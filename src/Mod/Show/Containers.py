@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # /***************************************************************************
 # *   Copyright (c) 2018 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
@@ -79,8 +81,9 @@ class Container(object):
         elif container.hasExtension("App::GroupExtension"):
             result = container.Group
             if container.hasExtension("App::GeoFeatureGroupExtension"):
-                # geofeaturegroup's group contains all objects within the CS, we don't want that
-                result = [obj for obj in result if obj.getParentGroup() is not container]
+                # geofeaturegroup's group contains all objects within the CS, we don't want that.
+                # Objects in a nested plain group have a non-None getParentGroup(); exclude them.
+                result = [obj for obj in result if obj.getParentGroup() is None]
             return result
         elif container.isDerivedFrom("App::Origin"):
             return []

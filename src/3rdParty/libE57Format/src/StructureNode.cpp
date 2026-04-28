@@ -127,7 +127,7 @@ to attach the StructureNode to a different ImageFile.
 @pre The @a destImageFile must have been opened in write mode (i.e. destImageFile.isWritable() must
 be true).
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see Node
@@ -199,7 +199,7 @@ bool StructureNode::isAttached() const
 
 @return Number of child nodes contained by this StructureNode.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see StructureNode::get(int64_t) const,
@@ -225,8 +225,8 @@ is not attached to an ImageFile, the @a pathName origin root will not the root n
 
 @return true if pathName is currently defined.
 
-@throw ::ErrorBadPathName
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ImageFile::root, VectorNode::isDefined
@@ -251,8 +251,8 @@ the StructureNode. The order of children may change if more children are added t
 
 @return A smart Node handle referencing the child node.
 
-@throw ::ErrorChildIndexOutOfBounds
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorChildIndexOutOfBounds (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see StructureNode::childCount,
@@ -278,9 +278,9 @@ an ImageFile.
 
 @return A smart Node handle referencing the child node.
 
-@throw ::ErrorBadPathName
-@throw ::ErrorPathUndefined
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorPathUndefined (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see StructureNode::get(int64_t) const
@@ -321,14 +321,14 @@ destImageFile().isWritable()).
 destImageFile() == n.destImageFile()).
 @post The @a pathName will be defined (i.e. isDefined(pathName)).
 
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorBadPathName
-@throw ::ErrorPathUndefined
-@throw ::ErrorSetTwice
-@throw ::ErrorAlreadyHasParent
-@throw ::ErrorDifferentDestImageFile
-@throw ::ErrorHomogeneousViolation
-@throw ::ErrorFileReadOnly
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorPathUndefined (n/c)
+@throw ::ErrorSetTwice (n/c)
+@throw ::ErrorAlreadyHasParent (n/c)
+@throw ::ErrorDifferentDestImageFile (n/c)
+@throw ::ErrorHomogeneousViolation (n/c)
+@throw ::ErrorFileReadOnly (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see VectorNode::append
@@ -386,7 +386,7 @@ designs that need to avoid the exception, use Node::type() to determine the actu
 before downcasting. This function must be explicitly called (c++ compiler cannot insert it
 automatically).
 
-@throw ::ErrorBadNodeDowncast
+@throw ::ErrorBadNodeDowncast (n/c)
 
 @see Node::type(), StructureNode::operator Node()
 */

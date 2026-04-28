@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -21,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskDressUpParameters_H
-#define GUI_TASKVIEW_TaskDressUpParameters_H
+#pragma once
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskView.h>
@@ -36,28 +37,38 @@ class QAction;
 class QListWidget;
 class QListWidgetItem;
 
-namespace Part {
-    class Feature;
+namespace Part
+{
+class Feature;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class TaskDressUpParameters : public TaskFeatureParameters, public Gui::SelectionObserver
+class TaskDressUpParameters: public TaskFeatureParameters, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget* parent = nullptr);
+    TaskDressUpParameters(
+        ViewProviderDressUp* DressUpView,
+        bool selectEdges,
+        bool selectFaces,
+        QWidget* parent = nullptr
+    );
     ~TaskDressUpParameters() override;
 
     const std::vector<std::string> getReferences() const;
-    Part::Feature *getBase() const;
+    Part::Feature* getBase() const;
 
     void setupTransaction();
 
-    int getTransactionID() const {
+    int getTransactionID() const
+    {
         return transactionID;
     }
+
+    void setSelectionGate();
 
     bool event(QEvent* event) override;
 
@@ -71,6 +82,7 @@ protected Q_SLOTS:
     void createAddAllEdgesAction(QListWidget* parentList);
 
 protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
     void referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget);
     bool wasDoubleClicked = false;
     void keyPressEvent(QKeyEvent* ke) override;
@@ -80,7 +92,13 @@ protected:
     void updateFeature(PartDesign::DressUp* pcDressUp, const std::vector<std::string>& refs);
 
 protected:
-    enum selectionModes { none, refSel, plane, line };
+    enum selectionModes
+    {
+        none,
+        refSel,
+        plane,
+        line
+    };
     void setSelectionMode(selectionModes mode);
     virtual void setButtons(const selectionModes mode) = 0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
@@ -106,16 +124,16 @@ protected:
 private:
     Gui::WeakPtrT<ViewProviderDressUp> DressUpView;
 
-    Gui::ViewProvider* previouslyShownViewProvider { nullptr };
+    Gui::ViewProvider* previouslyShownViewProvider {nullptr};
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgDressUpParameters : public TaskDlgFeatureParameters
+class TaskDlgDressUpParameters: public TaskDlgFeatureParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView);
+    explicit TaskDlgDressUpParameters(ViewProviderDressUp* DressUpView);
     ~TaskDlgDressUpParameters() override;
 
 public:
@@ -124,9 +142,7 @@ public:
     bool reject() override;
 
 protected:
-    TaskDressUpParameters  *parameter;
+    TaskDressUpParameters* parameter;
 };
 
-} //namespace PartDesignGui
-
-#endif // GUI_TASKVIEW_TaskDressUpParameters_H
+}  // namespace PartDesignGui

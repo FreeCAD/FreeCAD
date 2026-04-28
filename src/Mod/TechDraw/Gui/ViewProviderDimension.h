@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
-#define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
+#pragma once
 
 #include <App/PropertyUnits.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -78,6 +77,7 @@ public:
     bool setEdit(int ModNum) override;
     bool doubleClicked() override;
     bool onDelete(const std::vector<std::string> & parms) override;
+    void finishRestoring() override;
 
 
     TechDraw::DrawViewDimension* getViewObject() const override;
@@ -93,6 +93,8 @@ public:
 
     std::vector<App::DocumentObject*> claimChildren() const override;
 
+    void fixTextSize();
+    void fixArrowSize();
 
 protected:
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
@@ -104,6 +106,3 @@ private:
 };
 
 } // namespace TechDrawGui
-
-
-#endif // DRAWINGGUI_VIEWPROVIDERDIMENSION_H

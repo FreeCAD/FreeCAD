@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureMultiTransform_H
-#define PARTDESIGN_FeatureMultiTransform_H
+#pragma once
 
 #include "FeatureTransformed.h"
 
@@ -55,14 +56,12 @@ public:
      * by the Transformations property. Subfeatures can be Mirrored, LinearPattern, PolarPattern and
      * Scaled.
      */
-    const std::list<gp_Trsf>
-    getTransformations(const std::vector<App::DocumentObject*> originals) override;
+    const std::list<gp_Trsf> getTransformations(
+        const std::vector<App::DocumentObject*> originals
+    ) override;
 
 protected:
     void positionBySupport() override;
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureMultiTransform_H

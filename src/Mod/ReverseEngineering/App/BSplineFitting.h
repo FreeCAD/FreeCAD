@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,14 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REEN_BSPLINEFITTING_H
-#define REEN_BSPLINEFITTING_H
+#pragma once
 
 #if defined(HAVE_PCL_OPENNURBS)
-#include <vector>
+# include <vector>
 
-#include <Base/Vector3D.h>
-#include <Geom_BSplineSurface.hxx>
+# include <Base/Vector3D.h>
+# include <Geom_BSplineSurface.hxx>
 
 
 namespace Reen
@@ -61,5 +62,3 @@ private:
 }  // namespace Reen
 
 #endif  // HAVE_PCL_OPENNURBS
-
-#endif  // REEN_BSPLINEFITTING_H

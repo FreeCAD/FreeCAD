@@ -30,7 +30,8 @@
 using namespace Gui;
 
 SelectionFilterPy::SelectionFilterPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kwds)
-    : Py::PythonClass<SelectionFilterPy>::PythonClass(self, args, kwds), filter("")
+    : Py::PythonClass<SelectionFilterPy>::PythonClass(self, args, kwds)
+    , filter("")
 {
     const char* str;
     if (!PyArg_ParseTuple(args.ptr(), "s", &str)) {
@@ -59,16 +60,15 @@ PYCXX_NOARGS_METHOD_DECL(SelectionFilterPy, match)
 
 Py::Object SelectionFilterPy::test(const Py::Tuple& args)
 {
-    PyObject * pcObj;
-    char* text=nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "O!|s",
-        &(App::DocumentObjectPy::Type), &pcObj, &text)) {
+    PyObject* pcObj;
+    char* text = nullptr;
+    if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(App::DocumentObjectPy::Type), &pcObj, &text)) {
         throw Py::Exception();
     }
 
     auto docObj = static_cast<App::DocumentObjectPy*>(pcObj);
 
-    return Py::Boolean(filter.test(docObj->getDocumentObjectPtr(),text));
+    return Py::Boolean(filter.test(docObj->getDocumentObjectPtr(), text));
 }
 PYCXX_VARARGS_METHOD_DECL(SelectionFilterPy, test)
 
@@ -77,7 +77,7 @@ Py::Object SelectionFilterPy::result()
     Py::List list;
     for (const auto& vec : filter.Result) {
         Py::Tuple tuple(vec.size());
-        int index=0;
+        int index = 0;
         for (auto sel : vec) {
             tuple[index++] = Py::asObject(sel.getPyObject());
         }
@@ -90,7 +90,7 @@ PYCXX_NOARGS_METHOD_DECL(SelectionFilterPy, result)
 
 Py::Object SelectionFilterPy::setFilter(const Py::Tuple& args)
 {
-    char* text=nullptr;
+    char* text = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &text)) {
         throw Py::Exception();
     }
@@ -114,27 +114,32 @@ PYCXX_NOARGS_METHOD_DECL(SelectionFilterPy, getFilter)
 void SelectionFilterPy::init_type()
 {
     behaviors().name("Gui.SelectionFilter");
-    behaviors().doc("Filter for certain selection\n"
+    behaviors().doc(
+        "Filter for certain selection\n"
         "Example strings are:\n"
         "\"SELECT Part::Feature SUBELEMENT Edge\",\n"
         "\"SELECT Part::Feature\", \n"
-        "\"SELECT Part::Feature COUNT 1..5\"\n");
+        "\"SELECT Part::Feature COUNT 1..5\"\n"
+    );
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
     behaviors().supportGetattro();
     behaviors().supportSetattro();
-    PYCXX_ADD_NOARGS_METHOD(match, match,
-        "Check if the current selection matches the filter");
-    PYCXX_ADD_NOARGS_METHOD(result, result,
-        "If match() returns True then with result() you get a list of the matching objects");
-    PYCXX_ADD_VARARGS_METHOD(test, test,
+    PYCXX_ADD_NOARGS_METHOD(match, match, "Check if the current selection matches the filter");
+    PYCXX_ADD_NOARGS_METHOD(
+        result,
+        result,
+        "If match() returns True then with result() you get a list of the matching objects"
+    );
+    PYCXX_ADD_VARARGS_METHOD(
+        test,
+        test,
         "test(Feature, SubName='')\n"
         "Test if a given object is described in the filter.\n"
-        "If SubName is not empty the sub-element gets also tested.");
-    PYCXX_ADD_VARARGS_METHOD(setFilter, setFilter,
-        "Set a new selection filter from a string");
-    PYCXX_ADD_NOARGS_METHOD(getFilter, getFilter,
-        "Get the selection filter string");
+        "If SubName is not empty the sub-element gets also tested."
+    );
+    PYCXX_ADD_VARARGS_METHOD(setFilter, setFilter, "Set a new selection filter from a string");
+    PYCXX_ADD_NOARGS_METHOD(getFilter, getFilter, "Get the selection filter string");
 
     behaviors().readyType();
 }

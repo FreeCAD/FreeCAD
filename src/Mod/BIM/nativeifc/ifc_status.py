@@ -31,7 +31,7 @@ import FreeCAD
 import FreeCADGui
 
 translate = FreeCAD.Qt.translate
-params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
+PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 text_on = translate("BIM", "Strict IFC mode is ON (all objects are IFC)")
 text_off = translate("BIM", "Strict IFC mode is OFF (IFC and non-IFC objects allowed)")
 

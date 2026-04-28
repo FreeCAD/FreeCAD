@@ -77,6 +77,7 @@ constexpr auto unitSpecs = std::to_array<UnitSpec>({
     { "Force"                                 , {  1,  1, -2                     } },
     { "Frequency"                             , {  0,  0, -1                     } },
     { "HeatFlux"                              , {  0,  1, -3                     } },
+    { "Inertia"                               , {  2,  1                         } },
     { "InverseArea"                           , { -2                             } },
     { "InverseLength"                         , { -1                             } },
     { "InverseVolume"                         , { -3                             } },
@@ -102,6 +103,7 @@ constexpr auto unitSpecs = std::to_array<UnitSpec>({
     { "VacuumPermittivity"                    , { -3, -1,  4,  2                 } },
     { "Velocity"                              , {  1,  0, -1                     } },
     { "Volume"                                , {  3                             } },
+    { "Concentration"                         , { -3,  0,  0,  0,  0,  1         } },
     { "VolumeChargeDensity"                   , { -3,  0,  1,  1                 } },
     { "VolumeFlowRate"                        , {  3,  0, -1                     } },
     { "VolumetricThermalExpansionCoefficient" , {  0,  0,  0,  0, -1             } },
@@ -110,20 +112,24 @@ constexpr auto unitSpecs = std::to_array<UnitSpec>({
     { "YoungsModulus"                         , { -1,  1, -2                     } },
 });  // clang-format on
 
-Unit::Unit(const int length,  // NOLINT
-           const int mass,
-           const int time,
-           const int electricCurrent,
-           const int thermodynamicTemperature,
-           const int amountOfSubstance,
-           const int luminousIntensity,
-           const int angle)
+Unit::Unit(
+    const int length,  // NOLINT
+    const int mass,
+    const int time,
+    const int electricCurrent,
+    const int thermodynamicTemperature,
+    const int amountOfSubstance,
+    const int luminousIntensity,
+    const int angle
+)
     : _name {""}
 {
     auto cast = [](auto val) {
-        return static_cast<int8_t>(std::clamp<decltype(val)>(val,
-                                                             std::numeric_limits<int8_t>::min(),
-                                                             std::numeric_limits<int8_t>::max()));
+        return static_cast<int8_t>(std::clamp<decltype(val)>(
+            val,
+            std::numeric_limits<int8_t>::min(),
+            std::numeric_limits<int8_t>::max()
+        ));
     };
 
     _exps[0] = cast(length);
@@ -257,10 +263,11 @@ std::string Unit::getString() const
 
     auto denominatorStr = buildStr(negValIndexes);
 
-    return fmt::format("{}/{}",
-                       numeratorStr.empty() ? "1" : numeratorStr,
-                       negValIndexes.size() > 1 ? fmt::format("({})", denominatorStr)
-                                                : denominatorStr);
+    return fmt::format(
+        "{}/{}",
+        numeratorStr.empty() ? "1" : numeratorStr,
+        negValIndexes.size() > 1 ? fmt::format("({})", denominatorStr) : denominatorStr
+    );
 }
 
 std::string Unit::representation() const
@@ -322,6 +329,7 @@ constexpr Unit Unit::Angle                                 = make("Angle"       
 constexpr Unit Unit::Acceleration                          = make("Acceleration"                );
 constexpr Unit Unit::AngleOfFriction                       = make("Angle"                       );
 constexpr Unit Unit::Area                                  = make("Area"                        );
+constexpr Unit Unit::Concentration                         = make("Concentration"               );
 constexpr Unit Unit::CompressiveStrength                   = make("Pressure"                    );
 constexpr Unit Unit::CurrentDensity                        = make("CurrentDensity"              );
 constexpr Unit Unit::Density                               = make("Density"                     );
@@ -338,14 +346,15 @@ constexpr Unit Unit::ElectromagneticPotential              = make("Electromagnet
 constexpr Unit Unit::Force                                 = make("Force"                       );
 constexpr Unit Unit::Frequency                             = make("Frequency"                   );
 constexpr Unit Unit::HeatFlux                              = make("HeatFlux"                    );
+constexpr Unit Unit::Inertia                               = make("Inertia"                     );
 constexpr Unit Unit::InverseArea                           = make("InverseArea"                 );
 constexpr Unit Unit::InverseLength                         = make("InverseLength"               );
 constexpr Unit Unit::InverseVolume                         = make("InverseVolume"               );
 constexpr Unit Unit::KinematicViscosity                    = make("KinematicViscosity"          );
-constexpr Unit Unit::MagneticFieldStrength                 = make("Magnetization"               );
+constexpr Unit Unit::MagneticFieldStrength                 = make("MagneticFieldStrength"       );
 constexpr Unit Unit::MagneticFlux                          = make("MagneticFlux"                );
 constexpr Unit Unit::MagneticFluxDensity                   = make("MagneticFluxDensity"         );
-constexpr Unit Unit::Magnetization                         = make("MagneticFieldStrength"       );
+constexpr Unit Unit::Magnetization                         = make("Magnetization"               );
 constexpr Unit Unit::Moment                                = make("Moment"                      );
 constexpr Unit Unit::Pressure                              = make("Pressure"                    );
 constexpr Unit Unit::Power                                 = make("Power"                       );

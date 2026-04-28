@@ -35,7 +35,8 @@ CustomFolderModel::CustomFolderModel(QObject* parent)
 {
 
     Base::Reference<ParameterGrp> parameterGroup = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
+        "User parameter:BaseApp/Preferences/Mod/Start"
+    );
 
     _customFolderPathSpec = QString::fromStdString(parameterGroup->GetASCII("CustomFolder", ""));
 
@@ -58,21 +59,25 @@ void CustomFolderModel::loadCustomFolder()
         if (!customFolderDirectory.exists()) {
             Base::Console().warning(
                 "BaseApp/Preferences/Mod/Start/CustomFolder: custom folder %s does not exist\n",
-                customFolderDirectory.absolutePath().toStdString().c_str());
+                customFolderDirectory.absolutePath().toStdString().c_str()
+            );
             continue;
         }
         if (!customFolderDirectory.isReadable()) {
             Base::Console().warning(
                 "BaseApp/Preferences/Mod/Start/CustomFolder: cannot read custom folder %s\n",
-                customFolderDirectory.absolutePath().toStdString().c_str());
+                customFolderDirectory.absolutePath().toStdString().c_str()
+            );
             continue;
         }
         if (_showOnlyFCStd) {
             customFolderDirectory.setNameFilters(QStringList() << QStringLiteral("*.FCStd"));
         }
 
-        auto entries = customFolderDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
-                                                       QDir::SortFlag::Name);
+        auto entries = customFolderDirectory.entryList(
+            QDir::Filter::Files | QDir::Filter::Readable,
+            QDir::SortFlag::Name
+        );
         for (const auto& entry : entries) {
             addFile(customFolderDirectory.filePath(entry));
         }

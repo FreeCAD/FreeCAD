@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -26,7 +28,6 @@ from .base import ToolBitShape
 
 class ToolBitShapeThreadMill(ToolBitShape):
     name = "ThreadMill"
-    aliases = "threadmill", "thread-mill"
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
@@ -36,7 +37,7 @@ class ToolBitShapeThreadMill(ToolBitShape):
                 "App::PropertyLength",
             ),
             "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Major diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting diameter"),
                 "App::PropertyLength",
             ),
             "Flutes": (

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Wild Magic Source Code
 // David Eberly
 // http://www.geometrictools.com
@@ -14,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4FOUNDATIONLIB_H
-#define WM4FOUNDATIONLIB_H
+#pragma once
 
 // For the DLL library.
 #ifdef WM4_FOUNDATION_DLL_EXPORT
@@ -30,6 +31,5 @@
 #else
 #define WM4_FOUNDATION_ITEM
 
-#endif
 #endif
 #endif

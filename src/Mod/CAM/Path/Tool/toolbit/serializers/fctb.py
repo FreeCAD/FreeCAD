@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -25,7 +27,6 @@ import FreeCAD
 from ...assets import Asset, AssetUri, AssetSerializer
 from ...shape import ToolBitShape
 from ..models.base import ToolBit
-
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())

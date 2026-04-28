@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintOnBoundary_H
-#define GUI_TASKVIEW_TaskFemConstraintOnBoundary_H
+#pragma once
 
 #include <QObject>
 
@@ -48,9 +47,11 @@ class TaskFemConstraintOnBoundary: public TaskFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintOnBoundary(ViewProviderFemConstraint* ConstraintView,
-                                         QWidget* parent = nullptr,
-                                         const char* pixmapname = "");
+    explicit TaskFemConstraintOnBoundary(
+        ViewProviderFemConstraint* ConstraintView,
+        QWidget* parent = nullptr,
+        const char* pixmapname = ""
+    );
     ~TaskFemConstraintOnBoundary() override;
 
 protected Q_SLOTS:
@@ -74,5 +75,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintOnBoundary_H

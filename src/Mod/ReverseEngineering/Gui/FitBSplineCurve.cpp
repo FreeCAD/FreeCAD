@@ -85,7 +85,7 @@ bool FitBSplineCurveWidget::accept()
         tryAccept();
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        d->obj.getDocument()->abortTransaction();
         QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
@@ -99,8 +99,7 @@ void FitBSplineCurveWidget::tryAccept()
     QString object = QString::fromStdString(d->obj.getObjectPython());
 
     QStringList arguments;
-    arguments.append(
-        QStringLiteral("Points=getattr(%1, %1.getPropertyNameOfGeometry())").arg(object));
+    arguments.append(QStringLiteral("Points=getattr(%1, %1.getPropertyNameOfGeometry())").arg(object));
     if (!d->ui.groupBoxSmooth->isChecked()) {
         arguments.append(QStringLiteral("MinDegree = %1").arg(d->ui.degreeMin->value()));
     }
@@ -123,8 +122,10 @@ void FitBSplineCurveWidget::tryAccept()
     }
 
     QString argument = arguments.join(QLatin1String(", "));
-    QString command = QStringLiteral("%1.addObject(\"Part::Spline\", \"Spline\").Shape = "
-                                     "ReverseEngineering.approxCurve(%2).toShape()")
+    QString command = QStringLiteral(
+                          "%1.addObject(\"Part::Spline\", \"Spline\").Shape = "
+                          "ReverseEngineering.approxCurve(%2).toShape()"
+    )
                           .arg(document, argument);
 
     tryCommand(command);
@@ -134,9 +135,9 @@ void FitBSplineCurveWidget::exeCommand(const QString& cmd)
 {
     Gui::WaitCursor wc;
     Gui::Command::addModule(Gui::Command::App, "ReverseEngineering");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fit B-spline"));
+    d->obj.getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Fit B-spline"));
     Gui::Command::runCommand(Gui::Command::Doc, cmd.toLatin1());
-    Gui::Command::commitCommand();
+    d->obj.getDocument()->commitTransaction();
     Gui::Command::updateActive();
 }
 
@@ -146,7 +147,7 @@ void FitBSplineCurveWidget::tryCommand(const QString& cmd)
         exeCommand(cmd);
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        d->obj.getDocument()->abortTransaction();
         e.reportException();
     }
 }

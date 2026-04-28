@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,28 +22,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPREADSHEET_GLOBAL_H
-#define SPREADSHEET_GLOBAL_H
+#pragma once
 
 #include <FCGlobal.h>
 
 
 // Spreadsheet
 #ifndef SpreadsheetExport
-#ifdef Spreadsheet_EXPORTS
-#define SpreadsheetExport FREECAD_DECL_EXPORT
-#else
-#define SpreadsheetExport FREECAD_DECL_IMPORT
-#endif
+# ifdef Spreadsheet_EXPORTS
+#  define SpreadsheetExport FREECAD_DECL_EXPORT
+# else
+#  define SpreadsheetExport FREECAD_DECL_IMPORT
+# endif
 #endif
 
 // SpreadsheetGui
 #ifndef SpreadsheetGuiExport
-#ifdef SpreadsheetGui_EXPORTS
-#define SpreadsheetGuiExport FREECAD_DECL_EXPORT
-#else
-#define SpreadsheetGuiExport FREECAD_DECL_IMPORT
+# ifdef SpreadsheetGui_EXPORTS
+#  define SpreadsheetGuiExport FREECAD_DECL_EXPORT
+# else
+#  define SpreadsheetGuiExport FREECAD_DECL_IMPORT
+# endif
 #endif
-#endif
-
-#endif  // SPREADSHEET_GLOBAL_H

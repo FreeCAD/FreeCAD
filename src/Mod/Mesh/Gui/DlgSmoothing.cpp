@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -24,6 +26,7 @@
 #include <QDialogButtonBox>
 
 
+#include <App/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
@@ -148,8 +151,7 @@ TaskSmoothing::TaskSmoothing()
     addTaskBox(widget, false, nullptr);
 
     selection = new Selection();  // NOLINT
-    selection->setObjects(
-        Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
+    selection->setObjects(Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
     Gui::Selection().clearSelection();
     QWidget* box = addTaskBoxWithoutHeader(selection);
     box->hide();
@@ -165,11 +167,13 @@ bool TaskSmoothing::accept()
     }
 
     Gui::WaitCursor wc;
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"));
 
+    int tid = 0;
     bool hasSelection = false;
     for (auto it : meshes) {
         Mesh::Feature* mesh = static_cast<Mesh::Feature*>(it);
+        tid = mesh->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"), tid);
+
         std::vector<Mesh::FacetIndex> selection;
         if (widget->smoothSelection()) {
             // clear the selection before editing the mesh to avoid
@@ -220,12 +224,12 @@ bool TaskSmoothing::accept()
         mesh->Mesh.finishEditing();
     }
 
-    if (widget->smoothSelection() && !hasSelection) {
-        Gui::Command::abortCommand();
+    if (widget->smoothSelection() && !hasSelection && tid) {
+        App::GetApplication().abortTransaction(tid);
         return false;
     }
 
-    Gui::Command::commitCommand();
+    App::GetApplication().commitTransaction(tid);
     return true;
 }
 

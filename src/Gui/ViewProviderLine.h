@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ViewProviderLine_H
-#define GUI_ViewProviderLine_H
+#pragma once
 
 #include "ViewProviderDatum.h"
 
@@ -40,7 +39,8 @@ class SoFrameLabel;
 namespace Gui
 {
 
-class GuiExport ViewProviderLine : public ViewProviderDatum {
+class GuiExport ViewProviderLine: public ViewProviderDatum
+{
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLine);
 
 public:
@@ -61,7 +61,4 @@ protected:
     ParamHandlers handlers;
 };
 
-} //namespace Gui
-
-
-#endif // GUI_ViewProviderLine_H
+}  // namespace Gui

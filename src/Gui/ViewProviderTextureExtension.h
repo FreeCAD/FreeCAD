@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERTEXTUREEXT_H
-#define GUI_VIEWPROVIDERTEXTUREEXT_H
+#pragma once
 
 #include <Gui/ViewProviderExtensionPython.h>
 
@@ -88,13 +87,9 @@ public:
 
 private:
     // Used to support per face textures
-    SoTexture3        * pcShapeTexture3D;
-    SoCoordinate3     * pcShapeCoordinates;
-    SoIndexedFaceSet  * pcShapeFaceset;
+    SoTexture3* pcShapeTexture3D;
+    SoCoordinate3* pcShapeCoordinates;
+    SoIndexedFaceSet* pcShapeFaceset;
 };
 
-} //namespace Gui
-
-
-#endif // GUI_VIEWPROVIDERTEXTUREEXT_H
-
+}  // namespace Gui

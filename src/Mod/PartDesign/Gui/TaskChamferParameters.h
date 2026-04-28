@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskChamferParameters_H
-#define GUI_TASKVIEW_TaskChamferParameters_H
+#pragma once
 
 #include <Gui/Inventor/Draggers/Gizmo.h>
 
@@ -30,24 +31,27 @@
 #include "ViewProviderChamfer.h"
 
 class Ui_TaskChamferParameters;
-namespace PartDesign {
+namespace PartDesign
+{
 class Chamfer;
 }
 
-namespace Gui {
+namespace Gui
+{
 class LinearGizmo;
 class RotationalGizmo;
 class GizmoContainer;
-}
+}  // namespace Gui
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class TaskChamferParameters : public TaskDressUpParameters
+class TaskChamferParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskChamferParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    explicit TaskChamferParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
     ~TaskChamferParameters() override;
 
     void apply() override;
@@ -64,7 +68,7 @@ private Q_SLOTS:
 
 protected:
     void setButtons(const selectionModes mode) override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     int getType() const;
@@ -87,12 +91,12 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgChamferParameters : public TaskDlgDressUpParameters
+class TaskDlgChamferParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgChamferParameters(ViewProviderChamfer *DressUpView);
+    explicit TaskDlgChamferParameters(ViewProviderChamfer* DressUpView);
     ~TaskDlgChamferParameters() override;
 
 public:
@@ -100,6 +104,4 @@ public:
     bool accept() override;
 };
 
-} //namespace PartDesignGui
-
-#endif // GUI_TASKVIEW_TaskChamferParameters_H
+}  // namespace PartDesignGui

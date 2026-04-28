@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,16 +22,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SHAPEFROMMESH_H
-#define PARTGUI_SHAPEFROMMESH_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
 
-namespace PartGui {
+namespace PartGui
+{
 
 class Ui_ShapeFromMesh;
-class ShapeFromMesh : public QDialog
+class ShapeFromMesh: public QDialog
 {
     Q_OBJECT
 
@@ -44,6 +46,4 @@ private:
     std::unique_ptr<Ui_ShapeFromMesh> ui;
 };
 
-} // namespace PartGui
-
-#endif // PARTGUI_SHAPEFROMMESH_H
+}  // namespace PartGui

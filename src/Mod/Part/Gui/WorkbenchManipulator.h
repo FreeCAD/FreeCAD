@@ -22,12 +22,12 @@
  **************************************************************************/
 
 
-#ifndef PARTGUI_WORKBENCHMANIPULATOR_H
-#define PARTGUI_WORKBENCHMANIPULATOR_H
+#pragma once
 
 #include <Gui/WorkbenchManipulator.h>
 
-namespace PartGui {
+namespace PartGui
+{
 
 class WorkbenchManipulator: public Gui::WorkbenchManipulator
 {
@@ -56,7 +56,4 @@ private:
     static void addDatums(Gui::ToolBarItem* toolBar);
 };
 
-} // namespace PartGui
-
-
-#endif // PARTGUI_WORKBENCHMANIPULATOR_H
+}  // namespace PartGui

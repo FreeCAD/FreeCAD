@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H
-#define GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -42,8 +41,10 @@ class TaskFemConstraintPlaneRotation: public TaskFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation* ConstraintView,
-                                            QWidget* parent = nullptr);
+    explicit TaskFemConstraintPlaneRotation(
+        ViewProviderFemConstraintPlaneRotation* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintPlaneRotation() override;
     const std::string getReferences() const override;
 
@@ -65,11 +66,8 @@ class TaskDlgFemConstraintPlaneRotation: public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintPlaneRotation(
-        ViewProviderFemConstraintPlaneRotation* ConstraintView);
+    explicit TaskDlgFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation* ConstraintView);
     bool accept() override;
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H

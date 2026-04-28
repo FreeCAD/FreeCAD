@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *   Copyright (c) 2015 Eivind Kvedalen (eivind@kvedalen.name)             *
@@ -28,6 +30,7 @@
 
 #include "Mod/Spreadsheet/App/Sheet.h"
 #include "Mod/Spreadsheet/Gui/SpreadsheetView.h"
+#include <App/Document.h>
 #include <App/Range.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -65,8 +68,9 @@ Workbench::~Workbench() = default;
 void Workbench::activated()
 {
     if (!initialized) {
-        QList<QToolBar*> bars =
-            Gui::getMainWindow()->findChildren<QToolBar*>(QStringLiteral("Spreadsheet"));
+        QList<QToolBar*> bars = Gui::getMainWindow()->findChildren<QToolBar*>(
+            QStringLiteral("Spreadsheet")
+        );
 
         if (bars.size() == 1) {
             QToolBar* bar = bars[0];
@@ -75,19 +79,27 @@ void Workbench::activated()
             QPalette palette = Gui::getMainWindow()->palette();
 
             QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-                QStringLiteral("Spreadsheet_ForegroundColor"));
+                QStringLiteral("Spreadsheet_ForegroundColor")
+            );
             if (!fgList.empty()) {
                 foregroundColor = fgList[0];
             }
             else {
-                foregroundColor = new QtColorPicker(bar);
+                foregroundColor = new QtColorPicker(bar, palette.color(QPalette::WindowText));
                 foregroundColor->setObjectName(QStringLiteral("Spreadsheet_ForegroundColor"));
                 foregroundColor->setStandardColors();
-                foregroundColor->setCurrentColor(palette.color(QPalette::WindowText));
-                QObject::connect(foregroundColor,
-                                 &QtColorPicker::colorSet,
-                                 workbenchHelper.get(),
-                                 &WorkbenchHelper::setForegroundColor);
+                QObject::connect(
+                    foregroundColor,
+                    &QtColorPicker::colorSet,
+                    workbenchHelper.get(),
+                    &WorkbenchHelper::setForegroundColor
+                );
+                QObject::connect(
+                    foregroundColor,
+                    &QtColorPicker::colorCleared,
+                    workbenchHelper.get(),
+                    &WorkbenchHelper::clearForegroundColor
+                );
             }
             foregroundColor->setToolTip(QObject::tr("Sets the text color of cells"));
             foregroundColor->setWhatsThis(QObject::tr("Sets the text color of spreadsheet cells"));
@@ -95,23 +107,30 @@ void Workbench::activated()
             bar->addWidget(foregroundColor);
 
             QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-                QStringLiteral("Spreadsheet_BackgroundColor"));
+                QStringLiteral("Spreadsheet_BackgroundColor")
+            );
             if (!bgList.empty()) {
                 backgroundColor = bgList[0];
             }
             else {
-                backgroundColor = new QtColorPicker(bar);
+                backgroundColor = new QtColorPicker(bar, palette.color(QPalette::Base));
                 backgroundColor->setObjectName(QStringLiteral("Spreadsheet_BackgroundColor"));
                 backgroundColor->setStandardColors();
-                backgroundColor->setCurrentColor(palette.color(QPalette::Base));
-                QObject::connect(backgroundColor,
-                                 &QtColorPicker::colorSet,
-                                 workbenchHelper.get(),
-                                 &WorkbenchHelper::setBackgroundColor);
+                QObject::connect(
+                    backgroundColor,
+                    &QtColorPicker::colorSet,
+                    workbenchHelper.get(),
+                    &WorkbenchHelper::setBackgroundColor
+                );
+                QObject::connect(
+                    backgroundColor,
+                    &QtColorPicker::colorCleared,
+                    workbenchHelper.get(),
+                    &WorkbenchHelper::clearBackgroundColor
+                );
             }
             backgroundColor->setToolTip(QObject::tr("Sets the background color of cells"));
-            backgroundColor->setWhatsThis(
-                QObject::tr("Sets the spreadsheet cells background color"));
+            backgroundColor->setWhatsThis(QObject::tr("Sets the spreadsheet cells background color"));
             backgroundColor->setStatusTip(QObject::tr("Sets the background color of cells"));
             bar->addWidget(backgroundColor);
 
@@ -124,68 +143,154 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
 
-    if (doc) {
-        Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
-
-        if (sheetView) {
-            Sheet* sheet = sheetView->getSheet();
-            std::vector<Range> ranges = sheetView->selectedRanges();
-
-            // Execute mergeCells commands
-            if (!ranges.empty()) {
-                std::vector<Range>::const_iterator i = ranges.begin();
-
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set text color"));
-                for (; i != ranges.end(); ++i) {
-                    Gui::Command::doCommand(Gui::Command::Doc,
-                                            "App.ActiveDocument.%s.setForeground('%s', (%f,%f,%f))",
-                                            sheet->getNameInDocument(),
-                                            i->rangeString().c_str(),
-                                            color.redF(),
-                                            color.greenF(),
-                                            color.blueF());
-                }
-                Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-            }
-        }
+    if (!doc) {
+        return;
     }
+
+    Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
+    SpreadsheetGui::SheetView* sheetView = freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
+
+    if (!sheetView) {
+        return;
+    }
+
+    Sheet* sheet = sheetView->getSheet();
+    std::vector<Range> ranges = sheetView->selectedRanges();
+
+    if (ranges.empty()) {
+        return;
+    }
+
+    std::vector<Range>::const_iterator i = ranges.begin();
+
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Set text color"));
+    for (; i != ranges.end(); ++i) {
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.setForeground('%s', (%f,%f,%f))",
+            sheet->getNameInDocument(),
+            i->rangeString().c_str(),
+            color.redF(),
+            color.greenF(),
+            color.blueF()
+        );
+    }
+    sheet->getDocument()->commitTransaction();
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+}
+
+void SpreadsheetGui::WorkbenchHelper::clearForegroundColor()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+
+    if (!doc) {
+        return;
+    }
+
+    Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
+    SpreadsheetGui::SheetView* sheetView = freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
+
+    if (!sheetView) {
+        return;
+    }
+
+    Sheet* sheet = sheetView->getSheet();
+    std::vector<Range> ranges = sheetView->selectedRanges();
+
+    if (ranges.empty()) {
+        return;
+    }
+
+    std::vector<Range>::const_iterator i = ranges.begin();
+
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Clear text color"));
+    for (; i != ranges.end(); ++i) {
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.clearForeground('%s')",
+            sheet->getNameInDocument(),
+            i->rangeString().c_str()
+        );
+    }
+    sheet->getDocument()->commitTransaction();
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
 void WorkbenchHelper::setBackgroundColor(const QColor& color)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
 
-    if (doc) {
-        Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
-
-        if (sheetView) {
-            Sheet* sheet = sheetView->getSheet();
-            std::vector<Range> ranges = sheetView->selectedRanges();
-
-            // Execute mergeCells commands
-            if (!ranges.empty()) {
-                std::vector<Range>::const_iterator i = ranges.begin();
-
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set background color"));
-                for (; i != ranges.end(); ++i) {
-                    Gui::Command::doCommand(Gui::Command::Doc,
-                                            "App.ActiveDocument.%s.setBackground('%s', (%f,%f,%f))",
-                                            sheet->getNameInDocument(),
-                                            i->rangeString().c_str(),
-                                            color.redF(),
-                                            color.greenF(),
-                                            color.blueF());
-                }
-                Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-            }
-        }
+    if (!doc) {
+        return;
     }
+
+    Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
+    SpreadsheetGui::SheetView* sheetView = freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
+
+    if (!sheetView) {
+        return;
+    }
+
+    Sheet* sheet = sheetView->getSheet();
+    std::vector<Range> ranges = sheetView->selectedRanges();
+
+    if (ranges.empty()) {
+        return;
+    }
+
+    std::vector<Range>::const_iterator i = ranges.begin();
+
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Set background color"));
+    for (; i != ranges.end(); ++i) {
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.setBackground('%s', (%f,%f,%f))",
+            sheet->getNameInDocument(),
+            i->rangeString().c_str(),
+            color.redF(),
+            color.greenF(),
+            color.blueF()
+        );
+    }
+    sheet->getDocument()->commitTransaction();
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+}
+
+void SpreadsheetGui::WorkbenchHelper::clearBackgroundColor()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+
+    if (!doc) {
+        return;
+    }
+
+    Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
+    SpreadsheetGui::SheetView* sheetView = freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
+
+    if (!sheetView) {
+        return;
+    }
+
+    Sheet* sheet = sheetView->getSheet();
+    std::vector<Range> ranges = sheetView->selectedRanges();
+
+    if (ranges.empty()) {
+        return;
+    }
+
+    std::vector<Range>::const_iterator i = ranges.begin();
+
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Clear background color"));
+    for (; i != ranges.end(); ++i) {
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.clearBackground('%s')",
+            sheet->getNameInDocument(),
+            i->rangeString().c_str()
+        );
+    }
+    sheet->getDocument()->commitTransaction();
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
 Gui::MenuItem* Workbench::setupMenuBar() const

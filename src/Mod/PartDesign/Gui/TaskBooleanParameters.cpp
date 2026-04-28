@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -22,8 +24,8 @@
  ***************************************************************************/
 
 
-
 #include <QAction>
+#include <QApplication>
 #include <QMessageBox>
 
 
@@ -48,10 +50,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskBooleanParameters */
 
 TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, QWidget* parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"),
-              tr("Boolean Parameters"),
-              true,
-              parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"), tr("Boolean Parameters"), true, parent)
     , ui(new Ui_TaskBooleanParameters)
     , BooleanView(BooleanView)
 {
@@ -108,8 +107,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         // get the selected object
-        PartDesign::Boolean* pcBoolean =
-            BooleanView->getObject<PartDesign::Boolean>();
+        PartDesign::Boolean* pcBoolean = BooleanView->getObject<PartDesign::Boolean>();
         std::string body(msg.pObjectName);
         if (body.empty()) {
             return;
@@ -147,15 +145,15 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 // Hide the bodies
                 if (bodies.size() == 1) {
                     // Hide base body and added body
-                    Gui::ViewProviderDocumentObject* vp =
-                        dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                            Gui::Application::Instance->getViewProvider(
-                                pcBoolean->BaseFeature.getValue()));
+                    Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
+                        Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue())
+                    );
                     if (vp) {
                         vp->hide();
                     }
                     vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                        Gui::Application::Instance->getViewProvider(bodies.front()));
+                        Gui::Application::Instance->getViewProvider(bodies.front())
+                    );
                     if (vp) {
                         vp->hide();
                     }
@@ -163,9 +161,10 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 }
                 else {
                     // Hide newly added body
-                    Gui::ViewProviderDocumentObject* vp =
-                        dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                            Gui::Application::Instance->getViewProvider(bodies.back()));
+                    Gui::ViewProviderDocumentObject* vp
+                        = dynamic_cast<Gui::ViewProviderDocumentObject*>(
+                            Gui::Application::Instance->getViewProvider(bodies.back())
+                        );
                     if (vp) {
                         vp->hide();
                     }
@@ -193,17 +192,16 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 exitSelectionMode();
 
                 // Make bodies visible again
-                Gui::ViewProviderDocumentObject* vp =
-                    dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                        Gui::Application::Instance->getViewProvider(pcBody));
+                Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
+                    Gui::Application::Instance->getViewProvider(pcBody)
+                );
                 if (vp) {
                     vp->show();
                 }
                 if (bodies.empty()) {
-                    Gui::ViewProviderDocumentObject* vp =
-                        dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                            Gui::Application::Instance->getViewProvider(
-                                pcBoolean->BaseFeature.getValue()));
+                    Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
+                        Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue())
+                    );
                     if (vp) {
                         vp->show();
                     }
@@ -217,8 +215,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 void TaskBooleanParameters::onButtonBodyAdd(bool checked)
 {
     if (checked) {
-        PartDesign::Boolean* pcBoolean =
-            BooleanView->getObject<PartDesign::Boolean>();
+        PartDesign::Boolean* pcBoolean = BooleanView->getObject<PartDesign::Boolean>();
         Gui::Document* doc = BooleanView->getDocument();
         BooleanView->hide();
         if (pcBoolean->Group.getValues().empty() && pcBoolean->BaseFeature.getValue()) {
@@ -265,6 +262,9 @@ void TaskBooleanParameters::onTypeChanged(int index)
             pcBoolean->Type.setValue("Fuse");
     }
 
+    // Force UI update before starting heavy computation to show user's selection immediately
+    QApplication::processEvents();
+
     pcBoolean->getDocument()->recomputeFeature(pcBoolean);
 }
 
@@ -272,8 +272,7 @@ const std::vector<std::string> TaskBooleanParameters::getBodies() const
 {
     std::vector<std::string> result;
     for (int i = 0; i < ui->listWidgetBodies->count(); i++) {
-        result.push_back(
-            ui->listWidgetBodies->item(i)->data(Qt::UserRole).toString().toStdString());
+        result.push_back(ui->listWidgetBodies->item(i)->data(Qt::UserRole).toString().toStdString());
     }
     return result;
 }
@@ -308,13 +307,15 @@ void TaskBooleanParameters::onBodyDeleted()
 
     // Make bodies visible again
     Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-        Gui::Application::Instance->getViewProvider(body));
+        Gui::Application::Instance->getViewProvider(body)
+    );
     if (vp) {
         vp->show();
     }
     if (bodies.empty()) {
         Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-            Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
+            Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue())
+        );
         if (vp) {
             vp->show();
         }
@@ -382,9 +383,7 @@ bool TaskDlgBooleanParameters::accept()
     try {
         std::vector<std::string> bodies = parameter->getBodies();
         if (bodies.empty()) {
-            QMessageBox::warning(parameter,
-                                 tr("Empty body list"),
-                                 tr("The body list cannot be empty"));
+            QMessageBox::warning(parameter, tr("Empty body list"), tr("The body list cannot be empty"));
             return false;
         }
         std::stringstream str;
@@ -395,19 +394,21 @@ bool TaskDlgBooleanParameters::accept()
         }
         str << "])";
         Gui::Command::runCommand(Gui::Command::Doc, str.str().c_str());
+        FCMD_OBJ_CMD(obj, "Type = " << parameter->getType());
+
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+        obj->getDocument()->commitTransaction();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter,
-                             tr("Boolean: Accept: Input error"),
-                             QCoreApplication::translate("Exception", e.what()));
+        obj->getDocument()->abortTransaction();
+        QMessageBox::warning(
+            parameter,
+            tr("Boolean: Accept: Input error"),
+            QCoreApplication::translate("Exception", e.what())
+        );
         return false;
     }
-
-    FCMD_OBJ_CMD(obj, "Type = " << parameter->getType());
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
-
     return true;
 }
 
@@ -424,15 +425,12 @@ bool TaskDlgBooleanParameters::reject()
                 doc->setShow(body->getNameInDocument());
             }
         }
+        // roll back the done things
+        doc->abortCommand();
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     }
-
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-
 
     return true;
 }
-
 
 #include "moc_TaskBooleanParameters.cpp"

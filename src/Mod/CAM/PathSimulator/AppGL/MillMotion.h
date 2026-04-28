@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,12 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __mill_operation_h__
-#define __mill_operation_h__
+#pragma once
 
-#include "EndMill.h"
 #include "linmath.h"
-namespace MillSim
+
+namespace CAMSimulator
 {
 
 enum eEndMillType
@@ -48,20 +49,20 @@ enum eCmdType
 
 struct MillMotion
 {
-    eCmdType cmd;
-    int tool;
-    float x, y, z;
-    float i, j, k;
-    float r;
-    char retract_mode;
-    float retract_z;
+    eCmdType cmd = eNop;
+    int tool = -1;
+    float x = 0.0f, y = 0.0f, z = 0.0f;
+    float i = 0.0f, j = 0.0f, k = 0.0f;
+    float r = 0.0f;
+    char retract_mode = '\0';
+    float retract_z = 0;
 };
 
-static inline void MotionPosToVec(vec3 vec, const MillMotion* motion)
+static inline void MotionPosToVec(vec3 vec, const MillMotion& motion)
 {
-    vec[0] = motion->x;
-    vec[1] = motion->y;
-    vec[2] = motion->z;
+    vec[0] = motion.x;
+    vec[1] = motion.y;
+    vec[2] = motion.z;
 }
-}  // namespace MillSim
-#endif
+
+}  // namespace CAMSimulator

@@ -1,4 +1,8 @@
-from Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from typing import Tuple
 
@@ -23,7 +27,7 @@ class AnaFilletAlgo(PyObjectBase):
         """
         ...
 
-    def perform(self, radius: float) -> bool:
+    def perform(self, radius: float, /) -> bool:
         """
         perform(radius) -> bool
 

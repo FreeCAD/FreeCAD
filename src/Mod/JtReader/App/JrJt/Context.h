@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Context_HEADER
-#define Context_HEADER
+#pragma once
 
 #include <istream>
 #include <stdint.h>
@@ -38,6 +39,3 @@ public:
 
     istream& Strm;
 };
-
-
-#endif

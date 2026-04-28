@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(JTREADER_TKJT_INCLUDE_DIRS CACHE PATH  "Include directory of TKJT headers")
 set(JTREADER_TKJT_LIBRARIES CACHE FILEPATH  "File path to TKJT library")
 

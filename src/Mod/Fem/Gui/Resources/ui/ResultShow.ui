@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>477</width>
+    <width>498</width>
     <height>798</height>
    </rect>
   </property>
@@ -60,7 +60,7 @@
         <item row="1" column="1">
          <widget class="QRadioButton" name="rb_vm_stress">
           <property name="text">
-           <string>von Mises Stress</string>
+           <string>von Mises stress</string>
           </property>
          </widget>
         </item>
@@ -242,35 +242,23 @@
          </widget>
         </item>
         <item>
-         <widget class="QScrollBar" name="hsb_displacement_factor">
+         <widget class="QSlider" name="hsb_displacement_factor">
           <property name="enabled">
            <bool>false</bool>
           </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximum">
-           <number>1000</number>
-          </property>
-          <property name="value">
-           <number>5</number>
-          </property>
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
          </widget>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <layout class="QHBoxLayout" name="factor_layout">
         <item>
          <widget class="QLabel" name="label_3">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>Factor</string>
@@ -280,10 +268,10 @@
         <item>
          <widget class="QDoubleSpinBox" name="sb_displacement_factor">
           <property name="enabled">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="inputMethodHints">
-           <set>Qt::ImhFormattedNumbersOnly</set>
+           <set>Qt::InputMethodHint::ImhFormattedNumbersOnly</set>
           </property>
           <property name="readOnly">
            <bool>false</bool>
@@ -306,7 +294,7 @@
         <item>
          <widget class="QLabel" name="label_7">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>Slider maximum</string>
@@ -316,10 +304,10 @@
         <item>
          <widget class="QDoubleSpinBox" name="sb_displacement_factor_max">
           <property name="enabled">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="inputMethodHints">
-           <set>Qt::ImhFormattedNumbersOnly</set>
+           <set>Qt::InputMethodHint::ImhFormattedNumbersOnly</set>
           </property>
           <property name="readOnly">
            <bool>false</bool>
@@ -329,6 +317,9 @@
           </property>
           <property name="maximum">
            <double>1000000.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>10.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -363,7 +354,7 @@
         <x>10</x>
         <y>30</y>
         <width>435</width>
-        <height>28</height>
+        <height>30</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -389,7 +380,7 @@
           <bool>true</bool>
          </property>
          <property name="inputMethodHints">
-          <set>Qt::ImhFormattedNumbersOnly</set>
+          <set>Qt::InputMethodHint::ImhFormattedNumbersOnly</set>
          </property>
          <property name="readOnly">
           <bool>false</bool>
@@ -474,7 +465,7 @@
           <bool>true</bool>
          </property>
          <property name="inputMethodHints">
-          <set>Qt::ImhFormattedNumbersOnly</set>
+          <set>Qt::InputMethodHint::ImhFormattedNumbersOnly</set>
          </property>
          <property name="readOnly">
           <bool>false</bool>
@@ -495,9 +486,9 @@
      <widget class="QPushButton" name="startButton">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>230</x>
         <y>130</y>
-        <width>435</width>
+        <width>200</width>
         <height>25</height>
        </rect>
       </property>
@@ -506,6 +497,35 @@
       </property>
       <property name="text">
        <string>Start Animation</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="rb_full_cycle">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>130</y>
+        <width>91</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string> Full cycle</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="rb_half_cycle">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>130</y>
+        <width>101</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Half cycle</string>
       </property>
      </widget>
     </widget>
@@ -570,54 +590,4 @@ For possible variables, see the description box below.</string>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>cb_show_displacement</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_3</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>90</x>
-     <y>232</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>68</x>
-     <y>269</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_show_displacement</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_7</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>95</x>
-     <y>238</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>86</x>
-     <y>309</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_show_displacement</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>hsb_displacement_factor</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>48</x>
-     <y>241</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>36</x>
-     <y>345</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
 </ui>

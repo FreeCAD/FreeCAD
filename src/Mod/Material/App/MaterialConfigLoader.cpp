@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -38,6 +40,7 @@
 #include "Exceptions.h"
 #include "MaterialConfigLoader.h"
 #include "MaterialLoader.h"
+#include "MaterialLibrary.h"
 #include "Model.h"
 #include "ModelUuids.h"
 
@@ -1054,8 +1057,7 @@ MaterialConfigLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibraryL
     QString sourceReference = value(fcmat, "ReferenceSource", "");
     QString sourceURL = value(fcmat, "SourceURL", "");
 
-    auto baseLibrary =
-        reinterpret_cast<const std::shared_ptr<Materials::MaterialLibrary>&>(library);
+    auto baseLibrary = std::static_pointer_cast<Materials::MaterialLibrary>(library);
     std::shared_ptr<Material> finalModel =
         std::make_shared<Material>(baseLibrary, path, uuid, name);
     finalModel->setOldFormat(true);

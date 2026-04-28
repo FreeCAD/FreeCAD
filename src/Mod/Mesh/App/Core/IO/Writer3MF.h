@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESH_IO_WRITER_3MF_H
-#define MESH_IO_WRITER_3MF_H
+#pragma once
 
 #include <Mod/Mesh/MeshGlobal.h>
 #include <iosfwd>
@@ -74,9 +75,10 @@ public:
      * \brief Add a mesh object resource to the 3MF file.
      * \param mesh The mesh object to be written
      * \param mat The placement of the mesh object
+     * \param name The name of the mesh object which can later be displayed by downstream applications
      * \return true if the added mesh could be written successfully, false otherwise.
      */
-    bool AddMesh(const MeshKernel& mesh, const Base::Matrix4D& mat);
+    bool AddMesh(const MeshKernel& mesh, const Base::Matrix4D& mat, const std::string& name = "");
     /*!
      * \brief AddResource
      * Add an additional resource to the 3MF file.
@@ -95,7 +97,7 @@ private:
     std::string GetType(const MeshKernel& mesh) const;
     void SaveBuildItem(int id, const Base::Matrix4D& mat);
     static std::string DumpMatrix(const Base::Matrix4D& mat);
-    bool SaveObject(std::ostream& str, int id, const MeshKernel& mesh) const;
+    bool SaveObject(std::ostream& str, int id, const MeshKernel& mesh, const std::string& name) const;
     bool SaveRels(std::ostream& str) const;
     bool SaveContent(std::ostream& str) const;
 
@@ -108,6 +110,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_IO_WRITER_3MF_H

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 Schildkroet                                        *
@@ -35,7 +37,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Tapping Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Path Tapping operation."
 __contributors__ = "luvtofish (Dan Henderson)"
 
@@ -95,6 +97,13 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add tapping specific properties to obj."""
+        # DEPRECATED: This operation is deprecated. Use Drilling operation with Strategy=Tapping instead.
+        Path.Log.warning(
+            "DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. "
+            "Please use the Drilling operation with Strategy set to 'Tapping' instead. "
+            "Existing Tapping operations will continue to work but you cannot create new ones."
+        )
+
         obj.addProperty(
             "App::PropertyFloat",
             "DwellTime",
@@ -172,7 +181,9 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             endoffset = PathUtils.drillTipLength(self.tool) * 2
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
-        self.commandlist.append(Path.Command(obj.ReturnLevel))
+        self.commandlist.append(
+            Path.Command(obj.ReturnLevel).addAnnotations({"operation": "tapping"})
+        )
 
         # This section is technical debt. The computation of the
         # target shapes should be factored out for reuse.
@@ -263,7 +274,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
                 machine.addCommand(command)
 
         # Cancel canned tapping cycle
-        self.commandlist.append(Path.Command("G80"))
+        self.commandlist.append(Path.Command("G80").addAnnotations({"operation": "tapping"}))
         # command = Path.Command("G0", {"Z": obj.SafeHeight.Value})  DLH- Not needed, adds unnecessary move to Z SafeHeight.
         # self.commandlist.append(command)
         # machine.addCommand(command)       DLH - Not needed.
@@ -304,9 +315,5 @@ def Create(name, obj=None, parentJob=None):
     """Create(name) ... Creates and returns a Tapping operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-
     obj.Proxy = ObjectTapping(obj, name, parentJob)
-    if obj.Proxy:
-        obj.Proxy.findAllHoles(obj)
-
     return obj

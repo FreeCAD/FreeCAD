@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_INVENTOR_SOFCTRANSFORM_H
-#define GUI_INVENTOR_SOFCTRANSFORM_H
+#pragma once
 
 #include <Inventor/nodes/SoTransform.h>
 #include <FCGlobal.h>
@@ -41,7 +40,7 @@ namespace Gui
  * Once this feature is available in all supported versions of Coin3D, this class should
  * be removed and all instances should revert to using SoTransform.
  */
-class GuiExport SoFCTransform : public SoTransform
+class GuiExport SoFCTransform: public SoTransform
 {
     using inherited = SoTransform;
 
@@ -52,14 +51,12 @@ public:
     SoFCTransform();
 
 protected:
-    void GLRender(SoGLRenderAction * action) override;
-    void callback(SoCallbackAction * action) override;
-    void pick(SoPickAction * action) override;
-    void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
-    void getBoundingBox(SoGetBoundingBoxAction * action) override;
-    void doAction(SoAction * action) override;
+    void GLRender(SoGLRenderAction* action) override;
+    void callback(SoCallbackAction* action) override;
+    void pick(SoPickAction* action) override;
+    void getPrimitiveCount(SoGetPrimitiveCountAction* action) override;
+    void getBoundingBox(SoGetBoundingBoxAction* action) override;
+    void doAction(SoAction* action) override;
 };
 
-} // namespace Gui
-
-#endif // GUI_INVENTOR_SOFCTRANSFORM_H
+}  // namespace Gui

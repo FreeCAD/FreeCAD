@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-
-# include <list>
+#include <list>
 
 
 #include <Base/TypePy.h>
@@ -49,27 +48,27 @@ void MainWindowPy::init_type()
     behaviors().supportSetattr();
     behaviors().set_tp_new(extension_object_new);
 
-    add_varargs_method("getWindows",&MainWindowPy::getWindows,"getWindows()");
-    add_varargs_method("getWindowsOfType",&MainWindowPy::getWindowsOfType,"getWindowsOfType(typeid)");
+    add_varargs_method("getWindows", &MainWindowPy::getWindows, "getWindows()");
+    add_varargs_method("getWindowsOfType", &MainWindowPy::getWindowsOfType, "getWindowsOfType(typeid)");
     add_varargs_method("setActiveWindow", &MainWindowPy::setActiveWindow, "setActiveWindow(MDIView)");
     add_varargs_method("getActiveWindow", &MainWindowPy::getActiveWindow, "getActiveWindow()");
     add_varargs_method("addWindow", &MainWindowPy::addWindow, "addWindow(MDIView)");
     add_varargs_method("removeWindow", &MainWindowPy::removeWindow, "removeWindow(MDIView)");
-    add_varargs_method("showHint",&MainWindowPy::showHint,"showHint(hint)");
-    add_varargs_method("hideHint",&MainWindowPy::hideHint,"hideHint()");
+    add_varargs_method("showHint", &MainWindowPy::showHint, "showHint(hint)");
+    add_varargs_method("hideHint", &MainWindowPy::hideHint, "hideHint()");
 }
 
-PyObject *MainWindowPy::extension_object_new(struct _typeobject * /*type*/, PyObject * /*args*/, PyObject * /*kwds*/)
+PyObject* MainWindowPy::extension_object_new(struct _typeobject* /*type*/, PyObject* /*args*/, PyObject* /*kwds*/)
 {
     return new MainWindowPy(nullptr);
 }
 
 Py::Object MainWindowPy::type()
 {
-    return Py::Object( reinterpret_cast<PyObject *>( behaviors().type_object() ) );
+    return Py::Object(reinterpret_cast<PyObject*>(behaviors().type_object()));
 }
 
-Py::ExtensionObject<MainWindowPy> MainWindowPy::create(MainWindow *mw)
+Py::ExtensionObject<MainWindowPy> MainWindowPy::create(MainWindow* mw)
 {
     Py::Callable class_type(type());
     Py::Tuple arg;
@@ -78,12 +77,10 @@ Py::ExtensionObject<MainWindowPy> MainWindowPy::create(MainWindow *mw)
     return inst;
 }
 
-Py::Object MainWindowPy::createWrapper(MainWindow *mw)
+Py::Object MainWindowPy::createWrapper(MainWindow* mw)
 {
     PythonWrapper wrap;
-    if (!wrap.loadCoreModule() ||
-        !wrap.loadGuiModule() ||
-        !wrap.loadWidgetsModule()) {
+    if (!wrap.loadCoreModule() || !wrap.loadGuiModule() || !wrap.loadWidgetsModule()) {
         throw Py::RuntimeError("Failed to load Python wrapper for Qt");
     }
 
@@ -107,10 +104,9 @@ Py::Object MainWindowPy::createWrapper(MainWindow *mw)
     return py;
 }
 
-MainWindowPy::MainWindowPy(MainWindow *mw)
-  : _mw(mw)
-{
-}
+MainWindowPy::MainWindowPy(MainWindow* mw)
+    : _mw(mw)
+{}
 
 MainWindowPy::~MainWindowPy()
 {
@@ -120,16 +116,18 @@ MainWindowPy::~MainWindowPy()
 
 Py::Object MainWindowPy::repr()
 {
-    if (!_mw)
+    if (!_mw) {
         throw Py::RuntimeError("Cannot print representation of deleted object");
+    }
 
     return Py::String("MainWindow");
 }
 
 Py::Object MainWindowPy::getWindows(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     Py::List mdis;
     if (_mw) {
@@ -148,8 +146,9 @@ Py::Object MainWindowPy::getWindows(const Py::Tuple& args)
 Py::Object MainWindowPy::getWindowsOfType(const Py::Tuple& args)
 {
     PyObject* t;
-    if (!PyArg_ParseTuple(args.ptr(), "O!", &Base::TypePy::Type, &t))
+    if (!PyArg_ParseTuple(args.ptr(), "O!", &Base::TypePy::Type, &t)) {
         throw Py::Exception();
+    }
 
     Base::Type typeId = *static_cast<Base::TypePy*>(t)->getBaseTypePtr();
 
@@ -179,8 +178,9 @@ Py::Object MainWindowPy::setActiveWindow(const Py::Tuple& args)
 
 Py::Object MainWindowPy::getActiveWindow(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     if (_mw) {
         MDIView* mdi = _mw->activeWindow();
@@ -194,12 +194,13 @@ Py::Object MainWindowPy::getActiveWindow(const Py::Tuple& args)
 Py::Object MainWindowPy::addWindow(const Py::Tuple& args)
 {
     PyObject* obj;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
+    if (!PyArg_ParseTuple(args.ptr(), "O", &obj)) {
         throw Py::Exception();
+    }
 
     if (_mw) {
         Py::Object py(obj);
-        Gui::Document* document{nullptr};
+        Gui::Document* document {nullptr};
         // Check if the py object has a reference to a Gui document
         if (py.hasAttr("document")) {
             Py::Object attr(py.getAttr("document"));

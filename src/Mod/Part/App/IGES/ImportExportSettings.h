@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_IGES_IMPORTEXPORTSETTINGS_H
-#define PART_IGES_IMPORTEXPORTSETTINGS_H
+#pragma once
 
 #include <Mod/Part/App/Interface.h>
 #include <Base/Parameter.h>
@@ -31,7 +32,8 @@
 namespace Part
 {
 
-namespace IGES {
+namespace IGES
+{
 
 class PartExport ImportExportSettings
 {
@@ -60,7 +62,5 @@ private:
     ParameterGrp::handle pGroup;
 };
 
-} //namespace IGES
-} //namespace Part
-
-#endif
+}  // namespace IGES
+}  // namespace Part

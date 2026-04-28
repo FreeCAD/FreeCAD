@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2004,2005 Juergen Riegel <juergen.riegel@web.de>        *
 # *                                                                         *
@@ -23,6 +25,12 @@
 
 # FreeCAD init script of the Points module
 
+import FreeCAD
+
+translate = FreeCAD.Qt.translate
+
 # Append the open handler
 FreeCAD.addImportType("Point formats (*.asc *.ASC *.pcd *.PCD *.ply *.PLY *.e57 *.E57)", "Points")
-FreeCAD.addExportType("Point formats (*.asc *.pcd *.ply)", "Points")
+FreeCAD.addTranslatableExportType(
+    translate("FileFormat", "Point formats"), ["asc", "pcd", "ply"], "Points"
+)

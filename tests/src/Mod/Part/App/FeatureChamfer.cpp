@@ -22,9 +22,11 @@ protected:
         _boxes[0]->Width.setValue(width);
         _boxes[0]->Height.setValue(height);
         _boxes[0]->Placement.setValue(
-            Base::Placement(Base::Vector3d(), Base::Rotation(), Base::Vector3d()));
+            Base::Placement(Base::Vector3d(), Base::Rotation(), Base::Vector3d())
+        );
         _boxes[1]->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 1, height), Base::Rotation(), Base::Vector3d()));
+            Base::Placement(Base::Vector3d(0, 1, height), Base::Rotation(), Base::Vector3d())
+        );
         _boxes[1]->Length.setValue(1);
         _boxes[1]->Width.setValue(2);
         _boxes[1]->Height.setValue(3);
@@ -55,8 +57,8 @@ protected:
 
 TEST_F(FeatureChamferTest, testOther)
 {
-    const double baseVolume =
-        _boxes[0]->Length.getValue() * _boxes[0]->Width.getValue() * _boxes[0]->Height.getValue()
+    const double baseVolume = _boxes[0]->Length.getValue() * _boxes[0]->Width.getValue()
+            * _boxes[0]->Height.getValue()
         + _boxes[1]->Length.getValue() * _boxes[1]->Width.getValue() * _boxes[1]->Height.getValue();
     // Arrange
     _chamfer->Base.setValue(_fused);
@@ -93,11 +95,14 @@ TEST_F(FeatureChamferTest, testMost)
     _fused->Refine.setValue(true);
     _fused->execute();
     _chamfer->Base.setValue(_fused);
-    _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges(
-        {3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,  // NOLINT magic number
-         15, 16, 17, 18, 19, 20, 21, 22, 23, 24},         // NOLINT magic number
-        0.4,                                              // NOLINT magic number
-        0.4));                                            // NOLINT magic number
+    _chamfer->Edges.setValues(
+        PartTestHelpers::_getFilletEdges(
+            {3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,  // NOLINT magic number
+             15, 16, 17, 18, 19, 20, 21, 22, 23, 24},         // NOLINT magic number
+            0.4,                                              // NOLINT magic number
+            0.4
+        )
+    );  // NOLINT magic number
     // Act
     _chamfer->execute();
     double chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());

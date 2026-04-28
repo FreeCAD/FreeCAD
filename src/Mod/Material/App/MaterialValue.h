@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALVALUE_H
-#define MATERIAL_MATERIALVALUE_H
+#pragma once
 
 #include <memory>
 
@@ -286,5 +287,3 @@ protected:
 Q_DECLARE_METATYPE(Materials::MaterialValue)
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::Array2D>)
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::Array3D>)
-
-#endif  // MATERIAL_MATERIALVALUE_H

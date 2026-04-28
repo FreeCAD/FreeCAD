@@ -583,9 +583,11 @@ TEST(MappedName, appendToBufferWithPrefix)
     mappedName2.appendToBufferWithPrefix(buffer);
 
     // Assert
-    EXPECT_EQ(buffer,
-              std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST")
-                  + /*missing prefix*/ std::string("TEST"));
+    EXPECT_EQ(
+        buffer,
+        std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST")
+            + /*missing prefix*/ std::string("TEST")
+    );
 }
 
 TEST(MappedName, toPrefixedString)
@@ -609,9 +611,11 @@ TEST(MappedName, toPrefixedString)
     buffer += mappedName2.toPrefixedString();
 
     // Assert
-    EXPECT_EQ(buffer,
-              std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST")
-                  + /*missing prefix*/ std::string("TEST"));
+    EXPECT_EQ(
+        buffer,
+        std::string("STUFF") + elemMapPrefix + std::string("TESTPOSTFIXTEST")
+            + /*missing prefix*/ std::string("TEST")
+    );
 }
 
 TEST(MappedName, toBytes)
@@ -849,8 +853,7 @@ TEST(MappedName, findTagInElementNameHexPositiveIndexNonrecursive)
     char type {0};
 
     // Act
-    int result =
-        mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, false);
+    int result = mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, false);
 
     // Assert
     EXPECT_EQ(result, 36);       // The location of the tag
@@ -872,8 +875,7 @@ TEST(MappedName, findTagInElementNameDecPositiveIndexNonrecursive)
     char type {0};
 
     // Act
-    int result =
-        mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, false);
+    int result = mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, false);
 
     // Assert
     EXPECT_EQ(result, 36);     // The location of the tag
@@ -895,8 +897,7 @@ TEST(MappedName, findTagInElementNameHexNegativeIndexNonrecursive)
     char type {0};
 
     // Act
-    int result =
-        mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, false);
+    int result = mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, false);
 
     // Assert
     EXPECT_EQ(result, 36);       // The location of the tag
@@ -918,8 +919,7 @@ TEST(MappedName, findTagInElementNameHexExpectedNegativeIndexNonrecursive)
     char type {0};
 
     // Act
-    int result =
-        mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, true, false);
+    int result = mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, true, false);
 
     // Assert
     EXPECT_EQ(result, 36);        // The location of the tag
@@ -941,8 +941,7 @@ TEST(MappedName, findTagInElementNameRecursive)
     char type {0};
 
     // Act
-    int result =
-        mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, true);
+    int result = mappedName.findTagInElementName(&tagOutput, &lenOutput, &postfix, &type, false, true);
 
     // Assert
     EXPECT_EQ(result, 36);       // The location of the tag

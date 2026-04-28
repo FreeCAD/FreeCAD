@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Matteo Grellier <matteogrellier@gmail.com>         *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_BLEND_POINT_H
-#define SURFACE_BLEND_POINT_H
+#pragma once
 
 
 #include <Base/Vector3D.h>
@@ -71,5 +72,3 @@ public:
 private:
 };
 }  // namespace Surface
-
-#endif

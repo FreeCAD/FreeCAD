@@ -22,7 +22,6 @@
  ***************************************************************************/
 
 
-
 #include <sstream>
 
 #include <App/Application.h>
@@ -63,22 +62,24 @@ SelectionObject::SelectionObject(const App::DocumentObject* obj)
 
 SelectionObject::~SelectionObject() = default;
 
-const App::DocumentObject * SelectionObject::getObject() const
+const App::DocumentObject* SelectionObject::getObject() const
 {
     if (!DocName.empty()) {
-        App::Document *doc = App::GetApplication().getDocument(DocName.c_str());
-        if (doc && !FeatName.empty())
+        App::Document* doc = App::GetApplication().getDocument(DocName.c_str());
+        if (doc && !FeatName.empty()) {
             return doc->getObject(FeatName.c_str());
+        }
     }
     return nullptr;
 }
 
-App::DocumentObject * SelectionObject::getObject()
+App::DocumentObject* SelectionObject::getObject()
 {
     if (!DocName.empty()) {
-        App::Document *doc = App::GetApplication().getDocument(DocName.c_str());
-        if (doc && !FeatName.empty())
+        App::Document* doc = App::GetApplication().getDocument(DocName.c_str());
+        if (doc && !FeatName.empty()) {
             return doc->getObject(FeatName.c_str());
+        }
     }
     return nullptr;
 }
@@ -89,12 +90,13 @@ bool SelectionObject::isObjectTypeOf(const Base::Type& typeId) const
     return (obj && obj->isDerivedFrom(typeId));
 }
 
-std::string SelectionObject::getAsPropertyLinkSubString()const
+std::string SelectionObject::getAsPropertyLinkSubString() const
 {
     std::ostringstream str;
     str << "(" << Gui::Command::getObjectCmd(getObject()) << ",[";
-    for(const auto & it : SubNames)
+    for (const auto& it : SubNames) {
         str << "'" << it << "',";
+    }
     str << "])";
     return str.str();
 }

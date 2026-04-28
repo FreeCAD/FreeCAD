@@ -53,7 +53,7 @@ App::PropertyFloatConstraint::Constraints DrawPage::scaleRange = {
 
 PROPERTY_SOURCE(TechDraw::DrawPage, App::DocumentObject)
 
-const char* DrawPage::ProjectionTypeEnums[] = {"First Angle", "Third Angle", nullptr};
+const char* DrawPage::ProjectionTypeEnums[] = {"First angle", "Third angle", nullptr};
 
 DrawPage::DrawPage(void)
 {

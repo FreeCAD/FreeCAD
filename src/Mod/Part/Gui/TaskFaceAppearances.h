@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,26 +22,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_TASKSETCOLORS_H
-#define PARTGUI_TASKSETCOLORS_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
-namespace Gui {
-    class Document;
-    class ViewProvider;
+namespace Gui
+{
+class Document;
+class ViewProvider;
+}  // namespace Gui
+
+namespace Materials
+{
+class Material;
 }
 
-namespace Materials {
-    class Material;
-}
-
-namespace PartGui {
+namespace PartGui
+{
 
 class ViewProviderPartExt;
 
-class FaceAppearances : public QWidget, public Gui::SelectionObserver
+class FaceAppearances: public QWidget, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -50,6 +54,7 @@ public:
     void open();
     bool accept();
     bool reject();
+    void setSelectionGate();
 
 private:
     void setupConnections();
@@ -60,7 +65,7 @@ private:
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void slotUndoDocument(const Gui::Document& Doc);
     void slotDeleteDocument(const Gui::Document&);
     void slotDeleteObject(const Gui::ViewProvider&);
@@ -72,7 +77,7 @@ private:
     Private* d;
 };
 
-class TaskFaceAppearances : public Gui::TaskView::TaskDialog
+class TaskFaceAppearances: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -87,12 +92,12 @@ public:
     void clicked(int) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 private:
     FaceAppearances* widget;
 };
 
-} //namespace PartGui
-
-#endif // PARTGUI_TASKSETCOLORS_H
+}  // namespace PartGui

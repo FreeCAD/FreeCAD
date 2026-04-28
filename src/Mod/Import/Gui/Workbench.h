@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef IMPORT_WORKBENCH_H
-#define IMPORT_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -46,6 +47,3 @@ protected:
 };
 
 }  // namespace ImportGui
-
-
-#endif  // IMPORT_WORKBENCH_H

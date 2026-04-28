@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Wild Magic Source Code
 // David Eberly
 // http://www.geometrictools.com
@@ -14,8 +16,7 @@
 //
 // Version: 4.0.5 (2006/11/05)
 
-#ifndef WM4FOUNDATIONPCH_H
-#define WM4FOUNDATIONPCH_H
+#pragma once
 
 #ifdef WM4_USE_PRECOMPILED_HEADERS
 
@@ -377,6 +378,4 @@
 #include "Wm4TSmallUnorderedSet.h"
 #include "Wm4TStringHashTable.h"
 #include "Wm4TTuple.h"
-#endif
-
 #endif

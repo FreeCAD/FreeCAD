@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,36 +23,35 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderMultiTransform_H
-#define PARTGUI_ViewProviderMultiTransform_H
+#pragma once
 
 #include "ViewProviderTransformed.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransformed
+class PartDesignGuiExport ViewProviderMultiTransform: public ViewProviderTransformed
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderMultiTransform)
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderMultiTransform);
+
 public:
-    ViewProviderMultiTransform() {
+    ViewProviderMultiTransform()
+    {
         menuName = tr("Multi-Transform Parameters");
         sPixmap = "PartDesign_MultiTransform.svg";
     }
 
-    const std::string & featureName() const override;
+    const std::string& featureName() const override;
     std::vector<App::DocumentObject*> claimChildren() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
-    TaskDlgFeatureParameters *getEditDialog() override;
+    TaskDlgFeatureParameters* getEditDialog() override;
 };
 
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderMultiTransform_H
+}  // namespace PartDesignGui

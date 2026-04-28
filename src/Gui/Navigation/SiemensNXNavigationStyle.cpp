@@ -42,56 +42,55 @@ using NS = SiemensNXNavigationStyle;
 struct NS::NaviMachine: public sc::state_machine<NS::NaviMachine, NS::IdleState>
 {
     using superclass = sc::state_machine<NS::NaviMachine, NS::IdleState>;
-    explicit NaviMachine(NS& ns) : ns(ns) {}
+    explicit NaviMachine(NS& ns)
+        : ns(ns)
+    {}
     NS& ns;
 };
 
 struct NS::IdleState: public sc::state<NS::IdleState, NS::NaviMachine>
 {
     using reactions = sc::custom_reaction<SC::Event>;
-    explicit IdleState(my_context ctx) : my_base(ctx)
+    explicit IdleState(my_context ctx)
+        : my_base(ctx)
     {
-        auto &ns = this->outermost_context().ns;
+        auto& ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::IDLE);
     }
     sc::result react(const SC::Event& ev)
     {
-        auto &ns = this->outermost_context().ns;
+        auto& ns = this->outermost_context().ns;
         switch (ns.getViewingMode()) {
-        case NavigationStyle::SEEK_WAIT_MODE:
-        {
-            if (ev.isPress(SoMouseButtonEvent::BUTTON1)) {
-                ns.seekToPoint(ev.inventor_event->getPosition());
-                ns.setViewingMode(NavigationStyle::SEEK_MODE);
-                ev.flags->processed = true;
-                return transit<NS::AwaitingReleaseState>();
-            }
-            break;
-        }
-        case NavigationStyle::SPINNING:
-        case NavigationStyle::SEEK_MODE:
-        {
-            if (!ev.flags->processed) {
-                if (ev.isMouseButtonEvent()) {
+            case NavigationStyle::SEEK_WAIT_MODE: {
+                if (ev.isPress(SoMouseButtonEvent::BUTTON1)) {
+                    ns.seekToPoint(ev.inventor_event->getPosition());
+                    ns.setViewingMode(NavigationStyle::SEEK_MODE);
                     ev.flags->processed = true;
                     return transit<NS::AwaitingReleaseState>();
                 }
-                else if (ev.isKeyboardEvent() || ev.isMotion3Event()) {
-                    ns.setViewingMode(NavigationStyle::IDLE);
-                }
+                break;
             }
+            case NavigationStyle::SPINNING:
+            case NavigationStyle::SEEK_MODE: {
+                if (!ev.flags->processed) {
+                    if (ev.isMouseButtonEvent()) {
+                        ev.flags->processed = true;
+                        return transit<NS::AwaitingReleaseState>();
+                    }
+                    else if (ev.isKeyboardEvent() || ev.isMotion3Event()) {
+                        ns.setViewingMode(NavigationStyle::IDLE);
+                    }
+                }
 
-            break;
-        }
-        case NavigationStyle::BOXZOOM:
-            return forward_event();
+                break;
+            }
+            case NavigationStyle::BOXZOOM:
+                return forward_event();
         }
 
         // right-click
-        if (ev.isRelease(SoMouseButtonEvent::BUTTON2)
-           && ev.mbstate() == 0
-           && !ns.viewer->isEditing()
-           && ns.isPopupMenuEnabled()){
+        if (ev.isRelease(SoMouseButtonEvent::BUTTON2) && ev.mbstate() == 0
+            && !ns.viewer->isEditing() && ns.isPopupMenuEnabled()) {
             ns.openPopupMenu(ev.inventor_event->getPosition());
         }
 
@@ -110,7 +109,7 @@ struct NS::IdleState: public sc::state<NS::IdleState, NS::NaviMachine>
         // Use processClickEvent()
 
         // Implement selection callback
-        //if (ev.isLocation2Event() && ev.isDownButton1()) {
+        // if (ev.isLocation2Event() && ev.isDownButton1()) {
         //    ev.flags->processed = true;
         //    return transit<NS::SelectionState>();
         //}
@@ -119,10 +118,11 @@ struct NS::IdleState: public sc::state<NS::IdleState, NS::NaviMachine>
     }
 };
 
-struct NS::AwaitingReleaseState : public sc::state<NS::AwaitingReleaseState, NS::NaviMachine>
+struct NS::AwaitingReleaseState: public sc::state<NS::AwaitingReleaseState, NS::NaviMachine>
 {
     using reactions = sc::custom_reaction<NS::Event>;
-    explicit AwaitingReleaseState(my_context ctx) : my_base(ctx)
+    explicit AwaitingReleaseState(my_context ctx)
+        : my_base(ctx)
     {}
 
     sc::result react(const NS::Event& /*ev*/)
@@ -134,13 +134,15 @@ struct NS::AwaitingReleaseState : public sc::state<NS::AwaitingReleaseState, NS:
 struct NS::InteractState: public sc::state<NS::InteractState, NS::NaviMachine>
 {
     using reactions = sc::custom_reaction<NS::Event>;
-    explicit InteractState(my_context ctx):my_base(ctx)
+    explicit InteractState(my_context ctx)
+        : my_base(ctx)
     {
-        auto &ns = this->outermost_context().ns;
+        auto& ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::INTERACT);
     }
 
-    sc::result react(const NS::Event& /*ev*/) {
+    sc::result react(const NS::Event& /*ev*/)
+    {
         return forward_event();
     }
 };
@@ -154,15 +156,19 @@ private:
     SbTime since;
 
 public:
-    explicit AwaitingMoveState(my_context ctx):my_base(ctx)
+    explicit AwaitingMoveState(my_context ctx)
+        : my_base(ctx)
     {
-        auto &ns = this->outermost_context().ns;
+        auto& ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::DRAGGING);
-        this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
-        this->since = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getTime();
+        this->base_pos
+            = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        this->since
+            = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getTime();
     }
-    sc::result react(const NS::Event& ev){
-        //this state consumes all mouse events.
+    sc::result react(const NS::Event& ev)
+    {
+        // this state consumes all mouse events.
         ev.flags->processed = ev.isMouseButtonEvent() || ev.isLocation2Event();
 
         if (ev.isLocation2Event()) {
@@ -191,7 +197,7 @@ public:
 
         // middle-click
         if (ev.isRelease(SoMouseButtonEvent::BUTTON3) && ev.isDownNoButton()) {
-            auto &ns = this->outermost_context().ns;
+            auto& ns = this->outermost_context().ns;
             SbTime tmp = (ev.inventor_event->getTime() - this->since);
             double dci = QApplication::doubleClickInterval() / 1000.0;
 
@@ -211,10 +217,12 @@ public:
 struct NS::RotateState: public sc::state<NS::RotateState, NS::NaviMachine>
 {
     using reactions = sc::custom_reaction<NS::Event>;
-    explicit RotateState(my_context ctx) : my_base(ctx)
+    explicit RotateState(my_context ctx)
+        : my_base(ctx)
     {
-        auto &ns = this->outermost_context().ns;
-        const auto inventorEvent = static_cast<const NS::Event*>(this->triggering_event())->inventor_event;
+        auto& ns = this->outermost_context().ns;
+        const auto inventorEvent
+            = static_cast<const NS::Event*>(this->triggering_event())->inventor_event;
         ns.saveCursorPosition(inventorEvent);
         ns.setViewingMode(NavigationStyle::DRAGGING);
         this->base_pos = inventorEvent->getPosition();
@@ -223,7 +231,7 @@ struct NS::RotateState: public sc::state<NS::RotateState, NS::NaviMachine>
     sc::result react(const NS::Event& ev)
     {
         if (ev.isLocation2Event()) {
-            auto &ns = this->outermost_context().ns;
+            auto& ns = this->outermost_context().ns;
             ns.addToLog(ev.inventor_event->getPosition(), ev.inventor_event->getTime());
             const SbVec2s pos = ev.inventor_event->getPosition();
             const SbVec2f posn = ns.normalizePixelPos(pos);
@@ -268,9 +276,10 @@ private:
 struct NS::PanState: public sc::state<NS::PanState, NS::NaviMachine>
 {
     using reactions = sc::custom_reaction<NS::Event>;
-    explicit PanState(my_context ctx):my_base(ctx)
+    explicit PanState(my_context ctx)
+        : my_base(ctx)
     {
-        auto &ns = this->outermost_context().ns;
+        auto& ns = this->outermost_context().ns;
         const NS::Event* ev = static_cast<const NS::Event*>(this->triggering_event());
         ns.setViewingMode(NavigationStyle::PANNING);
         this->base_pos = ev->inventor_event->getPosition();
@@ -280,15 +289,17 @@ struct NS::PanState: public sc::state<NS::PanState, NS::NaviMachine>
     }
     sc::result react(const NS::Event& ev)
     {
-        if (ev.isLocation2Event()){
+        if (ev.isLocation2Event()) {
             ev.flags->processed = true;
             SbVec2s pos = ev.inventor_event->getPosition();
-            auto &ns = this->outermost_context().ns;
-            ns.panCamera(ns.viewer->getSoRenderManager()->getCamera(),
-                         this->ratio,
-                         ns.panningplane,
-                         ns.normalizePixelPos(pos),
-                         ns.normalizePixelPos(this->base_pos));
+            auto& ns = this->outermost_context().ns;
+            ns.panCamera(
+                ns.viewer->getSoRenderManager()->getCamera(),
+                this->ratio,
+                ns.panningplane,
+                ns.normalizePixelPos(pos),
+                ns.normalizePixelPos(this->base_pos)
+            );
             this->base_pos = pos;
         }
 
@@ -318,9 +329,10 @@ private:
 struct NS::ZoomState: public sc::state<NS::ZoomState, NS::NaviMachine>
 {
     using reactions = sc::custom_reaction<NS::Event>;
-    explicit ZoomState(my_context ctx) : my_base(ctx)
+    explicit ZoomState(my_context ctx)
+        : my_base(ctx)
     {
-        auto &ns = this->outermost_context().ns;
+        auto& ns = this->outermost_context().ns;
         const NS::Event* ev = static_cast<const NS::Event*>(this->triggering_event());
         ns.setViewingMode(NavigationStyle::ZOOMING);
         this->base_pos = ev->inventor_event->getPosition();
@@ -328,12 +340,11 @@ struct NS::ZoomState: public sc::state<NS::ZoomState, NS::NaviMachine>
 
     sc::result react(const NS::Event& ev)
     {
-        if (ev.isLocation2Event()){
+        if (ev.isLocation2Event()) {
             ev.flags->processed = true;
             SbVec2s pos = ev.inventor_event->getPosition();
-            auto &ns = this->outermost_context().ns;
-            ns.zoomByCursor(ns.normalizePixelPos(pos),
-                            ns.normalizePixelPos(this->base_pos));
+            auto& ns = this->outermost_context().ns;
+            ns.zoomByCursor(ns.normalizePixelPos(pos), ns.normalizePixelPos(this->base_pos));
             this->base_pos = pos;
         }
 
@@ -362,9 +373,10 @@ private:
 struct NS::SelectionState: public sc::state<NS::SelectionState, NS::NaviMachine>
 {
     using reactions = sc::custom_reaction<NS::Event>;
-    explicit SelectionState(my_context ctx) : my_base(ctx)
+    explicit SelectionState(my_context ctx)
+        : my_base(ctx)
     {
-        auto &ns = this->outermost_context().ns;
+        auto& ns = this->outermost_context().ns;
         const NS::Event* ev = static_cast<const NS::Event*>(this->triggering_event());
 
         ns.setViewingMode(NavigationStyle::BOXZOOM);
@@ -379,7 +391,7 @@ struct NS::SelectionState: public sc::state<NS::SelectionState, NS::NaviMachine>
         mbe.setState(SoMouseButtonEvent::DOWN);
         mbe.setPosition(pos);
 
-        auto &ns = this->outermost_context().ns;
+        auto& ns = this->outermost_context().ns;
         ns.processEvent(&mbe);
     }
 
@@ -402,22 +414,21 @@ SiemensNXNavigationStyle::SiemensNXNavigationStyle()
 }
 
 SiemensNXNavigationStyle::~SiemensNXNavigationStyle()
-{
-}
+{}
 
 const char* SiemensNXNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
-    case NavigationStyle::SELECTION:
-        return QT_TR_NOOP("Press left mouse button");
-    case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Press middle+right click");
-    case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Press middle mouse button");
-    case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Scroll mouse wheel");
-    default:
-        return "No description";
+        case NavigationStyle::SELECTION:
+            return QT_TR_NOOP("Press left mouse button");
+        case NavigationStyle::PANNING:
+            return QT_TR_NOOP("Press middle+right click");
+        case NavigationStyle::DRAGGING:
+            return QT_TR_NOOP("Press middle mouse button");
+        case NavigationStyle::ZOOMING:
+            return QT_TR_NOOP("Scroll mouse wheel");
+        default:
+            return "No description";
     }
 }
 
@@ -434,29 +445,26 @@ SbBool SiemensNXNavigationStyle::processKeyboardEvent(const SoKeyboardEvent* con
     // Fit all: CTRL+F
     // Normal view: F8
     switch (event->getKey()) {
-    case SoKeyboardEvent::F:
-        if (event->wasCtrlDown()) {
-            viewer->viewAll();
+        case SoKeyboardEvent::F:
+            if (event->wasCtrlDown()) {
+                viewer->viewAll();
+                return true;
+            }
+            break;
+        case SoKeyboardEvent::HOME: {
+            viewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
             return true;
         }
-        break;
-    case SoKeyboardEvent::HOME:
-    {
-        viewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
-        return true;
-    }
-    case SoKeyboardEvent::END:
-    {
-        viewer->setCameraOrientation(Camera::rotation(Camera::Trimetric));
-        return true;
-    }
-    case SoKeyboardEvent::F8:
-    {
-        viewer->setCameraOrientation(Camera::rotation(Camera::Top));
-        return true;
-    }
-    default:
-        break;
+        case SoKeyboardEvent::END: {
+            viewer->setCameraOrientation(Camera::rotation(Camera::Trimetric));
+            return true;
+        }
+        case SoKeyboardEvent::F8: {
+            viewer->setCameraOrientation(Camera::rotation(Camera::Top));
+            return true;
+        }
+        default:
+            break;
     }
 
     return inherited::processKeyboardEvent(event);

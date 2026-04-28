@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -21,14 +23,19 @@
  ***************************************************************************/
 
 #include "SimShapes.h"
-#include "Shader.h"
-#include "GlUtils.h"
-#include <math.h>
-#include <cstddef>
-#include <vector>
 
-using namespace MillSim;
-using std::numbers::pi;
+#include "Shader.h"
+#include <algorithm>
+#include <cmath>
+#include <numbers>
+
+// include this last as the defines can mess up other includes
+#include "OpenGlWrapper.h"
+
+namespace CAMSimulator
+{
+
+constexpr auto pi = std::numbers::pi_v<float>;
 
 int Shape::lastNumSlices = 0;
 std::vector<float> Shape::sinTable;
@@ -40,7 +47,7 @@ void Shape::GenerateSinTable(int nSlices)
         return;
     }
 
-    float slice = (float)(2 * pi / nSlices);
+    float slice = 2 * pi / nSlices;
     int nvals = nSlices + 1;
     sinTable.resize(nvals);
     cosTable.resize(nvals);
@@ -51,13 +58,14 @@ void Shape::GenerateSinTable(int nSlices)
     lastNumSlices = nvals;
 }
 
-
-void Shape::RotateProfile(float* profPoints,
-                          int nPoints,
-                          float distance,
-                          float /* deltaHeight */,
-                          int nSlices,
-                          bool isHalfTurn)
+void Shape::RotateProfile(
+    const float* profPoints,
+    int nPoints,
+    float distance,
+    float /* deltaHeight */,
+    int nSlices,
+    bool isHalfTurn
+)
 {
     int vidx = 0;
     int iidx = 0;
@@ -122,15 +130,17 @@ void Shape::RotateProfile(float* profPoints,
     SetModelData(vbuffer, ibuffer);
 }
 
-void Shape::CalculateExtrudeBufferSizes(int nProfilePoints,
-                                        bool capStart,
-                                        bool capEnd,
-                                        int* numVerts,
-                                        int* numIndices,
-                                        int* vc1idx,
-                                        int* vc2idx,
-                                        int* ic1idx,
-                                        int* ic2idx)
+void Shape::CalculateExtrudeBufferSizes(
+    int nProfilePoints,
+    bool capStart,
+    bool capEnd,
+    int* numVerts,
+    int* numIndices,
+    int* vc1idx,
+    int* vc2idx,
+    int* ic1idx,
+    int* ic2idx
+)
 {
     *numVerts = nProfilePoints * 4;        // one face per profile point times 4 vertex per face
     *numIndices = nProfilePoints * 2 * 3;  // 2 triangles per face times 3 indices per triangle
@@ -148,27 +158,31 @@ void Shape::CalculateExtrudeBufferSizes(int nProfilePoints,
     }
 }
 
-void Shape::ExtrudeProfileRadial(float* profPoints,
-                                 int nPoints,
-                                 float radius,
-                                 float angleRad,
-                                 float deltaHeight,
-                                 bool capStart,
-                                 bool capEnd)
+void Shape::ExtrudeProfileRadial(
+    const float* profPoints,
+    int nPoints,
+    float radius,
+    float angleRad,
+    float deltaHeight,
+    bool capStart,
+    bool capEnd
+)
 {
     int vidx = 0, vc1idx, vc2idx;
     int iidx = 0, ic1idx, ic2idx;
     int numVerts, numIndices;
 
-    CalculateExtrudeBufferSizes(nPoints,
-                                capStart,
-                                capEnd,
-                                &numVerts,
-                                &numIndices,
-                                &vc1idx,
-                                &vc2idx,
-                                &ic1idx,
-                                &ic2idx);
+    CalculateExtrudeBufferSizes(
+        nPoints,
+        capStart,
+        capEnd,
+        &numVerts,
+        &numIndices,
+        &vc1idx,
+        &vc2idx,
+        &ic1idx,
+        &ic2idx
+    );
     int vc1start = vc1idx;
     int vc2start = vc2idx;
 
@@ -242,28 +256,32 @@ void Shape::ExtrudeProfileRadial(float* profPoints,
     SetModelData(vbuffer, ibuffer);
 }
 
-void Shape::ExtrudeProfileLinear(float* profPoints,
-                                 int nPoints,
-                                 float fromX,
-                                 float toX,
-                                 float fromZ,
-                                 float toZ,
-                                 bool capStart,
-                                 bool capEnd)
+void Shape::ExtrudeProfileLinear(
+    const float* profPoints,
+    int nPoints,
+    float fromX,
+    float toX,
+    float fromZ,
+    float toZ,
+    bool capStart,
+    bool capEnd
+)
 {
     int vidx = 0, vc1idx, vc2idx;
     int iidx = 0, ic1idx, ic2idx;
     int numVerts, numIndices;
 
-    CalculateExtrudeBufferSizes(nPoints,
-                                capStart,
-                                capEnd,
-                                &numVerts,
-                                &numIndices,
-                                &vc1idx,
-                                &vc2idx,
-                                &ic1idx,
-                                &ic2idx);
+    CalculateExtrudeBufferSizes(
+        nPoints,
+        capStart,
+        capEnd,
+        &numVerts,
+        &numIndices,
+        &vc1idx,
+        &vc2idx,
+        &ic1idx,
+        &ic2idx
+    );
     int vc1start = vc1idx;
     int vc2start = vc2idx;
 
@@ -313,15 +331,13 @@ void Shape::ExtrudeProfileLinear(float* profPoints,
     SetModelData(vbuffer, ibuffer);
 }
 
-void Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int nIndices)
+void Shape::GenerateModel(const float* vbuffer, const GLushort* ibuffer, int numVerts, int nIndices)
 {
     // GLuint vbo, ibo, vao;
 
     // vertex buffer
     glGenBuffers(1, &vbo);
-    GLClearError();
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    GLLogError();
     glBufferData(GL_ARRAY_BUFFER, numVerts * sizeof(Vertex), vbuffer, GL_STATIC_DRAW);
 
     // index buffer
@@ -329,30 +345,35 @@ void Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int n
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(GLushort), ibuffer, GL_STATIC_DRAW);
 
-    // vertex array
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    numIndices = nIndices;
+}
+
+void Shape::SetupVertexAttribs() const
+{
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, x));
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, nx));
-
-    numIndices = nIndices;
 }
 
-void MillSim::Shape::SetModelData(std::vector<Vertex>& vbuffer, std::vector<GLushort>& ibuffer)
+void Shape::SetModelData(const std::vector<Vertex>& vbuffer, const std::vector<GLushort>& ibuffer)
 {
-    GenerateModel((float*)vbuffer.data(), ibuffer.data(), (int)vbuffer.size(), (int)ibuffer.size());
+    GenerateModel((const float*)vbuffer.data(), ibuffer.data(), (int)vbuffer.size(), (int)ibuffer.size());
 }
 
-void Shape::Render()
+void Shape::Render() const
 {
-    glBindVertexArray(vao);
+    SetupVertexAttribs();
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, nullptr);
 }
 
-void Shape::Render(mat4x4 modelMat, mat4x4 normallMat)  // normals are rotated only
+void Shape::Render(
+    const mat4x4& modelMat,
+    const mat4x4& normallMat
+) const  // normals are rotated only
 {
     CurrentShader->UpdateModelMat(modelMat, normallMat);
     Render();
@@ -360,13 +381,13 @@ void Shape::Render(mat4x4 modelMat, mat4x4 normallMat)  // normals are rotated o
 
 void Shape::FreeResources()
 {
-    glBindVertexArray(0);
     GLDELETE_BUFFER(vbo);
     GLDELETE_BUFFER(ibo);
-    GLDELETE_VERTEXARRAY(vao);
 }
 
 Shape::~Shape()
 {
     FreeResources();
 }
+
+}  // namespace CAMSimulator

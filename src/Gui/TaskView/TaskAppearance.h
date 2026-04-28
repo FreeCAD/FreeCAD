@@ -22,35 +22,39 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKAPPERANCE_H
-#define GUI_TASKVIEW_TASKAPPERANCE_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include "TaskView.h"
 
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 
-namespace TaskView {
+namespace TaskView
+{
 
-using TaskAppearance_Connection = boost::signals2::connection;
+using TaskAppearance_Connection = fastsignals::connection;
 class Ui_TaskAppearance;
 
-class TaskAppearance : public TaskBox, public Gui::SelectionSingleton::ObserverType
+class TaskAppearance: public TaskBox, public Gui::SelectionSingleton::ObserverType
 {
     Q_OBJECT
 
 public:
-    explicit TaskAppearance(QWidget *parent = nullptr);
+    explicit TaskAppearance(QWidget* parent = nullptr);
     ~TaskAppearance() override;
     /// Observer message from the Selection
-    void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason) override;
+    void OnChange(
+        Gui::SelectionSingleton::SubjectType& rCaller,
+        Gui::SelectionSingleton::MessageType Reason
+    ) override;
 
 private Q_SLOTS:
     void setupConnections();
@@ -61,7 +65,7 @@ private Q_SLOTS:
     void onLineWidthValueChanged(int);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     void slotChangedObject(const Gui::ViewProvider&, const App::Property& Prop);
@@ -77,7 +81,5 @@ private:
     TaskAppearance_Connection connectChangedObject;
 };
 
-} //namespace TaskView
-} //namespace Gui
-
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+}  // namespace TaskView
+}  // namespace Gui

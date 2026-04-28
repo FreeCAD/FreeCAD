@@ -64,16 +64,18 @@ TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject* pcObject, QWidget* 
 
     QObject::connect(ui->toolButton_Poly, &QToolButton::clicked, this, &TaskCreateNodeSet::Poly);
     QObject::connect(ui->toolButton_Pick, &QToolButton::clicked, this, &TaskCreateNodeSet::Pick);
-    QObject::connect(ui->comboBox,
-                     qOverload<int>(&QComboBox::activated),
-                     this,
-                     &TaskCreateNodeSet::SwitchMethod);
+    QObject::connect(
+        ui->comboBox,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskCreateNodeSet::SwitchMethod
+    );
 
     // check if the Link to the FemMesh is defined
     assert(pcObject->FemMesh.getValue<Fem::FemMeshObject*>());
-    MeshViewProvider =
-        freecad_cast<ViewProviderFemMesh*>(Gui::Application::Instance->getViewProvider(
-            pcObject->FemMesh.getValue<Fem::FemMeshObject*>()));
+    MeshViewProvider = freecad_cast<ViewProviderFemMesh*>(
+        Gui::Application::Instance->getViewProvider(pcObject->FemMesh.getValue<Fem::FemMeshObject*>())
+    );
     assert(MeshViewProvider);
 
     tempSet = pcObject->Nodes.getValues();
@@ -81,6 +83,16 @@ TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject* pcObject, QWidget* 
     MeshViewProvider->setHighlightNodes(tempSet);
 
     ui->groupBox_AngleSearch->setEnabled(false);
+}
+
+void TaskCreateNodeSet::setSelectionGate()
+{
+    if (selectionMode == none) {
+        Gui::Selection().rmvSelectionGate();
+    }
+    else if (selectionMode == PickElement) {
+        Gui::Selection().addSelectionGate(new FemSelectionGate(FemSelectionGate::Element));
+    }
 }
 
 void TaskCreateNodeSet::Poly()
@@ -100,7 +112,7 @@ void TaskCreateNodeSet::Pick()
     if (selectionMode == none) {
         selectionMode = PickElement;
         Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate(new FemSelectionGate(FemSelectionGate::Element));
+        setSelectionGate();
     }
 }
 
@@ -152,14 +164,14 @@ void TaskCreateNodeSet::DefineNodesCallback(void* ud, SoEventCallback* n)
     taskBox->DefineNodes(polygon, proj, role == Gui::SelectionRole::Inner ? true : false);
 }
 
-void TaskCreateNodeSet::DefineNodes(const Base::Polygon2d& polygon,
-                                    const Gui::ViewVolumeProjection& proj,
-                                    bool inner)
+void TaskCreateNodeSet::DefineNodes(
+    const Base::Polygon2d& polygon,
+    const Gui::ViewVolumeProjection& proj,
+    bool inner
+)
 {
-    const SMESHDS_Mesh* data = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()
-                                   ->FemMesh.getValue()
-                                   .getSMesh()
-                                   ->GetMeshDS();
+    const SMESHDS_Mesh* data
+        = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSMesh()->GetMeshDS();
 
     SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
     Base::Vector3f pt2d;
@@ -204,19 +216,22 @@ void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 
         if (!ui->checkBox_Add->isChecked()) {
-            std::set<long> tmp = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()
-                                     ->FemMesh.getValue()
-                                     .getSurfaceNodes(elem, face);
+            std::set<long> tmp
+                = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSurfaceNodes(
+                    elem,
+                    face
+                );
             tempSet.insert(tmp.begin(), tmp.end());
         }
         else {
-            tempSet = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()
-                          ->FemMesh.getValue()
-                          .getSurfaceNodes(elem, face);
+            tempSet = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSurfaceNodes(
+                elem,
+                face
+            );
         }
 
         selectionMode = none;
-        Gui::Selection().rmvSelectionGate();
+        setSelectionGate();
 
         MeshViewProvider->setHighlightNodes(tempSet);
     }

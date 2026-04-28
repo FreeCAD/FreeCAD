@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAW_OCCNAVSTYLE_H
-#define TECHDRAW_OCCNAVSTYLE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -52,4 +51,3 @@ private:
 };
 
 }
-#endif // TECHDRAW_OCCNAVSTYLE_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef LINEEDIT_H
-#define LINEEDIT_H
+#pragma once
 
 #include <Gui/ExpressionCompleter.h>
 #include <QListView>
@@ -67,5 +68,3 @@ protected:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // LINEEDIT_H

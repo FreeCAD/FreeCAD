@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
 # *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
@@ -23,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to create Circle objects."""
+
 ## @package gui_circles
 # \ingroup draftguitools
 # \brief Provides GUI tools to create Circle objects.
@@ -75,12 +78,14 @@ class Circle(gui_arcs.Arc):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Circle',
-                'Accel': "C, I",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Circle", "Circle"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Circle", "Creates a circle (full circular arc)")}
+        return {
+            "Pixmap": "Draft_Circle",
+            "Accel": "C, I",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Circle", "Circle"),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_Circle", "Creates a circle (full circular arc)"),
+        }
 
 
-Gui.addCommand('Draft_Circle', Circle())
+Gui.addCommand("Draft_Circle", Circle())
 
 ## @}

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,22 +22,61 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <algorithm>
-# include <QApplication>
-# include <QDir>
-# include <QKeyEvent>
-# include <QRegularExpression>
-# include <QStringList>
-# include <QTranslator>
-# include <QWidget>
+#include <algorithm>
+#include <array>
+#include <QApplication>
+#include <QDir>
+#include <QDirListing>
+#include <QKeyEvent>
+#include <QRegularExpression>
+#include <QStringList>
+#include <QTranslator>
+#include <QWidget>
 
+#include <Base/Tools.h>
 
 #include <App/Application.h>
 #include <Gui/TextEdit.h>
 #include "Translator.h"
 
+#ifdef FC_OS_WIN32
+# include <windows.h>
+#endif
 
 using namespace Gui;
+
+namespace
+{
+Translator::LocaleFormattingPreference toLocaleFormattingPreference(const int format)
+{
+    switch (format) {
+        case static_cast<int>(Translator::LocaleFormattingPreference::OperatingSystem):
+            return Translator::LocaleFormattingPreference::OperatingSystem;
+        case static_cast<int>(Translator::LocaleFormattingPreference::SelectedLanguage):
+            return Translator::LocaleFormattingPreference::SelectedLanguage;
+        case static_cast<int>(Translator::LocaleFormattingPreference::CLocale):
+            return Translator::LocaleFormattingPreference::CLocale;
+        default:
+            throw Base::ValueError(
+                "Parameter \"UseLocaleFormatting\" value out of bounds for "
+                "Translator::formattingOptions"
+            );
+    }
+}
+
+#ifdef FC_OS_WIN32
+QString getWindowsUserDefaultLocaleName()
+{
+    std::array<wchar_t, LOCALE_NAME_MAX_LENGTH> buffer {};
+    const int written = GetUserDefaultLocaleName(buffer.data(), static_cast<int>(buffer.size()));
+    if (written <= 0) {
+        return {};
+    }
+
+    return QString::fromWCharArray(buffer.data());
+}
+#endif
+}  // namespace
 
 /** \defgroup i18n Internationalization with FreeCAD
  *  \ingroup GUI
@@ -78,8 +119,8 @@ using namespace Gui;
  * concerning missing .qm files.
  *
  * To integrate the .qm file into the executable you have to create a resource file (.qrc), first.
- * This is an XML file where you can append the .qm file. For the .qrc file you have to define the following
- * curstom build step inside the Visual Studio project file:
+ * This is an XML file where you can append the .qm file. For the .qrc file you have to define the
+ * following curstom build step inside the Visual Studio project file:
  *
  * Command Line: rcc.exe -name $(InputName) $(InputPath) -o "$(InputDir)qrc_$(InputName).cpp"
  * Outputs:      $(InputDir)qrc_$(InputName).cpp
@@ -101,51 +142,41 @@ using namespace Gui;
 
 Translator* Translator::_pcSingleton = nullptr;
 
-namespace Gui {
+namespace Gui
+{
 class TranslatorP
 {
 public:
     std::string activatedLanguage; /**< Active language */
     std::map<std::string, std::string> mapLanguageTopLevelDomain;
     TStringMap mapSupportedLocales;
-    std::list<QTranslator*> translators; /**< A list of all created translators */
+    std::vector<QTranslator*> translators; /**< A list of all created translators */
     QStringList paths;
 };
-}
+}  // namespace Gui
 
-class Translator::ParameterObserver : public ParameterGrp::ObserverType
+class Translator::ParameterObserver: public ParameterGrp::ObserverType
 {
 public:
-    ParameterObserver(Translator* client) : client(client)
+    ParameterObserver(Translator* client)
+        : client(client)
     {
-        hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+        hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/General"
+        );
         hGrp->Attach(this);
     }
 
     void OnChange(Base::Subject<const char*>& caller, const char* creason) override
     {
-        (void) caller;
+        (void)caller;
 
         std::string_view reason = creason;
         if (reason == "UseLocaleFormatting") {
-            int format = hGrp->GetInt("UseLocaleFormatting");
-            if (format == 0) {
-                client->setLocale(); // Defaults to system locale
-            }
-            else if (format == 1) {
-                // Language must need to be set before locale. How do we ensure this?
-                std::string language = hGrp->GetASCII("Language");
-                client->setLocale(language);
-            }
-            else if (format == 2) {
-                client->setLocale("C");
-            }
-            else {
-                throw Base::ValueError("Parameter \"UseLocaleFormatting\" value out of bounds for Translator::formattingOptions");
-            }
+            client->applyLocaleFormattingPreference();
         }
         else if (reason == "SubstituteDecimalSeparator") {
-            bool value = hGrp->GetBool("SubstituteDecimal");
+            bool value = hGrp->GetBool("SubstituteDecimalSeparator");
             client->enableDecimalPointConversion(value);
         }
     }
@@ -157,16 +188,18 @@ ParameterGrp::handle Translator::ParameterObserver::hGrp;  // definition for exp
 
 Translator* Translator::instance()
 {
-    if (!_pcSingleton)
+    if (!_pcSingleton) {
         _pcSingleton = new Translator;
+    }
     return _pcSingleton;
 }
 
-void Translator::destruct ()
+void Translator::destruct()
 {
-    if (_pcSingleton)
+    if (_pcSingleton) {
         delete _pcSingleton;
-    _pcSingleton=nullptr;
+    }
+    _pcSingleton = nullptr;
 }
 
 Translator::Translator()
@@ -215,12 +248,14 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"             )] = "sl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"               )] = "es-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish (Argentina)"   )] = "es-AR";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"               )] = "sv-SE";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"               )] = "sv";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"               )] = "tr";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"             )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"             )] = "val-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"            )] = "vi";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Malay")] = "ms";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Tamil")] = "ta";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Irish")] = "ga-IE";
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");
@@ -249,30 +284,38 @@ Translator::~Translator()
     delete d;
 }
 
-TStringList Translator::supportedLanguages() const
+TLanguageList Translator::supportedLanguages() const
 {
-    TStringList languages;
-    TStringMap locales = supportedLocales();
-    for (const auto& it : locales)
-        languages.push_back(it.first);
-
+    TLanguageList languages;
+    const TStringMap locales = supportedLocales();
+    languages.reserve(locales.size());
+    for (const auto& it : locales) {
+        languages.emplace_back(it.first);
+    }
     return languages;
 }
 
 TStringMap Translator::supportedLocales() const
 {
-    if (!d->mapSupportedLocales.empty())
+    if (!d->mapSupportedLocales.empty()) {
         return d->mapSupportedLocales;
+    }
 
-    // List all .qm files
-    for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
-        for (const auto& directoryName : std::as_const(d->paths)) {
-            QDir dir(directoryName);
-            QString filter = QStringLiteral("*_%1.qm").arg(QString::fromStdString(domainMap.second));
-            QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
-            if (!fileNames.isEmpty()) {
-                d->mapSupportedLocales[domainMap.first] = domainMap.second;
-                break;
+    // List all *_*.qm files, and if any match a known locale,
+    // report that locale as supported.
+    const QStringList qmFilter(QStringLiteral("*_*.qm"));
+    for (const auto& directoryName : std::as_const(d->paths)) {
+        const QDir dir(directoryName);
+        const QStringList fileNames = dir.entryList(qmFilter, QDir::Files);
+        for (const auto& file : fileNames) {
+            const auto lang
+                = QStringView(file).mid(file.lastIndexOf('_') + 1).chopped(sizeof(".qm") - 1);
+            for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
+                if (lang == domainMap.second) {
+                    // Emplace only inserts if no element exists at the key yet,
+                    // avoiding string copies here.
+                    d->mapSupportedLocales.emplace(domainMap.first, domainMap.second);
+                }
             }
         }
     }
@@ -280,11 +323,11 @@ TStringMap Translator::supportedLocales() const
     return d->mapSupportedLocales;
 }
 
-void Translator::activateLanguage (const char* lang)
+void Translator::activateLanguage(const char* lang)
 {
-    removeTranslators(); // remove the currently installed translators
+    removeTranslators();  // remove the currently installed translators
     d->activatedLanguage = lang;
-    TStringList languages = supportedLanguages();
+    const TLanguageList languages = supportedLanguages();
     if (std::ranges::find(languages, lang) != languages.end()) {
         refresh();
     }
@@ -299,34 +342,79 @@ std::string Translator::locale(const std::string& lang) const
 {
     std::string loc;
     std::map<std::string, std::string>::const_iterator tld = d->mapLanguageTopLevelDomain.find(lang);
-    if (tld != d->mapLanguageTopLevelDomain.end())
+    if (tld != d->mapLanguageTopLevelDomain.end()) {
         loc = tld->second;
+    }
 
     return loc;
 }
 
+void Translator::applyLocaleFormattingPreference() const
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+    const auto format = toLocaleFormattingPreference(hGrp->GetInt("UseLocaleFormatting", 0));
+    switch (format) {
+        case LocaleFormattingPreference::OperatingSystem:
+            setLocale();  // Defaults to system locale.
+            break;
+        case LocaleFormattingPreference::SelectedLanguage:
+            // Language must be activated before locale changes can follow it.
+            setLocale(hGrp->GetASCII("Language", activeLanguage().c_str()));
+            break;
+        case LocaleFormattingPreference::CLocale:
+            setLocale("C");
+            break;
+    }
+}
+
 void Translator::setLocale(const std::string& language) const
 {
-    auto loc = QLocale::system(); //Defaulting to OS locale
-    if (language == "C" || language == "c") {
+    const bool isCLocale = Base::Tools::isCLocaleName(language);
+
+    auto loc = QLocale::system();  // Defaulting to OS locale
+#ifdef FC_OS_WIN32
+    if (language.empty()) {
+        // Local Windows development runs can inherit shell state that makes Qt resolve the
+        // system locale differently from the user's regional format.
+        const auto operatingSystemLocale = getWindowsUserDefaultLocaleName();
+        if (!operatingSystemLocale.isEmpty()) {
+            loc = QLocale(operatingSystemLocale);
+        }
+    }
+#endif
+    if (isCLocale) {
         loc = QLocale::c();
     }
     else {
         auto bcp47 = locale(language);
-        if (!bcp47.empty())
-            loc  = QLocale(QString::fromStdString(bcp47));
+        if (!bcp47.empty()) {
+            loc = QLocale(QString::fromStdString(bcp47));
+        }
+    }
+
+    auto icuLocaleId = loc.name().toStdString();
+    if (language.empty()) {
+        // QLocale keeps the effective numeric separators, but loc.name() may still report LANG.
+        const auto operatingSystemNumericLocale = Base::Tools::getOperatingSystemNumericLocale();
+        if (!operatingSystemNumericLocale.empty()) {
+            icuLocaleId = operatingSystemNumericLocale;
+        }
     }
     QLocale::setDefault(loc);
+    Base::Tools::setIcuDefaultLocale(isCLocale ? "C" : icuLocaleId);
     updateLocaleChange();
 
 #ifdef FC_DEBUG
-    Base::Console().log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
+    Base::Console()
+        .log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
 #endif
 }
 
 void Translator::updateLocaleChange() const
 {
-    for (auto &topLevelWidget : qApp->topLevelWidgets()) {
+    for (auto& topLevelWidget : qApp->topLevelWidgets()) {
         topLevelWidget->setLocale(QLocale());
     }
 }
@@ -334,10 +422,12 @@ void Translator::updateLocaleChange() const
 QStringList Translator::directories() const
 {
     QStringList list;
-    auto dir = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-        GetASCII("AdditionalTranslationsDirectory", "");
-    if (!dir.empty())
+    auto dir = App::GetApplication()
+                   .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
+                   ->GetASCII("AdditionalTranslationsDirectory", "");
+    if (!dir.empty()) {
         list.push_back(QString::fromStdString(dir));
+    }
     QDir home(QString::fromUtf8(App::Application::getUserAppDataDir().c_str()));
     list.push_back(home.absoluteFilePath(QLatin1String("translations")));
     QDir resc(QString::fromUtf8(App::Application::getResourceDir().c_str()));
@@ -354,14 +444,14 @@ void Translator::addPath(const QString& path)
 
 void Translator::installQMFiles(const QDir& dir, const char* locale)
 {
-    QString filter = QStringLiteral("*_%1.qm").arg(QLatin1String(locale));
-    QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
-    for (const auto &it : fileNames){
-        bool ok=false;
-        for (std::list<QTranslator*>::const_iterator tt = d->translators.begin();
-            tt != d->translators.end(); ++tt) {
-            if ((*tt)->objectName() == it) {
-                ok = true; // this file is already installed
+    const QString filter = QStringLiteral("*_%1.qm").arg(QLatin1String(locale));
+    const QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
+    d->translators.reserve(fileNames.size());
+    for (const auto& it : fileNames) {
+        bool ok = false;
+        for (const auto translator : d->translators) {
+            if (translator->objectName() == it) {
+                ok = true;  // this file is already installed
                 break;
             }
         }
@@ -382,15 +472,18 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
 }
 
 /**
- * This method checks for newly added (internal) .qm files which might be added at runtime. This e.g. happens if a plugin
- * gets loaded at runtime. For each newly added files that supports the currently set language a new translator object is created
- * to load the file.
+ * This method checks for newly added (internal) .qm files which might be added at runtime. This
+ * e.g. happens if a plugin gets loaded at runtime. For each newly added files that supports the
+ * currently set language a new translator object is created to load the file.
  */
 void Translator::refresh()
 {
-    std::map<std::string, std::string>::iterator tld = d->mapLanguageTopLevelDomain.find(d->activatedLanguage);
-    if (tld == d->mapLanguageTopLevelDomain.end())
-        return; // no language activated
+    std::map<std::string, std::string>::iterator tld = d->mapLanguageTopLevelDomain.find(
+        d->activatedLanguage
+    );
+    if (tld == d->mapLanguageTopLevelDomain.end()) {
+        return;  // no language activated
+    }
     for (const QString& it : d->paths) {
         QDir dir(it);
         installQMFiles(dir, tld->second.c_str());
@@ -413,25 +506,39 @@ void Translator::removeTranslators()
 bool Translator::eventFilter(QObject* obj, QEvent* ev)
 {
     if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
-        QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
+        QKeyEvent* kev = static_cast<QKeyEvent*>(ev);
         Qt::KeyboardModifiers mod = kev->modifiers();
         int key = kev->key();
         if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma)) {
             if (ev->spontaneous()) {
                 auto dp = QString(QLocale().decimalPoint());
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
                 int dpcode = QKeySequence(dp)[0];
 #else
                 int dpcode = QKeySequence(dp)[0].key();
 #endif
                 if (kev->text() != dp) {
-                    QKeyEvent modifiedKeyEvent(kev->type(), dpcode, mod, dp, kev->isAutoRepeat(), kev->count());
+                    QKeyEvent modifiedKeyEvent(
+                        kev->type(),
+                        dpcode,
+                        mod,
+                        dp,
+                        kev->isAutoRepeat(),
+                        kev->count()
+                    );
                     qApp->sendEvent(obj, &modifiedKeyEvent);
                     return true;
                 }
             }
             if (dynamic_cast<Gui::TextEdit*>(obj) && key != Qt::Key_Period) {
-                QKeyEvent modifiedKeyEvent(kev->type(), Qt::Key_Period, mod, QChar::fromLatin1('.'), kev->isAutoRepeat(), kev->count());
+                QKeyEvent modifiedKeyEvent(
+                    kev->type(),
+                    Qt::Key_Period,
+                    mod,
+                    QChar::fromLatin1('.'),
+                    kev->isAutoRepeat(),
+                    kev->count()
+                );
                 qApp->sendEvent(obj, &modifiedKeyEvent);
                 return true;
             }
@@ -452,14 +559,15 @@ void Translator::enableDecimalPointConversion(bool on)
     }
 #if FC_DEBUG
     if (on && decimalPointConverter) {
-        Base::Console().instance().warning("Translator: decimal point converter is already installed\n");
+        Base::Console().instance().warning(
+            "Translator: decimal point converter is already installed\n"
+        );
     }
 #endif
     if (on && !decimalPointConverter) {
-        decimalPointConverter = std::unique_ptr<Translator, std::function<void(Translator*)>>(this,
-            [](Translator* evFilter) {
-                qApp->removeEventFilter(evFilter);
-            }
+        decimalPointConverter = std::unique_ptr<Translator, std::function<void(Translator*)>>(
+            this,
+            [](Translator* evFilter) { qApp->removeEventFilter(evFilter); }
         );
         qApp->installEventFilter(decimalPointConverter.get());
     }

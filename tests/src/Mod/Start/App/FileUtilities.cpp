@@ -41,12 +41,14 @@ TEST_F(FileUtilitiesTest, humanReadableSizeBytesHasNoDecimal)
 
 TEST_F(FileUtilitiesTest, humanReadableSizeOthersHaveDecimal)
 {
-    constexpr std::array<uint64_t, 6> testSizes {1000,
-                                                 123456,
-                                                 123456789,
-                                                 123456789013,
-                                                 100000000000000,
-                                                 std::numeric_limits<uint64_t>::max()};
+    constexpr std::array<uint64_t, 6> testSizes {
+        1000,
+        123456,
+        123456789,
+        123456789013,
+        100000000000000,
+        std::numeric_limits<uint64_t>::max()
+    };
     for (const auto size : testSizes) {
         auto result = Start::humanReadableSize(size);
         EXPECT_NE(result.find('.'), std::string::npos);

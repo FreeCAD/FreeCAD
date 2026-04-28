@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTCIRCLE_H
-#define PART_FEATUREPARTCIRCLE_H
+#pragma once
 
 #include <App/PropertyUnits.h>
 
@@ -31,7 +32,7 @@
 
 namespace Part
 {
-class PartExport Circle : public Part::Primitive
+class PartExport Circle: public Part::Primitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Circle);
 
@@ -46,23 +47,26 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     void onChanged(const App::Property*) override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderCircleParametric";
     }
 
 protected:
-    void Restore(Base::XMLReader &reader) override;
-    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
+    void Restore(Base::XMLReader& reader) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
 
 private:
     static App::PropertyQuantityConstraint::Constraints angleRange;
     //@}
 };
 
-} //namespace Part
-
-#endif // PART_FEATUREPARTCIRCLE_H
+}  // namespace Part

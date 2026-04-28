@@ -254,6 +254,8 @@ class SmallListView(QtGui.QListView):
 
 class GeometryElementsSelection(QtGui.QWidget):
 
+    referencesUpdated = QtCore.Signal(object)
+
     def __init__(self, ref, eltypes, multigeom, showHintEmptyList):
         super().__init__()
         # init ui stuff
@@ -462,10 +464,12 @@ class GeometryElementsSelection(QtGui.QWidget):
         for ref in self.references:
             if self.get_item_text(ref) == currentItemName:
                 self.references.remove(ref)
+                self.referencesUpdated.emit(self.references)
         self.rebuild_list_References(currentRow)
 
     def remove_all_references(self):
         self.references = []
+        self.referencesUpdated.emit(self.references)
         self.rebuild_list_References()
 
     def choose_selection_mode_standard(self, state):
@@ -494,6 +498,14 @@ class GeometryElementsSelection(QtGui.QWidget):
             # on every click on addReference button
             # but close only one SelectionObserver on leaving the task panel
             self.sel_server = FemSelectionObserver(self.selectionParser, print_message)
+
+    def attachSelection(self):
+        if self.sel_server:
+            FreeCADGui.Selection.addObserver(self.sel_server)
+
+    def detachSelection(self):
+        if self.sel_server:
+            FreeCADGui.Selection.removeObserver(self.sel_server)
 
     def selectionParser(self, selection):
         if hasattr(selection[0], "Shape") and selection[1]:
@@ -546,6 +558,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                         if self.allow_multiple_geom_types is False:
                             if self.has_equal_references_shape_types(ele_ShapeType):
                                 self.references.append(selection)
+                                self.referencesUpdated.emit(self.references)
                                 self.rebuild_list_References(
                                     self.get_allitems_text().index(self.get_item_text(selection))
                                 )
@@ -554,6 +567,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                                 FreeCADGui.Selection.clearSelection()
                         else:  # multiple shape types are allowed to add
                             self.references.append(selection)
+                            self.referencesUpdated.emit(self.references)
                             self.rebuild_list_References(
                                 self.get_allitems_text().index(self.get_item_text(selection))
                             )

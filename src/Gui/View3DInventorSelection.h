@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_VIEW3DINVENTORSELECTION_H
-#define GUI_VIEW3DINVENTORSELECTION_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -31,7 +30,8 @@ class SoGroup;
 class SoNode;
 class SoSeparator;
 
-namespace Gui {
+namespace Gui
+{
 
 class Document;
 class SoFCUnifiedSelection;
@@ -42,26 +42,26 @@ public:
     View3DInventorSelection(SoFCUnifiedSelection* root);
     ~View3DInventorSelection();
 
-    void setDocument(Gui::Document *pcDocument) {
+    void setDocument(Gui::Document* pcDocument)
+    {
         guiDocument = pcDocument;
     }
-    Gui::Document* getDocument() const {
+    Gui::Document* getDocument() const
+    {
         return guiDocument;
     }
 
-    void checkGroupOnTop(const SelectionChanges &Reason);
+    void checkGroupOnTop(const SelectionChanges& Reason);
     void clearGroupOnTop();
 
 private:
-    SoGroup * pcGroupOnTop;
-    SoGroup * pcGroupOnTopSel;
-    SoGroup * pcGroupOnTopPreSel;
+    SoGroup* pcGroupOnTop;
+    SoGroup* pcGroupOnTopSel;
+    SoGroup* pcGroupOnTopPreSel;
     SoFCUnifiedSelection* selectionRoot;
     std::map<std::string, SoNode*> objectsOnTop;
     std::map<std::string, SoNode*> objectsOnTopPreSel;
     Gui::Document* guiDocument = nullptr;
 };
 
-} //namespace Gui
-
-#endif // GUI_VIEW3DINVENTORSELECTION_H
+}  // namespace Gui

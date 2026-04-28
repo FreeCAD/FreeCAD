@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,14 +23,14 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderBase_H
-#define PARTGUI_ViewProviderBase_H
+#pragma once
 
 #include "ViewProvider.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderBase : public ViewProvider
+class PartDesignGuiExport ViewProviderBase: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderBase);
 
@@ -47,7 +49,4 @@ protected:
     bool setEdit(int ModNum) override;
 };
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderBase_H
+}  // namespace PartDesignGui

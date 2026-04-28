@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2021 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -23,7 +25,6 @@ import FreeCAD as App
 import Path
 import Path.Base.Drillable as Drillable
 import CAMTests.PathTestUtils as PathTestUtils
-
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -249,10 +250,10 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
     def test20(self):
         """Test getDrillableTargets"""
         results = Drillable.getDrillableTargets(self.obj)
-        self.assertEqual(len(results), 15)
+        self.assertEqual(len(results), 16)
 
         results = Drillable.getDrillableTargets(self.obj, vector=None)
-        self.assertEqual(len(results), 20)
+        self.assertEqual(len(results), 21)
 
-        results = Drillable.getDrillableTargets(self.obj, ToolDiameter=20, vector=None)
+        results = Drillable.getDrillableTargets(self.obj, toolDiameter=20, vector=None)
         self.assertEqual(len(results), 5)

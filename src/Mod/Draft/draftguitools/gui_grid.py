@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
 # *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
@@ -23,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to enable and disable the working plane grid."""
+
 ## @package gui_grid
 # \ingroup draftguitools
 # \brief Provides GUI tools to enable and disable the working plane grid.
@@ -55,12 +58,15 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"Pixmap": "Draft_Grid",
-                "Accel": "G, R",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_ToggleGrid",
-                                             "Toggles the visibility of the Draft grid"),
-                "CmdType": "ForEdit"}
+        return {
+            "Pixmap": "Draft_Grid",
+            "Accel": "G, R",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_ToggleGrid", "Toggles the visibility of the Draft grid"
+            ),
+            "CmdType": "ForEdit",
+        }
 
     def IsActive(self):
         """Return True when this command should be available."""
@@ -89,6 +95,7 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
             grid.set()
             WorkingPlane.get_working_plane()
             grid.show_always = True
+
 
 Gui.addCommand("Draft_ToggleGrid", ToggleGrid())
 

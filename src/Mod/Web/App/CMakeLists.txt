@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(Web_LIBS
     FreeCADApp
     ${QtNetwork_LIBRARIES}

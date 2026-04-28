@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -25,6 +27,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Dressup.DogboneII as DogboneII
+import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 
 if False:
@@ -299,6 +302,12 @@ class ViewProviderDressup(object):
             arg1.Object.Base = None
         return True
 
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
+
 
 def Create(base, name="DressupDogbone"):
     """
@@ -327,33 +336,19 @@ class CommandDressupDogboneII(object):
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        return bool(PathDressup.selection())
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(
-                translate("CAM_DressupDogbone", "Select one toolpath object") + "\n"
-            )
-            return
-        baseObject = selection[0]
-        if not baseObject.isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(
-                translate("CAM_DressupDogbone", "The selected object is not a toolpath") + "\n"
-            )
+        op = PathDressup.selection(verbose=True)
+        if not op:
             return
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Dogbone Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.DogboneII")
         FreeCADGui.doCommand(
-            "Path.Dressup.Gui.DogboneII.Create(FreeCAD.ActiveDocument.%s)" % baseObject.Name
+            "Path.Dressup.Gui.DogboneII.Create(FreeCAD.ActiveDocument.%s)" % op.Name
         )
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,15 +23,15 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderHelix_H
-#define PARTGUI_ViewProviderHelix_H
+#pragma once
 
 #include "ViewProvider.h"
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderHelix : public ViewProvider
+class PartDesignGuiExport ViewProviderHelix: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderHelix);
 
@@ -48,11 +50,8 @@ protected:
     QIcon getIcon() const override;
 
     /// Returns a newly created TaskDlgHelixParameters
-    TaskDlgFeatureParameters *getEditDialog() override;
+    TaskDlgFeatureParameters* getEditDialog() override;
 };
 
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderHelix_H
+}  // namespace PartDesignGui

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 russ4262 <russ4262@gmail.com>                      *
 # *                                                                         *
@@ -35,7 +37,7 @@ import math
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
-# MeshPart = LazyLoader('MeshPart', globals(), 'MeshPart')
+MeshPart = LazyLoader("MeshPart", globals(), "MeshPart")  # tessellate bug Workaround
 Part = LazyLoader("Part", globals(), "Part")
 
 
@@ -43,7 +45,7 @@ if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
-    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+    Path.Log.setLevel(Path.Log.Level.ERROR, Path.Log.thisModule())
 
 
 translate = FreeCAD.Qt.translate
@@ -548,15 +550,13 @@ class ProcessSelectedFaces:
         if self.checkBase:
             Path.Log.debug(" -obj.Base exists. Pre-processing for selected faces.")
 
-            (hasFace, hasVoid) = self._identifyFacesAndVoids(
-                FACES, VOIDS
-            )  # modifies FACES and VOIDS
+            hasFace, hasVoid = self._identifyFacesAndVoids(FACES, VOIDS)  # modifies FACES and VOIDS
             hasGeometry = True if hasFace or hasVoid else False
 
             # Cycle through each base model, processing faces for each
             for m in range(0, lenGRP):
                 base = GRP[m]
-                (mFS, mVS, mPS) = self._preProcessFacesAndVoids(base, FACES[m], VOIDS[m])
+                mFS, mVS, mPS = self._preProcessFacesAndVoids(base, FACES[m], VOIDS[m])
                 fShapes[m] = mFS
                 vShapes[m] = mVS
                 self.profileShapes[m] = mPS
@@ -589,7 +589,7 @@ class ProcessSelectedFaces:
                     )
                     FreeCAD.Console.PrintError(msg)
                 else:
-                    (fcShp, prflShp) = pPEB
+                    fcShp, prflShp = pPEB
                     if fcShp:
                         if fcShp is True:
                             Path.Log.debug(" -fcShp is True.")
@@ -663,7 +663,7 @@ class ProcessSelectedFaces:
         faceCnt = len(TUPS)
         add = faceCnt - self.obj.AvoidLastX_Faces
         for bst in range(0, faceCnt):
-            (m, base, sub) = TUPS[bst]
+            m, base, sub = TUPS[bst]
             shape = getattr(base.Shape, sub)
             if isinstance(shape, Part.Face):
                 faceIdx = int(sub[4:]) - 1
@@ -1252,6 +1252,22 @@ def _makeSTL(model, obj, ocl, model_type=None):
     """Convert a mesh or shape into an OCL STL, using the tessellation
     tolerance specified in obj.LinearDeflection.
     Returns an ocl.STLSurf()."""
+    # Determine Deflection Values
+    lin_def = obj.LinearDeflection.Value
+    ang_def = obj.AngularDeflection.Value
+
+    # Apply Overrides for Waterline OCL Adaptive
+    # OCL Adaptive is a Vector-based algorithm, not a Grid-based algorithm (like Dropcutter)
+    # This fundamental difference makes it sensitive to Topology (how points connect) rather than just density
+    # Models with internal features can cause the algorithm to be confused even with very high density values.
+    # The following values create the cleanest possible Topology for a vector-slicing algorithm
+    # Setting those values here rather than hacking the Obj values in Waterline.py is preferable.
+    algo = getattr(obj, "Algorithm", None)
+    if algo == "OCL Adaptive":
+        # Force the "Sweet Spot" values for topology stability (Good enough for 99% or more of operations)
+        lin_def = 0.001
+        ang_def = 0.15
+
     if model_type == "M":
         facets = model.Mesh.Facets.Points
     else:
@@ -1259,7 +1275,15 @@ def _makeSTL(model, obj, ocl, model_type=None):
             shape = model.Shape
         else:
             shape = model
-        vertices, facet_indices = shape.tessellate(obj.LinearDeflection.Value)
+        # vertices, facet_indices = shape.tessellate(obj.LinearDeflection.Value) # tessellate workaround
+        # Workaround for tessellate bug
+        mesh = MeshPart.meshFromShape(
+            Shape=shape,
+            LinearDeflection=lin_def,
+            AngularDeflection=ang_def,
+        )
+        vertices = [point.Vector for point in mesh.Points]
+        facet_indices = [facet.PointIndices for facet in mesh.Facets]
         facets = ((vertices[f[0]], vertices[f[1]], vertices[f[2]]) for f in facet_indices)
     stl = ocl.STLSurf()
     for tri in facets:
@@ -1365,7 +1389,7 @@ def pathGeomToLinesPointSet(self, obj, compGeoShp):
                 if iL == "BRK":
                     rev.append(iL)
                 else:
-                    (p1, p2) = iL
+                    p1, p2 = iL
                     rev.append((p2, p1))
             rev.reverse()
             LINES.insert(0, rev)
@@ -1478,7 +1502,7 @@ def pathGeomToZigzagPointSet(self, obj, compGeoShp):
             if iL == "BRK":
                 rev.append(iL)
             else:
-                (p1, p2) = iL
+                p1, p2 = iL
                 rev.append((p2, p1))
 
         if not obj.CutPatternReversed:
@@ -1489,7 +1513,7 @@ def pathGeomToZigzagPointSet(self, obj, compGeoShp):
                 if iL == "BRK":
                     rev2.append(iL)
                 else:
-                    (p1, p2) = iL
+                    p1, p2 = iL
                     rev2.append((p2, p1))
             rev2.reverse()
             rev = rev2
@@ -1587,9 +1611,9 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
             lenEOA = len(endOnAxis)
             if lenSOA > 0 and lenEOA > 0:
                 for soa in range(0, lenSOA):
-                    (iS, eiS, vS) = startOnAxis[soa]
+                    iS, eiS, vS = startOnAxis[soa]
                     for eoa in range(0, len(endOnAxis)):
-                        (iE, eiE, vE) = endOnAxis[eoa]
+                        iE, eiE, vE = endOnAxis[eoa]
                         dist = vE.X - vS.X
                         if abs(dist) < 0.00001:  # They connect on axis at same radius
                             SO[2] = (eiE, eiS)
@@ -1651,7 +1675,7 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
             lst = None
 
             if CONN:  # Connected edges(arcs)
-                (iE, iS) = CONN
+                iE, iS = CONN
                 v1 = compGeoShp.Edges[iE].Vertexes[0]
                 v2 = compGeoShp.Edges[iS].Vertexes[1]
                 sp = (v1.X, v1.Y, 0.0)
@@ -1934,7 +1958,7 @@ class FindUnifiedRegions:
                 self.topFaces.append((topFace, fcIdx))
 
     def _fuseTopFaces(self):
-        (one, baseFcIdx) = self.topFaces.pop(0)
+        one, baseFcIdx = self.topFaces.pop(0)
         base = one
         for face, fcIdx in self.topFaces:
             base = base.fuse(face)
@@ -2346,7 +2370,7 @@ class FindUnifiedRegions:
                 face = Part.Face(wCS)
                 return [face]
             else:
-                (faceShp, fcIdx) = self.FACES[0]
+                faceShp, fcIdx = self.FACES[0]
                 msg = translate(
                     "PathSurfaceSupport",
                     "Failed to identify a horizontal cross-section for Face",
@@ -2587,8 +2611,12 @@ class OCL_Tool:
             return False
         if hasattr(self.tool, "LengthOffset"):
             self.lengthOffset = float(self.tool.LengthOffset)
+        # Derive flatRadius from diameter and cornerRadius if both are present
         if hasattr(self.tool, "FlatRadius"):
             self.flatRadius = float(self.tool.FlatRadius)
+        if hasattr(self.tool, "CornerRadius") and hasattr(self.tool, "Diameter"):
+            self.cornerRadius = float(self.tool.CornerRadius)
+            self.flatRadius = (self.diameter / 2.0) - self.cornerRadius
         if hasattr(self.tool, "CuttingEdgeHeight"):
             self.cutEdgeHeight = float(self.tool.CuttingEdgeHeight)
         if hasattr(self.tool, "CuttingEdgeAngle"):
@@ -2648,6 +2676,7 @@ class OCL_Tool:
                 "endmill": "CylCutter",
                 "ballend": "BallCutter",
                 "bullnose": "BullCutter",
+                "taperedballnose": "BallCutter",
                 "drill": "ConeCutter",
                 "engraver": "ConeCutter",
                 "v_bit": "ConeCutter",

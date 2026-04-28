@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-
-# include <QMenu>
+#include <QMenu>
 
 
 #include "TaskPadParameters.h"
@@ -45,9 +46,9 @@ void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const cha
     PartDesignGui::ViewProviderSketchBased::setupContextMenu(menu, receiver, member);
 }
 
-TaskDlgFeatureParameters *ViewProviderPad::getEditDialog()
+TaskDlgFeatureParameters* ViewProviderPad::getEditDialog()
 {
     // TODO fix setting values from the history: now it doesn't work neither in
     //      the master and in the migrated branch  (2015-07-26, Fat-Zer)
-    return new TaskDlgPadParameters( this );
+    return new TaskDlgPadParameters(this);
 }

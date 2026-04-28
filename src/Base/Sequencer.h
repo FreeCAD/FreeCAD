@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,11 +23,9 @@
  ***************************************************************************/
 
 
-#ifndef BASE_SEQUENCER_H
-#define BASE_SEQUENCER_H
+#pragma once
 
 #include <cstddef>
-
 #include <FCGlobal.h>
 
 namespace Base
@@ -222,6 +222,11 @@ protected:
      */
     virtual void startStep();
     /**
+     * This method can be reimplemented in sub-classes to do some last action
+     * when a new sequence stops. The default implementation does nothing.
+     */
+    virtual void stopStep();
+    /**
      * This method can be reimplemented in sub-classes to give the user a feedback
      * when the next is performed. The default implementation does nothing. If \a canAbort
      * is true then the pending operation can aborted, otherwise not. Depending on the
@@ -376,6 +381,7 @@ public:
     bool next(bool canAbort = false);
     void setProgress(size_t);
     bool wasCanceled() const;
+    void stop();
 
     SequencerLauncher(const SequencerLauncher&) = delete;
     SequencerLauncher(SequencerLauncher&&) = delete;
@@ -390,5 +396,3 @@ inline SequencerBase& Sequencer()
 }
 
 }  // namespace Base
-
-#endif  // BASE_SEQUENCER_H

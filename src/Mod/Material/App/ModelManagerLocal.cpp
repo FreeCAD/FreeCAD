@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -189,7 +191,7 @@ std::shared_ptr<Model> ModelManagerLocal::getModelByPath(const QString& path) co
     for (auto& library : *_libraryList) {
         if (library->isLocal()) {
             auto localLibrary = std::static_pointer_cast<Materials::ModelLibraryLocal> (library);
-            if (cleanPath.startsWith(localLibrary->getDirectory())) {
+            if (cleanPath.startsWith(localLibrary->getDirectory(), localLibrary->caseSensitivity())) {
                 return localLibrary->getModelByPath(cleanPath);
             }
         }

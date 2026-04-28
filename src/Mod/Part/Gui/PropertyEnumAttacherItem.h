@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Peter Lama <peterldev94@gmail.com>                 *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PART_PropertyEnumAttacherItem_H
-#define PART_PropertyEnumAttacherItem_H
+#pragma once
 
 #include <Gui/propertyeditor/PropertyItem.h>
 
@@ -36,8 +37,8 @@ namespace PartGui
 using FrameOption = Gui::PropertyEditor::FrameOption;
 
 /**
-* Custom editor item for PropertyEnumeration to open Attacher task
-*/
+ * Custom editor item for PropertyEnumeration to open Attacher task
+ */
 class PartGuiExport PropertyEnumAttacherItem: public Gui::PropertyEditor::PropertyEnumItem
 {
     Q_OBJECT
@@ -45,9 +46,11 @@ class PartGuiExport PropertyEnumAttacherItem: public Gui::PropertyEditor::Proper
 public:
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent,
-                          const std::function<void()>& method,
-                          FrameOption frameOption) const override;
+    QWidget* createEditor(
+        QWidget* parent,
+        const std::function<void()>& method,
+        FrameOption frameOption
+    ) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -58,6 +61,4 @@ protected:
     PropertyEnumAttacherItem();
 };
 
-} // namespace PartGui
-
-#endif // PART_PropertyEnumAttacherItem_H
+}  // namespace PartGui

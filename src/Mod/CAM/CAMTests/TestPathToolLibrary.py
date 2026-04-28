@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import unittest
 from Path.Tool.library import Library
 from Path.Tool.toolbit import ToolBitEndmill, ToolBitDrill, ToolBitVBit

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -21,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create a fusion of two shapes."""
+
 ## @package fuse
 # \ingroup draftfunctions
 # \brief Provides functions to create a fusion of two shapes.
@@ -49,6 +52,7 @@ def fuse(object1, object2):
         return
     import Part
     import DraftGeomUtils
+
     # testing if we have holes:
     holes = False
     fshape = object1.Shape.fuse(object2.Shape)
@@ -74,9 +78,10 @@ def fuse(object1, object2):
     if App.GuiUp:
         object1.ViewObject.Visibility = False
         object2.ViewObject.Visibility = False
-        gui_utils.format_object(obj,object1)
+        gui_utils.format_object(obj, object1)
         gui_utils.select(obj)
 
     return obj
+
 
 ## @}

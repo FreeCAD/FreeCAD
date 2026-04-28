@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -234,8 +236,6 @@ void CmdSketcherNewSketch::activated(int iMsg)
     if (bAttach) {
 
         std::vector<Gui::SelectionObject> objects = Gui::Selection().getSelectionEx();
-        // assert (objects.size() == 1); //should have been filtered out by SuggestAutoMapMode
-        // Gui::SelectionObject &sel_support = objects[0];
         App::PropertyLinkSubList support;
         Gui::Selection().getAsPropertyLinkSubList(support);
         std::string supportString = support.getPyReprString();
@@ -271,6 +271,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
                           FeatName.c_str());
             }
         }
+        commitCommand();
     }
     else {
         // ask user for orientation
@@ -313,6 +314,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
                   FeatName.c_str(),
                   AttachEngine::getModeName(Attacher::mmDeactivated).c_str());
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
+        commitCommand();
     }
 }
 
@@ -363,7 +365,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Leave Sketch");
-    sToolTipText = QT_TR_NOOP("Exits the active sketch");
+    sToolTipText = QT_TR_NOOP("Finish editing the active sketch. You can also press Escape to exit.");
     sWhatsThis = "Sketcher_LeaveSketch";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_LeaveSketch";
@@ -392,6 +394,76 @@ bool CmdSketcherLeaveSketch::isActive()
 {
     return isSketchInEdit(getActiveGuiDocument());
 }
+
+// Cancel sketch edition
+
+DEF_STD_CMD_A(CmdSketcherCancelSketch)
+
+CmdSketcherCancelSketch::CmdSketcherCancelSketch()
+    : Command("Sketcher_CancelSketch")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Cancel Editing");
+    sToolTipText = QT_TR_NOOP("Leave 'edit' mode and revert any changes");
+    sWhatsThis = "Sketcher_CancelSketch";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CancelSketch";
+    eType = 0;
+}
+
+void CmdSketcherCancelSketch::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::Document* doc = getActiveGuiDocument();
+    if (!doc) {
+        return;
+    }
+
+    auto* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    if (!vp) {
+        return;
+    }
+
+    if (vp->getSketchMode() != ViewProviderSketch::STATUS_NONE) {
+        vp->purgeHandler();
+    }
+
+    vp->editingCancelled = true;
+    doCommand(Gui, "Gui.activeDocument().resetEdit()");
+    vp->editingCancelled = false;
+}
+
+bool CmdSketcherCancelSketch::isActive()
+{
+    return isSketchInEdit(getActiveGuiDocument());
+}
+
+//===========================================================================
+// Sketcher_LeaveGroup
+//===========================================================================
+class CmdSketcherLeaveGroup : public Gui::GroupCommand
+{
+public:
+    CmdSketcherLeaveGroup() : GroupCommand("Sketcher_LeaveGroup")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Leave");
+        sToolTipText = QT_TR_NOOP("Leave the sketch editing mode.");
+        sWhatsThis = "Sketcher_LeaveGroup";
+        sStatusTip = sToolTipText;
+        eType = 0;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Sketcher_LeaveSketch");
+        addCommand("Sketcher_CancelSketch");
+    }
+
+    const char* className() const override { return "CmdSketcherLeaveGroup"; }
+};
 
 DEF_STD_CMD_A(CmdSketcherStopOperation)
 
@@ -559,6 +631,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
         r[2],
         r[3]);
     doCommand(Gui, "Gui.ActiveDocument.setEdit('%s')", sketch->getNameInDocument());
+    commitCommand();
 }
 
 bool CmdSketcherReorientSketch::isActive()
@@ -759,6 +832,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
             Gui::cmdAppObjectArgs(
                 sketch, "MapMode = \"%s\"", AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "AttachmentSupport = %s", supportString.c_str());
+            // commitCommand();
             commitCommand();
             doCommand(Gui, "App.activeDocument().recompute()");
         }
@@ -767,6 +841,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
             Gui::cmdAppObjectArgs(
                 sketch, "MapMode = \"%s\"", AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "AttachmentSupport = None");
+            // commitCommand();
             commitCommand();
             doCommand(Gui, "App.activeDocument().recompute()");
         }
@@ -807,13 +882,11 @@ CmdSketcherViewSketch::CmdSketcherViewSketch()
 void CmdSketcherViewSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    SketcherGui::ViewProviderSketch* vp =
-        dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    if (vp) {
+
+    if (Gui::Application::Instance->isInEdit(getActiveGuiDocument())) {
         runCommand(Gui,
                    "Gui.ActiveDocument.ActiveView.setCameraOrientation("
-                   "App.Placement(Gui.editDocument().EditingTransform).Rotation.Q)");
+                   "App.Placement(Gui.ActiveDocument.EditingTransform).Rotation.Q)");
     }
 }
 
@@ -981,6 +1054,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
         delete tempsketch;
     }
 
+    commitCommand();
     doCommand(Gui, "App.activeDocument().recompute()");
 }
 
@@ -1078,6 +1152,8 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     doCommand(Doc,
               "App.activeDocument().ActiveObject.Placement = App.activeDocument().%s.Placement",
               selection.front().getFeatName());
+
+    commitCommand();
     doCommand(Doc, "App.activeDocument().recompute()");
 }
 
@@ -1109,8 +1185,9 @@ void CmdSketcherViewSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmdStr =
-        QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, None, %1)\n");
+        QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, None, %1)\n");
     Gui::Document* doc = getActiveGuiDocument();
+
     bool revert = false;
     if (doc) {
         SketcherGui::ViewProviderSketch* vp =
@@ -1296,10 +1373,6 @@ protected:
     bool isActive() override;
     Gui::Action* createAction() override;
 
-private:
-    void updateIcon(bool value);
-    void updateInactiveHandlerIcon();
-
 public:
     CmdSketcherGrid(const CmdSketcherGrid&) = delete;
     CmdSketcherGrid(CmdSketcherGrid&&) = delete;
@@ -1320,26 +1393,6 @@ CmdSketcherGrid::CmdSketcherGrid()
     eType = 0;
 }
 
-void CmdSketcherGrid::updateIcon(bool value)
-{
-    static QIcon active = Gui::BitmapFactory().iconFromTheme("Sketcher_GridToggle");
-    static QIcon inactive = Gui::BitmapFactory().iconFromTheme("Sketcher_GridToggle_Deactivated");
-
-    auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    pcAction->setIcon(value ? active : inactive);
-}
-
-void CmdSketcherGrid::updateInactiveHandlerIcon()
-{
-    auto* vp = getInactiveHandlerEditModeSketchViewProvider();
-
-    if (vp) {
-        auto value = vp->ShowGrid.getValue();
-
-        updateIcon(value);
-    }
-}
-
 void CmdSketcherGrid::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -1351,8 +1404,6 @@ void CmdSketcherGrid::activated(int iMsg)
 
     auto value = sketchView->ShowGrid.getValue();
     sketchView->ShowGrid.setValue(!value);
-
-    updateIcon(!value);
 }
 
 Gui::Action* CmdSketcherGrid::createAction()
@@ -1371,9 +1422,6 @@ Gui::Action* CmdSketcherGrid::createAction()
         Q_UNUSED(menu)
         gsa->updateWidget();
     });
-
-    // set the right pixmap
-    updateInactiveHandlerIcon();
 
     return pcAction;
 }
@@ -1397,10 +1445,6 @@ bool CmdSketcherGrid::isActive()
     auto* vp = getInactiveHandlerEditModeSketchViewProvider();
 
     if (vp) {
-        auto value = vp->ShowGrid.getValue();
-
-        updateIcon(value);
-
         return true;
     }
 
@@ -1527,8 +1571,6 @@ protected:
     Gui::Action* createAction() override;
 
 private:
-    void updateIcon(bool value);
-
     ParameterGrp::handle getParameterPath()
     {
         return App::GetApplication().GetParameterGroupByPath(
@@ -1570,23 +1612,11 @@ void CmdSketcherSnap::OnChange(Base::Subject<const char*>& rCaller, const char* 
     }
 }
 
-void CmdSketcherSnap::updateIcon(bool value)
-{
-    static QIcon active = Gui::BitmapFactory().iconFromTheme("Sketcher_Snap");
-    static QIcon inactive = Gui::BitmapFactory().iconFromTheme("Sketcher_Snap_Deactivated");
-
-    auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    pcAction->setIcon(value ? active : inactive);
-}
-
 void CmdSketcherSnap::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
     getParameterPath()->SetBool("Snap", !snapEnabled);
-
-    // snapEnable updated via observer
-    updateIcon(snapEnabled);
 
     // Update the widget :
     if (!_pcAction)
@@ -1616,9 +1646,6 @@ Gui::Action* CmdSketcherSnap::createAction()
         ssa->updateWidget(snapEnabled);
     });
 
-    // set the right pixmap
-    updateIcon(snapEnabled);
-
     return pcAction;
 }
 
@@ -1641,8 +1668,6 @@ bool CmdSketcherSnap::isActive()
     auto* vp = getInactiveHandlerEditModeSketchViewProvider();
 
     if (vp) {
-        updateIcon(snapEnabled);
-
         return true;
     }
 
@@ -1666,7 +1691,7 @@ void RenderingOrderAction::updateWidget()
     int midid = hGrp->GetInt("MidRenderGeometryId", 2);
     int lowid = hGrp->GetInt("LowRenderGeometryId", 3);
 
-    auto idToText = [this](int id) -> QString {
+    auto idToText = [](int id) -> QString {
         switch (id) {
         case 1:
             return tr("Normal geometry");
@@ -1788,8 +1813,6 @@ protected:
     Gui::Action* createAction() override;
 
 private:
-    void updateIcon();
-
     ParameterGrp::handle getParameterPath()
     {
         return App::GetApplication().GetParameterGroupByPath(
@@ -1829,28 +1852,6 @@ void CmdRenderingOrder::OnChange(Base::Subject<const char*>& rCaller, const char
 
     if (strcmp(sReason, "TopRenderGeometryId") == 0) {
         TopElement = static_cast<ElementType>(getParameterPath()->GetInt("TopRenderGeometryId", 1));
-
-        updateIcon();
-    }
-}
-
-void CmdRenderingOrder::updateIcon()
-{
-    static QIcon normal = Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_Normal");
-    static QIcon construction =
-        Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_Construction");
-    static QIcon external = Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_External");
-
-    if (auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction())) {
-        if (TopElement == ElementType::Normal) {
-            pcAction->setIcon(normal);
-        }
-        else if (TopElement == ElementType::Construction) {
-            pcAction->setIcon(construction);
-        }
-        else if (TopElement == ElementType::External) {
-            pcAction->setIcon(external);
-        }
     }
 }
 
@@ -1875,9 +1876,6 @@ Gui::Action* CmdRenderingOrder::createAction()
         Q_UNUSED(menu)
         roa->updateWidget();
     });
-
-    // set the right pixmap
-    updateIcon();
 
     return pcAction;
 }
@@ -1908,8 +1906,10 @@ void CreateSketcherCommands()
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdSketcherNewSketch());
+    rcCmdMgr.addCommand(new CmdSketcherCancelSketch());
     rcCmdMgr.addCommand(new CmdSketcherEditSketch());
     rcCmdMgr.addCommand(new CmdSketcherLeaveSketch());
+    rcCmdMgr.addCommand(new CmdSketcherLeaveGroup());
     rcCmdMgr.addCommand(new CmdSketcherStopOperation());
     rcCmdMgr.addCommand(new CmdSketcherReorientSketch());
     rcCmdMgr.addCommand(new CmdSketcherMapSketch());

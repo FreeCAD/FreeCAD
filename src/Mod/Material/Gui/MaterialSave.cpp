@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -137,7 +139,9 @@ void MaterialSave::onOk(bool checked)
     QFileInfo filepath(_selectedPath + QStringLiteral("/") + name
                        + QStringLiteral(".FCMat"));
 
-    /*if (library->fileExists(filepath.filePath()))*/ {
+    auto localLibrary = std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(library);
+    if (localLibrary && localLibrary->fileExists(filepath.filePath()))
+    {
         // confirm overwrite
         auto res = confirmOverwrite(_filename);
         if (res == QMessageBox::Cancel) {

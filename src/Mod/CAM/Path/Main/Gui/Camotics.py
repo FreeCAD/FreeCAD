@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -132,6 +134,7 @@ class CamoticsSimulation(QtCore.QObject):
     SHAPEMAP = {
         "ballend": "Ballnose",
         "endmill": "Cylindrical",
+        "taperedballnose": "Ballnose",
         "v-bit": "Conical",
         "chamfer": "Snubnose",
     }

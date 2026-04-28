@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -23,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the task panel code for the Draft ShapeString tool."""
+
 ## @package task_shapestring
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft ShapeString tool.
@@ -86,9 +89,9 @@ class ShapeStringTaskPanel:
         self.form.sbX.valueChanged.connect(self.set_point_x)
         self.form.sbY.valueChanged.connect(self.set_point_y)
         self.form.sbZ.valueChanged.connect(self.set_point_z)
-        if hasattr(self.form.cbGlobalMode, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.cbGlobalMode, "checkStateChanged"):  # Qt version >= 6.7.0
             self.form.cbGlobalMode.checkStateChanged.connect(self.set_global_mode)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             self.form.cbGlobalMode.stateChanged.connect(self.set_global_mode)
         self.form.pbReset.clicked.connect(self.reset_point)
         self.form.sbHeight.valueChanged.connect(self.set_height)
@@ -131,8 +134,9 @@ class ShapeStringTaskPanel:
         self.form.sbZ.setProperty("rawValue", point.z)
         self.display_point_active = False
 
-    def escape_string(self, string):
-        return string.replace("\\", "\\\\").replace("\"", "\\\"")
+    @staticmethod
+    def quote_string(string):
+        return repr(string)
 
     def platform_win_dialog(self, flag):
         """Handle the type of dialog depending on the platform."""
@@ -207,10 +211,7 @@ class ShapeStringTaskPanel:
             Gui.HintManager.hide()
         else:
             Gui.HintManager.show(
-                Gui.InputHint(
-                  translate("draft", "%1 pick point"), 
-                  Gui.UserInput.MouseLeft
-                )
+                Gui.InputHint(translate("draft", "%1 pick point"), Gui.UserInput.MouseLeft)
             )
 
 
@@ -232,20 +233,22 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
         Gui.addModule("Draft")
         Gui.addModule("WorkingPlane")
         cmd = "Draft.make_shapestring("
-        cmd += "String=\"" + self.escape_string(self.text) + "\", "
-        cmd += "FontFile=\"" + self.escape_string(self.font_file) + "\", "
+        cmd += "String=" + self.quote_string(self.text) + ", "
+        cmd += "FontFile=" + self.quote_string(self.font_file) + ", "
         cmd += "Size=" + str(self.height) + ", "
         cmd += "Tracking=0.0"
         cmd += ")"
         self.sourceCmd.commit(
             translate("draft", "Create ShapeString"),
-            ["ss = " + cmd,
-             "pl = FreeCAD.Placement()",
-             "pl.Base = " + toString(self.point),
-             "pl.Rotation = WorkingPlane.get_working_plane().get_placement().Rotation",
-             "ss.Placement = pl",
-             "Draft.autogroup(ss)",
-             "FreeCAD.ActiveDocument.recompute()"]
+            [
+                "ss = " + cmd,
+                "pl = FreeCAD.Placement()",
+                "pl.Base = " + toString(self.point),
+                "pl.Rotation = WorkingPlane.get_working_plane().get_placement().Rotation",
+                "ss.Placement = pl",
+                "Draft.autogroup(ss)",
+                "FreeCAD.ActiveDocument.recompute()",
+            ],
         )
 
     def reject(self):
@@ -269,9 +272,9 @@ class ShapeStringTaskPanelEdit(ShapeStringTaskPanel):
 
     def accept(self):
 
-        Gui.doCommand("ss = FreeCAD.ActiveDocument.getObject(\"" + self.obj.Name + "\")")
-        Gui.doCommand("ss.String=\"" + self.escape_string(self.text) + "\"")
-        Gui.doCommand("ss.FontFile=\"" + self.escape_string(self.font_file) + "\"")
+        Gui.doCommand("ss = FreeCAD.ActiveDocument.getObject(" + repr(self.obj.Name) + ")")
+        Gui.doCommand("ss.String=" + self.quote_string(self.text))
+        Gui.doCommand("ss.FontFile=" + self.quote_string(self.font_file))
         Gui.doCommand("ss.Size=" + str(self.height))
         Gui.doCommand("ss.Placement.Base=" + toString(self.point))
         Gui.doCommand("FreeCAD.ActiveDocument.recompute()")

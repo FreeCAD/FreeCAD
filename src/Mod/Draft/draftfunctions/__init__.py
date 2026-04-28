@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2020 Carlo Pavan <carlopav@gmail.com>                             *
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
@@ -39,6 +41,7 @@ represent the public application programming interface (API)
 of the Draft Workbench, and should be made available in the `Draft`
 namespace by importing them in the `Draft` module.
 """
+
 ## \defgroup draftfunctions draftfunctions
 # \ingroup DRAFT
 # \brief Modules with functions for use with scripted objects and GuiCommands.

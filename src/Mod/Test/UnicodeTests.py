@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2007 Juergen Riegel <juergen.riegel@web.de>             *
 # *                                                                         *
@@ -25,7 +24,6 @@
 # Open and edit only in UTF-8 !!!!!!
 
 import FreeCAD, os, unittest, tempfile
-
 
 # ---------------------------------------------------------------------------
 # define the functions to test the FreeCAD Document code

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_FEATURE_H
-#define MESH_FEATURE_H
+#pragma once
 
 #include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
@@ -92,6 +93,3 @@ using FeatureCustom = App::FeatureCustomT<Feature>;
 using FeaturePython = App::FeaturePythonT<Feature>;
 
 }  // namespace Mesh
-
-
-#endif

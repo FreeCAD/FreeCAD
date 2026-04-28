@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Ian Rees <ian.rees@gmail.com>                      *
  *                                                                         *
@@ -20,12 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
-#define MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
+#pragma once
 
-#ifndef MESH_GLOBAL_H
 #include <Mod/Mesh/MeshGlobal.h>
-#endif
 #include <Gui/PropertyPage.h>
 
 
@@ -57,5 +56,3 @@ private:
 };  // end class DlgSettingsImportExport
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H

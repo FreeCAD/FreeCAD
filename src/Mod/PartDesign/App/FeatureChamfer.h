@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATURECHAMFER_H
-#define PARTDESIGN_FEATURECHAMFER_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -31,7 +32,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Chamfer : public DressUp
+class PartDesignExport Chamfer: public DressUp
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Chamfer);
 
@@ -48,10 +49,11 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderChamfer";
     }
     //@}
@@ -61,13 +63,17 @@ public:
     void updateProperties();
 
 protected:
-    void Restore(Base::XMLReader &reader) override;
-    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    void Restore(Base::XMLReader& reader) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
     static const App::PropertyQuantityConstraint::Constraints floatSize;
     static const App::PropertyAngle::Constraints floatAngle;
+
+    bool requiresSizeSwapping(const Base::XMLReader& reader) const;
+    void migrateFlippedProperties(const Base::XMLReader& reader);
 };
 
-} //namespace Part
-
-
-#endif // PARTDESIGN_FEATURECHAMFER_H
+}  // namespace PartDesign

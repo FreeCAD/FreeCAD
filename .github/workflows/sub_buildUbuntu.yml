@@ -22,9 +22,9 @@
 # ***************************************************************************
 
 # This is a build and test workflow for CI of FreeCAD.
-# This workflow aims at building and testing FreeCAD on Ubuntu 22.04 using GCC.
+# This workflow aims at building and testing FreeCAD on Ubuntu 24.04 using GCC.
 
-name: Build Ubuntu 22.04
+name: Build Ubuntu 24.04
 
 on:
   workflow_call:
@@ -34,6 +34,10 @@ on:
         required: true
       testOnBuildDir:
         default: false
+        type: boolean
+        required: false
+      testCoinNodeSnapshots:
+        default: true
         type: boolean
         required: false
       allowedToFail:
@@ -47,7 +51,7 @@ on:
 jobs:
 
   Build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
@@ -77,12 +81,12 @@ jobs:
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
         with:
           egress-policy: audit
 
       - name: Checking out source code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: true
 
@@ -94,7 +98,7 @@ jobs:
           sudo apt-get update -y -qq
           sudo apt-get install -y -qq python3-pip
           python3 -m pip install --upgrade pip
-          python3 -m pip install ifcopenshell==0.8.2
+          python3 -m pip install ifcopenshell==0.8.2 --break-system-packages
 
       - name: Make needed directories, files and initializations
         id: Init
@@ -116,7 +120,7 @@ jobs:
       - name: Restore Compiler Cache
         id: cache-restore
         if: always()
-        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -131,7 +135,7 @@ jobs:
           ccache -p
 
       - name: Install cmake
-        uses: jwlawson/actions-setup-cmake@802fa1a2c4e212495c05bf94dba2704a92a472be # v2.0.2
+        uses: jwlawson/actions-setup-cmake@0d6a7d60b009d01c9e7523be22153ff8f19460d3 # v2.2.0
         with:
           cmake-version: '3.31.6'
 
@@ -178,6 +182,26 @@ jobs:
           logFile: ${{ env.logdir }}TestGUIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
+      - name: Coin node snapshot visual tests on build dir
+        if: inputs.testCoinNodeSnapshots
+        timeout-minutes: 15
+        uses: ./.github/workflows/actions/runPythonTests
+        with:
+          testDescription: "Coin node snapshot visual tests on build dir"
+          testCommand: |
+            FC_VISUAL_OUT_DIR="/tmp/FreeCADTesting/CoinNodeSnapshots" \
+            xvfb-run -a -s "-screen 0 1024x768x24" \
+              "${{ env.builddir }}/bin/FreeCAD" -t TestCoinNodeSnapshots
+          logFile: ${{ env.logdir }}TestCoinNodeSnapshotsBuild.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+      - name: Upload Coin node snapshot artifacts (on failure)
+        if: failure() && inputs.testCoinNodeSnapshots
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ inputs.artifactBasename }}-CoinNodeSnapshots
+          path: /tmp/FreeCADTesting/CoinNodeSnapshots
+
       - name: C++ tests
         timeout-minutes: 1
         uses: ./.github/workflows/actions/runCPPTests/runAllTests
@@ -216,14 +240,14 @@ jobs:
       - name: Save Compiler Cache
         id: cache-save
         if: always()
-        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
 
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
@@ -232,7 +256,7 @@ jobs:
 
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ env.reportfilename }}
           path: |

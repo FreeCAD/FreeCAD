@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_EXTERNALMANAGER_H
-#define MATERIAL_EXTERNALMANAGER_H
+#pragma once
 
 #include <Base/Parameter.h>
 #include <CXX/Objects.hxx>
@@ -136,5 +137,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_EXTERNALMANAGER_H

@@ -1,11 +1,11 @@
 #! python
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2003 Werner Mayer LGPL
 # Create a new application module
 
 import os, sys
 import MakeAppTools
-
 
 if len(sys.argv) != 2:
     sys.stdout.write("Please enter a name for your application.\n")

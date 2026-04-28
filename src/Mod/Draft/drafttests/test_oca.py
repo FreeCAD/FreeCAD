@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -70,5 +72,6 @@ class DraftOCA(test_base.DraftTestCaseDoc):
 
         obj = aux.fake_function(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
+
 
 ## @}

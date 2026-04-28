@@ -41,7 +41,8 @@ protected:
                 {"PrimaryColor", "#ff0000"},
                 {"SecondaryColor", "#00ff00"},
             },
-            ParameterSource::Metadata {"Source 1"});
+            ParameterSource::Metadata {"Source 1"}
+        );
 
         auto source2 = std::make_unique<InMemoryParameterSource>(
             std::list<Parameter> {
@@ -49,7 +50,8 @@ protected:
                 {"Margin", "@BaseSize * 2"},
                 {"Padding", "@BaseSize / 2"},
             },
-            ParameterSource::Metadata {"Source 2"});
+            ParameterSource::Metadata {"Source 2"}
+        );
 
         manager.addSource(source1.get());
         manager.addSource(source2.get());
@@ -160,7 +162,8 @@ TEST_F(ParameterManagerTest, SourcePriority)
         std::list<Parameter> {
             {"BaseSize", "24px"},  // Should override both previous sources
         },
-        ParameterSource::Metadata {"Source 3"});
+        ParameterSource::Metadata {"Source 3"}
+    );
 
     manager.addSource(source3.get());
     sources.push_back(std::move(source3));
@@ -254,7 +257,8 @@ TEST_F(ParameterManagerTest, CircularReferenceDetection)
             {"A", "@B"},
             {"B", "@A"},
         },
-        ParameterSource::Metadata {"Circular Source"});
+        ParameterSource::Metadata {"Circular Source"}
+    );
 
     manager.addSource(circularSource.get());
     sources.push_back(std::move(circularSource));
@@ -275,7 +279,8 @@ TEST_F(ParameterManagerTest, ComplexExpressions)
             {"ComplexPadding", "(@BaseSize - 2px) / 2"},
             {"ColorWithFunction", "lighten(@PrimaryColor, 20)"},
         },
-        ParameterSource::Metadata {"Complex Source"});
+        ParameterSource::Metadata {"Complex Source"}
+    );
 
     manager.addSource(complexSource.get());
     sources.push_back(std::move(complexSource));
@@ -317,7 +322,8 @@ TEST_F(ParameterManagerTest, ErrorHandling)
         std::list<Parameter> {
             {"Invalid", "invalid expression that will fail"},
         },
-        ParameterSource::Metadata {"Invalid Source"});
+        ParameterSource::Metadata {"Invalid Source"}
+    );
 
     manager.addSource(invalidSource.get());
     sources.push_back(std::move(invalidSource));
@@ -346,4 +352,54 @@ TEST_F(ParameterManagerTest, ResolveParameterDefinitionDefault)
     auto result = manager.resolve(MarginSize);
     EXPECT_DOUBLE_EQ(result.value, 16);
     EXPECT_EQ(result.unit, "px");
+}
+
+// --- QSS formatting tests (via replacePlaceholders) ---
+
+TEST_F(ParameterManagerTest, QssFormattingNumeric)
+{
+    EXPECT_EQ(manager.replacePlaceholders("@{16px}"), "16px");
+}
+
+TEST_F(ParameterManagerTest, QssFormattingColor)
+{
+    EXPECT_EQ(manager.replacePlaceholders("@{#ff0000}"), "#ff0000");
+}
+
+TEST_F(ParameterManagerTest, QssFormattingGenericTuple)
+{
+    EXPECT_EQ(manager.replacePlaceholders("@{(1px, 2px)}"), "1px 2px");
+}
+
+// --- @{expression} substitution tests ---
+
+TEST_F(ParameterManagerTest, InlineExpressionSimple)
+{
+    auto result = manager.replacePlaceholders("padding: @{10px}");
+    EXPECT_EQ(result, "padding: 10px");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionArithmetic)
+{
+    auto result = manager.replacePlaceholders("margin: @{@BaseSize * 2}");
+    EXPECT_EQ(result, "margin: 32px");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionInvalidLogsWarning)
+{
+    auto result = manager.replacePlaceholders("padding: @{!!!invalid}");
+    EXPECT_EQ(result, "padding: ");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionMultiple)
+{
+    auto result = manager.replacePlaceholders("@{@BaseSize} @{@BaseSize * 2}");
+    EXPECT_EQ(result, "16px 32px");
+}
+
+TEST_F(ParameterManagerTest, ExistingTokenUsesToQss)
+{
+    // @TokenName for non-tuple types should still work identically
+    auto result = manager.replacePlaceholders("size: @BaseSize; color: @PrimaryColor;");
+    EXPECT_EQ(result, "size: 16px; color: #ff0000;");
 }

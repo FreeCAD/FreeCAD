@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCH_SKETCHOBJECTSF_H
-#define SKETCH_SKETCHOBJECTSF_H
+#pragma once
 
 #include <App/PropertyFile.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -57,6 +58,3 @@ public:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCH_SKETCHOBJECTSF_H

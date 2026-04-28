@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef POINTS_POINTPROPERTIES_H
-#define POINTS_POINTPROPERTIES_H
+#pragma once
 
 #include <vector>
 
@@ -237,6 +238,3 @@ private:
 };
 
 }  // namespace Points
-
-
-#endif  // POINTS_POINTPROPERTIES_H

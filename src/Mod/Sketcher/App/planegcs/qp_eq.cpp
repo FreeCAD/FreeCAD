@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
@@ -21,7 +23,7 @@
  ***************************************************************************/
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4244)
+# pragma warning(disable : 4244)
 #endif
 
 #include <Eigen/QR>

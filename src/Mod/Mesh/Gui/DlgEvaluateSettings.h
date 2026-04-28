@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLG_EVALUATE_SETTINGS_H
-#define MESHGUI_DLG_EVALUATE_SETTINGS_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -60,5 +61,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_DLG_EVALUATE_SETTINGS_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PRISM_EXTENSION_H
-#define PART_PRISM_EXTENSION_H
+#pragma once
 
 #include <App/DocumentObjectExtension.h>
 #include <App/PropertyUnits.h>
@@ -33,9 +34,10 @@
 namespace Part
 {
 
-class PartExport PrismExtension : public App::DocumentObjectExtension
+class PartExport PrismExtension: public App::DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::PrismExtension);
+
 public:
     PrismExtension();
     ~PrismExtension() override;
@@ -47,12 +49,10 @@ public:
     TopoDS_Shape makePrism(double height, const TopoDS_Face& face) const;
 
     short int extensionMustExecute() override;
-    App::DocumentObjectExecReturn *extensionExecute() override;
+    App::DocumentObjectExecReturn* extensionExecute() override;
 
 protected:
     void extensionOnChanged(const App::Property* /*prop*/) override;
 };
 
-} // namespace Part
-
-#endif // PART_PRISM_EXTENSION_H
+}  // namespace Part

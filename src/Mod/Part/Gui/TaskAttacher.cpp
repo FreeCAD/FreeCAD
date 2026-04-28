@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -22,11 +24,16 @@
  ***************************************************************************/
 
 
-# include <sstream>
-# include <QMessageBox>
-# include <QRegularExpression>
-# include <QRegularExpressionMatch>
-# include <Standard_Failure.hxx>
+#include <sstream>
+#include <QApplication>
+#include <QMessageBox>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QTimer>
+#include <Standard_Failure.hxx>
+
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoEventCallback.h>
 
 
 #include <App/Application.h>
@@ -38,7 +45,12 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/InputHint.h>
+#include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
@@ -85,8 +97,10 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
         + QString::fromLatin1(el.oldName.c_str());
 }
 
-void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames) {
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames)
+{
+    Part::AttachExtension* pcAttach
+        = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
     refnames = pcAttach->AttachmentSupport.getSubValues();
 
@@ -94,8 +108,9 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
         if ((r < refs.size()) && (refs[r])) {
             refstrings.push_back(makeRefString(refs[r], refnames[r]));
             // for Origin or Datum features refnames is empty but we need a non-empty return value
-            if (refnames[r].empty())
+            if (refnames[r].empty()) {
                 refnames[r] = refs[r]->getNameInDocument();
+            }
         }
         else {
             refstrings.push_back(QObject::tr("No reference selected"));
@@ -104,18 +119,25 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
     }
 }
 
-TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidget* parent,
-    QString picture, QString text, TaskAttacher::VisibilityFunction visFunc)
+TaskAttacher::TaskAttacher(
+    Gui::ViewProviderDocumentObject* ViewProvider,
+    QWidget* parent,
+    QString picture,
+    QString text,
+    TaskAttacher::VisibilityFunction visFunc
+)
     : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent)
     , SelectionObserver(ViewProvider, true, Gui::ResolveMode::NoResolve)
     , ViewProvider(ViewProvider)
     , ui(new Ui_TaskAttacher)
     , visibilityFunc(visFunc)
     , completed(false)
+    , userSelectedMode(false)
 {
-    //check if we are attachable
-    if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
+    // check if we are attachable
+    if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
         throw Base::RuntimeError("Object has no Part::AttachExtension");
+    }
 
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -172,7 +194,8 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidge
     ui->listOfModes->blockSignals(true);
 
     // Get the feature data
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    Part::AttachExtension* pcAttach
+        = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     std::vector<std::string> refnames = pcAttach->AttachmentSupport.getSubValues();
 
     ui->checkBoxFlip->setChecked(pcAttach->MapReversed.getValue());
@@ -200,10 +223,12 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidge
     ui->listOfModes->blockSignals(false);
 
     // only activate the ref when there is no existing first attachment
-    if (refnames[0].empty())
+    if (refnames[0].empty()) {
         this->iActiveRef = 0;
-    else
+    }
+    else {
         this->iActiveRef = -1;
+    }
     if (pcAttach->AttachmentSupport.getSize() == 0) {
         autoNext = true;
     }
@@ -211,18 +236,41 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidge
         autoNext = false;
     }
 
-    ui->attachmentOffsetX->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Base.x")));
-    ui->attachmentOffsetY->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Base.y")));
-    ui->attachmentOffsetZ->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Base.z")));
+    ui->attachmentOffsetX->bind(
+        App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Base.x"))
+    );
+    ui->attachmentOffsetY->bind(
+        App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Base.y"))
+    );
+    ui->attachmentOffsetZ->bind(
+        App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Base.z"))
+    );
 
-    ui->attachmentOffsetYaw->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Rotation.Yaw")));
-    ui->attachmentOffsetPitch->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Rotation.Pitch")));
-    ui->attachmentOffsetRoll->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Rotation.Roll")));
+    ui->attachmentOffsetYaw->bind(
+        App::ObjectIdentifier::parse(
+            ViewProvider->getObject(),
+            std::string("AttachmentOffset.Rotation.Yaw")
+        )
+    );
+    ui->attachmentOffsetPitch->bind(
+        App::ObjectIdentifier::parse(
+            ViewProvider->getObject(),
+            std::string("AttachmentOffset.Rotation.Pitch")
+        )
+    );
+    ui->attachmentOffsetRoll->bind(
+        App::ObjectIdentifier::parse(
+            ViewProvider->getObject(),
+            std::string("AttachmentOffset.Rotation.Roll")
+        )
+    );
 
 
     auto document = ViewProvider->getObject()->getDocument();
     for (auto planeDocumentObject : document->getObjectsOfType(App::Plane::getClassTypeId())) {
-        auto planeViewProvider = Application::Instance->getViewProvider<Gui::ViewProviderPlane>(planeDocumentObject);
+        auto planeViewProvider = Application::Instance->getViewProvider<Gui::ViewProviderPlane>(
+            planeDocumentObject
+        );
 
         if (!planeViewProvider) {
             continue;
@@ -242,12 +290,14 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidge
     updatePreview();
     showPlacementUtilities();
 
-    //NOLINTBEGIN
-    // connect object deletion with slot
+    // NOLINTBEGIN
+    //  connect object deletion with slot
     auto bnd1 = std::bind(&TaskAttacher::objectDeleted, this, sp::_1);
     auto bnd2 = std::bind(&TaskAttacher::documentDeleted, this, sp::_1);
-    //NOLINTEND
-    Gui::Document* guiDocument = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
+    // NOLINTEND
+    Gui::Document* guiDocument = Gui::Application::Instance->getDocument(
+        ViewProvider->getObject()->getDocument()
+    );
     connectDelObject = guiDocument->signalDeletedObject.connect(bnd1);
     connectDelDocument = guiDocument->signalDeleteDocument.connect(bnd2);
 
@@ -310,10 +360,12 @@ const QString makeHintText(std::set<eRefType> hint)
 
 void TaskAttacher::updateReferencesUI()
 {
-    if (!ViewProvider)
+    if (!ViewProvider) {
         return;
+    }
 
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    Part::AttachExtension* pcAttach
+        = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
 
     std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
     completed = false;
@@ -328,7 +380,7 @@ void TaskAttacher::updateReferencesUI()
 
     if (this->lastSuggestResult.message != SuggestResult::srOK) {
         if (!this->lastSuggestResult.nextRefTypeHint.empty()) {
-            //message = "Need more references";
+            // message = "Need more references";
         }
     }
     else {
@@ -343,10 +395,12 @@ void TaskAttacher::updateReferencesUI()
 
 bool TaskAttacher::updatePreview()
 {
-    if (!ViewProvider)
+    if (!ViewProvider) {
         return false;
+    }
 
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    Part::AttachExtension* pcAttach
+        = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     QString errMessage;
     bool attached = false;
     try {
@@ -371,12 +425,16 @@ bool TaskAttacher::updatePreview()
             ui->message->setStyleSheet(QString());
         }
         else {
-            std::vector<QString> strs = AttacherGui::getUIStrings(pcAttach->attacher().getTypeId(), eMapMode(pcAttach->MapMode.getValue()));
+            std::vector<QString> strs = AttacherGui::getUIStrings(
+                pcAttach->attacher().getTypeId(),
+                eMapMode(pcAttach->MapMode.getValue())
+            );
             ui->message->setText(tr("Attached with mode %1").arg(strs[0]));
             ui->message->setStyleSheet(QStringLiteral("QLabel{color: green;}"));
         }
     }
-    QString splmLabelText = attached ? tr("Attachment offset (in its local coordinate system):") : tr("Attachment offset (inactive - not attached):");
+    QString splmLabelText = attached ? tr("Attachment Offset (in its local coordinate system):")
+                                     : tr("Attachment Offset (inactive - not attached):");
     ui->groupBox_AttachmentOffset->setTitle(splmLabelText);
     ui->groupBox_AttachmentOffset->setEnabled(attached);
 
@@ -386,11 +444,16 @@ bool TaskAttacher::updatePreview()
 QLineEdit* TaskAttacher::getLine(unsigned idx)
 {
     switch (idx) {
-    case 0: return ui->lineRef1;
-    case 1: return ui->lineRef2;
-    case 2: return ui->lineRef3;
-    case 3: return ui->lineRef4;
-    default: return nullptr;
+        case 0:
+            return ui->lineRef1;
+        case 1:
+            return ui->lineRef2;
+        case 2:
+            return ui->lineRef3;
+        case 3:
+            return ui->lineRef4;
+        default:
+            return nullptr;
     }
 }
 
@@ -400,7 +463,8 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     // - Part
     // - - Cube
     // - Sketch
-    // if sketch is attached to Cube.Face1 then it must store Part:Cube.Face3 as Sketch is outside of Part.
+    // if sketch is attached to Cube.Face1 then it must store Part:Cube.Face3 as Sketch is outside
+    // of Part.
     // - Part
     // - - Cube
     // - - Sketch
@@ -416,9 +480,9 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     // - - - Cube
     // - - Part3
     // - - - Sketch
-    // In this example it's not possible because Sketch has Part3 placement. So it should be rejected
-    // So we need to take the selection object and subname, and process them to get the correct obj/sub based
-    // on attached and attaching objects positions.
+    // In this example it's not possible because Sketch has Part3 placement. So it should be
+    // rejected So we need to take the selection object and subname, and process them to get the
+    // correct obj/sub based on attached and attaching objects positions.
 
     std::vector<std::string> names = Base::Tools::splitSubName(sub);
     if (!rootObj || names.size() < 2) {
@@ -427,14 +491,14 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     names.insert(names.begin(), rootObj->getNameInDocument());
 
     App::Document* doc = rootObj->getDocument();
-    App::DocumentObject* attachingObj = ViewProvider->getObject(); // Attaching object
-    App::DocumentObject* subObj = rootObj->getSubObject(sub.c_str()); // Object being attached.
+    App::DocumentObject* attachingObj = ViewProvider->getObject();     // Attaching object
+    App::DocumentObject* subObj = rootObj->getSubObject(sub.c_str());  // Object being attached.
     if (!subObj || subObj == rootObj) {
         // Case of root object. We don't need to modify it.
         return;
     }
     if (subObj == attachingObj) {
-        //prevent self-referencing
+        // prevent self-referencing
         rootObj = nullptr;
         return;
     }
@@ -454,9 +518,14 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     for (size_t i = 0; i < names.size(); ++i) {
         App::DocumentObject* obj = doc->getObject(names[i].c_str());
         if (!obj) {
-            Base::Console().translatedUserError("TaskAttacher",
-                "Unsuitable selection: '%s' cannot be attached to '%s' from within it's group '%s'.\n",
-                attachingObj->getFullLabel(), subObj->getFullLabel(), group->getFullLabel());
+            Base::Console().translatedUserError(
+                "TaskAttacher",
+                "Unsuitable selection: '%s' cannot be attached to '%s' from within it's group "
+                "'%s'.\n",
+                attachingObj->getFullLabel(),
+                subObj->getFullLabel(),
+                group->getFullLabel()
+            );
             rootObj = nullptr;
             return;
         }
@@ -511,13 +580,16 @@ void TaskAttacher::handleInitialSelection()
     }
     std::vector<SubAndObjName> subAndObjNamePairs;
 
-    auto sel = Gui::Selection().getSelectionEx("",
-        App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
+    auto sel = Gui::Selection().getSelectionEx(
+        "",
+        App::DocumentObject::getClassTypeId(),
+        Gui::ResolveMode::NoResolve
+    );
     for (auto& selObj : sel) {
         std::vector<std::string> subs = selObj.getSubNames();
         std::string objName = selObj.getFeatName();
         for (auto& sub : subs) {
-            SubAndObjName objSubName = { objName, sub };
+            SubAndObjName objSubName = {objName, sub};
             subAndObjNamePairs.push_back(objSubName);
         }
     }
@@ -531,8 +603,10 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        SubAndObjName pair = { msg.pObjectName, msg.pSubName };
+        SubAndObjName pair = {msg.pObjectName, msg.pSubName};
         addToReference(pair);
+
+        Q_EMIT placementUpdated();
     }
 }
 
@@ -570,11 +644,11 @@ void TaskAttacher::addToReference(const std::vector<SubAndObjName>& pairs)
         }
 
         if (autoNext && iActiveRef > 0 && iActiveRef == static_cast<int>(refnames.size())) {
-            if (refs[iActiveRef - 1] == selObj
-                && refnames[iActiveRef - 1].length() != 0 && subname.length() == 0) {
-                //A whole object was selected by clicking it twice. Fill it
-                //into previous reference, where a sub-named reference filled by
-                //the first click is already stored.
+            if (refs[iActiveRef - 1] == selObj && refnames[iActiveRef - 1].length() != 0
+                && subname.length() == 0) {
+                // A whole object was selected by clicking it twice. Fill it
+                // into previous reference, where a sub-named reference filled by
+                // the first click is already stored.
 
                 iActiveRef--;
             }
@@ -600,7 +674,7 @@ void TaskAttacher::addToReference(const std::vector<SubAndObjName>& pairs)
 
         if (autoNext) {
             if (iActiveRef == -1) {
-                //nothing to do
+                // nothing to do
             }
             else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.empty()) {
                 iActiveRef = -1;
@@ -612,10 +686,12 @@ void TaskAttacher::addToReference(const std::vector<SubAndObjName>& pairs)
     }
 
     try {
+        userSelectedMode = false;
         updateListOfModes();
-        eMapMode mmode = getActiveMapMode();  //will be mmDeactivated, if selected or if no modes are available
+        eMapMode mmode = getActiveMapMode();  // will be mmDeactivated, if selected or if no modes
+                                              // are available
         if (mmode == mmDeactivated) {
-            //error = true;
+            // error = true;
             this->completed = false;
         }
         else {
@@ -635,15 +711,17 @@ void TaskAttacher::addToReference(const std::vector<SubAndObjName>& pairs)
 
 void TaskAttacher::addToReference(SubAndObjName pair)
 {
-    addToReference({{{ pair }}});
+    addToReference({{{pair}}});
 }
 
 void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
 {
-    if (!ViewProvider)
+    if (!ViewProvider) {
         return;
+    }
 
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    Part::AttachExtension* pcAttach
+        = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     Base::Placement pl = pcAttach->AttachmentOffset.getValue();
 
     Base::Vector3d pos = pl.getPosition();
@@ -672,6 +750,8 @@ void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
 
     pcAttach->AttachmentOffset.setValue(pl);
     updatePreview();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onAttachmentOffsetXChanged(double val)
@@ -706,12 +786,16 @@ void TaskAttacher::onAttachmentOffsetRollChanged(double val)
 
 void TaskAttacher::onCheckFlip(bool on)
 {
-    if (!ViewProvider)
+    if (!ViewProvider) {
         return;
+    }
 
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    Part::AttachExtension* pcAttach
+        = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     pcAttach->MapReversed.setValue(on);
     ViewProvider->getObject()->recomputeFeature();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
@@ -728,47 +812,61 @@ void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
     updateRefButton(1);
     updateRefButton(2);
     updateRefButton(3);
+
+    Q_EMIT placementUpdated();
 }
 
-void TaskAttacher::onButtonRef1(const bool checked) {
+void TaskAttacher::onButtonRef1(const bool checked)
+{
     onButtonRef(checked, 0);
 }
 
-void TaskAttacher::onButtonRef2(const bool checked) {
+void TaskAttacher::onButtonRef2(const bool checked)
+{
     onButtonRef(checked, 1);
 }
 
-void TaskAttacher::onButtonRef3(const bool checked) {
+void TaskAttacher::onButtonRef3(const bool checked)
+{
     onButtonRef(checked, 2);
 }
 
-void TaskAttacher::onButtonRef4(const bool checked) {
+void TaskAttacher::onButtonRef4(const bool checked)
+{
     onButtonRef(checked, 3);
 }
 
 void TaskAttacher::onModeSelect()
 {
-    if (!ViewProvider)
+    if (!ViewProvider) {
         return;
+    }
 
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-    pcAttach->MapMode.setValue(getActiveMapMode());
+    Part::AttachExtension* pcAttach
+        = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    eMapMode activeMode = getActiveMapMode();
+    pcAttach->MapMode.setValue(activeMode);
+    userSelectedMode = true;
+    applyBoldMode(activeMode);
     updatePreview();
 }
 
 void TaskAttacher::onRefName(const QString& text, unsigned idx)
 {
-    if (!ViewProvider)
+    if (!ViewProvider) {
         return;
+    }
 
     QLineEdit* line = getLine(idx);
-    if (!line)
+    if (!line) {
         return;
+    }
 
     if (text.length() == 0) {
         // Reference was removed
         // Update the reference list
-        Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+        Part::AttachExtension* pcAttach
+            = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
         std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
         std::vector<std::string> refnames = pcAttach->AttachmentSupport.getSubValues();
         std::vector<App::DocumentObject*> newrefs;
@@ -780,6 +878,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
             }
         }
         pcAttach->AttachmentSupport.setValues(newrefs, newrefnames);
+        userSelectedMode = false;
         updateListOfModes();
         pcAttach->MapMode.setValue(getActiveMapMode());
         selectMapMode(getActiveMapMode());
@@ -798,35 +897,42 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         ui->lineRef4->setText(refstrings[3]);
         ui->lineRef4->setProperty("RefName", QByteArray(newrefnames[3].c_str()));
         updateReferencesUI();
+        Q_EMIT placementUpdated();
         return;
     }
 
     QStringList parts = text.split(QChar::fromLatin1(':'));
-    if (parts.length() < 2)
+    if (parts.length() < 2) {
         parts.push_back(QStringLiteral(""));
+    }
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = ViewProvider->getObject()->getDocument()->getObject(parts[0].toLatin1());
-    if (!obj)
+    if (!obj) {
         return;
+    }
 
     std::string subElement;
 
     if (obj->isDerivedFrom<App::Plane>()) {
-        // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
+        // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at
+        // the base of the feature tree)
         subElement.clear();
     }
     else if (obj->isDerivedFrom<App::Line>()) {
-        // everything is OK (we assume a Part can only have exactly 3 App::Line objects located at the base of the feature tree)
+        // everything is OK (we assume a Part can only have exactly 3 App::Line objects located at
+        // the base of the feature tree)
         subElement.clear();
     }
     else if (obj->isDerivedFrom<Part::Datum>()) {
         subElement.clear();
     }
     else {
-        // TODO: check validity of the text that was entered: Does subElement actually reference to an element on the obj?
+        // TODO: check validity of the text that was entered: Does subElement actually reference to
+        // an element on the obj?
 
         auto getSubshapeName = [](const QString& part) -> std::string {
-            // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed by an ID.
+            // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed
+            // by an ID.
             QRegularExpression rx;
             QRegularExpressionMatch match;
             std::stringstream ss;
@@ -852,8 +958,8 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
                 return ss.str();
             }
 
-            //none of Edge/Vertex/Face. May be empty string.
-            //Feed in whatever user supplied, even if invalid.
+            // none of Edge/Vertex/Face. May be empty string.
+            // Feed in whatever user supplied, even if invalid.
             ss << part.toLatin1().constData();
             return ss.str();
         };
@@ -864,7 +970,8 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         subElement = name;
     }
 
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    Part::AttachExtension* pcAttach
+        = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
     std::vector<std::string> refnames = pcAttach->AttachmentSupport.getSubValues();
     if (idx < refs.size()) {
@@ -876,36 +983,52 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         refnames.emplace_back(subElement);
     }
     pcAttach->AttachmentSupport.setValues(refs, refnames);
+    userSelectedMode = false;
     updateListOfModes();
     pcAttach->MapMode.setValue(getActiveMapMode());
     selectMapMode(getActiveMapMode());
 
     updateReferencesUI();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::updateRefButton(int idx)
 {
-    if (!ViewProvider)
+    if (!ViewProvider) {
         return;
+    }
 
     QAbstractButton* b;
     switch (idx) {
-    case 0: b = ui->buttonRef1; break;
-    case 1: b = ui->buttonRef2; break;
-    case 2: b = ui->buttonRef3; break;
-    case 3: b = ui->buttonRef4; break;
-    default: throw Base::IndexError("button index out of range");
+        case 0:
+            b = ui->buttonRef1;
+            break;
+        case 1:
+            b = ui->buttonRef2;
+            break;
+        case 2:
+            b = ui->buttonRef3;
+            break;
+        case 3:
+            b = ui->buttonRef4;
+            break;
+        default:
+            throw Base::IndexError("button index out of range");
     }
 
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    Part::AttachExtension* pcAttach
+        = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
 
     int numrefs = refs.size();
     bool enable = true;
-    if (idx > numrefs)
+    if (idx > numrefs) {
         enable = false;
-    if (idx == numrefs && this->lastSuggestResult.nextRefTypeHint.empty())
+    }
+    if (idx == numrefs && this->lastSuggestResult.nextRefTypeHint.empty()) {
         enable = false;
+    }
     b->setEnabled(enable);
 
     b->setChecked(iActiveRef == idx);
@@ -923,10 +1046,12 @@ void TaskAttacher::updateRefButton(int idx)
 
 void TaskAttacher::updateAttachmentOffsetUI()
 {
-    if (!ViewProvider)
+    if (!ViewProvider) {
         return;
+    }
 
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    Part::AttachExtension* pcAttach
+        = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     Base::Placement pl = pcAttach->AttachmentOffset.getValue();
     Base::Vector3d pos = pl.getPosition();
     Base::Rotation rot = pl.getRotation();
@@ -950,21 +1075,43 @@ void TaskAttacher::updateAttachmentOffsetUI()
 
     auto expressions = ViewProvider->getObject()->ExpressionEngine.getExpressions();
     bool bRotationBound = false;
-    bRotationBound = bRotationBound ||
-        expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Rotation.Angle"))) != expressions.end();
-    bRotationBound = bRotationBound ||
-        expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Rotation.Axis.x"))) != expressions.end();
-    bRotationBound = bRotationBound ||
-        expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Rotation.Axis.y"))) != expressions.end();
-    bRotationBound = bRotationBound ||
-        expressions.find(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Rotation.Axis.z"))) != expressions.end();
+    bRotationBound = bRotationBound
+        || expressions.find(
+               App::ObjectIdentifier::parse(
+                   ViewProvider->getObject(),
+                   std::string("AttachmentOffset.Rotation.Angle")
+               )
+           ) != expressions.end();
+    bRotationBound = bRotationBound
+        || expressions.find(
+               App::ObjectIdentifier::parse(
+                   ViewProvider->getObject(),
+                   std::string("AttachmentOffset.Rotation.Axis.x")
+               )
+           ) != expressions.end();
+    bRotationBound = bRotationBound
+        || expressions.find(
+               App::ObjectIdentifier::parse(
+                   ViewProvider->getObject(),
+                   std::string("AttachmentOffset.Rotation.Axis.y")
+               )
+           ) != expressions.end();
+    bRotationBound = bRotationBound
+        || expressions.find(
+               App::ObjectIdentifier::parse(
+                   ViewProvider->getObject(),
+                   std::string("AttachmentOffset.Rotation.Axis.z")
+               )
+           ) != expressions.end();
 
     ui->attachmentOffsetYaw->setEnabled(!bRotationBound);
     ui->attachmentOffsetPitch->setEnabled(!bRotationBound);
     ui->attachmentOffsetRoll->setEnabled(!bRotationBound);
 
     if (bRotationBound) {
-        QString tooltip = tr("Not editable because rotation of AttachmentOffset is bound by expressions.");
+        QString tooltip = tr(
+            "Not editable because rotation of AttachmentOffset is bound by expressions."
+        );
         ui->attachmentOffsetYaw->setToolTip(tooltip);
         ui->attachmentOffsetPitch->setToolTip(tooltip);
         ui->attachmentOffsetRoll->setToolTip(tooltip);
@@ -981,66 +1128,85 @@ void TaskAttacher::updateAttachmentOffsetUI()
 
 void TaskAttacher::updateListOfModes()
 {
-    if (!ViewProvider)
+    if (!ViewProvider) {
         return;
+    }
 
-    //first up, remember currently selected mode.
+    // first up, remember currently selected mode.
     eMapMode curMode = mmDeactivated;
     auto sel = ui->listOfModes->selectedItems();
-    if (!sel.isEmpty())
+    if (!sel.isEmpty()) {
         curMode = modesInList[ui->listOfModes->row(sel[0])];
+    }
 
-    //obtain list of available modes:
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    // obtain list of available modes:
+    Part::AttachExtension* pcAttach
+        = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     this->lastSuggestResult.bestFitMode = mmDeactivated;
     size_t lastValidModeItemIndex = mmDummy_NumberOfModes;
 
     if (pcAttach->AttachmentSupport.getSize() > 0) {
         pcAttach->attacher().suggestMapModes(this->lastSuggestResult);
         modesInList = this->lastSuggestResult.allApplicableModes;
-        modesInList.insert(modesInList.begin(), mmDeactivated); // always have the option to choose Deactivated mode
+        modesInList.insert(modesInList.begin(), mmDeactivated);  // always have the option to choose
+                                                                 // Deactivated mode
 
-        //add reachable modes to the list, too, but gray them out (using lastValidModeItemIndex, later)
+        // add reachable modes to the list, too, but gray them out (using lastValidModeItemIndex, later)
         lastValidModeItemIndex = modesInList.size() - 1;
-        for (std::pair<const eMapMode, refTypeStringList>& rm : this->lastSuggestResult.reachableModes) {
+        for (std::pair<const eMapMode, refTypeStringList>& rm :
+             this->lastSuggestResult.reachableModes) {
             modesInList.push_back(rm.first);
         }
     }
     else {
-        //no references - display all modes
+        // no references - display all modes
         modesInList.clear();
         modesInList.push_back(mmDeactivated);
 
         for (int mmode = 0; mmode < mmDummy_NumberOfModes; mmode++) {
-            if (pcAttach->attacher().modeEnabled[mmode])
+            if (pcAttach->attacher().modeEnabled[mmode]) {
                 modesInList.push_back(eMapMode(mmode));
+            }
         }
     }
 
-    //populate list
+    // determine which mode to bold: user's explicit choice takes priority, else suggest best fit
+    eMapMode activeSavedMode = eMapMode(pcAttach->MapMode.getValue());
+    eMapMode boldMode = (userSelectedMode || activeSavedMode != mmDeactivated)
+        ? activeSavedMode
+        : this->lastSuggestResult.bestFitMode;
+
+    // populate list
     ui->listOfModes->blockSignals(true);
     ui->listOfModes->clear();
     QListWidgetItem* iSelect = nullptr;
     if (!modesInList.empty()) {
         for (size_t i = 0; i < modesInList.size(); ++i) {
             eMapMode mmode = modesInList[i];
-            std::vector<QString> mstr = AttacherGui::getUIStrings(pcAttach->attacher().getTypeId(), mmode);
+            std::vector<QString> mstr
+                = AttacherGui::getUIStrings(pcAttach->attacher().getTypeId(), mmode);
             ui->listOfModes->addItem(mstr[0]);
             QListWidgetItem* item = ui->listOfModes->item(i);
             QString tooltip = mstr[1];
 
             if (mmode != mmDeactivated) {
                 tooltip += QStringLiteral("\n\n%1\n%2")
-                    .arg(tr("Reference combinations:"),
-                        AttacherGui::getRefListForMode(pcAttach->attacher(), mmode).join(QStringLiteral("\n")));
+                               .arg(
+                                   tr("Reference combinations:"),
+                                   AttacherGui::getRefListForMode(pcAttach->attacher(), mmode)
+                                       .join(QStringLiteral("\n"))
+                               );
             }
             item->setToolTip(tooltip);
 
-            if (mmode == curMode && curMode != mmDeactivated)
+            if (mmode == curMode && curMode != mmDeactivated) {
                 iSelect = ui->listOfModes->item(i);
+            }
             if (i > lastValidModeItemIndex) {
-                //potential mode - can be reached by selecting more stuff
-                item->setFlags(item->flags() & ~(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable));
+                // potential mode - can be reached by selecting more stuff
+                item->setFlags(
+                    item->flags() & ~(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable)
+                );
 
                 refTypeStringList& extraRefs = this->lastSuggestResult.reachableModes[mmode];
                 if (extraRefs.size() == 1) {
@@ -1048,33 +1214,31 @@ void TaskAttacher::updateListOfModes()
                     for (eRefType rt : extraRefs[0]) {
                         buf.append(AttacherGui::getShapeTypeText(rt));
                     }
-                    item->setText(tr("%1 (add %2)").arg(
-                        item->text(),
-                        buf.join(QStringLiteral("+"))
-                    ));
+                    item->setText(tr("%1 (add %2)").arg(item->text(), buf.join(QStringLiteral("+"))));
                 }
                 else {
                     item->setText(tr("%1 (add more references)").arg(item->text()));
                 }
             }
-            else if (mmode == this->lastSuggestResult.bestFitMode) {
-                //suggested mode - make bold
+            else if (mmode == boldMode) {
+                // active or suggested mode - make bold
                 QFont fnt = item->font();
                 fnt.setBold(true);
                 item->setFont(fnt);
             }
-
         }
     }
 
-    //restore selection
-    if (iSelect)
+    // restore selection
+    if (iSelect) {
         iSelect->setSelected(true);
+    }
 
     ui->listOfModes->blockSignals(false);
 }
 
-void TaskAttacher::selectMapMode(eMapMode mmode) {
+void TaskAttacher::selectMapMode(eMapMode mmode)
+{
     ui->listOfModes->blockSignals(true);
 
     for (size_t i = 0; i < modesInList.size(); ++i) {
@@ -1086,27 +1250,43 @@ void TaskAttacher::selectMapMode(eMapMode mmode) {
     ui->listOfModes->blockSignals(false);
 }
 
+void TaskAttacher::applyBoldMode(eMapMode boldMode)
+{
+    for (int i = 0; i < ui->listOfModes->count(); ++i) {
+        QListWidgetItem* item = ui->listOfModes->item(i);
+        if (!(item->flags() & Qt::ItemFlag::ItemIsEnabled)) {
+            continue;
+        }
+        QFont fnt = item->font();
+        fnt.setBold(modesInList[i] == boldMode);
+        item->setFont(fnt);
+    }
+}
+
 void TaskAttacher::showPlacementUtilities()
 {
     if (auto planarViewProvider = freecad_cast<PartGui::ViewProvider2DObject*>(ViewProvider)) {
         overrides.override(planarViewProvider->ShowPlane, true);
     }
 
-    if (auto partViewProvider = freecad_cast<PartGui::ViewProviderPartExt*>(ViewProvider)) {
-        overrides.override(partViewProvider->ShowPlacement, true);
+    if (auto draggerViewProvider = freecad_cast<Gui::ViewProviderDragger*>(ViewProvider)) {
+        overrides.override(draggerViewProvider->ShowPlacement, true);
     }
 }
 
 Attacher::eMapMode TaskAttacher::getActiveMapMode()
 {
     auto sel = ui->listOfModes->selectedItems();
-    if (!sel.isEmpty())
+    if (!sel.isEmpty()) {
         return modesInList[ui->listOfModes->row(sel[0])];
+    }
     else {
-        if (this->lastSuggestResult.message == SuggestResult::srOK)
+        if (this->lastSuggestResult.message == SuggestResult::srOK) {
             return this->lastSuggestResult.bestFitMode;
-        else
+        }
+        else {
             return mmDeactivated;
+        }
     };
 }
 
@@ -1174,40 +1354,46 @@ void TaskAttacher::changeEvent(QEvent* e)
 void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 {
     auto defvisfunc = [](bool opening_not_closing,
-        const std::string& postfix,
-        Gui::ViewProviderDocumentObject* vp,
-        App::DocumentObject* editObj,
-        const std::string& editSubName) {
+                         const std::string& postfix,
+                         Gui::ViewProviderDocumentObject* vp,
+                         App::DocumentObject* editObj,
+                         const std::string& editSubName) {
         if (opening_not_closing) {
-            QString code = QStringLiteral(
-                "import Show\n"
-                "from Show.Containers import isAContainer\n"
-                "_tv_%4 = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
-                "tvObj = %1\n"
-                "dep_features = _tv_%4.get_all_dependent(%2, '%3')\n"
-                "dep_features = [o for o in dep_features if not isAContainer(o)]\n"
-                "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
-                "\tvisible_features = [feat for feat in tvObj.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
-                "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
-                "\tdel(visible_features)\n"
-                "_tv_%4.hide(dep_features)\n"
-                "del(dep_features)\n"
-                "if not tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
-                "\t\tif len(tvObj.AttachmentSupport) > 0:\n"
-                "\t\t\t_tv_%4.show([lnk[0] for lnk in tvObj.AttachmentSupport])\n"
-                "del(tvObj)"
-            ).arg(
-                QString::fromLatin1(Gui::Command::getObjectCmd(vp->getObject()).c_str()),
-                QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
-                QString::fromLatin1(editSubName.c_str()),
-                QString::fromLatin1(postfix.c_str()));
+            QString code
+                = QStringLiteral(
+                      "import Show\n"
+                      "from Show.Containers import isAContainer\n"
+                      "_tv_%4 = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
+                      "tvObj = %1\n"
+                      "dep_features = _tv_%4.get_all_dependent(%2, '%3')\n"
+                      "dep_features = [o for o in dep_features if not isAContainer(o)]\n"
+                      "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
+                      "\tvisible_features = [feat for feat in tvObj.InList if "
+                      "feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
+                      "\tdep_features = [feat for feat in dep_features if feat not in "
+                      "visible_features]\n"
+                      "\tdel(visible_features)\n"
+                      "_tv_%4.hide(dep_features)\n"
+                      "del(dep_features)\n"
+                      "if not tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
+                      "\t\tif len(tvObj.AttachmentSupport) > 0:\n"
+                      "\t\t\t_tv_%4.show([lnk[0] for lnk in tvObj.AttachmentSupport])\n"
+                      "del(tvObj)"
+                )
+                      .arg(
+                          QString::fromLatin1(Gui::Command::getObjectCmd(vp->getObject()).c_str()),
+                          QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
+                          QString::fromLatin1(editSubName.c_str()),
+                          QString::fromLatin1(postfix.c_str())
+                      );
             Gui::Command::runCommand(Gui::Command::Gui, code.toLatin1().constData());
         }
         else if (!postfix.empty()) {
             QString code = QStringLiteral(
-                "_tv_%1.restore()\n"
-                "del(_tv_%1)"
-            ).arg(QString::fromLatin1(postfix.c_str()));
+                               "_tv_%1.restore()\n"
+                               "del(_tv_%1)"
+            )
+                               .arg(QString::fromLatin1(postfix.c_str()));
             Gui::Command::runCommand(Gui::Command::Gui, code.toLatin1().constData());
         }
     };
@@ -1215,21 +1401,25 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
     auto visAutoFunc = visibilityFunc ? visibilityFunc : defvisfunc;
 
     if (opening_not_closing) {
-        //crash guards
-        if (!ViewProvider)
+        // crash guards
+        if (!ViewProvider) {
             return;
-        if (!ViewProvider->getObject())
+        }
+        if (!ViewProvider->getObject()) {
             return;
-        if (!ViewProvider->getObject()->isAttachedToDocument())
+        }
+        if (!ViewProvider->getObject()->isAttachedToDocument()) {
             return;
+        }
 
-        auto editDoc = Gui::Application::Instance->editDocument();
+        Gui::Document* editDoc = Gui::Application::Instance->isInEdit(ViewProvider->getDocument())
+            ? ViewProvider->getDocument()
+            : nullptr;
         App::DocumentObject* editObj = ViewProvider->getObject();
         std::string editSubName;
         auto sels = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve, true);
         if (!sels.empty() && sels[0].pResolvedObject
-            && sels[0].pResolvedObject->getLinkedObject() == editObj)
-        {
+            && sels[0].pResolvedObject->getLinkedObject() == editObj) {
             editObj = sels[0].pObject;
             editSubName = sels[0].SubName;
         }
@@ -1237,8 +1427,9 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             ViewProviderDocumentObject* editVp = nullptr;
             if (editDoc) {
                 editDoc->getInEdit(&editVp, &editSubName);
-                if (editVp)
+                if (editVp) {
                     editObj = editVp->getObject();
+                }
             }
         }
         ObjectName = ViewProvider->getObject()->getNameInDocument();
@@ -1270,9 +1461,18 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, bool createBox,
-    std::function<void()> onAccept, std::function<void()> onReject)
-    : TaskDialog(), ViewProvider(ViewProvider), parameter(nullptr), onAccept(onAccept), onReject(onReject), accepted(false)
+TaskDlgAttacher::TaskDlgAttacher(
+    Gui::ViewProviderDocumentObject* ViewProvider,
+    bool createBox,
+    std::function<void()> onAccept,
+    std::function<void()> onReject
+)
+    : TaskDialog()
+    , ViewProvider(ViewProvider)
+    , parameter(nullptr)
+    , onAccept(onAccept)
+    , onReject(onReject)
+    , accepted(false)
 {
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
@@ -1281,65 +1481,179 @@ TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, 
         parameter = new TaskAttacher(ViewProvider, nullptr, QString(), tr("Attachment"));
         Content.push_back(parameter);
     }
+
+    // Double-click on a valid attachment element in the 3D view confirms the dialog
+    if (onAccept) {
+        auto* view3d = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+        if (view3d) {
+            dblClickViewer = view3d->getViewer();
+            dblClickViewer->addEventCallback(
+                SoMouseButtonEvent::getClassTypeId(),
+                &TaskDlgAttacher::handleMouseButtonCB,
+                this
+            );
+        }
+    }
+
+    // Status-bar input hints
+    using enum Gui::InputHint::UserInput;
+    std::list<Gui::InputHint> hints {
+        {
+            .message = tr("%1 select reference"),
+            .sequences = {MouseLeft},
+        },
+    };
+    if (onAccept) {
+        hints.push_back({
+            .message = tr("2x%1 select and confirm"),
+            .sequences = {MouseLeft},
+        });
+    }
+    Gui::getMainWindow()->showHints(hints);
 }
 
 TaskDlgAttacher::~TaskDlgAttacher()
 {
+    Gui::getMainWindow()->hideHints();
+    if (dblClickViewer) {
+        // Re-enable selection in case it was disabled for a double-click that never completed
+        dblClickViewer->setSelectionEnabled(true);
+        dblClickViewer->removeEventCallback(
+            SoMouseButtonEvent::getClassTypeId(),
+            &TaskDlgAttacher::handleMouseButtonCB,
+            this
+        );
+    }
     if (accepted && onAccept) {
         onAccept();
     }
-};
+}
+
+void TaskDlgAttacher::handleMouseButtonCB(void* userdata, SoEventCallback* cb)
+{
+    auto* self = static_cast<TaskDlgAttacher*>(userdata);
+    const SoEvent* ev = cb->getEvent();
+    if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        return;
+    }
+    const auto* mbe = static_cast<const SoMouseButtonEvent*>(ev);
+
+    if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 || mbe->getState() != SoButtonEvent::DOWN) {
+        return;
+    }
+
+    const SbVec2s pos = mbe->getPosition();
+    const SbTime now = SbTime::getTimeOfDay();
+    const float dci = static_cast<float>(QApplication::doubleClickInterval()) / 1000.0F;
+    constexpr int dblClickRadius = 5;
+
+    const bool inWindow = SbVec2f(pos - self->lastClickPos).length() < dblClickRadius
+        && (now - self->lastClickTime).getValue() < dci;
+
+    auto* pcAttach = self->ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    const bool validState = pcAttach && !pcAttach->AttachmentSupport.getValues().empty()
+        && pcAttach->MapMode.getValue() != mmDeactivated;
+
+    if (inWindow && validState && self->dblClickViewer) {
+        // Block SoFCUnifiedSelection from processing second click (would add the parent object instead)
+        self->dblClickViewer->setSelectionEnabled(false);
+
+        // Anti-retrigger: park tracking far away and reset time
+        self->lastClickTime = SbTime();
+        self->lastClickPos = SbVec2s(-16000, -16000);
+
+        auto* doc = self->ViewProvider->getDocument()->getDocument();
+        QPointer<Gui::View3DInventorViewer> viewer = self->dblClickViewer;
+        QTimer::singleShot(0, [doc, viewer]() {
+            if (viewer) {
+                viewer->setSelectionEnabled(true);
+            }
+            Gui::Control().accept(doc);
+        });
+        return;
+    }
+
+    // Not a double-click
+    self->lastClickTime = now;
+    self->lastClickPos = pos;
+}
 
 //==== calls from the TaskView ===============================================================
 
 
 void TaskDlgAttacher::open()
 {
-    if (!Gui::Command::hasPendingCommand()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    Gui::DocumentT doc(getDocumentName());
+    if (Gui::Document* document = doc.getDocument()) {
+        if (!document->hasPendingCommand()) {
+            document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+        }
     }
 }
 
 void TaskDlgAttacher::clicked(int)
-{
-
-}
+{}
 
 bool TaskDlgAttacher::accept()
 {
     try {
         Gui::DocumentT doc(getDocumentName());
         Gui::Document* document = doc.getDocument();
-        if (!document || !ViewProvider)
+        if (!document || !ViewProvider) {
             return true;
+        }
 
-        Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+        Part::AttachExtension* pcAttach
+            = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
         auto obj = ViewProvider->getObject();
 
-        //DeepSOIC: changed this to heavily rely on dialog constantly updating feature properties
-        //if (pcAttach->AttachmentOffset.isTouched()){
+        // DeepSOIC: changed this to heavily rely on dialog constantly updating feature properties
+        // if (pcAttach->AttachmentOffset.isTouched()){
         Base::Placement plm = pcAttach->AttachmentOffset.getValue();
         double yaw, pitch, roll;
         plm.getRotation().getYawPitchRoll(yaw, pitch, roll);
-        Gui::cmdAppObjectArgs(obj, "AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
-            plm.getPosition().x, plm.getPosition().y, plm.getPosition().z, yaw, pitch, roll);
+        Gui::cmdAppObjectArgs(
+            obj,
+            "AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  "
+            "App.Rotation(%.10f, %.10f, %.10f))",
+            plm.getPosition().x,
+            plm.getPosition().y,
+            plm.getPosition().z,
+            yaw,
+            pitch,
+            roll
+        );
         //}
 
-        Gui::cmdAppObjectArgs(obj, "MapReversed = %s", pcAttach->MapReversed.getValue() ? "True" : "False");
+        Gui::cmdAppObjectArgs(
+            obj,
+            "MapReversed = %s",
+            pcAttach->MapReversed.getValue() ? "True" : "False"
+        );
 
-        Gui::cmdAppObjectArgs(obj, "AttachmentSupport = %s", pcAttach->AttachmentSupport.getPyReprString().c_str());
+        Gui::cmdAppObjectArgs(
+            obj,
+            "AttachmentSupport = %s",
+            pcAttach->AttachmentSupport.getPyReprString().c_str()
+        );
 
         Gui::cmdAppObjectArgs(obj, "MapPathParameter = %f", pcAttach->MapPathParameter.getValue());
 
-        Gui::cmdAppObjectArgs(obj, "MapMode = '%s'", AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
+        Gui::cmdAppObjectArgs(
+            obj,
+            "MapMode = '%s'",
+            AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str()
+        );
         Gui::cmdAppObject(obj, "recompute()");
 
-        Gui::cmdGuiDocument(obj, "resetEdit()");
-
-        Gui::Command::commitCommand();
+        document->commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Datum dialog: input error"), QCoreApplication::translate("Exception", e.what()));
+        QMessageBox::warning(
+            parameter,
+            tr("Datum dialog: input error"),
+            QCoreApplication::translate("Exception", e.what())
+        );
         return false;
     }
 
@@ -1353,14 +1667,13 @@ bool TaskDlgAttacher::reject()
     if (onReject) {
         onReject();
     }
-    
+
     Gui::DocumentT doc(getDocumentName());
     Gui::Document* document = doc.getDocument();
     if (document) {
         // roll back the done things
-        Gui::Command::abortCommand();
-        Gui::Command::doCommand(Gui::Command::Gui,"%s.resetEdit()", doc.getGuiDocumentPython().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", doc.getAppDocumentPython().c_str());
+        document->abortCommand();
+        Gui::Command::doCommand(Gui::Command::Doc, "%s.recompute()", doc.getAppDocumentPython().c_str());
     }
 
     accepted = false;

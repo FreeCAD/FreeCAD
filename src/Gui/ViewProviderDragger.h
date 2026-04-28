@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_DRAGGER_H
-#define GUI_VIEWPROVIDER_DRAGGER_H
+#pragma once
 
 #include "ViewProviderDocumentObject.h"
 #include <Base/Placement.h>
@@ -32,10 +31,12 @@
 class SoDragger;
 class SoTransform;
 
-namespace Gui {
+namespace Gui
+{
 
-namespace TaskView {
-    class TaskDialog;
+namespace TaskView
+{
+class TaskDialog;
 }
 
 class SoTransformDragger;
@@ -47,7 +48,7 @@ class GizmoContainer;
  * of a geometric feature.
  * @author Werner Mayer
  */
-class GuiExport ViewProviderDragger : public ViewProviderDocumentObject
+class GuiExport ViewProviderDragger: public ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderDragger);
 
@@ -62,11 +63,15 @@ public:
     /// Dragger is normally placed at the transform origin, unless explicitly overridden via
     /// ViewProviderDragger#setDraggerPlacement() method.
     App::PropertyPlacement TransformOrigin;
+    App::PropertyBool ShowPlacement;
 
     void attach(App::DocumentObject* pcObject) override;
 
     /// Convenience method to obtain the transform origin
-    Base::Placement getTransformOrigin() const { return TransformOrigin.getValue(); }
+    Base::Placement getTransformOrigin() const
+    {
+        return TransformOrigin.getValue();
+    }
     /// Convenience method to set the transform origin
     void setTransformOrigin(const Base::Placement& placement);
     /// Resets transform origin to the object origin
@@ -78,13 +83,12 @@ public:
     /** @name Edit methods */
     //@{
     bool doubleClicked() override;
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
     void updateData(const App::Property*) override;
 
-    ViewProvider *startEditing(int ModNum=0) override;
+    ViewProvider* startEditing(int ModNum = 0) override;
 
     /*! synchronize From FC placement to Coin placement*/
-    static void updateTransform(const Base::Placement &from, SoTransform *to);
+    static void updateTransform(const Base::Placement& from, SoTransform* to);
 
     enum class DraggerComponent
     {
@@ -123,9 +127,6 @@ protected:
 
     bool forwardToLink();
 
-    /// Gets placement property of the object
-    App::PropertyPlacement* getPlacementProperty() const;
-
     /**
      * Returns a newly create dialog for the part to be placed in the task view
      * Must be reimplemented in subclasses.
@@ -133,30 +134,30 @@ protected:
     virtual TaskView::TaskDialog* getTransformDialog();
 
     CoinPtr<SoTransformDragger> transformDragger;
-    ViewProvider *forwardedViewProvider = nullptr;
+    ViewProvider* forwardedViewProvider = nullptr;
 
     CoinPtr<SoSwitch> pcPlacement;
+
 private:
-    static void dragStartCallback(void *data, SoDragger *d);
-    static void dragFinishCallback(void *data, SoDragger *d);
-    static void dragMotionCallback(void *data, SoDragger *d);
+    static void dragStartCallback(void* data, SoDragger* d);
+    static void dragFinishCallback(void* data, SoDragger* d);
+    static void dragMotionCallback(void* data, SoDragger* d);
 
     void updateDraggerPosition();
 
-    Base::Placement draggerPlacement { };
+    Base::Placement draggerPlacement {};
 
     // Rotation by orthonormalizing depending on given axes components
-    Base::Rotation orthonormalize(Base::Vector3d x,
-                                  Base::Vector3d y,
-                                  Base::Vector3d z,
-                                  ViewProviderDragger::DraggerComponents components = DraggerComponent::All);
+    Base::Rotation orthonormalize(
+        Base::Vector3d x,
+        Base::Vector3d y,
+        Base::Vector3d z,
+        ViewProviderDragger::DraggerComponents components = DraggerComponent::All
+    );
 
     GizmoContainer* gizmoContainer = nullptr;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::ViewProviderDragger::DraggerComponent)
-
-#endif // GUI_VIEWPROVIDER_DRAGGER_H
-

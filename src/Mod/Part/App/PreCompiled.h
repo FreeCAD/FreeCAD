@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PRECOMPILED_H
-#define PART_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -65,11 +66,9 @@
 #include "OpenCascadeAll.h"
 
 #if defined(FC_OS_WIN32)
-#include <Windows.h>
+# include <Windows.h>
 #endif
 
 #ifndef _Standard_Version_HeaderFile
 # include <Standard_Version.hxx>
-#endif
-
 #endif

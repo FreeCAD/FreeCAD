@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2023 FreeCAD Project Association                        *
@@ -27,6 +29,7 @@ The working plane is mostly intended to be used in the Draft Workbench
 to draw 2D objects in various orientations, not only in the standard XY,
 YZ, and XZ planes.
 """
+
 ## @package WorkingPlane
 #  \ingroup DRAFT
 #  \brief This module handles the Working Plane and grid of the Draft module.
@@ -83,9 +86,9 @@ class PlaneBase:
     Note that the u, v and w vectors are not checked for validity.
     """
 
-    def __init__(self,
-                 u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1),
-                 pos=Vector(0, 0, 0)):
+    def __init__(
+        self, u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1), pos=Vector(0, 0, 0)
+    ):
 
         if isinstance(u, PlaneBase):
             self.match(u)
@@ -241,6 +244,87 @@ class PlaneBase:
         self.position = pos + (self.axis * offset)
         return True
 
+    def align_to_straight_edge(self, edge, offset=0):
+        """Align the WP to a straight edge.
+
+        Used when a single straight edge is selected and does not define a
+        plane. The edge direction becomes the WP `u` axis. All three axes are
+        recomputed using XZY priority so the result is always a valid
+        orthonormal frame.
+
+        Parameters
+        ----------
+        edge: Part.Edge
+            A straight edge.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful.
+        """
+        tol = 1e-7
+        if edge.Length <= tol:
+            return False
+        u = edge.derivative1At(edge.FirstParameter).normalize()
+        rot = FreeCAD.Rotation(u, self.v, self.axis, "XZY")
+        self.u, self.v, self.axis = self._axes_from_rotation(rot)
+        self.position = edge.Vertexes[0].Point + (self.axis * offset)
+        return True
+
+    def align_to_vertex(self, vertex, offset=0):
+        """Move the WP origin to a vertex, keeping the current orientation.
+
+        Parameters
+        ----------
+        vertex: Part.Vertex
+            A vertex.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`
+            Always successful.
+        """
+        self.position = vertex.Point + (self.axis * offset)
+        return True
+
+    def align_to_two_vertices(self, v1, v2, offset=0):
+        """Align the WP to two vertices.
+
+        The direction from `v1` to `v2` defines the WP `u` axis. The `v` and
+        `axis` vectors are recomputed using XZY priority. The WP origin is set
+        to `v1`.
+
+        Parameters
+        ----------
+        v1: Part.Vertex
+            First vertex (WP origin).
+        v2: Part.Vertex
+            Second vertex (defines u axis direction).
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful.
+        """
+        tol = 1e-7
+        u = v2.Point - v1.Point
+        if u.Length <= tol:
+            return False
+        u.normalize()
+        rot = FreeCAD.Rotation(u, self.v, self.axis, "XZY")
+        self.u, self.v, self.axis = self._axes_from_rotation(rot)
+        self.position = v1.Point + (self.axis * offset)
+        return True
+
     def align_to_face(self, face, offset=0):
         """Align the WP to a face with an optional offset.
 
@@ -297,7 +381,7 @@ class PlaneBase:
         """
         if face.Surface.isPlanar() is False:
             return False
-        axis = face.normalAt(0,0)
+        axis = face.normalAt(0, 0)
         point = edge.Vertexes[0].Point
         vec = edge.Vertexes[-1].Point.sub(point)
         return self.align_to_point_and_axis(point, axis, offset, axis.cross(vec))
@@ -426,44 +510,44 @@ class PlaneBase:
         self.axis = Vector(axis).normalize()
         ref_vec = Vector(0.0, 1.0, 0.0)
 
-        if ((abs(axis.x) > abs(axis.y)) and (abs(axis.y) > abs(axis.z))):
-            ref_vec = Vector(0.0, 0., 1.0)
+        if (abs(axis.x) > abs(axis.y)) and (abs(axis.y) > abs(axis.z)):
+            ref_vec = Vector(0.0, 0.0, 1.0)
             self.u = axis.negative().cross(ref_vec)
             self.u.normalize()
-            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            self.v = DraftVecUtils.rotate(self.u, math.pi / 2, self.axis)
             # projcase = "Case new"
 
-        elif ((abs(axis.y) > abs(axis.z)) and (abs(axis.z) >= abs(axis.x))):
+        elif (abs(axis.y) > abs(axis.z)) and (abs(axis.z) >= abs(axis.x)):
             ref_vec = Vector(1.0, 0.0, 0.0)
             self.u = axis.negative().cross(ref_vec)
             self.u.normalize()
-            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            self.v = DraftVecUtils.rotate(self.u, math.pi / 2, self.axis)
             # projcase = "Y>Z, View Y"
 
-        elif ((abs(axis.y) >= abs(axis.x)) and (abs(axis.x) > abs(axis.z))):
-            ref_vec = Vector(0.0, 0., 1.0)
+        elif (abs(axis.y) >= abs(axis.x)) and (abs(axis.x) > abs(axis.z)):
+            ref_vec = Vector(0.0, 0.0, 1.0)
             self.u = axis.cross(ref_vec)
             self.u.normalize()
-            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            self.v = DraftVecUtils.rotate(self.u, math.pi / 2, self.axis)
             # projcase = "ehem. XY, Case XY"
 
-        elif ((abs(axis.x) > abs(axis.z)) and (abs(axis.z) >= abs(axis.y))):
+        elif (abs(axis.x) > abs(axis.z)) and (abs(axis.z) >= abs(axis.y)):
             self.u = axis.cross(ref_vec)
             self.u.normalize()
-            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            self.v = DraftVecUtils.rotate(self.u, math.pi / 2, self.axis)
             # projcase = "X>Z, View X"
 
-        elif ((abs(axis.z) >= abs(axis.y)) and (abs(axis.y) > abs(axis.x))):
-            ref_vec = Vector(1.0, 0., 0.0)
+        elif (abs(axis.z) >= abs(axis.y)) and (abs(axis.y) > abs(axis.x)):
+            ref_vec = Vector(1.0, 0.0, 0.0)
             self.u = axis.cross(ref_vec)
             self.u.normalize()
-            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            self.v = DraftVecUtils.rotate(self.u, math.pi / 2, self.axis)
             # projcase = "Y>X, Case YZ"
 
         else:
             self.u = axis.negative().cross(ref_vec)
             self.u.normalize()
-            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            self.v = DraftVecUtils.rotate(self.u, math.pi / 2, self.axis)
             # projcase = "else"
 
         # spat_vec = self.u.cross(self.v)
@@ -474,6 +558,21 @@ class PlaneBase:
         offsetVector.multiply(offset)
         self.position = point.add(offsetVector)
 
+        return True
+
+    def align_to_rotation(self, rot):
+        """Align the WP to a rotation.
+
+        Parameter
+        ---------
+        rot: Base.Rotation
+            Rotation.
+
+        Returns
+        -------
+        `True`
+        """
+        self.u, self.v, self.axis = self._axes_from_rotation(rot)
         return True
 
     def get_global_coords(self, point, as_vector=False):
@@ -545,16 +644,18 @@ class PlaneBase:
 
     def is_global(self):
         """Return `True` if the WP matches the global coordinate system exactly."""
-        return self.u == Vector(1, 0, 0) \
-            and self.v == Vector(0, 1, 0) \
-            and self.axis == Vector(0, 0, 1) \
+        return (
+            self.u == Vector(1, 0, 0)
+            and self.v == Vector(0, 1, 0)
+            and self.axis == Vector(0, 0, 1)
             and self.position == Vector()
+        )
 
     def is_ortho(self):
         """Return `True` if all WP axes are  parallel to a global axis."""
         rot = FreeCAD.Rotation(self.u, self.v, self.axis, "ZYX")
         ypr = [round(ang, 6) for ang in rot.getYawPitchRoll()]
-        return all([ang%90 == 0 for ang in ypr])
+        return all([ang % 90 == 0 for ang in ypr])
 
     def project_point(self, point, direction=None, force_projection=True):
         """Project a point onto the WP and return the global coordinates of the
@@ -575,11 +676,9 @@ class PlaneBase:
         -------
         Base.Vector
         """
-        return DraftGeomUtils.project_point_on_plane(point,
-                                                     self.position,
-                                                     self.axis,
-                                                     direction,
-                                                     force_projection)
+        return DraftGeomUtils.project_point_on_plane(
+            point, self.position, self.axis, direction, force_projection
+        )
 
     def set_to_top(self, offset=0):
         """Set the WP to the top position with an optional offset."""
@@ -613,15 +712,12 @@ class PlaneBase:
         near multiples of 45 degrees.
         """
         ypr = [round(ang, 3) for ang in rot.getYawPitchRoll()]
-        if all([ang%45 == 0 for ang in ypr]):
+        if all([ang % 45 == 0 for ang in ypr]):
             rot.setEulerAngles("YawPitchRoll", *ypr)
         return self._axes_from_rotation(rot)
 
     def _get_prop_list(self):
-        return ["u",
-                "v",
-                "axis",
-                "position"]
+        return ["u", "v", "axis", "position"]
 
 
 class Plane(PlaneBase):
@@ -660,10 +756,14 @@ class Plane(PlaneBase):
         Placeholder for a stored state.
     """
 
-    def __init__(self,
-                 u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1),
-                 pos=Vector(0, 0, 0),
-                 weak=True):
+    def __init__(
+        self,
+        u=Vector(1, 0, 0),
+        v=Vector(0, 1, 0),
+        w=Vector(0, 0, 1),
+        pos=Vector(0, 0, 0),
+        weak=True,
+    ):
 
         if isinstance(u, Plane):
             self.match(u)
@@ -837,16 +937,20 @@ class Plane(PlaneBase):
                 if isinstance(geom, Part.Shape):
                     geom_is_shape = True
             if not geom_is_shape:
-                _wrn(translate(
-                    "draft",
-                    "Object without Part.Shape geometry:'{}'".format(
-                        obj.ObjectName)) + "\n")
+                _wrn(
+                    translate(
+                        "draft", "Object without Part.Shape geometry:'{}'".format(obj.ObjectName)
+                    )
+                    + "\n"
+                )
                 return False
             if geom.isNull():
-                _wrn(translate(
-                    "draft",
-                    "Object with null Part.Shape geometry:'{}'".format(
-                        obj.ObjectName)) + "\n")
+                _wrn(
+                    translate(
+                        "draft", "Object with null Part.Shape geometry:'{}'".format(obj.ObjectName)
+                    )
+                    + "\n"
+                )
                 return False
             if obj.HasSubObjects:
                 shapes.extend(obj.SubObjects)
@@ -858,8 +962,7 @@ class Plane(PlaneBase):
         normal = None
         for n in range(len(shapes)):
             if not DraftGeomUtils.is_planar(shapes[n]):
-                _wrn(translate(
-                   "draft", "'{}' object is not planar".format(names[n])) + "\n")
+                _wrn(translate("draft", "'{}' object is not planar".format(names[n])) + "\n")
                 return False
             if not normal:
                 normal = DraftGeomUtils.get_normal(shapes[n])
@@ -869,9 +972,12 @@ class Plane(PlaneBase):
         if normal:
             for n in range(len(shapes)):
                 if not DraftGeomUtils.are_coplanar(shapes[shape_ref], shapes[n]):
-                    _wrn(translate(
-                        "draft", "{} and {} are not coplanar".format(
-                        names[shape_ref],names[n])) + "\n")
+                    _wrn(
+                        translate(
+                            "draft", "{} and {} are not coplanar".format(names[shape_ref], names[n])
+                        )
+                        + "\n"
+                    )
                     return False
         else:
             # suppose all geometries are straight lines or points
@@ -879,25 +985,23 @@ class Plane(PlaneBase):
             if len(points) >= 3:
                 poly = Part.makePolygon(points)
                 if not DraftGeomUtils.is_planar(poly):
-                    _wrn(translate(
-                        "draft", "All shapes must be coplanar") + "\n")
+                    _wrn(translate("draft", "All shapes must be coplanar") + "\n")
                     return False
                 normal = DraftGeomUtils.get_normal(poly)
             else:
                 normal = None
 
         if not normal:
-            _wrn(translate(
-                "draft", "Selected shapes must define a plane") + "\n")
+            _wrn(translate("draft", "Selected shapes must define a plane") + "\n")
             return False
 
         # set center of mass
-        ctr_mass = Vector(0,0,0)
-        ctr_pts = Vector(0,0,0)
+        ctr_mass = Vector(0, 0, 0)
+        ctr_pts = Vector(0, 0, 0)
         mass = 0
         for shape in shapes:
             if hasattr(shape, "CenterOfMass"):
-                ctr_mass += shape.CenterOfMass*shape.Mass
+                ctr_mass += shape.CenterOfMass * shape.Mass
                 mass += shape.Mass
             else:
                 ctr_pts += shape.Point
@@ -905,7 +1009,7 @@ class Plane(PlaneBase):
             ctr_mass /= mass
         # all shapes are vertexes
         else:
-            ctr_mass = ctr_pts/len(shapes)
+            ctr_mass = ctr_pts / len(shapes)
 
         super().align_to_point_and_axis(ctr_mass, normal, offset)
         self.weak = False
@@ -970,9 +1074,10 @@ class Plane(PlaneBase):
         self.weak = False
         if FreeCAD.GuiUp:
             from draftutils.translate import translate
-            if hasattr(FreeCADGui,"Snapper"):
+
+            if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.setGrid()
-            if hasattr(FreeCADGui,"draftToolBar"):
+            if hasattr(FreeCADGui, "draftToolBar"):
                 FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Top"))
 
     def setFront(self):
@@ -981,9 +1086,10 @@ class Plane(PlaneBase):
         self.weak = False
         if FreeCAD.GuiUp:
             from draftutils.translate import translate
-            if hasattr(FreeCADGui,"Snapper"):
+
+            if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.setGrid()
-            if hasattr(FreeCADGui,"draftToolBar"):
+            if hasattr(FreeCADGui, "draftToolBar"):
                 FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Front"))
 
     def setSide(self):
@@ -999,9 +1105,10 @@ class Plane(PlaneBase):
         self.weak = False
         if FreeCAD.GuiUp:
             from draftutils.translate import translate
-            if hasattr(FreeCADGui,"Snapper"):
+
+            if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.setGrid()
-            if hasattr(FreeCADGui,"draftToolBar"):
+            if hasattr(FreeCADGui, "draftToolBar"):
                 FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Side"))
 
     def getRotation(self):
@@ -1030,7 +1137,7 @@ class Plane(PlaneBase):
         if rebase:
             super().align_to_placement(place)
         else:
-            super()._axes_from_rotation(place.Rotation)
+            super().align_to_rotation(place.Rotation)
 
     def inverse(self):
         """Invert the direction of the plane.
@@ -1152,15 +1259,12 @@ class Plane(PlaneBase):
         data: dict
             dictionary of the form:
             {"u":x, "v":v, "axis":axis, "position":position, "weak":weak}
-       """
+        """
         super().set_parameters(data)
 
     def _get_prop_list(self):
-        return ["u",
-                "v",
-                "axis",
-                "position",
-                "weak"]
+        return ["u", "v", "axis", "position", "weak"]
+
 
 plane = Plane
 
@@ -1220,13 +1324,17 @@ class PlaneGui(PlaneBase):
         Dictionary that holds up to 10 stored states.
     """
 
-    def __init__(self,
-                 u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1),
-                 pos=Vector(0, 0, 0),
-                 auto=True,
-                 icon=":/icons/view-axonometric.svg",
-                 label=QT_TRANSLATE_NOOP("draft", "Auto"),
-                 tip=QT_TRANSLATE_NOOP("draft", "Current working plane: Auto")):
+    def __init__(
+        self,
+        u=Vector(1, 0, 0),
+        v=Vector(0, 1, 0),
+        w=Vector(0, 0, 1),
+        pos=Vector(0, 0, 0),
+        auto=True,
+        icon=":/icons/view-axonometric.svg",
+        label=QT_TRANSLATE_NOOP("draft", "Auto"),
+        tip=QT_TRANSLATE_NOOP("draft", "Current working plane: Auto"),
+    ):
 
         if isinstance(u, PlaneGui):
             self.match(u)
@@ -1260,7 +1368,13 @@ class PlaneGui(PlaneBase):
     def align_to_selection(self, offset=0, _hist_add=True):
         """Align the WP to a selection with an optional offset.
 
-        The selection must define a plane.
+        For a single face the WP is aligned to that face. For a single curved
+        edge or wire the WP is aligned to the plane of that shape. For a
+        single straight edge the WP u-axis is aligned along the edge while the
+        WP axis (normal) is preserved. For a single vertex the WP origin is
+        moved to that point while the orientation is preserved. For two
+        vertices the direction from the first to the second defines the WP
+        u-axis; selection order matters.
 
         Parameter
         ---------
@@ -1287,13 +1401,24 @@ class PlaneGui(PlaneBase):
 
         if len(objs) != 1:
             ret = False
-            if all([obj[0].isNull() is False and obj[0].ShapeType in ["Edge", "Vertex"] for obj in objs]):
+            if len(objs) == 2 and all(
+                obj[0].isNull() is False and obj[0].ShapeType == "Vertex" for obj in objs
+            ):
+                ret = self.align_to_two_vertices(objs[0][0], objs[1][0], offset, _hist_add)
+            elif all(
+                [
+                    obj[0].isNull() is False and obj[0].ShapeType in ["Edge", "Vertex"]
+                    for obj in objs
+                ]
+            ):
                 ret = self.align_to_edges_vertexes([obj[0] for obj in objs], offset, _hist_add)
-            elif all([obj[0].isNull() is False and obj[0].ShapeType in ["Edge", "Face"] for obj in objs]):
-                    edges = [obj[0] for obj in objs if obj[0].ShapeType == "Edge"]
-                    faces = [obj[0] for obj in objs if obj[0].ShapeType == "Face"]
-                    if faces and edges:
-                            ret = self.align_to_face_and_edge(faces[0], edges[0], offset, _hist_add)
+            elif all(
+                [obj[0].isNull() is False and obj[0].ShapeType in ["Edge", "Face"] for obj in objs]
+            ):
+                edges = [obj[0] for obj in objs if obj[0].ShapeType == "Edge"]
+                faces = [obj[0] for obj in objs if obj[0].ShapeType == "Face"]
+                if faces and edges:
+                    ret = self.align_to_face_and_edge(faces[0], edges[0], offset, _hist_add)
             if ret is False:
                 _wrn(translate("draft", "Selected shapes do not define a plane"))
             return ret
@@ -1310,7 +1435,7 @@ class PlaneGui(PlaneBase):
             ret = self.align_to_wp_proxy(obj, offset, place * obj.Placement, _hist_add)
         elif typ == "IfcBuildingStorey":
             pl = FreeCAD.Placement(obj.Placement)
-            pl.move(FreeCAD.Vector(0,0,obj.Elevation.Value))
+            pl.move(FreeCAD.Vector(0, 0, obj.Elevation.Value))
             ret = self.align_to_wp_proxy(obj, offset, place * pl, _hist_add)
         elif shape.isNull():
             ret = self.align_to_obj_placement(obj, offset, place, _hist_add)
@@ -1318,8 +1443,12 @@ class PlaneGui(PlaneBase):
             ret = self.align_to_face(shape, offset, _hist_add)
         elif shape.ShapeType == "Edge":
             ret = self.align_to_edge_or_wire(shape, offset, _hist_add)
+            if ret is False:
+                ret = self.align_to_straight_edge(shape, offset, _hist_add)
         elif shape.Solids:
             ret = self.align_to_obj_placement(obj, offset, place, _hist_add)
+        elif shape.ShapeType == "Vertex":
+            ret = self.align_to_vertex(shape, offset, _hist_add)
         else:
             ret = self.align_to_edges_vertexes(shape.Vertexes, offset, _hist_add)
 
@@ -1351,6 +1480,26 @@ class PlaneGui(PlaneBase):
     def align_to_edge_or_wire(self, shape, offset=0, _hist_add=True):
         """See PlaneBase.align_to_edge_or_wire."""
         if super().align_to_edge_or_wire(shape, offset) is False:
+            return False
+        self._handle_custom(_hist_add)
+        return True
+
+    def align_to_straight_edge(self, edge, offset=0, _hist_add=True):
+        """See PlaneBase.align_to_straight_edge."""
+        if super().align_to_straight_edge(edge, offset) is False:
+            return False
+        self._handle_custom(_hist_add)
+        return True
+
+    def align_to_vertex(self, vertex, offset=0, _hist_add=True):
+        """See PlaneBase.align_to_vertex."""
+        super().align_to_vertex(vertex, offset)
+        self._handle_custom(_hist_add)
+        return True
+
+    def align_to_two_vertices(self, v1, v2, offset=0, _hist_add=True):
+        """See PlaneBase.align_to_two_vertices."""
+        if super().align_to_two_vertices(v1, v2, offset) is False:
             return False
         self._handle_custom(_hist_add)
         return True
@@ -1411,10 +1560,12 @@ class PlaneGui(PlaneBase):
         self.auto = False
         if utils.get_type(obj) == "WorkingPlaneProxy":
             self.icon = ":/icons/Draft_PlaneProxy.svg"
-        elif FreeCAD.GuiUp \
-                and hasattr(obj, "ViewObject") \
-                and hasattr(obj.ViewObject, "Proxy") \
-                and hasattr(obj.ViewObject.Proxy, "getIcon"):
+        elif (
+            FreeCAD.GuiUp
+            and hasattr(obj, "ViewObject")
+            and hasattr(obj.ViewObject, "Proxy")
+            and hasattr(obj.ViewObject.Proxy, "getIcon")
+        ):
             self.icon = obj.ViewObject.Proxy.getIcon()
         else:
             self.icon = ":/icons/Std_Placement.svg"
@@ -1438,19 +1589,18 @@ class PlaneGui(PlaneBase):
 
         vobj = obj.ViewObject
 
-        if hasattr(vobj, "AutoWorkingPlane") \
-                and vobj.AutoWorkingPlane is True:
+        if hasattr(vobj, "AutoWorkingPlane") and vobj.AutoWorkingPlane is True:
             self.auto = True
 
-        if hasattr(vobj, "CutView") \
-                and hasattr(vobj, "AutoCutView") \
-                and vobj.AutoCutView is True:
+        if hasattr(vobj, "CutView") and hasattr(vobj, "AutoCutView") and vobj.AutoCutView is True:
             vobj.CutView = True
 
-        if hasattr(vobj, "RestoreView") \
-                and vobj.RestoreView is True \
-                and hasattr(vobj, "ViewData") \
-                and len(vobj.ViewData) >= 12:
+        if (
+            hasattr(vobj, "RestoreView")
+            and vobj.RestoreView is True
+            and hasattr(vobj, "ViewData")
+            and len(vobj.ViewData) >= 12
+        ):
             vdat = vobj.ViewData
             if self._view is not None:
                 try:
@@ -1475,14 +1625,16 @@ class PlaneGui(PlaneBase):
                 except Exception:
                     pass
 
-        if hasattr(vobj, "RestoreState") \
-                and vobj.RestoreState is True \
-                and hasattr(vobj, "VisibilityMap") \
-                and vobj.VisibilityMap:
+        if (
+            hasattr(vobj, "RestoreState")
+            and vobj.RestoreState is True
+            and hasattr(vobj, "VisibilityMap")
+            and vobj.VisibilityMap
+        ):
             for name, vis in vobj.VisibilityMap.items():
                 obj = FreeCADGui.ActiveDocument.getObject(name)
                 if obj:
-                    obj.Visibility = (vis == "True")
+                    obj.Visibility = vis == "True"
 
         return True
 
@@ -1509,7 +1661,7 @@ class PlaneGui(PlaneBase):
         elif default_wp == 3:
             self.set_to_side()
 
-    def set_to_auto(self): # Similar to Plane.reset.
+    def set_to_auto(self):  # Similar to Plane.reset.
         """Set the WP to auto."""
         self.auto = True
         self.auto_align()
@@ -1633,9 +1785,11 @@ class PlaneGui(PlaneBase):
         if self._view is not None:
             try:
                 cam = self._view.getCameraNode()
-                pos = self.project_point(Vector(cam.position.getValue().getValue()),
-                                         direction=self._view.getViewDirection(),
-                                         force_projection=False)
+                pos = self.project_point(
+                    Vector(cam.position.getValue().getValue()),
+                    direction=self._view.getViewDirection(),
+                    force_projection=False,
+                )
                 if pos is not None:
                     self.position = pos
             except Exception:
@@ -1647,7 +1801,9 @@ class PlaneGui(PlaneBase):
             try:
                 default_cam_dist = abs(params.get_param_view("NewDocumentCameraScale"))
                 cam = self._view.getCameraNode()
-                cur_cam_dist = abs(self.get_local_coords(Vector(cam.position.getValue().getValue())).z)
+                cur_cam_dist = abs(
+                    self.get_local_coords(Vector(cam.position.getValue().getValue())).z
+                )
                 cam_dist = max(default_cam_dist, cur_cam_dist)
                 cam.position.setValue(self.position + DraftVecUtils.scaleTo(self.axis, cam_dist))
                 cam.orientation.setValue(self.get_placement().Rotation.Q)
@@ -1683,14 +1839,7 @@ class PlaneGui(PlaneBase):
         return bool(self._history) and self._history["idx"] != len(self._history["data_list"]) - 1
 
     def _get_prop_list(self):
-        return ["u",
-                "v",
-                "axis",
-                "position",
-                "auto",
-                "icon",
-                "label",
-                "tip"]
+        return ["u", "v", "axis", "position", "auto", "icon", "label", "tip"]
 
     def _get_label(self, label):
         if self.auto or self.position.isEqual(Vector(), 0):
@@ -1745,36 +1894,35 @@ class PlaneGui(PlaneBase):
             return
 
         max_len = 10  # Max. length of data_list.
-        self._history["data_list"] = self._history["data_list"][(idx - (max_len - 2)):(idx + 1)]
+        self._history["data_list"] = self._history["data_list"][(idx - (max_len - 2)) : (idx + 1)]
         self._history["data_list"].append(data)
         self._history["idx"] = len(self._history["data_list"]) - 1
 
     def _update_old_plane(self):
-        """ Update the old DraftWorkingPlane for compatibility.
+        """Update the old DraftWorkingPlane for compatibility.
         The tracker and snapper code currently still depend on it.
         """
         if not hasattr(FreeCAD, "DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane = Plane()
         for prop in ["u", "v", "axis", "position"]:
-            setattr(FreeCAD.DraftWorkingPlane,
-                    prop,
-                    self._copy_value(getattr(self, prop)))
+            setattr(FreeCAD.DraftWorkingPlane, prop, self._copy_value(getattr(self, prop)))
         FreeCAD.DraftWorkingPlane.weak = self.auto
 
     def _update_grid(self):
         # Check for draftToolBar because the trackers (grid) depend on it for its colors.
-        if FreeCAD.GuiUp \
-                and hasattr(FreeCADGui, "draftToolBar") \
-                and hasattr(FreeCADGui, "Snapper") \
-                and self._view is not None:
+        if (
+            FreeCAD.GuiUp
+            and hasattr(FreeCADGui, "draftToolBar")
+            and hasattr(FreeCADGui, "Snapper")
+            and self._view is not None
+        ):
             FreeCADGui.Snapper.setGrid()
             FreeCADGui.Snapper.restack()  # Required??
 
     def _update_gui(self):
-        if FreeCAD.GuiUp \
-                and hasattr(FreeCADGui, "draftToolBar") \
-                and self._view is not None:
+        if FreeCAD.GuiUp and hasattr(FreeCADGui, "draftToolBar") and self._view is not None:
             from PySide import QtGui
+
             button = FreeCADGui.draftToolBar.wplabel
             button.setIcon(QtGui.QIcon(self.icon))
             button.setText(self.label)
@@ -1800,7 +1948,9 @@ def get_working_plane(update=True):
 
     wp = PlaneGui()
     if FreeCAD.GuiUp:
-        wp._view = view  # Update _view before call to set_to_default, set_to_auto requires a 3D view.
+        wp._view = (
+            view  # Update _view before call to set_to_default, set_to_auto requires a 3D view.
+        )
         wp.set_to_default()
         if view is not None:
             FreeCAD.draft_working_planes[0].append(view)

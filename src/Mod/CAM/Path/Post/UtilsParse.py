@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
@@ -35,6 +37,7 @@ import FreeCAD
 from FreeCAD import Units
 
 import Path
+import Path.Post.Utils as PostUtils
 
 # Define some types that are used throughout this file
 CommandLine = List[str]
@@ -57,11 +60,11 @@ def check_for_an_adaptive_op(
     opHorizRapid: float
     opVertRapid: float
 
-    (adaptiveOp, opHorizRapid, opVertRapid) = adaptive_op_variables
+    adaptiveOp, opHorizRapid, opVertRapid = adaptive_op_variables
     if values["OUTPUT_ADAPTIVE"] and adaptiveOp and command in values["RAPID_MOVES"]:
         if opHorizRapid and opVertRapid:
             return "G1"
-        command_line.append(f"(Tool Controller Rapid Values are unset)")
+        command_line.append("(Tool Controller Rapid Values are unset)")
     return ""
 
 
@@ -178,7 +181,10 @@ def check_for_tool_change(
 def create_comment(values: Values, comment_string: str) -> str:
     """Create a comment from a string using the correct comment symbol."""
     if values["COMMENT_SYMBOL"] == "(":
-        return f"({comment_string})"
+        # Sanitize nested parentheses to prevent breaking G-code comment format
+        # Replace ( with [ and ) with ] to preserve readability
+        sanitized = comment_string.replace("(", "[").replace(")", "]")
+        return f"({sanitized})"
     return values["COMMENT_SYMBOL"] + comment_string
 
 
@@ -702,7 +708,16 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
     )
     adaptive_op_variables = determine_adaptive_op(values, pathobj)
 
-    for c in pathobj.Path.Commands:
+    path_to_process = pathobj.Path
+
+    # Process canned cycles for drilling operations
+    path_to_process = PostUtils.cannedCycleTerminator(path_to_process)
+
+    # Apply arc splitting if requested
+    if values["SPLIT_ARCS"]:
+        path_to_process = PostUtils.splitArcs(path_to_process)
+
+    for c in path_to_process.Commands:
         command = c.Name
         command_line = []
 
@@ -802,7 +817,7 @@ def set_adaptive_op_speed(
     opVertRapid: float
     param_num: str
 
-    (adaptiveOp, opHorizRapid, opVertRapid) = adaptive_op_variables
+    adaptiveOp, opHorizRapid, opVertRapid = adaptive_op_variables
     if (
         values["OUTPUT_ADAPTIVE"]
         and adaptiveOp

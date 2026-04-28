@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureTransformed_H
-#define PARTDESIGN_FeatureTransformed_H
+#pragma once
 
 #include <gp_Trsf.hxx>
 
@@ -75,8 +76,7 @@ public:
 
     /// Get the list of transformations describing the members of the pattern
     // Note: Only the Scaled feature requires the originals
-    virtual const std::list<gp_Trsf>
-    getTransformations(const std::vector<App::DocumentObject*> /*originals*/)
+    virtual const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> /*originals*/)
     {
         return std::list<gp_Trsf>();  // Default method
     }
@@ -105,9 +105,11 @@ public:
 
 protected:
     void Restore(Base::XMLReader& reader) override;
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
 
     virtual void positionBySupport();
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
@@ -116,6 +118,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureTransformed_H

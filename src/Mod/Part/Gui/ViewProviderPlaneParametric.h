@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -35,10 +36,11 @@ class SoSeparator;
 class SbVec3f;
 class SoTransform;
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderPlaneParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderPlaneParametric: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPlaneParametric);
 
@@ -51,10 +53,9 @@ public:
     std::vector<std::string> getDisplayModes() const override;
 
 protected:
-
 };
 
-class PartGuiExport ViewProviderFace : public ViewProviderPlaneParametric
+class PartGuiExport ViewProviderFace: public ViewProviderPlaneParametric
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderFace);
 
@@ -71,8 +72,4 @@ public:
     void dropObject(App::DocumentObject*) override;
 };
 
-} // namespace PartGui
-
-
-#endif // PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
-
+}  // namespace PartGui

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -43,19 +45,17 @@ PROPERTY_SOURCE(Measure::MeasureRadius, Measure::MeasureBase)
 
 MeasureRadius::MeasureRadius()
 {
-    ADD_PROPERTY_TYPE(Element,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "Element to get the radius from");
+    ADD_PROPERTY_TYPE(Element, (nullptr), "Measurement", App::Prop_None, "Element to get the radius from");
     Element.setScope(App::LinkScope::Global);
     Element.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Radius,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Radius of selection");
+    ADD_PROPERTY_TYPE(
+        Radius,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Radius of selection"
+    );
 }
 
 MeasureRadius::~MeasureRadius() = default;
@@ -78,7 +78,9 @@ bool MeasureRadius::isValidSelection(const App::MeasureSelection& selection)
         return false;
     }
 
-    if (type != App::MeasureElementType::CIRCLE && type != App::MeasureElementType::ARC) {
+    if (type != App::MeasureElementType::CIRCLE && type != App::MeasureElementType::ARC
+        && type != App::MeasureElementType::CYLINDER && type != App::MeasureElementType::DISC
+        && type != App::MeasureElementType::TORUS && type != App::MeasureElementType::SPHERE) {
         return false;
     }
 
@@ -96,7 +98,9 @@ bool MeasureRadius::isPrioritizedSelection(const App::MeasureSelection& selectio
     auto element = selection.front();
     auto type = App::MeasureManager::getMeasureElementType(element);
 
-    if (type == App::MeasureElementType::CIRCLE || type == App::MeasureElementType::ARC) {
+    if (type == App::MeasureElementType::CIRCLE || type == App::MeasureElementType::ARC
+        || type == App::MeasureElementType::CYLINDER || type == App::MeasureElementType::DISC
+        || type == App::MeasureElementType::TORUS || type == App::MeasureElementType::SPHERE) {
         return true;
     }
 
@@ -143,7 +147,7 @@ void MeasureRadius::onChanged(const App::Property* prop)
 
 
 //! return a placement (location + orientation) for the first element
-Base::Placement MeasureRadius::getPlacement()
+Base::Placement MeasureRadius::getPlacement() const
 {
     auto loc = getMeasureInfoFirst()->pointOnCurve;
     auto p = Base::Placement();

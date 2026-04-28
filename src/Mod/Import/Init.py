@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # FreeCAD init script of the Import module
 # (c) 2001 Juergen Riegel
 
@@ -24,6 +26,9 @@
 # *                                                                         *
 # ***************************************************************************/
 
+import FreeCAD
+
+translate = FreeCAD.Qt.translate
 
 # Append the open handler
 # FreeCAD.addImportType("STEP 214 (*.step *.stp)","ImportGui")
@@ -32,5 +37,7 @@
 FreeCAD.addImportType("PLMXML files (*.plmxml *.PLMXML)", "PlmXmlParser")
 FreeCAD.addImportType("STEPZ Zip File Type (*.stpZ *.stpz *.STPZ)", "stepZ")
 FreeCAD.addImportType("glTF (*.gltf *.GLTF *.glb *.GLB)", "ImportGui")
-FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)", "stepZ")
+FreeCAD.addTranslatableExportType(
+    translate("FileFormat", "STEPZ (Zipped STEP)"), ["stpZ", "stpz"], "stepZ"
+)
 FreeCAD.addExportType("glTF (*.gltf *.glb)", "ImportGui")

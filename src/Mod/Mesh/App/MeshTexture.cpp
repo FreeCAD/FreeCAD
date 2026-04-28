@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -37,25 +39,30 @@ MeshTexture::MeshTexture(const Mesh::MeshObject& mesh, const MeshCore::Material&
         binding = MeshCore::MeshIO::PER_VERTEX;
         kdTree = std::make_unique<MeshCore::MeshKDTree>(mesh.getKernel().GetPoints());
     }
-    else if (material.binding == MeshCore::MeshIO::PER_FACE
-             && material.diffuseColor.size() == countFacets) {
+    else if (
+        material.binding == MeshCore::MeshIO::PER_FACE && material.diffuseColor.size() == countFacets
+    ) {
         binding = MeshCore::MeshIO::PER_FACE;
         kdTree = std::make_unique<MeshCore::MeshKDTree>(mesh.getKernel().GetPoints());
         refPnt2Fac = std::make_unique<MeshCore::MeshRefPointToFacets>(mesh.getKernel());
     }
 }
 
-void MeshTexture::apply(const Mesh::MeshObject& mesh,
-                        const Base::Color& defaultColor,
-                        MeshCore::Material& material)
+void MeshTexture::apply(
+    const Mesh::MeshObject& mesh,
+    const Base::Color& defaultColor,
+    MeshCore::Material& material
+)
 {
     apply(mesh, true, defaultColor, -1.0F, material);
 }
 
-void MeshTexture::apply(const Mesh::MeshObject& mesh,
-                        const Base::Color& defaultColor,
-                        float max_dist,
-                        MeshCore::Material& material)
+void MeshTexture::apply(
+    const Mesh::MeshObject& mesh,
+    const Base::Color& defaultColor,
+    float max_dist,
+    MeshCore::Material& material
+)
 {
     apply(mesh, true, defaultColor, max_dist, material);
 }
@@ -72,11 +79,13 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh, float max_dist, MeshCore::
     apply(mesh, false, defaultColor, max_dist, material);
 }
 
-void MeshTexture::apply(const Mesh::MeshObject& mesh,
-                        bool addDefaultColor,
-                        const Base::Color& defaultColor,
-                        float max_dist,
-                        MeshCore::Material& material)
+void MeshTexture::apply(
+    const Mesh::MeshObject& mesh,
+    bool addDefaultColor,
+    const Base::Color& defaultColor,
+    float max_dist,
+    MeshCore::Material& material
+)
 {
     // copy the color values because the passed material could be the same instance as
     // 'materialRefMesh'
@@ -130,8 +139,7 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh,
                     PointIndex index3 = pointMap[it._aulPoints[2]];
                     if (index1 != MeshCore::POINT_INDEX_MAX && index2 != MeshCore::POINT_INDEX_MAX
                         && index3 != MeshCore::POINT_INDEX_MAX) {
-                        std::vector<FacetIndex> found =
-                            refPnt2Fac->GetIndices(index1, index2, index3);
+                        std::vector<FacetIndex> found = refPnt2Fac->GetIndices(index1, index2, index3);
                         if (found.size() == 1) {
                             diffuseColor.push_back(textureColor[found.front()]);
                         }

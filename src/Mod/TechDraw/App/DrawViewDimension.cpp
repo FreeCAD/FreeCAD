@@ -186,6 +186,12 @@ DrawViewDimension::DrawViewDimension()
                       App::Prop_Output,
                       "The dimensional value is displayed inverted");
 
+    ADD_PROPERTY_TYPE(ShowSupplementary, 
+                      (false), 
+                      "", 
+                      App::Prop_Output, 
+                      "Toggle supplementary angle\nAngle displayed is dependent on selection order");
+
     ADD_PROPERTY_TYPE(AngleOverride,
                       (false),
                       "Override",
@@ -193,6 +199,11 @@ DrawViewDimension::DrawViewDimension()
                       "User specified angles");
     ADD_PROPERTY_TYPE(LineAngle, (0.0), "Override", App::Prop_Output, "Dimension line angle");
     ADD_PROPERTY_TYPE(ExtensionAngle, (0.0), "Override", App::Prop_Output, "Extension line angle");
+
+    ADD_PROPERTY_TYPE(UseAreaLeaderPoint, (false), "Area", App::Prop_None,
+                  "If true, the area leader end pt uses user clicked pt instead of face center.");
+    ADD_PROPERTY_TYPE(AreaLeaderPoint, (Base::Vector3d(0,0,0)), "Area", App::Prop_None,
+                  "Area leader end point");
 
     ADD_PROPERTY_TYPE(SavedGeometry,
                       (),
@@ -678,6 +689,11 @@ double DrawViewDimension::getDimValue()
     }
 
     result = fabs(result);
+
+    if (ShowSupplementary.getValue() && (Type.isValue("Angle") || Type.isValue("Angle3Pt"))) {
+        result = CircleDegrees/2.0 - result;
+    }
+
     if (Inverted.getValue()) {
         if (Type.isValue("Angle") || Type.isValue("Angle3Pt")) {
             result = CircleDegrees - result;
@@ -1238,7 +1254,6 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
             farPoint0 = generic0->getStartPoint();
         }
 
-
         // pick the end of generic1 farthest from the apex
         Base::Vector3d farPoint1{generic1->getEndPoint()};
         if ((generic1->getStartPoint() - apex).Length()
@@ -1246,22 +1261,9 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
             farPoint1 = (generic1->getStartPoint());
         }
 
-        Base::Vector3d leg0Dir = (farPoint0 - apex).Normalize();
-        Base::Vector3d leg1Dir = (farPoint1 - apex).Normalize();
-        Base::Vector3d extenPoint0 = farPoint0;  // extension line points
-        Base::Vector3d extenPoint1 = farPoint1;
-
-
-        double extenRadius = std::min(extenPoint0.Length(),
-                                      extenPoint1.Length());
-        if (extenRadius == 0) {
-            // one of the legs has 0 length??
-            throw Base::RuntimeError("No extension point radius!!");
-        }
-
         anglePoints pts;
-        pts.first(apex + leg0Dir * extenRadius);
-        pts.second(apex + leg1Dir * extenRadius);
+        pts.first(farPoint0);
+        pts.second(farPoint1);
         pts.vertex(apex);
         return pts;
     }
@@ -1367,6 +1369,10 @@ areaPoint DrawViewDimension::getAreaParameters(ReferenceVector references)
     areaPoint pts;
 
     App::DocumentObject* refObject = references.front().getObject();
+    if (!refObject) {
+        throw Base::RuntimeError("Area dimension has no reference object");
+    }
+
     if (refObject->isDerivedFrom<DrawViewPart>() && !references[0].getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
         TechDraw::FacePtr face = getViewPart()->getFace(references[0].getSubName());
@@ -1377,8 +1383,8 @@ areaPoint DrawViewDimension::getAreaParameters(ReferenceVector references)
         }
         auto dvp = static_cast<DrawViewPart*>(refObject);
 
-        auto filteredFaces  = GeometryUtils::findHolesInFace(dvp, references.front().getSubName());
-        auto perforatedFace = GeometryUtils::makePerforatedFace(face, filteredFaces);
+        std::vector<FacePtr> holesInFace = GeometryUtils::findHolesInFace(dvp, references.front().getSubName());
+        TopoDS_Face perforatedFace = GeometryUtils::makePerforatedFace(face, holesInFace);
 
         // these areas are scaled because the source geometry is scaled, but it makes no sense to
         // report a scaled area.

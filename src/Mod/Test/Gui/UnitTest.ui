@@ -123,6 +123,19 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="copyButton">
+       <property name="text">
+        <string>&amp;Copy</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+C</string>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="helpButton">
        <property name="text">
         <string>&amp;Help</string>
@@ -151,7 +164,7 @@
      <item>
       <widget class="QPushButton" name="closeButton">
        <property name="text">
-        <string>&amp;Close</string>
+        <string>Close</string>
        </property>
        <property name="shortcut">
         <string>Alt+C</string>
@@ -300,6 +313,7 @@
   <tabstop>comboTests</tabstop>
   <tabstop>startButton</tabstop>
   <tabstop>treeViewFailure</tabstop>
+  <tabstop>copyButton</tabstop>
   <tabstop>helpButton</tabstop>
   <tabstop>aboutButton</tabstop>
   <tabstop>closeButton</tabstop>

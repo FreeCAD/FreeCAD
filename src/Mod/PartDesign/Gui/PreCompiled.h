@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,13 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_DESIGN_PRECOMPILED_H
-#define PART_DESIGN_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // Boost
@@ -50,9 +51,7 @@
 #include <limits>
 
 // Qt
-# include <Gui/QtAll.h>
+#include <Gui/QtAll.h>
 
 // Inventor
-# include <Gui/InventorAll.h>
-
-#endif // PART_DESIGN_PRECOMPILED_H
+#include <Gui/InventorAll.h>

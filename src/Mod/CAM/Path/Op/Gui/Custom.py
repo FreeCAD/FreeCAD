@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -25,7 +27,6 @@ import Path.Op.Custom as PathCustom
 import Path.Op.Gui.Base as PathOpGui
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
 
 __title__ = "CAM Custom Operation UI"
 __author__ = "sliptonic (Brad Collette)"

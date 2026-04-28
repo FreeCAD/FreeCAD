@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -19,7 +21,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                   *
  *                                                                            *
  ******************************************************************************/
-
 
 
 #include <QMessageBox>
@@ -46,16 +47,17 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskMirroredParameters */
 
-TaskMirroredParameters::TaskMirroredParameters(ViewProviderTransformed* TransformedView,
-                                               QWidget* parent)
+TaskMirroredParameters::TaskMirroredParameters(ViewProviderTransformed* TransformedView, QWidget* parent)
     : TaskTransformedParameters(TransformedView, parent)
     , ui(new Ui_TaskMirroredParameters)
 {
     setupUI();
 }
 
-TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters* parentTask,
-                                               QWidget* parameterWidget)
+TaskMirroredParameters::TaskMirroredParameters(
+    TaskMultiTransformParameters* parentTask,
+    QWidget* parameterWidget
+)
     : TaskTransformedParameters(parentTask)
     , ui(new Ui_TaskMirroredParameters)
 {
@@ -67,10 +69,12 @@ void TaskMirroredParameters::setupParameterUI(QWidget* widget)
     ui->setupUi(widget);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->comboPlane,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskMirroredParameters::onPlaneChanged);
+    connect(
+        ui->comboPlane,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskMirroredParameters::onPlaneChanged
+    );
 
     this->planeLinks.setCombo(ui->comboPlane);
     ui->comboPlane->setEnabled(true);
@@ -89,7 +93,8 @@ void TaskMirroredParameters::setupParameterUI(QWidget* widget)
         try {
             App::Origin* origin = body->getOrigin();
             auto vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
-                Gui::Application::Instance->getViewProvider(origin));
+                Gui::Application::Instance->getViewProvider(origin)
+            );
             vpOrigin->setTemporaryVisibility(Gui::DatumElement::Planes);
         }
         catch (const Base::Exception& ex) {
@@ -118,7 +123,8 @@ void TaskMirroredParameters::updateUI()
         // failed to set current, because the link isn't in the list yet
         planeLinks.addLink(
             pcMirrored->MirrorPlane,
-            getRefStr(pcMirrored->MirrorPlane.getValue(), pcMirrored->MirrorPlane.getSubValues()));
+            getRefStr(pcMirrored->MirrorPlane.getValue(), pcMirrored->MirrorPlane.getSubValues())
+        );
         planeLinks.setCurrentLink(pcMirrored->MirrorPlane);
     }
 
@@ -200,8 +206,7 @@ void TaskMirroredParameters::onUpdateView(bool on)
     }
 }
 
-void TaskMirroredParameters::getMirrorPlane(App::DocumentObject*& obj,
-                                            std::vector<std::string>& sub) const
+void TaskMirroredParameters::getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
     const App::PropertyLinkSub& lnk = planeLinks.getCurrentLink();
     obj = lnk.getValue();
@@ -226,7 +231,8 @@ TaskMirroredParameters::~TaskMirroredParameters()
         if (body) {
             App::Origin* origin = body->getOrigin();
             auto vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
-                Gui::Application::Instance->getViewProvider(origin));
+                Gui::Application::Instance->getViewProvider(origin)
+            );
             vpOrigin->resetTemporaryVisibility();
         }
     }

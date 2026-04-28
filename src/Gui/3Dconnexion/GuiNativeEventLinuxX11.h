@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUINATIVEEVENT_H
-#define GUINATIVEEVENT_H
+#pragma once
 
 #include "GuiAbstractNativeEvent.h"
 #include <vector>
@@ -35,23 +34,22 @@ class GUIApplicationNativeEventAware;
 
 namespace Gui
 {
-    class GUIApplicationNativeEventAware;
+class GUIApplicationNativeEventAware;
 
-    class GuiNativeEvent : public GuiAbstractNativeEvent
-    {
+class GuiNativeEvent: public GuiAbstractNativeEvent
+{
     Q_OBJECT
-    public:
-        GuiNativeEvent(GUIApplicationNativeEventAware *app);
-        ~GuiNativeEvent() override;
-        void initSpaceball(QMainWindow *window) override final;
-    private:
-        GuiNativeEvent();
-        GuiNativeEvent(const GuiNativeEvent&);
-        GuiNativeEvent& operator=(const GuiNativeEvent&);
-    public:
-        static bool xcbEventFilter(void *message, long* result);
-    };
-}
+public:
+    GuiNativeEvent(GUIApplicationNativeEventAware* app);
+    ~GuiNativeEvent() override;
+    void initSpaceball(QMainWindow* window) override final;
 
-#endif //GUINATIVEEVENT_H
+private:
+    GuiNativeEvent();
+    GuiNativeEvent(const GuiNativeEvent&);
+    GuiNativeEvent& operator=(const GuiNativeEvent&);
 
+public:
+    static bool xcbEventFilter(void* message, long* result);
+};
+}  // namespace Gui

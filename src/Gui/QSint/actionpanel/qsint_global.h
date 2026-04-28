@@ -6,8 +6,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef QSINT_GLOBAL_H
-#define QSINT_GLOBAL_H
+#pragma once
 
 #include <qglobal.h>
 
@@ -21,5 +20,3 @@
 #   define QSINT_EXPORT Q_DECL_IMPORT
 #  endif
 #endif
-
-#endif // QSINT_GLOBAL_H

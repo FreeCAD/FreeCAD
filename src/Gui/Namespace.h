@@ -21,13 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_NAMESPACE_H
-#define GUI_NAMESPACE_H
+#pragma once
 
 
-namespace Gui {
+namespace Gui
+{
 
-enum SelectionRole {
+enum SelectionRole
+{
     None = 0,
     Inner = 1,
     Outer = 2,
@@ -37,6 +38,4 @@ enum SelectionRole {
     Custom2 = 6,
 };
 
-} // namespace Gui
-
-#endif // GUI_NAMESPACE_H
+}  // namespace Gui

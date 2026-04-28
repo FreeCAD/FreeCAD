@@ -39,7 +39,7 @@ html = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR
 <html><head><meta name="qrichtext" content="1" /><style type="text/css">
 p, li { white-space: pre-wrap; }</style></head><body>inserthere</body></html>"""
 
-URL = "https://www.freecadweb.org/wiki/BIM_ingame_tutorial"
+URL = "https://www.freecad.org/wiki/BIM_ingame_tutorial"
 TESTINTERVAL = 1000  # interval between tests
 
 
@@ -97,11 +97,7 @@ class BIM_Tutorial:
         import codecs
         import re
         import sys
-
-        if sys.version_info.major < 3:
-            import urllib2
-        else:
-            import urllib.request as urllib2
+        from urllib.request import urlopen
 
         # initial loading
 
@@ -111,7 +107,7 @@ class BIM_Tutorial:
         # load tutorial from wiki
         offlineloc = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "Tutorial", "Tutorial.html")
         try:
-            u = urllib2.urlopen(URL)
+            u = urlopen(URL)
             html = u.read()
             if sys.version_info.major >= 3:
                 html = html.decode("utf8")
@@ -180,10 +176,10 @@ class BIM_Tutorial:
                         if not os.path.exists(storename):
                             if path.startswith("/images"):
                                 # relative path
-                                fullpath = "https://www.freecadweb.org/wiki" + path
+                                fullpath = "https://www.freecad.org/wiki" + path
                             else:
                                 fullpath = path
-                            u = urllib2.urlopen(fullpath)
+                            u = urlopen(fullpath)
                             imagedata = u.read()
                             f = open(storename, "wb")
                             f.write(imagedata)
@@ -243,7 +239,7 @@ class BIM_Tutorial:
         else:
             self.form.labelTasks.hide()
         self.dock.setWindowTitle(
-            translate("BIM", "BIM Tutorial - step") + " " + str(self.step) + " / " + str(self.steps)
+            translate("BIM", "BIM Tutorial - Step") + " " + str(self.step) + " / " + str(self.steps)
         )
         self.form.progressBar.setValue(int((float(self.step) / self.steps) * 100))
 

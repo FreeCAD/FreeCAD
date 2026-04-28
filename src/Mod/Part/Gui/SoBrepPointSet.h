@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,9 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SOBREPPOINTSET_H
-#define PARTGUI_SOBREPPOINTSET_H
+#pragma once
 
+#include <Inventor/fields/SoMFInt32.h>
+#include <Inventor/fields/SoSFColor.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <memory>
 #include <vector>
@@ -33,12 +36,15 @@
 class SoCoordinateElement;
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
+class SoIndexedPointSet;
 
-namespace PartGui {
+namespace PartGui
+{
 
 class ViewProviderPartExt;
 
-class PartGuiExport SoBrepPointSet : public SoPointSet {
+class PartGuiExport SoBrepPointSet: public SoPointSet
+{
     using inherited = SoPointSet;
 
     SO_NODE_HEADER(SoBrepPointSet);
@@ -46,35 +52,40 @@ class PartGuiExport SoBrepPointSet : public SoPointSet {
 public:
     static void initClass();
     SoBrepPointSet();
-    
-    void setViewProvider(ViewProviderPartExt* vp) { viewProvider = vp; }
+
+    void setViewProvider(ViewProviderPartExt* vp)
+    {
+        viewProvider = vp;
+    }
+
+    SoMFInt32 highlightCoordIndex;
+    SoMFInt32 selectionCoordIndex;
+    SoSFColor highlightColor;
+    SoSFColor selectionColor;
 
 protected:
-    ~SoBrepPointSet() override = default;
-    void GLRender(SoGLRenderAction *action) override;
-    void GLRenderBelowPath(SoGLRenderAction * action) override;
+    ~SoBrepPointSet() override;
+    void GLRender(SoGLRenderAction* action) override;
+    void GLRenderBelowPath(SoGLRenderAction* action) override;
     void doAction(SoAction* action) override;
 
-    void getBoundingBox(SoGetBoundingBoxAction * action) override;
+    void getBoundingBox(SoGetBoundingBoxAction* action) override;
 
 private:
     using SelContext = Gui::SoFCSelectionContext;
     using SelContextPtr = Gui::SoFCSelectionContextPtr;
-    void renderHighlight(SoGLRenderAction *action, SelContextPtr);
-    void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
+    void renderHighlight(SoGLRenderAction* action, SelContextPtr);
+    void renderSelection(SoGLRenderAction* action, SelContextPtr, bool push = true);
 
 private:
     SelContextPtr selContext;
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
-    uint32_t packedColor{0};
-    
+    uint32_t packedColor {0};
+    SoIndexedPointSet* overlayPointSet {nullptr};
+
     // backreference to viewprovider that owns this node
     ViewProviderPartExt* viewProvider = nullptr;
 };
 
-} // namespace PartGui
-
-
-#endif // PARTGUI_SOBREPPOINTSET_H
-
+}  // namespace PartGui

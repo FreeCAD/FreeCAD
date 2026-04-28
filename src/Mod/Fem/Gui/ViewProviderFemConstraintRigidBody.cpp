@@ -33,8 +33,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintRigidBody,
-                FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintRigidBody, FemGui::ViewProviderFemConstraintOnBoundary)
 
 
 ViewProviderFemConstraintRigidBody::ViewProviderFemConstraintRigidBody()

@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_FEATUREVIEWGROUP_H_
-#define TECHDRAW_FEATUREVIEWGROUP_H_
+#pragma once
 
-#include <string>
 #include <QRectF>
 
 #include <App/DocumentObject.h>
@@ -74,6 +72,14 @@ public:
 
     App::PropertyLink Anchor; /// Anchor Element to align views to
 
+    // this needs to be kept in the same sequence as the literals in the cpp file and with the QComboBox
+    // in TaskProjGroup.ui.
+    enum class ViewProjectionConvention {
+        FirstAngle = 0,
+        ThirdAngle,
+        Page
+    };
+
     double autoScale() const override;
     double autoScale(double w, double h) const override;
     QRectF getRect() const override;   //always scaled
@@ -115,10 +121,10 @@ public:
     //return PyObject as DrawProjGroupPy
     PyObject *getPyObject() override;
 
-    /// Determines either "First Angle" or "Third Angle".
+    /// Determines either "First angle" or "Third angle".
     App::Enumeration usedProjectionType();
 
-    /// Allowed projection types - either Document, First Angle or Third Angle
+    /// Allowed projection types - either Document, First angle or Third angle
     static const char* ProjectionTypeEnums[];
 
     bool hasAnchor();
@@ -202,5 +208,3 @@ protected:
 };
 
 } //namespace TechDraw
-
-#endif // TECHDRAW_FEATUREVIEWGROUP_H_

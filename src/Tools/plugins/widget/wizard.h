@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef WIZARD_H
-#define WIZARD_H
+#pragma once
 
 
 #include <QDialog>
@@ -115,5 +116,3 @@ public:
 protected:
     QObject* createExtension(QObject* object, const QString& iid, QObject* parent) const;
 };
-
-#endif

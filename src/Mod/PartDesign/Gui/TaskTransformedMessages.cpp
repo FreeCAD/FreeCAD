@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,7 +23,6 @@
  ***************************************************************************/
 
 
-
 #include <Gui/BitmapFactory.h>
 
 #include "ui_TaskTransformedMessages.h"
@@ -32,8 +33,13 @@ using namespace PartDesignGui;
 using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
-TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transformedView_)
-    : TaskBox(Gui::BitmapFactory().pixmap("Part_Transformed_Copy"), tr("Transformed Feature Messages"), true, nullptr)
+TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed* transformedView_)
+    : TaskBox(
+          Gui::BitmapFactory().pixmap("Part_Transformed_Copy"),
+          tr("Transformed Feature Messages"),
+          true,
+          nullptr
+      )
     , transformedView(transformedView_)
     , ui(new Ui_TaskTransformedMessages)
 {
@@ -48,11 +54,11 @@ TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transf
     this->groupLayout()->addWidget(proxy);
     ui->labelTransformationStatus->setText(transformedView->getMessage());
 
-    //NOLINTBEGIN
+    // NOLINTBEGIN
     connectionDiagnosis = transformedView->signalDiagnosis.connect(
         std::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this, sp::_1)
     );
-    //NOLINTEND
+    // NOLINTEND
 }
 
 TaskTransformedMessages::~TaskTransformedMessages()

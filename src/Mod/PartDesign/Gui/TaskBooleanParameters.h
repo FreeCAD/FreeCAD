@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -21,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskBooleanParameters_H
-#define GUI_TASKVIEW_TaskBooleanParameters_H
+#pragma once
 
 #include "TaskFeatureParameters.h"
 
@@ -35,23 +36,26 @@
 
 class Ui_TaskBooleanParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class TaskBooleanParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskBooleanParameters: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    explicit TaskBooleanParameters(ViewProviderBoolean *BooleanView, QWidget *parent=nullptr);
+    explicit TaskBooleanParameters(ViewProviderBoolean* BooleanView, QWidget* parent = nullptr);
     ~TaskBooleanParameters() override;
 
     const std::vector<std::string> getBodies() const;
@@ -67,30 +71,36 @@ protected:
     void exitSelectionMode();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskBooleanParameters> ui;
-    ViewProviderBoolean *BooleanView;
+    ViewProviderBoolean* BooleanView;
 
-    enum selectionModes { none, bodyAdd, bodyRemove };
+    enum selectionModes
+    {
+        none,
+        bodyAdd,
+        bodyRemove
+    };
     selectionModes selectionMode;
-
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgBooleanParameters : public TaskDlgFeatureParameters
+class TaskDlgBooleanParameters: public TaskDlgFeatureParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgBooleanParameters(ViewProviderBoolean *BooleanView);
+    explicit TaskDlgBooleanParameters(ViewProviderBoolean* BooleanView);
     ~TaskDlgBooleanParameters() override;
 
     ViewProviderBoolean* getBooleanView() const
-    { return BooleanView; }
+    {
+        return BooleanView;
+    }
 
 
 public:
@@ -102,20 +112,22 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user presses the help button
+
     bool isAllowedAlterDocument() const override
-    { return false; }
+    {
+        return false;
+    }
 
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 protected:
-    ViewProviderBoolean   *BooleanView;
+    ViewProviderBoolean* BooleanView;
 
-    TaskBooleanParameters  *parameter;
+    TaskBooleanParameters* parameter;
 };
 
-} //namespace PartDesignGui
-
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+}  // namespace PartDesignGui

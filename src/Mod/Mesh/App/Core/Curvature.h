@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Imetric 3D GmbH                                    *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHCORE_CURVATURE_H
-#define MESHCORE_CURVATURE_H
+#pragma once
 
 #include "Definitions.h"
 #include <Base/Vector3D.h>
@@ -43,10 +44,7 @@ struct MeshExport CurvatureInfo
 class MeshExport FacetCurvature
 {
 public:
-    FacetCurvature(const MeshKernel& kernel,
-                   const MeshRefPointToFacets& search,
-                   float,
-                   unsigned long);
+    FacetCurvature(const MeshKernel& kernel, const MeshRefPointToFacets& search, float, unsigned long);
     CurvatureInfo Compute(FacetIndex index) const;
 
 private:
@@ -85,5 +83,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESHCORE_CURVATURE_H

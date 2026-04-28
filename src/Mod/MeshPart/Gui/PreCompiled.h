@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_PART_GUI_PRECOMPILED_H
-#define MESH_PART_GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -66,5 +67,3 @@
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-
-#endif  // __PRECOMPILED_GUI__

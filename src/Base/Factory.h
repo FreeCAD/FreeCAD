@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -22,15 +24,12 @@
  ***************************************************************************/
 
 
-#ifndef BASE_FACTORY_H
-#define BASE_FACTORY_H
+#pragma once
 
 #include <list>
 #include <map>
 #include <string>
-#ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
-#endif
 
 
 namespace Base
@@ -137,6 +136,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif

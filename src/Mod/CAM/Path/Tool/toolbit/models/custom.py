@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -20,6 +22,7 @@
 # ***************************************************************************
 import FreeCAD
 import Path
+from typing import Optional, Mapping
 from ...shape import ToolBitShapeCustom
 from .base import ToolBit
 
@@ -27,9 +30,11 @@ from .base import ToolBit
 class ToolBitCustom(ToolBit):
     SHAPE_CLASS = ToolBitShapeCustom
 
-    def __init__(self, shape: ToolBitShapeCustom, id: str | None = None):
+    def __init__(
+        self, shape: ToolBitShapeCustom, id: str | None = None, attrs: Optional[Mapping] = None
+    ):
         Path.Log.track(f"ToolBitCustom __init__ called with shape: {shape}, id: {id}")
-        super().__init__(shape, id=id)
+        super().__init__(shape, id=id, attrs=attrs)
 
     @property
     def summary(self) -> str:

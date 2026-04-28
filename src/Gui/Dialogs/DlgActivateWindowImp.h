@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,13 +23,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGACTIVATEWINDOW_IMP_H
-#define GUI_DIALOG_DLGACTIVATEWINDOW_IMP_H
+#pragma once
 
 #include <QDialog>
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgActivateWindow;
 /**
  * The DlgActivateWindowImp class provides a dialog to activate the MDI window
@@ -35,7 +38,7 @@ class Ui_DlgActivateWindow;
  * an application you cannot put all of them into the "Windows" popup menu.
  * \author Werner Mayer
  */
-class DlgActivateWindowImp : public QDialog
+class DlgActivateWindowImp: public QDialog
 {
     Q_OBJECT
 
@@ -50,7 +53,5 @@ private:
     Ui_DlgActivateWindow* ui;
 };
 
-} // namespace Dialog
-} // namespace Gui
-
-#endif // GUI_DIALOG_DLGACTIVATEWINDOW_IMP_H
+}  // namespace Dialog
+}  // namespace Gui

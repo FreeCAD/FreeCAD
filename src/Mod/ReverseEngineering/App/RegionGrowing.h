@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REEN_REGIONGROWING_H
-#define REEN_REGIONGROWING_H
+#pragma once
 
 #include <list>
 #include <vector>
@@ -56,5 +57,3 @@ private:
 };
 
 }  // namespace Reen
-
-#endif  // REEN_REGIONGROWING_H

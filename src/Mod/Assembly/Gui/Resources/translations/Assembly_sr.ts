@@ -17,12 +17,12 @@
   <context>
     <name>Assembly_InsertLink</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="56"/>
+      <location filename="../../../CommandInsertLink.py" line="55"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Убаци компоненту у активни склоп. Ово направи везе према деловима, телима, примитивима и склоповима. Да би убацио спољне компоненте, увери се да је датотека &lt;b&gt;отворена у тренутној сесији&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Убаци левим кликом миша на ставке у листи.&lt;/li&gt;&lt;li&gt;Уклони десним кликом миша на ставке у листи.&lt;/li&gt;&lt;li&gt;</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="81"/>
+      <location filename="../../../CommandInsertLink.py" line="80"/>
       <source>Component</source>
       <translation>Део</translation>
     </message>
@@ -30,12 +30,12 @@
   <context>
     <name>Assembly_SolveAssembly</name>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="50"/>
+      <location filename="../../../CommandSolveAssembly.py" line="49"/>
       <source>Solve Assembly</source>
       <translation>Реши склоп</translation>
     </message>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="55"/>
+      <location filename="../../../CommandSolveAssembly.py" line="54"/>
       <source>Solves the currently active assembly.</source>
       <translation>Реши тренутно активни склоп.</translation>
     </message>
@@ -43,42 +43,42 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="74"/>
+      <location filename="../../../InitGui.py" line="75"/>
       <source>Assembly</source>
       <translation>Скупштина</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="138"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
       <source>Active object</source>
       <translation>Активни објекат</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="123"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="154"/>
       <source>Turn flexible</source>
       <translation>Okreni fleksibilno</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="124"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="156"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
       <translation>Подсклоп је тренутно крут. Ово ће га направити флексибилним.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="128"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="160"/>
       <source>Turn rigid</source>
       <translation>Окрени круто</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="129"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="162"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
       <translation>Подсклоп је тренутно флексибилан. Ово ће га направити крутим.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="270"/>
+      <location filename="../../../App/BomObject.cpp" line="329"/>
       <source>N/A</source>
       <translation>Н/А</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="294"/>
+      <location filename="../../../App/BomObject.cpp" line="353"/>
       <source>Not supported</source>
       <translation>Није подржано</translation>
     </message>
@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="109"/>
+      <location filename="../../../InitGui.py" line="112"/>
       <source>Assembly</source>
       <translation>Склопови</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="110"/>
+      <location filename="../../../InitGui.py" line="113"/>
       <source>Assembly Joints</source>
       <translation>Спојеви у склопу</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="113"/>
+      <location filename="../../../InitGui.py" line="116"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Склопови</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1569"/>
+      <location filename="../../../JointObject.py" line="1809"/>
       <source>Distance</source>
       <translation>Растојање</translation>
     </message>
@@ -146,7 +146,6 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
-      <location filename="../../../JointObject.py" line="1571"/>
       <source>Angle</source>
       <translation>Угаони</translation>
     </message>
@@ -171,27 +170,27 @@
       <translation>Ремени</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="641"/>
+      <location filename="../../../JointObject.py" line="818"/>
       <source>Broken link in: </source>
       <translation>Неисправна веза у: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1413"/>
+      <location filename="../../../JointObject.py" line="1628"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Потребно је изабрати 2 елемента са 2 различита дела</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1573"/>
+      <location filename="../../../JointObject.py" line="1811"/>
       <source>Radius 1</source>
       <translation>Полупречник 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1575"/>
+      <location filename="../../../JointObject.py" line="1813"/>
       <source>Thread pitch</source>
       <translation>Корак навоја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1577"/>
+      <location filename="../../../JointObject.py" line="1815"/>
       <source>Pitch radius</source>
       <translation>Подеони полупречник</translation>
     </message>
@@ -236,164 +235,171 @@
       <translation>Количина (аутоматски)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="190"/>
+      <location filename="../../../CommandCreateBom.py" line="188"/>
       <source>Default</source>
       <translation>Подразумевано</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="286"/>
+      <location filename="../../../CommandCreateBom.py" line="284"/>
       <source>Duplicate Name</source>
       <translation>Дуплирано име</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="287"/>
+      <location filename="../../../CommandCreateBom.py" line="285"/>
       <source>This name is already used. Please choose a different name.</source>
       <translation>Ово име је већ у употреби. Изабери друго име.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="366"/>
+      <location filename="../../../CommandCreateBom.py" line="365"/>
       <source>Options</source>
       <translation>Опције</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="373"/>
+      <location filename="../../../CommandCreateBom.py" line="372"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
       <translation>Делови подсклопова: у саставници ће се појавити делови подсклопова</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="379"/>
+      <location filename="../../../CommandCreateBom.py" line="378"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
       <translation>Компоненте унутар контејнера Део: у саставници ће се појавити и компоненте унутар контејнера Део</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="385"/>
+      <location filename="../../../CommandCreateBom.py" line="384"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
       <translation>Само контејнери Део: у саставници ће се појавити само контејнери Део и подсклопови. Пуна тела моделирана у окружењу Конструисање делова, компоненте из гвожђаре или примитиви из окружења Делови биће игнорисани.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="387"/>
+      <location filename="../../../CommandCreateBom.py" line="386"/>
       <source>Columns</source>
       <translation>Колоне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="400"/>
+      <location filename="../../../CommandCreateBom.py" line="399"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
       <translation>Сопствене колоне: 'Опис' и остале колоне које су додате помоћу опције 'Додај колону' неће бити преписане. Ако назив колоне почиње са '.' након чега следи назив својства (нпр. '.Дужина'), колона ће бити аутоматски попуњена вредношћу тог својства. Ове колоне се могу преименовати двоструким кликом или притиском на типку F2 (преименовање колоне ће обрисати њихове податке).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="406"/>
+      <location filename="../../../CommandCreateBom.py" line="405"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
       <translation>Било која колона (сопствена или не) може бити обрисана притиском на типку Дел</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="408"/>
+      <location filename="../../../CommandCreateBom.py" line="407"/>
       <source>Export</source>
       <translation>Извези</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="415"/>
+      <location filename="../../../CommandCreateBom.py" line="414"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
       <translation>Формат извезене датотеке можете прилагодити у подешавањима радног окружења Табеле</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="394"/>
+      <location filename="../../../CommandCreateBom.py" line="393"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>Аутоматске колоне: (Индекс, Количина, Назив...) се попуњавају аутоматски. Свака промена коју направиш биће поништена. Ове колоне се не могу преименовати.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="85"/>
+      <location filename="../../../CommandInsertNewPart.py" line="108"/>
       <source>Part name</source>
       <translation>Назив дела</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="90"/>
+      <location filename="../../../CommandInsertNewPart.py" line="113"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="95"/>
+      <location filename="../../../CommandInsertNewPart.py" line="118"/>
       <source>Create part in new file</source>
       <translation>Направи део унутар нове датотеке</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="102"/>
+      <location filename="../../../CommandInsertNewPart.py" line="125"/>
       <source>Joint new part origin</source>
       <translation>Задај спој координатног почетка новог дела</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="138"/>
+      <location filename="../../../CommandInsertNewPart.py" line="161"/>
       <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
       <translation>Док се не сачува нови документ није могуће задавати спојеве нових делова.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="139"/>
+      <location filename="../../../CommandInsertNewPart.py" line="78"/>
+      <location filename="../../../CommandInsertNewPart.py" line="162"/>
       <source>Save Document</source>
       <translation>Сачувај документ</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="141"/>
+      <location filename="../../../CommandInsertNewPart.py" line="77"/>
+      <source>The assembly document must be saved before inserting a new part.</source>
+      <translation>Пре неге што се убаци нови део потребно је снимити склоп.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertNewPart.py" line="80"/>
+      <location filename="../../../CommandInsertNewPart.py" line="164"/>
       <source>Save</source>
       <translation>Сачувај</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="144"/>
+      <location filename="../../../CommandInsertNewPart.py" line="167"/>
       <source>Do not Link</source>
       <translation>Немој спајати</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="488"/>
-      <source>Enter your formula...</source>
-      <translation>Унеси своју формулу...</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="493"/>
+      <source>Enter your formula…</source>
+      <translation type="unfinished">Enter your formula…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="541"/>
+      <location filename="../../../CommandCreateSimulation.py" line="546"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
       <translation>Великим словима су означене променљиве које треба да замените стварним вредностима. Више детаља о сваком примеру у кратком опису.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="544"/>
+      <location filename="../../../CommandCreateSimulation.py" line="549"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - Линеарно: C + VEL*time</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="546"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - Квадратно: C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="549"/>
+      <location filename="../../../CommandCreateSimulation.py" line="554"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - Хармонично: C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="552"/>
+      <location filename="../../../CommandCreateSimulation.py" line="557"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - Експоненцијално: C*exp(time/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="558"/>
+      <location filename="../../../CommandCreateSimulation.py" line="563"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - Степеник - Равно, скок, па поново равно: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="565"/>
+      <location filename="../../../CommandCreateSimulation.py" line="570"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - Правоугаони импулс - Равно, скок, равно, пад на почетну вредност, па поново равно: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="572"/>
+      <location filename="../../../CommandCreateSimulation.py" line="577"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - Импулс са нагибом - Равно, скок, косина, пад на почетну вредност, па поново равно: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="582"/>
+      <location filename="../../../CommandCreateSimulation.py" line="587"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C је помак.
 VEL је брзина или нагиб т.ј. градијент праве линије.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="590"/>
+      <location filename="../../../CommandCreateSimulation.py" line="595"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -402,7 +408,7 @@ VEL је брзина или нагиб т.ј. градијент праве л�
 ACC је убрзање или коефицијент другог реда. Функција је парабола.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="599"/>
+      <location filename="../../../CommandCreateSimulation.py" line="604"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -413,14 +419,14 @@ VEL је угаона брзина у радијанима по секунди.
 PHASE је фаза синусног таласа.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="606"/>
+      <location filename="../../../CommandCreateSimulation.py" line="611"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C је константа.
 TIMEC је временска константа експоненцијалне функције.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="614"/>
+      <location filename="../../../CommandCreateSimulation.py" line="619"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -429,7 +435,7 @@ L2 је ниво после времена = T0.
 SLOPE одређује величину нагиба прелаза између L1 и L2 око времена = T0. SLOPE = 1000 или већи су погодни.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="623"/>
+      <location filename="../../../CommandCreateSimulation.py" line="628"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -440,7 +446,7 @@ T2 је крај импулса.
 SLOPE дефинише стрмину прелаза између 0 и H око времена = T1 и T2. SLOPE = 1000 или већи су погодни.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="634"/>
+      <location filename="../../../CommandCreateSimulation.py" line="639"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -455,48 +461,98 @@ H2 је висина на T2, т. ј. на крају рампе.
 SLOPE дефинише нагиб прелаза између 0 и H1, и H2 до 0 око времена = T1 и T2 респективно. SLOPE = 1000 или већи су погодни.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="672"/>
-      <location filename="../../../CommandCreateSimulation.py" line="689"/>
+      <location filename="../../../CommandCreateSimulation.py" line="677"/>
+      <location filename="../../../CommandCreateSimulation.py" line="694"/>
       <source>Help</source>
       <translation>Помоћ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="687"/>
+      <location filename="../../../CommandCreateSimulation.py" line="692"/>
       <source>Hide help</source>
       <translation>Сакриј помоћ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="142"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1044"/>
+      <source>Animation</source>
+      <translation type="unfinished">Animation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
+      <source>Not enough frames to create an animation.</source>
+      <translation type="unfinished">Not enough frames to create an animation.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1052"/>
+      <source>Save Animation</source>
+      <translation type="unfinished">Save Animation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1074"/>
+      <source>Generating Frames…</source>
+      <translation type="unfinished">Generating Frames…</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
+      <source>Cancel</source>
+      <translation>Откажи</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1102"/>
+      <source>Assembling animation…</source>
+      <translation type="unfinished">Assembling animation…</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1118"/>
+      <source>An error occurred while saving the animation</source>
+      <translation type="unfinished">An error occurred while saving the animation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1136"/>
+      <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
+      <translation type="unfinished">Pillow (PIL) is not installed. It is required for GIF export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1159"/>
+      <source>OpenCV is not installed. It is required for video export.</source>
+      <translation type="unfinished">OpenCV is not installed. It is required for video export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1176"/>
+      <source>Could not open video writer. Check codecs.</source>
+      <translation type="unfinished">Could not open video writer. Check codecs.</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="160"/>
       <source>Create</source>
       <translation>Спакуј</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="158"/>
+      <location filename="../../../InitGui.py" line="176"/>
       <source>Activate</source>
       <translation>Активирати</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="192"/>
+      <location filename="../../../InitGui.py" line="210"/>
       <source>Insert</source>
       <translation>Убаци</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="203"/>
+      <location filename="../../../InitGui.py" line="221"/>
       <source>Grounding</source>
       <translation>Направи непокретним</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="230"/>
+      <location filename="../../../InitGui.py" line="248"/>
       <source>Constraints</source>
       <translation>Ограничења</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="246"/>
+      <location filename="../../../InitGui.py" line="264"/>
       <source>Tools</source>
       <translation>Алати</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="259"/>
+      <location filename="../../../InitGui.py" line="277"/>
       <source>Simulation</source>
       <translation>Симулација</translation>
     </message>
@@ -504,180 +560,185 @@ SLOPE дефинише нагиб прелаза између 0 и H1, и H2 д�
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="183"/>
+      <location filename="../../../JointObject.py" line="184"/>
       <source>The type of the joint</source>
       <translation>Врста споја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="209"/>
+      <location filename="../../../JointObject.py" line="370"/>
       <source>The first reference of the joint</source>
       <translation>Прва референца у споју</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="221"/>
+      <location filename="../../../JointObject.py" line="218"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation>Ово је локални координатни систем унутар референтног објекта 1 који ће се користити за спој</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="233"/>
+      <location filename="../../../JointObject.py" line="230"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation>Ово спречава да се поново израчунава Положај1, што омогућава сопствено позиционирање помоћу параметра Положај</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="245"/>
-      <location filename="../../../JointObject.py" line="516"/>
+      <location filename="../../../JointObject.py" line="242"/>
+      <location filename="../../../JointObject.py" line="563"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>Одмак првих изабраних елемената споја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="267"/>
+      <location filename="../../../JointObject.py" line="258"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>Ово је локални координатни систем унутар референтног објекта 2 који ће се користити за спој</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="279"/>
+      <location filename="../../../JointObject.py" line="270"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation>Ово спречава да се поново израчунава Положај2, што омогућава сопствено позиционирање помоћу параметра Положај</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="291"/>
-      <location filename="../../../JointObject.py" line="527"/>
+      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="574"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>Одмак других изабраних елемената споја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
+      <location filename="../../../JointObject.py" line="304"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>Омогући минимално дужинско ограничење споја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="341"/>
+      <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>Омогући максимално дужинско ограничење споја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="354"/>
+      <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>Омогући минимално угаоно ограничење споја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="367"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>Омогући максимално угаоно ограничење споја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="380"/>
+      <location filename="../../../JointObject.py" line="391"/>
+      <source>This is the angle of the joint. It is used only by the Angle joint.</source>
+      <translation>Ово је угао споја. Користи се само код угаоног споја.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="427"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Ово је минимално дужинско ограничење између координатних система (уздуж њихових З оса)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="392"/>
+      <location filename="../../../JointObject.py" line="439"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Ово је максимално дужинско ограничење између координатних система (уздуж њихових З оса)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="404"/>
+      <location filename="../../../JointObject.py" line="451"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Ово је минимално угаоно ограничење између координатних система (између њихових X оса)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="416"/>
+      <location filename="../../../JointObject.py" line="463"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Ово је минимално угаоно ограничење између координатних система (између њихових X оса)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="255"/>
+      <location filename="../../../JointObject.py" line="379"/>
       <source>The second reference of the joint</source>
       <translation>Друга референца у споју</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="435"/>
+      <location filename="../../../JointObject.py" line="482"/>
       <source>The first object of the joint</source>
       <translation>Први објекат у споју</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="455"/>
+      <location filename="../../../JointObject.py" line="502"/>
       <source>The second object of the joint</source>
       <translation>Други објекат у споју</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="304"/>
+      <location filename="../../../JointObject.py" line="403"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Растојање споја. Користи се код раванског и навојног споја, а такође и код зупчастог, ременог (полупречник) и преносног споја са зупчастом летвом (полупречник корака)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="316"/>
+      <location filename="../../../JointObject.py" line="415"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Ово је друго растојање споја. Користи се само код зупчастог споја да одреди други полупречник.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="469"/>
+      <location filename="../../../JointObject.py" line="516"/>
       <source>The {order} reference of the joint</source>
       <translation>{order} референци споја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1037"/>
+      <location filename="../../../JointObject.py" line="1237"/>
       <source>The object to ground</source>
       <translation>Објекат који треба направити непокретним</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="259"/>
-      <location filename="../../../CommandCreateView.py" line="296"/>
+      <location filename="../../../CommandCreateView.py" line="376"/>
+      <location filename="../../../CommandCreateView.py" line="413"/>
       <source>The objects moved by the move</source>
       <translation>Објекти који се померају приликом померања</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="271"/>
+      <location filename="../../../CommandCreateView.py" line="388"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Померање током померања. Крајњи положај је резултат почетног положаја * овог положаја.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="280"/>
+      <location filename="../../../CommandCreateView.py" line="397"/>
       <source>The type of the move</source>
       <translation>Врста померања</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="111"/>
+      <location filename="../../../CommandCreateSimulation.py" line="116"/>
       <source>Simulation start time.</source>
       <translation>Време почетка симулације.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="123"/>
+      <location filename="../../../CommandCreateSimulation.py" line="128"/>
       <source>Simulation end time.</source>
       <translation>Време завршетка симулације.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="135"/>
+      <location filename="../../../CommandCreateSimulation.py" line="140"/>
       <source>Simulation time step for output.</source>
       <translation>Временски корак за излазну симулацију.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="147"/>
+      <location filename="../../../CommandCreateSimulation.py" line="152"/>
       <source>Integration global error tolerance.</source>
       <translation>Интегрисана глобална толеранција грешака.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="159"/>
+      <location filename="../../../CommandCreateSimulation.py" line="164"/>
       <source>Frames Per Second.</source>
       <translation>Кадрова по секунди.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="211"/>
+      <location filename="../../../CommandCreateSimulation.py" line="216"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>Број децимала за вредности прорачуна</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="311"/>
+      <location filename="../../../CommandCreateSimulation.py" line="316"/>
       <source>The joint that is moved by the motion</source>
       <translation>Померени спојеви приликом померања</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="323"/>
+      <location filename="../../../CommandCreateSimulation.py" line="328"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
       <translation>Ово је формула кретања. На пример '1.0*time'.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="332"/>
+      <location filename="../../../CommandCreateSimulation.py" line="337"/>
       <source>The type of the motion</source>
       <translation>Врста померања</translation>
     </message>
@@ -685,37 +746,37 @@ SLOPE дефинише нагиб прелаза између 0 и H1, и H2 д�
   <context>
     <name>TaskAssemblyCreateJoint</name>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="55"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
       <source>Distance</source>
       <translation>Равански</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>
       <source>Radius 2</source>
       <translation>Полупречник 2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
       <source>Offset</source>
       <translation>Одмак</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
       <source>Rotation</source>
       <translation>Окретање</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="175"/>
       <source>Offset1</source>
       <translation>Одмак1</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="172"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="196"/>
       <source>Offset2</source>
       <translation>Одмак2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="191"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="215"/>
       <source>Show advanced offsets</source>
       <translation>Прикажи поставке одмака</translation>
     </message>
@@ -730,52 +791,57 @@ SLOPE дефинише нагиб прелаза између 0 и H1, и H2 д�
       <translation>Изолуј</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="158"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="55"/>
+      <source>Angle</source>
+      <translation>Угао</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="182"/>
       <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
       <translation>Одмак првих изабраних елемената (координатног система) споја</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="179"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="203"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
       <translation>Одмак других изабраних елемената (координатног система) споја</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
       <source>Reverse the direction of the joint</source>
       <translation>Обрни смер споја</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="210"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
       <source>Reverse</source>
       <translation>Обрнуто</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="221"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
       <source>Limits</source>
       <translation>Ограничења</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="227"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
       <source>Min length</source>
       <translation>Минимална дужина</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="250"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
       <source>Max length</source>
       <translation>Максимална дужина</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="273"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min angle</source>
       <translation>Минимални угао</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="302"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
       <source>Max angle</source>
       <translation>Минимални угао</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="334"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
       <source>Reverse rotation</source>
       <translation>Обрни ротацију</translation>
     </message>
@@ -873,63 +939,52 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="207"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Објекту су придружени један или више спојева.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="209"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Да ли желиш померити објекат и обрисати придружене спојеве?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1006"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1104"/>
       <source>Move part</source>
       <translation>Помеи део</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1519"/>
-      <source>ViewProviderAssembly</source>
-      <comment>and %1 more</comment>
-      <translation type="unfinished">ViewProviderAssembly</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1536"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
       <source>Empty Assembly</source>
       <translation>Празан склоп</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1540"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1831"/>
       <source>Over-constrained:</source>
-      <translation>Превише ограничена:</translation>
+      <translation>Превише ограничена скица:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1839"/>
       <source>Malformed joints:</source>
       <translation>Оштећени спојеви:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1553"/>
-      <source>Redundant joints:</source>
-      <translation>Сувишни спојеви:</translation>
+      <location filename="../../ViewProviderAssembly.cpp" line="1802"/>
+      <source>and %1 more</source>
+      <translation>и %1 више</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
-      <source>Partially redundant:</source>
-      <translation>Делимично сувише ограничена скица:</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1566"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
       <source>Solver failed to converge</source>
       <translation>Солвер није успео да се приближи</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1572"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1871"/>
       <source>Under-constrained:</source>
       <translation>Недовољно ограничена скица:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1574"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Степени слободе</numerusform>
@@ -938,7 +993,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1578"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1877"/>
       <source>Fully constrained</source>
       <translation>Потпуно ограничена скица</translation>
     </message>
@@ -952,8 +1007,8 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="324"/>
-      <source>&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -966,7 +1021,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="396"/>
       <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Направи зупчасти или ремени пренос који спајају 2 дела која се заједно обрћу&lt;/p&gt;&lt;p&gt;Изабери исте координатне системе као за ротационе спојеве.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1067,13 +1122,13 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Направи саставницу склопа. Ако је неки склоп активан, направиће његову саставницу. У супротном, направиће саставницу целог документа.&lt;/p&gt;&lt;p&gt;Објекат саставница је врста документа унутар које се чувају сва подешавања саставнице. Саставница је табеларни објекат који може веома лако представити све делове склопа. Ако вам није потребно да саставница буде сачувана унутар документа, можете једноставно да је извезете и откажете задатак.&lt;/p&gt;&lt;p&gt;Колоне „Редни број“, „Назив“, „Назив датотеке“ и „Количина“ се аутоматски генеришу при поновном израчунавању. Колоне „Опис“ и сопствене колоне се не преписују.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="584"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Спојеви</translation>
     </message>
@@ -1081,7 +1136,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="135"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="168"/>
       <source>Toggle Rigid</source>
       <translation>Укљ/искљ крутост</translation>
     </message>
@@ -1166,12 +1221,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Глобална толеранција грешака</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
+      <source>Save the animation as a GIF or video file.</source>
+      <translation type="unfinished">Save the animation as a GIF or video file.</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="197"/>
       <source>Animation Player</source>
       <translation>Плејер анимације</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="236"/>
       <source>Frames per second</source>
       <translation>Кадрова по секунди</translation>
     </message>
@@ -1181,42 +1241,42 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Толеранција</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="166"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="168"/>
       <source>Generate</source>
       <translation>Генериши</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="205"/>
       <source>Frame</source>
       <translation>Кадар</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="225"/>
       <source>0.00 s</source>
       <translation>0.00 s</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="232"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="256"/>
       <source>Step backward</source>
       <translation>Корак уназад</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="252"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="276"/>
       <source>Play backward</source>
       <translation>Пусти уназад</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="272"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="296"/>
       <source>Stop</source>
       <translation>Cтоп</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="292"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="316"/>
       <source>Play forward</source>
       <translation>Пусти</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="312"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="336"/>
       <source>Step forward</source>
       <translation>Корак напред</translation>
     </message>
@@ -1263,7 +1323,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Ако је склоп активан: Направи спој који трајно закључава два дела заједно, спречавајући било какво кретање или ротацију&lt;/p&gt;&lt;p&gt;2 - Ако је део активан: Позиционира подређене делове подударањем изабраних координатних система. Други изабрани део ће се померити.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1328,7 +1388,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="203"/>
       <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Направи равански спој који фиксира растојање између изабраних објеката.&lt;/p&gt;&lt;p&gt;Овај спој на основу изабраних објеката може да направи различите спојеве. На пример, растојање од 0 између равни и цилиндра ствара тангентни спој. Растојање од 0 између равни ће их учинити копланарним.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1379,8 +1439,8 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="300"/>
-      <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1393,7 +1453,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="348"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Направи зупчасти пренос који спаја 2 зупчаника који се обрћу у супротном смеру.&lt;/p&gt;&lt;p&gt;Изабери исте координатне системе као за ротационе спојеве.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1406,31 +1466,31 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="372"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Направи ремени пренос који спаја 2 објекта који се обрћу у истом смеру&lt;/p&gt;&lt;p&gt;Изабери исте координатне системе као за ротационе спојеве.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="429"/>
+      <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Toggle Grounded</source>
       <translation>Направи непокретним</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="435"/>
-      <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="437"/>
+      <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
+      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateSimulation</name>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="67"/>
+      <location filename="../../../CommandCreateSimulation.py" line="72"/>
       <source>Simulation</source>
       <translation>Симулација</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="72"/>
+      <location filename="../../../CommandCreateSimulation.py" line="77"/>
       <source>Creates a new simulation of the current assembly</source>
       <translation>Направи нову симулацију склопа</translation>
     </message>
@@ -1438,12 +1498,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateView</name>
     <message>
-      <location filename="../../../CommandCreateView.py" line="54"/>
+      <location filename="../../../CommandCreateView.py" line="53"/>
       <source>Exploded View</source>
       <translation>Растављени поглед</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="59"/>
+      <location filename="../../../CommandCreateView.py" line="58"/>
       <source>Creates an exploded view of the current assembly</source>
       <translation>Направи растављени поглед активног склопа</translation>
     </message>
@@ -1451,37 +1511,159 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_Insert</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="65"/>
+      <location filename="../../../CommandInsertLink.py" line="64"/>
       <source>Insert Component</source>
       <translation>Уметни компоненту</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="222"/>
+      <source>Partially loaded</source>
+      <translation>Делимично учитан</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="615"/>
+      <source>Fully load document</source>
+      <translation>Потпуно учитан документ</translation>
     </message>
   </context>
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="37"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
       <translation>Поруке алгоритма за решавање</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="54"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Click to select these conflicting joints.</source>
       <translation>Кликни да би изабрао конфликтне спојеве.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="57"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Click to select these redundant joints.</source>
       <translation>Кликни да би изабрао сувишне спојеве.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="60"/>
-      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
-      <translation>Склоп има недовољно ограничене делове који проузрокују нежељене степене слободе. Кликните да бисте изабрали недовољно ограничене делове.</translation>
+      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
+Click to select these unconstrained components.
+Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
+      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
+Click to select these unconstrained components.
+Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
       <source>Click to select these malformed joints.</source>
       <translation>Кликни да би изабрао оштећене спојеве.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblyLinkSelectLinked</name>
+    <message>
+      <location filename="../../Commands.cpp" line="101"/>
+      <source>Assembly</source>
+      <translation>Скупштина</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="102"/>
+      <source>Go to linked Assembly</source>
+      <translation type="unfinished">Go to linked Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="103"/>
+      <source>Selects the linked assembly and switches to its original document</source>
+      <translation type="unfinished">Selects the linked assembly and switches to its original document</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectConflictingConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="165"/>
+      <source>Assembly</source>
+      <translation>Скупштина</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="166"/>
+      <source>Select conflicting constraints</source>
+      <translation type="unfinished">Select conflicting constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="167"/>
+      <source>Selects conflicting joints in the active assembly</source>
+      <translation type="unfinished">Selects conflicting joints in the active assembly</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectRedundantConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="200"/>
+      <source>Assembly</source>
+      <translation>Скупштина</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="201"/>
+      <source>Select redundant constraints</source>
+      <translation type="unfinished">Select redundant constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="202"/>
+      <source>Selects redundant joints in the active assembly</source>
+      <translation type="unfinished">Selects redundant joints in the active assembly</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectMalformedConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="233"/>
+      <source>Assembly</source>
+      <translation>Скупштина</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="234"/>
+      <source>Select malformed constraints</source>
+      <translation type="unfinished">Select malformed constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="235"/>
+      <source>Selects malformed joints in the active assembly</source>
+      <translation type="unfinished">Selects malformed joints in the active assembly</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectComponentsWithDoFs</name>
+    <message>
+      <location filename="../../Commands.cpp" line="267"/>
+      <source>Assembly</source>
+      <translation>Скупштина</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="268"/>
+      <source>Select components with DoFs</source>
+      <translation type="unfinished">Select components with DoFs</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="269"/>
+      <source>Selects unconstrained components in the active assembly</source>
+      <translation type="unfinished">Selects unconstrained components in the active assembly</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectJointsOfComponent</name>
+    <message>
+      <location filename="../../Commands.cpp" line="310"/>
+      <source>Assembly</source>
+      <translation>Скупштина</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="311"/>
+      <source>Select component joints</source>
+      <translation type="unfinished">Select component joints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="312"/>
+      <source>Selects all joints referencing the selected component</source>
+      <translation type="unfinished">Selects all joints referencing the selected component</translation>
     </message>
   </context>
 </TS>

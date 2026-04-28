@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -42,7 +44,6 @@ from .asset import Asset
 from .serializer import AssetSerializer
 from .uri import AssetUri
 from .cache import AssetCache, CacheKey
-
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.ERROR)

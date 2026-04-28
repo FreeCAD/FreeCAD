@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -35,6 +37,7 @@ In many cases using `App::Link` makes more sense, as this object is
 more memory efficient as it reuses the same internal `Shape`
 instead of creating a copy of it.
 """
+
 ## @package gui_clone
 # \ingroup draftguitools
 # \brief Provides GUI tools to create Clone objects.
@@ -66,10 +69,12 @@ class Clone(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {"Pixmap": "Draft_Clone",
-                "Accel": "C, L",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Clone", "Clone"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Clone", "Creates a clone of the selected objects")}
+        return {
+            "Pixmap": "Draft_Clone",
+            "Accel": "C, L",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Clone", "Clone"),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_Clone", "Creates a clone of the selected objects"),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -121,6 +126,6 @@ class Clone(gui_base_original.Modifier):
 
 
 Draft_Clone = Clone
-Gui.addCommand('Draft_Clone', Clone())
+Gui.addCommand("Draft_Clone", Clone())
 
 ## @}

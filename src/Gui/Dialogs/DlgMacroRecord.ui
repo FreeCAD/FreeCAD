@@ -93,7 +93,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Choose Folder</string>
+         <string notr="true">…</string>
         </property>
        </widget>
       </item>

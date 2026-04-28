@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
@@ -20,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef DLG_SHEETCONF_H
-#define DLG_SHEETCONF_H
+#pragma once
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <QDialog>
@@ -44,11 +45,13 @@ public:
 
     void accept() override;
 
-    App::Property* prepare(App::CellAddress& from,
-                           App::CellAddress& to,
-                           std::string& rangeConf,
-                           App::ObjectIdentifier& path,
-                           bool init);
+    App::Property* prepare(
+        App::CellAddress& from,
+        App::CellAddress& to,
+        std::string& rangeConf,
+        App::ObjectIdentifier& path,
+        bool init
+    );
 
 public Q_SLOTS:
     void onDiscard();
@@ -59,5 +62,3 @@ private:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // DLG_SHEETCONF_H

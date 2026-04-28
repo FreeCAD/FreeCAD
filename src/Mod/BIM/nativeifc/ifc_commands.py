@@ -140,7 +140,7 @@ class IFC_MakeProject:
         )
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_MakeProject", "Create IFC Project"),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_MakeProject", "Convert to IFC Project"),
             "ToolTip": tt,
             "Accel": "I, P",
         }
@@ -157,7 +157,7 @@ class IFC_MakeProject:
         objs = FreeCADGui.Selection.getSelection()
         sf = QtGui.QFileDialog.getSaveFileName(
             None,
-            "Save an IFC file",
+            "Save an IFC File",
             None,
             "Industry Foundation Classes (*.ifc)",
         )

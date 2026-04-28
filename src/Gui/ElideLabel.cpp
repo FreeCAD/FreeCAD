@@ -25,13 +25,15 @@
 
 #include "ElideLabel.h"
 
-namespace Gui {
+namespace Gui
+{
 
-ElideLabel::ElideLabel(QWidget *parent)
-    : QLabel(parent) {
-}
+ElideLabel::ElideLabel(QWidget* parent)
+    : QLabel(parent)
+{}
 
-void ElideLabel::paintEvent(QPaintEvent *event) {
+void ElideLabel::paintEvent(QPaintEvent* event)
+{
     Q_UNUSED(event);
     QPainter painter(this);
     painter.setPen(palette().color(QPalette::WindowText));
@@ -51,14 +53,16 @@ void ElideLabel::paintEvent(QPaintEvent *event) {
     painter.drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 }
 
-QSize ElideLabel::sizeHint() const {
+QSize ElideLabel::sizeHint() const
+{
     QFontMetrics fm(font());
     int width = fm.horizontalAdvance(this->text());
     int height = fm.height();
     return {width, height};
 }
 
-QSize ElideLabel::minimumSizeHint() const {
+QSize ElideLabel::minimumSizeHint() const
+{
     QFontMetrics fm(font());
     QString minimumText = QStringLiteral("A...");
     int width = fm.horizontalAdvance(minimumText);
@@ -68,4 +72,4 @@ QSize ElideLabel::minimumSizeHint() const {
 
 }  // namespace Gui
 
-#include "moc_ElideLabel.cpp" // NOLINT
+#include "moc_ElideLabel.cpp"  // NOLINT

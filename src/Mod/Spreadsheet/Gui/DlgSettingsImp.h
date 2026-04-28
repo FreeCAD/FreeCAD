@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Mark Ganson <TheMarkster>                          *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SPREADSHEETGUI_DLGSETTINGSIMP_H
-#define SPREADSHEETGUI_DLGSETTINGSIMP_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -54,5 +55,3 @@ private:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // SPREADSHEETGUI_DLGSETTINGSIMP_H

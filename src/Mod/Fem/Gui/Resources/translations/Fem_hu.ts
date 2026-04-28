@@ -4,17 +4,17 @@
   <context>
     <name>CmdFemConstraintBearing</name>
     <message>
-      <location filename="../../Command.cpp" line="240"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="241"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>Bearing Constraint</source>
-      <translation type="unfinished">Bearing Constraint</translation>
+      <translation>Csapágy kényszer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Creates a bearing constraint</source>
       <translation>Létrehoz egy csapágy kényszert</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdFemConstraintContact</name>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="291"/>
       <source>Fem</source>
       <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="289"/>
+      <location filename="../../Command.cpp" line="292"/>
       <source>Contact Constraint</source>
-      <translation type="unfinished">Contact Constraint</translation>
+      <translation>Kapcsolat kényszer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="290"/>
+      <location filename="../../Command.cpp" line="293"/>
       <source>Creates a contact constraint between faces</source>
       <translation>Érintkezési kényszert hoz létre a felületek közt</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdFemConstraintDisplacement</name>
     <message>
-      <location filename="../../Command.cpp" line="354"/>
+      <location filename="../../Command.cpp" line="369"/>
       <source>Fem</source>
       <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="355"/>
+      <location filename="../../Command.cpp" line="370"/>
       <source>Displacement Boundary Condition</source>
-      <translation type="unfinished">Displacement Boundary Condition</translation>
+      <translation>Elmozdulás peremfeltétele</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="356"/>
+      <location filename="../../Command.cpp" line="371"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
       <translation>Kiszorítási peremfeltételt hoz létre egy geometriai egységhez</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdFemConstraintFixed</name>
     <message>
-      <location filename="../../Command.cpp" line="404"/>
+      <location filename="../../Command.cpp" line="423"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="405"/>
+      <location filename="../../Command.cpp" line="424"/>
       <source>Fixed Boundary Condition</source>
-      <translation type="unfinished">Fixed Boundary Condition</translation>
+      <translation>Rögzített peremfeltétel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="425"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
       <translation>Rögzített peremfeltételt hoz létre egy geometriai egységhez</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="506"/>
+      <location filename="../../Command.cpp" line="533"/>
       <source>Fem</source>
       <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="507"/>
+      <location filename="../../Command.cpp" line="534"/>
       <source>Fluid Boundary Condition</source>
-      <translation type="unfinished">Fluid Boundary Condition</translation>
+      <translation>Folyadékhatár állapota</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="509"/>
+      <location filename="../../Command.cpp" line="535"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
       <translation>Folyadékhatár feltétel létrehozása a felület szerkezeten a Számítógépes áramlástan részére</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdFemConstraintForce</name>
     <message>
-      <location filename="../../Command.cpp" line="558"/>
+      <location filename="../../Command.cpp" line="592"/>
       <source>Fem</source>
       <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="559"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Force Load</source>
-      <translation type="unfinished">Force Load</translation>
+      <translation>Erőterhelés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="560"/>
+      <location filename="../../Command.cpp" line="594"/>
       <source>Creates a force load applied to a geometric entity</source>
       <translation>Létrehoz egy geometriai egységre alkalmazott erőterhelést</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdFemConstraintGear</name>
     <message>
-      <location filename="../../Command.cpp" line="615"/>
+      <location filename="../../Command.cpp" line="655"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="616"/>
+      <location filename="../../Command.cpp" line="656"/>
       <source>Gear Constraint</source>
-      <translation type="unfinished">Gear Constraint</translation>
+      <translation>Fogaskerék kényszer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
+      <location filename="../../Command.cpp" line="657"/>
       <source>Creates a gear constraint</source>
       <translation>Létrehoz egy fogaskerék kényszert</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdFemConstraintHeatflux</name>
     <message>
-      <location filename="../../Command.cpp" line="663"/>
+      <location filename="../../Command.cpp" line="703"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="664"/>
+      <location filename="../../Command.cpp" line="704"/>
       <source>Heat Flux Load</source>
-      <translation type="unfinished">Heat Flux Load</translation>
+      <translation>Hőáram terhelés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="665"/>
+      <location filename="../../Command.cpp" line="705"/>
       <source>Creates a heat flux load acting on a face</source>
       <translation>Egy felületre ható hőáramterhelést hoz létre</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="724"/>
+      <location filename="../../Command.cpp" line="776"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="725"/>
+      <location filename="../../Command.cpp" line="777"/>
       <source>Initial Temperature</source>
-      <translation type="unfinished">Initial Temperature</translation>
+      <translation>Kezdeti hőmérséklet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="726"/>
+      <location filename="../../Command.cpp" line="778"/>
       <source>Creates an initial temperature acting on a body</source>
       <translation>Egy testre ható kezdeti hőmérsékletet hoz létre</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../Command.cpp" line="775"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="776"/>
+      <location filename="../../Command.cpp" line="834"/>
       <source>Plane Multi-Point Constraint</source>
-      <translation type="unfinished">Plane Multi-Point Constraint</translation>
+      <translation>Síkbeli többpontú kényszer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="777"/>
+      <location filename="../../Command.cpp" line="835"/>
       <source>Creates a plane multi-point constraint for a face</source>
       <translation>Síkbeli többpontos kényszerïtést hoz létre egy felülethez</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdFemConstraintPressure</name>
     <message>
-      <location filename="../../Command.cpp" line="826"/>
+      <location filename="../../Command.cpp" line="890"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="827"/>
+      <location filename="../../Command.cpp" line="891"/>
       <source>Pressure Load</source>
-      <translation type="unfinished">Pressure Load</translation>
+      <translation>Nyomás terhelés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="828"/>
+      <location filename="../../Command.cpp" line="892"/>
       <source>Creates a pressure load acting on a face</source>
       <translation>Egy felületre ható nyomóterhelést hoz létre</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdFemConstraintPulley</name>
     <message>
-      <location filename="../../Command.cpp" line="937"/>
+      <location filename="../../Command.cpp" line="1013"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="938"/>
+      <location filename="../../Command.cpp" line="1014"/>
       <source>Pulley Constraint</source>
-      <translation type="unfinished">Pulley Constraint</translation>
+      <translation>Csigás kényszer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="939"/>
+      <location filename="../../Command.cpp" line="1015"/>
       <source>Creates a pulley constraint</source>
       <translation>Csiga kényszer létrehozása</translation>
     </message>
@@ -220,35 +220,35 @@
   <context>
     <name>CmdFemConstraintSpring</name>
     <message>
-      <location filename="../../Command.cpp" line="882"/>
+      <location filename="../../Command.cpp" line="954"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="955"/>
       <source>Spring Boundary Condition</source>
-      <translation type="unfinished">Spring Boundary Condition</translation>
+      <translation>Rugó határfeltétele</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="956"/>
       <source>Creates a spring boundary condition on a face</source>
-      <translation type="unfinished">Creates a spring boundary condition on a face</translation>
+      <translation>Hozzon létre egy rugó határfeltételt egy felületen</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="990"/>
+      <location filename="../../Command.cpp" line="1066"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="991"/>
+      <location filename="../../Command.cpp" line="1067"/>
       <source>Temperature Boundary Condition</source>
-      <translation type="unfinished">Temperature Boundary Condition</translation>
+      <translation>Hőmérséklet határfeltétele</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="992"/>
+      <location filename="../../Command.cpp" line="1068"/>
       <source>Creates a temperature/concentrated heat flux load acting on a face</source>
       <translation>Egy felületre ható hőmérséklet/koncentrált hőáram terhelést hoz létre</translation>
     </message>
@@ -256,114 +256,114 @@
   <context>
     <name>CmdFemConstraintTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="1041"/>
+      <location filename="../../Command.cpp" line="1123"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1042"/>
+      <location filename="../../Command.cpp" line="1124"/>
       <source>Local Coordinate System</source>
-      <translation type="unfinished">Local Coordinate System</translation>
+      <translation>Koordináta rendszer betöltés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1043"/>
+      <location filename="../../Command.cpp" line="1125"/>
       <source>Creates a local coordinate system on a face</source>
-      <translation type="unfinished">Creates a local coordinate system on a face</translation>
+      <translation>Helyi koordináta rendszer létrehozása egy felületen</translation>
     </message>
   </context>
   <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1279"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Nodes Set</source>
-      <translation type="unfinished">Nodes Set</translation>
+      <translation>Csomópontok beállítása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1189"/>
+      <location filename="../../Command.cpp" line="1281"/>
       <source>Creates a FEM mesh nodes set</source>
       <translation>VEM háló csomópont csoportot hoz lére</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1225"/>
+      <location filename="../../Command.cpp" line="1319"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../Command.cpp" line="1320"/>
       <source>Select a single FEM mesh or nodes set.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set.</translation>
+      <translation>Válasszon egyetlen VEM hálót vagy csomópontot.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1480"/>
       <source>Select a single FEM Mesh.</source>
-      <translation type="unfinished">Select a single FEM Mesh.</translation>
+      <translation>Válasszon egyetlen VEM hálót.</translation>
     </message>
   </context>
   <context>
     <name>CmdFemDefineNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1128"/>
+      <location filename="../../Command.cpp" line="1220"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1129"/>
+      <location filename="../../Command.cpp" line="1221"/>
       <source>Node Set by Polygon</source>
-      <translation type="unfinished">Node Set by Polygon</translation>
+      <translation>Csomópont sokszög által</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1130"/>
+      <location filename="../../Command.cpp" line="1222"/>
       <source>Creates a node set by polygon selection</source>
-      <translation type="unfinished">Creates a node set by polygon selection</translation>
+      <translation>Létrehoz egy csomópontkészletet sokszög kiválasztásával</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2622"/>
+      <location filename="../../Command.cpp" line="2883"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2623"/>
+      <location filename="../../Command.cpp" line="2884"/>
       <source>Apply Changes to Pipeline</source>
-      <translation type="unfinished">Apply Changes to Pipeline</translation>
+      <translation>Változások alkalmazása a folyamatokra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2624"/>
+      <location filename="../../Command.cpp" line="2885"/>
       <source>Applies changes to parameters directly and not on recompute only</source>
-      <translation type="unfinished">Applies changes to parameters directly and not on recompute only</translation>
+      <translation>Változtatások érvényesítése a paraméterekre közvetlenül és nem csak újraszámolása</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2027"/>
+      <location filename="../../Command.cpp" line="2247"/>
       <source>Fem</source>
       <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2028"/>
+      <location filename="../../Command.cpp" line="2248"/>
       <source>Region Clip Filter</source>
-      <translation type="unfinished">Region Clip Filter</translation>
+      <translation>Terület kivágó szűrő</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2030"/>
+      <location filename="../../Command.cpp" line="2249"/>
       <source>Defines a clip filter which uses functions to define the clipped region</source>
-      <translation type="unfinished">Defines a clip filter which uses functions to define the clipped region</translation>
+      <translation>Kivágás szűrő meghatározása, amely függvények segítségével határozza meg a vágott régiót</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2525"/>
+      <location filename="../../Command.cpp" line="2773"/>
       <source>Select a pipeline.</source>
-      <translation type="unfinished">Select a pipeline.</translation>
+      <translation>Egy folyamat kiválasztása.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2524"/>
+      <location filename="../../Command.cpp" line="2772"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
@@ -371,91 +371,91 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2065"/>
+      <location filename="../../Command.cpp" line="2286"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2066"/>
+      <location filename="../../Command.cpp" line="2287"/>
       <source>Function Cut Filter</source>
-      <translation type="unfinished">Function Cut Filter</translation>
+      <translation>Kivágási funkció szűrő</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2067"/>
+      <location filename="../../Command.cpp" line="2288"/>
       <source>Cuts the data along an implicit function</source>
-      <translation type="unfinished">Cuts the data along an implicit function</translation>
+      <translation>Adatok vágása egy rejtett függvény mentén</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2102"/>
+      <location filename="../../Command.cpp" line="2323"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2103"/>
+      <location filename="../../Command.cpp" line="2324"/>
       <source>Line Clip Filter</source>
-      <translation type="unfinished">Line Clip Filter</translation>
+      <translation>Vonal kivágó szűrő</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2104"/>
+      <location filename="../../Command.cpp" line="2325"/>
       <source>Defines a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Defines a clip filter which clips a field along a line</translation>
+      <translation>Kivágó szűrő meghatározása, amely egy mezőt egy vonal mentén vág le</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="2360"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2140"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Data at Point Clip Filter</source>
-      <translation type="unfinished">Data at Point Clip Filter</translation>
+      <translation>Adat a pont kivágó szűrőjén</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2141"/>
+      <location filename="../../Command.cpp" line="2362"/>
       <source>Defines a clip filter which clips a field data at point</source>
-      <translation type="unfinished">Defines a clip filter which clips a field data at point</translation>
+      <translation>Kivágó szűrő meghatározása, amely pontnál vág egy mezőadatot</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2397"/>
+      <location filename="../../Command.cpp" line="2625"/>
       <source>Fem</source>
       <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2626"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Szűrő funkciók</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2399"/>
+      <location filename="../../Command.cpp" line="2627"/>
       <source>Functions for use in postprocessing filter</source>
-      <translation type="unfinished">Functions for use in postprocessing filter</translation>
+      <translation>Utófeldolgozási szűrőben használható funkciók</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2576"/>
+      <location filename="../../Command.cpp" line="2825"/>
       <source>Plane</source>
       <translation>Sík</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2583"/>
+      <location filename="../../Command.cpp" line="2835"/>
       <source>Sphere</source>
       <translation>Gömb</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2590"/>
+      <location filename="../../Command.cpp" line="2845"/>
       <source>Cylinder</source>
       <translation>Henger</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2597"/>
+      <location filename="../../Command.cpp" line="2855"/>
       <source>Box</source>
       <translation>Doboz</translation>
     </message>
@@ -463,65 +463,65 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1926"/>
+      <location filename="../../Command.cpp" line="2134"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>Vastagság [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1930"/>
+      <location filename="../../Command.cpp" line="2140"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>Nyomás [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1934"/>
+      <location filename="../../Command.cpp" line="2146"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>Linearizált nyomások</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1938"/>
+      <location filename="../../Command.cpp" line="2152"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>Membrán</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1942"/>
+      <location filename="../../Command.cpp" line="2158"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>Membrán és hajlítás</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1946"/>
+      <location filename="../../Command.cpp" line="2164"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>Összesen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2177"/>
+      <location filename="../../Command.cpp" line="2398"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2178"/>
+      <location filename="../../Command.cpp" line="2399"/>
       <source>Stress Linearization Plot</source>
-      <translation type="unfinished">Stress Linearization Plot</translation>
+      <translation>Feszültség linearizálási grafikon</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2179"/>
+      <location filename="../../Command.cpp" line="2400"/>
       <source>Defines a stress linearization plot</source>
-      <translation type="unfinished">Defines a stress linearization plot</translation>
+      <translation>Meghatároz egy feszültség linearizálási grafikont</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2217"/>
-      <location filename="../../Command.cpp" line="2225"/>
+      <location filename="../../Command.cpp" line="2439"/>
+      <location filename="../../Command.cpp" line="2450"/>
       <source>Select a clip filter which clips a stress field along a line</source>
-      <translation type="unfinished">Select a clip filter which clips a stress field along a line</translation>
+      <translation>Vágószűrő kiválasztása, amely a feszültségmezőt a vonal mentén vágja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2216"/>
-      <location filename="../../Command.cpp" line="2224"/>
+      <location filename="../../Command.cpp" line="2438"/>
+      <location filename="../../Command.cpp" line="2449"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
@@ -529,194 +529,194 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2663"/>
+      <location filename="../../Command.cpp" line="2924"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2925"/>
       <source>Post Pipeline From Result</source>
-      <translation type="unfinished">Post Pipeline From Result</translation>
+      <translation>Folyamat feladása az eredményből</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2665"/>
+      <location filename="../../Command.cpp" line="2926"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>Utófeldolgozási folyamatot hoz létre egy eredmény objektumból</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2743"/>
+      <location filename="../../Command.cpp" line="3010"/>
       <source>Wrong selection type</source>
       <translation>Hibás kiválasztási típus</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2744"/>
+      <location filename="../../Command.cpp" line="3011"/>
       <source>Select a result object.</source>
-      <translation type="unfinished">Select a result object.</translation>
+      <translation>Válassz egy eredmény objektumot.</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2250"/>
+      <location filename="../../Command.cpp" line="2478"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2251"/>
+      <location filename="../../Command.cpp" line="2479"/>
       <source>Scalar Clip Filter</source>
-      <translation type="unfinished">Scalar Clip Filter</translation>
+      <translation>Síkszűrő</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2252"/>
+      <location filename="../../Command.cpp" line="2480"/>
       <source>Defines a clip filter which clips a field with a scalar value</source>
-      <translation type="unfinished">Defines a clip filter which clips a field with a scalar value</translation>
+      <translation>Vágásszűrő meghatározása, amely skaláris értékkel vágja le a mezőt</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2287"/>
+      <location filename="../../Command.cpp" line="2515"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2288"/>
+      <location filename="../../Command.cpp" line="2516"/>
       <source>Warp Filter</source>
-      <translation type="unfinished">Warp Filter</translation>
+      <translation>Térhajtás szűrő</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2289"/>
+      <location filename="../../Command.cpp" line="2517"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
-      <translation type="unfinished">Warps the geometry along a vector field by a certain factor</translation>
+      <translation>Deformálja a geometriát egy vektormező mentén egy bizonyos tényezővel</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="525"/>
+      <location filename="../../Command.cpp" line="553"/>
       <source>Create fluid boundary condition</source>
       <translation>Adjon hozzá egy határfeltételt a folyadékhoz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="258"/>
+      <location filename="../../Command.cpp" line="261"/>
       <source>Make bearing constraint</source>
       <translation>Csapágyazási kényszer készítése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Make contact constraint on a face</source>
       <translation>Érintkezési kényszer készítése egy felületen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="387"/>
       <source>Make displacement boundary condition on face</source>
       <translation>Készítsünk elmozdulási peremfeltételt a felületre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="422"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Make fixed boundary condition for geometry</source>
       <translation>Készítsen rögzített peremfeltételt a geometriához</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="472"/>
+      <location filename="../../Command.cpp" line="491"/>
       <source>Make rigid body constraint</source>
       <translation>Merev test kényszer létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="576"/>
+      <location filename="../../Command.cpp" line="610"/>
       <source>Make force load on geometry</source>
       <translation>Erőterhelés készítése a geometriára</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="672"/>
       <source>Make gear constraint</source>
       <translation>Fogaskerék kényszer készítése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="721"/>
       <source>Make heat flux load on face</source>
       <translation>Hőáram terhelés készítése a felületre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="742"/>
+      <location filename="../../Command.cpp" line="794"/>
       <source>Make initial temperature condition on body</source>
       <translation>A test kezdeti hőmérsékleti állapotának beállítása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="793"/>
+      <location filename="../../Command.cpp" line="851"/>
       <source>Make plane multi-point constraint on face</source>
       <translation>Síkbeli többpontos kényszer a felületen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="844"/>
+      <location filename="../../Command.cpp" line="908"/>
       <source>Make pressure load on face</source>
       <translation>Nyomás terhelés készítése a felületen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="900"/>
+      <location filename="../../Command.cpp" line="972"/>
       <source>Make Spring Constraint</source>
-      <translation type="unfinished">Make Spring Constraint</translation>
+      <translation>Rugó kényszer létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="955"/>
+      <location filename="../../Command.cpp" line="1031"/>
       <source>Make pulley constraint</source>
       <translation>Csiga kényszer készítése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1008"/>
+      <location filename="../../Command.cpp" line="1084"/>
       <source>Make temperature boundary condition on face</source>
       <translation>Készítsünk hőmérséklet peremfeltételt a felületre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1141"/>
       <source>Make local coordinate system on face</source>
       <translation>Helyi koordináta rendszer készítése a felületen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1109"/>
-      <location filename="../../Command.cpp" line="1260"/>
+      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../Command.cpp" line="1355"/>
       <source>Place robot</source>
       <translation>Robot hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1203"/>
+      <location filename="../../Command.cpp" line="1296"/>
       <source>Edit nodes set</source>
       <translation>Csomópontkészlet szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1306"/>
       <source>Create nodes set</source>
       <translation>Csomópontkészlet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1351"/>
+      <location filename="../../Command.cpp" line="1450"/>
       <source>Edit Elements set</source>
       <translation>Elemkészlet szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1362"/>
+      <location filename="../../Command.cpp" line="1462"/>
       <source>Create Elements set</source>
       <translation>Elemkészlet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1875"/>
+      <location filename="../../Command.cpp" line="2061"/>
       <source>Create filter</source>
       <translation>Szűrő létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2431"/>
+      <location filename="../../Command.cpp" line="2659"/>
       <source>Create function</source>
       <translation>Függvény létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2715"/>
+      <location filename="../../Command.cpp" line="2979"/>
       <source>Create pipeline from result</source>
       <translation>Folyamat létrehozása az eredményből</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="282"/>
-      <source>Edit Mirror</source>
-      <translation>Tükrözés szerkesztése</translation>
+      <location filename="../../ViewProviderShapeExtension.cpp" line="189"/>
+      <source>Edit Shape</source>
+      <translation>Alakzat szerkesztése</translation>
     </message>
   </context>
   <context>
@@ -731,7 +731,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
       <source>Mesh groups detected. Choose values for the different groups.</source>
-      <translation type="unfinished">Mesh groups detected. Choose values for the different groups.</translation>
+      <translation>A rendszer háló csoportokat észlelt. Válassza ki a különböző csoportok értékeit.</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
@@ -761,7 +761,7 @@
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
       <source>Select the vertices, lines and surfaces</source>
-      <translation type="unfinished">Select the vertices, lines and surfaces</translation>
+      <translation>Csúcspontok, vonalak és felületek kiválasztása</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
@@ -794,22 +794,22 @@
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2578"/>
+      <location filename="../../Command.cpp" line="2827"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>Kezdőpont és aktuális pont alapján definiált rétegfüggvény létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2585"/>
+      <location filename="../../Command.cpp" line="2837"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Gömbfüggvény létrehozása, amelyet a középpontja és a sugara határoz meg</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2591"/>
+      <location filename="../../Command.cpp" line="2847"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>Hengerfüggvény létrehozása, amelyet a középpontja, tengelye és sugara határoz meg</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2598"/>
+      <location filename="../../Command.cpp" line="2857"/>
       <source>Create a box function, defined by its center, length, width and height</source>
       <translation>Hozzon létre egy doboz funkciót, amelyet a középpontja, hossza, szélessége és magassága határoz meg</translation>
     </message>
@@ -819,7 +819,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="14"/>
       <location filename="../../DlgSettingsFemCcx.ui" line="29"/>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="151"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="130"/>
       <source>CalculiX</source>
       <translation>CalculiX</translation>
     </message>
@@ -829,315 +829,320 @@
       <translation>Hagyja üresen az alapértelmezett a CalculiX ccx bináris fájl használatához</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="97"/>
-      <source>Use internal editor for *.inp files</source>
-      <translation>A belső szerkesztő használata *.inp fájlokhoz</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="142"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="90"/>
       <source>Input file splitting</source>
       <translation>Felosztott bemeneti fájl</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="152"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="100"/>
       <source>Split writing of  *.inp</source>
       <translation>Szétválasztás *.inp írás közben</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="181"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="129"/>
       <source>Type</source>
       <translation>Típus</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="194"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="142"/>
       <source>Default type on analysis</source>
       <translation>Elemzések alapértelmezett típusa</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="204"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="155"/>
       <source>Static</source>
       <translation>Statikus</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="213"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="164"/>
       <source>Frequency</source>
       <translation>Gyakoriság</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="222"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="173"/>
       <source>Thermomech</source>
       <translation>Termomechanikus</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="231"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="182"/>
       <source>Check Mesh</source>
       <translation>Ellenőrizze a hálót</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="240"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="191"/>
       <source>Buckling</source>
       <translation>Kihajlás</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="278"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="229"/>
       <source>Initial time increment</source>
-      <translation type="unfinished">Initial time increment</translation>
+      <translation>Kezdeti időnövekedés</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="285"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="236"/>
       <source>Time period</source>
-      <translation type="unfinished">Time period</translation>
+      <translation>Időszak</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="331"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="282"/>
       <source>Number of threads used for analysis</source>
       <translation>Az elemzéshez használt szálak száma</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="465"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="419"/>
       <source>Matrix solver</source>
       <translation>Mátrix megoldó</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="492"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="446"/>
       <source>Maximum number of increments</source>
-      <translation type="unfinished">Maximum number of increments</translation>
+      <translation>Maximális növekedések száma</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="499"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="453"/>
       <source>Minimum time increment</source>
-      <translation type="unfinished">Minimum time increment</translation>
+      <translation>Minimális időlépték</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="629"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="583"/>
       <source>Maximum time increment</source>
-      <translation type="unfinished">Maximum time increment</translation>
+      <translation>Maximális időlépték</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="695"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="649"/>
       <source>Thermo-Mechanical Defaults</source>
-      <translation type="unfinished">Thermo-Mechanical Defaults</translation>
+      <translation>Alap hőmérséklet műszaki beállítások</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="731"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="685"/>
       <source>Frequency Defaults</source>
-      <translation type="unfinished">Frequency Defaults</translation>
+      <translation>Alapértelmezett frekvencia értékek</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="841"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="795"/>
       <source> Hz</source>
-      <translation type="unfinished"> Hz</translation>
+      <translation> Hz</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="317"/>
       <source>Default</source>
       <translation>Alapértelmezett</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="90"/>
-      <source>Input file editor</source>
-      <translation type="unfinished">Input file editor</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="122"/>
-      <source>External editor</source>
-      <translation type="unfinished">External editor</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="173"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="121"/>
       <source>Analysis Defaults</source>
-      <translation type="unfinished">Analysis Defaults</translation>
+      <translation>Elemzés alapértékei</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="257"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="208"/>
       <source>Solver Defaults</source>
-      <translation type="unfinished">Solver Defaults</translation>
+      <translation>Megoldó alapértékei</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="308"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="259"/>
       <source>Number of CPUs to use</source>
-      <translation type="unfinished">Number of CPUs to use</translation>
+      <translation>Használni kívánt CPU-k száma</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="322"/>
       <source>PaStiX</source>
       <translation>PaStiX</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="373"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="327"/>
       <source>Pardiso</source>
       <translation>Pardiso</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="378"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="332"/>
       <source>SPOOLES equation solver</source>
       <translation>Spooles egyenletmegoldó</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="383"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="337"/>
       <source>Iterative Scaling</source>
       <translation>Iteratív megoldó méretezése</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="396"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="350"/>
       <source>Non-linear geometry</source>
       <translation>Nemlineáris geometria</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="550"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="504"/>
       <source>Use non-linear geometry</source>
       <translation>Tartalmazza a geometriai nemlinearitást</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="472"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="426"/>
       <source>Time incrementation control parameter</source>
       <translation>Időnövekmény-szabályozási paraméter</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="46"/>
       <source>CalculiX path</source>
-      <translation type="unfinished">CalculiX path</translation>
+      <translation>CalculiX útvonala</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="292"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="243"/>
       <source>Use non ccx defaults</source>
       <translation>A Calculixtól eltérő alapértelmezett beállítások használata</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="315"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="266"/>
       <source>3D Output, unchecked for 2D</source>
       <translation>3D kimenet, letiltva 2D-ben</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="636"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="590"/>
       <source>Result object</source>
-      <translation type="unfinished">Result object</translation>
+      <translation>Eredményobjektum</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="643"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="597"/>
       <source>Pipeline only</source>
-      <translation type="unfinished">Pipeline only</translation>
+      <translation>Csak folyamat</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="646"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="600"/>
       <source>Load results as pipeline instead of CCX_Results objects.
 After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</source>
-      <translation type="unfinished">Load results as pipeline instead of CCX_Results objects.
-After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</translation>
+      <translation>A találatok betöltése folyamatként a CCX_Results objektumok helyett.
+Miután ezt a lehetőséget kikapcsolja, a CalculiX parancs a SolverCalculiXCcxTools-ként viselkedik</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="663"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="617"/>
       <source>Result format</source>
-      <translation type="unfinished">Result format</translation>
+      <translation>Eredményformátum</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="670"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="624"/>
       <source>Save result in binary format.
 Only takes effect if 'Pipeline only' is enabled</source>
-      <translation type="unfinished">Save result in binary format.
-Only takes effect if 'Pipeline only' is enabled</translation>
+      <translation>Eredmények mentése bináris formátumban.
+Ez csak akkor hatásos, ha a 'Csak folyamat' bekapcsolt</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="674"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="628"/>
       <source>Use binary format</source>
       <translation>Bináris formátum használata</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="703"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="657"/>
       <source>Analysis type (transient or steady state)</source>
       <translation>Az elemzés típusa (átmeneti vagy állandó állapot)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="710"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="664"/>
       <source>Use steady state</source>
       <translation>Állandósult állapot használata</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="388"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="342"/>
       <source>Cholesky iterative solver</source>
       <translation>Cholesky ismétlődés megoldó</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="597"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="551"/>
       <source>Beam, shell element 3D output format</source>
       <translation>3D eredményformátum gerendákhoz és burkolólapokhoz</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="771"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="725"/>
       <source>Eigenmode number</source>
       <translation>Egyediforma száma</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="764"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="718"/>
       <source>High frequency limit</source>
       <translation>Magas frekvenciájú limit</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="825"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="779"/>
       <source>Low frequency limit</source>
       <translation>Alacsony frekvenciájú limit</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="151"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="130"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>'%1' futtatható fájl nem található</translation>
     </message>
   </context>
   <context>
     <name>FemGui::DlgSettingsFemElmerImp</name>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="14"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="98"/>
       <source>Elmer</source>
       <translation>Elmer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="44"/>
       <source>ElmerSolver path</source>
-      <translation type="unfinished">ElmerSolver path</translation>
+      <translation>Elmer megoldó útvonal</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="75"/>
       <source>Leave blank to use default ElmerSolver binary file</source>
-      <translation type="unfinished">Leave blank to use default ElmerSolver binary file</translation>
+      <translation>Hagyja üresen az alapértelmezett Elmer megoldó bináris érték használatához</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="94"/>
       <source>ElmerGrid path</source>
-      <translation type="unfinished">ElmerGrid path</translation>
+      <translation>ElmerRács útvonal</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
-      <source>Number of processes</source>
-      <translation type="unfinished">Number of processes</translation>
+      <source>Log verbosity</source>
+      <translation>Napló szóbeliség</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
-      <source>Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</source>
-      <translation type="unfinished">Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</translation>
+      <source>Maximum output level</source>
+      <translation type="unfinished">Maximum output level</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="180"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="181"/>
+      <source>Number of tasks</source>
+      <translation>Feladatok száma</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="191"/>
+      <source>Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</source>
+      <translation>Párhuzamos feladatok száma. Állítsa `1`-re, ha az Elmer nem használ MPI-t.&lt;br&gt;Ajánlott páros magok számát használni a hálószimmetriák kihasználásához&lt;br&gt;(például 8 mag használata gyorsabb lehet, mint 9 mag).&lt;br&gt;Extrém esetekben az ElmerMegoldó esetleg nem tart össze, ha a magok száma túl magas.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="207"/>
+      <source>Threads per task</source>
+      <translation>Szálak a feladathoz</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="217"/>
+      <source>Number of threads per task. Take effect if Elmer uses OpenMP.</source>
+      <translation>Szálak száma feladatonként. Hatásos, ha Elmer OpenMP-t használ.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="238"/>
       <source>Results</source>
       <translation>Eredmények</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="186"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="244"/>
       <source>Save result in binary format</source>
       <translation>Eredmény mentése bináris formátumban</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="189"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="247"/>
       <source>Use binary format</source>
       <translation>Bináris formátum használata</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="263"/>
       <source>Save the index of geometric entities</source>
       <translation>Geometriai egységek indexének mentése</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="266"/>
       <source>Save geometry IDs</source>
       <translation>Geometriai azonosítók mentése</translation>
     </message>
@@ -1149,7 +1154,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="29"/>
       <source>Elmer Binaries</source>
-      <translation type="unfinished">Elmer Binaries</translation>
+      <translation>Elmer telepítő</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="141"/>
@@ -1157,9 +1162,9 @@ Only takes effect if 'Pipeline only' is enabled</translation>
       <translation>Beállítások</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="98"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>'%1' futtatható fájl nem található</translation>
     </message>
   </context>
   <context>
@@ -1187,46 +1192,49 @@ Highest: Only the highest elements will be exported. This means volumes for a vo
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
-      <translation type="unfinished">All: All elements will be exported.
+      <translation>Mind: Összes elem exportálásra kerül.
 
-Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
+Legmagasabb: Csak a legmagasabb szinten lávő elemeket exportálja. Ez a tömör háló térfogatát és a héjháló felületeit jelenti.
 
-FEM: Only FEM elements will be exported. This means only edges
-not belonging to faces and faces not belonging to volumes.</translation>
+VEM: Csak VEM-elemeket exportálunk. Ez csak olyan éleket jelent, 
+melyek nem tartoznak a felülethez, és olyan felületeket, amelyek nem tartoznak a térfogathoz.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
       <source>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation type="unfinished">element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</translation>
+      <translation>elem változó: 
+Összes: összes elem, 
+Legmagasabb: csak a legmagasabb szintű elemek, 
+VEM: csak VEM elemek (csak a felülethez nem tartozó élek és a térfogathoz nem tartozó felületek)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="81"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="84"/>
       <source>Mesh groups are exported too.
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups - faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>A hálócsoportok is exportálásra kerülnek.
+Minden elemzési funkció és, ha vannak különböző anyagok, 
+két hálócsoportból álló anyag - felületekből és csomópontokból áll, 
+ahol a kényszert vagy az anyagot alkalmazzák.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="59"/>
       <source>All</source>
       <translation>Minden</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="61"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="64"/>
       <source>Highest</source>
       <translation>Legmagasabb</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="66"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="69"/>
       <source>FEM</source>
       <translation>VEM</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="74"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="77"/>
       <source>Export group data</source>
       <translation>Csoportok adat exportálása</translation>
     </message>
@@ -1235,13 +1243,10 @@ the constraint or material is applied.</translation>
     <name>FemGui::DlgSettingsFemGeneralImp</name>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="14"/>
+      <location filename="../../DlgSettingsFemGeneralImp.cpp" line="133"/>
+      <location filename="../../DlgSettingsFemGeneralImp.cpp" line="140"/>
       <source>General</source>
       <translation>Általános</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
-      <source>sdfsdfsdfds</source>
-      <translation>sdfsdfsdfds</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="51"/>
@@ -1249,131 +1254,150 @@ the constraint or material is applied.</translation>
       <translation>Ideiglenes könyvtárak</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="54"/>
       <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
       <translation>Lehetővé teszi az alkalmazás számára az összes megoldó munkakönyvtárainak kezelését (létrehozását, törlését). Használjon ideiglenes könyvtárakat.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="76"/>
       <source>Beside .FCStd file</source>
       <translation>.FCStd fájl mellett</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="116"/>
-      <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each solver (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
-      <translation>Hozzon létre egy könyvtárat ugyanabban a mappában, mint a dokumentum FCStd-fájlja. Használjon almappát minden megoldóhoz (például egy fájlhoz ./mydoc.FCStd és az Elmer002 megoldóhoz a ./mydoc/Elmer002 parancsot használja).</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="142"/>
-      <source>Use custom directory</source>
-      <translation>Egyéni könyvtár használata</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="160"/>
-      <source>Use directory set below. Create own subdirectory for every solver. Name directory after the solver label prefixed with the document name.</source>
-      <translation>Használja az alább megadott könyvtárat. Hozzon létre külön alkönyvtárat minden megoldóhoz. Nevezze el a könyvtárat a megoldó címkéje után, amelyet egy dokumentumnév előz meg.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="247"/>
-      <source>Overwrite solver working directory with the directory chosen above</source>
-      <translation>A működő megoldó könyvtárának felülírása a fent kiválasztott könyvtárral</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="268"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="206"/>
       <source>Mesh</source>
       <translation>Háló</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
-      <source>Working Directory for Solving Analysis and Gmsh Meshing</source>
-      <translation type="unfinished">Working Directory for Solving Analysis and Gmsh Meshing</translation>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="34"/>
+      <source>Working Directory for Solving Analysis and Meshing</source>
+      <translation type="unfinished">Working Directory for Solving Analysis and Meshing</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="187"/>
-      <source>Path</source>
-      <translation>Szerszámpálya</translation>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="79"/>
+      <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
+(e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
+      <translation type="unfinished">Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
+(e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="279"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="99"/>
+      <source>Custom directory</source>
+      <translation type="unfinished">Custom directory</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="102"/>
+      <source>Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
+Leave blank to use user home directory.</source>
+      <translation type="unfinished">Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
+Leave blank to use user home directory.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="161"/>
+      <source>Input File Editor</source>
+      <translation type="unfinished">Input File Editor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="178"/>
+      <source>Editor path</source>
+      <translation type="unfinished">Editor path</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="188"/>
+      <source>Leave blank to use default FreeCAD internal editor</source>
+      <translation type="unfinished">Leave blank to use default FreeCAD internal editor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="217"/>
       <source>Create mesh groups for analysis reference shapes (experimental)</source>
-      <translation type="unfinished">Create mesh groups for analysis reference shapes (experimental)</translation>
+      <translation>Hálócsoportok létrehozása elemzési referenciaformákhoz (kísérleti)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="300"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="238"/>
       <source>Results</source>
       <translation>Eredmények</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="311"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="249"/>
       <source>Existing result objects will be kept
 otherwise overwritten by new solver run</source>
       <translation>Meglévő eredmény objektumok megmaradnak,
 egyébként felülírja az új megoldó futtatásával</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="315"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="253"/>
       <source>Keep results on calculation re-run</source>
       <translation>Tartsa meg az eredményeket az újraszámítás során</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="331"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="269"/>
       <source>The results dialog will be opened
 with the last used dialog settings</source>
       <translation>Megnyílik az eredmények párbeszédpanel
 az utoljára használt párbeszédpanel beállításaival</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="335"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="273"/>
       <source>Restore result dialog settings</source>
       <translation>Eredmény visszaállítása párbeszédpanel beállításai</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="292"/>
       <source>All analysis features are hidden in the model view
 when the results dialog is opened</source>
-      <translation>Összes elemzési funkció el van rejtve a modell nézetben
+      <translation>Összes elemzési jellemző el van rejtve a modell nézetben
 az eredmények párbeszédpanel megnyitásakor</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="296"/>
       <source>Hide analysis features when opening result dialog</source>
-      <translation>Elemzési funkciók elrejtése az eredmény párbeszédpanel megnyitásakor</translation>
+      <translation>Elemzési jellemzők elrejtése az eredmény párbeszédpanel megnyitásakor</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="320"/>
       <source>Defaults</source>
       <translation>Alapértelmezések</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="331"/>
       <source>Default solver</source>
       <translation>Alapértelmezett megoldó</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="341"/>
       <source>Default solver to be added when
 adding an analysis container</source>
       <translation>Alapértelmezett megoldó, amelyet hozzá kell adni, az
 elemzési konténer hozzáadásakor</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="414"/>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="352"/>
       <source>None</source>
       <translation>Egyik sem</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGeneralImp.cpp" line="133"/>
+      <source>Executable '%1' not found</source>
+      <translation>'%1' futtatható fájl nem található</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGeneralImp.cpp" line="140"/>
+      <source>Directory '%1' not found</source>
+      <translation type="unfinished">Directory '%1' not found</translation>
     </message>
   </context>
   <context>
     <name>FemGui::DlgSettingsFemGmshImp</name>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="14"/>
-      <location filename="../../DlgSettingsFemGmshImp.cpp" line="87"/>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="90"/>
       <source>Gmsh</source>
       <translation>Gmsh ( http://gmsh.info/ )</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="29"/>
       <source>Gmsh Binary</source>
-      <translation type="unfinished">Gmsh Binary</translation>
+      <translation>Gmsh telepítő</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="64"/>
@@ -1383,7 +1407,7 @@ elemzési konténer hozzáadásakor</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="89"/>
       <source>Gmsh path</source>
-      <translation type="unfinished">Gmsh path</translation>
+      <translation>Gmsh útvonal</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="101"/>
@@ -1411,9 +1435,44 @@ elemzési konténer hozzáadásakor</translation>
       <translation>A hálózáshoz használt szálak száma</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmshImp.cpp" line="87"/>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="90"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>'%1' futtatható fájl nem található</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="97"/>
+      <source>Silent</source>
+      <translation>Csendes</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="98"/>
+      <source>Errors</source>
+      <translation>Hibaüzenetek</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="99"/>
+      <source>Warnings</source>
+      <translation>Riasztások</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="100"/>
+      <source>Direct</source>
+      <translation>Közvetlen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="101"/>
+      <source>Information</source>
+      <translation>Információ</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="102"/>
+      <source>Status</source>
+      <translation>Állapot</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="103"/>
+      <source>Debug</source>
+      <translation>Hibakeresés</translation>
     </message>
   </context>
   <context>
@@ -1491,24 +1550,24 @@ FreeCAD eredményobjektum: Az importált adatok FreeCAD VEM eredményobjektumokk
     <name>FemGui::DlgSettingsFemMystranImp</name>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="14"/>
-      <location filename="../../DlgSettingsFemMystranImp.cpp" line="76"/>
+      <location filename="../../DlgSettingsFemMystranImp.cpp" line="78"/>
       <source>Mystran</source>
       <translation>Mystran</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="29"/>
       <source>Mystran Binary</source>
-      <translation type="unfinished">Mystran Binary</translation>
+      <translation>Mystran telepítő</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="49"/>
       <source>Mystran path</source>
-      <translation type="unfinished">Mystran path</translation>
+      <translation>Mystran útvonal</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="80"/>
       <source>Leave blank to use default mystran binary file</source>
-      <translation type="unfinished">Leave blank to use default mystran binary file</translation>
+      <translation>Hagyja üresen az alapértelmezett mystran telepítő fájl használatához</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="93"/>
@@ -1521,38 +1580,38 @@ FreeCAD eredményobjektum: Az importált adatok FreeCAD VEM eredményobjektumokk
       <translation>Megjegyzések írása a bemeneti fájlba</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemMystranImp.cpp" line="76"/>
+      <location filename="../../DlgSettingsFemMystranImp.cpp" line="78"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>'%1' futtatható fájl nem található</translation>
     </message>
   </context>
   <context>
     <name>FemGui::DlgSettingsFemZ88Imp</name>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="14"/>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="106"/>
       <source>Z88</source>
       <translation>Z88</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="29"/>
       <source>Z88 Binary</source>
-      <translation type="unfinished">Z88 Binary</translation>
+      <translation>Z88 telepítő</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="52"/>
       <source>z88r path</source>
-      <translation type="unfinished">z88r path</translation>
+      <translation>z88r útvonal</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="83"/>
       <source>Leave blank to use default z88r binary file</source>
-      <translation type="unfinished">Leave blank to use default z88r binary file</translation>
+      <translation>Hagyja üresen az alapértelmezett z88r telepítő fájl használatához</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="110"/>
       <source>Solver Settings</source>
-      <translation type="unfinished">Solver Settings</translation>
+      <translation>Megoldó beállításai</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="121"/>
@@ -1565,62 +1624,60 @@ FreeCAD eredményobjektum: Az importált adatok FreeCAD VEM eredményobjektumokk
       <translation>Az alkalmazott megoldási módszer</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="150"/>
-      <source>Iteration solver with SOR preconditioning (-sorcg)</source>
-      <translation>Iteratív megoldó SOR előfeltétellel (-sorcg)</translation>
+      <location filename="../../DlgSettingsFemZ88.ui" line="156"/>
+      <source>Stiffness matrix entries</source>
+      <translation type="unfinished">Stiffness matrix entries</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="155"/>
-      <source>Iteration solver with SIC preconditioning (-siccg)</source>
-      <translation>Iteratív megoldás SIC előkondicionálással (-siccg)</translation>
+      <location filename="../../DlgSettingsFemZ88.ui" line="200"/>
+      <source>Coincidence vector entries</source>
+      <translation type="unfinished">Coincidence vector entries</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="160"/>
-      <source>Simple Cholesky solver (-choly)</source>
-      <translation>Egyszerű Cholesky (-Chile) megoldó</translation>
+      <location filename="../../DlgSettingsFemZ88.ui" line="213"/>
+      <source>Maximal places in coincidence vector.
+(number of knots per element times
+ number of finite elements)
+You might need to increase this when using an
+iterative solver and you get the error message
+that "MAXKOI" needs to be increased.</source>
+      <translation type="unfinished">Maximal places in coincidence vector.
+(number of knots per element times
+ number of finite elements)
+You might need to increase this when using an
+iterative solver and you get the error message
+that "MAXKOI" needs to be increased.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="168"/>
-      <source>Max places in stiffness matrix</source>
-      <translation>Pontok maximális száma a merevségi mátrixban</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="181"/>
+      <location filename="../../DlgSettingsFemZ88.ui" line="169"/>
       <source>Maximum places in the stiffness matrix.
 You might need to increase this when using the
 Cholesky solver and getting the error message
 that "MAXGS" needs to be increased.</source>
-      <translation type="unfinished">Maximum places in the stiffness matrix.
-You might need to increase this when using the
-Cholesky solver and getting the error message
-that "MAXGS" needs to be increased.</translation>
+      <translation>A merevségi mátrix pontjainak maximális száma.
+Ha a Cholesky megoldó használatakor a "MAXGS"
+hibaüzenet megjelenik, lehetséges, hogy ezt az 
+értéket növelni kell.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="212"/>
-      <source>Maximum places in coincidence vector</source>
-      <translation type="unfinished">Maximum places in coincidence vector</translation>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
+      <source>Succesive over-relaxation (SOR)</source>
+      <translation type="unfinished">Succesive over-relaxation (SOR)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="225"/>
-      <source>Maximal places in coincidence vector.
-(number of knots per element times
- number of finite elements)
-
-You might need to increase this when using an
-iterative solver and you get the error message
-that "MAXKOI" needs to be increased.</source>
-      <translation>A pontok maximális száma a konvergenciavektorban.
-(csomópontok száma elemenként szorozva
- véges elemek száma)
-
-Előfordulhat, hogy növelnie kell ezt a paramétert, ha
-egy iteratív megoldó használata esetén a "MAXKOI" paraméter
-értékét növelni kell hibaüzenet jelenik meg.</translation>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
+      <source>Shifted incomplete Cholesky (SIC)</source>
+      <translation type="unfinished">Shifted incomplete Cholesky (SIC)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="88"/>
+      <source>Simple Cholesky</source>
+      <translation type="unfinished">Simple Cholesky</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="106"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>'%1' futtatható fájl nem található</translation>
     </message>
   </context>
   <context>
@@ -1642,13 +1699,13 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="234"/>
-      <location filename="../../TaskFemConstraint.cpp" line="252"/>
+      <location filename="../../TaskFemConstraint.cpp" line="237"/>
+      <location filename="../../TaskFemConstraint.cpp" line="259"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="235"/>
+      <location filename="../../TaskFemConstraint.cpp" line="238"/>
       <source>You must specify at least one reference</source>
       <translation>Meg kell adnia legalább egy hivatkozást</translation>
     </message>
@@ -1656,7 +1713,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="371"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1664,7 +1721,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="564"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1672,7 +1729,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="610"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1680,7 +1737,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1097"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1688,7 +1745,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="463"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="476"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1696,7 +1753,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1704,7 +1761,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="525"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1712,7 +1769,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="113"/>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1720,7 +1777,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="315"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1728,7 +1785,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintPulley</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="216"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1736,7 +1793,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="322"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1744,7 +1801,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="390"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1752,7 +1809,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="602"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1765,7 +1822,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
       <translation>VEM háló szerkesztés</translation>
     </message>
     <message>
-      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="100"/>
+      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="102"/>
       <source>Meshing failure</source>
       <translation>Hálólétrehozás hiba</translation>
     </message>
@@ -1773,7 +1830,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="375"/>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -1789,9 +1846,9 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="55"/>
+      <location filename="../../TaskFemConstraint.cpp" line="56"/>
       <source>Analysis Feature Properties</source>
-      <translation type="unfinished">Analysis Feature Properties</translation>
+      <translation>Elemzési jellemzők tulajdonságai</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="182"/>
@@ -1807,42 +1864,42 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="168"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="173"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="181"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="207"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="214"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="170"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="185"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="205"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="215"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="224"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="169"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="171"/>
       <source>Use only a single reference for bearing constraint</source>
-      <translation type="unfinished">Use only a single reference for bearing constraint</translation>
+      <translation>Csak egyetlen hivatkozást használjon a csapágy kényszerhez</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="173"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
       <source>Only faces can be picked</source>
       <translation>Csak felületek választhatók ki</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="186"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Csak hengeres felületek választhatóak</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="200"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="206"/>
       <source>Only planar faces can be picked</source>
       <translation>Csak a síkbeli felületek választhatók ki</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="216"/>
       <source>Only linear edges can be picked</source>
       <translation>Csak lineáris élek választhatók ki</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="215"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="225"/>
       <source>Only faces and edges can be picked</source>
       <translation>Csak a felületek és élek választhatók ki</translation>
     </message>
@@ -1850,108 +1907,108 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="55"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="61"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="57"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="60"/>
       <source>Delete</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="129"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="197"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="130"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="196"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="219"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="226"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="234"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="243"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="278"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="209"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="221"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="229"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="239"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="250"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="287"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="332"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="338"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="343"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="354"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="360"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="368"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="377"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="413"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="422"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="296"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="342"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="349"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="355"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="367"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="374"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="384"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="130"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="131"/>
       <source>Only one face in object! - moved to master face</source>
       <translation>Csak egy felület az objektumon! - a fő felületre költözött</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="139"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
       <source>Select slave geometry of type: </source>
-      <translation type="unfinished">Select slave geometry of type: </translation>
+      <translation>Válassza ki a következő típusok függő geometriáját </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="146"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="144"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
       <source>click Add or Remove</source>
-      <translation type="unfinished">click Add or Remove</translation>
+      <translation>kattintson a Hozzáadás vagy Eltávolítás gombra</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="146"/>
       <source>Select master geometry of type: </source>
-      <translation type="unfinished">Select master geometry of type: </translation>
+      <translation>Válassza ki az alapgeometriát típusa szerint </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="198"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="333"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="197"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="343"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>Csak egy fő felület és egy másodlagos felület a kényszer érintkezéséhez!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="278"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="338"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="413"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="287"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="349"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="209"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="235"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="240"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>Csak egy másodlagos felület a kényszer érintkezéséhez!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="219"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="287"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="354"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="422"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="221"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="296"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="367"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkotórész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="227"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="361"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="230"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="375"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>A külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="244"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="378"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="251"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="396"/>
       <source>Only faces can be picked (edges in 2D models)</source>
-      <translation type="unfinished">Only faces can be picked (edges in 2D models)</translation>
+      <translation>Csak felületek választhatók ki (élek 2D modellekben)</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="344"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
       <source>Only one master for a contact constraint!</source>
       <translation>Csak egy mester egy érintkezési kényszerhez!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="369"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="385"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>Csak egy fő felület a kényszer érintkezéséhez!</translation>
     </message>
@@ -1959,44 +2016,44 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="164"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="158"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Válassza ki a következő típusok geometriáját </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="165"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="158"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Csomópont, él, felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="243"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="253"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="260"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="298"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="255"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="299"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="332"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="243"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="253"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="332"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkotórész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="261"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="256"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>A külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="296"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="295"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Elemzési jellemzőnként csak egyféle kijelölés (csúcs, felület vagy él) megengedett!</translation>
     </message>
@@ -2004,44 +2061,44 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskFemConstraintFixed</name>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="85"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="87"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Válassza ki a következő típusok geometriáját </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="86"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="87"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Csomópont, él, felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="120"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="127"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="164"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="187"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="196"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="130"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="171"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="203"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="187"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="120"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="196"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="203"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkotórész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="128"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="131"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="162"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="167"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Elemzési jellemzőnként csak egyféle kijelölés (csúcs, felület vagy él) megengedett!</translation>
     </message>
@@ -2049,144 +2106,144 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="345"/>
       <source>Basic</source>
       <translation>Alapkifejezések</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="332"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="346"/>
       <source>Turbulence</source>
       <translation>Turbulencia</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="333"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="347"/>
       <source>Thermal</source>
       <translation>Termikus</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="335"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="349"/>
       <source>select boundary type, faces and set value</source>
       <translation>válassza ki a szegély típusát, a felületeket és állítsa be az értéket</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="373"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="390"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Válassza ki a következő típusok geometriáját </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="374"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="390"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="509"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="526"/>
       <source>Intensity [0~1]</source>
       <translation>Intenzitás [0~1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="511"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="528"/>
       <source>Dissipation Rate [m2/s3]</source>
       <translation>Disszipációs sebesség [m2/s3]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="514"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="531"/>
       <source>Length Scale [m]</source>
       <translation>Hosszskála [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="517"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="534"/>
       <source>Viscosity Ratio [1]</source>
       <translation>Viszkozitási arány [1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="520"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="537"/>
       <source>Hydraulic Diameter [m]</source>
       <translation>Hidraulikus átmérő [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="548"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="553"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="566"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="571"/>
       <source>Gradient [K/m]</source>
       <translation>Lejtés [K/m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="557"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="575"/>
       <source>Flux [W/m2]</source>
       <translation>Fluxus [W/m2]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="634"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
       <source>Empty selection</source>
       <translation>Üres kijelölés</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="634"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
       <source>Select an edge or a face.</source>
-      <translation type="unfinished">Select an edge or a face.</translation>
+      <translation>Él vagy felület kiválasztása.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="646"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="671"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="679"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="686"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="675"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="693"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="703"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="712"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="647"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
       <source>Selected object is not a part object!</source>
       <translation>A kiválasztott objektum nem egy alkatrész objektum!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="656"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="676"/>
       <source>Only one planar face or edge can be selected!</source>
       <translation>Csak sík felület vagy él választható!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="672"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="694"/>
       <source>Only planar faces can be picked for 3D</source>
       <translation>3D-hez csak sík felületek választhatók ki</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="680"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="704"/>
       <source>Only planar edges can be picked for 2D</source>
       <translation>A 2D-hez csak sík élek választhatók</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="687"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="713"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
       <translation>Csak a 3D alkatrészek felületei vagy a 2D élei választhatók ki</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="822"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="832"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="839"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="877"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="900"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="910"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="867"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="909"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="822"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="900"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="832"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="910"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkatrész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="840"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="875"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="905"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Elemzési jellemzőnként csak egyféle kijelölés (csúcs, felület vagy él) megengedett!</translation>
     </message>
@@ -2194,41 +2251,41 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="89"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Válassza ki a következő típusok geometriáját </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="90"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Csomópont, él, felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="128"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="137"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="205"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="214"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="125"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="134"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="184"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="207"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="216"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="128"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="205"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="125"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="207"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="137"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="214"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="134"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="216"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkatrész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="145"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="180"/>
@@ -2236,38 +2293,38 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
       <translation>Elemzési jellemzőnként csak egyféle kijelölés (csúcs, felület vagy él) megengedett!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="335"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="339"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
       <source>Select an edge or a face.</source>
-      <translation type="unfinished">Select an edge or a face.</translation>
+      <translation>Él vagy felület kiválasztása.</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="147"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="155"/>
-      <location filename="../../TaskFemConstraintGear.cpp" line="162"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="174"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="156"/>
       <source>Only planar faces can be picked</source>
       <translation>Csak a síkbeli felületek választhatók ki</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="156"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="166"/>
       <source>Only linear edges can be picked</source>
       <translation>Csak lineáris élek választhatók ki</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="163"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="175"/>
       <source>Only faces and edges can be picked</source>
       <translation>Csak a felületek és élek választhatók ki</translation>
     </message>
@@ -2275,97 +2332,97 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="156"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Válassza ki a következő típusok geometriáját </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="149"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="156"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Él, felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="277"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="284"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="295"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="339"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="349"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="291"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="299"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="311"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="359"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="369"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="380"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="359"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="277"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="349"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="291"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="369"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkatrész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="285"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="300"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="296"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="361"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="312"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="381"/>
       <source>Selection must only consist of faces! (edges in 2D models)</source>
-      <translation type="unfinished">Selection must only consist of faces! (edges in 2D models)</translation>
+      <translation>Kijelölés csak felületeket tartalmazhat (éleket 2D-modellekben)</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="95"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="98"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Válasszon egyetlen típusú geometriát </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="96"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="98"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="128"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="138"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="157"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="168"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="177"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="207"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="224"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="130"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="140"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="158"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="178"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="209"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="237"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="129"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="131"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="210"/>
       <source>Only one face can be selected for a plane multi-point constraint!</source>
       <translation>Egy síkbeli többpontos kényszerhez csak egy felületet lehet kiválasztani!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="138"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="224"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="140"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="150"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="237"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkatrész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="158"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="159"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
@@ -2373,7 +2430,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
       <translation>Csak felületek választhatók ki</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="178"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="179"/>
       <source>Only planar faces can be picked</source>
       <translation>Csak a síkbeli felületek választhatók ki</translation>
     </message>
@@ -2381,57 +2438,57 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="73"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="75"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Válassza ki a következő típusok geometriáját </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="74"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="75"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Él, felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="159"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="157"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkatrész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="146"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="160"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="158"/>
       <source>Only faces (edges in 2D models) can be picked</source>
-      <translation type="unfinished">Only faces (edges in 2D models) can be picked</translation>
+      <translation>Csak felületek (élek 2D modellekben) választhatók ki</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintPulley</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="92"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="97"/>
       <source>Pulley diameter</source>
       <translation>Csiga átmérője</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="93"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="98"/>
       <source>Torque [Nm]</source>
       <translation>Nyomaték [Nm]</translation>
     </message>
@@ -2439,44 +2496,44 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="102"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Válassza ki a következő típusok geometriáját:</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="103"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="131"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="140"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="156"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="190"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="199"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="160"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="204"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="131"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="190"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="140"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="199"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="204"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkatrész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="151"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="156"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="160"/>
       <source>Only faces can be picked</source>
       <translation>Csak felületek választhatók ki</translation>
     </message>
@@ -2484,119 +2541,119 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="100"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Válassza ki a következő típusok geometriáját </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Csomópont, él, felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="191"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="201"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="208"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="247"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="257"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="207"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="215"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="265"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="191"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="247"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="201"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="257"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="207"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="265"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkatrész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="209"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="216"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Külső objektum kiválasztása nem támogatott</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="211"/>
       <source>Analysis feature update error</source>
       <translation>Elemzési funkció frissítési hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="296"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="302"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="310"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="324"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="331"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="339"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="347"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="357"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="395"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="429"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="438"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="316"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="326"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="349"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="359"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="379"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="423"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="296"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="429"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="303"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="311"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="327"/>
       <source>Only one face for rectangular local coordinate system!</source>
       <translation>Csak egy felület a téglalap alakú helyi koordinátarendszerhez!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="332"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="350"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="340"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
       <source>Only one face for local coordinate system!</source>
       <translation>Csak egy felület a helyi koordinátarendszerhez!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="396"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="424"/>
       <source>Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</source>
-      <translation type="unfinished">Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</translation>
+      <translation>Csak az átalakítható felületek választhatók ki! Először alkalmazzon elmozdulási határfeltételt vagy erőterhelést egy felületre, majd alkalmazza a helyi koordináta rendszert a felületre.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="324"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="438"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkatrész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="156"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="163"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Válasszon ki egyetlen geometriai típust a következők közül </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="157"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="163"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="204"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="212"/>
       <source>The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</source>
-      <translation type="unfinished">The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</translation>
+      <translation>Az átalakítható felületek megváltoztak. Csak add hozzá a átalakítható felületeket, és távolítsd el a nem átalakítható felületeket!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="347"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
       <source>Only faces can be picked</source>
       <translation>Csak felületek választhatók ki</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="358"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="380"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Csak hengeres felületek választhatóak</translation>
     </message>
@@ -2604,12 +2661,12 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="662"/>
+      <location filename="../../TaskPostBoxes.cpp" line="687"/>
       <source>Data Along a Line Options</source>
-      <translation type="unfinished">Data Along a Line Options</translation>
+      <translation>Adatbeállítások egy vonal mentén</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1046"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1095"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Hossz</translation>
@@ -2618,12 +2675,12 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1083"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1129"/>
       <source>Data at Point Options</source>
-      <translation type="unfinished">Data at Point Options</translation>
+      <translation>Adatbeállítások egy ponton</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1402"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1470"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 a (%2; %3; %4) pontnál: %5 %6</translation>
     </message>
@@ -2631,7 +2688,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="512"/>
+      <location filename="../../TaskPostBoxes.cpp" line="535"/>
       <source>Implicit function</source>
       <translation>Implicit függvény</translation>
     </message>
@@ -2647,12 +2704,12 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
   <context>
     <name>FemGui::ViewProviderFemMeshShapeNetgen</name>
     <message>
-      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="71"/>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="69"/>
       <source>Meshing failure</source>
       <translation>Hálólétrehozás hiba</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="73"/>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="70"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
       <translation>A Végeselemes módszer VEM modul NETGEN támogatás nélküli. Hálólétrehozás nem fog működni!!!</translation>
     </message>
@@ -2672,12 +2729,12 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/Material.ui" line="14"/>
       <source>FEM Material</source>
-      <translation type="unfinished">FEM Material</translation>
+      <translation>VEM anyag</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Sűrűség</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="91"/>
@@ -2687,32 +2744,32 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/Material.ui" line="102"/>
       <source>Young's modulus</source>
-      <translation type="unfinished">Young's modulus</translation>
+      <translation>Rugalmassági modulus</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
       <source>Poisson ratio</source>
-      <translation type="unfinished">Poisson ratio</translation>
+      <translation>Poisson arányszám</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="263"/>
       <source>Thermal conductivity</source>
-      <translation type="unfinished">Thermal conductivity</translation>
+      <translation>Hővezetési tényező</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="303"/>
       <source>Expansion coefficient</source>
-      <translation type="unfinished">Expansion coefficient</translation>
+      <translation>Hőtágulási együttható</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="343"/>
       <source>Reference temperature</source>
-      <translation type="unfinished">Reference temperature</translation>
+      <translation>Referencia hőmérséklet</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="386"/>
       <source>Specific heat capacity</source>
-      <translation type="unfinished">Specific heat capacity</translation>
+      <translation>Fajlagos hőkapacitás</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="190"/>
@@ -2722,7 +2779,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/Material.ui" line="201"/>
       <source>Kinematic viscosity</source>
-      <translation type="unfinished">Kinematic viscosity</translation>
+      <translation>Kinematikai súrlódás</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="252"/>
@@ -2732,7 +2789,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/Material.ui" line="346"/>
       <source>Reference temperature for thermal expansion</source>
-      <translation type="unfinished">Reference temperature for thermal expansion</translation>
+      <translation>Referencia hőmérséklet a hőtáguláshoz</translation>
     </message>
   </context>
   <context>
@@ -2761,7 +2818,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="45"/>
       <source>Liquid section parameter</source>
-      <translation type="unfinished">Liquid section parameter</translation>
+      <translation>Folyadékszakasz paraméter</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
@@ -2771,34 +2828,34 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
       <location filename="../ui/ElementFluid1D.ui" line="561"/>
       <location filename="../ui/ElementFluid1D.ui" line="717"/>
       <source>Pipe area</source>
-      <translation type="unfinished">Pipe area</translation>
+      <translation>Cső területe</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="85"/>
       <location filename="../ui/ElementFluid1D.ui" line="738"/>
       <source>Hydraulic radius</source>
-      <translation type="unfinished">Hydraulic radius</translation>
+      <translation>Hidraulikus sugár</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="106"/>
       <source>Manning coefficient</source>
-      <translation type="unfinished">Manning coefficient</translation>
+      <translation>Manning együttható</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="134"/>
       <location filename="../ui/ElementFluid1D.ui" line="180"/>
       <source>Initial area</source>
-      <translation type="unfinished">Initial area</translation>
+      <translation>Elsődleges terület</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="155"/>
       <source>Enlarged area</source>
-      <translation type="unfinished">Enlarged area</translation>
+      <translation>Megnövelt terület</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted area</source>
-      <translation type="unfinished">Contracted area</translation>
+      <translation>Csökkentett terület</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
@@ -2848,27 +2905,27 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="390"/>
       <source>Entrance area</source>
-      <translation type="unfinished">Entrance area</translation>
+      <translation>Beviteli terület</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="436"/>
       <source>Diaphragm area</source>
-      <translation type="unfinished">Diaphragm area</translation>
+      <translation>Membrán felülete</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
       <source>Bend radius / pipe diameter</source>
-      <translation type="unfinished">Bend radius / pipe diameter</translation>
+      <translation>Hajlítási sugár/csőátmérő</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="509"/>
       <source>Bend angle</source>
-      <translation type="unfinished">Bend angle</translation>
+      <translation>Hajlítási szög</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
       <source>Pump characteristic</source>
-      <translation type="unfinished">Pump characteristic</translation>
+      <translation>Szivattyú jellemzői</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
@@ -2878,12 +2935,12 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="829"/>
       <source>Gas section parameter</source>
-      <translation type="unfinished">Gas section parameter</translation>
+      <translation>Gázszakasz változó</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="843"/>
       <source>Open channel section parameter</source>
-      <translation type="unfinished">Open channel section parameter</translation>
+      <translation>Nyitott csatorna szakasz paraméter</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
@@ -2913,7 +2970,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/ConstraintTie.ui" line="14"/>
       <source>Tie Parameter</source>
-      <translation type="unfinished">Tie Parameter</translation>
+      <translation>Kötési változó</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="56"/>
@@ -2923,7 +2980,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/ConstraintTie.ui" line="63"/>
       <source>Enable adjust</source>
-      <translation type="unfinished">Enable adjust</translation>
+      <translation>Igazítás engedélyezése</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
@@ -2939,23 +2996,23 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <source>Parameter</source>
       <translation>Paraméter</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
       <source>Centrif Parameter</source>
-      <translation type="unfinished">Centrif Parameter</translation>
+      <translation>Centrifugális változó</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="34"/>
       <source>Rotation frequency</source>
-      <translation type="unfinished">Rotation frequency</translation>
+      <translation>Forgatási frekvencia</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="41"/>
@@ -2965,7 +3022,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
       <source>Section Print Parameter</source>
-      <translation type="unfinished">Section Print Parameter</translation>
+      <translation>Szakasz nyomtatási változó</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="34"/>
@@ -2973,174 +3030,217 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
       <translation>Változó</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="26"/>
+      <location filename="../ui/Electromagnetic.ui" line="26"/>
       <source>Boundary condition</source>
-      <translation type="unfinished">Boundary condition</translation>
+      <translation>Peremfeltétel</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="50"/>
+      <location filename="../ui/Electromagnetic.ui" line="50"/>
       <source>Potential</source>
-      <translation type="unfinished">Potential</translation>
+      <translation>Feszültség</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="60"/>
+      <location filename="../ui/Electromagnetic.ui" line="60"/>
       <source>Electric potential</source>
       <translation>Elektromos feszültség</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="84"/>
+      <location filename="../ui/Electromagnetic.ui" line="84"/>
       <source>Electromagnetic potential</source>
-      <translation type="unfinished">Electromagnetic potential</translation>
+      <translation>Elektromos feszültség</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="100"/>
+      <location filename="../ui/Electromagnetic.ui" line="100"/>
+      <location filename="../ui/Electromagnetic.ui" line="419"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
       <translation>A képzetes rész csak az egyenleteknél használatos
 harmonikus/rezgő hajtóerővel rendelkező egyenletek esetén</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="150"/>
+      <location filename="../ui/Electromagnetic.ui" line="140"/>
       <source>Real part of scalar potential</source>
-      <translation type="unfinished">Real part of scalar potential</translation>
+      <translation>Skalárfeszültség képzetes része</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="211"/>
+      <location filename="../ui/Electromagnetic.ui" line="191"/>
       <source>Real part of vector potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Feszültségvektor X-komponensének valós része
+Megjegyzés: nincs hatása, ha egy szilárd testet választottunk ki</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="234"/>
+      <location filename="../ui/Electromagnetic.ui" line="214"/>
       <source>Imaginary part of vector potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>A feszültségvektor képzeletbeli része, x-összetevő
+Megjegyzés: nincs hatása, ha egy testet választottak</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="274"/>
+      <location filename="../ui/Electromagnetic.ui" line="244"/>
       <source>Real part of vector potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Feszültségvektor Z-komponensének valós része
+Megjegyzés: nincs hatása, ha egy szilárd testet választottunk ki</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="297"/>
+      <location filename="../ui/Electromagnetic.ui" line="267"/>
       <source>Imaginary part of vector potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>A feszültségvektor képzeletbeli része, y-összetevő
+Megjegyzés: nincs hatása, ha egy testet választottak</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="337"/>
+      <location filename="../ui/Electromagnetic.ui" line="297"/>
       <source>Real part of vector potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Feszültségvektor Z-komponensének valós része
+Megjegyzés: nincs hatása, ha egy szilárd testet választottunk ki</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="360"/>
+      <location filename="../ui/Electromagnetic.ui" line="320"/>
       <source>Imaginary part of vector potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>A feszültségvektor képzeletbeli része, z-összetevő
+Megjegyzés: nincs hatása, ha egy testet választottak</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="391"/>
-      <source>Electric infinity</source>
-      <translation type="unfinished">Electric infinity</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="419"/>
+      <location filename="../ui/Electromagnetic.ui" line="381"/>
       <source>Electric flux density</source>
-      <translation type="unfinished">Electric flux density</translation>
+      <translation>Elektromos fluxussűrűség</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="445"/>
+      <location filename="../ui/Electromagnetic.ui" line="614"/>
       <source>Capacitance body</source>
-      <translation type="unfinished">Capacitance body</translation>
+      <translation>Kapacitív test</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="448"/>
+      <location filename="../ui/Electromagnetic.ui" line="617"/>
       <source>Enabled by 'Calculate capacity matrix' in Electrostatic equation</source>
-      <translation type="unfinished">Enabled by 'Calculate capacity matrix' in Electrostatic equation</translation>
+      <translation>Engedélyezve a 'A kapacitásmátrix kiszámítása' az elektrosztatikai egyenletben</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="398"/>
+      <location filename="../ui/Electromagnetic.ui" line="358"/>
       <source>Whether the boundary condition defines a constant potential</source>
       <translation>A peremfeltétel meghatároz-e egy rögzített potenciált</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="401"/>
+      <location filename="../ui/Electromagnetic.ui" line="348"/>
+      <source>Far field approximation assuming spherical symmetry</source>
+      <translation type="unfinished">Far field approximation assuming spherical symmetry</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="351"/>
+      <source>Far field</source>
+      <translation type="unfinished">Far field</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
-      <translation type="unfinished">Potential constant</translation>
+      <translation>Állandó feszültség</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="413"/>
+      <location filename="../ui/Electromagnetic.ui" line="373"/>
       <source>Neumann</source>
-      <translation type="unfinished">Neumann</translation>
+      <translation>Neumann</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="426"/>
+      <location filename="../ui/Electromagnetic.ui" line="388"/>
       <source>Normal component of electric displacement field</source>
-      <translation type="unfinished">Normal component of electric displacement field</translation>
+      <translation>Az elektromos eltolódási tér normál komponense</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="439"/>
+      <location filename="../ui/Electromagnetic.ui" line="400"/>
+      <source>To define magnetic flux density</source>
+      <translation type="unfinished">To define magnetic flux density</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="403"/>
+      <source>Magnetic flux density</source>
+      <translation type="unfinished">Magnetic flux density</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="459"/>
+      <source>Real part of magnetic flux density x-component</source>
+      <translation type="unfinished">Real part of magnetic flux density x-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="481"/>
+      <source>Imaginary part of magnetic flux density x-component</source>
+      <translation type="unfinished">Imaginary part of magnetic flux density x-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="510"/>
+      <source>Real part of magnetic flux density y-component</source>
+      <translation type="unfinished">Real part of magnetic flux density y-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="532"/>
+      <source>Imaginary part of magnetic flux density y-component</source>
+      <translation type="unfinished">Imaginary part of magnetic flux density y-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="561"/>
+      <source>Real part of magnetic flux density z-component</source>
+      <translation type="unfinished">Real part of magnetic flux density z-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="583"/>
+      <source>Imaginary part of magnetic flux density z-component</source>
+      <translation type="unfinished">Imaginary part of magnetic flux density z-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="608"/>
       <source>Capacitance</source>
-      <translation type="unfinished">Capacitance</translation>
+      <translation>Kapacitás</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="388"/>
-      <source>Whether the boundary condition defines a farfield potential</source>
-      <translation>A peremfeltétel meghatároz-e egy távoli mező potenciálját</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="39"/>
+      <location filename="../ui/Electromagnetic.ui" line="39"/>
       <source>Dirichlet</source>
-      <translation type="unfinished">Dirichlet</translation>
+      <translation>Dirichlet</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="81"/>
+      <location filename="../ui/Electromagnetic.ui" line="81"/>
       <source>To define scalar potential and magnetic vector potential</source>
-      <translation type="unfinished">To define scalar potential and magnetic vector potential</translation>
+      <translation>Határozza meg a skaláris feszültséget és a mágneses vektoriális feszültséget</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/Electromagnetic.ui" line="113"/>
+      <location filename="../ui/Electromagnetic.ui" line="432"/>
       <source>Real</source>
       <translation>Valós</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/Electromagnetic.ui" line="123"/>
+      <location filename="../ui/Electromagnetic.ui" line="442"/>
       <source>Imaginary</source>
       <translation>Elképzelt</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="133"/>
+      <location filename="../ui/Electromagnetic.ui" line="130"/>
       <source>Scalar</source>
       <translation>Skaláris</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="172"/>
+      <location filename="../ui/Electromagnetic.ui" line="162"/>
       <source>Imaginary part of scalar potential</source>
       <translation>A skalárpotenciál képzetes része</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="455"/>
+      <location filename="../ui/Electromagnetic.ui" line="624"/>
       <source>Counter of the body (or face) with a capacitance</source>
       <translation>A test (vagy felület) számlálója kapacitással</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
       <source>Beam Section Rotation</source>
-      <translation type="unfinished">Beam Section Rotation</translation>
+      <translation>Gerenda szelvényének elfordulása</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="61"/>
@@ -3155,17 +3255,17 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
       <source>Mesh Boundary Layer Settings</source>
-      <translation type="unfinished">Mesh Boundary Layer Settings</translation>
+      <translation>Háló határréteg beállításai</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="34"/>
       <source>Maximum layers</source>
-      <translation type="unfinished">Maximum layers</translation>
+      <translation>Maximális rétegszám</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="51"/>
       <source>Minimum/1st thickness</source>
-      <translation type="unfinished">Minimum/1st thickness</translation>
+      <translation>Első réteg minimális vastagsága</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="77"/>
@@ -3175,12 +3275,12 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
       <source>Mesh Group</source>
-      <translation type="unfinished">Mesh Group</translation>
+      <translation>Háló csoport</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="26"/>
       <source>Identifier Used for Mesh Export</source>
-      <translation type="unfinished">Identifier Used for Mesh Export</translation>
+      <translation>Azonosító a háló exportálásához</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="37"/>
@@ -3195,13 +3295,13 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
       <source>Beam Section Parameter</source>
-      <translation type="unfinished">Beam Section Parameter</translation>
+      <translation>Gerenda szakaszparamétere</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
-      <translation type="unfinished">Cross-Section Parameter</translation>
+      <translation>Keresztmetszeti paraméter</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="41"/>
@@ -3210,14 +3310,14 @@ Note: has no effect if a solid was selected</translation>
       <translation>Szélesség</translation>
     </message>
     <message>
+      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3235,81 +3335,82 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="141"/>
       <source>Outer diameter</source>
-      <translation type="unfinished">Outer diameter</translation>
+      <translation>Külső átmérő</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
+      <location filename="../ui/MeshShape.ui" line="109"/>
       <source>Thickness</source>
       <translation>Vastagság</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="204"/>
       <source>Axis1 length</source>
-      <translation type="unfinished">Axis1 length</translation>
+      <translation>Tengely1 hossza</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="236"/>
       <source>Axis2 length</source>
-      <translation type="unfinished">Axis2 length</translation>
+      <translation>Tengely2 hossza</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="343"/>
       <source>T1 thickness</source>
-      <translation type="unfinished">T1 thickness</translation>
+      <translation>T1 vastagság</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="375"/>
       <source>T2 thickness</source>
-      <translation type="unfinished">T2 thickness</translation>
+      <translation>T2 vastagság</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="407"/>
       <source>T3 thickness</source>
-      <translation type="unfinished">T3 thickness</translation>
+      <translation>T3 vastagság</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="439"/>
       <source>T4 thickness</source>
-      <translation type="unfinished">T4 thickness</translation>
+      <translation>T4 vastagság</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>Formula</source>
       <translation>Képlet</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="32"/>
-      <location filename="../ui/FlowVelocity.ui" line="87"/>
-      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
+      <location filename="../ui/FlowVelocity.ui" line="32"/>
+      <location filename="../ui/FlowVelocity.ui" line="87"/>
+      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <source>Unspecified</source>
-      <translation type="unfinished">Unspecified</translation>
+      <translation>Határozatlan</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity X</source>
-      <translation type="unfinished">Velocity X</translation>
+      <translation>Sebesség X</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity Y</source>
-      <translation type="unfinished">Velocity Y</translation>
+      <translation>Sebesség Y</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity Z</source>
-      <translation type="unfinished">Velocity Z</translation>
+      <translation>Sebesség Z</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
@@ -3317,16 +3418,16 @@ Note: has no effect if a solid was selected</translation>
       <translation>Merőleges a határra</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/Electromagnetic.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <source>Analysis Feature Properties</source>
-      <translation type="unfinished">Analysis Feature Properties</translation>
+      <translation>Elemzési jellemzők tulajdonságai</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="29"/>
@@ -3334,146 +3435,337 @@ Note: has no effect if a solid was selected</translation>
       <translation>Hőforrás</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation>Mód</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="45"/>
       <source>Total power</source>
-      <translation type="unfinished">Total power</translation>
+      <translation>Teljesítmény</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="86"/>
       <source>Dissipation rate</source>
-      <translation type="unfinished">Dissipation rate</translation>
+      <translation>Veszteségteljesítmény</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="48"/>
       <location filename="../ui/Magnetization.ui" line="26"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
-      <translation type="unfinished">Imaginary part is only used for equations
-with harmonic/oscillating driving current</translation>
+      <translation>A képzetes rész csak harmonikus/rezgő hajtóerővel rendelkező 
+egyenletek esetén használatos</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="66"/>
       <source>Real part of magnetization x-component</source>
-      <translation type="unfinished">Real part of magnetization x-component</translation>
+      <translation>Mágnesezettség x-komponensének valós része</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="88"/>
       <source>Imaginary part of magnetization x-component</source>
-      <translation type="unfinished">Imaginary part of magnetization x-component</translation>
+      <translation>Mágnesezettség x-komponensének képzetes része</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="117"/>
       <source>Real part of magnetization y-component</source>
-      <translation type="unfinished">Real part of magnetization y-component</translation>
+      <translation>Mágnesezettség y-komponensének valós része</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="139"/>
       <source>Imaginary part of magnetization y-component</source>
-      <translation type="unfinished">Imaginary part of magnetization y-component</translation>
+      <translation>Mágnesezettség y-komponensének képzetes része</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="168"/>
       <source>Real part of magnetization z-component</source>
-      <translation type="unfinished">Real part of magnetization z-component</translation>
+      <translation>Mágnesezettség z-komponensének valós része</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="190"/>
       <source>Imaginary part of magnetization z-component</source>
-      <translation type="unfinished">Imaginary part of magnetization z-component</translation>
+      <translation>Mágnesezettség z-komponensének képzetes része</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="50"/>
       <source>Free surface charge density</source>
-      <translation type="unfinished">Free surface charge density</translation>
+      <translation>Szabad felületi töltéssűrűség</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="55"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="98"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Sűrűség</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="93"/>
       <source>Free volume charge density</source>
-      <translation type="unfinished">Free volume charge density</translation>
+      <translation>Szabad térfogat töltéssűrűsége</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="136"/>
       <source>Free total charge</source>
-      <translation type="unfinished">Free total charge</translation>
+      <translation>Teljes szabad töltés</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="141"/>
       <source>Total charge</source>
-      <translation type="unfinished">Total charge</translation>
+      <translation>Teljes töltöttség</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectricChargeDensity.ui" line="173"/>
+      <source>Concentrated</source>
+      <translation type="unfinished">Concentrated</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="23"/>
       <source>Select custom mode to enable vector current density</source>
-      <translation type="unfinished">Select custom mode to enable vector current density</translation>
+      <translation>Válassza a testreszabás módot az áram sűrűségének vektoriális meghatározásának bekapcsolásához</translation>
     </message>
     <message>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <location filename="../ui/MeshAdvanced.ui" line="121"/>
+      <location filename="../ui/MeshAdvanced.ui" line="526"/>
+      <location filename="../ui/MeshAdvanced.ui" line="646"/>
+      <location filename="../ui/MeshAdvanced.ui" line="682"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
+      <source>Icon</source>
+      <translation>Ikon</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="56"/>
+      <source>Drag the refinement, that should be altered, into the Manipulate object in the document tree</source>
+      <translation>Húzza a módosítani kívánt szűrőt a dokumentumfa Feldolgozandó objektumába</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="70"/>
+      <source>Type:</source>
+      <translation>Típus:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="84"/>
+      <source>Restrict</source>
+      <translation type="unfinished">Restrict</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="89"/>
+      <source>Threshold</source>
+      <translation type="unfinished">Threshold</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="94"/>
+      <location filename="../ui/MeshManipulate.ui" line="609"/>
+      <source>Mean</source>
+      <translation type="unfinished">Mean</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="99"/>
+      <source>Gradient</source>
+      <translation type="unfinished">Gradient</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="104"/>
+      <source>Curvature</source>
+      <translation>Görbület</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="109"/>
+      <source>Laplacian</source>
+      <translation type="unfinished">Laplacian</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="138"/>
+      <source>Restrict the application of the child refinement to the selected reference elements.</source>
+      <translation type="unfinished">Restrict the application of the child refinement to the selected reference elements.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="160"/>
+      <location filename="../ui/MeshManipulate.ui" line="173"/>
+      <source>Include the boundary of the selected reference elements</source>
+      <translation type="unfinished">Include the boundary of the selected reference elements</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="163"/>
+      <source>Include boundary</source>
+      <translation type="unfinished">Include boundary</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="209"/>
+      <source>Apply a threshold to the child refinements value</source>
+      <translation type="unfinished">Apply a threshold to the child refinements value</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <location filename="../ui/MeshAdvanced.ui" line="210"/>
+      <location filename="../ui/MeshAdvanced.ui" line="399"/>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <location filename="../ui/MeshAdvanced.ui" line="179"/>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
+      <source>Distance at which the mesh size will be SizeMaximum</source>
+      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="308"/>
+      <source>Output size</source>
+      <translation type="unfinished">Output size</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
+      <location filename="../ui/MeshAdvanced.ui" line="337"/>
+      <location filename="../ui/MeshAdvanced.ui" line="430"/>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="365"/>
+      <source>Input value</source>
+      <translation type="unfinished">Input value</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <location filename="../ui/MeshAdvanced.ui" line="368"/>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
+      <source>Distance up to which the mesh size will be SizeMinimum</source>
+      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="434"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
+      <source>Diagram</source>
+      <translation type="unfinished">Diagram</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="452"/>
+      <source>Linear interpolation</source>
+      <translation type="unfinished">Linear interpolation</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="472"/>
+      <source>Stop at max input</source>
+      <translation type="unfinished">Stop at max input</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="493"/>
+      <source>Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</source>
+      <translation type="unfinished">Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="508"/>
+      <location filename="../ui/MeshManipulate.ui" line="617"/>
+      <location filename="../ui/MeshManipulate.ui" line="689"/>
+      <location filename="../ui/MeshManipulate.ui" line="761"/>
+      <source>Delta</source>
+      <translation type="unfinished">Delta</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="565"/>
+      <source>Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</source>
+      <translation type="unfinished">Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="580"/>
+      <source>Kind</source>
+      <translation type="unfinished">Kind</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="594"/>
       <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
+      <location filename="../ui/Electromagnetic.ui" line="181"/>
+      <location filename="../ui/Electromagnetic.ui" line="449"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="88"/>
       <source>Real part of current density x-component</source>
-      <translation type="unfinished">Real part of current density x-component</translation>
+      <translation>Áramsűrűség x-komponensének valós része</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="110"/>
       <source>Imaginary part of current density x-component</source>
-      <translation type="unfinished">Imaginary part of current density x-component</translation>
+      <translation>Áramsűrűség x-komponensének képzetes része</translation>
     </message>
     <message>
+      <location filename="../ui/MeshManipulate.ui" line="599"/>
       <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
+      <location filename="../ui/Electromagnetic.ui" line="234"/>
+      <location filename="../ui/Electromagnetic.ui" line="500"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="139"/>
       <source>Real part of current density y-component</source>
-      <translation type="unfinished">Real part of current density y-component</translation>
+      <translation>Áramsűrűség y-komponensének valós része</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="161"/>
       <source>Imaginary part of current density y-component</source>
-      <translation type="unfinished">Imaginary part of current density y-component</translation>
+      <translation>Áramsűrűség y-komponensének képzetes része</translation>
     </message>
     <message>
+      <location filename="../ui/MeshManipulate.ui" line="604"/>
       <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
+      <location filename="../ui/Electromagnetic.ui" line="287"/>
+      <location filename="../ui/Electromagnetic.ui" line="551"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="190"/>
       <source>Real part of current density z-component</source>
-      <translation type="unfinished">Real part of current density z-component</translation>
+      <translation>Áramsűrűség z-komponensének valós része</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="212"/>
       <source>Imaginary part of current density z-component</source>
-      <translation type="unfinished">Imaginary part of current density z-component</translation>
+      <translation>Áramsűrűség z-komponensének képzetes része</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="237"/>
       <source>Current density normal to surface</source>
-      <translation type="unfinished">Current density normal to surface</translation>
+      <translation>Aktuális áramsűrűség a felületen</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="263"/>
@@ -3483,28 +3775,38 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell Thickness Parameter</source>
-      <translation type="unfinished">Shell Thickness Parameter</translation>
+      <translation>Kéregvastagság paraméter</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
       <source>Mesh Refinement</source>
-      <translation type="unfinished">Mesh Refinement</translation>
+      <translation>Háló finomítás</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
       <source>Maximum element size</source>
-      <translation type="unfinished">Maximum element size</translation>
+      <translation>Maximális elemméret</translation>
     </message>
     <message>
+      <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshShape.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/MeshPreview.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
       <source>Form</source>
       <translation>Űrlap</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/MeshAdvanced.ui" line="971"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>Mező</translation>
@@ -3518,29 +3820,515 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
       <source>One field for each frame</source>
-      <translation type="unfinished">One field for each frame</translation>
+      <translation>Egy mező minden képkockához</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
       <source>Index</source>
-      <translation type="unfinished">Index</translation>
+      <translation>Index szám</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
       <source>X field</source>
-      <translation type="unfinished">X field</translation>
+      <translation>X mező</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
       <source>Y field</source>
-      <translation type="unfinished">Y field</translation>
+      <translation>Y mező</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
       <source>One Y field for each frame</source>
-      <translation type="unfinished">One Y field for each frame</translation>
+      <translation>Egy Y mező minden képkockához</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
+      <source>Global refinement preview settings:</source>
+      <translation type="unfinished">Global refinement preview settings:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
+      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
+      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
+      <source>Auto enable on open</source>
+      <translation type="unfinished">Auto enable on open</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
+      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
+      <translation type="unfinished">Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
+      <source>Preview mesh fineness</source>
+      <translation type="unfinished">Preview mesh fineness</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
+      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
+      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <source>Progression</source>
+      <translation type="unfinished">Progression</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
+      <source>Invert</source>
+      <translation>Invertálás</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <source>Nodes</source>
+      <translation>Csomópontok</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <source>Bump</source>
+      <translation type="unfinished">Bump</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <source>Constant</source>
+      <translation>Állandó</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
+      <source>Coefficient</source>
+      <translation>Együtthatók</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="34"/>
+      <source>Type</source>
+      <translation>Típus</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="48"/>
+      <source>AttractorAnisoCurve</source>
+      <translation type="unfinished">AttractorAnisoCurve</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="53"/>
+      <source>MathEval</source>
+      <translation type="unfinished">MathEval</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="58"/>
+      <source>MathEvalAniso</source>
+      <translation type="unfinished">MathEvalAniso</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="63"/>
+      <location filename="../ui/MeshAdvanced.ui" line="283"/>
+      <location filename="../ui/MeshDistance.ui" line="197"/>
+      <source>Distance</source>
+      <translation>Távolság</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="68"/>
+      <location filename="../ui/MeshAdvanced.ui" line="964"/>
+      <source>Result</source>
+      <translation>Eredmény</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="100"/>
+      <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
+      <translation type="unfinished">Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="134"/>
+      <location filename="../ui/MeshAdvanced.ui" line="695"/>
+      <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
+      <translation type="unfinished">Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="315"/>
+      <source>Size Tangent</source>
+      <translation type="unfinished">Size Tangent</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="449"/>
+      <source>Size Normal</source>
+      <translation type="unfinished">Size Normal</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="460"/>
+      <location filename="../ui/MeshAdvanced.ui" line="916"/>
+      <source>Sampling</source>
+      <translation>Mintavétel</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="505"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="539"/>
+      <location filename="../ui/MeshAdvanced.ui" line="659"/>
+      <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
+      <translation type="unfinished">Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="569"/>
+      <location filename="../ui/MeshAdvanced.ui" line="583"/>
+      <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</source>
+      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="576"/>
+      <location filename="../ui/MeshAdvanced.ui" line="742"/>
+      <location filename="../ui/MeshAdvanced.ui" line="756"/>
+      <location filename="../ui/MeshAdvanced.ui" line="784"/>
+      <location filename="../ui/MeshAdvanced.ui" line="798"/>
+      <location filename="../ui/MeshAdvanced.ui" line="826"/>
+      <location filename="../ui/MeshAdvanced.ui" line="847"/>
+      <source>Mesh size equation</source>
+      <translation type="unfinished">Mesh size equation</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="590"/>
+      <source>EQIcon</source>
+      <translation type="unfinished">EQIcon</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="625"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="728"/>
+      <source>M12</source>
+      <translation type="unfinished">M12</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="735"/>
+      <location filename="../ui/MeshAdvanced.ui" line="749"/>
+      <location filename="../ui/MeshAdvanced.ui" line="777"/>
+      <location filename="../ui/MeshAdvanced.ui" line="791"/>
+      <location filename="../ui/MeshAdvanced.ui" line="819"/>
+      <location filename="../ui/MeshAdvanced.ui" line="840"/>
+      <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</source>
+      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="763"/>
+      <source>M33</source>
+      <translation type="unfinished">M33</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="770"/>
+      <source>M22</source>
+      <translation type="unfinished">M22</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="805"/>
+      <source>M11</source>
+      <translation type="unfinished">M11</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="812"/>
+      <source>M23</source>
+      <translation type="unfinished">M23</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="833"/>
+      <source>M13</source>
+      <translation type="unfinished">M13</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="904"/>
+      <source>Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</source>
+      <translation type="unfinished">Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="952"/>
+      <source>Uses a datafield from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
+      <translation type="unfinished">Uses a datafield from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
+      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
+      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
+      <source>Select any number of 5 or 6 sided volumes</source>
+      <translation type="unfinished">Select any number of 5 or 6 sided volumes</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
+      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
+      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
+      <source>Mixed mesh elements</source>
+      <translation type="unfinished">Mixed mesh elements</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
+      <source>If activated, all edges and surface belonging to the selected volumes that do not have a transfinite definitions already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </source>
+      <translation type="unfinished">If activated, all edges and surface belonging to the selected volumes that do not have a transfinite definitions already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
+      <source>Auto apply transfinite surfaces and curves</source>
+      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
+      <source>Distribution</source>
+      <translation type="unfinished">Distribution</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
+      <source>Bump Inverted</source>
+      <translation type="unfinished">Bump Inverted</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
+      <source>Progression Inverted</source>
+      <translation type="unfinished">Progression Inverted</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
+      <source>Surface</source>
+      <translation>Felület</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
+      <source>Recombine</source>
+      <translation type="unfinished">Recombine</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="38"/>
+      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
+      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="54"/>
+      <location filename="../ui/MeshShape.ui" line="70"/>
+      <source>Mesh size within the shape</source>
+      <translation type="unfinished">Mesh size within the shape</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="57"/>
+      <source>Size inside</source>
+      <translation type="unfinished">Size inside</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="80"/>
+      <location filename="../ui/MeshShape.ui" line="96"/>
+      <source>Mesh size outside of the shape</source>
+      <translation type="unfinished">Mesh size outside of the shape</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="83"/>
+      <source>Size outside</source>
+      <translation type="unfinished">Size outside</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="106"/>
+      <location filename="../ui/MeshShape.ui" line="122"/>
+      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
+      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="145"/>
+      <source>Box</source>
+      <translation>Doboz</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="150"/>
+      <source>Sphere</source>
+      <translation>Gömb</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="155"/>
+      <source>Cylinder</source>
+      <translation>Henger</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on distance to chosen reference geometries.</source>
+      <translation type="unfinished">Define mesh element size based on distance to chosen reference geometries.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>Méret</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation type="unfinished">Interpolation</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation type="unfinished">Sampling size</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surface it is the sampling size per direction.</source>
+      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surface it is the sampling size per direction.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation type="unfinished">Linear</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="96"/>
+      <location filename="../ui/MeshPreview.ui" line="109"/>
+      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
+      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="99"/>
+      <source>Min:</source>
+      <translation type="unfinished">Min:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="112"/>
+      <source>1.00e+02</source>
+      <translation type="unfinished">1.00e+02</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="138"/>
+      <location filename="../ui/MeshPreview.ui" line="151"/>
+      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
+      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="141"/>
+      <source>Max:</source>
+      <translation type="unfinished">Max:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="154"/>
+      <source>1.00e+03</source>
+      <translation type="unfinished">1.00e+03</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="184"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinements mesh size output: It shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh, therefore details smaller then the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinements mesh size output: It shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh, therefore details smaller then the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="187"/>
+      <source>Visualize</source>
+      <translation type="unfinished">Visualize</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="197"/>
+      <source>...</source>
+      <translation type="unfinished">...</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
+      <source>Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</source>
+      <translation type="unfinished">Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
+      <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
+      <translation type="unfinished">The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
+      <source>Define if the triangles on the surface shall be recombined into quads</source>
+      <translation type="unfinished">Define if the triangles on the surface shall be recombined into quads</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
+      <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
+      <translation type="unfinished">Define how the triangles are oriented within the transfinite mesh (if not recombined)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
+      <source>Triangle Orientation</source>
+      <translation type="unfinished">Triangle Orientation</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
+      <source>If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
+Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+
+Notes:
+1. User defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
+3. Works with most faces, either connected or unconnected </source>
+      <translation type="unfinished">If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
+Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+
+Notes:
+1. User defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
+3. Works with most faces, either connected or unconnected </translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
+      <source>Auto apply transfinite curves</source>
+      <translation type="unfinished">Auto apply transfinite curves</translation>
     </message>
   </context>
   <context>
@@ -3551,48 +4339,68 @@ with harmonic/oscillating driving current</translation>
       <translation>VEM háló Gmsh használatával</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="26"/>
+      <location filename="../ui/MeshGmsh.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Munkakönyvtár</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGmsh.ui" line="35"/>
+      <source>Write</source>
+      <translation>Ír</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGmsh.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Szerkesztés</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGmsh.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGmsh.ui" line="80"/>
       <source>Mesh Parameters</source>
       <translation>VEM háló paraméterek</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="37"/>
+      <location filename="../ui/MeshGmsh.ui" line="91"/>
       <source>Element dimension</source>
-      <translation type="unfinished">Element dimension</translation>
+      <translation>Elem mérete</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="47"/>
+      <location filename="../ui/MeshGmsh.ui" line="101"/>
       <source>Maximum size</source>
-      <translation type="unfinished">Maximum size</translation>
+      <translation>Maximális méret</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="85"/>
+      <location filename="../ui/MeshGmsh.ui" line="139"/>
       <source>Minimum size</source>
-      <translation type="unfinished">Minimum size</translation>
+      <translation>Minimális méret</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="126"/>
+      <location filename="../ui/MeshGmsh.ui" line="180"/>
       <source>Element order</source>
-      <translation type="unfinished">Element order</translation>
+      <translation>Elem sorrendje</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="172"/>
+      <location filename="../ui/MeshGmsh.ui" line="226"/>
       <source>Time</source>
       <translation>Idő</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="198"/>
+      <location filename="../ui/MeshGmsh.ui" line="252"/>
       <source>Gmsh Version</source>
-      <translation type="unfinished">Gmsh Version</translation>
+      <translation>Gmsh verzió</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="57"/>
-      <location filename="../ui/MeshGmsh.ui" line="95"/>
+      <location filename="../ui/MeshGmsh.ui" line="111"/>
+      <location filename="../ui/MeshGmsh.ui" line="149"/>
       <source>Use 0.0 to set size automatically</source>
       <translation>Automatikus méretbeállításhoz használja a 0.0 értéket</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="144"/>
+      <location filename="../ui/MeshGmsh.ui" line="198"/>
       <source>Gmsh</source>
       <translation>Gmsh ( http://gmsh.info/ )</translation>
     </message>
@@ -3600,30 +4408,30 @@ with harmonic/oscillating driving current</translation>
   <context>
     <name>PlaneWidget</name>
     <message>
-      <location filename="../../PlaneWidget.ui" line="20"/>
+      <location filename="../../PlaneWidget.ui" line="32"/>
       <source>Origin</source>
       <translation>Kezdőpont</translation>
     </message>
     <message>
-      <location filename="../../PlaneWidget.ui" line="26"/>
-      <location filename="../../PlaneWidget.ui" line="86"/>
+      <location filename="../../PlaneWidget.ui" line="38"/>
+      <location filename="../../PlaneWidget.ui" line="98"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../PlaneWidget.ui" line="43"/>
-      <location filename="../../PlaneWidget.ui" line="103"/>
+      <location filename="../../PlaneWidget.ui" line="55"/>
+      <location filename="../../PlaneWidget.ui" line="115"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../PlaneWidget.ui" line="60"/>
-      <location filename="../../PlaneWidget.ui" line="120"/>
+      <location filename="../../PlaneWidget.ui" line="72"/>
+      <location filename="../../PlaneWidget.ui" line="132"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../PlaneWidget.ui" line="80"/>
+      <location filename="../../PlaneWidget.ui" line="92"/>
       <source>Normal</source>
       <translation>Alapértelmezett</translation>
     </message>
@@ -3631,92 +4439,92 @@ with harmonic/oscillating driving current</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
+      <location filename="../../Command.cpp" line="76"/>
       <source>No active Analysis</source>
       <translation>Nincs aktív elemzés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="77"/>
       <source>You need to create or activate a Analysis</source>
       <translation>Létre kell hozni, vagy aktiválni kell egy elemzést</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="324"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="891"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="899"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="155"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Egy párbeszédablak már nyitva van a feladat panelen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="325"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="892"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="900"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="156"/>
       <source>Do you want to close this dialog?</source>
       <translation>Szeretné bezárni a párbeszédpanelt?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="56"/>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="54"/>
       <source>Meshing</source>
       <translation>Hálólétrehozás</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="185"/>
-      <location filename="../../AppFemGui.cpp" line="186"/>
-      <location filename="../../AppFemGui.cpp" line="187"/>
-      <location filename="../../AppFemGui.cpp" line="188"/>
-      <location filename="../../AppFemGui.cpp" line="189"/>
-      <location filename="../../AppFemGui.cpp" line="190"/>
+      <location filename="../../AppFemGui.cpp" line="195"/>
+      <location filename="../../AppFemGui.cpp" line="196"/>
+      <location filename="../../AppFemGui.cpp" line="197"/>
+      <location filename="../../AppFemGui.cpp" line="198"/>
+      <location filename="../../AppFemGui.cpp" line="199"/>
+      <location filename="../../AppFemGui.cpp" line="200"/>
       <source>FEM</source>
       <translation>VEM</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="193"/>
-      <location filename="../../AppFemGui.cpp" line="194"/>
+      <location filename="../../AppFemGui.cpp" line="203"/>
+      <location filename="../../AppFemGui.cpp" line="204"/>
       <source>Import-Export</source>
       <translation>Importáló-Exportáló</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="108"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="115"/>
       <source>Nodes</source>
       <translation>Csomópontok</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="109"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="116"/>
       <source>Edges</source>
       <translation>Élek</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="110"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="117"/>
       <source>Faces</source>
       <translation>Felületek</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="111"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="118"/>
       <source>Polygons</source>
       <translation>Sokszög</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="112"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="119"/>
       <source>Volumes</source>
       <translation>Térfogat</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="113"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="120"/>
       <source>Polyhedrons</source>
       <translation>Poliéderek</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="114"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="121"/>
       <source>Groups</source>
       <translation>Csoportok</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="313"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="320"/>
       <source>Are you sure you want to continue?</source>
       <translation>Biztosan folytatja?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="157"/>
       <source>Edit Analysis Feature</source>
-      <translation type="unfinished">Edit Analysis Feature</translation>
+      <translation>Elemzési jellemzők szerkesztése</translation>
     </message>
   </context>
   <context>
@@ -3725,11 +4533,6 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/ResultShow.ui" line="40"/>
       <source>None</source>
       <translation>Egyik sem</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="63"/>
-      <source>von Mises Stress</source>
-      <translation>von Mises feszültség</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="76"/>
@@ -3754,27 +4557,27 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="229"/>
       <source>Displacement Scaling</source>
-      <translation type="unfinished">Displacement Scaling</translation>
+      <translation>Elmozdulási lépték</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="276"/>
+      <location filename="../ui/ResultShow.ui" line="264"/>
       <source>Factor</source>
       <translation>Tényező</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="358"/>
+      <location filename="../ui/ResultShow.ui" line="349"/>
       <source>Animation Control</source>
-      <translation type="unfinished">Animation Control</translation>
+      <translation>Animáció vezérlő</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="505"/>
+      <location filename="../ui/ResultShow.ui" line="496"/>
       <source>Toggles between Start and Stop</source>
-      <translation type="unfinished">Toggles between Start and Stop</translation>
+      <translation>Indítás és a Leállítás között kapcsol</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="508"/>
+      <location filename="../ui/ResultShow.ui" line="499"/>
       <source>Start Animation</source>
-      <translation type="unfinished">Start Animation</translation>
+      <translation>Animáció indítása</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="170"/>
@@ -3784,37 +4587,42 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="14"/>
       <source>Show Result</source>
-      <translation type="unfinished">Show Result</translation>
+      <translation>Találat megjelenítése</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="26"/>
       <source>Result Type</source>
-      <translation type="unfinished">Result Type</translation>
+      <translation>Eredmény típusa</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="56"/>
       <source>Displacement magnitude</source>
-      <translation type="unfinished">Displacement magnitude</translation>
+      <translation>Elmozdulás mérete</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="63"/>
+      <source>von Mises stress</source>
+      <translation type="unfinished">von Mises stress</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="83"/>
       <source>Maximum principal stress</source>
-      <translation type="unfinished">Maximum principal stress</translation>
+      <translation>Maximum elsődleges feszültség</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="103"/>
       <source>Minimum principal stress</source>
-      <translation type="unfinished">Minimum principal stress</translation>
+      <translation>Maximum elsődleges feszültség</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="123"/>
       <source>Maximum shear stress (Tresca)</source>
-      <translation type="unfinished">Maximum shear stress (Tresca)</translation>
+      <translation>Max. nyíró erő (Tresca)</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="136"/>
       <source>Equivalent plastic strain</source>
-      <translation type="unfinished">Equivalent plastic strain</translation>
+      <translation>Egyenértékű képlékeny nyújtás</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="143"/>
@@ -3824,7 +4632,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="163"/>
       <source>Network pressure</source>
-      <translation type="unfinished">Network pressure</translation>
+      <translation>Hálózati nyomás</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="181"/>
@@ -3842,32 +4650,42 @@ with harmonic/oscillating driving current</translation>
       <translation>Mutat</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="312"/>
+      <location filename="../ui/ResultShow.ui" line="300"/>
       <source>Slider maximum</source>
-      <translation type="unfinished">Slider maximum</translation>
+      <translation>Max. elcsúszás</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="382"/>
+      <location filename="../ui/ResultShow.ui" line="373"/>
       <source>Number of steps per cycle</source>
-      <translation type="unfinished">Number of steps per cycle</translation>
+      <translation>Lépésszám ciklusonként</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="429"/>
+      <location filename="../ui/ResultShow.ui" line="420"/>
       <source>Number of cycles</source>
-      <translation type="unfinished">Number of cycles</translation>
+      <translation>Ciklusok száma</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="467"/>
+      <location filename="../ui/ResultShow.ui" line="458"/>
       <source>Frame rate</source>
-      <translation type="unfinished">Frame rate</translation>
+      <translation>Képkockasebesség</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="522"/>
-      <source>User-Defined Equation</source>
-      <translation type="unfinished">User-Defined Equation</translation>
+      <location filename="../ui/ResultShow.ui" line="512"/>
+      <source> Full cycle</source>
+      <translation type="unfinished"> Full cycle</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="528"/>
+      <source>Half cycle</source>
+      <translation type="unfinished">Half cycle</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="542"/>
+      <source>User-Defined Equation</source>
+      <translation>Egyéni egyenlet</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="548"/>
       <source>Runs the equation given in the field below,
 outputs the results to the Min and Max fields
 and colors the result mesh accordingly</source>
@@ -3876,19 +4694,19 @@ megjeleníti az eredményeket a Min és a Max mezőkben
 és ennek megfelelően színezi az eredményrácsot</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="533"/>
+      <location filename="../ui/ResultShow.ui" line="553"/>
       <source>Calculate</source>
       <translation>Kiszámol</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="552"/>
+      <location filename="../ui/ResultShow.ui" line="572"/>
       <source>Enter here an equation to be calculated.
 For possible variables, see the description box below.</source>
       <translation>Itt adja meg a kiszámítandó egyenletet.
 A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="556"/>
+      <location filename="../ui/ResultShow.ui" line="576"/>
       <source>P1 - P3 # Max - Min Principal Stress</source>
       <translation>P1 - P3 # Maximum - Minimális fő feszültségek</translation>
     </message>
@@ -3930,42 +4748,42 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>maximum shear stress: MS</source>
-      <translation type="unfinished">maximum shear stress: MS</translation>
+      <translation>max. nyíró erő: MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
       <source>maximum princ. stress vector: s3x, s3y, s3z</source>
-      <translation type="unfinished">maximum princ. stress vector: s3x, s3y, s3z</translation>
+      <translation>maximális fő feszültségvektor: S3x, S3y, S3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
       <source>maximum principal stress: P1</source>
-      <translation type="unfinished">maximum principal stress: P1</translation>
+      <translation>max. elsődleges feszültség: P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
       <source>medium princ. stress vector: s2x, s2y, s2z</source>
-      <translation type="unfinished">medium princ. stress vector: s2x, s2y, s2z</translation>
+      <translation>közepes elsődleges feszültség vektor: s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="218"/>
       <source>medium principal stress: P2</source>
-      <translation type="unfinished">medium principal stress: P2</translation>
+      <translation>közepes elsődleges feszültség: P2</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="228"/>
       <source>minimum princ. stress vector: s1x, s1y, s1z</source>
-      <translation type="unfinished">minimum princ. stress vector: s1x, s1y, s1z</translation>
+      <translation>min. elsődleges feszültség vektor: s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
       <source>minimum principal stress: P3</source>
-      <translation type="unfinished">minimum principal stress: P3</translation>
+      <translation>min. elsődleges feszültség: P3</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="248"/>
       <source>Mohr-Coulomb: mc</source>
-      <translation type="unfinished">Mohr-Coulomb: mc</translation>
+      <translation>Mohr-Coulomb: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
@@ -3975,12 +4793,12 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
       <source>Hints User-Defined Equations</source>
-      <translation type="unfinished">Hints User-Defined Equations</translation>
+      <translation>Tippek egyéni egyenletekhez</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="20"/>
       <source>Available Result Types</source>
-      <translation type="unfinished">Available Result Types</translation>
+      <translation>Elérhető eredménytípusok</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="168"/>
@@ -3993,7 +4811,7 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="14"/>
       <source>Mechanical Analysis</source>
-      <translation type="unfinished">Mechanical Analysis</translation>
+      <translation>Mechanikai elemzés</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="20"/>
@@ -4003,7 +4821,7 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="55"/>
       <source>Analysis Type</source>
-      <translation type="unfinished">Analysis Type</translation>
+      <translation>Elemzés típusa</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="67"/>
@@ -4033,12 +4851,12 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="110"/>
       <source>Write .inp File</source>
-      <translation type="unfinished">Write .inp File</translation>
+      <translation>.inp fájl írása</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="120"/>
       <source>Edit .inp File</source>
-      <translation type="unfinished">Edit .inp File</translation>
+      <translation>.Inp fájl szerkesztése</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="151"/>
@@ -4054,27 +4872,27 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
   <context>
     <name>SphereWidget</name>
     <message>
-      <location filename="../../SphereWidget.ui" line="26"/>
+      <location filename="../../SphereWidget.ui" line="38"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../SphereWidget.ui" line="49"/>
+      <location filename="../../SphereWidget.ui" line="61"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../SphereWidget.ui" line="72"/>
+      <location filename="../../SphereWidget.ui" line="84"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../SphereWidget.ui" line="112"/>
+      <location filename="../../SphereWidget.ui" line="124"/>
       <source>Radius</source>
       <translation>Sugár</translation>
     </message>
     <message>
-      <location filename="../../SphereWidget.ui" line="20"/>
+      <location filename="../../SphereWidget.ui" line="32"/>
       <source>Center</source>
       <translation>Középre</translation>
     </message>
@@ -4082,7 +4900,7 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="317"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="324"/>
       <source>Object dependencies</source>
       <translation>Objektumfüggőségek</translation>
     </message>
@@ -4092,12 +4910,12 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
       <source>Meshes</source>
-      <translation type="unfinished">Meshes</translation>
+      <translation>Hálók</translation>
     </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Analysis features</source>
-      <translation>Elemzési tulajdonságok</translation>
+      <translation>Elemzési jellemzők</translation>
     </message>
   </context>
   <context>
@@ -4140,12 +4958,12 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
       <source>Angle-Search</source>
-      <translation type="unfinished">Angle-Search</translation>
+      <translation>Szög-keresés</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
       <source>Stop angle</source>
-      <translation type="unfinished">Stop angle</translation>
+      <translation>Megállási szög</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
@@ -4158,7 +4976,7 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="23"/>
       <source>Add Reference</source>
-      <translation type="unfinished">Add Reference</translation>
+      <translation>Hivatkozás hozzáadása</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="35"/>
@@ -4206,7 +5024,7 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
       <source>Add Reference</source>
-      <translation type="unfinished">Add Reference</translation>
+      <translation>Hivatkozás hozzáadása</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="35"/>
@@ -4286,12 +5104,12 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Face; click Add or Remove</translation>
+      <translation>Válasszon alap geometria típust: felület; kattintson a Hozzáadás vagy Eltávolítás gombra</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Face; click Add or Remove</translation>
+      <translation>Válasszon alárendelt geometria típust: felület; kattintson a Hozzáadás vagy Eltávolítás gombra</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="151"/>
@@ -4301,27 +5119,27 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="157"/>
       <source>Contact stiffness</source>
-      <translation type="unfinished">Contact stiffness</translation>
+      <translation>Kapcsolati merevség</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="180"/>
       <source>Clearance adjustment</source>
-      <translation type="unfinished">Clearance adjustment</translation>
+      <translation>Hézag igazítása</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="203"/>
       <source>Enable friction</source>
-      <translation type="unfinished">Enable friction</translation>
+      <translation>Súrlódás engedélyezése</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="210"/>
       <source>Friction coefficient</source>
-      <translation type="unfinished">Friction coefficient</translation>
+      <translation>Súrlódási együttható</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="233"/>
       <source>Stick slope</source>
-      <translation type="unfinished">Stick slope</translation>
+      <translation>Dőlésszög</translation>
     </message>
   </context>
   <context>
@@ -4334,7 +5152,7 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="41"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Válasszon egy geometriatípust: csúcs, él, felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="58"/>
@@ -4400,22 +5218,22 @@ az áramlás által generált
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="232"/>
       <source>Rotations are only valid for beam and shell elements</source>
-      <translation type="unfinished">Rotations are only valid for beam and shell elements</translation>
+      <translation>A forgatások csak gerenda és héj típusú elemekre érvényesek</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="245"/>
       <source>Rotation X</source>
-      <translation type="unfinished">Rotation X</translation>
+      <translation>X forgatás</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="264"/>
       <source>Rotation Y</source>
-      <translation type="unfinished">Rotation Y</translation>
+      <translation>Y forgatás</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="283"/>
       <source>Rotation Z</source>
-      <translation type="unfinished">Rotation Z</translation>
+      <translation>Z forgatás</translation>
     </message>
   </context>
   <context>
@@ -4423,7 +5241,7 @@ az áramlás által generált
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Válasszon egy geometriatípust: csúcs, él, felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="35"/>
@@ -4451,7 +5269,7 @@ az áramlás által generált
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Válasszon egy geometriatípust: felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="85"/>
@@ -4556,7 +5374,7 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Válasszon egy geometriatípust: csúcs, él, felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4606,12 +5424,12 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="14"/>
       <source>Task Heat Flux Load</source>
-      <translation type="unfinished">Task Heat Flux Load</translation>
+      <translation>Hőáram feltöltési feladat</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
       <source>Select  geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select  geometry of type: Edge, Face</translation>
+      <translation>Válasszon egy geometriatípust: él, felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -4631,18 +5449,18 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="96"/>
       <source>Surface heat flux</source>
-      <translation type="unfinished">Surface heat flux</translation>
+      <translation>Felületi hőáram</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="133"/>
       <source>Film coefficient</source>
-      <translation type="unfinished">Film coefficient</translation>
+      <translation>Fólia együttható</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="156"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="218"/>
       <source>Ambient temperature</source>
-      <translation type="unfinished">Ambient temperature</translation>
+      <translation>Környezeti hőmérséklet</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="193"/>
@@ -4668,7 +5486,7 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>Válasszon ki egyetlen geometriát a következő típusból: felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -4686,7 +5504,7 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Select geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Edge, Face</translation>
+      <translation>Válasszon egy geometriát a következő típusok közül: él, felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -4724,12 +5542,12 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="75"/>
       <source>Normal stiffness</source>
-      <translation type="unfinished">Normal stiffness</translation>
+      <translation>Aktuális merevség</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="122"/>
       <source>Stiffness used for the Elmer solver</source>
-      <translation type="unfinished">Stiffness used for the Elmer solver</translation>
+      <translation>Keménység az Elmer megoldóhoz</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="82"/>
@@ -4740,12 +5558,12 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Válasszon egy geometriatípust: felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
       <source>Tangential stiffness</source>
-      <translation type="unfinished">Tangential stiffness</translation>
+      <translation>Érintőleges merevség</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="115"/>
@@ -4758,7 +5576,7 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Válasszon egy geometriatípust: csúcs, él, felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
@@ -4801,7 +5619,7 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>Válasszon ki egyetlen geometriát a következő típusból: felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
@@ -4842,7 +5660,7 @@ vektorát használják irányként</translation>
       <location filename="../../TaskFemConstraintTransform.ui" line="190"/>
       <location filename="../../TaskFemConstraintTransform.ui" line="209"/>
       <source>Transformable Surfaces</source>
-      <translation type="unfinished">Transformable Surfaces</translation>
+      <translation>Átalakítható felületek</translation>
     </message>
   </context>
   <context>
@@ -4855,12 +5673,12 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskPostClip.ui" line="73"/>
       <source>Inside out</source>
-      <translation type="unfinished">Inside out</translation>
+      <translation>Kifordított</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="80"/>
       <source>Cut cells</source>
-      <translation type="unfinished">Cut cells</translation>
+      <translation>Cellák kivágása</translation>
     </message>
   </context>
   <context>
@@ -5059,12 +5877,12 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
       <source>Minimum scalar</source>
-      <translation type="unfinished">Minimum scalar</translation>
+      <translation>Legkisebb skalár</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="121"/>
       <source>Maximum scalar</source>
-      <translation type="unfinished">Maximum scalar</translation>
+      <translation>Legnagyobb skalár</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="108"/>
@@ -5092,12 +5910,12 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="98"/>
       <source>Minimum warp</source>
-      <translation type="unfinished">Minimum warp</translation>
+      <translation>Minimális deformáció</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="118"/>
       <source>Maximum warp</source>
-      <translation type="unfinished">Maximum warp</translation>
+      <translation>Maximális deformáció</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="105"/>
@@ -5115,12 +5933,12 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="28"/>
       <source>Maximum size</source>
-      <translation type="unfinished">Maximum size</translation>
+      <translation>Maximális méret</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="46"/>
       <source>Minimum size</source>
-      <translation type="unfinished">Minimum size</translation>
+      <translation>Minimális méret</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="71"/>
@@ -5160,12 +5978,12 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="115"/>
       <source>Growth rate</source>
-      <translation type="unfinished">Growth rate</translation>
+      <translation>Növekedési ütem</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
       <source>Number of segments per edge</source>
-      <translation type="unfinished">Number of segments per edge</translation>
+      <translation>Szakaszok száma élenként</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
@@ -5175,17 +5993,17 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="184"/>
       <source>Node count</source>
-      <translation type="unfinished">Node count</translation>
+      <translation>Csomópontok száma</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="198"/>
       <source>Triangle count</source>
-      <translation type="unfinished">Triangle count</translation>
+      <translation>Háromszög száma</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="212"/>
       <source>Tetrahedron count</source>
-      <translation type="unfinished">Tetrahedron count</translation>
+      <translation>Tetraéderek száma</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
@@ -5238,82 +6056,82 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Electrostatic Boundary Conditions</source>
-      <translation type="unfinished">Electrostatic Boundary Conditions</translation>
+      <translation>Elektrosztatikus peremfeltételek</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>&amp;Electrostatic Boundary Conditions</source>
-      <translation type="unfinished">&amp;Electrostatic Boundary Conditions</translation>
+      <translation>&amp;Elektrosztatikus peremfeltételek</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Fluid Boundary Conditions</source>
-      <translation type="unfinished">Fluid Boundary Conditions</translation>
+      <translation>Folyadékhatár állapota</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Fluid Boundary Conditions</source>
-      <translation type="unfinished">&amp;Fluid Boundary Conditions</translation>
+      <translation>&amp;Folyadékhatár állapota</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">Electromagnetic Boundary Conditions</translation>
+      <translation>Elektromágneses peremfeltételek</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">&amp;Electromagnetic Boundary Conditions</translation>
+      <translation>&amp;Elektromágneses peremfeltételek</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Geometrical Analysis Features</source>
-      <translation type="unfinished">Geometrical Analysis Features</translation>
+      <translation>Geometriai elemzés jellemzői</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>&amp;Geometrical Analysis Features</source>
-      <translation type="unfinished">&amp;Geometrical Analysis Features</translation>
+      <translation>&amp;Geometriai elemzés jellemzői</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Mechanical Boundary Conditions and Loads</source>
-      <translation type="unfinished">Mechanical Boundary Conditions and Loads</translation>
+      <translation>Mechanikai peremfeltételek és terhelések</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>&amp;Mechanical Boundary Conditions and Loads</source>
-      <translation type="unfinished">&amp;Mechanical Boundary Conditions and Loads</translation>
+      <translation>&amp;Mechanikai peremfeltételek és terhelések</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Thermal Boundary Conditions and Loads</source>
-      <translation type="unfinished">Thermal Boundary Conditions and Loads</translation>
+      <translation>Termikus peremfeltételek és terhelések</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>&amp;Thermal Boundary Conditions and Loads</source>
-      <translation type="unfinished">&amp;Thermal Boundary Conditions and Loads</translation>
+      <translation>&amp;Termikus peremfeltételek és terhelések</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Analysis Features Without Solver</source>
-      <translation type="unfinished">Analysis Features Without Solver</translation>
+      <translation>Elemzési funkciók megoldó nélkül</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>&amp;Analysis Features Without Solver</source>
-      <translation type="unfinished">&amp;Analysis Features Without Solver</translation>
+      <translation>&amp;Elemzési funkciók megoldó nélkül</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Szűrő funkciók</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="74"/>
       <source>&amp;Filter Functions</source>
-      <translation type="unfinished">&amp;Filter Functions</translation>
+      <translation>&amp;Szűrő funkciók</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -5364,41 +6182,41 @@ vektorát használják irányként</translation>
   <context>
     <name>setupFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1836"/>
+      <location filename="../../Command.cpp" line="2019"/>
       <source>Error: A filter can only be applied to a single object.</source>
       <translation>Hiba: Egy szűrő csak egyetlen objektumra alkalmazható.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1838"/>
-      <location filename="../../Command.cpp" line="1849"/>
+      <location filename="../../Command.cpp" line="2020"/>
+      <location filename="../../Command.cpp" line="2032"/>
       <source>The filter could not be set up.</source>
       <translation>A szűrőt nem sikerült beállítani.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1848"/>
+      <location filename="../../Command.cpp" line="2031"/>
       <source>Error: no post processing object selected.</source>
       <translation>Hiba: nincs kijelölve objektum utófeldolgozásra.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1866"/>
+      <location filename="../../Command.cpp" line="2050"/>
       <source>Error: Object not in a post processing group</source>
-      <translation type="unfinished">Error: Object not in a post processing group</translation>
+      <translation>Hiba: az objektum nem része egy utófeldolgozó csoportnak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1867"/>
+      <location filename="../../Command.cpp" line="2051"/>
       <source>The filter could not be set up: Object not in a post processing group.</source>
-      <translation type="unfinished">The filter could not be set up: Object not in a post processing group.</translation>
+      <translation>A szűrőt nem lehetett beállítani: az objektum nem egy utófeldolgozó csoportban van.</translation>
     </message>
   </context>
   <context>
     <name>FEM_Analysis</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="61"/>
+      <location filename="../../../femcommands/commands.py" line="58"/>
       <source>New Analysis</source>
-      <translation type="unfinished">New Analysis</translation>
+      <translation>Új elemzés</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="65"/>
+      <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Creates an analysis container with default solver</source>
       <translation>Létrehoz egy elemzési konténert alapértelmezett megoldóval</translation>
     </message>
@@ -5406,12 +6224,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_ClippingPlaneRemoveAll</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="161"/>
+      <location filename="../../../femcommands/commands.py" line="163"/>
       <source>Remove All Clipping Planes</source>
-      <translation type="unfinished">Remove All Clipping Planes</translation>
+      <translation>Összes vágási terv törlése</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="164"/>
+      <location filename="../../../femcommands/commands.py" line="166"/>
       <source>Removes all clipping planes</source>
       <translation>Eltávolítja az összes vágósíkot</translation>
     </message>
@@ -5419,12 +6237,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_Examples</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="551"/>
+      <location filename="../../../femcommands/commands.py" line="558"/>
       <source>FEM Examples</source>
-      <translation type="unfinished">FEM Examples</translation>
+      <translation>VEM munkafelület példák</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="552"/>
+      <location filename="../../../femcommands/commands.py" line="559"/>
       <source>Opens the FEM examples</source>
       <translation>Megnyitja a Véges elemes módszer példákat</translation>
     </message>
@@ -5432,12 +6250,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_MaterialEditor</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="566"/>
+      <location filename="../../../femcommands/commands.py" line="573"/>
       <source>Material Editor</source>
       <translation>Anyag szerkesztő</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="569"/>
+      <location filename="../../../femcommands/commands.py" line="576"/>
       <source>Opens the FreeCAD material editor</source>
       <translation>Megnyitja a FreeCAD anyag szerkesztőt</translation>
     </message>
@@ -5445,12 +6263,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="662"/>
+      <location filename="../../../femcommands/commands.py" line="633"/>
       <source>Reinforced Material (Concrete)</source>
-      <translation type="unfinished">Reinforced Material (Concrete)</translation>
+      <translation>Megerősített anyagok (beton)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="666"/>
+      <location filename="../../../femcommands/commands.py" line="637"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
       <translation>Hozzáadja az anyagot megerősített mátrix-al, például betonnal</translation>
     </message>
@@ -5458,12 +6276,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="688"/>
+      <location filename="../../../femcommands/commands.py" line="659"/>
       <source>FEM Mesh to Mesh</source>
-      <translation type="unfinished">FEM Mesh to Mesh</translation>
+      <translation>VEM, hálótól hálóig</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="691"/>
+      <location filename="../../../femcommands/commands.py" line="662"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
       <translation>Egy VEM háló felületet átalakítja egy hálóvá</translation>
     </message>
@@ -5471,12 +6289,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_MeshDisplayInfo</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="763"/>
+      <location filename="../../../femcommands/commands.py" line="758"/>
       <source>Display Mesh Info</source>
-      <translation type="unfinished">Display Mesh Info</translation>
+      <translation>Háló adatainak megjelenítése</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="764"/>
+      <location filename="../../../femcommands/commands.py" line="759"/>
       <source>Displays FEM mesh information</source>
       <translation>Megjeleníti a VEM háló adatait</translation>
     </message>
@@ -5484,12 +6302,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_MeshGmshFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="787"/>
+      <location filename="../../../femcommands/commands.py" line="782"/>
       <source>Mesh From Shape by Gmsh</source>
-      <translation type="unfinished">Mesh From Shape by Gmsh</translation>
+      <translation>Vem háló az Gmsh forma által</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="790"/>
+      <location filename="../../../femcommands/commands.py" line="785"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
       <translation>Létrehoz egy VEM hálót egy GMSH hálózó alakzatából</translation>
     </message>
@@ -5497,12 +6315,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="848"/>
+      <location filename="../../../femcommands/commands.py" line="843"/>
       <source>Mesh From Shape by Netgen</source>
-      <translation type="unfinished">Mesh From Shape by Netgen</translation>
+      <translation>Fem háló Netgen forma által</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="852"/>
+      <location filename="../../../femcommands/commands.py" line="847"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>Létrehoz egy VEM hálót egy test vagy felület alapján Netgen belső hálózó generátorral</translation>
     </message>
@@ -5510,12 +6328,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1045"/>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
       <source>Solver CalculiX Standard</source>
       <translation>CalculiX alapértelmezett megoldó</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1050"/>
+      <location filename="../../../femcommands/commands.py" line="1179"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Létrehoz egy normál CalculiX VEM megoldót ccx eszközzel</translation>
     </message>
@@ -5523,12 +6341,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1101"/>
+      <location filename="../../../femcommands/commands.py" line="1217"/>
       <source>Solver Job Control</source>
-      <translation type="unfinished">Solver Job Control</translation>
+      <translation>Munka megoldó ellenőrző</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1106"/>
+      <location filename="../../../femcommands/commands.py" line="1222"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Megoldó attribútumainak módosítása és a kiválasztott megoldó számításainak elindítása</translation>
     </message>
@@ -5536,12 +6354,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1118"/>
+      <location filename="../../../femcommands/commands.py" line="1234"/>
       <source>Solver Elmer</source>
       <translation>Elmer megoldó</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1120"/>
+      <location filename="../../../femcommands/commands.py" line="1236"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>Létrehoz egy VEM Z88 megoldót</translation>
     </message>
@@ -5549,12 +6367,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1157"/>
+      <location filename="../../../femcommands/commands.py" line="1273"/>
       <source>Solver Mystran</source>
       <translation>Mystran megoldó</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1159"/>
+      <location filename="../../../femcommands/commands.py" line="1275"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Létrehoz egy VEM Mystran megoldót</translation>
     </message>
@@ -5562,12 +6380,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1169"/>
+      <location filename="../../../femcommands/commands.py" line="1285"/>
       <source>Run Solver</source>
-      <translation type="unfinished">Run Solver</translation>
+      <translation>Megoldó futtatása</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1173"/>
+      <location filename="../../../femcommands/commands.py" line="1289"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>A kiválasztott megoldó számításainak elindítása</translation>
     </message>
@@ -5575,12 +6393,12 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1220"/>
+      <location filename="../../../femcommands/commands.py" line="1306"/>
       <source>Solver Z88</source>
       <translation>Z88 megoldó</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1222"/>
+      <location filename="../../../femcommands/commands.py" line="1308"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Létrehoz egy VEM Z88 megoldót</translation>
     </message>
@@ -5588,53 +6406,53 @@ vektorát használják irányként</translation>
   <context>
     <name>ControlWidget</name>
     <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="208"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="207"/>
       <source>Solver Control</source>
       <translation>Megoldás ellenörző</translation>
     </message>
     <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="219"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="218"/>
       <source>Working Directory</source>
       <translation>Munka könyvtár</translation>
     </message>
     <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="223"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="299"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="222"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="298"/>
       <source>Write</source>
       <translation>Ír</translation>
     </message>
     <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="224"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="300"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="304"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="223"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="299"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
       <source>Edit</source>
       <translation>Szerkesztés</translation>
     </message>
     <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="241"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="240"/>
       <source>Elapsed Time:</source>
       <translation>Eltelt idő:</translation>
     </message>
     <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="301"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="300"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="304"/>
       <source>Run</source>
       <translation>Futtat</translation>
     </message>
     <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="302"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="306"/>
       <source>Re-write</source>
       <translation>Újra ír</translation>
     </message>
     <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="309"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
       <source>Re-run</source>
       <translation>Újra futtat</translation>
     </message>
     <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="310"/>
       <source>Abort</source>
       <translation>Megszakít</translation>
     </message>
@@ -5681,42 +6499,42 @@ vektorát használják irányként</translation>
   <context>
     <name>GeometryElementsSelection</name>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="297"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="299"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="298"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="300"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="304"/>
       <source>Select geometry of type: {}{}{}</source>
-      <translation type="unfinished">Select geometry of type: {}{}{}</translation>
+      <translation>Válasszon egy geometriát a következő típusok közül: {}{}{}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="331"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="333"/>
       <source>Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
-      <translation type="unfinished">Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</translation>
+      <translation>Kattintson és válassza ki a geometriai elemeket, hogy hozzáadja őket a listához. {} A következő geometriai elemek választhatók ki: {}{}{}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="334"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="336"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
       <translation>{}Ha a listához nem adnak hozzá geometriát, az összes többit használja.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="310"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="312"/>
       <source>Selection mode</source>
       <translation>Kiválasztás mód</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="297"/>
       <source>Geometry Reference Selector</source>
-      <translation type="unfinished">Geometry Reference Selector</translation>
+      <translation>Geometriai hivatkozások kiválasztója</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="312"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="314"/>
       <source>Solid</source>
       <translation>Szilárd test</translation>
     </message>
@@ -5724,95 +6542,95 @@ vektorát használják irányként</translation>
   <context>
     <name>FEM</name>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="318"/>
-      <source>Displacement Magnitude</source>
-      <translation>Elmozdulás mérete</translation>
-    </message>
-    <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="327"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="335"/>
       <source>Displacement X</source>
       <translation>Elmozdulás X</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="335"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="343"/>
       <source>Displacement Y</source>
       <translation>Elmozdulás Y</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="343"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="351"/>
       <source>Displacement Z</source>
       <translation>Elmozdulás Z</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="354"/>
-      <source>von Mises Stress</source>
-      <translation>von Mises feszültség</translation>
-    </message>
-    <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="366"/>
-      <source>Max Shear Stress</source>
-      <translation>Max nyíró erő</translation>
-    </message>
-    <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="378"/>
-      <source>Max Principal Stress</source>
-      <translation>Max elsődleges feszültség</translation>
-    </message>
-    <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="390"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="398"/>
       <source>Temperature</source>
       <translation>Hőmérséklet</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="402"/>
-      <source>Mass Flow Rate</source>
-      <translation>Max tömegáram</translation>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="326"/>
+      <source>Displacement magnitude</source>
+      <translation>Elmozdulás mérete</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="414"/>
-      <source>Network Pressure</source>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="362"/>
+      <source>von Mises stress</source>
+      <translation type="unfinished">von Mises stress</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="374"/>
+      <source>Maximum shear stress (Tresca)</source>
+      <translation>Max. nyíró erő (Tresca)</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="386"/>
+      <source>Maximum principal stress</source>
+      <translation>Maximum elsődleges feszültség</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="410"/>
+      <source>Mass flow rate</source>
+      <translation>Tömegáram</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="422"/>
+      <source>Network pressure</source>
       <translation>Hálózati nyomás</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="426"/>
-      <source>Min Principal Stress</source>
-      <translation>Min fő feszültség</translation>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="434"/>
+      <source>Minimum principal stress</source>
+      <translation>Maximum elsődleges feszültség</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="438"/>
-      <source>Equivalent Plastic Strain</source>
-      <translation>Egyenértékű képlékeny kinyújtás</translation>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="446"/>
+      <source>Equivalent plastic strain</source>
+      <translation>Egyenértékű képlékeny nyújtás</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="458"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="466"/>
       <source>Information</source>
       <translation>Információ</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="462"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="470"/>
       <source>No histogram available.
 Please select a result type first.</source>
       <translation>Nem áll rendelkezésre hisztogram.
 Kérjük, először válassza ki az eredmény típusát.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="610"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="618"/>
       <source>Histogram of {}</source>
       <translation>Hisztogram {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="611"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="619"/>
       <source>Nodes</source>
       <translation>Csomópontok</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="740"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="770"/>
       <source>Result mesh is empty</source>
-      <translation type="unfinished">Result mesh is empty</translation>
+      <translation>Az eredményháló üres</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="754"/>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="763"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="784"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="793"/>
       <source>No result object</source>
       <translation>Nincs eredményobjektum</translation>
     </message>
@@ -5820,11 +6638,11 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>
 
-Correct module found in:
+Correct module found in: 
 {}</source>
-      <translation type="unfinished">
+      <translation>
 
-Correct module found in:
+A megfelelő modul a következő helyen található:
 {}</translation>
     </message>
     <message>
@@ -5832,78 +6650,78 @@ Correct module found in:
       <source>
 
 Should this module be loaded instead?</source>
-      <translation type="unfinished">
+      <translation>
 
-Should this module be loaded instead?</translation>
+Ezt a modult kellene inkább betölteni?</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
       <source>
 
 No matching module was found in the current Python path.</source>
-      <translation type="unfinished">
+      <translation>
 
-No matching module was found in the current Python path.</translation>
+A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>VTK Python module conflict</source>
-      <translation type="unfinished">VTK Python module conflict</translation>
+      <translation>VTK Python modulkonfliktus</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="253"/>
       <source>VTK Python Module Conflict</source>
-      <translation type="unfinished">VTK Python Module Conflict</translation>
+      <translation>VTK Python modulkonfliktus</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="256"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
-      <translation type="unfinished">This functionality is not available due to VTK Python module conflict</translation>
+      <translation>Ez a funkció nem elérhető egy ütközés miatt a VTK Python moduljával</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="56"/>
       <source>New {}</source>
-      <translation type="unfinished">New {}</translation>
+      <translation>Új {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="63"/>
       <source>with {}</source>
-      <translation type="unfinished">with {}</translation>
+      <translation>ezzel: {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="98"/>
       <source>Add {}</source>
-      <translation type="unfinished">Add {}</translation>
+      <translation>Hozzáad {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="114"/>
       <source>From {}</source>
-      <translation type="unfinished">From {}</translation>
+      <translation>Ettől {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="123"/>
       <source>add {}</source>
-      <translation type="unfinished">add {}</translation>
+      <translation>hozzáad {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="371"/>
       <source>{}: Data source not available</source>
-      <translation type="unfinished">{}: Data source not available</translation>
+      <translation>{}: Adatforrás nem elérhető</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="530"/>
       <source>Data used in:</source>
-      <translation type="unfinished">Data used in:</translation>
+      <translation>Adatok felhasználva a következőben:</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="532"/>
       <source>Data used from:</source>
-      <translation type="unfinished">Data used from:</translation>
+      <translation>Adatok felhasználva innen:</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="541"/>
       <source>Add data to</source>
-      <translation type="unfinished">Add data to</translation>
+      <translation>Adatok ehhez adása</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="546"/>
@@ -5913,240 +6731,240 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="553"/>
       <source>Add data from</source>
-      <translation type="unfinished">Add data from</translation>
+      <translation>Adatok hozzáadása innen</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="109"/>
+      <location filename="../../../femguiutils/post_visualization.py" line="108"/>
       <source>Data Visualizations</source>
-      <translation type="unfinished">Data Visualizations</translation>
+      <translation>Adatvizualizáció</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="112"/>
+      <location filename="../../../femguiutils/post_visualization.py" line="111"/>
       <source>Different visualizations to show post processing data in</source>
-      <translation type="unfinished">Different visualizations to show post processing data in</translation>
+      <translation>Különböző nézetek az utófeldolgozott adatok megjelenítésére</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="175"/>
       <source>Export to CSV</source>
-      <translation type="unfinished">Export to CSV</translation>
+      <translation>Exportálás CSV-be</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="213"/>
       <source>Save as csv file</source>
-      <translation type="unfinished">Save as csv file</translation>
+      <translation>Mentés CVS fájlként</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="218"/>
       <source>CSV file export aborted: no filename selected</source>
-      <translation type="unfinished">CSV file export aborted: no filename selected</translation>
+      <translation>CSV fájl exportálás megszakítva: nem lett fájlnév kiválasztva</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="87"/>
       <source>The data table that stores the extracted data</source>
-      <translation type="unfinished">The data table that stores the extracted data</translation>
+      <translation>Az adatok tárolására szolgáló adattábla</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="94"/>
       <source>The data source from which the data is extracted</source>
-      <translation type="unfinished">The data source from which the data is extracted</translation>
+      <translation>Az az adatkészlet, amelyből az adatokat kinyerik</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="147"/>
       <source>The field to use as X data</source>
-      <translation type="unfinished">The field to use as X data</translation>
+      <translation>X adatként használt mező</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="156"/>
       <source>Which part of the X field vector to use for the X axis</source>
-      <translation type="unfinished">Which part of the X field vector to use for the X axis</translation>
+      <translation>A X tengelyhez használni kívánt X mezővektor melyik része</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="286"/>
       <source>The field to use as Y data</source>
-      <translation type="unfinished">The field to use as Y data</translation>
+      <translation>Y adatként használt mező</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="295"/>
       <source>Which part of the Y field vector to use for the Y axis</source>
-      <translation type="unfinished">Which part of the Y field vector to use for the Y axis</translation>
+      <translation>A Y tengelyhez használni kívánt Y mezővektor melyik része</translation>
     </message>
     <message>
       <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
-      <translation type="unfinished">Specify if the field shall be extracted for every available frame</translation>
+      <translation>Adja meg, hogy az mezőt ki kell-e nyerni minden rendelkezésre álló képkockához</translation>
     </message>
     <message>
       <location filename="../../../femobjects/post_extract1D.py" line="140"/>
       <source>Specify for which index the data should be extracted</source>
-      <translation type="unfinished">Specify for which index the data should be extracted</translation>
+      <translation>Adja meg, melyik indexből kell az adatokat kinyerni</translation>
     </message>
     <message>
       <location filename="../../../femobjects/post_extract2D.py" line="155"/>
       <source>Specify for which point index the data should be extracted</source>
-      <translation type="unfinished">Specify for which point index the data should be extracted</translation>
+      <translation>Adja meg, melyik pont indexből kell az adatokat kinyerni</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/base_fempostpanel.py" line="69"/>
       <source>Edit {}</source>
-      <translation type="unfinished">Edit {}</translation>
+      <translation>Szerkesztés {}</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <source>Show Plot</source>
-      <translation type="unfinished">Show Plot</translation>
+      <translation>A nyomvonal megjelenítése</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <source>Show Data</source>
-      <translation type="unfinished">Show Data</translation>
+      <translation>Adat megjelenítése</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="69"/>
       <source>Histogram Data</source>
-      <translation type="unfinished">Histogram Data</translation>
+      <translation>Hisztogram adat</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="76"/>
       <source>Histogram View Settings</source>
-      <translation type="unfinished">Histogram View Settings</translation>
+      <translation>Hisztogram nézet beállításai</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="69"/>
       <source>Lineplot Data</source>
-      <translation type="unfinished">Lineplot Data</translation>
+      <translation>Vonaldiagram adatai</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="76"/>
       <source>Lineplot View Settings</source>
-      <translation type="unfinished">Lineplot View Settings</translation>
+      <translation>Vonaldiagram nézetparaméterei</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="54"/>
       <source>Show Table</source>
-      <translation type="unfinished">Show Table</translation>
+      <translation>Táblázat megjelenítése</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="64"/>
       <source>Table Data</source>
-      <translation type="unfinished">Table Data</translation>
+      <translation>Táblázat adat</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="283"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
       <source>The name used in the plots legend</source>
-      <translation type="unfinished">The name used in the plots legend</translation>
+      <translation>A nyomvonal legendájában használt név</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="274"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="295"/>
       <source>The color the data bin area is drawn with</source>
-      <translation type="unfinished">The color the data bin area is drawn with</translation>
+      <translation>Az a szín, amellyel az adatterület rajzolt</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="281"/>
       <source>The hatch pattern drawn in the bar</source>
-      <translation type="unfinished">The hatch pattern drawn in the bar</translation>
+      <translation>A sávban rajzolt kitöltési minta</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="288"/>
       <source>The line width of the hatch)</source>
-      <translation type="unfinished">The line width of the hatch)</translation>
+      <translation>A kitöltés vonalvastagsága</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="304"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="416"/>
       <source>The width of the bar, between 0 and 1 (1 being without gaps)</source>
-      <translation type="unfinished">The width of the bar, between 0 and 1 (1 being without gaps)</translation>
+      <translation>A sáv szélessége 0 és 1 között (1 a hézagok nélküli)</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="297"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
       <source>The style the line is drawn in</source>
-      <translation type="unfinished">The style the line is drawn in</translation>
+      <translation>A vonal rajzolási stílusa</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="400"/>
       <source>If the bars should show the cumulative sum left to right</source>
-      <translation type="unfinished">If the bars should show the cumulative sum left to right</translation>
+      <translation>Ha a sávok a balról jobbra haladó halmozott összeget szeretnék megjeleníteni</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="407"/>
       <source>The type of histogram plotted</source>
-      <translation type="unfinished">The type of histogram plotted</translation>
+      <translation>A feltüntetett hisztogram típusa</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="423"/>
       <source>The line width of all drawn hatch patterns</source>
-      <translation type="unfinished">The line width of all drawn hatch patterns</translation>
+      <translation>Az összes rajzolt kitöltési minta vonalvastagsága</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="430"/>
       <source>The number of bins the data is split into</source>
-      <translation type="unfinished">The number of bins the data is split into</translation>
+      <translation>Az adatokra osztott kategóriák száma</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="421"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
       <source>The histogram plot title</source>
-      <translation type="unfinished">The histogram plot title</translation>
+      <translation>Hisztogram feltüntetett címe</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="428"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
       <source>The label shown for the histogram X axis</source>
-      <translation type="unfinished">The label shown for the histogram X axis</translation>
+      <translation>A hisztogram X-tengelyén megjelenő felirat</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="435"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
       <source>The label shown for the histogram Y axis</source>
-      <translation type="unfinished">The label shown for the histogram Y axis</translation>
+      <translation>A hisztogram Y-tengelyén megjelenő felirat</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="465"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="442"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="449"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="465"/>
       <source>Determines if the legend is plotted</source>
-      <translation type="unfinished">Determines if the legend is plotted</translation>
+      <translation>Megerősíti, hogy a jelmagyarázat fel van-e tüntetve</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="290"/>
       <source>The color the line and the markers are drawn with</source>
-      <translation type="unfinished">The color the line and the markers are drawn with</translation>
+      <translation>A vonalat és a jelölőket rajzoló szín</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="304"/>
       <source>The width the line is drawn with</source>
-      <translation type="unfinished">The width the line is drawn with</translation>
+      <translation>A vonal rajzolásához használt szélesség</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="311"/>
       <source>The style the data markers are drawn with</source>
-      <translation type="unfinished">The style the data markers are drawn with</translation>
+      <translation>Az adat jelölők rajzolásának stílusa</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="318"/>
       <source>The size the data markers are drawn in</source>
-      <translation type="unfinished">The size the data markers are drawn in</translation>
+      <translation>Az adatok jelölőinek mérete</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="407"/>
       <source>If be the bars should show the cumulative sum left to right</source>
-      <translation type="unfinished">If be the bars should show the cumulative sum left to right</translation>
+      <translation>Ha a sávok a balról jobbra haladó halmozott összeget szeretnék megjeleníteni</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="414"/>
       <source>The scale the axis are drawn in</source>
-      <translation type="unfinished">The scale the axis are drawn in</translation>
+      <translation>Méretarány, amelyen a tengelyeket rajzolják</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="188"/>
       <source>The name used in the table header. Default name is used if empty</source>
-      <translation type="unfinished">The name used in the table header. Default name is used if empty</translation>
+      <translation>A táblázat fejlécében használt név. Ha üres, az alapértelmezett nevet használja</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="209"/>
@@ -6157,17 +6975,17 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>CmdFemCompEmConstraints</name>
     <message>
-      <location filename="../../Command.cpp" line="1397"/>
+      <location filename="../../Command.cpp" line="1503"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1398"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">Electromagnetic Boundary Conditions</translation>
+      <translation>Elektromágneses peremfeltételek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1399"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Electromagnetic boundary conditions</source>
       <translation>Elektromágneses peremfeltételek</translation>
     </message>
@@ -6213,17 +7031,17 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>CmdFemCompEmEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1540"/>
+      <location filename="../../Command.cpp" line="1687"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1541"/>
+      <location filename="../../Command.cpp" line="1688"/>
       <source>Electromagnetic Equations</source>
-      <translation type="unfinished">Electromagnetic Equations</translation>
+      <translation>Elektromagnetikus egyenlet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1542"/>
+      <location filename="../../Command.cpp" line="1689"/>
       <source>Electromagnetic equations for the Elmer solver</source>
       <translation>Elektromágneses egyenletek az Elmer megoldóhoz</translation>
     </message>
@@ -6231,17 +7049,17 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2324"/>
+      <location filename="../../Command.cpp" line="2552"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2325"/>
+      <location filename="../../Command.cpp" line="2553"/>
       <source>Contours Filter</source>
-      <translation type="unfinished">Contours Filter</translation>
+      <translation>Kontúr szűrő</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2326"/>
+      <location filename="../../Command.cpp" line="2554"/>
       <source>Define/create a contours filter which displays iso contours</source>
       <translation>Kontúrszűrő definiálása/készítése, amely az iso kontúrokat jeleníti meg</translation>
     </message>
@@ -6249,37 +7067,37 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>BoxWidget</name>
     <message>
-      <location filename="../../BoxWidget.ui" line="20"/>
+      <location filename="../../BoxWidget.ui" line="32"/>
       <source>Center</source>
       <translation>Középre</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="32"/>
+      <location filename="../../BoxWidget.ui" line="44"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="61"/>
+      <location filename="../../BoxWidget.ui" line="73"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="84"/>
+      <location filename="../../BoxWidget.ui" line="96"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="124"/>
+      <location filename="../../BoxWidget.ui" line="136"/>
       <source>Length</source>
       <translation>Hossz</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="153"/>
+      <location filename="../../BoxWidget.ui" line="165"/>
       <source>Width</source>
       <translation>Szélesség</translation>
     </message>
     <message>
-      <location filename="../../BoxWidget.ui" line="182"/>
+      <location filename="../../BoxWidget.ui" line="194"/>
       <source>Height</source>
       <translation>Magasság</translation>
     </message>
@@ -6287,35 +7105,35 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>CylinderWidget</name>
     <message>
-      <location filename="../../CylinderWidget.ui" line="20"/>
+      <location filename="../../CylinderWidget.ui" line="32"/>
       <source>Center</source>
       <translation>Középre</translation>
     </message>
     <message>
-      <location filename="../../CylinderWidget.ui" line="26"/>
-      <location filename="../../CylinderWidget.ui" line="110"/>
+      <location filename="../../CylinderWidget.ui" line="38"/>
+      <location filename="../../CylinderWidget.ui" line="122"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../CylinderWidget.ui" line="49"/>
-      <location filename="../../CylinderWidget.ui" line="133"/>
+      <location filename="../../CylinderWidget.ui" line="61"/>
+      <location filename="../../CylinderWidget.ui" line="145"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../CylinderWidget.ui" line="72"/>
-      <location filename="../../CylinderWidget.ui" line="156"/>
+      <location filename="../../CylinderWidget.ui" line="84"/>
+      <location filename="../../CylinderWidget.ui" line="168"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../CylinderWidget.ui" line="104"/>
+      <location filename="../../CylinderWidget.ui" line="116"/>
       <source>Axis</source>
       <translation>Tengely</translation>
     </message>
     <message>
-      <location filename="../../CylinderWidget.ui" line="196"/>
+      <location filename="../../CylinderWidget.ui" line="208"/>
       <source>Radius</source>
       <translation>Sugár</translation>
     </message>
@@ -6323,17 +7141,17 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>CmdFemCompMechEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1883"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1709"/>
+      <location filename="../../Command.cpp" line="1884"/>
       <source>Mechanical Equations</source>
-      <translation type="unfinished">Mechanical Equations</translation>
+      <translation>Mechanikai egyenletek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1710"/>
+      <location filename="../../Command.cpp" line="1885"/>
       <source>Mechanical equations for the Elmer solver</source>
       <translation>Mechanikai egyenletek az Elmer megoldóhoz</translation>
     </message>
@@ -6341,12 +7159,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintBodyHeatSource</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="201"/>
+      <location filename="../../../femcommands/commands.py" line="208"/>
       <source>Body Heat Source</source>
-      <translation type="unfinished">Body Heat Source</translation>
+      <translation>Test hőforrás</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="204"/>
+      <location filename="../../../femcommands/commands.py" line="211"/>
       <source>Creates a body heat source</source>
       <translation>Létrehoz egy test hőforrást</translation>
     </message>
@@ -6354,12 +7172,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintCentrif</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="214"/>
+      <location filename="../../../femcommands/commands.py" line="221"/>
       <source>Centrifugal Load</source>
-      <translation type="unfinished">Centrifugal Load</translation>
+      <translation>Centrifugális terhelés</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="215"/>
+      <location filename="../../../femcommands/commands.py" line="222"/>
       <source>Creates a centrifugal load</source>
       <translation>Centrifugális terhelést hoz létre</translation>
     </message>
@@ -6367,38 +7185,25 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintCurrentDensity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="228"/>
+      <location filename="../../../femcommands/commands.py" line="235"/>
       <source>Current Density Boundary Condition</source>
-      <translation type="unfinished">Current Density Boundary Condition</translation>
+      <translation>Aktuális áramsűrűség peremfeltétel</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="232"/>
+      <location filename="../../../femcommands/commands.py" line="239"/>
       <source>Creates a current density boundary condition</source>
       <translation>Létrehoz egy áramsűrűség határfeltételt</translation>
     </message>
   </context>
   <context>
-    <name>FEM_ConstraintElectrostaticPotential</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="261"/>
-      <source>Electrostatic Potential Boundary Condition</source>
-      <translation type="unfinished">Electrostatic Potential Boundary Condition</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="265"/>
-      <source>Creates an electrostatic potential boundary condition</source>
-      <translation>Létrehoz egy elektrosztatikus potenciál peremfeltételt</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_ConstraintFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="277"/>
+      <location filename="../../../femcommands/commands.py" line="284"/>
       <source>Flow Velocity Boundary Condition</source>
-      <translation type="unfinished">Flow Velocity Boundary Condition</translation>
+      <translation>Határfeltétel az áramlás sebességre</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="280"/>
+      <location filename="../../../femcommands/commands.py" line="287"/>
       <source>Creates a flow velocity boundary condition</source>
       <translation>Létrehoz egy áramlási sebesség peremfeltételt</translation>
     </message>
@@ -6406,12 +7211,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintInitialPressure</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="308"/>
+      <location filename="../../../femcommands/commands.py" line="315"/>
       <source>Initial Pressure Condition</source>
-      <translation type="unfinished">Initial Pressure Condition</translation>
+      <translation>Kezdeti nyomásállapot</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="311"/>
+      <location filename="../../../femcommands/commands.py" line="318"/>
       <source>Creates an initial pressure condition</source>
       <translation>Létrehoz egy kezdeti nyomásállapotot</translation>
     </message>
@@ -6419,12 +7224,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintMagnetization</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="323"/>
+      <location filename="../../../femcommands/commands.py" line="330"/>
       <source>Magnetization Boundary Condition</source>
-      <translation type="unfinished">Magnetization Boundary Condition</translation>
+      <translation>Mágnesezettségi peremfeltétel</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="326"/>
+      <location filename="../../../femcommands/commands.py" line="333"/>
       <source>Creates a magnetization boundary condition</source>
       <translation>Létrehoz egy mágnesezettségi peremfeltételt</translation>
     </message>
@@ -6432,12 +7237,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintSectionPrint</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="336"/>
+      <location filename="../../../femcommands/commands.py" line="343"/>
       <source>Section Print Feature</source>
-      <translation type="unfinished">Section Print Feature</translation>
+      <translation>Szakasznyomtatási tulajdonság</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="339"/>
+      <location filename="../../../femcommands/commands.py" line="346"/>
       <source>Creates a section print feature</source>
       <translation>Létrehoz egy szakasznyomtatási tulajdonságot</translation>
     </message>
@@ -6445,12 +7250,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintSelfWeight</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="349"/>
+      <location filename="../../../femcommands/commands.py" line="356"/>
       <source>Gravity Load</source>
-      <translation type="unfinished">Gravity Load</translation>
+      <translation>Gravitációs terhelés</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="350"/>
+      <location filename="../../../femcommands/commands.py" line="357"/>
       <source>Creates a gravity load</source>
       <translation>Létrehoz egy gravitációs terhelést</translation>
     </message>
@@ -6458,12 +7263,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintTie</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="360"/>
+      <location filename="../../../femcommands/commands.py" line="367"/>
       <source>Tie Constraint</source>
-      <translation type="unfinished">Tie Constraint</translation>
+      <translation>Kötési kényszer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="361"/>
+      <location filename="../../../femcommands/commands.py" line="368"/>
       <source>Creates a tie constraint</source>
       <translation>Létrehoz egy kötési kényszert</translation>
     </message>
@@ -6471,12 +7276,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="902"/>
+      <location filename="../../../femcommands/commands.py" line="897"/>
       <source>Mesh Refinement</source>
-      <translation type="unfinished">Mesh Refinement</translation>
+      <translation>Háló finomítás</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="903"/>
+      <location filename="../../../femcommands/commands.py" line="898"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>Egy FEM-háló finomítást hoz létre</translation>
     </message>
@@ -6491,7 +7296,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Válasszon egy geometriatípust: csúcs, él, felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
@@ -6580,17 +7385,17 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>CmdFemConstraintRigidBody</name>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
+      <location filename="../../Command.cpp" line="473"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="474"/>
       <source>Rigid Body Constraint</source>
-      <translation type="unfinished">Rigid Body Constraint</translation>
+      <translation>Merev test kényszer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Creates a rigid body constraint for a geometric entity</source>
       <translation>Egy mértani szerkezethez merevtest-kényszert hoz létre</translation>
     </message>
@@ -6598,44 +7403,44 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FemGui::TaskFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="251"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="277"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Válassza ki a következő típusok geometriáját </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="252"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="277"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Csomópont, él, felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="276"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="285"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="292"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="331"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="354"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="364"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="319"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="361"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="394"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="276"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="285"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="364"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="394"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkatrész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="293"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="320"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>A külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="329"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
       <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
       <translation>Kényszerként csak egy típusú kijelölés (csúcs, felület vagy él) megengedett!</translation>
     </message>
@@ -6643,7 +7448,7 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="748"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -6663,17 +7468,17 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="35"/>
       <source>Erase elements by polygon</source>
-      <translation type="unfinished">Erase elements by polygon</translation>
+      <translation>Elemek törlése sokszög által</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="56"/>
       <source>Delete new meshes</source>
-      <translation type="unfinished">Delete new meshes</translation>
+      <translation>Új hálók törlése</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="77"/>
       <source>Copy result mesh</source>
-      <translation type="unfinished">Copy result mesh</translation>
+      <translation>Eredmény háló másolása</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
@@ -6689,53 +7494,53 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>CmdFemCreateElementsSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1434"/>
       <source>Erase Elements</source>
-      <translation type="unfinished">Erase Elements</translation>
+      <translation>Elemek törlése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1374"/>
-      <location filename="../../TaskCreateElementSet.cpp" line="228"/>
-      <location filename="../../TaskCreateElementSet.cpp" line="238"/>
-      <location filename="../../TaskCreateElementSet.cpp" line="469"/>
-      <location filename="../../TaskCreateElementSet.cpp" line="560"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="241"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="252"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="515"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="612"/>
+      <location filename="../../Command.cpp" line="1479"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="229"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="242"/>
       <source>Cannot copy ResultMesh to ResultMesh</source>
-      <translation type="unfinished">Cannot copy ResultMesh to ResultMesh</translation>
+      <translation>Nem lehet az eredményhálót az eredményhálóra másolni</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="239"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="253"/>
       <source>Mesh must be a ResultMesh</source>
-      <translation type="unfinished">Mesh must be a ResultMesh</translation>
+      <translation>A hálónak az eredmények hálójának kell lennie</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="561"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="613"/>
       <source>No Data To Restore
 </source>
       <translation>Nincs visszaállítandó adat
 </translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="756"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="812"/>
       <source>Erased Elements</source>
       <translation>Törölt elemek</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="757"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="813"/>
       <source>All Elements Erased - no mesh generated.</source>
       <translation>Minden elem törölve - nem generál hálót.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1335"/>
+      <location filename="../../Command.cpp" line="1433"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1435"/>
       <source>Creates a FEM mesh elements set</source>
       <translation>Létrehoz egy VEM hálóelemkészletet</translation>
     </message>
@@ -6743,7 +7548,7 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FemGui::TaskCreateElementSet</name>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="438"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="481"/>
       <source>Elements set</source>
       <translation>Elemek készlet</translation>
     </message>
@@ -6751,19 +7556,19 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>CmdFemDefineElementsSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1280"/>
+      <location filename="../../Command.cpp" line="1379"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1281"/>
+      <location filename="../../Command.cpp" line="1380"/>
       <source>Element Set From Polygon</source>
-      <translation type="unfinished">Element Set From Polygon</translation>
+      <translation>A sokszög által kiválasztott elemek készlete</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1282"/>
+      <location filename="../../Command.cpp" line="1381"/>
       <source>Creates a collection of elements selected by a polygon</source>
-      <translation type="unfinished">Creates a collection of elements selected by a polygon</translation>
+      <translation>Létrehoz egy elemkészletet, amelyet a sokszög választ ki</translation>
     </message>
   </context>
   <context>
@@ -6774,57 +7579,77 @@ No matching module was found in the current Python path.</translation>
       <translation>VEM háló Netgen által</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="26"/>
+      <location filename="../ui/MeshNetgen.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Munkakönyvtár</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="35"/>
+      <source>Write</source>
+      <translation>Ír</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Szerkesztés</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="80"/>
       <source>Mesh Parameters</source>
       <translation>VEM háló paraméterek</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="37"/>
+      <location filename="../ui/MeshNetgen.ui" line="91"/>
       <source>Fineness</source>
       <translation>Finomítás</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="47"/>
+      <location filename="../ui/MeshNetgen.ui" line="101"/>
       <source>Maximum size</source>
-      <translation type="unfinished">Maximum size</translation>
+      <translation>Maximális méret</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="82"/>
+      <location filename="../ui/MeshNetgen.ui" line="136"/>
       <source>Minimum size</source>
-      <translation type="unfinished">Minimum size</translation>
+      <translation>Minimális méret</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="117"/>
+      <location filename="../ui/MeshNetgen.ui" line="171"/>
       <source>Second order</source>
       <translation>Második sorrend</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="124"/>
+      <location filename="../ui/MeshNetgen.ui" line="178"/>
       <source>Growth rate</source>
-      <translation type="unfinished">Growth rate</translation>
+      <translation>Növekedési ütem</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="147"/>
+      <location filename="../ui/MeshNetgen.ui" line="201"/>
       <source>Curvature safety</source>
-      <translation type="unfinished">Curvature safety</translation>
+      <translation>Görbület biztonsága</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="164"/>
+      <location filename="../ui/MeshNetgen.ui" line="218"/>
       <source>Segments per edge</source>
       <translation>Élenkénti szakaszok</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="220"/>
+      <location filename="../ui/MeshNetgen.ui" line="274"/>
       <source>Time</source>
       <translation>Idő</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="246"/>
+      <location filename="../ui/MeshNetgen.ui" line="300"/>
       <source>Netgen Version</source>
-      <translation type="unfinished">Netgen Version</translation>
+      <translation>Netgen verzió</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="192"/>
+      <location filename="../ui/MeshNetgen.ui" line="246"/>
       <source>Netgen</source>
       <translation>Netgen</translation>
     </message>
@@ -6850,14 +7675,14 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Python útvonala</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Python executable for which Netgen Python bindings are installed.
 Leave blank to use default Python executable</source>
-      <translation type="unfinished">Python executable for which Netgen Python bindings are installed.
-Leave blank to use default Python executable</translation>
+      <translation>Python futtatható fájl, melyhez a Netgen Python-kötéseket telepített. 
+Hagyja üresen az alapértelmezett Python futtatható fájl használatához</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="102"/>
@@ -6888,14 +7713,14 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1071"/>
+      <location filename="../../../femcommands/commands.py" line="1193"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>CalculiX megoldó</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1076"/>
+      <location filename="../../../femcommands/commands.py" line="1198"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>Létrehoz egy VEM CalculiX megoldót</translation>
     </message>
   </context>
   <context>
@@ -6903,22 +7728,22 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="28"/>
       <source>Field name</source>
-      <translation type="unfinished">Field name</translation>
+      <translation>Mezőnév</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="41"/>
       <source>Mathematical expression</source>
-      <translation type="unfinished">Mathematical expression</translation>
+      <translation>Matematikai kifejezés</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="54"/>
       <source>Available fields</source>
-      <translation type="unfinished">Available fields</translation>
+      <translation>Elérhető mezők</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="62"/>
       <source>Scalars</source>
-      <translation type="unfinished">Scalars</translation>
+      <translation>Skalárok</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="72"/>
@@ -6928,17 +7753,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="82"/>
       <source>Operators</source>
-      <translation type="unfinished">Operators</translation>
+      <translation>Operátorok</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="102"/>
       <source>Replace invalid data</source>
-      <translation type="unfinished">Replace invalid data</translation>
+      <translation>Érvénytelen adatok cseréje</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="105"/>
       <source>Replacement value for invalid operations</source>
-      <translation type="unfinished">Replacement value for invalid operations</translation>
+      <translation>Csereérték érvénytelen műveletekhez</translation>
     </message>
   </context>
   <context>
@@ -6946,7 +7771,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBranch.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válaszd ki a forrást, a alpont szűrő ezt fogja kapni:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; Sorosan:&lt;/span&gt; A változat első szűrője a változatok forrását kapja saját forrásaként. A következő szűrő pedig az első szűrő kimenetét kapja forrásként, és így tovább.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Párhuzamosan: &lt;/span&gt;A változat összes szűrője az változatok forrását kapja saját forrásaként.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
@@ -6956,12 +7781,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válaszd ki a forrást, a alpont szűrők ezt fogják kapni:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; Sorosan:&lt;/span&gt; A változat első szűrője a változatok forrását kapja saját forrásaként. A következő szűrő pedig az első szűrő kimenetét kapja forrásként, és így tovább.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Párhuzamosan: &lt;/span&gt;A változat összes szűrője az változatok forrását kapja saját forrásaként.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="54"/>
       <source>Serial</source>
-      <translation type="unfinished">Serial</translation>
+      <translation>Sorozatszám</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="59"/>
@@ -6972,17 +7797,17 @@ Leave blank to use default Python executable</translation>
       <location filename="../../TaskPostBranch.ui" line="73"/>
       <location filename="../../TaskPostBranch.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válaszd ki, hogyan kerül meghatározásra a változat eredménye:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;- Átadás: &lt;/span&gt;A változatok eredménye megegyezik a forrásával, függetlenül attól, mit csinálnak a változat alpont szűrők.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Összeadás: &lt;/span&gt;A változat eredménye az összes alponti szűrő gyűjteménye: összeadja az alpont eredményeit, és azt kínálja a változat eredményeként.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="77"/>
       <source>Passthrough</source>
-      <translation type="unfinished">Passthrough</translation>
+      <translation>Átjáró</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="82"/>
       <source>Append</source>
-      <translation type="unfinished">Append</translation>
+      <translation>Hozzáadás</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="93"/>
@@ -7000,12 +7825,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostFrames.ui" line="34"/>
       <source>Type of frames</source>
-      <translation type="unfinished">Type of frames</translation>
+      <translation>Kerettípus</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="41"/>
       <source>Resonant frequencies</source>
-      <translation type="unfinished">Resonant frequencies</translation>
+      <translation>Rezgésfrekvenciák</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="84"/>
@@ -7023,7 +7848,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="14"/>
       <source>Solver CalculiX Control</source>
-      <translation type="unfinished">Solver CalculiX Control</translation>
+      <translation>CalculiX megoldó vezérlése</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="20"/>
@@ -7041,34 +7866,29 @@ Leave blank to use default Python executable</translation>
       <translation>Szerkesztés</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="56"/>
-      <source>Path to working directory</source>
-      <translation type="unfinished">Path to working directory</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverCalculiX.ui" line="66"/>
-      <source>…</source>
-      <translation>…</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverCalculiX.ui" line="86"/>
+      <location filename="../ui/SolverCalculiX.ui" line="82"/>
       <source>Analysis type</source>
       <translation>Elemzés típusa</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="126"/>
+      <location filename="../ui/SolverCalculiX.ui" line="122"/>
       <source>Time</source>
       <translation>Idő</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="78"/>
+      <location filename="../ui/SolverCalculiX.ui" line="74"/>
       <source>Solver Parameters</source>
-      <translation type="unfinished">Solver Parameters</translation>
+      <translation>Megoldó változói</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="133"/>
+      <location filename="../ui/SolverCalculiX.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="129"/>
       <source>Solver Version</source>
-      <translation type="unfinished">Solver Version</translation>
+      <translation>Megoldó verzió</translation>
     </message>
   </context>
   <context>
@@ -7076,7 +7896,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <source>FEM Material Reinforcement</source>
-      <translation type="unfinished">FEM Material Reinforcement</translation>
+      <translation>VEM anyag erősítés</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="29"/>
@@ -7097,7 +7917,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
-      <translation type="unfinished">The form of the glyph</translation>
+      <translation>A szimbólum formája</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="25"/>
@@ -7142,7 +7962,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
-      <translation type="unfinished">Which vector field is used to orient the glyphs</translation>
+      <translation>Vektormező, amelyet a szimbólumok irányítására használnak</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="78"/>
@@ -7160,13 +7980,13 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="111"/>
       <source>Sca&amp;le</source>
-      <translation type="unfinished">Sca&amp;le</translation>
+      <translation>Ská&amp;la</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="126"/>
       <location filename="../ui/TaskPostGlyph.ui" line="144"/>
       <source>Which data field is used to scale the glyphs</source>
-      <translation type="unfinished">Which data field is used to scale the glyphs</translation>
+      <translation>Szimbólum méretezésére használt mező</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="129"/>
@@ -7179,7 +7999,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
-      <translation type="unfinished">A constant multiplier the glyphs are scaled with</translation>
+      <translation>Szimbólumokat méretező szorzótényező állandó</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="161"/>
@@ -7189,40 +8009,40 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="199"/>
       <source>Changes the scale factor by +/- 50% of the set scale factor</source>
-      <translation type="unfinished">Changes the scale factor by +/- 50% of the set scale factor</translation>
+      <translation>A méretezési tényező módosítása a beállított méretezési tényező ±50%-ára</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
-      <translation type="unfinished">If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</translation>
+      <translation>Ha a méretarány adat egy vektor, ez a tulajdonság meghatározza, hogy a szimbólumokat a vektor nagysága vagy az egyes összetevők alapján méretezik-e</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="230"/>
       <source>Not a vector</source>
-      <translation type="unfinished">Not a vector</translation>
+      <translation>Ez nem egy vektor</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="235"/>
       <source>By magnitude</source>
-      <translation type="unfinished">By magnitude</translation>
+      <translation>Méret szerint</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="240"/>
       <source>By components</source>
-      <translation type="unfinished">By components</translation>
+      <translation>Összetevők szerint</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="251"/>
       <source>Vertex Mas&amp;king</source>
-      <translation type="unfinished">Vertex Mas&amp;king</translation>
+      <translation>Csúcsok maszkolása</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="263"/>
       <location filename="../ui/TaskPostGlyph.ui" line="349"/>
       <source>Which vertices are used as glyph locations</source>
-      <translation type="unfinished">Which vertices are used as glyph locations</translation>
+      <translation>Csúcsok szimbólum helyekként használva</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="266"/>
@@ -7232,23 +8052,23 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="282"/>
       <source>Defines the maximal number of vertices used for "Uniform Sampling" masking mode</source>
-      <translation type="unfinished">Defines the maximal number of vertices used for "Uniform Sampling" masking mode</translation>
+      <translation>Meghatározza az 'Egyenletes mintavételezés' maszkolási módhoz használt maximális csúcsok számát</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="298"/>
       <location filename="../ui/TaskPostGlyph.ui" line="330"/>
       <source>Define the stride for "Every Nth" masking mode</source>
-      <translation type="unfinished">Define the stride for "Every Nth" masking mode</translation>
+      <translation>Állítsa be a lépést az 'Minden n-edik' maszkolási módhoz</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="301"/>
       <source>Stride</source>
-      <translation type="unfinished">Stride</translation>
+      <translation>Lépés hossz</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="311"/>
       <source>Defines the maximum number of vertices used for "Uniform Sampling" masking mode</source>
-      <translation type="unfinished">Defines the maximum number of vertices used for "Uniform Sampling" masking mode</translation>
+      <translation>Meghatározza az 'Egyenletes mintavételezés' maszkolási módhoz használt maximum csúcsok számát</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="314"/>
@@ -7263,17 +8083,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="358"/>
       <source>Every Nth</source>
-      <translation type="unfinished">Every Nth</translation>
+      <translation>Minden N-edik</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="363"/>
       <source>Uniform Sampling</source>
-      <translation type="unfinished">Uniform Sampling</translation>
+      <translation>Egyenletes mintavételezés</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="40"/>
       <source>Bins</source>
-      <translation type="unfinished">Bins</translation>
+      <translation>Sejtek</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="69"/>
@@ -7283,13 +8103,13 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="94"/>
       <source>Cumulative</source>
-      <translation type="unfinished">Cumulative</translation>
+      <translation>Összesítő</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <source>Legend</source>
-      <translation type="unfinished">Legend</translation>
+      <translation>Jelmagyarázat</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="112"/>
@@ -7308,12 +8128,12 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <source>Y-axis</source>
-      <translation>Y-tengely</translation>
+      <translation>Y tengely</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="169"/>
       <source>X Axis</source>
-      <translation type="unfinished">X Axis</translation>
+      <translation>X tengely</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="179"/>
@@ -7324,17 +8144,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="192"/>
       <source>Visuals</source>
-      <translation type="unfinished">Visuals</translation>
+      <translation>Vizuális elemek</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="208"/>
       <source>Hatch Line Width</source>
-      <translation type="unfinished">Hatch Line Width</translation>
+      <translation>Kitöltés vonal vastagsága</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="215"/>
       <source>Bar width</source>
-      <translation type="unfinished">Bar width</translation>
+      <translation>Sáv szélesség</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="40"/>
@@ -7349,410 +8169,397 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="148"/>
       <source>X-axis</source>
-      <translation>X-tengely</translation>
+      <translation>X tengely</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostCalculatorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2361"/>
+      <location filename="../../Command.cpp" line="2589"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2362"/>
+      <location filename="../../Command.cpp" line="2590"/>
       <source>Calculator Filter</source>
-      <translation type="unfinished">Calculator Filter</translation>
+      <translation>Szűrő kalkulátor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2363"/>
+      <location filename="../../Command.cpp" line="2591"/>
       <source>Creates a new field from current data</source>
-      <translation type="unfinished">Creates a new field from current data</translation>
+      <translation>Hozzon létre egy új mezőt a jelenlegi adatokból</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostBranchFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2763"/>
+      <location filename="../../Command.cpp" line="3031"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2764"/>
+      <location filename="../../Command.cpp" line="3032"/>
       <source>Pipeline Branch</source>
-      <translation type="unfinished">Pipeline Branch</translation>
+      <translation>Folyamat változat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2765"/>
+      <location filename="../../Command.cpp" line="3033"/>
       <source>Branches the pipeline into a new path</source>
-      <translation type="unfinished">Branches the pipeline into a new path</translation>
+      <translation>Elágaztatja a folyamatot egy új útvonalra</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostFrames</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="541"/>
+      <location filename="../../TaskPostBoxes.cpp" line="563"/>
       <source>Result Frames</source>
-      <translation type="unfinished">Result Frames</translation>
+      <translation>Eredménytáblázatok</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostCalculator</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2173"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2257"/>
       <source>Calculator options</source>
-      <translation type="unfinished">Calculator options</translation>
+      <translation>Számítógép beállítások</translation>
     </message>
   </context>
   <context>
     <name>FEM_ClippingPlaneAdd</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="105"/>
+      <location filename="../../../femcommands/commands.py" line="102"/>
       <source>Clipping Plane on Face</source>
-      <translation type="unfinished">Clipping Plane on Face</translation>
+      <translation>Vágási terv</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="108"/>
+      <location filename="../../../femcommands/commands.py" line="105"/>
       <source>Adds a clipping plane on a selected face</source>
-      <translation type="unfinished">Adds a clipping plane on a selected face</translation>
+      <translation>Adj hozzá egy vágási tervet a kiválasztott felülethez</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstantVacuumPermittivity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="185"/>
+      <location filename="../../../femcommands/commands.py" line="192"/>
       <source>Constant Vacuum Permittivity</source>
-      <translation type="unfinished">Constant Vacuum Permittivity</translation>
+      <translation>Állandó vákuumáteresztő képesség</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="189"/>
+      <location filename="../../../femcommands/commands.py" line="196"/>
       <source>Creates a constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a constant vacuum permittivity to overwrite standard value</translation>
+      <translation>Konstans vákuumáteresztést hoz létre az alapértelmezett érték felülírásához</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintElectricChargeDensity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="245"/>
+      <location filename="../../../femcommands/commands.py" line="252"/>
       <source>Electric Charge Density</source>
-      <translation type="unfinished">Electric Charge Density</translation>
+      <translation>Elektrikus töltéssűrűség</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="248"/>
+      <location filename="../../../femcommands/commands.py" line="255"/>
       <source>Creates an electric charge density</source>
-      <translation type="unfinished">Creates an electric charge density</translation>
+      <translation>Elektromos töltéssűrűséget hoz létre</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintInitialFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="292"/>
+      <location filename="../../../femcommands/commands.py" line="299"/>
       <source>Initial Flow Velocity Condition</source>
-      <translation type="unfinished">Initial Flow Velocity Condition</translation>
+      <translation>Kezdeti áramlási sebesség</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="296"/>
+      <location filename="../../../femcommands/commands.py" line="303"/>
       <source>Creates an initial flow velocity condition</source>
-      <translation type="unfinished">Creates an initial flow velocity condition</translation>
+      <translation>Hozzon létre egy kezdeti áramlási sebesség feltételt</translation>
     </message>
   </context>
   <context>
     <name>FEM_ElementFluid1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="371"/>
+      <location filename="../../../femcommands/commands.py" line="378"/>
       <source>Fluid Section for 1D Flow</source>
-      <translation type="unfinished">Fluid Section for 1D Flow</translation>
+      <translation>Folyadékrész az 1D áramláshoz</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="374"/>
+      <location filename="../../../femcommands/commands.py" line="381"/>
       <source>Creates a fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a fluid section for 1D flow</translation>
+      <translation>Létrehozza egy 1D-áramlásnak a folyadék szakaszát</translation>
     </message>
   </context>
   <context>
     <name>FEM_ElementGeometry1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="384"/>
+      <location filename="../../../femcommands/commands.py" line="391"/>
       <source>Beam Cross Section</source>
-      <translation type="unfinished">Beam Cross Section</translation>
+      <translation>Gerendakeresztmetszet</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="385"/>
+      <location filename="../../../femcommands/commands.py" line="392"/>
       <source>Creates a beam cross section</source>
-      <translation type="unfinished">Creates a beam cross section</translation>
+      <translation>Létrehoz egy gerenda keresztmetszetet</translation>
     </message>
   </context>
   <context>
     <name>FEM_ElementGeometry2D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="395"/>
+      <location filename="../../../femcommands/commands.py" line="402"/>
       <source>Shell Plate Thickness</source>
-      <translation type="unfinished">Shell Plate Thickness</translation>
+      <translation>Héjlemez vastagság</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="398"/>
+      <location filename="../../../femcommands/commands.py" line="405"/>
       <source>Creates a shell plate thickness</source>
-      <translation type="unfinished">Creates a shell plate thickness</translation>
+      <translation>Létrehoz egy héj lemez vastagságot</translation>
     </message>
   </context>
   <context>
     <name>FEM_ElementRotation1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="408"/>
+      <location filename="../../../femcommands/commands.py" line="415"/>
       <source>Beam Rotation</source>
-      <translation type="unfinished">Beam Rotation</translation>
+      <translation>Sugárforgás</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="409"/>
+      <location filename="../../../femcommands/commands.py" line="416"/>
       <source>Creates a beam rotation</source>
-      <translation type="unfinished">Creates a beam rotation</translation>
+      <translation>Létrehoz egy gerenda forgatást</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationDeformation</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="419"/>
+      <location filename="../../../femcommands/commands.py" line="426"/>
       <source>Deformation Equation</source>
-      <translation type="unfinished">Deformation Equation</translation>
+      <translation>Deformációs egyenlet</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="423"/>
+      <location filename="../../../femcommands/commands.py" line="430"/>
       <source>Creates an equation for deformation (nonlinear elasticity)</source>
-      <translation type="unfinished">Creates an equation for deformation (nonlinear elasticity)</translation>
+      <translation>Egyenletet hoz létre az alakváltozásra (nemlineáris rugalmasság)</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationElasticity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="433"/>
+      <location filename="../../../femcommands/commands.py" line="440"/>
       <source>Elasticity Equation</source>
-      <translation type="unfinished">Elasticity Equation</translation>
+      <translation>Rugalmassági egyenlet</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="436"/>
+      <location filename="../../../femcommands/commands.py" line="443"/>
       <source>Creates an equation for elasticity (stress)</source>
-      <translation type="unfinished">Creates an equation for elasticity (stress)</translation>
+      <translation>Rugalmasságra (feszültségre) képez egy egyenletet</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationElectricforce</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="446"/>
+      <location filename="../../../femcommands/commands.py" line="453"/>
       <source>Electricforce Equation</source>
-      <translation type="unfinished">Electricforce Equation</translation>
+      <translation>Elektromos erőtörvény</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="449"/>
+      <location filename="../../../femcommands/commands.py" line="456"/>
       <source>Creates an equation for electric forces</source>
-      <translation type="unfinished">Creates an equation for electric forces</translation>
+      <translation>Létrehoz egy elektromos erő egyenletet</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationElectrostatic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="459"/>
+      <location filename="../../../femcommands/commands.py" line="466"/>
       <source>Electrostatic Equation</source>
-      <translation type="unfinished">Electrostatic Equation</translation>
+      <translation>Elektrosztatikus egyenlet</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="462"/>
+      <location filename="../../../femcommands/commands.py" line="469"/>
       <source>Creates an equation for electrostatic</source>
-      <translation type="unfinished">Creates an equation for electrostatic</translation>
+      <translation>Létrehoz egy elektrosztatikai egyenletet</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationFlow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="472"/>
+      <location filename="../../../femcommands/commands.py" line="479"/>
       <source>Flow Equation</source>
-      <translation type="unfinished">Flow Equation</translation>
+      <translation>Áramlási egyenlet</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="473"/>
+      <location filename="../../../femcommands/commands.py" line="480"/>
       <source>Creates an equation for flow</source>
-      <translation type="unfinished">Creates an equation for flow</translation>
+      <translation>Létrehoz egy áramlási egyenletet</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationFlux</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="483"/>
+      <location filename="../../../femcommands/commands.py" line="490"/>
       <source>Flux Equation</source>
-      <translation type="unfinished">Flux Equation</translation>
+      <translation>Áramlási egyenlet</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="484"/>
+      <location filename="../../../femcommands/commands.py" line="491"/>
       <source>Creates an equation for flux</source>
-      <translation type="unfinished">Creates an equation for flux</translation>
+      <translation>Létrehoz egy áramlási egyenletet</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationHeat</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="494"/>
+      <location filename="../../../femcommands/commands.py" line="501"/>
       <source>Heat Equation</source>
-      <translation type="unfinished">Heat Equation</translation>
+      <translation>Hővezetési egyenlet</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="495"/>
+      <location filename="../../../femcommands/commands.py" line="502"/>
       <source>Creates an equation for heat</source>
-      <translation type="unfinished">Creates an equation for heat</translation>
+      <translation>Létrehoz egy hőtani áramlási egyenletet</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationMagnetodynamic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="507"/>
+      <location filename="../../../femcommands/commands.py" line="514"/>
       <source>Magnetodynamic Equation</source>
-      <translation type="unfinished">Magnetodynamic Equation</translation>
+      <translation>Magnetodinamikus egyenlőség</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="511"/>
+      <location filename="../../../femcommands/commands.py" line="518"/>
       <source>Creates an equation for magnetodynamic forces</source>
-      <translation type="unfinished">Creates an equation for magnetodynamic forces</translation>
+      <translation>Létrehoz egy egyenletet a mágnes dinamikus erők számára</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationMagnetodynamic2D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="523"/>
+      <location filename="../../../femcommands/commands.py" line="530"/>
       <source>Magnetodynamic 2D Equation</source>
-      <translation type="unfinished">Magnetodynamic 2D Equation</translation>
+      <translation>Magnetodynamic2D egyenlőség</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="527"/>
+      <location filename="../../../femcommands/commands.py" line="534"/>
       <source>Creates an equation for 2D magnetodynamic forces</source>
-      <translation type="unfinished">Creates an equation for 2D magnetodynamic forces</translation>
+      <translation>Létrehoz egy egyenletet a 2D magneto dinamikus erők számára</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationStaticCurrent</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="537"/>
+      <location filename="../../../femcommands/commands.py" line="544"/>
       <source>Static Current Equation</source>
-      <translation type="unfinished">Static Current Equation</translation>
+      <translation>Stacionárius áramegyenlet</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="540"/>
+      <location filename="../../../femcommands/commands.py" line="547"/>
       <source>Creates an equation for static current</source>
-      <translation type="unfinished">Creates an equation for static current</translation>
+      <translation>Készítsen egy egyenletet a statikus áramhoz</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="582"/>
+      <location filename="../../../femcommands/commands.py" line="589"/>
       <source>Fluid Material</source>
-      <translation type="unfinished">Fluid Material</translation>
+      <translation>Folyékony anyag</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="583"/>
+      <location filename="../../../femcommands/commands.py" line="590"/>
       <source>Creates a fluid material</source>
-      <translation type="unfinished">Creates a fluid material</translation>
+      <translation>Folyékony anyagot hoz létre</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialMechanicalNonlinear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="595"/>
+      <location filename="../../../femcommands/commands.py" line="602"/>
       <source>Non-Linear Mechanical Material</source>
-      <translation type="unfinished">Non-Linear Mechanical Material</translation>
+      <translation>Nemlineáris mechanikai anyag</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="598"/>
-      <source>Creates a non-linear mechanical material</source>
-      <translation type="unfinished">Creates a non-linear mechanical material</translation>
+      <location filename="../../../femcommands/commands.py" line="606"/>
+      <source>Add non-linear mechanical properties to material</source>
+      <translation type="unfinished">Add non-linear mechanical properties to material</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="676"/>
+      <location filename="../../../femcommands/commands.py" line="647"/>
       <source>Solid Material</source>
-      <translation type="unfinished">Solid Material</translation>
+      <translation>Szilárd anyag</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="678"/>
+      <location filename="../../../femcommands/commands.py" line="649"/>
       <source>Creates a solid material</source>
-      <translation type="unfinished">Creates a solid material</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshBoundaryLayer</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="730"/>
-      <source>Mesh Boundary Layer</source>
-      <translation type="unfinished">Mesh Boundary Layer</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="733"/>
-      <source>Creates a mesh boundary layer</source>
-      <translation type="unfinished">Creates a mesh boundary layer</translation>
+      <translation>Szilárd anyagot hoz létre</translation>
     </message>
   </context>
   <context>
     <name>FEM_MeshClear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="743"/>
+      <location filename="../../../femcommands/commands.py" line="715"/>
       <source>Clear FEM Mesh</source>
-      <translation type="unfinished">Clear FEM Mesh</translation>
+      <translation>Egyértelmű FEM háló</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="744"/>
+      <location filename="../../../femcommands/commands.py" line="716"/>
       <source>Clears the mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clears the mesh of a FEM mesh object</translation>
+      <translation>Törli a VEM hálóobjektum hálóját</translation>
     </message>
   </context>
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="837"/>
+      <location filename="../../../femcommands/commands.py" line="832"/>
       <source>Mesh Group</source>
-      <translation type="unfinished">Mesh Group</translation>
+      <translation>Háló csoport</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="838"/>
+      <location filename="../../../femcommands/commands.py" line="833"/>
       <source>Creates a mesh group</source>
-      <translation type="unfinished">Creates a mesh group</translation>
+      <translation>Egy háló csoportot hoz létre</translation>
     </message>
   </context>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="913"/>
+      <location filename="../../../femcommands/commands.py" line="1044"/>
       <source>Show Result</source>
-      <translation type="unfinished">Show Result</translation>
+      <translation>Találat megjelenítése</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="917"/>
+      <location filename="../../../femcommands/commands.py" line="1048"/>
       <source>Shows and visualizes the selected result data</source>
-      <translation type="unfinished">Shows and visualizes the selected result data</translation>
+      <translation>Mutatja és megjeleníti a kiválasztott eredmény adatokat</translation>
     </message>
   </context>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="929"/>
+      <location filename="../../../femcommands/commands.py" line="1060"/>
       <source>Purge Results</source>
-      <translation type="unfinished">Purge Results</translation>
+      <translation>Tisztítás eredménye</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="933"/>
+      <location filename="../../../femcommands/commands.py" line="1064"/>
       <source>Purges all results from the active analysis</source>
-      <translation type="unfinished">Purges all results from the active analysis</translation>
+      <translation>Törli az összes eredményt az aktív elemzésből</translation>
     </message>
   </context>
   <context>
     <name>FEM_PostFilterGlyph</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1232"/>
+      <location filename="../../../femcommands/commands.py" line="1344"/>
       <source>Glyph Filter</source>
-      <translation type="unfinished">Glyph Filter</translation>
+      <translation>Glyph szűrő</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1237"/>
+      <location filename="../../../femcommands/commands.py" line="1349"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
-      <translation type="unfinished">Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</translation>
+      <translation>Adj hozzá egy utófeldolgozó szűrőt, amely Glyfet ad a háló csúcsaihoz a csúcsadatok megjelenítéséhez</translation>
     </message>
   </context>
   <context>
@@ -7767,36 +8574,36 @@ Leave blank to use default Python executable</translation>
       <location filename="../../TaskPostExtraction.ui" line="22"/>
       <location filename="../ui/TaskPostExtraction.ui" line="37"/>
       <source>Data Summary</source>
-      <translation type="unfinished">Data Summary</translation>
+      <translation>Adatösszefoglaló</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="29"/>
       <location filename="../ui/TaskPostExtraction.ui" line="44"/>
       <source>Show Data</source>
-      <translation type="unfinished">Show Data</translation>
+      <translation>Adat megjelenítése</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="62"/>
       <source>Data used in</source>
-      <translation type="unfinished">Data used in</translation>
+      <translation>Az adatok felhasználva ebben</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="92"/>
       <source>Add data to</source>
-      <translation type="unfinished">Add data to</translation>
+      <translation>Adatok ehhez adása</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="107"/>
       <source>Create and add</source>
-      <translation type="unfinished">Create and add</translation>
+      <translation>Létrehozás és hozzáadás</translation>
     </message>
   </context>
   <context>
     <name>PostHistogramEdit</name>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Űrlap</translation>
     </message>
@@ -7804,7 +8611,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
       <source>Outline draw style (None does not draw outlines)</source>
-      <translation type="unfinished">Outline draw style (None does not draw outlines)</translation>
+      <translation>Kontúrrajzolási stílus ('Nincs' nem rajzol kontúrokat)</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
@@ -7818,13 +8625,13 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
       <source>Width of all lines (outline and hatch)</source>
-      <translation type="unfinished">Width of all lines (outline and hatch)</translation>
+      <translation>Az összes vonal szélessége (kontúr és kitöltés)</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <source>Hatch pattern</source>
-      <translation type="unfinished">Hatch pattern</translation>
+      <translation>Kitöltési minta</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="89"/>
@@ -7834,29 +8641,29 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="102"/>
       <source>Density of hatch pattern</source>
-      <translation type="unfinished">Density of hatch pattern</translation>
+      <translation>Kitöltési minta sűrűsége</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="112"/>
       <source>Bars</source>
-      <translation type="unfinished">Bars</translation>
+      <translation>Gerenda</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
       <source>Legend</source>
-      <translation type="unfinished">Legend</translation>
+      <translation>Jelmagyarázat</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="135"/>
       <source>Color of all lines (bar outline and hatches)</source>
-      <translation type="unfinished">Color of all lines (bar outline and hatches)</translation>
+      <translation>Összes vonal színe (kontúr és kitöltés)</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
       <source>Color of the bars in histogram</source>
-      <translation type="unfinished">Color of the bars in histogram</translation>
+      <translation>Hisztogram oszlopainak színe</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="34"/>
@@ -7877,57 +8684,57 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="435"/>
+      <location filename="../../TaskPostBoxes.cpp" line="462"/>
       <source>Result Display Options</source>
-      <translation type="unfinished">Result Display Options</translation>
+      <translation>Eredmények megjelenítési beállításai</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostBranch</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="607"/>
+      <location filename="../../TaskPostBoxes.cpp" line="632"/>
       <source>Branch Behaviour</source>
-      <translation type="unfinished">Branch Behaviour</translation>
+      <translation>Ág viselkedése</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1441"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1504"/>
       <source>Clip Region, Choose Implicit Function</source>
-      <translation type="unfinished">Clip Region, Choose Implicit Function</translation>
+      <translation>Vágja ki a területet, válassza a rejtett funkciót</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1592"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1655"/>
       <source>Contours Filter Options</source>
-      <translation type="unfinished">Contours Filter Options</translation>
+      <translation>Kontúrszűrő beállításai</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1751"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1819"/>
       <source>Function Cut, Choose Implicit Function</source>
-      <translation type="unfinished">Function Cut, Choose Implicit Function</translation>
+      <translation>Vágás funkcióval, válassza a rejtett funkciót</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1884"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1952"/>
       <source>Scalar Clip Options</source>
-      <translation type="unfinished">Scalar Clip Options</translation>
+      <translation>Skalár vágási lehetőségek</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2005"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2076"/>
       <source>Warp Options</source>
-      <translation type="unfinished">Warp Options</translation>
+      <translation>Deformációs beállítások</translation>
     </message>
   </context>
   <context>
@@ -7935,23 +8742,23 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostExtraction.cpp" line="50"/>
       <source>Data and Extractions</source>
-      <translation type="unfinished">Data and Extractions</translation>
+      <translation>Adatok és kivonatok</translation>
     </message>
   </context>
   <context>
     <name>FemGui::ViewProviderFemAnalysis</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="162"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="168"/>
       <source>Activate Analysis</source>
-      <translation type="unfinished">Activate Analysis</translation>
+      <translation>Elemzés bekapcsolása</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskObjectName</name>
     <message>
-      <location filename="../../TaskObjectName.cpp" line="40"/>
+      <location filename="../../TaskObjectName.cpp" line="39"/>
       <source>Name of the object</source>
-      <translation type="unfinished">Name of the object</translation>
+      <translation>Az objektum neve</translation>
     </message>
   </context>
   <context>
@@ -7959,7 +8766,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../fempreferencepages/dlg_settings_netgen.py" line="84"/>
       <source>Executable '{}' not found</source>
-      <translation type="unfinished">Executable '{}' not found</translation>
+      <translation>A '{}' futtatható fájl nem található</translation>
     </message>
   </context>
   <context>
@@ -7967,7 +8774,328 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
-      <translation type="unfinished">Axis Reference Selector</translation>
+      <translation>Tengelyreferencia kiválasztása</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../../../Init.py" line="62"/>
+      <source>FEM mesh Python</source>
+      <translation type="unfinished">FEM mesh Python</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="66"/>
+      <source>FEM mesh TetGen</source>
+      <translation type="unfinished">FEM mesh TetGen</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="75"/>
+      <source>FEM mesh formats</source>
+      <translation type="unfinished">FEM mesh formats</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="81"/>
+      <source>FEM mesh Nastran</source>
+      <translation type="unfinished">FEM mesh Nastran</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="88"/>
+      <source>FEM mesh Fenics</source>
+      <translation type="unfinished">FEM mesh Fenics</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="96"/>
+      <source>FEM mesh YAML/JSON</source>
+      <translation type="unfinished">FEM mesh YAML/JSON</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="103"/>
+      <source>FEM mesh Z88</source>
+      <translation type="unfinished">FEM mesh Z88</translation>
+    </message>
+    <message>
+      <location filename="../../../Init.py" line="114"/>
+      <source>FEM result VTK</source>
+      <translation type="unfinished">FEM result VTK</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintElectromagnetic</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="268"/>
+      <source>Electromagnetic Boundary Condition</source>
+      <translation type="unfinished">Electromagnetic Boundary Condition</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="272"/>
+      <source>Creates an electromagnetic boundary condition</source>
+      <translation type="unfinished">Creates an electromagnetic boundary condition</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshBoundaryLayer</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="701"/>
+      <source>2D Boundary Layer</source>
+      <translation type="unfinished">2D Boundary Layer</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
+      <source>Adds a structured layer of mesh elmenets on 2D model boundaries</source>
+      <translation type="unfinished">Adds a structured layer of mesh elmenets on 2D model boundaries</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshClearGroups</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="735"/>
+      <source>Clear Mesh Groups</source>
+      <translation type="unfinished">Clear Mesh Groups</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="736"/>
+      <source>Remove groups from FEM mesh</source>
+      <translation type="unfinished">Remove groups from FEM mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshDistance</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="908"/>
+      <source>Distance-Based Refinement</source>
+      <translation type="unfinished">Distance-Based Refinement</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="911"/>
+      <source>Sets mesh size based on the distance to vertices, edges, and faces</source>
+      <translation type="unfinished">Sets mesh size based on the distance to vertices, edges, and faces</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshManipulate</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="921"/>
+      <source>Manipulate Refinement</source>
+      <translation type="unfinished">Manipulate Refinement</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="924"/>
+      <source>Allows to manipulate the output of a refinement in various ways</source>
+      <translation type="unfinished">Allows to manipulate the output of a refinement in various ways</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshAdvanced</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="934"/>
+      <source>Advanced Refinement Types</source>
+      <translation type="unfinished">Advanced Refinement Types</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="937"/>
+      <source>Allows to define the mesh size by various advanced means</source>
+      <translation type="unfinished">Allows to define the mesh size by various advanced means</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshShape</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="947"/>
+      <source>Shape-Based Refinement</source>
+      <translation type="unfinished">Shape-Based Refinement</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshSphere</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="951"/>
+      <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
+      <translation type="unfinished">Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshTransfiniteCurve</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="963"/>
+      <source>Structured Transfinite Curve</source>
+      <translation type="unfinished">Structured Transfinite Curve</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="967"/>
+      <source>Creates a fixed amount of nodes on an endge with a structured algorithm</source>
+      <translation type="unfinished">Creates a fixed amount of nodes on an endge with a structured algorithm</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshTransfiniteSurface</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="979"/>
+      <source>Structured Transfinite Surface</source>
+      <translation type="unfinished">Structured Transfinite Surface</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="982"/>
+      <source>Creates a structured mesh on a face</source>
+      <translation type="unfinished">Creates a structured mesh on a face</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshTransfiniteVolume</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="994"/>
+      <source>Structured Transfinite Volume</source>
+      <translation type="unfinished">Structured Transfinite Volume</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="998"/>
+      <source>Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces</source>
+      <translation type="unfinished">Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_CompSolvers</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1358"/>
+      <source>Solvers</source>
+      <translation type="unfinished">Solvers</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1359"/>
+      <source>Creates a FEM solver</source>
+      <translation type="unfinished">Creates a FEM solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverZ88</name>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="14"/>
+      <source>Solver Z88 Control</source>
+      <translation type="unfinished">Solver Z88 Control</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Munkakönyvtár</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="35"/>
+      <source>Write</source>
+      <translation>Ír</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Szerkesztés</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Megoldó változói</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="82"/>
+      <source>Solver type</source>
+      <translation type="unfinished">Solver type</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="122"/>
+      <source>Time</source>
+      <translation>Idő</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Megoldó verzió</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation>Elmer megoldó ellenőrző</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Munkakönyvtár</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>Ír</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Szerkesztés</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Megoldó változói</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation>Szimuláció típusa</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>Idő</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Megoldó verzió</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemToolsCcx</name>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="419"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation>Hiányzó vagy hibás CalculiX xszámítás bináris fájl</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="453"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>VEM: az xszámítás bináris érvénytelen</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="466"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation>VEM: A CalculiX xszámítás '{}' bináris fájl nem található. Kérlek, állítsd be a CalculiX xszámítás bináris fájl elérési útját a VEM beállításoknál a CalculiX fülön.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="478"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation>VEM: A CalculiX xszámítás '{}' kimenete '{}' nem tartalmazza a várt kifejezést '{}'. Valami gond van a xszámítás futtatásakor. Nézd meg, hogy a xszámítás önállóan, FreeCAD nélkül le tud-e futni.</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::DlgSettingsFemInOutVtkImp</name>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>All</source>
+      <translation>Minden</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>Highest</source>
+      <translation>Legmagasabb</translation>
     </message>
   </context>
 </TS>

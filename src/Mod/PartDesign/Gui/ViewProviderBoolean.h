@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -23,18 +25,18 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderBoolean_H
-#define PARTGUI_ViewProviderBoolean_H
+#pragma once
 
 #include "ViewProvider.h"
 #include <Gui/ViewProviderGeoFeatureGroupExtension.h>
 #include <Gui/Inventor/SoToggleSwitch.h>
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderBoolean : public ViewProvider,
-                                                public Gui::ViewProviderGeoFeatureGroupExtension
+class PartDesignGuiExport ViewProviderBoolean: public ViewProvider,
+                                               public Gui::ViewProviderGeoFeatureGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderBoolean);
 
@@ -49,7 +51,7 @@ public:
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
     const char* getDefaultDisplayMode() const override;
     void onChanged(const App::Property* prop) override;
 
@@ -70,7 +72,4 @@ private:
     Gui::CoinPtr<SoToggleSwitch> pcBasePreviewToggle;
 };
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderBoolean_H
+}  // namespace PartDesignGui

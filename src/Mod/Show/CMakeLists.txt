@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 SET(Show_SRCS
     __init__.py

@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEW_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEW_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <QColor>
 #include <QFont>
@@ -75,6 +74,15 @@ class QGIViewClip;
 class QGCustomImage;
 class QGTracker;
 class QGIVertex;
+
+
+enum class ViewFrameMode {
+    Auto,
+    AlwaysOn,
+    AlwaysOff,
+    Manual
+};
+
 
 class TechDrawGuiExport QGIView : public QObject, public QGraphicsItemGroup
 {
@@ -174,6 +182,12 @@ public:
 
     bool pseudoEventFilter(QGraphicsItem *watched, QEvent *event) { return sceneEventFilter(watched, event); }
 
+    static bool hasSelectedChildren(QGIView* parent);
+
+    bool isExporting() const;
+
+    virtual void setMovableFlag();
+
 protected:
     QGIView* getQGIVByName(std::string name) const;
 
@@ -184,9 +198,13 @@ protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual QRectF customChildrenBoundingRect() const;
+    virtual QRectF frameRect() const;
     void dumpRect(const char* text, QRectF rect);
     bool m_isHovered;
 
+    virtual void updateFrameVisibility();
+    bool shouldShowFromViewProvider() const;
+    bool shouldShowFrame() const;
 
     Base::Reference<ParameterGrp> getParmGroupCol();
 
@@ -228,5 +246,3 @@ private:
 };
 
 } // namespace
-
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEW_H

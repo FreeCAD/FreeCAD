@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Wild Magic Source Code
 // David Eberly
 // http://www.geometrictools.com
@@ -14,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4INTERSECTOR1_H
-#define WM4INTERSECTOR1_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Math.h"
@@ -71,5 +72,3 @@ typedef Intersector1<float> Intersector1f;
 typedef Intersector1<double> Intersector1d;
 
 }
-
-#endif

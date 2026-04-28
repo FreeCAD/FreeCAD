@@ -21,15 +21,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SELECTIONFILTERPY_H
-#define GUI_SELECTIONFILTERPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 
 #include "SelectionFilter.h"
 
 
-namespace Gui {
+namespace Gui
+{
 /**
  * Python binding for SelectionFilter class.
  * \code
@@ -39,14 +39,15 @@ namespace Gui {
  * @see SelectionFilter
  * @author Werner Mayer
  */
-class SelectionFilterPy : public Py::PythonClass<SelectionFilterPy>
+class SelectionFilterPy: public Py::PythonClass<SelectionFilterPy>
 {
 public:
     SelectionFilter filter;
 
 public:
-    static void init_type();    // announce properties and methods
-    static SelectionFilterPy* cast(PyObject* py) {
+    static void init_type();  // announce properties and methods
+    static SelectionFilterPy* cast(PyObject* py)
+    {
         using SelectionFilterClass = Py::PythonClassObject<SelectionFilterPy>;
         return SelectionFilterClass(py).getCxxObject();
     }
@@ -63,6 +64,4 @@ public:
     Py::Object getFilter();
 };
 
-} // namespace Gui
-
-#endif // GUI_SELECTIONFILTERPY_H
+}  // namespace Gui

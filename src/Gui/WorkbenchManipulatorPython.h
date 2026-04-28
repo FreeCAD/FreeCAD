@@ -22,20 +22,20 @@
  **************************************************************************/
 
 
-#ifndef GUI_WORKBENCHMANIPULATOR_PYTHON_H
-#define GUI_WORKBENCHMANIPULATOR_PYTHON_H
+#pragma once
 
 #include <Gui/WorkbenchManipulator.h>
 #include <CXX/Objects.hxx>
 
-namespace Gui {
+namespace Gui
+{
 
 /**
  * The WorkbenchManipulatorPython class accepts an instance of a Python class
  * that is supposed to implement any of the virtual functions.
  * @author Werner Mayer
  */
-class GuiExport WorkbenchManipulatorPython : public WorkbenchManipulator
+class GuiExport WorkbenchManipulatorPython: public WorkbenchManipulator
 {
 public:
     static void installManipulator(const Py::Object& obj);
@@ -68,8 +68,8 @@ protected:
 public:
     WorkbenchManipulatorPython(const WorkbenchManipulatorPython&) = delete;
     WorkbenchManipulatorPython(WorkbenchManipulatorPython&&) = delete;
-    WorkbenchManipulatorPython& operator = (const WorkbenchManipulatorPython&) = delete;
-    WorkbenchManipulatorPython& operator = (WorkbenchManipulatorPython&&) = delete;
+    WorkbenchManipulatorPython& operator=(const WorkbenchManipulatorPython&) = delete;
+    WorkbenchManipulatorPython& operator=(WorkbenchManipulatorPython&&) = delete;
 
 private:
     void tryModifyMenuBar(MenuItem* menuBar);
@@ -85,7 +85,4 @@ private:
     Py::Object object;
 };
 
-} // namespace Gui
-
-
-#endif // GUI_WORKBENCHMANIPULATOR_PYTHON_H
+}  // namespace Gui

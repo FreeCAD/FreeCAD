@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_VIEWPROVIDERMESHFACESET_H
-#define MESHGUI_VIEWPROVIDERMESHFACESET_H
+#pragma once
 
 #include <Mod/Mesh/Gui/ViewProvider.h>
 
@@ -75,6 +76,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_VIEWPROVIDERMESHFACESET_H

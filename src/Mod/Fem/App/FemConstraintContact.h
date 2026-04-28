@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTCONTACT_H
-#define FEM_CONSTRAINTCONTACT_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -66,12 +65,11 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* typeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* typeName,
+        App::Property* prop
+    ) override;
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINTCONTACT_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_CROSSSECTIONS_H
-#define PARTGUI_CROSSSECTIONS_H
+#pragma once
 
 #include <QDialog>
 #include <QPointer>
@@ -31,28 +32,39 @@
 #include <Gui/TaskView/TaskView.h>
 
 
-namespace Gui {
+namespace Gui
+{
 class View3DInventor;
 }
 
-namespace PartGui {
+namespace PartGui
+{
 
 class ViewProviderCrossSections;
 class Ui_CrossSections;
-class CrossSections : public QDialog
+class CrossSections: public QDialog
 {
     Q_OBJECT
 
-    enum Plane { XY, XZ, YZ };
+    enum Plane
+    {
+        XY,
+        XZ,
+        YZ
+    };
 
 public:
-    explicit CrossSections(const Base::BoundBox3d& bb, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit CrossSections(
+        const Base::BoundBox3d& bb,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~CrossSections() override;
     void accept() override;
     bool apply();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void keyPressEvent(QKeyEvent*) override;
 
 private:
@@ -69,7 +81,7 @@ private:
 private:
     std::vector<double> getPlanes() const;
     void calcPlane(Plane, double);
-    void calcPlanes(Plane/*, double, bool, int*/);
+    void calcPlanes(Plane /*, double, bool, int*/);
     void makePlanes(Plane, const std::vector<double>&, double[4]);
     Plane plane() const;
 
@@ -80,7 +92,7 @@ private:
     QPointer<Gui::View3DInventor> view;
 };
 
-class TaskCrossSections : public Gui::TaskView::TaskDialog
+class TaskCrossSections: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -92,12 +104,12 @@ public:
     void clicked(int id) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel;
+    }
 
 private:
     CrossSections* widget;
 };
 
-} // namespace PartGui
-
-#endif // PARTGUI_CROSSSECTIONS_H
+}  // namespace PartGui

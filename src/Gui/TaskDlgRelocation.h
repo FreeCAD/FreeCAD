@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKDLGRELOCATE_H
-#define GUI_TASKDLGRELOCATE_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -32,39 +31,38 @@
 class Ui_Position;
 class Ui_Angle;
 
-namespace Gui {
+namespace Gui
+{
 
-class TaskBoxPosition : public Gui::TaskView::TaskBox
+class TaskBoxPosition: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskBoxPosition(QWidget *parent = nullptr);
+    explicit TaskBoxPosition(QWidget* parent = nullptr);
     ~TaskBoxPosition() override;
 
 
 private Q_SLOTS:
 
 protected:
-
 private:
     QWidget* proxy;
     Ui_Position* ui;
 };
 
-class TaskBoxAngle : public Gui::TaskView::TaskBox
+class TaskBoxAngle: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskBoxAngle(QWidget *parent = nullptr);
+    explicit TaskBoxAngle(QWidget* parent = nullptr);
     ~TaskBoxAngle() override;
 
 
 private Q_SLOTS:
 
 protected:
-
 private:
     QWidget* proxy;
     Ui_Angle* ui;
@@ -72,7 +70,7 @@ private:
 
 
 ///
-class GuiExport TaskDlgRelocation : public Gui::TaskView::TaskDialog
+class GuiExport TaskDlgRelocation: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -94,14 +92,12 @@ public:
 
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 protected:
-
 };
 
 
-
-} //namespace Gui
-
-#endif // ROBOTGUI_TASKDLGSIMULATE_H
+}  // namespace Gui

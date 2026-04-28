@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -45,14 +47,17 @@ void Importer::load(const std::string& fileName)
         if (segmct > 1) {
             createMeshFromSegments(file.fileNamePure(), mat, mesh);
         }
-        else if (mat.binding == MeshCore::MeshIO::PER_VERTEX
-                 && mat.diffuseColor.size() == mesh.countPoints()) {
+        else if (
+            mat.binding == MeshCore::MeshIO::PER_VERTEX
+            && mat.diffuseColor.size() == mesh.countPoints()
+        ) {
             Feature* feature = createMesh(file.fileNamePure(), mesh);
             addVertexColors(feature, mat.diffuseColor);
             feature->purgeTouched();
         }
-        else if (mat.binding == MeshCore::MeshIO::PER_FACE
-                 && mat.diffuseColor.size() == mesh.countFacets()) {
+        else if (
+            mat.binding == MeshCore::MeshIO::PER_FACE && mat.diffuseColor.size() == mesh.countFacets()
+        ) {
             Feature* feature = createMesh(file.fileNamePure(), mesh);
             addFaceColors(feature, mat.diffuseColor);
             feature->purgeTouched();
@@ -74,20 +79,21 @@ void Importer::addFaceColors(Feature* feature, const std::vector<Base::Color>& c
     addColors(feature, "FaceColors", colors);
 }
 
-void Importer::addColors(Feature* feature,
-                         const std::string& property,
-                         const std::vector<Base::Color>& colors)
+void Importer::addColors(
+    Feature* feature,
+    const std::string& property,
+    const std::vector<Base::Color>& colors
+)
 {
     App::PropertyColorList* prop = static_cast<App::PropertyColorList*>(
-        feature->addDynamicProperty("App::PropertyColorList", property.c_str()));
+        feature->addDynamicProperty("App::PropertyColorList", property.c_str())
+    );
     if (prop) {
         prop->setValues(colors);
     }
 }
 
-void Importer::createMeshFromSegments(const std::string& name,
-                                      MeshCore::Material& mat,
-                                      MeshObject& mesh)
+void Importer::createMeshFromSegments(const std::string& name, MeshCore::Material& mat, MeshObject& mesh)
 {
     unsigned long segmct = mesh.countSegments();
     for (unsigned long i = 0; i < segmct; i++) {

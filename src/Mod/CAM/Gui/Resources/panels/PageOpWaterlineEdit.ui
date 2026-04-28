@@ -70,7 +70,7 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="algorithmSelect">
         <property name="toolTip">
-         <string>Select the algorithm to use: 'OCL Dropcutter*', or 'Experimental' (not OCL based).</string>
+         <string>Select the algorithm to use: 'OCL Dropcutter*', 'OCL Adaptive*' or 'Experimental' (not OCL based).</string>
         </property>
        </widget>
       </item>
@@ -205,7 +205,24 @@ A step over of 100% results in no overlap between two different cycles.</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="7" column="0">
+       <widget class="QLabel" name="minSampleInterval_label">
+        <property name="text">
+         <string>Min Sample interval</string>
+        </property>
+       </widget>
+      </item>
+     <item row="7" column="1">
+      <widget class="Gui::InputField" name="minSampleInterval">
+       <property name="toolTip">
+        <string>Set the minimum sampling resolution. Smaller values quickly increase processing time.</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+      </widget>
+     </item>
+      <item row="8" column="1">
        <widget class="QCheckBox" name="optimizeEnabled">
         <property name="toolTip">
          <string>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</string>
@@ -249,6 +266,7 @@ A step over of 100% results in no overlap between two different cycles.</string>
   <tabstop>cutPattern</tabstop>
   <tabstop>stepOver</tabstop>
   <tabstop>sampleInterval</tabstop>
+  <tabstop>minSampleInterval</tabstop>
   <tabstop>optimizeEnabled</tabstop>
  </tabstops>
  <resources/>

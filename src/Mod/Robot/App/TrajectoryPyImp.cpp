@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -65,8 +67,7 @@ int TrajectoryPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         Py::List list(pcObj);
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Robot::WaypointPy::Type))) {
-                Robot::Waypoint& wp =
-                    *static_cast<Robot::WaypointPy*>((*it).ptr())->getWaypointPtr();
+                Robot::Waypoint& wp = *static_cast<Robot::WaypointPy*>((*it).ptr())->getWaypointPtr();
                 getTrajectoryPtr()->addWaypoint(wp);
             }
         }
@@ -103,8 +104,7 @@ PyObject* TrajectoryPy::insertWaypoints(PyObject* args)
         Py::List list(o);
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Robot::WaypointPy::Type))) {
-                Robot::Waypoint& wp =
-                    *static_cast<Robot::WaypointPy*>((*it).ptr())->getWaypointPtr();
+                Robot::Waypoint& wp = *static_cast<Robot::WaypointPy*>((*it).ptr())->getWaypointPtr();
                 getTrajectoryPtr()->addWaypoint(wp);
             }
         }
@@ -157,8 +157,9 @@ Py::List TrajectoryPy::getWaypoints() const
 {
     Py::List list;
     for (unsigned int i = 0; i < getTrajectoryPtr()->getSize(); i++) {
-        list.append(Py::asObject(
-            new Robot::WaypointPy(new Robot::Waypoint(getTrajectoryPtr()->getWaypoint(i)))));
+        list.append(
+            Py::asObject(new Robot::WaypointPy(new Robot::Waypoint(getTrajectoryPtr()->getWaypoint(i))))
+        );
     }
 
     return list;

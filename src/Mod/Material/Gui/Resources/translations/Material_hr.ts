@@ -4,17 +4,17 @@
   <context>
     <name>CmdInspectAppearance</name>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="146"/>
       <source>Inspect Appearance</source>
-      <translation type="unfinished">Inspect Appearance</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="145"/>
-      <source>Inspects the appearance properties of the selected object</source>
-      <translation type="unfinished">Inspects the appearance properties of the selected object</translation>
+      <translation>Pregledaj Izgled</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="147"/>
+      <source>Inspects the appearance properties of the selected object</source>
+      <translation>Provjerite svojstva izgleda odabranog objekta</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="149"/>
       <source>Inspect the appearance properties of the selected object</source>
       <translation>Provjerite svojstva izgleda odabranog objekta</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdInspectMaterial</name>
     <message>
-      <location filename="../../Command.cpp" line="171"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Inspect Material</source>
-      <translation type="unfinished">Inspect Material</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="172"/>
-      <source>Inspects the material properties of the selected object</source>
-      <translation type="unfinished">Inspects the material properties of the selected object</translation>
+      <translation>Pregledaj Materijal</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
+      <source>Inspects the material properties of the selected object</source>
+      <translation>Provjerite svojstva materijala odabranog objekta</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
       <translation>Provjerite svojstva materijala odabranog objekta</translation>
     </message>
@@ -45,14 +45,14 @@
       <translation>2D Matrica</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="77"/>
+      <location filename="../../Array2D.cpp" line="79"/>
       <source>Delete Row</source>
       <translation>Izbriši redak</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="136"/>
+      <location filename="../../Array2D.cpp" line="138"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Kontekstni izbornik</translation>
     </message>
   </context>
   <context>
@@ -63,31 +63,31 @@
       <translation>3D Matrica</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="75"/>
-      <location filename="../../Array3D.cpp" line="79"/>
+      <location filename="../../Array3D.cpp" line="77"/>
+      <location filename="../../Array3D.cpp" line="81"/>
       <source>Delete Row</source>
       <translation>Izbriši redak</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="229"/>
-      <location filename="../../Array3D.cpp" line="300"/>
+      <location filename="../../Array3D.cpp" line="231"/>
+      <location filename="../../Array3D.cpp" line="302"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
-    </message>
-    <message>
-      <location filename="../../Array3D.cpp" line="261"/>
-      <location filename="../../Array3D.cpp" line="333"/>
-      <source>Confirm Delete</source>
-      <translation>Potvrdite Brisanje</translation>
+      <translation>Kontekstni izbornik</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="263"/>
       <location filename="../../Array3D.cpp" line="335"/>
-      <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <source>Confirm Delete</source>
+      <translation>Potvrdite Brisanje</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
+      <location filename="../../Array3D.cpp" line="337"/>
+      <source>Delete the row?</source>
+      <translation>Izbriši redak?</translation>
+    </message>
+    <message>
+      <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
       <translation>Uklanjanjem ovoga također će se ukloniti svi 2D sadržaji.</translation>
     </message>
@@ -95,12 +95,12 @@
   <context>
     <name>MatGui::ArrayDelegate</name>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="146"/>
+      <location filename="../../ArrayDelegate.cpp" line="148"/>
       <source>False</source>
       <translation>Netočno</translation>
     </message>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="147"/>
+      <location filename="../../ArrayDelegate.cpp" line="149"/>
       <source>True</source>
       <translation>Točno</translation>
     </message>
@@ -108,12 +108,12 @@
   <context>
     <name>MatGui::BaseDelegate</name>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="437"/>
+      <location filename="../../BaseDelegate.cpp" line="430"/>
       <source>False</source>
       <translation>Netočno</translation>
     </message>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="438"/>
+      <location filename="../../BaseDelegate.cpp" line="431"/>
       <source>True</source>
       <translation>Točno</translation>
     </message>
@@ -123,22 +123,22 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
       <source>Display Properties</source>
-      <translation type="unfinished">Display Properties</translation>
+      <translation>Prikaži svojstva</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
       <source>Viewing Mode</source>
-      <translation type="unfinished">Viewing Mode</translation>
+      <translation>Mod prikaza</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="55"/>
       <source>Document window</source>
-      <translation type="unfinished">Document window</translation>
+      <translation>Prozor dokumenta</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
       <source>Plot mode</source>
-      <translation type="unfinished">Plot mode</translation>
+      <translation>Mod ispisa</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
@@ -168,12 +168,12 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="365"/>
       <source>Color plot</source>
-      <translation type="unfinished">Color plot</translation>
+      <translation>Boja ispisa</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="372"/>
       <source>Custom appearance</source>
-      <translation type="unfinished">Custom appearance</translation>
+      <translation>Korisnički prilagođen izgled</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="382"/>
@@ -211,12 +211,12 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>Naziv dokumenta</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>Oznaka / Interni naziv</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
@@ -244,34 +244,64 @@
       <translation>Kartica 2</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="200"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="202"/>
       <source>Diffuse color</source>
       <translation>Difuzna boja</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="209"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="204"/>
+      <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
+      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="215"/>
       <source>Ambient color</source>
-      <translation type="unfinished">Ambient color</translation>
+      <translation>Boja okoline</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="218"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="217"/>
+      <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
+      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="228"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>Emisiona boja</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="227"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="230"/>
+      <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
+      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="241"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>Boja sjaja</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="236"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="243"/>
+      <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
+      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="254"/>
       <source>Shininess</source>
       <translation>Sjajnost</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="246"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="256"/>
+      <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
+      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="268"/>
       <source>Transparency</source>
       <translation>Prozirnost</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="269"/>
+      <source>Defines how much light passes through an object, making it partially or fully see-through</source>
+      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
     </message>
   </context>
   <context>
@@ -294,12 +324,12 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>Naziv dokumenta</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>Oznaka / Interni naziv</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
@@ -319,122 +349,122 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>Kopiraj u Međuspremnik</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="149"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="151"/>
       <source>Document: </source>
       <translation>Dokument: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="164"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="166"/>
       <source>Label: </source>
       <translation>Oznaka: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="170"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal name: </source>
-      <translation type="unfinished">Internal name: </translation>
+      <translation>Interno ime: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="188"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="329"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="190"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
       <source>Type: </source>
       <translation>Tip: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="190"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="192"/>
       <source>TypeID: </source>
       <translation>Tip-ID:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="219"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="231"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="250"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="290"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="312"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="221"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="233"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="252"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="292"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="314"/>
       <source>Name: </source>
       <translation>Naziv: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="244"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="283"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="307"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="358"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="246"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="285"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="309"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="360"/>
       <source>None</source>
       <translation>Prazno</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="264"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="339"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="266"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="341"/>
       <source>UUID: </source>
       <translation>UUID: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="267"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="342"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="269"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="344"/>
       <source>Library: </source>
       <translation>Biblioteka:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="271"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="344"/>
-      <source>Library directory: </source>
-      <translation type="unfinished">Library directory: </translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="274"/>
-      <source>Subdirectory: </source>
-      <translation type="unfinished">Subdirectory: </translation>
-    </message>
-    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
-      <source>Sub directory: </source>
-      <translation type="unfinished">Sub directory: </translation>
+      <source>Library directory: </source>
+      <translation>Direktorij biblioteke:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="363"/>
-      <source>Appearance models:</source>
-      <translation type="unfinished">Appearance models:</translation>
+      <location filename="../../DlgInspectMaterial.cpp" line="276"/>
+      <source>Subdirectory: </source>
+      <translation>Poddirektorij: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="369"/>
-      <source>Physical models:</source>
-      <translation type="unfinished">Physical models:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="375"/>
-      <source>Appearance properties:</source>
-      <translation type="unfinished">Appearance properties:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="381"/>
-      <source>Physical properties:</source>
-      <translation type="unfinished">Physical properties:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="277"/>
       <location filename="../../DlgInspectMaterial.cpp" line="348"/>
+      <source>Sub directory: </source>
+      <translation>Pod Direktorij: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="365"/>
+      <source>Appearance models:</source>
+      <translation>Modeli izgleda:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="371"/>
+      <source>Physical models:</source>
+      <translation>Fizički modeli:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="377"/>
+      <source>Appearance properties:</source>
+      <translation>Svojstva izgleda:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="383"/>
+      <source>Physical properties:</source>
+      <translation>Fizička svojstva:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="279"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="350"/>
       <source>Inherits:</source>
       <translation>Nasljeđuje:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="327"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Model UUID: </source>
       <translation>Model UUID: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Has value: </source>
       <translation>Ima vrijednost: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>No</source>
       <translation>Ne</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Yes</source>
       <translation>Da</translation>
     </message>
@@ -456,7 +486,7 @@
       <translation>Zadani materijal</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsDefaultMaterial.cpp" line="50"/>
+      <location filename="../../DlgSettingsDefaultMaterial.cpp" line="52"/>
       <source>Physical</source>
       <translation>Fizička</translation>
     </message>
@@ -486,47 +516,48 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="23"/>
       <source>Card Resources</source>
-      <translation type="unfinished">Card Resources</translation>
+      <translation>Resursi za kartice</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
       <source>The cards built-in to FreeCAD will be listed as available</source>
-      <translation type="unfinished">The cards built-in to FreeCAD will be listed as available</translation>
+      <translation>U FreeCAD ugrađene kartice  bit će navedene kao dostupne</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="50"/>
       <source>Use materials added by external workbenches</source>
-      <translation type="unfinished">Use materials added by external workbenches</translation>
+      <translation>Koristite materijale dodane od vanjskog Radnog prostora</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="69"/>
       <source>Cards from FreeCAD’s preferences directory are also listed as available</source>
-      <translation type="unfinished">Cards from FreeCAD’s preferences directory are also listed as available</translation>
+      <translation>Kartice iz FreeCAD direktorija postavki bit će navedene kao dostupne</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from the Materials preference directory</source>
-      <translation type="unfinished">Use materials from the Materials preference directory</translation>
+      <translation>Koristite materijale iz direktorija Postavke materijala</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Material cards from the specified directory will also be listed as available</source>
-      <translation type="unfinished">Material cards from the specified directory will also be listed as available</translation>
+      <translation>Kartice materijala iz navedenog direktorija 
+bit će navedene kao dostupne</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="91"/>
       <source>Use materials from user-defined directory</source>
-      <translation type="unfinished">Use materials from user-defined directory</translation>
+      <translation>Koristite materijale iz korisnički definiranog direktorija</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="154"/>
       <source>Card Sorting and Duplicates</source>
-      <translation type="unfinished">Card Sorting and Duplicates</translation>
+      <translation>Sortiranje kartica i duplikati</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="160"/>
       <source>Duplicate cards will be deleted from the displayed material card list</source>
-      <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list</translation>
+      <translation>Duplikati kartica će biti obrisani sa prikazane liste kartica materijala</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="163"/>
@@ -614,19 +645,25 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
       <translation>Širina</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="193"/>
+      <location filename="../../ImageEdit.cpp" line="195"/>
       <source>Select an image</source>
       <translation>Odaberite sliku</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="204"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>Slikovne datoteke (*.jpg *.jpeg *.png *.bmp);;All files (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
+      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="216"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>Datoteke slika (*.svg);;Sve datoteke (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>All files (*)</source>
+      <translation type="unfinished">All files (*)</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.cpp" line="222"/>
+      <source>Image files (*.svg)</source>
+      <translation type="unfinished">Image files (*.svg)</translation>
     </message>
   </context>
   <context>
@@ -645,12 +682,12 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
   <context>
     <name>MatGui::MaterialDelegate</name>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="473"/>
+      <location filename="../../MaterialDelegate.cpp" line="474"/>
       <source>False</source>
       <translation>Netočno</translation>
     </message>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="474"/>
+      <location filename="../../MaterialDelegate.cpp" line="475"/>
       <source>True</source>
       <translation>Točno</translation>
     </message>
@@ -665,7 +702,7 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../MaterialSave.ui" line="22"/>
       <source>Library</source>
-      <translation type="unfinished">Library</translation>
+      <translation>Biblioteka</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="70"/>
@@ -675,7 +712,7 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../MaterialSave.ui" line="104"/>
       <source>Save as inherited</source>
-      <translation type="unfinished">Save as inherited</translation>
+      <translation>Spremi kao naslijeđeno</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
@@ -683,88 +720,88 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
       <translation>Nova mapa</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="94"/>
+      <location filename="../../MaterialSave.cpp" line="96"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="194"/>
+      <location filename="../../MaterialSave.cpp" line="198"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Spremanje preko izvorne datoteke može uzrokovati oštećenje drugih dokumenata. Ovo se ne preporučuje.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="218"/>
+      <location filename="../../MaterialSave.cpp" line="222"/>
       <source>Save as new material</source>
       <translation>Spremi kao novi materijal</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="191"/>
+      <location filename="../../MaterialSave.cpp" line="195"/>
       <source>Save over &apos;%1&apos;?</source>
-      <translation type="unfinished">Save over &apos;%1&apos;?</translation>
+      <translation>Spremi preko &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="216"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>Confirm Save as New Material</source>
-      <translation type="unfinished">Confirm Save as New Material</translation>
+      <translation>Potvrdite Spremi kao novi materijal</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="221"/>
+      <location filename="../../MaterialSave.cpp" line="225"/>
       <source>This material already exists in this library. Save as a new material?</source>
-      <translation type="unfinished">This material already exists in this library. Save as a new material?</translation>
+      <translation>Ovaj materijal već postoji u ovoj biblioteci. Spremiti kao novi materijal?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="243"/>
+      <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Confirm Save as Copy</source>
-      <translation type="unfinished">Confirm Save as Copy</translation>
+      <translation>Potvrdite Spremi kao kopiju</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="245"/>
+      <location filename="../../MaterialSave.cpp" line="249"/>
       <source>Save as copy</source>
-      <translation type="unfinished">Save as copy</translation>
+      <translation>Spremi kao kopiju</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="248"/>
+      <location filename="../../MaterialSave.cpp" line="252"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
-      <translation type="unfinished">Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</translation>
+      <translation>Spremanje kopije se ne preporučuje jer može oštetiti druge dokumente. Preporučujemo da spremite kao novi materijal.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="251"/>
+      <location filename="../../MaterialSave.cpp" line="255"/>
       <source>Save Copy</source>
       <translation>Spremi kopiju</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="252"/>
+      <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save As New</source>
       <translation>Spremi kao Novi</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="484"/>
-      <location filename="../../MaterialSave.cpp" line="494"/>
+      <location filename="../../MaterialSave.cpp" line="488"/>
+      <location filename="../../MaterialSave.cpp" line="498"/>
       <source>New folder</source>
-      <translation type="unfinished">New folder</translation>
+      <translation>Nova mapa</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="534"/>
+      <location filename="../../MaterialSave.cpp" line="538"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Kontekstni izbornik</translation>
     </message>
   </context>
   <context>
     <name>MatGui::MaterialTreeWidget</name>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="138"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="139"/>
       <source>Launch Editor</source>
-      <translation type="unfinished">Launch Editor</translation>
+      <translation>Pokreni uređivač</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="311"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="532"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="312"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="533"/>
       <source>Favorites</source>
       <translation>Omiljeno</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="311"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="539"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="312"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="540"/>
       <source>Recent</source>
       <translation>Nedavno</translation>
     </message>
@@ -814,17 +851,17 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
       <source>Source reference</source>
-      <translation type="unfinished">Source reference</translation>
+      <translation>Referenca izvora</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>Dodaje ili uklanja u/iz favorita</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="205"/>
       <source>Toggle Favorite</source>
-      <translation type="unfinished">Toggle Favorite</translation>
+      <translation>Uključi/isključi favorite</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="164"/>
@@ -872,56 +909,56 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
       <translation>Izbriši model izgleda</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="482"/>
+      <location filename="../../MaterialsEditor.cpp" line="484"/>
       <source>Unnamed</source>
       <translation>Neimenovano</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="604"/>
+      <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>Old Format Material</source>
       <translation>Materijal starog formata</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="606"/>
+      <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
       <translation>Ova datoteka je u starom formatu kartice materijala.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="692"/>
+      <location filename="../../MaterialsEditor.cpp" line="694"/>
       <source>This card uses the old format and must be saved before use</source>
       <translation>Ova kartica koristi stari format i mora se spremiti prije upotrebe</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="752"/>
-      <location filename="../../MaterialsEditor.cpp" line="784"/>
+      <location filename="../../MaterialsEditor.cpp" line="754"/>
+      <location filename="../../MaterialsEditor.cpp" line="786"/>
       <location filename="../../MaterialsEditor.cpp" line="1086"/>
       <location filename="../../MaterialsEditor.cpp" line="1148"/>
       <source>Property</source>
       <translation>Svojstva</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="753"/>
-      <location filename="../../MaterialsEditor.cpp" line="785"/>
+      <location filename="../../MaterialsEditor.cpp" line="755"/>
+      <location filename="../../MaterialsEditor.cpp" line="787"/>
       <location filename="../../MaterialsEditor.cpp" line="1087"/>
       <location filename="../../MaterialsEditor.cpp" line="1149"/>
       <source>Value</source>
       <translation>Vrijednost</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="754"/>
-      <location filename="../../MaterialsEditor.cpp" line="786"/>
+      <location filename="../../MaterialsEditor.cpp" line="756"/>
+      <location filename="../../MaterialsEditor.cpp" line="788"/>
       <location filename="../../MaterialsEditor.cpp" line="1088"/>
       <location filename="../../MaterialsEditor.cpp" line="1150"/>
       <source>Type</source>
       <translation>Tip</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="877"/>
+      <location filename="../../MaterialsEditor.cpp" line="879"/>
       <source>Favorites</source>
       <translation>Favoriti</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="884"/>
+      <location filename="../../MaterialsEditor.cpp" line="886"/>
       <source>Recent</source>
       <translation>Nedavno</translation>
     </message>
@@ -933,17 +970,17 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1318"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Kontekstni izbornik</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1320"/>
       <source>Inherit From</source>
-      <translation type="unfinished">Inherit From</translation>
+      <translation>Naslijedi od</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1324"/>
       <source>Inherit New Material</source>
-      <translation type="unfinished">Inherit New Material</translation>
+      <translation>Naslijedi novi materijal</translation>
     </message>
   </context>
   <context>
@@ -960,13 +997,13 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="49"/>
-      <location filename="../../ModelSelect.cpp" line="363"/>
+      <location filename="../../ModelSelect.cpp" line="365"/>
       <source>URL</source>
       <translation>URL</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="56"/>
-      <location filename="../../ModelSelect.cpp" line="362"/>
+      <location filename="../../ModelSelect.cpp" line="364"/>
       <source>Description</source>
       <translation>Opis</translation>
     </message>
@@ -983,47 +1020,47 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>Dodaje ili uklanja u/iz favorita</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="162"/>
       <source>Toggle Favorites</source>
-      <translation type="unfinished">Toggle Favorites</translation>
+      <translation>Uključi/isključi favorite</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
-      <location filename="../../ModelSelect.cpp" line="441"/>
-      <location filename="../../ModelSelect.cpp" line="457"/>
+      <location filename="../../ModelSelect.cpp" line="443"/>
+      <location filename="../../ModelSelect.cpp" line="459"/>
       <source>Properties</source>
       <translation>Svojstva</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="335"/>
+      <location filename="../../ModelSelect.cpp" line="337"/>
       <source>Favorites</source>
       <translation>Favoriti</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="340"/>
+      <location filename="../../ModelSelect.cpp" line="342"/>
       <source>Recent</source>
       <translation>Nedavno</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="359"/>
+      <location filename="../../ModelSelect.cpp" line="361"/>
       <source>Inherited</source>
       <translation>Naslijeđeno</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="360"/>
+      <location filename="../../ModelSelect.cpp" line="362"/>
       <source>Property</source>
       <translation>Svojstva</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="361"/>
+      <location filename="../../ModelSelect.cpp" line="363"/>
       <source>Units</source>
       <translation>Mjerne jedinice</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="444"/>
+      <location filename="../../ModelSelect.cpp" line="446"/>
       <source>Appearance</source>
       <translation>Izgled</translation>
     </message>
@@ -1046,7 +1083,7 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
       <source>Material Card</source>
-      <translation type="unfinished">Material Card</translation>
+      <translation>Kartica materijala</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
@@ -1066,32 +1103,32 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Otvori...</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>Spremi kao...</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
       <source>Material Parameter</source>
-      <translation type="unfinished">Material Parameter</translation>
+      <translation>Parametar materijala</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add/Remove Parameter</source>
-      <translation type="unfinished">Add/Remove Parameter</translation>
+      <translation>Dodaj / Ukloni parametar</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>Dodaj svojstvo</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>
       <source>Delete Property</source>
-      <translation type="unfinished">Delete Property</translation>
+      <translation>Izbriši svojstvo</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
@@ -1102,7 +1139,7 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgMaterialImp.cpp" line="54"/>
+      <location filename="../../DlgMaterialImp.cpp" line="57"/>
       <source>Material</source>
       <translation>Materijal</translation>
     </message>
@@ -1110,42 +1147,42 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMatGui.cpp" line="106"/>
+      <location filename="../../AppMatGui.cpp" line="108"/>
       <source>Material Workbench</source>
-      <translation type="unfinished">Material Workbench</translation>
+      <translation>Radni prostor Materijal</translation>
     </message>
     <message>
-      <location filename="../../AppMatGui.cpp" line="108"/>
       <location filename="../../AppMatGui.cpp" line="110"/>
-      <location filename="../../AppMatGui.cpp" line="113"/>
+      <location filename="../../AppMatGui.cpp" line="112"/>
+      <location filename="../../AppMatGui.cpp" line="115"/>
       <source>Material</source>
       <translation>Materijal</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="188"/>
+      <location filename="../../MaterialSave.cpp" line="192"/>
       <source>Confirm Overwrite</source>
       <translation>Potvrda prekopisanja</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="378"/>
-      <location filename="../../MaterialSave.cpp" line="379"/>
+      <location filename="../../MaterialSave.cpp" line="382"/>
+      <location filename="../../MaterialSave.cpp" line="383"/>
       <source>No writeable library</source>
       <translation>Nema biblioteke za pisanje</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="566"/>
+      <location filename="../../MaterialSave.cpp" line="570"/>
       <source>Delete &apos;%1&apos;?</source>
-      <translation type="unfinished">Delete &apos;%1&apos;?</translation>
+      <translation>Izbriši &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="570"/>
+      <location filename="../../MaterialSave.cpp" line="574"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Uklanjanjem ovoga također će se ukloniti svi sadržaji.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="607"/>
+      <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>Save the material before using it.</source>
-      <translation type="unfinished">Save the material before using it.</translation>
+      <translation>Spremi Materijal prije korištenja.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1345"/>
@@ -1155,37 +1192,37 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1346"/>
       <source>Save changes to the material before closing?</source>
-      <translation type="unfinished">Save changes to the material before closing?</translation>
+      <translation>Spremiti promjene materijala prije zatvaranja?</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1347"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
+      <translation>U suprotnom, sve promjene će biti izgubljene.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="168"/>
-      <location filename="../../ListEdit.cpp" line="140"/>
-      <location filename="../../MaterialSave.cpp" line="563"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Potvrdite Brisanje</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>Izbriši redak?</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="88"/>
       <source>&amp;Appearance</source>
-      <translation type="unfinished">&amp;Appearance</translation>
+      <translation>&amp;Izgled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="87"/>
       <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="91"/>
       <source>Sets the display properties of the selected object</source>
       <translation>Postavlja svojstva prikaza odabranog objekta</translation>
     </message>
@@ -1193,13 +1230,13 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
   <context>
     <name>StdCmdSetMaterial</name>
     <message>
-      <location filename="../../Command.cpp" line="115"/>
+      <location filename="../../Command.cpp" line="117"/>
       <source>&amp;Material</source>
-      <translation type="unfinished">&amp;Material</translation>
+      <translation>&amp;Materijal</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="116"/>
       <location filename="../../Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="120"/>
       <source>Sets the material of the selected object</source>
       <translation>Postavlja materijal odabranog objekta</translation>
     </message>
@@ -1207,12 +1244,12 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Materials</source>
       <translation>&amp;Materijali</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Materials</source>
       <translation>Materijali</translation>
     </message>
@@ -1222,27 +1259,27 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="14"/>
       <source>Materials Migration</source>
-      <translation type="unfinished">Materials Migration</translation>
+      <translation>Migracija materijala</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="27"/>
       <source>Select material libraries to migrate. Existing materials will not be overwritten.</source>
-      <translation type="unfinished">Select material libraries to migrate. Existing materials will not be overwritten.</translation>
+      <translation>Odaberite biblioteke materijala za migraciju. Postojeći materijali neće biti prepisani.</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="20"/>
       <source>Select material libraries</source>
-      <translation type="unfinished">Select material libraries</translation>
+      <translation>Odaberite biblioteke materijala</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="34"/>
       <source>Select model libraries</source>
-      <translation type="unfinished">Select model libraries</translation>
+      <translation>Odaberite biblioteke modela</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="41"/>
       <source>Select model libraries to migrate. Existing models will not be overwritten.</source>
-      <translation type="unfinished">Select model libraries to migrate. Existing models will not be overwritten.</translation>
+      <translation>Odaberite biblioteke modela za migraciju. Postojeći modeli neće biti prepisani.</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="48"/>
@@ -1250,9 +1287,9 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
       <translation>Stanje</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="176"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="178"/>
       <source>&amp;Migrate</source>
-      <translation type="unfinished">&amp;Migrate</translation>
+      <translation>&amp;Migrirati</translation>
     </message>
   </context>
   <context>
@@ -1260,17 +1297,17 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="14"/>
       <source>External Interface</source>
-      <translation type="unfinished">External Interface</translation>
+      <translation>Vanjsko sučelje</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="20"/>
       <source>Use External Interface</source>
-      <translation type="unfinished">Use External Interface</translation>
+      <translation>Koristi vanjsko sučelje</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="29"/>
       <source>External interface</source>
-      <translation type="unfinished">External interface</translation>
+      <translation>Vanjsko sučelje</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="65"/>
@@ -1280,21 +1317,21 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="91"/>
       <source>Model cache size</source>
-      <translation type="unfinished">Model cache size</translation>
+      <translation>Model cache veličina</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
       <source>Hit rate</source>
-      <translation type="unfinished">Hit rate</translation>
+      <translation>Stopa pogodka</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
       <source>Material cache size</source>
-      <translation type="unfinished">Material cache size</translation>
+      <translation>Materijal cache veličina</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsExternal.cpp" line="93"/>
+      <location filename="../../DlgSettingsExternal.cpp" line="95"/>
       <source>None</source>
       <translation>Prazno</translation>
     </message>
@@ -1302,109 +1339,117 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
   <context>
     <name>MatGui::DlgMigrateExternal</name>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="73"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="75"/>
       <source>Migrating models…</source>
-      <translation type="unfinished">Migrating models…</translation>
+      <translation>Migrira modele…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="79"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="91"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="103"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="115"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="81"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="93"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="105"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="117"/>
       <source>  Library: </source>
-      <translation type="unfinished">  Library: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="83"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="95"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="107"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="119"/>
-      <source>done</source>
-      <translation type="unfinished">done</translation>
+      <translation>  Biblioteka: </translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="85"/>
-      <source>Validating models…</source>
-      <translation type="unfinished">Validating models…</translation>
-    </message>
-    <message>
       <location filename="../../TaskMigrateExternal.cpp" line="97"/>
-      <source>Migrating materials…</source>
-      <translation type="unfinished">Migrating materials…</translation>
-    </message>
-    <message>
       <location filename="../../TaskMigrateExternal.cpp" line="109"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="121"/>
+      <source>done</source>
+      <translation>gotovo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="87"/>
+      <source>Validating models…</source>
+      <translation>Validacija modela…</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="99"/>
+      <source>Migrating materials…</source>
+      <translation>Migrira materijale…</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="111"/>
       <source>Validating materials…</source>
-      <translation type="unfinished">Validating materials…</translation>
+      <translation>Validacija materijala…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="143"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="146"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="145"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="148"/>
       <source>Unknown exception - aborted</source>
-      <translation type="unfinished">Unknown exception - aborted</translation>
+      <translation>Nepoznata iznimka - prekinuto</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="123"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="127"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="131"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="135"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="139"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="125"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="129"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="133"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="137"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="141"/>
       <source>Aborted</source>
-      <translation type="unfinished">Aborted</translation>
+      <translation>Obustavljeno</translation>
     </message>
   </context>
   <context>
     <name>CmdMaterialEdit</name>
     <message>
-      <location filename="../../Command.cpp" line="51"/>
+      <location filename="../../Command.cpp" line="53"/>
       <source>Material</source>
       <translation>Materijal</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="52"/>
+      <location filename="../../Command.cpp" line="54"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="53"/>
+      <location filename="../../Command.cpp" line="55"/>
       <source>Edits material properties</source>
-      <translation type="unfinished">Edits material properties</translation>
+      <translation>Uredi postavke materijala</translation>
     </message>
   </context>
   <context>
     <name>CmdMigrateToExternal</name>
     <message>
-      <location filename="../../Command.cpp" line="200"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Migrate</source>
       <translation>Migrirati</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Migrates the materials to the external materials manager</source>
-      <translation type="unfinished">Migrates the materials to the external materials manager</translation>
+      <translation>Migrira materijale upravitelju vanjskih materijala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="205"/>
       <source>Migrate existing materials to the external materials manager</source>
-      <translation type="unfinished">Migrate existing materials to the external materials manager</translation>
+      <translation>Migriraj materijale upravitelju vanjskih materijala</translation>
     </message>
   </context>
   <context>
     <name>MatGui::DlgDisplayPropertiesImp</name>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="178"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="180"/>
       <source>Basic appearance</source>
-      <translation type="unfinished">Basic appearance</translation>
+      <translation>Osnovni izgled</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="183"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="185"/>
       <source>Texture appearance</source>
-      <translation type="unfinished">Texture appearance</translation>
+      <translation>Izgled teksture</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="188"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="190"/>
       <source>All materials</source>
-      <translation type="unfinished">All materials</translation>
+      <translation>Svi materiali</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../DlgMaterialImp.cpp" line="263"/>
+      <source>Set Material</source>
+      <translation type="unfinished">Set Material</translation>
     </message>
   </context>
 </TS>

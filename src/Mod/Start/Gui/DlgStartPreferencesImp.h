@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef STARTGUI_DLGSTARTPREFERENCESIMP_H
-#define STARTGUI_DLGSTARTPREFERENCESIMP_H
+#pragma once
 
 #include <memory>
 #include <Gui/PropertyPage.h>
@@ -48,5 +49,3 @@ private:
 };
 
 }  // namespace StartGui
-
-#endif  // STARTGUI_DLGSTARTPREFERENCESIMP_H

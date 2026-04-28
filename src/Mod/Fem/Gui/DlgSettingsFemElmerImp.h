@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_DLGSETTINGSFEMELMERIMP_H
-#define FEMGUI_DLGSETTINGSFEMELMERIMP_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -50,9 +49,6 @@ protected:
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemElmerImp> ui;
-    int processor_count;
 };
 
 }  // namespace FemGui
-
-#endif  // FEMGUI_DLGSETTINGSFEMELMERIMP_H

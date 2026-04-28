@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /************************************************************************
  *                                                                      *
  *   This file is part of the FreeCAD CAx development system.           *
@@ -19,8 +21,7 @@
  *                                                                      *
  ************************************************************************/
 
-#ifndef UNITSCHEMASPECS_H
-#define UNITSCHEMASPECS_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -66,4 +67,3 @@ struct UnitsSchemasDataPack
 
 
 }  // namespace Base
-#endif  // UNITSCHEMASPECS_H

@@ -76,7 +76,7 @@ class SCwriter:
                     )
 
     def handleStaticCurrentBndConditions(self):
-        for obj in self.write.getMember("Fem::ConstraintElectrostaticPotential"):
+        for obj in self.write.getMember("Fem::ConstraintElectromagnetic"):
             if obj.References:
                 for name in obj.References[0][1]:
                     # output the FreeCAD label as comment

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ACTIONFUNCTION_H
-#define GUI_ACTIONFUNCTION_H
+#pragma once
 
 #include <QObject>
 #include <QVariant>
@@ -61,7 +60,7 @@ class ActionFunctionPrivate;
 
   http://www.boost.org/doc/libs/1_57_0/libs/bind/bind.html#with_boost_function
 */
-class GuiExport ActionFunction : public QObject
+class GuiExport ActionFunction: public QObject
 {
     Q_OBJECT
 
@@ -90,7 +89,7 @@ private:
 
 class TimerFunctionPrivate;
 
-class GuiExport TimerFunction : public QObject
+class GuiExport TimerFunction: public QObject
 {
     Q_OBJECT
 
@@ -114,7 +113,4 @@ private:
     Q_DECLARE_PRIVATE(TimerFunction)
 };
 
-} //namespace Gui
-
-
-#endif // GUI_ACTIONFUNCTION_H
+}  // namespace Gui

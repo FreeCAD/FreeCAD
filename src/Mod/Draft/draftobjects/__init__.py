@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2020 Carlo Pavan <carlopav@gmail.com>                             *
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
@@ -53,6 +55,7 @@ as the older class.
 
     old_module.Rectangle = new_module.Rectangle
 """
+
 ## \defgroup draftobjects draftobjects
 # \ingroup DRAFT
 # \brief Modules that contain classes that define custom scripted objects.

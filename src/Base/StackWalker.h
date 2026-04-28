@@ -1,7 +1,8 @@
+// SPDX-License-Identifier: BSD-3-Clause
+
 // clang-format off
 // NOLINTBEGIN
-#ifndef __STACKWALKER_H__
-#define __STACKWALKER_H__
+#pragma once
 
 #if defined(_MSC_VER)
 
@@ -44,9 +45,7 @@
 #pragma once
 
 #include <Windows.h>
-#ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
-#endif
 
 // special defines for VC5/6 (if no actual PSDK is installed):
 #if _MSC_VER < 1300
@@ -259,21 +258,20 @@ protected:
     __asm    mov c.Esp, esp                                       \
   } while (0)
 // clang-format on
-#endif
+#  endif
 
-#else
+# else
 
 // The following is defined for x86 (XP and higher), x64 and IA64:
-#define GET_CURRENT_CONTEXT_STACKWALKER_CODEPLEX(c, contextFlags)                                  \
-    do {                                                                                           \
-        memset(&c, 0, sizeof(CONTEXT));                                                            \
-        c.ContextFlags = contextFlags;                                                             \
-        RtlCaptureContext(&c);                                                                     \
-    } while (0);
-#endif
+#  define GET_CURRENT_CONTEXT_STACKWALKER_CODEPLEX(c, contextFlags) \
+      do { \
+          memset(&c, 0, sizeof(CONTEXT)); \
+          c.ContextFlags = contextFlags; \
+          RtlCaptureContext(&c); \
+      } while (0);
+# endif
 
 #endif  // defined(_MSC_VER)
 
-#endif  // __STACKWALKER_H__
 // NOLINTEND
 // clang-format on

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef POINTSGUI_PRECOMPILED_H
-#define POINTSGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -51,5 +52,3 @@
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPointSet.h>
-
-#endif  // POINTSGUI_PRECOMPILED_H

@@ -1,9 +1,10 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Unit tests for the Path.Tool.Shape module and its document utilities.
 import unittest
 from unittest.mock import patch, MagicMock, call
 from Path.Tool.shape import doc
 import os
-
 
 mock_freecad = MagicMock(Name="FreeCAD_Mock")
 mock_freecad.Console = MagicMock()

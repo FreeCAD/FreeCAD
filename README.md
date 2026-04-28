@@ -10,7 +10,7 @@
 [Blog](https://blog.freecad.org)
 
 
-[![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad) [![Liberapay](https://img.shields.io/liberapay/receives/FreeCAD.svg?logo=liberapay)](https://liberapay.com/FreeCAD)
+[![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)
 
 <img src="/.github/images/partdesign.png" width="800"/>
 
@@ -56,14 +56,8 @@ Other options are described on the [wiki Download page](https://wiki.freecad.org
 Compiling
 ---------
 
-FreeCAD requires several dependencies to correctly compile for development and
-production builds. The following pages contain updated build instructions for
-their respective platforms:
-
-- [Linux](https://wiki.freecad.org/Compile_on_Linux)
-- [Windows](https://wiki.freecad.org/Compile_on_Windows)
-- [macOS](https://wiki.freecad.org/Compile_on_MacOS)
-- [MinGW](https://wiki.freecad.org/Compile_on_MinGW)
+See the [Developers Handbook – Getting Started](https://freecad.github.io/DevelopersHandbook/gettingstarted/)
+for build instructions.
 
 
 Reporting Issues

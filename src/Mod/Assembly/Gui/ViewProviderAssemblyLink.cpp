@@ -34,6 +34,7 @@
 #include <App/DocumentObject.h>
 #include <App/Part.h>
 
+#include <Gui/Action.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -74,8 +75,7 @@ bool ViewProviderAssemblyLink::setEdit(int mode)
     auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
 
     if (!assemblyLink->isRigid() && mode == (int)ViewProvider::Transform) {
-        Base::Console().userTranslatedNotification(
-            "Flexible sub-assemblies cannot be transformed.");
+        Base::Console().userTranslatedNotification("Flexible sub-assemblies cannot be transformed.");
         return true;
     }
 
@@ -85,16 +85,45 @@ bool ViewProviderAssemblyLink::setEdit(int mode)
 bool ViewProviderAssemblyLink::doubleClicked()
 {
     auto* link = freecad_cast<AssemblyLink*>(getObject());
-
     if (!link) {
         return true;
     }
     auto* assembly = link->getLinkedAssembly();
+    if (!assembly) {
+        return true;
+    }
 
-    auto* vpa =
-        freecad_cast<ViewProviderAssembly*>(Gui::Application::Instance->getViewProvider(assembly));
+    auto* vpa = freecad_cast<ViewProviderAssembly*>(
+        Gui::Application::Instance->getViewProvider(assembly)
+    );
     if (!vpa) {
         return true;
+    }
+
+    auto doc = assembly->getDocument();
+    auto guiDoc = vpa->getDocument();
+    if (!doc || !guiDoc) {
+        return true;
+    }
+
+    Gui::MDIView* mdi = guiDoc->getActiveView();
+
+    // Ensure the linked assembly document is fully loaded and has a view
+    if (doc->testStatus(App::Document::PartialDoc) || !mdi) {
+        Gui::Application::Instance->reopen(doc);
+
+        // reopening invalidates the pointer.
+        auto* assembly = link->getLinkedAssembly();
+        if (!assembly) {
+            return true;
+        }
+
+        vpa = freecad_cast<ViewProviderAssembly*>(
+            Gui::Application::Instance->getViewProvider(assembly)
+        );
+        if (!vpa) {
+            return true;
+        }
     }
 
     return vpa->doubleClicked();
@@ -104,10 +133,12 @@ bool ViewProviderAssemblyLink::onDelete(const std::vector<std::string>& subNames
 {
     Q_UNUSED(subNames)
 
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()",
-                            getObject()->getDocument()->getName(),
-                            getObject()->getNameInDocument());
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()",
+        getObject()->getDocument()->getName(),
+        getObject()->getNameInDocument()
+    );
 
     // getObject()->purgeTouched();
 
@@ -121,25 +152,38 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
     auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
     if (assemblyLink->isRigid()) {
         act = menu->addAction(QObject::tr("Turn flexible"));
-        act->setToolTip(QObject::tr(
-            "Your sub-assembly is currently rigid. This will make it flexible instead."));
+        act->setToolTip(
+            QObject::tr("Your sub-assembly is currently rigid. This will make it flexible instead.")
+        );
     }
     else {
         act = menu->addAction(QObject::tr("Turn rigid"));
-        act->setToolTip(QObject::tr(
-            "Your sub-assembly is currently flexible. This will make it rigid instead."));
+        act->setToolTip(
+            QObject::tr("Your sub-assembly is currently flexible. This will make it rigid instead.")
+        );
     }
 
     func->trigger(act, [this]() {
         auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Toggle Rigid"));
-        Gui::cmdAppObjectArgs(assemblyLink,
-                              "Rigid = %s",
-                              assemblyLink->Rigid.getValue() ? "False" : "True");
+        getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle Rigid"));
+        Gui::cmdAppObjectArgs(
+            assemblyLink,
+            "Rigid = %s",
+            assemblyLink->Rigid.getValue() ? "False" : "True"
+        );
 
-        Gui::Command::commitCommand();
+        getDocument()->commitCommand();
         Gui::Selection().clearSelection();
     });
+
+    Gui::CommandManager& mgr = Gui::Application::Instance->commandManager();
+    Gui::Command* cmd = mgr.getCommandByName("Assembly_LinkSelectLinked");
+    if (cmd) {
+        QAction* action = cmd->getAction()->action();
+        if (action) {
+            menu->addAction(action);
+        }
+    }
 
     Q_UNUSED(receiver)
     Q_UNUSED(member)

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -64,27 +66,31 @@ bool PoissonWidget::accept()
         QString document = QString::fromStdString(d->obj.getDocumentPython());
         QString object = QString::fromStdString(d->obj.getObjectPython());
 
-        QString argument = QStringLiteral("Points=%1.Points, "
-                                          "OctreeDepth=%2, "
-                                          "SolverDivide=%3, "
-                                          "SamplesPerNode=%4")
+        QString argument = QStringLiteral(
+                               "Points=%1.Points, "
+                               "OctreeDepth=%2, "
+                               "SolverDivide=%3, "
+                               "SamplesPerNode=%4"
+        )
                                .arg(object)
                                .arg(d->ui.octreeDepth->value())
                                .arg(d->ui.solverDivide->value())
                                .arg(d->ui.samplesPerNode->value());
-        QString command = QStringLiteral("%1.addObject(\"Mesh::Feature\", \"Poisson\").Mesh = "
-                                         "ReverseEngineering.poissonReconstruction(%2)")
+        QString command = QStringLiteral(
+                              "%1.addObject(\"Mesh::Feature\", \"Poisson\").Mesh = "
+                              "ReverseEngineering.poissonReconstruction(%2)"
+        )
                               .arg(document, argument);
 
         Gui::WaitCursor wc;
         Gui::Command::addModule(Gui::Command::App, "ReverseEngineering");
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Poisson reconstruction"));
+        d->obj.getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Poisson reconstruction"));
         Gui::Command::runCommand(Gui::Command::Doc, command.toLatin1());
-        Gui::Command::commitCommand();
+        d->obj.getDocument()->commitTransaction();
         Gui::Command::updateActive();
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        d->obj.getDocument()->abortTransaction();
         QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }

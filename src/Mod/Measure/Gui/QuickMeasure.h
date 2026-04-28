@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Pierre-Louis Boyer <development@Ondsel.com>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MEASUREGUI_QUICKMEASURE_H
-#define MEASUREGUI_QUICKMEASURE_H
+#pragma once
 
 #include <QObject>
 
@@ -67,5 +68,3 @@ private:
 };
 
 }  // namespace MeasureGui
-
-#endif  // MEASUREGUI_QUICKMEASURE_H

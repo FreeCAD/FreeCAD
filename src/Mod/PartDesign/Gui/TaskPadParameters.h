@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -20,31 +22,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskPadParameters_H
-#define GUI_TASKVIEW_TaskPadParameters_H
+#pragma once
 
 #include "TaskExtrudeParameters.h"
 #include "ViewProviderPad.h"
 
 class QComboBox;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 
-class TaskPadParameters : public TaskExtrudeParameters
+class TaskPadParameters: public TaskExtrudeParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = nullptr, bool newObj=false);
+    explicit TaskPadParameters(ViewProviderPad* PadView, QWidget* parent = nullptr, bool newObj = false);
     ~TaskPadParameters() override;
 
     void apply() override;
@@ -56,12 +60,12 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPadParameters : public TaskDlgExtrudeParameters
+class TaskDlgPadParameters: public TaskDlgExtrudeParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
+    explicit TaskDlgPadParameters(ViewProviderPad* PadView, bool newObj = false);
 
 protected:
     TaskExtrudeParameters* getTaskParameters() override
@@ -73,6 +77,4 @@ private:
     TaskPadParameters* parameters;
 };
 
-} //namespace PartDesignGui
-
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+}  // namespace PartDesignGui

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,34 +23,32 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderScaled_H
-#define PARTGUI_ViewProviderScaled_H
+#pragma once
 
 #include "ViewProviderTransformed.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderScaled : public ViewProviderTransformed
+class PartDesignGuiExport ViewProviderScaled: public ViewProviderTransformed
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderScaled)
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderScaled);
+
 public:
-    ViewProviderScaled() {
+    ViewProviderScaled()
+    {
         menuName = tr("Scale Parameters");
         sPixmap = "PartDesign_Scaled.svg";
     }
 
-    const std::string & featureName() const override;
+    const std::string& featureName() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
-    TaskDlgFeatureParameters *getEditDialog() override;
-
+    TaskDlgFeatureParameters* getEditDialog() override;
 };
 
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderScaled_H
+}  // namespace PartDesignGui

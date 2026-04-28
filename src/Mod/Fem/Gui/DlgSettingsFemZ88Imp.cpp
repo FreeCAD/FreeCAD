@@ -39,10 +39,12 @@ DlgSettingsFemZ88Imp::DlgSettingsFemZ88Imp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->fc_z88_binary_path,
-            &Gui::PrefFileChooser::fileNameSelected,
-            this,
-            &DlgSettingsFemZ88Imp::onfileNameSelected);
+    connect(
+        ui->fc_z88_binary_path,
+        &Gui::PrefFileChooser::fileNameSelected,
+        this,
+        &DlgSettingsFemZ88Imp::onfileNameSelected
+    );
 }
 
 DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp() = default;
@@ -50,37 +52,19 @@ DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp() = default;
 void DlgSettingsFemZ88Imp::saveSettings()
 {
     ui->fc_z88_binary_path->onSave();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
-    hGrp->SetInt("Solver", ui->cmb_solver->currentIndex());
     ui->cmb_solver->onSave();
-    hGrp->SetInt("MaxGS", ui->sb_Z88_MaxGS->value());
     ui->sb_Z88_MaxGS->onSave();
-    hGrp->SetInt("MaxKOI", ui->sb_Z88_MaxKOI->value());
     ui->sb_Z88_MaxKOI->onSave();
 }
 
 void DlgSettingsFemZ88Imp::loadSettings()
 {
     ui->fc_z88_binary_path->onRestore();
-    ui->cmb_solver->onRestore();
     ui->sb_Z88_MaxGS->onRestore();
+    ui->sb_Z88_MaxKOI->onRestore();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
-    int index = hGrp->GetInt("Solver", 0);
-    if (index > -1) {
-        ui->cmb_solver->setCurrentIndex(index);
-    }
-    int places = hGrp->GetInt("MaxGS", 100000000);
-    if (places > -1) {
-        ui->sb_Z88_MaxGS->setValue(places);
-    }
-    places = hGrp->GetInt("MaxKOI", 2800000);
-    if (places > -1) {
-        ui->sb_Z88_MaxKOI->setValue(places);
-    }
+    populateSolverType();
+    ui->cmb_solver->onRestore();
 }
 
 /**
@@ -94,6 +78,26 @@ void DlgSettingsFemZ88Imp::changeEvent(QEvent* e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void DlgSettingsFemZ88Imp::populateSolverType()
+{
+    std::list<std::pair<std::string, std::string>> mapValues = {
+        {QT_TR_NOOP("Succesive over-relaxation (SOR)"), "sorcg"},
+        {QT_TR_NOOP("Shifted incomplete Cholesky (SIC)"), "siccg"},
+        {QT_TR_NOOP("Simple Cholesky"), "choly"},
+    };
+
+    ui->cmb_solver->clear();
+    for (const auto& val : mapValues) {
+        ui->cmb_solver->addItem(tr(val.first.c_str()), QByteArray::fromStdString(val.second));
+    }
+
+    // set default index
+    auto hGrp = ui->cmb_solver->getWindowParameter();
+    std::string current = hGrp->GetASCII(ui->cmb_solver->entryName(), "sorcg");
+    int index = ui->cmb_solver->findData(QByteArray::fromStdString(current));
+    ui->cmb_solver->setCurrentIndex(index);
 }
 
 void DlgSettingsFemZ88Imp::onfileNameSelected(const QString& fileName)

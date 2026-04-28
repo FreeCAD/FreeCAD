@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 EXECUTE_PROCESS(COMMAND ${Python3_EXECUTABLE} -c
     "from sysconfig import get_path; print(get_path('purelib'))"
     OUTPUT_VARIABLE python_libs OUTPUT_STRIP_TRAILING_WHITESPACE )

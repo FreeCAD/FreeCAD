@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from typing import Final, overload
 from Part.Curve2d import Curve2d
@@ -71,7 +75,7 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def increaseDegree(self, Degree: int) -> None:
+    def increaseDegree(self, Degree: int, /) -> None:
         """
         increaseDegree(Int=Degree)
 
@@ -83,13 +87,9 @@ class BSplineCurve2d(Curve2d):
         ...
 
     @overload
-    def increaseMultiplicity(self, index: int, mult: int) -> None:
-        ...
-
+    def increaseMultiplicity(self, index: int, mult: int, /) -> None: ...
     @overload
-    def increaseMultiplicity(self, start: int, end: int, mult: int) -> None:
-        ...
-
+    def increaseMultiplicity(self, start: int, end: int, mult: int, /) -> None: ...
     def increaseMultiplicity(self, *args, **kwargs) -> None:
         """
         increaseMultiplicity(int index, int mult)
@@ -103,7 +103,7 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def incrementMultiplicity(self, start: int, end: int, mult: int) -> None:
+    def incrementMultiplicity(self, start: int, end: int, mult: int, /) -> None:
         """
         incrementMultiplicity(int start, int end, int mult)
         Raises multiplicity of knots by mult.
@@ -112,7 +112,7 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def insertKnot(self, u: float, mult: int = 1, tol: float = 0.0) -> None:
+    def insertKnot(self, u: float, mult: int = 1, tol: float = 0.0, /) -> None:
         """
         insertKnot(u, mult = 1, tol = 0.0)
 
@@ -120,7 +120,14 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def insertKnots(self, list_of_floats: list[float], list_of_ints: list[int], tol: float = 0.0, bool_add: bool = True) -> None:
+    def insertKnots(
+        self,
+        list_of_floats: list[float],
+        list_of_ints: list[int],
+        tol: float = 0.0,
+        bool_add: bool = True,
+        /,
+    ) -> None:
         """
         insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
 
@@ -140,7 +147,7 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def removeKnot(self, Index: int, M: int, tol: float) -> None:
+    def removeKnot(self, Index: int, M: int, tol: float, /) -> None:
         """
         removeKnot(Index, M, tol)
 
@@ -159,26 +166,26 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def segment(self, u1: float, u2: float) -> None:
+    def segment(self, u1: float, u2: float, /) -> None:
         """
         segment(u1,u2)
         Modifies this B-Spline curve by segmenting it.
         """
         ...
 
-    def setKnot(self, value: float) -> None:
+    def setKnot(self, value: float, /) -> None:
         """
         Set a knot of the B-Spline curve.
         """
         ...
 
-    def getKnot(self, index: int) -> float:
+    def getKnot(self, index: int, /) -> float:
         """
         Get a knot of the B-Spline curve.
         """
         ...
 
-    def setKnots(self, knots: list[float]) -> None:
+    def setKnots(self, knots: list[float], /) -> None:
         """
         Set knots of the B-Spline curve.
         """
@@ -190,13 +197,13 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def setPole(self, P: Vector, Index: int) -> None:
+    def setPole(self, P: Vector, Index: int, /) -> None:
         """
         Modifies this B-Spline curve by assigning P to the pole of index Index in the poles table.
         """
         ...
 
-    def getPole(self, Index: int) -> Vector:
+    def getPole(self, Index: int, /) -> Vector:
         """
         Get a pole of the B-Spline curve.
         """
@@ -208,13 +215,13 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def setWeight(self, weight: float, Index: int) -> None:
+    def setWeight(self, weight: float, Index: int, /) -> None:
         """
         Set a weight of the B-Spline curve.
         """
         ...
 
-    def getWeight(self, Index: int) -> float:
+    def getWeight(self, Index: int, /) -> float:
         """
         Get a weight of the B-Spline curve.
         """
@@ -242,7 +249,7 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def movePoint(self, U: float, P: Vector, Index1: int, Index2: int) -> tuple[int, int]:
+    def movePoint(self, U: float, P: Vector, Index1: int, Index2: int, /) -> tuple[int, int]:
         """
         movePoint(U, P, Index1, Index2)
 
@@ -268,14 +275,14 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def setOrigin(self, Index: int) -> None:
+    def setOrigin(self, Index: int, /) -> None:
         """
         Assigns the knot of index Index in the knots table as the origin of this periodic B-Spline curve.
         As a consequence, the knots and poles tables are modified.
         """
         ...
 
-    def getMultiplicity(self, index: int) -> int:
+    def getMultiplicity(self, index: int, /) -> int:
         """
         Returns the multiplicity of the knot of index from the knots table of this B-Spline curve.
         """
@@ -361,20 +368,32 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def buildFromPoles(self, poles: list[Vector]) -> None:
+    def buildFromPoles(self, poles: list[Vector], /) -> None:
         """
         Builds a B-Spline by a list of poles.
         """
         ...
 
     @overload
-    def buildFromPolesMultsKnots(self, poles: list[Vector], mults: tuple[int, ...], knots: tuple[float, ...], periodic: bool, degree: int) -> None:
-        ...
-
+    def buildFromPolesMultsKnots(
+        self,
+        poles: list[Vector],
+        mults: tuple[int, ...],
+        knots: tuple[float, ...],
+        periodic: bool,
+        degree: int,
+    ) -> None: ...
     @overload
-    def buildFromPolesMultsKnots(self, poles: list[Vector], mults: tuple[int, ...], knots: tuple[float, ...], periodic: bool, degree: int, weights: tuple[float, ...], CheckRational: bool) -> None:
-        ...
-
+    def buildFromPolesMultsKnots(
+        self,
+        poles: list[Vector],
+        mults: tuple[int, ...],
+        knots: tuple[float, ...],
+        periodic: bool,
+        degree: int,
+        weights: tuple[float, ...],
+        CheckRational: bool,
+    ) -> None: ...
     def buildFromPolesMultsKnots(self, **kwargs) -> None:
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
@@ -410,20 +429,20 @@ class BSplineCurve2d(Curve2d):
         """
         ...
 
-    def toBiArcs(self, tolerance: float) -> list:
+    def toBiArcs(self, tolerance: float, /) -> list:
         """
         toBiArcs(tolerance) -> list.
         Build a list of arcs and lines to approximate the B-spline.
         """
         ...
 
-    def join(self, other: "BSplineCurve2d") -> "BSplineCurve2d":
+    def join(self, other: "BSplineCurve2d", /) -> "BSplineCurve2d":
         """
         Build a new spline by joining this and a second spline.
         """
         ...
 
-    def makeC1Continuous(self, tol: float = 1e-6, ang_tol: float = 1e-7) -> "BSplineCurve2d":
+    def makeC1Continuous(self, tol: float = 1e-6, ang_tol: float = 1e-7, /) -> "BSplineCurve2d":
         """
         makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)
 

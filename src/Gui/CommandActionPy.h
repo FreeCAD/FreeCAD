@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_COMMANDACTIONPY_H
-#define GUI_COMMANDACTIONPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 
@@ -31,7 +30,7 @@ namespace Gui
 {
 class Command;
 
-class CommandActionPy : public Py::PythonClass<CommandActionPy>
+class CommandActionPy: public Py::PythonClass<CommandActionPy>
 {
 public:
     static void init_type();
@@ -55,6 +54,4 @@ private:
     Command* cmd = nullptr;
 };
 
-} // namespace Gui
-
-#endif // GUI_COMMANDACTIONPY_H
+}  // namespace Gui

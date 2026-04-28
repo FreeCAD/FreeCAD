@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -41,8 +43,7 @@ void TestJtReader::read(void)
 {
     // const std::vector<TOC_Entry>& toc = readToc();
 
-    for (std::vector<TOC_Entry>::const_iterator i = TocEntries.begin(); i != TocEntries.end();
-         ++i) {
+    for (std::vector<TOC_Entry>::const_iterator i = TocEntries.begin(); i != TocEntries.end(); ++i) {
         int segType = i->getSegmentType();
 
         if (segType == 7) {

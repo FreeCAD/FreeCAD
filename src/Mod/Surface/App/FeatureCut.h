@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATURECUT_H
-#define SURFACE_FEATURECUT_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -50,5 +51,3 @@ public:
 };
 
 }  // Namespace Surface
-
-#endif

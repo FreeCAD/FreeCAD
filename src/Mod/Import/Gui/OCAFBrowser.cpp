@@ -109,8 +109,8 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
 
     Handle(TDataStd_Name) name;
     if (label.FindAttribute(TDataStd_Name::GetID(), name)) {
-        QString text =
-            QStringLiteral("%1 %2").arg(str, QString::fromUtf8(toString(name->Get()).c_str()));
+        QString text
+            = QStringLiteral("%1 %2").arg(str, QString::fromUtf8(toString(name->Get()).c_str()));
         item->setText(0, text);
     }
 

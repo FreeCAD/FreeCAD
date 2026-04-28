@@ -115,7 +115,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         pref = Preferences.preferences()
 
         if bomObj:
-            App.setActiveTransaction("Edit Bill Of Materials")
+            Gui.ActiveDocument.openCommand("Edit Bill Of Materials")
 
             for name in bomObj.columnsNames:
                 if name in ColumnNames:
@@ -125,23 +125,21 @@ class TaskAssemblyCreateBom(QtCore.QObject):
                 self.addColItem(name)
 
             self.bomObj = bomObj
-            self.form.CheckBox_onlyParts.setChecked(bomObj.onlyParts)
-            self.form.CheckBox_detailParts.setChecked(bomObj.detailParts)
-            self.form.CheckBox_detailSubAssemblies.setChecked(bomObj.detailSubAssemblies)
-
         else:
-            App.setActiveTransaction("Create Bill Of Materials")
+            Gui.ActiveDocument.openCommand("Create Bill Of Materials")
 
             # Add the columns
             for name in TranslatedColumnNames:
                 self.addColItem(name)
 
             self.createBomObject()
-            self.form.CheckBox_onlyParts.setChecked(pref.GetBool("BOMOnlyParts", False))
-            self.form.CheckBox_detailParts.setChecked(pref.GetBool("BOMDetailParts", True))
-            self.form.CheckBox_detailSubAssemblies.setChecked(
-                pref.GetBool("BOMDetailSubAssemblies", True)
-            )
+            self.bomObj.onlyParts = pref.GetBool("BOMOnlyParts", False)
+            self.bomObj.detailParts = pref.GetBool("BOMDetailParts", True)
+            self.bomObj.detailSubAssemblies = pref.GetBool("BOMDetailSubAssemblies", True)
+
+        self.form.CheckBox_onlyParts.setChecked(self.bomObj.onlyParts)
+        self.form.CheckBox_detailParts.setChecked(self.bomObj.detailParts)
+        self.form.CheckBox_detailSubAssemblies.setChecked(self.bomObj.detailSubAssemblies)
 
         self.form.columnList.model().rowsMoved.connect(self.onItemsReordered)
         self.form.columnList.itemChanged.connect(self.itemUpdated)
@@ -154,7 +152,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
     def accept(self):
         self.deactivate()
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
 
         self.bomObj.recompute()
 
@@ -164,7 +162,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
     def reject(self):
         self.deactivate()
-        App.closeActiveTransaction(True)
+        Gui.ActiveDocument.abortCommand()
         return True
 
     def deactivate(self):
@@ -227,7 +225,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         noneAdded = True
         for name in TranslatedColumnNames:
             if name not in current_columns:
-                action = QtWidgets.QAction(f"Add '{name}' column", self)
+                action = QtGui.QAction(f"Add '{name}' column", self)
                 action.triggered.connect(partial(self.addColItem, name))
                 menu.addAction(action)
                 noneAdded = False
@@ -237,7 +235,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             return
 
         # Add the action for adding a custom column
-        action = QtWidgets.QAction("Add custom column", self)
+        action = QtGui.QAction("Add custom column", self)
         action.triggered.connect(self.addColumn)
         menu.addAction(action)
 
@@ -359,6 +357,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         help_dialog.setWindowFlags(QtCore.Qt.Popup)
         help_dialog.setWindowModality(QtCore.Qt.NonModal)
         help_dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        help_dialog.setFixedWidth(500)
 
         layout = QtWidgets.QVBoxLayout()
         layout.setContentsMargins(10, 10, 10, 10)
@@ -415,9 +414,14 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             + "\n"
         )
 
-        options_text.setWordWrap(True)
-        columns_text.setWordWrap(True)
-        export_text.setWordWrap(True)
+        layout_width = (
+            help_dialog.contentsRect().width()
+            - layout.contentsMargins().left()
+            - layout.contentsMargins().right()
+        )
+        for label in (options_text, columns_text, export_text):
+            label.setWordWrap(True)
+            label.setFixedWidth(layout_width)
 
         layout.addWidget(options_title)
         layout.addWidget(options_text)
@@ -427,7 +431,6 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         layout.addWidget(export_text)
 
         help_dialog.setLayout(layout)
-        help_dialog.setFixedWidth(500)
 
         help_dialog.show()
 

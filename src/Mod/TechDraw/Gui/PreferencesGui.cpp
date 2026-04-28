@@ -172,6 +172,11 @@ double PreferencesGui::edgeFuzz()
     return Preferences::getPreferenceGroup("General")->GetFloat("EdgeFuzz", 10.0);
 }
 
+double PreferencesGui::markFuzz()
+{
+    return Preferences::getPreferenceGroup("General")->GetFloat("MarkFuzz", 5.0);
+}
+
 QString PreferencesGui::weldingDirectory()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols/Welding/AWS/";
@@ -302,5 +307,12 @@ int PreferencesGui::get3dMarkerSize()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
                                 ("User parameter:BaseApp/Preferences/View");
     return hGrp->GetInt("MarkerSize", 9L);
+}
+
+
+ViewFrameMode PreferencesGui::getViewFrameMode()
+{
+    int temp = Preferences::getPreferenceGroup("View")->GetInt("ViewFrameMode", 0);
+    return static_cast<ViewFrameMode>(temp);
 }
 

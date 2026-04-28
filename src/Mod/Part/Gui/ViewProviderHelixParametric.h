@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,18 +23,18 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
+#pragma once
 
 #include "ViewProviderSpline.h"
 #include "ViewProviderPrimitive.h"
 
 #include <Mod/Part/PartGlobal.h>
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderHelixParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderHelixParametric: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderHelixParametric);
 
@@ -48,7 +50,7 @@ private:
     ViewProviderSplineExtension extension;
 };
 
-class PartGuiExport ViewProviderSpiralParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderSpiralParametric: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSpiralParametric);
 
@@ -64,8 +66,4 @@ private:
     ViewProviderSplineExtension extension;
 };
 
-} // namespace PartGui
-
-
-#endif // PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
-
+}  // namespace PartGui

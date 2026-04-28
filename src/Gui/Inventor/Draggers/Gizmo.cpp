@@ -24,6 +24,7 @@
 #include "Gizmo.h"
 
 #include <cmath>
+#include <QApplication>
 
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
@@ -52,21 +53,82 @@
 
 using namespace Gui;
 
+namespace
+{
+enum class DefaultDragBehavior
+{
+    Coarse = 0,
+    Fine = 1,
+};
+
+Base::Reference<ParameterGrp> getGizmoParameterGroup()
+{
+    static Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup(
+        "BaseApp/Preferences/Gui/Gizmos"
+    );
+
+    return hGrp;
+}
+
+Qt::KeyboardModifiers getFineSnapModifier()
+{
+    auto modifier = static_cast<Qt::KeyboardModifier>(
+        getGizmoParameterGroup()->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
+    );
+    if (modifier == Qt::ControlModifier) {
+        return modifier;
+    }
+    return Qt::ShiftModifier;
+}
+
+bool isCoarseSnapEnabled()
+{
+    return getGizmoParameterGroup()->GetBool("EnableCoarseSnap", true);
+}
+
+int getCoarseLinearSnapMultiplier()
+{
+    int multiplier = static_cast<int>(
+        getGizmoParameterGroup()->GetInt("CoarseLinearSnapMultiplier", 5)
+    );
+    return std::max(1, multiplier);
+}
+
+int getCoarseRotationSnapMultiplier()
+{
+    int multiplier = static_cast<int>(
+        getGizmoParameterGroup()->GetInt("CoarseRotationSnapMultiplier", 5)
+    );
+    return std::max(1, multiplier);
+}
+
+DefaultDragBehavior getDefaultDragBehavior()
+{
+    int behavior = getGizmoParameterGroup()->GetInt(
+        "DefaultCoarseDragBehavior",
+        static_cast<int>(DefaultDragBehavior::Coarse)
+    );
+    return static_cast<DefaultDragBehavior>(behavior);
+}
+
+double snapToStep(double value, double step)
+{
+    if (step <= 0.0) {
+        return value;
+    }
+
+    return std::round(value / step) * step;
+}
+}  // namespace
+
 void Gizmo::setDraggerPlacement(const Base::Vector3d& pos, const Base::Vector3d& dir)
 {
-    setDraggerPlacement(
-        Base::convertTo<SbVec3f>(pos),
-        Base::convertTo<SbVec3f>(dir)
-    );
+    setDraggerPlacement(Base::convertTo<SbVec3f>(pos), Base::convertTo<SbVec3f>(dir));
 }
 
 bool Gizmo::isDelayedUpdateEnabled()
 {
-    static Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-        .GetUserParameter()
-        .GetGroup("BaseApp/Preferences/Mod/PartDesign");
-
-    return hGrp->GetBool("DelayedGizmoUpdate", false);
+    return getGizmoParameterGroup()->GetBool("DelayedGizmoUpdate", false);
 }
 
 double Gizmo::getMultFactor()
@@ -79,7 +141,8 @@ double Gizmo::getAddFactor()
     return addFactor;
 }
 
-bool Gizmo::getVisibility() {
+bool Gizmo::getVisibility()
+{
     return visible;
 }
 
@@ -95,21 +158,15 @@ SoInteractionKit* LinearGizmo::initDragger()
     dragger = draggerContainer->getDragger();
 
     dragger->addStartCallback(
-        [] (void* data, SoDragger*) {
-            static_cast<LinearGizmo*>(data)->draggingStarted();
-        },
+        [](void* data, SoDragger*) { static_cast<LinearGizmo*>(data)->draggingStarted(); },
         this
     );
     dragger->addFinishCallback(
-        [] (void* data, SoDragger*) {
-            static_cast<LinearGizmo*>(data)->draggingFinished();
-        },
+        [](void* data, SoDragger*) { static_cast<LinearGizmo*>(data)->draggingFinished(); },
         this
     );
     dragger->addMotionCallback(
-        [] (void* data, SoDragger*) {
-            static_cast<LinearGizmo*>(data)->draggingContinued();
-        },
+        [](void* data, SoDragger*) { static_cast<LinearGizmo*>(data)->draggingContinued(); },
         this
     );
 
@@ -145,7 +202,9 @@ void LinearGizmo::updateColorTheme()
     dragger->activeColor = activeColor.asValue<SbColor>();
 
     auto baseGeom = SO_GET_PART(dragger, "baseGeom", SoArrowBase);
-    Base::Color baseGeomColor = styleParameterManager->resolve(StyleParameters::DimensionVisualizerColor);
+    Base::Color baseGeomColor = styleParameterManager->resolve(
+        StyleParameters::DimensionVisualizerColor
+    );
     baseGeom->color = baseGeomColor.asValue<SbColor>();
 }
 
@@ -162,7 +221,8 @@ void LinearGizmo::setDraggerPlacement(const SbVec3f& pos, const SbVec3f& dir)
     draggerContainer->setPointerDirection(dir);
 }
 
-void LinearGizmo::reverseDir() {
+void LinearGizmo::reverseDir()
+{
     auto dir = getDraggerContainer()->getPointerDirection();
     getDraggerContainer()->setPointerDirection(dir * -1);
 }
@@ -184,7 +244,9 @@ void LinearGizmo::setDragLength(double dragLength)
 void LinearGizmo::setGeometryScale(float scale)
 {
     dragger->geometryScale = SbVec3f(scale, scale, scale);
-    dragger->translationIncrement = std::pow(10.0f, std::floor(std::log10(scale)));
+    // Scales the dragger increment in exponents of 10 based on the zoom level (scale)
+    constexpr float base = 10.0F;
+    dragger->translationIncrement = multFactor * std::pow(base, std::floor(std::log10(scale)));
 }
 
 SoLinearDraggerContainer* LinearGizmo::getDraggerContainer()
@@ -200,19 +262,16 @@ void LinearGizmo::setProperty(QuantitySpinBox* property)
 
     this->property = property;
     quantityChangedConnection = QuantitySpinBox::connect(
-        property, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-        [this] (double value) {
-            setDragLength(value);
-        }
+        property,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        [this](double value) { setDragLength(value); }
     );
-    formulaDialogConnection = QuantitySpinBox::connect(
-        property, &Gui::QuantitySpinBox::showFormulaDialog,
-        [this] (bool) {
-            // This will set the visibility of the actual geometry to true or false
-            // based on if an expression is bound and the externally set visibility
-            setVisibility(visible);
-        }
-    );
+    formulaDialogConnection
+        = QuantitySpinBox::connect(property, &Gui::QuantitySpinBox::showFormulaDialog, [this](bool) {
+              // This will set the visibility of the actual geometry to true or false
+              // based on if an expression is bound and the externally set visibility
+              setVisibility(visible);
+          });
 
     // Updates the gizmo state based on the new property
     setDragLength(property->rawValue());
@@ -261,6 +320,18 @@ void LinearGizmo::draggingFinished()
 void LinearGizmo::draggingContinued()
 {
     double value = initialValue + getDragLength();
+
+    auto fineModifier = getFineSnapModifier();
+    auto modifiers = QApplication::queryKeyboardModifiers();
+    bool fineModifierPressed = (modifiers & fineModifier) == fineModifier;
+    bool coarseByDefault = getDefaultDragBehavior() == DefaultDragBehavior::Coarse;
+    bool useCoarseSnap = coarseByDefault != fineModifierPressed;
+
+    if (isCoarseSnapEnabled() && useCoarseSnap) {
+        double baseStep = std::abs(dragger->translationIncrement.getValue() / multFactor);
+        value = snapToStep(value, baseStep * getCoarseLinearSnapMultiplier());
+    }
+
     // TODO: Need to change the lower limit to sudoThis->property->minimum() once the
     // two direction extrude work gets merged
     value = std::clamp(value, dragger->translationIncrement.getValue(), property->maximum());
@@ -289,7 +360,7 @@ SoInteractionKit* RotationGizmo::initDragger()
 
     draggerContainer->color.setValue(1, 0, 0);
     dragger = draggerContainer->getDragger();
-    dragger->rotationIncrement = std::numbers::pi / 90.0;
+    dragger->rotationIncrement = std::numbers::pi / 180.0;
 
     auto rotator = new SoRotatorGeometry;
     rotator->arcAngle = std::numbers::pi_v<float> / 6.0f;
@@ -297,21 +368,15 @@ SoInteractionKit* RotationGizmo::initDragger()
     dragger->setPart("rotator", rotator);
 
     dragger->addStartCallback(
-        [] (void* data, SoDragger*) {
-            static_cast<RotationGizmo*>(data)->draggingStarted();
-        },
+        [](void* data, SoDragger*) { static_cast<RotationGizmo*>(data)->draggingStarted(); },
         this
     );
     dragger->addFinishCallback(
-        [] (void* data, SoDragger*) {
-            static_cast<RotationGizmo*>(data)->draggingFinished();
-        },
+        [](void* data, SoDragger*) { static_cast<RotationGizmo*>(data)->draggingFinished(); },
         this
     );
     dragger->addMotionCallback(
-        [] (void* data, SoDragger*) {
-            static_cast<RotationGizmo*>(data)->draggingContinued();
-        },
+        [](void* data, SoDragger*) { static_cast<RotationGizmo*>(data)->draggingContinued(); },
         this
     );
 
@@ -355,7 +420,8 @@ void RotationGizmo::setDraggerPlacement(const SbVec3f& pos, const SbVec3f& dir)
     draggerContainer->setPointerDirection(dir);
 }
 
-void RotationGizmo::reverseDir() {
+void RotationGizmo::reverseDir()
+{
     auto dir = getDraggerContainer()->getPointerDirection();
     getDraggerContainer()->setPointerDirection(dir * -1);
 }
@@ -459,8 +525,21 @@ void RotationGizmo::draggingFinished()
 void RotationGizmo::draggingContinued()
 {
     double value = initialValue + getRotAngle();
+
+    auto fineModifier = getFineSnapModifier();
+    auto modifiers = QApplication::queryKeyboardModifiers();
+    bool fineModifierPressed = (modifiers & fineModifier) == fineModifier;
+    bool coarseByDefault = getDefaultDragBehavior() == DefaultDragBehavior::Coarse;
+    bool useCoarseSnap = coarseByDefault != fineModifierPressed;
+
+    if (isCoarseSnapEnabled() && useCoarseSnap) {
+        value = snapToStep(value, getCoarseRotationSnapMultiplier());
+    }
+
     value = Base::clampAngle(
-        value, property->minimum(), property->maximum(),
+        value,
+        property->minimum(),
+        property->maximum(),
         Base::Precision::Confusion()
     );
 
@@ -470,17 +549,17 @@ void RotationGizmo::draggingContinued()
 
 void RotationGizmo::orientAlongCamera(SoCamera* camera)
 {
-    if (linearGizmo == nullptr || automaticOrientation == false) {
+    if (!automaticOrientation) {
         return;
     }
 
-    SbVec3f cameraDir{0, 0, 1};
+    SbVec3f cameraDir {0, 0, 1};
     camera->orientation.getValue().multVec(cameraDir, cameraDir);
-    SbVec3f pointerDir = linearGizmo->getDraggerContainer()->getPointerDirection();
+    SbVec3f pointerDir = getDraggerContainer()->getPointerDirection();
 
     pointerDir.normalize();
     auto proj = cameraDir - cameraDir.dot(pointerDir) * pointerDir;
-    if (proj.equals(SbVec3f{0, 0, 0}, 0.001)) {
+    if (proj.equals(SbVec3f {0, 0, 0}, 0.001)) {
         return;
     }
 
@@ -495,19 +574,16 @@ void RotationGizmo::setProperty(QuantitySpinBox* property)
 
     this->property = property;
     quantityChangedConnection = QuantitySpinBox::connect(
-        property, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-        [this] (double value) {
-            setRotAngle(value);
-        }
+        property,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        [this](double value) { setRotAngle(value); }
     );
-    formulaDialogConnection = QuantitySpinBox::connect(
-        property, &Gui::QuantitySpinBox::showFormulaDialog,
-        [this] (bool) {
-            // This will set the visibility of the actual geometry to true or false
-            // based on if an expression is bound and the externally set visibility
-            setVisibility(visible);
-        }
-    );
+    formulaDialogConnection
+        = QuantitySpinBox::connect(property, &Gui::QuantitySpinBox::showFormulaDialog, [this](bool) {
+              // This will set the visibility of the actual geometry to true or false
+              // based on if an expression is bound and the externally set visibility
+              setVisibility(visible);
+          });
 
     // Updates the gizmo state based on the new property
     setRotAngle(property->rawValue());
@@ -532,7 +608,8 @@ void RotationGizmo::setVisibility(bool visible)
     getDraggerContainer()->visible = visible && !property->hasExpression();
 }
 
-DirectedRotationGizmo::DirectedRotationGizmo(QuantitySpinBox* property): RotationGizmo(property)
+DirectedRotationGizmo::DirectedRotationGizmo(QuantitySpinBox* property)
+    : RotationGizmo(property)
 {}
 
 SoInteractionKit* DirectedRotationGizmo::initDragger()
@@ -560,7 +637,8 @@ void DirectedRotationGizmo::flipArrow()
 }
 
 
-RadialGizmo::RadialGizmo(QuantitySpinBox* property): RotationGizmo(property)
+RadialGizmo::RadialGizmo(QuantitySpinBox* property)
+    : RotationGizmo(property)
 {}
 
 SoInteractionKit* RadialGizmo::initDragger()
@@ -608,7 +686,9 @@ void RadialGizmo::updateColorTheme()
     dragger->activeColor = activeColor.asValue<SbColor>();
 
     auto baseGeom = SO_GET_PART(dragger, "baseGeom", SoRotatorBase);
-    Base::Color baseGeomColor = styleParameterManager->resolve(StyleParameters::DimensionVisualizerColor);
+    Base::Color baseGeomColor = styleParameterManager->resolve(
+        StyleParameters::DimensionVisualizerColor
+    );
     baseGeom->color = baseGeomColor.asValue<SbColor>();
 }
 
@@ -619,7 +699,8 @@ void GizmoContainer::initClass()
     SO_KIT_INIT_CLASS(GizmoContainer, SoBaseKit, "BaseKit");
 }
 
-GizmoContainer::GizmoContainer(): viewProvider(nullptr)
+GizmoContainer::GizmoContainer()
+    : viewProvider(nullptr)
 {
     SO_KIT_CONSTRUCTOR(GizmoContainer);
 
@@ -669,14 +750,14 @@ GizmoContainer::~GizmoContainer()
 void GizmoContainer::initGizmos()
 {
     auto geometry = SO_GET_ANY_PART(this, "geometry", SoSeparator);
-    for (auto gizmo: gizmos) {
+    for (auto gizmo : gizmos) {
         geometry->addChild(gizmo->initDragger());
     }
 }
 
 void GizmoContainer::uninitGizmos()
 {
-    for (auto gizmo: gizmos) {
+    for (auto gizmo : gizmos) {
         gizmo->uninitDragger();
         delete gizmo;
     }
@@ -687,7 +768,7 @@ void GizmoContainer::addGizmos(std::initializer_list<Gui::Gizmo*> gizmos)
 {
     assert(this->gizmos.size() == 0 && "Already called GizmoContainer::addGizmos?");
 
-    for (auto gizmo: gizmos) {
+    for (auto gizmo : gizmos) {
         addGizmo(gizmo);
     }
     initGizmos();
@@ -699,7 +780,7 @@ void GizmoContainer::addGizmo(Gizmo* gizmo)
     gizmos.push_back(gizmo);
 }
 
-void GizmoContainer::attachViewer(Gui::View3DInventorViewer* viewer, Base::Placement &origin)
+void GizmoContainer::attachViewer(Gui::View3DInventorViewer* viewer, Base::Placement& origin)
 {
     if (!viewer) {
         return;
@@ -721,7 +802,6 @@ void GizmoContainer::setUpAutoScale(SoCamera* cameraIn)
         cameraSensor.attach(&localCamera->height);
         cameraPositionSensor.attach(&localCamera->orientation);
         calculateScaleAndOrientation();
-
     }
     else if (cameraIn->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
         auto localCamera = dynamic_cast<SoPerspectiveCamera*>(cameraIn);
@@ -751,7 +831,7 @@ void GizmoContainer::cameraChangeCallback(void* data, SoSensor*)
     auto camera = static_cast<SoCamera*>(field->getContainer());
 
     SbViewVolume viewVolume = camera->getViewVolume();
-    for (auto gizmo: sudoThis->gizmos) {
+    for (auto gizmo : sudoThis->gizmos) {
         float localScale = viewVolume.getWorldToScreenScale(gizmo->getDraggerPlacement().pos, 0.015);
         gizmo->setGeometryScale(localScale);
     }
@@ -765,7 +845,7 @@ void GizmoContainer::cameraPositionChangeCallback(void* data, SoSensor*)
     if (field) {
         auto camera = static_cast<SoCamera*>(field->getContainer());
 
-        for (auto gizmo: sudoThis->gizmos) {
+        for (auto gizmo : sudoThis->gizmos) {
             gizmo->orientAlongCamera(camera);
         }
     }
@@ -773,9 +853,7 @@ void GizmoContainer::cameraPositionChangeCallback(void* data, SoSensor*)
 
 bool GizmoContainer::isEnabled()
 {
-    static Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-        .GetUserParameter()
-        .GetGroup("BaseApp/Preferences/Mod/PartDesign");
+    static auto hGrp = getGizmoParameterGroup();
 
     return hGrp->GetBool("EnableGizmos", true);
 }

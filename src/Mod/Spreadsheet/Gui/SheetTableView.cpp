@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,7 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
 #include <limits>
+#include <string>
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
@@ -29,6 +33,7 @@
 #include <QMessageBox>
 #include <QMimeData>
 
+#include <QTextDocument>
 #include <QTextTableCell>
 
 #include <App/Application.h>
@@ -45,7 +50,6 @@
 
 #include "DlgBindSheet.h"
 #include "DlgSheetConf.h"
-#include "LineEdit.h"
 #include "PropertiesDialog.h"
 #include "SheetTableView.h"
 
@@ -53,6 +57,31 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
+
+/// Gathers adjacent columns/rows into ranges. Returns the ranges in descending order.
+static std::vector<std::pair<int, int>> selectionRanges(
+    const QModelIndexList& selection,
+    Qt::Orientation orientation
+)
+{
+    std::vector<int> values;
+    for (const auto& index : selection) {
+        values.emplace_back(orientation == Qt::Horizontal ? index.column() : index.row());
+    }
+    std::ranges::sort(values, std::greater<>());
+
+    std::vector<std::pair<int, int>> ranges;
+    for (int value : values) {
+        if (ranges.empty() || value < ranges.back().first - 1) {
+            ranges.emplace_back(value, value);
+        }
+        else {
+            ranges.back().first = value;
+        }
+    }
+
+    return ranges;
+}
 
 void SheetViewHeader::mouseMoveEvent(QMouseEvent* e)
 {
@@ -93,30 +122,6 @@ bool SheetViewHeader::viewportEvent(QEvent* e)
     return QHeaderView::viewportEvent(e);
 }
 
-static std::pair<int, int> selectedMinMaxRows(QModelIndexList list)
-{
-    int min = std::numeric_limits<int>::max();
-    int max = 0;
-    for (const auto& item : list) {
-        int row = item.row();
-        min = std::min(row, min);
-        max = std::max(row, max);
-    }
-    return {min, max};
-}
-
-static std::pair<int, int> selectedMinMaxColumns(QModelIndexList list)
-{
-    int min = std::numeric_limits<int>::max();
-    int max = 0;
-    for (const auto& item : list) {
-        int column = item.column();
-        min = std::min(column, min);
-        max = std::max(column, max);
-    }
-    return {min, max};
-}
-
 SheetTableView::SheetTableView(QWidget* parent)
     : QTableView(parent)
     , sheet(nullptr)
@@ -130,26 +135,19 @@ SheetTableView::SheetTableView(QWidget* parent)
     connect(verticalHeader(), &QWidget::customContextMenuRequested, [this](const QPoint& point) {
         Q_UNUSED(point)
         QMenu menu {nullptr};
-        const auto selection = selectionModel()->selectedRows();
-        const auto& [min, max] = selectedMinMaxRows(selection);
-        if (bool isContiguous = max - min == selection.size() - 1) {
-            Q_UNUSED(isContiguous)
-            /*: This is shown in the context menu for the vertical header in a spreadsheet.
-                The number refers to how many lines are selected and will be inserted. */
-            auto insertBefore = menu.addAction(tr("Insert %n Row(s) Above", "", selection.size()));
-            connect(insertBefore, &QAction::triggered, this, &SheetTableView::insertRows);
-
-            if (max < model()->rowCount() - 1) {
-                auto insertAfter =
-                    menu.addAction(tr("Insert %n Row(s) Below", "", selection.size()));
-                connect(insertAfter, &QAction::triggered, this, &SheetTableView::insertRowsAfter);
-            }
+        const auto& selection = selectionModel()->selectedRows();
+        const auto& ranges = selectionRanges(selection, Qt::Vertical);
+        if (ranges.size() <= 1) {
+            auto insertBefore = menu.addAction(tr("Insert %n Rows Above", "", selection.size()));
+            connect(insertBefore, &QAction::triggered, [this] { insertRows(false); });
+            auto insertAfter = menu.addAction(tr("Insert %n Rows Below", "", selection.size()));
+            connect(insertAfter, &QAction::triggered, [this] { insertRows(true); });
         }
         else {
             auto insert = menu.addAction(tr("Insert %n Non-Contiguous Rows", "", selection.size()));
-            connect(insert, &QAction::triggered, this, &SheetTableView::insertRows);
+            connect(insert, &QAction::triggered, [this] { insertRows(false); });
         }
-        auto remove = menu.addAction(tr("Remove Rows", "", selection.size()));
+        auto remove = menu.addAction(tr("Remove Rows", ""));
         connect(remove, &QAction::triggered, this, &SheetTableView::removeRows);
         menu.exec(QCursor::pos());
     });
@@ -157,30 +155,19 @@ SheetTableView::SheetTableView(QWidget* parent)
     connect(horizontalHeader(), &QWidget::customContextMenuRequested, [this](const QPoint& point) {
         Q_UNUSED(point)
         QMenu menu {nullptr};
-        const auto selection = selectionModel()->selectedColumns();
-        const auto& [min, max] = selectedMinMaxColumns(selection);
-        if (bool isContiguous = max - min == selection.size() - 1) {
-            Q_UNUSED(isContiguous)
-            /*: This is shown in the context menu for the horizontal header in a spreadsheet.
-                The number refers to how many lines are selected and will be inserted. */
-            auto insertAbove = menu.addAction(tr("Insert %n Column(s) Left", "", selection.size()));
-            connect(insertAbove, &QAction::triggered, this, &SheetTableView::insertColumns);
-
-            if (max < model()->columnCount() - 1) {
-                auto insertAfter =
-                    menu.addAction(tr("Insert %n Column(s) Right", "", selection.size()));
-                connect(insertAfter,
-                        &QAction::triggered,
-                        this,
-                        &SheetTableView::insertColumnsAfter);
-            }
+        const auto& selection = selectionModel()->selectedColumns();
+        const auto& ranges = selectionRanges(selection, Qt::Horizontal);
+        if (ranges.size() <= 1) {
+            auto insertAbove = menu.addAction(tr("Insert %n Columns Left", "", selection.size()));
+            connect(insertAbove, &QAction::triggered, [this] { insertColumns(false); });
+            auto insertAfter = menu.addAction(tr("Insert %n Columns Right", "", selection.size()));
+            connect(insertAfter, &QAction::triggered, [this] { insertColumns(true); });
         }
         else {
-            auto insert =
-                menu.addAction(tr("Insert %n Non-Contiguous Columns", "", selection.size()));
-            connect(insert, &QAction::triggered, this, &SheetTableView::insertColumns);
+            auto insert = menu.addAction(tr("Insert %n Non-Contiguous Columns", "", selection.size()));
+            connect(insert, &QAction::triggered, [this] { insertColumns(false); });
         }
-        auto remove = menu.addAction(tr("Remove Column(s)", "", selection.size()));
+        auto remove = menu.addAction(tr("Remove Columns", ""));
         connect(remove, &QAction::triggered, this, &SheetTableView::removeColumns);
         menu.exec(QCursor::pos());
     });
@@ -193,26 +180,28 @@ SheetTableView::SheetTableView(QWidget* parent)
         return act;
     };
 
-    actionProperties = createAction("", tr("Properties…"), &SheetTableView::cellProperties);
+    actionProperties = createAction("", tr("Properties"), &SheetTableView::cellProperties);
     contextMenu.addSeparator();
-    actionRecompute =
-        createAction(":/icons/view-refresh.svg", tr("Recompute"), &SheetTableView::onRecompute);
+    actionRecompute
+        = createAction(":/icons/view-refresh.svg", tr("Recompute"), &SheetTableView::onRecompute);
     actionBind = createAction("", tr("Bind…"), &SheetTableView::onBind);
-    actionConf = createAction("", tr("Configuration Table…"), &SheetTableView::onConfSetup);
+    actionConf = createAction("", tr("Configuration Table"), &SheetTableView::onConfSetup);
     contextMenu.addSeparator();
-    actionMerge = createAction(":/icons/SpreadsheetMergeCells.svg",
-                               tr("Merge Cells"),
-                               &SheetTableView::mergeCells);
-    actionSplit = createAction(":/icons/SpreadsheetSplitCell.svg",
-                               tr("Split Cell"),
-                               &SheetTableView::splitCell);
+    actionMerge = createAction(
+        ":/icons/SpreadsheetMergeCells.svg",
+        tr("Merge Cells"),
+        &SheetTableView::mergeCells
+    );
+    actionSplit = createAction(
+        ":/icons/SpreadsheetSplitCell.svg",
+        tr("Split Cell"),
+        &SheetTableView::splitCell
+    );
     contextMenu.addSeparator();
     actionCut = createAction(":/icons/edit-cut.svg", tr("Cut"), &SheetTableView::cutSelection);
     actionCopy = createAction(":/icons/edit-copy.svg", tr("Copy"), &SheetTableView::copySelection);
-    actionPaste =
-        createAction(":/icons/edit-paste.svg", tr("Paste"), &SheetTableView::pasteClipboard);
-    actionDel =
-        createAction(":/icons/edit-delete.svg", tr("Delete"), &SheetTableView::deleteSelection);
+    actionPaste = createAction(":/icons/edit-paste.svg", tr("Paste"), &SheetTableView::pasteClipboard);
+    actionDel = createAction(":/icons/edit-delete.svg", tr("Delete"), &SheetTableView::deleteSelection);
 
     addAction(actionProperties);
 
@@ -232,14 +221,16 @@ SheetTableView::SheetTableView(QWidget* parent)
 
 void SheetTableView::onRecompute()
 {
-    Gui::Command::openCommand("Recompute Cells");
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Recompute Cells"));
     for (auto& range : selectedRanges()) {
-        Gui::cmdAppObjectArgs(sheet,
-                              "recomputeCells('%s', '%s')",
-                              range.fromCellString(),
-                              range.toCellString());
+        Gui::cmdAppObjectArgs(
+            sheet,
+            "recomputeCells('%s', '%s')",
+            range.fromCellString(),
+            range.toCellString()
+        );
     }
-    Gui::Command::commitCommand();
+    sheet->getDocument()->commitTransaction();
 }
 
 void SheetTableView::onBind()
@@ -310,8 +301,10 @@ std::vector<Range> SheetTableView::selectedRanges() const
                     }
                     continue;
                 }
-                else if (last.rowCount() == 1 && last.from().row() == sel.top()
-                         && last.to().col() + 1 == sel.left()) {
+                else if (
+                    last.rowCount() == 1 && last.from().row() == sel.top()
+                    && last.to().col() + 1 == sel.left()
+                ) {
                     // This is the case of single row selection
                     last = Range(last.from(), CellAddress(sel.top(), sel.left()));
                     continue;
@@ -328,156 +321,57 @@ QModelIndexList SheetTableView::selectedIndexesRaw() const
     return selectedIndexes();
 }
 
-void SheetTableView::insertRows()
+void SheetTableView::insertRows(bool after)
 {
-    assert(sheet);
-
-    QModelIndexList rows = selectionModel()->selectedRows();
-    std::vector<int> sortedRows;
-
-    /* Make sure rows are sorted in ascending order */
-    for (const auto& it : rows) {
-        sortedRows.push_back(it.row());
-    }
-    std::sort(sortedRows.begin(), sortedRows.end());
-
-    /* Insert rows */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Rows"));
-    std::vector<int>::const_reverse_iterator it = sortedRows.rbegin();
-    while (it != sortedRows.rend()) {
-        int prev = *it;
-        int count = 1;
-
-        /* Collect neighbouring rows into one chunk */
-        ++it;
-        while (it != sortedRows.rend()) {
-            if (*it == prev - 1) {
-                prev = *it;
-                ++count;
-                ++it;
-            }
-            else {
-                break;
-            }
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Insert Rows"));
+    for (const auto& [begin, end] : selectionRanges(selectionModel()->selectedRows(), Qt::Vertical)) {
+        if (!model()->insertRows(after ? end + 1 : begin, end - begin + 1)) {
+            sheet->getDocument()->abortTransaction();
+            return;
         }
-
-        Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(prev).c_str(), count);
     }
-    Gui::Command::commitCommand();
+    sheet->getDocument()->commitTransaction();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
-void SheetTableView::insertRowsAfter()
+void SheetTableView::insertColumns(bool after)
 {
-    assert(sheet);
-    const auto rows = selectionModel()->selectedRows();
-    const auto& [min, max] = selectedMinMaxRows(rows);
-    assert(max - min == rows.size() - 1);
-    Q_UNUSED(min)
-
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Rows"));
-    Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(max + 1).c_str(), rows.size());
-    Gui::Command::commitCommand();
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Insert Columns"));
+    for (const auto& [begin, end] :
+         selectionRanges(selectionModel()->selectedColumns(), Qt::Horizontal)) {
+        if (!model()->insertColumns(after ? end + 1 : begin, end - begin + 1)) {
+            sheet->getDocument()->abortTransaction();
+            return;
+        }
+    }
+    sheet->getDocument()->commitTransaction();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
 void SheetTableView::removeRows()
 {
-    assert(sheet);
-
-    QModelIndexList rows = selectionModel()->selectedRows();
-    std::vector<int> sortedRows;
-
-    /* Make sure rows are sorted in descending order */
-    for (const auto& it : rows) {
-        sortedRows.push_back(it.row());
-    }
-    std::sort(sortedRows.begin(), sortedRows.end(), std::greater<>());
-
-    /* Remove rows */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove Rows"));
-    for (const auto& it : sortedRows) {
-        Gui::cmdAppObjectArgs(sheet, "removeRows('%s', %d)", rowName(it).c_str(), 1);
-    }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-}
-
-void SheetTableView::insertColumns()
-{
-    assert(sheet);
-
-    QModelIndexList cols = selectionModel()->selectedColumns();
-    std::vector<int> sortedColumns;
-
-    /* Make sure rows are sorted in ascending order */
-    for (const auto& it : cols) {
-        sortedColumns.push_back(it.column());
-    }
-    std::sort(sortedColumns.begin(), sortedColumns.end());
-
-    /* Insert columns */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Columns"));
-    std::vector<int>::const_reverse_iterator it = sortedColumns.rbegin();
-    while (it != sortedColumns.rend()) {
-        int prev = *it;
-        int count = 1;
-
-        /* Collect neighbouring columns into one chunk */
-        ++it;
-        while (it != sortedColumns.rend()) {
-            if (*it == prev - 1) {
-                prev = *it;
-                ++count;
-                ++it;
-            }
-            else {
-                break;
-            }
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Remove Rows"));
+    for (const auto& [begin, end] : selectionRanges(selectionModel()->selectedRows(), Qt::Vertical)) {
+        if (!model()->removeRows(begin, end - begin + 1)) {
+            sheet->getDocument()->abortTransaction();
+            return;
         }
-
-        Gui::cmdAppObjectArgs(sheet, "insertColumns('%s', %d)", columnName(prev).c_str(), count);
     }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-}
-
-void SheetTableView::insertColumnsAfter()
-{
-    assert(sheet);
-    const auto columns = selectionModel()->selectedColumns();
-    const auto& [min, max] = selectedMinMaxColumns(columns);
-    assert(max - min == columns.size() - 1);
-    Q_UNUSED(min)
-
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Columns"));
-    Gui::cmdAppObjectArgs(sheet,
-                          "insertColumns('%s', %d)",
-                          columnName(max + 1).c_str(),
-                          columns.size());
-    Gui::Command::commitCommand();
+    sheet->getDocument()->commitTransaction();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
 void SheetTableView::removeColumns()
 {
-    assert(sheet);
-
-    QModelIndexList cols = selectionModel()->selectedColumns();
-    std::vector<int> sortedColumns;
-
-    /* Make sure rows are sorted in descending order */
-    for (const auto& it : cols) {
-        sortedColumns.push_back(it.column());
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Remove Columns"));
+    for (const auto& [begin, end] :
+         selectionRanges(selectionModel()->selectedColumns(), Qt::Horizontal)) {
+        if (!model()->removeColumns(begin, end - begin + 1)) {
+            sheet->getDocument()->abortTransaction();
+            return;
+        }
     }
-    std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<>());
-
-    /* Remove columns */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove Rows"));
-    for (const auto& it : sortedColumns) {
-        Gui::cmdAppObjectArgs(sheet, "removeColumns('%s', %d)", columnName(it).c_str(), 1);
-    }
-    Gui::Command::commitCommand();
+    sheet->getDocument()->commitTransaction();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
@@ -593,6 +487,10 @@ bool SheetTableView::event(QEvent* event)
             default:
                 break;
         }
+        if (kevent->matches(QKeySequence::SelectAll)) {
+            QTableView::selectAll();
+            return true;
+        }
         if (kevent->matches(QKeySequence::Delete) || kevent->matches(QKeySequence::Backspace)) {
             deleteSelection();
         }
@@ -644,6 +542,9 @@ bool SheetTableView::event(QEvent* event)
             }
         }
 
+        if (kevent->matches(QKeySequence::SelectAll)) {
+            kevent->accept();
+        }
         if (kevent->matches(QKeySequence::Delete) || kevent->matches(QKeySequence::Backspace)) {
             kevent->accept();
         }
@@ -677,18 +578,20 @@ void SheetTableView::deleteSelection()
     QModelIndexList selection = selectionModel()->selectedIndexes();
 
     if (!selection.empty()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear Cells"));
+        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Clear Cells"));
         std::vector<Range> ranges = selectedRanges();
         std::vector<Range>::const_iterator i = ranges.begin();
 
         for (; i != ranges.end(); ++i) {
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.clear('%s')",
-                                    sheet->getNameInDocument(),
-                                    i->rangeString().c_str());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "App.ActiveDocument.%s.clear('%s')",
+                sheet->getNameInDocument(),
+                i->rangeString().c_str()
+            );
         }
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::commitCommand();
+        sheet->getDocument()->commitTransaction();
     }
 }
 
@@ -748,7 +651,7 @@ void SheetTableView::cutSelection()
 
 void SheetTableView::pasteClipboard()
 {
-    App::AutoTransaction committer("Paste Cell");
+    App::AutoTransaction committer(sheet->getDocument()->openTransaction("Paste Cell"));
     try {
         bool copy = true;
         auto ranges = sheet->getCopyOrCutRange(copy);
@@ -798,7 +701,8 @@ void SheetTableView::pasteClipboard()
         }
         else {
             QByteArray res = mimeData->data(_SheetMime);
-            Base::ByteArrayIStreambuf buf(res);
+            std::string buffer(res.constData(), static_cast<std::size_t>(res.size()));
+            Base::StringIStreambuf buf(buffer);
             std::istream in(nullptr);
             in.rdbuf(&buf);
             Base::XMLReader reader("<memory>", in);
@@ -808,18 +712,19 @@ void SheetTableView::pasteClipboard()
         GetApplication().getActiveDocument()->recompute();
     }
     catch (Base::Exception& e) {
+        committer.close(App::TransactionCloseMode::Abort);
         e.reportException();
-        QMessageBox::critical(Gui::getMainWindow(),
-                              QObject::tr("Copy & Paste Failed"),
-                              QString::fromLatin1(e.what()));
+        QMessageBox::critical(
+            Gui::getMainWindow(),
+            QObject::tr("Copy & Paste Failed"),
+            QString::fromLatin1(e.what())
+        );
         return;
     }
     clearSelection();
 }
 
-void SheetTableView::finishEditWithMove(int keyPressed,
-                                        Qt::KeyboardModifiers modifiers,
-                                        bool handleTabMotion)
+void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers modifiers, bool handleTabMotion)
 {
     // A utility lambda for finding the beginning and ending of data regions
     auto scanForRegionBoundary = [this](int& r, int& c, int dr, int dc) {
@@ -911,8 +816,10 @@ void SheetTableView::finishEditWithMove(int keyPressed,
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetColumn--;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, 0, -1);
             }
             else {
@@ -928,13 +835,15 @@ void SheetTableView::finishEditWithMove(int keyPressed,
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetColumn += colSpan;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, 0, 1);
             }
             else {
-                targetColumn +=
-                    colSpan;  // Unrecognized modifier combination: default to just moving one cell
+                targetColumn += colSpan;  // Unrecognized modifier combination: default to just
+                                          // moving one cell
             }
             tabCounter = 0;
             break;
@@ -945,8 +854,10 @@ void SheetTableView::finishEditWithMove(int keyPressed,
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetRow--;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, -1, 0);
             }
             else {
@@ -961,13 +872,15 @@ void SheetTableView::finishEditWithMove(int keyPressed,
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetRow += rowSpan;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, 1, 0);
             }
             else {
-                targetRow +=
-                    rowSpan;  // Unrecognized modifier combination: default to just moving one cell
+                targetRow += rowSpan;  // Unrecognized modifier combination: default to just moving
+                                       // one cell
             }
             tabCounter = 0;
             break;
@@ -1011,8 +924,10 @@ void SheetTableView::finishEditWithMove(int keyPressed,
         || keyPressed == Qt::Key_Return) {
         // We have to use this method so that Ctrl-modifier combinations don't result in multiple
         // selection
-        this->selectionModel()->setCurrentIndex(model()->index(targetRow, targetColumn),
-                                                QItemSelectionModel::ClearAndSelect);
+        this->selectionModel()->setCurrentIndex(
+            model()->index(targetRow, targetColumn),
+            QItemSelectionModel::ClearAndSelect
+        );
     }
     else if (modifiers & Qt::ShiftModifier) {
         // With shift down, this motion becomes a block selection command, rather than just simple
@@ -1063,16 +978,20 @@ void SheetTableView::ModifyBlockSelection(int targetRow, int targetCol)
                 }
                 QItemSelection oldRange(range.topLeft(), range.bottomRight());
                 this->selectionModel()->select(oldRange, QItemSelectionModel::Deselect);
-                QItemSelection newRange(model()->index(rangeMinRow, rangeMinCol),
-                                        model()->index(rangeMaxRow, rangeMaxCol));
+                QItemSelection newRange(
+                    model()->index(rangeMinRow, rangeMinCol),
+                    model()->index(rangeMaxRow, rangeMaxCol)
+                );
                 this->selectionModel()->select(newRange, QItemSelectionModel::Select);
             }
             break;
         }
     }
 
-    this->selectionModel()->setCurrentIndex(model()->index(targetRow, targetCol),
-                                            QItemSelectionModel::Current);
+    this->selectionModel()->setCurrentIndex(
+        model()->index(targetRow, targetCol),
+        QItemSelectionModel::Current
+    );
 }
 
 void SheetTableView::mergeCells()
@@ -1096,8 +1015,7 @@ void SheetTableView::mousePressEvent(QMouseEvent* event)
     QTableView::mousePressEvent(event);
 }
 
-void SheetTableView::selectionChanged(const QItemSelection& selected,
-                                      const QItemSelection& deselected)
+void SheetTableView::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
     Gui::getMainWindow()->updateActions();
     QTableView::selectionChanged(selected, deselected);
@@ -1127,7 +1045,8 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent*)
         actionDel->setEnabled(true);
         actionSplit->setEnabled(
             selectedIndexesRaw().size() == 1
-            && sheet->isMergedCell(CellAddress(currentIndex().row(), currentIndex().column())));
+            && sheet->isMergedCell(CellAddress(currentIndex().row(), currentIndex().column()))
+        );
         actionMerge->setEnabled(selectedIndexesRaw().size() > 1);
     }
 

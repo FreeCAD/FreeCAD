@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHPARTGUI_CURVEONMESH_H
-#define MESHPARTGUI_CURVEONMESH_H
+#pragma once
 
 #include <GeomAbs_Shape.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -103,5 +104,3 @@ private:
 };
 
 }  // namespace MeshPartGui
-
-#endif  // MESHPARTGUI_CURVEONMESH_H

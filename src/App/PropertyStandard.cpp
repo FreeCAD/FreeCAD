@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -35,6 +37,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/ProgramVersion.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Quantity.h>
@@ -767,6 +770,54 @@ void PropertyIntegerConstraint::setPyObject(PyObject* value)
     }
 }
 
+void PropertyIntegerConstraint::Save(Base::Writer& writer) const
+{
+    writer.Stream() << writer.ind()
+                    << "<Integer value=\"" << _lValue << "\"";
+    if (_ConstStruct && _ConstStruct->isDeletable()) {
+        long minimum = _ConstStruct->LowerBound;
+        long maximum = _ConstStruct->UpperBound;
+        long stepsize = _ConstStruct->StepSize;
+        writer.Stream() << " min=\"" << minimum << "\""
+                        << " max=\"" << maximum << "\""
+                        << " step=\"" << stepsize << "\"";
+    }
+    writer.Stream() << "/>\n";
+}
+
+void PropertyIntegerConstraint::Restore(Base::XMLReader& reader)
+{
+    // read my Element
+    reader.readElement("Integer");
+    // get the value of my Attribute
+    setValue(reader.getAttribute<long>("value"));
+
+    bool createConstraint = false;
+    long minimum = std::numeric_limits<int>::lowest();
+    long maximum = std::numeric_limits<int>::max();
+    long stepsize = 1.0;
+    if (reader.hasAttribute("min")) {
+        minimum = reader.getAttribute<long>("min");
+        createConstraint = true;
+    }
+    if (reader.hasAttribute("max")) {
+        maximum = reader.getAttribute<long>("max");
+        createConstraint = true;
+    }
+    if (reader.hasAttribute("step")) {
+        stepsize = reader.getAttribute<long>("step");
+    }
+
+    if (createConstraint) {
+        Constraints* c = new Constraints();
+        c->setDeletable(true);
+        c->LowerBound = minimum;
+        c->UpperBound = maximum;
+        c->StepSize = stepsize;
+        setConstraints(c);
+    }
+}
+
 //**************************************************************************
 //**************************************************************************
 // PropertyPercent
@@ -1269,6 +1320,54 @@ void PropertyFloatConstraint::setPyObject(PyObject* value)
     }
 }
 
+void PropertyFloatConstraint::Save(Base::Writer& writer) const
+{
+    writer.Stream() << writer.ind()
+                    << "<Float value=\"" << _dValue << "\"";
+    if (_ConstStruct && _ConstStruct->isDeletable()) {
+        double minimum = _ConstStruct->LowerBound;
+        double maximum = _ConstStruct->UpperBound;
+        double stepsize = _ConstStruct->StepSize;
+        writer.Stream() << " min=\"" << minimum << "\""
+                        << " max=\"" << maximum << "\""
+                        << " step=\"" << stepsize << "\"";
+    }
+    writer.Stream() << "/>\n";
+}
+
+void PropertyFloatConstraint::Restore(Base::XMLReader& reader)
+{
+    // read my Element
+    reader.readElement("Float");
+    // get the value of my Attribute
+    setValue(reader.getAttribute<double>("value"));
+
+    bool createConstraint = false;
+    double minimum = std::numeric_limits<double>::lowest();
+    double maximum = std::numeric_limits<double>::max();
+    double stepsize = 1.0;
+    if (reader.hasAttribute("min")) {
+        minimum = reader.getAttribute<double>("min");
+        createConstraint = true;
+    }
+    if (reader.hasAttribute("max")) {
+        maximum = reader.getAttribute<double>("max");
+        createConstraint = true;
+    }
+    if (reader.hasAttribute("step")) {
+        stepsize = reader.getAttribute<double>("step");
+    }
+
+    if (createConstraint) {
+        Constraints* c = new Constraints();
+        c->setDeletable(true);
+        c->LowerBound = minimum;
+        c->UpperBound = maximum;
+        c->StepSize = stepsize;
+        setConstraints(c);
+    }
+}
+
 //**************************************************************************
 // PropertyPrecision
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1447,11 +1546,11 @@ void PropertyString::setValue(const char* newValue)
             // OnProposedLabelChange has changed the new value to what the current value is
             return;
         }
-        if (!propChanges.empty() && !GetApplication().getActiveTransaction()) {
+        if (!propChanges.empty() && obj->getDocument()->getBookedTransactionID() == 0) {
             commit = true;
             std::ostringstream str;
             str << "Change " << obj->getNameInDocument() << ".Label";
-            GetApplication().setActiveTransaction(str.str().c_str());
+            obj->getDocument()->openTransaction(str.str().c_str());
         }
     }
 
@@ -1464,7 +1563,7 @@ void PropertyString::setValue(const char* newValue)
     }
 
     if (commit) {
-        GetApplication().closeActiveTransaction();
+        obj->getDocument()->commitTransaction();
     }
 }
 
@@ -1867,11 +1966,51 @@ void PropertyMap::setValue(const std::string& key, const std::string& value)
     hasSetValue();
 }
 
+void PropertyMap::setValue(const char* key, const char* value)
+{
+    if (!key) {
+        return;
+    }
+    if (!value) {
+        auto it = _lValueList.find(key);
+        if (it == _lValueList.end()) {
+            return;
+        }
+        aboutToSetValue();
+        _lValueList.erase(it);
+        hasSetValue();
+        return;
+    }
+
+    aboutToSetValue();
+    _lValueList[key] = value;
+    hasSetValue();
+}
+
 void PropertyMap::setValues(const std::map<std::string, std::string>& map)
 {
     aboutToSetValue();
     _lValueList = map;
     hasSetValue();
+}
+
+void PropertyMap::setValues(std::map<std::string, std::string>&& map)
+{
+    aboutToSetValue();
+    _lValueList = std::move(map);
+    hasSetValue();
+}
+
+const char* PropertyMap::getValue(const char* key) const
+{
+    if (!key) {
+        return nullptr;
+    }
+    auto it = _lValueList.find(key);
+    if (it == _lValueList.end()) {
+        return nullptr;
+    }
+    return it->second.c_str();
 }
 
 const std::string& PropertyMap::operator[](const std::string& key) const
@@ -2226,6 +2365,25 @@ unsigned int PropertyBoolList::getMemSize() const
 // PropertyColor
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+namespace
+{
+/// The definition of "alpha" was corrected in FreeCAD 1.1 -- returns true if the reader is working
+/// on a file that pre-dates that correction.
+bool readerRequiresAlphaConversion(const Base::XMLReader &reader)
+{
+    return Base::getVersion(reader.ProgramVersion) < Base::Version::v1_1;
+}
+
+/// Given a material, invert the alpha channel of all of its colors.
+void convertAlphaInMaterial(App::Material& material)
+{
+    material.ambientColor.a = 1.0F - material.ambientColor.a;
+    material.diffuseColor.a = 1.0F - material.diffuseColor.a;
+    material.specularColor.a = 1.0F - material.specularColor.a;
+    material.emissiveColor.a = 1.0F - material.emissiveColor.a;
+}
+}
+
 TYPESYSTEM_SOURCE(App::PropertyColor, App::Property)
 
 //**************************************************************************
@@ -2367,6 +2525,12 @@ void PropertyColor::Restore(Base::XMLReader& reader)
     reader.readElement("PropertyColor");
     // get the value of my Attribute
     unsigned long rgba = reader.getAttribute<unsigned long>("value");
+    if (readerRequiresAlphaConversion(reader)) {
+        // Convert transparency / alpha value
+        constexpr unsigned long alphaMax = 0xff;
+        unsigned long alpha = alphaMax - (rgba & alphaMax);
+        rgba = rgba - (rgba & alphaMax) + alpha;
+    }
     setValue(rgba);
 }
 
@@ -2448,6 +2612,8 @@ void PropertyColorList::Restore(Base::XMLReader& reader)
             // initiate a file read
             reader.addFile(file.c_str(), this);
         }
+
+        requiresAlphaConversion = readerRequiresAlphaConversion(reader);
     }
 }
 
@@ -2471,6 +2637,11 @@ void PropertyColorList::RestoreDocFile(Base::Reader& reader)
     for (auto& it : values) {
         str >> value;
         it.setPackedValue(value);
+    }
+    if (requiresAlphaConversion) {
+        for (auto& it : values) {
+            it.a = 1.0F - it.a;
+        }
     }
     setValues(values);
 }
@@ -2702,6 +2873,9 @@ void PropertyMaterial::Restore(Base::XMLReader& reader)
     _cMat.emissiveColor.setPackedValue(reader.getAttribute<unsigned long>("emissiveColor"));
     _cMat.shininess = (float)reader.getAttribute<double>("shininess");
     _cMat.transparency = (float)reader.getAttribute<double>("transparency");
+    if (readerRequiresAlphaConversion(reader)) {
+        convertAlphaInMaterial(_cMat);
+    }
     if (reader.hasAttribute("image")) {
         _cMat.image = reader.getAttribute<const char*>("image");
     }
@@ -3156,6 +3330,7 @@ const Base::Color& PropertyMaterialList::getDiffuseColor(int index) const
 std::vector<Base::Color> PropertyMaterialList::getDiffuseColors() const
 {
     std::vector<Base::Color> list;
+    list.reserve(_lValueList.size());
     for (auto& material : _lValueList) {
         list.push_back(material.diffuseColor);
     }
@@ -3206,6 +3381,7 @@ float PropertyMaterialList::getTransparency(int index) const
 std::vector<float> PropertyMaterialList::getTransparencies() const
 {
     std::vector<float> list;
+    list.reserve(_lValueList.size());
     for (auto& material : _lValueList) {
         list.push_back(material.transparency);
     }
@@ -3247,6 +3423,8 @@ void PropertyMaterialList::Restore(Base::XMLReader& reader)
             // initiate a file read
             reader.addFile(file.c_str(), this);
         }
+
+        requiresAlphaConversion = readerRequiresAlphaConversion(reader);
     }
 }
 
@@ -3330,6 +3508,7 @@ void PropertyMaterialList::RestoreDocFileV0(uint32_t count, Base::Reader& reader
         str >> valueF;
         it.transparency = valueF;
     }
+    convertAlpha(values);
     setValues(values);
 }
 
@@ -3360,7 +3539,15 @@ void PropertyMaterialList::RestoreDocFileV3(Base::Reader& reader)
         readString(str, it.imagePath);
         readString(str, it.uuid);
     }
+    convertAlpha(values);
     setValues(values);
+}
+
+void PropertyMaterialList::convertAlpha(std::vector<App::Material>& materials) const
+{
+    if (requiresAlphaConversion) {
+        std::ranges::for_each(materials, convertAlphaInMaterial);
+    }
 }
 
 void PropertyMaterialList::readString(Base::InputStream& str, std::string& value)
@@ -3481,3 +3668,4 @@ void PropertyPersistentObject::setValue(const char* type)
     }
     hasSetValue();
 }
+

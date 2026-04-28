@@ -1,3 +1,5 @@
+.. SPDX-License-Identifier: LGPL-2.1-or-later
+
 .. FreeCAD documentation master file, created by
    sphinx-quickstart on Wed Nov 30 10:49:09 2011.
    You can adapt this file completely to your liking, but it should at least

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -20,120 +22,112 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef APP_AUTOTRANSACTION_H
-#define APP_AUTOTRANSACTION_H
+#pragma once
 
 #include <cstddef>
 #include <FCGlobal.h>
+#include <string>
+
+#include "TransactionDefs.h"
 
 namespace App
 {
 
 class Application;
+class Document;
 
-/// Helper class to manager transaction (i.e. undo/redo)
+/**
+ * @brief A helper class to manage transactions (i.e. undo/redo).
+ *
+ * An AutoTransaction object is meant to be allocated on the stack and governs
+ * the transactions in that scope.
+ */
 class AppExport AutoTransaction
 {
 public:
-    /// Private new operator to prevent heap allocation
+     /// Delete the new operator to prevent heap allocation.
     void* operator new(std::size_t) = delete;
 
 public:
     /** Constructor
-     *
-     * @param name: optional new transaction name on construction
-     * @param tmpName: if true and a new transaction is setup, the name given is
-     * considered as temporary, and subsequent construction of this class (or
-     * calling Application::setActiveTransaction()) can override the transaction
-     * name.
-     *
-     * The constructor increments an internal counter
-     * (Application::_activeTransactionGuard). The counter prevents any new
-     * active transaction being setup. It also prevents close (i.e. commits) the
-     * current active transaction until it reaches zero. It does not have any
-     * effect on aborting transaction, though.
+     * 
+     * @param tid the ID of the transaction to manage
+     * 
+     * No action is done in the constructor
      */
-    AutoTransaction(const char* name = nullptr, bool tmpName = false);
-
+    explicit AutoTransaction(int tid);
+    AutoTransaction(Document* doc, const std::string& name);
+    
     /** Destructor
-     *
-     * This destructor decrease an internal counter
-     * (Application::_activeTransactionGuard), and will commit any current
-     * active transaction when the counter reaches zero.
+     * 
+     * This destructor attempts to commit the transaction it manages
      */
     ~AutoTransaction();
 
-    /** Close or abort the transaction
+    /**
+     * @brief Close or abort the transaction.
      *
-     * This function can be used to explicitly close (i.e. commit) the
-     * transaction, if the current transaction ID matches the one created inside
-     * the constructor. For aborting, it will abort any current transaction
+     * This function can be used to explicitly close (i.e. commit / abort) the
+     * transaction,
      */
-    void close(bool abort = false);
-
-    /** Enable/Disable any AutoTransaction instance in the current stack
-     *
-     * Once disabled, any empty temporary named transaction is closed. If there
-     * are non-empty or non-temporary named active transaction, it will not be
-     * auto closed.
-     *
-     * This function may be used in, for example, Gui::Document::setEdit() to
-     * allow a transaction live past any command scope.
-     */
-    static void setEnable(bool enable);
+    void close(TransactionCloseMode mode = TransactionCloseMode::Commit);
 
 private:
-    int tid = 0;
+    int tid { 0 };
 };
 
 
-/** Helper class to lock a transaction from being closed or aborted.
+/**
+ * @brief Helper class to lock a transaction from being closed or aborted.
  *
- * The helper class is used to protect some critical transaction from being
+ * The helper class is used to protect some critical transactions from being
  * closed prematurely, e.g. when deleting some object.
  */
 class AppExport TransactionLocker
 {
 public:
-    /** Constructor
-     * @param lock: whether to activate the lock
-     */
-    TransactionLocker(bool lock = true);
 
-    /** Destructor
-     * Unlock the transaction is this locker is active
+    /**
+     * @brief Construct a transaction locker.
+     *
+     * @param[in] lock: whether to activate the lock
+     */
+    TransactionLocker(Document* doc, bool lock = true);
+
+    /**
+     * @brief Destruct a transaction locker.
+     *
+     * Unlock the transaction if this locker is active
      */
     ~TransactionLocker();
 
-    /** Activate or deactivate this locker
-     * @param enable: whether to activate the locker
+    /**
+     * @brief Activate or deactivate this locker.
      *
      * An internal counter is used to support recursive locker. When activated,
      * the current active transaction cannot be closed or aborted.  But the
      * closing call (Application::closeActiveTransaction()) will be remembered,
      * and performed when the internal lock counter reaches zero.
+     *
+     * @param enable: whether to activate the locker
      */
     void activate(bool enable);
 
-    /// Check if the locker is active
+    /// Check if the locker is active.
     bool isActive() const
     {
         return active;
     }
-
-    /// Check if transaction is being locked
-    static bool isLocked();
-
+    
     friend class Application;
 
 public:
-    /// Private new operator to prevent heap allocation
+    /// Delete the new operator to prevent heap allocation.
     void* operator new(std::size_t) = delete;
 
 private:
     bool active;
+    Document* doc;
 };
 
 }  // namespace App
-
-#endif  // APP_AUTOTRANSACTION_H

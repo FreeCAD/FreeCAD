@@ -110,78 +110,6 @@
     </message>
   </context>
   <context>
-    <name>CmdRobotInsertKukaIR125</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="174"/>
-      <source>Robot</source>
-      <translation>روبوت</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="175"/>
-      <source>Kuka IR125</source>
-      <translation>IR125 كوكا</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="176"/>
-      <source>Insert a Kuka IR125 into the document.</source>
-      <translation>إدراج كوكا IR125 في المستند.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR16</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="93"/>
-      <source>Robot</source>
-      <translation>روبوت</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="94"/>
-      <source>Kuka IR16</source>
-      <translation>IR16 كوكا</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="95"/>
-      <source>Insert a Kuka IR16 into the document.</source>
-      <translation>إدراج كوكا IR16 في المستند.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR210</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="134"/>
-      <source>Robot</source>
-      <translation>روبوت</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="135"/>
-      <source>Kuka IR210</source>
-      <translation>IR210 كوكا</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="136"/>
-      <source>Insert a Kuka IR210 into the document.</source>
-      <translation>إدراج كوكا IR210 في المستند.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR500</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="51"/>
-      <source>Robot</source>
-      <translation>روبوت</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="52"/>
-      <source>Kuka IR500</source>
-      <translation>كوكا IR500</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="53"/>
-      <source>Insert a Kuka IR500 into the document.</source>
-      <translation>إدراج كوكا IR500 في المستند.</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdRobotInsertWaypoint</name>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="95"/>
@@ -477,16 +405,6 @@
       <location filename="../../ViewProviderTrajectory.cpp" line="164"/>
       <source>Modify</source>
       <translation type="unfinished">Modify</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="81"/>
-      <source>No robot files installed</source>
-      <translation>لم يتم تثبيت أي ملف روبوت</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="82"/>
-      <source>Please visit %1 and copy the files to %2</source>
-      <translation>المرجو زيارة %1 ونسخ الملفات في %2</translation>
     </message>
   </context>
   <context>

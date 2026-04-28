@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_PRECOMPILED_H
-#define FEMGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -49,7 +48,7 @@
 #include <boost/lexical_cast.hpp>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // OCC
@@ -156,5 +155,3 @@
 #include <vtkDoubleArray.h>
 #include <vtkLookupTable.h>
 #include <vtkPointData.h>
-
-#endif  // FEMGUI_PRECOMPILED_H

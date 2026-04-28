@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -22,7 +24,7 @@
 
 #include <QSignalBlocker>
 #include <algorithm>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Base/Console.h>
 #include <Gui/Application.h>
@@ -48,7 +50,7 @@ namespace sp = std::placeholders;
 
 class DlgDisplayPropertiesImp::Private
 {
-    using DlgDisplayPropertiesImp_Connection = boost::signals2::connection;
+    using DlgDisplayPropertiesImp_Connection = fastsignals::connection;
 
 public:
     Ui::DlgDisplayProperties ui;

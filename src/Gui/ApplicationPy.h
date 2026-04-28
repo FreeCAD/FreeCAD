@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_APPLICATIONPY_H
-#define GUI_APPLICATIONPY_H
+#pragma once
 
 #include <Base/PyObjectBase.h>
 
-namespace Gui{
+namespace Gui
+{
 
 /** The ApplicationPy class
  * This is the Python wrapper class of Application.
@@ -118,6 +118,4 @@ public:
     // clang-format on
 };
 
-} //namespace Gui
-
-#endif
+}  // namespace Gui

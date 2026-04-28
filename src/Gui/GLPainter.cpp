@@ -34,8 +34,9 @@ GLPainter::GLPainter()
 {
     depthrange[0] = 0;
     depthrange[1] = 0;
-    for (int i=0; i<16; i++)
+    for (int i = 0; i < 16; i++) {
         projectionmatrix[i] = 0.0;
+    }
 }
 
 GLPainter::~GLPainter()
@@ -43,14 +44,16 @@ GLPainter::~GLPainter()
     end();
 }
 
-bool GLPainter::begin(QPaintDevice * device)
+bool GLPainter::begin(QPaintDevice* device)
 {
-    if (viewer)
+    if (viewer) {
         return false;
+    }
 
     viewer = dynamic_cast<QOpenGLWidget*>(device);
-    if (!viewer)
+    if (!viewer) {
         return false;
+    }
 
     // Make current context
     QSize view = viewer->size();
@@ -72,7 +75,7 @@ bool GLPainter::begin(QPaintDevice * device)
 
     glDepthFunc(GL_ALWAYS);
     glDepthMask(GL_TRUE);
-    glDepthRange(0,0);
+    glDepthRange(0, 0);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
@@ -87,8 +90,9 @@ bool GLPainter::begin(QPaintDevice * device)
 
 bool GLPainter::end()
 {
-    if (!viewer)
+    if (!viewer) {
         return false;
+    }
 
     glFlush();
 
@@ -168,41 +172,45 @@ void GLPainter::resetLineStipple()
 // Draw routines
 void GLPainter::drawRect(int x1, int y1, int x2, int y2)
 {
-    if (!viewer)
+    if (!viewer) {
         return;
+    }
 
     glBegin(GL_LINE_LOOP);
-        glVertex3i(x1, this->height-y1, 0);
-        glVertex3i(x2, this->height-y1, 0);
-        glVertex3i(x2, this->height-y2, 0);
-        glVertex3i(x1, this->height-y2, 0);
+    glVertex3i(x1, this->height - y1, 0);
+    glVertex3i(x2, this->height - y1, 0);
+    glVertex3i(x2, this->height - y2, 0);
+    glVertex3i(x1, this->height - y2, 0);
     glEnd();
 }
 
 void GLPainter::drawLine(int x1, int y1, int x2, int y2)
 {
-    if (!viewer)
+    if (!viewer) {
         return;
+    }
 
     glBegin(GL_LINES);
-        glVertex3i(x1, this->height-y1, 0);
-        glVertex3i(x2, this->height-y2, 0);
+    glVertex3i(x1, this->height - y1, 0);
+    glVertex3i(x2, this->height - y2, 0);
     glEnd();
 }
 
 void GLPainter::drawPoint(int x, int y)
 {
-    if (!viewer)
+    if (!viewer) {
         return;
+    }
 
     glBegin(GL_POINTS);
-        glVertex3i(x, this->height-y, 0);
+    glVertex3i(x, this->height - y, 0);
     glEnd();
 }
 
 //-----------------------------------------------
 
-Rubberband::Rubberband(View3DInventorViewer* v) : viewer(v)
+Rubberband::Rubberband(View3DInventorViewer* v)
+    : viewer(v)
 {
     x_old = y_old = x_new = y_new = 0;
     working = false;
@@ -214,7 +222,8 @@ Rubberband::Rubberband(View3DInventorViewer* v) : viewer(v)
     rgb_a = 1.0f;
 }
 
-Rubberband::Rubberband() : viewer(nullptr)
+Rubberband::Rubberband()
+    : viewer(nullptr)
 {
     x_old = y_old = x_new = y_new = 0;
     working = false;
@@ -261,8 +270,9 @@ void Rubberband::setColor(float r, float g, float b, float a)
 
 void Rubberband::paintGL()
 {
-    if (!working)
+    if (!working) {
         return;
+    }
 
     const SbViewportRegion vp = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
@@ -294,15 +304,17 @@ void Rubberband::paintGL()
 
     glLineWidth(1.0);
 
-    if (stipple)
+    if (stipple) {
         glDisable(GL_LINE_STIPPLE);
+    }
 
     glDisable(GL_BLEND);
 }
 
 // -----------------------------------------------------------------------------------
 
-Polyline::Polyline(View3DInventorViewer* v) : viewer(v)
+Polyline::Polyline(View3DInventorViewer* v)
+    : viewer(v)
 {
     x_new = y_new = 0;
     working = false;
@@ -316,7 +328,8 @@ Polyline::Polyline(View3DInventorViewer* v) : viewer(v)
     rgb_a = 1.0f;
 }
 
-Polyline::Polyline() : viewer(nullptr)
+Polyline::Polyline()
+    : viewer(nullptr)
 {
     x_new = y_new = 0;
     working = false;
@@ -383,8 +396,9 @@ void Polyline::addNode(const QPoint& p)
 
 void Polyline::popNode()
 {
-    if (!_cNodeVector.empty())
+    if (!_cNodeVector.empty()) {
         _cNodeVector.pop_back();
+    }
 }
 
 void Polyline::clear()
@@ -394,11 +408,13 @@ void Polyline::clear()
 
 void Polyline::paintGL()
 {
-    if (!working)
+    if (!working) {
         return;
+    }
 
-    if (_cNodeVector.empty())
+    if (_cNodeVector.empty()) {
         return;
+    }
 
     const SbViewportRegion vp = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
@@ -439,8 +455,8 @@ void Polyline::paintGL()
             glEnable(GL_LINE_STIPPLE);
             glLineStipple(2, 0x3F3F);
             glBegin(GL_LINES);
-                glVertex2i(_cNodeVector.back().x(), _cNodeVector.back().y());
-                glVertex2i(_cNodeVector.front().x(), _cNodeVector.front().y());
+            glVertex2i(_cNodeVector.back().x(), _cNodeVector.back().y());
+            glVertex2i(_cNodeVector.front().x(), _cNodeVector.front().y());
             glEnd();
             glDisable(GL_LINE_STIPPLE);
         }

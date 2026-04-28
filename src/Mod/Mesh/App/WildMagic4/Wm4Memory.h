@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Wild Magic Source Code
 // David Eberly
 // http://www.geometrictools.com
@@ -14,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4MEMORY_H
-#define WM4MEMORY_H
+#pragma once
 
 #ifndef WM4_MEMORY_MANAGER
 
@@ -135,5 +136,4 @@ void operator delete[] (void* pvAddr);
 void operator delete (void* pvAddr, char* acFile, unsigned int uiLine);
 void operator delete[] (void* pvAddr, char* acFile, unsigned int uiLine);
 
-#endif
 #endif

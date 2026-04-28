@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,17 +23,17 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPYTHON_H
-#define PARTGUI_VIEWPROVIDERPYTHON_H
+#pragma once
 
 #include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include <Mod/Part/PartGlobal.h>
 
-namespace PartGui {
+namespace PartGui
+{
 
-class PartGuiExport ViewProviderCustom : public ViewProviderPart
+class PartGuiExport ViewProviderCustom: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderCustom);
 
@@ -50,8 +52,4 @@ protected:
 using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProviderPart>;
 using ViewProviderCustomPython = Gui::ViewProviderFeaturePythonT<ViewProviderCustom>;
 
-} // namespace PartGui
-
-
-#endif // PARTGUI_VIEWPROVIDERPYTHON_H
-
+}  // namespace PartGui

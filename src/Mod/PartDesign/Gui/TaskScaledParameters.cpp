@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -40,16 +42,17 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskScaledParameters */
 
-TaskScaledParameters::TaskScaledParameters(ViewProviderTransformed* TransformedView,
-                                           QWidget* parent)
+TaskScaledParameters::TaskScaledParameters(ViewProviderTransformed* TransformedView, QWidget* parent)
     : TaskTransformedParameters(TransformedView, parent)
     , ui(new Ui_TaskScaledParameters)
 {
     setupUI();
 }
 
-TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters* parentTask,
-                                           QWidget* parameterWidget)
+TaskScaledParameters::TaskScaledParameters(
+    TaskMultiTransformParameters* parentTask,
+    QWidget* parameterWidget
+)
     : TaskTransformedParameters(parentTask)
     , ui(new Ui_TaskScaledParameters)
 {
@@ -61,14 +64,18 @@ void TaskScaledParameters::setupParameterUI(QWidget* widget)
     ui->setupUi(widget);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->spinFactor,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskScaledParameters::onFactor);
-    connect(ui->spinOccurrences,
-            &Gui::UIntSpinBox::unsignedChanged,
-            this,
-            &TaskScaledParameters::onOccurrences);
+    connect(
+        ui->spinFactor,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskScaledParameters::onFactor
+    );
+    connect(
+        ui->spinOccurrences,
+        &Gui::UIntSpinBox::unsignedChanged,
+        this,
+        &TaskScaledParameters::onOccurrences
+    );
 
     // Get the feature data
     auto pcScaled = getObject<PartDesign::Scaled>();

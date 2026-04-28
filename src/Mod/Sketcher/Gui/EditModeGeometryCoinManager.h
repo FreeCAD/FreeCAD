@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_EditModeGeometryCoinManager_H
-#define SKETCHERGUI_EditModeGeometryCoinManager_H
+#pragma once
 
 #include <functional>
 #include <vector>
@@ -86,12 +87,14 @@ class SketcherGuiExport EditModeGeometryCoinManager
 {
 
 public:
-    explicit EditModeGeometryCoinManager(ViewProviderSketch& vp,
-                                         DrawingParameters& drawingParams,
-                                         GeometryLayerParameters& geometryLayerParams,
-                                         AnalysisResults& analysisResultStruct,
-                                         EditModeScenegraphNodes& editModeScenegraph,
-                                         CoinMapping& coinMap);
+    explicit EditModeGeometryCoinManager(
+        ViewProviderSketch& vp,
+        DrawingParameters& drawingParams,
+        GeometryLayerParameters& geometryLayerParams,
+        AnalysisResults& analysisResultStruct,
+        EditModeScenegraphNodes& editModeScenegraph,
+        CoinMapping& coinMap
+    );
     ~EditModeGeometryCoinManager();
 
 
@@ -126,6 +129,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_EditModeGeometryCoinManager_H

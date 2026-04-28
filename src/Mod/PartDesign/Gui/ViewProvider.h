@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProvider_H
-#define PARTGUI_ViewProvider_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <Gui/ViewProviderFeaturePython.h>
@@ -35,17 +36,18 @@
 #include "ViewProviderBody.h"
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskDlgFeatureParameters;
 
 /**
  * A common base class for all part design features view providers
  */
-class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart,
-                                         Gui::ViewProviderSuppressibleExtension,
-                                         PartGui::ViewProviderAttachExtension,
-                                         public PartGui::ViewProviderPreviewExtension
+class PartDesignGuiExport ViewProvider: public PartGui::ViewProviderPart,
+                                        Gui::ViewProviderSuppressibleExtension,
+                                        PartGui::ViewProviderAttachExtension,
+                                        public PartGui::ViewProviderPreviewExtension
 {
     using inherited = PartGui::ViewProviderPart;
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProvider);
@@ -66,18 +68,18 @@ public:
 
     void setTipIcon(bool onoff);
 
-    //body mode means that the object is part of a body and that the body is used to set the
-    //visual properties, not the features. Hence setting body mode to true will hide most
-    //viewprovider properties.
+    // body mode means that the object is part of a body and that the body is used to set the
+    // visual properties, not the features. Hence setting body mode to true will hide most
+    // viewprovider properties.
     void setBodyMode(bool bodymode);
 
-    //makes this viewprovider visible in the scene graph without changing any properties,
-    //not the visibility one and also not the display mode. This can be used to show the
-    //shape of this viewprovider from other viewproviders without doing anything to the
-    //document and properties.
+    // makes this viewprovider visible in the scene graph without changing any properties,
+    // not the visibility one and also not the display mode. This can be used to show the
+    // shape of this viewprovider from other viewproviders without doing anything to the
+    // document and properties.
     void makeTemporaryVisible(bool);
 
-    //Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
+    // Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
     /// Provides preview shape
@@ -87,7 +89,13 @@ public:
 
     PyObject* getPyObject() override;
 
-    QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
+    QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
+
+    /// Default implementation is a no-op; derived classes override if needed.
+    /// Called on recompute and when any feature in the Body changes visibility.
+    /// Serves as the entry point for ViewProviders that apply visual overlays
+    /// (e.g. textures, highlights, thread visualization).
+    virtual void updateOverlay() {};
 
 protected:
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
@@ -99,18 +107,18 @@ protected:
     void updatePreview() override;
 
     virtual void makeChildrenVisible();
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
     /**
      * Returns a newly create dialog for the part to be placed in the task view
      * Must be reimplemented in subclasses.
      */
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    virtual TaskDlgFeatureParameters* getEditDialog();
 
     std::string oldWb;
-    ViewProvider* previouslyShownViewProvider { nullptr };
+    ViewProvider* previouslyShownViewProvider {nullptr};
 
-    bool isSetTipIcon { false };
+    bool isSetTipIcon {false};
 
 private:
     Gui::CoinPtr<PartGui::SoPreviewShape> pcToolPreview;
@@ -118,7 +126,4 @@ private:
 
 using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderHole_H
+}  // namespace PartDesignGui

@@ -22,7 +22,6 @@
  ***************************************************************************/
 
 
-
 #include <QObject>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -43,10 +42,9 @@ using namespace Gui::TaskView;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskWatcher::TaskWatcher(const char* Filter)
-    : QObject(nullptr),SelectionFilter(Filter)
-{
-    
-}
+    : QObject(nullptr)
+    , SelectionFilter(Filter)
+{}
 
 TaskWatcher::~TaskWatcher()
 {
@@ -63,10 +61,7 @@ QWidget* TaskWatcher::addTaskBox(QWidget* widget, bool expandable, QWidget* pare
     return addTaskBox(QPixmap(), widget, expandable, parent);
 }
 
-QWidget* TaskWatcher::addTaskBox(const QPixmap& icon,
-                                 QWidget* widget,
-                                 bool expandable,
-                                 QWidget* parent)
+QWidget* TaskWatcher::addTaskBox(const QPixmap& icon, QWidget* widget, bool expandable, QWidget* parent)
 {
     auto taskbox = new Gui::TaskView::TaskBox(icon, widget->windowTitle(), expandable, parent);
     taskbox->groupLayout()->addWidget(widget);
@@ -82,7 +77,7 @@ QWidget* TaskWatcher::addTaskBoxWithoutHeader(QWidget* widget)
     return taskbox;
 }
 
-std::vector<QWidget*> &TaskWatcher::getWatcherContent()
+std::vector<QWidget*>& TaskWatcher::getWatcherContent()
 {
     return Content;
 }
@@ -99,17 +94,20 @@ bool TaskWatcher::shouldShow()
 // TaskWatcherCommands
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskWatcherCommands::TaskWatcherCommands(const char* Filter,const char* commands[],
-                                         const char* name, const char* pixmap)
+TaskWatcherCommands::TaskWatcherCommands(
+    const char* Filter,
+    const char* commands[],
+    const char* name,
+    const char* pixmap
+)
     : TaskWatcher(Filter)
 {
     if (commands) {
-        CommandManager &mgr = Gui::Application::Instance->commandManager();
-        auto tb = new Gui::TaskView::TaskBox
-            (BitmapFactory().pixmap(pixmap), tr(name), true, nullptr);
+        CommandManager& mgr = Gui::Application::Instance->commandManager();
+        auto tb = new Gui::TaskView::TaskBox(BitmapFactory().pixmap(pixmap), tr(name), true, nullptr);
 
-        for (const char** i=commands;*i;i++) {
-            Command *c = mgr.getCommandByName(*i);
+        for (const char** i = commands; *i; i++) {
+            Command* c = mgr.getCommandByName(*i);
             if (c) {
                 // handled in TaskBox::actionEvent()
                 c->addTo(tb);
@@ -136,13 +134,13 @@ bool TaskWatcherCommands::shouldShow()
 // TaskWatcherCommandsEmptyDoc
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskWatcherCommandsEmptyDoc::TaskWatcherCommandsEmptyDoc(const char* commands[],
-                                                         const char* name,
-                                                         const char* pixmap )
-    : TaskWatcherCommands(nullptr,commands,name,pixmap)
-{
-}
-
+TaskWatcherCommandsEmptyDoc::TaskWatcherCommandsEmptyDoc(
+    const char* commands[],
+    const char* name,
+    const char* pixmap
+)
+    : TaskWatcherCommands(nullptr, commands, name, pixmap)
+{}
 
 
 //==== implementer ===========================================================================
@@ -161,12 +159,13 @@ bool TaskWatcherCommandsEmptyDoc::shouldShow()
 // TaskWatcherCommandsEmptySelection
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskWatcherCommandsEmptySelection::TaskWatcherCommandsEmptySelection(const char* commands[],
-                                                         const char* name,
-                                                         const char* pixmap )
-    : TaskWatcherCommands(nullptr,commands,name,pixmap)
-{
-}
+TaskWatcherCommandsEmptySelection::TaskWatcherCommandsEmptySelection(
+    const char* commands[],
+    const char* name,
+    const char* pixmap
+)
+    : TaskWatcherCommands(nullptr, commands, name, pixmap)
+{}
 
 TaskWatcherCommandsEmptySelection::~TaskWatcherCommandsEmptySelection() = default;
 

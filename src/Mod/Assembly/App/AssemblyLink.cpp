@@ -59,18 +59,22 @@ PROPERTY_SOURCE(Assembly::AssemblyLink, App::Part)
 
 AssemblyLink::AssemblyLink()
 {
-    ADD_PROPERTY_TYPE(Rigid,
-                      (true),
-                      "General",
-                      (App::PropertyType)(App::Prop_None),
-                      "If the sub-assembly is set to Rigid, it will act "
-                      "as a rigid body. Else its joints will be taken into account.");
+    ADD_PROPERTY_TYPE(
+        Rigid,
+        (true),
+        "General",
+        (App::PropertyType)(App::Prop_None),
+        "If the sub-assembly is set to Rigid, it will act "
+        "as a rigid body. Else its joints will be taken into account."
+    );
 
-    ADD_PROPERTY_TYPE(LinkedObject,
-                      (nullptr),
-                      "General",
-                      (App::PropertyType)(App::Prop_None),
-                      "The linked assembly.");
+    ADD_PROPERTY_TYPE(
+        LinkedObject,
+        (nullptr),
+        "General",
+        (App::PropertyType)(App::Prop_None),
+        "The linked assembly."
+    );
 }
 
 AssemblyLink::~AssemblyLink() = default;
@@ -101,12 +105,32 @@ void AssemblyLink::onChanged(const App::Property* prop)
     if (prop == &Rigid) {
         Base::Placement movePlc;
 
+        // A flexible sub-assembly cannot be grounded.
+        // If a rigid sub-assembly has an object that is grounded, we also remove it.
+        auto groundedJoints = getParentAssembly()->getGroundedJoints();
+        for (auto* joint : groundedJoints) {
+            auto* propObj = dynamic_cast<App::PropertyLink*>(
+                joint->getPropertyByName("ObjectToGround")
+            );
+            if (!propObj) {
+                continue;
+            }
+            auto* groundedObj = propObj->getValue();
+            if (auto* linkElt = dynamic_cast<App::LinkElement*>(groundedObj)) {
+                // hasObject does not handle link groups so we must handle it manually.
+                groundedObj = linkElt->getLinkGroup();
+            }
+
+            if (Rigid.getValue() ? hasObject(groundedObj) : groundedObj == this) {
+                getDocument()->removeObject(joint->getNameInDocument());
+            }
+        }
+
         if (Rigid.getValue()) {
             // movePlc needs to be computed before updateContents.
             App::DocumentObject* firstLink = nullptr;
             for (auto* obj : Group.getValues()) {
-                if (obj
-                    && (obj->isDerivedFrom<App::Link>() || obj->isDerivedFrom<AssemblyLink>())) {
+                if (obj && (obj->isDerivedFrom<App::Link>() || obj->isDerivedFrom<AssemblyLink>())) {
                     firstLink = obj;
                     break;
                 }
@@ -123,9 +147,11 @@ void AssemblyLink::onChanged(const App::Property* prop)
 
                 if (sourceObj) {
                     auto* propSource = dynamic_cast<App::PropertyPlacement*>(
-                        sourceObj->getPropertyByName("Placement"));
+                        sourceObj->getPropertyByName("Placement")
+                    );
                     auto* propLink = dynamic_cast<App::PropertyPlacement*>(
-                        firstLink->getPropertyByName("Placement"));
+                        firstLink->getPropertyByName("Placement")
+                    );
 
                     if (propSource && propLink) {
                         movePlc = propLink->getValue() * propSource->getValue().inverse();
@@ -159,8 +185,8 @@ void AssemblyLink::onChanged(const App::Property* prop)
 
                     if (obj->isLinkGroup()) {
                         auto* srcLink = static_cast<App::Link*>(obj);
-                        const std::vector<App::DocumentObject*> srcElements =
-                            srcLink->ElementList.getValues();
+                        const std::vector<App::DocumentObject*> srcElements
+                            = srcLink->ElementList.getValues();
 
                         for (auto elt : srcElements) {
                             if (!elt) {
@@ -168,7 +194,8 @@ void AssemblyLink::onChanged(const App::Property* prop)
                             }
 
                             auto* prop = dynamic_cast<App::PropertyPlacement*>(
-                                elt->getPropertyByName("Placement"));
+                                elt->getPropertyByName("Placement")
+                            );
                             if (prop) {
                                 prop->setValue(plc * prop->getValue());
                             }
@@ -176,7 +203,8 @@ void AssemblyLink::onChanged(const App::Property* prop)
                     }
                     else {
                         auto* prop = dynamic_cast<App::PropertyPlacement*>(
-                            obj->getPropertyByName("Placement"));
+                            obj->getPropertyByName("Placement")
+                        );
                         if (prop) {
                             prop->setValue(plc * prop->getValue());
                         }
@@ -195,6 +223,79 @@ void AssemblyLink::onChanged(const App::Property* prop)
         return;
     }
     App::Part::onChanged(prop);
+}
+
+void AssemblyLink::updateParentJoints()
+{
+    AssemblyObject* parent = getParentAssembly();
+    if (!parent) {
+        return;
+    }
+
+    bool rigid = Rigid.getValue();
+    // Iterate joints in the immediate parent assembly only (recursive=false)
+    for (auto* joint : parent->getJoints(false, false)) {
+        for (const char* refName : {"Reference1", "Reference2"}) {
+            auto* prop = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(refName));
+            if (!prop) {
+                continue;
+            }
+            App::DocumentObject* refObj = prop->getValue();
+            if (!refObj) {
+                continue;
+            }
+
+            if (rigid) {  // Flexible -> Rigid
+                if (hasObject(refObj)) {
+                    // The joint currently points to a child (refObj) inside this AssemblyLink.
+                    // We must repoint it to 'this' and prepend the child's name to the sub-elements.
+                    std::vector<std::string> subs = prop->getSubValues();
+                    std::vector<std::string> newSubs;
+                    std::string prefix = refObj->getNameInDocument();
+                    prefix += ".";
+                    for (const auto& s : subs) {
+                        newSubs.push_back(prefix + s);
+                    }
+                    prop->setValue(this);
+                    prop->setSubValues(std::move(newSubs));
+                }
+            }
+            else {  // Rigid -> Flexible
+                if (refObj == this) {
+                    // The joint currently points to 'this'.
+                    // We must extract the child's name from the sub-element, point to the child,
+                    // and strip the prefix.
+                    std::vector<std::string> subs = prop->getSubValues();
+                    if (subs.empty()) {
+                        continue;
+                    }
+                    std::vector<std::string> parts = Base::Tools::splitSubName(subs[0]);
+                    if (parts.empty()) {
+                        continue;
+                    }
+                    std::string childName = parts[0];
+                    App::DocumentObject* child = getDocument()->getObject(childName.c_str());
+                    if (child && hasObject(child)) {
+                        std::vector<std::string> newSubs;
+                        size_t prefixLen = childName.length() + 1;  // "Name."
+                        for (const auto& s : subs) {
+                            if (s.length() >= prefixLen) {
+                                newSubs.push_back(s.substr(prefixLen));
+                            }
+                            else {
+                                newSubs.push_back(s);
+                            }
+                        }
+                        prop->setValue(child);
+                        prop->setSubValues(std::move(newSubs));
+                    }
+                }
+            }
+        }
+        if (joint->isTouched()) {
+            joint->recomputeFeature();
+        }
+    }
 }
 
 void AssemblyLink::updateContents()
@@ -224,8 +325,41 @@ void AssemblyLink::synchronizeComponents()
     std::vector<App::DocumentObject*> assemblyGroup = assembly->Group.getValues();
     std::vector<App::DocumentObject*> assemblyLinkGroup = Group.getValues();
 
-    // We check if a component needs to be added to the AssemblyLink
+    // Filter out child objects from Part-workbench features to get only top-level components.
+    // An object is considered a child if it's referenced by another object's 'Base', 'Tool',
+    // or 'Shapes' property within the same group.
+    std::set<App::DocumentObject*> children;
     for (auto* obj : assemblyGroup) {
+        if (auto* partFeat = dynamic_cast<PartApp::Feature*>(obj)) {
+            if (auto* prop = dynamic_cast<App::PropertyLink*>(partFeat->getPropertyByName("Base"))) {
+                if (prop->getValue()) {
+                    children.insert(prop->getValue());
+                }
+            }
+            if (auto* prop = dynamic_cast<App::PropertyLink*>(partFeat->getPropertyByName("Tool"))) {
+                if (prop->getValue()) {
+                    children.insert(prop->getValue());
+                }
+            }
+            if (auto* prop
+                = dynamic_cast<App::PropertyLinkList*>(partFeat->getPropertyByName("Shapes"))) {
+                for (auto* shapeObj : prop->getValues()) {
+                    children.insert(shapeObj);
+                }
+            }
+        }
+    }
+
+    std::vector<App::DocumentObject*> topLevelComponents;
+    std::copy_if(
+        assemblyGroup.begin(),
+        assemblyGroup.end(),
+        std::back_inserter(topLevelComponents),
+        [&children](App::DocumentObject* obj) { return children.find(obj) == children.end(); }
+    );
+
+    // We check if a component needs to be added to the AssemblyLink
+    for (auto* obj : topLevelComponents) {
         if (!obj->isDerivedFrom<App::Part>() && !obj->isDerivedFrom<PartApp::Feature>()
             && !obj->isDerivedFrom<App::Link>()) {
             continue;
@@ -258,11 +392,11 @@ void AssemblyLink::synchronizeComponents()
                         // same number of elements.
                         linkGroupsAdded.insert(srcLink);
 
-                        const std::vector<App::DocumentObject*> srcElements =
-                            srcLink->ElementList.getValues();
-                        const std::vector<App::DocumentObject*> newElements =
-                            link2->ElementList.getValues();
-                        for (int i = 0; i < srcElements.size(); ++i) {
+                        const std::vector<App::DocumentObject*> srcElements
+                            = srcLink->ElementList.getValues();
+                        const std::vector<App::DocumentObject*> newElements
+                            = link2->ElementList.getValues();
+                        for (size_t i = 0; i < srcElements.size(); ++i) {
                             objLinkMap[srcElements[i]] = newElements[i];
                         }
                         break;
@@ -289,8 +423,8 @@ void AssemblyLink::synchronizeComponents()
             if (obj->isDerivedFrom<AssemblyLink>()) {
                 auto* asmLink = static_cast<AssemblyLink*>(obj);
 
-                App::DocumentObject* newObj =
-                    doc->addObject("Assembly::AssemblyLink", obj->getNameInDocument());
+                App::DocumentObject* newObj
+                    = doc->addObject("Assembly::AssemblyLink", obj->getNameInDocument());
                 auto* subAsmLink = static_cast<AssemblyLink*>(newObj);
                 subAsmLink->LinkedObject.setValue(obj);
                 subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());
@@ -301,19 +435,18 @@ void AssemblyLink::synchronizeComponents()
             else if (obj->isDerivedFrom<App::Link>() && obj->isLinkGroup()) {
                 auto* srcLink = static_cast<App::Link*>(obj);
 
-                auto* newLink =
-                    static_cast<App::Link*>(doc->addObject("App::Link", obj->getNameInDocument()));
+                auto* newLink = static_cast<App::Link*>(
+                    doc->addObject("App::Link", obj->getNameInDocument())
+                );
                 newLink->LinkedObject.setValue(srcLink->getTrueLinkedObject(false));
 
                 newLink->Label.setValue(obj->Label.getValue());
                 addObject(newLink);
 
                 newLink->ElementCount.setValue(srcLink->ElementCount.getValue());
-                const std::vector<App::DocumentObject*> srcElements =
-                    srcLink->ElementList.getValues();
-                const std::vector<App::DocumentObject*> newElements =
-                    newLink->ElementList.getValues();
-                for (int i = 0; i < srcElements.size(); ++i) {
+                const std::vector<App::DocumentObject*> srcElements = srcLink->ElementList.getValues();
+                const std::vector<App::DocumentObject*> newElements = newLink->ElementList.getValues();
+                for (size_t i = 0; i < srcElements.size(); ++i) {
                     auto* newObj = newElements[i];
                     auto* srcObj = srcElements[i];
                     if (newObj && srcObj) {
@@ -367,9 +500,11 @@ void AssemblyLink::synchronizeComponents()
 namespace
 {
 template<typename T>
-void copyPropertyIfDifferent(App::DocumentObject* source,
-                             App::DocumentObject* target,
-                             const char* propertyName)
+void copyPropertyIfDifferent(
+    App::DocumentObject* source,
+    App::DocumentObject* target,
+    const char* propertyName
+)
 {
     auto sourceProp = freecad_cast<T*>(source->getPropertyByName(propertyName));
     auto targetProp = freecad_cast<T*>(target->getPropertyByName(propertyName));
@@ -378,7 +513,7 @@ void copyPropertyIfDifferent(App::DocumentObject* source,
     }
 }
 
-std::string removeUpToName(const std::string& sub, const std::string& name)
+[[maybe_unused]] std::string removeUpToName(const std::string& sub, const std::string& name)
 {
     size_t pos = sub.find(name);
     if (pos != std::string::npos) {
@@ -392,8 +527,11 @@ std::string removeUpToName(const std::string& sub, const std::string& name)
     return sub;
 }
 
-std::string
-replaceLastOccurrence(const std::string& str, const std::string& oldStr, const std::string& newStr)
+[[maybe_unused]] std::string replaceLastOccurrence(
+    const std::string& str,
+    const std::string& oldStr,
+    const std::string& newStr
+)
 {
     size_t pos = str.rfind(oldStr);
     if (pos != std::string::npos) {
@@ -415,8 +553,7 @@ void AssemblyLink::synchronizeJoints()
 
     JointGroup* jGroup = ensureJointGroup();
 
-    std::vector<App::DocumentObject*> assemblyJoints =
-        assembly->getJoints(assembly->isTouched(), false, false);
+    std::vector<App::DocumentObject*> assemblyJoints = assembly->getJoints(false, false);
     std::vector<App::DocumentObject*> assemblyLinkJoints = getJoints();
 
     // We delete the excess of joints if any
@@ -467,99 +604,67 @@ void AssemblyLink::synchronizeJoints()
 
     assemblyLinkJoints = getJoints();
 
-    AssemblyObject::recomputeJointPlacements(assemblyLinkJoints);
-
     for (auto* joint : assemblyLinkJoints) {
         joint->purgeTouched();
     }
 }
 
 
-void AssemblyLink::handleJointReference(App::DocumentObject* joint,
-                                        App::DocumentObject* lJoint,
-                                        const char* refName)
+void AssemblyLink::handleJointReference(
+    App::DocumentObject* joint,
+    App::DocumentObject* lJoint,
+    const char* refName
+)
 {
-    AssemblyObject* assembly = getLinkedAssembly();
-
-    auto prop1 = dynamic_cast<App::PropertyXLinkSubHidden*>(joint->getPropertyByName(refName));
-    auto prop2 = dynamic_cast<App::PropertyXLinkSubHidden*>(lJoint->getPropertyByName(refName));
+    auto prop1 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(refName));
+    auto prop2 = dynamic_cast<App::PropertyXLinkSub*>(lJoint->getPropertyByName(refName));
     if (!prop1 || !prop2) {
         return;
     }
 
-    App::DocumentObject* obj1 = nullptr;
-    App::DocumentObject* obj2 = prop2->getValue();
-    std::vector<std::string> subs1 = prop1->getSubValues();
-    std::vector<std::string> subs2 = prop2->getSubValues();
-    if (subs1.empty()) {
+    // 1. Get the external component prop1 is [ExternalPart, "Sub"]
+    App::DocumentObject* externalComponent = prop1->getValue();
+    if (!externalComponent) {
         return;
     }
 
-    // Example :
-    // Obj1 = docA-Asm1 Subs1 = ["part1.body.pad.face0", "part1.body.pad.vertex1"]
-    // Obj1 = docA-Part Subs1 = ["Asm1.part1.body.pad.face0", "Asm1.part1.body.pad.vertex1"] // some
-    // user may put the assembly inside a part... should become : Obj2 = docB-Asm2 Subs2 =
-    // ["Asm1Link.part1.linkTobody.pad.face0", "Asm1Link.part1.linkTobody.pad.vertex1"] Obj2 =
-    // docB-Part Sub2 = ["Asm2.Asm1Link.part1.linkTobody.pad.face0",
-    // "Asm2.Asm1Link.part1.linkTobody.pad.vertex1"]
-
-    std::string asmLink = getNameInDocument();
-    for (auto& sub : subs1) {
-        // First let's remove 'Asm1' name and everything before if any.
-        sub = removeUpToName(sub, assembly->getNameInDocument());
-        // Then we add the assembly link name.
-        sub = asmLink + "." + sub;
-        // Then the question is, is there more to prepend? Because the parent assembly may have some
-        // parents So we check assemblyLink parents and prepend necessary parents.
-        bool first = true;
-        std::vector<App::DocumentObject*> inList = getInList();
-        int limit = 0;
-        while (!inList.empty() && limit < 20) {
-            ++limit;
-            bool found = false;
-            for (auto* obj : inList) {
-                if (obj->isDerivedFrom<App::Part>()) {
-                    found = true;
-                    if (first) {
-                        first = false;
-                    }
-                    else {
-                        std::string obj1Name = obj1->getNameInDocument();
-                        sub = obj1Name + "." + sub;
-                    }
-                    obj1 = obj;
-                    break;
-                }
-            }
-            if (found) {
-                inList = obj1->getInList();
-            }
-            else {
-                inList = {};
-            }
-        }
-
-        // Lastly we need to replace the object name by its link name.
-        auto* obj = getObjFromRef(prop1);
-        auto* link = objLinkMap[obj];
-        if (!obj || !link) {
-            return;
-        }
-        std::string objName = obj->getNameInDocument();
-        std::string linkName = link->getNameInDocument();
-        sub = replaceLastOccurrence(sub, objName, linkName);
+    // 2. Map to local link
+    auto it = objLinkMap.find(externalComponent);
+    if (it == objLinkMap.end()) {
+        Base::Console().warning(
+            "AssemblyLink: Could not map external component %s to a local link for joint %s\n",
+            externalComponent->getNameInDocument(),
+            joint->getNameInDocument()
+        );
+        return;
     }
-    // Now obj1 and the subs1 are what should be in obj2 and subs2 if the joint did not changed
-    if (obj1 != obj2) {
-        prop2->setValue(obj1);
+    App::DocumentObject* localLink = it->second;
+
+    // 3. Set the new reference
+    // The local joint now points to the local link [LocalLink, "Sub"]
+    if (prop2->getValue() != localLink) {
+        prop2->setValue(localLink);
     }
+
+    // 4. Sync sub-elements
+    // The sub-elements (e.g. "Body.Face1") are relative to the component.
+    // Since the LocalLink points to the ExternalPart, the relative path is identical.
+    std::vector<std::string> subs1 = prop1->getSubValues();
+    std::vector<std::string> subs2 = prop2->getSubValues();
+
     bool changed = false;
-    for (size_t i = 0; i < subs1.size(); ++i) {
-        if (i >= subs2.size() || subs1[i] != subs2[i]) {
-            changed = true;
-            break;
+    if (subs1.size() != subs2.size()) {
+        changed = true;
+    }
+    else {
+        for (size_t i = 0; i < subs1.size(); ++i) {
+            if (subs1[i] != subs2[i]) {
+                changed = true;
+                break;
+            }
         }
     }
+
     if (changed) {
         prop2->setSubValues(std::move(subs1));
     }

@@ -22,12 +22,11 @@
  ***************************************************************************/
 
 
-
 #include "SelectionObserverPython.h"
 #include <Base/Interpreter.h>
 
 
-FC_LOG_LEVEL_INIT("Selection",false,true,true)
+FC_LOG_LEVEL_INIT("Selection", false, true, true)
 
 using namespace Gui;
 
@@ -36,7 +35,7 @@ std::vector<SelectionObserverPython*> SelectionObserverPython::_instances;
 void SelectionObserverPythonHandler::init(PyObject* obj)
 {
 #undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_GetCallable(obj,#_name,py_##_name);
+#define FC_PY_ELEMENT(_name) FC_PY_GetCallable(obj, #_name, py_##_name);
     FC_PY_SEL_OBSERVER
 }
 
@@ -55,52 +54,53 @@ SelectionObserverPythonHandler::~SelectionObserverPythonHandler()
 
 void SelectionObserverPythonHandler::handleSelectionChanged(const SelectionChanges& msg)
 {
-    switch (msg.Type)
-    {
-    case SelectionChanges::AddSelection:
-        addSelection(msg);
-        break;
-    case SelectionChanges::RmvSelection:
-        removeSelection(msg);
-        break;
-    case SelectionChanges::SetSelection:
-        setSelection(msg);
-        break;
-    case SelectionChanges::ClrSelection:
-        clearSelection(msg);
-        break;
-    case SelectionChanges::SetPreselect:
-        setPreselection(msg);
-        break;
-    case SelectionChanges::RmvPreselect:
-        removePreselection(msg);
-        break;
-    case SelectionChanges::PickedListChanged:
-        pickedListChanged();
-        break;
-    default:
-        break;
+    switch (msg.Type) {
+        case SelectionChanges::AddSelection:
+            addSelection(msg);
+            break;
+        case SelectionChanges::RmvSelection:
+            removeSelection(msg);
+            break;
+        case SelectionChanges::SetSelection:
+            setSelection(msg);
+            break;
+        case SelectionChanges::ClrSelection:
+            clearSelection(msg);
+            break;
+        case SelectionChanges::SetPreselect:
+            setPreselection(msg);
+            break;
+        case SelectionChanges::RmvPreselect:
+            removePreselection(msg);
+            break;
+        case SelectionChanges::PickedListChanged:
+            pickedListChanged();
+            break;
+        default:
+            break;
     }
 }
 
 void SelectionObserverPythonHandler::pickedListChanged()
 {
-    if(py_pickedListChanged.isNone())
+    if (py_pickedListChanged.isNone()) {
         return;
+    }
     Base::PyGILStateLocker lock;
     try {
         Py::Callable(py_pickedListChanged).apply(Py::Tuple());
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
 
 void SelectionObserverPythonHandler::addSelection(const SelectionChanges& msg)
 {
-    if(py_addSelection.isNone())
+    if (py_addSelection.isNone()) {
         return;
+    }
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(4);
@@ -112,103 +112,109 @@ void SelectionObserverPythonHandler::addSelection(const SelectionChanges& msg)
         tuple[1] = Py::Float(msg.y);
         tuple[2] = Py::Float(msg.z);
         args.setItem(3, tuple);
-        Base::pyCall(py_addSelection.ptr(),args.ptr());
+        Base::pyCall(py_addSelection.ptr(), args.ptr());
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
 
 void SelectionObserverPythonHandler::removeSelection(const SelectionChanges& msg)
 {
-    if(py_removeSelection.isNone())
+    if (py_removeSelection.isNone()) {
         return;
+    }
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(3);
         args.setItem(0, Py::String(msg.pDocName ? msg.pDocName : ""));
         args.setItem(1, Py::String(msg.pObjectName ? msg.pObjectName : ""));
         args.setItem(2, Py::String(msg.pSubName ? msg.pSubName : ""));
-        Base::pyCall(py_removeSelection.ptr(),args.ptr());
+        Base::pyCall(py_removeSelection.ptr(), args.ptr());
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
 
 void SelectionObserverPythonHandler::setSelection(const SelectionChanges& msg)
 {
-    if(py_setSelection.isNone())
+    if (py_setSelection.isNone()) {
         return;
+    }
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::String(msg.pDocName ? msg.pDocName : ""));
-        Base::pyCall(py_setSelection.ptr(),args.ptr());
+        Base::pyCall(py_setSelection.ptr(), args.ptr());
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
 
 void SelectionObserverPythonHandler::clearSelection(const SelectionChanges& msg)
 {
-    if(py_clearSelection.isNone())
+    if (py_clearSelection.isNone()) {
         return;
+    }
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::String(msg.pDocName ? msg.pDocName : ""));
-        Base::pyCall(py_clearSelection.ptr(),args.ptr());
+        Base::pyCall(py_clearSelection.ptr(), args.ptr());
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
 
 void SelectionObserverPythonHandler::setPreselection(const SelectionChanges& msg)
 {
-    if(py_setPreselection.isNone())
+    if (py_setPreselection.isNone()) {
         return;
+    }
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(3);
         args.setItem(0, Py::String(msg.pDocName ? msg.pDocName : ""));
         args.setItem(1, Py::String(msg.pObjectName ? msg.pObjectName : ""));
         args.setItem(2, Py::String(msg.pSubName ? msg.pSubName : ""));
-        Base::pyCall(py_setPreselection.ptr(),args.ptr());
+        Base::pyCall(py_setPreselection.ptr(), args.ptr());
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
 
 void SelectionObserverPythonHandler::removePreselection(const SelectionChanges& msg)
 {
-    if(py_removePreselection.isNone())
+    if (py_removePreselection.isNone()) {
         return;
+    }
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(3);
         args.setItem(0, Py::String(msg.pDocName ? msg.pDocName : ""));
         args.setItem(1, Py::String(msg.pObjectName ? msg.pObjectName : ""));
         args.setItem(2, Py::String(msg.pSubName ? msg.pSubName : ""));
-        Base::pyCall(py_removePreselection.ptr(),args.ptr());
+        Base::pyCall(py_removePreselection.ptr(), args.ptr());
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
 
 
 SelectionObserverPython::SelectionObserverPython(const Py::Object& obj, ResolveMode resolve)
-    : SelectionObserver(true, resolve), inst(obj)
+    : SelectionObserver(true, resolve)
+    , inst(obj)
 {
     this->init(obj.ptr());
 }
@@ -222,8 +228,8 @@ void SelectionObserverPython::addObserver(const Py::Object& obj, ResolveMode res
 
 void SelectionObserverPython::removeObserver(const Py::Object& obj)
 {
-    SelectionObserverPython* obs=nullptr;
-    for (auto it =_instances.begin(); it != _instances.end(); ++it) {
+    SelectionObserverPython* obs = nullptr;
+    for (auto it = _instances.begin(); it != _instances.end(); ++it) {
         if ((*it)->inst == obj) {
             obs = *it;
             _instances.erase(it);

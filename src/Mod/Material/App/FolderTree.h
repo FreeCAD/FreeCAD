@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_FOLDERTREE_H
-#define MATERIAL_FOLDERTREE_H
+#pragma once
 
 #include <map>
 #include <memory>
@@ -121,5 +122,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_FOLDERTREE_H

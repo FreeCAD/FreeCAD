@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,19 +23,20 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderLoft_H
-#define PARTGUI_ViewProviderLoft_H
+#pragma once
 
 #include "ViewProvider.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderLoft : public ViewProvider
+class PartDesignGuiExport ViewProviderLoft: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderLoft);
 
 public:
-    enum Reference {
+    enum Reference
+    {
         Profile,
         Section,
         Both
@@ -64,7 +67,4 @@ private:
 };
 
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderLoft_H
+}  // namespace PartDesignGui

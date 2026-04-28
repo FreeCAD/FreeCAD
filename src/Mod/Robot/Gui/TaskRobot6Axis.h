@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskRobot6Axis_H
-#define GUI_TASKVIEW_TaskRobot6Axis_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Robot/App/RobotObject.h>
@@ -55,8 +56,7 @@ public:
     void setRobot(Robot::RobotObject* pcRobotObject);
 
 public Q_SLOTS:
-    void
-    setAxis(float A1, float A2, float A3, float A4, float A5, float A6, const Base::Placement& Tcp);
+    void setAxis(float A1, float A2, float A3, float A4, float A5, float A6, const Base::Placement& Tcp);
     void changeSliderA1(int value);
     void changeSliderA2(int value);
     void changeSliderA3(int value);
@@ -79,5 +79,3 @@ private:
 };
 
 }  // namespace RobotGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

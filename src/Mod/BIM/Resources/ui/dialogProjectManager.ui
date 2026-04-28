@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>443</width>
+    <width>600</width>
     <height>840</height>
    </rect>
   </property>
@@ -117,7 +117,7 @@
                <string>Create a new document without IFC support</string>
               </property>
               <property name="checked">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -130,7 +130,7 @@
                <string>Create a native IFC project in the current document</string>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>

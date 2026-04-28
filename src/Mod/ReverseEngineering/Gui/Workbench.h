@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef REENGUI_WORKBENCH_H
-#define REENGUI_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -47,6 +48,3 @@ protected:
 };
 
 }  // namespace ReverseEngineeringGui
-
-
-#endif  // REENGUI_WORKBENCH_H

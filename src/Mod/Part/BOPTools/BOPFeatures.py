@@ -29,6 +29,7 @@ __doc__ = "Helper class to create the features for Boolean operations."
 import FreeCAD
 import Part
 
+
 class BOPFeatures:
     def __init__(self, doc):
         self.doc = doc

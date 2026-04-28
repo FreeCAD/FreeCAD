@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
   tag: Erwin Aertbelien  Mon Jan 10 16:38:38 CET 2005  path_composite.h
 
@@ -41,8 +43,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_PATHCOMPOSITE_H
-#define KDL_PATHCOMPOSITE_H
+#pragma once
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -166,6 +167,3 @@ namespace KDL {
 
 
 }
-
-
-#endif

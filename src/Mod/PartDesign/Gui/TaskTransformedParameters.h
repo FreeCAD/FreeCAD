@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskTransformedParameters_H
-#define GUI_TASKVIEW_TaskTransformedParameters_H
+#pragma once
 
 #include <Gui/ComboLinks.h>
 #include <Gui/DocumentObserver.h>
@@ -70,8 +71,10 @@ class TaskTransformedParameters: public Gui::TaskView::TaskBox,
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskTransformedParameters(ViewProviderTransformed* TransformedView,
-                                       QWidget* parent = nullptr);
+    explicit TaskTransformedParameters(
+        ViewProviderTransformed* TransformedView,
+        QWidget* parent = nullptr
+    );
     /// Constructor for task with parent task (MultiTransform mode)
     explicit TaskTransformedParameters(TaskMultiTransformParameters* parentTask);
     ~TaskTransformedParameters() override;
@@ -105,8 +108,11 @@ protected:
      */
     PartDesign::Transformed* getObject() const;
 
-    template <class T>
-    T* getObject() const { return freecad_cast<T*>(getObject()); }
+    template<class T>
+    T* getObject() const
+    {
+        return freecad_cast<T*>(getObject());
+    }
 
     /// Get the sketch object of the first original either of the object associated with this
     /// feature or with the parent feature (MultiTransform mode)
@@ -236,5 +242,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

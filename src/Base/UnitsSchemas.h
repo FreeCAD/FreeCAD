@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /************************************************************************
  *                                                                      *
  *   This file is part of the FreeCAD CAx development system.           *
@@ -19,8 +21,7 @@
  *                                                                      *
  ************************************************************************/
 
-#ifndef SRC_BASE_UNITSSCHEMAS_H
-#define SRC_BASE_UNITSSCHEMAS_H
+#pragma once
 
 #include <functional>
 #include <string>
@@ -69,9 +70,7 @@ private:
     UnitsSchemasDataPack pack;
     std::unique_ptr<UnitsSchema> current {std::make_unique<UnitsSchema>(spec())};
     std::size_t denominator;
-    std::size_t decimals;
 };
 
 
 }  // namespace Base
-#endif  // SRC_BASE_UNITSSCHEMAS_H

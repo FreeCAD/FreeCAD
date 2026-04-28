@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -185,11 +187,13 @@ void Trajectory::generateTrajectory()
                             pcRoundComp = std::make_unique<KDL::Path_RoundedComposite>(
                                 3,
                                 3,
-                                new KDL::RotationalInterpolation_SingleAxis());
+                                new KDL::RotationalInterpolation_SingleAxis()
+                            );
                             // the velocity of the first waypoint is used
-                            pcVelPrf =
-                                std::make_unique<KDL::VelocityProfile_Trap>((*it)->Velocity,
-                                                                            (*it)->Acceleration);
+                            pcVelPrf = std::make_unique<KDL::VelocityProfile_Trap>(
+                                (*it)->Velocity,
+                                (*it)->Acceleration
+                            );
                             pcRoundComp->Add(Last);
                             pcRoundComp->Add(Next);
 
@@ -204,27 +208,32 @@ void Trajectory::generateTrajectory()
                             pcRoundComp->Add(Next);
                             pcRoundComp->Finish();
                             pcVelPrf->SetProfile(0, pcRoundComp->PathLength());
-                            pcTrak =
-                                std::make_unique<KDL::Trajectory_Segment>(pcRoundComp.release(),
-                                                                          pcVelPrf.release());
+                            pcTrak = std::make_unique<KDL::Trajectory_Segment>(
+                                pcRoundComp.release(),
+                                pcVelPrf.release()
+                            );
 
                             // normal block
                         }
                         else if (!Cont && !pcRoundComp) {
                             KDL::Path* pcPath;
-                            pcPath =
-                                new KDL::Path_Line(Last,
-                                                   Next,
-                                                   new KDL::RotationalInterpolation_SingleAxis(),
-                                                   1.0,
-                                                   true);
+                            pcPath = new KDL::Path_Line(
+                                Last,
+                                Next,
+                                new KDL::RotationalInterpolation_SingleAxis(),
+                                1.0,
+                                true
+                            );
 
-                            pcVelPrf =
-                                std::make_unique<KDL::VelocityProfile_Trap>((*it)->Velocity,
-                                                                            (*it)->Acceleration);
+                            pcVelPrf = std::make_unique<KDL::VelocityProfile_Trap>(
+                                (*it)->Velocity,
+                                (*it)->Acceleration
+                            );
                             pcVelPrf->SetProfile(0, pcPath->PathLength());
-                            pcTrak = std::make_unique<KDL::Trajectory_Segment>(pcPath,
-                                                                               pcVelPrf.release());
+                            pcTrak = std::make_unique<KDL::Trajectory_Segment>(
+                                pcPath,
+                                pcVelPrf.release()
+                            );
                         }
                         Last = Next;
                         break;

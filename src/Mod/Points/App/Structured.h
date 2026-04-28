@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef POINTS_VIEW_FEATURE_H
-#define POINTS_VIEW_FEATURE_H
+#pragma once
 
 #include "PointsFeature.h"
 
@@ -60,6 +61,3 @@ public:
 using StructuredCustom = App::FeatureCustomT<Structured>;
 
 }  // namespace Points
-
-
-#endif

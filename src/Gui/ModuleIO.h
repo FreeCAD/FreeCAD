@@ -21,13 +21,13 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_MODULE_IO_H
-#define GUI_MODULE_IO_H
+#pragma once
 
 #include <QCoreApplication>
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
 class GuiExport ModuleIO
 {
@@ -67,6 +67,4 @@ public:
     static void importFiles(const QStringList& filenames, const char* document);
 };
 
-}
-
-#endif // GUI_MODULE_IO_H
+}  // namespace Gui

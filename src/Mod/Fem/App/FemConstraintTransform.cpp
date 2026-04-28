@@ -36,40 +36,52 @@ static const char* TransformTypes[] = {"Cylindrical", "Rectangular", nullptr};
 
 ConstraintTransform::ConstraintTransform()
 {
-    ADD_PROPERTY_TYPE(Rotation,
-                      (Base::Rotation(0.0, 0.0, 0.0, 1.0)),
-                      "ConstraintTransform",
-                      App::Prop_Output,
-                      "Rectangular system transform");
-    ADD_PROPERTY_TYPE(TransformType,
-                      (1),
-                      "ConstraintTransform",
-                      (App::PropertyType)(App::Prop_None),
-                      "Type of transform, rectangular or cylindrical");
+    ADD_PROPERTY_TYPE(
+        Rotation,
+        (Base::Rotation(0.0, 0.0, 0.0, 1.0)),
+        "ConstraintTransform",
+        App::Prop_Output,
+        "Rectangular system transform"
+    );
+    ADD_PROPERTY_TYPE(
+        TransformType,
+        (1),
+        "ConstraintTransform",
+        (App::PropertyType)(App::Prop_None),
+        "Type of transform, rectangular or cylindrical"
+    );
     TransformType.setEnums(TransformTypes);
-    ADD_PROPERTY_TYPE(RefDispl,
-                      (nullptr, nullptr),
-                      "ConstraintTransform",
-                      (App::PropertyType)(App::Prop_None),
-                      "Elements where the constraint is applied");
+    ADD_PROPERTY_TYPE(
+        RefDispl,
+        (nullptr, nullptr),
+        "ConstraintTransform",
+        (App::PropertyType)(App::Prop_None),
+        "Elements where the constraint is applied"
+    );
     // RefDispl must get a global scope, see
     // https://forum.freecad.org/viewtopic.php?p=671402#p671402
     RefDispl.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(NameDispl,
-                      (nullptr),
-                      "ConstraintTransform",
-                      (App::PropertyType)(App::Prop_None),
-                      "Elements where the constraint is applied");
-    ADD_PROPERTY_TYPE(BasePoint,
-                      (Base::Vector3d(0, 0, 0)),
-                      "ConstraintTransform",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Base point of cylindrical surface");
-    ADD_PROPERTY_TYPE(Axis,
-                      (Base::Vector3d(0, 1, 0)),
-                      "ConstraintTransform",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Axis of cylindrical surface");
+    ADD_PROPERTY_TYPE(
+        NameDispl,
+        (nullptr),
+        "ConstraintTransform",
+        (App::PropertyType)(App::Prop_None),
+        "Elements where the constraint is applied"
+    );
+    ADD_PROPERTY_TYPE(
+        BasePoint,
+        (Base::Vector3d(0, 0, 0)),
+        "ConstraintTransform",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Base point of cylindrical surface"
+    );
+    ADD_PROPERTY_TYPE(
+        Axis,
+        (Base::Vector3d(0, 1, 0)),
+        "ConstraintTransform",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Axis of cylindrical surface"
+    );
 }
 
 App::DocumentObjectExecReturn* ConstraintTransform::execute()
@@ -170,9 +182,11 @@ Base::Rotation anglesToRotation(double xAngle, double yAngle, double zAngle)
 }  // namespace
 
 
-void ConstraintTransform::handleChangedPropertyName(Base::XMLReader& reader,
-                                                    const char* typeName,
-                                                    const char* propName)
+void ConstraintTransform::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
 {
     if (strcmp(propName, "X_rot") == 0) {
         double xAngle {};

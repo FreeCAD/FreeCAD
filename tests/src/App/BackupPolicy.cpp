@@ -25,24 +25,24 @@
 #include <gmock/gmock.h>
 
 #include "InitApplication.h"
+#include <src/TempDirectory.h>
 
 #include <App/BackupPolicy.h>
 
 #include <filesystem>
 #include <array>
 #include <fstream>
-#include <random>
 #include <regex>
 #include <string>
 
-#if defined(__cpp_lib_chrono) && __cpp_lib_chrono >= 201907L && defined(_LIBCPP_VERSION)           \
+#if defined(__cpp_lib_chrono) && __cpp_lib_chrono >= 201907L && defined(_LIBCPP_VERSION) \
     && _LIBCPP_VERSION >= 13000
 // Apple's clang compiler did not support timezones fully until a quite recent version:
 // before removing this preprocessor check, verify that it compiles on our oldest-supported
 // macOS version.
-#define CAN_USE_CHRONO_AND_FORMAT
-#include <chrono>
-#include <format>
+# define CAN_USE_CHRONO_AND_FORMAT
+# include <chrono>
+# include <format>
 #endif
 
 
@@ -52,18 +52,6 @@ protected:
     static void SetUpTestSuite()
     {
         tests::initApplication();
-    }
-
-    void SetUp() override
-    {
-        _tempDir =
-            std::filesystem::temp_directory_path() / ("fc_backup_policy-" + randomString(16));
-        std::filesystem::create_directory(_tempDir);
-    }
-
-    void TearDown() override
-    {
-        std::filesystem::remove_all(_tempDir);
     }
 
     void apply(const std::string& sourcename, const std::string& targetname)
@@ -83,7 +71,7 @@ protected:
     // method at the end of the test.
     std::filesystem::path createTempFile(const std::string& filename)
     {
-        std::filesystem::path p = _tempDir / filename;
+        std::filesystem::path p = _tempDir.path() / filename;
         std::ofstream fileStream(p.string());
         fileStream << "Test data";
         fileStream.close();
@@ -92,41 +80,23 @@ protected:
 
 
 protected:
-    std::string randomString(size_t length)
-    {
-        static constexpr std::string_view chars = "0123456789"
-                                                  "abcdefghijklmnopqrstuvwxyz"
-                                                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(0, static_cast<int>(chars.size()) - 1);
-
-        std::string result;
-        result.reserve(length);
-
-        std::ranges::generate_n(std::back_inserter(result), length, [&]() {
-            return chars[dis(gen)];
-        });
-
-        return result;
-    }
-
     std::string filenameFromDateFormatString(const std::string& fmt)
     {
 #if CAN_USE_CHRONO_AND_FORMAT
-        std::chrono::zoned_time local_time {std::chrono::current_zone(),
-                                            std::chrono::system_clock::now()};
+        std::chrono::zoned_time local_time {
+            std::chrono::current_zone(),
+            std::chrono::system_clock::now()
+        };
         std::string fmt_str = "{:" + fmt + "}";
         std::string result = std::vformat(fmt_str, std::make_format_args(local_time));
 #else
         std::time_t now = std::time(nullptr);
         std::tm local_tm {};
-#if defined(_WIN32)
+# if defined(_WIN32)
         localtime_s(&local_tm, &now);  // Windows
-#else
+# else
         localtime_r(&now, &local_tm);  // POSIX
-#endif
+# endif
         constexpr size_t bufferLength = 128;
         std::array<char, bufferLength> buffer {};
         size_t bytes = std::strftime(buffer.data(), bufferLength, fmt.c_str(), &local_tm);
@@ -141,12 +111,12 @@ protected:
 
     std::filesystem::path getTempPath()
     {
-        return _tempDir;
+        return _tempDir.path();
     }
 
 private:
     App::BackupPolicy _policy;
-    std::filesystem::path _tempDir;
+    tests::TempDirectory _tempDir {"fc_backup_policy"};
 };
 
 TEST_F(BackupPolicyTest, StandardSourceDoesNotExist)
@@ -411,11 +381,13 @@ TEST_F(BackupPolicyTest, DISABLED_TimestampWithAbsurdlyLongFormatStringThrows)
     // OPERATIONS, AND GENERATES AN INVALID FILENAME. FIXME.
 
     // Arrange
-    setPolicyTerms(App::BackupPolicy::Policy::TimeStamp,
-                   1,
-                   true,
-                   "%A, %B %d, %Y at %H:%M:%S %Z (Day %j of the year, Week %U/%W) — This is a "
-                   "verbose date string for demonstration purposes.");
+    setPolicyTerms(
+        App::BackupPolicy::Policy::TimeStamp,
+        1,
+        true,
+        "%A, %B %d, %Y at %H:%M:%S %Z (Day %j of the year, Week %U/%W) — This is a "
+        "verbose date string for demonstration purposes."
+    );
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
 
@@ -436,7 +408,8 @@ TEST_F(BackupPolicyTest, TimestampDetectsOldBackupFormat)
 
     // Assert
     bool check1 = std::filesystem::exists(
-        getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak"));
+        getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak")
+    );
     bool check2 = std::filesystem::exists(backup);
     EXPECT_NE(check1, check2);
 }
@@ -455,7 +428,8 @@ TEST_F(BackupPolicyTest, TimestampDetectsOldBackupFormatIgnoresOther)
 
     // Assert
     bool check1 = std::filesystem::exists(
-        getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak"));
+        getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak")
+    );
     bool check2 = std::filesystem::exists(backup);
     EXPECT_NE(check1, check2);
     EXPECT_TRUE(std::filesystem::exists(weird));
@@ -473,8 +447,11 @@ TEST_F(BackupPolicyTest, TimestampDetectsAndRetainsOldBackupWhenAllowed)
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(
-        getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak")));
+    EXPECT_TRUE(
+        std::filesystem::exists(
+            getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak")
+        )
+    );
     EXPECT_TRUE(std::filesystem::exists(backup));
 }
 
@@ -489,8 +466,11 @@ TEST_F(BackupPolicyTest, TimestampFormatStringEndsWithSpace)
     apply(source.string(), target.string());
 
     // Assert (the space is stripped, and an index is added)
-    EXPECT_TRUE(std::filesystem::exists(
-        getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "1.FCBak")));
+    EXPECT_TRUE(
+        std::filesystem::exists(
+            getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "1.FCBak")
+        )
+    );
 }
 
 TEST_F(BackupPolicyTest, TimestampFormatStringEndsWithDash)
@@ -504,8 +484,11 @@ TEST_F(BackupPolicyTest, TimestampFormatStringEndsWithDash)
     apply(source.string(), target.string());
 
     // Assert (the dash is left, and an index is added)
-    EXPECT_TRUE(std::filesystem::exists(
-        getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "-1.FCBak")));
+    EXPECT_TRUE(
+        std::filesystem::exists(
+            getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "-1.FCBak")
+        )
+    );
 }
 
 TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExists)
@@ -521,8 +504,11 @@ TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExists)
 
     // Assert (An index is appended)
     EXPECT_TRUE(std::filesystem::exists(backup));
-    EXPECT_TRUE(std::filesystem::exists(
-        getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "-1.FCBak")));
+    EXPECT_TRUE(
+        std::filesystem::exists(
+            getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "-1.FCBak")
+        )
+    );
 }
 
 TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExistsMultipleTimes)
@@ -532,12 +518,9 @@ TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExistsMultipleTimes)
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
     auto backup = createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak");
-    auto backup1 =
-        createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + "-1.FCBak");
-    auto backup2 =
-        createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + "-2.FCBak");
-    auto backup3 =
-        createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + "-3.FCBak");
+    auto backup1 = createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + "-1.FCBak");
+    auto backup2 = createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + "-2.FCBak");
+    auto backup3 = createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + "-3.FCBak");
 
     // Act
     apply(source.string(), target.string());
@@ -547,6 +530,9 @@ TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExistsMultipleTimes)
     EXPECT_TRUE(std::filesystem::exists(backup1));
     EXPECT_TRUE(std::filesystem::exists(backup2));
     EXPECT_TRUE(std::filesystem::exists(backup3));
-    EXPECT_TRUE(std::filesystem::exists(
-        getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "-4.FCBak")));
+    EXPECT_TRUE(
+        std::filesystem::exists(
+            getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "-4.FCBak")
+        )
+    );
 }

@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_MULTISAMPLE_H
-#define GUI_MULTISAMPLE_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -35,12 +34,14 @@ namespace Gui
 {
 
 /** @name Anti-Aliasing modes of the rendered 3D scene
-  * Specifies Anti-Aliasing (AA) method
-  * - Smoothing enables OpenGL line and vertex smoothing (basically deprecated)
-  * - MSAA is hardware multi sampling (with 2, 4, 6 or 8 passes), a quite common and efficient AA technique
-  */
+ * Specifies Anti-Aliasing (AA) method
+ * - Smoothing enables OpenGL line and vertex smoothing (basically deprecated)
+ * - MSAA is hardware multi sampling (with 2, 4, 6 or 8 passes), a quite common and efficient AA
+ * technique
+ */
 //@{
-enum class AntiAliasing {
+enum class AntiAliasing
+{
     None = 0,
     MSAA1x = 1,
     MSAA2x = 2,
@@ -68,5 +69,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MULTISAMPLE_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Copyright  (C)  2007-2008  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
 // Copyright  (C)  2008  Mikael Mayer
 // Copyright  (C)  2008  Julia Jesse
@@ -21,8 +23,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDLCHAINIKSOLVERPOS_NR_JL_HPP
-#define KDLCHAINIKSOLVERPOS_NR_JL_HPP
+#pragma once
 
 #include "chainiksolver.hpp"
 #include "chainfksolver.hpp"
@@ -78,5 +79,3 @@ namespace KDL {
     };
 
 }
-
-#endif

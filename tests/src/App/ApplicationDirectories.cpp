@@ -43,14 +43,19 @@ class ApplicationDirectoriesTestClass: public App::ApplicationDirectories
     using App::ApplicationDirectories::ApplicationDirectories;
 
 public:
-    void wrapAppendVersionIfPossible(const fs::path& basePath,
-                                     std::vector<std::string>& subdirs) const
+    void wrapAppendVersionIfPossible(const fs::path& basePath, std::vector<std::string>& subdirs) const
     {
-        appendVersionIfPossible(basePath, subdirs);
+        appendVersionIfPossible(basePath, subdirs, MissingDirectoryBehavior::doNotAppend);
     }
 
-    std::tuple<int, int>
-    wrapExtractVersionFromConfigMap(const std::map<std::string, std::string>& config)
+    void wrapAppendVersionIfPossibleCreate(const fs::path& basePath, std::vector<std::string>& subdirs) const
+    {
+        appendVersionIfPossible(basePath, subdirs, MissingDirectoryBehavior::create);
+    }
+
+    std::tuple<int, int> wrapExtractVersionFromConfigMap(
+        const std::map<std::string, std::string>& config
+    )
     {
         return extractVersionFromConfigMap(config);
     }
@@ -69,14 +74,17 @@ protected:
         _tempDir = MakeUniqueTempDir();
     }
 
-    std::map<std::string, std::string>
-    generateConfig(const std::map<std::string, std::string>& overrides) const
+    std::map<std::string, std::string> generateConfig(
+        const std::map<std::string, std::string>& overrides
+    ) const
     {
-        std::map<std::string, std::string> config {{"AppHomePath", _tempDir.string()},
-                                                   {"ExeVendor", "Vendor"},
-                                                   {"ExeName", "Test"},
-                                                   {"BuildVersionMajor", "4"},
-                                                   {"BuildVersionMinor", "2"}};
+        std::map<std::string, std::string> config {
+            {"AppHomePath", _tempDir.string()},
+            {"ExeVendor", "Vendor"},
+            {"ExeName", "Test"},
+            {"BuildVersionMajor", "4"},
+            {"BuildVersionMinor", "2"}
+        };
         for (const auto& override : overrides) {
             config[override.first] = override.second;
         }
@@ -85,8 +93,10 @@ protected:
 
     std::unique_ptr<ApplicationDirectoriesTestClass> makeAppDirsForVersion(int major, int minor)
     {
-        auto configuration = generateConfig({{"BuildVersionMajor", std::to_string(major)},
-                                             {"BuildVersionMinor", std::to_string(minor)}});
+        auto configuration = generateConfig(
+            {{"BuildVersionMajor", std::to_string(major)},
+             {"BuildVersionMinor", std::to_string(minor)}}
+        );
         return std::make_unique<ApplicationDirectoriesTestClass>(configuration);
     }
 
@@ -136,8 +146,10 @@ TEST_F(ApplicationDirectoriesTest, usingCurrentVersionConfigFalseWhenDirDoesntMa
         / App::ApplicationDirectories::versionStringForPath(major, minor);
 
     // Act: generate a directory structure with the same version
-    auto configuration = generateConfig({{"BuildVersionMajor", std::to_string(major + 1)},
-                                         {"BuildVersionMinor", std::to_string(minor)}});
+    auto configuration = generateConfig(
+        {{"BuildVersionMajor", std::to_string(major + 1)},
+         {"BuildVersionMinor", std::to_string(minor)}}
+    );
     auto appDirs = std::make_unique<App::ApplicationDirectories>(configuration);
 
     // Assert
@@ -216,8 +228,10 @@ TEST_F(ApplicationDirectoriesTest, mostRecentAvailReturnsExactCurrentVersionIfDi
     auto appDirs = makeAppDirsForVersion(5, 4);
     fs::create_directories(versionedPath(tempDir(), 5, 4));
 
-    EXPECT_EQ(appDirs->mostRecentAvailableConfigVersion(tempDir()),
-              App::ApplicationDirectories::versionStringForPath(5, 4));
+    EXPECT_EQ(
+        appDirs->mostRecentAvailableConfigVersion(tempDir()),
+        App::ApplicationDirectories::versionStringForPath(5, 4)
+    );
 }
 
 // No exact match in the current major: choose the highest available minor <= current
@@ -229,8 +243,10 @@ TEST_F(ApplicationDirectoriesTest, mostRecentAvailPrefersSameMajorAndPicksHighes
     fs::create_directories(versionedPath(tempDir(), 5, 3));
     fs::create_directories(versionedPath(tempDir(), 4, 99));  // distractor in lower major
 
-    EXPECT_EQ(appDirs->mostRecentAvailableConfigVersion(tempDir()),
-              App::ApplicationDirectories::versionStringForPath(5, 3));
+    EXPECT_EQ(
+        appDirs->mostRecentAvailableConfigVersion(tempDir()),
+        App::ApplicationDirectories::versionStringForPath(5, 3)
+    );
 }
 
 // No directories in current major: scan next lower major from 99 downward,
@@ -241,8 +257,10 @@ TEST_F(ApplicationDirectoriesTest, mostRecentAvailForLowerMajorPicksHighestAvail
     fs::create_directories(versionedPath(tempDir(), 4, 3));
     fs::create_directories(versionedPath(tempDir(), 4, 42));
 
-    EXPECT_EQ(appDirs->mostRecentAvailableConfigVersion(tempDir()),
-              App::ApplicationDirectories::versionStringForPath(4, 42));
+    EXPECT_EQ(
+        appDirs->mostRecentAvailableConfigVersion(tempDir()),
+        App::ApplicationDirectories::versionStringForPath(4, 42)
+    );
 }
 
 // If the candidate path exists but is a regular file, it must be ignored and
@@ -253,8 +271,10 @@ TEST_F(ApplicationDirectoriesTest, mostRecentAvailSkipsFilesAndFallsBackToNextDi
     touchFile(versionedPath(tempDir(), 5, 4));               // file at the current version
     fs::create_directories(versionedPath(tempDir(), 5, 3));  // directory at next lower minor
 
-    EXPECT_EQ(appDirs->mostRecentAvailableConfigVersion(tempDir()),
-              App::ApplicationDirectories::versionStringForPath(5, 3));
+    EXPECT_EQ(
+        appDirs->mostRecentAvailableConfigVersion(tempDir()),
+        App::ApplicationDirectories::versionStringForPath(5, 3)
+    );
 }
 
 // Higher minor in the current major is not considered (loop starts at the current minor);
@@ -262,12 +282,13 @@ TEST_F(ApplicationDirectoriesTest, mostRecentAvailSkipsFilesAndFallsBackToNextDi
 TEST_F(ApplicationDirectoriesTest, mostRecentAvailIgnoresHigherMinorThanCurrentInSameMajor)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
-    fs::create_directories(
-        versionedPath(tempDir(), 5, 7));  // higher than the current minor; ignored
+    fs::create_directories(versionedPath(tempDir(), 5, 7));  // higher than the current minor; ignored
     fs::create_directories(versionedPath(tempDir(), 4, 1));  // fallback target
 
-    EXPECT_EQ(appDirs->mostRecentAvailableConfigVersion(tempDir()),
-              App::ApplicationDirectories::versionStringForPath(4, 1));
+    EXPECT_EQ(
+        appDirs->mostRecentAvailableConfigVersion(tempDir()),
+        App::ApplicationDirectories::versionStringForPath(4, 1)
+    );
 }
 
 // No candidates anywhere -> empty string returned.
@@ -289,8 +310,7 @@ TEST_F(ApplicationDirectoriesTest, mostRecentConfigReturnsCurrentVersionDirector
 }
 
 // The current version missing -> falls back to most recent available in same major
-TEST_F(ApplicationDirectoriesTest,
-       mostRecentConfigFallsBackToMostRecentInSameMajorWhenCurrentMissing)
+TEST_F(ApplicationDirectoriesTest, mostRecentConfigFallsBackToMostRecentInSameMajorWhenCurrentMissing)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
     // There is no directory called "5.4"; provide candidates 5.3 and 5.1; also a distractor in a
@@ -419,9 +439,10 @@ TEST_F(ApplicationDirectoriesTest, migrateConfigCreatesDestinationAndCopiesFiles
     writeFile(oldPath / "b.ini", "bravo");
 
     // Act
-    App::ApplicationDirectories::migrateConfig(oldPath, newPath);
+    auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
 
     // Assert
+    EXPECT_TRUE(result.failedPaths.empty());
     ASSERT_TRUE(fs::exists(newPath));
     ASSERT_TRUE(fs::is_directory(newPath));
 
@@ -573,6 +594,54 @@ TEST_F(ApplicationDirectoriesTest, migrateAllPathsIgnoresIfDestinationAlreadyExi
     ASSERT_NO_THROW(appDirs->migrateAllPaths(inputs));
 }
 
+// Broken symlink is skipped and counted as a failure
+TEST_F(ApplicationDirectoriesTest, migrateConfigSkipsBrokenSymlink)
+{
+    fs::path oldPath = tempDir() / "symlink_src";
+    fs::path newPath = tempDir() / "symlink_dst";
+    writeFile(oldPath / "good.txt", "ok");
+    fs::create_symlink(oldPath / "nonexistent_target", oldPath / "bad_link");
+
+    auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
+
+    EXPECT_FALSE(result.failedPaths.empty());
+    EXPECT_TRUE(fs::exists(newPath / "good.txt"));
+    EXPECT_EQ(readFile(newPath / "good.txt"), "ok");
+}
+
+// Valid symlink is copied successfully
+TEST_F(ApplicationDirectoriesTest, migrateConfigCopiesValidSymlink)
+{
+    fs::path oldPath = tempDir() / "valid_link_src";
+    fs::path newPath = tempDir() / "valid_link_dst";
+    writeFile(oldPath / "target.txt", "content");
+    fs::create_symlink(oldPath / "target.txt", oldPath / "good_link");
+
+    auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
+
+    EXPECT_TRUE(result.failedPaths.empty());
+    EXPECT_TRUE(fs::exists(newPath / "target.txt"));
+    EXPECT_TRUE(fs::exists(newPath / "good_link"));
+}
+
+// migrateAllPaths returns skipped paths
+TEST_F(ApplicationDirectoriesTest, migrateAllPathsReturnsSkippedPaths)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "fail_count";
+    fs::create_directories(base);
+    writeFile(base / "good.txt", "ok");
+    fs::create_symlink(base / "no_such_file", base / "broken");
+
+    std::vector<fs::path> inputs {base};
+    auto result = appDirs->migrateAllPaths(inputs);
+
+    EXPECT_FALSE(result.failedPaths.empty());
+    fs::path dest = versionedPath(base, 5, 4);
+    EXPECT_TRUE(fs::exists(dest / "good.txt"));
+}
+
 // Multiple inputs: one versioned, one non-versioned -> both destinations created
 TEST_F(ApplicationDirectoriesTest, migrateAllPathsProcessesMultipleInputs)
 {
@@ -604,7 +673,8 @@ TEST_F(ApplicationDirectoriesTest, appendVecAlreadyVersionedBails)
     fs::path base = tempDir() / "bail_vec";
     std::vector<std::string> sub {
         "configs",
-        App::ApplicationDirectories::versionStringForPath(5, 2)};  // versioned tail
+        App::ApplicationDirectories::versionStringForPath(5, 2)
+    };  // versioned tail
     fs::create_directories(base / sub[0] / sub[1]);
 
     auto before = sub;
@@ -704,8 +774,10 @@ TEST_F(ApplicationDirectoriesTest, extractVersionSucceedsWithPlainIntegers)
 TEST_F(ApplicationDirectoriesTest, extractVersionSucceedsWithWhitespace)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
-    std::map<std::string, std::string> m {{"BuildVersionMajor", "  10  "},
-                                          {"BuildVersionMinor", "\t3\n"}};
+    std::map<std::string, std::string> m {
+        {"BuildVersionMajor", "  10  "},
+        {"BuildVersionMinor", "\t3\n"}
+    };
     auto [maj, min] = appDirs->wrapExtractVersionFromConfigMap(m);
     EXPECT_EQ(maj, 10);
     EXPECT_EQ(min, 3);
@@ -739,8 +811,10 @@ TEST_F(ApplicationDirectoriesTest, extractVersionNonNumericThrowsRuntimeError)
 TEST_F(ApplicationDirectoriesTest, extractVersionOverflowThrowsRuntimeError)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
-    std::map<std::string, std::string> m {{"BuildVersionMajor", "9999999999999999999999999"},
-                                          {"BuildVersionMinor", "1"}};
+    std::map<std::string, std::string> m {
+        {"BuildVersionMajor", "9999999999999999999999999"},
+        {"BuildVersionMinor", "1"}
+    };
     EXPECT_THROW(appDirs->wrapExtractVersionFromConfigMap(m), Base::RuntimeError);
 }
 
@@ -771,6 +845,102 @@ TEST_F(ApplicationDirectoriesTest, sanitizeReturnsUnchangedIfNoNullCharacter)
 
     EXPECT_EQ(result.string(), input);
     EXPECT_EQ(result.string().find('\0'), std::string::npos);
+}
+
+// --- Tests for MissingDirectoryBehavior::create ---
+
+// Base exists, current version dir already present -> append current, no extra creation needed
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseExistsAppendsCurrentWhenAlreadyPresent)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_current";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(base / "configs");
+    fs::create_directories(versionedPath(base / "configs", 5, 4));
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+    EXPECT_TRUE(fs::is_directory(versionedPath(base / "configs", 5, 4)));
+}
+
+// Base exists, older version dir present -> create behavior still uses current version
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseExistsUsesCurrentEvenWhenOlderVersionPresent)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_older";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(versionedPath(base / "configs", 5, 2));
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+    EXPECT_TRUE(fs::is_directory(versionedPath(base / "configs", 5, 4)));
+}
+
+// Base exists but no versioned children -> create behavior appends current AND creates the directory
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseExistsNoVersionsAppendsAndCreatesDir)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_noversions";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(base / "configs");
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+    // The directory should have been created on disk
+    EXPECT_TRUE(fs::is_directory(versionedPath(base / "configs", 5, 4)));
+}
+
+// Contrast: doNotAppend does NOT append or create when base exists with no versioned children
+TEST_F(ApplicationDirectoriesTest, appendDoNotAppendBaseExistsNoVersionsLeavesUnchanged)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "donotappend_noversions";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(base / "configs");
+
+    auto before = sub;
+    appDirs->wrapAppendVersionIfPossible(base, sub);
+
+    EXPECT_EQ(sub, before);
+    EXPECT_FALSE(fs::exists(versionedPath(base / "configs", 5, 4)));
+}
+
+// Base does not exist -> both behaviors append current version (no directory creation needed)
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseMissingAppendsCurrentSuffix)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_missing";
+    std::vector<std::string> sub {"configs"};
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+}
+
+// Already versioned -> create behavior still bails out (no change)
+TEST_F(ApplicationDirectoriesTest, appendCreateAlreadyVersionedBails)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_bail";
+    std::vector<std::string> sub {"configs", App::ApplicationDirectories::versionStringForPath(5, 2)};
+    fs::create_directories(base / sub[0] / sub[1]);
+
+    auto before = sub;
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+    EXPECT_EQ(sub, before);
 }
 
 /* NOLINTEND(

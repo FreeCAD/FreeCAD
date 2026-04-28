@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014-2015 Nathan Miller <Nathan.A.Mill[at]gmail.com>    *
  *                           Balázs Bámer                                  *
@@ -21,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEATUREGEOMFILLSURFACE_H
-#define FEATUREGEOMFILLSURFACE_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
@@ -47,9 +48,11 @@ public:
     void initValidator();
     void checkEdge(const TopoDS_Shape& shape);
     void checkAndAdd(const TopoDS_Shape& shape, Handle(ShapeExtend_WireData) * aWD = nullptr);
-    void checkAndAdd(const Part::TopoShape& ts,
-                     const char* subName,
-                     Handle(ShapeExtend_WireData) * aWire = nullptr);
+    void checkAndAdd(
+        const Part::TopoShape& ts,
+        const char* subName,
+        Handle(ShapeExtend_WireData) * aWire = nullptr
+    );
 
     bool isBezier() const
     {
@@ -94,5 +97,3 @@ private:
 };
 
 }  // namespace Surface
-
-#endif  // FEATUREGEOMFILLSURFACE_H

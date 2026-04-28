@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,45 +23,49 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderTransformed_H
-#define PARTGUI_ViewProviderTransformed_H
+#pragma once
 
 #include "ViewProvider.h"
 
 #include <Inventor/nodes/SoMultipleCopy.h>
 
-namespace PartDesign {
-    class Transformed;
+namespace PartDesign
+{
+class Transformed;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskDlgTransformedParameters;
 
-class PartDesignGuiExport ViewProviderTransformed : public ViewProvider
+class PartDesignGuiExport ViewProviderTransformed: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderTransformed);
 
 public:
     ViewProviderTransformed() = default;
-    ~ViewProviderTransformed() override  = default;
+    ~ViewProviderTransformed() override = default;
 
     // The feature name of the subclass
-    virtual const std::string & featureName() const;
+    virtual const std::string& featureName() const;
     std::string featureIcon() const;
 
-    void recomputeFeature(bool recompute=true);
+    void recomputeFeature(bool recompute = true);
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// signals if the transformation contains errors
-    boost::signals2::signal<void (QString msg)> signalDiagnosis;
+    fastsignals::signal<void(QString msg)> signalDiagnosis;
 
     // Name of menu dialog
     QString menuName;
 
-    Gui::ViewProvider *startEditing(int ModNum=0) override;
+    Gui::ViewProvider* startEditing(int ModNum = 0) override;
 
-    QString getMessage() const { return diagMessage; }
+    QString getMessage() const
+    {
+        return diagMessage;
+    }
 
 protected:
     bool setEdit(int ModNum) override;
@@ -75,7 +81,4 @@ protected:
 };
 
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderTransformed_H
+}  // namespace PartDesignGui

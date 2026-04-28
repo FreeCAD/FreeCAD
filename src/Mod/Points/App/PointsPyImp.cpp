@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -177,10 +179,12 @@ PyObject* PointsPy::addPoints(PyObject* args)
         }
     }
     catch (const Py::Exception&) {
-        PyErr_SetString(PyExc_TypeError,
-                        "either expect\n"
-                        "-- [Vector,...] \n"
-                        "-- [(x,y,z),...]");
+        PyErr_SetString(
+            PyExc_TypeError,
+            "either expect\n"
+            "-- [Vector,...] \n"
+            "-- [(x,y,z),...]"
+        );
         return nullptr;
     }
 

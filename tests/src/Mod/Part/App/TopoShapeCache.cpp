@@ -90,8 +90,7 @@ TEST_F(TopoShapeCacheTest, InsertRelationIntoEmptyTableCompacts)
 {
     // Arrange
     Data::IndexedName indexedName {"EDGE1"};
-    auto mappedName =
-        Data::MappedName::fromRawData("#94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F");
+    auto mappedName = Data::MappedName::fromRawData("#94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F");
     ASSERT_TRUE(mappedName.isRaw());
     Data::MappedElement mappedElement1 {indexedName, mappedName};
     QVector<Data::MappedElement> vectorOfElements {mappedElement1};

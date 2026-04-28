@@ -1,5 +1,6 @@
 #! python
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ShapeContent.py
 # 2021, by Mark Ganson <TheMarkster>
 # LGPL 2.1 or later
@@ -27,45 +28,15 @@ def buildShapeContent(objArg, decimals=2, advancedShapeContent=True):
     typeStr = str(shp.ShapeType)
     lbl = "" if obj.Name == obj.Label else " (" + obj.Label + ")"
     result = linkName + obj.Name + lbl + "\n"
+    result += translate("TaskCheckGeometryResults", "Shape type") + ":  " + typeStr + "\n"
     result += (
-        translate("TaskCheckGeometryResults", "Shape type") + ":  " + typeStr + "\n"
+        translate("TaskCheckGeometryResults", "Vertices") + ":  " + str(len(shp.Vertexes)) + "\n"
     )
-    result += (
-        translate("TaskCheckGeometryResults", "Vertices")
-        + ":  "
-        + str(len(shp.Vertexes))
-        + "\n"
-    )
-    result += (
-        translate("TaskCheckGeometryResults", "Edges")
-        + ":  "
-        + str(len(shp.Edges))
-        + "\n"
-    )
-    result += (
-        translate("TaskCheckGeometryResults", "Wires")
-        + ":  "
-        + str(len(shp.Wires))
-        + "\n"
-    )
-    result += (
-        translate("TaskCheckGeometryResults", "Faces")
-        + ":  "
-        + str(len(shp.Faces))
-        + "\n"
-    )
-    result += (
-        translate("TaskCheckGeometryResults", "Shells")
-        + ":  "
-        + str(len(shp.Shells))
-        + "\n"
-    )
-    result += (
-        translate("TaskCheckGeometryResults", "Solids")
-        + ":  "
-        + str(len(shp.Solids))
-        + "\n"
-    )
+    result += translate("TaskCheckGeometryResults", "Edges") + ":  " + str(len(shp.Edges)) + "\n"
+    result += translate("TaskCheckGeometryResults", "Wires") + ":  " + str(len(shp.Wires)) + "\n"
+    result += translate("TaskCheckGeometryResults", "Faces") + ":  " + str(len(shp.Faces)) + "\n"
+    result += translate("TaskCheckGeometryResults", "Shells") + ":  " + str(len(shp.Shells)) + "\n"
+    result += translate("TaskCheckGeometryResults", "Solids") + ":  " + str(len(shp.Solids)) + "\n"
     result += (
         translate("TaskCheckGeometryResults", "CompSolids")
         + ":  "
@@ -73,10 +44,7 @@ def buildShapeContent(objArg, decimals=2, advancedShapeContent=True):
         + "\n"
     )
     result += (
-        translate("TaskCheckGeometryResults", "Compounds")
-        + ":  "
-        + str(len(shp.Compounds))
-        + "\n"
+        translate("TaskCheckGeometryResults", "Compounds") + ":  " + str(len(shp.Compounds)) + "\n"
     )
     result += (
         translate("TaskCheckGeometryResults", "Shapes")
@@ -167,9 +135,7 @@ def buildShapeContent(objArg, decimals=2, advancedShapeContent=True):
         if hasattr(shp, "normalAt"):
             try:
                 result += (
-                    "normalAt(0):  "
-                    + str([round(vv, decimals) for vv in shp.normalAt(0)])
-                    + "\n"
+                    "normalAt(0):  " + str([round(vv, decimals) for vv in shp.normalAt(0)]) + "\n"
                 )
             except Exception:
                 try:

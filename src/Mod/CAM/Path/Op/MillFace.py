@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -297,7 +299,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... initialize mill facing properties"""
         obj.StepOver = 50
-        obj.ZigZagAngle = 45.0
+        obj.Angle = 45
         obj.ExcludeRaisedAreas = False
         obj.ClearEdges = False
 

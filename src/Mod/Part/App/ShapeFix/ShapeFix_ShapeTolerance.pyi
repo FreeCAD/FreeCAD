@@ -1,7 +1,11 @@
-from Base.Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from Part.App.TopoShape import TopoShape
-from typing import Final, overload
+from typing import overload
 
 @export(
     PythonName="Part.ShapeFix.ShapeTolerance",
@@ -18,24 +22,26 @@ class ShapeFix_ShapeTolerance(PyObjectBase):
     """
 
     @overload
-    def limitTolerance(self, shape: TopoShape, tmin: float) -> None: ...
-
+    def limitTolerance(self, shape: TopoShape, tmin: float, /) -> None: ...
     @overload
-    def limitTolerance(self, shape: TopoShape, tmin: float, tmax: float, ShapeEnum: str = None) -> None: ...
-
-    def limitTolerance(self, shape: TopoShape, tmin: float, tmax: float = 0, ShapeEnum: str = None) -> None:
+    def limitTolerance(
+        self, shape: TopoShape, tmin: float, tmax: float, ShapeEnum: str = None, /
+    ) -> None: ...
+    def limitTolerance(
+        self, shape: TopoShape, tmin: float, tmax: float = 0, ShapeEnum: str = None, /
+    ) -> None:
         """
         limitTolerance(shape, tmin, [tmax=0, ShapeEnum=SHAPE])
         """
         ...
 
     @overload
-    def setTolerance(self, shape: TopoShape, precision: float) -> None: ...
-
+    def setTolerance(self, shape: TopoShape, precision: float, /) -> None: ...
     @overload
-    def setTolerance(self, shape: TopoShape, precision: float, ShapeEnum: str = None) -> None: ...
-
-    def setTolerance(self, shape: TopoShape, precision: float, ShapeEnum: str = None) -> None:
+    def setTolerance(
+        self, shape: TopoShape, precision: float, ShapeEnum: str = None, /
+    ) -> None: ...
+    def setTolerance(self, shape: TopoShape, precision: float, ShapeEnum: str = None, /) -> None:
         """
         setTolerance(shape, precision, [ShapeEnum=SHAPE])
         """

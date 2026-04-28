@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEW3DINVENTOR_H
-#define GUI_VIEW3DINVENTOR_H
+#pragma once
 
 #include <memory>
 #include <optional>
@@ -29,7 +28,7 @@
 
 #include <Base/Parameter.h>
 
-#include "MDIView.h"
+#include "MDIViewWithCamera.h"
 
 #include "Base/Vector3D.h"
 
@@ -37,7 +36,8 @@ class QPrinter;
 class QOpenGLWidget;
 class QStackedWidget;
 
-namespace Gui {
+namespace Gui
+{
 
 class Document;
 class View3DInventorViewer;
@@ -55,16 +55,19 @@ struct RayPickInfo
     std::optional<std::string> component;
     std::optional<std::string> subName;
 };
-class GuiExport GLOverlayWidget : public QWidget
+class GuiExport GLOverlayWidget: public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit GLOverlayWidget(QWidget* parent=nullptr) : QWidget(parent)
+    explicit GLOverlayWidget(QWidget* parent = nullptr)
+        : QWidget(parent)
     {}
     ~GLOverlayWidget() override = default;
     virtual void setImage(const QImage& img)
-    { image = img; }
+    {
+        image = img;
+    }
     void paintEvent(QPaintEvent*) override;
 
 protected:
@@ -75,27 +78,32 @@ protected:
  *  It consists out of the 3D view
  *  \author Juergen Riegel
  */
-class GuiExport View3DInventor : public MDIView
+class GuiExport View3DInventor: public MDIViewWithCamera
 {
     Q_OBJECT
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QOpenGLWidget* sharewidget = nullptr, Qt::WindowFlags wflags=Qt::WindowFlags());
+    View3DInventor(
+        Gui::Document* pcDocument,
+        QWidget* parent,
+        const QOpenGLWidget* sharewidget = nullptr,
+        Qt::WindowFlags wflags = Qt::WindowFlags()
+    );
     ~View3DInventor() override;
 
     View3DInventor* clone() override;
 
     /// Message handler
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
     void deleteSelf() override;
     /// get called when the document is updated
-    void onRename(Gui::Document *pDoc) override;
+    void onRename(Gui::Document* pDoc) override;
     void onUpdate() override;
     void viewAll() override;
-    const char *getName() const override;
+    const char* getName() const override;
 
     /// print function of the view
     void print() override;
@@ -103,7 +111,7 @@ public:
     void printPreview() override;
     void print(QPrinter*) override;
 
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
     /**
      * If \a b is set to \a FullScreen the MDI view is displayed in full screen mode, if \a b
      * is set to \a TopLevel then it is displayed as an own top-level window, otherwise (\a Normal)
@@ -112,16 +120,19 @@ public:
      * GL widget to get all key events in \a TopLevel or \a Fullscreen mode.
      */
     void setCurrentViewMode(ViewMode b) override;
-    RayPickInfo getObjInfoRay(Base::Vector3d* startvec,
-                                 Base::Vector3d* dirvec);
-    bool setCamera(const char* pCamera);
+    RayPickInfo getObjInfoRay(Base::Vector3d* startvec, Base::Vector3d* dirvec);
+    const std::string& getCamera() const override;
+    bool setCamera(const char* pCamera) override;
     void toggleClippingPlane();
     bool hasClippingPlane() const;
 
     void setOverlayWidget(QWidget*);
     void removeOverlayWidget();
 
-    View3DInventorViewer *getViewer() const {return _viewer;}
+    View3DInventorViewer* getViewer() const
+    {
+        return _viewer;
+    }
     bool containsViewProvider(const ViewProvider*) const override;
 
 public Q_SLOTS:
@@ -129,7 +140,7 @@ public Q_SLOTS:
     void setOverrideCursor(const QCursor&) override;
     void restoreOverrideCursor() override;
 
-    void dump(const char* filename, bool onlyVisible=false);
+    void dump(const char* filename, bool onlyVisible = false);
 
 protected Q_SLOTS:
     void stopAnimating();
@@ -139,18 +150,18 @@ private:
 
 protected:
     void windowStateChanged(QWidget* view) override;
-    void dropEvent        (QDropEvent      * e) override;
-    void dragEnterEvent   (QDragEnterEvent * e) override;
-    void keyPressEvent    (QKeyEvent       * e) override;
-    void keyReleaseEvent  (QKeyEvent       * e) override;
-    void focusInEvent     (QFocusEvent     * e) override;
-    void customEvent      (QEvent          * e) override;
-    void contextMenuEvent (QContextMenuEvent*e) override;
+    void dropEvent(QDropEvent* e) override;
+    void dragEnterEvent(QDragEnterEvent* e) override;
+    void keyPressEvent(QKeyEvent* e) override;
+    void keyReleaseEvent(QKeyEvent* e) override;
+    void focusInEvent(QFocusEvent* e) override;
+    void customEvent(QEvent* e) override;
+    void contextMenuEvent(QContextMenuEvent* e) override;
 
 private:
-    View3DInventorViewer * _viewer;
-    PyObject *_viewerPy;
-    QTimer * stopSpinTimer;
+    View3DInventorViewer* _viewer;
+    PyObject* _viewerPy;
+    QTimer* stopSpinTimer;
     QStackedWidget* stack;
     std::unique_ptr<View3DSettings> viewSettings;
     std::unique_ptr<NaviCubeSettings> naviSettings;
@@ -159,7 +170,4 @@ private:
     friend class View3DPy;
 };
 
-} // namespace Gui
-
-#endif  // GUI_VIEW3DINVENTOR_H
-
+}  // namespace Gui

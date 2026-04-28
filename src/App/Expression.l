@@ -1,4 +1,6 @@
 %{
+/* SPDX-License-Identifier: LGPL-2.1-or-later */
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
@@ -209,6 +211,9 @@ EXPO    [eE][-+]?[0-9]+
 "h"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Hour;                yylval.quantity.unitStr = yytext; return UNIT; // hour
 
 "A"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Ampere;              yylval.quantity.unitStr = yytext; return UNIT; // Ampere         (internal standard electric current)
+"nA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // nano Ampere
+"uA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroAmpere;         yylval.quantity.unitStr = yytext; return UNIT; // micro Ampere
+"\xC2\xB5""A"                COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroAmpere;         yylval.quantity.unitStr = yytext; return UNIT; // micro Ampere
 "mA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliAmpere;         yylval.quantity.unitStr = yytext; return UNIT; // milli Ampere
 "kA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Ampere
 "MA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // mega Ampere
@@ -219,6 +224,9 @@ EXPO    [eE][-+]?[0-9]+
 "uK"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // micro Kelvin
 
 "mol"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Mole;                yylval.quantity.unitStr = yytext; return UNIT; // Mole           (internal standard amount of substance)
+"nmol"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoMole;            yylval.quantity.unitStr = yytext; return UNIT; // nano Mole
+"\xC2\xB5mol"                COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMole;           yylval.quantity.unitStr = yytext; return UNIT; // micro Mole
+"umol"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMole;           yylval.quantity.unitStr = yytext; return UNIT; // micro Mole
 "mmol"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliMole;           yylval.quantity.unitStr = yytext; return UNIT; // milli Mole
 
 "cd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Candela;             yylval.quantity.unitStr = yytext; return UNIT; // Candela        (internal standard luminous intensity)
@@ -267,6 +275,9 @@ EXPO    [eE][-+]?[0-9]+
 "Mpsi"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MPSI;                yylval.quantity.unitStr = yytext; return UNIT; // 1000 ksi
 
 "W"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Watt;                yylval.quantity.unitStr = yytext; return UNIT; // Watt (kg*m^2/s^3)
+"nW"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoWatt;            yylval.quantity.unitStr = yytext; return UNIT; // nano Watt
+"uW"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroWatt;           yylval.quantity.unitStr = yytext; return UNIT; // micro Watt
+"\xC2\xB5W"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroWatt;           yylval.quantity.unitStr = yytext; return UNIT; // micro Watt
 "mW"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliWatt;           yylval.quantity.unitStr = yytext; return UNIT; // milli Watt
 "kW"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloWatt;            yylval.quantity.unitStr = yytext; return UNIT; // kilo Watt
 "VA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // VoltAmpere (kg*m^2/s^3)
@@ -289,6 +300,7 @@ EXPO    [eE][-+]?[0-9]+
 "C"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Coulomb;             yylval.quantity.unitStr = yytext; return UNIT; // Coulomb (A*s)
 
 "T"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Tesla;               yylval.quantity.unitStr = yytext; return UNIT; // Tesla (kg/s^2/A)
+"mT"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliTesla;          yylval.quantity.unitStr = yytext; return UNIT; // milli Tesla
 "G"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Gauss;               yylval.quantity.unitStr = yytext; return UNIT; // Gauss (1 G = 1e-4 T)
 
 "Wb"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Weber;               yylval.quantity.unitStr = yytext; return UNIT; // Weber (kg*m^2/s^2/A)

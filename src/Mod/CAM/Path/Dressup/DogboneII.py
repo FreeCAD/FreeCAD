@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -89,7 +91,7 @@ def calc_length_adaptive(kink, angle, nominal_length, custom_length):
             f"{kink}: angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI}, depth={depth:.4f}"
         )
 
-    return depth
+    return custom_length if custom_length and depth > custom_length else depth
 
 
 def calc_length_nominal(kink, angle, nominal_length, custom_length):
@@ -233,7 +235,13 @@ class Proxy(object):
             "App::PropertyEnumeration",
             "Incision",
             "Dressup",
-            QT_TRANSLATE_NOOP("App::Property", "The algorithm to determine the bone length"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The algorithm to determine the bone length\n\n"
+                "Adaptive: length depend from shape\n"
+                "Fixed: length equal tool radius\n"
+                "Custom: length from Custom property",
+            ),
         )
         obj.Incision = Incision.All
         obj.Incision = Incision.Adaptive
@@ -242,7 +250,11 @@ class Proxy(object):
             "App::PropertyLength",
             "Custom",
             "Dressup",
-            QT_TRANSLATE_NOOP("App::Property", "Dressup length if incision is set to 'custom'"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Dressup length if incision is set to 'custom'"
+                "\nAlso non zero value limit max 'adaptive' length",
+            ),
         )
         obj.Custom = 0.0
 
@@ -274,6 +286,10 @@ class Proxy(object):
 
     def loads(self, state):
         return None
+
+    def onChanged(self, obj, prop):
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def toolRadius(self, obj):
         return PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
@@ -352,7 +368,7 @@ class Proxy(object):
         closedProfilesIndex = []
         startArea = None
         endArea = None
-        for i, instr in enumerate(source):
+        for i in range(len(source)):
             if (
                 startArea is None
                 and endArea is None
@@ -370,7 +386,7 @@ class Proxy(object):
                 # end mill index of the area
                 endArea = i
 
-            if startArea and endArea:
+            if startArea is not None and endArea is not None:
                 p1 = source[startArea].positionBegin()
                 p2 = source[endArea].positionEnd()
                 if Path.Geom.pointsCoincide(p1, p2):
@@ -411,7 +427,7 @@ class Proxy(object):
             source = PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
 
             # get indexes of outer closed profile in each multi work area
-            if hasattr(obj, "OnlyClosedProfiles") and obj.OnlyClosedProfiles:
+            if getattr(obj, "OnlyClosedProfiles", None):
                 closedProfilesIndex = self.getIndexOuterClosedProfiles(source)
             else:
                 closedProfilesIndex = None
@@ -421,19 +437,26 @@ class Proxy(object):
                 if instr.isMove():
                     thisMove = instr
                     bone = None
-                    if thisMove.isPlunge() or (
-                        closedProfilesIndex is not None and index not in closedProfilesIndex
-                    ):
+                    if thisMove.isPlunge():
+                        # plunge indicate end of the profile
                         if lastMove and moveAfterPlunge and lastMove.leadsInto(moveAfterPlunge):
+                            # first Bone skipped, so add Bone before plunge in the profile end
                             bone = self.createBone(obj, lastMove, moveAfterPlunge)
+                        # prepare for the next profile
+                        lastMove = None
+                        moveAfterPlunge = None
+                    elif closedProfilesIndex is not None and index not in closedProfilesIndex:
+                        # skip inner profiles in case 'OnlyClosedProfiles'
                         lastMove = None
                         moveAfterPlunge = None
                     else:
                         if moveAfterPlunge is None:
                             moveAfterPlunge = thisMove
                         if lastMove:
+                            # create Bone for the profile
                             bone = self.createBone(obj, lastMove, thisMove)
                         lastMove = thisMove
+
                     if bone:
                         enabled = len(bones) not in obj.BoneBlacklist
                         if enabled and not (

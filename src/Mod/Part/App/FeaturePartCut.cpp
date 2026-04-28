@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 
 
 #include "FeaturePartCut.h"
@@ -33,7 +35,7 @@ PROPERTY_SOURCE(Part::Cut, Part::Boolean)
 
 Cut::Cut() = default;
 
-const char *Cut::opCode() const
+const char* Cut::opCode() const
 {
     return Part::OpCodes::Cut;
 }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REEN_SAMPLECONSENSUS_H
-#define REEN_SAMPLECONSENSUS_H
+#pragma once
 
 #include <vector>
 
@@ -60,5 +61,3 @@ private:
 };
 
 }  // namespace Reen
-
-#endif  // REEN_SAMPLECONSENSUS_H

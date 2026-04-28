@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                    *
  *                                                                         *
@@ -19,8 +21,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#ifndef GUI_SO3DANNOTATION_H
-#define GUI_SO3DANNOTATION_H
+#pragma once
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -46,11 +47,15 @@ protected:
 
     // internal structure to hold path with it's rendering
     // priority (lower renders first)
-    struct PriorityPath {
+    struct PriorityPath
+    {
         SoPath* path;
         int priority;
-        
-        PriorityPath(SoPath* p, int pr = 0) : path(p), priority(pr) {}
+
+        PriorityPath(SoPath* p, int pr = 0)
+            : path(p)
+            , priority(pr)
+        {}
     };
 
 public:
@@ -62,11 +67,11 @@ public:
     static void initClass();
 
     static void addDelayedPath(SoState* state, SoPath* path, int priority = 0);
-    
+
     static SoPathList getDelayedPaths(SoState* state);
-    
+
     static void processDelayedPathsWithPriority(SoState* state, SoGLRenderAction* action);
-    
+
     static bool isProcessingDelayedPaths;
 
     SbBool matches([[maybe_unused]] const SoElement* element) const override
@@ -119,5 +124,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SO3DANNOTATION_H

@@ -74,9 +74,11 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
     }
 }
 
-void ViewProviderFemConstraintForce::transformSymbol(const Base::Vector3d& point,
-                                                     const Base::Vector3d& normal,
-                                                     SbMatrix& mat) const
+void ViewProviderFemConstraintForce::transformSymbol(
+    const Base::Vector3d& point,
+    const Base::Vector3d& normal,
+    SbMatrix& mat
+) const
 {
     auto obj = this->getObject<const Fem::ConstraintForce>();
     bool rev = obj->Reversed.getValue();
@@ -88,15 +90,19 @@ void ViewProviderFemConstraintForce::transformSymbol(const Base::Vector3d& point
     float symTraY = dir.Dot(normal) < 0 ? -1 * symLen : 0.0f;
     float rotAngle = rev ? std::numbers::pi_v<float> : 0.0f;
     SbMatrix mat0, mat1;
-    mat0.setTransform(SbVec3f(0, symTraY, 0),
-                      SbRotation(SbVec3f(0, 0, 1), rotAngle),
-                      SbVec3f(1, 1, 1),
-                      SbRotation(SbVec3f(0, 0, 1), 0),
-                      SbVec3f(0, symLen / 2.0f, 0));
+    mat0.setTransform(
+        SbVec3f(0, symTraY, 0),
+        SbRotation(SbVec3f(0, 0, 1), rotAngle),
+        SbVec3f(1, 1, 1),
+        SbRotation(SbVec3f(0, 0, 1), 0),
+        SbVec3f(0, symLen / 2.0f, 0)
+    );
 
-    mat1.setTransform(SbVec3f(point.x, point.y, point.z),
-                      SbRotation(SbVec3f(0, 1, 0), SbVec3f(dir.x, dir.y, dir.z)),
-                      SbVec3f(s, s, s));
+    mat1.setTransform(
+        SbVec3f(point.x, point.y, point.z),
+        SbRotation(SbVec3f(0, 1, 0), SbVec3f(dir.x, dir.y, dir.z)),
+        SbVec3f(s, s, s)
+    );
 
     mat = mat0 * mat1;
 }

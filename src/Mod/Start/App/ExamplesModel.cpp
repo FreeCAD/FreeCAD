@@ -42,11 +42,15 @@ void ExamplesModel::loadExamples()
     beginResetModel();
     clear();
     if (!_examplesDirectory.isReadable()) {
-        Base::Console().warning("Cannot read %s",
-                                _examplesDirectory.absolutePath().toStdString().c_str());
+        Base::Console().warning(
+            "Cannot read %s",
+            _examplesDirectory.absolutePath().toStdString().c_str()
+        );
     }
-    auto entries = _examplesDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
-                                                QDir::SortFlag::Name);
+    auto entries = _examplesDirectory.entryList(
+        QDir::Filter::Files | QDir::Filter::Readable,
+        QDir::SortFlag::Name
+    );
     for (const auto& entry : entries) {
         addFile(_examplesDirectory.filePath(entry));
     }

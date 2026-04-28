@@ -59,8 +59,10 @@ TEST_F(TopoShapeMakeShapeTests, nullShapeThrows)
     TopoDS_Vertex nullShape;
 
     // Act and assert
-    EXPECT_THROW(Shape()->makeShapeWithElementMap(nullShape, *Mapper(), sources),
-                 Part::NullShapeException);
+    EXPECT_THROW(
+        Shape()->makeShapeWithElementMap(nullShape, *Mapper(), sources),
+        Part::NullShapeException
+    );
 }
 
 TEST_F(TopoShapeMakeShapeTests, shapeVertex)
@@ -92,8 +94,8 @@ TEST_F(TopoShapeMakeShapeTests, thruSections)
     thruMaker.AddWire(wire2);
     TopoShape topoShape {};
     // Act
-    TopoShape& result =
-        topoShape.makeElementShape(thruMaker, {wire1ts, wire2ts}, OpCodes::ThruSections);
+    TopoShape& result
+        = topoShape.makeElementShape(thruMaker, {wire1ts, wire2ts}, OpCodes::ThruSections);
     auto elements = elementMap(result);
     // Assert
     EXPECT_EQ(elements.size(), 24);
@@ -110,7 +112,8 @@ TEST_F(TopoShapeMakeShapeTests, thruSections)
             "Vertex2;:G(Vertex2;K-1;:H2:4,V);TRU;:H1:1c,E", "Vertex2;:H1,V", "Vertex2;:H2,V",
             "Vertex3;:G(Vertex3;K-1;:H2:4,V);TRU;:H1:1c,E", "Vertex3;:H1,V", "Vertex3;:H2,V",
             "Vertex4;:G(Vertex4;K-1;:H2:4,V);TRU;:H1:1c,E", "Vertex4;:H1,V", "Vertex4;:H2,V",
-        }));
+        }
+    ));
 }
 
 TEST_F(TopoShapeMakeShapeTests, sewing)
@@ -128,10 +131,12 @@ TEST_F(TopoShapeMakeShapeTests, sewing)
     std::vector<TopoShape> sources {{face1, 1L}, {face2, 2L}};
     TopoShape topoShape {};
     // Act
-    TopoShape& result = topoShape.makeShapeWithElementMap(sewer.SewedShape(),
-                                                          MapperSewing(sewer),
-                                                          sources,
-                                                          OpCodes::Sewing);
+    TopoShape& result = topoShape.makeShapeWithElementMap(
+        sewer.SewedShape(),
+        MapperSewing(sewer),
+        sources,
+        OpCodes::Sewing
+    );
 
     auto elements = elementMap(result);
     // Assert
@@ -141,25 +146,27 @@ TEST_F(TopoShapeMakeShapeTests, sewing)
     EXPECT_EQ(getArea(result.getShape()), 12);
     // TODO:  This element map is suspiciously devoid of anything OpCodes::Sewing (SEW).  Is that
     // right?
-    EXPECT_TRUE(allElementsMatch(topoShape,
-                                 {
-                                     "Face1;:H1,F",
-                                     "Face1;:H2,F",
-                                     "Edge1;:H2,E",
-                                     "Edge2;:H2,E",
-                                     "Edge3;:H2,E",
-                                     "Edge4;:H2,E",
-                                     "Edge1;:H1,E",
-                                     "Edge2;:H1,E",
-                                     "Edge3;:H1,E",
-                                     "Edge4;:H1,E",
-                                     "Vertex1;:H2,V",
-                                     "Vertex2;:H2,V",
-                                     "Vertex3;:H2,V",
-                                     "Vertex4;:H2,V",
-                                     "Vertex1;:H1,V",
-                                     "Vertex2;:H1,V",
-                                     "Vertex3;:H1,V",
-                                     "Vertex4;:H1,V",
-                                 }));
+    EXPECT_TRUE(allElementsMatch(
+        topoShape,
+        {
+            "Face1;:H1,F",
+            "Face1;:H2,F",
+            "Edge1;:H2,E",
+            "Edge2;:H2,E",
+            "Edge3;:H2,E",
+            "Edge4;:H2,E",
+            "Edge1;:H1,E",
+            "Edge2;:H1,E",
+            "Edge3;:H1,E",
+            "Edge4;:H1,E",
+            "Vertex1;:H2,V",
+            "Vertex2;:H2,V",
+            "Vertex3;:H2,V",
+            "Vertex4;:H2,V",
+            "Vertex1;:H1,V",
+            "Vertex2;:H1,V",
+            "Vertex3;:H1,V",
+            "Vertex4;:H1,V",
+        }
+    ));
 }

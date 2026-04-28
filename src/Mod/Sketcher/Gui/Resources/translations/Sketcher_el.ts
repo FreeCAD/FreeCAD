@@ -4,40 +4,40 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1531"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1559"/>
       <source>Clone</source>
-      <translation>Κλωνοποιήστε</translation>
+      <translation>Πιστό Αντίγραφο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1533"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1561"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Δημιουργεί έναν κλώνο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
+      <translation>Δημιουργεί ένα Πιστό αντίγραφο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8875"/>
+      <location filename="../../CommandConstraints.cpp" line="8956"/>
       <source>Radius/Diameter Dimension</source>
-      <translation>Radius/Diameter Dimension</translation>
+      <translation>Διάσταση Ακτίνας/Διάμετρος</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8876"/>
+      <location filename="../../CommandConstraints.cpp" line="8957"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
-      <translation>Περιορίζει την ακτίνα ή τη διάμετρο ενός τόξου ή ενός κύκλου</translation>
+      <translation>Περιορίζει την ακτίνα ή τη διάμετρο ενός τόξου ή ενός κύκλου. (Σου επιτρέπει να «κλειδώσεις» το μέγεθος του κύκλου δίνοντας μια συγκεκριμένη τιμή.)</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8986"/>
+      <location filename="../../CommandConstraints.cpp" line="9067"/>
       <source>Constrain radius</source>
-      <translation>Περιορισμός ακτίνας</translation>
+      <translation>Περιορισμός Aκτίνας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8992"/>
+      <location filename="../../CommandConstraints.cpp" line="9073"/>
       <source>Constrain diameter</source>
       <translation>Περιορισμός Διαμέτρου</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8998"/>
+      <location filename="../../CommandConstraints.cpp" line="9079"/>
       <source>Constrain auto radius/diameter</source>
       <translation>Περιορισμός αυτόματης Ακτίνας/Διαμέτρου</translation>
     </message>
@@ -45,35 +45,35 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1613"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1641"/>
       <source>Clone</source>
-      <translation>Κλωνοποιήστε</translation>
+      <translation>Πιστό Αντίγραφο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1615"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1643"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Δημιουργεί έναν κλώνο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
+      <translation>Δημιουργεί έναν Πιστό αντίγραφο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompModifyKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="660"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="695"/>
       <source>Modify Knot Multiplicity</source>
       <translation>Τροποποίηση Πολλαπλότητας Κόμβων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="661"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="696"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
       <translation>Τροποποιεί την πολλαπλότητα του επιλεγμένου κόμβου μιας καμπύλης B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="726"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="762"/>
       <source>Increase knot multiplicity</source>
       <translation>Αύξηση της πολλαπλότητας κόμβου</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="735"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="778"/>
       <source>Decrease knot multiplicity</source>
       <translation>Μείωση της πολλαπλότητας κόμβου</translation>
     </message>
@@ -81,25 +81,25 @@
   <context>
     <name>CmdSketcherConvertToNURBS</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="111"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="116"/>
       <source>Geometry to B-Spline</source>
       <translation>Γεωμετρία σε B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="112"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="117"/>
       <source>Converts the selected geometry to B-splines</source>
-      <translation type="unfinished">Converts the selected geometry to B-splines</translation>
+      <translation>Μετατρέπει την επιλεγμένη γεωμετρία σε καμπύλες B-spline. (Μετατρέπει μια «δύσκαμπτη» γραμμή σε μια «ελαστική» καμπύλη που μπορείς να τη λυγίσεις όπως θέλεις.)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1480"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1508"/>
       <source>Copy</source>
       <translation>Αντιγραφή</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1481"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1509"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Δημιουργεί ένα απλό αντίγραφο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -107,25 +107,25 @@
   <context>
     <name>CmdSketcherDecreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="260"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="271"/>
       <source>Decrease B-Spline Degree</source>
-      <translation>Decrease B-Spline Degree</translation>
+      <translation>Μείωση βαθμού B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="261"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="272"/>
       <source>Decreases the degree of the B-spline</source>
-      <translation>Decreases the degree of the B-spline</translation>
+      <translation>Μειώνει τον βαθμό της καμπύλης B-spline</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="523"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="550"/>
       <source>Decrease Knot Multiplicity</source>
-      <translation>Decrease Knot Multiplicity</translation>
+      <translation>Μείωση της πολλαπλότητας κόμβου</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="524"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="551"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
       <translation>Μειώνει την πολλαπλότητα του επιλεγμένου κόμβου μιας καμπύλης B-spline</translation>
     </message>
@@ -133,12 +133,12 @@
   <context>
     <name>CmdSketcherIncreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="187"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="194"/>
       <source>Increase B-Spline Degree</source>
-      <translation>Increase B-Spline Degree</translation>
+      <translation>Αύξηση Βαθμού B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="188"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="195"/>
       <source>Increases the degree of the B-spline</source>
       <translation>Αυξάνει τον βαθμό της καμπύλης B-spline</translation>
     </message>
@@ -146,12 +146,12 @@
   <context>
     <name>CmdSketcherIncreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="376"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="393"/>
       <source>Increase Knot Multiplicity</source>
-      <translation>Increase Knot Multiplicity</translation>
+      <translation>Αύξηση Πολλαπλότητας Κόμβου</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="377"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="394"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
       <translation>Αυξάνει την πολλαπλότητα του επιλεγμένου κόμβου μιας καμπύλης B-spline</translation>
     </message>
@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="576"/>
+      <location filename="../../Command.cpp" line="579"/>
       <source>Attach Sketch</source>
-      <translation>Attach Sketch</translation>
+      <translation>Προσάρτηση Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="577"/>
+      <location filename="../../Command.cpp" line="580"/>
       <source>Attaches a sketch to the selected geometry element</source>
-      <translation>Attaches a sketch to the selected geometry element</translation>
+      <translation>Προσαρτά ένα σχέδιο στο επιλεγμένο γεωμετρικό στοιχείο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="668"/>
+      <location filename="../../Command.cpp" line="671"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>Ορισμένα από τα επιλεγμένα αντικείμενα εξαρτώνται από το σχέδιο που θα αντιστοιχιστεί. Δεν επιτρέπονται κυκλικές εξαρτήσεις.</translation>
     </message>
@@ -177,62 +177,60 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="999"/>
+      <location filename="../../Command.cpp" line="1003"/>
       <source>Merge Sketches</source>
-      <translation>Merge Sketches</translation>
+      <translation>Συγχώνευση Σχεδίων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1000"/>
+      <location filename="../../Command.cpp" line="1004"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
-      <translation>Creates a new sketch by merging at least 2 selected sketches</translation>
+      <translation>Ενώνει 2 ή περισσότερα σχέδια σε ένα νέο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1015"/>
+      <location filename="../../Command.cpp" line="1019"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1016"/>
+      <location filename="../../Command.cpp" line="1020"/>
       <source>Select at least 2 sketches</source>
-      <translation>Select at least 2 sketches</translation>
+      <translation>Επιλέξτε τουλάχιστον 2 σχέδια</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="872"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Mirror Sketch</source>
-      <translation>Mirror Sketch</translation>
+      <translation>Κατοπτρισμός Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="873"/>
+      <location filename="../../Command.cpp" line="876"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
-      <translation>Creates a new mirrored sketch for each selected sketch
-by using the X or Y axes, or the origin point,
-as mirroring reference</translation>
+      <translation>Δημιουργεί ένα νέο συμμετρικό αντίγραφο για κάθε επιλεγμένο σχέδιο, χρησιμοποιώντας τους άξονες X ή Y, ή το κέντρο των αξόνων, ως σημείο αναφοράς του "καθρέφτη"</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="890"/>
+      <location filename="../../Command.cpp" line="893"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../Command.cpp" line="894"/>
       <source>Select at least 1 sketch</source>
-      <translation>Select at least 1 sketch</translation>
+      <translation>Επιλέξτε τουλάχιστον 1 σχέδιο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMove</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1579"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1607"/>
       <source>Move</source>
-      <translation>Μετακινήστε</translation>
+      <translation>Μετακίνηση</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1580"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1608"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Μετακινεί το γεωμετρικό στοιχείο λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -240,12 +238,12 @@ as mirroring reference</translation>
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1921"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1950"/>
       <source>Rectangular Array</source>
-      <translation>Rectangular Array</translation>
+      <translation>Ορθογώνια Διάταξη</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1922"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1951"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
       <translation>Δημιουργεί ένα μοτίβο ορθογώνιας συστοιχίας της γεωμετρίας λαμβάνοντας ως αναφορά το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -253,12 +251,12 @@ as mirroring reference</translation>
   <context>
     <name>CmdSketcherSwitchVirtualSpace</name>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="90"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="89"/>
       <source>Switch Virtual Space</source>
-      <translation>Switch Virtual Space</translation>
+      <translation>Εμφάνιση/Απόκρυψη Εικονικού Χώρου</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="92"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="90"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
       <translation>Πραγματοποιεί μεταφορά των επιλεγμένων περιορισμών ή της προβολής στον άλλο εικονικό χώρο</translation>
     </message>
@@ -266,428 +264,434 @@ as mirroring reference</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="832"/>
+      <location filename="../../Command.cpp" line="835"/>
       <source>Validate Sketch</source>
-      <translation>Validate Sketch</translation>
+      <translation>Επικύρωση Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="833"/>
+      <location filename="../../Command.cpp" line="836"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
-      <translation>Validates a sketch by checking for missing coincidences,
-invalid constraints, and degenerate geometry</translation>
+      <translation>Ελέγχει και διορθώνει το σχέδιο αναζητώντας ασύνδετα σημεία, 
+λανθασμένους περιορισμούς και προβληματικές γραμμές που εμποδίζουν τη δημιουργία του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="849"/>
+      <location filename="../../Command.cpp" line="852"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="850"/>
+      <location filename="../../Command.cpp" line="853"/>
       <source>Select only 1 sketch.</source>
-      <translation>Select only 1 sketch.</translation>
+      <translation>Επιλέξτε μόνο ένα σχέδιο.</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3759"/>
+      <location filename="../../CommandConstraints.cpp" line="3779"/>
       <source>Add 'Lock' constraint</source>
       <translation>Προσθήκη περιορισμού "Κλειδώματος"</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3813"/>
+      <location filename="../../CommandConstraints.cpp" line="3833"/>
       <source>Add relative 'Lock' constraint</source>
       <translation>Προσθήκη σχετικού περιορισμού "Κλειδώματος"</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3878"/>
+      <location filename="../../CommandConstraints.cpp" line="3899"/>
       <source>Add fixed constraint</source>
       <translation>Προσθήκη σταθερού περιορισμού</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4098"/>
+      <location filename="../../CommandConstraints.cpp" line="4118"/>
       <source>Add block constraint</source>
-      <translation>Προσθήκη περιορισμού kλειδώματος</translation>
+      <translation>Προσθήκη περιορισμού Κλειδώματος</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4438"/>
-      <location filename="../../CommandConstraints.cpp" line="4625"/>
+      <location filename="../../CommandConstraints.cpp" line="4458"/>
+      <location filename="../../CommandConstraints.cpp" line="4641"/>
       <source>Add coincident constraint</source>
       <translation>Προσθήκη περιορισμού Συμπίπτουσας συμπεριφοράς</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4852"/>
-      <location filename="../../CommandConstraints.cpp" line="5175"/>
+      <location filename="../../CommandConstraints.cpp" line="4877"/>
+      <location filename="../../CommandConstraints.cpp" line="5200"/>
       <source>Add distance from horizontal axis constraint</source>
       <translation>Προσθήκη απόστασης από τον περιορισμό του Οριζόντιου άξονα</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4864"/>
-      <location filename="../../CommandConstraints.cpp" line="5189"/>
+      <location filename="../../CommandConstraints.cpp" line="4889"/>
+      <location filename="../../CommandConstraints.cpp" line="5214"/>
       <source>Add distance from vertical axis constraint</source>
       <translation>Προσθήκη περιορισμού απόστασης από τον Κατακόρυφο άξονα</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4876"/>
-      <location filename="../../CommandConstraints.cpp" line="5202"/>
+      <location filename="../../CommandConstraints.cpp" line="4901"/>
+      <location filename="../../CommandConstraints.cpp" line="5227"/>
       <source>Add point to point distance constraint</source>
       <translation>Προσθήκη περιορισμού απόστασης από Σημείο σε Σημείο</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2242"/>
+      <location filename="../../CommandConstraints.cpp" line="2255"/>
       <source>Add point to line Distance constraint</source>
       <translation>Προσθήκη σημείου σε γραμμή Περιορισμός Απόστασης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5000"/>
-      <location filename="../../CommandConstraints.cpp" line="5351"/>
+      <location filename="../../CommandConstraints.cpp" line="5025"/>
+      <location filename="../../CommandConstraints.cpp" line="5376"/>
       <source>Add circle to circle distance constraint</source>
       <translation>Προσθήκη περιορισμού απόστασης από Κύκλο σε Κύκλο</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5043"/>
+      <location filename="../../CommandConstraints.cpp" line="5068"/>
       <source>Add circle to line distance constraint</source>
       <translation>Προσθήκη περιορισμού απόστασης από Κύκλο σε Γραμμή</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2340"/>
-      <location filename="../../CommandConstraints.cpp" line="2363"/>
-      <location filename="../../CommandConstraints.cpp" line="2431"/>
-      <location filename="../../CommandConstraints.cpp" line="2515"/>
-      <location filename="../../CommandConstraints.cpp" line="5091"/>
-      <location filename="../../CommandConstraints.cpp" line="5118"/>
-      <location filename="../../CommandConstraints.cpp" line="5246"/>
+      <location filename="../../CommandConstraints.cpp" line="2353"/>
+      <location filename="../../CommandConstraints.cpp" line="2376"/>
+      <location filename="../../CommandConstraints.cpp" line="2444"/>
+      <location filename="../../CommandConstraints.cpp" line="2528"/>
+      <location filename="../../CommandConstraints.cpp" line="5116"/>
+      <location filename="../../CommandConstraints.cpp" line="5143"/>
+      <location filename="../../CommandConstraints.cpp" line="5271"/>
       <source>Add length constraint</source>
       <translation>Προσθήκη περιορισμού Μήκους</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1775"/>
-      <location filename="../../CommandConstraints.cpp" line="1963"/>
-      <location filename="../../CommandConstraints.cpp" line="3148"/>
+      <location filename="../../CommandConstraints.cpp" line="1757"/>
+      <location filename="../../CommandConstraints.cpp" line="1948"/>
+      <location filename="../../CommandConstraints.cpp" line="3169"/>
       <source>Dimension</source>
       <translation>Διάσταση</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2211"/>
+      <location filename="../../CommandConstraints.cpp" line="2224"/>
       <source>Add lock constraint</source>
       <translation>Προσθήκη περιορισμού κλειδώματος</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2207"/>
+      <location filename="../../CommandConstraints.cpp" line="2220"/>
       <source>Add 'Distance to origin' constraint</source>
       <translation>Προσθήκη περιορισμού «Απόσταση από την προέλευση»</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2223"/>
-      <location filename="../../CommandConstraints.cpp" line="2837"/>
-      <location filename="../../CommandConstraints.cpp" line="3066"/>
+      <location filename="../../CommandConstraints.cpp" line="2236"/>
+      <location filename="../../CommandConstraints.cpp" line="2850"/>
+      <location filename="../../CommandConstraints.cpp" line="3087"/>
       <source>Add Distance constraint</source>
-      <translation>Add Distance constraint</translation>
+      <translation>Προσθήκη περιορισμού Απόστασης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2228"/>
-      <location filename="../../CommandConstraints.cpp" line="2257"/>
-      <location filename="../../CommandConstraints.cpp" line="2291"/>
-      <source>Add 'Horizontal' constraints</source>
-      <translation>Add 'Horizontal' constraints</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2232"/>
-      <location filename="../../CommandConstraints.cpp" line="2264"/>
-      <location filename="../../CommandConstraints.cpp" line="2298"/>
-      <source>Add 'Vertical' constraints</source>
-      <translation>Add 'Vertical' constraints</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2247"/>
-      <location filename="../../CommandConstraints.cpp" line="2310"/>
-      <source>Add Symmetry constraint</source>
-      <translation>Add Symmetry constraint</translation>
-    </message>
-    <message>
+      <location filename="../../CommandConstraints.cpp" line="2241"/>
       <location filename="../../CommandConstraints.cpp" line="2270"/>
-      <location filename="../../CommandConstraints.cpp" line="2442"/>
+      <location filename="../../CommandConstraints.cpp" line="2304"/>
+      <source>Add 'Horizontal' constraints</source>
+      <translation>Προσθήκη περιορισμών 'Οριζόντιας' ευθυγράμμισης</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2245"/>
+      <location filename="../../CommandConstraints.cpp" line="2277"/>
+      <location filename="../../CommandConstraints.cpp" line="2311"/>
+      <source>Add 'Vertical' constraints</source>
+      <translation>Προσθήκη περιορισμών 'Κάθετης' ευθυγράμμισης</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2260"/>
+      <location filename="../../CommandConstraints.cpp" line="2323"/>
+      <source>Add Symmetry constraint</source>
+      <translation>Προσθήκη περιορισμού Συμμετρίας</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2283"/>
+      <location filename="../../CommandConstraints.cpp" line="2455"/>
       <source>Add Symmetry constraints</source>
-      <translation>Add Symmetry constraints</translation>
+      <translation>Προσθήκη περιορισμών Συμμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2315"/>
-      <location filename="../../CommandConstraints.cpp" line="2327"/>
+      <location filename="../../CommandConstraints.cpp" line="2328"/>
+      <location filename="../../CommandConstraints.cpp" line="2340"/>
       <source>Add Distance constraints</source>
-      <translation>Add Distance constraints</translation>
+      <translation>Προσθήκη περιορισμών Απόστασης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2373"/>
+      <location filename="../../CommandConstraints.cpp" line="2386"/>
       <source>Add Horizontal constraint</source>
-      <translation>Add Horizontal constraint</translation>
+      <translation>Προσθήκη περιορισμού Οριζόντιας ευθυγράμμισης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2378"/>
+      <location filename="../../CommandConstraints.cpp" line="2391"/>
       <source>Add Vertical constraint</source>
-      <translation>Add Vertical constraint</translation>
+      <translation>Προσθήκη περιορισμού Κατακόρυφης ευθυγράμμισης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2382"/>
-      <location filename="../../CommandConstraints.cpp" line="4049"/>
+      <location filename="../../CommandConstraints.cpp" line="2395"/>
+      <location filename="../../CommandConstraints.cpp" line="4070"/>
       <source>Add Block constraint</source>
       <translation>Προσθήκη περιορισμού "Κλειδώματος"</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2397"/>
+      <location filename="../../CommandConstraints.cpp" line="2410"/>
       <source>Add Angle constraint</source>
-      <translation>Add Angle constraint</translation>
+      <translation>Προσθήκη περιορισμού Γωνίας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2407"/>
-      <location filename="../../CommandConstraints.cpp" line="2530"/>
-      <location filename="../../CommandConstraints.cpp" line="2540"/>
-      <location filename="../../CommandConstraints.cpp" line="2578"/>
+      <location filename="../../CommandConstraints.cpp" line="2420"/>
+      <location filename="../../CommandConstraints.cpp" line="2543"/>
+      <location filename="../../CommandConstraints.cpp" line="2553"/>
+      <location filename="../../CommandConstraints.cpp" line="2591"/>
       <source>Add Equality constraint</source>
-      <translation>Add Equality constraint</translation>
+      <translation>Προσθήκη περιορισμού Ισότητας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2418"/>
+      <location filename="../../CommandConstraints.cpp" line="2431"/>
       <source>Add Equality constraints</source>
-      <translation>Add Equality constraints</translation>
+      <translation>Προσθήκη περιορισμών Ισότητας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10540"/>
+      <location filename="../../CommandConstraints.cpp" line="10545"/>
+      <source>Add Group constraint</source>
+      <translation type="unfinished">Add Group constraint</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="10969"/>
       <source>Activate/Deactivate constraints</source>
-      <translation>Activate/Deactivate constraints</translation>
+      <translation>Ενεργοποίηση/Απενεργοποίηση περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2466"/>
-      <location filename="../../CommandConstraints.cpp" line="2499"/>
-      <source>Add arc angle constraint</source>
-      <translation>Add arc angle constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2520"/>
-      <source>Add concentric and length constraint</source>
-      <translation>Add concentric and length constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="3044"/>
-      <source>Add DistanceX constraint</source>
-      <translation>Add DistanceX constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="3055"/>
-      <source>Add DistanceY constraint</source>
-      <translation>Add DistanceY constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="4356"/>
-      <location filename="../../CommandConstraints.cpp" line="4540"/>
-      <source>Add point on object constraint</source>
-      <translation>Add point on object constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2471"/>
-      <location filename="../../CommandConstraints.cpp" line="2503"/>
-      <source>Add arc length constraint</source>
-      <translation>Add arc length constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="4919"/>
-      <location filename="../../CommandConstraints.cpp" line="5296"/>
-      <source>Add point to line distance constraint</source>
-      <translation>Add point to line distance constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="4949"/>
-      <source>Add point to circle distance constraint</source>
-      <translation>Add point to circle distance constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="5537"/>
-      <location filename="../../CommandConstraints.cpp" line="5663"/>
-      <source>Add point to point horizontal distance constraint</source>
-      <translation>Add point to point horizontal distance constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="5578"/>
-      <source>Add fixed x-coordinate constraint</source>
-      <translation>Add fixed x-coordinate constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="5837"/>
-      <location filename="../../CommandConstraints.cpp" line="5960"/>
-      <source>Add point to point vertical distance constraint</source>
-      <translation>Add point to point vertical distance constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="5875"/>
-      <source>Add fixed y-coordinate constraint</source>
-      <translation>Add fixed y-coordinate constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6108"/>
-      <location filename="../../CommandConstraints.cpp" line="6152"/>
-      <source>Add parallel constraint</source>
-      <translation>Add parallel constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6292"/>
-      <location filename="../../CommandConstraints.cpp" line="6391"/>
-      <location filename="../../CommandConstraints.cpp" line="6554"/>
-      <location filename="../../CommandConstraints.cpp" line="6604"/>
-      <location filename="../../CommandConstraints.cpp" line="6755"/>
-      <location filename="../../CommandConstraints.cpp" line="6804"/>
-      <location filename="../../CommandConstraints.cpp" line="6860"/>
-      <source>Add perpendicular constraint</source>
-      <translation>Προσθήκη κάθετου περιορισμού</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6430"/>
-      <source>Add perpendicularity constraint</source>
-      <translation>Προσθήκη περιορισμού καθετότητας</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6997"/>
-      <source>Swap coincident+tangency with ptp tangency</source>
-      <translation>Swap coincident+tangency with ptp tangency</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="7127"/>
-      <location filename="../../CommandConstraints.cpp" line="7229"/>
-      <location filename="../../CommandConstraints.cpp" line="7278"/>
-      <location filename="../../CommandConstraints.cpp" line="7465"/>
-      <location filename="../../CommandConstraints.cpp" line="7633"/>
-      <location filename="../../CommandConstraints.cpp" line="7703"/>
-      <location filename="../../CommandConstraints.cpp" line="7736"/>
-      <source>Add tangent constraint</source>
-      <translation>Add tangent constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="7324"/>
-      <location filename="../../CommandConstraints.cpp" line="7335"/>
-      <location filename="../../CommandConstraints.cpp" line="7347"/>
-      <location filename="../../CommandConstraints.cpp" line="7371"/>
-      <location filename="../../CommandConstraints.cpp" line="7384"/>
-      <location filename="../../CommandConstraints.cpp" line="7408"/>
-      <location filename="../../CommandConstraints.cpp" line="7420"/>
-      <location filename="../../CommandConstraints.cpp" line="7445"/>
-      <location filename="../../CommandConstraints.cpp" line="7538"/>
-      <location filename="../../CommandConstraints.cpp" line="7549"/>
-      <location filename="../../CommandConstraints.cpp" line="7561"/>
-      <location filename="../../CommandConstraints.cpp" line="7585"/>
-      <location filename="../../CommandConstraints.cpp" line="7597"/>
-      <location filename="../../CommandConstraints.cpp" line="7621"/>
-      <source>Add tangent constraint point</source>
-      <translation>Add tangent constraint point</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2475"/>
       <location filename="../../CommandConstraints.cpp" line="2479"/>
-      <location filename="../../CommandConstraints.cpp" line="2486"/>
-      <location filename="../../CommandConstraints.cpp" line="2491"/>
-      <location filename="../../CommandConstraints.cpp" line="7956"/>
-      <location filename="../../CommandConstraints.cpp" line="8000"/>
-      <location filename="../../CommandConstraints.cpp" line="8029"/>
-      <location filename="../../CommandConstraints.cpp" line="8106"/>
-      <source>Add radius constraint</source>
-      <translation>Add radius constraint</translation>
+      <location filename="../../CommandConstraints.cpp" line="2512"/>
+      <source>Add arc angle constraint</source>
+      <translation>Προσθήκη περιορισμού Γωνίας Τόξου</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8307"/>
-      <location filename="../../CommandConstraints.cpp" line="8339"/>
-      <location filename="../../CommandConstraints.cpp" line="8360"/>
-      <location filename="../../CommandConstraints.cpp" line="8436"/>
+      <location filename="../../CommandConstraints.cpp" line="2533"/>
+      <source>Add concentric and length constraint</source>
+      <translation>Προσθήκη περιορισμού Ομόκεντρης θέσης και Μήκους</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="3067"/>
+      <source>Add DistanceX constraint</source>
+      <translation>Προσθήκη Οριζόντιας απόστασης (X)</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="3077"/>
+      <source>Add DistanceY constraint</source>
+      <translation>Προσθήκη κάθετου μήκους (Υ)</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="4378"/>
+      <location filename="../../CommandConstraints.cpp" line="4557"/>
+      <source>Add point on object constraint</source>
+      <translation>Σημείο πάνω σε αντικείμενο</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2484"/>
+      <location filename="../../CommandConstraints.cpp" line="2516"/>
+      <source>Add arc length constraint</source>
+      <translation>Ορισμός μήκους τόξου</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="4944"/>
+      <location filename="../../CommandConstraints.cpp" line="5321"/>
+      <source>Add point to line distance constraint</source>
+      <translation>Απόσταση σημείου από γραμμή</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="4974"/>
+      <source>Add point to circle distance constraint</source>
+      <translation>Απόσταση σημείου από κύκλο</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5562"/>
+      <location filename="../../CommandConstraints.cpp" line="5688"/>
+      <source>Add point to point horizontal distance constraint</source>
+      <translation>Οριζόντια απόσταση σημείων</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5603"/>
+      <source>Add fixed x-coordinate constraint</source>
+      <translation>Κλείδωμα οριζόντιας θέσης Χ</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5862"/>
+      <location filename="../../CommandConstraints.cpp" line="5984"/>
+      <source>Add point to point vertical distance constraint</source>
+      <translation>Κάθετη απόσταση σημείων</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5900"/>
+      <source>Add fixed y-coordinate constraint</source>
+      <translation>Κλείδωμα κάθετης θέσης Υ</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6132"/>
+      <location filename="../../CommandConstraints.cpp" line="6176"/>
+      <source>Add parallel constraint</source>
+      <translation>Παραλληλία Γραμμών</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6297"/>
+      <location filename="../../CommandConstraints.cpp" line="6335"/>
+      <location filename="../../CommandConstraints.cpp" line="6436"/>
+      <location filename="../../CommandConstraints.cpp" line="6600"/>
+      <location filename="../../CommandConstraints.cpp" line="6650"/>
+      <location filename="../../CommandConstraints.cpp" line="6799"/>
+      <location filename="../../CommandConstraints.cpp" line="6848"/>
+      <location filename="../../CommandConstraints.cpp" line="6904"/>
+      <source>Add perpendicular constraint</source>
+      <translation>Καθετότητα Γραμμών</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6475"/>
+      <source>Add perpendicularity constraint</source>
+      <translation>Προσθήκη Καθετότητας</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="7040"/>
+      <source>Swap coincident+tangency with ptp tangency</source>
+      <translation>Μετατροπή απλής ένωσης και ομαλής επαφής σε άμεση σύνδεση χωρίς γωνία</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="7170"/>
+      <location filename="../../CommandConstraints.cpp" line="7271"/>
+      <location filename="../../CommandConstraints.cpp" line="7320"/>
+      <location filename="../../CommandConstraints.cpp" line="7529"/>
+      <location filename="../../CommandConstraints.cpp" line="7715"/>
+      <location filename="../../CommandConstraints.cpp" line="7785"/>
+      <location filename="../../CommandConstraints.cpp" line="7818"/>
+      <source>Add tangent constraint</source>
+      <translation>Προσθήκη ομαλής επαφής (χωρίς γωνία)</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="7366"/>
+      <location filename="../../CommandConstraints.cpp" line="7380"/>
+      <location filename="../../CommandConstraints.cpp" line="7394"/>
+      <location filename="../../CommandConstraints.cpp" line="7421"/>
+      <location filename="../../CommandConstraints.cpp" line="7436"/>
+      <location filename="../../CommandConstraints.cpp" line="7463"/>
+      <location filename="../../CommandConstraints.cpp" line="7478"/>
+      <location filename="../../CommandConstraints.cpp" line="7506"/>
+      <location filename="../../CommandConstraints.cpp" line="7602"/>
+      <location filename="../../CommandConstraints.cpp" line="7616"/>
+      <location filename="../../CommandConstraints.cpp" line="7631"/>
+      <location filename="../../CommandConstraints.cpp" line="7658"/>
+      <location filename="../../CommandConstraints.cpp" line="7673"/>
+      <location filename="../../CommandConstraints.cpp" line="7700"/>
+      <source>Add tangent constraint point</source>
+      <translation>Προσθήκη Εφαπτομένης σε Σημείο</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2488"/>
+      <location filename="../../CommandConstraints.cpp" line="2492"/>
+      <location filename="../../CommandConstraints.cpp" line="2499"/>
+      <location filename="../../CommandConstraints.cpp" line="2504"/>
+      <location filename="../../CommandConstraints.cpp" line="8037"/>
+      <location filename="../../CommandConstraints.cpp" line="8081"/>
+      <location filename="../../CommandConstraints.cpp" line="8110"/>
+      <location filename="../../CommandConstraints.cpp" line="8187"/>
+      <source>Add radius constraint</source>
+      <translation>Προσθήκη περιορισμού Ακτίνας</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="8388"/>
+      <location filename="../../CommandConstraints.cpp" line="8420"/>
+      <location filename="../../CommandConstraints.cpp" line="8441"/>
+      <location filename="../../CommandConstraints.cpp" line="8517"/>
       <source>Add diameter constraint</source>
       <translation>Προσθήκη περιορισμού διαμέτρου</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8632"/>
-      <location filename="../../CommandConstraints.cpp" line="8680"/>
-      <location filename="../../CommandConstraints.cpp" line="8715"/>
-      <location filename="../../CommandConstraints.cpp" line="8804"/>
+      <location filename="../../CommandConstraints.cpp" line="8713"/>
+      <location filename="../../CommandConstraints.cpp" line="8761"/>
+      <location filename="../../CommandConstraints.cpp" line="8796"/>
+      <location filename="../../CommandConstraints.cpp" line="8885"/>
       <source>Add radiam constraint</source>
-      <translation>Add radiam constraint</translation>
+      <translation>Ορισμός Ακτίνας ή Διαμέτρου</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="261"/>
-      <location filename="../../CommandConstraints.cpp" line="9137"/>
-      <location filename="../../CommandConstraints.cpp" line="9253"/>
-      <location filename="../../CommandConstraints.cpp" line="9279"/>
-      <location filename="../../CommandConstraints.cpp" line="9374"/>
+      <location filename="../../CommandConstraints.cpp" line="264"/>
+      <location filename="../../CommandConstraints.cpp" line="9218"/>
+      <location filename="../../CommandConstraints.cpp" line="9334"/>
+      <location filename="../../CommandConstraints.cpp" line="9360"/>
+      <location filename="../../CommandConstraints.cpp" line="9455"/>
       <source>Add angle constraint</source>
-      <translation>Add angle constraint</translation>
+      <translation>Ορισμός Γωνίας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7020"/>
+      <location filename="../../CommandConstraints.cpp" line="7063"/>
       <source>Swap point on object and tangency with point to curve tangency</source>
-      <translation>Swap point on object and tangency with point to curve tangency</translation>
+      <translation>Εναλλαγή σημείου σε αντικείμενο με επαφή (εφαπτομένη)</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9636"/>
-      <location filename="../../CommandConstraints.cpp" line="9691"/>
+      <location filename="../../CommandConstraints.cpp" line="9717"/>
+      <location filename="../../CommandConstraints.cpp" line="9772"/>
       <source>Add equality constraint</source>
-      <translation>Add equality constraint</translation>
+      <translation>Κάνε τα σχήματα ίσα</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9817"/>
-      <location filename="../../CommandConstraints.cpp" line="9876"/>
-      <location filename="../../CommandConstraints.cpp" line="9897"/>
+      <location filename="../../CommandConstraints.cpp" line="9941"/>
       <location filename="../../CommandConstraints.cpp" line="10000"/>
-      <location filename="../../CommandConstraints.cpp" line="10040"/>
-      <location filename="../../CommandConstraints.cpp" line="10062"/>
+      <location filename="../../CommandConstraints.cpp" line="10021"/>
+      <location filename="../../CommandConstraints.cpp" line="10137"/>
+      <location filename="../../CommandConstraints.cpp" line="10178"/>
+      <location filename="../../CommandConstraints.cpp" line="10252"/>
       <source>Add symmetric constraint</source>
-      <translation>Add symmetric constraint</translation>
+      <translation>Προσθήκη συμμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10224"/>
+      <location filename="../../CommandConstraints.cpp" line="10414"/>
       <source>Add Snell's law constraint</source>
       <translation>Προσθήκη περιορισμού νόμου Snell</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10453"/>
+      <location filename="../../CommandConstraints.cpp" line="10882"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation>Toggle constraint to driving/reference</translation>
+      <translation>Εναλλαγή Περιορισμών απο Κύρια σε Βοηθητική και αντίστροφα</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Create a new sketch on a face</source>
-      <translation>Δημιουργία νέου σκίτσου σε μια όψη</translation>
+      <translation>Δημιουργία νέου Σχεδίου πάνω σε μια επιφάνεια</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="288"/>
       <source>Create a new sketch</source>
       <translation>Δημιουργία νέου σκίτσου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="552"/>
       <source>Reorient sketch</source>
       <translation>Επαναπροσανατολισμό σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="758"/>
+      <location filename="../../Command.cpp" line="761"/>
       <source>Attach sketch</source>
       <translation>Επισύναψη σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="766"/>
+      <location filename="../../Command.cpp" line="770"/>
       <source>Detach sketch</source>
       <translation>Αποκοπή σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="906"/>
+      <location filename="../../Command.cpp" line="909"/>
       <source>Create a mirrored sketch for each selected sketch</source>
-      <translation>Δημιουργήστε ένα είδωλο σχεδίου για κάθε επιλεγμένο σχέδιο</translation>
+      <translation>Δημιουργήστε ένα είδωλο (κατοπτρικού) σχεδίου για κάθε επιλεγμένο σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1025"/>
+      <location filename="../../Command.cpp" line="1029"/>
       <source>Merge sketches</source>
       <translation>Συγχώνευση σχεδίων</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="130"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="134"/>
       <source>Add sketch line</source>
       <translation>Προσθήκη γραμμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="496"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="506"/>
       <source>Add sketch box</source>
       <translation>Προσθήκη πλαισίου</translation>
     </message>
@@ -697,265 +701,271 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Προσθήκη τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="205"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="214"/>
       <source>Add sketch circle</source>
       <translation>Προσθήκη κύκλου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="207"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="213"/>
       <source>Add sketch ellipse</source>
       <translation>Προσθήκη έλλειψης</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="300"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="330"/>
       <source>Add sketch arc of ellipse</source>
       <translation>Προσθήκη ελλειπτικό τόξο</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="305"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="290"/>
       <source>Add sketch arc of hyperbola</source>
       <translation>Προσθήκη τόξου ομαλής καμπύλης</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="232"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="240"/>
       <source>Add sketch arc of Parabola</source>
-      <translation>Προσθήκη κατοπτρικό συμμετρικό τόξο</translation>
+      <translation>Σχεδίαση Παραβολικού Τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="94"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="96"/>
       <source>Add sketch point</source>
       <translation>Προσθήκη σημείου στο σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="206"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="261"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="212"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="270"/>
       <source>Create fillet</source>
       <translation>Δημιουργία στρογγυλέματος</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="176"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
       <source>Trim edge</source>
       <translation>Περικοπή ακμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="291"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="293"/>
       <source>Extend edge</source>
       <translation>Επέκταση ακμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="154"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="160"/>
       <source>Split edge</source>
-      <translation>Split edge</translation>
+      <translation>Διαχωρισμός Ακμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="176"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="184"/>
       <source>Add external geometry</source>
-      <translation>Add external geometry</translation>
+      <translation>Προσθήκη εξωτερικής γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="173"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="179"/>
       <source>Add slot</source>
-      <translation>Add slot</translation>
+      <translation>Σχεδίαση εσοχής (οπή)</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="137"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="142"/>
       <source>Convert to NURBS</source>
-      <translation>Convert to NURBS</translation>
+      <translation>Μετατροπή σε NURBS</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="213"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="220"/>
       <source>Increase B-spline degree</source>
-      <translation>Increase B-spline degree</translation>
+      <translation>Αύξηση βαθμού καμπύλης (B-spline)</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="288"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="299"/>
       <source>Decrease B-spline degree</source>
-      <translation>Decrease B-spline degree</translation>
+      <translation>Μείωση βαθμού καμπύλης (B-spline)</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="413"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="431"/>
       <source>Increase knot multiplicity</source>
       <translation>Αύξηση της πολλαπλότητας κόμβου</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="560"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="588"/>
       <source>Decrease knot multiplicity</source>
       <translation>Μείωση της πολλαπλότητας κόμβου</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="803"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="853"/>
       <source>Insert knot</source>
-      <translation>Insert knot</translation>
+      <translation>Προσθήκη σημείου καμπής (κόμβου)</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1093"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1165"/>
       <source>Join Curves</source>
-      <translation>Join Curves</translation>
+      <translation>Ένωση Καμπυλών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="273"/>
+      <location filename="../../CommandSketcherTools.cpp" line="298"/>
       <source>Cut in Sketcher</source>
-      <translation>Cut in Sketcher</translation>
+      <translation>Αποκοπή στο Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="318"/>
+      <location filename="../../CommandSketcherTools.cpp" line="343"/>
       <source>Paste in Sketcher</source>
-      <translation>Paste in Sketcher</translation>
+      <translation>Επικόλληση στο Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1065"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1090"/>
       <source>Exposing Internal Geometry</source>
-      <translation>Exposing Internal Geometry</translation>
+      <translation>Εμφάνιση Εσωτερικής Γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1266"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1293"/>
       <source>Copy/clone/move geometry</source>
       <translation>Αντιγραφή/κλωνοποίηση/μετακίνηση γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1849"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1878"/>
       <source>Create copy of geometry</source>
-      <translation>Create copy of geometry</translation>
+      <translation>Δημιουργία αντιγράφου γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2099"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2128"/>
       <source>Delete all geometry</source>
-      <translation>Delete all geometry</translation>
+      <translation>Διαγραφή όλων των γεωμετρικών στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2163"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2192"/>
       <source>Delete all constraints</source>
       <translation>Διαγραφή όλων των περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2297"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2326"/>
       <source>Remove Axes Alignment</source>
-      <translation>Remove Axes Alignment</translation>
+      <translation>Κατάργηση Ευθυγράμμισης Αξόνων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="162"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="170"/>
       <source>Toggle constraints to the other virtual space</source>
-      <translation>Toggle constraints to the other virtual space</translation>
+      <translation>Εμφάνιση/Απόκρυψη περιορισμών στον εικονικό χώρο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="172"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1523"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1671"/>
       <source>Update constraint's virtual space</source>
-      <translation>Update constraint's virtual space</translation>
+      <translation>Ενημέρωση περιορισμού στον εικονικό χώρο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="705"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="801"/>
       <source>Swap constraint names</source>
       <translation>Ανταλλαγή ονομάτων περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1210"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1321"/>
       <source>Rename sketch constraint</source>
       <translation>Μετονομασία περιορισμού σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1557"/>
-      <source>Update constraint's visibility</source>
-      <translation type="unfinished">Update constraint's visibility</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1765"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1921"/>
       <source>Drag Point</source>
-      <translation>Drag Point</translation>
+      <translation>Σύρσιμο Σημείου</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1765"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1921"/>
       <source>Drag Curve</source>
-      <translation>Drag Curve</translation>
+      <translation>Σύρσιμο Καμπύλης</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1766"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1922"/>
       <source>Drag geometries</source>
-      <translation>Drag geometries</translation>
+      <translation>Σύρσιμο Γεωμετριών</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1115"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1168"/>
       <source>Drag Constraint</source>
-      <translation>Drag Constraint</translation>
+      <translation>Σύρσιμο Περιορισμού</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1330"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1276"/>
+      <location filename="../../CommandConstraints.cpp" line="10747"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1411"/>
       <source>Modify sketch constraints</source>
       <translation>Τροποποίηση περιορισμών σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="168"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="182"/>
       <source>Create a carbon copy</source>
-      <translation>Create a carbon copy</translation>
+      <translation>Δημιουργία πιστού αντιγράφου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="433"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="430"/>
       <source>Offset</source>
       <translation>Μετατόπιση</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="111"/>
       <source>Add polygon</source>
-      <translation>Add polygon</translation>
+      <translation>Προσθήκη Πολυγώνου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="208"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="206"/>
       <source>Add sketch arc slot</source>
-      <translation>Add sketch arc slot</translation>
+      <translation>Προσθήκη τοξωτής σχισμής στο σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="145"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="149"/>
       <source>Rotate geometries</source>
-      <translation>Rotate geometries</translation>
+      <translation>Περιστροφή Γεωμετριών</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="121"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="131"/>
       <source>Scale geometries</source>
-      <translation>Scale geometries</translation>
+      <translation>Αλλαγή μεγέθους γεωμετριών</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="118"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="122"/>
       <source>Translate geometries</source>
-      <translation>Translate geometries</translation>
+      <translation>Μετατόπιση γεωμετριών</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="134"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="140"/>
       <source>Symmetry geometries</source>
-      <translation>Symmetry geometries</translation>
+      <translation>Συμμετρία γεωμετριών</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="457"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="462"/>
       <source>Add line to sketch polyline</source>
-      <translation>Add line to sketch polyline</translation>
+      <translation>Προσθήκη γραμμής σε πολυγραμμή σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="485"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="492"/>
       <source>Add arc to sketch polyline</source>
-      <translation>Add arc to sketch polyline</translation>
+      <translation>Προσθήκη τόξου σε πολυγραμμή σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="180"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="183"/>
       <source>Toggle construction geometry</source>
       <translation>Εναλλαγή κατασκευαστικής λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="912"/>
-      <location filename="../../DrawSketchHandler.cpp" line="760"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="922"/>
+      <location filename="../../DrawSketchHandler.cpp" line="799"/>
       <source>Add Auto-Constraints</source>
-      <translation type="unfinished">Add Auto-Constraints</translation>
+      <translation>Προσθήκη Αυτόματων Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="610"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="748"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="99"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="626"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="773"/>
       <source>Add Sketch B-Spline</source>
-      <translation type="unfinished">Add Sketch B-Spline</translation>
+      <translation>Προσθήκη Σκίτσου B-Spline</translation>
+    </message>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="114"/>
+      <source>Modify sketch text constraint</source>
+      <translation type="unfinished">Modify sketch text constraint</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="131"/>
+      <source>Add sketch Text</source>
+      <translation type="unfinished">Add sketch Text</translation>
     </message>
   </context>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Sketcher</source>
       <translation>Σχεδιασμός</translation>
     </message>
@@ -963,111 +973,111 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6623"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2802"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Δεν απαιτείτε καμία αλλαγή της πολλαπλότητας κόμβου.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6616"/>
-      <location filename="../../../App/SketchObject.cpp" line="6778"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2794"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2972"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
-      <translation>B-spline Geometry Index (GeoID) is out of bounds.</translation>
+      <translation>Ο δείκτης (GeoID) της καμπύλης B-spline είναι εκτός ορίων.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6630"/>
-      <location filename="../../../App/SketchObject.cpp" line="6790"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2811"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2988"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
-      <translation>The Geometry Index (GeoId) provided is not a B-spline.</translation>
+      <translation>Το επιλεγμένο σχήμα (GeoId) δεν είναι καμπύλη B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6641"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2823"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Ο δείκτης κόμβου είναι εκτός ορίων. Σημειώστε πως σύμφωνα με το σύστημα σημειογραφίας του OCC, ο πρώτος κόμβος έχει δείκτη 1 και όχι μηδέν.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6653"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2839"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
-      <translation>The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
+      <translation>Η πολλαπλότητα (Ισχύ) δεν μπορεί να αυξηθεί πάνω από τον βαθμό της B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6662"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2850"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Η πολλαπλότητα δεν δύναται να είναι χαμηλότερη από το μηδέν.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6676"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2866"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>To ΟCC αδυνατεί να μειώσει την πολλαπλότητα εντός των ορίων μέγιστης ανοχής.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6783"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2979"/>
       <source>Knot cannot have zero multiplicity.</source>
-      <translation>Knot cannot have zero multiplicity.</translation>
+      <translation>Ο κόμβος δεν μπορεί να έχει μηδενική πολλαπλότητα (Ισχύ).</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6802"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3001"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
-      <translation>Knot multiplicity cannot be higher than the degree of the B-spline.</translation>
+      <translation>Η πολλαπλότητα (Ισχύ) του κόμβου δεν μπορεί να είναι μεγαλύτερη από τον βαθμό της καμπύλης B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6809"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3011"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
-      <translation>Knot cannot be inserted outside the B-spline parameter range.</translation>
+      <translation>Ο κόμβος δεν μπορεί να εισαχθεί εκτός του εύρους παραμέτρων της καμπύλης B-spline.</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="318"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="337"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="364"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="377"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="390"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="403"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="415"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="429"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="456"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="572"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="353"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="371"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="397"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="409"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="421"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="433"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="444"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="457"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="483"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="596"/>
       <source>ToolWidget parameter index out of range</source>
-      <translation>ToolWidget parameter index out of range</translation>
+      <translation>Ο δείκτης παραμέτρου του ToolWidget (Πίνακας Εργαλείων) είναι εκτός ορίων</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="672"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="677"/>
       <source>Autoconstraint error: Unsolvable sketch while applying coincident constraints.</source>
-      <translation>Autoconstraint error: Unsolvable sketch while applying coincident constraints.</translation>
+      <translation>Σφάλμα αυτόματου περιορισμού: Το σχέδιο έχει αντικρουόμενους κανόνες κατά την προσπάθεια ταύτισης σημείων.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="719"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="728"/>
       <source>Autoconstraint error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
-      <translation>Autoconstraint error: Unsolvable sketch while applying vertical/horizontal constraints.</translation>
+      <translation>Σφάλμα αυτόματου περιορισμού: Το σχέδιο έχει αντικρουόμενους κανόνες κατά την εφαρμογή κάθετων/οριζόντιων περιορισμών.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="812"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="825"/>
       <source>Autoconstraint error: Unsolvable sketch while applying equality constraints.</source>
-      <translation>Autoconstraint error: Unsolvable sketch while applying equality constraints.</translation>
+      <translation>Σφάλμα αυτόματου περιορισμού: Το σχέδιο έχει αντικρουόμενους κανόνες κατά την εφαρμογή περιορισμών ισότητας.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="852"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="869"/>
       <source>Autoconstraint error: Unsolvable sketch without constraints.</source>
-      <translation>Autoconstraint error: Unsolvable sketch without constraints.</translation>
+      <translation>Σφάλμα αυτόματου περιορισμού: Το σχέδιο παρουσιάζει αντικρουόμενους κανόνες ακόμη και χωρίς περιορισμούς.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="866"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="883"/>
       <source>Autoconstraint error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
-      <translation>Autoconstraint error: Unsolvable sketch after applying horizontal and vertical constraints.</translation>
+      <translation>Σφάλμα αυτόματου περιορισμού: Το σχέδιο παρουσιάζει αντικρουόμενους κανόνες μετά την εφαρμογή οριζόντιων και κάθετων περιορισμών.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="881"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="900"/>
       <source>Autoconstraint error: Unsolvable sketch after applying point-on-point constraints.</source>
-      <translation>Autoconstraint error: Unsolvable sketch after applying point-on-point constraints.</translation>
+      <translation>Σφάλμα αυτόματου περιορισμού: Το σχέδιο παρουσιάζει αντικρουόμενους κανόνες μετά την εφαρμογή περιορισμών ταύτισης σημείων.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="902"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="923"/>
       <source>Autoconstraint error: Unsolvable sketch after applying equality constraints.</source>
-      <translation>Autoconstraint error: Unsolvable sketch after applying equality constraints.</translation>
+      <translation>Σφάλμα αυτόματου περιορισμού: Το σχέδιο παρουσιάζει αντικρουόμενους κανόνες μετά την εφαρμογή περιορισμών ισότητας.</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskSketcherCreateCommands</name>
     <message>
-      <location filename="../../TaskSketcherCreateCommands.cpp" line="34"/>
+      <location filename="../../TaskSketcherCreateCommands.cpp" line="36"/>
       <source>Appearance</source>
       <translation>Εμφάνιση</translation>
     </message>
@@ -1075,515 +1085,556 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppSketcherGui.cpp" line="141"/>
-      <location filename="../../AppSketcherGui.cpp" line="143"/>
-      <location filename="../../AppSketcherGui.cpp" line="145"/>
+      <location filename="../../AppSketcherGui.cpp" line="144"/>
       <location filename="../../AppSketcherGui.cpp" line="147"/>
+      <location filename="../../AppSketcherGui.cpp" line="150"/>
+      <location filename="../../AppSketcherGui.cpp" line="153"/>
       <source>Sketcher</source>
       <translation>Σχεδιασμός</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="124"/>
       <source>There are no modes that accept the selected set of subelements</source>
       <translation>Δεν υπάρχουν λειτουργίες που να δέχονται το επιλεγμένο σύνολο δευτερευόντων στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="125"/>
+      <location filename="../../Command.cpp" line="127"/>
       <source>Broken link to support subelements</source>
       <translation>Σπασμένος σύνδεσμος για την υποστήριξη δευτερευόντων στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="128"/>
-      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="140"/>
       <source>Unexpected error</source>
       <translation>Απρόσμενο σφάλμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Face is non-planar</source>
-      <translation>Η όψη δεν είναι επίπεδη</translation>
+      <translation>Η επιφάνεια δεν είναι επίπεδη</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="136"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
       <translation>Τα επιλεγμένα σχήματα έχουν λάθος μορφή (π.χ., καμπύλη ακμή ενώ χρειάζεται ευθύγραμμη)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Invalid selection</source>
       <translation>Μη έγκυρη επιλογή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="175"/>
+      <location filename="../../Command.cpp" line="177"/>
       <source>Too many objects selected</source>
       <translation>Επιλέχθηκαν πάρα πολλά αντικείμενα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="195"/>
       <source>Sketch mapping</source>
       <translation>Αποτύπωση σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="196"/>
       <source>Cannot map the sketch to the selected object. %1.</source>
-      <translation>Cannot map the sketch to the selected object. %1.</translation>
+      <translation>Αδυναμία αντιστοίχισης του σχεδίου στο επιλεγμένο αντικείμενο. %1.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="700"/>
       <source>Do not attach</source>
-      <translation>Do not attach</translation>
+      <translation>Χωρίς προσάρτηση</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="174"/>
-      <location filename="../../CommandConstraints.cpp" line="171"/>
-      <location filename="../../CommandConstraints.cpp" line="178"/>
-      <location filename="../../CommandConstraints.cpp" line="2816"/>
-      <location filename="../../CommandConstraints.cpp" line="2975"/>
-      <location filename="../../CommandConstraints.cpp" line="2991"/>
-      <location filename="../../CommandConstraints.cpp" line="3297"/>
-      <location filename="../../CommandConstraints.cpp" line="3704"/>
-      <location filename="../../CommandConstraints.cpp" line="3731"/>
-      <location filename="../../CommandConstraints.cpp" line="3736"/>
-      <location filename="../../CommandConstraints.cpp" line="3989"/>
-      <location filename="../../CommandConstraints.cpp" line="4022"/>
-      <location filename="../../CommandConstraints.cpp" line="4027"/>
-      <location filename="../../CommandConstraints.cpp" line="4320"/>
-      <location filename="../../CommandConstraints.cpp" line="4350"/>
-      <location filename="../../CommandConstraints.cpp" line="4373"/>
-      <location filename="../../CommandConstraints.cpp" line="4404"/>
-      <location filename="../../CommandConstraints.cpp" line="4422"/>
-      <location filename="../../CommandConstraints.cpp" line="4555"/>
-      <location filename="../../CommandConstraints.cpp" line="4577"/>
-      <location filename="../../CommandConstraints.cpp" line="4607"/>
-      <location filename="../../CommandConstraints.cpp" line="4809"/>
-      <location filename="../../CommandConstraints.cpp" line="4821"/>
-      <location filename="../../CommandConstraints.cpp" line="5070"/>
-      <location filename="../../CommandConstraints.cpp" line="5078"/>
-      <location filename="../../CommandConstraints.cpp" line="5144"/>
-      <location filename="../../CommandConstraints.cpp" line="5270"/>
-      <location filename="../../CommandConstraints.cpp" line="5375"/>
-      <location filename="../../CommandConstraints.cpp" line="5460"/>
-      <location filename="../../CommandConstraints.cpp" line="5473"/>
-      <location filename="../../CommandConstraints.cpp" line="5506"/>
-      <location filename="../../CommandConstraints.cpp" line="5568"/>
-      <location filename="../../CommandConstraints.cpp" line="5604"/>
-      <location filename="../../CommandConstraints.cpp" line="5639"/>
-      <location filename="../../CommandConstraints.cpp" line="5761"/>
-      <location filename="../../CommandConstraints.cpp" line="5774"/>
-      <location filename="../../CommandConstraints.cpp" line="5805"/>
-      <location filename="../../CommandConstraints.cpp" line="5867"/>
-      <location filename="../../CommandConstraints.cpp" line="5901"/>
-      <location filename="../../CommandConstraints.cpp" line="5936"/>
-      <location filename="../../CommandConstraints.cpp" line="6058"/>
-      <location filename="../../CommandConstraints.cpp" line="6093"/>
-      <location filename="../../CommandConstraints.cpp" line="6102"/>
-      <location filename="../../CommandConstraints.cpp" line="6141"/>
-      <location filename="../../CommandConstraints.cpp" line="6240"/>
-      <location filename="../../CommandConstraints.cpp" line="6252"/>
-      <location filename="../../CommandConstraints.cpp" line="6287"/>
-      <location filename="../../CommandConstraints.cpp" line="6363"/>
-      <location filename="../../CommandConstraints.cpp" line="6373"/>
-      <location filename="../../CommandConstraints.cpp" line="6414"/>
-      <location filename="../../CommandConstraints.cpp" line="6425"/>
-      <location filename="../../CommandConstraints.cpp" line="6454"/>
-      <location filename="../../CommandConstraints.cpp" line="6475"/>
-      <location filename="../../CommandConstraints.cpp" line="6655"/>
-      <location filename="../../CommandConstraints.cpp" line="6676"/>
-      <location filename="../../CommandConstraints.cpp" line="6855"/>
-      <location filename="../../CommandConstraints.cpp" line="7076"/>
-      <location filename="../../CommandConstraints.cpp" line="7088"/>
-      <location filename="../../CommandConstraints.cpp" line="7122"/>
-      <location filename="../../CommandConstraints.cpp" line="7194"/>
-      <location filename="../../CommandConstraints.cpp" line="7214"/>
-      <location filename="../../CommandConstraints.cpp" line="7223"/>
-      <location filename="../../CommandConstraints.cpp" line="7252"/>
-      <location filename="../../CommandConstraints.cpp" line="7261"/>
-      <location filename="../../CommandConstraints.cpp" line="7272"/>
-      <location filename="../../CommandConstraints.cpp" line="7300"/>
-      <location filename="../../CommandConstraints.cpp" line="7459"/>
-      <location filename="../../CommandConstraints.cpp" line="7512"/>
-      <location filename="../../CommandConstraints.cpp" line="7686"/>
-      <location filename="../../CommandConstraints.cpp" line="7731"/>
-      <location filename="../../CommandConstraints.cpp" line="7857"/>
-      <location filename="../../CommandConstraints.cpp" line="7870"/>
-      <location filename="../../CommandConstraints.cpp" line="7936"/>
-      <location filename="../../CommandConstraints.cpp" line="7944"/>
-      <location filename="../../CommandConstraints.cpp" line="8100"/>
-      <location filename="../../CommandConstraints.cpp" line="8220"/>
-      <location filename="../../CommandConstraints.cpp" line="8233"/>
-      <location filename="../../CommandConstraints.cpp" line="8278"/>
-      <location filename="../../CommandConstraints.cpp" line="8296"/>
-      <location filename="../../CommandConstraints.cpp" line="8422"/>
-      <location filename="../../CommandConstraints.cpp" line="8430"/>
-      <location filename="../../CommandConstraints.cpp" line="8538"/>
-      <location filename="../../CommandConstraints.cpp" line="8551"/>
-      <location filename="../../CommandConstraints.cpp" line="8612"/>
-      <location filename="../../CommandConstraints.cpp" line="8620"/>
-      <location filename="../../CommandConstraints.cpp" line="8798"/>
-      <location filename="../../CommandConstraints.cpp" line="9081"/>
-      <location filename="../../CommandConstraints.cpp" line="9094"/>
-      <location filename="../../CommandConstraints.cpp" line="9130"/>
-      <location filename="../../CommandConstraints.cpp" line="9228"/>
-      <location filename="../../CommandConstraints.cpp" line="9241"/>
-      <location filename="../../CommandConstraints.cpp" line="9306"/>
-      <location filename="../../CommandConstraints.cpp" line="9367"/>
-      <location filename="../../CommandConstraints.cpp" line="9521"/>
-      <location filename="../../CommandConstraints.cpp" line="9535"/>
-      <location filename="../../CommandConstraints.cpp" line="9553"/>
-      <location filename="../../CommandConstraints.cpp" line="9560"/>
-      <location filename="../../CommandConstraints.cpp" line="9581"/>
-      <location filename="../../CommandConstraints.cpp" line="9614"/>
-      <location filename="../../CommandConstraints.cpp" line="9630"/>
-      <location filename="../../CommandConstraints.cpp" line="9685"/>
-      <location filename="../../CommandConstraints.cpp" line="9769"/>
-      <location filename="../../CommandConstraints.cpp" line="9783"/>
-      <location filename="../../CommandConstraints.cpp" line="9810"/>
-      <location filename="../../CommandConstraints.cpp" line="9839"/>
-      <location filename="../../CommandConstraints.cpp" line="9869"/>
-      <location filename="../../CommandConstraints.cpp" line="9919"/>
-      <location filename="../../CommandConstraints.cpp" line="9948"/>
+      <location filename="../../CommandSketcherTools.cpp" line="393"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1037"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1366"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1376"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1438"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1970"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1980"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2044"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2254"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2264"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2311"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2376"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
+      <location filename="../../CommandConstraints.cpp" line="174"/>
+      <location filename="../../CommandConstraints.cpp" line="181"/>
+      <location filename="../../CommandConstraints.cpp" line="2829"/>
+      <location filename="../../CommandConstraints.cpp" line="2988"/>
+      <location filename="../../CommandConstraints.cpp" line="3004"/>
+      <location filename="../../CommandConstraints.cpp" line="3317"/>
+      <location filename="../../CommandConstraints.cpp" line="3724"/>
+      <location filename="../../CommandConstraints.cpp" line="3751"/>
+      <location filename="../../CommandConstraints.cpp" line="3756"/>
+      <location filename="../../CommandConstraints.cpp" line="4010"/>
+      <location filename="../../CommandConstraints.cpp" line="4043"/>
+      <location filename="../../CommandConstraints.cpp" line="4048"/>
+      <location filename="../../CommandConstraints.cpp" line="4342"/>
+      <location filename="../../CommandConstraints.cpp" line="4372"/>
+      <location filename="../../CommandConstraints.cpp" line="4395"/>
+      <location filename="../../CommandConstraints.cpp" line="4425"/>
+      <location filename="../../CommandConstraints.cpp" line="4442"/>
+      <location filename="../../CommandConstraints.cpp" line="4572"/>
+      <location filename="../../CommandConstraints.cpp" line="4594"/>
+      <location filename="../../CommandConstraints.cpp" line="4623"/>
+      <location filename="../../CommandConstraints.cpp" line="4834"/>
+      <location filename="../../CommandConstraints.cpp" line="4846"/>
+      <location filename="../../CommandConstraints.cpp" line="5095"/>
+      <location filename="../../CommandConstraints.cpp" line="5103"/>
+      <location filename="../../CommandConstraints.cpp" line="5169"/>
+      <location filename="../../CommandConstraints.cpp" line="5295"/>
+      <location filename="../../CommandConstraints.cpp" line="5400"/>
+      <location filename="../../CommandConstraints.cpp" line="5485"/>
+      <location filename="../../CommandConstraints.cpp" line="5498"/>
+      <location filename="../../CommandConstraints.cpp" line="5531"/>
+      <location filename="../../CommandConstraints.cpp" line="5593"/>
+      <location filename="../../CommandConstraints.cpp" line="5629"/>
+      <location filename="../../CommandConstraints.cpp" line="5664"/>
+      <location filename="../../CommandConstraints.cpp" line="5786"/>
+      <location filename="../../CommandConstraints.cpp" line="5799"/>
+      <location filename="../../CommandConstraints.cpp" line="5830"/>
+      <location filename="../../CommandConstraints.cpp" line="5892"/>
+      <location filename="../../CommandConstraints.cpp" line="5926"/>
+      <location filename="../../CommandConstraints.cpp" line="5960"/>
+      <location filename="../../CommandConstraints.cpp" line="6082"/>
+      <location filename="../../CommandConstraints.cpp" line="6117"/>
+      <location filename="../../CommandConstraints.cpp" line="6126"/>
+      <location filename="../../CommandConstraints.cpp" line="6165"/>
+      <location filename="../../CommandConstraints.cpp" line="6264"/>
+      <location filename="../../CommandConstraints.cpp" line="6276"/>
+      <location filename="../../CommandConstraints.cpp" line="6330"/>
+      <location filename="../../CommandConstraints.cpp" line="6408"/>
+      <location filename="../../CommandConstraints.cpp" line="6418"/>
+      <location filename="../../CommandConstraints.cpp" line="6459"/>
+      <location filename="../../CommandConstraints.cpp" line="6470"/>
+      <location filename="../../CommandConstraints.cpp" line="6500"/>
+      <location filename="../../CommandConstraints.cpp" line="6521"/>
+      <location filename="../../CommandConstraints.cpp" line="6699"/>
+      <location filename="../../CommandConstraints.cpp" line="6720"/>
+      <location filename="../../CommandConstraints.cpp" line="6899"/>
+      <location filename="../../CommandConstraints.cpp" line="7119"/>
+      <location filename="../../CommandConstraints.cpp" line="7131"/>
+      <location filename="../../CommandConstraints.cpp" line="7165"/>
+      <location filename="../../CommandConstraints.cpp" line="7236"/>
+      <location filename="../../CommandConstraints.cpp" line="7256"/>
+      <location filename="../../CommandConstraints.cpp" line="7265"/>
+      <location filename="../../CommandConstraints.cpp" line="7294"/>
+      <location filename="../../CommandConstraints.cpp" line="7303"/>
+      <location filename="../../CommandConstraints.cpp" line="7314"/>
+      <location filename="../../CommandConstraints.cpp" line="7342"/>
+      <location filename="../../CommandConstraints.cpp" line="7523"/>
+      <location filename="../../CommandConstraints.cpp" line="7576"/>
+      <location filename="../../CommandConstraints.cpp" line="7768"/>
+      <location filename="../../CommandConstraints.cpp" line="7813"/>
+      <location filename="../../CommandConstraints.cpp" line="7938"/>
+      <location filename="../../CommandConstraints.cpp" line="7951"/>
+      <location filename="../../CommandConstraints.cpp" line="8017"/>
+      <location filename="../../CommandConstraints.cpp" line="8025"/>
+      <location filename="../../CommandConstraints.cpp" line="8181"/>
+      <location filename="../../CommandConstraints.cpp" line="8301"/>
+      <location filename="../../CommandConstraints.cpp" line="8314"/>
+      <location filename="../../CommandConstraints.cpp" line="8359"/>
+      <location filename="../../CommandConstraints.cpp" line="8377"/>
+      <location filename="../../CommandConstraints.cpp" line="8503"/>
+      <location filename="../../CommandConstraints.cpp" line="8511"/>
+      <location filename="../../CommandConstraints.cpp" line="8619"/>
+      <location filename="../../CommandConstraints.cpp" line="8632"/>
+      <location filename="../../CommandConstraints.cpp" line="8693"/>
+      <location filename="../../CommandConstraints.cpp" line="8701"/>
+      <location filename="../../CommandConstraints.cpp" line="8879"/>
+      <location filename="../../CommandConstraints.cpp" line="9162"/>
+      <location filename="../../CommandConstraints.cpp" line="9175"/>
+      <location filename="../../CommandConstraints.cpp" line="9211"/>
+      <location filename="../../CommandConstraints.cpp" line="9309"/>
+      <location filename="../../CommandConstraints.cpp" line="9322"/>
+      <location filename="../../CommandConstraints.cpp" line="9387"/>
+      <location filename="../../CommandConstraints.cpp" line="9448"/>
+      <location filename="../../CommandConstraints.cpp" line="9602"/>
+      <location filename="../../CommandConstraints.cpp" line="9616"/>
+      <location filename="../../CommandConstraints.cpp" line="9634"/>
+      <location filename="../../CommandConstraints.cpp" line="9641"/>
+      <location filename="../../CommandConstraints.cpp" line="9662"/>
+      <location filename="../../CommandConstraints.cpp" line="9695"/>
+      <location filename="../../CommandConstraints.cpp" line="9711"/>
+      <location filename="../../CommandConstraints.cpp" line="9766"/>
+      <location filename="../../CommandConstraints.cpp" line="9862"/>
+      <location filename="../../CommandConstraints.cpp" line="9877"/>
+      <location filename="../../CommandConstraints.cpp" line="9910"/>
+      <location filename="../../CommandConstraints.cpp" line="9921"/>
+      <location filename="../../CommandConstraints.cpp" line="9934"/>
+      <location filename="../../CommandConstraints.cpp" line="9962"/>
       <location filename="../../CommandConstraints.cpp" line="9993"/>
-      <location filename="../../CommandConstraints.cpp" line="10017"/>
-      <location filename="../../CommandConstraints.cpp" line="10125"/>
-      <location filename="../../CommandConstraints.cpp" line="10135"/>
-      <location filename="../../CommandConstraints.cpp" line="10160"/>
-      <location filename="../../CommandConstraints.cpp" line="10170"/>
-      <location filename="../../CommandConstraints.cpp" line="10188"/>
-      <location filename="../../CommandConstraints.cpp" line="10323"/>
-      <location filename="../../CommandConstraints.cpp" line="10399"/>
-      <location filename="../../CommandConstraints.cpp" line="10411"/>
-      <location filename="../../CommandConstraints.cpp" line="10447"/>
-      <location filename="../../CommandConstraints.cpp" line="10522"/>
-      <location filename="../../CommandConstraints.cpp" line="10534"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="165"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="236"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="319"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="406"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="465"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="553"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="600"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="963"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1073"/>
-      <location filename="../../CommandSketcherTools.cpp" line="368"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1012"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1338"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1348"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1410"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1941"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1951"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2015"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2225"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2235"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2282"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2347"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="151"/>
+      <location filename="../../CommandConstraints.cpp" line="10043"/>
+      <location filename="../../CommandConstraints.cpp" line="10074"/>
+      <location filename="../../CommandConstraints.cpp" line="10089"/>
+      <location filename="../../CommandConstraints.cpp" line="10130"/>
+      <location filename="../../CommandConstraints.cpp" line="10154"/>
+      <location filename="../../CommandConstraints.cpp" line="10219"/>
+      <location filename="../../CommandConstraints.cpp" line="10229"/>
+      <location filename="../../CommandConstraints.cpp" line="10239"/>
+      <location filename="../../CommandConstraints.cpp" line="10315"/>
+      <location filename="../../CommandConstraints.cpp" line="10325"/>
+      <location filename="../../CommandConstraints.cpp" line="10350"/>
+      <location filename="../../CommandConstraints.cpp" line="10360"/>
+      <location filename="../../CommandConstraints.cpp" line="10378"/>
+      <location filename="../../CommandConstraints.cpp" line="10506"/>
+      <location filename="../../CommandConstraints.cpp" line="10516"/>
+      <location filename="../../CommandConstraints.cpp" line="10752"/>
+      <location filename="../../CommandConstraints.cpp" line="10828"/>
+      <location filename="../../CommandConstraints.cpp" line="10840"/>
+      <location filename="../../CommandConstraints.cpp" line="10876"/>
+      <location filename="../../CommandConstraints.cpp" line="10951"/>
+      <location filename="../../CommandConstraints.cpp" line="10963"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="176"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="166"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="175"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="177"/>
       <source>Select edges from the sketch</source>
-      <translation>Select edges from the sketch</translation>
+      <translation>Επιλέξτε ακμές (γραμμές) από το σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="102"/>
+      <location filename="../../EditDatumDialog.cpp" line="109"/>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
       <translation>Δεν επιτρέπεται η επεξεργασία του περιορισμού μεγέθους επειδή το σχέδιο περιέχει αντιφατικούς περιορισμούς</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="101"/>
+      <location filename="../../EditDatumDialog.cpp" line="108"/>
       <source>Dimensional constraint</source>
       <translation>Περιορισμός διαστάσεων</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="172"/>
+      <location filename="../../CommandConstraints.cpp" line="175"/>
       <source>Cannot add a constraint between two external geometries.</source>
-      <translation>Cannot add a constraint between two external geometries.</translation>
+      <translation>Αδυναμία προσθήκης περιορισμού μεταξύ δύο εξωτερικών γεωμετριών.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="179"/>
+      <location filename="../../CommandConstraints.cpp" line="182"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
       <translation>Δεν είναι δυνατή η προσθήκη περιορισμού μεταξύ δύο σταθερών γεωμετριών. Οι σταθερές γεωμετρίες περιλαμβάνουν εξωτερική γεωμετρία, φραγμένη γεωμετρία, και ειδικά σημεία όπως σημεία κόμβων καμπύλης B-spline.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="753"/>
+      <location filename="../../CommandConstraints.cpp" line="738"/>
       <source>Sketcher Constraint Substitution</source>
       <translation>Αντικατάσταση περιορισμού Σχεδιασμού</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="869"/>
+      <location filename="../../CommandConstraints.cpp" line="850"/>
       <source>One of the selected has to be on the sketch.</source>
       <translation>Ένα από τα επιλεγμένα πρέπει να βρίσκεται στο σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3298"/>
+      <location filename="../../CommandConstraints.cpp" line="3318"/>
       <source>Select an edge from the sketch.</source>
       <translation>Επιλέξτε μια ακμή από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3262"/>
-      <location filename="../../CommandConstraints.cpp" line="3271"/>
-      <location filename="../../CommandConstraints.cpp" line="3323"/>
-      <location filename="../../CommandConstraints.cpp" line="3347"/>
-      <location filename="../../CommandConstraints.cpp" line="3401"/>
-      <location filename="../../CommandConstraints.cpp" line="3435"/>
+      <location filename="../../CommandConstraints.cpp" line="3282"/>
+      <location filename="../../CommandConstraints.cpp" line="3291"/>
+      <location filename="../../CommandConstraints.cpp" line="3343"/>
+      <location filename="../../CommandConstraints.cpp" line="3367"/>
+      <location filename="../../CommandConstraints.cpp" line="3421"/>
+      <location filename="../../CommandConstraints.cpp" line="3455"/>
       <source>Impossible constraint</source>
       <translation>Αδύνατος περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3324"/>
-      <location filename="../../CommandConstraints.cpp" line="3436"/>
+      <location filename="../../CommandConstraints.cpp" line="3344"/>
+      <location filename="../../CommandConstraints.cpp" line="3456"/>
       <source>The selected edge is not a line segment.</source>
-      <translation>The selected edge is not a line segment.</translation>
+      <translation>Η επιλεγμένη ακμή (γραμμή) δεν είναι ευθύγραμμο τμήμα.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3254"/>
-      <location filename="../../CommandConstraints.cpp" line="4039"/>
-      <location filename="../../CommandConstraints.cpp" line="4092"/>
+      <location filename="../../CommandConstraints.cpp" line="3274"/>
+      <location filename="../../CommandConstraints.cpp" line="4060"/>
+      <location filename="../../CommandConstraints.cpp" line="4112"/>
       <source>Double constraint</source>
       <translation>Διπλός περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3255"/>
+      <location filename="../../CommandConstraints.cpp" line="3275"/>
       <source>The selected edge already has a horizontal constraint!</source>
-      <translation>The selected edge already has a horizontal constraint!</translation>
+      <translation>Η επιλεγμένη ακμή (γραμμή) έχει ήδη έναν οριζόντιο περιορισμό!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3263"/>
+      <location filename="../../CommandConstraints.cpp" line="3283"/>
       <source>The selected edge already has a vertical constraint!</source>
-      <translation>The selected edge already has a vertical constraint!</translation>
+      <translation>Η επιλεγμένη ακμή (γραμμή) έχει ήδη έναν κάθετο περιορισμό!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3402"/>
+      <location filename="../../CommandConstraints.cpp" line="3422"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
       <translation>Υπάρχουν περισσότερα από ένα σταθερά σημεία επιλεγμένα. Επιλέξτε το πολύ ένα σταθερό σημείο!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3705"/>
-      <location filename="../../CommandConstraints.cpp" line="3990"/>
-      <location filename="../../CommandConstraints.cpp" line="4810"/>
+      <location filename="../../CommandConstraints.cpp" line="3725"/>
+      <location filename="../../CommandConstraints.cpp" line="4011"/>
+      <location filename="../../CommandConstraints.cpp" line="4835"/>
       <source>Select vertices from the sketch.</source>
       <translation>Επιλέξτε κορυφές από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3732"/>
+      <location filename="../../CommandConstraints.cpp" line="3752"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>Επιλέξτε μια κορυφή από το σκαρίφημα εκτός από το σημείο τομής των αξόνων.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3737"/>
+      <location filename="../../CommandConstraints.cpp" line="3757"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
       <translation>Επιλέξτε μόνο τις κορυφές από το σχέδιο. Η τελευταία επιλεγμένη κορυφή δύναται να είναι το σημείο τομής των αξόνων.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4003"/>
+      <location filename="../../CommandConstraints.cpp" line="4024"/>
       <source>Wrong solver status</source>
       <translation>Λάθος κατάσταση επιλυτή</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4023"/>
+      <location filename="../../CommandConstraints.cpp" line="4044"/>
       <source>Select one edge from the sketch.</source>
       <translation>Επιλέξτε μια ακμή από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4028"/>
+      <location filename="../../CommandConstraints.cpp" line="4049"/>
       <source>Select only edges from the sketch.</source>
       <translation>Επιλέξτε μόνο ακμές από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4405"/>
+      <location filename="../../CommandConstraints.cpp" line="4426"/>
       <source>None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible.</source>
-      <translation>None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible.</translation>
+      <translation>Κανένα από τα επιλεγμένα σημεία δεν περιορίστηκε πάνω στις αντίστοιχες καμπύλες, διότι ανήκουν στο ίδιο στοιχείο, είναι και τα δύο εξωτερικές γεωμετρίες ή η ακμή (γραμμή) δεν είναι κατάλληλη.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7460"/>
+      <location filename="../../CommandConstraints.cpp" line="7524"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
-      <translation>Only tangent-via-point is supported with a B-spline.</translation>
+      <translation>Με B-spline υποστηρίζεται μόνο η εφαπτομένη μέσω σημείου.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7945"/>
-      <location filename="../../CommandConstraints.cpp" line="8621"/>
+      <location filename="../../CommandConstraints.cpp" line="8026"/>
+      <location filename="../../CommandConstraints.cpp" line="8702"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</translation>
+      <translation>Επιλέξτε από το σχέδιο είτε μόνο έναν ή περισσότερους πόλους B-spline, είτε μόνο ένα ή περισσότερα τόξα ή κύκλους, αλλά όχι ανάμεικτα.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10110"/>
+      <location filename="../../CommandConstraints.cpp" line="9863"/>
+      <location filename="../../CommandConstraints.cpp" line="9878"/>
+      <location filename="../../CommandConstraints.cpp" line="9963"/>
+      <location filename="../../CommandConstraints.cpp" line="10044"/>
+      <location filename="../../CommandConstraints.cpp" line="10155"/>
+      <source>Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</source>
+      <translation type="unfinished">Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="9911"/>
+      <location filename="../../CommandConstraints.cpp" line="10090"/>
+      <location filename="../../CommandConstraints.cpp" line="10230"/>
+      <source>Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</source>
+      <translation type="unfinished">Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="9922"/>
+      <location filename="../../CommandConstraints.cpp" line="10240"/>
+      <source>Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</source>
+      <translation type="unfinished">Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="9935"/>
+      <location filename="../../CommandConstraints.cpp" line="10075"/>
+      <source>Cannot add a symmetry constraint between an element and its end points!</source>
+      <translation type="unfinished">Cannot add a symmetry constraint between an element and its end points!</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="10220"/>
+      <source>Cannot add a symmetry constraint between an element and itself.</source>
+      <translation type="unfinished">Cannot add a symmetry constraint between an element and itself.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="10300"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and the value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and the value sets the ratio n2/n1.</translation>
+      <translation>Πιλέξτε δύο άκρα γραμμών που θα λειτουργήσουν ως ακτίνες και μια ακμή που θα αντιπροσωπεύει το όριο. Το πρώτο επιλεγμένο σημείο αντιστοιχεί στον δείκτη n1, το δεύτερο στον n2, και η τιμή ορίζει την αναλογία n2/n1.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10136"/>
+      <location filename="../../CommandConstraints.cpp" line="10326"/>
       <source>Number of selected objects is not 3</source>
-      <translation>Number of selected objects is not 3</translation>
+      <translation>Ο αριθμός των επιλεγμένων αντικειμένων δεν είναι 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="784"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="590"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1110"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="623"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1185"/>
+      <location filename="../../CommandConstraints.cpp" line="767"/>
       <source>Error</source>
       <translation>Σφάλμα</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4253"/>
+      <location filename="../../CommandConstraints.cpp" line="4275"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>Εφαρμόστηκε περιορισμός επαφής μεταξύ άκρων εναλλακτικά.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4423"/>
+      <location filename="../../CommandConstraints.cpp" line="4443"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
+      <translation>Επιλέξτε δύο ή περισσότερες κορυφές από το σχέδιο για περιορισμό ταύτισης, ή δύο ή περισσότερους κύκλους, ελλείψεις ή τόξα για περιορισμό ομοκεντρικότητας.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4608"/>
+      <location filename="../../CommandConstraints.cpp" line="4624"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
+      <translation>Επιλέξτε δύο κορυφές από το σχέδιο για περιορισμό ταύτισης, ή δύο κύκλους, ελλείψεις ή τόξα για περιορισμό ομοκεντρικότητας.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4822"/>
+      <location filename="../../CommandConstraints.cpp" line="4847"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>Επιλέξτε ακριβώς μια γραμμή ή ένα σημείο και μια γραμμή ή δύο σημεία από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5079"/>
+      <location filename="../../CommandConstraints.cpp" line="5104"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>Αδύνατη η προσθήκη περιορισμού μήκους σε άξονα!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5145"/>
-      <location filename="../../CommandConstraints.cpp" line="5376"/>
+      <location filename="../../CommandConstraints.cpp" line="5170"/>
+      <location filename="../../CommandConstraints.cpp" line="5401"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
-      <translation>Select exactly one line or one point and one line or two points or two circles from the sketch.</translation>
+      <translation>Επιλέξτε από το σχέδιο ακριβώς μία γραμμή, ή ένα σημείο και μία γραμμή, ή δύο σημεία, ή δύο κύκλους.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5271"/>
+      <location filename="../../CommandConstraints.cpp" line="5296"/>
       <source>This constraint does not make sense for non-linear curves.</source>
-      <translation>This constraint does not make sense for non-linear curves.</translation>
+      <translation>Αυτός ο περιορισμός δεν εφαρμόζεται για μη γραμμικές καμπύλες.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4205"/>
+      <location filename="../../CommandConstraints.cpp" line="4227"/>
       <source>Endpoint to edge tangency was applied instead.</source>
-      <translation>Endpoint to edge tangency was applied instead.</translation>
+      <translation>Αντ' αυτού, εφαρμόστηκε ομαλή επαφή του άκρου πάνω στην ακμή (γραμμή).</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5461"/>
-      <location filename="../../CommandConstraints.cpp" line="5762"/>
-      <location filename="../../CommandConstraints.cpp" line="7858"/>
-      <location filename="../../CommandConstraints.cpp" line="8221"/>
-      <location filename="../../CommandConstraints.cpp" line="8539"/>
-      <location filename="../../CommandConstraints.cpp" line="9082"/>
+      <location filename="../../CommandConstraints.cpp" line="5486"/>
+      <location filename="../../CommandConstraints.cpp" line="5787"/>
+      <location filename="../../CommandConstraints.cpp" line="7939"/>
+      <location filename="../../CommandConstraints.cpp" line="8302"/>
+      <location filename="../../CommandConstraints.cpp" line="8620"/>
+      <location filename="../../CommandConstraints.cpp" line="9163"/>
       <source>Select the right things from the sketch.</source>
       <translation>Επιλέξτε τα κατάλληλα στοιχεία από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4374"/>
-      <location filename="../../CommandConstraints.cpp" line="4556"/>
-      <location filename="../../CommandConstraints.cpp" line="6288"/>
-      <location filename="../../CommandConstraints.cpp" line="6426"/>
-      <location filename="../../CommandConstraints.cpp" line="6476"/>
-      <location filename="../../CommandConstraints.cpp" line="6677"/>
-      <location filename="../../CommandConstraints.cpp" line="6856"/>
-      <location filename="../../CommandConstraints.cpp" line="7123"/>
-      <location filename="../../CommandConstraints.cpp" line="7273"/>
-      <location filename="../../CommandConstraints.cpp" line="7301"/>
-      <location filename="../../CommandConstraints.cpp" line="7513"/>
-      <location filename="../../CommandConstraints.cpp" line="7732"/>
-      <location filename="../../CommandConstraints.cpp" line="8279"/>
-      <location filename="../../CommandConstraints.cpp" line="8431"/>
-      <location filename="../../CommandConstraints.cpp" line="9131"/>
-      <location filename="../../CommandConstraints.cpp" line="9229"/>
-      <location filename="../../CommandConstraints.cpp" line="9368"/>
-      <location filename="../../CommandConstraints.cpp" line="10189"/>
+      <location filename="../../CommandConstraints.cpp" line="4396"/>
+      <location filename="../../CommandConstraints.cpp" line="4573"/>
+      <location filename="../../CommandConstraints.cpp" line="6331"/>
+      <location filename="../../CommandConstraints.cpp" line="6471"/>
+      <location filename="../../CommandConstraints.cpp" line="6522"/>
+      <location filename="../../CommandConstraints.cpp" line="6721"/>
+      <location filename="../../CommandConstraints.cpp" line="6900"/>
+      <location filename="../../CommandConstraints.cpp" line="7166"/>
+      <location filename="../../CommandConstraints.cpp" line="7315"/>
+      <location filename="../../CommandConstraints.cpp" line="7343"/>
+      <location filename="../../CommandConstraints.cpp" line="7577"/>
+      <location filename="../../CommandConstraints.cpp" line="7814"/>
+      <location filename="../../CommandConstraints.cpp" line="8360"/>
+      <location filename="../../CommandConstraints.cpp" line="8512"/>
+      <location filename="../../CommandConstraints.cpp" line="9212"/>
+      <location filename="../../CommandConstraints.cpp" line="9310"/>
+      <location filename="../../CommandConstraints.cpp" line="9449"/>
+      <location filename="../../CommandConstraints.cpp" line="10379"/>
       <source>Select an edge that is not a B-spline weight.</source>
-      <translation>Select an edge that is not a B-spline weight.</translation>
+      <translation>Επιλέξτε μια ακμή (γραμμή) που να μην είναι βάρος B-spline.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4295"/>
+      <location filename="../../CommandConstraints.cpp" line="4317"/>
       <source>Select either several points, or several conics for concentricity.</source>
-      <translation>Select either several points, or several conics for concentricity.</translation>
+      <translation>Επιλέξτε είτε αρκετά σημεία, είτε αρκετές κωνικές τομές για ομοκεντρικότητα.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4298"/>
+      <location filename="../../CommandConstraints.cpp" line="4320"/>
       <source>Select either one point and several curves, or one curve and several points</source>
-      <translation>Select either one point and several curves, or one curve and several points</translation>
+      <translation>Επιλέξτε είτε ένα σημείο και αρκετές καμπύλες, είτε μία καμπύλη και αρκετά σημεία</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4301"/>
+      <location filename="../../CommandConstraints.cpp" line="4323"/>
       <source>Select either one point and several curves or one curve and several points for pointOnObject, or several points for coincidence, or several conics for concentricity.</source>
-      <translation>Select either one point and several curves or one curve and several points for pointOnObject, or several points for coincidence, or several conics for concentricity.</translation>
+      <translation>Επιλέξτε είτε ένα σημείο και αρκετές καμπύλες ή μία καμπύλη και αρκετά σημεία για «Σημείο σε αντικείμενο», είτε αρκετά σημεία για ταύτιση, είτε αρκετές κωνικές τομές για ομοκεντρικότητα.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4578"/>
+      <location filename="../../CommandConstraints.cpp" line="4595"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
       <translation>Κανένα από τα επιλεγμένα σημεία δεν ήταν περιορισμένο πάνω στις αντίστοιχες καμπύλες, είτε επειδή είναι τμήματα του ίδιου στοιχείου, είτε επειδή ανήκουν και τα δύο στο ίδιο στοιχείο εξωτερικής γεωμετρίας.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5071"/>
+      <location filename="../../CommandConstraints.cpp" line="5096"/>
       <source>Cannot add a length constraint on this selection!</source>
-      <translation>Cannot add a length constraint on this selection!</translation>
+      <translation>Αδυναμία προσθήκης περιορισμού μήκους σε αυτή την επιλογή!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5474"/>
-      <location filename="../../CommandConstraints.cpp" line="5605"/>
-      <location filename="../../CommandConstraints.cpp" line="5775"/>
-      <location filename="../../CommandConstraints.cpp" line="5902"/>
+      <location filename="../../CommandConstraints.cpp" line="5499"/>
+      <location filename="../../CommandConstraints.cpp" line="5630"/>
+      <location filename="../../CommandConstraints.cpp" line="5800"/>
+      <location filename="../../CommandConstraints.cpp" line="5927"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Επιλέξτε ακριβώς μια γραμμή ή έως και δύο σημεία από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5507"/>
+      <location filename="../../CommandConstraints.cpp" line="5532"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>Αδύνατη η προσθήκη περιορισμού οριζόντιου μήκους σε άξονα!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5569"/>
+      <location filename="../../CommandConstraints.cpp" line="5594"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
       <translation>Αδυναμία προσθήκης σταθερού περιορισμού συντεταγμένων x στο σημείο αρχής!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5640"/>
-      <location filename="../../CommandConstraints.cpp" line="5937"/>
+      <location filename="../../CommandConstraints.cpp" line="5665"/>
+      <location filename="../../CommandConstraints.cpp" line="5961"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
-      <translation>This constraint only makes sense on a line segment or a pair of points.</translation>
+      <translation>Αυτός ο περιορισμός εφαρμόζεται μόνο σε ευθύγραμμο τμήμα ή σε ένα ζεύγος σημείων.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5806"/>
+      <location filename="../../CommandConstraints.cpp" line="5831"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>Αδύνατη η προσθήκη κατακόρυφου μήκους σε άξονα!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5868"/>
+      <location filename="../../CommandConstraints.cpp" line="5893"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
       <translation>Δεν είναι δυνατή η προσθήκη ενός σταθερού περιορισμού συντεταγμένων y στο σημείο αρχής!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6059"/>
+      <location filename="../../CommandConstraints.cpp" line="6083"/>
       <source>Select two or more lines from the sketch.</source>
       <translation>Επιλέξτε δύο ή περισσότερες γραμμές από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6094"/>
+      <location filename="../../CommandConstraints.cpp" line="6118"/>
       <source>One selected edge is not a valid line.</source>
-      <translation>One selected edge is not a valid line.</translation>
+      <translation>Μία από τις επιλεγμένες γραμμές δεν είναι έγκυρη γραμμή.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6103"/>
-      <location filename="../../CommandConstraints.cpp" line="9536"/>
+      <location filename="../../CommandConstraints.cpp" line="6127"/>
+      <location filename="../../CommandConstraints.cpp" line="9617"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Επιλέξτε τουλάχιστον δύο γραμμές από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6142"/>
+      <location filename="../../CommandConstraints.cpp" line="6166"/>
       <source>The selected edge is not a valid line.</source>
-      <translation>The selected edge is not a valid line.</translation>
+      <translation>Η επιλεγμένη γραμμή δεν είναι έγκυρη.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6231"/>
+      <location filename="../../CommandConstraints.cpp" line="6255"/>
       <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -1593,35 +1644,35 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Αποδεκτοί συνδυασμοί: δύο καμπύλες· ένα αρχικό σημείο και μια καμπύλη· ένα αρχικό και ένα τελικό σημείο· δύο καμπύλες και ένα σημείο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6236"/>
+      <location filename="../../CommandConstraints.cpp" line="6260"/>
       <source>Select some geometry from the sketch.</source>
       <comment>perpendicular constraint</comment>
       <translation>Επιλέξτε γεωμετρικά στοιχεία από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6374"/>
-      <location filename="../../CommandConstraints.cpp" line="6415"/>
+      <location filename="../../CommandConstraints.cpp" line="6419"/>
+      <location filename="../../CommandConstraints.cpp" line="6460"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>Αδύνατη η προσθήκη περιορισμού καθετότητας σε ένα ασύνδετο σημείο!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6455"/>
-      <location filename="../../CommandConstraints.cpp" line="6656"/>
+      <location filename="../../CommandConstraints.cpp" line="6501"/>
+      <location filename="../../CommandConstraints.cpp" line="6700"/>
       <source>One of the selected edges should be a line.</source>
       <translation>Μια από τις επιλεγμένες ακμές θα πρέπει να είναι γραμμή.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7008"/>
+      <location filename="../../CommandConstraints.cpp" line="7051"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation>Εφαρμόστηκε περιορισμός επαφής μεταξύ άκρων. Ο περιορισμός ταύτισης διαγράφηκε.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7036"/>
+      <location filename="../../CommandConstraints.cpp" line="7079"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
-      <translation>Endpoint to edge tangency was applied. The point on object constraint was deleted.</translation>
+      <translation>Εφαρμόστηκε ομαλή επαφή άκρου-με-γραμμή. Ο περιορισμός «σημείο σε αντικείμενο» διαγράφηκε.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7067"/>
+      <location filename="../../CommandConstraints.cpp" line="7110"/>
       <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -1631,398 +1682,424 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Αποδεκτοί συνδυασμοί: δύο καμπύλες· ένα αρχικό σημείο και μια καμπύλη· ένα αρχικό και ένα τελικό σημείο· δύο καμπύλες και ένα σημείο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7072"/>
+      <location filename="../../CommandConstraints.cpp" line="7115"/>
       <source>Select some geometry from the sketch.</source>
       <comment>tangent constraint</comment>
       <translation>Επιλέξτε γεωμετρικά στοιχεία από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7224"/>
-      <location filename="../../CommandConstraints.cpp" line="7262"/>
-      <location filename="../../CommandConstraints.cpp" line="7687"/>
+      <location filename="../../CommandConstraints.cpp" line="7266"/>
+      <location filename="../../CommandConstraints.cpp" line="7304"/>
+      <location filename="../../CommandConstraints.cpp" line="7769"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>Αδύνατη η προσθήκη περιορισμού επαφής σε ένα ασύνδετο σημείο!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7215"/>
-      <location filename="../../CommandConstraints.cpp" line="7253"/>
+      <location filename="../../CommandConstraints.cpp" line="7257"/>
+      <location filename="../../CommandConstraints.cpp" line="7295"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
-      <translation>Tangent constraint at B-spline knot is only supported with lines!</translation>
+      <translation>Ο περιορισμός εφαπτομένης σε κόμβο B-spline υποστηρίζεται μόνο με γραμμές!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="227"/>
+      <location filename="../../CommandConstraints.cpp" line="230"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
-      <translation>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</translation>
+      <translation>Ένας ή δύο περιορισμοί «σημείο σε αντικείμενο» διαγράφηκαν, καθώς ο τελευταίος περιορισμός που εφαρμόστηκε περιλαμβάνει ήδη την ίδια λειτουργία.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="759"/>
+      <location filename="../../CommandConstraints.cpp" line="744"/>
       <source>Keep notifying about constraint substitutions</source>
-      <translation>Keep notifying about constraint substitutions</translation>
+      <translation>Να συνεχιστεί η ενημέρωση σχετικά με την αντικατάσταση περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="785"/>
+      <location filename="../../CommandConstraints.cpp" line="768"/>
       <source>Unexpected error. More information may be available in the report view.</source>
-      <translation>Unexpected error. More information may be available in the report view.</translation>
+      <translation>Μη αναμενόμενο σφάλμα. Περισσότερες πληροφορίες μπορεί να είναι διαθέσιμες στην προβολή αναφοράς.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="837"/>
+      <location filename="../../CommandConstraints.cpp" line="818"/>
       <source>Only the sketch and its support are allowed to be selected</source>
-      <translation>Only the sketch and its support are allowed to be selected</translation>
+      <translation>Επιτρέπεται η επιλογή μόνο του σχεδίου και της βάσης υποστήριξής του</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="848"/>
+      <location filename="../../CommandConstraints.cpp" line="829"/>
       <source>Only the sketch and its support may be selected</source>
-      <translation>Only the sketch and its support may be selected</translation>
+      <translation>Επιτρέπεται η επιλογή μόνο του σχεδίου και της βάσης υποστήριξής του</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="860"/>
+      <location filename="../../CommandConstraints.cpp" line="841"/>
       <source>Only the sketch and its support  may be selected</source>
-      <translation>Only the sketch and its support  may be selected</translation>
+      <translation>Επιτρέπεται να επιλεγούν μόνο το σχέδιο και η βάση υποστήριξής του</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3272"/>
-      <location filename="../../CommandConstraints.cpp" line="4040"/>
-      <location filename="../../CommandConstraints.cpp" line="4093"/>
+      <location filename="../../CommandConstraints.cpp" line="3292"/>
+      <location filename="../../CommandConstraints.cpp" line="4061"/>
+      <location filename="../../CommandConstraints.cpp" line="4113"/>
       <source>The selected edge already has a block constraint!</source>
-      <translation>The selected edge already has a block constraint!</translation>
+      <translation>Η επιλεγμένη γραμμή έχει ήδη έναν περιορισμό ακινητοποίησης!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3348"/>
+      <location filename="../../CommandConstraints.cpp" line="3368"/>
       <source>The selected items cannot be constrained horizontally or vertically!</source>
-      <translation>The selected items cannot be constrained horizontally or vertically!</translation>
+      <translation>Τα επιλεγμένα στοιχεία δεν μπορούν να περιοριστούν οριζόντια ή κάθετα!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4004"/>
+      <location filename="../../CommandConstraints.cpp" line="4025"/>
       <source>A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
-      <translation>A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</translation>
+      <translation>Δεν είναι δυνατή η προσθήκη περιορισμού ακινητοποίησης αν το σχέδιο δεν έχει επιλυθεί ή αν υπάρχουν περιττοί και αντικρουόμενοι κανόνες.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4273"/>
+      <location filename="../../CommandConstraints.cpp" line="4295"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
-      <translation>B-spline knot to endpoint tangency was applied instead.</translation>
+      <translation>Αντ' αυτού, εφαρμόστηκε ομαλή επαφή μεταξύ κόμβου B-spline και άκρου.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6253"/>
-      <location filename="../../CommandConstraints.cpp" line="7089"/>
+      <location filename="../../CommandConstraints.cpp" line="6277"/>
+      <location filename="../../CommandConstraints.cpp" line="7132"/>
       <source>Wrong number of selected objects!</source>
       <translation>Λάθος αριθμός επιλεγμένων αντικειμένων!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6364"/>
-      <location filename="../../CommandConstraints.cpp" line="7195"/>
+      <location filename="../../CommandConstraints.cpp" line="6409"/>
+      <location filename="../../CommandConstraints.cpp" line="7237"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <translation>Με 3 αντικείμενα, πρέπει να υπάρχουν 2 καμπύλες και 1 σημείο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7871"/>
-      <location filename="../../CommandConstraints.cpp" line="7937"/>
-      <location filename="../../CommandConstraints.cpp" line="8234"/>
-      <location filename="../../CommandConstraints.cpp" line="8297"/>
-      <location filename="../../CommandConstraints.cpp" line="8552"/>
-      <location filename="../../CommandConstraints.cpp" line="8613"/>
+      <location filename="../../CommandConstraints.cpp" line="7952"/>
+      <location filename="../../CommandConstraints.cpp" line="8018"/>
+      <location filename="../../CommandConstraints.cpp" line="8315"/>
+      <location filename="../../CommandConstraints.cpp" line="8378"/>
+      <location filename="../../CommandConstraints.cpp" line="8633"/>
+      <location filename="../../CommandConstraints.cpp" line="8694"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Επιλέξτε ένα ή περισσότερα τόξα ή κύκλους από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8101"/>
-      <location filename="../../CommandConstraints.cpp" line="8423"/>
-      <location filename="../../CommandConstraints.cpp" line="8799"/>
+      <location filename="../../CommandConstraints.cpp" line="8182"/>
+      <location filename="../../CommandConstraints.cpp" line="8504"/>
+      <location filename="../../CommandConstraints.cpp" line="8880"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Ο περιορισμός εφαρμόζεται μόνο σε τόξα ή κύκλους.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9095"/>
-      <location filename="../../CommandConstraints.cpp" line="9307"/>
+      <location filename="../../CommandConstraints.cpp" line="9176"/>
+      <location filename="../../CommandConstraints.cpp" line="9388"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Επιλέξτε μια ή δύο γραμμές από το σχέδιο. Ή επιλέξτε δύο ακμές και ένα σημείο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="255"/>
+      <location filename="../../CommandConstraints.cpp" line="258"/>
       <source>Parallel lines</source>
       <translation>Παράλληλες γραμμές</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="256"/>
+      <location filename="../../CommandConstraints.cpp" line="259"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
       <translation>Δεν δύναται να οριστεί γωνιακός περιορισμός για δύο παράλληλες γραμμές.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9242"/>
+      <location filename="../../CommandConstraints.cpp" line="9323"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Αδύνατη η προσθήκη γωνιακού περιορισμού σε άξονα!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9522"/>
+      <location filename="../../CommandConstraints.cpp" line="9603"/>
       <source>Select two edges from the sketch.</source>
       <translation>Επιλέξτε δύο ακμές από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9554"/>
+      <location filename="../../CommandConstraints.cpp" line="9635"/>
       <source>Select two or more compatible edges.</source>
-      <translation>Select two or more compatible edges.</translation>
+      <translation>Επιλέξτε δύο ή περισσότερες συμβατές ακμές.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9561"/>
+      <location filename="../../CommandConstraints.cpp" line="9642"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
       <translation>Οι άξονες σχεδίου δεν μπορούν να χρησιμοποιηθούν για περιορισμούς ισότητας.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9582"/>
+      <location filename="../../CommandConstraints.cpp" line="9663"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>Δεν υποστηρίζονται περιορισμοί ισότητας σε ακμές καμπύλης B-spline επί του παρόντος.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2817"/>
-      <location filename="../../CommandConstraints.cpp" line="9615"/>
-      <location filename="../../CommandConstraints.cpp" line="9631"/>
-      <location filename="../../CommandConstraints.cpp" line="9686"/>
+      <location filename="../../CommandConstraints.cpp" line="2830"/>
+      <location filename="../../CommandConstraints.cpp" line="9696"/>
+      <location filename="../../CommandConstraints.cpp" line="9712"/>
+      <location filename="../../CommandConstraints.cpp" line="9767"/>
       <source>Select two or more edges of similar type.</source>
-      <translation>Select two or more edges of similar type.</translation>
+      <translation>Επιλέξτε δύο ή περισσότερες ακμές παρόμοιου τύπου.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9770"/>
-      <location filename="../../CommandConstraints.cpp" line="9784"/>
-      <location filename="../../CommandConstraints.cpp" line="9840"/>
-      <location filename="../../CommandConstraints.cpp" line="9920"/>
-      <location filename="../../CommandConstraints.cpp" line="10018"/>
-      <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
-      <translation>Επιλέξτε δύο σημεία και μια γραμμή συμμετρίας, δύο σημεία και ένα σημείο συμμετρίας ή μια γραμμή και ένα σημείο συμμετρίας από το σχέδιο.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="9811"/>
-      <location filename="../../CommandConstraints.cpp" line="9994"/>
+      <location filename="../../CommandConstraints.cpp" line="10131"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
-      <translation>Cannot add a symmetry constraint between a line and its end points.</translation>
+      <translation>Αδυναμία προσθήκης περιορισμού συμμετρίας μεταξύ μιας γραμμής και των άκρων της.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2976"/>
-      <location filename="../../CommandConstraints.cpp" line="2992"/>
-      <location filename="../../CommandConstraints.cpp" line="9870"/>
-      <location filename="../../CommandConstraints.cpp" line="9949"/>
+      <location filename="../../CommandConstraints.cpp" line="2989"/>
+      <location filename="../../CommandConstraints.cpp" line="3005"/>
+      <location filename="../../CommandConstraints.cpp" line="9994"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>Αδύνατη η προσθήκη περιορισμού μεταξύ μιας γραμμής και του αρχικού ή του τελικού της σημείου!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10119"/>
+      <location filename="../../CommandConstraints.cpp" line="10309"/>
+      <location filename="../../CommandConstraints.cpp" line="10501"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>Τα επιλεγμένα στοιχεία δεν είναι μόνο γεωμετρικά στοιχεία από το ίδιο σκαρίφημα.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10161"/>
+      <location filename="../../CommandConstraints.cpp" line="10351"/>
       <source>Cannot create constraint with external geometry only.</source>
-      <translation>Cannot create constraint with external geometry only.</translation>
+      <translation>Αδυναμία δημιουργίας περιορισμού μόνο με εξωτερική γεωμετρία.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10171"/>
+      <location filename="../../CommandConstraints.cpp" line="10361"/>
       <source>Incompatible geometry is selected.</source>
-      <translation>Incompatible geometry is selected.</translation>
+      <translation>Έχει επιλεγεί μη συμβατή γεωμετρία.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10324"/>
+      <location filename="../../CommandConstraints.cpp" line="10517"/>
+      <source>No geometries selected</source>
+      <translation type="unfinished">No geometries selected</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="10753"/>
       <source>Select one dimensional constraint from the sketch.</source>
-      <translation>Select one dimensional constraint from the sketch.</translation>
+      <translation>Επιλέξτε έναν περιορισμό διάστασης από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10400"/>
-      <location filename="../../CommandConstraints.cpp" line="10412"/>
-      <location filename="../../CommandConstraints.cpp" line="10448"/>
-      <location filename="../../CommandConstraints.cpp" line="10523"/>
-      <location filename="../../CommandConstraints.cpp" line="10535"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="125"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="152"/>
+      <location filename="../../CommandConstraints.cpp" line="10829"/>
+      <location filename="../../CommandConstraints.cpp" line="10841"/>
+      <location filename="../../CommandConstraints.cpp" line="10877"/>
+      <location filename="../../CommandConstraints.cpp" line="10952"/>
+      <location filename="../../CommandConstraints.cpp" line="10964"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
       <source>Select constraints from the sketch.</source>
       <translation>Επιλέξτε τους περιορισμούς από το σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="446"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="820"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="469"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="871"/>
       <source>CAD Kernel Error</source>
       <translation>Σφάλμα Πυρήνα CAD</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="166"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="172"/>
       <source>None of the selected elements is an edge.</source>
       <translation>Κανένα από τα επιλεγμένα στοιχεία δεν είναι ακμή.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="455"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="828"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="480"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="881"/>
       <source>Input Error</source>
       <translation>Σφάλμα Εισαγωγής</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="466"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="601"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="492"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="635"/>
       <source>None of the selected elements is a knot of a B-spline</source>
       <translation>Κανένα από τα επιλεγμένα στοιχεία δεν είναι κόμβος καμπύλης B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="945"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1018"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1002"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1081"/>
       <source>Selection is empty</source>
-      <translation>Selection is empty</translation>
+      <translation>Η επιλογή είναι κενή</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="237"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="320"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="245"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="330"/>
       <source>At least one of the selected objects was not a B-spline and was ignored.</source>
-      <translation>At least one of the selected objects was not a B-spline and was ignored.</translation>
+      <translation>Τουλάχιστον ένα από τα επιλεγμένα αντικείμενα δεν ήταν B-spline και αγνοήθηκε.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="407"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="554"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="424"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="581"/>
       <source>The selection comprises more than one item. Select just one knot.</source>
-      <translation>The selection comprises more than one item. Select just one knot.</translation>
+      <translation>Η επιλογή περιλαμβάνει περισσότερα από ένα στοιχεία. Επιλέξτε μόνο έναν κόμβο.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="946"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1003"/>
       <source>Nothing is selected. Select a B-spline.</source>
-      <translation>Nothing is selected. Select a B-spline.</translation>
+      <translation>Δεν υπάρχει επιλογή. Επιλέξτε μια B-spline.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="964"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1024"/>
       <source>Select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, convert it into one first.</source>
-      <translation>Select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, convert it into one first.</translation>
+      <translation>Επιλέξτε μια B-spline για να εισαγάγετε έναν κόμβο (όχι έναν ήδη υπάρχοντα κόμβο πάνω της). Αν η καμπύλη δεν είναι B-spline, μετατρέψτε την πρώτα σε μία.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1019"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1082"/>
       <source>Nothing is selected. Select end points of curves.</source>
-      <translation>Nothing is selected. Select end points of curves.</translation>
+      <translation>Δεν υπάρχει επιλογή. Επιλέξτε τα άκρα των καμπυλών.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1046"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1110"/>
       <source>Too many curves on point</source>
-      <translation>Too many curves on point</translation>
+      <translation>Πάρα πολλές καμπύλες στο ίδιο σημείο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1047"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1057"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1111"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1125"/>
       <source>Exactly two curves should end at the selected point to be able to join them.</source>
-      <translation>Exactly two curves should end at the selected point to be able to join them.</translation>
+      <translation>Δύο καμπύλες πρέπει να καταλήγουν ακριβώς στο επιλεγμένο σημείο για να μπορέσετε να τις ενώσετε.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1056"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1124"/>
       <source>Too few curves on point</source>
-      <translation>Too few curves on point</translation>
+      <translation>Πολύ λίγες καμπύλες στο σημείο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1074"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1145"/>
       <source>Two end points, or coincident point should be selected.</source>
-      <translation>Two end points, or coincident point should be selected.</translation>
+      <translation>Πρέπει να επιλεγούν δύο άκρα ή ένα σημείο ταύτισης.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="85"/>
+      <location filename="../../CommandSketcherTools.cpp" line="88"/>
       <source>Wrong Selection</source>
-      <translation type="unfinished">Wrong Selection</translation>
+      <translation>Λανθασμένη Επιλογή</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="86"/>
-      <location filename="../../CommandSketcherTools.cpp" line="369"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1013"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1339"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1349"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1942"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1952"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2226"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2236"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2348"/>
+      <location filename="../../CommandSketcherTools.cpp" line="89"/>
+      <location filename="../../CommandSketcherTools.cpp" line="394"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1038"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1367"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1377"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1971"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1981"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2255"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2265"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2377"/>
       <source>Select elements from a single sketch.</source>
       <translation>Επιλέξτε στοιχεία από ένα σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="877"/>
+      <location filename="../../CommandSketcherTools.cpp" line="902"/>
       <source>No constraint selected</source>
       <translation>Δεν επιλέχθηκε κανένας περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="878"/>
+      <location filename="../../CommandSketcherTools.cpp" line="903"/>
       <source>At least one constraint must be selected</source>
       <translation>Πρέπει να επιλεχθεί τουλάχιστον ένας περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1411"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2016"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1439"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2045"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Η δημιουργία αντιγράφου απαιτεί την ύπαρξη τουλάχιστον ενός επιλεγμένου στοιχείου μη εξωτερικής γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2089"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2118"/>
       <source>Delete All Geometry</source>
       <translation>Διαγραφή Όλων των Γεωμετρικών Στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2153"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2182"/>
       <source>Delete All Constraints</source>
       <translation>Διαγραφή Όλων των Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2090"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2119"/>
       <source>Delete all geometry and constraints?</source>
-      <translation>Delete all geometry and constraints?</translation>
+      <translation>Διαγραφή όλης της γεωμετρίας και των περιορισμών;</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2154"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2183"/>
       <source>Delete all the constraints in the sketch?</source>
-      <translation>Delete all the constraints in the sketch?</translation>
+      <translation>Διαγραφή όλων των περιορισμών του σχεδίου;</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2283"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2312"/>
       <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
-      <translation>Removal of axes alignment requires at least one selected non-external geometric element</translation>
+      <translation>Η αφαίρεση της ευθυγράμμισης αξόνων απαιτεί την επιλογή τουλάχιστον ενός μη εξωτερικού γεωμετρικού στοιχείου</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="625"/>
-      <location filename="../../TaskSketcherElements.cpp" line="672"/>
+      <location filename="../../TaskSketcherElements.cpp" line="666"/>
+      <location filename="../../TaskSketcherElements.cpp" line="716"/>
       <source>Unsupported visual layer operation</source>
-      <translation>Unsupported visual layer operation</translation>
+      <translation>Μη υποστηριζόμενη λειτουργία οπτικού επιπέδου</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="626"/>
-      <location filename="../../TaskSketcherElements.cpp" line="673"/>
+      <location filename="../../TaskSketcherElements.cpp" line="667"/>
+      <location filename="../../TaskSketcherElements.cpp" line="717"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
-      <translation>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</translation>
+      <translation>Προς το παρόν δεν υποστηρίζεται η μεταφορά εξωτερικής γεωμετρίας σε άλλο οπτικό επίπεδο. Η εξωτερική γεωμετρία θα παραλειφθεί</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="92"/>
+      <source>Text</source>
+      <translation>Κείμενο</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="245"/>
+      <source>Text parameters</source>
+      <translation type="unfinished">Text parameters</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="726"/>
+      <source>%1 switch mode</source>
+      <translation>%1 εναλλαγή λειτουργίας</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="736"/>
+      <location filename="../../DrawSketchHandlerText.h" line="744"/>
+      <source>%1 pick bottom-left point</source>
+      <translation type="unfinished">%1 pick bottom-left point</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="740"/>
+      <source>%1 pick top-left point</source>
+      <translation type="unfinished">%1 pick top-left point</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="748"/>
+      <source>%1 pick bottom-right point</source>
+      <translation type="unfinished">%1 pick bottom-right point</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="78"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="81"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>Η δημιουργία πιστού αντιγράφου θα προκαλέσει κυκλική εξάρτηση.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="81"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="86"/>
       <source>This object is in another document.</source>
       <translation>Αυτό το αντικείμενο βρίσκεται σε κάποιο άλλο έγγραφο.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="84"/>
-      <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
-      <translation>This object belongs to another body. Hold Ctrl to allow cross-references.</translation>
-    </message>
-    <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="89"/>
-      <source>This object belongs to another body and it contains external geometry. Cross-reference not allowed.</source>
-      <translation>This object belongs to another body and it contains external geometry. Cross-reference not allowed.</translation>
+      <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
+      <translation>Αυτό το αντικείμενο ανήκει σε άλλο σώμα (Body). Κρατήστε πατημένο το Ctrl για να επιτραπούν οι διασταυρούμενες αναφορές.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="93"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="95"/>
+      <source>This object belongs to another body and it contains external geometry. Cross-reference not allowed.</source>
+      <translation>Αυτό το αντικείμενο ανήκει σε άλλο σώμα (Body) και περιέχει εξωτερική γεωμετρία. Δεν επιτρέπεται η διασταυρούμενη αναφορά.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="101"/>
       <source>This object belongs to another part.</source>
       <translation>Αυτό το αντικείμενο ανήκει σε κάποιο άλλο εξάρτημα.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="97"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="104"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
       <translation>Το επιλεγμένο σχέδιο δεν είναι παράλληλο με αυτό το σχέδιο. Κρατήστε πατημένα τα πλήκτρα Ctrl+Alt για να επιτρέψει τα μη παράλληλα σχέδια.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="102"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="110"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Οι άξονες XY του επιλεγμένου σχεδίου έχουν διαφορετικές διευθύνσεις από τους άξονες αυτού του σχεδίου. Κρατήστε πιεσμένα τα πλήκτρα Ctrl+Alt για να γίνει παράβλεψη.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="107"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="116"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Το σημείο τομής των αξόνων του επιλεγμένου σχεδίου δεν ταυτίζεται με το σημείο τομής των αξόνων αυτού του σχεδίου. Κρατήστε πιεσμένα τα πλήκτρα Ctrl+Alt για να γίνει παράβλεψη.</translation>
     </message>
@@ -2030,275 +2107,397 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ConstraintFilterList</name>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="109"/>
+      <location filename="../../TaskSketcherConstraints.h" line="110"/>
       <source>All</source>
       <translation>Όλα</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="110"/>
-      <source>Geometric</source>
-      <translation>Geometric</translation>
-    </message>
-    <message>
       <location filename="../../TaskSketcherConstraints.h" line="111"/>
-      <source>Coincident</source>
-      <translation>Coincident</translation>
+      <source>Geometric</source>
+      <translation>Γεωμετρία</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="112"/>
-      <source>Point on Object</source>
-      <translation>Point on Object</translation>
+      <source>Coincident</source>
+      <translation>Ταύτιση</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="113"/>
+      <source>Point on Object</source>
+      <translation>Σημείο σε Αντικείμενο</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.h" line="114"/>
       <source>Vertical</source>
       <translation>Κατακόρυφα</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="114"/>
+      <location filename="../../TaskSketcherConstraints.h" line="115"/>
       <source>Horizontal</source>
       <translation>Οριζόντια</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="115"/>
+      <location filename="../../TaskSketcherConstraints.h" line="116"/>
       <source>Parallel</source>
       <translation>Παράλληλο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="116"/>
+      <location filename="../../TaskSketcherConstraints.h" line="117"/>
       <source>Perpendicular</source>
       <translation>Κάθετο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="117"/>
+      <location filename="../../TaskSketcherConstraints.h" line="118"/>
       <source>Tangent</source>
       <translation>Εφαπτόμενη</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="118"/>
+      <location filename="../../TaskSketcherConstraints.h" line="119"/>
       <source>Equality</source>
-      <translation>Equality</translation>
+      <translation>Ισότητα</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="119"/>
+      <location filename="../../TaskSketcherConstraints.h" line="120"/>
       <source>Symmetric</source>
       <translation>Συμμετρική</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="120"/>
+      <location filename="../../TaskSketcherConstraints.h" line="121"/>
       <source>Block</source>
       <translation>Αποκλεισμός</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="121"/>
+      <location filename="../../TaskSketcherConstraints.h" line="122"/>
+      <source>Group</source>
+      <translation>Ομάδα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.h" line="123"/>
+      <source>Text</source>
+      <translation>Κείμενο</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.h" line="124"/>
       <source>Internal Alignment</source>
       <translation>Εσωτερική ευθυγράμμιση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="122"/>
+      <location filename="../../TaskSketcherConstraints.h" line="125"/>
       <source>Datums</source>
       <translation>Περιορισμοί μεγέθους</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="123"/>
+      <location filename="../../TaskSketcherConstraints.h" line="126"/>
       <source>Horizontal Distance</source>
-      <translation>Horizontal Distance</translation>
+      <translation>Οριζόντια Απόσταση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="124"/>
+      <location filename="../../TaskSketcherConstraints.h" line="127"/>
       <source>Vertical Distance</source>
-      <translation>Vertical Distance</translation>
+      <translation>Κάθετη Απόσταση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="125"/>
+      <location filename="../../TaskSketcherConstraints.h" line="128"/>
       <source>Distance</source>
       <translation>Απόσταση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="126"/>
+      <location filename="../../TaskSketcherConstraints.h" line="129"/>
       <source>Radius</source>
       <translation>Ακτίνα</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="127"/>
+      <location filename="../../TaskSketcherConstraints.h" line="130"/>
       <source>Weight</source>
       <translation>Βάρος</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="128"/>
+      <location filename="../../TaskSketcherConstraints.h" line="131"/>
       <source>Diameter</source>
       <translation>Διάμετρος</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="129"/>
+      <location filename="../../TaskSketcherConstraints.h" line="132"/>
       <source>Angle</source>
       <translation>Γωνία</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="130"/>
+      <location filename="../../TaskSketcherConstraints.h" line="133"/>
       <source>Snell's Law</source>
       <translation>Νόμος Του Snell</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="131"/>
+      <location filename="../../TaskSketcherConstraints.h" line="134"/>
       <source>Named</source>
       <translation>Ονομάζεται</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="132"/>
+      <location filename="../../TaskSketcherConstraints.h" line="135"/>
       <source>Reference</source>
       <translation>Αναφορά</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="133"/>
+      <location filename="../../TaskSketcherConstraints.h" line="136"/>
       <source>Selected constraints</source>
-      <translation>Selected constraints</translation>
+      <translation>Επιλεγμένοι περιορισμοί</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="134"/>
+      <location filename="../../TaskSketcherConstraints.h" line="137"/>
       <source>Associated constraints</source>
-      <translation>Associated constraints</translation>
+      <translation>Σχετιζόμενοι περιορισμοί</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="64"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="69"/>
       <source>Select Elements</source>
-      <translation>Select Elements</translation>
+      <translation>Επιλογή Στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="560"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="123"/>
+      <source>Horizontal</source>
+      <translation>Οριζόντια</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="126"/>
+      <source>Vertical</source>
+      <translation>Κατακόρυφα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="129"/>
+      <source>Coincident</source>
+      <translation>Ταύτιση</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="132"/>
+      <source>PointOnObject</source>
+      <translation type="unfinished">PointOnObject</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="135"/>
+      <source>Parallel</source>
+      <translation>Παράλληλο</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="138"/>
+      <source>Perpendicular</source>
+      <translation>Κάθετο</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="141"/>
+      <source>Tangent</source>
+      <translation>Εφαπτόμενη</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="144"/>
+      <source>Equal</source>
+      <translation type="unfinished">Equal</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="147"/>
+      <source>Symmetric</source>
+      <translation>Συμμετρική</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="150"/>
+      <source>Lock</source>
+      <translation type="unfinished">Lock</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="153"/>
+      <source>Distance</source>
+      <translation>Απόσταση</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="156"/>
+      <source>DistanceX</source>
+      <translation type="unfinished">DistanceX</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="159"/>
+      <source>DistanceY</source>
+      <translation type="unfinished">DistanceY</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="162"/>
+      <source>Radius</source>
+      <translation>Ακτίνα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="165"/>
+      <source>Diameter</source>
+      <translation>Διάμετρος</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="168"/>
+      <source>Angle</source>
+      <translation>Γωνία</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="171"/>
+      <source>Weight</source>
+      <translation>Βάρος</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="174"/>
+      <source>Snell</source>
+      <translation type="unfinished">Snell</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="177"/>
+      <source>Alignment</source>
+      <translation>Ευθυγράμμιση</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="186"/>
+      <source>Constraint</source>
+      <translation type="unfinished">Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="654"/>
       <source>Change Value</source>
-      <translation>Change Value</translation>
+      <translation>Αλλαγή Τιμής</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="565"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="659"/>
       <source>Toggle Driving/Reference</source>
-      <translation>Toggle Driving/Reference</translation>
+      <translation>Εναλλαγή Κύριας/Βοηθητικής</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="569"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="663"/>
       <source>Deactivate</source>
-      <translation>Deactivate</translation>
+      <translation>Απενεργοποίηση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="569"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="663"/>
       <source>Activate</source>
-      <translation>Activate</translation>
+      <translation>Ενεργοποίηση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="573"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="667"/>
       <source>Show Constraints</source>
-      <translation>Show Constraints</translation>
+      <translation>Εμφάνιση Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="575"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="669"/>
       <source>Hide Constraints</source>
-      <translation>Hide Constraints</translation>
+      <translation>Απόκρυψη Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="592"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="686"/>
       <source>Center Sketch</source>
-      <translation>Center Sketch</translation>
+      <translation>Κεντράρισμα Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="600"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="694"/>
       <source>Swap Constraint Names</source>
-      <translation>Swap Constraint Names</translation>
+      <translation>Εμφάνιση/Απόκρυψη Ονομάτων Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="585"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="679"/>
       <source>Rename</source>
       <translation>Μετονομασία</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="595"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="689"/>
       <source>Delete</source>
       <translation>Διαγραφή</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="695"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="789"/>
       <source>Unnamed constraint</source>
       <translation>Ανώνυμος περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="696"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="790"/>
       <source>Only the names of named constraints can be swapped.</source>
-      <translation>Μόνο τα ονόματα των ονομασμένων περιορισμών μπορούν να ανταλλαχθούν.</translation>
+      <translation>Μόνο τα ονόματα των περιορισμών που έχετε ονομάσει μπορούν να ανταλλαχθούν μεταξύ τους.</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="119"/>
+      <location filename="../../EditDatumDialog.cpp" line="134"/>
       <source>Insert Angle</source>
-      <translation>Insert Angle</translation>
+      <translation>Εισαγωγή Γωνίας</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="121"/>
+      <location filename="../../EditDatumDialog.cpp" line="136"/>
       <source>Angle:</source>
       <translation>Γωνία:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="126"/>
+      <location filename="../../EditDatumDialog.cpp" line="142"/>
+      <location filename="../../EditDatumDialog.cpp" line="245"/>
       <source>Insert Radius</source>
-      <translation>Insert Radius</translation>
+      <translation>Εισαγωγή Ακτίνας</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="133"/>
+      <location filename="../../EditDatumDialog.cpp" line="151"/>
+      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <source>Insert Diameter</source>
-      <translation>Insert Diameter</translation>
+      <translation>Εισαγωγή Διάμετρος</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="140"/>
+      <location filename="../../EditDatumDialog.cpp" line="160"/>
       <source>Insert Weight</source>
-      <translation>Insert Weight</translation>
+      <translation>Εισαγωγή Βάρους</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="146"/>
+      <location filename="../../EditDatumDialog.cpp" line="167"/>
       <source>Refractive Index Ratio</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation>Refractive Index Ratio</translation>
+      <translation>Λόγος Δείκτη Διάθλασης</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="153"/>
+      <location filename="../../EditDatumDialog.cpp" line="175"/>
       <source>Insert Length</source>
-      <translation>Insert Length</translation>
+      <translation>Εισαγωγή Μήκους</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="128"/>
+      <location filename="../../EditDatumDialog.cpp" line="243"/>
+      <source>Radius</source>
+      <translation>Ακτίνα</translation>
+    </message>
+    <message>
+      <location filename="../../EditDatumDialog.cpp" line="249"/>
+      <source>Diameter</source>
+      <translation>Διάμετρος</translation>
+    </message>
+    <message>
+      <location filename="../../EditDatumDialog.cpp" line="144"/>
       <source>Radius:</source>
       <translation>Ακτίνα:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="135"/>
+      <location filename="../../EditDatumDialog.cpp" line="153"/>
       <source>Diameter:</source>
       <translation>Διάμετρος:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="141"/>
+      <location filename="../../EditDatumDialog.cpp" line="161"/>
       <source>Weight:</source>
       <translation>Βάρος:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="147"/>
+      <location filename="../../EditDatumDialog.cpp" line="168"/>
       <source>Ratio n2/n1:</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Λόγος n2/n1:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="155"/>
+      <location filename="../../EditDatumDialog.cpp" line="177"/>
       <source>Length:</source>
       <translation>Μήκος:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10200"/>
+      <location filename="../../CommandConstraints.cpp" line="10390"/>
       <source>Refractive Index Ratio</source>
-      <translation>Refractive Index Ratio</translation>
+      <translation>Λόγος Δείκτη Διάθλασης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10201"/>
+      <location filename="../../CommandConstraints.cpp" line="10391"/>
       <source>Ratio n2/n1:</source>
       <translation>Λόγος n2/n1:</translation>
     </message>
@@ -2306,215 +2505,225 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ElementFilterList</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="333"/>
+      <location filename="../../TaskSketcherElements.cpp" line="349"/>
       <source>Normal</source>
       <translation>Κανονικό</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="334"/>
+      <location filename="../../TaskSketcherElements.cpp" line="350"/>
       <source>Construction</source>
       <translation>Κατασκευή</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="335"/>
+      <location filename="../../TaskSketcherElements.cpp" line="351"/>
       <source>Internal</source>
-      <translation>Internal</translation>
+      <translation>Εσωτερικά</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="336"/>
+      <location filename="../../TaskSketcherElements.cpp" line="352"/>
       <source>External</source>
-      <translation>External</translation>
+      <translation>Εξωτερικά</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="337"/>
+      <location filename="../../TaskSketcherElements.cpp" line="353"/>
       <source>All types</source>
-      <translation>All types</translation>
+      <translation>Όλοι οι τύποι</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="338"/>
+      <location filename="../../TaskSketcherElements.cpp" line="354"/>
       <source>Point</source>
       <translation>Σημείο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="339"/>
+      <location filename="../../TaskSketcherElements.cpp" line="355"/>
       <source>Line</source>
       <translation>Γραμμή</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="340"/>
+      <location filename="../../TaskSketcherElements.cpp" line="356"/>
       <source>Circle</source>
       <translation>Κύκλος</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="341"/>
+      <location filename="../../TaskSketcherElements.cpp" line="357"/>
       <source>Ellipse</source>
       <translation>Έλλειψη</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="342"/>
+      <location filename="../../TaskSketcherElements.cpp" line="358"/>
       <source>Arc of circle</source>
-      <translation>Arc of circle</translation>
+      <translation>Τόξο κύκλου</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="343"/>
+      <location filename="../../TaskSketcherElements.cpp" line="359"/>
       <source>Arc of ellipse</source>
-      <translation>Arc of ellipse</translation>
+      <translation>Τόξο έλλειψης</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="344"/>
+      <location filename="../../TaskSketcherElements.cpp" line="360"/>
       <source>Arc of hyperbola</source>
-      <translation>Arc of hyperbola</translation>
+      <translation>Τόξο υπερβολής</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="345"/>
+      <location filename="../../TaskSketcherElements.cpp" line="361"/>
       <source>Arc of parabola</source>
-      <translation>Arc of parabola</translation>
+      <translation>Τόξο παραβολής</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="346"/>
+      <location filename="../../TaskSketcherElements.cpp" line="362"/>
       <source>B-spline</source>
-      <translation>Καμπύλη βασικής συνάρτησης</translation>
+      <translation>Καμπύλη B-spline</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="65"/>
+      <location filename="../../TaskSketcherElements.cpp" line="72"/>
       <source>Vertical Constraint</source>
-      <translation>Vertical Constraint</translation>
+      <translation>Περιορισμός Καθετότητας (με τον κατακόρυφο άξονα Y)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="67"/>
+      <location filename="../../TaskSketcherElements.cpp" line="74"/>
       <source>Horizontal Constraint</source>
-      <translation>Horizontal Constraint</translation>
+      <translation>Περιορισμός Οριζοντίωσης</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="69"/>
+      <location filename="../../TaskSketcherElements.cpp" line="76"/>
       <source>Parallel Constraint</source>
-      <translation>Parallel Constraint</translation>
+      <translation>Περιορισμός Παραλληλίας</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="71"/>
+      <location filename="../../TaskSketcherElements.cpp" line="78"/>
       <source>Perpendicular Constraint</source>
-      <translation>Perpendicular Constraint</translation>
+      <translation>Περιορισμός Καθετότητας</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="73"/>
+      <location filename="../../TaskSketcherElements.cpp" line="80"/>
       <source>Tangent Constraint</source>
-      <translation>Tangent Constraint</translation>
+      <translation>Περιορισμός Εφάπτοσης</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="79"/>
+      <location filename="../../TaskSketcherElements.cpp" line="86"/>
       <source>Block Constraint</source>
       <translation>Περιορισμός Κλειδώματος</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="75"/>
+      <location filename="../../TaskSketcherElements.cpp" line="82"/>
       <source>Equal Constraint</source>
-      <translation>Equal Constraint</translation>
+      <translation>Περιορισμός Ισότητας</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="61"/>
+      <location filename="../../TaskSketcherElements.cpp" line="68"/>
       <source>Coincident Constraint</source>
-      <translation>Coincident Constraint</translation>
+      <translation>Περιορισμός Ταύτισης</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="63"/>
+      <location filename="../../TaskSketcherElements.cpp" line="70"/>
       <source>Point-On-Object Constraint</source>
-      <translation>Point-On-Object Constraint</translation>
+      <translation>Περιορισμός Σημείου πάνω σε Αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="77"/>
+      <location filename="../../TaskSketcherElements.cpp" line="84"/>
       <source>Symmetric Constraint</source>
-      <translation>Symmetric Constraint</translation>
+      <translation>Περιορισμός Συμμετρίας</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="81"/>
+      <location filename="../../TaskSketcherElements.cpp" line="90"/>
       <source>Lock Position</source>
-      <translation>Lock Position</translation>
+      <translation>Κλείδωμα Θέσης</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="83"/>
+      <location filename="../../TaskSketcherElements.cpp" line="92"/>
       <source>Horizontal Dimension</source>
-      <translation>Horizontal Dimension</translation>
+      <translation>Οριζόντια Διάσταση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="85"/>
+      <location filename="../../TaskSketcherElements.cpp" line="94"/>
       <source>Vertical Dimension</source>
-      <translation>Vertical Dimension</translation>
+      <translation>Κάθετη Διάσταση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="89"/>
+      <location filename="../../TaskSketcherElements.cpp" line="98"/>
       <source>Radius Dimension</source>
-      <translation>Radius Dimension</translation>
+      <translation>Διάσταση Ακτίνας</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="91"/>
+      <location filename="../../TaskSketcherElements.cpp" line="100"/>
       <source>Diameter Dimension</source>
-      <translation>Diameter Dimension</translation>
+      <translation>Διάσταση Διαμέτρου</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="87"/>
+      <location filename="../../TaskSketcherElements.cpp" line="96"/>
       <source>Distance Dimension</source>
-      <translation>Distance Dimension</translation>
+      <translation>Διάσταση Απόστασης</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="93"/>
+      <location filename="../../TaskSketcherElements.cpp" line="88"/>
+      <source>Group Constraint</source>
+      <translation type="unfinished">Group Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="102"/>
       <source>Radius/Diameter Dimension</source>
-      <translation>Radius/Diameter Dimension</translation>
+      <translation>Διάσταση Ακτίνας/Διάμετρος</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="95"/>
+      <location filename="../../TaskSketcherElements.cpp" line="104"/>
       <source>Angle Dimension</source>
-      <translation>Angle Dimension</translation>
+      <translation>Διάσταση Γωνίας</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="97"/>
+      <location filename="../../TaskSketcherElements.cpp" line="106"/>
       <source>Toggle Construction Geometry</source>
-      <translation type="unfinished">Toggle Construction Geometry</translation>
+      <translation>Εμφάνιση/Απόκρυψη Γεωμετρίας Κατασκευής</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="99"/>
+      <location filename="../../TaskSketcherElements.cpp" line="108"/>
       <source>Select Constraints</source>
-      <translation>Select Constraints</translation>
+      <translation>Επιλογή Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="101"/>
+      <location filename="../../TaskSketcherElements.cpp" line="110"/>
       <source>Select Origin</source>
-      <translation>Select Origin</translation>
+      <translation>Επιλογή Αρχής Αξόνων</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="103"/>
+      <location filename="../../TaskSketcherElements.cpp" line="112"/>
       <source>Select Horizontal Axis</source>
-      <translation>Select Horizontal Axis</translation>
+      <translation>Επιλογή Οριζόντιου Άξονα</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="105"/>
+      <location filename="../../TaskSketcherElements.cpp" line="114"/>
       <source>Select Vertical Axis</source>
-      <translation>Select Vertical Axis</translation>
+      <translation>Επιλογή Κατακόρυφου Άξονα</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="805"/>
+      <location filename="../../TaskSketcherElements.cpp" line="755"/>
+      <source>Convert to geometries</source>
+      <translation type="unfinished">Convert to geometries</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="880"/>
       <source>Layer</source>
-      <translation>Layer</translation>
+      <translation>Επίπεδο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="815"/>
+      <location filename="../../TaskSketcherElements.cpp" line="890"/>
       <source>Layer 0</source>
-      <translation>Layer 0</translation>
+      <translation>Επίπεδο 0</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="816"/>
+      <location filename="../../TaskSketcherElements.cpp" line="891"/>
       <source>Layer 1</source>
-      <translation>Layer 1</translation>
+      <translation>Επίπεδο 1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="817"/>
+      <location filename="../../TaskSketcherElements.cpp" line="892"/>
       <source>Hidden</source>
-      <translation>Hidden</translation>
+      <translation>Κρυφό</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="822"/>
+      <location filename="../../TaskSketcherElements.cpp" line="897"/>
       <source>Delete</source>
       <translation>Διαγραφή</translation>
     </message>
@@ -2522,12 +2731,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="71"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="72"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>Η δημιουργία συνδέσμου θα προκαλέσει κυκλική εξάρτηση.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="74"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="75"/>
       <source>This object is in another document.</source>
       <translation>Αυτό το αντικείμενο βρίσκεται σε κάποιο άλλο έγγραφο.</translation>
     </message>
@@ -2537,7 +2746,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Αυτό το αντικείμενο ανήκει σε κάποιο άλλο σώμα, αδύνατη η σύνδεση.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="82"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="83"/>
       <source>This object belongs to another part, can't link.</source>
       <translation>Αυτό το αντικείμενο ανήκει σε κάποιο άλλο εξάρτημα, αδύνατη η σύνδεση.</translation>
     </message>
@@ -2547,12 +2756,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../InsertDatum.ui" line="23"/>
       <source>Insert Datum</source>
-      <translation>Insert Datum</translation>
+      <translation>Εισαγωγή Τιμής</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="31"/>
       <source>Datum</source>
-      <translation>Datum</translation>
+      <translation>Τιμή</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="48"/>
@@ -2562,15 +2771,25 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../InsertDatum.ui" line="61"/>
       <source>Constraint name (available for expressions)</source>
-      <translation>Constraint name (available for expressions)</translation>
+      <translation>Όνομα περιορισμού (διαθέσιμο για εκφράσεις)</translation>
     </message>
     <message>
-      <location filename="../../InsertDatum.ui" line="76"/>
-      <source>Reference (or constraint) dimension</source>
-      <translation>Reference (or constraint) dimension</translation>
+      <location filename="../../InsertDatum.ui" line="72"/>
+      <source>Radius</source>
+      <translation>Ακτίνα</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="79"/>
+      <source>Diameter</source>
+      <translation>Διάμετρος</translation>
+    </message>
+    <message>
+      <location filename="../../InsertDatum.ui" line="94"/>
+      <source>Reference (or constraint) dimension</source>
+      <translation>Διάσταση Αναφοράς (ή περιορισμού)</translation>
+    </message>
+    <message>
+      <location filename="../../InsertDatum.ui" line="97"/>
       <source>Reference</source>
       <translation>Αναφορά</translation>
     </message>
@@ -2578,8 +2797,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-      <location filename="../../PropertyConstraintListItem.cpp" line="130"/>
-      <location filename="../../PropertyConstraintListItem.cpp" line="187"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="132"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="190"/>
       <source>Unnamed</source>
       <translation>Ανώνυμο</translation>
     </message>
@@ -2590,17 +2809,17 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../SketchMirrorDialog.ui" line="14"/>
       <location filename="../../SketchMirrorDialog.ui" line="20"/>
       <source>Select Mirror Axis or Point</source>
-      <translation>Select Mirror Axis or Point</translation>
+      <translation>Επιλογή Άξονα ή Σημείου συμμετρίας</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="26"/>
       <source>X-axis</source>
-      <translation>Άξονας X(App49)</translation>
+      <translation>Άξονας-X (οριζόντιος)</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="36"/>
       <source>Y-axis</source>
-      <translation>Άξονας Υ(App54)</translation>
+      <translation>Άξονας-Υ (κάθετος)</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="43"/>
@@ -2633,7 +2852,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="43"/>
       <source>YZ-plane</source>
-      <translation>YZ-Πλάγια όψη</translation>
+      <translation>Επίπεδο YZ (Πλάγια όψη)</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="72"/>
@@ -2643,7 +2862,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="81"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση</translation>
     </message>
   </context>
   <context>
@@ -2656,17 +2875,17 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="17"/>
       <source>Create Array</source>
-      <translation>Create Array</translation>
+      <translation>Αντιγραφή και Οργάνωση σε διάταξη</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="25"/>
       <source>Columns</source>
-      <translation>Columns</translation>
+      <translation>Στήλες</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="52"/>
       <source>Rows</source>
-      <translation>Rows</translation>
+      <translation>Σειρές</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="59"/>
@@ -2686,14 +2905,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>Constrains each element in the array with respect to the others using construction lines</source>
-      <translation>Constrains each element in the array with respect to the others using construction lines</translation>
+      <translation>Συνδέει και συγκρατεί όλα τα αντίγραφα μεταξύ τους χρησιμοποιώντας βοηθητικές γραμμές, ώστε αν μετακινήσετε ένα, να ακολουθήσουν και τα υπόλοιπα με την ίδια σειρά</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="115"/>
       <source>Substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is reflected on copies</source>
-      <translation>Substitutes dimensional constraints by geometric constraints
-in the copies, so that a change in the original element is reflected on copies</translation>
+      <translation>Αντικαθιστά τις διαστάσεις των αντιγράφων με κανόνες γεωμετρίας, έτσι ώστε οποιαδήποτε αλλαγή κάνετε στο αρχικό σχήμα να εφαρμόζεται αυτόματα σε όλα τα αντίγραφα</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="99"/>
@@ -2703,7 +2921,7 @@ in the copies, so that a change in the original element is reflected on copies</
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="119"/>
       <source>Clone</source>
-      <translation>Κλωνοποιήστε</translation>
+      <translation>Πιστό Αντίγραφο</translation>
     </message>
   </context>
   <context>
@@ -2711,7 +2929,7 @@ in the copies, so that a change in the original element is reflected on copies</
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="17"/>
       <source>Create Regular Polygon</source>
-      <translation>Create Regular Polygon</translation>
+      <translation>Δημιουργία Κανονικού Πολυγώνου</translation>
     </message>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="25"/>
@@ -2735,17 +2953,17 @@ in the copies, so that a change in the original element is reflected on copies</
     <message>
       <location filename="../../SketcherSettings.ui" line="29"/>
       <source>Show section 'Advanced solver control'</source>
-      <translation>Show section 'Advanced solver control'</translation>
+      <translation>Εμφάνιση ενότητας 'Προηγμένος έλεγχος επιλύτη'</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="20"/>
       <source>Task Panel Widgets</source>
-      <translation>Task Panel Widgets</translation>
+      <translation>Γραφικά Πίνακα Εργασιών</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="45"/>
       <source>Dragging Performance</source>
-      <translation>Dragging Performance</translation>
+      <translation>Απόδοση Συρσίματος</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="51"/>
@@ -2757,118 +2975,131 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="55"/>
       <source>Improve solving while dragging</source>
-      <translation>Improve solving while dragging</translation>
+      <translation>Βελτίωση επίλυσης κατά το σύρσιμο</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="107"/>
       <source>Automatically removes newly added redundant constraints</source>
-      <translation>Automatically removes newly added redundant constraints</translation>
+      <translation>Αυτόματη αφαίρεση νέων πλεοναζόντων περιορισμών</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="110"/>
       <source>Auto remove redundant constraints</source>
-      <translation>Auto remove redundant constraints</translation>
+      <translation>Αυτόματη αφαίρεση πλεοναζόντων περιορισμών</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="126"/>
       <source>Allows to leave the sketch edit mode by pressing the Esc key</source>
-      <translation>Allows to leave the sketch edit mode by pressing the Esc key</translation>
+      <translation>Επιτρέπει την έξοδο από τη λειτουργία επεξεργασίας σκίτσου με το πάτημα του Esc</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="129"/>
       <source>Esc key can leave sketch edit mode</source>
-      <translation>Esc key can leave sketch edit mode</translation>
+      <translation>Το κουμπί Esc επιτρέπει την έξοδο από την επεξεργασία σκίτσου</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="148"/>
       <source>Notify about automatic constraint substitutions</source>
-      <translation>Notify about automatic constraint substitutions</translation>
+      <translation>Ειδοποίηση για αυτόματες αντικαταστάσεις περιορισμών</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="164"/>
       <source>Unifies the coincident and point-on-object constraints in a single tool</source>
-      <translation>Unifies the coincident and point-on-object constraints in a single tool</translation>
+      <translation>Ενοποίηση των περιορισμών σύμπτωσης και σημείου-σε-αντικείμενο σε ένα εργαλείο</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="167"/>
       <source>Unify coincident and point-on-object constraints</source>
-      <translation>Unify coincident and point-on-object constraints</translation>
+      <translation>Ενοποίηση περιορισμών σύμπτωσης και σημείου-σε-αντικείμενο</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="183"/>
       <source>Unifies the horizontal and vertical constraints to an automatic command</source>
-      <translation>Unifies the horizontal and vertical constraints to an automatic command</translation>
+      <translation>Ενοποίηση οριζόντιου και κατακόρυφου περιορισμού σε μία αυτόματη εντολή</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="186"/>
       <source>Unified tool for automatic horizontal/vertical constraints</source>
-      <translation>Unified tool for automatic horizontal/vertical constraints</translation>
+      <translation>Ενοποιημένο εργαλείο αυτόματου οριζόντιου/κατακόρυφου περιορισμού</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="202"/>
       <source>Shows a command group button that contains both the polyline and line commands. Otherwise, each command has its own separate button.</source>
-      <translation>Shows a command group button that contains both the polyline and line commands. Otherwise, each command has its own separate button.</translation>
+      <translation>Εμφάνιση κουμπιού ομάδας εντολών που περιέχει την πολυγραμμή και την απλή γραμμή. Διαφορετικά, κάθε εντολή έχει το δικό της ξεχωριστό κουμπί.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="221"/>
       <source>Always adds external geometry as construction geometry. Otherwise, it is added according to the current construction mode.</source>
-      <translation>Always adds external geometry as construction geometry. Otherwise, it is added according to the current construction mode.</translation>
+      <translation>Προσθήκη εξωτερικής γεωμετρίας πάντα ως γεωμετρία κατασκευής. Διαφορετικά, προστίθεται ανάλογα με την τρέχουσα λειτουργία κατασκευής.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="224"/>
       <source>Always add external geometry as construction</source>
-      <translation>Always add external geometry as construction</translation>
+      <translation>Πάντα προσθήκη εξωτερικής γεωμετρίας ως κατασκευής</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="240"/>
       <source>Closed loops will automatically generate internal faces which are selectable to be used with other tools</source>
-      <translation type="unfinished">Closed loops will automatically generate internal faces which are selectable to be used with other tools</translation>
+      <translation>Οι κλειστοί βρόχοι δημιουργούν αυτόματα εσωτερικές επιφάνειες οι οποίες μπορούν να επιλεγούν για χρήση με άλλα εργαλεία</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="243"/>
       <source>Generate internal faces</source>
-      <translation type="unfinished">Generate internal faces</translation>
+      <translation>Δημιουργία εσωτερικών επιφανειών</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="265"/>
+      <location filename="../../SketcherSettings.ui" line="268"/>
       <source>Dimension Constraint</source>
-      <translation>Dimension Constraint</translation>
+      <translation>Περιορισμός Διάστασης</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="292"/>
+      <location filename="../../SketcherSettings.ui" line="295"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation>Dimension tool diameter/radius mode</translation>
+      <translation>Λειτουργία εργαλείου διαστάσεων Διαμέτρου/Ακτίνας</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="299"/>
+      <location filename="../../SketcherSettings.ui" line="302"/>
       <source>Dimensioning constraints</source>
-      <translation>Dimensioning constraints</translation>
+      <translation>Περιορισμοί Μεγέθους</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="306"/>
+      <location filename="../../SketcherSettings.ui" line="309"/>
       <source>Scale upon first constraint</source>
-      <translation>Scale upon first constraint</translation>
+      <translation>Προσαρμογή μεγέθους στον πρώτο περιορισμό</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="313"/>
+      <location filename="../../SketcherSettings.ui" line="316"/>
       <source>Select the mode of automatic geometry scaling upon first dimension:
 'Always': Automatic scaling upon first dimension is always performed.
 'Never': Automatic scaling upon first dimension is never performed.
-'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</source>
-      <translation>Select the mode of automatic geometry scaling upon first dimension:
+'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.
+</source>
+      <translation type="unfinished">Select the mode of automatic geometry scaling upon first dimension:
 'Always': Automatic scaling upon first dimension is always performed.
 'Never': Automatic scaling upon first dimension is never performed.
-'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</translation>
+'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.
+</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="332"/>
+      <location filename="../../SketcherSettings.ui" line="349"/>
+      <source>Choose a visibility mode for the On-View-Parameters:
+'Disabled': On-View-Parameters are completely disabled.
+'Dimensional only': Only dimensional On-View-Parameters are visible. They are the most useful. For example, the radius of a circle.
+'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
+      <translation type="unfinished">Choose a visibility mode for the On-View-Parameters:
+'Disabled': On-View-Parameters are completely disabled.
+'Dimensional only': Only dimensional On-View-Parameters are visible. They are the most useful. For example, the radius of a circle.
+'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="336"/>
       <source>Tool Parameters</source>
-      <translation>Tool Parameters</translation>
+      <translation>Εργαλείο Παραμέτρων</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="338"/>
+      <location filename="../../SketcherSettings.ui" line="342"/>
       <source>On-view-parameters (OVP)</source>
-      <translation>On-view-parameters (OVP)</translation>
+      <translation>Παράμετροι επί της οθόνης (OVP)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="145"/>
@@ -2878,107 +3109,96 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="26"/>
       <source>Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</source>
-      <translation type="unfinished">Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</translation>
+      <translation>Εμφάνιση της πρόσθετης ενότητας 'Προηγμένοι Έλεγχοι Επίλυσης' στον πίνακα εργασιών</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="205"/>
       <source>Group the polyline and line commands</source>
-      <translation>Group the polyline and line commands</translation>
+      <translation>Ομαδοποίηση των εντολών πολυγραμμής και απλής γραμμής</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="281"/>
+      <location filename="../../SketcherSettings.ui" line="284"/>
       <source>Select the type of dimensioning constraints for your toolbar:
 'Single tool': A single tool for all dimensioning constraints in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
 'Separated tools': Individual tools for each dimensioning constraint.
 'Both': You will have both the 'Dimension' tool and the separated tools.
 This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</source>
-      <translation>Select the type of dimensioning constraints for your toolbar:
-'Single tool': A single tool for all dimensioning constraints in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
-'Separated tools': Individual tools for each dimensioning constraint.
-'Both': You will have both the 'Dimension' tool and the separated tools.
-This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</translation>
+      <translation>Επιλέξτε τον τύπο των εργαλείων για τους περιορισμούς μεγέθους στη γραμμή εργαλείων σας: 
+'Ενιαίο εργαλείο': Ένα μόνο κουμπί για όλους τους περιορισμούς μεγέθους: Απόσταση, Απόσταση X / Y, Γωνία, Ακτίνα. (Τα υπόλοιπα βρίσκονται σε αναδυόμενο μενού)
+'Ξεχωριστά εργαλεία': Αυτόνομα κουμπιά για κάθε περιορισμό μεγέθους. 
+'Και τα δύο': Θα έχετε στη διάθεσή σας τόσο το ενιαίο εργαλείο 'Διάσταση' όσο και τα ξεχωριστά εργαλεία. 
+Αυτή η ρύθμιση αφορά μόνο τη γραμμή εργαλείων. Όποιο και αν επιλέξετε, όλα τα εργαλεία είναι πάντα διαθέσιμα στο μενού και μέσω συντομεύσεων πληκτρολογίου.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="271"/>
+      <location filename="../../SketcherSettings.ui" line="274"/>
       <source>While using the Dimension tool you may choose how to handle circles and arcs:
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
 'Radius': The tool will apply radius to both arcs and circles.</source>
-      <translation>While using the Dimension tool you may choose how to handle circles and arcs:
-'Auto': The tool will apply radius to arcs and diameter to circles.
-'Diameter': The tool will apply diameter to both arcs and circles.
-'Radius': The tool will apply radius to both arcs and circles.</translation>
+      <translation>Όταν χρησιμοποιείτε το εργαλείο 'Διάσταση', μπορείτε να επιλέξετε πώς να χειρίζεστε τους κύκλους και τα τόξα: 
+'Αυτόματα': Το εργαλείο θα εφαρμόσει ακτίνα στα τόξα και διάμετρο στους κύκλους.
+'Διάμετρος': Το εργαλείο θα εφαρμόσει διάμετρο τόσο στα τόξα όσο και στους κύκλους. 
+'Ακτίνα': Το εργαλείο θα εφαρμόσει ακτίνα τόσο στα τόξα όσο και στους κύκλους.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="345"/>
-      <source>Choose a visibility mode for the On-View-Parameters:
-'Disabled': On-View-Parameters are completely disabled.
-'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
-'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
-      <translation>Choose a visibility mode for the On-View-Parameters:
-'Disabled': On-View-Parameters are completely disabled.
-'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
-'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettings.cpp" line="196"/>
+      <location filename="../../SketcherSettings.cpp" line="201"/>
       <source>Single tool</source>
-      <translation>Single tool</translation>
+      <translation>Ενιαίο εργαλείο</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="197"/>
+      <location filename="../../SketcherSettings.cpp" line="202"/>
       <source>Separated tools</source>
-      <translation>Separated tools</translation>
+      <translation>Ξεχωριστά εργαλεία</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="198"/>
+      <location filename="../../SketcherSettings.cpp" line="203"/>
       <source>Both</source>
-      <translation>Both</translation>
+      <translation>Και τα δύο</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="216"/>
+      <location filename="../../SketcherSettings.cpp" line="224"/>
       <source>Auto</source>
       <translation>Αυτόματο</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="217"/>
+      <location filename="../../SketcherSettings.cpp" line="225"/>
       <source>Diameter</source>
       <translation>Διάμετρος</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="218"/>
+      <location filename="../../SketcherSettings.cpp" line="226"/>
       <source>Radius</source>
       <translation>Ακτίνα</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="229"/>
+      <location filename="../../SketcherSettings.cpp" line="237"/>
       <source>Always</source>
       <translation>Πάντοτε</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="230"/>
+      <location filename="../../SketcherSettings.cpp" line="238"/>
       <source>Never</source>
       <translation>Ποτέ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="231"/>
+      <location filename="../../SketcherSettings.cpp" line="239"/>
       <source>When no scale feature is visible</source>
-      <translation>When no scale feature is visible</translation>
+      <translation>Όταν δεν υπάρχει ορατό αντικείμενο για σύγκριση μεγέθους</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="238"/>
+      <location filename="../../SketcherSettings.cpp" line="247"/>
       <source>None</source>
       <translation>Κανένα</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="239"/>
+      <location filename="../../SketcherSettings.cpp" line="248"/>
       <source>Dimensions only</source>
-      <translation>Dimensions only</translation>
+      <translation>Μόνο Διαστάσεις</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="240"/>
+      <location filename="../../SketcherSettings.cpp" line="249"/>
       <source>Position and dimensions</source>
-      <translation>Position and dimensions</translation>
+      <translation>Θέση και Διαστάσεις</translation>
     </message>
   </context>
   <context>
@@ -3008,8 +3228,8 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
       <location filename="../../SketcherSettingsDisplay.ui" line="225"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
-      <translation>Base length units will not be displayed in constraints or cursor coordinates.
-Supports all unit systems except 'US customary' and 'Building US/Euro'.</translation>
+      <translation>Οι βασικές μονάδες μήκους δεν θα εμφανίζονται στους περιορισμούς ή στις συντεταγμένες του κέρσορα. 
+Υποστηρίζει όλα τα συστήματα μονάδων εκτός από το 'US customary' (ΗΠΑ) και το 'Building US/Euro'.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="170"/>
@@ -3039,22 +3259,22 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="20"/>
       <source>Sketch Editing</source>
-      <translation>Sketch Editing</translation>
+      <translation>Επεξεργασία Σκίτσου</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="37"/>
       <source>Pixel size used to render constraint symbols</source>
-      <translation type="unfinished">Pixel size used to render constraint symbols</translation>
+      <translation>Μέγεθος σε pixel για την εμφάνιση των συμβόλων περιορισμού</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="78"/>
       <source>Scales the 3D view based on this factor</source>
-      <translation>Scales the 3D view based on this factor</translation>
+      <translation>Προσαρμόζει το μέγεθος της τρισδιάστατης προβολής με βάση αυτόν τον παράγοντα</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="109"/>
       <source>The number of polygons used for geometry approximation</source>
-      <translation>The number of polygons used for geometry approximation</translation>
+      <translation>Ο αριθμός των πολυγώνων που χρησιμοποιούνται για την προσέγγιση της γεωμετρίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="131"/>
@@ -3069,79 +3289,79 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="180"/>
       <source>Keeps the current Sketcher tool active after creating geometry</source>
-      <translation>Keeps the current Sketcher tool active after creating geometry</translation>
+      <translation>Διατήρηση ενεργό το εργαλείο σχεδίασης μετά τη δημιουργία γεωμετρίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="199"/>
       <source>Font size used for labels and constraints</source>
-      <translation>Font size used for labels and constraints</translation>
+      <translation>Μέγεθος γραμματοσειράς για ετικέτες και περιορισμούς</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
       <source>Keeps the current Sketcher constraint tool active after creating geometry</source>
-      <translation>Keeps the current Sketcher constraint tool active after creating geometry</translation>
+      <translation>Διατήρηση του εργαλείου περιορισμών ενεργού μετά τη χρήση</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="296"/>
       <source>Opens a dialog to input a value for new dimensional constraints after creation</source>
-      <translation>Opens a dialog to input a value for new dimensional constraints after creation</translation>
+      <translation>Εμφάνιση παραθύρου για την εισαγωγή τιμής στους νέους περιορισμούς διαστάσεων</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form</source>
-      <translation>Cursor coordinates will use the system decimals setting instead of the short form</translation>
+      <translation>Οι συντεταγμένες του κέρσορα θα χρησιμοποιούν τις ρυθμίσεις δεκαδικών του συστήματος αντί για τη σύντομη μορφή</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="361"/>
       <source>Visibility Automation</source>
-      <translation>Visibility Automation</translation>
+      <translation>Αυτοματοποίηση Ορατότητας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="367"/>
       <source>Hides all object features that depend on the opened sketch</source>
-      <translation>Hides all object features that depend on the opened sketch</translation>
+      <translation>Απόκρυψη οτιδήποτε έχει δημιουργηθεί από αυτό το σχέδιο</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="386"/>
       <source>Shows source objects which are used for external geometry in the opened sketch</source>
-      <translation>Shows source objects which are used for external geometry in the opened sketch</translation>
+      <translation>Εμφανίζει τα αρχικά αντικείμενα από τα οποία προέρχεται η εξωτερική γεωμετρία</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="405"/>
       <source>Shows objects the opened sketch is attached to</source>
-      <translation>Shows objects the opened sketch is attached to</translation>
+      <translation>Εμφανίζει τα αντικείμενα πάνω στα οποία είναι τοποθετημένο το σχέδιο</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="424"/>
       <source>Restores the camera position after closing the sketch</source>
-      <translation>Restores the camera position after closing the sketch</translation>
+      <translation>Επαναφέρει τη γωνία θέασης μετά το κλείσιμο του σχεδίου</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="443"/>
       <source>Forces the camera to an orthographic view when editing a sketch.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>Forces the camera to an orthographic view when editing a sketch.
-Works only when "Restore camera position after editing" is enabled.</translation>
+      <translation>Γυρίζει αυτόματα την οθόνη σε επίπεδη προβολή όταν σχεδιάζετε.
+Λειτουργεί μόνο όταν είναι ενεργή η 'Επαναφορά γωνίας θέασης μετά την επεξεργασία'.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="463"/>
       <source>Opens a sketch in section view mode, showing only objects behind the sketch plane</source>
-      <translation>Opens a sketch in section view mode, showing only objects behind the sketch plane</translation>
+      <translation>Ανοίγει το σχέδιο σε λειτουργία τομής, δείχνοντας μόνο όσα αντικείμενα βρίσκονται πίσω από το επίπεδο που σχεδιάζετε</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="466"/>
       <source>Open sketch in section view mode</source>
-      <translation>Open sketch in section view mode</translation>
+      <translation>Άνοιγμα σχεδίου σε λειτουργία προβολής τομής</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="507"/>
       <source>Applies current visibility automation settings to all sketches in the open documents</source>
-      <translation>Applies current visibility automation settings to all sketches in the open documents</translation>
+      <translation>Εφαρμόζει τις τρέχουσες ρυθμίσεις αυτόματης ορατότητας σε όλα τα σχέδια των ανοιχτών εγγράφων</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="510"/>
       <source>Apply to Existing Sketches</source>
-      <translation>Apply to Existing Sketches</translation>
+      <translation>Εφαρμογή στα Υπάρχοντα Σχέδια</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
@@ -3150,36 +3370,36 @@ Defaults to: %N = %V
 
 %N - name parameter
 %V - dimension value</source>
-      <translation>The format of the dimensional constraint string presentation.
-Defaults to: %N = %V
+      <translation>Η μορφή εμφάνισης του κειμένου για τους περιορισμούς διαστάσεων.
+Προεπιλογή: %N = %V
 
-%N - name parameter
-%V - dimension value</translation>
+%N - όνομα παραμέτρου
+%V - τιμή διάστασης</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="27"/>
       <source>Constraint symbol size</source>
-      <translation type="unfinished">Constraint symbol size</translation>
+      <translation>Μέγεθος συμβόλου περιορισμού</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="128"/>
       <source>Shows names of dimensional constraints, if they exist</source>
-      <translation type="unfinished">Shows names of dimensional constraints, if they exist</translation>
+      <translation>Εμφάνιση ονομάτων για τους περιορισμούς διαστάσεων, εάν αυτοί υπάρχουν</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="277"/>
       <source>Shows cursor position coordinates next to the cursor while editing a sketch</source>
-      <translation type="unfinished">Shows cursor position coordinates next to the cursor while editing a sketch</translation>
+      <translation>Εμφάνιση των συντεταγμένων της θέσης του κέρσορα κατά την επεξεργασία ενός σχεδίου</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
       <source>Show coordinates next to the cursor while editing</source>
-      <translation type="unfinished">Show coordinates next to the cursor while editing</translation>
+      <translation>Εμφάνιση συντεταγμένων δίπλα στον κέρσορα κατά την επεξεργασία</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="318"/>
       <source>Use system decimals setting for cursor coordinates</source>
-      <translation>Use system decimals setting for cursor coordinates</translation>
+      <translation>Ακρίβεια αριθμών στον κέρσορα βάσει ρυθμίσεων συστήματος</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="370"/>
@@ -3212,12 +3432,12 @@ Defaults to: %N = %V
       <translation>Σημείωση: αυτές οι ρυθμίσεις είναι προεπιλεγμένες που εφαρμόζονται σε νέα σχέδια. Η ενέργεια απομνημονεύεται για κάθε σκίτσο ξεχωριστά ως ιδιότητες στην καρτέλα Προβολή.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="514"/>
+      <location filename="../../SketcherSettings.cpp" line="527"/>
       <source>Unexpected C++ exception</source>
       <translation>Απρόσμενη εξαίρεση C++</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="517"/>
+      <location filename="../../SketcherSettings.cpp" line="530"/>
       <source>Sketcher</source>
       <translation>Σχεδιασμός</translation>
     </message>
@@ -3225,140 +3445,140 @@ Defaults to: %N = %V
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="175"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="177"/>
       <source>No missing coincidences</source>
       <translation>Δεν υπάρχει αστοχία σύμπτωσης σημείων</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="176"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="178"/>
       <source>No missing coincidences found</source>
       <translation>Δεν βρέθηκαν περιπτώσεις αστοχίας σύμπτωσης σημείων</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="184"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="187"/>
       <source>Missing coincidences</source>
       <translation>Βρέθηκαν περιπτώσεις αστοχίας σύμπτωσης σημείων</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="185"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="188"/>
       <source>%1 missing coincidences found</source>
       <translation>Βρέθηκαν %1 περιπτώσεις αστοχίας σύμπτωσης σημείων</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="236"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="241"/>
       <source>No invalid constraints</source>
       <translation>Κανένας μη έγκυρος περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="237"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="242"/>
       <source>No invalid constraints found</source>
       <translation>Δεν βρέθηκε κανένας μη έγκυρος περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="243"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="248"/>
       <source>Invalid constraints</source>
       <translation>Μη έγκυροι περιορισμοί</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="244"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="248"/>
       <source>Invalid constraints found</source>
       <translation>Βρέθηκαν μη έγκυροι περιορισμοί</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="285"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="300"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="311"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="328"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="289"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="305"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="318"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="336"/>
       <source>Reversed external geometry</source>
       <translation>Ανεστραμμένη εξωτερική γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="286"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="290"/>
       <source>%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
 
 %2 constraints are linking to the endpoints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation>%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
+      <translation>Βρέθηκαν %1 ανεστραμμένα τόξα εξωτερικής γεωμετρίας. Τα αρχικά και τα τελικά τους σημεία επισημαίνονται στην τρισδιάστατη προβολή.
 
-%2 constraints are linking to the endpoints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).
+%2 περιορισμοί συνδέονται με τα αρχικά και τα τελικά σημεία. Οι περιορισμοί παρατίθενται στην προβολή Αναφοράς (μενού Προβολών -&gt; Προβολές -&gt; προβολή Αναφοράς).
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+Κάντε κλικ στην επιλογή ''Αλλαγή αρχικού και τελικού σημείου στους περιορισμούς'' προκειμένου να ορίσετε ξανά αρχικά και τελικά σημεία. Αυτό να γίνει μόνο μια φορά σε σκαριφήματα που δημιουργήθηκαν σε έκδοση του FreeCAD που είναι παλαιότερη από την έκδοση v0.15</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="301"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="306"/>
       <source>%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation>%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
+      <translation>Βρέθηκαν %1 ανεστραμμένα τόξα εξωτερικής γεωμετρίας. Τα τελικά τους σημεία έχουν κυκλωθεί στην (3D) προβολή.
 
-However, no constraints linking to the endpoints were found.</translation>
+Ωστόσο, δεν βρέθηκαν περιορισμοί που να συνδέονται με αυτά τα σημεία.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="312"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="319"/>
       <source>No reversed external geometry arcs were found.</source>
-      <translation>No reversed external geometry arcs were found.</translation>
+      <translation>Δεν βρέθηκαν ανεστραμμένα τόξα εξωτερικής γεωμετρίας.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="388"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="399"/>
       <source>Delete Constraints to External Geometry</source>
-      <translation type="unfinished">Delete Constraints to External Geometry</translation>
+      <translation>Διαγραφή Περιορισμών Εξωτερικής Γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="389"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="400"/>
       <source>This will delete all constraints that deal with external geometry. This is useful to rescue a sketch with broken or changed links to external geometry. Delete the constraints?</source>
-      <translation>This will delete all constraints that deal with external geometry. This is useful to rescue a sketch with broken or changed links to external geometry. Delete the constraints?</translation>
+      <translation>Αυτή η επιλογή θα διαγράψει όλους τους περιορισμούς που συνδέουν το σχέδιό σας με άλλα αντικείμενα (εξωτερική γεωμετρία). Είναι χρήσιμο για να επαναφέρετε ένα σχέδιο που παρουσιάζει σφάλματα επειδή άλλαξαν ή διαγράφηκαν τα αντικείμενα με τα οποία συνδεόταν. Θέλετε να προχωρήσετε στη διαγραφή των περιορισμών;</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="329"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="337"/>
       <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
       <translation>%1 αλλαγές έγιναν σε περιορισμούς που συνδέονται με τα αρχικά και τελικά σημεία ανεστραμμένων τόξων.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="349"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="370"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="358"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="380"/>
       <source>Constraint orientation locking</source>
       <translation>Περιορισμός κλειδώματος προσανατολισμού</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="350"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="359"/>
       <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view).</source>
-      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view).</translation>
+      <translation>Το κλείδωμα κατεύθυνσης ενεργοποιήθηκε και υπολογίστηκε ξανά για %1 περιορισμούς. Η λίστα των περιορισμών εμφανίζεται στο μενού ( Προβολή → Πάνελ → Αναφορά).</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="371"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="381"/>
       <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+      <translation>Το κλείδωμα κατεύθυνσης απενεργοποιήθηκε για %1 περιορισμούς. Η λίστα των περιορισμών εμφανίζεται στο μενού (Προβολή → Πάνελ → Αναφορά). Σημειώστε ότι για όλους τους μελλοντικούς περιορισμούς, το κλείδωμα παραμένει από προεπιλογή Ενεργοποιημένο.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="407"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="419"/>
       <source>Delete constraints to external geom.</source>
       <translation>Διαγραφή περιορισμών των στοιχείων εξωτερικής γεωμετρίας.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="408"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="420"/>
       <source>All constraints that deal with external geometry were deleted.</source>
       <translation>Όλοι οι περιορισμοί που σχετίζονται με την εξωτερική γεωμετρία διαγράφηκαν.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="477"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="491"/>
       <source>No degenerated geometry</source>
-      <translation>No degenerated geometry</translation>
+      <translation>Δεν υπάρχει ελαττωματική γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="478"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="492"/>
       <source>No degenerated geometry found</source>
-      <translation>No degenerated geometry found</translation>
+      <translation>Δεν βρέθηκε ελαττωματική γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="484"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="500"/>
       <source>Degenerated geometry</source>
-      <translation>Degenerated geometry</translation>
+      <translation>Ελαττωματική γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="485"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="501"/>
       <source>%1 degenerated geometry found</source>
-      <translation>%1 degenerated geometry found</translation>
+      <translation>Βρέθηκε %1 ελαττωματική γεωμετρία</translation>
     </message>
   </context>
   <context>
@@ -3366,12 +3586,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Toggles the chosen constraint filters</source>
-      <translation>Toggles the chosen constraint filters</translation>
+      <translation>Εναλλάσσει την εμφάνιση των επιλεγμένων φίλτρων περιορισμού</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
       <source>Filters constraints by type</source>
-      <translation>Filters constraints by type</translation>
+      <translation>Φιλτράρει τους περιορισμούς με βάση τον τύπο τους</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="65"/>
@@ -3381,7 +3601,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
       <source>Toggles the visibility of all listed constraints from the 3D view</source>
-      <translation>Toggles the visibility of all listed constraints from the 3D view</translation>
+      <translation>Εναλλάσσει την ορατότητα όλων των περιορισμών της λίστας στην (3D) προβολή</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="107"/>
@@ -3389,50 +3609,50 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Ρυθμίσεις</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="820"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="920"/>
       <source>Constraints</source>
       <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="846"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="947"/>
       <source>Auto constraints</source>
       <translation>Αυτόματοι περιορισμοί</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="847"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="948"/>
       <source>Auto remove redundant constraints</source>
-      <translation>Auto remove redundant constraints</translation>
+      <translation>Αυτόματη αφαίρεση πλεοναζόντων περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="848"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="949"/>
       <source>Display only filtered constraints</source>
-      <translation>Display only filtered constraints</translation>
+      <translation>Εμφάνιση μόνο των φιλτραρισμένων περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="849"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="950"/>
       <source>Extended information (in widget)</source>
-      <translation>Extended information (in widget)</translation>
+      <translation>Εμφάνιση πρόσθετων πληροφοριών (στο παράθυρο εργαλείων)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="850"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="951"/>
       <source>Hide internal alignment (in widget)</source>
-      <translation>Hide internal alignment (in widget)</translation>
+      <translation>Απόκρυψη εσωτερικής ευθυγράμμισης (στο παράθυρο εργαλείων)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1535"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1569"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1683"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1712"/>
       <source>Error</source>
       <translation>Σφάλμα</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1535"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1683"/>
       <source>Impossible to update visibility tracking:</source>
-      <translation>Impossible to update visibility tracking:</translation>
+      <translation>Αδυναμία ενημέρωσης της καταγραφής ορατότητας:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1569"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1712"/>
       <source>Impossible to update visibility:</source>
-      <translation type="unfinished">Impossible to update visibility:</translation>
+      <translation>Αδύνατη η ενημέρωση της ορατότητας:</translation>
     </message>
   </context>
   <context>
@@ -3440,12 +3660,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="40"/>
       <source>Toggles the chosen element filters</source>
-      <translation>Toggles the chosen element filters</translation>
+      <translation>Εναλλάσσει την εμφάνιση των επιλεγμένων στοιχείων στα φίλτρα</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
       <source>Filters elements by type</source>
-      <translation>Filters elements by type</translation>
+      <translation>Φιλτράρει τα στοιχεία με βάση τον τύπο τους</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="65"/>
@@ -3458,132 +3678,114 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Ρυθμίσεις</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1888"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1895"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1902"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1909"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1916"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1923"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1930"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1937"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1944"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1950"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2086"/>
       <source>Construction</source>
       <translation>Κατασκευή</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1208"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1325"/>
       <source>Elements</source>
       <translation>Στοιχεία</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1886"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1891"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2027"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2028"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2038"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2181"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2182"/>
       <source>Point</source>
       <translation>Σημείο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1889"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1896"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1903"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1910"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1917"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1924"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1931"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1938"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1945"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1951"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2089"/>
       <source>Internal</source>
-      <translation>Internal</translation>
+      <translation>Εσωτερικά</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1893"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1898"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2030"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2031"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2184"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2185"/>
       <source>Line</source>
       <translation>Γραμμή</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1900"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1905"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2033"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
+      <source>Group</source>
+      <translation>Ομάδα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="2049"/>
+      <source>Text</source>
+      <translation>Κείμενο</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="2058"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2187"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2188"/>
       <source>Arc</source>
       <translation>Τόξο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1907"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1912"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2036"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2037"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2061"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2190"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2191"/>
       <source>Circle</source>
       <translation>Κύκλος</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1914"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1919"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2039"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2040"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2064"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2193"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2194"/>
       <source>Ellipse</source>
       <translation>Έλλειψη</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1921"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2043"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2067"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2197"/>
       <source>Elliptical Arc</source>
       <translation>Ελλειπτικό Τόξο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1926"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2044"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2198"/>
       <source>Elliptical arc</source>
-      <translation>Elliptical arc</translation>
+      <translation>Ελλειπτικό τόξο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1928"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2047"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2070"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2201"/>
       <source>Hyperbolic Arc</source>
       <translation>Υπερβολικό Τόξο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1933"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2048"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2202"/>
       <source>Hyperbolic arc</source>
-      <translation>Hyperbolic arc</translation>
+      <translation>Δημιουργεί ένα υπερβολικό τόξο. Σάς επιτρέπει να σχεδιάσετε μια ανοιχτή καμπύλη που ακολουθεί το σχήμα της υπερβολής. Είναι μια μαθηματική καμπύλη που μοιάζει με πολύ ανοιχτό «U» και χρησιμοποιείται συχνά σε εξειδικευμένα σχέδια, όπως σε ορισμένους τύπους κατόπτρων ή σε μελέτες ροής</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1935"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2051"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2205"/>
       <source>Parabolic Arc</source>
       <translation>Παραβολικό Τόξο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1940"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2052"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2073"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2206"/>
       <source>Parabolic arc</source>
-      <translation>Parabolic arc</translation>
+      <translation>Παραβολικό Τόξο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1942"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1947"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2055"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2076"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2208"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2209"/>
       <source>B-spline</source>
-      <translation>Καμπύλη βασικής συνάρτησης</translation>
+      <translation>Καμπύλη βασικής συνάρτησης B spline</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1953"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2056"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2057"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2079"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2210"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2211"/>
       <source>Other</source>
       <translation>Άλλο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2097"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2253"/>
       <source>Extended information</source>
       <translation>Εκτεταμένες Πληροφορίες</translation>
     </message>
@@ -3591,44 +3793,44 @@ However, no constraints linking to the endpoints were found.</translation>
   <context>
     <name>SketcherGui::TaskSketcherMessages</name>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="116"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="118"/>
       <source>Executes a recomputation of active document after every sketch action</source>
       <translation>Εκτελεί έναν επανυπολογισμό ενεργού εγγράφου μετά από κάθε ενέργεια σχεδίασης</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="62"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="64"/>
       <source>Click to select these conflicting constraints.</source>
-      <translation>Click to select these conflicting constraints.</translation>
+      <translation>Κάντε κλικ για να επιλέξετε αυτούς τους περιορισμούς που έρχονται σε σύγκρουση μεταξύ τους.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="43"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="45"/>
       <source>Sketch Edit</source>
-      <translation>Sketch Edit</translation>
+      <translation>Επεξεργασία Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="65"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="67"/>
       <source>Click to select these redundant constraints.</source>
-      <translation>Click to select these redundant constraints.</translation>
+      <translation>Κάντε κλικ για να επιλέξετε αυτούς τους περιττούς περιορισμούς.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="68"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="70"/>
       <source>The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select these unconstrained elements.</source>
-      <translation>The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select these unconstrained elements.</translation>
+      <translation>Το σχέδιο έχει στοιχεία χωρίς περιορισμούς, τα οποία δημιουργούν αυτούς τους βαθμούς ελευθερίας. Κάντε κλικ για να επιλέξετε αυτά τα ελεύθερα στοιχεία.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="72"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="74"/>
       <source>Click to select these malformed constraints.</source>
-      <translation>Click to select these malformed constraints.</translation>
+      <translation>Κάντε κλικ για να επιλέξετε αυτούς τους ελαττωματικούς περιορισμούς.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="76"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="78"/>
       <source>Some constraints in combination are partially redundant. Click to select these partially redundant constraints.</source>
-      <translation>Some constraints in combination are partially redundant. Click to select these partially redundant constraints.</translation>
+      <translation>Ορισμένοι περιορισμοί, σε συνδυασμό μεταξύ τους, είναι εν μέρει περιττοί. Κάντε κλικ για να επιλέξετε αυτούς τους εν μέρει περιττούς περιορισμούς.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="115"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="117"/>
       <source>Auto-update</source>
-      <translation>Auto-update</translation>
+      <translation>Αυτόματη ενημέρωση</translation>
     </message>
   </context>
   <context>
@@ -3636,32 +3838,32 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="14"/>
       <source>Sketch Validation</source>
-      <translation>Sketch Validation</translation>
+      <translation>Επικύρωση Σχεδίου</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and Non-Manifold Vertices</source>
-      <translation>Open and Non-Manifold Vertices</translation>
+      <translation>Ανοιχτές και Μη-πολλαπλές Κορυφές</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
       <source>Highlights open and non-manifold vertices that could lead to errors if the sketch is used to generate solids. This is purely based on the topological shape of the sketch and not on its geometry/constraint set.</source>
-      <translation>Highlights open and non-manifold vertices that could lead to errors if the sketch is used to generate solids. This is purely based on the topological shape of the sketch and not on its geometry/constraint set.</translation>
+      <translation>Επισημαίνει τα σημεία όπου το σχέδιο δεν είναι "κλειστό" ή έχει αδύνατες ενώσεις που θα προκαλέσουν σφάλματα αν προσπαθήσετε να το μετατρέψετε σε στερεό 3D αντικείμενο. Ο έλεγχος αυτός εξετάζει μόνο αν οι γραμμές συνδέονται σωστά μεταξύ τους και όχι αν οι διαστάσεις τους είναι σωστές.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="41"/>
       <source>Highlight Troublesome Vertices</source>
-      <translation>Highlight Troublesome Vertices</translation>
+      <translation>Επισήμανση Προβληματικών Σημείων</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="51"/>
       <source>Fixes missing coincidences by adding extra coincident constraints</source>
-      <translation>Fixes missing coincidences by adding extra coincident constraints</translation>
+      <translation>Διορθώνει τις ταυτίσεις που λείπουν, προσθέτοντας αυτόματα νέους περιορισμούς ταύτισης σημείων</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="54"/>
       <source>Missing Coincidences</source>
-      <translation>Missing Coincidences</translation>
+      <translation>Ταυτίσεις που Λείπουν</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="60"/>
@@ -3671,17 +3873,17 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="67"/>
       <source>Defines the X/Y tolerance within which missing coincidences are detected</source>
-      <translation>Defines the X/Y tolerance within which missing coincidences are detected</translation>
+      <translation>Ορίζει την ανοχή (απόσταση) στους άξονες X/Y, εντός της οποίας το πρόγραμμα αναζητά ταυτίσεις που λείπουν</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="74"/>
       <source>Ignores construction geometry in the search</source>
-      <translation>Ignores construction geometry in the search</translation>
+      <translation>Αγνοεί τη γεωμετρία κατασκευής κατά την αναζήτηση</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="77"/>
       <source>Ignore construction geometry</source>
-      <translation>Να αγνοηθεί η κατασκευαστική γεωμετρία</translation>
+      <translation>Παράβλεψη κατασκευαστικής γεωμετρίας</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="87"/>
@@ -3708,32 +3910,32 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="108"/>
       <source>Invalid Constraints</source>
-      <translation>Invalid Constraints</translation>
+      <translation>Μη έγκυροι Περιορισμοί</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="137"/>
       <source>Delete Constraints Linked to External Geometry</source>
-      <translation>Delete Constraints Linked to External Geometry</translation>
+      <translation>Διαγραφή Περιορισμών που Συνδέονται με την Εξωτερική Γεωμετρία</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="147"/>
       <source>Degenerate Geometry</source>
-      <translation>Degenerate Geometry</translation>
+      <translation>Ελαττωματική Γεωμετρία</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="176"/>
       <source>Reversed External Geometry</source>
-      <translation>Reversed External Geometry</translation>
+      <translation>Ανεστραμμένη Εξωτερική Γεωμετρία</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="195"/>
       <source>Swap Endpoints in Constraints</source>
-      <translation>Swap Endpoints in Constraints</translation>
+      <translation>Αλλαγή πλευράς των σημείων στους περιορισμούς</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="205"/>
       <source>Constraint Orientation Locking</source>
-      <translation>Constraint Orientation Locking</translation>
+      <translation>Κλείδωμα Κατεύθυνσης Περιορισμών</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="114"/>
@@ -3743,12 +3945,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="124"/>
       <source>Tries to fix found invalid constraints</source>
-      <translation>Tries to fix found invalid constraints</translation>
+      <translation>Προσπαθεί να διορθώσει τους μη έγκυρους περιορισμούς που εντοπίστηκαν</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="134"/>
       <source>Deletes constraints referring to external geometry</source>
-      <translation>Deletes constraints referring to external geometry</translation>
+      <translation>Διαγράφει τους περιορισμούς που αφορούν τις συνδέσεις του σχεδίου σας με άλλα αντικείμενα (εξωτερική γεωμετρία), επιτρέποντάς του να κινηθεί ανεξάρτητα</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="153"/>
@@ -3758,7 +3960,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="163"/>
       <source>Tries to fix found degenerated geometries</source>
-      <translation>Tries to fix found degenerated geometries</translation>
+      <translation>Προσπαθεί να διορθώσει τις ελαττωματικές γεωμετρίες που εντοπίστηκαν</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="182"/>
@@ -3794,129 +3996,129 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3287"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3603"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3309"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3627"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Το σχέδιο είναι μη έγκυρο και δε δύναται να υποστεί επεξεργασία.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3467"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3823"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Ο ακόλουθος περιορισμός είναι εν μέρει περιττός:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3468"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3824"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Οι ακόλουθοι περιορισμοί είναι εν μέρει περιττοί:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3270"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3582"/>
       <source>Edit Sketch</source>
-      <translation>Edit Sketch</translation>
+      <translation>Επεξεργασία Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3288"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3604"/>
       <source>Close this dialog?</source>
-      <translation>Close this dialog?</translation>
+      <translation>Να κλείσει αυτό το παράθυρο διαλόγου;</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3307"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3625"/>
       <source>Invalid Sketch</source>
-      <translation>Invalid Sketch</translation>
+      <translation>&gt;Μη Έγκυρο Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3308"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3626"/>
       <source>Open the sketch validation tool?</source>
-      <translation>Open the sketch validation tool?</translation>
+      <translation>Να ανοίξει το εργαλείο επικύρωσης σχεδίου;</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3453"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3809"/>
       <source>Remove the following constraint:</source>
-      <translation>Remove the following constraint:</translation>
+      <translation>Αφαίρεση του ακόλουθου περιορισμού:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3454"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3810"/>
       <source>Remove at least one of the following constraints:</source>
-      <translation>Remove at least one of the following constraints:</translation>
+      <translation>Αφαιρέστε τουλάχιστον έναν από τους ακόλουθους περιορισμούς:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3460"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3816"/>
       <source>Remove the following redundant constraint:</source>
-      <translation>Remove the following redundant constraint:</translation>
+      <translation>Αφαίρεση του ακόλουθου περιττού περιορισμού:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3461"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3817"/>
       <source>Remove the following redundant constraints:</source>
-      <translation>Remove the following redundant constraints:</translation>
+      <translation>Αφαίρεση των ακόλουθων περιττών περιορισμών:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3474"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3830"/>
       <source>Remove the following malformed constraint:</source>
-      <translation>Remove the following malformed constraint:</translation>
+      <translation>Αφαίρεση του ακόλουθου ελαττωματικού περιορισμού:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3475"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3831"/>
       <source>Remove the following malformed constraints:</source>
-      <translation>Remove the following malformed constraints:</translation>
+      <translation>Αφαίρεση των ακόλουθων ελαττωματικών περιορισμών:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3534"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3890"/>
       <source>Empty sketch</source>
       <translation>Κενό σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3539"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3895"/>
       <source>Over-constrained:</source>
-      <translation>Over-constrained:</translation>
+      <translation>Υπερ-περιορισμένο:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3545"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3901"/>
       <source>Malformed constraints:</source>
-      <translation>Malformed constraints:</translation>
+      <translation>Ελαττωματικοί περιορισμοί:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3553"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3909"/>
       <source>Redundant constraints:</source>
       <translation>Περιττοί περιορισμοί:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3559"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3915"/>
       <source>Partially redundant:</source>
       <translation>Εν μέρει περιττό:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3566"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3922"/>
       <source>Solver failed to converge</source>
-      <translation>Solver failed to converge</translation>
+      <translation>Το πρόγραμμα δεν μπόρεσε να βρει λύση για το σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3572"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3928"/>
       <source>Under-constrained:</source>
-      <translation>Under-constrained:</translation>
+      <translation>Ελλιπώς περιορισμένο (χρειάζονται επιπλέον περιορισμοί):</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3574"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3930"/>
       <source>%n Degrees of Freedom</source>
       <translation>
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
+        <numerusform>%n βαθμοί ελευθερίας</numerusform>
+        <numerusform>%n βαθμοί ελευθερίας</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3578"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3934"/>
       <source>Fully constrained</source>
-      <translation>Fully constrained</translation>
+      <translation>Πλήρως περιορισμένο</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="738"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="741"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="781"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="787"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
       <translation>Μειώνει την πολλαπλότητα του επιλεγμένου κόμβου μιας καμπύλης B-spline</translation>
     </message>
@@ -3924,8 +4126,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_BSplineIncreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="729"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="732"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="765"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="771"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
       <translation>Αυξάνει την πολλαπλότητα του επιλεγμένου κόμβου μιας καμπύλης B-spline</translation>
     </message>
@@ -3933,35 +4135,35 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1688"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1691"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1716"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1719"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Δημιουργεί έναν κλώνο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
+      <translation>Δημιουργεί ένα Πιστό αντίγραφο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1687"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1715"/>
       <source>Clone</source>
-      <translation>Κλωνοποιήστε</translation>
+      <translation>Πιστό Αντίγραφο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1695"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1723"/>
       <source>Copy</source>
       <translation>Αντιγραφή</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1703"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1731"/>
       <source>Move</source>
-      <translation>Μετακινήστε</translation>
+      <translation>Μετακίνηση</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8993"/>
-      <location filename="../../CommandConstraints.cpp" line="8995"/>
+      <location filename="../../CommandConstraints.cpp" line="9074"/>
+      <location filename="../../CommandConstraints.cpp" line="9076"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>Όρισε τη σταθερή διάμετρο ενός κύκλου, ή ενός τόξου</translation>
     </message>
@@ -3969,8 +4171,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1696"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1699"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1724"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1727"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Δημιουργεί ένα απλό αντίγραφο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -3978,12 +4180,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="399"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="418"/>
       <source>Center</source>
       <translation>Κέντρο</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="400"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="419"/>
       <source>3 rim points</source>
       <translation>3 σημεία της περιφέρειας</translation>
     </message>
@@ -3991,74 +4193,74 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="622"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>No sketch found</source>
       <translation>Δε βρέθηκε σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
+      <location filename="../../Command.cpp" line="627"/>
       <source>Cannot attach sketch to itself!</source>
-      <translation>Cannot attach sketch to itself!</translation>
+      <translation>Το σχέδιο δεν μπορεί να χρησιμοποιήσει τον εαυτό του ως σημείο στήριξης!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="628"/>
       <source>The document does not contain a sketch</source>
-      <translation>The document does not contain a sketch</translation>
+      <translation>Το έγγραφο δεν περιέχει κανένα σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="641"/>
+      <location filename="../../Command.cpp" line="644"/>
       <source>Select Sketch</source>
-      <translation type="unfinished">Select Sketch</translation>
+      <translation>Επιλογή Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="643"/>
+      <location filename="../../Command.cpp" line="646"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
-      <translation>Select a sketch (some sketches not shown to prevent a circular dependency)</translation>
+      <translation>Επιλέξτε ένα σχέδιο (ορισμένα σχέδια αποκρύπτονται για να αποφευχθεί ο φαύλος κύκλος εξαρτήσεων)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="648"/>
       <source>Select a sketch from the list</source>
       <translation>Επιλέξτε ένα σχέδιο από τη λίστα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="710"/>
+      <location filename="../../Command.cpp" line="713"/>
       <source> (incompatible with selection)</source>
       <translation> (μη συμβατή με την επιλογή)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="711"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source> (current)</source>
       <translation> (τρέχουσα)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="719"/>
+      <location filename="../../Command.cpp" line="722"/>
       <source> (suggested)</source>
       <translation> (προτεινόμενη)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="726"/>
+      <location filename="../../Command.cpp" line="729"/>
       <source>Sketch Attachment</source>
-      <translation type="unfinished">Sketch Attachment</translation>
+      <translation>Προσάρτηση Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="728"/>
+      <location filename="../../Command.cpp" line="731"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Η τρέχουσα λειτουργία επισύναψης δεν είναι συμβατή με τη νέα επιλογή.
 Επιλέξτε τη μέθοδο επισύναψης αυτού του σχεδίου σε επιλεγμένα αντικείμενα.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="732"/>
+      <location filename="../../Command.cpp" line="735"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Επιλέξτε τη μέθοδο επισύναψης αυτού του σχεδίου στα επιλεγμένα αντικείμενα.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="776"/>
+      <location filename="../../Command.cpp" line="781"/>
       <source>Map sketch</source>
       <translation>Αποτύπωση σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="777"/>
+      <location filename="../../Command.cpp" line="782"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Αδύνατη η αποτύπωση σχεδίου στο στοιχείο υποστήριξης:
@@ -4068,8 +4270,8 @@ Select the method to attach this sketch to selected objects.</source>
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1704"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1706"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1732"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1734"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Μετακινεί το γεωμετρικό στοιχείο λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -4077,12 +4279,12 @@ Select the method to attach this sketch to selected objects.</source>
   <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="212"/>
+      <location filename="../../Command.cpp" line="214"/>
       <source>Sketch Attachment</source>
-      <translation type="unfinished">Sketch Attachment</translation>
+      <translation>Προσάρτηση Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Επιλέξτε τη μέθοδο επισύναψης αυτού του σχεδίου στο επιλεγμένο αντικείμενο</translation>
     </message>
@@ -4090,35 +4292,35 @@ Select the method to attach this sketch to selected objects.</source>
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="457"/>
       <source>Sketch Has Support</source>
-      <translation type="unfinished">Sketch Has Support</translation>
+      <translation>Το Σχέδιο είναι Στερεωμένο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="458"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
-      <translation>Sketch with a support face cannot be reoriented.
-Detach it from the support?</translation>
+      <translation>Ένα σχέδιο που στηρίζεται σε μια επιφάνεια δεν μπορεί να αλλάξει προσανατολισμό.
+Θέλετε να το αποσυνδέσετε από την επιφάνεια στήριξης;</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherSolverAdvanced</name>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="47"/>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="393"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="474"/>
       <source>BFGS</source>
       <translation>BFGS</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="52"/>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="398"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="479"/>
       <source>LevenbergMarquardt</source>
       <translation>Αλγόριθμος Levenberg-Marquardt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="57"/>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="403"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="484"/>
       <source>DogLeg</source>
       <translation>Αλγόριθμος DogLeg</translation>
     </message>
@@ -4130,22 +4332,22 @@ Detach it from the support?</translation>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="79"/>
       <source>Step type used in the DogLeg algorithm</source>
-      <translation>Step type used in the DogLeg algorithm</translation>
+      <translation>Τύπος βήματος που χρησιμοποιείται στον αλγόριθμο DogLeg</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="92"/>
       <source>FullPivLU</source>
-      <translation>FullPivLU</translation>
+      <translation>FullPivLU (μέθοδος γραμμικής επίλυσης)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="97"/>
       <source>LeastNorm-FullPivLU</source>
-      <translation>LeastNorm-FullPivLU</translation>
+      <translation>LeastNorm-FullPivLU (μέθοδος βελτιστοποιημένης επίλυσης)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="102"/>
       <source>LeastNorm-LDLT</source>
-      <translation>LeastNorm-LDLT</translation>
+      <translation>LeastNorm-LDLT (μέθοδος σταθερής επίλυσης)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="114"/>
@@ -4166,209 +4368,231 @@ Detach it from the support?</translation>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="199"/>
       <source>Threshold for squared error that is used
 to determine whether a solution converges or not</source>
-      <translation>Threshold for squared error that is used
-to determine whether a solution converges or not</translation>
+      <translation>Όριο τετραγωνικού σφάλματος βάσει του 
+οποίου καθορίζεται αν το σχέδιο έχει επιλυθεί επιτυχώς ή όχι</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="298"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="379"/>
       <source>Algorithm used for the rank revealing QR decomposition</source>
       <translation>Αλγόριθμος που χρησιμοποιείται για την παραγοντοποίηση πίνακα με την μέθοδο QR που αποκαλύπτει το βαθμό του πίνακα</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="22"/>
       <source>Default algorithm used for solving the sketch</source>
-      <translation>Default algorithm used for solving the sketch</translation>
+      <translation>Προεπιλεγμένος αλγόριθμος για την επίλυση του σχεδίου</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="25"/>
       <source>Default solver</source>
-      <translation>Default solver</translation>
+      <translation>Προεπιλεγμένος επιλύτης</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="32"/>
       <source>Solver used for solving the geometry.
 LevenbergMarquardt and DogLeg are trust region optimization algorithms.
 BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</source>
-      <translation>Solver used for solving the geometry.
-LevenbergMarquardt and DogLeg are trust region optimization algorithms.
-BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translation>
+      <translation>Ο επιλύτης που χρησιμοποιείται για τον υπολογισμό της γεωμετρίας.
+Οι Levenberg-Marquardt και DogLeg είναι αλγόριθμοι που αναζητούν λύση μέσα σε ασφαλή όρια (trust region).
+Ο επιλύτης BFGS χρησιμοποιεί τον αλγόριθμο Broyden–Fletcher–Goldfarb–Shanno.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="72"/>
       <source>DogLeg Gauss step</source>
-      <translation>DogLeg Gauss step</translation>
+      <translation>Βήμα Gauss του αλγορίθμου DogLeg</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="117"/>
       <source>Maximum iterations</source>
-      <translation>Maximum iterations</translation>
+      <translation>Μέγιστος αριθμός επαναλήψεων</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="150"/>
       <source>Scales the maximum iteration count based on the sketch size</source>
-      <translation>Scales the maximum iteration count based on the sketch size</translation>
+      <translation>Προσαρμόζει τον μέγιστο αριθμό επαναλήψεων με βάση το μέγεθος του σχεδίου</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="153"/>
       <source>Sketch size multiplier</source>
-      <translation>Sketch size multiplier</translation>
+      <translation>Πολλαπλασιαστής μεγέθους σχεδίου</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="166"/>
       <source>Scales the maximum iteration count based on the number of parameters</source>
-      <translation>Scales the maximum iteration count based on the number of parameters</translation>
+      <translation>Προσαρμόζει τον μέγιστο αριθμό επαναλήψεων με βάση τον αριθμό των παραμέτρων</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="192"/>
       <source>Convergence</source>
-      <translation>Convergence</translation>
+      <translation>Σύγκλιση</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="298"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="317"/>
+      <source>Automatically select the QR algorithm based on number of dofs</source>
+      <translation>Αυτόματη επιλογή του αλγορίθμου QR βάσει των βαθμών ελευθερίας (dofs)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="301"/>
-      <source>QR algorithm</source>
-      <translation>QR algorithm</translation>
+      <source>Automatic QR algorithm</source>
+      <translation>Αυτόματος Αλγόριθμος QR</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="308"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="340"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="350"/>
+      <source>Maximum number of parameters before switching to sparse QR algorithm</source>
+      <translation>Μέγιστος αριθμός παραμέτρων πριν την αλλαγή σε αλγόριθμο sparse QR</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="343"/>
+      <source>Auto QR threshold</source>
+      <translation>Όριο αυτόματης επιλογής QR</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="382"/>
+      <source>QR algorithm</source>
+      <translation>Αλγόριθμος QR</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="389"/>
       <source>During diagnosing the QR rank of matrix is calculated.
 Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
 Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</source>
-      <translation>During diagnosing the QR rank of matrix is calculated.
-Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
-Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</translation>
+      <translation>Κατά τη διάγνωση υπολογίζεται η τάξη (rank) QR του πίνακα.
+Ο αλγόριθμος Eigen Dense QR αφορά πυκνούς πίνακες με πλήρη εναλλαγή (full pivoting) και είναι συνήθως πιο αργός.
+Ο αλγόριθμος Eigen Sparse QR είναι βελτιστοποιημένος για αραιούς πίνακες και είναι συνήθως πιο γρήγορος</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="323"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="404"/>
       <source>Eigen Dense QR</source>
       <translation>Εύρεση Ιδιοτιμών Πυκνού Πίνακα με τη Μέθοδο QR</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="328"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="409"/>
       <source>Eigen Sparse QR</source>
       <translation>Εύρεση Ιδιοτιμών Αραιού Πίνακα με τη Μέθοδο QR</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="340"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="421"/>
       <source>Pivot threshold</source>
       <translation>Όριο περιστροφής</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="347"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="428"/>
       <source>During a QR, values under the pivot threshold are treated as zero</source>
-      <translation>During a QR, values under the pivot threshold are treated as zero</translation>
+      <translation>Κατά τη διάρκεια μιας ανάλυσης QR, τιμές κάτω από το όριο εναλλαγής θεωρούνται ως μηδενικές</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="350"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="431"/>
       <source>1E-13</source>
       <translation>1E-13</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="370"/>
-      <source>Solving algorithm used to detect redundant constraints</source>
-      <translation>Solving algorithm used to detect redundant constraints</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="373"/>
-      <source>Redundant solver</source>
-      <translation>Redundant solver</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="415"/>
-      <source>Maximum number of iterations of the solver used to detect redundant constraints</source>
-      <translation>Maximum number of iterations of the solver used to detect redundant constraints</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="418"/>
-      <source>Maximum redundant solver iterations</source>
-      <translation>Maximum redundant solver iterations</translation>
-    </message>
-    <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="451"/>
-      <source>Multiplies the maximum iterations value for the redundant algorithm by the sketch size</source>
-      <translation>Multiplies the maximum iterations value for the redundant algorithm by the sketch size</translation>
+      <source>Solving algorithm used to detect redundant constraints</source>
+      <translation>Αλγόριθμος επίλυσης που χρησιμοποιείται για τον εντοπισμό περιττών περιορισμών</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="454"/>
+      <source>Redundant solver</source>
+      <translation>Επιλύτης περιττών περιορισμών</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="496"/>
+      <source>Maximum number of iterations of the solver used to detect redundant constraints</source>
+      <translation>Μέγιστος αριθμός επαναλήψεων του επιλύτη για τον εντοπισμό περιττών περιορισμών</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="499"/>
+      <source>Maximum redundant solver iterations</source>
+      <translation>Μέγιστες επαναλήψεις επιλύτη περιττών περιορισμών</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="532"/>
+      <source>Multiplies the maximum iterations value for the redundant algorithm by the sketch size</source>
+      <translation>Πολλαπλασιάζει τη μέγιστη τιμή επαναλήψεων του αλγορίθμου περιττών περιορισμών με το μέγεθος του σχεδίου</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="535"/>
       <source>Redundant sketch size multiplier</source>
-      <translation>Redundant sketch size multiplier</translation>
+      <translation>Πολλαπλασιάζει τη μέγιστη τιμή επαναλήψεων του αλγορίθμου περιττών περιορισμών με το μέγεθος του σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="592"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="673"/>
       <source>Console debug mode</source>
-      <translation>Console debug mode</translation>
+      <translation>Λειτουργία καταγραφής τεχνικών λεπτομερειών</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="622"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="703"/>
       <source>Iteration level</source>
-      <translation>Iteration level</translation>
+      <translation>Επίπεδο επαναλήψεων</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="380"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="461"/>
       <source>Solver used to determine whether a group is redundant or conflicting</source>
       <translation>Επίλυση χρησιμοποιείται για να προσδιορίσει εάν μια ομάδα είναι περιττή ή σε διένεξη</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="425"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="506"/>
       <source>Same as 'Maximum iterations', but for redundant solving</source>
       <translation>Ίδιο με το "Μέγιστες επαναλήψεις", αλλά για περιττή επίλυση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="461"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="542"/>
       <source>Same as 'Sketch size multiplier', but for redundant solving</source>
       <translation>Ίδιο με τον «Πολλαπλασιαστή μεγέθους σκίτσου», αλλά για επιπλέων επίλυση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="484"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="565"/>
       <source>Error threshold under which convergence is reached for the solving of redundant constraints</source>
       <translation>Όριο σφάλματος βάσει του οποίου επιτυγχάνεται σύγκλιση για την επίλυση πλεοναζόντων περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="487"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="568"/>
       <source>Redundant convergence</source>
       <translation>Πλεονάζουσα σύγκλιση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="494"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="575"/>
       <source>Same as 'Convergence', but for redundant solving</source>
       <translation>Ίδιο με τη «Σύγκλιση», αλλά για περιττή επίλυση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="497"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="578"/>
       <source>1E-10</source>
       <translation>1E-10</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="589"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="670"/>
       <source>Degree of verbosity of the debug output to the console</source>
       <translation>Βαθμός λεπτομέρειας της εξόδου αποσφαλμάτωσης στην κονσόλα</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="599"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="680"/>
       <source>Verbosity of console output</source>
-      <translation>Verbosity of console output</translation>
+      <translation>Επίπεδο λεπτομέρειας αναφορών κονσόλας</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="612"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="693"/>
       <source>None</source>
       <translation>Κανένα</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="617"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="698"/>
       <source>Minimum</source>
       <translation>Ελάχιστο</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="634"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="715"/>
       <source>Solve</source>
       <translation>Επίλυση</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="641"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="722"/>
       <source>Resets all solver values to their default values</source>
       <translation>Επαναφέρει όλες τις τιμές του αλγορίθμου επίλυσης στην προεπιλογή</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="644"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="725"/>
       <source>Restore Defaults</source>
       <translation>Επαναφορά Προεπιλογών</translation>
     </message>
@@ -4376,7 +4600,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3517"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3873"/>
       <source>and %1 more</source>
       <translation>και %1 ακόμη</translation>
     </message>
@@ -4384,72 +4608,72 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>P&amp;rofiles</source>
       <translation>Π&amp;ροφίλ</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>S&amp;ketch</source>
       <translation>Σ&amp;κίτσο</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher</source>
       <translation>Σχεδιασμός</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Edit Mode</source>
       <translation>Λειτουργία Επεξεργασίας</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Geometries</source>
       <translation>Γεωμετρίες</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Constraints</source>
-      <translation type="unfinished">Constraints</translation>
+      <translation>Περιορισμοί</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>Sketcher Helpers</source>
       <translation>Βοηθοί Σκιτσογράφου</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>B-Spline Tools</source>
       <translation>B-Spline Εργαλεία</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
-      <source>Visual Tools</source>
-      <translation>Οπτικά Εργαλεία</translation>
+      <location filename="../../Workbench.cpp" line="47"/>
+      <source>Visual Helpers</source>
+      <translation>Οπτικά Βοηθήματα</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>Virtual Space</source>
       <translation>Εικονικός Χώρος</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="49"/>
       <source>Sketcher Edit Tools</source>
-      <translation>Εργαλεία επεξεργασίας Σκίτσου</translation>
+      <translation>Εργαλεία Επεξεργασίας Σκίτσου</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_ProfilesHexagon1</name>
     <message>
-      <location filename="../../../Profiles.py" line="59"/>
+      <location filename="../../../Profiles.py" line="55"/>
       <source>Creates a hexagonal profile</source>
-      <translation>Creates a hexagonal profile</translation>
+      <translation>Δημιουργία Εξαγωνικού Σχήματος</translation>
     </message>
     <message>
-      <location filename="../../../Profiles.py" line="64"/>
+      <location filename="../../../Profiles.py" line="60"/>
       <source>Creates a hexagonal profile in the sketch</source>
-      <translation>Creates a hexagonal profile in the sketch</translation>
+      <translation>Δημιουργεί ένα εξάγωνο σχήμα στο σχέδιο</translation>
     </message>
   </context>
   <context>
@@ -4458,452 +4682,458 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
       <location filename="../../SketcherSettingsGrid.ui" line="14"/>
       <location filename="../../SketcherSettingsGrid.ui" line="38"/>
       <source>Grid</source>
-      <translation>Κάναβος</translation>
+      <translation>Πλέγμα (Κάναβος)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="73"/>
       <source>Grid spacing</source>
-      <translation>Αποστάσεις του κανάβου</translation>
+      <translation>Αποστάσεις Πλέγματους</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="115"/>
       <source>Pixel size threshold</source>
-      <translation>Pixel size threshold</translation>
+      <translation>Όριο μεγέθους (pixel)</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsGrid.ui" line="178"/>
-      <location filename="../../SketcherSettingsGrid.ui" line="316"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="210"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="354"/>
       <source>Line pattern</source>
-      <translation>Line pattern</translation>
+      <translation>Μοτίβο γραμμών</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="20"/>
       <source>Grid Settings</source>
-      <translation>Grid Settings</translation>
+      <translation>Ρυθμίσεις Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="35"/>
       <source>Displays a grid in the active sketch</source>
-      <translation>Displays a grid in the active sketch</translation>
+      <translation>Εμφανίζει ένα πλέγμα στο ενεργό σχέδιο</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="57"/>
       <source>Automatically adapts grid spacing based on the viewer dimensions</source>
-      <translation>Automatically adapts grid spacing based on the viewer dimensions</translation>
+      <translation>Προσαρμόζει αυτόματα την απόσταση του πλέγματος με βάση τις διαστάσεις της οθόνης</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="60"/>
       <source>Grid auto-spacing</source>
-      <translation>Grid auto-spacing</translation>
+      <translation>Αυτόματο μέγεθος πλέγματος</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="83"/>
       <source>Distance between two subsequent grid lines.
 If 'Grid auto-apacing' is enabled, it will be used as the base value</source>
-      <translation>Distance between two subsequent grid lines.
-If 'Grid auto-apacing' is enabled, it will be used as the base value</translation>
+      <translation>Απόσταση μεταξύ δύο διαδοχικών γραμμών του πλέγματος.
+Εάν η 'Αυτόματη απόσταση πλέγματος' είναι ενεργοποιημένη, αυτή η τιμή θα χρησιμοποιηθεί ως βάση υπολογισμού</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="125"/>
       <source>While using 'Grid auto-spacing', this sets a pixel threshold for grid spacing.
 The grid spacing changes if it becomes smaller than the specified pixel size.</source>
-      <translation>While using 'Grid auto-spacing', this sets a pixel threshold for grid spacing.
-The grid spacing changes if it becomes smaller than the specified pixel size.</translation>
+      <translation>Με τη χρήση της 'Αυτόματης απόστασης πλέγματος', αυτή η ρύθμιση ορίζει ένα όριο pixel για την απόσταση των γραμμών.
+Η απόσταση του πλέγματος αλλάζει αυτόματα εάν γίνει μικρότερη από το καθορισμένο μέγεθος pixel στην οθόνη.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="154"/>
       <source>Grid Display</source>
-      <translation>Grid Display</translation>
+      <translation>Εμφάνιση Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="166"/>
-      <source>Minor Grid Lines</source>
-      <translation>Minor Grid Lines</translation>
+      <source>Grid transparency</source>
+      <translation>Διαφάνεια πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsGrid.ui" line="188"/>
-      <source>Line pattern used for grid lines</source>
-      <translation>Line pattern used for grid lines</translation>
+      <location filename="../../SketcherSettingsGrid.ui" line="173"/>
+      <source>Sets the transparency of the grid lines (0 = opaque, 100 = fully transparent)</source>
+      <translation type="unfinished">Sets the transparency of the grid lines (0 = opaque, 100 = fully transparent)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="198"/>
-      <location filename="../../SketcherSettingsGrid.ui" line="336"/>
+      <source>Minor Grid Lines</source>
+      <translation>Μικρές Γραμμές Πλέγματος</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="220"/>
+      <source>Line pattern used for grid lines</source>
+      <translation>Μοτίβο γραμμών του πλέγματος</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsGrid.ui" line="236"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="374"/>
       <source>Line width</source>
       <translation>Πλάτος γραμμής</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsGrid.ui" line="208"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="246"/>
       <source>Distance between two subsequent grid lines</source>
-      <translation>Distance between two subsequent grid lines</translation>
+      <translation>Απόσταση μεταξύ δύο διαδοχικών γραμμών πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsGrid.ui" line="233"/>
-      <location filename="../../SketcherSettingsGrid.ui" line="368"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="271"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="406"/>
       <source>Line color</source>
       <translation>Χρώμα γραμμής</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsGrid.ui" line="272"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="310"/>
       <source>Major Grid Lines</source>
-      <translation>Major Grid Lines</translation>
+      <translation>Κύριες Γραμμές Πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsGrid.ui" line="284"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="322"/>
       <source>Major grid line interval</source>
-      <translation>Major grid line interval</translation>
+      <translation>Διάστημα κύριων γραμμών πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsGrid.ui" line="294"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="332"/>
       <source>Displays a major grid line every 'n' minor lines. Enter 1 to disable major lines</source>
-      <translation>Displays a major grid line every 'n' minor lines. Enter 1 to disable major lines</translation>
+      <translation>Εμφανίζει μια κύρια γραμμή πλέγματος για κάθε 'n' δευτερεύουσες. Εισαγάγετε 1 για να απενεργοποιήσετε τις κύριες γραμμές</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsGrid.ui" line="326"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="364"/>
       <source>Line pattern used for grid division</source>
-      <translation>Line pattern used for grid division</translation>
+      <translation>Μοτίβο γραμμών για την υποδιαίρεση του πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsGrid.ui" line="346"/>
+      <location filename="../../SketcherSettingsGrid.ui" line="384"/>
       <source>Distance between two subsequent division lines</source>
-      <translation>Distance between two subsequent division lines</translation>
+      <translation>Απόσταση μεταξύ δύο διαδοχικών γραμμών υποδιαίρεσης</translation>
     </message>
   </context>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="587"/>
+      <location filename="../../../App/SketchObjectConstraints.cpp" line="141"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Το Σκίτσο έχει λανθασμένους περιορισμούς!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="593"/>
-      <source>The Sketch has partially redundant constraints!</source>
-      <translation>Το Σκίτσο έχει εν μέρει περιττούς περιορισμούς!</translation>
+      <location filename="../../../App/SketchObjectConstraints.cpp" line="155"/>
+      <source>"%1" has partially redundant constraint(s).</source>
+      <translation type="unfinished">"%1" has partially redundant constraint(s).</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10025"/>
-      <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
-      <translation>Η μη διαχειριζόμενη αλλαγή της ιδιότητας Γεωμετρίας έχει ως αποτέλεσμα μη έγκυρους δείκτες περιορισμού</translation>
-    </message>
-    <message>
-      <location filename="../../../App/SketchObject.cpp" line="10056"/>
+      <location filename="../../../App/SketchObject.cpp" line="1058"/>
+      <location filename="../../../App/SketchObject.cpp" line="1102"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Η μη διαχειριζόμενη αλλαγή της ιδιότητας περιορισμού έχει ως αποτέλεσμα μη έγκυρους δείκτες περιορισμού</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10679"/>
+      <location filename="../../../App/SketchObject.cpp" line="1597"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Οι παραβολές μετεγκαταστάθηκαν. Τα μετεγκατεστημένα αρχεία δεν ανοίγουν σε προηγούμενες εκδόσεις του FreeCAD!!
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1288"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1867"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2304"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="325"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="254"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="333"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="256"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="216"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="377"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="661"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="731"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="187"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="213"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="227"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="337"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="203"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="138"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="105"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="504"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="168"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="140"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="183"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="165"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="141"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="187"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="110"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="355"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="318"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1315"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1896"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2333"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="190"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="477"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="509"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="153"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="196"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="157"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="203"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="135"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="515"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="175"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="174"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="264"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="143"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="223"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="148"/>
+      <location filename="../../DrawSketchHandlerText.h" line="182"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="344"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="393"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="678"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="755"/>
       <source>Error</source>
       <translation>Σφάλμα</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2105"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2134"/>
       <source>Failed to delete all geometry</source>
       <translation>Η διαγραφή όλης της γεωμετρίας απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2170"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2199"/>
       <source>Failed to delete all constraints</source>
       <translation>Η διαγραφή όλων των περιορισμών απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2390"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2419"/>
       <source>Selection has no valid geometries. B-splines and points are not supported yet.</source>
       <translation>Η επιλογή δεν έχει έγκυρες γεωμετρίες. Οι B-splines και τα σημεία δεν υποστηρίζονται ακόμη.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="139"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2389"/>
+      <location filename="../../CommandSketcherTools.cpp" line="142"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2418"/>
       <source>Invalid selection</source>
       <translation>Μη έγκυρη επιλογή</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="140"/>
+      <location filename="../../CommandSketcherTools.cpp" line="143"/>
       <source>Selection has no valid geometries.</source>
       <translation>Η επιλογή δεν έχει έγκυρες γεωμετρίες.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectPyImp.cpp" line="418"/>
+      <location filename="../../../App/SketchObjectPyImp.cpp" line="422"/>
       <source>The constraint has invalid index information and is malformed.</source>
       <translation>Ο περιορισμός έχει μη έγκυρες πληροφορίες ευρετηρίου και έχει λανθασμένη μορφή.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="432"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1101"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
+      <location filename="../../CommandConstraints.cpp" line="435"/>
       <location filename="../../CommandConstraints.cpp" line="512"/>
-      <location filename="../../CommandConstraints.cpp" line="609"/>
-      <location filename="../../CommandConstraints.cpp" line="699"/>
-      <location filename="../../CommandConstraints.cpp" line="6589"/>
-      <location filename="../../CommandConstraints.cpp" line="6793"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="493"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="628"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="856"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1076"/>
+      <location filename="../../CommandConstraints.cpp" line="604"/>
+      <location filename="../../CommandConstraints.cpp" line="688"/>
+      <location filename="../../CommandConstraints.cpp" line="6635"/>
+      <location filename="../../CommandConstraints.cpp" line="6837"/>
       <source>Invalid Constraint</source>
       <translation>Μη έγκυρος περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="773"/>
+      <location filename="../../CommandConstraints.cpp" line="758"/>
       <source>Invalid constraint</source>
       <translation>Μη έγκυρος περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="501"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="510"/>
       <source>Failed to add arc</source>
       <translation>Αποτυχία προσθήκης τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="326"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="356"/>
       <source>Failed to add arc of ellipse</source>
       <translation>Αποτυχία προσθήκης τόξου έλλειψης</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="255"/>
-      <source>Cannot create arc of hyperbola from invalid angles, try again!</source>
-      <translation>Αδυναμία δημιουργίας τόξου υπερβολής από μη έγκυρες γωνίες, προσπαθήστε ξανά!</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="334"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="319"/>
       <source>Cannot create arc of hyperbola</source>
       <translation>Αδυναμία δημιουργίας τόξου υπερβολής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="257"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="265"/>
       <source>Cannot create arc of parabola</source>
       <translation>Αδυναμία δημιουργίας τόξου παραβολής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="378"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="394"/>
       <source>Error creating B-spline</source>
-      <translation>Σφάλμα κατά τη δημιουργία B-spline</translation>
+      <translation>Σφάλμα κατά τη δημιουργία καμπύλης B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="662"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="679"/>
       <source>Error deleting last pole/knot</source>
-      <translation>Error deleting last pole/knot</translation>
+      <translation>Σφάλμα κατά τη διαγραφή του τελευταίου σημείου/ένωση (πόλου/κόμβου) ελέγχου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="732"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="756"/>
       <source>Error adding B-spline pole/knot</source>
-      <translation>Error adding B-spline pole/knot</translation>
+      <translation>Σφάλμα κατά την προσθήκη σημείου/ένωση της καμπύλης B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="188"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="204"/>
       <source>Failed to add carbon copy</source>
-      <translation>Failed to add carbon copy</translation>
+      <translation>Αποτυχία προσθήκης πιστού αντιγράφου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="214"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="224"/>
       <source>Failed to add circle</source>
-      <translation>Failed to add circle</translation>
+      <translation>Αποτυχία προσθήκης κύκλου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="338"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="345"/>
       <source>Failed to extend edge</source>
-      <translation>Failed to extend edge</translation>
+      <translation>Αποτυχία επέκτασης ακμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="204"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="213"/>
       <source>Failed to add external geometry</source>
-      <translation>Failed to add external geometry</translation>
+      <translation>Αποτυχία προσθήκης εξωτερικής γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="225"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="233"/>
       <source>Failed to create fillet</source>
-      <translation>Αποτυχία δημιουργίας φιλέτου</translation>
+      <translation>Αποτυχία δημιουργίας καμπύλης σύνδεσης (φιλέτου)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="139"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="471"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="478"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
       <source>Failed to add line</source>
-      <translation>Failed to add line</translation>
+      <translation>Αποτυχία προσθήκης γραμμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="298"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="221"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="218"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="143"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="509"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="188"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="155"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="239"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="197"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="162"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="164"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="142"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="522"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="222"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="182"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="299"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="150"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="230"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="155"/>
       <source>Tool execution aborted</source>
-      <translation>Tool execution aborted</translation>
+      <translation>Η εκτέλεση του εργαλείου διακόπηκε</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="106"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="111"/>
       <source>Failed to add point</source>
-      <translation>Failed to add point</translation>
+      <translation>Αποτυχία προσθήκης σημείου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="136"/>
       <source>Failed to add polygon</source>
-      <translation>Failed to add polygon</translation>
+      <translation>Αποτυχία προσθήκης πολυγώνου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="505"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="516"/>
       <source>Failed to add box</source>
-      <translation>Failed to add box</translation>
+      <translation>Αποτυχία προσθήκης πλαισίου (κουτί)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="184"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="191"/>
       <source>Failed to add slot</source>
-      <translation>Failed to add slot</translation>
+      <translation>Αποτυχία προσθήκης εσοχής (Slot)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="166"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="175"/>
       <source>Failed to add edge</source>
-      <translation>Failed to add edge</translation>
+      <translation>Αποτυχία προσθήκης ακμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="188"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="197"/>
       <source>Failed to trim edge</source>
-      <translation>Failed to trim edge</translation>
+      <translation>Αποτυχία περικοπής ακμής</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="63"/>
-      <location filename="../../EditDatumDialog.cpp" line="278"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1220"/>
-      <source>Value Error</source>
-      <translation>Value Error</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="970"/>
-      <source>Autoconstraints cause redundancy. Removing them</source>
-      <translation>Autoconstraints cause redundancy. Removing them</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="989"/>
-      <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
-      <translation>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1037"/>
-      <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
-      <translation>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="428"/>
-      <source>Offset Error</source>
-      <translation type="unfinished">Offset Error</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="429"/>
-      <source>Offset could not be created.</source>
-      <translation type="unfinished">Offset could not be created.</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1197"/>
-      <source>Invalid Value</source>
-      <translation>Invalid Value</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1198"/>
-      <source>Offset value can't be 0.</source>
-      <translation>Offset value can't be 0.</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="217"/>
-      <source>Failed to add arc slot</source>
-      <translation>Failed to add arc slot</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="228"/>
-      <source>Failed to add ellipse</source>
-      <translation>Failed to add ellipse</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="169"/>
-      <source>Failed to rotate</source>
-      <translation>Failed to rotate</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="116"/>
-      <source>Invalid scale factor. Scale factor must be a positive number.</source>
-      <translation type="unfinished">Invalid scale factor. Scale factor must be a positive number.</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="141"/>
-      <source>Failed to scale</source>
-      <translation>Failed to scale</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="142"/>
-      <source>Failed to translate</source>
-      <translation>Failed to translate</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="151"/>
-      <source>Failed to create symmetry</source>
-      <translation>Failed to create symmetry</translation>
-    </message>
-    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1331"/>
       <location filename="../../EditDatumDialog.cpp" line="64"/>
+      <location filename="../../EditDatumDialog.cpp" line="340"/>
+      <source>Value Error</source>
+      <translation>Σφάλμα Τιμής</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchDefaultHandler.h" line="984"/>
+      <source>Autoconstraints cause redundancy. Removing them</source>
+      <translation>Οι αυτόματοι περιορισμοί προκαλούν πλεονασμό. Γίνεται αφαίρεσή τους</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchDefaultHandler.h" line="1004"/>
+      <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
+      <translation>Ο περιττός περιορισμός δεν είναι αυτόματος. Δεν προστέθηκαν αυτόματοι ή πρόσθετοι περιορισμοί. Παρακαλούμε αναφέρετε το σφάλμα!</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchDefaultHandler.h" line="1055"/>
+      <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
+      <translation>Μη αναμενόμενος περιττός ή αντικρουόμενος περιορισμός. Ελέγξτε τους περιορισμούς και τους αυτόματους περιορισμούς αυτής της ενέργειας.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="424"/>
+      <source>Offset Error</source>
+      <translation>Σφάλμα Μετατόπισης</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="425"/>
+      <source>Offset could not be created.</source>
+      <translation>Αδυναμία δημιουργίας μετατόπισης.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1241"/>
+      <source>Invalid Value</source>
+      <translation>Μη Έγκυρη Τιμή</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1242"/>
+      <source>Offset value can't be 0.</source>
+      <translation>Η τιμή μετατόπισης δεν μπορεί να είναι 0.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="216"/>
+      <source>Failed to add arc slot</source>
+      <translation>Αποτυχία προσθήκης τοξοειδούς εσοχής</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="233"/>
+      <source>Failed to add ellipse</source>
+      <translation>Αποτυχία προσθήκης έλλειψης</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="176"/>
+      <source>Failed to rotate</source>
+      <translation>Αποτυχία περιστροφής</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerScale.h" line="123"/>
+      <source>Invalid scale factor. Scale factor must be a positive number.</source>
+      <translation>Μη έγκυρος συντελεστής κλίμακας. Ο συντελεστής πρέπει να είναι θετικός αριθμός.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerScale.h" line="154"/>
+      <source>Failed to scale</source>
+      <translation>Αποτυχία αλλαγής κλίμακας</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="149"/>
+      <source>Failed to translate</source>
+      <translation>Αποτυχία μετατόπισης</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="158"/>
+      <source>Failed to create symmetry</source>
+      <translation>Αποτυχία δημιουργίας συμμετρίας</translation>
+    </message>
+    <message>
+      <location filename="../../EditDatumDialog.cpp" line="65"/>
       <source>Invalid constraint name (must only contain alphanumericals and underscores, and must not start with digit)</source>
-      <translation>Invalid constraint name (must only contain alphanumericals and underscores, and must not start with digit)</translation>
+      <translation>Μη έγκυρο όνομα περιορισμού (πρέπει να περιέχει μόνο αλφαριθμητικούς χαρακτήρες και κάτω παύλες, και δεν πρέπει να ξεκινά με ψηφίο)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="183"/>
+      <source>Failed to add text</source>
+      <translation type="unfinished">Failed to add text</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDimension</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3163"/>
+      <location filename="../../CommandConstraints.cpp" line="3184"/>
       <source>Dimension</source>
       <translation>Διάσταση</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3164"/>
+      <location filename="../../CommandConstraints.cpp" line="3185"/>
       <source>Constrains contextually based on the selection. The type can be changed with the M key.</source>
-      <translation>Constrains contextually based on the selection. The type can be changed with the M key.</translation>
+      <translation>Επιβάλλει περιορισμούς βάσει των επιλεγμένων στοιχείων. Ο τύπος του περιορισμού μπορεί να αλλάξει με το πλήκτρο M.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompDimensionTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1560"/>
+      <location filename="../../CommandConstraints.cpp" line="1542"/>
       <source>Dimension</source>
       <translation>Διάσταση</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1561"/>
+      <location filename="../../CommandConstraints.cpp" line="1543"/>
       <source>Dimension tools</source>
-      <translation>Dimension tools</translation>
+      <translation>Εργαλεία Διαστάσεων</translation>
     </message>
   </context>
   <context>
@@ -4916,7 +5146,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="22"/>
       <source>Mode (M)</source>
-      <translation>Mode (M)</translation>
+      <translation>Λειτουργία (M)</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="46"/>
@@ -4926,167 +5156,187 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="94"/>
+      <source>Line edit 1</source>
+      <translation type="unfinished">Line edit 1</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="108"/>
+      <source>Line edit 2</source>
+      <translation type="unfinished">Line edit 2</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="122"/>
       <source>Parameter 1</source>
-      <translation>Parameter 1</translation>
+      <translation>Παράμετρος 1</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="115"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="143"/>
       <source>Parameter 2</source>
-      <translation>Parameter 2</translation>
+      <translation>Παράμετρος 2</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="136"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="164"/>
       <source>Parameter 3</source>
-      <translation>Parameter 3</translation>
+      <translation>Παράμετρος 3</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="157"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="185"/>
       <source>Parameter 4</source>
-      <translation>Parameter 4</translation>
+      <translation>Παράμετρος 4</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="178"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="206"/>
       <source>Parameter 5</source>
-      <translation>Parameter 5</translation>
+      <translation>Παράμετρος 5</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="199"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="227"/>
       <source>Parameter 6</source>
-      <translation>Parameter 6</translation>
+      <translation>Παράμετρος 6</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="220"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="248"/>
       <source>Parameter 7</source>
-      <translation>Parameter 7</translation>
+      <translation>Παράμετρος 7</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="241"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="269"/>
       <source>Parameter 8</source>
-      <translation>Parameter 8</translation>
+      <translation>Παράμετρος 8</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="262"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="290"/>
       <source>Parameter 9</source>
-      <translation>Parameter 9</translation>
+      <translation>Παράμετρος 9</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="283"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="311"/>
       <source>Parameter 10</source>
-      <translation>Parameter 10</translation>
+      <translation>Παράμετρος 10</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="305"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="333"/>
       <source>Checkbox 1 toolTip</source>
-      <translation>Checkbox 1 toolTip</translation>
+      <translation>Αναδυόμενη συμβουλή για το πλαίσιο επιλογής 1</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="308"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="336"/>
       <source>Checkbox 1</source>
-      <translation>Checkbox 1</translation>
+      <translation>Πλαίσιο επιλογής 1</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="327"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="355"/>
       <source>Checkbox 2 toolTip</source>
-      <translation>Checkbox 2 toolTip</translation>
+      <translation>Αναδυόμενη συμβουλή για το πλαίσιο επιλογής 2</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="330"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="358"/>
       <source>Checkbox 2</source>
-      <translation>Checkbox 2</translation>
+      <translation>Πλαίσιο επιλογής 2</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="349"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="377"/>
       <source>Checkbox 3 toolTip</source>
-      <translation>Checkbox 3 toolTip</translation>
+      <translation>Αναδυόμενη συμβουλή για το πλαίσιο επιλογής 3</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="352"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="380"/>
       <source>Checkbox 3</source>
-      <translation>Checkbox 3</translation>
+      <translation>Πλαίσιο επιλογής 3</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="371"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="399"/>
       <source>Checkbox 4 toolTip</source>
-      <translation>Checkbox 4 toolTip</translation>
+      <translation>Αναδυόμενη συμβουλή για το πλαίσιο επιλογής 4</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.ui" line="374"/>
+      <location filename="../../SketcherToolDefaultWidget.ui" line="402"/>
       <source>Checkbox 4</source>
-      <translation>Checkbox 4</translation>
+      <translation>Πλαίσιο επιλογής 4</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1171"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1196"/>
       <source>Delete original geometries (U)</source>
       <translation>Διαγραφή αρχικών γεωμετριών (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="537"/>
-      <source>Apply equal constraints</source>
-      <translation>Apply equal constraints</translation>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1204"/>
+      <source>Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation.</source>
+      <translation type="unfinished">Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="541"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="481"/>
+      <source>Apply equal constraints</source>
+      <translation>Εφαρμογή περιορισμών ισότητας</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="486"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
-      <translation>If this option is selected dimensional constraints are excluded from the operation.
-Instead equal constraints are applied between the original objects and their copies.</translation>
+      <translation>Εάν επιλέξτε αυτό, οι περιορισμοί διαστάσεων εξαιρούνται από τη διαδικασία.
+Αντί αυτού, εφαρμόζονται περιορισμοί ισότητας μεταξύ των αρχικών αντικειμένων και των αντιγράφων τους.</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1175"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1200"/>
       <source>Add offset constraint (J)</source>
       <translation>Προσθήκη περιορισμού Μετατόπισης (J)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1212"/>
+      <source>Adds a distance constraint with additional construction geometries that allows the distance to modify the entire offset geometry</source>
+      <translation type="unfinished">Adds a distance constraint with additional construction geometries that allows the distance to modify the entire offset geometry</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1821"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2084"/>
       <source>Corner, width, height</source>
-      <translation>Corner, width, height</translation>
+      <translation>Γωνία, Πλάτος, Ύψος</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1822"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2085"/>
       <source>Center, width, height</source>
-      <translation>Center, width, height</translation>
+      <translation>Κέντρο, Πλάτος, Ύψος</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1823"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2086"/>
       <source>3 corners</source>
-      <translation>3 corners</translation>
+      <translation>3 γωνίες</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1824"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2087"/>
       <source>Center, 2 corners</source>
-      <translation>Center, 2 corners</translation>
+      <translation>Κέντρο, 2 γωνίες</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1829"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2093"/>
       <source>Rounded corners (U)</source>
-      <translation>Rounded corners (U)</translation>
+      <translation>Στρογγυλεμένες γωνίες (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1832"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2097"/>
       <source>Create a rectangle with rounded corners.</source>
-      <translation>Create a rectangle with rounded corners.</translation>
+      <translation>Δημιουργεί ένα ορθογώνιο με στρογγυλεμένες γωνίες.</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1838"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2106"/>
       <source>Frame (J)</source>
-      <translation>Frame (J)</translation>
+      <translation>Πλαίσιο (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1841"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2110"/>
       <source>Create two rectangles with a constant offset.</source>
-      <translation>Create two rectangles with a constant offset.</translation>
+      <translation>Δημιουργία δύο ορθογωνίων με σταθερή απόσταση μεταξύ τους.</translation>
     </message>
   </context>
   <context>
@@ -5124,17 +5374,17 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
       <source>Working Colors</source>
-      <translation>Working Colors</translation>
+      <translation>Χρώματα Εργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="114"/>
       <source>Color of the crosshair cursor</source>
-      <translation>Color of the crosshair cursor</translation>
+      <translation>Χρώμα του σταυρονήματος κέρσορα</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="139"/>
       <source>Geometric Element Colors</source>
-      <translation>Geometric Element Colors</translation>
+      <translation>Χρώματα Γεωμετρικών Στοιχείων</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="151"/>
@@ -5154,112 +5404,112 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="211"/>
       <source>Color of fully constrained normal geometry in edit mode</source>
-      <translation>Color of fully constrained normal geometry in edit mode</translation>
+      <translation>Χρώμα πλήρως περιορισμένης γεωμετρίας σε κατάσταση επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="237"/>
       <source>Color of normal geometry in edit mode</source>
-      <translation>Color of normal geometry in edit mode</translation>
+      <translation>Χρώμα κανονικής γεωμετρίας σε κατάσταση επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="257"/>
       <source>Line pattern of normal edges</source>
-      <translation>Line pattern of normal edges</translation>
+      <translation>Μορφή γραμμής των κανονικών ακμών</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="267"/>
       <source>Width of normal edges</source>
-      <translation>Width of normal edges</translation>
+      <translation>Πάχος των κανονικών ακμών</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="308"/>
       <source>Color of fully constrained construction geometry in edit mode</source>
-      <translation>Color of fully constrained construction geometry in edit mode</translation>
+      <translation>Χρώμα πλήρως περιορισμένης γεωμετρίας κατασκευής σε κατάσταση επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="354"/>
       <source>Line pattern of construction edges</source>
-      <translation>Line pattern of construction edges</translation>
+      <translation>Μορφή γραμμής των ακμών κατασκευής</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="364"/>
       <source>Width of construction edges</source>
-      <translation>Width of construction edges</translation>
+      <translation>Πάχος των ακμών κατασκευής</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="392"/>
       <source>Internal alignment geometry</source>
-      <translation>Internal alignment geometry</translation>
+      <translation>Βοηθητικές γραμμές εσωτερικής δομής</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="405"/>
       <source>Color of fully constrained internal alignment geometry in edit mode</source>
-      <translation>Color of fully constrained internal alignment geometry in edit mode</translation>
+      <translation>Χρώμα πλήρως περιορισμένης εσωτερικής δομής σε κατάσταση επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="431"/>
       <source>Color of internal alignment geometry in edit mode</source>
-      <translation>Color of internal alignment geometry in edit mode</translation>
+      <translation>Χρώμα εσωτερικής δομής σε κατάσταση επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="451"/>
       <source>Line pattern of internal aligned edges</source>
-      <translation>Line pattern of internal aligned edges</translation>
+      <translation>Μορφή γραμμής των ακμών εσωτερικής δομής</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="461"/>
       <source>Width of internal aligned edges</source>
-      <translation>Width of internal aligned edges</translation>
+      <translation>Πάχος των ακμών εσωτερικής δομής</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="489"/>
       <source>External construction geometry</source>
-      <translation type="unfinished">External construction geometry</translation>
+      <translation>Εξωτερική γεωμετρία κατασκευής</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="502"/>
       <source>Color of external construction geometry in edit mode</source>
-      <translation type="unfinished">Color of external construction geometry in edit mode</translation>
+      <translation>Χρώμα εξωτερικής γεωμετρίας κατασκευής σε κατάσταση επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="522"/>
       <source>Line pattern of external construction edges</source>
-      <translation type="unfinished">Line pattern of external construction edges</translation>
+      <translation>Μορφή γραμμής των εξωτερικών ακμών κατασκευής</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="532"/>
       <source>Width of external construction edges</source>
-      <translation type="unfinished">Width of external construction edges</translation>
+      <translation>Πάχος των εξωτερικών ακμών κατασκευής</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="560"/>
       <source>External defining geometry</source>
-      <translation>External defining geometry</translation>
+      <translation>Εξωτερικές γραμμές ορισμού σχήματος</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="573"/>
       <source>Color of external defining geometry in edit mode</source>
-      <translation>Color of external defining geometry in edit mode</translation>
+      <translation>Χρώμα εξωτερικών γραμμών ορισμού σχήματος σε κατάσταση επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="593"/>
       <source>Line pattern of external defining edges</source>
-      <translation>Line pattern of external defining edges</translation>
+      <translation>Μορφή γραμμής των εξωτερικών ακμών ορισμού σχήματος</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="603"/>
       <source>Width of external defining edges</source>
-      <translation>Width of external defining edges</translation>
+      <translation>Πάχος των εξωτερικών ακμών ορισμού σχήματος</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="637"/>
       <source>Fully constrained sketch</source>
-      <translation>Fully constrained sketch</translation>
+      <translation>Πλήρως περιορισμένο σχέδιο</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="650"/>
       <source>Color of geometry indicating a fully constrained sketch</source>
-      <translation>Color of geometry indicating a fully constrained sketch</translation>
+      <translation>Χρώμα γεωμετρίας που υποδεικνύει ένα πλήρως περιορισμένο σχέδιο</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="670"/>
@@ -5269,42 +5519,42 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="706"/>
       <source>Constraint Colors</source>
-      <translation>Constraint Colors</translation>
+      <translation>Χρώματα Περιορισμών</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="747"/>
       <source>Dimensional constraints</source>
-      <translation>Dimensional constraints</translation>
+      <translation>Περιορισμοί Διαστάσεων</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="754"/>
       <source>Color of dimensional driving constraints in edit mode</source>
-      <translation>Color of dimensional driving constraints in edit mode</translation>
+      <translation>Χρώμα διαστάσεων που ορίζουν το σχήμα (σε κατάσταση επεξεργασίας)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
       <source>Reference constraints</source>
-      <translation>Reference constraints</translation>
+      <translation>Περιορισμοί Αναφοράς (μόνο για ανάγνωση)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="828"/>
       <source>Deactivated constraints</source>
-      <translation>Deactivated constraints</translation>
+      <translation>Απενεργοποιημένοι Περιορισμοί</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="873"/>
       <source>Colors Outside Sketcher</source>
-      <translation>Colors Outside Sketcher</translation>
+      <translation>Χρώματα Εκτός Σχεδίου</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="879"/>
       <source>Vertex</source>
-      <translation>Vertex</translation>
+      <translation>Κορυφή</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="886"/>
       <source>Color of vertices outside edit mode</source>
-      <translation>Color of vertices outside edit mode</translation>
+      <translation>Χρώμα σημείων κορυφών εκτός κατάστασης επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="925"/>
@@ -5314,17 +5564,17 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="932"/>
       <source>Color of edges outside edit mode</source>
-      <translation>Color of edges outside edit mode</translation>
+      <translation>Χρώμα ακμών (γραμμών) εκτός κατάστασης επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="952"/>
       <source>Face</source>
-      <translation>Όψη</translation>
+      <translation>Επιφάνεια</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="965"/>
       <source>Color of internal faces formed by intersecting geometry or closed loops in the sketch</source>
-      <translation type="unfinished">Color of internal faces formed by intersecting geometry or closed loops in the sketch</translation>
+      <translation>Χρώμα εσωτερικών επιφανειών που σχηματίζονται από κλειστά σχήματα στο σχέδιο</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="198"/>
@@ -5334,7 +5584,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
       <source>Line Type</source>
-      <translation type="unfinished">Line Type</translation>
+      <translation>Τύπος Γραμμής</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="295"/>
@@ -5344,7 +5594,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="334"/>
       <source>Color of construction geometry in edit mode</source>
-      <translation>Color of construction geometry in edit mode</translation>
+      <translation>Χρώμα γεωμετρίας κατασκευής σε κατάσταση επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="683"/>
@@ -5354,27 +5604,27 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="720"/>
       <source>Constraint symbols</source>
-      <translation>Constraint symbols</translation>
+      <translation>Σύμβολα περιορισμών</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="727"/>
       <source>Color of driving constraints in edit mode</source>
-      <translation>Color of driving constraints in edit mode</translation>
+      <translation>Χρώμα κύριων περιορισμών σε κατάσταση επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="781"/>
       <source>Color of reference constraints in edit mode</source>
-      <translation>Color of reference constraints in edit mode</translation>
+      <translation>Χρώμα περιορισμών αναφοράς σε κατάσταση επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="801"/>
       <source>Expression dependent constraint</source>
-      <translation>Expression dependent constraint</translation>
+      <translation>Περιορισμός εξαρτώμενος από μαθηματική έκφραση</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="808"/>
       <source>Color of expression dependent constraints in edit mode</source>
-      <translation>Color of expression dependent constraints in edit mode</translation>
+      <translation>Χρώμα περιορισμών που εξαρτώνται από μαθηματικό τύπο σε κατάσταση επεξεργασίας</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="835"/>
@@ -5385,7 +5635,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="510"/>
       <source>Copies (+'U'/ -'J')</source>
       <translation>Αντίγραφα (+'U'/ -'J')</translation>
     </message>
@@ -5393,20 +5643,20 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>ToolWidgetManager_p4</name>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="329"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="330"/>
       <source>Sides (+'U'/ -'J')</source>
-      <translation>Sides (+'U'/ -'J')</translation>
+      <translation>Πλευρές (+'U'/ -'J')</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="952"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="992"/>
       <source>Degree (+'U'/ -'J')</source>
-      <translation>Degree (+'U'/ -'J')</translation>
+      <translation>Βαθμός (+'U'/ -'J')</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="594"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="673"/>
       <source>Keep original geometries (U)</source>
       <translation>Διατηρήστε τις αρχικές γεωμετρίες (U)</translation>
     </message>
@@ -5414,20 +5664,20 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherCompConstrainTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1633"/>
+      <location filename="../../CommandConstraints.cpp" line="1615"/>
       <source>Constrain</source>
-      <translation>Constrain</translation>
+      <translation>Περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1634"/>
+      <location filename="../../CommandConstraints.cpp" line="1616"/>
       <source>Constrain tools</source>
-      <translation>Constrain tools</translation>
+      <translation>Εργαλεία περιορισμών</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="548"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="569"/>
       <source>Copies (+'U'/-'J')</source>
       <translation>Αντίγραφα (+'U'/ -'J')</translation>
     </message>
@@ -5435,7 +5685,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_p5_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="551"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="573"/>
       <source>Rows (+'R'/-'F')</source>
       <translation>Σειρές (+'R'/-'F')</translation>
     </message>
@@ -5443,12 +5693,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="516"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="576"/>
       <source>Center</source>
       <translation>Κέντρο</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="517"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="577"/>
       <source>3 rim points</source>
       <translation>3 σημεία της περιφέρειας</translation>
     </message>
@@ -5456,69 +5706,69 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="584"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="613"/>
       <source>Arc ends</source>
-      <translation>Arc ends</translation>
+      <translation>Άκρα Τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="585"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="614"/>
       <source>Flat ends</source>
-      <translation>Flat ends</translation>
+      <translation>Επίπεδα Άκρα</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="481"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="501"/>
       <source>Center</source>
       <translation>Κέντρο</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="482"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="502"/>
       <source>Axis endpoints</source>
-      <translation>Axis endpoints</translation>
+      <translation>Άκρα Άξονα</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_c1_fillet</name>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="458"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="474"/>
       <source>Preserve corner (U)</source>
-      <translation>Preserve corner (U)</translation>
+      <translation>Διατήρηση γωνίας (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="461"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="478"/>
       <source>Preserves intersection point and most constraints</source>
-      <translation>Preserves intersection point and most constraints</translation>
+      <translation>Διατηρεί το σημείο τομής και τους περισσότερους περιορισμούς</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="335"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="355"/>
       <source>Point, length, angle</source>
-      <translation>Point, length, angle</translation>
+      <translation>Σημείο, Μήκος, Γωνία</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="336"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="356"/>
       <source>Point, width, height</source>
-      <translation>Point, width, height</translation>
+      <translation>Σημείο, Πλάτος, Ύψος</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="337"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="357"/>
       <source>2 points</source>
-      <translation>2 points</translation>
+      <translation>2 σημεία</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1158"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1178"/>
       <source>Arc</source>
       <translation>Τόξο</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1159"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1179"/>
       <source>Intersection</source>
       <translation>Σημείο τομής</translation>
     </message>
@@ -5526,34 +5776,39 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_symmetry</name>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="273"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="283"/>
       <source>Delete original geometries (U)</source>
       <translation>Διαγραφή αρχικών γεωμετριών (U)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="287"/>
+      <source>Removes the original geometry and keeps only the mirrored result.</source>
+      <translation type="unfinished">Removes the original geometry and keeps only the mirrored result.</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="908"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="938"/>
       <source>Press F to undo last point.</source>
-      <translation>Press F to undo last point.</translation>
+      <translation>Πατήστε το F για αναίρεση του τελευταίου σημείου.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="917"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="949"/>
       <source>Periodic (R)</source>
-      <translation>Periodic (R)</translation>
+      <translation>Περιοδικότητα (R)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="920"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="953"/>
       <source>Create a periodic B-spline.</source>
-      <translation>Create a periodic B-spline.</translation>
+      <translation>Όταν ενεργοποιείτε την "Περιοδικότητα" (πατώντας το πλήκτρο R), η καμπύλη "κλείνει" αυτόματα ενώνοντας την αρχή με το τέλος της με έναν ομαλό τρόπο, δημιουργώντας έτσι ένα συνεχόμενο κλειστό σχήμα χωρίς γωνίες.</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8987"/>
-      <location filename="../../CommandConstraints.cpp" line="8989"/>
+      <location filename="../../CommandConstraints.cpp" line="9068"/>
+      <location filename="../../CommandConstraints.cpp" line="9070"/>
       <source>Fix the radius of an arc or a circle</source>
       <translation>Προσδιορίστε την Ακτίνα ενός Τόξου ή ενός Κύκλου</translation>
     </message>
@@ -5561,8 +5816,8 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_ConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9000"/>
-      <location filename="../../CommandConstraints.cpp" line="9002"/>
+      <location filename="../../CommandConstraints.cpp" line="9081"/>
+      <location filename="../../CommandConstraints.cpp" line="9083"/>
       <source>Fix the radius/diameter of an arc or a circle</source>
       <translation>Προσδιορίστε την Ακτίνα/Διάμετρο ενός τόξου ή ενός κύκλου</translation>
     </message>
@@ -5570,244 +5825,245 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="520"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="533"/>
       <source>Apply equal constraints</source>
-      <translation>Apply equal constraints</translation>
+      <translation>Εφαρμογή περιορισμών ισότητας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="523"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="537"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
-      <translation>If this option is selected dimensional constraints are excluded from the operation.
-Instead equal constraints are applied between the original objects and their copies.</translation>
+      <translation>Εάν επιλέξτε αυτό, οι περιορισμοί διαστάσεων εξαιρούνται από τη διαδικασία.
+Αντί αυτού, εφαρμόζονται περιορισμοί ισότητας μεταξύ των αρχικών αντικειμένων και των αντιγράφων τους.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="155"/>
+      <location filename="../../Command.cpp" line="157"/>
       <source>New Sketch</source>
-      <translation>New Sketch</translation>
+      <translation>Νέο Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="156"/>
+      <location filename="../../Command.cpp" line="158"/>
       <source>Creates a new sketch</source>
-      <translation>Creates a new sketch</translation>
+      <translation>Δημιουργία νέου σχεδίου</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="334"/>
+      <location filename="../../Command.cpp" line="336"/>
       <source>Edit Sketch</source>
-      <translation>Edit Sketch</translation>
+      <translation>Επεξεργασία Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="335"/>
+      <location filename="../../Command.cpp" line="337"/>
       <source>Opens the selected sketch for editing</source>
-      <translation>Opens the selected sketch for editing</translation>
+      <translation>Σάς μεταφέρει πίσω στο σχέδιο που έχετε ήδη δημιουργήσει για επεξεργασία. Εκεί μπορείτε να αλλάξετε τις γραμμές, τους κύκλους ή τις διαστάσεις και το τελικό 3D αντικείμενο θα αλλάξει αυτόματα μόλις τελειώσετε</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="367"/>
       <source>Leave Sketch</source>
-      <translation>Leave Sketch</translation>
+      <translation>Έξοδος από το Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="368"/>
       <source>Exits the active sketch</source>
-      <translation>Exits the active sketch</translation>
+      <translation>Αυτή η εντολή χρησιμοποιείται όταν τελειώσετε τη δουλειά σας μέσα στο σχέδιο. Σας επιστρέφει στο τρισδιάστατο περιβάλλον του FreeCAD για να μπορέσετε να δείτε το αντικείμενό σας στον χώρο ή να προχωρήσετε στο επόμενο βήμα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="403"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>Stop Operation</source>
-      <translation>Stop Operation</translation>
+      <translation>Διακοπή Λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="404"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Stops the active operation while in edit mode</source>
-      <translation>Stops the active operation while in edit mode</translation>
+      <translation>Αυτή η εντολή σταματά αμέσως το εργαλείο που χρησιμοποιείτε εκείνη τη στιγμή χωρίς να κλείσει το σχέδιο. Είναι ο τρόπος να πείτε στο πρόγραμμα «σταμάτα αυτό που κάνω τώρα για να επιλέξω ένα άλλο εργαλείο»</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Reorient Sketch</source>
-      <translation>Reorient Sketch</translation>
+      <translation>Επαναπροσανατολισμός Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="442"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
-      <translation>Places the selected sketch on one of the global coordinate planes.
-This will clear the AttachmentSupport property.</translation>
+      <translation>Αυτή η εντολή σάς επιτρέπει να αλλάξετε το επίπεδο πάνω στο οποίο «πατάει» το σχέδιό σας. (π. χ. από το επίπεδο Xy 'Κάτοψη' στο επίπεδο Xz 'Πρόσοψη'). 
+Προσοχή όμως: αν το σχέδιο ήταν "κολλημένο" πάνω σε μια επιφάνεια ενός άλλου αντικειμένου, αυτός ο περιορισμός θα χαθεί και το σχέδιο θα ακολουθεί πλέον μόνο τους βασικούς άξονες του προγράμματος.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="798"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Align View to Sketch</source>
-      <translation>Align View to Sketch</translation>
+      <translation>Ευθυγράμμιση Προβολής με το Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="804"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
-      <translation>Aligns the camera orientation perpendicular to the active sketch plane</translation>
+      <translation>Αυτή η εντολή «φέρνει» την οθόνη ακριβώς μπροστά από το σχέδιό σας. Αν έχετε στρίψει την κάμερα και βλέπετε το σχέδιο υπό γωνία ή από πλάγια, πατώντας αυτό το κουμπί η προβολή διορθώνεται ώστε να βλέπετε το σχέδιο εντελώς επίπεδα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1099"/>
+      <location filename="../../Command.cpp" line="1105"/>
       <source>Toggle Section View</source>
-      <translation>Toggle Section View</translation>
+      <translation>Εναλλαγή ΠροβολήςΤομής</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1100"/>
+      <location filename="../../Command.cpp" line="1106"/>
       <source>Toggles between section view and full view</source>
-      <translation>Toggles between section view and full view</translation>
+      <translation>Αυτή η λειτουργία σας επιτρέπει να «κρύβετε» προσωρινά τα κομμάτια του αντικειμένου που βρίσκονται μπροστά από το σχέδιό σας. Έτσι, μπορείτε να βλέπετε μόνο την επιφάνεια που σχεδιάζετε χωρίς να σας εμποδίζει ο υπόλοιπος όγκος, και να επιστρέφετε στην πλήρη εμφάνιση όποτε θέλετε</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1173"/>
+      <location filename="../../Command.cpp" line="1180"/>
       <source>Display grid</source>
-      <translation>Display grid</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1174"/>
-      <source>Toggles the visibility of the grid in the active sketch</source>
-      <translation>Toggles the visibility of the grid in the active sketch</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1177"/>
-      <source>Grid auto-spacing</source>
-      <translation>Grid auto-spacing</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1178"/>
-      <source>Automatically adjusts the grid spacing based on the zoom level</source>
-      <translation>Automatically adjusts the grid spacing based on the zoom level</translation>
+      <translation>Εμφάνιση Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1181"/>
-      <source>Spacing</source>
-      <translation>Spacing</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1182"/>
-      <source>Distance between two subsequent grid lines</source>
-      <translation>Distance between two subsequent grid lines</translation>
+      <source>Toggles the visibility of the grid in the active sketch</source>
+      <translation>Αυτή η λειτουργία σάς επιτρέπει να εμφανίζετε/εξαφανίζετε το βοηθητικό πλέγμα στην οθόνη σας. Είναι χρήσιμο για να καθαρίζετε την εικόνα όταν το σχέδιο γίνεται περίπλοκο ή για να το επαναφέρετε όταν χρειάζεστε οπτική βοήθεια στις αποστάσεις</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1184"/>
-      <source>Snap to grid</source>
-      <translation>Snap to grid</translation>
+      <source>Grid auto-spacing</source>
+      <translation>Αυτόματο μέγεθος πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1186"/>
+      <location filename="../../Command.cpp" line="1185"/>
+      <source>Automatically adjusts the grid spacing based on the zoom level</source>
+      <translation>Αυτή η λειτουργία αλλάζει αυτόματα το πόσο μεγάλα ή μικρά φαίνονται τα τετραγωνάκια στο υπόβαθρο καθώς πλησιάζετε ή απομακρύνεστε από το σχέδιο (ζουμ). Έτσι, το πλέγμα παραμένει πάντα χρήσιμο ως οδηγός, χωρίς να πυκνώνει υπερβολικά όταν βλέπετε το σχέδιο από μακριά</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1188"/>
+      <source>Spacing</source>
+      <translation>Μέγεθος Τετραγώνων</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1189"/>
+      <source>Distance between two subsequent grid lines</source>
+      <translation>Εδώ ορίζετε την ακριβή απόσταση ανάμεσα στις γραμμές του πλέγματος (π. χ. ανά 10 χιλιοστά). Είναι το μέγεθος που έχουν τα «τετράγωνα» στο υπόβαθρο, ώστε να μπορείτε να σχεδιάζετε με βάση μια σταθερή κλίμακα</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1191"/>
+      <source>Snap to grid</source>
+      <translation>Προσκόλληση στο πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1193"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
-      <translation>New points will snap to the nearest grid line.
-Points must be set closer than a fifth of the grid spacing to a grid line to snap.</translation>
+      <translation>Τα νέα σημεία θα προσκολλώνται στην πλησιέστερη γραμμή του πλέγματος.
+Για να γίνει η προσκόλληση, τα σημεία πρέπει να τοποθετούνται σε απόσταση μικρότερη από το 1/5 του μεγέθους του τετραγώνου.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1315"/>
+      <location filename="../../Command.cpp" line="1318"/>
       <source>Toggle Grid</source>
-      <translation>Toggle Grid</translation>
+      <translation>Εναλλαγή Πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1317"/>
+      <location filename="../../Command.cpp" line="1320"/>
       <source>Toggles the grid display in the active sketch</source>
-      <translation>Toggles the grid display in the active sketch</translation>
+      <translation>Σας επιτρέπει να εμφανίζετε ή να κρύβετε τις βοηθητικές γραμμές (το πλέγμα) στην οθόνη σας ανά πάσα στιγμή, για να βλέπετε καλύτερα το σχέδιό σας</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1451"/>
+      <location filename="../../Command.cpp" line="1425"/>
       <source>Snap to objects</source>
-      <translation>Snap to objects</translation>
+      <translation>Προσκόλληση σε αντικείμενα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1452"/>
+      <location filename="../../Command.cpp" line="1426"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</translation>
+      <translation>Αυτή η λειτουργία κάνει τα νέα σημεία να προσκολλώνται πάνω σε σχήματα που έχετε ήδη σχεδιάσει. 
+Το πολύ χρήσιμο είναι ότι σας βοηθά να βρείτε αυτόματα το ακριβές κέντρο μιας γραμμής ή ενός τόξου, ώστε να μπορείτε να ξεκινήσετε μια νέα γραμμή ακριβώς από τη μέση τους χωρίς να χρειάζεται να μετρήσετε.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1456"/>
+      <location filename="../../Command.cpp" line="1430"/>
       <source>Snap angle</source>
-      <translation>Snap angle</translation>
+      <translation>Προσκόλληση Γωνίας</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1458"/>
+      <location filename="../../Command.cpp" line="1432"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
-      <translation>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</translation>
+      <translation>Αυτή η λειτουργία κάνει τη γραμμή σας να «κουμπώνει» αυτόματα σε συγκεκριμένες μοίρες (π. χ. ανά 15° ή 45°) καθώς την περιστρέφετε. Σας βοηθάει να σχεδιάζετε γρήγορα γραμμές με ακριβή κλίση χωρίς να χρειάζεται να πληκτρολογείτε τη γωνία κάθε φορά. Αν κρατάτε πατημένο το Ctrl, η γραμμή θα κινείται με σταθερά βήματα ξεκινώντας από την οριζόντια θέση (άξονας Χ), βοηθώντας σας να πετύχετε εύκολα γωνίες όπως 45° ή 90°.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1546"/>
+      <location filename="../../Command.cpp" line="1518"/>
       <source>Toggle Snap</source>
-      <translation>Toggle Snap</translation>
+      <translation>Εναλλαγή Προσκόλλησης</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1548"/>
+      <location filename="../../Command.cpp" line="1520"/>
       <source>Toggles snapping</source>
-      <translation>Toggles snapping</translation>
+      <translation>Με ένα κλικ ενεργοποιείτε ή απενεργοποιείτε όλες τις λειτουργίες "Προσκόλλησης" σε πλέγμα, γωνίες ή αντικείμενα ταυτόχρονα, επιτρέποντάς σας να επιλέξετε αν θέλετε το ποντίκι να κινείται ελεύθερα ή να "προσκολλάται" με ακρίβεια στα σημεία που έχετε ορίσει</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1672"/>
+      <location filename="../../Command.cpp" line="1627"/>
       <source>Normal geometry</source>
-      <translation>Normal geometry</translation>
+      <translation>Κανονική Γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1674"/>
+      <location filename="../../Command.cpp" line="1629"/>
       <source>Construction geometry</source>
       <translation>Κατασκευαστική γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1676"/>
+      <location filename="../../Command.cpp" line="1631"/>
       <source>External geometry</source>
-      <translation>External geometry</translation>
+      <translation>Εξωτερική γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1679"/>
+      <location filename="../../Command.cpp" line="1634"/>
       <source>Unknown geometry</source>
-      <translation>Unknown geometry</translation>
+      <translation>Άγνωστη γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1720"/>
+      <location filename="../../Command.cpp" line="1675"/>
       <source>Rendering order</source>
-      <translation>Rendering order</translation>
+      <translation>Σειρά απόδοσης (Rendering)</translation>
     </message>
   </context>
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="1807"/>
+      <location filename="../../Command.cpp" line="1760"/>
       <source>Rendering Order</source>
-      <translation>Rendering Order</translation>
+      <translation>Σειρά Απόδοσης</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1808"/>
+      <location filename="../../Command.cpp" line="1761"/>
       <source>Reorders items in the rendering order</source>
-      <translation>Reorders items in the rendering order</translation>
+      <translation>Αυτή η λειτουργία σάς επιτρέπει να αλλάξετε τη σειρά με την οποία εμφανίζονται τα διάφορα στοιχεία (γραμμές, σημεία, σύμβολα) στην οθόνη. Με αυτόν τον τρόπο, μπορείτε να ορίσετε ποια στοιχεία θα φαίνονται "μπροστά" και ποια "πίσω", ώστε να μη κρύβονται οι σημαντικές πληροφορίες του σχεδίου σας</translation>
     </message>
   </context>
   <context>
@@ -5815,1120 +6071,1122 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="69"/>
       <source>Toggle Construction Geometry</source>
-      <translation type="unfinished">Toggle Construction Geometry</translation>
+      <translation>Εναλλαγή Γεωμετρίας Κατασκευής</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="70"/>
       <source>Toggles between defining geometry and construction geometry modes</source>
-      <translation>Toggles between defining geometry and construction geometry modes</translation>
+      <translation>Αυτή η εντολή σας επιτρέπει να αλλάζετε μεταξύ της κανονικής σχεδίασης (λευκές γραμμές) και της σχεδίασης κατασκευής (μπλε γραμμές). Μπορείτε επίσης να την χρησιμοποιήσετε για να μετατρέψετε μια ήδη υπάρχουσα γραμμή από "κανονική" σε "βοηθητική" και το αντίστροφο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompToggleConstraints</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1664"/>
+      <location filename="../../CommandConstraints.cpp" line="1646"/>
       <source>Toggle Constraints</source>
-      <translation>Toggle Constraints</translation>
+      <translation>Εναλλαγή Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1665"/>
+      <location filename="../../CommandConstraints.cpp" line="1647"/>
       <source>Toggle constrain tools</source>
-      <translation>Toggle constrain tools</translation>
+      <translation>Εμφάνιση/Απόκρυψη εργαλείων περιορισμού</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompHorizontalVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3218"/>
+      <location filename="../../CommandConstraints.cpp" line="3238"/>
       <source>Horizontal/Vertical Constraint</source>
-      <translation>Horizontal/Vertical Constraint</translation>
+      <translation>Οριζόντιος/Κατακόρυφος Περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3219"/>
+      <location filename="../../CommandConstraints.cpp" line="3239"/>
       <source>Constrains the selected elements either horizontally or vertically</source>
-      <translation>Constrains the selected elements either horizontally or vertically</translation>
+      <translation>Εργαλείο που ευθυγραμμίζει αυτόματα μια γραμμή. Αν η γραμμή που επιλέξατε είναι σχεδόν οριζόντια, την κάνει εντελώς οριζόντια. Αν είναι σχεδόν όρθια, την κάνει εντελώς κατακόρυφη</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainHorVer</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3536"/>
+      <location filename="../../CommandConstraints.cpp" line="3556"/>
       <source>Horizontal/Vertical Constraint</source>
-      <translation>Horizontal/Vertical Constraint</translation>
+      <translation>Οριζόντιος/Κατακόρυφος Περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3537"/>
+      <location filename="../../CommandConstraints.cpp" line="3557"/>
       <source>Constrains the selected elements either horizontally or vertically, based on their closest alignment</source>
-      <translation>Constrains the selected elements either horizontally or vertically, based on their closest alignment</translation>
+      <translation>Εργαλείο που ευθυγραμμίζει αυτόματα μια γραμμή. Αν η γραμμή που επιλέξατε είναι σχεδόν οριζόντια, την κάνει εντελώς οριζόντια. Αν είναι σχεδόν όρθια, την κάνει εντελώς κατακόρυφη</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3582"/>
+      <location filename="../../CommandConstraints.cpp" line="3602"/>
       <source>Horizontal Constraint</source>
-      <translation>Horizontal Constraint</translation>
+      <translation>Περιορισμός Οριζοντίωσης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3583"/>
+      <location filename="../../CommandConstraints.cpp" line="3603"/>
       <source>Constrains the selected elements horizontally</source>
-      <translation>Constrains the selected elements horizontally</translation>
+      <translation>Αυτή η εντολή αναγκάζει μια γραμμή να γίνει εντελώς οριζόντια</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3627"/>
+      <location filename="../../CommandConstraints.cpp" line="3647"/>
       <source>Vertical Constraint</source>
-      <translation>Vertical Constraint</translation>
+      <translation>Περιορισμός Καθετότητας (με τον κατακόρυφο άξονα Y)</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3628"/>
+      <location filename="../../CommandConstraints.cpp" line="3648"/>
       <source>Constrains the selected elements vertically</source>
-      <translation>Constrains the selected elements vertically</translation>
+      <translation>Αυτή η εντολή αναγκάζει μια γραμμή να γίνει εντελώς κατακόρυφη (όρθια)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3673"/>
+      <location filename="../../CommandConstraints.cpp" line="3693"/>
       <source>Lock Position</source>
-      <translation>Lock Position</translation>
+      <translation>Κλείδωμα Θέσης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3674"/>
+      <location filename="../../CommandConstraints.cpp" line="3694"/>
       <source>Constrains the selected vertices by adding horizontal and vertical distance constraints</source>
-      <translation>Constrains the selected vertices by adding horizontal and vertical distance constraints</translation>
+      <translation>Αυτή η εντολή «Κλειδώνει» ένα σημείο ή μια γραμμή στη συγκεκριμένη θέση που βρίσκεται εκείνη τη στιγμή. Εφαρμόζει αυτόματα δύο περιορισμούς (οριζόντιο και κατακόρυφο) ώστε το στοιχείο να μην μπορεί να μετακινηθεί καθόλου με το ποντίκι</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3958"/>
+      <location filename="../../CommandConstraints.cpp" line="3979"/>
       <source>Block Constraint</source>
       <translation>Περιορισμός Κλειδώματος</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3959"/>
+      <location filename="../../CommandConstraints.cpp" line="3980"/>
       <source>Constrains the selected edges as fixed</source>
-      <translation>Constrains the selected edges as fixed</translation>
+      <translation>Αυτή η εντολή χρησιμοποιείται για να «παγώσει» ένα σχήμα (γραμμές (ακμές) ή μια καμπύλη B-spline) στην ακριβή θέση και μορφή που έχει εκείνη τη στιγμή, χρησιμοποιώντας μόνο έναν περιορισμό</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainCoincidentUnified</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4158"/>
+      <location filename="../../CommandConstraints.cpp" line="4180"/>
       <source>Coincident Constraint</source>
-      <translation>Coincident Constraint</translation>
+      <translation>Περιορισμός Ταύτισης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4159"/>
+      <location filename="../../CommandConstraints.cpp" line="4181"/>
       <source>Constrains the selected elements to be coincident</source>
-      <translation>Constrains the selected elements to be coincident</translation>
+      <translation>Αυτή η εντολή «ενώνει» δύο ή περισσότερα σημεία μεταξύ τους, αναγκάζοντάς τα να βρίσκονται στην ίδια ακριβώς θέση</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4670"/>
+      <location filename="../../CommandConstraints.cpp" line="4695"/>
       <source>Coincident Constraint</source>
-      <translation>Coincident Constraint</translation>
+      <translation>Περιορισμός Ταύτισης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4671"/>
+      <location filename="../../CommandConstraints.cpp" line="4696"/>
       <source>Constrains the selected elements to be coincident</source>
-      <translation>Constrains the selected elements to be coincident</translation>
+      <translation>Αυτή η εντολή «ενώνει» δύο ή περισσότερα σημεία μεταξύ τους, αναγκάζοντάς τα να βρίσκονται στην ίδια ακριβώς θέση</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4720"/>
+      <location filename="../../CommandConstraints.cpp" line="4745"/>
       <source>Point-On-Object Constraint</source>
-      <translation>Point-On-Object Constraint</translation>
+      <translation>Περιορισμός Σημείου πάνω σε Αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4721"/>
+      <location filename="../../CommandConstraints.cpp" line="4746"/>
       <source>Constrains the selected point onto the selected object</source>
-      <translation>Constrains the selected point onto the selected object</translation>
+      <translation>Αυτή η εντολή αναγκάζει ένα σημείο να «πατάει» πάντα πάνω σε μια γραμμή ή έναν κύκλο. Το σημείο μπορεί να μετακινείται μπρος-πίσω κατά μήκος της γραμμής, αλλά είναι αδύνατο να βγει έξω από αυτήν</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4772"/>
+      <location filename="../../CommandConstraints.cpp" line="4797"/>
       <source>Distance Dimension</source>
-      <translation>Distance Dimension</translation>
+      <translation>Διάσταση Απόστασης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4773"/>
+      <location filename="../../CommandConstraints.cpp" line="4798"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if one is selected</source>
-      <translation>Constrains the vertical distance between two points, or from a point to the origin if one is selected</translation>
+      <translation>Περιορίζει την κατακόρυφη απόσταση μεταξύ δύο σημείων. Αν επιλέξετε μόνο ένα σημείο, τότε ορίζει την απόστασή του από το κεντρικό σημείο του σχεδίου (την αρχή των αξόνων)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5426"/>
+      <location filename="../../CommandConstraints.cpp" line="5451"/>
       <source>Horizontal Dimension</source>
-      <translation>Horizontal Dimension</translation>
+      <translation>Οριζόντια Διάσταση</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5427"/>
+      <location filename="../../CommandConstraints.cpp" line="5452"/>
       <source>Constrains the horizontal distance between two points, or from a point to the origin if only one is selected</source>
-      <translation type="unfinished">Constrains the horizontal distance between two points, or from a point to the origin if only one is selected</translation>
+      <translation>Περιορίζει την οριζόντια απόσταση μεταξύ δύο σημείων. Αν επιλέξετε μόνο ένα σημείο, τότε ορίζει την οριζόντια απόστασή του από το κεντρικό σημείο του σχεδίου (την αρχή των αξόνων)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5727"/>
+      <location filename="../../CommandConstraints.cpp" line="5752"/>
       <source>Vertical Dimension</source>
-      <translation>Vertical Dimension</translation>
+      <translation>Κάθετη Διάσταση</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5728"/>
-      <source>Constrains the vertical distance between the selected elements</source>
-      <translation>Constrains the vertical distance between the selected elements</translation>
+      <location filename="../../CommandConstraints.cpp" line="5753"/>
+      <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
+      <translation type="unfinished">Constrains the vertical distance between two points, or from a point to the origin if only one is selected</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6023"/>
+      <location filename="../../CommandConstraints.cpp" line="6047"/>
       <source>Parallel Constraint</source>
-      <translation>Parallel Constraint</translation>
+      <translation>Περιορισμός Παραλληλίας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6024"/>
+      <location filename="../../CommandConstraints.cpp" line="6048"/>
       <source>Constrains the selected lines to be parallel</source>
-      <translation>Constrains the selected lines to be parallel</translation>
+      <translation>Περιορίζει τις επιλεγμένες γραμμές ώστε να είναι παράλληλες</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6186"/>
+      <location filename="../../CommandConstraints.cpp" line="6210"/>
       <source>Perpendicular Constraint</source>
-      <translation>Perpendicular Constraint</translation>
+      <translation>Περιορισμός Καθετότητας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6187"/>
+      <location filename="../../CommandConstraints.cpp" line="6211"/>
       <source>Constrains the selected lines to be perpendicular</source>
-      <translation>Constrains the selected lines to be perpendicular</translation>
+      <translation>Περιορίζει τις επιλεγμένες γραμμές να είναι κάθετες μεταξύ τους. Να σχηματίζουν πάντα μια τέλεια «ορθή» γωνία (90 μοιρών)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6951"/>
+      <location filename="../../CommandConstraints.cpp" line="6994"/>
       <source>Tangent/Collinear Constraint</source>
-      <translation>Tangent/Collinear Constraint</translation>
+      <translation>Περιορισμός Εφαπτομενικότητας/Συνευθειακότητας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6952"/>
+      <location filename="../../CommandConstraints.cpp" line="6995"/>
       <source>Constrains the selected elements to be tangent or collinear</source>
-      <translation>Constrains the selected elements to be tangent or collinear</translation>
+      <translation>Πρόκειται για ένα διπλό εργαλείο που εξομαλύνει τη σύνδεση μεταξύ σχημάτων:
+Εφαπτομενικότητα: Κάνει μια γραμμή να "ακουμπά" έναν κύκλο ή ένα τόξο χωρίς να τα διαπερνά, δημιουργώντας μια ομαλή μετάβαση.
+Συνευθειακότητα: Αναγκάζει δύο ξεχωριστές γραμμές να βρίσκονται πάνω στην ίδια ακριβώς νοητή ευθεία</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7826"/>
+      <location filename="../../CommandConstraints.cpp" line="7907"/>
       <source>Radius Dimension</source>
-      <translation>Radius Dimension</translation>
+      <translation>Διάσταση Ακτίνας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7827"/>
+      <location filename="../../CommandConstraints.cpp" line="7908"/>
       <source>Constrains the radius of the selected circle or arc</source>
-      <translation>Constrains the radius of the selected circle or arc</translation>
+      <translation>Περιορίζει το μέγεθος ενός κύκλου ή τόξου ορίζοντας την ακτίνα του. Η ακτίνα είναι η απόσταση από το κέντρο μέχρι την άκρη· αν την αλλάξετε, ο κύκλος θα μεγαλώσει ή θα μικρύνει ομοιόμορφα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8189"/>
+      <location filename="../../CommandConstraints.cpp" line="8270"/>
       <source>Diameter Dimension</source>
-      <translation>Diameter Dimension</translation>
+      <translation>Διάσταση Διαμέτρου</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8190"/>
+      <location filename="../../CommandConstraints.cpp" line="8271"/>
       <source>Constrains the diameter of the selected circle or arc</source>
-      <translation>Constrains the diameter of the selected circle or arc</translation>
+      <translation>Περιορίζει τη διάμετρο του επιλεγμένου κύκλου ή τόξου. Είναι ο πιο συνηθισμένος τρόπος για να ορίζουμε το μέγεθος μιας τρύπας ή ενός κυλίνδρου στο σχέδιο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8507"/>
+      <location filename="../../CommandConstraints.cpp" line="8588"/>
       <source>Radius/Diameter Dimension</source>
-      <translation>Radius/Diameter Dimension</translation>
+      <translation>Διάσταση Ακτίνας/Διάμετρος</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8508"/>
+      <location filename="../../CommandConstraints.cpp" line="8589"/>
       <source>Constrains the radius of the selected arc or the diameter of the selected circle</source>
-      <translation>Constrains the radius of the selected arc or the diameter of the selected circle</translation>
+      <translation>Αυτό το έξυπνο εργαλείο αναγνωρίζει τι έχετε επιλέξει: αν επιλέξετε ένα τόξο (μισό κύκλο ή καμπύλη), ορίζει την ακτίνα του. Αν επιλέξετε έναν πλήρη κύκλο, ορίζει τη διάμετρο (το συνολικό φάρδος του)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9035"/>
+      <location filename="../../CommandConstraints.cpp" line="9116"/>
       <source>Angle Dimension</source>
-      <translation>Angle Dimension</translation>
+      <translation>Διάσταση Γωνίας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9036"/>
+      <location filename="../../CommandConstraints.cpp" line="9117"/>
       <source>Constrains the angle between two straight lines or between one line and the X-axis of the sketch if only one is selected</source>
-      <translation type="unfinished">Constrains the angle between two straight lines or between one line and the X-axis of the sketch if only one is selected</translation>
+      <translation>Αυτό το εργαλείο ορίζει πόσο ανοιχτή ή κλειστή είναι η γωνία (σε μοίρες) ανάμεσα σε δύο γραμμές. Αν επιλέξετε μόνο μία γραμμή, τότε το πρόγραμμα μετράει την κλίση που έχει αυτή η γραμμή σε σχέση με την οριζόντια γραμμή του σχεδίου (τον άξονα Χ)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9488"/>
+      <location filename="../../CommandConstraints.cpp" line="9569"/>
       <source>Equal Constraint</source>
-      <translation>Equal Constraint</translation>
+      <translation>Περιορισμός Ισότητας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9490"/>
+      <location filename="../../CommandConstraints.cpp" line="9571"/>
       <source>Constrains the selected edges or circles to be equal</source>
-      <translation>Constrains the selected edges or circles to be equal</translation>
+      <translation>Αυτή η εντολή κάνει τα σχήματα που επιλέξατε πανομοιότυπα σε μέγεθος. Για παράδειγμα, αν επιλέξετε τρεις διαφορετικές γραμμές, θα αποκτήσουν όλες το ίδιο μήκος. Αν επιλέξετε δύο κύκλους, θα αποκτήσουν την ίδια διάμετρο. Έτσι, αν αλλάξετε αργότερα το μέγεθος του ενός, θα αλλάξουν αυτόματα και τα υπόλοιπα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9730"/>
+      <location filename="../../CommandConstraints.cpp" line="9819"/>
       <source>Symmetric Constraint</source>
-      <translation>Symmetric Constraint</translation>
+      <translation>Περιορισμός Συμμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9731"/>
+      <location filename="../../CommandConstraints.cpp" line="9820"/>
       <source>Constrains the selected elements to be symmetric</source>
-      <translation>Constrains the selected elements to be symmetric</translation>
+      <translation>Αυτή η εντολή αναγκάζει δύο σημεία ή αντικείμενα να απέχουν εξίσου από έναν κεντρικό άξονα ή ένα σημείο, σαν να καθρεφτίζονται. Αν μετακινήσετε το ένα στοιχείο, το άλλο θα ακολουθήσει αυτόματα στην αντίθετη πλευρά, διατηρώντας το σχέδιό σας απόλυτα Συμμετρικό</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10091"/>
+      <location filename="../../CommandConstraints.cpp" line="10281"/>
       <source>Refraction Constraint</source>
-      <translation>Refraction Constraint</translation>
+      <translation>Περιορισμός Διάθλασης</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10092"/>
+      <location filename="../../CommandConstraints.cpp" line="10282"/>
       <source>Constrains the selected elements based on the refraction law (Snell's Law)</source>
-      <translation>Constrains the selected elements based on the refraction law (Snell's Law)</translation>
+      <translation>Αυτός ο ειδικός περιορισμός αναγκάζει δύο γραμμές να σχηματίζουν μια γωνία μεταξύ τους ακολουθώντας τους κανόνες της φυσικής για το φως. Όπως μια ακτίνα φωτός αλλάζει πορεία όταν μπαίνει στο νερό, έτσι και αυτό το εργαλείο υπολογίζει αυτόματα τη σωστή κλίση των γραμμών με βάση έναν «δείκτη διάθλασης» που ορίζετε εσείς</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherChangeDimensionConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10288"/>
+      <location filename="../../CommandConstraints.cpp" line="10717"/>
       <source>Edit Value</source>
-      <translation>Edit Value</translation>
+      <translation>Επεξεργασία Τιμής</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10289"/>
+      <location filename="../../CommandConstraints.cpp" line="10718"/>
       <source>Edits the value of a dimensional constraint</source>
-      <translation>Edits the value of a dimensional constraint</translation>
+      <translation>Επεξεργάζεται την τιμή ενός περιορισμού διάστασης. Σάς επιτρέπει να αλλάξετε την τιμή σε μια μέτρηση που έχετε ήδη βάλει στο σχέδιο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10342"/>
+      <location filename="../../CommandConstraints.cpp" line="10771"/>
       <source>Toggle Driving/Reference Constraints</source>
-      <translation>Toggle Driving/Reference Constraints</translation>
+      <translation>Εναλλαγή Περιορισμών Κύριους/Βοηθητικούς</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10343"/>
+      <location filename="../../CommandConstraints.cpp" line="10772"/>
       <source>Toggles between driving and reference mode of the selected constraints and commands</source>
-      <translation>Toggles between driving and reference mode of the selected constraints and commands</translation>
+      <translation>Αυτή η λειτουργία σάς επιτρέπει να αλλάξετε τον "ρόλο" μιας διάστασης. Ένας Κύριος (driving) περιορισμός καθορίζει το μέγεθος και μετακινεί το σχέδιο, ενώ ένας Βοηθητικός (reference) περιορισμός απλώς σας δείχνει το μέγεθος χωρίς να το ελέγχει (μια απλή μέτρηση)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10497"/>
+      <location filename="../../CommandConstraints.cpp" line="10926"/>
       <source>Toggle Constraints</source>
-      <translation>Toggle Constraints</translation>
+      <translation>Εναλλαγή Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10498"/>
+      <location filename="../../CommandConstraints.cpp" line="10927"/>
       <source>Toggles the state of the selected constraints</source>
-      <translation>Toggles the state of the selected constraints</translation>
+      <translation>Αυτή η εντολή αλλάζει τη λειτουργία των περιορισμών που έχετε επιλέξει. Για παράδειγμα, μπορεί να μετατρέψει μια διάσταση από "ενεργή" (που καθορίζει το μέγεθος) σε "αναφοράς" (που απλώς εμφανίζει το μέγεθος), ή να ενεργοποιήσει/απενεργοποιήσει προσωρινά έναν περιορισμό χωρίς να τον διαγράψει</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="111"/>
+      <location filename="../../CommandCreateGeo.cpp" line="114"/>
       <source>Point</source>
       <translation>Σημείο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="112"/>
+      <location filename="../../CommandCreateGeo.cpp" line="115"/>
       <source>Creates a point</source>
-      <translation>Creates a point</translation>
+      <translation>Δημιουργεί ένα Σημείο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="142"/>
+      <location filename="../../CommandCreateGeo.cpp" line="145"/>
       <source>Polyline</source>
       <translation>Πολλαπλές Γραμμές</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="143"/>
+      <location filename="../../CommandCreateGeo.cpp" line="146"/>
       <source>Creates a continuous polyline</source>
-      <translation>Creates a continuous polyline</translation>
+      <translation>Αυτό το εργαλείο σάς επιτρέπει να σχεδιάσετε πολλές διαδοχικές γραμμές τη μία μετά την άλλη χωρίς διακοπή. Κάθε φορά που κάνετε κλικ, ολοκληρώνεται η μία γραμμή και ξεκινά αμέσως η επόμενη από το ίδιο ακριβώς σημείο, επιτρέποντάς σας να φτιάξετε γρήγορα σύνθετα σχήματα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="199"/>
+      <location filename="../../CommandCreateGeo.cpp" line="201"/>
       <source>Line</source>
       <translation>Γραμμή</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="200"/>
+      <location filename="../../CommandCreateGeo.cpp" line="202"/>
       <source>Creates a line</source>
-      <translation>Creates a line</translation>
+      <translation>Δημιουργεί μια Γραμμή</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="230"/>
+      <location filename="../../CommandCreateGeo.cpp" line="232"/>
       <source>Polyline</source>
       <translation>Πολλαπλές Γραμμές</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="232"/>
+      <location filename="../../CommandCreateGeo.cpp" line="233"/>
       <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
-      <translation>Creates a continuous polyline. Press the 'M' key to switch segment modes</translation>
+      <translation>Αυτό το εργαλείο σάς επιτρέπει να σχεδιάζετε πολλές γραμμές τη μία μετά την άλλη χωρίς διακοπή. Το ιδιαίτερο χαρακτηριστικό του είναι ότι πατώντας το πλήκτρο 'M' καθώς σχεδιάζετε, μπορείτε να αλλάξετε τη γραμμή σε τόξο (καμπύλη) ή σε διαφορετικές γωνίες, επιτρέποντάς σας να φτιάξετε πολύπλοκα σχήματα με μία μόνο κίνηση</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="264"/>
+      <location filename="../../CommandCreateGeo.cpp" line="267"/>
       <source>Arc</source>
       <translation>Τόξο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="265"/>
+      <location filename="../../CommandCreateGeo.cpp" line="268"/>
       <source>Creates an arc</source>
-      <translation>Creates an arc</translation>
+      <translation>Δημιουργεί ένα Τόξο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="332"/>
+      <location filename="../../CommandCreateGeo.cpp" line="337"/>
       <source>Arc From Center</source>
-      <translation>Arc From Center</translation>
+      <translation>Τόξο από Κέντρο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="333"/>
+      <location filename="../../CommandCreateGeo.cpp" line="338"/>
       <source>Creates an arc defined by a center point and an end point</source>
-      <translation>Creates an arc defined by a center point and an end point</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε ένα τόξο επιλέγοντας πρώτα το κέντρο της και μετά το σημείο από το οποίο θα ξεκινήσει η γραμμή. Η απόσταση ανάμεσα στα δύο αυτά σημεία καθορίζει αυτόματα πόσο μεγάλη θα είναι η καμπύλη (ακτίνα της)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="364"/>
+      <location filename="../../CommandCreateGeo.cpp" line="369"/>
       <source>Arc From 3 Points</source>
-      <translation>Arc From 3 Points</translation>
+      <translation>Τόξο από 3 Σημεία</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="365"/>
+      <location filename="../../CommandCreateGeo.cpp" line="370"/>
       <source>Creates an arc defined by 2 end points and 1 point on the arc</source>
-      <translation>Creates an arc defined by 2 end points and 1 point on the arc</translation>
+      <translation>Δημιουργεί ένα τόξο που ορίζεται από 2 τελικά σημεία και 1 σημείο πάνω στο τόξο. Σχεδιάζετε μια καμπύλη επιλέγοντας πρώτα 2 τελικά σημεία πού ξεκινάει και πού τελειώνει η γραμμή. Με το τρίτο σημείο, ορίζετε πόσο πολύ θα «φουσκώνει» η καμπύλη, τραβώντας την προς τη θέση που θέλετε</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="397"/>
+      <location filename="../../CommandCreateGeo.cpp" line="405"/>
       <source>Elliptical Arc</source>
       <translation>Ελλειπτικό Τόξο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="398"/>
+      <location filename="../../CommandCreateGeo.cpp" line="406"/>
       <source>Creates an elliptical arc</source>
-      <translation>Creates an elliptical arc</translation>
+      <translation>Δημιουργεί ένα ελλειπτικό τόξο. Αντί για μια ομοιόμορφη κυκλική καμπύλη, δημιουργεί μια καμπύλη που ακολουθεί ένα ωοειδές σχήμα, ορίζοντας το κέντρο, τις δύο διαφορετικές ακτίνες του και τα σημεία που ξεκινά και τελειώνει η γραμμή</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="428"/>
+      <location filename="../../CommandCreateGeo.cpp" line="436"/>
       <source>Hyperbolic Arc</source>
       <translation>Υπερβολικό Τόξο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="429"/>
+      <location filename="../../CommandCreateGeo.cpp" line="437"/>
       <source>Creates a hyperbolic arc</source>
-      <translation>Creates a hyperbolic arc</translation>
+      <translation>Δημιουργεί ένα υπερβολικό τόξο. Σάς επιτρέπει να σχεδιάσετε μια ανοιχτή καμπύλη που ακολουθεί το σχήμα της υπερβολής. Είναι μια μαθηματική καμπύλη που μοιάζει με πολύ ανοιχτό «U» και χρησιμοποιείται συχνά σε εξειδικευμένα σχέδια, όπως σε ορισμένους τύπους κατόπτρων ή σε μελέτες ροής</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="458"/>
+      <location filename="../../CommandCreateGeo.cpp" line="466"/>
       <source>Parabolic Arc</source>
       <translation>Παραβολικό Τόξο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="459"/>
+      <location filename="../../CommandCreateGeo.cpp" line="467"/>
       <source>Creates a parabolic arc</source>
-      <translation>Creates a parabolic arc</translation>
+      <translation>Δημιουργεί ένα παραβολικό τόξο. Σάς επιτρέπει να σχεδιάσετε μια καμπύλη που έχει το σχήμα της παραβολής. Ορίζετε την εστία και την κορυφή της καμπύλης για να δημιουργήσετε αυτό το ακριβές μαθηματικό σχήμα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="490"/>
+      <location filename="../../CommandCreateGeo.cpp" line="498"/>
       <source>Conic</source>
-      <translation>Κωνική</translation>
+      <translation>Κωνικό</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="491"/>
+      <location filename="../../CommandCreateGeo.cpp" line="499"/>
       <source>Creates a conic</source>
-      <translation>Creates a conic</translation>
+      <translation>Δημιουργεί μια κωνική τομή. Σάς επιτρέπει να σχεδιάσετε καμπύλες που προκύπτουν από την τομή ενός κώνου, όπως η έλλειψη, παραβολή η υπερβολή. Αντί για έναν απλό κύκλο, μπορείτε να δημιουργήσετε πιο σύνθετες και "φυσικές" καμπύλες ορίζοντας τα σημεία εστίασης και την κλίση τους</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="556"/>
+      <location filename="../../CommandCreateGeo.cpp" line="565"/>
       <source>Circle From Center</source>
-      <translation>Circle From Center</translation>
+      <translation>Κύκλος από Κέντρο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="557"/>
+      <location filename="../../CommandCreateGeo.cpp" line="566"/>
       <source>Creates a circle from a center and rim point</source>
-      <translation>Creates a circle from a center and rim point</translation>
+      <translation>Δημιουργεί έναν κύκλο κάνοντας δύο κλικ: το πρώτο ορίζει το κέντρο του και το δεύτερο ορίζει ένα σημείο πάνω στην εξωτερική γραμμή (την περιφέρεια). Η απόσταση ανάμεσα στα δύο κλικ καθορίζει πόσο μεγάλος θα είναι ο κύκλος</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="587"/>
+      <location filename="../../CommandCreateGeo.cpp" line="596"/>
       <source>Circle From 3 Points</source>
-      <translation>Circle From 3 Points</translation>
+      <translation>Κύκλος απο 3 Σημεία</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="588"/>
+      <location filename="../../CommandCreateGeo.cpp" line="597"/>
       <source>Creates a circle from 3 perimeter points</source>
-      <translation>Creates a circle from 3 perimeter points</translation>
+      <translation>Δημιουργεί έναν κύκλο από 3 σημεία της περιφέρειας. Είναι πολύ χρήσιμο όταν θέλετε να τοποθετήστε έναν κύκλο ανάμεσα σε τρεις υπάρχουσες γραμμές ή κορυφές του σχεδίου σας, χωρίς να γνωρίζετε από πριν πού βρίσκεται το κέντρο του</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="624"/>
+      <location filename="../../CommandCreateGeo.cpp" line="636"/>
       <source>Ellipse From Center</source>
-      <translation>Ellipse From Center</translation>
+      <translation>Έλλειψη από Κέντρο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="625"/>
+      <location filename="../../CommandCreateGeo.cpp" line="637"/>
       <source>Creates an ellipse from a center and rim point</source>
-      <translation>Creates an ellipse from a center and rim point</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε ένα ωοειδές σχήμα, από το κέντρο και ένα σημείο που ορίζει τη μία από τις δύο άκρες του. Στη συνέχεια, μετακινείτε το ποντίκι για να καθορίσετε πόσο πλατιά ή στενή θα είναι η έλλειψη</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="659"/>
+      <location filename="../../CommandCreateGeo.cpp" line="671"/>
       <source>Ellipse From 3 Points</source>
-      <translation>Ellipse From 3 Points</translation>
+      <translation>Έλλειψη από 3 Σημεία</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="660"/>
+      <location filename="../../CommandCreateGeo.cpp" line="672"/>
       <source>Creates an ellipse from 3 points on its perimeter</source>
-      <translation>Creates an ellipse from 3 points on its perimeter</translation>
+      <translation>Δημιουργεί μια έλλειψη από 3 σημεία της περιφέρειας. Σάς επιτρέπει να σχεδιάσετε μια έλλειψη ορίζοντας τρία συγκεκριμένα σημεία από τα οποία πρέπει να περνάει η εξωτερική της γραμμή</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateRectangles</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="694"/>
+      <location filename="../../CommandCreateGeo.cpp" line="709"/>
       <source>Rectangle</source>
       <translation>Ορθογώνιο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="695"/>
+      <location filename="../../CommandCreateGeo.cpp" line="710"/>
       <source>Creates a rectangle</source>
-      <translation>Creates a rectangle</translation>
+      <translation>Δημιουργεί γρήγορα ένα ορθογώνιο παραλληλόγραμμο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="755"/>
+      <location filename="../../CommandCreateGeo.cpp" line="769"/>
       <source>Rectangle</source>
       <translation>Ορθογώνιο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="756"/>
+      <location filename="../../CommandCreateGeo.cpp" line="770"/>
       <source>Creates a rectangle from 2 corner points</source>
-      <translation>Creates a rectangle from 2 corner points</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε ένα ορθογώνιο κάνοντας δύο κλικ: ένα για την πρώτη γωνία και ένα για την απέναντι διαγώνια γωνία. Το FreeCAD θα φτιάξει αυτόματα τις τέσσερις πλευρές και θα τις κρατήσει οριζόντιες και κατακόρυφες</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateRectangleCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="788"/>
+      <location filename="../../CommandCreateGeo.cpp" line="805"/>
       <source>Centered Rectangle</source>
-      <translation>Centered Rectangle</translation>
+      <translation>Κεντραρισμένο Ορθογώνιο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="789"/>
+      <location filename="../../CommandCreateGeo.cpp" line="806"/>
       <source>Creates a centered rectangle from a center and a corner point</source>
-      <translation>Creates a centered rectangle from a center and a corner point</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε ένα ορθογώνιο ξεκινώντας από το κέντρο του. Το πρώτο σημείο ορίζει το κέντρο και το δεύτερο ορίζει μία από τις γωνίες του. Καθώς μετακινείτε το ποντίκι, το ορθογώνιο μεγαλώνει συμμετρικά προς όλες τις πλευρές</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="822"/>
+      <location filename="../../CommandCreateGeo.cpp" line="842"/>
       <source>Rounded Rectangle</source>
-      <translation>Rounded Rectangle</translation>
+      <translation>Ορθογώνιο Στρογγυλεμένων Γωνιών</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="823"/>
+      <location filename="../../CommandCreateGeo.cpp" line="843"/>
       <source>Creates a rounded rectangle from 2 corner points</source>
-      <translation>Creates a rounded rectangle from 2 corner points</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε ένα ορθογώνιο επιλέγοντας τις δύο διαγώνιες γωνίες του, όπως και στο απλό ορθογώνιο. Η διαφορά είναι ότι το FreeCAD προσθέτει αυτόματα καμπύλες (τόξα) στις τέσσερις γωνίες του</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="858"/>
+      <location filename="../../CommandCreateGeo.cpp" line="881"/>
       <source>Polygon</source>
       <translation>Πολύγωνο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="859"/>
+      <location filename="../../CommandCreateGeo.cpp" line="882"/>
       <source>Creates a regular polygon from a center and corner point</source>
-      <translation>Creates a regular polygon from a center and corner point</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε Πολύγωνα. Το πρώτο κλικ ορίζει το κέντρο του σχήματος και το δεύτερο ορίζει τη θέση μίας από τις γωνίες του, καθορίζοντας ταυτόχρονα το μέγεθος και τον προσανατολισμό του πολυγώνου</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="932"/>
+      <location filename="../../CommandCreateGeo.cpp" line="953"/>
       <source>Triangle</source>
       <translation>Τρίγωνο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="933"/>
+      <location filename="../../CommandCreateGeo.cpp" line="954"/>
       <source>Creates an equilateral triangle from a center and corner point</source>
-      <translation>Creates an equilateral triangle from a center and corner point</translation>
+      <translation>Δημιουργεί ένα ισόπλευρο τρίγωνο. Το πρώτο σημείο ορίζει το κέντρο του τριγώνου και το δεύτερο ορίζει τη θέση μιας από τις γωνίες του, καθορίζοντας έτσι το μέγεθος και την κλίση του</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="963"/>
+      <location filename="../../CommandCreateGeo.cpp" line="984"/>
       <source>Square</source>
       <translation>Τετράγωνο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="964"/>
+      <location filename="../../CommandCreateGeo.cpp" line="985"/>
       <source>Creates a square from a center and corner point</source>
-      <translation>Creates a square from a center and corner point</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε ένα τέλειο τετράγωνο ξεκινώντας από τη μέση του. Το πρώτο σημείο ορίζει το κέντρο και το δεύτερο ορίζει μία από τις γωνίες του. Το σχήμα μεγαλώνει ομοιόμορφα προς όλες τις κατευθύνσεις καθώς μετακινείτε το ποντίκι</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="994"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1015"/>
       <source>Pentagon</source>
-      <translation>Pentagon</translation>
+      <translation>Πεντάγωνο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="995"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1016"/>
       <source>Creates a pentagon from a center and corner point</source>
-      <translation>Creates a pentagon from a center and corner point</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε ένα κανονικό πεντάγωνο (σχήμα με 5 ίσες πλευρές). Το πρώτο σημείο ορίζει το κέντρο του και το δεύτερο ορίζει τη θέση μιας από τις γωνίες του, καθορίζοντας πόσο μεγάλο θα είναι</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1025"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1046"/>
       <source>Hexagon</source>
       <translation>Εξάγωνο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1026"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1047"/>
       <source>Creates a hexagon from a center and corner point</source>
-      <translation>Creates a hexagon from a center and corner point</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε ένα εξάγωνο (σχήμα με 6 ίσες πλευρές). Το πρώτο σημείο ορίζει το κέντρο του και το δεύτερο ορίζει τη θέση μιας από τις γωνίες του, καθορίζοντας πόσο μεγάλο θα είναι</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1056"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1077"/>
       <source>Heptagon</source>
-      <translation>Heptagon</translation>
+      <translation>Επτάγωνο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1057"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1078"/>
       <source>Creates a heptagon from a center and corner point</source>
-      <translation>Creates a heptagon from a center and corner point</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε ένα επτάγωνο (σχήμα με 7 ίσες πλευρές). Το πρώτο σημείο ορίζει το κέντρο του και το δεύτερο ορίζει τη θέση μιας από τις γωνίες του, καθορίζοντας πόσο μεγάλο θα είναι</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1087"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1108"/>
       <source>Octagon</source>
-      <translation>Octagon</translation>
+      <translation>Οκτάγωνο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1088"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1109"/>
       <source>Creates an octagon from a center and corner point</source>
-      <translation>Creates an octagon from a center and corner point</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε ένα οκτάγωνο (σχήμα με 8 ίσες πλευρές). Το πρώτο σημείο ορίζει το κέντρο του και το δεύτερο ορίζει τη θέση μιας από τις γωνίες του, καθορίζοντας πόσο μεγάλο θα είναι</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1118"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1139"/>
       <source>Polygon</source>
       <translation>Πολύγωνο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1119"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1140"/>
       <source>Creates a regular polygon from a center and corner point</source>
-      <translation>Creates a regular polygon from a center and corner point</translation>
+      <translation>Με αυτό το εργαλείο σχεδιάζετε Πολύγωνα. Το πρώτο κλικ ορίζει το κέντρο του σχήματος και το δεύτερο ορίζει τη θέση μίας από τις γωνίες του, καθορίζοντας ταυτόχρονα το μέγεθος και τον προσανατολισμό του πολυγώνου</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1157"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1177"/>
       <source>Slot</source>
-      <translation>Slot</translation>
+      <translation>Επιμήκης οπή (Slot)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1158"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1178"/>
       <source>Slot tools</source>
-      <translation>Slot tools</translation>
+      <translation>Εργαλεία Επιμήκης οπής (Slot)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1213"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1233"/>
       <source>Slot</source>
-      <translation type="unfinished">Slot</translation>
+      <translation>Επιμήκης Οπή (Slot)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1214"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1234"/>
       <source>Creates a slot</source>
-      <translation>Creates a slot</translation>
+      <translation>Αυτό το εργαλείο σχεδιάζει μια «σχισμή» ή «λούκι», δηλαδή ένα σχήμα που μοιάζει με παραλληλόγραμμο με ημικυκλικές</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1244"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1264"/>
       <source>Arc Slot</source>
-      <translation>Arc Slot</translation>
+      <translation>Τοξοειδής Επιμήκης Οπή</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1245"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1265"/>
       <source>Creates an arc slot</source>
-      <translation>Creates an arc slot</translation>
+      <translation>Αυτό το εργαλείο σχεδιάζει μια «σχισμή» ή «λούκι» που ακολουθεί μια καμπύλη (τόξο) αντί για ευθεία γραμμή</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1277"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1297"/>
       <source>B-Spline</source>
-      <translation>B-Spline</translation>
+      <translation>Καμπύλη B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1278"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1298"/>
       <source>Creates a B-spline curve defined by control points</source>
-      <translation>Creates a B-spline curve defined by control points</translation>
+      <translation>Η B-spline είναι μια καμπύλη που μπορεί να πάρει πολύ περίπλοκα και ομαλά σχήματα. Τα σημεία ελέγχου λειτουργούν σαν μαγνήτες: η γραμμή δεν περνάει απαραίτητα μέσα από αυτά, αλλά «τεντώνεται» προς το μέρος τους, επιτρέποντάς σας να διαμορφώσετε το σχήμα της με μεγάλη ακρίβεια και φυσικότητα.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1343"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1406"/>
       <source>B-Spline</source>
-      <translation type="unfinished">B-Spline</translation>
+      <translation>Καμπύλη B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1344"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1407"/>
       <source>Creates a B-spline curve defined by control points</source>
-      <translation>Creates a B-spline curve defined by control points</translation>
+      <translation>Η B-spline είναι μια καμπύλη που μπορεί να πάρει πολύ περίπλοκα και ομαλά σχήματα. Τα σημεία ελέγχου λειτουργούν σαν μαγνήτες: η γραμμή δεν περνάει απαραίτητα μέσα από αυτά, αλλά «τεντώνεται» προς το μέρος τους, επιτρέποντάς σας να διαμορφώσετε το σχήμα της με μεγάλη ακρίβεια και φυσικότητα.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1380"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1446"/>
       <source>Periodic B-Spline</source>
-      <translation>Periodic B-Spline</translation>
+      <translation>Περιοδική Καμπύλη B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1381"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1447"/>
       <source>Creates a periodic B-spline curve defined by control points</source>
-      <translation>Creates a periodic B-spline curve defined by control points</translation>
+      <translation>Αυτή η λειτουργία δημιουργεί μια κλειστή και ομαλή καμπύλη (σαν ένας ελαστικός δακτύλιος) που δεν έχει εμφανή αρχή και τέλος. Τα σημεία ελέγχου λειτουργούν ως οδηγοί που τραβούν την καμπύλη προς το μέρος τους, επιτρέποντάς σας να φτιάξετε σύνθετα, κυκλικά σχήματα με απόλυτα ομαλές ενώσεις</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1416"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1485"/>
       <source>B-Spline From Knots</source>
-      <translation>B-Spline From Knots</translation>
+      <translation>B-Spline Από Κόμβους</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1417"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1486"/>
       <source>Creates a B-spline from knots, i.e. from interpolation</source>
-      <translation>Creates a B-spline from knots, i.e. from interpolation</translation>
+      <translation>Δημιουργεί μια ομαλή καμπύλη που περνάει ακριβώς μέσα από τα σημεία (κόμβους) που επιλέγετε. Σε αντίθεση με τα σημεία ελέγχου που λειτουργούν σαν «μαγνήτες» από μακριά, εδώ η γραμμή «ακουμπά» υποχρεωτικά πάνω σε κάθε κλικ που κάνετε, δίνοντάς σας άμεσο έλεγχο της διαδρομής της</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePeriodicBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1453"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1522"/>
       <source>Periodic B-Spline From Knots</source>
-      <translation>Periodic B-Spline From Knots</translation>
+      <translation>Περιοδική B-Spline Από Κόμβους</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1454"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1523"/>
       <source>Creates a periodic B-spline defined by knots using interpolation</source>
-      <translation>Creates a periodic B-spline defined by knots using interpolation</translation>
+      <translation>Δημιουργεί μια κλειστή και ομαλή καμπύλη (χωρίς αρχή και τέλος) που περνάει ακριβώς μέσα από τα σημεία (κόμβους) που επιλέγετε. Το πρόγραμμα υπολογίζει αυτόματα την ιδανική διαδρομή ώστε η γραμμή να ενωθεί στο τέλος με την αρχή της, δημιουργώντας ένα ενιαίο, ομαλό σχήμα χωρίς γωνίες</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1491"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1565"/>
       <source>Fillet/Chamfer</source>
-      <translation>Fillet/Chamfer</translation>
+      <translation>Στρογγύλεμα / Λοξοτόμηση</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1492"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1566"/>
       <source>Creates a fillet or chamfer between 2 lines</source>
-      <translation>Creates a fillet or chamfer between 2 lines</translation>
+      <translation>Στρογγύλεμα (Fillet): Μετατρέπει μια μυτερή γωνία σε μια ομαλή καμπύλη (τόξο). Λοξοτόμηση: Κόβει τη γωνία με μια ευθεία γραμμή</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1525"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1599"/>
       <source>Fillet</source>
       <translation>Στρογγύλεμα</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1526"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1600"/>
       <source>Creates a fillet between 2 selected lines or at coincident points</source>
-      <translation type="unfinished">Creates a fillet between 2 selected lines or at coincident points</translation>
+      <translation>Αυτό το εργαλείο «στρογγυλεύει» τις γωνίες του σχεδίου σας. Μπορείτε να το χρησιμοποιήσετε επιλέγοντας 2 γραμμές που συναντιούνται ή απευθείας τη γωνία (το κοινό σημείο) όπου ενώνονται</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateChamfer</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1556"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1631"/>
       <source>Chamfer</source>
       <translation>Λοξότμηση</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1557"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1632"/>
       <source>Creates a chamfer between 2 selected lines or at coincident points</source>
-      <translation type="unfinished">Creates a chamfer between 2 selected lines or at coincident points</translation>
+      <translation>Αυτό το εργαλείο «κόβει» τις γωνίες του σχεδίου σας. Αντί για μια αιχμηρή γωνία, δημιουργεί μια πλάγια ευθεία γραμμή που ενώνει τις δύο πλευρές. Μπορείτε να το εφαρμόσετε είτε επιλέγοντας τις 2 γραμμές που ενώνονται, είτε κάνοντας κλικ απευθείας πάνω στη γωνία τους</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCurveEdition</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1589"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1665"/>
       <source>Edit Edges</source>
-      <translation>Edit Edges</translation>
+      <translation>Επεξεργασία Ακμών</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1590"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1666"/>
       <source>Edge editing tools</source>
-      <translation>Edge editing tools</translation>
+      <translation>Εργαλεία Επεξεργασία Ακμών</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1623"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1699"/>
       <source>Trim Edge</source>
-      <translation>Trim Edge</translation>
+      <translation>Περικοπή Ακμής</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1624"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1700"/>
       <source>Trims an edge with respect to the selected position</source>
-      <translation>Trims an edge with respect to the selected position</translation>
+      <translation>Αυτό το εργαλείο λειτουργεί σαν «ψαλίδι». Όταν κάνετε κλικ σε ένα τμήμα μιας γραμμής που περισσεύει, το πρόγραμμα το αφαιρεί αυτόματα μέχρι το σημείο που αυτή συναντά μια άλλη γραμμή. Σας βοηθά να καθαρίσετε το σχέδιό σας από περιττά τμήματα γρήγορα και με ακρίβεια</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1653"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1729"/>
       <source>Extend Edge</source>
-      <translation>Extend Edge</translation>
+      <translation>Επέκταση Ακμής</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1654"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1730"/>
       <source>Extends an edge with respect to the selected position</source>
-      <translation>Extends an edge with respect to the selected position</translation>
+      <translation>Αυτό το εργαλείο μεγαλώνει αυτόματα μια γραμμή. Αντί να τραβάτε τη γραμμή με το χέρι, απλώς κάνετε κλικ πάνω της και το FreeCAD την προεκτείνει με ακρίβεια μέχρι να συναντήσει το πλησιέστερο στοιχείο του σχεδίου σας</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1683"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1759"/>
       <source>Split Edge</source>
-      <translation>Split Edge</translation>
+      <translation>Διαχωρισμός Ακμής</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1684"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1760"/>
       <source>Splits an edge into 2 segments while preserving constraints</source>
-      <translation>Splits an edge into 2 segments while preserving constraints</translation>
+      <translation>Διασπά μια ακμή σε 2 τμήματα διατηρώντας τους περιορισμούς</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1714"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1790"/>
       <source>External Geometry</source>
-      <translation>External Geometry</translation>
+      <translation>Εξωτερική Γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1716"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1791"/>
       <source>Creates sketch elements linked to geometry defined outside the sketch</source>
-      <translation>Creates sketch elements linked to geometry defined outside the sketch</translation>
+      <translation>Αυτό το εργαλείο σάς επιτρέπει να «φέρνετε» στο τωρινό σας σχέδιο γραμμές ή γωνίες από άλλα τρισδιάστατα αντικείμενα που έχετε ήδη φτιάξει. Με αυτόν τον τρόπο, μπορείτε να ευθυγραμμίσετε το νέο σας σχήμα με απόλυτη ακρίβεια πάνω στα υπάρχοντα κομμάτια, εξασφαλίζοντας ότι όλα τα μέρη της κατασκευής σας θα ταιριάζουν τέλεια μεταξύ τους</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherProjection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1771"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1848"/>
       <source>External Projection</source>
-      <translation>External Projection</translation>
+      <translation>Εξωτερική Προβολή</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1772"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1849"/>
       <source>Creates the projection of external geometry in the sketch plane</source>
-      <translation>Creates the projection of external geometry in the sketch plane</translation>
+      <translation>Αυτό το εργαλείο σάς επιτρέπει να «δανειστείτε» σχήματα από άλλα αντικείμενα και να τα εμφανίσετε στο τωρινό σας σχέδιο. Λειτουργεί σαν να ρίχνετε το φως ενός προβολέα πάνω σε μια ακμή ή μια επιφάνεια: η «σκιά» τους αποτυπώνεται πάνω στο επίπεδο που σχεδιάζετε, επιτρέποντάς σας να τη χρησιμοποιήσετε ως οδηγό για να ευθυγραμμίσετε τα νέα σας σχήματα με απόλυτη ακρίβεια</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherIntersection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1806"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1885"/>
       <source>External Intersection</source>
-      <translation>External Intersection</translation>
+      <translation>Εξωτερική Τομή</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1808"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1886"/>
       <source>Creates the intersection of external geometry with the sketch plane</source>
-      <translation>Creates the intersection of external geometry with the sketch plane</translation>
+      <translation>Βρίσκει και σχεδιάζει τα σημεία ή τις γραμμές όπου ένα άλλο τρισδιάστατο αντικείμενο «τρυπάει» ή συναντά το επίπεδο του σχεδίου σας. Φανταστείτε ότι το επίπεδο του σχεδίου σας είναι ένα χαρτί που διαπερνά ένα αντικείμενο· η εξωτερική τομή σάς δείχνει το ακριβές «αποτύπωμα» που αφήνει το αντικείμενο πάνω στο χαρτί, επιτρέποντάς σας να σχεδιάσετε γύρω από αυτό με απόλυτη ακρίβεια</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1843"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1923"/>
       <source>Carbon Copy</source>
-      <translation>Carbon Copy</translation>
+      <translation>Πιστό Αντίγραφο</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1844"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1924"/>
       <source>Copies the geometry of another sketch</source>
-      <translation>Copies the geometry of another sketch</translation>
+      <translation>Αυτό το εργαλείο σάς επιτρέπει να «Αντιγράψετε» ολόκληρο το περιεχόμενο ενός άλλου σχεδίου (γραμμές, κύκλους και διαστάσεις) και να το τοποθετήσετε στο τωρινό σας σχέδιο. Το σημαντικό είναι ότι το αντίγραφο παραμένει συνδεδεμένο με το πρωτότυπο: αν αλλάξετε κάτι στο αρχικό σχέδιο, το αντίγραφο θα ενημερωθεί αυτόματα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherInsertKnot</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="914"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="969"/>
       <source>Insert Knot</source>
-      <translation>Insert Knot</translation>
+      <translation>Εισαγωγή Κόμβων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="916"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="970"/>
       <source>Inserts a knot at a given parameter. If a knot already exists at that parameter, its multiplicity is increased by 1.</source>
-      <translation>Inserts a knot at a given parameter. If a knot already exists at that parameter, its multiplicity is increased by 1.</translation>
+      <translation>Αυτό το εργαλείο προσθέτει ένα νέο σημείο ελέγχου πάνω σε μια καμπύλη B-spline για να μπορείτε να τη λυγίσετε με μεγαλύτερη λεπτομέρεια. Αν προσθέσετε έναν κόμβο στο ίδιο ακριβώς σημείο όπου υπάρχει ήδη ένας άλλος (αυξάνοντας την «πολλαπλότητα κατά 1»), η καμπύλη γίνεται λιγότερο ομαλή σε εκείνο το σημείο.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherJoinCurves</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="983"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1046"/>
       <source>Join Curves</source>
-      <translation>Join Curves</translation>
+      <translation>Ένωση Καμπυλών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="984"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1047"/>
       <source>Joins 2 curves at selected end points</source>
-      <translation>Joins 2 curves at selected end points</translation>
+      <translation>Αυτό το εργαλείο παίρνει 2 ξεχωριστές καμπύλες και τις «κολλάει» μεταξύ τους για να γίνουν μία ενιαία. Πρέπει να επιλέξετε τις άκρες των δύο γραμμών που θέλετε να ενωθούν και το FreeCAD θα τις συνδέσει ομαλά, καταργώντας το κενό ανάμεσά τους</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplineDegree</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="64"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="67"/>
       <source>Toggle B-Spline Degree</source>
-      <translation>Toggle B-Spline Degree</translation>
+      <translation>Εναλλαγή Βαθμού B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="65"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="68"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation>Εναλλάσσει την ορατότητα του βαθμού για όλες τις γραμμές B-splines</translation>
+      <translation>Αυτή η εντολή εμφανίζει ή κρύβει έναν αριθμό δίπλα από τις καμπύλες B-spline. Αυτός ο αριθμός (ο βαθμός) σας δείχνει πόσο «ευλύγιστη» είναι η καμπύλη</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplinePolygon</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="93"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="96"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation>Toggle B-Spline Control Polygon</translation>
+      <translation>Εναλλάσσει το Πολύγωνο Ελέγχου B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="94"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="97"/>
       <source>Toggles the visibility of the control polygons for all B-splines</source>
-      <translation>Εναλλάσσει την ορατότητα των πολυγώνων ελέγχου για όλες τις γραμμές B-splines</translation>
+      <translation>Αυτή η εντολή εμφανίζει ή κρύβει τις βοηθητικές γραμμές (τον «σκελετό») που συνδέουν τα σημεία ελέγχου στις καμπύλες B-spline. Σας επιτρέπει να «καθαρίσετε» την οθόνη από τις πολλές βοηθητικές γραμμές για να βλέπετε καλύτερα το τελικό σχήμα, ή να τις επαναφέρετε όταν θέλετε να κάνετε διορθώσεις</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="122"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="125"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation>Toggle B-Spline Curvature Comb</translation>
+      <translation>Εναλλαγή Διαγράμματος Καμπυλότητας B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="123"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="126"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation>Εναλλαγή της ορατότητας της χτένας καμπυλότητας για όλες τις B-splines</translation>
+      <translation>Αυτή η εντολή εμφανίζει ή κρύβει μια σειρά από βοηθητικές γραμμές κατά μήκος μιας καμπύλης. Το μήκος αυτών των γραμμών σάς δείχνει πόσο απότομα «στρίβει» η καμπύλη σε κάθε σημείο. Είναι ένα πολύτιμο εργαλείο για να βεβαιωθείτε ότι οι καμπύλες σας είναι ομαλές και δεν έχουν απότομα τσακίσματα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplineKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="151"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="154"/>
       <source>Toggle B-spline knot multiplicity</source>
-      <translation>Toggle B-spline knot multiplicity</translation>
+      <translation>Εναλλαγή Πολλαπλότητας Κόμβων B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="152"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="155"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
-      <translation>Εναλλαγή της ορατότητας της πολλαπλότητας κόμβου για όλες τις B-splines</translation>
+      <translation>Αυτή η εντολή εμφανίζει ή κρύβει έναν αριθμό πάνω στους κόμβους των καμπυλών B-spline. Ο αριθμός αυτός σας δείχνει αν η καμπύλη είναι εντελώς ομαλή ή αν έχει τσακίσεις σε εκείνο το σημείο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplinePoleWeight</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="180"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="183"/>
       <source>Toggle B-Spline Control Point Weight</source>
-      <translation>Toggle B-Spline Control Point Weight</translation>
+      <translation>Εναλλαγή Δύναμη έλξης Σημείων ελέγχου B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="181"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="184"/>
       <source>Toggles the visibility of control point weights for all B-splines</source>
-      <translation>Toggles the visibility of control point weights for all B-splines</translation>
+      <translation>Αυτή η εντολή εμφανίζει ή κρύβει τις τιμές δύναμης έλξης των σημείων ελέγχου στις καμπύλες B-spline. Σας επιτρέπει να βλέπετε πόσο έντονα επηρεάζει κάθε σημείο το σχήμα της καμπύλης ή να κρύβετε αυτούς τους αριθμούς για να μην μπερδεύεται το σχέδιό σας</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompBSplineShowHideGeometryInformation</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="210"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="212"/>
       <source>Toggle B-Spline Information Layer</source>
-      <translation>Toggle B-Spline Information Layer</translation>
+      <translation>Εναλλαγή Επιπέδου Πληροφοριών B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="211"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="213"/>
       <source>Toggles the visibility of the information layer for all B-splines</source>
-      <translation>Toggles the visibility of the information layer for all B-splines</translation>
+      <translation>Αυτή η εντολή εμφανίζει ή κρύβει όλες τις τεχνικές ενδείξεις (όπως βαθμούς, Δύναμη έλξης και βοηθητικά σχήματα) ταυτόχρονα. Είναι χρήσιμο για να «καθαρίζετε» γρήγορα την οθόνη σας από τις πολλές πληροφορίες ώστε να βλέπετε το καθαρό σχήμα του σχεδίου σας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="292"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="295"/>
       <source>Toggle B-Spline Degree</source>
-      <translation>Toggle B-Spline Degree</translation>
+      <translation>Εναλλαγή Βαθμού B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="301"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="311"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation>Toggle B-Spline Control Polygon</translation>
+      <translation>Εναλλάσσει το Πολύγωνο Ελέγχου B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="310"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="330"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation>Toggle B-Spline Curvature Comb</translation>
+      <translation>Εναλλαγή Διαγράμματος Καμπυλότητας B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="319"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="349"/>
       <source>Toggle B-Spline Knot Multiplicity</source>
-      <translation>Toggle B-Spline Knot Multiplicity</translation>
+      <translation>Εναλλαγή πολλαπλότητας κόμβων B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="329"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="369"/>
       <source>Toggle B-Spline Control Point Weight</source>
-      <translation>Toggle B-Spline Control Point Weight</translation>
+      <translation>Εναλλαγή Δύναμη έλξης Σημείων ελέγχου B-Spline</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineDegree</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="295"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="298"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="304"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation>Εναλλάσσει την ορατότητα του βαθμού για όλες τις γραμμές B-splines</translation>
+      <translation>Αυτή η εντολή εμφανίζει ή κρύβει έναν αριθμό δίπλα από τις καμπύλες B-spline. Αυτός ο αριθμός (ο βαθμός) σας δείχνει πόσο «ευλύγιστη» είναι η καμπύλη</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplinePolygon</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="303"/>
-      <location filename="../../CommandSketcherOverlay.cpp" line="306"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="317"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="323"/>
       <source>Toggles the visibility of the control polygons for all B-splines</source>
-      <translation>Εναλλάσσει την ορατότητα των πολυγώνων ελέγχου για όλες τις γραμμές B-splines</translation>
+      <translation>Αυτή η εντολή εμφανίζει ή κρύβει τις βοηθητικές γραμμές (τον «σκελετό») που συνδέουν τα σημεία ελέγχου στις καμπύλες B-spline. Σας επιτρέπει να «καθαρίσετε» την οθόνη από τις πολλές βοηθητικές γραμμές για να βλέπετε καλύτερα το τελικό σχήμα, ή να τις επαναφέρετε όταν θέλετε να κάνετε διορθώσεις</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="313"/>
-      <location filename="../../CommandSketcherOverlay.cpp" line="316"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="336"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="342"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation>Εναλλαγή της ορατότητας της χτένας καμπυλότητας για όλες τις B-splines</translation>
+      <translation>Αυτή η εντολή εμφανίζει ή κρύβει μια σειρά από βοηθητικές γραμμές κατά μήκος μιας καμπύλης. Το μήκος αυτών των γραμμών σάς δείχνει πόσο απότομα «στρίβει» η καμπύλη σε κάθε σημείο. Είναι ένα πολύτιμο εργαλείο για να βεβαιωθείτε ότι οι καμπύλες σας είναι ομαλές και δεν έχουν απότομα τσακίσματα</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="321"/>
-      <location filename="../../CommandSketcherOverlay.cpp" line="324"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="355"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="361"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
-      <translation>Εναλλαγή της ορατότητας της πολλαπλότητας κόμβου για όλες τις B-splines</translation>
+      <translation>Αυτή η εντολή εμφανίζει ή κρύβει έναν αριθμό πάνω στους κόμβους των καμπυλών B-spline. Ο αριθμός αυτός σας δείχνει αν η καμπύλη είναι εντελώς ομαλή ή αν έχει τσακίσεις σε εκείνο το σημείο</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplinePoleWeight</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="331"/>
-      <location filename="../../CommandSketcherOverlay.cpp" line="334"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="375"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="381"/>
       <source>Toggles the visibility of the control point weight for all B-splines</source>
       <translation>Εναλλάσσει την ορατότητα του βάρους του σημείου ελέγχου για όλα τα B-splines</translation>
     </message>
@@ -6936,508 +7194,509 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherArcOverlay</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="355"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="404"/>
       <source>Toggle Circular Helper for Arcs</source>
-      <translation>Toggle Circular Helper for Arcs</translation>
+      <translation>Εναλλαγή Βοηθημάτων Τόξων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="356"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="405"/>
       <source>Toggles the visibility of the circular helpers for all arcs</source>
-      <translation>Toggles the visibility of the circular helpers for all arcs</translation>
+      <translation>Εμφάνιση/Απόκρυψη βοηθημάτων για όλα τα τόξα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCopyClipboard</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="224"/>
+      <location filename="../../CommandSketcherTools.cpp" line="249"/>
       <source>C&amp;opy Elements</source>
-      <translation>C&amp;opy Elements</translation>
+      <translation>Αντιγραφή Στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="225"/>
+      <location filename="../../CommandSketcherTools.cpp" line="250"/>
       <source>Copies the selected geometries and constraints to the clipboard</source>
-      <translation>Copies the selected geometries and constraints to the clipboard</translation>
+      <translation>Αντιγράφει τα επιλεγμένα γεωμετρικά σχήματα και τους περιορισμούς στο πρόχειρο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCut</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="255"/>
+      <location filename="../../CommandSketcherTools.cpp" line="280"/>
       <source>C&amp;ut Elements</source>
-      <translation>C&amp;ut Elements</translation>
+      <translation>Αποκοπή Στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="256"/>
+      <location filename="../../CommandSketcherTools.cpp" line="281"/>
       <source>Cuts the selected geometries and constraints to the clipboard</source>
-      <translation>Cuts the selected geometries and constraints to the clipboard</translation>
+      <translation>Αποκόπτει τις επιλεγμένες γεωμετρίες και τους περιορισμούς στο πρόχειρο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherPaste</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="295"/>
+      <location filename="../../CommandSketcherTools.cpp" line="320"/>
       <source>P&amp;aste Elements</source>
-      <translation>P&amp;aste Elements</translation>
+      <translation>Επικόλληση στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="296"/>
+      <location filename="../../CommandSketcherTools.cpp" line="321"/>
       <source>Pastes the geometries and constraints from the clipboard into the sketch</source>
-      <translation>Pastes the geometries and constraints from the clipboard into the sketch</translation>
+      <translation>Αυτή η λειτουργία παίρνει ό, τι έχετε κάνει «Αντιγραφή» (γραμμές, κύκλους και τις διαστάσεις) και το τοποθετεί μέσα στο σχέδιο που δουλεύετε τώρα. Είναι ο πιο γρήγορος τρόπος να μεταφέρετε έτοιμα σχήματα από ένα σημείο σε ένα άλλο</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="343"/>
+      <location filename="../../CommandSketcherTools.cpp" line="368"/>
       <source>Select Associated Constraints</source>
-      <translation>Select Associated Constraints</translation>
+      <translation>Επιλογή Σχετιζόμενων Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="345"/>
+      <location filename="../../CommandSketcherTools.cpp" line="370"/>
       <source>Selects the constraints associated with the selected geometrical elements</source>
-      <translation>Selects the constraints associated with the selected geometrical elements</translation>
+      <translation>Αυτό το εργαλείο σάς βοηθά να βρείτε γρήγορα ποιες μετρήσεις και ποιοι περιορισμοί ελέγχουν μια γραμμή ή έναν κύκλο. Αν επιλέξετε μια γραμμή και πατήσετε αυτό το κουμπί, το FreeCAD θα φωτίσει αυτόματα όλες τις διαστάσεις, τις παραλληλίες ή τις καθετότητες που την επηρεάζουν, ώστε να ξέρετε τι πρέπει να αλλάξετε</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectOrigin</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="427"/>
+      <location filename="../../CommandSketcherTools.cpp" line="452"/>
       <source>Select Origin</source>
-      <translation>Select Origin</translation>
+      <translation>Επιλογή Σημείου Αρχής Αξόνων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="428"/>
+      <location filename="../../CommandSketcherTools.cpp" line="453"/>
       <source>Selects the local origin point of the sketch</source>
-      <translation>Selects the local origin point of the sketch</translation>
+      <translation>Επιλέγει το κεντρικό σημείο αναφοράς (αρχή αξόνων) του σχεδίου</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectVerticalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="471"/>
+      <location filename="../../CommandSketcherTools.cpp" line="496"/>
       <source>Select Vertical Axis</source>
-      <translation>Select Vertical Axis</translation>
+      <translation>Επιλογή Κατακόρυφου Άξονα</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="472"/>
+      <location filename="../../CommandSketcherTools.cpp" line="497"/>
       <source>Selects the local vertical axis of the sketch</source>
-      <translation>Selects the local vertical axis of the sketch</translation>
+      <translation>Επιλέγει τον τοπικό κατακόρυφο άξονα του σχεδίου (συνήθως ο άξονας Y)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="512"/>
+      <location filename="../../CommandSketcherTools.cpp" line="537"/>
       <source>Select Horizontal Axis</source>
-      <translation>Select Horizontal Axis</translation>
+      <translation>Επιλογή Οριζόντιου Άξονα</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="513"/>
+      <location filename="../../CommandSketcherTools.cpp" line="538"/>
       <source>Selects the local horizontal axis of the sketch</source>
-      <translation>Selects the local horizontal axis of the sketch</translation>
+      <translation>Επιλέγει τον τοπικό οριζόντιο άξονα του σχεδίου (συνήθως ο άξονας X)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="552"/>
+      <location filename="../../CommandSketcherTools.cpp" line="577"/>
       <source>Select Redundant Constraints</source>
-      <translation>Select Redundant Constraints</translation>
+      <translation>Επιλογή Περιττών Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="553"/>
+      <location filename="../../CommandSketcherTools.cpp" line="578"/>
       <source>Selects all redundant constraints</source>
-      <translation>Selects all redundant constraints</translation>
+      <translation>Επιλογή Πλεοναζόντων Περιορισμών χρησιμοποιείται όταν έχετε δώσει περισσότερες πληροφορίες από όσες χρειάζεται το πρόγραμμα, συνήθως το FreeCAD εμφανίζει ένα μήνυμα σε πορτοκαλί φόντο που λέει "Redundant Constraints"</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectMalformedConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="610"/>
+      <location filename="../../CommandSketcherTools.cpp" line="635"/>
       <source>Select Malformed Constraints</source>
-      <translation>Select Malformed Constraints</translation>
+      <translation>Επιλογή Ελαττωματικών Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="611"/>
+      <location filename="../../CommandSketcherTools.cpp" line="636"/>
       <source>Selects all malformed constraints</source>
-      <translation>Selects all malformed constraints</translation>
+      <translation>Η Επιλογή Ελαττωματικών Περιορισμών χρησιμοποιείται για τον εντοπισμό περιορισμών που έχουν "χαλάσει" τεχνικά και δεν μπορούν πλέον να υπολογιστούν σωστά από το πρόγραμμα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectPartiallyRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="665"/>
+      <location filename="../../CommandSketcherTools.cpp" line="690"/>
       <source>Select Partially Redundant Constraints</source>
-      <translation>Select Partially Redundant Constraints</translation>
+      <translation>Επιλογή Μερικώς Πλεοναζόντων Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="666"/>
+      <location filename="../../CommandSketcherTools.cpp" line="691"/>
       <source>Selects all partially redundant constraints</source>
-      <translation>Selects all partially redundant constraints</translation>
+      <translation>Η επιλογή Μερικώς Πλεοναζόντων Περιορισμών είναι ένα πιο "έξυπνο" εργαλείο καθαρισμού. Χρησιμοποιείται όταν ένας περιορισμός δεν είναι εντελώς άχρηστος, αλλά ένα μέρος της πληροφορίας που δίνει καλύπτεται ήδη από άλλους περιορισμούς</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="721"/>
+      <location filename="../../CommandSketcherTools.cpp" line="746"/>
       <source>Select Conflicting Constraints</source>
-      <translation>Select Conflicting Constraints</translation>
+      <translation>Επιλογή Συγκρουόμενων Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="722"/>
+      <location filename="../../CommandSketcherTools.cpp" line="747"/>
       <source>Selects all conflicting constraints</source>
-      <translation>Selects all conflicting constraints</translation>
+      <translation>Η επιλογή Συγκρουόμενων Περιορισμών είναι ένα από τα πιο χρήσιμα εργαλεία για τη διόρθωση σφαλμάτων, καθώς εντοπίζει περιορισμούς που "μαλώνουν" μεταξύ τους, δίνοντας στο πρόγραμμα εντολές που είναι αδύνατο να εκτελεστούν ταυτόχρονα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="779"/>
+      <location filename="../../CommandSketcherTools.cpp" line="804"/>
       <source>Select Associated Geometry</source>
-      <translation>Select Associated Geometry</translation>
+      <translation>Επιλογή Σχετιζόμενης Γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="781"/>
+      <location filename="../../CommandSketcherTools.cpp" line="806"/>
       <source>Selects the geometrical elements associated with the selected constraints</source>
-      <translation>Selects the geometrical elements associated with the selected constraints</translation>
+      <translation>Αυτή η εντολή επιλέγει αυτόματα τα γεωμετρικά στοιχεία (γραμμές, τόξα ή σημεία) που είναι συνδεδεμένα με τους περιορισμούς (κανόνες) που έχετε ήδη επιλέξει</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectElementsWithDoFs</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="899"/>
+      <location filename="../../CommandSketcherTools.cpp" line="924"/>
       <source>Select Under-Constrained Elements</source>
-      <translation>Select Under-Constrained Elements</translation>
+      <translation>Επιλογή Μη Πλήρως Περιορισμένης Γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="900"/>
+      <location filename="../../CommandSketcherTools.cpp" line="925"/>
       <source>Selects geometrical elements where the solver still detects unconstrained degrees of freedom</source>
-      <translation>Selects geometrical elements where the solver still detects unconstrained degrees of freedom</translation>
+      <translation>Η εντολή αυτή είναι ο "ανιχνευτής" που σας δείχνει ποια σημεία του σχεδίου σας μπορούν ακόμα να κουνηθούν και χρειάζονται περισσότερες διαστάσεις ή περιορισμούς</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="988"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1013"/>
       <source>Toggle Internal Geometry</source>
-      <translation>Toggle Internal Geometry</translation>
+      <translation>Εναλλαγή Εσωτερικής Γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="989"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1014"/>
       <source>Toggles the visibility of all internal geometry</source>
-      <translation>Toggles the visibility of all internal geometry</translation>
+      <translation>Αυτό το εργαλείο λειτουργεί ως "διακόπτης" για να κρύβετε ή να εμφανίζετε τις βοηθητικές γραμμές ενός σχήματος που έχετε ήδη σχεδιάσει. Χρησιμοποιείται κυρίως όταν δουλεύουμε με σύνθετα σχήματα, όπως οι ελλείψεις (ellipses) ή οι καμπύλες B-splines. Είναι οι βοηθητικές γραμμές και τα σημεία που "κουβαλάει" ένα σχήμα για να οριστεί η δομή του (π. χ. οι εστίες μιας έλλειψης ή τα κέντρα ελέγχου μιας καμπύλης)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1103"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1128"/>
       <source>Mirror</source>
-      <translation>Mirror</translation>
+      <translation>Κατοπτρισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1105"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1130"/>
       <source>Creates a mirrored copy of the selected geometry</source>
-      <translation>Creates a mirrored copy of the selected geometry</translation>
+      <translation>Κατοπτρισμός / Καθρέφτης χρησιμοποιείται για να δημιουργήσετε ένα πανομοιότυπο αντίγραφο των γραμμών σας, το οποίο "κοιτάζει" αντίθετα, σαν να καθρεφτίζεται πάνω σε έναν άξονα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2073"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2102"/>
       <source>Delete All Geometry</source>
       <translation>Διαγραφή Όλων των Γεωμετρικών Στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2074"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2103"/>
       <source>Deletes all geometry and their constraints in the current sketch, with the exception of external geometry</source>
-      <translation>Deletes all geometry and their constraints in the current sketch, with the exception of external geometry</translation>
+      <translation>Διαγραφή Όλης της Γεωμετρίας είναι η επιλογή που χρησιμοποιείται για να διαγράψετε ταυτόχρονα όλα τα σχήματα που έχετε σχεδιάσει μέσα σε ένα Σχέδιο (Sketch)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2138"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2167"/>
       <source>Delete All Constraints</source>
       <translation>Διαγραφή Όλων των Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2139"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2168"/>
       <source>Deletes all constraints in the sketch</source>
-      <translation>Deletes all constraints in the sketch</translation>
+      <translation>Διαγραφή Όλων των Περιορισμών χρησιμοποιείται για να αφαιρέσετε μαζικά όλους τους περιορισμούς και τις διαστάσεις από ένα σχέδιο, αφήνοντας όμως τις γραμμές και τα σχήματα (τη γεωμετρία) ανέπαφα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherRemoveAxesAlignment</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2205"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2234"/>
       <source>Remove Axes Alignment</source>
-      <translation>Remove Axes Alignment</translation>
+      <translation>Κατάργηση Ευθυγράμμισης Αξόνων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2206"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2235"/>
       <source>Modifies the constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
-      <translation>Modifies the constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
+      <translation>Χρησιμοποιείται για να διαγράψετε αυτόματα τους περιορισμούς που "κλειδώνουν" μια γραμμή πάνω στον οριζόντιο (X) ή τον κατακόρυφο (Y) άξονα. Δεν καταργεί απλώς τους περιορισμούς, αλλά προσπαθεί να μετατρέψει τους οριζόντιους και κάθετους περιορισμούς σε άλλους (όπως η καθετότητα μεταξύ γραμμών), ώστε το σχήμα σας να μην "διαλυθεί"</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherOffset</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2325"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2354"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2326"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2355"/>
       <source>Adds an equidistant closed contour around selected geometry: positive values offset outward, negative values inward</source>
-      <translation type="unfinished">Adds an equidistant closed contour around selected geometry: positive values offset outward, negative values inward</translation>
+      <translation>Προσθέτει ένα ισαπέχον κλειστό περίγραμμα γύρω από την επιλεγμένη γεωμετρία: οι θετικές τιμές δημιουργούν μετατόπιση προς τα έξω, ενώ οι αρνητικές προς τα μέσα</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherRotate</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2408"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2437"/>
       <source>Rotate / Polar Transform</source>
-      <translation>Rotate / Polar Transform</translation>
+      <translation>Περιστροφή / Κυκλική Διάταξη</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2409"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2438"/>
       <source>Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation</source>
-      <translation>Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation</translation>
+      <translation>Περιστρέφει την επιλεγμένη γεωμετρία δημιουργώντας 'n' αντίγραφα, τοποθετώντας τα σε ίσες αποστάσεις γύρω από ένα κέντρο που εσείς επιλέγετε</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherScale</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2442"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2471"/>
       <source>Scale</source>
       <translation>Κλίμακα</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2443"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2472"/>
       <source>Scales the selected geometries</source>
-      <translation>Scales the selected geometries</translation>
+      <translation>Αλλάζει την κλίμακα (μέγεθος) των επιλεγμένων γεωμετριών</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherTranslate</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2476"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2505"/>
       <source>Move / Array Transform</source>
-      <translation>Move / Array Transform</translation>
+      <translation>Μετακίνηση / Διάταξη σε Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2477"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2506"/>
       <source>Translates the selected geometries and enables the creation of 'i' * 'j' copies</source>
-      <translation>Translates the selected geometries and enables the creation of 'i' * 'j' copies</translation>
+      <translation>Μετακινεί τα επιλεγμένα σχήματα και επιτρέπει τη δημιουργία πολλαπλών αντιγράφων σε γραμμές και στήλες (i * j). 
+Παράδειγμα: Αν θέλετε 10 τρύπες σε μια πλάκα, σχεδιάζετε μόνο την πρώτη και το FreeCAD δημιουργεί τις υπόλοιπες αυτόματα σε ίσες αποστάσεις</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerArc</name>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="96"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="100"/>
       <source>%1 switch mode</source>
-      <translation>%1 switch mode</translation>
+      <translation>%1 εναλλαγή λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="105"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="109"/>
       <source>%1 pick arc center</source>
-      <translation>%1 pick arc center</translation>
+      <translation>%1 επιλέξτε το κέντρο τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="111"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="115"/>
       <source>%1 pick arc start point</source>
-      <translation>%1 pick arc start point</translation>
+      <translation>%1 επιλογή σημείου έναρξης τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="117"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="121"/>
       <source>%1 pick arc end point</source>
-      <translation>%1 pick arc end point</translation>
+      <translation>%1 επιλογή σημείου τέλους Τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="125"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="129"/>
       <source>%1 pick first arc point</source>
-      <translation>%1 pick first arc point</translation>
+      <translation>%1 επιλογή πρώτου σημείο τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="131"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="135"/>
       <source>%1 pick second arc point</source>
-      <translation>%1 pick second arc point</translation>
+      <translation>%1 επιλογή δεύτερου σημείου τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="137"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="141"/>
       <source>%1 pick third arc point</source>
-      <translation>%1 pick third arc point</translation>
+      <translation>%1 επιλογή τρίτο σημείο τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="392"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="439"/>
       <source>Arc Parameters</source>
-      <translation type="unfinished">Arc Parameters</translation>
+      <translation>Παράμετροι Τόξου</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="418"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="452"/>
       <source>%1 pick ellipse center</source>
-      <translation>%1 pick ellipse center</translation>
+      <translation>%1 επιλέξτε το κέντρο της έλλειψης</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="423"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="457"/>
       <source>%1 pick axis point</source>
-      <translation>%1 pick axis point</translation>
+      <translation>%1 επιλογή σημείου Άξονα</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="428"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="462"/>
       <source>%1 pick arc start point</source>
-      <translation>%1 pick arc start point</translation>
+      <translation>%1 επιλογή σημείου έναρξης τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="433"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="467"/>
       <source>%1 pick arc end point</source>
-      <translation>%1 pick arc end point</translation>
+      <translation>%1 επιλογή σημείου τέλους Τόξου</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfHyperbola</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="417"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="406"/>
       <source>%1 pick center point</source>
-      <translation>%1 pick center point</translation>
+      <translation>%1 επιλέξτε το σημείο κέντρου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="422"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="411"/>
       <source>%1 pick axis point</source>
-      <translation>%1 pick axis point</translation>
+      <translation>%1 επιλογή σημείου Άξονα</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="427"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="416"/>
       <source>%1 pick arc start point</source>
-      <translation>%1 pick arc start point</translation>
+      <translation>%1 επιλογή σημείου έναρξης τόξου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="432"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="421"/>
       <source>%1 pick arc end point</source>
-      <translation>%1 pick arc end point</translation>
+      <translation>%1 επιλογή σημείου τέλους Τόξου</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfParabola</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="347"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="359"/>
       <source>%1 pick focus point</source>
-      <translation>%1 pick focus point</translation>
+      <translation>%1 επιλογή σημείου Εστίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="352"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="364"/>
       <source>%1 pick axis point</source>
-      <translation>%1 pick axis point</translation>
+      <translation>%1 επιλογή σημείου Άξονα</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="357"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="369"/>
       <source>%1 pick starting point</source>
-      <translation>%1 pick starting point</translation>
+      <translation>%1 επιλογή σημείου έναρξης</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="362"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="374"/>
       <source>%1 pick end point</source>
-      <translation>%1 pick end point</translation>
+      <translation>%1 επιλογή σημείου Λήξης</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="100"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="104"/>
       <source>%1 switch mode</source>
-      <translation>%1 switch mode</translation>
+      <translation>%1 εναλλαγή λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="107"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="111"/>
       <source>%1 pick slot center</source>
-      <translation>%1 pick slot center</translation>
+      <translation>%1 επιλογή κέντρου Σχισμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="113"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="117"/>
       <source>%1 pick slot radius</source>
-      <translation>%1 pick slot radius</translation>
+      <translation>%1 επιλογή ακτίνας σχισμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="119"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="123"/>
       <source>%1 pick slot angle</source>
-      <translation>%1 pick slot angle</translation>
+      <translation>%1 επιλογή γωνία σχισμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="125"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="129"/>
       <source>%1 pick slot width</source>
-      <translation>%1 pick slot width</translation>
+      <translation>%1 επιλογή πλάτους σχισμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="305"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="307"/>
       <source>Arc Slot Parameters</source>
-      <translation type="unfinished">Arc Slot Parameters</translation>
+      <translation>Παράμετροι Τοξωτής Σχισμής</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerBSpline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="412"/>
-      <source>%1 switch mode</source>
-      <translation>%1 switch mode</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="421"/>
-      <source>%1 pick first control point</source>
-      <translation>%1 pick first control point</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="423"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="432"/>
-      <source>%1 + degree</source>
-      <translation type="unfinished">%1 + degree</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="424"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="433"/>
-      <source>%1 - degree</source>
-      <translation type="unfinished">%1 - degree</translation>
-    </message>
-    <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="429"/>
-      <source>%1 pick next control point</source>
-      <translation>%1 pick next control point</translation>
+      <source>%1 switch mode</source>
+      <translation>%1 εναλλαγή λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="430"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="448"/>
-      <source>%1 finish B-spline</source>
-      <translation>%1 finish B-spline</translation>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="438"/>
+      <source>%1 pick first control point</source>
+      <translation>%1 επιλογή πρώτου σημείο ελέγχου</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="440"/>
-      <source>%1 pick first knot</source>
-      <translation>%1 pick first knot</translation>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="449"/>
+      <source>%1 + degree</source>
+      <translation>%1 + βαθμός</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="442"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="441"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="450"/>
-      <source>%1 toggle periodic</source>
-      <translation type="unfinished">%1 toggle periodic</translation>
+      <source>%1 - degree</source>
+      <translation>%1 - βαθμός</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="446"/>
+      <source>%1 pick next control point</source>
+      <translation>%1 επιλογή επόμενου σημείου ελέγχου</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="447"/>
-      <source>%1 pick next knot</source>
-      <translation>%1 pick next knot</translation>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="465"/>
+      <source>%1 finish B-spline</source>
+      <translation>%1 Τερματισμός Καμπύλης B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="497"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="457"/>
+      <source>%1 pick first knot</source>
+      <translation>%1 επιλογή πρώτου κόμβου</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="459"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="467"/>
+      <source>%1 toggle periodic</source>
+      <translation>%1 Ανοιχτές/Κλειστές καμπύλες B-splines</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="464"/>
+      <source>%1 pick next knot</source>
+      <translation>%1 επιλογή επόμενου κόμβου</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="514"/>
       <source>B-Spline Parameters</source>
-      <translation type="unfinished">B-Spline Parameters</translation>
+      <translation>Παράμετροι Καμπύλης B-Spline</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerCarbonCopy</name>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="227"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="244"/>
       <source>%1 pick sketch to copy</source>
       <comment>Sketcher CarbonCopy: hint</comment>
       <translation>%1 επιλέξτε σκίτσο για αντιγραφή</translation>
@@ -7446,103 +7705,103 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerCircle</name>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="86"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="90"/>
       <source>%1 switch mode</source>
-      <translation>%1 switch mode</translation>
+      <translation>%1 εναλλαγή λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="95"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="99"/>
       <source>%1 pick circle center</source>
-      <translation>%1 pick circle center</translation>
+      <translation>%1 επιλογή κέντρου κύκλου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="101"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="105"/>
       <source>%1 pick rim point</source>
-      <translation>%1 pick rim point</translation>
+      <translation>%1 επιλογή σημείου περιφέρειας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="109"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="113"/>
       <source>%1 pick first rim point</source>
-      <translation>%1 pick first rim point</translation>
+      <translation>%1 επιλογή πρώτου σημείο περιφέρειας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="115"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="119"/>
       <source>%1 pick second rim point</source>
-      <translation>%1 pick second rim point</translation>
+      <translation>%1 επιλογή δεύτερου σημείου περιφέρειας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="121"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="125"/>
       <source>%1 pick third rim point</source>
-      <translation>%1 pick third rim point</translation>
+      <translation>%1 επιλογή τρίτου σημείου περιφέρειας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="310"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="329"/>
       <source>Circle Parameters</source>
-      <translation type="unfinished">Circle Parameters</translation>
+      <translation>Παράμετροι Κύκλου</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="92"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="96"/>
       <source>%1 switch mode</source>
-      <translation>%1 switch mode</translation>
+      <translation>%1 εναλλαγή λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="101"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="105"/>
       <source>%1 pick ellipse center</source>
-      <translation>%1 pick ellipse center</translation>
+      <translation>%1 επιλέξτε το κέντρο της έλλειψης</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="107"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="111"/>
       <source>%1 pick axis endpoint</source>
-      <translation>%1 pick axis endpoint</translation>
+      <translation>%1 επιλέξτε σημείο άξονα</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="113"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="117"/>
       <source>%1 pick minor axis endpoint</source>
-      <translation>%1 pick minor axis endpoint</translation>
+      <translation>%1 επιλογή τελικού σημείου δευτερεύοντος άξονα</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="121"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="125"/>
       <source>%1 pick first rim point</source>
-      <translation>%1 pick first rim point</translation>
+      <translation>%1 ορίστε το πρώτο σημείο περιφέρειας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="127"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="131"/>
       <source>%1 pick second rim point</source>
-      <translation>%1 pick second rim point</translation>
+      <translation>%1 επιλέξτε το δεύτερου σημείο περιφέρειας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="133"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="137"/>
       <source>%1 pick third rim point</source>
-      <translation>%1 pick third rim point</translation>
+      <translation>%1 επιλέξτε το τρίτο σημείο περιφέρειας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="328"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="343"/>
       <source>Ellipse Parameters</source>
-      <translation type="unfinished">Ellipse Parameters</translation>
+      <translation>Παράμετροι Έλλειψης</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerExtend</name>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="387"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="394"/>
       <source>%1 pick edge to extend</source>
       <comment>Sketcher Extend: hint</comment>
-      <translation>%1 pick edge to extend</translation>
+      <translation>%1 επιλέξτε ακμή για επέκταση</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="392"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="399"/>
       <source>%1 set extension length</source>
       <comment>Sketcher Extend: hint</comment>
-      <translation>%1 set extension length</translation>
+      <translation>%1 ορίστε το μήκος επέκτασης</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerExternal</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="252"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="262"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
       <translation>%1 επιλέξτε εξωτερική γεωμετρία</translation>
@@ -7551,114 +7810,114 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerFillet</name>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="280"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="291"/>
       <source>CAD Kernel Error</source>
       <translation>Σφάλμα Πυρήνα CAD</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="287"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="299"/>
       <source>Value Error</source>
-      <translation>Value Error</translation>
+      <translation>Σφάλμα Τιμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="348"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="360"/>
       <source>Fillet/Chamfer Parameters</source>
-      <translation type="unfinished">Fillet/Chamfer Parameters</translation>
+      <translation>Παράμετροι Στρογγυλοποίησης/Λοξότμησης</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="417"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="430"/>
       <source>%1 switch mode</source>
-      <translation>%1 switch mode</translation>
+      <translation>%1 εναλλαγή λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="418"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="432"/>
       <source>%1 toggle preserve corner</source>
-      <translation type="unfinished">%1 toggle preserve corner</translation>
+      <translation>%1 εναλλαγή διατήρησης βοηθητικής γωνίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="425"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="441"/>
       <source>%1 pick first edge or point</source>
-      <translation>%1 pick first edge or point</translation>
+      <translation>%1 επιλέξτε την πρώτη ακμή ή σημείο</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="429"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="446"/>
       <source>%1 pick second edge</source>
-      <translation>%1 pick second edge</translation>
+      <translation>%1 επιλέξτε τη δεύτερη γωνία</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="433"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="448"/>
       <source>%1 create fillet</source>
-      <translation>%1 create fillet</translation>
+      <translation>%1 δημιουργία στρογγυλοποίησης</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="217"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="225"/>
       <source>Line Parameters</source>
-      <translation type="unfinished">Line Parameters</translation>
+      <translation>Παράμετροι Γραμμής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="264"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="283"/>
       <source>%1 switch mode</source>
-      <translation>%1 switch mode</translation>
+      <translation>%1 εναλλαγή λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="273"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="287"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="301"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="292"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="306"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="320"/>
       <source>%1 pick first point</source>
-      <translation>%1 pick first point</translation>
+      <translation>%1 επιλέξτε το πρώτο σημείο</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="279"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="293"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="307"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="298"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="312"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="326"/>
       <source>%1 pick second point</source>
-      <translation>%1 pick second point</translation>
+      <translation>%1 επιλέξτε το δεύτερο σημείο</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerLineSet</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="779"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="803"/>
       <source>%1 pick first point</source>
-      <translation>%1 pick first point</translation>
+      <translation>%1 επιλέξτε το πρώτο σημείο</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="784"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="808"/>
       <source>%1 pick next point</source>
-      <translation>%1 pick next point</translation>
+      <translation>%1 επιλέξτε το επόμενο σημείο</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="785"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="809"/>
       <source>%1 finish</source>
-      <translation>%1 finish</translation>
+      <translation>%1 ολοκλήρωση</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="786"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="810"/>
       <source>%1 switch mode</source>
-      <translation>%1 switch mode</translation>
+      <translation>%1 εναλλαγή λειτουργίας</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="184"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="191"/>
       <source>Offset Parameters</source>
-      <translation type="unfinished">Offset Parameters</translation>
+      <translation>Παράμετροι Μετατόπισης</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="202"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="209"/>
       <source>%1 set offset direction and distance</source>
       <comment>Sketcher Offset: hint</comment>
-      <translation>%1 set offset direction and distance</translation>
+      <translation>%1 ορίστε κατεύθυνση και απόσταση μετατόπισης</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerPoint</name>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="70"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="74"/>
       <source>%1 place a point</source>
       <comment>Sketcher Point: hint</comment>
       <translation>%1 τοποθετήστε ένα σημείο</translation>
@@ -7667,227 +7926,227 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerPolygon</name>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="203"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="206"/>
       <source>Polygon Parameters</source>
-      <translation type="unfinished">Polygon Parameters</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="276"/>
-      <source>%1 pick polygon center</source>
-      <translation>%1 pick polygon center</translation>
+      <translation>Παράμετροι Πολυγώνου</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="277"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="284"/>
-      <source>%1/%2 increase / decrease number of sides</source>
-      <translation>%1/%2 increase / decrease number of sides</translation>
+      <source>%1 pick polygon center</source>
+      <translation>%1 επιλέξτε το κέντρο του πολυγώνου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="282"/>
-      <source>%1 pick rotation and size</source>
-      <translation>%1 pick rotation and size</translation>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="278"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="285"/>
+      <source>%1/%2 increase / decrease number of sides</source>
+      <translation>%1/%2 αύξηση / μείωση αριθμού πλευρών</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="283"/>
+      <source>%1 pick rotation and size</source>
+      <translation>%1 ορίστε περιστροφή και μέγεθος</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="284"/>
       <source>%1 confirm</source>
-      <translation>%1 confirm</translation>
+      <translation>%1 επιβεβαίωση</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerRectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="117"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="125"/>
       <source>%1 switch mode</source>
-      <translation>%1 switch mode</translation>
+      <translation>%1 εναλλαγή λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="118"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="127"/>
       <source>%1 toggle rounded corners</source>
-      <translation type="unfinished">%1 toggle rounded corners</translation>
+      <translation>%1 εναλλαγή στρογγυλοποίησης γωνιών</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="120"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="130"/>
       <source>%1 toggle frame</source>
-      <translation type="unfinished">%1 toggle frame</translation>
+      <translation>%1 Εμφάνιση/Απόκρυψη πλαισίου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="129"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="197"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="239"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="139"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="207"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="249"/>
       <source>%1 pick first corner</source>
-      <translation>%1 pick first corner</translation>
+      <translation>%1 επιλογή πρώτης γωνία</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="137"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="147"/>
       <source>%1 pick opposite corner</source>
-      <translation>%1 pick opposite corner</translation>
+      <translation>%1 επιλογή αντίθετης γωνίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="145"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="179"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="221"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="255"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="155"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="189"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="231"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="265"/>
       <source>%1 set corner radius or frame thickness</source>
-      <translation>%1 set corner radius or frame thickness</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="153"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="187"/>
-      <source>%1 set frame thickness</source>
-      <translation>%1 set frame thickness</translation>
+      <translation>%1 ορίστε την ακτίνα γωνίας ή το πάχος του πλαισίου</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="163"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="231"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="197"/>
+      <source>%1 set frame thickness</source>
+      <translation>%1 ορίστε πάχος πλαισίου</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="173"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="241"/>
       <source>%1 pick center</source>
-      <translation>%1 pick center</translation>
+      <translation>%1 επιλογή κέντρου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="171"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="181"/>
       <source>%1 pick corner</source>
-      <translation>%1 pick corner</translation>
+      <translation>%1 επιλογή γωνίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="205"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="247"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="215"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="257"/>
       <source>%1 pick second corner</source>
-      <translation>%1 pick second corner</translation>
+      <translation>%1 επιλογή δεύτερης γωνίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="213"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="223"/>
       <source>%1 pick third corner</source>
-      <translation>%1 pick third corner</translation>
+      <translation>%1 επιλογή τρίτης γωνίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="741"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="796"/>
       <source>Rectangle Parameters</source>
-      <translation type="unfinished">Rectangle Parameters</translation>
+      <translation>Παράμετροι Ορθογωνίου</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="97"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="101"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation>%1 pick center point</translation>
+      <translation>%1 επιλέξτε το σημείο κέντρου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="102"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="106"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation>%1 set start angle</translation>
+      <translation>%1 ορίστε τη γωνία έναρξης</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="107"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="111"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation>%1 set rotation angle</translation>
+      <translation>%1 ορίστε τη γωνία περιστροφής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="212"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="223"/>
       <source>Rotate Parameters</source>
-      <translation type="unfinished">Rotate Parameters</translation>
+      <translation>Παράμετροι Περιστροφής</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="165"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="182"/>
       <source>%1 pick reference point</source>
-      <translation>%1 pick reference point</translation>
+      <translation>%1 σημείο αναφοράς επιλογής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="170"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="187"/>
       <source>%1 set scale factor</source>
-      <translation>%1 set scale factor</translation>
+      <translation>%1 ορίστε συντελεστή κλίμακας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="233"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="250"/>
       <source>Scale Parameters</source>
-      <translation type="unfinished">Scale Parameters</translation>
+      <translation>Παράμετροι Κλίμακας</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="92"/>
-      <source>%1 pick slot start point</source>
-      <translation>%1 pick slot start point</translation>
-    </message>
-    <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="97"/>
-      <source>%1 pick slot end point</source>
-      <translation>%1 pick slot end point</translation>
+      <source>%1 pick slot start point</source>
+      <translation>%1 επιλέξτε σημείο αρχής της εσοχής</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="102"/>
+      <source>%1 pick slot end point</source>
+      <translation>%1 επιλέξτε σημείο τέλους της εσοχής</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerSlot.h" line="107"/>
       <source>%1 pick slot width</source>
-      <translation>%1 pick slot width</translation>
+      <translation>%1 ορίστε το πλάτος της εσοχής</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerSplitting</name>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="203"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="213"/>
       <source>%1 pick location on edge to split</source>
       <comment>Sketcher Splitting: hint</comment>
-      <translation>%1 επιλέξτε τοποθεσία στην άκρη για να διαχωρίσετε</translation>
+      <translation>%1 επιλέξτε σημείο πάνω στην ακμή για διαχωρισμό</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerSymmetry</name>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="194"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="205"/>
       <source>Symmetry Parameters</source>
-      <translation type="unfinished">Symmetry Parameters</translation>
+      <translation>Παράμετροι Συμμετρίας</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="224"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="235"/>
       <source>%1 pick axis, edge, or point</source>
       <comment>Sketcher Symmetry: hint</comment>
-      <translation>%1 pick axis, edge, or point</translation>
+      <translation>%1 επιλέξτε άξονα, ακμή ή σημείο</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerTranslate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="185"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="196"/>
       <source>Translate Parameters</source>
-      <translation type="unfinished">Translate Parameters</translation>
+      <translation>Παράμετροι Μετατόπισης</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="451"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="464"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation>%1 pick reference point</translation>
+      <translation>%1 σημείο αναφοράς επιλογής</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="453"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="466"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation>%1 set translation vector</translation>
+      <translation>%1 ορίστε διάνυσμα μετατόπισης</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="456"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="469"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation>%1 set second translation vector</translation>
+      <translation>%1 ορίστε το δεύτερο διάνυσμα μετατόπισης</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerTrimming</name>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="216"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="226"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
-      <translation>%1 pick edge to trim</translation>
+      <translation>%1 επιλέξτε ακμή προς περικοπή</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::TaskSketcherSolverAdvanced</name>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.cpp" line="56"/>
+      <location filename="../../TaskSketcherSolverAdvanced.cpp" line="57"/>
       <source>Advanced Solver Controls</source>
       <translation>Προηγμένοι Έλεγχοι Επίλυσης</translation>
     </message>
@@ -7895,30 +8154,136 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="911"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="942"/>
       <source>From control points</source>
-      <translation type="unfinished">From control points</translation>
+      <translation>Από σημεία ελέγχου</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="912"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="943"/>
       <source>From knots</source>
-      <translation type="unfinished">From knots</translation>
+      <translation>Από Κόμβους</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_c2_symmetry</name>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="276"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="295"/>
       <source>Create symmetry constraints (J)</source>
-      <translation type="unfinished">Create symmetry constraints (J)</translation>
+      <translation>Κανόνας που «αναγκάζει» το σχέδιό σας να παραμένει απόλυτα ζυγισμένο και ίσο και από τις δύο πλευρές. (J)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="299"/>
+      <source>Create symmetry constraints between the original and mirrored geometries</source>
+      <translation type="unfinished">Create symmetry constraints between the original and mirrored geometries</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::TaskSketcherTool</name>
     <message>
-      <location filename="../../TaskSketcherTool.cpp" line="43"/>
+      <location filename="../../TaskSketcherTool.cpp" line="45"/>
       <source>Tool Parameters</source>
-      <translation>Tool Parameters</translation>
+      <translation>Εργαλείο Παραμέτρων</translation>
+    </message>
+  </context>
+  <context>
+    <name>EditTextDialog</name>
+    <message>
+      <location filename="../../EditTextDialog.ui" line="14"/>
+      <source>Edit Text</source>
+      <translation type="unfinished">Edit Text</translation>
+    </message>
+    <message>
+      <location filename="../../EditTextDialog.ui" line="22"/>
+      <source>Text:</source>
+      <translation type="unfinished">Text:</translation>
+    </message>
+    <message>
+      <location filename="../../EditTextDialog.ui" line="32"/>
+      <source>Font:</source>
+      <translation type="unfinished">Font:</translation>
+    </message>
+    <message>
+      <location filename="../../EditTextDialog.ui" line="44"/>
+      <source>Height</source>
+      <translation>Ύψος</translation>
+    </message>
+    <message>
+      <location filename="../../EditTextDialog.ui" line="51"/>
+      <source>Width</source>
+      <translation>Πλάτος</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreateText</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1369"/>
+      <source>Text</source>
+      <translation>Κείμενο</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1370"/>
+      <source>Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</source>
+      <translation type="unfinished">Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::EditTextDialog</name>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="72"/>
+      <source>Font not found</source>
+      <translation type="unfinished">Font not found</translation>
+    </message>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="73"/>
+      <source>The original font '%1' is not found on your system. A default font has been selected.</source>
+      <translation type="unfinished">The original font '%1' is not found on your system. A default font has been selected.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherConstrainGroup</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="10478"/>
+      <source>Group Constraint</source>
+      <translation type="unfinished">Group Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="10479"/>
+      <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
+      <translation type="unfinished">Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="362"/>
+      <source>Width</source>
+      <translation>Πλάτος</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="363"/>
+      <source>Height</source>
+      <translation>Ύψος</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_Text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="369"/>
+      <source>Text</source>
+      <translation>Κείμενο</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="375"/>
+      <source>Font</source>
+      <translation type="unfinished">Font</translation>
     </message>
   </context>
 </TS>

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Copyright (c) 2011-2012, Thomas Paviot (tpaviot@gmail.com)
 # All rights reserved.
 

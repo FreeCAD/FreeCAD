@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -124,12 +126,12 @@ public:
         auto transformColors = [](const std::vector<Base::Color>& input) {
             std::vector<Base::ColorRGB> output;
             output.reserve(input.size());
-            std::transform(input.cbegin(),
-                           input.cend(),
-                           std::back_inserter(output),
-                           [](const Base::Color& col) {
-                               return Base::ColorRGB {col.r, col.g, col.b};
-                           });
+            std::transform(
+                input.cbegin(),
+                input.cend(),
+                std::back_inserter(output),
+                [](const Base::Color& col) { return Base::ColorRGB {col.r, col.g, col.b}; }
+            );
 
             return output;
         };

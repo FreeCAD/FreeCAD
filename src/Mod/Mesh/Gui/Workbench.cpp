@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -199,7 +201,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "Mesh_SectionByPlane"
              << "Mesh_CrossSections";
 
-    mesh->setCommand("&Meshes");
+    mesh->setCommand("Mes&hes");
     *mesh << "Mesh_Import"
           << "Mesh_Export"
           << "Mesh_FromPartShape"

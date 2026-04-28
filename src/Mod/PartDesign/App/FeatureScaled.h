@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureScaled_H
-#define PARTDESIGN_FeatureScaled_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include "FeatureTransformed.h"
@@ -61,11 +62,9 @@ public:
      */
     // Note: We can't just use the Originals property because this will fail if the Scaled feature
     // is being used inside a MultiTransform feature
-    const std::list<gp_Trsf>
-    getTransformations(const std::vector<App::DocumentObject*> originals) override;
+    const std::list<gp_Trsf> getTransformations(
+        const std::vector<App::DocumentObject*> originals
+    ) override;
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureScaled_H

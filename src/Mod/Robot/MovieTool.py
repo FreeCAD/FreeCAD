@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import os, sys, string
 import FreeCAD, FreeCADGui, Robot, RobotGui
 

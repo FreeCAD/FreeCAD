@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,12 +23,13 @@
  ***************************************************************************/
 
 
-# include <QAction>
-# include <QMenu>
+#include <QAction>
+#include <QMenu>
 
 
 #include <Gui/ActionFunction.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
 #include "ViewProviderPrimitive.h"
@@ -48,11 +51,11 @@ ViewProviderPrimitive::~ViewProviderPrimitive() = default;
 void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
+    QAction* act = menu->addAction(
+        QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()))
+    );
     act->setData(QVariant((int)ViewProvider::Default));
-    func->trigger(act, [this](){
-        this->startDefaultEditMode();
-    });
+    func->trigger(act, [this]() { this->startDefaultEditMode(); });
 
     ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
@@ -60,10 +63,12 @@ void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, con
 bool ViewProviderPrimitive::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        if (Gui::Control().activeDialog())
+        if (Gui::Control().activeDialog()) {
             return false;
-        PartGui::TaskPrimitivesEdit* dlg
-            = new PartGui::TaskPrimitivesEdit(getObject<Part::Primitive>());
+        }
+        PartGui::TaskPrimitivesEdit* dlg = new PartGui::TaskPrimitivesEdit(
+            getObject<Part::Primitive>()
+        );
         Gui::Control().showDialog(dlg);
         return true;
     }
@@ -76,7 +81,7 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
 void ViewProviderPrimitive::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(getDocument()->getDocument());
     }
     else {
         ViewProviderPart::unsetEdit(ModNum);

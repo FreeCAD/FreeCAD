@@ -146,7 +146,7 @@ class BIM_IfcProperties:
             self.form.onlySelected.stateChanged.connect(self.onSelected)
             self.form.onlyMatches.stateChanged.connect(self.update)
         self.form.buttonBox.accepted.connect(self.accept)
-        self.form.buttonBox.rejected.connect(self.reject)
+        self.form.rejected.connect(self.reject)  # also triggered by self.form.buttonBox.rejected
         self.form.searchField.currentIndexChanged.connect(self.update)
         self.form.searchField.editTextChanged.connect(self.update)
         self.form.comboProperty.currentIndexChanged.connect(self.addProperty)
@@ -682,7 +682,7 @@ class BIM_IfcProperties:
             name = translate("Arch", "New property set", None)
             res = QtGui.QInputDialog.getText(
                 None,
-                translate("BIM", "New property set"),
+                translate("BIM", "New Property Set"),
                 translate("BIM", "Property set name:"),
                 QtGui.QLineEdit.Normal,
                 name,

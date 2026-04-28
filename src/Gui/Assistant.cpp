@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QCoreApplication>
-# include <QDir>
-# include <QFileInfo>
-# include <QLibraryInfo>
-# include <QMessageBox>
-# include <QProcess>
-# include <QTextStream>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
+#include <QLibraryInfo>
+#include <QMessageBox>
+#include <QProcess>
+#include <QTextStream>
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -38,8 +38,7 @@ using namespace Gui;
 
 Assistant::Assistant()
     : proc(nullptr)
-{
-}
+{}
 
 Assistant::~Assistant()
 {
@@ -49,14 +48,15 @@ Assistant::~Assistant()
     }
 }
 
-void Assistant::showDocumentation(const QString &page)
+void Assistant::showDocumentation(const QString& page)
 {
-    if (!startAssistant())
+    if (!startAssistant()) {
         return;
+    }
     if (!page.isEmpty()) {
         QTextStream str(proc);
-        str << QLatin1String("setSource qthelp://org.freecad.usermanual/doc/")
-            << page << QLatin1String("\n\n");
+        str << QLatin1String("setSource qthelp://org.freecad.usermanual/doc/") << page
+            << QLatin1String("\n\n");
     }
 }
 
@@ -64,25 +64,24 @@ bool Assistant::startAssistant()
 {
     if (!proc) {
         proc = new QProcess();
-        connect(proc, &QProcess::readyReadStandardOutput,
-                this, &Assistant::readyReadStandardOutput);
-        connect(proc, &QProcess::readyReadStandardError,
-                this, &Assistant::readyReadStandardError);
+        connect(proc, &QProcess::readyReadStandardOutput, this, &Assistant::readyReadStandardOutput);
+        connect(proc, &QProcess::readyReadStandardError, this, &Assistant::readyReadStandardError);
     }
 
     if (proc->state() != QProcess::Running) {
 #ifdef Q_OS_WIN
         QString app;
-        app = QDir::toNativeSeparators(QString::fromStdString
-            (App::Application::getHomePath()) + QLatin1String("bin/"));
+        app = QDir::toNativeSeparators(
+            QString::fromStdString(App::Application::getHomePath()) + QLatin1String("bin/")
+        );
 #elif defined(Q_OS_MACOS)
         QString app = QCoreApplication::applicationDirPath() + QDir::separator();
 #else
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+# if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
-#else
+# else
         QString app = QLibraryInfo::path(QLibraryInfo::BinariesPath) + QDir::separator();
-#endif
+# endif
 #endif
         app += QLatin1String("assistant");
 
@@ -94,8 +93,13 @@ bool Assistant::startAssistant()
 
         QFileInfo fi(qhc);
         if (!fi.isReadable()) {
-            QMessageBox::critical(nullptr, tr("%1 Help").arg(exe),
-                tr("%1 help files not found (%2). You might need to install the %1 documentation package.").arg(exe, qhc));
+            QMessageBox::critical(
+                nullptr,
+                tr("%1 Help").arg(exe),
+                tr("%1 help files not found (%2). You might need to install the %1 documentation "
+                   "package.")
+                    .arg(exe, qhc)
+            );
             return false;
         }
 
@@ -120,28 +124,34 @@ bool Assistant::startAssistant()
                     // Unregister qch file (path) from previous AppImage run
                     QStringList args;
 
-                    args << QLatin1String("-collectionFile") << qhc
-                         << QLatin1String("-unregister") << qch;
+                    args << QLatin1String("-collectionFile") << qhc << QLatin1String("-unregister")
+                         << qch;
 
                     proc->start(app, args);
 
                     if (!proc->waitForFinished(50000)) {
-                        QMessageBox::critical(nullptr, tr("%1 Help").arg(exe),
-                            tr("Unable to launch Qt Assistant (%1)").arg(app));
+                        QMessageBox::critical(
+                            nullptr,
+                            tr("%1 Help").arg(exe),
+                            tr("Unable to launch Qt Assistant (%1)").arg(app)
+                        );
                         return false;
                     }
 
                     // Register qch file (path) for current AppImage run
                     args.clear();
 
-                    args << QLatin1String("-collectionFile") << qhc
-                         << QLatin1String("-register") << qch;
+                    args << QLatin1String("-collectionFile") << qhc << QLatin1String("-register")
+                         << qch;
 
                     proc->start(app, args);
 
                     if (!proc->waitForFinished(50000)) {
-                        QMessageBox::critical(nullptr, tr("%1 Help").arg(exe),
-                            tr("Unable to launch Qt Assistant (%1)").arg(app));
+                        QMessageBox::critical(
+                            nullptr,
+                            tr("%1 Help").arg(exe),
+                            tr("Unable to launch Qt Assistant (%1)").arg(app)
+                        );
                         return false;
                     }
                 }
@@ -152,14 +162,16 @@ bool Assistant::startAssistant()
 
         QStringList args;
 
-        args << QLatin1String("-collectionFile") << qhc
-             << QLatin1String("-enableRemoteControl");
+        args << QLatin1String("-collectionFile") << qhc << QLatin1String("-enableRemoteControl");
 
         proc->start(app, args);
 
         if (!proc->waitForStarted()) {
-            QMessageBox::critical(nullptr, tr("%1 Help").arg(exe),
-                tr("Unable to launch Qt Assistant (%1)").arg(app));
+            QMessageBox::critical(
+                nullptr,
+                tr("%1 Help").arg(exe),
+                tr("Unable to launch Qt Assistant (%1)").arg(app)
+            );
             return false;
         }
     }

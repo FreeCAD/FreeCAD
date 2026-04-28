@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,17 +23,16 @@
  ***************************************************************************/
 
 
-
 #include "FeatureSolid.h"
 
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
-PROPERTY_SOURCE(PartDesign::Solid,PartDesign::Feature)
+PROPERTY_SOURCE(PartDesign::Solid, PartDesign::Feature)
 
 Solid::Solid() = default;
 
 
-
-}
+}  // namespace PartDesign

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_LINEAR_DRAGGER_GEOMETRY_H
-#define GUI_LINEAR_DRAGGER_GEOMETRY_H
+#pragma once
 
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -91,9 +90,9 @@ class GuiExport SoLinearGeometryBaseKit: public SoBaseKit
 public:
     static void initClass();
 
-    SoSFVec3f translation; //!< set from the parent dragger
-    SoSFVec3f geometryScale; //!< set from the parent dragger
-    SoSFBool active; //!< set from the parent dragger
+    SoSFVec3f translation;    //!< set from the parent dragger
+    SoSFVec3f geometryScale;  //!< set from the parent dragger
+    SoSFBool active;          //!< set from the parent dragger
 
 protected:
     SoLinearGeometryBaseKit();
@@ -131,6 +130,4 @@ private:
     using inherited = SoLinearGeometryBaseKit;
 };
 
-}
-
-#endif /* GUI_LINEAR_DRAGGER_GEOMETRY_H */
+}  // namespace Gui

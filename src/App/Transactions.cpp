@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -52,10 +54,6 @@ Transaction::Transaction(int id)
     transID = id;
 }
 
-/**
- * A destructor.
- * A more elaborate description of the destructor.
- */
 Transaction::~Transaction()
 {
     auto& index = _Objects.get<0>();
@@ -149,18 +147,15 @@ void Transaction::changeProperty(TransactionalObject* Obj,
     auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
 
-    TransactionObject* To;
-
     if (pos != index.end()) {
-        To = pos->second;
+        auto To = pos->second;
+        changeFunc(To);
     }
-    else {
-        To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
+    else if (auto To = TransactionFactory::instance().createTransaction(Obj->getTypeId())) {
         To->status = TransactionObject::Chn;
         index.emplace(Obj, To);
+        changeFunc(To);
     }
-
-    changeFunc(To);
 }
 
 void Transaction::renameProperty(TransactionalObject* Obj, const Property* pcProp, const char* oldName)
@@ -232,8 +227,7 @@ void Transaction::addObjectNew(TransactionalObject* Obj)
             seq.relocate(seq.end(), _Objects.project<0>(pos));
         }
     }
-    else {
-        TransactionObject* To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
+    else if (auto To = TransactionFactory::instance().createTransaction(Obj->getTypeId())) {
         To->status = TransactionObject::New;
         To->_NameInDocument = Obj->detachFromDocument();
         index.emplace(Obj, To);
@@ -254,8 +248,7 @@ void Transaction::addObjectDel(const TransactionalObject* Obj)
     else if (pos != index.end() && pos->second->status == TransactionObject::Chn) {
         pos->second->status = TransactionObject::Del;
     }
-    else {
-        TransactionObject* To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
+    else if (auto To = TransactionFactory::instance().createTransaction(Obj->getTypeId())) {
         To->status = TransactionObject::Del;
         index.emplace(Obj, To);
     }
@@ -266,18 +259,15 @@ void Transaction::addObjectChange(const TransactionalObject* Obj, const Property
     auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
 
-    TransactionObject* To;
-
     if (pos != index.end()) {
-        To = pos->second;
+        auto To = pos->second;
+        To->setProperty(Prop);
     }
-    else {
-        To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
+    else if (auto To = TransactionFactory::instance().createTransaction(Obj->getTypeId())) {
         To->status = TransactionObject::Chn;
         index.emplace(Obj, To);
+        To->setProperty(Prop);
     }
-
-    To->setProperty(Prop);
 }
 
 
@@ -291,16 +281,8 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionObject, Base::Persistence)
 //**************************************************************************
 // Construction/Destruction
 
-/**
- * A constructor.
- * A more elaborate description of the constructor.
- */
 TransactionObject::TransactionObject() = default;
 
-/**
- * A destructor.
- * A more elaborate description of the destructor.
- */
 TransactionObject::~TransactionObject()
 {
     for (auto& v : _PropChangeMap) {
@@ -344,7 +326,7 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
             }
 
             // getPropertyName() is specially coded to be safe even if prop has
-            // been destroies. We must prepare for the case where user removed
+            // been destroyed. We must prepare for the case where user removed
             // a dynamic property but does not recordered as transaction.
             auto name = pcObj->getPropertyName(prop);
             if (!name || (!data.name.empty() && data.name != name)
@@ -566,13 +548,12 @@ void TransactionFactory::addProducer(const Base::Type& type, Base::AbstractProdu
  */
 TransactionObject* TransactionFactory::createTransaction(const Base::Type& type) const
 {
-    std::map<Base::Type, Base::AbstractProducer*>::const_iterator it;
-    for (it = producers.begin(); it != producers.end(); ++it) {
-        if (type.isDerivedFrom(it->first)) {
-            return static_cast<TransactionObject*>(it->second->Produce());
+    for (const auto& it : producers) {
+        if (type.isDerivedFrom(it.first)) {
+            return static_cast<TransactionObject*>(it.second->Produce());
         }
     }
 
-    assert(0);
+    Base::Console().log("Cannot create transaction object from %s\n", type.getName());
     return nullptr;
 }

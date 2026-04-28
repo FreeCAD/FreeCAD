@@ -1,17 +1,14 @@
-from PySide.QtCore import QT_TRANSLATE_NOOP
-import FreeCAD
-import Path
-import Path.Base.Util as PathUtil
-import Path.Dressup.Array as DressupArray
-import Path.Main.Stock as PathStock
-import PathScripts.PathUtils as PathUtils
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
-from PySide import QtGui
-from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
-import PathGui
+import Path.Dressup.Array as DressupArray
+import Path.Dressup.Utils as PathDressup
+
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+translate = FreeCAD.Qt.translate
 
 
 class DressupArrayViewProvider(object):
@@ -49,6 +46,12 @@ class DressupArrayViewProvider(object):
     def clearTaskPanel(self):
         pass
 
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
+
 
 class CommandPathDressupArray:
     def GetResources(self):
@@ -62,26 +65,18 @@ class CommandPathDressupArray:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        return bool(PathDressup.selection())
 
     def Activated(self):
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            Path.Log.error(translate("CAM_DressupArray", "Select one toolpath object") + "\n")
+        op = PathDressup.selection(verbose=True)
+        if not op:
             return
-        baseObject = selection[0]
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Path Array Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.Array")
-        FreeCADGui.doCommand(
-            "Path.Dressup.Gui.Array.Create(App.ActiveDocument.%s)" % baseObject.Name
-        )
+        FreeCADGui.doCommand("Path.Dressup.Gui.Array.Create(App.ActiveDocument.%s)" % op.Name)
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 

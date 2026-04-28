@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKFILLINGVERTEX_H
-#define SURFACEGUI_TASKFILLINGVERTEX_H
+#pragma once
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -43,9 +44,7 @@ namespace SurfaceGui
 class ViewProviderFilling;
 class Ui_TaskFillingVertex;
 
-class FillingVertexPanel: public QWidget,
-                          public Gui::SelectionObserver,
-                          public Gui::DocumentObserver
+class FillingVertexPanel: public QWidget, public Gui::SelectionObserver, public Gui::DocumentObserver
 {
     Q_OBJECT
 
@@ -74,6 +73,7 @@ public:
     void checkOpenCommand();
     void setEditedObject(Surface::Filling* obj);
     void appendButtons(Gui::ButtonGroup*);
+    void setSelectionGate();
 
 protected:
     void changeEvent(QEvent* e) override;
@@ -97,5 +97,3 @@ private:
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_TASKFILLINGVERTEX_H

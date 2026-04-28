@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintDisplacement_H
-#define GUI_TASKVIEW_TaskFemConstraintDisplacement_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -46,8 +45,10 @@ class TaskFemConstraintDisplacement: public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement* ConstraintView,
-                                           QWidget* parent = nullptr);
+    explicit TaskFemConstraintDisplacement(
+        ViewProviderFemConstraintDisplacement* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintDisplacement() override;
 
     const std::string getReferences() const override;
@@ -98,11 +99,8 @@ class TaskDlgFemConstraintDisplacement: public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintDisplacement(
-        ViewProviderFemConstraintDisplacement* ConstraintView);
+    explicit TaskDlgFemConstraintDisplacement(ViewProviderFemConstraintDisplacement* ConstraintView);
     bool accept() override;
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintDisplacement_H

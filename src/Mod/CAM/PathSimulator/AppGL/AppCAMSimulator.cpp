@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -30,6 +32,7 @@
 
 namespace CAMSimulator
 {
+
 class Module: public Py::ExtensionModule<Module>
 {
 public:
@@ -52,7 +55,6 @@ PyObject* initModule()
 
 
 }  // namespace CAMSimulator
-
 
 /* Python entry */
 PyMOD_INIT_FUNC(CAMSimulator)

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,14 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REVERSE_ENGINEERING_APP_PRECOMPILED_H
-#define REVERSE_ENGINEERING_APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
 // pcl headers include <boost/bind.hpp> instead of <boost/bind/bind.hpp>
 #ifndef BOOST_BIND_GLOBAL_PLACEHOLDERS
-#define BOOST_BIND_GLOBAL_PLACEHOLDERS
+# define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #endif
 
 
@@ -48,5 +49,3 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-
-#endif

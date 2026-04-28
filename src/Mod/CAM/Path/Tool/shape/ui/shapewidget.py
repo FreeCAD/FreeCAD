@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -43,7 +45,7 @@ class ShapeWidget(QtGui.QWidget):
         self.layout.setAlignment(QtCore.Qt.AlignHCenter)
 
         self.shape = shape
-        self.icon_size = icon_size or QtCore.QSize(140, 165)  # 200 x 235
+        self.icon_size = icon_size or QtCore.QSize(263, 372)  # A4 aspect ratio
         self.icon_widget = QtGui.QLabel()
         self.layout.addWidget(self.icon_widget)
 
@@ -55,12 +57,14 @@ class ShapeWidget(QtGui.QWidget):
         icon = self.shape.get_icon()
         if icon:
             pixmap = icon.get_qpixmap(size)
+            pixmap.setDevicePixelRatio(ratio)
             self.icon_widget.setPixmap(pixmap)
             return
 
         thumbnail = self.shape.get_thumbnail()
         if thumbnail:
             pixmap = _png2qpixmap(thumbnail, size)
+            pixmap.setDevicePixelRatio(ratio)
             self.icon_widget.setPixmap(pixmap)
             return
 

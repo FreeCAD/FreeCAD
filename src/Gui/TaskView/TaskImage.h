@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_TASKIMAGE_H
-#define GUI_TASKIMAGE_H
+#pragma once
 
 #include <Inventor/SbVec3f.h>
 #include <QPointer>
@@ -36,11 +35,12 @@ class SbVec3f;
 class SoEventCallback;
 class EditableDatumLabel;
 
-namespace Gui {
+namespace Gui
+{
 
 class View3DInventorViewer;
 class ViewProvider;
-class InteractiveScale : public QObject
+class InteractiveScale: public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(InteractiveScale)
@@ -52,7 +52,8 @@ public:
     bool eventFilter(QObject* object, QEvent* event) override;
     void activate();
     void deactivate();
-    bool isActive() const {
+    bool isActive() const
+    {
         return active;
     }
     double getScaleFactor() const;
@@ -60,9 +61,9 @@ public:
     void setPlacement(const Base::Placement& plc);
 
 private:
-    static void soEventFilter(void * ud, SoEventCallback * ecb);
-    static void getMousePosition(void * ud, SoEventCallback * ecb);
-    void findPointOnImagePlane(SoEventCallback * ecb);
+    static void soEventFilter(void* ud, SoEventCallback* ecb);
+    static void getMousePosition(void* ud, SoEventCallback* ecb);
+    void findPointOnImagePlane(SoEventCallback* ecb);
     void collectPoint(const SbVec3f&);
     void setDistance(const SbVec3f&);
 
@@ -85,7 +86,7 @@ private:
 };
 
 class Ui_TaskImage;
-class TaskImage : public QWidget
+class TaskImage: public QWidget
 {
     Q_OBJECT
     Q_DISABLE_COPY(TaskImage)
@@ -118,8 +119,8 @@ private:
 
 private:
     void changeTransparency(int val);
-    void changeWidth(double val);
-    void changeHeight(double val);
+    void changeWidth();
+    void changeHeight();
 
 private:
     std::unique_ptr<Ui_TaskImage> ui;
@@ -128,7 +129,7 @@ private:
     double aspectRatio;
 };
 
-class TaskImageDialog : public Gui::TaskView::TaskDialog
+class TaskImageDialog: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -140,7 +141,8 @@ public:
     bool accept() override;
     bool reject() override;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const override {
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
         return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
     }
 
@@ -148,6 +150,4 @@ private:
     TaskImage* widget;
 };
 
-}
-
-#endif // GUI_TASKIMAGE_H
+}  // namespace Gui

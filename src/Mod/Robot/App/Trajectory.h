@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_Trajectory_H
-#define ROBOT_Trajectory_H
+#pragma once
 
 #include <vector>
 
@@ -94,6 +95,3 @@ protected:
 };
 
 }  // namespace Robot
-
-
-#endif  // PART_TOPOSHAPE_H

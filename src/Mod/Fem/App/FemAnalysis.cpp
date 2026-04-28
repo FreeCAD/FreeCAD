@@ -42,9 +42,11 @@ FemAnalysis::FemAnalysis()
 
 FemAnalysis::~FemAnalysis() = default;
 
-void FemAnalysis::handleChangedPropertyName(Base::XMLReader& reader,
-                                            const char* TypeName,
-                                            const char* PropName)
+void FemAnalysis::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    const char* PropName
+)
 {
     Base::Type type = Base::Type::fromName(TypeName);
     if (Group.getClassTypeId() == type && strcmp(PropName, "Member") == 0) {

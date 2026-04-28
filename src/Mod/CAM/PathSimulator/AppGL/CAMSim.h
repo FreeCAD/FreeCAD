@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CAMSimulator_CAMSim_H
-#define CAMSimulator_CAMSim_H
+#pragma once
 
 #include <memory>
 #include <TopoDS_Shape.hxx>
@@ -58,19 +59,15 @@ public:
     CAMSim() = default;
 
     void BeginSimulation(const Part::TopoShape& stock, float resolution);
-    void resetSimulation();
-    void addTool(const std::vector<float>& toolProfilePoints,
-                 int toolNumber,
-                 float diameter,
-                 float resolution);
+    void resetSimulation(Gui::Document* doc);
+    void addTool(
+        const std::vector<float>& toolProfilePoints,
+        int toolNumber,
+        float diameter,
+        float resolution
+    );
     void SetBaseShape(const Part::TopoShape& baseShape, float resolution);
     void AddCommand(Command* cmd);
-
-public:
-    std::unique_ptr<SimStock> m_stock;
 };
 
 }  // namespace CAMSimulator
-
-
-#endif  // CAMSimulator_CAMSim_H

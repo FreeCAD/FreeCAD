@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_InformationOverlayCoinConverter_H
-#define SKETCHERGUI_InformationOverlayCoinConverter_H
+#pragma once
 
 #include <vector>
 
@@ -133,7 +134,7 @@ private:
     // Node Position in the Coin Scenograph for the different types of nodes
     enum class TextNodePosition
     {
-        TextCoordinates = 0,
+        TextCoordinates = 2,
         TextInformation = 3
     };
 
@@ -154,10 +155,12 @@ public:
      * @param overlayparameters: Parameters for controlling the overlay
      * @param drawingparameters: Parameters for drawing the overlay information
      */
-    EditModeInformationOverlayCoinConverter(ViewProviderSketch& vp,
-                                            SoGroup* infogroup,
-                                            OverlayParameters& overlayparameters,
-                                            DrawingParameters& drawingparameters);
+    EditModeInformationOverlayCoinConverter(
+        ViewProviderSketch& vp,
+        SoGroup* infogroup,
+        OverlayParameters& overlayparameters,
+        DrawingParameters& drawingparameters
+    );
 
     /**
      * extracts information from the geometry and converts it into an information overlay in the
@@ -216,6 +219,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_InformationOverlayCoinConverter_H

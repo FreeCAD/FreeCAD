@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_SIMULATOR_APP_PRECOMPILED_H
-#define PATH_SIMULATOR_APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -48,5 +49,3 @@
 
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
-
-#endif

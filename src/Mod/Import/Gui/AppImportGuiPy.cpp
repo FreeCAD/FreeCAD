@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "Base/TimeInfo.h"
 #if defined(__MINGW32__)
-#define WNT  // avoid conflict with GUID
+# define WNT  // avoid conflict with GUID
 #endif
 
 #include <iostream>
@@ -29,8 +32,8 @@
 #include <QString>
 
 #if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wextra-semi"
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wextra-semi"
 #endif
 
 #include <OSD_Exception.hxx>
@@ -41,7 +44,7 @@
 #include <XCAFApp_Application.hxx>
 
 #if defined(__clang__)
-#pragma clang diagnostic pop
+# pragma clang diagnostic pop
 #endif
 
 #include <chrono>
@@ -73,6 +76,7 @@
 #include <Mod/Part/Gui/DlgExportStep.h>
 #include <Mod/Part/Gui/DlgImportStep.h>
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/App/ProgressIndicator.h>
 
 
 FC_LOG_LEVEL_INIT("Import", true, true)
@@ -86,26 +90,38 @@ public:
     Module()
         : Py::ExtensionModule<Module>("ImportGui")
     {
-        add_keyword_method("open",
-                           &Module::insert,
-                           "open(string) -- Open the file and create a new document.");
-        add_keyword_method("insert",
-                           &Module::insert,
-                           "insert(string,string) -- Insert the file into the given document.");
+        add_keyword_method(
+            "open",
+            &Module::insert,
+            "open(string) -- Open the file and create a new document."
+        );
+        add_keyword_method(
+            "insert",
+            &Module::insert,
+            "insert(string,string) -- Insert the file into the given document."
+        );
         add_varargs_method("preScanDxf", &Module::preScanDxf, "preScanDxf(filepath) -> dict");
-        add_varargs_method("readDXF",
-                           &Module::readDXF,
-                           "readDXF(filename,[document,ignore_errors,option_source]): Imports a "
-                           "DXF file into the given document. ignore_errors is True by default.");
-        add_varargs_method("importOptions",
-                           &Module::importOptions,
-                           "importOptions(string) -- Return the import options of a file type.");
-        add_varargs_method("exportOptions",
-                           &Module::exportOptions,
-                           "exportOptions(string) -- Return the export options of a file type.");
-        add_keyword_method("export",
-                           &Module::exporter,
-                           "export(list,string) -- Export a list of objects into a single file.");
+        add_varargs_method(
+            "readDXF",
+            &Module::readDXF,
+            "readDXF(filename,[document,ignore_errors,option_source]): Imports a "
+            "DXF file into the given document. ignore_errors is True by default."
+        );
+        add_varargs_method(
+            "importOptions",
+            &Module::importOptions,
+            "importOptions(string) -- Return the import options of a file type."
+        );
+        add_varargs_method(
+            "exportOptions",
+            &Module::exportOptions,
+            "exportOptions(string) -- Return the export options of a file type."
+        );
+        add_keyword_method(
+            "export",
+            &Module::exporter,
+            "export(list,string) -- Export a list of objects into a single file."
+        );
         add_varargs_method("ocaf", &Module::ocaf, "ocaf(string) -- Browse the ocaf structure.");
         initialize("This module is the ImportGui module.");  // register with Python
     }
@@ -174,30 +190,34 @@ private:
         PyObject* merge = Py_None;
         PyObject* useLinkGroup = Py_None;
         int mode = -1;
-        static const std::array<const char*, 8> kwd_list {"name",
-                                                          "docName",
-                                                          "options",
-                                                          "importHidden",
-                                                          "merge",
-                                                          "useLinkGroup",
-                                                          "mode",
-                                                          nullptr};
-        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(),
-                                                 kwds.ptr(),
-                                                 "et|sO!O!O!O!i",
-                                                 kwd_list,
-                                                 "utf-8",
-                                                 &Name,
-                                                 &DocName,
-                                                 &PyDict_Type,
-                                                 &pyoptions,
-                                                 &PyBool_Type,
-                                                 &importHidden,
-                                                 &PyBool_Type,
-                                                 &merge,
-                                                 &PyBool_Type,
-                                                 &useLinkGroup,
-                                                 &mode)) {
+        static const std::array<const char*, 8> kwd_list {
+            "name",
+            "docName",
+            "options",
+            "importHidden",
+            "merge",
+            "useLinkGroup",
+            "mode",
+            nullptr
+        };
+        if (!Base::Wrapped_ParseTupleAndKeywords(
+                args.ptr(),
+                kwds.ptr(),
+                "et|sO!O!O!O!i",
+                kwd_list,
+                "utf-8",
+                &Name,
+                &DocName,
+                &PyDict_Type,
+                &pyoptions,
+                &PyBool_Type,
+                &importHidden,
+                &PyBool_Type,
+                &merge,
+                &PyBool_Type,
+                &useLinkGroup,
+                &mode
+            )) {
             throw Py::Exception();
         }
 
@@ -220,8 +240,17 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
             ImportOCAFGui ocaf(hDoc, pcDoc, file.fileNamePure());
             ocaf.setImportOptions(ImportOCAFGui::customImportOptions());
-            FC_TIME_INIT(t);
-            FC_DURATION_DECL_INIT2(d1, d2);
+
+            Base::TimeTracker tracker("Import Step");
+
+            if (pyoptions) {
+                Py::Dict options(pyoptions);
+                if (options.hasKey("showProgress")) {
+                    ocaf.setShowProgress(
+                        static_cast<bool>(Py::Boolean(options.getItem("showProgress")))
+                    );
+                }
+            }
 
             if (file.hasExtension({"stp", "step"})) {
 
@@ -240,27 +269,28 @@ private:
                     }
                     if (options.hasKey("useLinkGroup")) {
                         ocaf.setUseLinkGroup(
-                            static_cast<bool>(Py::Boolean(options.getItem("useLinkGroup"))));
+                            static_cast<bool>(Py::Boolean(options.getItem("useLinkGroup")))
+                        );
                     }
                     if (options.hasKey("useBaseName")) {
                         ocaf.setBaseName(
-                            static_cast<bool>(Py::Boolean(options.getItem("useBaseName"))));
+                            static_cast<bool>(Py::Boolean(options.getItem("useBaseName")))
+                        );
                     }
                     if (options.hasKey("importHidden")) {
                         ocaf.setImportHiddenObject(
-                            static_cast<bool>(Py::Boolean(options.getItem("importHidden"))));
+                            static_cast<bool>(Py::Boolean(options.getItem("importHidden")))
+                        );
                     }
                     if (options.hasKey("reduceObjects")) {
                         ocaf.setReduceObjects(
-                            static_cast<bool>(Py::Boolean(options.getItem("reduceObjects"))));
-                    }
-                    if (options.hasKey("showProgress")) {
-                        ocaf.setShowProgress(
-                            static_cast<bool>(Py::Boolean(options.getItem("showProgress"))));
+                            static_cast<bool>(Py::Boolean(options.getItem("reduceObjects")))
+                        );
                     }
                     if (options.hasKey("expandCompound")) {
                         ocaf.setExpandCompound(
-                            static_cast<bool>(Py::Boolean(options.getItem("expandCompound"))));
+                            static_cast<bool>(Py::Boolean(options.getItem("expandCompound")))
+                        );
                     }
                     if (options.hasKey("mode")) {
                         ocaf.setMode(static_cast<int>(Py::Long(options.getItem("mode"))));
@@ -283,11 +313,15 @@ private:
                 }
 
                 try {
+                    Handle(Message_ProgressIndicator) pi;
+                    if (ocaf.showProgress()) {
+                        pi = new Part::ProgressIndicator();
+                    }
                     Import::ReaderStep reader(file);
 #if OCC_VERSION_HEX >= 0x070800
                     reader.setCodePage(cp);
 #endif
-                    reader.read(hDoc);
+                    reader.read(hDoc, Message_ProgressIndicator::Start(pi));
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().error("%s\n", e.GetMessageString());
@@ -299,8 +333,12 @@ private:
             }
             else if (file.hasExtension({"igs", "iges"})) {
                 try {
+                    Handle(Message_ProgressIndicator) pi;
+                    if (ocaf.showProgress()) {
+                        pi = new Part::ProgressIndicator();
+                    }
                     Import::ReaderIges reader(file);
-                    reader.read(hDoc);
+                    reader.read(hDoc, Message_ProgressIndicator::Start(pi));
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().error("%s\n", e.GetMessageString());
@@ -311,14 +349,18 @@ private:
                 }
             }
             else if (file.hasExtension({"glb", "gltf"})) {
+                Handle(Message_ProgressIndicator) pi;
+                if (ocaf.showProgress()) {
+                    pi = new Part::ProgressIndicator();
+                }
                 Import::ReaderGltf reader(file);
-                reader.read(hDoc);
+                reader.read(hDoc, Message_ProgressIndicator::Start(pi));
             }
             else {
                 throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
-            FC_DURATION_PLUS(d1, t);
+            tracker.checkpoint("File read");
             if (merge != Py_None) {
                 ocaf.setMerge(Base::asBoolean(merge));
             }
@@ -333,15 +375,10 @@ private:
             }
             auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
-            FC_DURATION_PLUS(d2, t);
-            FC_DURATION_LOG(d1, "file read");
-            FC_DURATION_LOG(d2, "import");
-            FC_DURATION_LOG((d1 + d2), "total");
 
             if (ret) {
                 App::GetApplication().setActiveDocument(pcDoc);
-                auto gdoc = Gui::Application::Instance->getDocument(pcDoc);
-                if (gdoc) {
+                if (auto gdoc = Gui::Application::Instance->getDocument(pcDoc)) {
                     gdoc->setActiveView();
                     Gui::Application::Instance->commandManager().runCommandByName("Std_ViewFitAll");
                 }
@@ -359,8 +396,7 @@ private:
         return Py::None();
     }
 
-    static std::map<std::string, Base::Color> getShapeColors(App::DocumentObject* obj,
-                                                             const char* subname)
+    static std::map<std::string, Base::Color> getShapeColors(App::DocumentObject* obj, const char* subname)
     {
         auto vp = Gui::Application::Instance->getViewProvider(obj);
         if (vp) {
@@ -383,13 +419,9 @@ private:
         const char* optionSource = nullptr;
         std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
         bool IgnoreErrors = true;
-        if (!PyArg_ParseTuple(args.ptr(),
-                              "et|sbs",
-                              "utf-8",
-                              &Name,
-                              &DocName,
-                              &IgnoreErrors,
-                              &optionSource)) {
+        if (
+            !PyArg_ParseTuple(args.ptr(), "et|sbs", "utf-8", &Name, &DocName, &IgnoreErrors, &optionSource)
+        ) {
             throw Py::Exception();
         }
 
@@ -476,21 +508,23 @@ private:
         PyObject* pykeepPlacement = Py_None;
         static const std::array<const char*, 7>
             kwd_list {"obj", "name", "options", "exportHidden", "legacy", "keepPlacement", nullptr};
-        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(),
-                                                 kwds.ptr(),
-                                                 "Oet|O!O!O!O!",
-                                                 kwd_list,
-                                                 &object,
-                                                 "utf-8",
-                                                 &Name,
-                                                 &PyDict_Type,
-                                                 &pyoptions,
-                                                 &PyBool_Type,
-                                                 &pyexportHidden,
-                                                 &PyBool_Type,
-                                                 &pylegacy,
-                                                 &PyBool_Type,
-                                                 &pykeepPlacement)) {
+        if (!Base::Wrapped_ParseTupleAndKeywords(
+                args.ptr(),
+                kwds.ptr(),
+                "Oet|O!O!O!O!",
+                kwd_list,
+                &object,
+                "utf-8",
+                &Name,
+                &PyDict_Type,
+                &pyoptions,
+                &PyBool_Type,
+                &pyexportHidden,
+                &PyBool_Type,
+                &pylegacy,
+                &PyBool_Type,
+                &pykeepPlacement
+            )) {
             throw Py::Exception();
         }
 
@@ -556,7 +590,8 @@ private:
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension({"stp", "step"})) {
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                    "User parameter:BaseApp/Preferences/Mod/Part/STEP");
+                    "User parameter:BaseApp/Preferences/Mod/Part/STEP"
+                );
                 std::string scheme = hGrp->GetASCII("Scheme", Part::Interface::writeStepScheme());
                 std::list<std::string> supported = Part::supportedSTEPSchemes();
                 if (std::ranges::find(supported, scheme) != supported.end()) {

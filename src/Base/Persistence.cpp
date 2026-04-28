@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -25,8 +27,11 @@
 #include <cassert>
 #include <codecvt>
 #include <locale>
+#include <ranges>
 
 #include <zipios++/zipinputstream.h>
+
+#include <unicode/utf8.h>
 
 #include "Exception.h"
 #include "Reader.h"
@@ -113,13 +118,35 @@ std::string Persistence::encodeAttribute(const std::string& str)
 
 // clang-format off
 // https://www.w3.org/TR/xml/#charsets
+// Nominally allowed ranges
 static constexpr std::array<std::pair<char32_t, char32_t>, 6> validRanges {{
-    {0x9, 0x9},
-    {0xA, 0xA},
-    {0xD, 0xD},
+    {0x9, 0x9}, // TAB -- explicitly allowed
+    {0xA, 0xA}, // LF -- explicitly allowed
+    {0xD, 0xD}, // CR -- explicitly allowed
     {0x20, 0xD7FF},
     {0xE000, 0xFFFD},
-    {0x10000, 0x10FFFF},
+    {0x10000, 0x10FFFF}
+}};
+static constexpr std::array<std::pair<char32_t, char32_t>, 19> discouragedRanges {{
+    {0x7F, 0x84},
+    {0x86, 0x9F},
+    {0xFDD0, 0xFDEF},
+    {0x1FFFE, 0x1FFFF},
+    {0x2FFFE, 0x2FFFF},
+    {0x3FFFE, 0x3FFFF},
+    {0x4FFFE, 0x4FFFF},
+    {0x5FFFE, 0x5FFFF},
+    {0x6FFFE, 0x6FFFF},
+    {0x7FFFE, 0x7FFFF},
+    {0x8FFFE, 0x8FFFF},
+    {0x9FFFE, 0x9FFFF},
+    {0xAFFFE, 0xAFFFF},
+    {0xBFFFE, 0xBFFFF},
+    {0xCFFFE, 0xCFFFF},
+    {0xDFFFE, 0xDFFFF},
+    {0xEFFFE, 0xEFFFF},
+    {0xFFFFE, 0xFFFFF},
+    {0x10FFFE, 0x10FFFF}
 }};
 // clang-format on
 
@@ -129,21 +156,44 @@ static constexpr std::array<std::pair<char32_t, char32_t>, 6> validRanges {{
  */
 std::string Persistence::validateXMLString(const std::string& str)
 {
-    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
-    std::u32string cp_in = cvt.from_bytes(str);
-    std::u32string cp_out;
-    cp_out.reserve(cp_in.size());
-    for (auto cp : cp_in) {
-        if (std::any_of(validRanges.begin(), validRanges.end(), [cp](const auto& range) {
-                return cp >= range.first && cp <= range.second;
-            })) {
-            cp_out += cp;
+    // Decode UTF-8 into code points and filter for XML 1.0 validity, replacing invalid or
+    // discouraged code points with '_'.
+    std::string out;
+    out.reserve(str.size());
+
+    const auto* data = reinterpret_cast<const uint8_t*>(str.data());  // NOLINT
+    const int32_t len = static_cast<int32_t>(str.size());
+
+    for (int32_t i = 0; i < len;) {
+        UChar32 cp = 0;
+        U8_NEXT(data, i, len, cp);
+        if (cp < 0) {
+            out.push_back('_');
+            continue;
+        }
+
+        const char32_t c32 = static_cast<char32_t>(cp);
+        const bool ok = std::ranges::any_of(validRanges, [c32](const auto& r) {
+            return c32 >= r.first && c32 <= r.second;
+        });
+        const bool discouraged = std::ranges::any_of(discouragedRanges, [c32](const auto& r) {
+            return c32 >= r.first && c32 <= r.second;
+        });
+
+        const char32_t emit = (ok && !discouraged) ? c32 : U'_';
+        uint8_t buf[8] {};
+        int32_t outLen = 0;
+        UBool isError = false;
+        U8_APPEND(buf, outLen, static_cast<int32_t>(sizeof(buf)), static_cast<UChar32>(emit), isError);
+        if (isError) {
+            out.push_back('_');
         }
         else {
-            cp_out += '_';
+            out.append(reinterpret_cast<const char*>(buf), static_cast<std::size_t>(outLen));  // NOLINT
         }
     }
-    return cvt.to_bytes(cp_out);
+
+    return out;
 }
 
 void Persistence::dumpToStream(std::ostream& stream, int compression)

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
-#define INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
+#pragma once
 
 #include <limits>
 
@@ -127,6 +128,3 @@ public:
 };
 
 }  // namespace InspectionGui
-
-
-#endif  // INSPECTIOGUI_VIEWPROVIDERINSPECTION_H

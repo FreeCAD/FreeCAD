@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from . import TestBoolean
 from . import TestChamfer
 from . import TestDatum
@@ -17,5 +19,6 @@ from . import TestPolarPattern
 from . import TestPrimitive
 from . import TestRevolve
 from . import TestShapeBinder
+from . import TestSuppressed
 from . import TestThickness
 from . import TestTopologicalNamingProblem

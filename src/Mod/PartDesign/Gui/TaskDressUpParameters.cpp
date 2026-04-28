@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -22,17 +24,18 @@
  ***************************************************************************/
 
 
-
-# include <QAction>
-# include <QApplication>
-# include <QKeyEvent>
-# include <QListWidgetItem>
-# include <QTimer>
+#include <QAction>
+#include <QApplication>
+#include <QKeyEvent>
+#include <QListWidget>
+#include <QListWidgetItem>
+#include <QTimer>
 
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Transactions.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Selection/Selection.h>
@@ -44,7 +47,7 @@
 #include "TaskDressUpParameters.h"
 
 
-FC_LOG_LEVEL_INIT("PartDesign",true,true)
+FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -52,7 +55,12 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskDressUpParameters */
 
-TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget *parent)
+TaskDressUpParameters::TaskDressUpParameters(
+    ViewProviderDressUp* DressUpView,
+    bool selectEdges,
+    bool selectFaces,
+    QWidget* parent
+)
     : TaskFeatureParameters(DressUpView, parent, DressUpView->featureIcon(), DressUpView->menuName)
     , proxy(nullptr)
     , deleteAction(nullptr)
@@ -62,7 +70,7 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     , DressUpView(DressUpView)
 {
     // remember initial transaction ID
-    App::GetApplication().getActiveTransaction(&transactionID);
+    transactionID = DressUpView->getObject()->getDocument()->getBookedTransactionID();
 
     selectionMode = none;
 }
@@ -75,24 +83,27 @@ TaskDressUpParameters::~TaskDressUpParameters()
 
 void TaskDressUpParameters::setupTransaction()
 {
-    if (DressUpView.expired())
+    if (DressUpView.expired()) {
         return;
+    }
 
-    int tid = 0;
-    App::GetApplication().getActiveTransaction(&tid);
-    if (tid && tid == transactionID)
+    int tid = DressUpView->getObject()->getDocument()->getBookedTransactionID();
+    if (tid != App::NullTransaction && tid == transactionID) {
         return;
+    }
 
     // open a transaction if none is active
+    // where is this transaction commited - theo-vt?
     std::string n("Edit ");
     n += DressUpView->getObject()->Label.getValue();
-    transactionID = App::GetApplication().setActiveTransaction(n.c_str());
+    transactionID = DressUpView->getObject()->getDocument()->openTransaction(n.c_str());
 }
 
 void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget)
 {
-    if (strcmp(msg.pDocName, DressUpView->getObject()->getDocument()->getName()) != 0)
+    if (strcmp(msg.pDocName, DressUpView->getObject()->getDocument()->getName()) != 0) {
         return;
+    }
 
     Gui::Selection().clearSelection();
 
@@ -133,14 +144,16 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     if (!base) {
         return;
     }
-    int count = Part::Feature::getTopoShape(base, Part::ShapeOption::ResolveLink
-                                                | Part::ShapeOption::Transform).countSubShapes(TopAbs_EDGE);
+    int count = Part::Feature::getTopoShape(
+                    base,
+                    Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+    )
+                    .countSubShapes(TopAbs_EDGE);
     auto subValues = pcDressUp->Base.getSubValues(false);
     std::size_t len = subValues.size();
     for (int i = 0; i < count; ++i) {
-        std::string name = "Edge" + std::to_string(i+1);
-        if (std::find(subValues.begin(), subValues.begin() + len, name)
-            == subValues.begin() + len) {
+        std::string name = "Edge" + std::to_string(i + 1);
+        if (std::find(subValues.begin(), subValues.begin() + len, name) == subValues.begin() + len) {
             subValues.push_back(name);
         }
     }
@@ -180,18 +193,24 @@ void TaskDressUpParameters::deleteRef(QListWidget* widget)
     updateFeature(pcDressUp, refs);
 }
 
-void TaskDressUpParameters::updateFeature(PartDesign::DressUp* pcDressUp, const std::vector<std::string>& refs)
+void TaskDressUpParameters::updateFeature(
+    PartDesign::DressUp* pcDressUp,
+    const std::vector<std::string>& refs
+)
 {
-    if (selectionMode == refSel)
+    if (selectionMode == refSel) {
         DressUpView->highlightReferences(false);
+    }
 
     setupTransaction();
     pcDressUp->Base.setValue(pcDressUp->Base.getValue(), refs);
     pcDressUp->recomputeFeature();
-    if (selectionMode == refSel)
+    if (selectionMode == refSel) {
         DressUpView->highlightReferences(true);
-    else
+    }
+    else {
         hideOnError();
+    }
 }
 
 void TaskDressUpParameters::onButtonRefSel(bool checked)
@@ -199,7 +218,8 @@ void TaskDressUpParameters::onButtonRefSel(bool checked)
     setSelectionMode(checked ? refSel : none);
 }
 
-void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
+void TaskDressUpParameters::doubleClicked(QListWidgetItem* item)
+{
     // executed when the user double-clicks on any item in the list
     // shows the fillets as they are -> useful to switch out of selection mode
 
@@ -210,21 +230,30 @@ void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
     setSelectionMode(none);
 
     // enable next possible single-click event after double-click time passed
-    QTimer::singleShot(QApplication::doubleClickInterval(), this, &TaskDressUpParameters::itemClickedTimeout);
+    QTimer::singleShot(
+        QApplication::doubleClickInterval(),
+        this,
+        &TaskDressUpParameters::itemClickedTimeout
+    );
 }
 
-void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
+void TaskDressUpParameters::setSelection(QListWidgetItem* current)
+{
     // executed when the user selected an item in the list (but double-clicked it)
     // highlights the currently selected item
 
-    if (current == nullptr){
+    if (current == nullptr) {
         setSelectionMode(none);
         return;
     }
 
     if (!wasDoubleClicked) {
         // we treat it as single-click event once the QApplication double-click time is passed
-        QTimer::singleShot(QApplication::doubleClickInterval(), this, &TaskDressUpParameters::itemClickedTimeout);
+        QTimer::singleShot(
+            QApplication::doubleClickInterval(),
+            this,
+            &TaskDressUpParameters::itemClickedTimeout
+        );
 
         // name of the item
         std::string subName = current->text().toStdString();
@@ -236,10 +265,12 @@ void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
             std::string objName = body->getNameInDocument();
 
             // Enter selection mode
-            if (selectionMode == none)
+            if (selectionMode == none) {
                 setSelectionMode(refSel);
-            else
+            }
+            else {
                 Gui::Selection().clearSelection();
+            }
 
             // highlight the selected item
             bool block = this->blockSelection(true);
@@ -249,9 +280,11 @@ void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
     }
 }
 
-void TaskDressUpParameters::tryAddSelection(const std::string& doc,
-                                            const std::string& obj,
-                                            const std::string& sub)
+void TaskDressUpParameters::tryAddSelection(
+    const std::string& doc,
+    const std::string& obj,
+    const std::string& sub
+)
 {
     try {
         Gui::Selection().addSelection(doc.c_str(), obj.c_str(), sub.c_str(), 0, 0, 0);
@@ -274,7 +307,8 @@ QString TaskDressUpParameters::stopSelectionLabel()
     return tr("Confirm Selection");
 }
 
-void TaskDressUpParameters::itemClickedTimeout() {
+void TaskDressUpParameters::itemClickedTimeout()
+{
     // executed after double-click time passed
     wasDoubleClicked = false;
 }
@@ -288,7 +322,9 @@ void TaskDressUpParameters::createAddAllEdgesAction(QListWidget* parentList)
     // display shortcut behind the context menu entry
     addAllEdgesAction->setShortcutVisibleInContextMenu(true);
     parentList->addAction(addAllEdgesAction);
-    addAllEdgesAction->setStatusTip(tr("Adds all edges to the list box (only when in add selection mode)"));
+    addAllEdgesAction->setStatusTip(
+        tr("Adds all edges to the list box (only when in add selection mode)")
+    );
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
@@ -303,12 +339,13 @@ void TaskDressUpParameters::createDeleteAction(QListWidget* parentList)
     deleteAction->setShortcutVisibleInContextMenu(true);
     parentList->addAction(deleteAction);
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
+    parentList->installEventFilter(this);
 }
 
 bool TaskDressUpParameters::event(QEvent* event)
 {
     if (event->type() == QEvent::ShortcutOverride) {
-        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);  // NOLINT
+        QKeyEvent* kevent = static_cast<QKeyEvent*>(event);  // NOLINT
         if (deleteAction && Gui::QtTools::matches(kevent, deleteAction->shortcut())) {
             kevent->accept();
             return true;
@@ -322,15 +359,39 @@ bool TaskDressUpParameters::event(QEvent* event)
     return TaskBox::event(event);
 }
 
+bool TaskDressUpParameters::eventFilter(QObject* watched, QEvent* event)
+{
+    if (event->type() == QEvent::KeyPress) {
+        auto* listWidget = qobject_cast<QListWidget*>(watched);
+        auto* keyEvent = static_cast<QKeyEvent*>(event);  // NOLINT
+        if (listWidget) {
+            const Qt::KeyboardModifiers ignoredModifiers = Qt::ShiftModifier | Qt::KeypadModifier;
+            if ((keyEvent->modifiers() & ~ignoredModifiers) == Qt::NoModifier
+                && (keyEvent->key() == Qt::Key_Down || keyEvent->key() == Qt::Key_Up)) {
+                const int row = listWidget->currentRow();
+                const int last = listWidget->count() - 1;
+                if (row >= 0
+                    && ((keyEvent->key() == Qt::Key_Down && row >= last)
+                        || (keyEvent->key() == Qt::Key_Up && row <= 0))) {
+                    keyEvent->accept();
+                    return true;
+                }
+            }
+        }
+    }
+
+    return TaskFeatureParameters::eventFilter(watched, event);
+}
+
 void TaskDressUpParameters::keyPressEvent(QKeyEvent* ke)
 {
-    if (deleteAction && deleteAction->isEnabled() &&
-        Gui::QtTools::matches(ke, deleteAction->shortcut())) {
+    if (deleteAction && deleteAction->isEnabled()
+        && Gui::QtTools::matches(ke, deleteAction->shortcut())) {
         deleteAction->trigger();
         return;
     }
-    if (addAllEdgesAction && addAllEdgesAction->isEnabled() &&
-        Gui::QtTools::matches(ke, addAllEdgesAction->shortcut())) {
+    if (addAllEdgesAction && addAllEdgesAction->isEnabled()
+        && Gui::QtTools::matches(ke, addAllEdgesAction->shortcut())) {
         addAllEdgesAction->trigger();
         return;
     }
@@ -392,8 +453,6 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
     setButtons(mode);
 
     if (mode == none) {
-        Gui::Selection().rmvSelectionGate();
-
         // remove any highlights and selections
         DressUpView->highlightReferences(false);
 
@@ -404,11 +463,6 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
         }
     }
     else {
-        AllowSelectionFlags allow;
-        allow.setFlag(AllowSelection::EDGE, allowEdges);
-        allow.setFlag(AllowSelection::FACE, allowFaces);
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
-
         DressUpView->highlightReferences(true);
 
         // selection must come from the previous feature, we also need to remember the currently
@@ -416,8 +470,20 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
         previouslyShownViewProvider = DressUpView->getBodyViewProvider()->getShownViewProvider();
         DressUpView->showPreviousFeature(true);
     }
-
+    setSelectionGate();
     Gui::Selection().clearSelection();
+}
+void TaskDressUpParameters::setSelectionGate()
+{
+    if (selectionMode == none) {
+        Gui::Selection().rmvSelectionGate();
+    }
+    else {
+        AllowSelectionFlags allow;
+        allow.setFlag(AllowSelection::EDGE, allowEdges);
+        allow.setFlag(AllowSelection::FACE, allowFaces);
+        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
+    }
 }
 
 //**************************************************************************
@@ -425,7 +491,7 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView)
+TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp* DressUpView)
     : TaskDlgFeatureParameters(DressUpView)
     , parameter(nullptr)
 {
@@ -435,17 +501,18 @@ TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp *DressUpV
     std::vector<std::string> newSubList;
     bool changed = false;
     auto& shadowSubs = pcDressUp->Base.getShadowSubs();
-    for ( auto &shadowSub : shadowSubs ) {
+    for (auto& shadowSub : shadowSubs) {
         auto displayName = shadowSub.oldName;
         // If there is a missing tag on the shadow sub, take a guess at a new name.
-        if ( boost::starts_with(shadowSub.oldName,Data::MISSING_PREFIX)) {
+        if (boost::starts_with(shadowSub.oldName, Data::MISSING_PREFIX)) {
             Part::Feature::guessNewLink(displayName, base, shadowSub.newName.c_str());
             newSubList.emplace_back(displayName);
             changed = true;
         }
     }
-    if ( changed )
+    if (changed) {
         pcDressUp->Base.setValue(base, newSubList);
+    }
 }
 
 TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;
@@ -459,10 +526,11 @@ bool TaskDlgDressUpParameters::accept()
     std::stringstream str;
     str << Gui::Command::getObjectCmd(getObject()) << ".Base = ("
         << Gui::Command::getObjectCmd(parameter->getBase()) << ",[";
-    for (const auto & ref : refs)
+    for (const auto& ref : refs) {
         str << "\"" << ref << "\",";
+    }
     str << "])";
-    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
+    Gui::Command::runCommand(Gui::Command::Doc, str.str().c_str());
     return TaskDlgFeatureParameters::accept();
 }
 

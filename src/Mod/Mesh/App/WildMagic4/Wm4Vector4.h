@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Wild Magic Source Code
 // David Eberly
 // http://www.geometrictools.com
@@ -14,8 +16,7 @@
 //
 // Version: 4.0.1 (2006/07/25)
 
-#ifndef WM4VECTOR4_H
-#define WM4VECTOR4_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Math.h"
@@ -110,5 +111,3 @@ typedef Vector4<float> Vector4f;
 typedef Vector4<double> Vector4d;
 
 }
-
-#endif

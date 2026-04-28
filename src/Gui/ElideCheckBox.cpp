@@ -25,21 +25,23 @@
 
 #include "ElideCheckBox.h"
 
-namespace Gui {
+namespace Gui
+{
 
-ElideCheckBox::ElideCheckBox(QWidget *parent)
-    : QCheckBox(parent) {
-}
+ElideCheckBox::ElideCheckBox(QWidget* parent)
+    : QCheckBox(parent)
+{}
 
-void ElideCheckBox::paintEvent(QPaintEvent *event) {
+void ElideCheckBox::paintEvent(QPaintEvent* event)
+{
     Q_UNUSED(event);
     QStyleOptionButton option;
     option.initFrom(this);
 
-    option.state = (isChecked() ? QStyle::State_On : QStyle::State_Off) |
-                   (isEnabled() ? QStyle::State_Enabled : QStyle::State_ReadOnly) |
-                   (underMouse() ? QStyle::State_MouseOver : QStyle::State_None) |
-                   (hasFocus() ? QStyle::State_HasFocus : QStyle::State_None);
+    option.state = (isChecked() ? QStyle::State_On : QStyle::State_Off)
+        | (isEnabled() ? QStyle::State_Enabled : QStyle::State_ReadOnly)
+        | (underMouse() ? QStyle::State_MouseOver : QStyle::State_None)
+        | (hasFocus() ? QStyle::State_HasFocus : QStyle::State_None);
 
     QPainter painter(this);
 
@@ -54,21 +56,21 @@ void ElideCheckBox::paintEvent(QPaintEvent *event) {
     painter.drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 }
 
-QSize ElideCheckBox::sizeHint() const {
+QSize ElideCheckBox::sizeHint() const
+{
     QFontMetrics fm(font());
-    int width =
-        fm.horizontalAdvance(this->text())
+    int width = fm.horizontalAdvance(this->text())
         + style()->pixelMetric(QStyle::PM_IndicatorWidth, nullptr, this)
         + style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, nullptr, this);
     int height = fm.height();
     return {width, height};
 }
 
-QSize ElideCheckBox::minimumSizeHint() const {
+QSize ElideCheckBox::minimumSizeHint() const
+{
     QFontMetrics fm(font());
     QString minimumText = QStringLiteral("A...");
-    int width =
-        fm.horizontalAdvance(minimumText)
+    int width = fm.horizontalAdvance(minimumText)
         + style()->pixelMetric(QStyle::PM_IndicatorWidth, nullptr, this)
         + style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, nullptr, this);
     int height = fm.height();
@@ -77,4 +79,4 @@ QSize ElideCheckBox::minimumSizeHint() const {
 
 }  // namespace Gui
 
-#include "moc_ElideCheckBox.cpp" // NOLINT
+#include "moc_ElideCheckBox.cpp"  // NOLINT

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Wild Magic Source Code
 // David Eberly
 // http://www.geometrictools.com
@@ -14,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DISTVECTOR3PLANE3_H
-#define WM4DISTVECTOR3PLANE3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Distance.h"
@@ -58,5 +59,3 @@ typedef DistVector3Plane3<float> DistVector3Plane3f;
 typedef DistVector3Plane3<double> DistVector3Plane3d;
 
 }
-
-#endif

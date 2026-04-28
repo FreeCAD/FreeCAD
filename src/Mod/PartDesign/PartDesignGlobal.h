@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,28 +23,25 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_GLOBAL_H
-#define PARTDESIGN_GLOBAL_H
+#pragma once
 
 #include <FCGlobal.h>
 
 
 // PartDesign
 #ifndef PartDesignExport
-#ifdef PartDesign_EXPORTS
-#  define PartDesignExport   FREECAD_DECL_EXPORT
-#else
-#  define PartDesignExport   FREECAD_DECL_IMPORT
-#endif
+# ifdef PartDesign_EXPORTS
+#  define PartDesignExport FREECAD_DECL_EXPORT
+# else
+#  define PartDesignExport FREECAD_DECL_IMPORT
+# endif
 #endif
 
 // PartDesignGui
 #ifndef PartDesignGuiExport
-#ifdef PartDesignGui_EXPORTS
-#  define PartDesignGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PartDesignGuiExport   FREECAD_DECL_IMPORT
+# ifdef PartDesignGui_EXPORTS
+#  define PartDesignGuiExport FREECAD_DECL_EXPORT
+# else
+#  define PartDesignGuiExport FREECAD_DECL_IMPORT
+# endif
 #endif
-#endif
-
-#endif //PARTDESIGN_GLOBAL_H

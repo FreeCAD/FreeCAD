@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if(MSVC)
     include_directories(
         ${CMAKE_SOURCE_DIR}/src/3rdParty/OpenGL/api
@@ -125,7 +127,6 @@ SET(MeshGui_SRCS
     ${ViewProvider_SRCS}
     AppMeshGui.cpp
     Command.cpp
-    Doxygen.cpp
     PreCompiled.h
     MeshEditor.cpp
     MeshEditor.h

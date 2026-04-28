@@ -32,6 +32,7 @@ from BasicShapes import Shapes
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -39,7 +40,7 @@ def get_information():
         "name": "Magnetic Field Around Wire",
         "meshtype": "solid",
         "meshelement": "Tet10",
-        "constraints": ["electrostatic potential", "magnetization"],
+        "constraints": ["electromagnetic", "magnetization"],
         "solvers": ["elmer"],
         "material": "solid",
         "equations": ["electromagnetic"],
@@ -157,7 +158,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(material_obj)
 
     # axial field around the wire
-    AxialField = ObjectsFem.makeConstraintElectrostaticPotential(doc, "AxialField")
+    AxialField = ObjectsFem.makeConstraintElectromagnetic(doc, "AxialField")
     AxialField.References = [
         (BooleanFragments, "Face4"),
         (BooleanFragments, "Face5"),
@@ -169,7 +170,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(AxialField)
 
     # voltage on one end
-    Voltage = ObjectsFem.makeConstraintElectrostaticPotential(doc, "Voltage")
+    Voltage = ObjectsFem.makeConstraintElectromagnetic(doc, "Voltage")
     Voltage.References = [(BooleanFragments, "Face3")]
     Voltage.AV_re = "10.000 mV"
     Voltage.AV_im = "0 V"
@@ -179,7 +180,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(Voltage)
 
     # ground on other end
-    Ground = ObjectsFem.makeConstraintElectrostaticPotential(doc, "Ground")
+    Ground = ObjectsFem.makeConstraintElectromagnetic(doc, "Ground")
     Ground.References = [(BooleanFragments, "Face2")]
     Ground.AV_re = "0 V"
     Ground.AV_im = "0 V"
@@ -211,29 +212,7 @@ def setup(doc=None, solvertype="elmer"):
     mesh_region.ViewObject.Visibility = False
 
     # generate the mesh
-    from femmesh import gmshtools
-
-    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
-    try:
-        error = gmsh_mesh.create_mesh()
-    except Exception:
-        error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
-    if error:
-        # try to create from existing rough mesh
-        from .meshes.mesh_capacitance_two_balls_tetra10 import (
-            create_nodes,
-            create_elements,
-        )
-
-        fem_mesh = Fem.FemMesh()
-        control = create_nodes(fem_mesh)
-        if not control:
-            FreeCAD.Console.PrintError("Error on creating nodes.\n")
-        control = create_elements(fem_mesh)
-        if not control:
-            FreeCAD.Console.PrintError("Error on creating elements.\n")
-        femmesh_obj.FemMesh = fem_mesh
+    generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
 
     doc.recompute()
     return doc

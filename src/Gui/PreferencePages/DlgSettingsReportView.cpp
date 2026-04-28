@@ -36,9 +36,9 @@ using namespace Gui::Dialog;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgSettingsReportView::DlgSettingsReportView( QWidget* parent )
-  : PreferencePage(parent)
-  , ui(new Ui_DlgSettingsReportView)
+DlgSettingsReportView::DlgSettingsReportView(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsReportView)
 {
     ui->setupUi(this);
     ui->colorText->setColor(qApp->palette().windowText().color());
@@ -94,7 +94,7 @@ void DlgSettingsReportView::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsReportView::changeEvent(QEvent *e)
+void DlgSettingsReportView::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

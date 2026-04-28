@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_AssemblyLink_H
-#define ASSEMBLY_AssemblyLink_H
+#pragma once
 
 #include <unordered_map>
 
@@ -72,12 +71,15 @@ public:
      * Update all of the components and joints from the Assembly
      */
     void updateContents();
+    void updateParentJoints();
 
     void synchronizeComponents();
     void synchronizeJoints();
-    void handleJointReference(App::DocumentObject* joint,
-                              App::DocumentObject* lJoint,
-                              const char* refName);
+    void handleJointReference(
+        App::DocumentObject* joint,
+        App::DocumentObject* lJoint,
+        const char* refName
+    );
     void ensureNoJointGroup();
     JointGroup* ensureJointGroup();
     std::vector<App::DocumentObject*> getJoints();
@@ -99,6 +101,3 @@ protected:
 
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_AssemblyLink_H

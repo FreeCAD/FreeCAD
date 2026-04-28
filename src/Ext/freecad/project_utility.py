@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2023 Werner Mayer LGPL
 
 __title__="Document handling module"

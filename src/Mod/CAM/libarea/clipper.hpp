@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSL-1.0
+
 /*******************************************************************************
  *                                                                              *
  * Author    :  Angus Johnson                                                   *
@@ -31,8 +33,7 @@
  *                                                                              *
  *******************************************************************************/
 
-#ifndef clipper_hpp
-#define clipper_hpp
+#pragma once
 
 #define CLIPPER_VERSION "6.4.2"
 
@@ -41,7 +42,7 @@
 // #define use_int32
 
 // use_xyz: adds a Z member to IntPoint. Adds a minor cost to performance.
-// #define use_xyz
+#define use_xyz
 
 // use_lines: Enables line clipping. Adds a very minor cost to performance.
 #define use_lines
@@ -160,11 +161,13 @@ struct DoublePoint
 //------------------------------------------------------------------------------
 
 #ifdef use_xyz
-typedef void (*ZFillCallback)(IntPoint& e1bot,
-                              IntPoint& e1top,
-                              IntPoint& e2bot,
-                              IntPoint& e2top,
-                              IntPoint& pt);
+typedef void (*ZFillCallback)(
+    IntPoint& e1bot,
+    IntPoint& e1top,
+    IntPoint& e2bot,
+    IntPoint& e2top,
+    IntPoint& pt
+);
 #endif
 
 enum InitOptions
@@ -345,15 +348,14 @@ class Clipper: public virtual ClipperBase
 public:
     Clipper(int initOptions = 0);
     bool Execute(ClipType clipType, Paths& solution, PolyFillType fillType = pftEvenOdd);
-    bool Execute(ClipType clipType,
-                 Paths& solution,
-                 PolyFillType subjFillType,
-                 PolyFillType clipFillType);
+    bool Execute(ClipType clipType, Paths& solution, PolyFillType subjFillType, PolyFillType clipFillType);
     bool Execute(ClipType clipType, PolyTree& polytree, PolyFillType fillType = pftEvenOdd);
-    bool Execute(ClipType clipType,
-                 PolyTree& polytree,
-                 PolyFillType subjFillType,
-                 PolyFillType clipFillType);
+    bool Execute(
+        ClipType clipType,
+        PolyTree& polytree,
+        PolyFillType subjFillType,
+        PolyFillType clipFillType
+    );
     bool ReverseSolution()
     {
         return m_ReverseOutput;
@@ -497,5 +499,3 @@ private:
 //------------------------------------------------------------------------------
 
 }  // namespace ClipperLib
-
-#endif  // clipper_hpp

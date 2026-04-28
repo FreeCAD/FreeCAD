@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -35,6 +37,7 @@ Or load it as a module and use the defined function.
 
 This test script is based on the one created for the Draft Workbench.
 """
+
 ## @package part_test_objects
 # \ingroup PART
 # \brief Run this file to create a standard test document for Part objects.
@@ -65,12 +68,14 @@ def _create_frame():
     version = App.Version()
     now = datetime.datetime.now().strftime("%Y/%m/%dT%H:%M:%S")
 
-    _text = ["Part test file",
-             "Created: {}".format(now),
-             "\n",
-             "Version: " + ".".join(version[0:3]),
-             "Release: " + " ".join(version[3:5]),
-             "Branch: " + " ".join(version[5:])]
+    _text = [
+        "Part test file",
+        "Created: {}".format(now),
+        "\n",
+        "Version: " + ".".join(version[0:3]),
+        "Release: " + " ".join(version[3:5]),
+        "Branch: " + " ".join(version[5:]),
+    ]
     record = App.ActiveDocument.addObject("App::Annotation", "Description")
     record.LabelText = _text
     record.Position = Vector(0, -1000, 0)
@@ -90,9 +95,7 @@ def _create_frame():
     frame.Shape = poly
 
 
-def create_test_file(file_name="part_test_objects",
-                     file_path=os.environ["HOME"],
-                     save=False):
+def create_test_file(file_name="part_test_objects", file_path=os.environ["HOME"], save=False):
     """Create a complete test file of Part objects.
 
     It draws a frame with information on the software used to create
@@ -263,8 +266,7 @@ def create_test_file(file_name="part_test_objects",
     _msg(16 * "-")
     _msg("Regular polygon")
     displacement += Vector(2500, 0, 0)
-    polygon = App.ActiveDocument.addObject("Part::RegularPolygon",
-                                           "RegularPolygon")
+    polygon = App.ActiveDocument.addObject("Part::RegularPolygon", "RegularPolygon")
     polygon.Circumradius = 750
     polygon.Placement.Base = displacement
 
@@ -285,6 +287,7 @@ def create_test_file(file_name="part_test_objects",
         _msg("Saved: {}".format(out_name))
 
     return doc
+
 
 ## @}
 

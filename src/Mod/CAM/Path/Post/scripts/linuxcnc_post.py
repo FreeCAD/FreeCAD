@@ -1,5 +1,10 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>   *
+# *   Copyright (c) 2024 Ondsel <development@ondsel.com>                    *
+# *   Copyright (c) 2024 Carl Slater <CandLWorkshopLLC@gmail.com>           *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,441 +26,514 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-from FreeCAD import Units
+
+from typing import Any, Dict
+
+from Path.Post.Processor import PostProcessor
+
 import Path
-import argparse
-import datetime
-import shlex
-import Path.Base.Util as PathUtil
-import Path.Post.Utils as PostUtils
-import PathScripts.PathUtils as PathUtils
-from builtins import open as pyopen
+import FreeCAD
 
-TOOLTIP = """
-This is a postprocessor file for the Path workbench. It is used to
-take a pseudo-G-code fragment outputted by a Path object, and output
-real G-code suitable for a linuxcnc 3 axis mill. This postprocessor, once placed
-in the appropriate PathScripts folder, can be used directly from inside
-FreeCAD, via the GUI importer or via python scripts with:
+translate = FreeCAD.Qt.translate
 
-import linuxcnc_post
-linuxcnc_post.export(object,"/path/to/file.ncc","")
-"""
+DEBUG = False
+if DEBUG:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-now = datetime.datetime.now()
+# Define some types that are used throughout this file.
+Values = Dict[str, Any]
 
-parser = argparse.ArgumentParser(prog="linuxcnc", add_help=False)
-parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
-parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
-parser.add_argument(
-    "--no-show-editor",
-    action="store_true",
-    help="don't pop up editor before writing output",
-)
-parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
-parser.add_argument(
-    "--preamble",
-    help='set commands to be issued before the first command, default="G17 G54 G40 G49 G80 G90\\n"',
-)
-parser.add_argument(
-    "--postamble",
-    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM2\\n"',
-)
-parser.add_argument(
-    "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
-)
-parser.add_argument(
-    "--modal",
-    action="store_true",
-    help="Output the Same G-command Name USE NonModal Mode",
-)
-parser.add_argument("--axis-modal", action="store_true", help="Output the Same Axis Value Mode")
-parser.add_argument(
-    "--no-tlo",
-    action="store_true",
-    help="suppress tool length offset (G43) following tool changes",
-)
-
-TOOLTIP_ARGS = parser.format_help()
-
-# These globals set common customization preferences
-OUTPUT_COMMENTS = True
-OUTPUT_HEADER = True
-OUTPUT_LINE_NUMBERS = False
-SHOW_EDITOR = True
-MODAL = False  # if true commands are suppressed if the same as previous line.
-USE_TLO = True  # if true G43 will be output following tool changes
-OUTPUT_DOUBLES = True  # if false duplicate axis values are suppressed if the same as previous line.
-COMMAND_SPACE = " "
-LINENR = 100  # line number starting value
-
-# These globals will be reflected in the Machine configuration of the project
-UNITS = "G21"  # G21 for metric, G20 for us standard
-UNIT_SPEED_FORMAT = "mm/min"
-UNIT_FORMAT = "mm"
-
-MACHINE_NAME = "LinuxCNC"
-CORNER_MIN = {"x": 0, "y": 0, "z": 0}
-CORNER_MAX = {"x": 500, "y": 300, "z": 300}
-PRECISION = 3
-
-# Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """G17 G54 G40 G49 G80 G90
-"""
-
-# Postamble text will appear following the last operation.
-POSTAMBLE = """M05
-G17 G54 G90 G80 G40
-M2
-"""
-
-# Pre operation text will be inserted before every operation
-PRE_OPERATION = """"""
-
-# Post operation text will be inserted after every operation
-POST_OPERATION = """"""
-
-# Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = """"""
+POST_TYPE = "machine"
 
 
-def processArguments(argstring):
-    global OUTPUT_HEADER
-    global OUTPUT_COMMENTS
-    global OUTPUT_LINE_NUMBERS
-    global SHOW_EDITOR
-    global PRECISION
-    global PREAMBLE
-    global POSTAMBLE
-    global UNITS
-    global UNIT_SPEED_FORMAT
-    global UNIT_FORMAT
-    global MODAL
-    global USE_TLO
-    global OUTPUT_DOUBLES
+class Linuxcnc(PostProcessor):
+    """
+    The LinuxCNC post processor class.
+    LinuxCNC supports various trajectory control methods (path blending) as
+    described at https://linuxcnc.org/docs/2.4/html/common_User_Concepts.html#r1_1_2
 
-    try:
-        args = parser.parse_args(shlex.split(argstring))
-        if args.no_header:
-            OUTPUT_HEADER = False
-        if args.no_comments:
-            OUTPUT_COMMENTS = False
-        if args.line_numbers:
-            OUTPUT_LINE_NUMBERS = True
-        if args.no_show_editor:
-            SHOW_EDITOR = False
-        print("Show editor = %d" % SHOW_EDITOR)
-        PRECISION = args.precision
-        if args.preamble is not None:
-            PREAMBLE = args.preamble.replace("\\n", "\n")
-        if args.postamble is not None:
-            POSTAMBLE = args.postamble.replace("\\n", "\n")
-        if args.inches:
-            UNITS = "G20"
-            UNIT_SPEED_FORMAT = "in/min"
-            UNIT_FORMAT = "in"
-            PRECISION = 4
-        if args.modal:
-            MODAL = True
-        if args.no_tlo:
-            USE_TLO = False
-        if args.axis_modal:
-            print("here")
-            OUTPUT_DOUBLES = False
+    This post processor implements the following trajectory control methods:
+    - Exact Path (G61)
+    - Exact Stop (G61.1)
+    - Blend (G64)
+    """
 
-    except Exception:
-        return False
+    @classmethod
+    def get_common_property_schema(cls):
+        """Override common properties with LinuxCNC-specific defaults."""
+        common_props = super().get_common_property_schema()
 
-    return True
+        # Override defaults for LinuxCNC
+        for prop in common_props:
+            if prop["name"] == "file_extension":
+                prop["default"] = "ngc"
+            elif prop["name"] == "supports_tool_radius_compensation":
+                prop["default"] = True
+            elif prop["name"] == "preamble":
+                prop["default"] = "G17 G54 G40 G49 G80 G90"
+            elif prop["name"] == "postamble":
+                prop["default"] = "M05\nG17 G54 G90 G80 G40\nM2"
+            elif prop["name"] == "safetyblock":
+                prop["default"] = "G40 G49 G80"
 
+        return common_props
 
-def export(objectslist, filename, argstring):
-    if not processArguments(argstring):
-        return None
-    global UNITS
-    global UNIT_FORMAT
-    global UNIT_SPEED_FORMAT
+    @classmethod
+    def get_property_schema(cls):
+        """Return schema for LinuxCNC-specific configurable properties."""
+        return [
+            {
+                "name": "blend_mode",
+                "type": "choice",
+                "runtime": True,
+                "label": translate("CAM", "Path Blending Mode"),
+                "default": "BLEND",
+                "choices": ["EXACT_PATH", "EXACT_STOP", "BLEND"],
+                "help": translate(
+                    "CAM",
+                    "Path blending mode: EXACT_PATH (G61) stops at each point, "
+                    "EXACT_STOP (G61.1) stops at path ends, BLEND (G64) allows smooth motion",
+                ),
+            },
+            {
+                "name": "blend_tolerance",
+                "type": "float",
+                "runtime": True,
+                "label": translate("CAM", "Blend Tolerance"),
+                "default": 0.0,
+                "min": 0.0,
+                "max": 10.0,
+                "decimals": 4,
+                "help": translate(
+                    "CAM",
+                    "Tolerance for BLEND mode (P value): 0 = no tolerance (G64), "
+                    ">0 = tolerance (G64 P-), in current units",
+                ),
+            },
+        ]
 
-    for obj in objectslist:
-        if not hasattr(obj, "Path"):
-            print(
-                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
-            )
-            return None
+    def __init__(
+        self,
+        job,
+        tooltip=translate("CAM", "LinuxCNC post processor"),
+        tooltipargs=[],
+        units="Metric",
+    ) -> None:
+        super().__init__(
+            job=job,
+            tooltip=tooltip,
+            tooltipargs=tooltipargs,
+            units=units,
+        )
+        Path.Log.debug("LinuxCNC post processor initialized.")
 
-    print("postprocessing...")
-    gcode = ""
-
-    # write header
-    if OUTPUT_HEADER:
-        gcode += linenumber() + "(Exported by FreeCAD)\n"
-        gcode += linenumber() + "(Post Processor: " + __name__ + ")\n"
-        gcode += linenumber() + "(Output Time:" + str(now) + ")\n"
-
-    # Write the preamble
-    if OUTPUT_COMMENTS:
-        gcode += linenumber() + "(begin preamble)\n"
-    for line in PREAMBLE.splitlines():
-        gcode += linenumber() + line + "\n"
-    gcode += linenumber() + UNITS + "\n"
-
-    for obj in objectslist:
-        # Skip inactive operations
-        if not PathUtil.activeForOp(obj):
-            continue
-
-        # do the pre_op
-        if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(begin operation: %s)\n" % obj.Label
-            gcode += linenumber() + "(machine units: %s)\n" % (UNIT_SPEED_FORMAT)
-        for line in PRE_OPERATION.splitlines(True):
-            gcode += linenumber() + line
-
-        # get coolant mode
-        coolantMode = PathUtil.coolantModeForOp(obj)
-
-        # turn coolant on if required
-        if OUTPUT_COMMENTS:
-            if not coolantMode == "None":
-                gcode += linenumber() + "(Coolant On:" + coolantMode + ")\n"
-        if coolantMode == "Flood":
-            gcode += linenumber() + "M8" + "\n"
-        if coolantMode == "Mist":
-            gcode += linenumber() + "M7" + "\n"
-
-        # process the operation gcode
-        gcode += parse(obj)
-
-        # do the post_op
-        if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(finish operation: %s)\n" % obj.Label
-        for line in POST_OPERATION.splitlines(True):
-            gcode += linenumber() + line
-
-        # turn coolant off if required
-        if not coolantMode == "None":
-            if OUTPUT_COMMENTS:
-                gcode += linenumber() + "(Coolant Off:" + coolantMode + ")\n"
-            gcode += linenumber() + "M9" + "\n"
-
-    # do the post_amble
-    if OUTPUT_COMMENTS:
-        gcode += "(begin postamble)\n"
-    for line in POSTAMBLE.splitlines():
-        gcode += linenumber() + line + "\n"
-
-    if FreeCAD.GuiUp and SHOW_EDITOR:
-        final = gcode
-        if len(gcode) > 100000:
-            print("Skipping editor since output is greater than 100kb")
-        else:
-            dia = PostUtils.GCodeEditorDialog()
-            dia.editor.setText(gcode)
-            result = dia.exec_()
-            if result:
-                final = dia.editor.toPlainText()
-    else:
-        final = gcode
-
-    print("done postprocessing.")
-
-    if not filename == "-":
-        gfile = pyopen(filename, "w")
-        gfile.write(final)
-        gfile.close()
-
-    return final
-
-
-def linenumber():
-    global LINENR
-    if OUTPUT_LINE_NUMBERS is True:
-        LINENR += 10
-        return "N" + str(LINENR) + " "
-    return ""
-
-
-def parse(pathobj):
-    global PRECISION
-    global MODAL
-    global OUTPUT_DOUBLES
-    global UNIT_FORMAT
-    global UNIT_SPEED_FORMAT
-
-    out = ""
-    lastcommand = None
-    precision_string = "." + str(PRECISION) + "f"
-    currLocation = {}  # keep track for no doubles
-
-    # the order of parameters
-    # linuxcnc doesn't want K properties on XY plane  Arcs need work.
-    params = [
-        "X",
-        "Y",
-        "Z",
-        "A",
-        "B",
-        "C",
-        "I",
-        "J",
-        "F",
-        "S",
-        "T",
-        "Q",
-        "R",
-        "L",
-        "H",
-        "D",
-        "P",
-    ]
-    firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
-    currLocation.update(firstmove.Parameters)  # set First location Parameters
-
-    if hasattr(pathobj, "Group"):  # We have a compound or project.
-        # if OUTPUT_COMMENTS:
-        #     out += linenumber() + "(compound: " + pathobj.Label + ")\n"
-        for p in pathobj.Group:
-            out += parse(p)
-        return out
-    else:  # parsing simple path
-        # groups might contain non-path things like stock.
-        if not hasattr(pathobj, "Path"):
-            return out
-
-        # if OUTPUT_COMMENTS:
-        #     out += linenumber() + "(" + pathobj.Label + ")\n"
-
-        # The following "for" statement was fairly recently added
-        # but seems to be using the A, B, and C parameters in ways
-        # that don't appear to be compatible with how the PATH code
-        # uses the A, B, and C parameters.  I have reverted the
-        # change here until we can figure out what it going on.
+    def init_values(self, values: Values) -> None:
+        """Initialize values that are used throughout the postprocessor."""
         #
-        # for c in PathUtils.getPathWithPlacement(pathobj).Commands:
-        for c in pathobj.Path.Commands:
-            outstring = []
-            command = c.Name
-            outstring.append(command)
+        super().init_values(values)
+        #
+        # Set any values here that need to override the default values set
+        # in the parent routine.
+        #
+        values["ENABLE_COOLANT"] = True
+        #
+        # The order of parameters.
+        #
+        # linuxcnc doesn't want K properties on XY plane; Arcs need work.
+        #
+        values["PARAMETER_ORDER"] = [
+            "X",
+            "Y",
+            "Z",
+            "A",
+            "B",
+            "C",
+            "I",
+            "J",
+            "F",
+            "S",
+            "T",
+            "Q",
+            "R",
+            "L",
+            "H",
+            "D",
+            "P",
+        ]
 
-            # if modal: suppress the command if it is the same as the last one
-            if MODAL is True:
-                if command == lastcommand:
-                    outstring.pop(0)
+        values["MACHINE_NAME"] = "LinuxCNC"
+        values["POSTPROCESSOR_FILE_NAME"] = __name__
+        #
+        # Load preamble from machine configuration if available
+        #
+        if self._machine and hasattr(self._machine, "postprocessor_properties"):
+            props = self._machine.postprocessor_properties
+            values["PREAMBLE"] = props.get("preamble", "")
+        else:
+            values["PREAMBLE"] = ""
 
-            if c.Name.startswith("(") and not OUTPUT_COMMENTS:  # command is a comment
-                continue
+        # Path blending mode configuration (LinuxCNC-specific)
+        # Load from machine configuration if available, otherwise use defaults
+        #
+        if self._machine and hasattr(self._machine, "postprocessor_properties"):
+            props = self._machine.postprocessor_properties
+            values["BLEND_MODE"] = props.get("blend_mode", "BLEND")
+            values["BLEND_TOLERANCE"] = props.get("blend_tolerance", 0.0)
+        else:
+            # Fallback to defaults if no machine configuration
+            values["BLEND_MODE"] = "BLEND"
+            values["BLEND_TOLERANCE"] = 0.0
 
-            # Handle G84/G74 tapping cycles
-            if command in ("G84", "G74") and "F" in c.Parameters:
-                pitch_mm = float(c.Parameters["F"])
-                c.Parameters.pop("F")  # Remove F from output, we'll handle it
+        # Add blend command to PREAMBLE
+        blend_cmd = self._get_blend_command()
+        if values["PREAMBLE"]:
+            values["PREAMBLE"] += f"\n{blend_cmd}"
+        else:
+            values["PREAMBLE"] = blend_cmd
 
-                # Get spindle speed (from S param or last known value)
-                spindle_speed = None
-                if "S" in c.Parameters:
-                    spindle_speed = float(c.Parameters["S"])
-                    c.Parameters.pop("S")
+    def export2(self):
+        """Override export2 to inject blend command before parent processing.
 
-                # Convert pitch to inches if needed
-                if UNITS == "G20":  # imperial
-                    pitch = pitch_mm / 25.4
-                else:
-                    pitch = pitch_mm
+        apply_configuration_bundle() (called by parent export2) populates
+        self.values with the final overridden blend settings.  We apply
+        the bundle first, inject the blend G-code into the preamble, then
+        let the parent finish.
+        """
+        # Build and apply the full configuration bundle (unless dialog already did it)
+        if not getattr(self, "_bundle_applied", False):
+            self.apply_configuration_bundle()
 
-                # Calculate feed rate
-                if spindle_speed is not None:
-                    feed_rate = pitch * spindle_speed
-                    speed = Units.Quantity(feed_rate, UNIT_SPEED_FORMAT)
-                    outstring.append(
-                        "F" + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string)
-                    )
-                else:
-                    # No spindle speed found, output pitch as F
-                    outstring.append("F" + format(pitch, precision_string))
+        # Inject blend command into preamble using the now-final values
+        if self._machine and hasattr(self._machine, "postprocessor_properties"):
+            blend_cmd = self._get_blend_command()
+            props = self._machine.postprocessor_properties
+            current_preamble = props.get("preamble", "")
+            if current_preamble:
+                props["preamble"] = f"{current_preamble}\n{blend_cmd}"
+            else:
+                props["preamble"] = blend_cmd
 
-            # Now add the remaining parameters in order
-            for param in params:
-                if param in c.Parameters:
-                    if param == "F" and (
-                        currLocation[param] != c.Parameters[param] or OUTPUT_DOUBLES
-                    ):
-                        if c.Name not in [
+        # Parent export2 will call apply_configuration_bundle again (idempotent)
+        return super().export2()
+
+    def _get_blend_command(self) -> str:
+        """Generate the path blending G-code command based on current settings.
+
+        Reads from postprocessor_properties if available, otherwise falls back to values dict.
+        """
+        # Try to read from postprocessor_properties first (for export2)
+        if self._machine and hasattr(self._machine, "postprocessor_properties"):
+            props = self._machine.postprocessor_properties
+            mode = props.get("blend_mode", "BLEND")
+            tolerance = props.get("blend_tolerance", 0.0)
+        else:
+            # Fallback to values dict (for legacy export)
+            mode = self.values.get("BLEND_MODE", "BLEND")
+            tolerance = self.values.get("BLEND_TOLERANCE", 0.0)
+
+        if mode == "EXACT_PATH":
+            return "G61"
+        elif mode == "EXACT_STOP":
+            return "G61.1"
+        else:  # BLEND
+            if tolerance > 0:
+                return f"G64 P{tolerance:.4f}"
+            else:
+                return "G64"
+
+    # Property tooltip is inherited from base class
+
+    def _convert_drill_cycle(self, command):
+        """
+        Convert drill cycle commands to G-code.
+
+        For G84/G74 tapping cycles, check for 'rigid' annotation and convert
+        to G33.1 rigid tapping if present. Otherwise use standard conversion.
+        """
+        from Path.Post.UtilsParse import format_command_line
+
+        # Check if this is a tapping cycle with rigid annotation
+        if command.Name in ["G84", "G74"]:
+            annotations = command.Annotations
+            is_rigid = annotations.get("rigid", "False") == "True"
+
+            if is_rigid:
+                # Rigid tapping - convert to G33.1
+                params = command.Parameters.copy()
+
+                # Extract pitch from F parameter
+                if "F" not in params:
+                    Path.Log.warning(f"Rigid tapping {command.Name} missing F (pitch) parameter")
+                    return super()._convert_drill_cycle(command)
+
+                pitch = params["F"]
+
+                # Get unit conversion function
+                def get_value(val):
+                    if self._machine and hasattr(self._machine, "output"):
+                        from Machine.models.machine import OutputUnits
+
+                        if self._machine.output.units == OutputUnits.IMPERIAL:
+                            return val / 25.4
+                    return val
+
+                pitch = get_value(pitch)
+
+                # Build output commands
+                output = []
+                block_delete = "/" if annotations.get("blockdelete") else ""
+
+                # Initial G33.1 command (in)
+                cmd_line = ["G33.1"]
+                cmd_line.append(f"K{pitch:.4f}")
+
+                if "Z" in params:
+                    z_val = get_value(params["Z"])
+                    cmd_line.append(f"Z{z_val:.4f}")
+
+                if "X" in params:
+                    x_val = get_value(params["X"])
+                    cmd_line.append(f"X{x_val:.4f}")
+
+                if "Y" in params:
+                    y_val = get_value(params["Y"])
+                    cmd_line.append(f"Y{y_val:.4f}")
+
+                output.append(f"{block_delete}{' '.join(cmd_line)}")
+
+                # Handle dwell if P parameter present
+                if "P" in params:
+                    output.append(f"{block_delete}M5")
+                    output.append(f"{block_delete}G04 P{params['P']:.2f}")
+
+                # Reverse out
+                if command.Name == "G84":
+                    # Right-hand tap: reverse spindle (M4), retract, restore (M3)
+                    output.append(f"{block_delete}M4")
+
+                    # Retract to R height
+                    retract_line = ["G33.1", f"K{pitch:.4f}"]
+                    if "R" in params:
+                        r_val = get_value(params["R"])
+                        retract_line.append(f"Z{r_val:.4f}")
+                    output.append(f"{block_delete}{' '.join(retract_line)}")
+
+                    output.append(f"{block_delete}M3")
+
+                elif command.Name == "G74":
+                    # Left-hand tap: forward spindle (M3), retract, restore (M4)
+                    output.append(f"{block_delete}M3")
+
+                    # Retract to R height
+                    retract_line = ["G33.1", f"K{pitch:.4f}"]
+                    if "R" in params:
+                        r_val = get_value(params["R"])
+                        retract_line.append(f"Z{r_val:.4f}")
+                    output.append(f"{block_delete}{' '.join(retract_line)}")
+
+                    output.append(f"{block_delete}M4")
+
+                return "\n".join(output)
+
+        # Not rigid tapping or not a tapping cycle - use parent implementation
+        return super()._convert_drill_cycle(command)
+
+    def _convert_modal_command(self, command):
+        """
+        Convert modal commands to G-code.
+
+        Suppress G80, G98, G99 if they're part of a rigid tapping operation.
+        """
+        # Check if this is G80/G98/G99 with tapping annotation
+        if command.Name in ["G80", "G98", "G99"]:
+            annotations = command.Annotations
+            # Check if this is part of a tapping operation with rigid annotation
+            if annotations.get("operation") == "tapping":
+                is_rigid = annotations.get("rigid", "False") == "True"
+                if is_rigid:
+                    # Suppress these commands for rigid tapping
+                    return None
+
+        # Use parent implementation for other modal commands
+        return super()._convert_modal_command(command)
+
+    def get_sanity_checks(self, job):
+        """LinuxCNC specific sanity checks."""
+        Path.Log.track("LinuxCNC.get_sanity_checks() called")
+        squawks = []
+
+        # Check blend tolerance vs operation precision
+        Path.Log.track("Checking blend tolerance")
+        blend_tolerance = self.values.get("BLEND_TOLERANCE", 0.0)
+        Path.Log.track(f"blend_tolerance: {blend_tolerance}")
+        if blend_tolerance > 0.1:  # 0.1mm threshold for precision work
+            Path.Log.track("Adding NOTE for high blend tolerance")
+            squawks.append(
+                self._create_squawk(
+                    "NOTE",
+                    f"High blend tolerance ({blend_tolerance}mm) may affect precision - consider reducing for tight tolerances",
+                )
+            )
+        elif blend_tolerance > 0.5:  # Very high tolerance
+            Path.Log.track("Adding CAUTION for very high blend tolerance")
+            squawks.append(
+                self._create_squawk(
+                    "CAUTION",
+                    f"Very high blend tolerance ({blend_tolerance}mm) will significantly affect part accuracy",
+                )
+            )
+
+        # Check for unsupported G-codes in operations
+        Path.Log.track("Checking for unsupported G-codes")
+        supported_commands = set()
+        if self.values.get("SUPPORTED_COMMANDS"):
+            supported_commands = set(
+                cmd.strip()
+                for cmd in self.values.get("SUPPORTED_COMMANDS", "").split("\n")
+                if cmd.strip()
+            )
+        Path.Log.track(f"supported_commands: {supported_commands}")
+
+        # Check operations for potentially problematic commands
+        operations = getattr(job.Operations, "Group", [])
+        Path.Log.track(f"Found {len(operations)} operations to check")
+        for i, op in enumerate(operations):
+            Path.Log.track(f"Checking operation {i}: {getattr(op, 'Label', 'unnamed')}")
+            if hasattr(op, "Path") and op.Path:
+                Path.Log.track(f"Operation has Path with {len(op.Path.Commands)} commands")
+                for j, cmd in enumerate(op.Path.Commands):
+                    if hasattr(cmd, "Name"):
+                        gcode = cmd.Name
+                        # Check for commands that might need special handling in LinuxCNC
+                        if gcode.startswith("G") and gcode not in [
                             "G0",
-                            "G00",
-                        ]:  # linuxcnc doesn't use rapid speeds
-                            speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
-                            if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
-                                outstring.append(
-                                    param
-                                    + format(
-                                        float(speed.getValueAs(UNIT_SPEED_FORMAT)),
-                                        precision_string,
+                            "G1",
+                            "G2",
+                            "G3",
+                            "G17",
+                            "G18",
+                            "G19",
+                            "G20",
+                            "G21",
+                            "G40",
+                            "G41",
+                            "G42",
+                            "G43",
+                            "G49",
+                            "G54",
+                            "G55",
+                            "G56",
+                            "G57",
+                            "G58",
+                            "G59",
+                            "G80",
+                            "G90",
+                            "G91",
+                            "G93",
+                            "G94",
+                            "G98",
+                            "G99",
+                        ]:
+                            if supported_commands and gcode not in supported_commands:
+                                Path.Log.track(f"Adding WARNING for unsupported command {gcode}")
+                                squawks.append(
+                                    self._create_squawk(
+                                        "WARNING",
+                                        f"Potentially unsupported command '{gcode}' in operation '{op.Label}' - verify LinuxCNC compatibility",
                                     )
                                 )
-                        else:
-                            continue
-                    elif param == "T":
-                        outstring.append(param + str(int(c.Parameters["T"])))
-                    elif param == "H":
-                        outstring.append(param + str(int(c.Parameters["H"])))
-                    elif param == "D":
-                        outstring.append(param + str(int(c.Parameters["D"])))
-                    elif param == "S":
-                        outstring.append(param + str(int(c.Parameters["S"])))
-                    else:
-                        if (
-                            (not OUTPUT_DOUBLES)
-                            and (param in currLocation)
-                            and (currLocation[param] == c.Parameters[param])
-                        ):
-                            continue
-                        else:
-                            if param in ("A", "B", "C"):
-                                outstring.append(
-                                    param + format(float(c.Parameters[param]), precision_string)
-                                )
-                            else:
-                                pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
-                                outstring.append(
-                                    param
-                                    + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
-                                )
 
-            # store the latest command
-            lastcommand = command
-            currLocation.update(c.Parameters)
-
-            # Check for Tool Change:
-            if command == "M6":
-                # stop the spindle
-                out += linenumber() + "M5\n"
-                for line in TOOL_CHANGE.splitlines(True):
-                    out += linenumber() + line
-
-                # add height offset
-                if USE_TLO:
-                    tool_height = "\nG43 H" + str(int(c.Parameters["T"]))
-                    outstring.append(tool_height)
-
-            if command == "message":
-                if OUTPUT_COMMENTS is False:
-                    out = []
+        # Check feed rates vs machine capabilities (if available)
+        Path.Log.track("Checking feed rates vs machine capabilities")
+        max_rapid_feed = self.values.get("MAX_RAPID_FEED", None)
+        Path.Log.track(f"max_rapid_feed: {max_rapid_feed}")
+        if max_rapid_feed:
+            for i, op in enumerate(operations):
+                Path.Log.track(
+                    f"Checking feed rate for operation {i}: {getattr(op, 'Label', 'unnamed')}"
+                )
+                if hasattr(op, "HoriFeed"):
+                    Path.Log.track(f"Operation HoriFeed: {op.HoriFeed}")
+                    if op.HoriFeed > max_rapid_feed:
+                        Path.Log.track("Adding CAUTION for high feed rate")
+                        squawks.append(
+                            self._create_squawk(
+                                "CAUTION",
+                                f"Operation '{op.Label}' feed rate ({op.HoriFeed}) exceeds configured maximum ({max_rapid_feed})",
+                            )
+                        )
                 else:
-                    outstring.pop(0)  # remove the command
+                    Path.Log.track("Operation has no HoriFeed attribute")
 
-            # prepend a line number and append a newline
-            if len(outstring) >= 1:
-                if OUTPUT_LINE_NUMBERS:
-                    outstring.insert(0, (linenumber()))
+        # Check spindle speed ranges
+        Path.Log.track("Checking spindle speed ranges")
+        max_spindle_speed = self.values.get("MAX_SPINDLE_SPEED", None)
+        Path.Log.track(f"max_spindle_speed: {max_spindle_speed}")
+        if max_spindle_speed:
+            for i, op in enumerate(operations):
+                Path.Log.track(
+                    f"Checking spindle speed for operation {i}: {getattr(op, 'Label', 'unnamed')}"
+                )
+                if hasattr(op, "SpindleSpeed"):
+                    Path.Log.track(f"Operation SpindleSpeed: {op.SpindleSpeed}")
+                    if op.SpindleSpeed > max_spindle_speed:
+                        Path.Log.track("Adding WARNING for high spindle speed")
+                        squawks.append(
+                            self._create_squawk(
+                                "WARNING",
+                                f"Operation '{op.Label}' spindle speed ({op.SpindleSpeed}) exceeds machine maximum ({max_spindle_speed})",
+                            )
+                        )
+                else:
+                    Path.Log.track("Operation has no SpindleSpeed attribute")
 
-                # append the line to the final output
-                for w in outstring:
-                    out += w + COMMAND_SPACE
-                out += "\n"
+        # Check for G41/G42 usage with tool radius compensation
+        Path.Log.track("Checking tool radius compensation usage")
+        supports_tool_radius_comp = self.values.get("SUPPORTS_TOOL_RADIUS_COMPENSATION", False)
+        Path.Log.track(f"supports_tool_radius_comp: {supports_tool_radius_comp}")
+        if not supports_tool_radius_comp:
+            for i, op in enumerate(operations):
+                Path.Log.track(
+                    f"Checking G41/G42 for operation {i}: {getattr(op, 'Label', 'unnamed')}"
+                )
+                if hasattr(op, "Path") and op.Path:
+                    g41_g42_found = False
+                    for cmd in op.Path.Commands:
+                        if hasattr(cmd, "Name") and cmd.Name in ["G41", "G42"]:
+                            Path.Log.track(f"Found {cmd.Name} in operation")
+                            squawks.append(
+                                self._create_squawk(
+                                    "WARNING",
+                                    f"Tool radius compensation ({cmd.Name}) used in '{op.Label}' but not supported by configuration",
+                                )
+                            )
+                            g41_g42_found = True
+                            break
+                    if not g41_g42_found:
+                        Path.Log.track("No G41/G42 found in operation")
+                else:
+                    Path.Log.track("Operation has no Path")
 
-        return out
+        Path.Log.track(f"LinuxCNC.get_sanity_checks() returning {len(squawks)} squawks")
+        return squawks
 
+    @property
+    def tooltip(self):
+        tooltip: str = """
+        This is a postprocessor file for the CAM workbench.
+        It is used to take a pseudo-gcode fragment from a CAM object
+        and output 'real' GCode suitable for a linuxcnc 3 axis mill.
 
-# print(__name__ + " gcode postprocessor loaded.")
+        Supports rigid tapping via G33.1 when the 'rigid' annotation is present
+        on G84/G74 tapping cycles.
+
+        Includes machine-specific sanity checks for:
+        - Blend tolerance validation
+        - Command compatibility verification
+        - Feed and spindle speed limits
+        - Tool radius compensation support
+        """
+        return tooltip

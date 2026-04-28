@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SHEETOBSERVER_H
-#define SHEETOBSERVER_H
+#pragma once
 
 #include <App/DocumentObserver.h>
 
@@ -53,5 +54,3 @@ private:
 };
 
 }  // namespace Spreadsheet
-
-#endif  // SHEETOBSERVER_H

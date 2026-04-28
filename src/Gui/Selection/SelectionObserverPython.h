@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SELECTIONOBSERVERPYTHON_H
-#define GUI_SELECTIONOBSERVERPYTHON_H
+#pragma once
 
 #include <CXX/Objects.hxx>
 #include "Selection.h"
@@ -52,7 +51,6 @@ protected:
     void pickedListChanged();
 
 private:
-
 #define FC_PY_SEL_OBSERVER \
     FC_PY_ELEMENT(onSelectionChanged) \
     FC_PY_ELEMENT(addSelection) \
@@ -76,12 +74,16 @@ private:
  *
  * @author Werner Mayer
  */
-class GuiExport SelectionObserverPython : public SelectionObserverPythonHandler, public SelectionObserver
+class GuiExport SelectionObserverPython: public SelectionObserverPythonHandler,
+                                         public SelectionObserver
 {
 
 public:
     /// Constructor
-    explicit SelectionObserverPython(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
+    explicit SelectionObserverPython(
+        const Py::Object& obj,
+        ResolveMode resolve = ResolveMode::OldStyleElement
+    );
     ~SelectionObserverPython() override;
 
     static void addObserver(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
@@ -94,6 +96,4 @@ private:
     static std::vector<SelectionObserverPython*> _instances;
 };
 
-} //namespace Gui
-
-#endif // GUI_SELECTIONOBSERVERPYTHON_H
+}  // namespace Gui

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Imetric 3D GmbH                                    *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_HELPERS_H
-#define MESH_HELPERS_H
+#pragma once
 
 #include "Elements.h"
 
@@ -124,16 +125,19 @@ inline bool MeshHelpPoint::operator==(const MeshHelpPoint& rclObj) const
     return Base::DistanceP2(_clPt, rclObj._clPt) < MeshDefinitions::_fMinPointDistanceP2;
 }
 
-inline void
-MeshPointBuilder::Add(FacetIndex ulCorner, FacetIndex ulFacet, const Base::Vector3f& rclPt)
+inline void MeshPointBuilder::Add(FacetIndex ulCorner, FacetIndex ulFacet, const Base::Vector3f& rclPt)
 {
     MeshHelpPoint clObj;
     clObj.Set(ulCorner, ulFacet, rclPt);
     push_back(clObj);
 }
 
-inline void
-MeshHelpBuilderEdge::Set(PointIndex ulInd1, PointIndex ulInd2, FacetIndex ulSide, FacetIndex ulFInd)
+inline void MeshHelpBuilderEdge::Set(
+    PointIndex ulInd1,
+    PointIndex ulInd2,
+    FacetIndex ulSide,
+    FacetIndex ulFInd
+)
 {
     if (ulInd1 < ulInd2) {
         _aulInd[0] = ulInd1;
@@ -167,8 +171,7 @@ inline bool MeshHelpBuilderEdge::operator!=(const MeshHelpBuilderEdge& rclObj) c
 }
 
 
-inline void
-MeshEdgeBuilder::Add(PointIndex ulInd1, PointIndex ulInd2, FacetIndex ulSide, FacetIndex ulFInd)
+inline void MeshEdgeBuilder::Add(PointIndex ulInd1, PointIndex ulInd2, FacetIndex ulSide, FacetIndex ulFInd)
 {
     MeshHelpBuilderEdge clObj {};
     clObj.Set(ulInd1, ulInd2, ulSide, ulFInd);
@@ -176,5 +179,3 @@ MeshEdgeBuilder::Add(PointIndex ulInd1, PointIndex ulInd2, FacetIndex ulSide, Fa
 }
 
 }  // namespace MeshCore
-
-#endif  // MESH_HELPERS_H

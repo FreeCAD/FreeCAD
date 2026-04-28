@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TOOLS_H
-#define GUI_TOOLS_H
+#pragma once
 
 #include <FCConfig.h>
 #include <FCGlobal.h>
@@ -51,12 +50,12 @@ inline int horizontalAdvance(const QFontMetrics& fm, const QString& text, int le
 
 inline bool matches(QKeyEvent* ke, const QKeySequence& ks)
 {
-    uint searchkey =
-        (ke->modifiers() | ke->key()) & ~(Qt::KeypadModifier | Qt::GroupSwitchModifier);
+    uint searchkey = (ke->modifiers() | ke->key()) & ~(Qt::KeypadModifier | Qt::GroupSwitchModifier);
     return ks == QKeySequence(searchkey);
 }
 
-inline QKeySequence::StandardKey deleteKeySequence() {
+inline QKeySequence::StandardKey deleteKeySequence()
+{
 #ifdef FC_OS_MACOSX
     return QKeySequence::Backspace;
 #else
@@ -91,9 +90,11 @@ concept TreeWalkCallable =
  *             return `void` or `bool` (for stopping logic).
  * @param[in] index The starting index for traversal. If omitted, defaults to the root.
  */
-void walkTreeModel(const QAbstractItemModel* model,
-                   TreeWalkCallable auto&& func,
-                   const QModelIndex& index = {})
+void walkTreeModel(
+    const QAbstractItemModel* model,
+    TreeWalkCallable auto&& func,
+    const QModelIndex& index = {}
+)
 {
     using ReturnType = std::invoke_result_t<decltype(func), const QModelIndex&>;
 
@@ -120,5 +121,3 @@ T valueOr(const QVariant& variant, const T& defaultValue)
 }
 
 }  // namespace Gui::QtTools
-
-#endif  // GUI_TOOLS_H

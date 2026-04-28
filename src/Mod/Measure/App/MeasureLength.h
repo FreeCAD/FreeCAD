@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef MEASURE_MEASURELENGTH_H
-#define MEASURE_MEASURELENGTH_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -69,7 +70,7 @@ public:
     }
 
     // Return a placement for the viewprovider, just use the first element for now
-    Base::Placement getPlacement() override;
+    Base::Placement getPlacement() const override;
 
     // Return the object we are measuring
     std::vector<App::DocumentObject*> getSubject() const override;
@@ -80,6 +81,3 @@ private:
 };
 
 }  // namespace Measure
-
-
-#endif  // MEASURE_MEASURELENGTH_H

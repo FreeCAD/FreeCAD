@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -34,6 +36,7 @@
 #include "GeometryFacadePy.h"
 #include "PropertyConstraintList.h"
 #include "Sketch.h"
+#include "SketchGeometry.h"
 #include "SketchGeometryExtension.h"
 #include "SketchGeometryExtensionPy.h"
 #include "SketchObject.h"
@@ -64,24 +67,29 @@ PyMOD_INIT_FUNC(Sketcher)
     // Add Types to module
     Base::Interpreter().addType(&Sketcher::ConstraintPy ::Type, sketcherModule, "Constraint");
     Base::Interpreter().addType(&Sketcher::SketchPy ::Type, sketcherModule, "Sketch");
-    Base::Interpreter().addType(&Sketcher::ExternalGeometryExtensionPy ::Type,
-                                sketcherModule,
-                                "ExternalGeometryExtension");
-    Base::Interpreter().addType(&Sketcher::SketchGeometryExtensionPy ::Type,
-                                sketcherModule,
-                                "SketchGeometryExtension");
-    Base::Interpreter().addType(&Sketcher::GeometryFacadePy ::Type,
-                                sketcherModule,
-                                "GeometryFacade");
-    Base::Interpreter().addType(&Sketcher::ExternalGeometryFacadePy ::Type,
-                                sketcherModule,
-                                "ExternalGeometryFacade");
+    Base::Interpreter().addType(
+        &Sketcher::ExternalGeometryExtensionPy ::Type,
+        sketcherModule,
+        "ExternalGeometryExtension"
+    );
+    Base::Interpreter().addType(
+        &Sketcher::SketchGeometryExtensionPy ::Type,
+        sketcherModule,
+        "SketchGeometryExtension"
+    );
+    Base::Interpreter().addType(&Sketcher::GeometryFacadePy ::Type, sketcherModule, "GeometryFacade");
+    Base::Interpreter().addType(
+        &Sketcher::ExternalGeometryFacadePy ::Type,
+        sketcherModule,
+        "ExternalGeometryFacade"
+    );
 
 
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
 
+    Sketcher::SketchGeometryType::init();
     Sketcher::SketchGeometryExtension ::init();
     Sketcher::ExternalGeometryExtension ::init();
     Sketcher::SolverGeometryExtension ::init();

@@ -69,6 +69,8 @@ class BIM_Unclone:
                 else:
                     newobj = obj
                     newobj.CloneOf = None
+                    if hasattr(newobj, "ViewObject") and newobj.ViewObject:
+                        newobj.ViewObject.signalChangeIcon()
 
                 # copy properties over, except special ones
                 for prop in cloned.PropertiesList:
@@ -80,12 +82,14 @@ class BIM_Unclone:
                         "Area",
                         "VerticalArea",
                         "PerimeterLength",
+                        "Placement",
                         "Proxy",
                         "Shape",
                     ]:
                         setattr(newobj, prop, getattr(cloned, prop))
-                        FreeCAD.ActiveDocument.recompute()
-                        newobj.Placement = cloned.Placement.multiply(placement)
+                newobj.Placement = placement
+                FreeCAD.ActiveDocument.recompute()
+
                 # update/reset view properties too? no i think...
                 # for prop in cloned.ViewObject.PropertiesList:
                 #    if not prop in ["Proxy"]:

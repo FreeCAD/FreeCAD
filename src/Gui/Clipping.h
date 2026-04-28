@@ -21,30 +21,37 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_CLIPPING_H
-#define GUI_DIALOG_CLIPPING_H
+#pragma once
 
 #include <QDialog>
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace App
+{
+class Document;
+}
+
+namespace Gui
+{
 class View3DInventor;
-namespace Dialog {
+namespace Dialog
+{
 
 /**
  * @author Werner Mayer
  */
-class GuiExport Clipping : public QDialog
+class GuiExport Clipping: public QDialog
 {
     Q_OBJECT
 
 public:
-    static Clipping* makeDockWidget(Gui::View3DInventor*);
-    Clipping(Gui::View3DInventor* view, QWidget* parent = nullptr);
+    static Clipping* makeDockWidget(Gui::View3DInventor*, App::Document* showOn);
+    Clipping(Gui::View3DInventor* view, App::Document* showOn, QWidget* parent = nullptr);
     ~Clipping() override;
 
 protected:
     void setupConnections();
+    void onActiveDocument(const App::Document& doc);
     void onGroupBoxXToggled(bool);
     void onGroupBoxYToggled(bool);
     void onGroupBoxZToggled(bool);
@@ -70,7 +77,5 @@ private:
     Private* d;
 };
 
-} // namespace Dialog
-} // namespace Gui
-
-#endif // GUI_DIALOG_CLIPPING_H
+}  // namespace Dialog
+}  // namespace Gui

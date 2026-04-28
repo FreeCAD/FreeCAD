@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>              *
  *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
@@ -22,8 +24,7 @@
  ****************************************************************************/
 
 
-#ifndef EXPRESSION_PARSER_H
-#define EXPRESSION_PARSER_H
+#pragma once
 
 #include "Expression.h"
 #include <Base/Matrix.h>
@@ -40,12 +41,15 @@ namespace App
 // included by everyone
 ///////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief %Part of an expression that represents an index or range.
+ */
 struct AppExport Expression::Component
 {
     ObjectIdentifier::Component comp;
-    Expression* e1;
-    Expression* e2;
-    Expression* e3;
+    ExpressionPtr e1;
+    ExpressionPtr e2;
+    ExpressionPtr e3;
 
     explicit Component(const std::string& n);
     Component(Expression* e1, Expression* e2, Expression* e3, bool isRange = false);
@@ -83,7 +87,7 @@ public:
 
     ~UnitExpression() override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     void setUnit(const Base::Quantity& _quantity);
 
@@ -139,8 +143,11 @@ public:
     explicit NumberExpression(const App::DocumentObject* _owner = nullptr,
                               const Base::Quantity& quantity = Base::Quantity());
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
+    /**
+     * @brief Negate the stored value.
+     */
     void negate();
 
     bool isInteger(long* v = nullptr) const;
@@ -213,7 +220,7 @@ public:
 
     bool isTouched() const override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     int priority() const override;
 
@@ -266,7 +273,7 @@ public:
 
     bool isTouched() const override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     int priority() const override;
 
@@ -395,7 +402,7 @@ public:
 
     bool isTouched() const override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     static Py::Object
     evaluate(const Expression* owner, int type, const std::vector<Expression*>& args);
@@ -457,7 +464,7 @@ public:
 
     bool isTouched() const override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     std::string name() const
     {
@@ -471,6 +478,19 @@ public:
 
     void setPath(const ObjectIdentifier& path);
 
+    /**
+     * @brief Find the property this expression referse to.
+     *
+     * Unqualified names (i.e the name only without any dots) are resolved in
+     * the owning DocumentObjects.  Qualified names are looked up in the owning
+     * Document, first, by its internal name, then if not found, by the
+     * DocumentObjects' labels.
+     *
+     * @return The Property object if it is derived from either
+     * PropertyInteger, PropertyFloat, or PropertyString.
+     *
+     * @trhows Expression::Exception If the property cannot be resolved.
+     */
     const App::Property* getProperty() const;
 
     void addComponent(Component* component) override;
@@ -519,7 +539,7 @@ public:
 
     void setPyValue(Py::Object pyobj);
     void setPyValue(PyObject* pyobj, bool owned = false);
-    Expression* simplify() const override
+    ExpressionPtr simplify() const override
     {
         return copy();
     }
@@ -547,7 +567,7 @@ public:
                               const std::string& _text = std::string());
     ~StringExpression() override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     virtual std::string getText() const
     {
@@ -581,7 +601,7 @@ public:
 
     bool isTouched() const override;
 
-    App::Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     Range getRange() const;
 
@@ -609,8 +629,8 @@ protected:
  */
 namespace ExpressionParser
 {
-AppExport Expression* parse(const App::DocumentObject* owner, const char* buffer);
-AppExport UnitExpression* parseUnit(const App::DocumentObject* owner, const char* buffer);
+AppExport ExpressionPtr parse(const App::DocumentObject* owner, const char* buffer);
+AppExport std::unique_ptr<UnitExpression> parseUnit(const App::DocumentObject* owner, const char* buffer);
 AppExport ObjectIdentifier parsePath(const App::DocumentObject* owner, const char* buffer);
 AppExport bool isTokenAnIndentifier(const std::string& str);
 AppExport bool isTokenAConstant(const std::string& str);
@@ -669,5 +689,3 @@ public:
 }  // namespace ExpressionParser
 
 }  // namespace App
-
-#endif  // EXPRESSION_PARSER_H

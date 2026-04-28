@@ -159,7 +159,7 @@ class BIM_Classification:
         self.form.buttonRename.clicked.connect(self.rename)
         self.form.search.textEdited.connect(self.updateClasses)
         self.form.buttonBox.accepted.connect(self.accept)
-        self.form.buttonBox.rejected.connect(self.reject)
+        self.form.rejected.connect(self.reject)  # also triggered by self.form.buttonBox.rejected
         self.form.groupMode.currentIndexChanged.connect(self.updateObjects)
         self.form.treeClass.itemDoubleClicked.connect(self.apply)
         self.form.search.up.connect(self.onUpArrow)
@@ -604,8 +604,7 @@ class BIM_Classification:
             # Close the form if user has pressed Enter and did not
             # select anything
             if len(self.form.treeClass.selectedItems()) < 1:
-                self.form.close()
-                return
+                return self.reject()
 
             code = self.form.treeClass.selectedItems()[0].text(0)
             pl = self.isEditing.PropertiesList
@@ -630,7 +629,6 @@ class BIM_Classification:
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
         p.SetInt("BimClassificationDialogWidth", self.form.width())
         p.SetInt("BimClassificationDialogHeight", self.form.height())
-        self.form.hide()
         return self.reject()
 
     def reject(self):

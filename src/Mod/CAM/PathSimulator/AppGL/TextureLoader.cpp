@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -22,7 +24,8 @@
 
 #include "TextureLoader.h"
 
-using namespace MillSim;
+namespace CAMSimulator
+{
 
 TextureItem texItems[] = {
     {1, 40, 0, 0},
@@ -50,13 +53,11 @@ TextureItem texItems[] = {
 
 int sssize = -1;
 
-TextureLoader::TextureLoader(std::string imgFolder,
-                             std::vector<std::string> fileNames,
-                             int textureSize)
+TextureLoader::TextureLoader(std::string imgFolder, std::vector<std::string> fileNames, int textureSize)
     : mImageFolder(imgFolder)
 {
-    size_t buffsize =
-        static_cast<size_t>(textureSize) * static_cast<size_t>(textureSize) * sizeof(unsigned int);
+    size_t buffsize = static_cast<size_t>(textureSize) * static_cast<size_t>(textureSize)
+        * sizeof(unsigned int);
     mRawData = (unsigned int*)malloc(buffsize);
     if (mRawData == nullptr) {
         return;
@@ -69,10 +70,7 @@ TextureLoader::TextureLoader(std::string imgFolder,
 }
 
 // parse compressed image into a texture buffer
-bool TextureLoader::AddImage(TextureItem* texItem,
-                             QImage& pixmap,
-                             unsigned int* buffPos,
-                             int stride)
+bool TextureLoader::AddImage(TextureItem* texItem, QImage& pixmap, unsigned int* buffPos, int stride)
 {
     int width = pixmap.width();
     int height = pixmap.height();
@@ -89,19 +87,21 @@ bool TextureLoader::AddImage(TextureItem* texItem,
     return true;
 }
 
-MillSim::TextureLoader::~TextureLoader()
+TextureLoader::~TextureLoader()
 {
     if (mRawData != nullptr) {
         free(mRawData);
     }
 }
 
-unsigned int* MillSim::TextureLoader::GetRawData()
+unsigned int* TextureLoader::GetRawData()
 {
     return mRawData;
 }
 
-TextureItem* MillSim::TextureLoader::GetTextureItem(int i)
+TextureItem* TextureLoader::GetTextureItem(int i)
 {
     return texItems + i;
 }
+
+}  // namespace CAMSimulator

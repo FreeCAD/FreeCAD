@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_INVENTOROBJECT_H
-#define APP_INVENTOROBJECT_H
+#pragma once
 
 #include "GeoFeature.h"
 #include "PropertyStandard.h"
@@ -57,6 +58,3 @@ public:
 };
 
 }  // namespace App
-
-
-#endif  // APP_INVENTOROBJECT_H

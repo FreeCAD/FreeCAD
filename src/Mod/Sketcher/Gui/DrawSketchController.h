@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchController_H
-#define SKETCHERGUI_DrawSketchController_H
+#pragma once
 
 #include <Base/Console.h>
 #include <Base/Tools2D.h>
@@ -87,14 +88,18 @@ namespace sp = std::placeholders;
  * DrawSketchDefaultWidgetController. For custom widgets, an appropriate class, preferably deriving
  * from this controller needs to be provided.
  */
-template<typename HandlerT,           // The name of the actual handler of the tool
-         typename SelectModeT,        // The state machine defining the working of the tool
-         int PAutoConstraintSize,     // The initial size of the AutoConstraint vector
-         typename OnViewParametersT,  // The number of parameter spinboxes in the 3D view (one
-                                      // value per construction mode)
-         typename ConstructionMethodT =
-             ConstructionMethods::DefaultConstructionMethod>  // The enum comprising all the
-                                                              // supported construction methods
+template<
+    typename HandlerT,           // The name of the actual handler of the tool
+    typename SelectModeT,        // The state machine defining the working of the tool
+    int PAutoConstraintSize,     // The initial size of the AutoConstraint vector
+    typename OnViewParametersT,  // The number of parameter spinboxes in the 3D view (one
+                                 // value per construction mode)
+    typename ConstructionMethodT = ConstructionMethods::DefaultConstructionMethod>  // The enum
+                                                                                    // comprising
+                                                                                    // all the
+                                                                                    // supported
+                                                                                    // construction
+                                                                                    // methods
 class DrawSketchController
 {
 public:
@@ -110,8 +115,8 @@ public:
 
     /** @name Convenience definitions */
     //@{
-    using DSDefaultHandler =
-        DrawSketchDefaultHandler<HandlerT, SelectModeT, PAutoConstraintSize, ConstructionMethodT>;
+    using DSDefaultHandler
+        = DrawSketchDefaultHandler<HandlerT, SelectModeT, PAutoConstraintSize, ConstructionMethodT>;
     using ConstructionMachine = ConstructionMethodMachine<ConstructionMethodT>;
 
     using ConstructionMethod = ConstructionMethodT;
@@ -167,7 +172,8 @@ private:
         void init()
         {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/View");
+                "User parameter:BaseApp/Preferences/View"
+            );
 
             dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
             dimConstrDeactivatedColor = SbColor(0.5f, 0.5f, 0.5f);  // NOLINT
@@ -219,8 +225,8 @@ private:
                 case OnViewParameterVisibility::Hidden:
                     return dynamicOverride;
                 case OnViewParameterVisibility::OnlyDimensional: {
-                    auto isDimensional =
-                        (ovp->getFunction() == Gui::EditableDatumLabel::Function::Dimensioning);
+                    auto isDimensional
+                        = (ovp->getFunction() == Gui::EditableDatumLabel::Function::Dimensioning);
 
                     return isDimensional != dynamicOverride;
                 }
@@ -246,10 +252,12 @@ private:
         void init()
         {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+                "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools"
+            );
 
             onViewParameterVisibility = static_cast<OnViewParameterVisibility>(
-                hGrp->GetInt("OnViewParameterVisibility", 1));
+                hGrp->GetInt("OnViewParameterVisibility", 1)
+            );
         }
 
         OnViewParameterVisibility onViewParameterVisibility;
@@ -333,7 +341,8 @@ public:
             handler->reset();  // reset of handler to restart.
         }
 
-        handler->mouseMove(prevCursorPosition);
+        auto snapHandle = std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+        handler->mouseMove(*snapHandle);
     }
     //@}
 
@@ -436,8 +445,10 @@ public:
             handler->setState(getState(onviewparameterindex));
         }*/
 
-        adaptDrawingToOnViewParameterChange(onviewparameterindex,
-                                            value);  // specialisation interface
+        adaptDrawingToOnViewParameterChange(
+            onviewparameterindex,
+            value
+        );  // specialisation interface
 
         finishControlsChanged();
     }
@@ -534,7 +545,8 @@ public:
     virtual void afterHandlerModeChanged()
     {
         if (handler && (!handler->isState(SelectModeT::End) || handler->continuousMode)) {
-            handler->mouseMove(prevCursorPosition);
+            auto snapHandle = std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+            handler->mouseMove(*snapHandle);
         }
     }
 
@@ -552,17 +564,18 @@ public:
         }
     }
 
-    void
-    drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2)
+    void drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2)
     {
         if (shouldDrawDimensionsAtCursor()) {
             handler->drawWidthHeightAtCursor(position, val1, val2);
         }
     }
 
-    void drawDoubleAtCursor(const Base::Vector2d& position,
-                            const double radius,
-                            Base::Unit unit = Base::Unit::Length)
+    void drawDoubleAtCursor(
+        const Base::Vector2d& position,
+        const double radius,
+        Base::Unit unit = Base::Unit::Length
+    )
     {
         if (shouldDrawDimensionsAtCursor()) {
             handler->drawDoubleAtCursor(position, radius, unit);
@@ -624,7 +637,8 @@ protected:
     /// change
     void finishControlsChanged()
     {
-        handler->mouseMove(prevCursorPosition);
+        auto snapHandle = std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+        handler->mouseMove(*snapHandle);
 
         auto currentstate = handler->state();
         // ensure that object at point is preselected, so that autoconstraints are generated
@@ -636,8 +650,8 @@ protected:
         computeNextDrawSketchHandlerMode();
 
         auto nextState = handler->getNextState();
-        bool shouldProcessLastPosWithNextState =
-            nextState && nextState != SelectMode::End && nextState != currentstate && firstMoveInit;
+        bool shouldProcessLastPosWithNextState = nextState && nextState != SelectMode::End
+            && nextState != currentstate && firstMoveInit;
         // the handler will be destroyed in applyNextState if the nextState is End
         handler->applyNextState();
 
@@ -645,7 +659,8 @@ protected:
         // reset)
         if (shouldProcessLastPosWithNextState) {
             // mode has changed, so reprocess the previous position to the new widget state
-            handler->mouseMove(prevCursorPosition);
+            auto snapHandle = std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+            handler->mouseMove(*snapHandle);
         }
     }
 
@@ -654,7 +669,11 @@ protected:
     {
         Gui::View3DInventorViewer* viewer = handler->getViewer();
 
-        auto doc = Gui::Application::Instance->editDocument();
+        auto doc = viewer->getDocument();
+        if (!doc->getInEdit()) {
+            return;
+        }
+
         auto placement = Base::Placement(doc->getEditingTransform());
 
         onViewParameters.clear();
@@ -663,30 +682,40 @@ protected:
 
             // the returned is a naked pointer
             auto parameter = onViewParameters
-                                 .emplace_back(std::make_unique<Gui::EditableDatumLabel>(
-                                     viewer,
-                                     placement,
-                                     colorManager.dimConstrDeactivatedColor,
-                                     /*autoDistance = */ true,
-                                     /*avoidMouseCursor = */ true))
+                                 .emplace_back(
+                                     std::make_unique<Gui::EditableDatumLabel>(
+                                         viewer,
+                                         placement,
+                                         colorManager.dimConstrDeactivatedColor,
+                                         /*autoDistance = */ true,
+                                         /*avoidMouseCursor = */ true
+                                     )
+                                 )
                                  .get();
 
-            QObject::connect(parameter,
-                             &Gui::EditableDatumLabel::valueChanged,
-                             [this, parameter, i](double value) {
-                                 parameter->setColor(colorManager.dimConstrColor);
-                                 onViewValueChanged(i, value);
-                             });
+            const auto handleParameterValueChanged = [this, parameter, i](double value) {
+                parameter->setColor(colorManager.dimConstrColor);
+                onViewValueChanged(i, value);
+            };
+
+            QObject::connect(
+                parameter,
+                &Gui::EditableDatumLabel::valueChanged,
+                handleParameterValueChanged
+            );
+            QObject::connect(
+                parameter,
+                &Gui::EditableDatumLabel::editingFinished,
+                handleParameterValueChanged
+            );
 
             // this gets triggered whenever user deletes content in OVP, we remove the
             // constraints and unset everything to give user another change to select stuff
             // with mouse
-            QObject::connect(parameter,
-                             &Gui::EditableDatumLabel::parameterUnset,
-                             [this, parameter]() {
-                                 unsetOnViewParameter(parameter);
-                                 finishControlsChanged();
-                             });
+            QObject::connect(parameter, &Gui::EditableDatumLabel::parameterUnset, [this, parameter]() {
+                unsetOnViewParameter(parameter);
+                finishControlsChanged();
+            });
 
             // Connect Ctrl+Enter signal to apply values to all visible OVPs in current stage
             QObject::connect(parameter, &Gui::EditableDatumLabel::finishEditingOnAllOVPs, [this]() {
@@ -704,9 +733,11 @@ protected:
         onViewParameter->setLockedAppearance(false);
     }
 
-    void setOnViewParameterValue(OnViewParameter index,
-                                 double val,
-                                 const Base::Unit& unit = Base::Unit::Length)
+    void setOnViewParameterValue(
+        OnViewParameter index,
+        double val,
+        const Base::Unit& unit = Base::Unit::Length
+    )
     {
         bool visible = isOnViewParameterVisible(index);
 
@@ -847,13 +878,15 @@ private:
     bool shouldDrawPositionAtCursor() const
     {
         return !(ovpVisibilityManager.isVisibility(
-            OnViewParameterVisibilityManager::OnViewParameterVisibility::ShowAll));
+            OnViewParameterVisibilityManager::OnViewParameterVisibility::ShowAll
+        ));
     }
 
     bool shouldDrawDimensionsAtCursor() const
     {
         return (ovpVisibilityManager.isVisibility(
-            OnViewParameterVisibilityManager::OnViewParameterVisibility::Hidden));
+            OnViewParameterVisibilityManager::OnViewParameterVisibility::Hidden
+        ));
     }
     //@}
 
@@ -867,6 +900,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchController_H

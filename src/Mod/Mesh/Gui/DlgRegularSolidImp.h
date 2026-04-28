@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLGREGULARSOLID_IMP_H
-#define MESHGUI_DLGREGULARSOLID_IMP_H
+#pragma once
 
 #include <Mod/Mesh/MeshGlobal.h>
 
@@ -53,5 +54,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_DLGREGULARSOLID_IMP_H

@@ -21,29 +21,25 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TREEVIEW_H
-#define GUI_TREEVIEW_H
+#pragma once
 
 #include <QTreeView>
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport TreeView : public QTreeView
+class GuiExport TreeView: public QTreeView
 {
     Q_OBJECT
 
 public:
-    TreeView(QWidget* parent=nullptr);
+    TreeView(QWidget* parent = nullptr);
     ~TreeView() override;
 
 protected:
-    void mouseDoubleClickEvent (QMouseEvent * ) override;
-    void rowsInserted (const QModelIndex & parent, int start, int end) override;
+    void mouseDoubleClickEvent(QMouseEvent*) override;
+    void rowsInserted(const QModelIndex& parent, int start, int end) override;
 };
 
-}
-
-
-#endif // GUI_TREEVIEW_H
-
+}  // namespace Gui

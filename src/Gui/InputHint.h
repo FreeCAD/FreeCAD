@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_INPUTHINT_H
-#define GUI_INPUTHINT_H
+#pragma once
 
 #include "FCGlobal.h"
 
@@ -69,10 +68,10 @@ struct InputHint
     enum class UserInput
     {
         // Modifier
-        ModifierShift = Qt::KeyboardModifier::ShiftModifier,
-        ModifierCtrl = Qt::KeyboardModifier::ControlModifier,
-        ModifierAlt = Qt::KeyboardModifier::AltModifier,
-        ModifierMeta = Qt::KeyboardModifier::MetaModifier,
+        ModifierShift = Qt::Key_Shift,
+        ModifierCtrl = Qt::Key_Control,
+        ModifierAlt = Qt::Key_Alt,
+        ModifierMeta = Qt::Key_Meta,
 
         // Keyboard Keys
         KeySpace = Qt::Key_Space,
@@ -293,18 +292,23 @@ struct InputHint
     }
 };
 
-template <typename T>
+template<typename T>
 struct StateHints
 {
     T state;
     std::list<InputHint> hints;
 };
 
-template <typename T>
+template<typename T>
 using HintTable = std::vector<StateHints<T>>;
 
-template <typename T>
-static std::list<InputHint> lookupHints(T state, HintTable<T> table, const std::list<InputHint>& fallback = {}) {
+template<typename T>
+static std::list<InputHint> lookupHints(
+    T state,
+    HintTable<T> table,
+    const std::list<InputHint>& fallback = {}
+)
+{
     const auto stateMatches = [&state](const StateHints<T>& entry) {
         return entry.state == state;
     };
@@ -317,5 +321,3 @@ static std::list<InputHint> lookupHints(T state, HintTable<T> table, const std::
 }
 
 }  // namespace Gui
-
-#endif // GUI_INPUTHINT_H

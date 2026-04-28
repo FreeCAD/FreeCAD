@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) Jürgen Riegel <juergen.riegel@web.de>                   *
  *                                                                         *
@@ -158,8 +160,10 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject* /*self*/, PyObject* args)
     }
 
     if (index < 0 || index >= static_cast<int>(count())) {
-        PyErr_SetString(PyExc_ValueError,
-                        std::string {"invalid schema index: " + std::to_string(index)}.c_str());
+        PyErr_SetString(
+            PyExc_ValueError,
+            std::string {"invalid schema index: " + std::to_string(index)}.c_str()
+        );
         return nullptr;
     }
 

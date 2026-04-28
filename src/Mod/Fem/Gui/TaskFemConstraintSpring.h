@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintSpring_H
-#define GUI_TASKVIEW_TaskFemConstraintSpring_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -40,8 +39,10 @@ class TaskFemConstraintSpring: public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintSpring(ViewProviderFemConstraintSpring* ConstraintView,
-                                     QWidget* parent = nullptr);
+    explicit TaskFemConstraintSpring(
+        ViewProviderFemConstraintSpring* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintSpring() override;
     const std::string getReferences() const override;
     std::string getNormalStiffness() const;
@@ -72,5 +73,3 @@ public:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintSpring_H

@@ -22,11 +22,12 @@
  *                                                                          *
  ***************************************************************************/
 
-# include <QMessageBox>
-# include <QString>
-# include <QCompleter>
-# include <algorithm>
+#include <QMessageBox>
+#include <QString>
+#include <QCompleter>
+#include <algorithm>
 #include <memory>
+#include <array>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -35,6 +36,7 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyGeo.h>
+#include <App/PropertyPythonObject.h>
 #include <Base/Tools.h>
 
 #include "Dialogs/DlgAddProperty.h"
@@ -131,24 +133,24 @@ const std::string DlgAddProperty::GroupBase = "Base";
  * situation.
  */
 
-DlgAddProperty::DlgAddProperty(QWidget* parent,
-                               App::PropertyContainer* container)
+DlgAddProperty::DlgAddProperty(QWidget* parent, App::PropertyContainer* container)
     : DlgAddProperty(parent, container, nullptr)
-{
-}
+{}
 
 
-DlgAddProperty::DlgAddProperty(QWidget* parent,
-                               ViewProviderVarSet* viewProvider)
-    : DlgAddProperty(parent,
-                     viewProvider ? viewProvider->getObject<App::PropertyContainer>() : nullptr,
-                     viewProvider)
-{
-}
+DlgAddProperty::DlgAddProperty(QWidget* parent, ViewProviderVarSet* viewProvider)
+    : DlgAddProperty(
+          parent,
+          viewProvider ? viewProvider->getObject<App::PropertyContainer>() : nullptr,
+          viewProvider
+      )
+{}
 
-DlgAddProperty::DlgAddProperty(QWidget* parent,
-                               App::PropertyContainer* container,
-                               ViewProviderVarSet* viewProvider)
+DlgAddProperty::DlgAddProperty(
+    QWidget* parent,
+    App::PropertyContainer* container,
+    ViewProviderVarSet* viewProvider
+)
     : QDialog(parent)
     , container(container)
     , ui(new Ui_DlgAddProperty)
@@ -166,17 +168,16 @@ DlgAddProperty::~DlgAddProperty() = default;
 
 void DlgAddProperty::setupMacroRedirector()
 {
-    setValueRedirector = std::make_unique<MacroManager::MacroRedirector>([this](MacroManager::LineType /*type*/,
-                                                                                const char* line) {
-        this->setValueCommand = line;
-    });
+    setValueRedirector = std::make_unique<MacroManager::MacroRedirector>(
+        [this](MacroManager::LineType /*type*/, const char* line) { this->setValueCommand = line; }
+    );
 }
 
 int DlgAddProperty::findLabelRow(const char* labelName, QFormLayout* layout)
 {
     for (int row = 0; row < layout->rowCount(); ++row) {
         QLayoutItem* labelItem = layout->itemAt(row, QFormLayout::LabelRole);
-        if (labelItem == nullptr) {
+        if (!labelItem) {
             continue;
         }
 
@@ -192,7 +193,7 @@ int DlgAddProperty::findLabelRow(const char* labelName, QFormLayout* layout)
 void DlgAddProperty::removeExistingWidget(QFormLayout* formLayout, int labelRow)
 {
     if (QLayoutItem* existingItem = formLayout->itemAt(labelRow, QFormLayout::FieldRole)) {
-        if (QWidget *existingWidget = existingItem->widget()) {
+        if (QWidget* existingWidget = existingItem->widget()) {
             formLayout->removeWidget(existingWidget);
             existingWidget->deleteLater();
         }
@@ -200,11 +201,10 @@ void DlgAddProperty::removeExistingWidget(QFormLayout* formLayout, int labelRow)
 }
 
 
-void DlgAddProperty::setWidgetForLabel(const char* labelName, QWidget* widget,
-                                       QLayout* layout)
+void DlgAddProperty::setWidgetForLabel(const char* labelName, QWidget* widget, QLayout* layout)
 {
     auto formLayout = qobject_cast<QFormLayout*>(layout);
-    if (formLayout == nullptr) {
+    if (!formLayout) {
         FC_ERR("Form layout not found");
         return;
     }
@@ -219,11 +219,11 @@ void DlgAddProperty::setWidgetForLabel(const char* labelName, QWidget* widget,
     formLayout->setWidget(labelRow, QFormLayout::FieldRole, widget);
 }
 
-void DlgAddProperty::populateGroup(EditFinishedComboBox& comboBox,
-                                   const App::PropertyContainer* container)
+void DlgAddProperty::populateGroup(EditFinishedComboBox& comboBox, const App::PropertyContainer* container)
 {
     auto paramGroup = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/PropertyView");
+        "User parameter:BaseApp/Preferences/PropertyView"
+    );
     std::string lastGroup = paramGroup->GetASCII("NewPropertyGroup");
 
     std::vector<App::Property*> properties;
@@ -251,8 +251,7 @@ void DlgAddProperty::populateGroup(EditFinishedComboBox& comboBox,
         comboBox.addItem(QString::fromStdString(groupName));
     }
 
-    if (!lastGroup.empty() &&
-        std::ranges::find(groupNames, lastGroup) != groupNames.end()) {
+    if (!lastGroup.empty() && std::ranges::find(groupNames, lastGroup) != groupNames.end()) {
         comboBox.setEditText(QString::fromStdString(lastGroup));
     }
     else {
@@ -269,46 +268,81 @@ void DlgAddProperty::initializeGroup()
     setWidgetForLabel("labelGroup", &comboBoxGroup, layout());
     populateGroup(comboBoxGroup, container);
 
-    connComboBoxGroup = connect(&comboBoxGroup, &EditFinishedComboBox::editFinished,
-                                this, &DlgAddProperty::onGroupFinished);
+    connComboBoxGroup = connect(
+        &comboBoxGroup,
+        &EditFinishedComboBox::editFinished,
+        this,
+        &DlgAddProperty::onGroupFinished
+    );
 }
 
-std::vector<Base::Type> DlgAddProperty::getSupportedTypes()
+DlgAddProperty::SupportedTypes DlgAddProperty::getSupportedTypes()
 {
-    std::vector<Base::Type> supportedTypes;
+    std::vector<Base::Type> commonTypes = {
+        App::PropertyLength::getClassTypeId(),
+        App::PropertyAngle::getClassTypeId(),
+        App::PropertyFloat::getClassTypeId(),
+        App::PropertyInteger::getClassTypeId(),
+        App::PropertyBool::getClassTypeId(),
+        App::PropertyString::getClassTypeId(),
+        App::PropertyEnumeration::getClassTypeId(),
+    };
+
+    std::vector<Base::Type> otherTypes;
     std::vector<Base::Type> allTypes;
     Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"), allTypes);
 
-    std::ranges::copy_if(allTypes, std::back_inserter(supportedTypes),
-                         [&](const Base::Type& type) {
-                             return type.canInstantiate() && isTypeWithEditor(type);
-                         });
+    const auto isCommonType = [&commonTypes](const Base::Type& type) {
+        return std::ranges::find(commonTypes, type) != commonTypes.end();
+    };
 
-    std::ranges::sort(supportedTypes, [](Base::Type a, Base::Type b) {
+    std::ranges::copy_if(allTypes, std::back_inserter(otherTypes), [&](const Base::Type& type) {
+        return type.canInstantiate() && !isExcluded(type) && !isCommonType(type);
+    });
+
+    std::ranges::sort(otherTypes, [](Base::Type a, Base::Type b) {
         return strcmp(a.getName(), b.getName()) < 0;
     });
 
-    return supportedTypes;
+    return {.commonTypes = std::move(commonTypes), .otherTypes = std::move(otherTypes)};
 }
 
 void DlgAddProperty::initializeTypes()
 {
+    auto* model = new TypeItemModel(this);
+    ui->comboBoxType->setModel(model);
+
     auto paramGroup = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/PropertyView");
+        "User parameter:BaseApp/Preferences/PropertyView"
+    );
     auto lastType = Base::Type::fromName(
-            paramGroup->GetASCII("NewPropertyType", "App::PropertyLength").c_str());
+        paramGroup->GetASCII("NewPropertyType", "App::PropertyLength").c_str()
+    );
     if (lastType.isBad()) {
         lastType = App::PropertyLength::getClassTypeId();
     }
 
-    std::vector<Base::Type> types = getSupportedTypes();
+    const auto [commonTypes, otherTypes] = getSupportedTypes();
 
-    for(const auto& type : types) {
-        ui->comboBoxType->addItem(QString::fromLatin1(type.getName()));
-        if (type == lastType) {
-            ui->comboBoxType->setCurrentIndex(ui->comboBoxType->count()-1);
+    const auto addTypes = [this, &lastType](const std::vector<Base::Type>& types) {
+        for (const auto& type : types) {
+            ui->comboBoxType->addItem(QString::fromLatin1(type.getName()));
+            if (type == lastType) {
+                ui->comboBoxType->setCurrentIndex(ui->comboBoxType->count() - 1);
+            }
         }
-    }
+    };
+
+
+    const auto addSeparator = [this]() {
+        ui->comboBoxType->addItem(QStringLiteral("──────────────────────"));
+        const int idx = ui->comboBoxType->count() - 1;
+        ui->comboBoxType->setItemData(idx, true, TypeItemModel::SeparatorRole);
+    };
+
+    addTypes(commonTypes);
+    addSeparator();
+    addTypes(otherTypes);
 
     completerType.setModel(ui->comboBoxType->model());
     completerType.setCaseSensitivity(Qt::CaseInsensitive);
@@ -316,8 +350,12 @@ void DlgAddProperty::initializeTypes()
     ui->comboBoxType->setCompleter(&completerType);
     ui->comboBoxType->setInsertPolicy(QComboBox::NoInsert);
 
-    connComboBoxType = connect(ui->comboBoxType, &QComboBox::currentTextChanged,
-                               this, &DlgAddProperty::onTypeChanged);
+    connComboBoxType = connect(
+        ui->comboBoxType,
+        &QComboBox::currentTextChanged,
+        this,
+        &DlgAddProperty::onTypeChanged
+    );
 }
 
 void DlgAddProperty::removeSelectionEditor()
@@ -333,8 +371,7 @@ void DlgAddProperty::removeSelectionEditor()
 
 void DlgAddProperty::addEnumEditor(PropertyItem* propertyItem)
 {
-    auto* values =
-        static_cast<PropertyStringListItem*>(PropertyStringListItem::create());
+    auto* values = static_cast<PropertyStringListItem*>(PropertyStringListItem::create());
     values->setParent(propertyItem);
     values->setPropertyName(QLatin1String(QT_TRANSLATE_NOOP("App::Property", "Enum")));
     if (propertyItem->childCount() > 0) {
@@ -342,26 +379,31 @@ void DlgAddProperty::addEnumEditor(PropertyItem* propertyItem)
         delete child;
     }
     propertyItem->appendChild(values);
-    editor.reset(values->createEditor(this, [this]() {
-        this->valueChangedEnum();
-    }, FrameOption::WithFrame));
+    editor.reset(
+        values->createEditor(this, [this]() { this->valueChangedEnum(); }, FrameOption::WithFrame)
+    );
 }
 
 void DlgAddProperty::addNormalEditor(PropertyItem* propertyItem)
 {
-    editor.reset(propertyItem->createEditor(this, []() {},
-                                            FrameOption::WithFrame));
+    editor.reset(
+        propertyItem->createEditor(this, [this]() { this->valueChanged(); }, FrameOption::WithFrame)
+    );
 }
 
 void DlgAddProperty::addEditor(PropertyItem* propertyItem)
 {
+    if (!isTypeWithEditor(propertyItem)) {
+        return;
+    }
+
     if (isEnumPropertyItem()) {
         addEnumEditor(propertyItem);
     }
     else {
         addNormalEditor(propertyItem);
     }
-    if (editor == nullptr) {
+    if (!editor) {
         return;
     }
 
@@ -380,13 +422,49 @@ void DlgAddProperty::addEditor(PropertyItem* propertyItem)
 
     setWidgetForLabel("labelValue", editor.get(), layout());
 
-    QWidget::setTabOrder(ui->comboBoxType, editor.get());
+    QWidget::setTabOrder(ui->lineEditName, editor.get());
     QWidget::setTabOrder(editor.get(), ui->lineEditToolTip);
 
     removeSelectionEditor();
 }
 
-bool DlgAddProperty::isTypeWithEditor(const Base::Type& type)
+bool DlgAddProperty::isExcluded(const Base::Type& type) const
+{
+    // These properties are excluded because you cannot give them a value in
+    // the property view.
+    static const std::initializer_list<Base::Type> excludedTypes = {
+        App::PropertyBoolList::getClassTypeId(),
+        App::PropertyColorList::getClassTypeId(),
+        App::PropertyExpressionEngine::getClassTypeId(),
+        App::PropertyIntegerSet::getClassTypeId(),
+        App::PropertyMap::getClassTypeId(),
+        App::PropertyMaterial::getClassTypeId(),
+        App::PropertyPlacementList::getClassTypeId(),
+        App::PropertyPythonObject::getClassTypeId(),
+        App::PropertyUUID::getClassTypeId()
+    };
+
+    std::string_view name(type.getName());
+    return !name.starts_with("App::Property")
+        || std::ranges::find(excludedTypes, type) != excludedTypes.end();
+}
+
+bool DlgAddProperty::isTypeWithEditor(PropertyItem* propertyItem) const
+{
+    if (!propertyItem) {
+        return false;
+    }
+
+    App::Property* prop = propertyItem->getFirstProperty();
+    if (!prop) {
+        return false;
+    }
+
+    const Base::Type type = prop->getTypeId();
+    return isTypeWithEditor(type);
+}
+
+bool DlgAddProperty::isTypeWithEditor(const Base::Type& type) const
 {
     static const std::initializer_list<Base::Type> subTypesWithEditor = {
         // These types and their subtypes have editors.
@@ -399,11 +477,22 @@ bool DlgAddProperty::isTypeWithEditor(const Base::Type& type)
 
     static const std::initializer_list<Base::Type> typesWithEditor = {
         // These types have editors but not necessarily their subtypes.
+
+        // Although sublink properties have editors, they need the 3D view to
+        // select an object.  Because the dialog is modal, it is not possible
+        // to make use of the 3D view, hence we do not provide an editor for
+        // sublinks and their lists.  It is possible to create a property of
+        // this type though and the property can be set in the property view
+        // later which does give access to the 3D view.
         App::PropertyEnumeration::getClassTypeId(),
         App::PropertyFile::getClassTypeId(),
         App::PropertyFloatList::getClassTypeId(),
         App::PropertyFont::getClassTypeId(),
         App::PropertyIntegerList::getClassTypeId(),
+        App::PropertyLink::getClassTypeId(),
+        App::PropertyLinkList::getClassTypeId(),
+        App::PropertyXLink::getClassTypeId(),
+        App::PropertyXLinkList::getClassTypeId(),
         App::PropertyMaterialList::getClassTypeId(),
         App::PropertyPath::getClassTypeId(),
         App::PropertyString::getClassTypeId(),
@@ -415,27 +504,27 @@ bool DlgAddProperty::isTypeWithEditor(const Base::Type& type)
         return type.isDerivedFrom(t);
     };
 
-    return std::ranges::find(typesWithEditor, type) != typesWithEditor.end() ||
-        std::ranges::any_of(subTypesWithEditor, isDerivedFromType);
+    return std::ranges::find(typesWithEditor, type) != typesWithEditor.end()
+        || std::ranges::any_of(subTypesWithEditor, isDerivedFromType);
 }
 
-bool DlgAddProperty::isTypeWithEditor(const std::string& type)
+bool DlgAddProperty::isTypeWithEditor(const std::string& type) const
 {
-    Base::Type propType =
-        Base::Type::getTypeIfDerivedFrom(type.c_str(), App::Property::getClassTypeId(), true);
+    Base::Type propType
+        = Base::Type::getTypeIfDerivedFrom(type.c_str(), App::Property::getClassTypeId(), true);
     return isTypeWithEditor(propType);
 }
 
-static PropertyItem *createPropertyItem(App::Property *prop)
+static PropertyItem* createPropertyItem(App::Property* prop)
 {
-    const char *editor = prop->getEditorName();
+    const char* editor = prop->getEditorName();
     if (Base::Tools::isNullOrEmpty(editor)) {
         return nullptr;
     }
     return PropertyItemFactory::instance().createPropertyItem(editor);
 }
 
-void DlgAddProperty::createEditorForType(const Base::Type& type)
+void DlgAddProperty::createSupportDataForType(const Base::Type& type)
 {
     // Temporarily create a property for two reasons:
     // - to acquire the editor name from the instance, and
@@ -448,9 +537,10 @@ void DlgAddProperty::createEditorForType(const Base::Type& type)
     // When prop goes out of scope, it can be deleted because we obtained the
     // propertyItem (if applicable) and we initialized the editor with the data
     // from the property.
-    std::unique_ptr<App::Property, void(*)(App::Property*)> prop(
-            static_cast<App::Property*>(propInstance),
-            [](App::Property* p) { delete p; });
+    std::unique_ptr<App::Property, void (*)(App::Property*)> prop(
+        static_cast<App::Property*>(propInstance),
+        [](App::Property* p) { delete p; }
+    );
     prop->setContainer(container);
 
     propertyItem.reset(createPropertyItem(prop.get()));
@@ -466,16 +556,15 @@ void DlgAddProperty::initializeValue()
 {
     std::string type = ui->comboBoxType->currentText().toStdString();
 
-    Base::Type propType =
-        Base::Type::getTypeIfDerivedFrom(type.c_str(), App::Property::getClassTypeId(), true);
+    Base::Type propType
+        = Base::Type::getTypeIfDerivedFrom(type.c_str(), App::Property::getClassTypeId(), true);
     if (propType.isBad()) {
         return;
     }
 
-    if (isTypeWithEditor(propType)) {
-        createEditorForType(propType);
-    }
-    else {
+    createSupportDataForType(propType);
+    if (!isTypeWithEditor(propType)) {
+        // remove the editor from a previous add
         removeEditor();
     }
 }
@@ -487,9 +576,9 @@ void DlgAddProperty::setTitle()
 
 void DlgAddProperty::setAddEnabled(bool enabled)
 {
-    QPushButton *addButton = ui->buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
-    cancelButton->setDefault(!enabled);
+    QPushButton* addButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
+    closeButton->setDefault(!enabled);
     addButton->setDefault(enabled);
     addButton->setEnabled(enabled);
 }
@@ -501,21 +590,24 @@ void DlgAddProperty::initializeWidgets(ViewProviderVarSet* viewProvider)
     initializeValue();
 
     if (viewProvider) {
-        connect(this, &QDialog::finished,
-                this, [viewProvider](int result) { viewProvider->onFinished(result); });
+        connect(this, &QDialog::finished, this, [viewProvider](int result) {
+            viewProvider->onFinished(result);
+        });
     }
-    connLineEditNameTextChanged = connect(ui->lineEditName, &QLineEdit::textChanged,
-            this, &DlgAddProperty::onNameChanged);
+    connLineEditNameTextChanged
+        = connect(ui->lineEditName, &QLineEdit::textChanged, this, &DlgAddProperty::onNameChanged);
 
     setTitle();
-    QPushButton *addButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* addButton = ui->buttonBox->button(QDialogButtonBox::Ok);
     addButton->setText(tr("Add"));
     setAddEnabled(false);
 
-    ui->lineEditName->setFocus();
+    comboBoxGroup.setFocus();
 
-    QWidget::setTabOrder(ui->lineEditName, &comboBoxGroup);
     QWidget::setTabOrder(&comboBoxGroup, ui->comboBoxType);
+    QWidget::setTabOrder(ui->comboBoxType, ui->lineEditName);
+    QWidget::setTabOrder(ui->lineEditName, editor.get());
+    QWidget::setTabOrder(editor.get(), ui->lineEditToolTip);
 
     adjustSize();
 }
@@ -523,19 +615,17 @@ void DlgAddProperty::initializeWidgets(ViewProviderVarSet* viewProvider)
 bool DlgAddProperty::propertyExists(const std::string& name)
 {
     App::Property* prop = container->getPropertyByName(name.c_str());
-    return prop && prop->getContainer() == container &&
-            !(propertyItem && propertyItem->getFirstProperty() == prop);
+    return prop && prop->getContainer() == container
+        && !(propertyItem && propertyItem->getFirstProperty() == prop);
 }
 
 bool DlgAddProperty::isNameValid()
 {
     std::string name = ui->lineEditName->text().toStdString();
 
-    return !name.empty() &&
-        name == Base::Tools::getIdentifier(name) &&
-        !App::ExpressionParser::isTokenAConstant(name) &&
-        !App::ExpressionParser::isTokenAUnit(name) &&
-        !propertyExists(name);
+    return !name.empty() && name == Base::Tools::getIdentifier(name)
+        && !App::ExpressionParser::isTokenAConstant(name)
+        && !App::ExpressionParser::isTokenAUnit(name) && !propertyExists(name);
 }
 
 bool DlgAddProperty::isGroupValid()
@@ -547,8 +637,8 @@ bool DlgAddProperty::isGroupValid()
 bool DlgAddProperty::isTypeValid()
 {
     std::string type = ui->comboBoxType->currentText().toStdString();
-    return Base::Type::fromName(type.c_str()).isDerivedFrom(App::Property::getClassTypeId()) &&
-        type != "App::Property";
+    return Base::Type::fromName(type.c_str()).isDerivedFrom(App::Property::getClassTypeId())
+        && type != "App::Property";
 }
 
 bool DlgAddProperty::isDocument() const
@@ -599,7 +689,7 @@ void DlgAddProperty::showStatusMessage()
 
 void DlgAddProperty::removeEditor()
 {
-    if (editor == nullptr) {
+    if (!editor) {
         return;
     }
 
@@ -609,21 +699,21 @@ void DlgAddProperty::removeEditor()
     placeholder->setMinimumHeight(comboBoxGroup.height());
     setWidgetForLabel("labelValue", placeholder, layout());
 
-    QWidget::setTabOrder(ui->comboBoxType, ui->lineEditToolTip);
+    QWidget::setTabOrder(ui->lineEditName, ui->lineEditToolTip);
     editor = nullptr;
 }
 
 bool DlgAddProperty::isEnumPropertyItem() const
 {
-    return ui->comboBoxType->currentText() ==
-        QString::fromLatin1(App::PropertyEnumeration::getClassTypeId().getName());
+    return ui->comboBoxType->currentText()
+        == QString::fromLatin1(App::PropertyEnumeration::getClassTypeId().getName());
 }
 
 QVariant DlgAddProperty::getEditorData() const
 {
     if (isEnumPropertyItem()) {
         PropertyItem* child = propertyItem->child(0);
-        if (child == nullptr) {
+        if (!child) {
             return {};
         }
         return child->editorData(editor.get());
@@ -636,7 +726,7 @@ void DlgAddProperty::setEditorData(const QVariant& data)
 {
     if (isEnumPropertyItem()) {
         PropertyItem* child = propertyItem->child(0);
-        if (child == nullptr) {
+        if (!child) {
             return;
         }
         child->setEditorData(editor.get(), data);
@@ -651,7 +741,7 @@ void DlgAddProperty::setEditor(bool valueNeedsReset)
     if (editor && !valueNeedsReset) {
         QVariant data = getEditorData();
         addEditor(propertyItem.get());
-        if (editor == nullptr) {
+        if (!editor) {
             return;
         }
         setEditorData(data);
@@ -663,19 +753,24 @@ void DlgAddProperty::setEditor(bool valueNeedsReset)
     else {
         initializeValue();
     }
+
+    if (editor) {
+        QVariant data = propertyItem->editorData(editor.get());
+        propertyItem->setData(data);
+    }
 }
 
 void DlgAddProperty::setPropertyItem(App::Property* prop, bool supportsExpressions)
 {
-    if (prop == nullptr) {
+    if (!prop) {
         return;
     }
 
-    if (propertyItem == nullptr) {
+    if (!propertyItem) {
         propertyItem.reset(createPropertyItem(prop));
     }
 
-    if (propertyItem == nullptr) {
+    if (!propertyItem) {
         return;
     }
 
@@ -709,6 +804,9 @@ bool DlgAddProperty::clearBoundProperty()
 
     if (App::Property* prop = propertyItem->getFirstProperty()) {
         propertyItem->unbind();
+        if (auto* eb = dynamic_cast<ExpressionBinding*>(editor.get())) {
+            eb->unbind();
+        }
         propertyItem->removeProperty(prop);
         container->removeDynamicProperty(prop->getName());
         closeTransaction(TransactionOption::Abort);
@@ -718,7 +816,7 @@ bool DlgAddProperty::clearBoundProperty()
 
 bool DlgAddProperty::clear(FieldChange fieldChange)
 {
-    if (propertyItem == nullptr) {
+    if (!propertyItem) {
         return true;
     }
 
@@ -732,7 +830,7 @@ bool DlgAddProperty::clear(FieldChange fieldChange)
     return valueNeedsReset;
 }
 
-void DlgAddProperty::onNameChanged([[maybe_unused]]const QString& text)
+void DlgAddProperty::onNameChanged([[maybe_unused]] const QString& text)
 {
     bool valueNeedsReset = clear(FieldChange::Name);
     if (isNameValid() && isTypeValid()) {
@@ -791,9 +889,8 @@ void DlgAddProperty::changeEvent(QEvent* e)
 
 void DlgAddProperty::valueChangedEnum()
 {
-    auto* propEnum =
-        static_cast<App::PropertyEnumeration*>(propertyItem->getFirstProperty());
-    if (propEnum == nullptr || propertyItem->childCount() == 0) {
+    auto* propEnum = static_cast<App::PropertyEnumeration*>(propertyItem->getFirstProperty());
+    if (!propEnum || propertyItem->childCount() == 0) {
         return;
     }
 
@@ -802,9 +899,16 @@ void DlgAddProperty::valueChangedEnum()
     QStringList enumValues = data.toStringList();
     // convert to std::vector<std::string>
     std::vector<std::string> enumValuesVec;
-    std::ranges::transform(enumValues, std::back_inserter(enumValuesVec),
-                               [](const QString& value) { return value.toStdString(); });
+    std::ranges::transform(enumValues, std::back_inserter(enumValuesVec), [](const QString& value) {
+        return value.toStdString();
+    });
     propEnum->setEnums(enumValuesVec);
+}
+
+void DlgAddProperty::valueChanged()
+{
+    QVariant data = propertyItem->editorData(editor.get());
+    propertyItem->setData(data);
 }
 
 /* We use these functions rather than the functions provided by App::Document
@@ -816,10 +920,13 @@ void DlgAddProperty::valueChangedEnum()
  */
 void DlgAddProperty::openTransaction()
 {
-    transactionID = App::GetApplication().setActiveTransaction("Add property");
+    transactionID = App::GetApplication().setActiveTransaction(
+        App::TransactionName {.name = "Add property", .temporary = false}
+    );
 }
 
-void DlgAddProperty::critical(const QString& title, const QString& text) {
+void DlgAddProperty::critical(const QString& title, const QString& text)
+{
     static bool criticalDialogShown = false;
     if (!criticalDialogShown) {
         Base::StateLocker locker(criticalDialogShown);
@@ -827,9 +934,13 @@ void DlgAddProperty::critical(const QString& title, const QString& text) {
     }
 }
 
-void DlgAddProperty::recordMacroAdd(const App::PropertyContainer* container,
-                                    const std::string& type, const std::string& name,
-                                    const std::string& group, const std::string& doc) const
+void DlgAddProperty::recordMacroAdd(
+    const App::PropertyContainer* container,
+    const std::string& type,
+    const std::string& name,
+    const std::string& group,
+    const std::string& doc
+) const
 {
     std::ostringstream command;
     command << "App.getDocument('";
@@ -845,8 +956,7 @@ void DlgAddProperty::recordMacroAdd(const App::PropertyContainer* container,
         FC_ERR("Cannot record macro for container of type " << container->getTypeId().getName());
         return;
     }
-    command << ".addProperty('" << type << "', '" << name << "', '" <<
-        group << "', '" << doc + "')";
+    command << ".addProperty('" << type << "', '" << name << "', '" << group << "', '" << doc + "')";
     Application::Instance->macroManager()->addLine(Gui::MacroManager::App, command.str().c_str());
 }
 
@@ -862,18 +972,19 @@ App::Property* DlgAddProperty::createProperty()
     };
 
     try {
-        App::Property* prop = container->addDynamicProperty(type.c_str(), name.c_str(),
-                                                            group.c_str(), doc.c_str());
+        App::Property* prop
+            = container->addDynamicProperty(type.c_str(), name.c_str(), group.c_str(), doc.c_str());
         MacroManager::MacroRedirector redirector(recordAddCommand);
         recordMacroAdd(container, type, name, group, doc);
         return prop;
     }
     catch (Base::Exception& e) {
         e.reportException();
-        critical(QObject::tr("Add property"),
-                 QObject::tr("Failed to add property to '%1': %2").arg(
-                         QString::fromLatin1(container->getFullName().c_str()),
-                         QString::fromUtf8(e.what())));
+        critical(
+            QObject::tr("Add property"),
+            QObject::tr("Failed to add property to '%1': %2")
+                .arg(QString::fromLatin1(container->getFullName().c_str()), QString::fromUtf8(e.what()))
+        );
         return nullptr;
     }
 }
@@ -884,7 +995,12 @@ void DlgAddProperty::closeTransaction(TransactionOption option)
         return;
     }
 
-    App::GetApplication().closeActiveTransaction(static_cast<bool>(option), transactionID);
+    if (option == TransactionOption::Abort) {
+        App::GetApplication().abortTransaction(transactionID);
+    }
+    else {
+        App::GetApplication().commitTransaction(transactionID);
+    }
     transactionID = 0;
 }
 
@@ -899,7 +1015,8 @@ void DlgAddProperty::clearFields()
     setAddEnabled(false);
 }
 
-void DlgAddProperty::addDocumentation() {
+void DlgAddProperty::addDocumentation()
+{
     /* Since there is no check on documentation (we accept any string), there
      * is no signal handler for the documentation field.  This method updates
      * the property that is being added with the text inserted as
@@ -909,13 +1026,13 @@ void DlgAddProperty::addDocumentation() {
     std::string group = comboBoxGroup.currentText().toStdString();
     std::string doc = ui->lineEditToolTip->text().toStdString();
 
-    if (propertyItem == nullptr) {
+    if (!propertyItem) {
         // If there is no property item, we cannot add documentation.
         return;
     }
 
     App::Property* prop = propertyItem->getFirstProperty();
-    if (prop == nullptr) {
+    if (!prop) {
         return;
     }
 
@@ -924,10 +1041,6 @@ void DlgAddProperty::addDocumentation() {
 
 void DlgAddProperty::accept()
 {
-    if (editor) {
-        QVariant data = propertyItem->editorData(editor.get());
-        propertyItem->setData(data);
-    }
     addDocumentation();
     auto* object = freecad_cast<App::DocumentObject*>(container);
     if (object) {
@@ -937,14 +1050,14 @@ void DlgAddProperty::accept()
 
     setValueRedirector = nullptr;
     Application::Instance->macroManager()->addLine(MacroManager::LineType::App, addCommand.c_str());
-    Application::Instance->macroManager()->addLine(MacroManager::LineType::App,
-                                                   setValueCommand.c_str());
+    Application::Instance->macroManager()->addLine(MacroManager::LineType::App, setValueCommand.c_str());
     setupMacroRedirector();
 
     std::string group = comboBoxGroup.currentText().toStdString();
     std::string type = ui->comboBoxType->currentText().toStdString();
     auto paramGroup = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/PropertyView");
+        "User parameter:BaseApp/Preferences/PropertyView"
+    );
     paramGroup->SetASCII("NewPropertyType", type.c_str());
     paramGroup->SetASCII("NewPropertyGroup", group.c_str());
 

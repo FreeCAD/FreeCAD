@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATURE_EXTRUDE_H
-#define PARTDESIGN_FEATURE_EXTRUDE_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -31,11 +32,12 @@
 class gp_Dir;
 class TopoDS_Face;
 class TopoDS_Shape;
+class TopLoc_Location;
 
 namespace PartDesign
 {
 
-class PartDesignExport FeatureExtrude : public ProfileBased
+class PartDesignExport FeatureExtrude: public ProfileBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureExtrude);
 
@@ -45,16 +47,16 @@ public:
     App::PropertyEnumeration SideType;
     App::PropertyEnumeration Type;
     App::PropertyEnumeration Type2;
-    App::PropertyLength      Length;
-    App::PropertyLength      Length2;
-    App::PropertyAngle       TaperAngle;
-    App::PropertyAngle       TaperAngle2;
-    App::PropertyBool        UseCustomVector;
-    App::PropertyVector      Direction;
-    App::PropertyBool        AlongSketchNormal;
-    App::PropertyLength      Offset;
-    App::PropertyLength      Offset2;
-    App::PropertyLinkSub     ReferenceAxis;
+    App::PropertyLength Length;
+    App::PropertyLength Length2;
+    App::PropertyAngle TaperAngle;
+    App::PropertyAngle TaperAngle2;
+    App::PropertyBool UseCustomVector;
+    App::PropertyVector Direction;
+    App::PropertyBool AlongSketchNormal;
+    App::PropertyLength Offset;
+    App::PropertyLength Offset2;
+    App::PropertyLinkSub ReferenceAxis;
 
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
     static double maxAngle;
@@ -65,7 +67,8 @@ public:
     short mustExecute() const override;
     void setupObject() override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderExtrude";
     }
     //@}
@@ -76,6 +79,7 @@ protected:
     void onDocumentRestored() override;
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
     bool hasTaperedAngle() const;
+    void onChanged(const App::Property* prop) override;
 
 
     /// Options for buildExtrusion()
@@ -96,11 +100,11 @@ protected:
      * by removing the farthest face from the sketchshape in the direction
      * if farthest is nearest (circular) then return the initial shape
      */
-    TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir);
+    TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir& dir);
 
     /**
-      * Disables settings that are not valid for the current method
-      */
+     * Disables settings that are not valid for the current method
+     */
     void updateProperties();
 
     TopoShape generateSingleExtrusionSide(
@@ -108,17 +112,16 @@ protected:
         const std::string& method,
         double length,
         double taperAngleDeg,
-        App::PropertyLinkSub& upToFacePropHandle,  // e.g., &UpToFace or &UpToFace2
+        App::PropertyLinkSub& upToFacePropHandle,       // e.g., &UpToFace or &UpToFace2
         App::PropertyLinkSubList& upToShapePropHandle,  // e.g., &UpToShape or &UpToShape2
         gp_Dir dir,
         double offsetVal,
         bool makeFace,
-        const TopoShape& base         // The base shape for context (global CS)
+        const TopoShape& base,      // The base shape for context (global CS)
+        TopLoc_Location& invObjLoc  // MUST be passed. Cannot be re-accessed, see #26677
     );
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 ENABLE_BITMASK_OPERATORS(PartDesign::FeatureExtrude::ExtrudeOption)
-
-#endif // PARTDESIGN_FEATURE_EXTRUDE_H

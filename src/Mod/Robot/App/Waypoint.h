@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_WAYPOINT_H
-#define ROBOT_WAYPOINT_H
+#pragma once
 
 #include <Base/Persistence.h>
 #include <Base/Placement.h>
@@ -49,14 +50,16 @@ public:
 
     Waypoint();
     /// full constructor
-    Waypoint(const char* name,
-             const Base::Placement& endPos,
-             WaypointType type = Waypoint::LINE,
-             float velocity = 2000.0,
-             float acceleration = 100.0,
-             bool cont = false,
-             unsigned int tool = 0,
-             unsigned int base = 0);
+    Waypoint(
+        const char* name,
+        const Base::Placement& endPos,
+        WaypointType type = Waypoint::LINE,
+        float velocity = 2000.0,
+        float acceleration = 100.0,
+        bool cont = false,
+        unsigned int tool = 0,
+        unsigned int base = 0
+    );
 
     ~Waypoint() override;
 
@@ -76,6 +79,3 @@ public:
 };
 
 }  // namespace Robot
-
-
-#endif  // ROBOT_WAYPOINT_H

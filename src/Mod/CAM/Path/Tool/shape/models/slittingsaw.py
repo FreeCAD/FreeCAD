@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -26,7 +28,6 @@ from .base import ToolBitShape
 
 class ToolBitShapeSlittingSaw(ToolBitShape):
     name = "SlittingSaw"
-    aliases = "slittingsaw", "slitting-saw"
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

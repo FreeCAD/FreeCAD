@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,12 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __stock_object_h__
-#define __stock_object_h__
-#include "SolidObject.h"
-#include "linmath.h"
+#pragma once
 
-namespace MillSim
+#include "SolidObject.h"
+
+namespace CAMSimulator
 {
 
 class StockObject: public SolidObject
@@ -38,6 +39,5 @@ public:
 private:
     float mProfile[8] = {};
 };
-}  // namespace MillSim
 
-#endif
+}  // namespace CAMSimulator

@@ -36,8 +36,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPressure,
-                FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPressure, FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintPressure::ViewProviderFemConstraintPressure()
 {
@@ -75,9 +74,11 @@ void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
     }
 }
 
-void ViewProviderFemConstraintPressure::transformSymbol(const Base::Vector3d& point,
-                                                        const Base::Vector3d& normal,
-                                                        SbMatrix& mat) const
+void ViewProviderFemConstraintPressure::transformSymbol(
+    const Base::Vector3d& point,
+    const Base::Vector3d& normal,
+    SbMatrix& mat
+) const
 {
     auto obj = this->getObject<const Fem::ConstraintPressure>();
     float rotAngle = obj->Reversed.getValue() ? std::numbers::pi_v<float> : 0.0f;
@@ -85,15 +86,19 @@ void ViewProviderFemConstraintPressure::transformSymbol(const Base::Vector3d& po
     // Symbol length from .iv file
     float symLen = 4.0f;
     SbMatrix mat0, mat1;
-    mat0.setTransform(SbVec3f(0, 0, 0),
-                      SbRotation(SbVec3f(0, 0, 1), rotAngle),
-                      SbVec3f(1, 1, 1),
-                      SbRotation(SbVec3f(0, 0, 1), 0),
-                      SbVec3f(0, symLen / 2.0f, 0));
+    mat0.setTransform(
+        SbVec3f(0, 0, 0),
+        SbRotation(SbVec3f(0, 0, 1), rotAngle),
+        SbVec3f(1, 1, 1),
+        SbRotation(SbVec3f(0, 0, 1), 0),
+        SbVec3f(0, symLen / 2.0f, 0)
+    );
 
-    mat1.setTransform(SbVec3f(point.x, point.y, point.z),
-                      SbRotation(SbVec3f(0, 1, 0), SbVec3f(normal.x, normal.y, normal.z)),
-                      SbVec3f(s, s, s));
+    mat1.setTransform(
+        SbVec3f(point.x, point.y, point.z),
+        SbRotation(SbVec3f(0, 1, 0), SbVec3f(normal.x, normal.y, normal.z)),
+        SbVec3f(s, s, s)
+    );
 
     mat = mat0 * mat1;
 }

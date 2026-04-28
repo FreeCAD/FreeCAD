@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,9 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAFTUTILS_PRECOMPILED_H
-#define DRAFTUTILS_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
-
-#endif

@@ -1,4 +1,6 @@
-    /******************************************************************************
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+/******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
@@ -20,8 +22,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskPatternParameters_H
-#define GUI_TASKVIEW_TaskPatternParameters_H
+#pragma once
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderTransformed.h"
@@ -30,8 +31,9 @@
 class QTimer;
 class Ui_TaskPatternParameters;
 
-namespace PartGui {
-    class PatternParametersWidget;
+namespace PartGui
+{
+class PatternParametersWidget;
 }
 
 namespace PartDesignGui
@@ -39,14 +41,13 @@ namespace PartDesignGui
 
 class TaskMultiTransformParameters;
 
-class TaskPatternParameters : public TaskTransformedParameters
+class TaskPatternParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskPatternParameters(ViewProviderTransformed* TransformedView,
-                                         QWidget* parent = nullptr);
+    explicit TaskPatternParameters(ViewProviderTransformed* TransformedView, QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskPatternParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
     ~TaskPatternParameters() override;
@@ -79,7 +80,7 @@ private:
     // Task-specific logic remains
     void showOriginAxes(bool show);
     void enterReferenceSelectionMode();
-    void exitReferenceSelectionMode(); // Ensure this clears gates etc.
+    void exitReferenceSelectionMode();  // Ensure this clears gates etc.
 
     PartGui::PatternParametersWidget* parametersWidget = nullptr;
     PartGui::PatternParametersWidget* parametersWidget2 = nullptr;
@@ -92,7 +93,7 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgLinearPatternParameters : public TaskDlgTransformedParameters
+class TaskDlgLinearPatternParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
@@ -101,6 +102,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif // GUI_TASKVIEW_TaskPatternParameters_H
-

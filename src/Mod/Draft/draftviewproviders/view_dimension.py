@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -29,6 +31,7 @@ These include linear dimensions, including radius and diameter,
 as well as angular dimensions.
 They inherit their behavior from the base Annotation viewprovider.
 """
+
 ## @package view_dimension
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Dimension objects.
@@ -119,82 +122,56 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         super().set_text_properties(vobj, properties)
 
         if "TextSpacing" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Spacing between text and dimension line")
-            vobj.addProperty("App::PropertyLength",
-                             "TextSpacing",
-                             "Text",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Spacing between text and dimension line")
+            vobj.addProperty("App::PropertyLength", "TextSpacing", "Text", _tip, locked=True)
             vobj.TextSpacing = params.get_param("dimspacing")
 
         if "FlipText" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Rotate the dimension text 180 degrees")
-            vobj.addProperty("App::PropertyBool",
-                             "FlipText",
-                             "Text",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Rotate the dimension text 180 degrees")
+            vobj.addProperty("App::PropertyBool", "FlipText", "Text", _tip, locked=True)
             vobj.FlipText = False
 
         if "TextPosition" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Text Position.\n"
-                                     "Leave '(0,0,0)' for automatic position")
-            vobj.addProperty("App::PropertyVectorDistance",
-                             "TextPosition",
-                             "Text",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "Text Position.\n" "Leave '(0,0,0)' for automatic position"
+            )
+            vobj.addProperty(
+                "App::PropertyVectorDistance", "TextPosition", "Text", _tip, locked=True
+            )
             vobj.TextPosition = App.Vector(0, 0, 0)
 
         if "Override" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Text override.\n"
-                                     "Write '$dim' so that it is replaced by "
-                                     "the dimension length.")
-            vobj.addProperty("App::PropertyString",
-                             "Override",
-                             "Text",
-                             _tip,
-                             locked=True)
-            vobj.Override = ''
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Text override.\n"
+                "Write '$dim' so that it is replaced by "
+                "the dimension length.",
+            )
+            vobj.addProperty("App::PropertyString", "Override", "Text", _tip, locked=True)
+            vobj.Override = ""
 
     def set_units_properties(self, vobj, properties):
         """Set unit properties only if they don't already exist."""
         super().set_units_properties(vobj, properties)
 
         if "Decimals" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The number of decimals to show")
-            vobj.addProperty("App::PropertyInteger",
-                             "Decimals",
-                             "Units",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "The number of decimals to show")
+            vobj.addProperty("App::PropertyInteger", "Decimals", "Units", _tip, locked=True)
             vobj.Decimals = params.get_param("dimPrecision")
 
         if "ShowUnit" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Show the unit suffix")
-            vobj.addProperty("App::PropertyBool",
-                             "ShowUnit",
-                             "Units",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Show the unit suffix")
+            vobj.addProperty("App::PropertyBool", "ShowUnit", "Units", _tip, locked=True)
             vobj.ShowUnit = params.get_param("showUnit")
 
         if "UnitOverride" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "A unit to express the measurement.\n"
-                                     "Leave blank for system default.\n"
-                                     "Use 'arch' to force US arch notation")
-            vobj.addProperty("App::PropertyString",
-                             "UnitOverride",
-                             "Units",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "A unit to express the measurement.\n"
+                "Leave blank for system default.\n"
+                "Use 'arch' to force US arch notation",
+            )
+            vobj.addProperty("App::PropertyString", "UnitOverride", "Units", _tip, locked=True)
             vobj.UnitOverride = params.get_param("overrideUnit")
 
     def set_graphics_properties(self, vobj, properties):
@@ -202,56 +179,33 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         super().set_graphics_properties(vobj, properties)
 
         if "FlipArrows" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Rotate the dimension arrows 180 degrees")
-            vobj.addProperty("App::PropertyBool",
-                             "FlipArrows",
-                             "Graphics",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Rotate the dimension arrows 180 degrees")
+            vobj.addProperty("App::PropertyBool", "FlipArrows", "Graphics", _tip, locked=True)
             vobj.FlipArrows = False
 
         if "DimOvershoot" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The distance the dimension line "
-                                     "is extended\n"
-                                     "past the extension lines")
-            vobj.addProperty("App::PropertyDistance",
-                             "DimOvershoot",
-                             "Graphics",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The distance the dimension line " "is extended\n" "past the extension lines",
+            )
+            vobj.addProperty("App::PropertyDistance", "DimOvershoot", "Graphics", _tip, locked=True)
             vobj.DimOvershoot = params.get_param("dimovershoot")
 
         if "ExtLines" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Length of the extension lines")
-            vobj.addProperty("App::PropertyDistance",
-                             "ExtLines",
-                             "Graphics",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Length of the extension lines")
+            vobj.addProperty("App::PropertyDistance", "ExtLines", "Graphics", _tip, locked=True)
             vobj.ExtLines = params.get_param("extlines")
 
         if "ExtOvershoot" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Length of the extension line\n"
-                                     "beyond the dimension line")
-            vobj.addProperty("App::PropertyDistance",
-                             "ExtOvershoot",
-                             "Graphics",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "Length of the extension line\n" "beyond the dimension line"
+            )
+            vobj.addProperty("App::PropertyDistance", "ExtOvershoot", "Graphics", _tip, locked=True)
             vobj.ExtOvershoot = params.get_param("extovershoot")
 
         if "ShowLine" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Shows the dimension line and arrows")
-            vobj.addProperty("App::PropertyBool",
-                             "ShowLine",
-                             "Graphics",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Shows the dimension line and arrows")
+            vobj.addProperty("App::PropertyBool", "ShowLine", "Graphics", _tip, locked=True)
             vobj.ShowLine = params.get_param("DimShowLine")
 
     def getIcon(self):
@@ -284,8 +238,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.textpos = coin.SoTransform()
         self.textcolor = coin.SoBaseColor()
         self.font = coin.SoFont()
-        self.text_wld = coin.SoAsciiText() # World orientation. Can be oriented in 3D space.
-        self.text_scr = coin.SoText2()     # Screen orientation. Always faces the camera.
+        self.text_wld = coin.SoAsciiText()  # World orientation. Can be oriented in 3D space.
+        self.text_scr = coin.SoText2()  # Screen orientation. Always faces the camera.
 
         # The text string needs to be initialized to something,
         # otherwise it may cause a crash of the system
@@ -318,7 +272,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.linecolor = coin.SoBaseColor()
         self.drawstyle = coin.SoDrawStyle()
         self.coords = coin.SoCoordinate3()
-        import PartGui # Required for "SoBrepEdgeSet" (because a dimension is not a Part::FeaturePython object).
+        import PartGui  # Required for "SoBrepEdgeSet" (because a dimension is not a Part::FeaturePython object).
+
         self.line = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         self.marks = coin.SoSeparator()
         self.marksDimOvershoot = coin.SoSeparator()
@@ -411,8 +366,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.p4 = obj.End
         base = None
 
-        if (hasattr(obj, "Direction")
-                and not DraftVecUtils.isNull(obj.Direction)):
+        if hasattr(obj, "Direction") and not DraftVecUtils.isNull(obj.Direction):
             v2 = self.p1 - obj.Dimline
             v3 = self.p4 - obj.Dimline
             v2 = DraftVecUtils.project(v2, obj.Direction)
@@ -501,10 +455,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         _plane_rot = DraftVecUtils.getPlaneRotation(u, v1, norm)
         if _plane_rot is not None:
             rot1 = App.Placement(_plane_rot).Rotation.Q
-            self.transDimOvershoot1.rotation.setValue((rot1[0], rot1[1],
-                                                       rot1[2], rot1[3]))
-            self.transDimOvershoot2.rotation.setValue((rot1[0], rot1[1],
-                                                       rot1[2], rot1[3]))
+            self.transDimOvershoot1.rotation.setValue((rot1[0], rot1[1], rot1[2], rot1[3]))
+            self.transDimOvershoot2.rotation.setValue((rot1[0], rot1[1], rot1[2], rot1[3]))
             self.trot = rot1
         else:
             self.trot = (0, 0, 0, 1)
@@ -516,10 +468,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         _plane_rot = DraftVecUtils.getPlaneRotation(u, v2)
         if _plane_rot is not None:
             rot2 = App.Placement(_plane_rot).Rotation.Q
-            self.trans1.rotation.setValue((rot2[0], rot2[1],
-                                           rot2[2], rot2[3]))
-            self.trans2.rotation.setValue((rot2[0], rot2[1],
-                                           rot2[2], rot2[3]))
+            self.trans1.rotation.setValue((rot2[0], rot2[1], rot2[2], rot2[3]))
+            self.trans2.rotation.setValue((rot2[0], rot2[1], rot2[2], rot2[3]))
 
         if self.p1 != self.p2:
             u3 = self.p1 - self.p2
@@ -528,10 +478,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             _plane_rot = DraftVecUtils.getPlaneRotation(u3, v3)
             if _plane_rot is not None:
                 rot3 = App.Placement(_plane_rot).Rotation.Q
-                self.transExtOvershoot1.rotation.setValue((rot3[0], rot3[1],
-                                                           rot3[2], rot3[3]))
-                self.transExtOvershoot2.rotation.setValue((rot3[0], rot3[1],
-                                                           rot3[2], rot3[3]))
+                self.transExtOvershoot1.rotation.setValue((rot3[0], rot3[1], rot3[2], rot3[3]))
+                self.transExtOvershoot2.rotation.setValue((rot3[0], rot3[1], rot3[2], rot3[3]))
 
         # Offset is the distance from the dimension line to the textual
         # element that displays the value of the measurement
@@ -560,8 +508,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         # The position of the text element in the dimension is provided
         # in absolute coordinates by the value of `TextPosition`,
         # if it is different from the default `(0,0,0)`
-        if (hasattr(vobj, "TextPosition")
-                and not DraftVecUtils.isNull(vobj.TextPosition)):
+        if hasattr(vobj, "TextPosition") and not DraftVecUtils.isNull(vobj.TextPosition):
             self.tbase = vobj.TextPosition
         else:
             # Otherwise the position is calculated from the end points
@@ -570,11 +517,10 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             center = self.p2 + (self.p3 - self.p2).multiply(0.5)
             self.tbase = center + offset
 
-        self.textpos.translation.setValue([self.tbase.x,
-                                           self.tbase.y,
-                                           self.tbase.z])
-        self.textpos.rotation = coin.SbRotation(self.trot[0], self.trot[1],
-                                                self.trot[2], self.trot[3])
+        self.textpos.translation.setValue([self.tbase.x, self.tbase.y, self.tbase.z])
+        self.textpos.rotation = coin.SbRotation(
+            self.trot[0], self.trot[1], self.trot[2], self.trot[3]
+        )
 
         show_unit = True
         if hasattr(vobj, "ShowUnit"):
@@ -589,12 +535,13 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
         # Special representation if we use 'Building US' scheme
         doc = obj.Document
-        if (not unit and doc.UnitSystem == doc.getEnumerationsOfProperty("UnitSystem")[5]) \
-                or (unit == "arch"):
+        if (not unit and doc.UnitSystem == doc.getEnumerationsOfProperty("UnitSystem")[5]) or (
+            unit == "arch"
+        ):
             self.string = App.Units.Quantity(length, App.Units.Length).UserString
             if self.string.count('"') > 1:
                 # multiple inch tokens
-                self.string = self.string.replace('"', "", self.string.count('"')-1)
+                self.string = self.string.replace('"', "", self.string.count('"') - 1)
             sep = params.get_param("FeetSeparator")
             # use a custom separator
             self.string = self.string.replace("' ", "'" + sep)
@@ -602,13 +549,9 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             self.string = self.string.replace("   ", " ")
             self.string = self.string.replace("  ", " ")
         elif hasattr(vobj, "Decimals"):
-            self.string = units.display_external(length,
-                                                 vobj.Decimals,
-                                                 'Length', show_unit, unit)
+            self.string = units.display_external(length, vobj.Decimals, "Length", show_unit, unit)
         else:
-            self.string = units.display_external(length,
-                                                 None,
-                                                 'Length', show_unit, unit)
+            self.string = units.display_external(length, None, "Length", show_unit, unit)
 
         if getattr(vobj, "Override", False):
             self.string = vobj.Override.replace("$dim", self.string)
@@ -620,12 +563,10 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         if m == "Screen":
             # Calculate the spacing of the text
             textsize = len(self.string) * vobj.FontSize.Value / 4.0
-            spacing = (self.p3 - self.p2).Length/2.0 - textsize
+            spacing = (self.p3 - self.p2).Length / 2.0 - textsize
 
-            self.p2a = self.p2 + DraftVecUtils.scaleTo(self.p3 - self.p2,
-                                                       spacing)
-            self.p2b = self.p3 + DraftVecUtils.scaleTo(self.p2 - self.p3,
-                                                       spacing)
+            self.p2a = self.p2 + DraftVecUtils.scaleTo(self.p3 - self.p2, spacing)
+            self.p2b = self.p3 + DraftVecUtils.scaleTo(self.p2 - self.p3, spacing)
             # fmt: off
             self.coords.point.setValues([[self.p1.x, self.p1.y, self.p1.z],
                                          [self.p2.x, self.p2.y, self.p2.z],
@@ -657,9 +598,12 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             # Update all dimension values
             if hasattr(self, "font"):
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
-            if (hasattr(self, "node_wld") and hasattr(self, "p2")
-                    and "ArrowSizeStart" in properties
-                    and "ArrowSizeEnd" in properties):
+            if (
+                hasattr(self, "node_wld")
+                and hasattr(self, "p2")
+                and "ArrowSizeStart" in properties
+                and "ArrowSizeEnd" in properties
+            ):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
             if "DimOvershoot" in properties:
@@ -671,46 +615,48 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
             self.updateData(obj, "Start")
 
-        elif (prop == "FontSize" and "FontSize" in properties
-              and "ScaleMultiplier" in properties):
+        elif prop == "FontSize" and "FontSize" in properties and "ScaleMultiplier" in properties:
             if hasattr(self, "font"):
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
 
-        elif (prop == "FontName" and "FontName" in properties
-              and hasattr(self, "font")):
+        elif prop == "FontName" and "FontName" in properties and hasattr(self, "font"):
             self.font.name = str(vobj.FontName)
 
-        elif (prop == "TextColor" and "TextColor" in properties
-              and hasattr(self, "textcolor")):
+        elif prop == "TextColor" and "TextColor" in properties and hasattr(self, "textcolor"):
             col = vobj.TextColor
             self.textcolor.rgb.setValue(col[0], col[1], col[2])
 
-        elif (prop == "LineColor" and "LineColor" in properties
-              and hasattr(self, "linecolor")):
+        elif prop == "LineColor" and "LineColor" in properties and hasattr(self, "linecolor"):
             col = vobj.LineColor
             self.linecolor.rgb.setValue(col[0], col[1], col[2])
 
-        elif (prop == "LineWidth" and "LineWidth" in properties
-              and hasattr(self, "drawstyle")):
+        elif prop == "LineWidth" and "LineWidth" in properties and hasattr(self, "drawstyle"):
             self.drawstyle.lineWidth = vobj.LineWidth
 
-        elif (prop in ("ArrowSizeStart", "ArrowSizeEnd", "ArrowTypeStart", "ArrowTypeEnd")
-              and "ArrowSizeStart" in properties
-              and "ArrowSizeEnd" in properties
-              and "ScaleMultiplier" in properties
-              and hasattr(self, "node_wld") and hasattr(self, "p2")):
+        elif (
+            prop in ("ArrowSizeStart", "ArrowSizeEnd", "ArrowTypeStart", "ArrowTypeEnd")
+            and "ArrowSizeStart" in properties
+            and "ArrowSizeEnd" in properties
+            and "ScaleMultiplier" in properties
+            and hasattr(self, "node_wld")
+            and hasattr(self, "p2")
+        ):
             self.remove_dim_arrows()
             self.draw_dim_arrows(vobj)
 
-        elif (prop == "DimOvershoot"
-              and "DimOvershoot" in properties
-              and "ScaleMultiplier" in properties):
+        elif (
+            prop == "DimOvershoot"
+            and "DimOvershoot" in properties
+            and "ScaleMultiplier" in properties
+        ):
             self.remove_dim_overshoot()
             self.draw_dim_overshoot(vobj)
 
-        elif (prop == "ExtOvershoot"
-              and "ExtOvershoot" in properties
-              and "ScaleMultiplier" in properties):
+        elif (
+            prop == "ExtOvershoot"
+            and "ExtOvershoot" in properties
+            and "ScaleMultiplier" in properties
+        ):
             self.remove_ext_overshoot()
             self.draw_ext_overshoot(vobj)
 
@@ -734,8 +680,12 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
     def draw_dim_arrows(self, vobj):
         """Draw dimension arrows."""
-        if not (hasattr(vobj, "ArrowTypeStart") and hasattr(vobj, "ArrowTypeEnd") and
-                hasattr(vobj, "ArrowSizeStart") and hasattr(vobj, "ArrowSizeEnd")):
+        if not (
+            hasattr(vobj, "ArrowTypeStart")
+            and hasattr(vobj, "ArrowTypeEnd")
+            and hasattr(vobj, "ArrowSizeStart")
+            and hasattr(vobj, "ArrowSizeEnd")
+        ):
             return
 
         # Set scale
@@ -872,8 +822,8 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.textpos = coin.SoTransform()
         self.textcolor = coin.SoBaseColor()
         self.font = coin.SoFont()
-        self.text_wld = coin.SoAsciiText() # World orientation. Can be oriented in 3D space.
-        self.text_scr = coin.SoText2()     # Screen orientation. Always faces the camera.
+        self.text_wld = coin.SoAsciiText()  # World orientation. Can be oriented in 3D space.
+        self.text_scr = coin.SoText2()  # Screen orientation. Always faces the camera.
 
         # The text string needs to be initialized to something,
         # otherwise it may cause a crash of the system
@@ -898,13 +848,20 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.trans1 = coin.SoTransform()
         self.coord2 = coin.SoCoordinate3()
         self.trans2 = coin.SoTransform()
+        self.transDimOvershoot1 = coin.SoTransform()
+        self.transDimOvershoot2 = coin.SoTransform()
+        self.transExtOvershoot1 = coin.SoTransform()
+        self.transExtOvershoot2 = coin.SoTransform()
 
         self.linecolor = coin.SoBaseColor()
         self.drawstyle = coin.SoDrawStyle()
         self.coords = coin.SoCoordinate3()
-        import PartGui # Required for "SoBrepEdgeSet" (because a dimension is not a Part::FeaturePython object).
+        import PartGui  # Required for "SoBrepEdgeSet" (because a dimension is not a Part::FeaturePython object).
+
         self.arc = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         self.marks = coin.SoSeparator()
+        self.marksDimOvershoot = coin.SoSeparator()
+        self.marksExtOvershoot = coin.SoSeparator()
 
         self.node_wld = coin.SoGroup()
         self.node_wld.addChild(self.linecolor)
@@ -912,6 +869,8 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.node_wld.addChild(self.coords)
         self.node_wld.addChild(self.arc)
         self.node_wld.addChild(self.marks)
+        self.node_wld.addChild(self.marksDimOvershoot)
+        self.node_wld.addChild(self.marksExtOvershoot)
         self.node_wld.addChild(label_wld)
 
         self.node_scr = coin.SoGroup()
@@ -920,6 +879,8 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.node_scr.addChild(self.coords)
         self.node_scr.addChild(self.arc)
         self.node_scr.addChild(self.marks)
+        self.node_scr.addChild(self.marksDimOvershoot)
+        self.node_scr.addChild(self.marksExtOvershoot)
         self.node_scr.addChild(label_scr)
 
         vobj.addDisplayMode(self.node_wld, "World")
@@ -931,6 +892,9 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.onChanged(vobj, "ArrowTypeStart")
         self.onChanged(vobj, "ArrowTypeEnd")
         self.onChanged(vobj, "LineColor")
+        self.onChanged(vobj, "DimOvershoot")
+        self.onChanged(vobj, "ExtOvershoot")
+        self.onChanged(vobj, "LineWidth")
 
     def updateData(self, obj, prop):
         """Execute when a property from the Proxy class is changed."""
@@ -938,6 +902,10 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
             return
 
         arcsegs = 24
+
+        # for ext lines
+        self.p1 = obj.Center
+        self.p4 = obj.Center
 
         vobj = obj.ViewObject
 
@@ -949,13 +917,29 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
             norm = obj.Normal
 
         radius = (obj.Dimline - obj.Center).Length
-        self.circle = Part.makeCircle(radius, obj.Center, norm,
-                                      obj.FirstAngle.Value,
-                                      obj.LastAngle.Value)
+        self.circle = Part.makeCircle(
+            radius, obj.Center, norm, obj.FirstAngle.Value, obj.LastAngle.Value
+        )
         self.p2 = self.circle.Vertexes[0].Point
         self.p3 = self.circle.Vertexes[-1].Point
         midp = DraftGeomUtils.findMidpoint(self.circle)
         ray = midp - obj.Center
+
+        proj1 = obj.Center - self.p2
+        proj2 = obj.Center - self.p3
+        if hasattr(vobj, "ExtLines") and hasattr(vobj, "ScaleMultiplier"):
+            # The scale multiplier also affects the value
+            # of the extension line; this makes sure a maximum length
+            # is used if the calculated value is larger than it.
+            dmax = vobj.ExtLines.Value * vobj.ScaleMultiplier
+            if dmax and proj1.Length > dmax:
+                if dmax > 0:
+                    self.p1 = self.p2 + DraftVecUtils.scaleTo(proj1, dmax)
+                    self.p4 = self.p3 + DraftVecUtils.scaleTo(proj2, dmax)
+                else:
+                    rest = proj1.Length + dmax
+                    self.p1 = self.p2 + DraftVecUtils.scaleTo(proj1, rest)
+                    self.p4 = self.p3 + DraftVecUtils.scaleTo(proj2, rest)
 
         # Set text value
         if obj.LastAngle.Value > obj.FirstAngle.Value:
@@ -968,13 +952,9 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
             show_unit = vobj.ShowUnit
 
         if hasattr(vobj, "Decimals"):
-            self.string = units.display_external(angle,
-                                                 vobj.Decimals,
-                                                 'Angle', show_unit)
+            self.string = units.display_external(angle, vobj.Decimals, "Angle", show_unit)
         else:
-            self.string = units.display_external(angle,
-                                                 None,
-                                                 'Angle', show_unit)
+            self.string = units.display_external(angle, None, "Angle", show_unit)
 
         if vobj.Override:
             self.string = vobj.Override.replace("$dim", self.string)
@@ -1012,48 +992,54 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                     else:
                         pts2.append([p.x, p.y, p.z])
 
-            self.coords.point.setValues(pts1 + pts2)
-
             pts1_num = len(pts1)
             pts2_num = len(pts2)
-            i1 = pts1_num
-            i2 = i1 + pts2_num
 
-            self.arc.coordIndex.setValues(0,
-                                          pts1_num + pts2_num + 1,
-                                          list(range(pts1_num))
-                                          + [-1]
-                                          + list(range(i1, i2)))
+            # fmt: off
+            ext_pts = [[self.p1.x, self.p1.y, self.p1.z],
+                       [self.p4.x, self.p4.y, self.p4.z]]
+            # fmt: on
+
+            self.coords.point.setValues(pts1 + pts2 + ext_pts)
+
+            p1_idx = pts1_num + pts2_num
+            p4_idx = p1_idx + 1
+            all_indices = (
+                [p1_idx]
+                + list(range(pts1_num))
+                + [-1]
+                + list(range(pts1_num, pts1_num + pts2_num))
+                + [p4_idx]
+            )
+            self.arc.coordIndex.setValues(0, len(all_indices), all_indices)
 
             if pts1_num >= 3 and pts2_num >= 3:
-                self.circle1 = Part.Arc(App.Vector(pts1[0][0],
-                                                   pts1[0][1],
-                                                   pts1[0][2]),
-                                        App.Vector(pts1[1][0],
-                                                   pts1[1][1],
-                                                   pts1[1][2]),
-                                        App.Vector(pts1[-1][0],
-                                                   pts1[-1][1],
-                                                   pts1[-1][2])).toShape()
-                self.circle2 = Part.Arc(App.Vector(pts2[0][0],
-                                                   pts2[0][1],
-                                                   pts2[0][2]),
-                                        App.Vector(pts2[1][0],
-                                                   pts2[1][1],
-                                                   pts2[1][2]),
-                                        App.Vector(pts2[-1][0],
-                                                   pts2[-1][1],
-                                                   pts2[-1][2])).toShape()
+                self.circle1 = Part.Arc(
+                    App.Vector(pts1[0][0], pts1[0][1], pts1[0][2]),
+                    App.Vector(pts1[1][0], pts1[1][1], pts1[1][2]),
+                    App.Vector(pts1[-1][0], pts1[-1][1], pts1[-1][2]),
+                ).toShape()
+                self.circle2 = Part.Arc(
+                    App.Vector(pts2[0][0], pts2[0][1], pts2[0][2]),
+                    App.Vector(pts2[1][0], pts2[1][1], pts2[1][2]),
+                    App.Vector(pts2[-1][0], pts2[-1][1], pts2[-1][2]),
+                ).toShape()
         else:
             pts = []
             for i in range(arcsegs + 1):
                 p = self.circle.valueAt(first + (last - first) / arcsegs * i)
                 pts.append([p.x, p.y, p.z])
 
-            self.coords.point.setValues(pts)
-            self.arc.coordIndex.setValues(0,
-                                          arcsegs + 1,
-                                          list(range(arcsegs + 1)))
+            # fmt: off
+            ext_pts = [[self.p1.x, self.p1.y, self.p1.z],
+                       [self.p4.x, self.p4.y, self.p4.z]]
+            # fmt: on
+
+            self.coords.point.setValues(pts + ext_pts)
+            p1_idx = len(pts)
+            p4_idx = p1_idx + 1
+            all_indices = [p1_idx] + list(range(arcsegs + 1)) + [p4_idx]
+            self.arc.coordIndex.setValues(0, len(all_indices), all_indices)
 
         # Set the arrow coords and rotation
         p2 = (self.p2.x, self.p2.y, self.p2.z)
@@ -1063,15 +1049,21 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.coord1.point.setValue(p2)
         self.trans2.translation.setValue(p3)
         self.coord2.point.setValue(p3)
+        self.transDimOvershoot1.translation.setValue(p2)
+        self.transDimOvershoot2.translation.setValue(p3)
+        self.transExtOvershoot1.translation.setValue(p2)
+        self.transExtOvershoot2.translation.setValue(p3)
 
         # Calculate small chords to make arrows look better
-        if hasattr(vobj, "ArrowSizeStart") \
-                and hasattr(vobj, "ArrowSizeEnd") \
-                and hasattr(vobj, "ScaleMultiplier") \
-                and hasattr(vobj, "FlipArrows") \
-                and vobj.ArrowSizeStart.Value !=0 \
-                and vobj.ArrowSizeEnd.Value !=0 \
-                and vobj.ScaleMultiplier != 0:
+        if (
+            hasattr(vobj, "ArrowSizeStart")
+            and hasattr(vobj, "ArrowSizeEnd")
+            and hasattr(vobj, "ScaleMultiplier")
+            and hasattr(vobj, "FlipArrows")
+            and vobj.ArrowSizeStart.Value != 0
+            and vobj.ArrowSizeEnd.Value != 0
+            and vobj.ScaleMultiplier != 0
+        ):
             half_arrow_length_sta = 2 * vobj.ArrowSizeStart.Value * vobj.ScaleMultiplier
             arrow_angle_sta = 2 * math.asin(min(1, half_arrow_length_sta / radius))
             half_arrow_length_end = 2 * vobj.ArrowSizeEnd.Value * vobj.ScaleMultiplier
@@ -1080,10 +1072,12 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                 arrow_angle_sta = -arrow_angle_sta
                 arrow_angle_end = -arrow_angle_end
 
-            u1 = (self.circle.valueAt(first + arrow_angle_sta)
-                  - self.circle.valueAt(first)).normalize()
-            u2 = (self.circle.valueAt(last)
-                  - self.circle.valueAt(last - arrow_angle_end)).normalize()
+            u1 = (
+                self.circle.valueAt(first + arrow_angle_sta) - self.circle.valueAt(first)
+            ).normalize()
+            u2 = (
+                self.circle.valueAt(last) - self.circle.valueAt(last - arrow_angle_end)
+            ).normalize()
 
             w2 = self.circle.Curve.Axis
             w1 = w2.negative()
@@ -1098,10 +1092,41 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
             self.trans1.rotation.setValue((q1[0], q1[1], q1[2], q1[3]))
             self.trans2.rotation.setValue((q2[0], q2[1], q2[2], q2[3]))
 
+        tangent1 = self.circle.tangentAt(self.circle.FirstParameter)
+        tangent2 = self.circle.tangentAt(self.circle.LastParameter)
+        if not DraftVecUtils.isNull(tangent1):
+            tangent1.normalize()
+            plane_rot = DraftVecUtils.getPlaneRotation(tangent1, norm.cross(tangent1), norm)
+            if plane_rot is not None:
+                q = App.Placement(plane_rot).Rotation.Q
+                self.transDimOvershoot1.rotation.setValue((q[0], q[1], q[2], q[3]))
+
+        if not DraftVecUtils.isNull(tangent2):
+            tangent2.normalize()
+            plane_rot = DraftVecUtils.getPlaneRotation(tangent2, norm.cross(tangent2), norm)
+            if plane_rot is not None:
+                q = App.Placement(plane_rot).Rotation.Q
+                self.transDimOvershoot2.rotation.setValue((q[0], q[1], q[2], q[3]))
+
+        ext1 = self.p1 - self.p2
+        ext2 = self.p4 - self.p3
+        if not DraftVecUtils.isNull(ext1):
+            ext1.normalize()
+            plane_rot = DraftVecUtils.getPlaneRotation(ext1, norm.cross(ext1), norm)
+            if plane_rot is not None:
+                q = App.Placement(plane_rot).Rotation.Q
+                self.transExtOvershoot1.rotation.setValue((q[0], q[1], q[2], q[3]))
+
+        if not DraftVecUtils.isNull(ext2):
+            ext2.normalize()
+            plane_rot = DraftVecUtils.getPlaneRotation(ext2, norm.cross(ext2), norm)
+            if plane_rot is not None:
+                q = App.Placement(plane_rot).Rotation.Q
+                self.transExtOvershoot2.rotation.setValue((q[0], q[1], q[2], q[3]))
+
         # Set text position and rotation
         self.tbase = midp
-        if (hasattr(vobj, "TextPosition")
-                and not DraftVecUtils.isNull(vobj.TextPosition)):
+        if hasattr(vobj, "TextPosition") and not DraftVecUtils.isNull(vobj.TextPosition):
             self.tbase = vobj.TextPosition
 
         u3 = ray.cross(norm).normalize()
@@ -1125,9 +1150,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
         self.tbase = self.tbase.add(offset)
         q = r.Q
-        self.textpos.translation.setValue([self.tbase.x,
-                                           self.tbase.y,
-                                           self.tbase.z])
+        self.textpos.translation.setValue([self.tbase.x, self.tbase.y, self.tbase.z])
         self.textpos.rotation = coin.SbRotation(q[0], q[1], q[2], q[3])
 
         # Set the angle property
@@ -1149,11 +1172,20 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         if prop == "ScaleMultiplier" and "ScaleMultiplier" in properties:
             if hasattr(self, "font"):
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
-            if (hasattr(self, "node_wld") and hasattr(self, "p2")
-                    and "ArrowSizeStart" in properties
-                    and "ArrowSizeEnd" in properties):
+            if (
+                hasattr(self, "node_wld")
+                and hasattr(self, "p2")
+                and "ArrowSizeStart" in properties
+                and "ArrowSizeEnd" in properties
+            ):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
+            if "DimOvershoot" in properties:
+                self.remove_dim_overshoot()
+                self.draw_dim_overshoot(vobj)
+            if "ExtOvershoot" in properties:
+                self.remove_ext_overshoot()
+                self.draw_ext_overshoot(vobj)
 
             self.updateData(obj, None)
 
@@ -1161,25 +1193,42 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
             if hasattr(self, "font"):
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
 
-        elif (prop == "FontName" and hasattr(self, "font")):
+        elif prop == "FontName" and hasattr(self, "font"):
             self.font.name = str(vobj.FontName)
 
-        elif (prop == "TextColor" and "TextColor" in properties
-              and hasattr(self, "textcolor")):
+        elif prop == "TextColor" and "TextColor" in properties and hasattr(self, "textcolor"):
             col = vobj.TextColor
             self.textcolor.rgb.setValue(col[0], col[1], col[2])
 
-        elif (prop == "LineColor" and "LineColor" in properties
-              and hasattr(self, "linecolor")):
+        elif prop == "LineColor" and "LineColor" in properties and hasattr(self, "linecolor"):
             col = vobj.LineColor
             self.linecolor.rgb.setValue(col[0], col[1], col[2])
 
         elif prop == "LineWidth" and hasattr(self, "drawstyle"):
             self.drawstyle.lineWidth = vobj.LineWidth
 
-        elif (prop in ("ArrowSizeStart", "ArrowTypeStart", "ArrowSizeEnd", "ArrowTypeEnd")
-              and "ScaleMultiplier" in properties
-              and hasattr(self, "node_wld") and hasattr(self, "p2")):
+        elif (
+            prop == "DimOvershoot"
+            and "DimOvershoot" in properties
+            and "ScaleMultiplier" in properties
+        ):
+            self.remove_dim_overshoot()
+            self.draw_dim_overshoot(vobj)
+
+        elif (
+            prop == "ExtOvershoot"
+            and "ExtOvershoot" in properties
+            and "ScaleMultiplier" in properties
+        ):
+            self.remove_ext_overshoot()
+            self.draw_ext_overshoot(vobj)
+
+        elif (
+            prop in ("ArrowSizeStart", "ArrowTypeStart", "ArrowSizeEnd", "ArrowTypeEnd")
+            and "ScaleMultiplier" in properties
+            and hasattr(self, "node_wld")
+            and hasattr(self, "p2")
+        ):
             self.updateData(obj, None)
             self.remove_dim_arrows()
             self.draw_dim_arrows(vobj)
@@ -1197,8 +1246,12 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
     def draw_dim_arrows(self, vobj):
         """Draw dimension arrows."""
-        if not (hasattr(vobj, "ArrowTypeStart") and hasattr(vobj, "ArrowTypeEnd") and
-                hasattr(vobj, "ArrowSizeStart") and hasattr(vobj, "ArrowSizeEnd")):
+        if not (
+            hasattr(vobj, "ArrowTypeStart")
+            and hasattr(vobj, "ArrowTypeEnd")
+            and hasattr(vobj, "ArrowSizeStart")
+            and hasattr(vobj, "ArrowSizeEnd")
+        ):
             return
 
         # Set scale
@@ -1231,6 +1284,62 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
         self.node_wld.insertChild(self.marks, 2)
         self.node_scr.insertChild(self.marks, 2)
+
+    def remove_dim_overshoot(self):
+        """Remove the dimension overshoot lines."""
+        self.node_wld.removeChild(self.marksDimOvershoot)
+        self.node_scr.removeChild(self.marksDimOvershoot)
+
+    def draw_dim_overshoot(self, vobj):
+        """Draw dimension overshoot lines."""
+        s = vobj.DimOvershoot.Value * vobj.ScaleMultiplier
+        self.transDimOvershoot1.scaleFactor.setValue((s, s, s))
+        self.transDimOvershoot2.scaleFactor.setValue((s, s, s))
+
+        self.marksDimOvershoot = coin.SoSeparator()
+        if vobj.DimOvershoot.Value:
+            self.marksDimOvershoot.addChild(self.linecolor)
+
+            s1 = coin.SoSeparator()
+            s1.addChild(self.transDimOvershoot1)
+            s1.addChild(gui_utils.dimDash((-1, 0, 0), (0, 0, 0)))
+            self.marksDimOvershoot.addChild(s1)
+
+            s2 = coin.SoSeparator()
+            s2.addChild(self.transDimOvershoot2)
+            s2.addChild(gui_utils.dimDash((0, 0, 0), (1, 0, 0)))
+            self.marksDimOvershoot.addChild(s2)
+
+        self.node_wld.insertChild(self.marksDimOvershoot, 5)
+        self.node_scr.insertChild(self.marksDimOvershoot, 5)
+
+    def remove_ext_overshoot(self):
+        """Remove dimension extension overshoot lines."""
+        self.node_wld.removeChild(self.marksExtOvershoot)
+        self.node_scr.removeChild(self.marksExtOvershoot)
+
+    def draw_ext_overshoot(self, vobj):
+        """Draw dimension extension overshoot lines."""
+        s = vobj.ExtOvershoot.Value * vobj.ScaleMultiplier
+        self.transExtOvershoot1.scaleFactor.setValue((s, s, s))
+        self.transExtOvershoot2.scaleFactor.setValue((s, s, s))
+
+        self.marksExtOvershoot = coin.SoSeparator()
+        if vobj.ExtOvershoot.Value:
+            self.marksExtOvershoot.addChild(self.linecolor)
+
+            s1 = coin.SoSeparator()
+            s1.addChild(self.transExtOvershoot1)
+            s1.addChild(gui_utils.dimDash((0, 0, 0), (-1, 0, 0)))
+            self.marksExtOvershoot.addChild(s1)
+
+            s2 = coin.SoSeparator()
+            s2.addChild(self.transExtOvershoot2)
+            s2.addChild(gui_utils.dimDash((0, 0, 0), (-1, 0, 0)))
+            self.marksExtOvershoot.addChild(s2)
+
+        self.node_wld.insertChild(self.marksExtOvershoot, 6)
+        self.node_scr.insertChild(self.marksExtOvershoot, 6)
 
     def getIcon(self):
         """Return the path to the icon used by the viewprovider."""

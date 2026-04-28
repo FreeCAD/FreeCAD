@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ZOOMABLEVIEW_H
-#define ZOOMABLEVIEW_H
+#pragma once
 
 #include <QGraphicsView>
 
@@ -58,9 +57,8 @@ Q_SIGNALS:
                                  /// used to show the zoom level in the zoom button.
 
 public Q_SLOTS:
-    void zoomIn(void);  /// This function is the slot for the zoomIn button and a keyboard shortcut
-    void
-    zoomOut(void);  /// This function is the slot for the zoomOut button and a keyboard shortcut
+    void zoomIn(void);   /// This function is the slot for the zoomIn button and a keyboard shortcut
+    void zoomOut(void);  /// This function is the slot for the zoomOut button and a keyboard shortcut
     void resetZoom(void);  /// This function is the slot for a keyboard shortcut
 
 private:
@@ -80,5 +78,3 @@ protected:
 
     static constexpr int zoom_step_mwheel {5}, zoom_step_kb {10};
 };
-
-#endif  // ZOOMABLEVIEW_H

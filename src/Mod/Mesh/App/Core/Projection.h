@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_PROJECTION_H
-#define MESH_PROJECTION_H
+#pragma once
 
 #include <Base/BoundBox.h>
 #include <vector>
@@ -48,31 +49,37 @@ class MeshExport MeshProjection
 public:
     explicit MeshProjection(const MeshKernel&);
 
-    bool projectLineOnMesh(const MeshFacetGrid& grid,
-                           const Base::Vector3f& p1,
-                           FacetIndex f1,
-                           const Base::Vector3f& p2,
-                           FacetIndex f2,
-                           const Base::Vector3f& view,
-                           std::vector<Base::Vector3f>& polyline);
+    bool projectLineOnMesh(
+        const MeshFacetGrid& grid,
+        const Base::Vector3f& p1,
+        FacetIndex f1,
+        const Base::Vector3f& p2,
+        FacetIndex f2,
+        const Base::Vector3f& view,
+        std::vector<Base::Vector3f>& polyline
+    );
 
 protected:
-    bool bboxInsideRectangle(const Base::BoundBox3f& bbox,
-                             const Base::Vector3f& p1,
-                             const Base::Vector3f& p2,
-                             const Base::Vector3f& view) const;
-    bool isPointInsideDistance(const Base::Vector3f& p1,
-                               const Base::Vector3f& p2,
-                               const Base::Vector3f& pt) const;
-    bool connectLines(std::list<std::pair<Base::Vector3f, Base::Vector3f>>& cutLines,
-                      const Base::Vector3f& startPoint,
-                      const Base::Vector3f& endPoint,
-                      std::vector<Base::Vector3f>& polyline) const;
+    bool bboxInsideRectangle(
+        const Base::BoundBox3f& bbox,
+        const Base::Vector3f& p1,
+        const Base::Vector3f& p2,
+        const Base::Vector3f& view
+    ) const;
+    bool isPointInsideDistance(
+        const Base::Vector3f& p1,
+        const Base::Vector3f& p2,
+        const Base::Vector3f& pt
+    ) const;
+    bool connectLines(
+        std::list<std::pair<Base::Vector3f, Base::Vector3f>>& cutLines,
+        const Base::Vector3f& startPoint,
+        const Base::Vector3f& endPoint,
+        std::vector<Base::Vector3f>& polyline
+    ) const;
 
 private:
     const MeshKernel& kernel;
 };
 
 }  // namespace MeshCore
-
-#endif  // MESH_PROJECTION_H

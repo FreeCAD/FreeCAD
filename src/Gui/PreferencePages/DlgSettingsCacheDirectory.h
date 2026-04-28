@@ -21,14 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
-#define GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgSettingsCacheDirectory;
 
 /**
@@ -36,7 +37,7 @@ class Ui_DlgSettingsCacheDirectory;
  * for the cache directory handling.
  * @author Werner Mayer
  */
-class DlgSettingsCacheDirectory : public PreferencePage
+class DlgSettingsCacheDirectory: public PreferencePage
 {
     Q_OBJECT
 
@@ -49,7 +50,7 @@ public:
     void resetSettingsToDefaults() override;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     void runCheck();
@@ -61,12 +62,13 @@ private:
     std::unique_ptr<Ui_DlgSettingsCacheDirectory> ui;
 };
 
-class ApplicationCache : public QObject
+class ApplicationCache: public QObject
 {
     Q_OBJECT
 
 public:
-    enum class Period {
+    enum class Period
+    {
         Always,
         Daily,
         Weekly,
@@ -104,7 +106,5 @@ public:
     static void setCheckPeriod(int);
 };
 
-} // namespace Dialog
-} // namespace Gui
-
-#endif // GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
+}  // namespace Dialog
+}  // namespace Gui

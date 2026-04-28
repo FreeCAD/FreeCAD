@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef U8_HEADER
-#define U8_HEADER
+#pragma once
 
 #include "Context.h"
 #include <istream>
@@ -55,6 +56,3 @@ struct U8
 
     uint8_t _U8;
 };
-
-
-#endif

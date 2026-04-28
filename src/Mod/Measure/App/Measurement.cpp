@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -125,11 +127,12 @@ MeasureType Measurement::findType()
     for (; obj != objects.end(); ++obj, ++subEl) {
         TopoDS_Shape refSubShape;
         try {
-            refSubShape = Part::Feature::getShape(*obj,
-                                                  Part::ShapeOption::NeedSubElement
-                                                      | Part::ShapeOption::ResolveLink
-                                                      | Part::ShapeOption::Transform,
-                                                  (*subEl).c_str());
+            refSubShape = Part::Feature::getShape(
+                *obj,
+                Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+                    | Part::ShapeOption::Transform,
+                (*subEl).c_str()
+            );
 
             if (refSubShape.IsNull()) {
                 return MeasureType::Invalid;
@@ -217,8 +220,10 @@ MeasureType Measurement::findType()
             else if (faces == 1 && verts == 1) {
                 mode = MeasureType::PointToSurface;
             }
-            else if (faces == 1 && (cylinders + cylinderSections) == 1
-                     && (circles + circleArcs) == 1 && edges == 1) {
+            else if (
+                faces == 1 && (cylinders + cylinderSections) == 1 && (circles + circleArcs) == 1
+                && edges == 1
+            ) {
                 mode = MeasureType::CircleToCylinder;
             }
             else if (faces == 1 && (circles + circleArcs) == 1 && edges == 1) {
@@ -322,14 +327,15 @@ MeasureType Measurement::getType()
     return measureType;
 }
 
-TopoDS_Shape
-Measurement::getShape(App::DocumentObject* obj, const char* subName, TopAbs_ShapeEnum hint) const
+TopoDS_Shape Measurement::getShape(App::DocumentObject* obj, const char* subName, TopAbs_ShapeEnum hint) const
 {
-    return Part::Feature::getShape(obj,
-                                   Part::ShapeOption::NeedSubElement
-                                       | Part::ShapeOption::ResolveLink
-                                       | Part::ShapeOption::Transform,
-                                   subName);
+    (void)hint;
+    return Part::Feature::getShape(
+        obj,
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+            | Part::ShapeOption::Transform,
+        subName
+    );
 }
 
 
@@ -357,10 +363,12 @@ double Measurement::length() const
             Base::Vector3d diff = this->delta();
             result = diff.Length();
         }
-        else if (measureType == MeasureType::Edges || measureType == MeasureType::Line
-                 || measureType == MeasureType::TwoLines || measureType == MeasureType::Circle
-                 || measureType == MeasureType::CircleArc || measureType == MeasureType::TwoCircles
-                 || measureType == MeasureType::CircleToEdge) {
+        else if (
+            measureType == MeasureType::Edges || measureType == MeasureType::Line
+            || measureType == MeasureType::TwoLines || measureType == MeasureType::Circle
+            || measureType == MeasureType::CircleArc || measureType == MeasureType::TwoCircles
+            || measureType == MeasureType::CircleToEdge
+        ) {
 
             // Iterate through edges and calculate each length
             std::vector<App::DocumentObject*>::const_iterator obj = objects.begin();
@@ -399,13 +407,15 @@ double Measurement::length() const
                     case GeomAbs_Ellipse:
                     case GeomAbs_BSplineCurve:
                     case GeomAbs_Hyperbola:
+                    case GeomAbs_Parabola:
                     case GeomAbs_BezierCurve: {
                         result += GCPnts_AbscissaPoint::Length(curve);
                         break;
                     }
                     default: {
                         throw Base::RuntimeError(
-                            "Measurement - length - Curve type not currently handled");
+                            "Measurement - length - Curve type not currently handled"
+                        );
                     }
                 }
             }
@@ -497,8 +507,10 @@ double Measurement::circleCenterDistance() const
             distance = circle1.Location().Distance(circle2.Location());
         }
     }
-    else if (measureType == MeasureType::CircleToEdge || measureType == MeasureType::CircleToSurface
-             || measureType == MeasureType::CircleToCylinder) {
+    else if (
+        measureType == MeasureType::CircleToEdge || measureType == MeasureType::CircleToSurface
+        || measureType == MeasureType::CircleToCylinder
+    ) {
         const TopoDS_Edge& edge1 = TopoDS::Edge(shape1);
         BRepAdaptor_Curve curve1(edge1);
 
@@ -615,8 +627,7 @@ double Measurement::cylinderAxisDistance() const
         BRepAdaptor_Surface surface2(face2);
 
         if (surface1.GetType() == GeomAbs_Cylinder && surface2.GetType() == GeomAbs_Cylinder) {
-            distance =
-                gp_Lin(surface1.Cylinder().Axis()).Distance(gp_Lin(surface2.Cylinder().Axis()));
+            distance = gp_Lin(surface1.Cylinder().Axis()).Distance(gp_Lin(surface2.Cylinder().Axis()));
         }
     }
     else if (measureType == MeasureType::CircleToCylinder) {
@@ -702,8 +713,10 @@ double Measurement::angle(const Base::Vector3d& /*param*/) const
             return Base::toDegrees<double>(radians);
         }
     }
-    else if (measureType == MeasureType::TwoCylinders || measureType == MeasureType::TwoCircles
-             || measureType == MeasureType::CircleToCylinder) {
+    else if (
+        measureType == MeasureType::TwoCylinders || measureType == MeasureType::TwoCircles
+        || measureType == MeasureType::CircleToCylinder
+    ) {
         if (numRefs == 2) {
             TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
             TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str(), TopAbs_EDGE);
@@ -737,7 +750,8 @@ double Measurement::angle(const Base::Vector3d& /*param*/) const
             }
             double aRad = axis1.Angle(axis2);
             return Base::toDegrees<double>(
-                std::min(aRad, std::fmod(aRad + std::numbers::pi, 2.0 * std::numbers::pi)));
+                std::min(aRad, std::fmod(aRad + std::numbers::pi, 2.0 * std::numbers::pi))
+            );
         }
     }
     throw Base::RuntimeError("Unexpected error for angle measurement");
@@ -761,8 +775,10 @@ double Measurement::radius() const
             return (double)curve.Circle().Radius();
         }
     }
-    else if (measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
-             || measureType == MeasureType::Sphere || measureType == MeasureType::Torus) {
+    else if (
+        measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
+        || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
+    ) {
         TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_FACE);
         TopoDS_Face face = TopoDS::Face(shape);
 
@@ -828,10 +844,8 @@ Base::Vector3d Measurement::delta() const
         if (measureType == MeasureType::PointToPoint) {
             if (numRefs == 2) {
                 // Keep separate case for two points to reduce need for complex algorithm
-                TopoDS_Shape shape1 =
-                    getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_VERTEX);
-                TopoDS_Shape shape2 =
-                    getShape(objects.at(1), subElements.at(1).c_str(), TopAbs_VERTEX);
+                TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_VERTEX);
+                TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str(), TopAbs_VERTEX);
 
                 const TopoDS_Vertex& vert1 = TopoDS::Vertex(shape1);
                 const TopoDS_Vertex& vert2 = TopoDS::Vertex(shape2);
@@ -842,10 +856,10 @@ Base::Vector3d Measurement::delta() const
                 return Base::Vector3d(diff.X(), diff.Y(), diff.Z());
             }
         }
-        else if (measureType == MeasureType::PointToEdge
-                 || measureType == MeasureType::PointToSurface
-                 || measureType == MeasureType::PointToCircle
-                 || measureType == MeasureType::PointToCylinder) {
+        else if (
+            measureType == MeasureType::PointToEdge || measureType == MeasureType::PointToSurface
+            || measureType == MeasureType::PointToCircle || measureType == MeasureType::PointToCylinder
+        ) {
             // BrepExtema can calculate minimum distance between any set of topology sets.
             if (numRefs == 2) {
                 TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
@@ -867,8 +881,7 @@ Base::Vector3d Measurement::delta() const
         else if (measureType == MeasureType::Edges) {
             // Only case that is supported is straight line edge
             if (numRefs == 1) {
-                TopoDS_Shape shape =
-                    getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
+                TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
                 const TopoDS_Edge& edge = TopoDS::Edge(shape);
                 BRepAdaptor_Curve curve(edge);
 
@@ -880,10 +893,8 @@ Base::Vector3d Measurement::delta() const
                 }
             }
             else if (numRefs == 2) {
-                TopoDS_Shape shape1 =
-                    getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
-                TopoDS_Shape shape2 =
-                    getShape(objects.at(1), subElements.at(1).c_str(), TopAbs_EDGE);
+                TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
+                TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str(), TopAbs_EDGE);
 
                 BRepAdaptor_Curve curve1(TopoDS::Edge(shape1));
                 BRepAdaptor_Curve curve2(TopoDS::Edge(shape2));
@@ -943,11 +954,13 @@ double Measurement::area() const
     if (References3D.getSize() == 0) {
         Base::Console().error("Measurement::area - No 3D references available\n");
     }
-    else if (measureType == MeasureType::Volumes || measureType == MeasureType::Surfaces
-             || measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
-             || measureType == MeasureType::TwoCylinders || measureType == MeasureType::Cone
-             || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
-             || measureType == MeasureType::Plane) {
+    else if (
+        measureType == MeasureType::Volumes || measureType == MeasureType::Surfaces
+        || measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
+        || measureType == MeasureType::TwoCylinders || measureType == MeasureType::Cone
+        || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
+        || measureType == MeasureType::Plane
+    ) {
 
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
         const std::vector<std::string>& subElements = References3D.getSubValues();
@@ -1023,11 +1036,12 @@ bool Measurement::planesAreParallel() const
     for (size_t i = 0; i < objects.size(); ++i) {
         TopoDS_Shape refSubShape;
         try {
-            refSubShape = Part::Feature::getShape(objects[i],
-                                                  Part::ShapeOption::NeedSubElement
-                                                      | Part::ShapeOption::ResolveLink
-                                                      | Part::ShapeOption::Transform,
-                                                  subElements[i].c_str());
+            refSubShape = Part::Feature::getShape(
+                objects[i],
+                Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+                    | Part::ShapeOption::Transform,
+                subElements[i].c_str()
+            );
 
             if (refSubShape.IsNull()) {
                 return false;

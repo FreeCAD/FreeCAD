@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,24 +23,25 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_WORKBENCH_H
-#define PARTDESIGN_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
 class MenuItem;
 
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 /**
  * @author Werner Mayer
  */
-class PartDesignGuiExport Workbench : public Gui::StdWorkbench
+class PartDesignGuiExport Workbench: public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -59,7 +62,4 @@ protected:
     Gui::ToolBarItem* setupToolBars() const override;
 };
 
-} // namespace PartDesignGui
-
-
-#endif // PARTDESIGN_WORKBENCH_H
+}  // namespace PartDesignGui

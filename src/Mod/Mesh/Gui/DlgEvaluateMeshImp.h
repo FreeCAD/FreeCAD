@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_DLG_EVALUATE_MESH_IMP_H
-#define MESHGUI_DLG_EVALUATE_MESH_IMP_H
+#pragma once
 
 #include <map>
 
@@ -172,5 +173,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_DLG_EVALUATE_MESH_IMP_H

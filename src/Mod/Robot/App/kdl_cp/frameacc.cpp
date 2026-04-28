@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /*****************************************************************************
  *  \author
  *  	Erwin Aertbelien, Div. PMA, Dep. of Mech. Eng., K.U.Leuven

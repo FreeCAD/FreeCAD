@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -218,8 +220,7 @@ WizardExtensionFactory::WizardExtensionFactory(QExtensionManager* parent)
     : QExtensionFactory(parent)
 {}
 
-QObject*
-WizardExtensionFactory::createExtension(QObject* object, const QString& iid, QObject* parent) const
+QObject* WizardExtensionFactory::createExtension(QObject* object, const QString& iid, QObject* parent) const
 {
     Wizard* widget = qobject_cast<Wizard*>(object);
 

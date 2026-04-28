@@ -1,10 +1,13 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.Placement import Placement
 from Base.Vector import Vector
 from GeometrySurface import GeometrySurface
 from GeometryCurve import GeometryCurve
 from typing import overload
-
 
 @export(
     Twin="GeomSurfaceOfRevolution",

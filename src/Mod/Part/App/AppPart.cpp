@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -21,10 +23,12 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Interface_Static.hxx>
-# include <IGESControl_Controller.hxx>
-# include <STEPControl_Controller.hxx>
-# include <Standard_Version.hxx>
+#include <Interface_Static.hxx>
+#include <IGESControl_Controller.hxx>
+#include <STEPControl_Controller.hxx>
+#include <Standard_Version.hxx>
+#include <Message.hxx>
+#include <Message_Messenger.hxx>
 
 #include <FCConfig.h>
 
@@ -63,7 +67,9 @@
 #include "EllipsePy.h"
 #include "FaceMaker.h"
 #include "FaceMakerBullseye.h"
+#include "FaceMakerBuildFace.h"
 #include "FaceMakerCheese.h"
+#include "WireJoiner.h"
 #include "FeatureChamfer.h"
 #include "FeatureCompound.h"
 #include "FeatureExtrusion.h"
@@ -128,6 +134,7 @@
 #include "TopoShapeWirePy.h"
 #include "ToroidPy.h"
 #include "OCCError.h"
+#include "OCCTMessagePrinter.h"
 #include "PrismExtension.h"
 #include "PropertyGeometryList.h"
 #include "PropertyTopoShapeList.h"
@@ -194,7 +201,8 @@
 #include <App/Services.h>
 #include <Services.h>
 
-namespace Part {
+namespace Part
+{
 extern PyObject* initModule();
 }
 
@@ -426,6 +434,7 @@ PyMOD_INIT_FUNC(Part)
     Part::FaceMakerExtrusion    ::init();
     Part::FaceMakerBullseye     ::init();
     Part::FaceMakerRing         ::init();
+    Part::FaceMakerBuildFace    ::init();
 
     Attacher::AttachEngine        ::init();
     Attacher::AttachEngine3D      ::init();
@@ -581,6 +590,12 @@ PyMOD_INIT_FUNC(Part)
 
     Base::registerServiceImplementation<App::SubObjectPlacementProvider>(new AttacherSubObjectPlacement);
     Base::registerServiceImplementation<App::CenterOfMassProvider>(new PartCenterOfMass);
+    Base::registerServiceImplementation<App::CustomAttributeProvider>(new ShapeAttributeProvider);
+    Base::registerServiceImplementation<App::PseudoShapeProvider>(new PartPseudoShapeProvider);
+
+    Handle(OCCTMessagePrinter) printer = new OCCTMessagePrinter();
+    printer->SetTraceLevel(Message_Trace);
+    Message::DefaultMessenger()->AddPrinter(printer);
 
     PyMOD_Return(partModule);
 }

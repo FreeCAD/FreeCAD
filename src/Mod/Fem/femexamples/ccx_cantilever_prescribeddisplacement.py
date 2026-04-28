@@ -35,7 +35,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "displacement"],
-        "solvers": ["ccxtools", "elmer"],
+        "solvers": ["ccxtools", "elmer", "z88"],
         "material": "solid",
         "equations": ["mechanical"],
     }
@@ -58,12 +58,7 @@ See forum topic post:
     )
 
 
-def setup(doc=None, solvertype="ccxtools"):
-
-    if solvertype == "z88":
-        # constraint displacement is not supported for Z88
-        # pass a not valid solver name for z88, thus no solver is created
-        solvertype = "z88_not_valid"
+def setup(doc=None, solvertype="ccxtools", test_mode=False):
 
     # init FreeCAD document
     if doc is None:
@@ -75,7 +70,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # setup CalculiX cantilever
     # apply a prescribed displacement of 250 mm in -z on the front end face
-    doc = setup_cantilever_base_solid(doc, solvertype)
+    doc = setup_cantilever_base_solid(doc, solvertype, test_mode)
     analysis = doc.Analysis
     geom_obj = doc.Box
 

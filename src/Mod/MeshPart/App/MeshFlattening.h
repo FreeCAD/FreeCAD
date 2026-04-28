@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Lorenz Lechner                                     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHFLATTENING
-#define MESHFLATTENING
+#pragma once
 
 // idea:
 // - unwrap any meshed shells and output a 2d face (meshing is done externally)
@@ -77,5 +78,3 @@ public:
 
 };
 // clang-format on
-
-#endif  // MESHFLATTENING

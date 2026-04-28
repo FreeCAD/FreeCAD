@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) YEAR YOUR NAME <Your e-mail address>                    *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef _TEMPLATE__WORKBENCH_H
-#define _TEMPLATE__WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -43,6 +44,3 @@ protected:
 };
 
 }  // namespace _TEMPLATE_Gui
-
-
-#endif  // _TEMPLATE__WORKBENCH_H

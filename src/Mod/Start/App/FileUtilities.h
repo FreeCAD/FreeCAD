@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_FILEUTILITIES_H
-#define FREECAD_FILEUTILITIES_H
+#pragma once
 
 #include "Base/FileInfo.h"
 #include "Mod/Start/StartGlobal.h"
@@ -45,8 +44,7 @@ const QLatin1String defaultThumbnailName
     ("FreeCADStartThumbnails");
 #endif
 
-const QDir thumbnailsParentDir {
-    QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation)};
+const QDir thumbnailsParentDir {QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation)};
 
 const QDir thumbnailsDir {thumbnailsParentDir.absoluteFilePath(defaultThumbnailName)};
 
@@ -63,5 +61,3 @@ StartExport std::string humanReadableSize(std::uint64_t bytes);
 StartExport std::string getLastModifiedAsString(const Base::FileInfo& file);
 
 }  // namespace Start
-
-#endif  // FREECAD_FILEUTILITIES_H

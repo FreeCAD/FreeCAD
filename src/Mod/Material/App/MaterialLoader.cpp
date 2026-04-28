@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -416,8 +418,8 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibraryLocal>&
                                     const QString& path) const
 {
     std::shared_ptr<MaterialEntry> model = nullptr;
-    auto materialLibrary =
-        reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+
+    const auto& materialLibrary = library;
 
     // Used for debugging
     std::string pathName = path.toStdString();
@@ -575,8 +577,10 @@ void MaterialLoader::loadLibraries(
         for (auto& it : *libraryList) {
             if (it->isLocal()) {
                 auto materialLibrary =
-                    reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(it);
-                loadLibrary(materialLibrary);
+                    std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(it);
+                if (materialLibrary) {
+                    loadLibrary(materialLibrary);
+                }
             }
         }
     }

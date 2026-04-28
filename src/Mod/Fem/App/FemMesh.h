@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_FEMMESH_H
-#define FEM_FEMMESH_H
+#pragma once
 
 #include <list>
 #include <memory>
@@ -118,10 +117,12 @@ public:
     /// get the subelement by type and number
     Data::Segment* getSubElement(const char* Type, unsigned long) const override;
     /** Get points from object with given accuracy */
-    void getPoints(std::vector<Base::Vector3d>& Points,
-                   std::vector<Base::Vector3d>& Normals,
-                   double Accuracy,
-                   uint16_t flags = 0) const override;
+    void getPoints(
+        std::vector<Base::Vector3d>& Points,
+        std::vector<Base::Vector3d>& Normals,
+        double Accuracy,
+        uint16_t flags = 0
+    ) const override;
     //@}
 
     /** @name search and retrieval */
@@ -180,6 +181,8 @@ public:
     void addGroupElements(int, const std::set<int>&);
     /// Remove group (Name due to similarity to SMESH basis functions)
     bool removeGroup(int);
+    /// Rename group
+    void renameGroup(int id, const std::string& name);
     //@}
 
 
@@ -203,14 +206,37 @@ public:
 
     /// import from files
     void read(const char* FileName);
+    // import vtk file, and interprets the vtk_group_cell_array
+    // as group indicator. A group will be created for each unique entry in
+    // the cell data array, the name is the entry. Int and String array are
+    // supported. String array creates groups names according to the string,
+    // int array leads to groups with the string version of the integer as name.
+    void readVTKWithGroups(const char* FileName, const char* vtk_group_cell_array);
+
     void write(const char* FileName) const;
-    void writeABAQUS(const std::string& Filename,
-                     int elemParam,
-                     bool groupParam,
-                     ABAQUS_VolumeVariant volVariant = ABAQUS_VolumeVariant::Standard,
-                     ABAQUS_FaceVariant faceVariant = ABAQUS_FaceVariant::Shell,
-                     ABAQUS_EdgeVariant edgeVariant = ABAQUS_EdgeVariant::Beam) const;
+    void writeABAQUS(
+        const std::string& Filename,
+        int elemParam,
+        bool groupParam,
+        ABAQUS_VolumeVariant volVariant = ABAQUS_VolumeVariant::Standard,
+        ABAQUS_FaceVariant faceVariant = ABAQUS_FaceVariant::Shell,
+        ABAQUS_EdgeVariant edgeVariant = ABAQUS_EdgeVariant::Beam
+    ) const;
     void writeVTK(const std::string& FileName, bool highest = true) const;
+    // write vtk file, and writes the groupes into the provided cell array.
+    // If name_to_id is empty the created cell data array is a vtkStringArray,
+    // and the group name is used as entry for each element. If the map is provided
+    // a vtkIntArray is created and the mapped int is used as entry.
+    // The following limitations apply:
+    //        1. Only element/cell groups are supported, no node groups and no mixed groups
+    //        2. Elements can only be in a single group, groups can not overlap
+    //        3. Element IDs in the mesh need to be continious and start with ID 1
+    void writeVTKWithGroups(
+        const std::string& FileName,
+        const std::string& vtk_group_cell_array,
+        std::map<std::string, int> name_to_id,
+        bool highest = true
+    );
     void writeZ88(const std::string& FileName) const;
 
 private:
@@ -247,6 +273,3 @@ inline SMESH_HypothesisPtr FemMesh::createHypothesis(int hypId)
 }
 
 }  // namespace Fem
-
-
-#endif  // FEM_FEMMESH_H

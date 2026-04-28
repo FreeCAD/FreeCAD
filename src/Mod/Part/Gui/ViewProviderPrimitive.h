@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,17 +23,17 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPRIMITIVE_H
-#define PARTGUI_VIEWPROVIDERPRIMITIVE_H
+#pragma once
 
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Part/PartGlobal.h>
 
 
-namespace PartGui {
+namespace PartGui
+{
 
-class PartGuiExport ViewProviderPrimitive : public ViewProviderPart
+class PartGuiExport ViewProviderPrimitive: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPrimitive);
 
@@ -51,8 +53,4 @@ private:
     ViewProviderAttachExtension extension;
 };
 
-} // namespace PartGui
-
-
-#endif // PARTGUI_VIEWPROVIDERPRIMITIVE_H
-
+}  // namespace PartGui

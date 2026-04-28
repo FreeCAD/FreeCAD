@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Wild Magic Source Code
 // David Eberly
 // http://www.geometrictools.com
@@ -14,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4GMATRIX_H
-#define WM4GMATRIX_H
+#pragma once
 
 // Matrix operations are applied on the left.  For example, given a matrix M
 // and a vector V, matrix-times-vector is M*V.  That is, V is treated as a
@@ -145,5 +146,3 @@ namespace Wm4
 typedef GMatrix<float> GMatrixf;
 typedef GMatrix<double> GMatrixd;
 }
-
-#endif

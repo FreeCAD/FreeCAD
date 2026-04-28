@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Hole_H
-#define PARTDESIGN_Hole_H
+#pragma once
 
 #include <optional>
 #include <App/PropertyUnits.h>
@@ -31,7 +32,8 @@
 
 class Property;
 
-namespace Base {
+namespace Base
+{
 class XMLReader;
 }
 
@@ -41,45 +43,47 @@ namespace PartDesign
 static constexpr size_t ThreadClass_ISOmetric_data_size = 25;
 static constexpr size_t ThreadRunout_size = 24;
 
-class PartDesignExport Hole : public ProfileBased
+class PartDesignExport Hole: public ProfileBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Hole);
 
 public:
     Hole();
 
-    App::PropertyBool           Threaded;
-    App::PropertyBool           ModelThread;
-    App::PropertyLength         ThreadPitch;
-    App::PropertyEnumeration    ThreadType;
-    App::PropertyEnumeration    ThreadSize;
-    App::PropertyEnumeration    ThreadClass;
-    App::PropertyEnumeration    ThreadFit;
-    App::PropertyLength         Diameter;
-    App::PropertyLength         ThreadDiameter;
-    App::PropertyEnumeration    ThreadDirection;
-    App::PropertyEnumeration    HoleCutType;
-    App::PropertyBool           HoleCutCustomValues;
-    App::PropertyLength         HoleCutDiameter;
-    App::PropertyLength         HoleCutDepth;
-    App::PropertyAngle          HoleCutCountersinkAngle;
-    App::PropertyEnumeration    DepthType;
-    App::PropertyLength         Depth;
-    App::PropertyEnumeration    ThreadDepthType;
-    App::PropertyLength         ThreadDepth;
-    App::PropertyEnumeration    DrillPoint;
-    App::PropertyAngle          DrillPointAngle;
-    App::PropertyBool           DrillForDepth;
-    App::PropertyBool           Tapered;
-    App::PropertyAngle          TaperedAngle;
-    App::PropertyBool           UseCustomThreadClearance;
-    App::PropertyLength         CustomThreadClearance;
-    App::PropertyInteger        BaseProfileType;
+    App::PropertyBool Threaded;
+    App::PropertyBool ModelThread;
+    App::PropertyBool CosmeticThread;
+    App::PropertyLength ThreadPitch;
+    App::PropertyEnumeration ThreadType;
+    App::PropertyEnumeration ThreadSize;
+    App::PropertyEnumeration ThreadClass;
+    App::PropertyEnumeration ThreadFit;
+    App::PropertyLength Diameter;
+    App::PropertyLength ThreadDiameter;
+    App::PropertyEnumeration ThreadDirection;
+    App::PropertyEnumeration HoleCutType;
+    App::PropertyBool HoleCutCustomValues;
+    App::PropertyLength HoleCutDiameter;
+    App::PropertyLength HoleCutDepth;
+    App::PropertyAngle HoleCutCountersinkAngle;
+    App::PropertyEnumeration DepthType;
+    App::PropertyLength Depth;
+    App::PropertyEnumeration ThreadDepthType;
+    App::PropertyLength ThreadDepth;
+    App::PropertyEnumeration DrillPoint;
+    App::PropertyAngle DrillPointAngle;
+    App::PropertyBool DrillForDepth;
+    App::PropertyBool Tapered;
+    App::PropertyAngle TaperedAngle;
+    App::PropertyBool UseCustomThreadClearance;
+    App::PropertyLength CustomThreadClearance;
+    App::PropertyInteger BaseProfileType;
 
-    enum BaseProfileTypeOptions {
-        OnPoints    = 1 << 0,
-        OnCircles   = 1 << 1,
-        OnArcs      = 1 << 2,
+    enum BaseProfileTypeOptions
+    {
+        OnPoints = 1 << 0,
+        OnCircles = 1 << 1,
+        OnArcs = 1 << 2,
 
         // Common combos
         OnPointsCirclesArcs = OnPoints | OnCircles | OnArcs,
@@ -91,17 +95,19 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderHole";
     }
     //@}
     short mustExecute() const override;
 
-    using ThreadDescription = struct {
-        const char * designation;
+    using ThreadDescription = struct
+    {
+        const char* designation;
         double diameter;
         double pitch;
         double TapDrill;
@@ -110,7 +116,8 @@ public:
 
     static const double metricHoleDiameters[51][4];
 
-    using UTSClearanceDefinition = struct {
+    using UTSClearanceDefinition = struct
+    {
         std::string designation;
         double close;
         double normal;
@@ -118,14 +125,19 @@ public:
     };
     static const UTSClearanceDefinition UTSHoleDiameters[23];
 
-    void Restore(Base::XMLReader & reader) override;
+    void Restore(Base::XMLReader& reader) override;
 
     virtual void updateProps();
-    bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
-    bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
+    bool isDynamicCounterbore(const std::string& thread, const std::string& holeCutType);
+    bool isDynamicCountersink(const std::string& thread, const std::string& holeCutType);
+    double getThreadPitch() const;
 
     Base::Vector3d guessNormalDirection(const TopoShape& profileshape) const;
-    TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
+    TopoShape findHoles(
+        std::vector<TopoShape>& holes,
+        const TopoShape& profileshape,
+        const TopoDS_Shape& protohole
+    ) const;
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -186,35 +198,60 @@ private:
     static const double ThreadRunout[ThreadRunout_size][2];
 
     /* Counter-xxx */
-//public:
-    // Dimension for counterbore
-    struct CounterBoreDimension {
+    // public:
+    //  Dimension for counterbore
+    struct CounterBoreDimension
+    {
         std::string thread;
         double diameter;
         double depth;
         static const CounterBoreDimension nothing;
     };
     // Dimension for countersink
-    struct CounterSinkDimension {
+    struct CounterSinkDimension
+    {
         std::string thread;
         double diameter;
         static const CounterSinkDimension nothing;
     };
 
     // cut dimensions for a screwtype
-    class CutDimensionSet {
+    class CutDimensionSet
+    {
     public:
-        enum CutType { Counterbore, Countersink };
-        enum ThreadType { Metric, MetricFine };
+        enum CutType
+        {
+            Counterbore,
+            Countersink
+        };
+        enum ThreadType
+        {
+            Metric,
+            MetricFine
+        };
 
-        CutDimensionSet():cut_type(Counterbore),thread_type(Metric),angle(0.0) {}
-        CutDimensionSet(const std::string &nme,
-              std::vector<CounterBoreDimension> &&d, CutType cut, ThreadType thread, double angle = 0.0);
-        CutDimensionSet(const std::string &nme,
-              std::vector<CounterSinkDimension> &&d, CutType cut, ThreadType thread, double angle = 0.0);
+        CutDimensionSet()
+            : cut_type(Counterbore)
+            , thread_type(Metric)
+            , angle(0.0)
+        {}
+        CutDimensionSet(
+            const std::string& nme,
+            std::vector<CounterBoreDimension>&& d,
+            CutType cut,
+            ThreadType thread,
+            double angle = 0.0
+        );
+        CutDimensionSet(
+            const std::string& nme,
+            std::vector<CounterSinkDimension>&& d,
+            CutType cut,
+            ThreadType thread,
+            double angle = 0.0
+        );
 
-        const CounterBoreDimension &get_bore(const std::string &t) const;
-        const CounterSinkDimension &get_sink(const std::string &t) const;
+        const CounterBoreDimension& get_bore(const std::string& t) const;
+        const CounterSinkDimension& get_sink(const std::string& t) const;
 
         std::vector<CounterBoreDimension> bore_data;
         std::vector<CounterSinkDimension> sink_data;
@@ -224,21 +261,22 @@ private:
         double angle;
     };
 
-    class CutDimensionKey {
+    class CutDimensionKey
+    {
         std::string thread_type;
         std::string cut_name;
+
     public:
         CutDimensionKey() = default;
-        CutDimensionKey(const std::string &t, const std::string &c);
-        bool operator<(const CutDimensionKey &b) const;
+        CutDimensionKey(const std::string& t, const std::string& c);
+        bool operator<(const CutDimensionKey& b) const;
     };
 
     std::map<CutDimensionKey, CutDimensionSet> HoleCutTypeMap;
 
-    const CutDimensionSet& find_cutDimensionSet(const std::string &t,
-          const std::string &c);
+    const CutDimensionSet& find_cutDimensionSet(const std::string& t, const std::string& c);
 
-    const CutDimensionSet& find_cutDimensionSet(const CutDimensionKey &k);
+    const CutDimensionSet& find_cutDimensionSet(const CutDimensionKey& k);
 
     void addCutType(const CutDimensionSet& dimensions);
     void updateHoleCutParams();
@@ -252,7 +290,6 @@ private:
     double getCountersinkAngle() const;
     double getThreadClassClearance() const;
     double getThreadRunout(int mode = 1) const;
-    double getThreadPitch() const;
     double getThreadProfileAngle();
     void findClosestDesignation();
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
@@ -260,12 +297,9 @@ private:
     TopoDS_Shape makeThread(const gp_Vec&, const gp_Vec&, double);
 
     // helpers for nlohmann json
-    friend void from_json(const nlohmann::json &j, CounterBoreDimension &t);
-    friend void from_json(const nlohmann::json &j, CounterSinkDimension &t);
-    friend void from_json(const nlohmann::json &j, CutDimensionSet &t);
+    friend void from_json(const nlohmann::json& j, CounterBoreDimension& t);
+    friend void from_json(const nlohmann::json& j, CounterSinkDimension& t);
+    friend void from_json(const nlohmann::json& j, CutDimensionSet& t);
 };
 
-} //namespace PartDesign
-
-
-#endif // PART_Hole_H
+}  // namespace PartDesign

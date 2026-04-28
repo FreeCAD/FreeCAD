@@ -147,9 +147,11 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     std::regex refRegex("\\(%\\.([0-9]+)([fFrRgGwWeE])\\)");
     const bool hasReference = std::regex_search(currentFormat, refRegex);
     ui->cbReference->setChecked(hasReference);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    connect(ui->cbReference, &QCheckBox::checkStateChanged, this, &TaskDimension::onReferenceChanged);
+#else
     connect(ui->cbReference, &QCheckBox::stateChanged, this, &TaskDimension::onReferenceChanged);
-
+#endif
 
     // Display Style
     if (dimensionVP) {

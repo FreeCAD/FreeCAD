@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -30,32 +32,6 @@
 #include "Server.h"
 
 
-// See http://docs.python.org/2/library/socketserver.html
-/*
-import socket
-import threading
-
-
-ip = "127.0.0.1"
-port = 54880
-
-def client(ip, port, message):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((ip, port))
-    try:
-        sock.sendall(message)
-        response = sock.recv(1024)
-        print ("Received: {}".format(response))
-    finally:
-        sock.close()
-
-
-
-client(ip, port, b"print ('Hello World')")
-client(ip, port, b"import FreeCAD\nFreeCAD.newDocument()")
-
-*/
-
 namespace Web
 {
 class Module: public Py::ExtensionModule<Module>
@@ -64,18 +40,24 @@ public:
     Module()
         : Py::ExtensionModule<Module>("Web")
     {
-        add_varargs_method("startServer",
-                           &Module::startServer,
-                           "startServer(address=127.0.0.1,port=0) -- Start a server.");
-        add_varargs_method("waitForConnection",
-                           &Module::waitForConnection,
-                           "waitForConnection(address=127.0.0.1,port=0,timeout=0)\n"
-                           "Start a server, wait for connection and close server.\n"
-                           "Its use is disadvised in a the GUI version, since it will\n"
-                           "stop responding until the function returns.");
-        add_varargs_method("registerServerFirewall",
-                           &Module::registerServerFirewall,
-                           "registerServerFirewall(callable(string)) -- Register a firewall.");
+        add_varargs_method(
+            "startServer",
+            &Module::startServer,
+            "startServer(address=127.0.0.1,port=0) -- Start a server."
+        );
+        add_varargs_method(
+            "waitForConnection",
+            &Module::waitForConnection,
+            "waitForConnection(address=127.0.0.1,port=0,timeout=0)\n"
+            "Start a server, wait for connection and close server.\n"
+            "Its use is disadvised in a the GUI version, since it will\n"
+            "stop responding until the function returns."
+        );
+        add_varargs_method(
+            "registerServerFirewall",
+            &Module::registerServerFirewall,
+            "registerServerFirewall(callable(string)) -- Register a firewall."
+        );
         initialize("This module is the Web module.");  // register with Python
     }
 

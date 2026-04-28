@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_PRECOMPILED_H
-#define BASE_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -42,17 +43,17 @@
 #include <locale>
 
 #ifdef FC_OS_WIN32
-#include <direct.h>
-#include <windows.h>
-#include <crtdbg.h>
-#include <shellapi.h>
-#include <Rpc.h>
+# include <direct.h>
+# include <windows.h>
+# include <crtdbg.h>
+# include <shellapi.h>
+# include <Rpc.h>
 #endif
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-#include <dirent.h>
-#include <unistd.h>
-#include <sys/stat.h>
+# include <dirent.h>
+# include <unistd.h>
+# include <sys/stat.h>
 #endif
 
 // STL
@@ -117,21 +118,3 @@
 // Unicode
 #include <unicode/unistr.h>
 #include <unicode/uchar.h>
-
-// QtCore
-#include <QBuffer>
-#include <QByteArray>
-#include <QCoreApplication>
-#include <QEvent>
-#include <QIODevice>
-#include <QDataStream>
-#include <QDateTime>
-#include <QElapsedTimer>
-#include <QWriteLocker>
-#include <QReadLocker>
-#include <QReadWriteLock>
-#include <QTime>
-#include <QTimeZone>
-#include <QUuid>
-
-#endif  // BASE_PRECOMPILED_H

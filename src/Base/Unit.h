@@ -19,8 +19,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef BASE_Unit_H
-#define BASE_Unit_H
+#pragma once
 
 #include <array>
 #include <cstdint>
@@ -36,8 +35,9 @@
 namespace Base
 {
 
-constexpr auto unitSymbols =
-    std::to_array<std::string_view>({"mm", "kg", "s", "A", "K", "mol", "cd", "deg"});
+constexpr auto unitSymbols = std::to_array<std::string_view>(
+    {"mm", "kg", "s", "A", "K", "mol", "cd", "deg"}
+);
 
 constexpr auto unitNumExponents {unitSymbols.size()};
 using UnitExponents = std::array<int8_t, unitNumExponents>;
@@ -57,14 +57,16 @@ public:
     }
 
     /// helper constructor to ease Unit construction from Python
-    explicit Unit(const int length,
-                  const int mass = 0,
-                  const int time = 0,
-                  const int electricCurrent = 0,
-                  const int thermodynamicTemperature = 0,
-                  const int amountOfSubstance = 0,
-                  const int luminousIntensity = 0,
-                  const int angle = 0);
+    explicit Unit(
+        const int length,
+        const int mass = 0,
+        const int time = 0,
+        const int electricCurrent = 0,
+        const int thermodynamicTemperature = 0,
+        const int amountOfSubstance = 0,
+        const int luminousIntensity = 0,
+        const int angle = 0
+    );
 
     bool operator==(const Unit&) const;
     bool operator!=(const Unit& that) const;
@@ -118,6 +120,7 @@ public:
     static const Unit AngleOfFriction;
     static const Unit Area;
     static const Unit CompressiveStrength;
+    static const Unit Concentration;
     static const Unit CurrentDensity;
     static const Unit Density;
     static const Unit DissipationRate;
@@ -134,6 +137,7 @@ public:
     static const Unit Force;
     static const Unit Frequency;
     static const Unit HeatFlux;
+    static const Unit Inertia;
     static const Unit InverseArea;
     static const Unit InverseLength;
     static const Unit InverseVolume;
@@ -174,5 +178,3 @@ public:
 };
 
 }  // namespace Base
-
-#endif  // BASE_Unit_H

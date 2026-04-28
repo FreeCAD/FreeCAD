@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -41,10 +43,10 @@ def Startup():
         from Path.Base.Gui import SetupSheet
         from Path.Dressup.Gui import Array
         from Path.Dressup.Gui import AxisMap
-        from Path.Dressup.Gui import Dogbone
         from Path.Dressup.Gui import DogboneII
         from Path.Dressup.Gui import Dragknife
         from Path.Dressup.Gui import LeadInOut
+        from Path.Dressup.Gui import Mirror
         from Path.Dressup.Gui import Boundary
         from Path.Dressup.Gui import RampEntry
         from Path.Dressup.Gui import Tags
@@ -66,6 +68,7 @@ def Startup():
         from Path.Op.Gui import Engrave
         from Path.Op.Gui import Helix
         from Path.Op.Gui import MillFace
+        from Path.Op.Gui import MillFacing
         from Path.Op.Gui import PathShapeTC
         from Path.Op.Gui import Pocket
         from Path.Op.Gui import PocketShape

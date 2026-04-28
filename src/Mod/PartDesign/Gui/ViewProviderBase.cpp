@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,7 +23,6 @@
  ***************************************************************************/
 
 
-
 #include <App/Document.h>
 #include <Gui/CommandT.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
@@ -31,7 +32,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderBase,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderBase, PartDesignGui::ViewProvider)
 
 ViewProviderBase::ViewProviderBase()
 {
@@ -45,18 +46,18 @@ bool ViewProviderBase::doubleClicked()
     // If the Placement is mutable then open the transform panel.
     // If the Placement can't be modified then just do nothing on double-click.
     PartDesign::FeatureBase* base = getObject<PartDesign::FeatureBase>();
-    if (!base->Placement.testStatus(App::Property::Immutable) &&
-        !base->Placement.testStatus(App::Property::ReadOnly) &&
-        !base->Placement.testStatus(App::Property::Hidden)) {
+    if (!base->Placement.testStatus(App::Property::Immutable)
+        && !base->Placement.testStatus(App::Property::ReadOnly)
+        && !base->Placement.testStatus(App::Property::Hidden)) {
 
         try {
             std::string Msg("Edit ");
             Msg += base->Label.getValue();
-            Gui::Command::openCommand(Msg.c_str());
+            getDocument()->openCommand(Msg.c_str());
             Gui::cmdSetEdit(base, Gui::Application::Instance->getUserEditMode());
         }
         catch (const Base::Exception&) {
-            Gui::Command::abortCommand();
+            getDocument()->commitCommand();
         }
         return true;
     }
@@ -68,9 +69,9 @@ void ViewProviderBase::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 {
     // If the Placement is mutable then show the context-menu of the base class.
     PartDesign::FeatureBase* base = getObject<PartDesign::FeatureBase>();
-    if (!base->Placement.testStatus(App::Property::Immutable) &&
-        !base->Placement.testStatus(App::Property::ReadOnly) &&
-        !base->Placement.testStatus(App::Property::Hidden)) {
+    if (!base->Placement.testStatus(App::Property::Immutable)
+        && !base->Placement.testStatus(App::Property::ReadOnly)
+        && !base->Placement.testStatus(App::Property::Hidden)) {
 
         // Handling of the edge case where some base features are outside the body
         // that should not happen, but it was possible to do in older FreeCAD versions.
@@ -94,9 +95,9 @@ Gui::ViewProvider* ViewProviderBase::startEditing(int ModNum)
 bool ViewProviderBase::setEdit(int ModNum)
 {
     PartDesign::FeatureBase* base = getObject<PartDesign::FeatureBase>();
-    if (!base->Placement.testStatus(App::Property::Immutable) &&
-        !base->Placement.testStatus(App::Property::ReadOnly) &&
-        !base->Placement.testStatus(App::Property::Hidden)) {
+    if (!base->Placement.testStatus(App::Property::Immutable)
+        && !base->Placement.testStatus(App::Property::ReadOnly)
+        && !base->Placement.testStatus(App::Property::Hidden)) {
 
         // same as in setupContextMenu
         if (!getBodyViewProvider()) {

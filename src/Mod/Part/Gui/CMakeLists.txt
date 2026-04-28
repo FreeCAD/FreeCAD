@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(PartGui_LIBS
     Part
     FreeCADGui
@@ -140,6 +142,8 @@ SET(PartGui_SRCS
     PatternParametersWidget.ui
     Resources/Part.qrc
     PreCompiled.h
+    PreviewUpdateScheduler.cpp
+    PreviewUpdateScheduler.h
     PropertyEnumAttacherItem.cpp
     PropertyEnumAttacherItem.h
     SoFCShapeObject.cpp

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_IMPORTER_H
-#define MESH_IMPORTER_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -59,5 +60,3 @@ private:
 };
 
 }  // namespace Mesh
-
-#endif  // MESH_IMPORTER_H

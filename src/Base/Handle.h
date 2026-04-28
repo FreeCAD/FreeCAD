@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -22,15 +24,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_HANDLE_H
-#define BASE_HANDLE_H
+#pragma once
 
-#ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
-#endif
 
-
-class QAtomicInt;
+#include <atomic>
 
 namespace Base
 {
@@ -184,9 +182,7 @@ public:
     Handled& operator=(Handled&&) = delete;
 
 private:
-    QAtomicInt* _lRefCount;
+    mutable std::atomic_int _refCount {0};
 };
 
 }  // namespace Base
-
-#endif  // BASE_HANDLE_H

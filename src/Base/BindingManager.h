@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BINDINGMANAGER_H
-#define BASE_BINDINGMANAGER_H
+#pragma once
 
 #include <memory>
 #include <FCGlobal.h>
@@ -58,5 +59,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_BINDINGMANAGER_H

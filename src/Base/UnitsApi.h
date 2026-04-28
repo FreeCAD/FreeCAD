@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -20,16 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_UNITSAPI_H
-#define BASE_UNITSAPI_H
+#pragma once
 
 #include "UnitsSchema.h"
 #include "UnitsSchemas.h"
 #include "UnitsSchemasData.h"
 #include "Quantity.h"
-
-
-class QString;
 
 using PyObject = struct _object;
 using PyMethodDef = struct PyMethodDef;
@@ -45,10 +43,11 @@ public:
     static void setSchema(const std::string& name);
     static void setSchema(std::size_t num);
 
-    static std::string
-    schemaTranslate(const Quantity& quant, double& factor, std::string& unitString);
+    static std::string schemaTranslate(const Quantity& quant, double& factor, std::string& unitString);
 
     static std::string schemaTranslate(const Quantity& quant);
+
+    static std::string toUnicodeSuperscript(const std::string& str);
 
     static double toDouble(PyObject* args, const Base::Unit& u = Base::Unit());
 
@@ -75,8 +74,7 @@ public:
     static PyMethodDef Methods[];
 
 protected:
-    static inline auto schemas =
-        std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);
+    static inline auto schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);
     static inline int decimals {-1};
     static inline int denominator {-1};
 
@@ -90,5 +88,3 @@ protected:
 };
 
 }  // namespace Base
-
-#endif  // BASE_UNITSAPI_H

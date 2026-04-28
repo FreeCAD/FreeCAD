@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_EDITORVIEW_H
-#define GUI_EDITORVIEW_H
+#pragma once
 
 #include "MDIView.h"
 #include "Window.h"
@@ -37,7 +36,8 @@ class QCheckBox;
 class QSpacerItem;
 QT_END_NAMESPACE
 
-namespace Gui {
+namespace Gui
+{
 
 class EditorViewP;
 class TextEdit;
@@ -48,14 +48,15 @@ class PythonTracingWatcher;
  * the editor and embeds it in a window.
  * @author Werner Mayer
  */
-class GuiExport EditorView : public MDIView, public WindowParameter
+class GuiExport EditorView: public MDIView, public WindowParameter
 {
     Q_OBJECT
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    enum DisplayName {
+    enum DisplayName
+    {
         FullName,
         FileName,
         BaseName
@@ -66,26 +67,30 @@ public:
 
     QPlainTextEdit* getEditor() const;
     void setDisplayName(DisplayName);
-    void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason) override;
+    void OnChange(Base::Subject<const char*>& rCaller, const char* rcReason) override;
 
-    const char *getName() const override {return "EditorView";}
-    void onUpdate() override{}
+    const char* getName() const override
+    {
+        return "EditorView";
+    }
+    void onUpdate() override
+    {}
 
-    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
 
     bool canClose() override;
 
     /** @name Standard actions of the editor */
     //@{
-    bool open   (const QString &f);
-    bool saveAs ();
-    void cut    ();
-    void copy   ();
-    void paste  ();
-    void undo   ();
-    void redo   ();
-    void print  () override;
+    bool open(const QString& f);
+    bool saveAs();
+    void cut();
+    void copy();
+    void paste();
+    void undo();
+    void redo();
+    void print() override;
     void printPdf() override;
     void printPreview() override;
     void print(QPrinter*) override;
@@ -111,16 +116,16 @@ Q_SIGNALS:
     void changeFileName(const QString&);
 
 private:
-    void setCurrentFileName(const QString &fileName);
+    void setCurrentFileName(const QString& fileName);
     bool saveFile();
 
 private:
     EditorViewP* d;
-    QList <QMetaObject::Connection> connectionList;
+    QList<QMetaObject::Connection> connectionList;
 };
 
 class PythonEditor;
-class GuiExport PythonEditorView : public EditorView
+class GuiExport PythonEditorView: public EditorView
 {
     Q_OBJECT
 
@@ -130,7 +135,7 @@ public:
     PythonEditorView(PythonEditor* editor, QWidget* parent);
     ~PythonEditorView() override;
 
-    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
 
 public Q_SLOTS:
@@ -145,21 +150,21 @@ private:
     PythonTracingWatcher* watcher;
 };
 
-class SearchBar : public QWidget
+class SearchBar: public QWidget
 {
     Q_OBJECT
 
 public:
     explicit SearchBar(QWidget* parent = nullptr);
 
-    void setEditor(QPlainTextEdit *textEdit);
+    void setEditor(QPlainTextEdit* textEdit);
 
 protected:
     void keyPressEvent(QKeyEvent*) override;
     void changeEvent(QEvent*) override;
 
 public Q_SLOTS:
-    void activate();
+    void activate(const QString& prefill = QString());
     void deactivate();
     void findPrevious();
     void findNext();
@@ -182,6 +187,4 @@ private:
     QCheckBox* matchWord;
 };
 
-} // namespace Gui
-
-#endif // GUI_EDITORVIEW_H
+}  // namespace Gui

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2024 Ondsel <development@ondsel.com>                    *
 # *                                                                         *
@@ -43,7 +45,7 @@ class Svg(PostProcessor):
     def __init__(self, job):
 
         super().__init__(
-            job,
+            job=job,
             tooltip=translate("CAM", "SVG post processor"),
             tooltipargs=[],
             units="mm",

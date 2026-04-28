@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_DLGSETTINGSMATERIAL_H
-#define MATGUI_DLGSETTINGSMATERIAL_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -48,5 +49,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_DLGSETTINGSMATERIAL_H

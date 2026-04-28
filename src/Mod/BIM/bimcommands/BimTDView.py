@@ -78,7 +78,7 @@ class BIM_TDView:
             return
         FreeCAD.ActiveDocument.openTransaction("Create view")
         for section in sections:
-            view = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewArch", "BIM view")
+            view = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewArch", "BIMView")
             view.Label = section.Label
             view.Source = section
             page.addView(view)

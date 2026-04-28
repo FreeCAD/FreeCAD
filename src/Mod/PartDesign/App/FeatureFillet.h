@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATUREFILLET_H
-#define PARTDESIGN_FEATUREFILLET_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -31,7 +32,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Fillet : public DressUp
+class PartDesignExport Fillet: public DressUp
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Fillet);
 
@@ -44,20 +45,22 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderFillet";
     }
     //@}
 
 protected:
-    void Restore(Base::XMLReader &reader) override;
-    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    void Restore(Base::XMLReader& reader) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
 };
 
-} //namespace Part
-
-
-#endif // PARTDESIGN_FEATUREFILLET_H
+}  // namespace PartDesign

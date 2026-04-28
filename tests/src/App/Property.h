@@ -21,8 +21,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
-#ifndef TEST_PROPERTY_H
-#define TEST_PROPERTY_H
+#pragma once
 
 #include <gtest/gtest.h>
 
@@ -46,7 +45,8 @@ protected:
     {
         varSet = freecad_cast<App::VarSet*>(_doc->addObject("App::VarSet", "VarSet"));
         prop = freecad_cast<App::PropertyInteger*>(
-            varSet->addDynamicProperty("App::PropertyInteger", "Variable", "Variables"));
+            varSet->addDynamicProperty("App::PropertyInteger", "Variable", "Variables")
+        );
         prop->setValue(Value);
     }
 
@@ -67,5 +67,3 @@ protected:
     static std::string _docName;
     static App::Document* _doc;
 };
-
-#endif

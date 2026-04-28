@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -413,6 +415,11 @@ class JobCreate:
             ]  # Standardize slashes used across os platforms
             templateFiles.extend(cleanPaths)
 
+        selectTemplate = Path.Preferences.defaultJobTemplate()
+        if os.path.isfile(selectTemplate):
+            if selectTemplate not in templateFiles:
+                templateFiles.insert(0, selectTemplate)
+
         template = {}
         for tFile in templateFiles:
             name = os.path.split(os.path.splitext(tFile)[0])[1][4:]
@@ -424,7 +431,7 @@ class JobCreate:
                     name = basename + " (%s)" % i
             Path.Log.track(name, tFile)
             template[name] = tFile
-        selectTemplate = Path.Preferences.defaultJobTemplate()
+
         index = 0
         self.dialog.jobTemplate.addItem(translate("CAM_Job", "<none>"), "")
         for name in sorted(template):

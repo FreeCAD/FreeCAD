@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,22 +22,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TRANSLATOR_H
-#define GUI_TRANSLATOR_H
+#pragma once
 
 #include <QObject>
-#include <list>
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 #include <FCGlobal.h>
 
 
 class QDir;
 
-namespace Gui {
+namespace Gui
+{
 
-using TStringList = std::list<std::string>;
+using TLanguageList = std::vector<std::string>;
 using TStringMap = std::map<std::string, std::string>;
 
 /**
@@ -47,13 +49,19 @@ using TStringMap = std::map<std::string, std::string>;
  * \author Werner Mayer
  */
 class TranslatorP;
-class GuiExport Translator : public QObject
+class GuiExport Translator: public QObject
 {
     Q_OBJECT
 
 public:
     class ParameterObserver;
-    static constexpr std::initializer_list<const char*> formattingOptions{
+    enum class LocaleFormattingPreference : int
+    {
+        OperatingSystem = 0,
+        SelectedLanguage = 1,
+        CLocale = 2
+    };
+    static constexpr std::initializer_list<const char*> formattingOptions {
         QT_TR_NOOP("Operating system"),
         QT_TR_NOOP("Selected language"),
         QT_TR_NOOP("C/POSIX")
@@ -64,21 +72,24 @@ public:
     /// Creates an instance
     static Translator* instance();
     /// Destroys the instance
-    static void destruct ();
+    static void destruct();
     //@}
 
     /** Activates the specified language \a lang if available. */
-    void activateLanguage (const char* lang);
+    void activateLanguage(const char* lang);
     /* Reloads the translators */
     void refresh();
-    /** Returns the currently installed language. If no language is installed an empty string is returned. */
+    /** Returns the currently installed language. If no language is installed an empty string is
+     * returned. */
     std::string activeLanguage() const;
     /** Returns the locale (e.g. "de") to the given language name. */
     std::string locale(const std::string&) const;
     /** Sets default Qt locale based on given language name **/
     void setLocale(const std::string& = "") const;
+    /** Applies the current locale formatting preference to Qt and ICU. **/
+    void applyLocaleFormattingPreference() const;
     /** Returns a list of supported languages. */
-    TStringList supportedLanguages() const;
+    TLanguageList supportedLanguages() const;
     /** Returns a map of supported languages/locales. */
     TStringMap supportedLocales() const;
     /** Adds a path where localization files can be found */
@@ -105,6 +116,4 @@ private:
     std::unique_ptr<Translator, std::function<void(Translator*)>> decimalPointConverter;
 };
 
-} // namespace Gui
-
-#endif // GUI_TRANSLATOR_H
+}  // namespace Gui

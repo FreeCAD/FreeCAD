@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_PRECISION_H
-#define BASE_PRECISION_H
+#pragma once
 
 #include <cmath>
 
@@ -226,5 +227,3 @@ public:
 };
 
 }  // namespace Base
-
-#endif  // BASE_PRECISION_H

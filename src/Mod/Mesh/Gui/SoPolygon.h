@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,16 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SOPOLYGON_H
-#define MESHGUI_SOPOLYGON_H
+#pragma once
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/nodes/SoShape.h>
-#ifndef MESH_GLOBAL_H
 #include <Mod/Mesh/MeshGlobal.h>
-#endif
 
 
 namespace MeshGui
@@ -64,6 +63,3 @@ private:
 // NOLINTEND
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_SOPOLYGON_H

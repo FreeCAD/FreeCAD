@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -29,9 +31,7 @@
 
 namespace Mesh
 {
-const App::PropertyIntegerConstraint::Constraints intSampling = {0,
-                                                                 std::numeric_limits<int>::max(),
-                                                                 1};
+const App::PropertyIntegerConstraint::Constraints intSampling = {0, std::numeric_limits<int>::max(), 1};
 const App::PropertyLength::Constraints floatRange = {0.0, std::numeric_limits<float>::max(), 1.0};
 }  // namespace Mesh
 
@@ -59,7 +59,8 @@ short Sphere::mustExecute() const
 App::DocumentObjectExecReturn* Sphere::execute()
 {
     std::unique_ptr<MeshObject> mesh(
-        MeshObject::createSphere((float)Radius.getValue(), Sampling.getValue()));
+        MeshObject::createSphere((float)Radius.getValue(), Sampling.getValue())
+    );
     if (mesh) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());
@@ -69,9 +70,7 @@ App::DocumentObjectExecReturn* Sphere::execute()
     return new App::DocumentObjectExecReturn("Cannot create sphere", this);
 }
 
-void Sphere::handleChangedPropertyType(Base::XMLReader& reader,
-                                       const char* TypeName,
-                                       App::Property* prop)
+void Sphere::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
 {
     if (prop == &Radius && strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {
         App::PropertyFloatConstraint r;
@@ -107,9 +106,13 @@ short Ellipsoid::mustExecute() const
 
 App::DocumentObjectExecReturn* Ellipsoid::execute()
 {
-    std::unique_ptr<MeshObject> mesh(MeshObject::createEllipsoid((float)Radius1.getValue(),
-                                                                 (float)Radius2.getValue(),
-                                                                 Sampling.getValue()));
+    std::unique_ptr<MeshObject> mesh(
+        MeshObject::createEllipsoid(
+            (float)Radius1.getValue(),
+            (float)Radius2.getValue(),
+            Sampling.getValue()
+        )
+    );
     if (mesh) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());
@@ -119,9 +122,11 @@ App::DocumentObjectExecReturn* Ellipsoid::execute()
     return new App::DocumentObjectExecReturn("Cannot create ellipsoid", this);
 }
 
-void Ellipsoid::handleChangedPropertyType(Base::XMLReader& reader,
-                                          const char* TypeName,
-                                          App::Property* prop)
+void Ellipsoid::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 {
     if ((prop == &Radius1 || prop == &Radius2)
         && strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {
@@ -162,11 +167,15 @@ short Cylinder::mustExecute() const
 
 App::DocumentObjectExecReturn* Cylinder::execute()
 {
-    std::unique_ptr<MeshObject> mesh(MeshObject::createCylinder((float)Radius.getValue(),
-                                                                (float)Length.getValue(),
-                                                                Closed.getValue(),
-                                                                (float)EdgeLength.getValue(),
-                                                                Sampling.getValue()));
+    std::unique_ptr<MeshObject> mesh(
+        MeshObject::createCylinder(
+            (float)Radius.getValue(),
+            (float)Length.getValue(),
+            Closed.getValue(),
+            (float)EdgeLength.getValue(),
+            Sampling.getValue()
+        )
+    );
     if (mesh) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());
@@ -176,9 +185,7 @@ App::DocumentObjectExecReturn* Cylinder::execute()
     return new App::DocumentObjectExecReturn("Cannot create cylinder", this);
 }
 
-void Cylinder::handleChangedPropertyType(Base::XMLReader& reader,
-                                         const char* TypeName,
-                                         App::Property* prop)
+void Cylinder::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
 {
     if ((prop == &Radius || prop == &Length || prop == &EdgeLength)
         && strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {
@@ -221,12 +228,16 @@ short Cone::mustExecute() const
 
 App::DocumentObjectExecReturn* Cone::execute()
 {
-    std::unique_ptr<MeshObject> mesh(MeshObject::createCone((float)Radius1.getValue(),
-                                                            (float)Radius2.getValue(),
-                                                            (float)Length.getValue(),
-                                                            Closed.getValue(),
-                                                            (float)EdgeLength.getValue(),
-                                                            Sampling.getValue()));
+    std::unique_ptr<MeshObject> mesh(
+        MeshObject::createCone(
+            (float)Radius1.getValue(),
+            (float)Radius2.getValue(),
+            (float)Length.getValue(),
+            Closed.getValue(),
+            (float)EdgeLength.getValue(),
+            Sampling.getValue()
+        )
+    );
     if (mesh) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());
@@ -236,9 +247,7 @@ App::DocumentObjectExecReturn* Cone::execute()
     return new App::DocumentObjectExecReturn("Cannot create cone", this);
 }
 
-void Cone::handleChangedPropertyType(Base::XMLReader& reader,
-                                     const char* TypeName,
-                                     App::Property* prop)
+void Cone::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
 {
     if ((prop == &Radius1 || prop == &Radius2 || prop == &Length || prop == &EdgeLength)
         && strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {
@@ -275,9 +284,9 @@ short Torus::mustExecute() const
 
 App::DocumentObjectExecReturn* Torus::execute()
 {
-    std::unique_ptr<MeshObject> mesh(MeshObject::createTorus((float)Radius1.getValue(),
-                                                             (float)Radius2.getValue(),
-                                                             Sampling.getValue()));
+    std::unique_ptr<MeshObject> mesh(
+        MeshObject::createTorus((float)Radius1.getValue(), (float)Radius2.getValue(), Sampling.getValue())
+    );
     if (mesh) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());
@@ -287,9 +296,7 @@ App::DocumentObjectExecReturn* Torus::execute()
     return new App::DocumentObjectExecReturn("Cannot create torus", this);
 }
 
-void Torus::handleChangedPropertyType(Base::XMLReader& reader,
-                                      const char* TypeName,
-                                      App::Property* prop)
+void Torus::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
 {
     if ((prop == &Radius1 || prop == &Radius2)
         && strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {
@@ -326,9 +333,9 @@ short Cube::mustExecute() const
 
 App::DocumentObjectExecReturn* Cube::execute()
 {
-    std::unique_ptr<MeshObject> mesh(MeshObject::createCube((float)Length.getValue(),
-                                                            (float)Width.getValue(),
-                                                            (float)Height.getValue()));
+    std::unique_ptr<MeshObject> mesh(
+        MeshObject::createCube((float)Length.getValue(), (float)Width.getValue(), (float)Height.getValue())
+    );
     if (mesh) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());
@@ -338,9 +345,7 @@ App::DocumentObjectExecReturn* Cube::execute()
     return new App::DocumentObjectExecReturn("Cannot create cube", this);
 }
 
-void Cube::handleChangedPropertyType(Base::XMLReader& reader,
-                                     const char* TypeName,
-                                     App::Property* prop)
+void Cube::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
 {
     if ((prop == &Length || prop == &Width || prop == &Height)
         && strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {

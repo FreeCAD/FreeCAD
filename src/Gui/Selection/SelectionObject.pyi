@@ -4,7 +4,6 @@ from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import Any, Final, Tuple
 
-
 @export(
     Include="Gui/Selection/SelectionObject.h",
     Delete=True,
@@ -20,19 +19,17 @@ class SelectionObject(BaseClass):
     def remove(self) -> None:
         """
         Remove this selection item from the selection.
-        remove() -> None
+
         --
         This object becomes invalid.
         """
         ...
 
-    def isObjectTypeOf(self, type: Any) -> bool:
+    def isObjectTypeOf(self, type: Any, /) -> bool:
         """
         Test for a certain father class.
-        isObjectTypeOf(type) -> Bool
         """
         ...
-
     ObjectName: Final[str] = ""
     """Name of the selected object"""
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -24,17 +26,22 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
+#include <Base/ServiceProvider.h>
+
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Dialogs/DlgPreferencesImp.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 
+#include <Mod/Part/App/PreviewExtension.h>
+
 #include "AttacherTexts.h"
 #include "PropertyEnumAttacherItem.h"
 #include "DlgSettings3DViewPartImp.h"
 #include "DlgSettingsGeneral.h"
 #include "DlgSettingsObjectColor.h"
+#include "PreviewUpdateScheduler.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
 #include "SoBrepPointSet.h"
@@ -224,6 +231,8 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::Workbench                              ::init();
     auto manip = std::make_shared<PartGui::WorkbenchManipulator>();
     Gui::WorkbenchManipulator::installManipulator(manip);
+
+    Base::registerServiceImplementation<Part::PreviewUpdateScheduler>(new PartGui::QtPreviewUpdateScheduler);
 
     // instantiating the commands
     CreatePartCommands();

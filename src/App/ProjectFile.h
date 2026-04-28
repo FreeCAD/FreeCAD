@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef APP_PROJECTFILE_H
-#define APP_PROJECTFILE_H
+#pragma once
 
 #include <Base/Type.h>
 #include <zipios++/zipfile.h>
@@ -32,22 +31,12 @@
 #include <string>
 #include <xercesc/util/XercesDefs.hpp>
 
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;
 class DOMElement;
 class DOMDocument;
 }  // namespace XERCES_CPP_NAMESPACE
-#else
-XERCES_CPP_NAMESPACE_BEGIN
-class DOMDocument;
-class DOMElement;
-class DOMNode;
-XERCES_CPP_NAMESPACE_END
-#endif
 
 namespace App
 {
@@ -159,6 +148,11 @@ public:
      */
     bool containsFile(const std::string& name) const;
     /**
+     * Retrieves the (uncompressed) file size of @a name, or 0 if it does not
+     * exist in the project file.
+     */
+    uint32_t sizeOfFile(const std::string& name) const;
+    /**
      * Retrieves a list of input file names referenced to the given object name.
      * This method does the same as @ref getPropertyFiles() unless that it only
      * returns the file names.
@@ -176,7 +170,7 @@ public:
     /**
      * Directly extracts the content of an input file of @a name.
      */
-    void readInputFileDirect(const std::string& name, std::ostream& str);
+    void readInputFileDirect(const std::string& name, std::ostream& str) const;
     /**
      * Replaces the input file @a name with the content of the given @a stream.
      * The method returns the file name of the newly created project file.
@@ -206,15 +200,13 @@ public:
     bool replaceProjectFile(const std::string& name, bool keepfile = false);
 
 private:
-    void findFiles(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode*, std::list<std::string>&) const;
-    void findFiles(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode*, std::list<PropertyFile>&) const;
+    void findFiles(XERCES_CPP_NAMESPACE::DOMNode*, std::list<std::string>&) const;
+    void findFiles(XERCES_CPP_NAMESPACE::DOMNode*, std::list<PropertyFile>&) const;
 
 private:
     std::string stdFile;
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument* xmlDocument;
+    XERCES_CPP_NAMESPACE::DOMDocument* xmlDocument;
 };
 
 
 }  // namespace App
-
-#endif  // APP_PROJECTFILE_H

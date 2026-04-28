@@ -48,13 +48,12 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraint */
 
-TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint* ConstraintView,
-                                     QWidget* parent,
-                                     const char* pixmapname)
-    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),
-              tr("Analysis Feature Properties"),
-              true,
-              parent)
+TaskFemConstraint::TaskFemConstraint(
+    ViewProviderFemConstraint* ConstraintView,
+    QWidget* parent,
+    const char* pixmapname
+)
+    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname), tr("Analysis Feature Properties"), true, parent)
     , proxy(nullptr)
     , actionList(nullptr)
     , clearListAction(nullptr)
@@ -158,14 +157,15 @@ void TaskFemConstraint::onButtonReference(const bool pressed)
     Gui::Selection().clearSelection();
 }
 
-const QString TaskFemConstraint::makeRefText(const std::string& objName,
-                                             const std::string& subName) const
+const QString TaskFemConstraint::makeRefText(const std::string& objName, const std::string& subName) const
 {
     return QString::fromUtf8((objName + ":" + subName).c_str());
 }
 
-const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj,
-                                             const std::string& subName) const
+const QString TaskFemConstraint::makeRefText(
+    const App::DocumentObject* obj,
+    const std::string& subName
+) const
 {
     return QString::fromUtf8((std::string(obj->getNameInDocument()) + ":" + subName).c_str());
 }
@@ -209,9 +209,9 @@ void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
 
 void TaskDlgFemConstraint::open()
 {
-    if (!Gui::Command::hasPendingCommand()) {
+    if (!ConstraintView->getDocument()->hasPendingCommand()) {
         const char* typeName = ConstraintView->getObject()->getTypeId().getName();
-        Gui::Command::openCommand(typeName);
+        ConstraintView->getDocument()->openCommand(typeName);
         ConstraintView->setVisible(true);
     }
 }
@@ -224,31 +224,38 @@ bool TaskDlgFemConstraint::accept()
         std::string refs = parameter->getReferences();
 
         if (!refs.empty()) {
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.References = [%s]",
-                                    name.c_str(),
-                                    refs.c_str());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "App.ActiveDocument.%s.References = [%s]",
+                name.c_str(),
+                refs.c_str()
+            );
         }
         else {
-            QMessageBox::warning(parameter,
-                                 tr("Input error"),
-                                 tr("You must specify at least one reference"));
+            QMessageBox::warning(
+                parameter,
+                tr("Input error"),
+                tr("You must specify at least one reference")
+            );
             return false;
         }
 
         std::string scale = parameter->getScale();
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.Scale = %s",
+            name.c_str(),
+            scale.c_str()
+        );
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!ConstraintView->getObject()->isValid()) {
             throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());
         }
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
+        ConstraintView->getDocument()->commitCommand();
     }
     catch (const Base::Exception& e) {
+        ConstraintView->getDocument()->abortCommand();
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
@@ -259,7 +266,7 @@ bool TaskDlgFemConstraint::accept()
 bool TaskDlgFemConstraint::reject()
 {
     // roll back the changes
-    Gui::Command::abortCommand();
+    ConstraintView->getDocument()->abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     Gui::Command::updateActive();
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -20,16 +22,15 @@
  **************************************************************************/
 
 
-
 #include <App/Application.h>
 #include <App/MeasureManager.h>
 #include "Base/Console.h"
 #include "Measure.h"
 
 
-void PartDesign::Measure::initialize() {
+void PartDesign::Measure::initialize()
+{
     const App::MeasureHandler& handler = App::MeasureManager::getMeasureHandler("Part");
 
     App::MeasureManager::addMeasureHandler("PartDesign", handler.typeCb);
 }
-

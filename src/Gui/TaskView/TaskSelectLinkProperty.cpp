@@ -37,9 +37,7 @@ using namespace Gui::TaskView;
 
 /* TRANSLATOR Gui::TaskView::TaskSelectLinkProperty */
 
-TaskSelectLinkProperty::TaskSelectLinkProperty(const char* sFilter,
-                                               App::Property* prop,
-                                               QWidget* parent)
+TaskSelectLinkProperty::TaskSelectLinkProperty(const char* sFilter, App::Property* prop, QWidget* parent)
     : TaskBox(Gui::BitmapFactory().pixmap("mouse_pointer"), tr("edit selection"), true, parent)
     , Filter(nullptr)
     , LinkSub(nullptr)
@@ -75,8 +73,10 @@ TaskSelectLinkProperty::TaskSelectLinkProperty(const char* sFilter,
         LinkList = dynamic_cast<App::PropertyLinkList*>(prop);
     }
     else {
-        Base::Console().warning("Unknown Link property type in "
-                                "Gui::TaskView::TaskSelectLinkProperty::TaskSelectLinkProperty()");
+        Base::Console().warning(
+            "Unknown Link property type in "
+            "Gui::TaskView::TaskSelectLinkProperty::TaskSelectLinkProperty()"
+        );
     }
 
     setFilter(sFilter);
@@ -213,12 +213,13 @@ void TaskSelectLinkProperty::checkSelectionStatus()
     ui->listWidget->setPalette(palette);
 }
 
-void TaskSelectLinkProperty::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
-                                      Gui::SelectionSingleton::MessageType Reason)
+void TaskSelectLinkProperty::OnChange(
+    Gui::SelectionSingleton::SubjectType& rCaller,
+    Gui::SelectionSingleton::MessageType Reason
+)
 {
     Q_UNUSED(rCaller);
-    if (Reason.Type == SelectionChanges::AddSelection
-        || Reason.Type == SelectionChanges::RmvSelection
+    if (Reason.Type == SelectionChanges::AddSelection || Reason.Type == SelectionChanges::RmvSelection
         || Reason.Type == SelectionChanges::SetSelection
         || Reason.Type == SelectionChanges::ClrSelection) {
         ui->listWidget->clear();

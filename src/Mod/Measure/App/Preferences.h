@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef Preferences_h_
-#define Preferences_h_
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -48,8 +49,9 @@ public:
     static Base::Color defaultTextColor();
     static int defaultFontSize();
     static Base::Color defaultTextBackgroundColor();
+    static int defaultArrowRadius();
+    static int defaultArrowHeight();
 };
 
 
 }  // end namespace Measure
-#endif

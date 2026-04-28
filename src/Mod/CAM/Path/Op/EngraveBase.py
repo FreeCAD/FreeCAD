@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -61,6 +63,8 @@ class ObjectOp(PathOp.ObjectOp):
     def buildpathocc(self, obj, wires, zValues, relZ=False, forward=True, start_idx=0):
         """buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands."""
         Path.Log.track(obj.Label, len(wires), zValues)
+
+        tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
 
         # sort wires, adapted from Area.py
         if len(wires) > 1:
@@ -145,13 +149,13 @@ class ObjectOp(PathOp.ObjectOp):
                     if Path.Geom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
                         # if Path.Geom.pointsCoincide(last, edge.Vertexes[0].Point):
                         # Edge not reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge):
+                        for cmd in Path.Geom.cmdsForEdge(edge, flip=False, tol=tol):
                             # Add gcode for edge
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[-1].Point
                     else:
                         # Edge reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge, True):
+                        for cmd in Path.Geom.cmdsForEdge(edge, flip=True, tol=tol):
                             # Add gcode for reversed edge
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[0].Point
@@ -170,9 +174,13 @@ class ObjectOp(PathOp.ObjectOp):
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj) ... set depths for engraving"""
         if PathOp.FeatureDepths & self.opFeatures(obj):
-            if job and len(job.Model.Group) > 0:
-                bb = job.Proxy.modelBoundBox(job)
-                obj.OpStartDepth = bb.ZMax
-                obj.OpFinalDepth = bb.ZMax - max(obj.StepDown.Value, 0.1)
-            else:
-                obj.OpFinalDepth = -0.1
+            if job and job.Stock:
+                obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
+                obj.OpFinalDepth = job.Stock.Shape.BoundBox.ZMax
+
+            if obj.Base:
+                obj.OpFinalDepth = obj.Base[0][0].Shape.BoundBox.ZMax
+            elif obj.BaseShapes:
+                obj.OpFinalDepth = obj.BaseShapes[0].Shape.BoundBox.ZMax
+
+            obj.OpStartDepth = max(obj.OpStartDepth, obj.OpFinalDepth)

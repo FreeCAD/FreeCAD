@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_APP_PRECOMPILED_H
-#define SKETCHER_APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -73,6 +74,7 @@
 #include <GC_MakeCircle.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <GeomConvert.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 #include <GeomLProp_CLProps.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -105,7 +107,6 @@
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
 
-#elif defined(FC_OS_WIN32)
-#include <windows.h>
-
+#ifdef FC_OS_WIN32
+# include <windows.h>
 #endif

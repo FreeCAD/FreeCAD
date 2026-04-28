@@ -1,7 +1,10 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import Any, List, Dict
-
 
 @export(
     Include="Gui/Workbench.h",

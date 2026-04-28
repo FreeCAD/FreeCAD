@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2021 Werner Mayer LGPL
 
 from PySide import QtUiTools

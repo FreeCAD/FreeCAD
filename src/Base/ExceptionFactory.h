@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_EXCEPTIONFACTORY_H
-#define BASE_EXCEPTIONFACTORY_H
+#pragma once
 
 
 #include "Factory.h"
@@ -111,6 +112,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif

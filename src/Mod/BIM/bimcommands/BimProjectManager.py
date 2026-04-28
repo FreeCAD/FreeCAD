@@ -26,9 +26,19 @@
 
 import math
 import os
+import re
 
 import FreeCAD
 import FreeCADGui
+
+
+def _parse_vector(text):
+    """Parse a Vector(x,y,z) string safely without eval()."""
+    match = re.match(r"^\s*Vector\s*\(\s*([^,]+)\s*,\s*([^,]+)\s*,\s*([^,)]+)\s*\)\s*$", text)
+    if not match:
+        raise ValueError("Invalid Vector string: " + text)
+    return FreeCAD.Vector(float(match.group(1)), float(match.group(2)), float(match.group(3)))
+
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -75,6 +85,7 @@ class BIM_ProjectManager:
         self.form.presets.currentIndexChanged.connect(self.getPreset)
         self.form.buttonOK.clicked.connect(self.accept)
         self.form.buttonCancel.clicked.connect(self.reject)
+        self.form.rejected.connect(self.reject)
         self.fillPresets()
 
         # Detect existing objects
@@ -129,13 +140,18 @@ class BIM_ProjectManager:
             if not buildings:
                 buildings = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building"]
             if buildings:
-                from nativeifc import ifc_tools
-
                 self.building = buildings[0]
                 self.form.buildingName.setText(self.building.Label)
+            levels = []
+            if self.building and self.project:
+                from nativeifc import ifc_tools
+
                 levels = ifc_tools.get_children(self.building, ifctype="IfcBuildingStorey")
-                if levels:
-                    self.form.countLevels.setValue(len(levels))
+                levels = list(filter(None, [ifc_tools.get_object(l) for l in levels]))
+            if not levels:
+                levels = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building Storey"]
+            if levels:
+                self.form.countLevels.setValue(len(levels))
 
         # show dialog
         self.form.show()
@@ -199,13 +215,13 @@ class BIM_ProjectManager:
             elif self.form.radioNative3.isChecked():
                 self.project = ifc_tools.convert_document(doc, silent=True)
 
-        # human
-        human = None
+        # Human
         if self.form.addHumanFigure.isChecked():
-            humanshape = Part.Shape()
-            humanshape.importBrep(":/geometry/HumanFigure.brep")
+            from draftguitools import gui_trackers
+
+            pts = gui_trackers.gridTracker.get_human_figure(None)
             human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
-            human.Shape = humanshape
+            human.Shape = Part.makePolygon(pts)
             human.Placement.move(FreeCAD.Vector(500, 500, 0))
 
         # Site creation or edition
@@ -290,21 +306,8 @@ class BIM_ProjectManager:
                             self.building.addObject(grp)
 
             # Human figure
-            if self.form.addHumanFigure.isChecked():
-                if not human:
-                    # TODO embed this
-                    humanpath = os.path.join(
-                        os.path.dirname(__file__), "geometry", "human figure.brep"
-                    )
-                    if os.path.exists(humanpath):
-                        humanshape = Part.Shape()
-                        humanshape.importBrep(humanpath)
-                        human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
-                        human.Shape = humanshape
-                        human.Placement.move(FreeCAD.Vector(500, 500, 0))
-                    if human:
-                        grp.addObject(human)
-                    # TODO: nativeifc
+            if human:
+                grp.addObject(human)
 
             # Outline
             if buildingWidth and buildingLength:
@@ -367,6 +370,17 @@ class BIM_ProjectManager:
                     grp.addObject(axisV)
                 if axisH:
                     grp.addObject(axisH)
+            if self.form.countLevels.value() and not levelHeight:
+                from PySide import QtGui
+
+                msg = QtGui.QMessageBox(self.form)
+                msg.setIcon(QtGui.QMessageBox.Warning)
+                msg.setWindowTitle(translate("BIM", "Zero Level Height"))
+                msg.setText(translate("BIM", "Level height is zero. No levels will be created."))
+                msg.setInformativeText(
+                    translate("BIM", "Please set the level height to a non-zero value.")
+                )
+                msg.exec()
             if self.form.countLevels.value() and levelHeight:
                 h = 0
                 alabels = []
@@ -451,36 +465,42 @@ class BIM_ProjectManager:
             for i in range(self.form.groupsList.count()):
                 groups.append(self.form.groupsList.item(i).text())
 
-            s = "# FreeCAD BIM Project setup preset " + name + "\n"
-            s += "groupNewDocument=" + str(int(self.form.groupNewProject.isChecked())) + "\n"
-            s += "projectName=" + self.form.projectName.text() + "\n"
-            s += "groupSite=" + str(int(self.form.groupSite.isChecked())) + "\n"
+            form = self.form
 
-            s += "siteName=" + self.form.siteName.text() + "\n"
-            s += "siteAddress=" + self.form.siteAddress.text() + "\n"
-            s += "siteLongitude=" + str(self.form.siteLongitude.value()) + "\n"
-            s += "siteLatitude=" + str(self.form.siteLatitude.value()) + "\n"
-            s += "siteDeviation=" + str(self.form.siteDeviation.value()) + "\n"
-            s += "siteElevation=" + self.form.siteElevation.text() + "\n"
+            presets: dict[str, object] = {
+                "groupNewDocument": int(form.groupNewProject.isChecked()),
+                "projectName": form.projectName.text(),
+                "groupSite": int(form.groupSite.isChecked()),
+                "siteName": form.siteName.text(),
+                "siteAddress": form.siteAddress.text(),
+                "siteLongitude": form.siteLongitude.value(),
+                "siteLatitude": form.siteLatitude.value(),
+                "siteDeviation": form.siteDeviation.value(),
+                "siteElevation": form.siteElevation.text(),
+                "groupBuilding": int(form.groupBuilding.isChecked()),
+                "buildingName": form.buildingName.text(),
+                "buildingUse": form.buildingUse.currentIndex(),
+                "buildingLength": form.buildingLength.text(),
+                "buildingWidth": form.buildingWidth.text(),
+                "countVAxes": form.countVAxes.value(),
+                "distVAxes": form.distVAxes.text(),
+                "countHAxes": form.countHAxes.value(),
+                "distHAxes": form.distHAxes.text(),
+                "countLevels": form.countLevels.value(),
+                "levelHeight": form.levelHeight.text(),
+                "lineWidth": form.lineWidth.value(),
+                "lineColor": form.lineColor.property("color").getRgbF()[:3],
+                "groups": ";;".join(groups),
+                "addHumanFigure": int(form.addHumanFigure.isChecked()),
+            }
 
-            s += "groupBuilding=" + str(int(self.form.groupBuilding.isChecked())) + "\n"
-            s += "buildingName=" + self.form.buildingName.text() + "\n"
-            s += "buildingUse=" + str(self.form.buildingUse.currentIndex()) + "\n"
-            s += "buildingLength=" + self.form.buildingLength.text() + "\n"
-            s += "buildingWidth=" + self.form.buildingWidth.text() + "\n"
-            s += "countVAxes=" + str(self.form.countVAxes.value()) + "\n"
-            s += "distVAxes=" + self.form.distVAxes.text() + "\n"
-            s += "countHAxes=" + str(self.form.countHAxes.value()) + "\n"
-            s += "distHAxes=" + self.form.distHAxes.text() + "\n"
-            s += "countLevels=" + str(self.form.countLevels.value()) + "\n"
-            s += "levelHeight=" + self.form.levelHeight.text() + "\n"
-            s += "lineWidth=" + str(self.form.lineWidth.value()) + "\n"
-            s += "lineColor=" + str(self.form.lineColor.property("color").getRgbF()[:3]) + "\n"
-            s += "groups=" + ";;".join(groups) + "\n"
-            s += "addHumanFigure=" + str(int(self.form.addHumanFigure.isChecked())) + "\n"
+            preset = f"# FreeCAD BIM Project setup preset { name }\n"
+
+            for key, value in presets.items():
+                preset += f"{ key }={ value }\n"
 
             f = open(os.path.join(presetdir, name + ".txt"), "w")
-            f.write(s)
+            f.write(preset)
             f.close()
             self.fillPresets()
 
@@ -640,7 +660,7 @@ class BIM_ProjectManager:
 
         filename = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
-            translate("BIM", "Save template file"),
+            translate("BIM", "Save Template File"),
             None,
             "FreeCAD file (*.FCStd)",
         )
@@ -658,11 +678,10 @@ class BIM_ProjectManager:
         from PySide import QtGui
         import FreeCADGui
         import WorkingPlane
-        from FreeCAD import Vector  # required for following eval calls
 
         filename = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
-            translate("BIM", "Open template file"),
+            translate("BIM", "Open Template File"),
             None,
             "FreeCAD file (*.FCStd)",
         )
@@ -682,14 +701,14 @@ class BIM_ProjectManager:
                 values = d.Meta
             bimunit = 0
             wp = WorkingPlane.get_working_plane()
-            if "wpposition" in values:
-                wp.position = eval(values["wpposition"])
-            if "wpu" in values:
-                wp.u = eval(values["wpu"])
-            if "wpv" in values:
-                wp.v = eval(values["wpv"])
-            if "wpaxis" in values:
-                wp.axis = eval(values["wpaxis"])
+            for key, attr in [
+                ("wpposition", "position"),
+                ("wpu", "u"),
+                ("wpv", "v"),
+                ("wpaxis", "axis"),
+            ]:
+                if key in values:
+                    setattr(wp, attr, _parse_vector(values[key]))
             wp._handle_custom(_hist_add=True)  # update the widget
             if "unit" in values:
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").SetInt(

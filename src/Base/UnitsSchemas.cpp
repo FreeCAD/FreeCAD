@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /************************************************************************
  *                                                                      *
  *   This file is part of the FreeCAD CAx development system.           *
@@ -24,25 +26,21 @@
 #include <string>
 #include <vector>
 
-#include <QCoreApplication>
-
 #include "UnitsSchemas.h"
 #include "Exception.h"
 #include "Quantity.h"
+#include "Translation.h"
 #include "UnitsApi.h"
 #include "UnitsSchema.h"
 #include "UnitsSchemasSpecs.h"
 #include "UnitsSchemasData.h"
 
-using Base::Quantity;
-using Base::UnitsSchema;
-using Base::UnitsSchemas;
-using Base::UnitsSchemaSpec;
+namespace Base
+{
 
 UnitsSchemas::UnitsSchemas(const UnitsSchemasDataPack& pack)
     : pack {pack}
     , denominator {pack.defDenominator}
-    , decimals {pack.defDecimals}
 {}
 
 size_t UnitsSchemas::count() const
@@ -64,15 +62,13 @@ std::vector<std::string> UnitsSchemas::getVec(const std::function<std::string(Un
 
 std::vector<std::string> UnitsSchemas::names()
 {
-    return getVec([](const UnitsSchemaSpec& spec) {
-        return spec.name;
-    });
+    return getVec([](const UnitsSchemaSpec& spec) { return spec.name; });
 }
 
 std::vector<std::string> UnitsSchemas::descriptions()
 {
     return getVec([](const UnitsSchemaSpec& spec) {
-        return QCoreApplication::translate("UnitsApi", spec.description).toStdString();
+        return Translation::translate("UnitsApi", spec.description);
     });
 }
 
@@ -129,21 +125,17 @@ UnitsSchemaSpec UnitsSchemas::findSpec(const std::function<bool(UnitsSchemaSpec)
 
 UnitsSchemaSpec UnitsSchemas::spec()
 {
-    return findSpec([](const UnitsSchemaSpec& spec) {
-        return spec.isDefault;
-    });
+    return findSpec([](const UnitsSchemaSpec& spec) { return spec.isDefault; });
 }
 
 UnitsSchemaSpec UnitsSchemas::spec(const std::string_view& name)
 {
-    return findSpec([&name](const UnitsSchemaSpec& spec) {
-        return spec.name == name;
-    });
+    return findSpec([&name](const UnitsSchemaSpec& spec) { return spec.name == name; });
 }
 
 UnitsSchemaSpec UnitsSchemas::spec(const std::size_t num)
 {
-    return findSpec([&num](const UnitsSchemaSpec& spec) {
-        return spec.num == num;
-    });
+    return findSpec([&num](const UnitsSchemaSpec& spec) { return spec.num == num; });
 }
+
+}  // namespace Base

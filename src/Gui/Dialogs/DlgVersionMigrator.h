@@ -21,50 +21,112 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_DIALOG_VERSIONMIGRATOR_H
-#define GUI_DIALOG_VERSIONMIGRATOR_H
+#pragma once
 
 #include <FCGlobal.h>
 #include <cstdint>
 #include <memory>
 #include <QDialog>
+#include <QStringList>
 
 
-namespace Gui {
+namespace Gui
+{
 
-    class MainWindow;
+class MainWindow;
 
-    namespace Dialog {
+namespace Dialog
+{
 
-        class GuiExport DlgVersionMigrator final : public QDialog
-        {
-            Q_OBJECT
+class GuiExport DlgVersionMigrator final: public QDialog
+{
+    Q_OBJECT
 
-        public:
-            explicit DlgVersionMigrator(MainWindow *mw);
-            ~DlgVersionMigrator() override;
-            Q_DISABLE_COPY_MOVE(DlgVersionMigrator)
+public:
+    explicit DlgVersionMigrator(MainWindow* mw);
+    ~DlgVersionMigrator() override;
+    Q_DISABLE_COPY_MOVE(DlgVersionMigrator)
 
-            int exec() override;
+    int exec() override;
 
-        protected Q_SLOTS:
+protected Q_SLOTS:
 
-            void calculateMigrationSize(); // Async -> this starts the process and immediately returns
-            void showSizeOfMigration(uintmax_t size);
-            void migrate();
-            void share();
-            void freshStart();
-            void help();
+    void calculateMigrationSize();  // Async -> this starts the process and immediately returns
+    void showSizeOfMigration(uintmax_t size);
+    void migrate();
+    void share();
+    void freshStart();
+    void help();
 
-        private:
-            MainWindow* mainWindow;
-            QThread* sizeCalculationWorkerThread;
-            std::unique_ptr<class Ui_DlgVersionMigrator> ui;
+private:
+    MainWindow* mainWindow;
+    QThread* sizeCalculationWorkerThread;
+    std::unique_ptr<class Ui_DlgVersionMigrator> ui;
 
-            void restart(const QString &message);
-        };
+    void restart(const QString& message);
+};
 
-    }
-}
 
-#endif // GUI_DIALOG_VERSIONMIGRATOR_H
+class GuiExport PathMigrationWorker: public QObject
+{
+    Q_OBJECT
+
+public:
+    PathMigrationWorker(std::string configDir, std::string userAppDir, int major, int minor);
+    void run();
+
+Q_SIGNALS:
+    void finished();
+    void complete();
+    void completedWithWarnings(QStringList skippedFiles);
+    void failed();
+
+protected:
+    /**
+     * @brief Find any occurrence of the original config and userAppDir paths in the new copy of the
+     * config file and replace them with updated versions.
+     */
+    void replaceOccurrencesInPreferences();
+
+    /**
+     * @brief Locate the new user config file
+     *
+     * After it's been moved, this method figures out the path to the new user.cfg file. It does not
+     * verify the existence of the file, just determines where it *should* be.
+     *
+     * @return The path to the new version of user.cfg.
+     */
+    std::filesystem::path locateNewPreferences() const;
+
+    /**
+     * @brief Given an old path, figure out what the new versioned one would be
+     *
+     * @param oldPath  The old path
+     * @return An equivalent new versioned path
+     */
+    std::string generateNewUserAppPathString(const std::string& oldPath) const;
+
+    /**
+     * @brief Replace all occurrences of oldString with newString, modifying contents in place.
+     *
+     * @param[inout] contents The string to do the replacement in
+     * @param[in] oldString The string to search for
+     * @param[in] newString The new string to put in place of oldString
+     */
+    static void replaceInContents(
+        std::string& contents,
+        const std::string& oldString,
+        const std::string& newString
+    );
+
+    void writeMigrationLog(const std::vector<std::filesystem::path>& skippedPaths);
+
+private:
+    std::string _configDir;
+    std::string _userAppDir;
+    int _major;
+    int _minor;
+};
+
+}  // namespace Dialog
+}  // namespace Gui

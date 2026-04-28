@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef Fem_VTK_vtkFemFrameSourceAlgorithm_H
-#define Fem_VTK_vtkFemFrameSourceAlgorithm_H
+#pragma once
 
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGridAlgorithm.h>
@@ -52,15 +51,16 @@ protected:
 
     vtkSmartPointer<vtkDataObject> m_data;
 
-    int RequestInformation(vtkInformation* reqInfo,
-                           vtkInformationVector** inVector,
-                           vtkInformationVector* outVector) override;
-    int RequestData(vtkInformation* reqInfo,
-                    vtkInformationVector** inVector,
-                    vtkInformationVector* outVector) override;
+    int RequestInformation(
+        vtkInformation* reqInfo,
+        vtkInformationVector** inVector,
+        vtkInformationVector* outVector
+    ) override;
+    int RequestData(
+        vtkInformation* reqInfo,
+        vtkInformationVector** inVector,
+        vtkInformationVector* outVector
+    ) override;
 };
 
 }  // namespace Fem
-
-
-#endif  // Fem_VTK_vtkFemFrameSourceAlgorithm_H

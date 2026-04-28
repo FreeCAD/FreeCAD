@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPART_H
-#define PARTGUI_VIEWPROVIDERPART_H
+#pragma once
 
 #include <utility>
 
@@ -37,11 +38,15 @@ namespace Gui
 class GizmoContainer;
 }
 
-namespace Part { struct ShapeHistory; }
+namespace Part
+{
+struct ShapeHistory;
+}
 
-namespace PartGui {
+namespace PartGui
+{
 
-class ViewProviderShapeBuilder : public Gui::ViewProviderBuilder
+class ViewProviderShapeBuilder: public Gui::ViewProviderBuilder
 {
 public:
     ViewProviderShapeBuilder() = default;
@@ -50,7 +55,7 @@ public:
     void createShape(const App::Property*, SoSeparator*) const;
 };
 
-class PartGuiExport ViewProviderPart : public ViewProviderPartExt
+class PartGuiExport ViewProviderPart: public ViewProviderPartExt
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPart);
 
@@ -62,18 +67,18 @@ public:
     bool doubleClicked() override;
 
 protected:
-    void applyColor(const Part::ShapeHistory& hist,
-                    const std::vector<Base::Color>& colBase,
-                    std::vector<Base::Color>& colBool);
-    void applyMaterial(const Part::ShapeHistory& hist,
-                       const std::vector<App::Material>& colBase,
-                       std::vector<App::Material>& colBool);
+    void applyColor(
+        const Part::ShapeHistory& hist,
+        const std::vector<Base::Color>& colBase,
+        std::vector<Base::Color>& colBool
+    );
+    void applyMaterial(
+        const Part::ShapeHistory& hist,
+        const std::vector<App::Material>& colBase,
+        std::vector<App::Material>& colBool
+    );
     void applyTransparency(float transparency, std::vector<Base::Color>& colors);
     void applyTransparency(float transparency, std::vector<App::Material>& colors);
 };
 
-} // namespace PartGui
-
-
-#endif // PARTGUI_VIEWPROVIDERPART_H
-
+}  // namespace PartGui

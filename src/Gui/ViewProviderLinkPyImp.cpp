@@ -20,17 +20,13 @@
  *                                                                          *
  ****************************************************************************/
 
-
-
-# include <sstream>
-
+#include <sstream>
 
 #include <Base/PlacementPy.h>
 
-// inclusion of the generated files (generated out of ViewProviderLinkPy.pyi)
+// generated out of ViewProviderLink.pyi
 #include "ViewProviderLinkPy.h"
 #include "ViewProviderLinkPy.cpp"
-
 
 using namespace Gui;
 
@@ -43,23 +39,29 @@ std::string ViewProviderLinkPy::representation() const
     return str.str();
 }
 
-Py::Object ViewProviderLinkPy::getDraggingPlacement() const {
-    return Py::asObject(new Base::PlacementPy(new Base::Placement(
-                    getViewProviderLinkPtr()->getDraggerPlacement())));
+Py::Object ViewProviderLinkPy::getDraggingPlacement() const
+{
+    return Py::asObject(
+        new Base::PlacementPy(new Base::Placement(getViewProviderLinkPtr()->getDraggerPlacement()))
+    );
 }
 
-void ViewProviderLinkPy::setDraggingPlacement(Py::Object arg) {
-    if(!PyObject_TypeCheck(arg.ptr(),&Base::PlacementPy::Type))
+void ViewProviderLinkPy::setDraggingPlacement(Py::Object arg)
+{
+    if (!PyObject_TypeCheck(arg.ptr(), &Base::PlacementPy::Type)) {
         throw Py::TypeError("expects a placement");
+    }
     getViewProviderLinkPtr()->setDraggerPlacement(
-            *static_cast<Base::PlacementPy*>(arg.ptr())->getPlacementPtr());
+        *static_cast<Base::PlacementPy*>(arg.ptr())->getPlacementPtr()
+    );
 }
 
-Py::Object ViewProviderLinkPy::getLinkView() const {
-    return Py::Object(getViewProviderLinkPtr()->getPyLinkView(),true);
+Py::Object ViewProviderLinkPy::getLinkView() const
+{
+    return Py::Object(getViewProviderLinkPtr()->getPyLinkView(), true);
 }
 
-PyObject *ViewProviderLinkPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ViewProviderLinkPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

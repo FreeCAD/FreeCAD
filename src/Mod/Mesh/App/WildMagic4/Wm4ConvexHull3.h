@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSL-1.0
+
 // Geometric Tools, LLC
 // Copyright (c) 1998-2010
 // Distributed under the Boost Software License, Version 1.0.
@@ -6,8 +8,7 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4CONVEXHULL3_H
-#define WM4CONVEXHULL3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4ConvexHull1.h"
@@ -122,5 +123,3 @@ typedef ConvexHull3<float> ConvexHull3f;
 typedef ConvexHull3<double> ConvexHull3d;
 
 }
-
-#endif

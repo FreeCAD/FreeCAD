@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -39,10 +41,12 @@ DlgDecimating::DlgDecimating(QWidget* parent, Qt::WindowFlags fl)
     , ui(new Ui_DlgDecimating)
 {
     ui->setupUi(this);
-    connect(ui->checkAbsoluteNumber,
-            &QCheckBox::toggled,
-            this,
-            &DlgDecimating::onCheckAbsoluteNumberToggled);
+    connect(
+        ui->checkAbsoluteNumber,
+        &QCheckBox::toggled,
+        this,
+        &DlgDecimating::onCheckAbsoluteNumberToggled
+    );
     ui->spinBoxReduction->setMinimumWidth(60);
     ui->checkAbsoluteNumber->setEnabled(false);
     onCheckAbsoluteNumberToggled(false);
@@ -79,33 +83,40 @@ void DlgDecimating::onCheckAbsoluteNumberToggled(bool on)
     ui->groupBoxTolerance->setDisabled(on);
 
     if (on) {
-        disconnect(ui->sliderReduction,
-                   qOverload<int>(&QSlider::valueChanged),
-                   ui->spinBoxReduction,
-                   &QSpinBox::setValue);
-        disconnect(ui->spinBoxReduction,
-                   qOverload<int>(&QSpinBox::valueChanged),
-                   ui->sliderReduction,
-                   &QSlider::setValue);
+        disconnect(
+            ui->sliderReduction,
+            qOverload<int>(&QSlider::valueChanged),
+            ui->spinBoxReduction,
+            &QSpinBox::setValue
+        );
+        disconnect(
+            ui->spinBoxReduction,
+            qOverload<int>(&QSpinBox::valueChanged),
+            ui->sliderReduction,
+            &QSlider::setValue
+        );
         ui->spinBoxReduction->setRange(1, numberOfTriangles);
         ui->spinBoxReduction->setValue(int(numberOfTriangles * (1.0 - reduction())));
         ui->spinBoxReduction->setSuffix(QString());
-        ui->checkAbsoluteNumber->setText(
-            tr("Absolute number (Maximum: %1)").arg(numberOfTriangles));
+        ui->checkAbsoluteNumber->setText(tr("Absolute number (Maximum: %1)").arg(numberOfTriangles));
     }
     else {
         ui->spinBoxReduction->setRange(0, 100);
         ui->spinBoxReduction->setValue(ui->sliderReduction->value());
         ui->spinBoxReduction->setSuffix(QStringLiteral("%"));
         ui->checkAbsoluteNumber->setText(tr("Absolute number"));
-        connect(ui->sliderReduction,
-                qOverload<int>(&QSlider::valueChanged),
-                ui->spinBoxReduction,
-                &QSpinBox::setValue);
-        connect(ui->spinBoxReduction,
-                qOverload<int>(&QSpinBox::valueChanged),
-                ui->sliderReduction,
-                &QSlider::setValue);
+        connect(
+            ui->sliderReduction,
+            qOverload<int>(&QSlider::valueChanged),
+            ui->spinBoxReduction,
+            &QSpinBox::setValue
+        );
+        connect(
+            ui->spinBoxReduction,
+            qOverload<int>(&QSpinBox::valueChanged),
+            ui->sliderReduction,
+            &QSlider::setValue
+        );
     }
 }
 
@@ -152,7 +163,7 @@ bool TaskDecimating::accept()
     Gui::Selection().clearSelection();
 
     Gui::WaitCursor wc;
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Decimating"));
+
 
     float tolerance = float(widget->tolerance());
     float reduction = float(widget->reduction());
@@ -161,6 +172,13 @@ bool TaskDecimating::accept()
     if (absolute) {
         targetSize = widget->targetNumberOfTriangles();
     }
+
+    // Here we assume that all meshes are in the same document
+    // if it turns out to not be the case then the transaction can be
+    // opened in the loop with the tid as an argument - theo-vt
+    int tid = meshes[0]->getDocument()->openTransaction(
+        QT_TRANSLATE_NOOP("Command", "Mesh Decimating")
+    );
     for (auto mesh : meshes) {
         if (absolute) {
             Gui::cmdAppObjectArgs(mesh, "decimate(%i)", targetSize);
@@ -169,8 +187,7 @@ bool TaskDecimating::accept()
             Gui::cmdAppObjectArgs(mesh, "decimate(%f, %f)", tolerance, reduction);
         }
     }
-
-    Gui::Command::commitCommand();
+    App::GetApplication().commitTransaction(tid);
     return true;
 }
 

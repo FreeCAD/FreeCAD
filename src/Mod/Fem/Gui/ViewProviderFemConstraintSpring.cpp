@@ -30,8 +30,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintSpring,
-                FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintSpring, FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintSpring::ViewProviderFemConstraintSpring()
 {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -91,7 +93,7 @@ void DlgSettingsObjectColor::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsObjectColor::changeEvent(QEvent *e)
+void DlgSettingsObjectColor::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -102,4 +104,3 @@ void DlgSettingsObjectColor::changeEvent(QEvent *e)
 }
 
 #include "moc_DlgSettingsObjectColor.cpp"
-

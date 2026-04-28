@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <Base/Exception.h>
 #include <Base/Quantity.h>
+#include "Base/UnitsApi.h"
 #include <QLocale>
 
 using Base::ParserError;
@@ -82,6 +83,18 @@ TEST(BaseQuantity, TestString)
 
     const Quantity q2 {v2, "kg*m^2/s^2"};
     EXPECT_EQ(q2.getUnit(), Unit::Work);
+}
+
+TEST(BaseQuantityFormat, NumberOptionsAreBaseOwnedBitmask)
+{
+    Base::QuantityFormat fmt;
+    EXPECT_EQ(
+        fmt.option,
+        Base::QuantityFormat::OmitGroupSeparator | Base::QuantityFormat::RejectGroupSeparator
+    );
+
+    fmt.option = Base::QuantityFormat::None;
+    EXPECT_EQ(fmt.option, Base::QuantityFormat::None);
 }
 
 TEST(BaseQuantity, TestCopy)
@@ -209,13 +222,21 @@ TEST_F(BaseQuantityLoc, psi_parse_no_space)
 
 TEST_F(BaseQuantityLoc, psi_parse_user_str)
 {
-    const auto qParsed = Quantity::parse("1 psi");
+    Base::UnitsApi::setSchema("Internal");
+    auto qParsed = Quantity::parse("1 psi");
+    auto format = qParsed.getFormat();
+    format.setPrecision(2);
+    qParsed.setFormat(format);
     EXPECT_EQ(qParsed.getUserString(), "6894.76 Pa");
 }
 
 TEST_F(BaseQuantityLoc, psi_parse_safe_user_str)
 {
-    const auto qParsed = Quantity::parse("1 psi");
+    Base::UnitsApi::setSchema("Internal");
+    auto qParsed = Quantity::parse("1 psi");
+    auto format = qParsed.getFormat();
+    format.setPrecision(2);
+    qParsed.setFormat(format);
     EXPECT_EQ(qParsed.getSafeUserString(), "6894.76 Pa");
 }
 

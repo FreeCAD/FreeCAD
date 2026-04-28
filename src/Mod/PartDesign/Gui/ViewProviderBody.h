@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,20 +23,22 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderBody_H
-#define PARTGUI_ViewProviderBody_H
+#pragma once
 
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 #include <Mod/PartDesign/App/Feature.h>
+#include <Gui/ViewProviderPart.h>
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
+#include <fastsignals/signal.h>
 
 class SoGroup;
 class SoSeparator;
 class SbBox3f;
 class SoGetBoundingBoxAction;
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 /** ViewProvider of the Body feature
  *  This class manages the visual appearance of the features in the
@@ -42,7 +46,8 @@ namespace PartDesignGui {
  *  If the Body is not active it shows only the result shape (tip).
  * \author jriegel
  */
-class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart, public Gui::ViewProviderOriginGroupExtension
+class PartDesignGuiExport ViewProviderBody: public PartGui::ViewProviderPart,
+                                            public Gui::ViewProviderOriginGroupExtension
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderBody)
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderBody);
@@ -55,29 +60,29 @@ public:
 
     App::PropertyEnumeration DisplayModeBody;
 
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject*) override;
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool isActiveBody();
     void toggleActiveBody();
 
-    std::vector< std::string > getDisplayModes() const override;
+    std::vector<std::string> getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
     void setOverrideMode(const std::string& mode) override;
 
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
     /// Update the children's highlighting when triggered
     void updateData(const App::Property* prop) override;
-    ///unify children visuals
+    /// unify children visuals
     void onChanged(const App::Property* prop) override;
 
     /**
      * Return the bounding box of visible features
      * @note datums are counted as their base point only
      */
-    SbBox3f getBoundBox ();
+    SbBox3f getBoundBox();
 
     PartDesign::Feature* getShownFeature() const;
     ViewProvider* getShownViewProvider() const;
@@ -90,7 +95,15 @@ public:
     void dropObject(App::DocumentObject*) override;
     bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const override;
     /* Check whether the object accept reordering of its children during drop.*/
-    bool acceptReorderingObjects() const override { return true; };
+    bool acceptReorderingObjects() const override
+    {
+        return true;
+    };
+
+    /// Override to return the color of the tip instead of the body, which doesn't really have color
+    std::map<std::string, Base::Color> getElementColors(const char* element) const override;
+
+    void show() override;
 
 protected:
     /// Copy over all visual properties to the child features
@@ -100,12 +113,12 @@ protected:
 
 private:
     static const char* BodyModeEnum[];
+
+    void afterRecompute(const App::Document&, const std::vector<App::DocumentObject*>& recomputedObjs);
+    fastsignals::scoped_connection m_RecomputedConn;
+    void onChangedObject(const Gui::ViewProvider& vp, const App::Property& prop);
+    fastsignals::scoped_connection m_ChangedConn;
+    void refreshOverlays();
 };
 
-
-
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderHole_H
-
+}  // namespace PartDesignGui

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -1566,7 +1568,7 @@ void Material::save(QTextStream& stream, bool overwrite, bool saveAsCopy, bool s
     }
 
     stream << "---\n";
-    stream << "# File created by " << QString::fromStdString(App::Application::Config()["ExeName"])
+    stream << "# File created by " << QString::fromStdString(App::Application::getExecutableName())
            << " " << QString::fromStdString(App::Application::Config()["ExeVersion"])
            << " Revision: " << QString::fromStdString(App::Application::Config()["BuildRevision"])
            << "\n";

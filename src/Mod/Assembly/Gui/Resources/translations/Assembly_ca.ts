@@ -17,12 +17,12 @@
   <context>
     <name>Assembly_InsertLink</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="56"/>
+      <location filename="../../../CommandInsertLink.py" line="55"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Insereix un component al muntatge actiu. Això crearà enllaços simbòlics a peces, cossos, primitives, i muntatges. Per a inserir components externs, assegura't que el fitxer està &lt;b&gt;obert a la sessió actual&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insereix fent clic esquerra als elements de la llista.&lt;/li&gt;&lt;li&gt;Suprimeix fent clic dret als elements de la llista&lt;/li&gt;&lt;li&gt;Premi shift per a afegir diverses instàncies del component mentre premi a la vista.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="81"/>
+      <location filename="../../../CommandInsertLink.py" line="80"/>
       <source>Component</source>
       <translation>Component</translation>
     </message>
@@ -30,12 +30,12 @@
   <context>
     <name>Assembly_SolveAssembly</name>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="50"/>
+      <location filename="../../../CommandSolveAssembly.py" line="49"/>
       <source>Solve Assembly</source>
       <translation>Resol el Muntatge</translation>
     </message>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="55"/>
+      <location filename="../../../CommandSolveAssembly.py" line="54"/>
       <source>Solves the currently active assembly.</source>
       <translation>Resol el muntatge actiu actual.</translation>
     </message>
@@ -43,42 +43,42 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="74"/>
+      <location filename="../../../InitGui.py" line="75"/>
       <source>Assembly</source>
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="138"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
       <source>Active object</source>
       <translation>Objecte actiu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="123"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="154"/>
       <source>Turn flexible</source>
       <translation>Fer-ho flexible</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="124"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="156"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
       <translation>Actualment, el vostre sub-assemblatge és rígid. Això ho farà flexible.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="128"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="160"/>
       <source>Turn rigid</source>
       <translation>Fer-ho rígid</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="129"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="162"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
       <translation>Actualment, el vostre sub-assemblatge és flexible. Això ho farà rígid.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="270"/>
+      <location filename="../../../App/BomObject.cpp" line="329"/>
       <source>N/A</source>
       <translation>N/D</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="294"/>
+      <location filename="../../../App/BomObject.cpp" line="353"/>
       <source>Not supported</source>
       <translation>No suportat</translation>
     </message>
@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="109"/>
+      <location filename="../../../InitGui.py" line="112"/>
       <source>Assembly</source>
       <translation>Muntatge</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="110"/>
+      <location filename="../../../InitGui.py" line="113"/>
       <source>Assembly Joints</source>
       <translation>Juntures de Muntatge</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="113"/>
+      <location filename="../../../InitGui.py" line="116"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Muntatge</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1569"/>
+      <location filename="../../../JointObject.py" line="1809"/>
       <source>Distance</source>
       <translation>Distància</translation>
     </message>
@@ -146,7 +146,6 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
-      <location filename="../../../JointObject.py" line="1571"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
@@ -171,27 +170,27 @@
       <translation>Corretja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="641"/>
+      <location filename="../../../JointObject.py" line="818"/>
       <source>Broken link in: </source>
       <translation>Enllaç trencat a </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1413"/>
+      <location filename="../../../JointObject.py" line="1628"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Seleccioneu 2 elements de 2 peces separades</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1573"/>
+      <location filename="../../../JointObject.py" line="1811"/>
       <source>Radius 1</source>
       <translation>Radi 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1575"/>
+      <location filename="../../../JointObject.py" line="1813"/>
       <source>Thread pitch</source>
       <translation>Pas de rosca</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1577"/>
+      <location filename="../../../JointObject.py" line="1815"/>
       <source>Pitch radius</source>
       <translation>Radi de pas</translation>
     </message>
@@ -236,163 +235,170 @@
       <translation>Quantitat (automàtic)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="190"/>
+      <location filename="../../../CommandCreateBom.py" line="188"/>
       <source>Default</source>
       <translation>Per defecte</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="286"/>
+      <location filename="../../../CommandCreateBom.py" line="284"/>
       <source>Duplicate Name</source>
       <translation>Duplica el Nom</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="287"/>
+      <location filename="../../../CommandCreateBom.py" line="285"/>
       <source>This name is already used. Please choose a different name.</source>
       <translation>Aquest nom ja està en ús. Si us plau, escull un nom diferent.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="366"/>
+      <location filename="../../../CommandCreateBom.py" line="365"/>
       <source>Options</source>
       <translation>Opcions</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="373"/>
+      <location filename="../../../CommandCreateBom.py" line="372"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
       <translation>Fills de subconjunts: els fills dels subconjunts s'inclouran a la llista de materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="379"/>
+      <location filename="../../../CommandCreateBom.py" line="378"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
       <translation>Fills de peces: els fills de peces s'afegiran al llistat de materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="385"/>
+      <location filename="../../../CommandCreateBom.py" line="384"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
       <translation>Només peces: només s'afegiran al llistat de materials contenidors de Peces i submostratges.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="387"/>
+      <location filename="../../../CommandCreateBom.py" line="386"/>
       <source>Columns</source>
       <translation>Columnes</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="400"/>
+      <location filename="../../../CommandCreateBom.py" line="399"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
       <translation>Columnes Personalitzades: s'afegiran 'Descripció' i altres columnes personalitzades prement 'Afegeix columna', no se'ls hi sobreescriuran les seves dades. Si una columna comença per '.' seguit per un nom de propietat (p.ex. '.Longitud'), s'omplirà automáticament amb el valor d'aquesta propietat. Es poden canviar el nom d'aquestes columnes fent doble clic o prement F2 (en canviar el nom d'una columna es perdran les seves dades).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="406"/>
+      <location filename="../../../CommandCreateBom.py" line="405"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
       <translation>Qualsevol columna (personalitzada o no) pot ser esborrada prement Supr.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="408"/>
+      <location filename="../../../CommandCreateBom.py" line="407"/>
       <source>Export</source>
       <translation>Exportar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="415"/>
+      <location filename="../../../CommandCreateBom.py" line="414"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
       <translation>El format de fitxer exportat es pot personalitzar a les preferències de l'àrea de treball 'Full de càlcul'</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="394"/>
+      <location filename="../../../CommandCreateBom.py" line="393"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>Columnes Automàtiques: (Índex, Quantitat, Nom...) són emplenats automàticament. Qualsevol modificació que feu serà sobreescrita. Aquestes columnes no poden ser reanomenades.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="85"/>
+      <location filename="../../../CommandInsertNewPart.py" line="108"/>
       <source>Part name</source>
       <translation>Nom de la peça</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="90"/>
+      <location filename="../../../CommandInsertNewPart.py" line="113"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="95"/>
+      <location filename="../../../CommandInsertNewPart.py" line="118"/>
       <source>Create part in new file</source>
       <translation>Crea un peça en un nou fitxer</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="102"/>
+      <location filename="../../../CommandInsertNewPart.py" line="125"/>
       <source>Joint new part origin</source>
       <translation>Uneix l'origen de la nova peça</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="138"/>
+      <location filename="../../../CommandInsertNewPart.py" line="161"/>
       <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
       <translation>Si el document nou no està desat, la peça nova no es pot enllaçar amb el muntatge.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="139"/>
+      <location filename="../../../CommandInsertNewPart.py" line="78"/>
+      <location filename="../../../CommandInsertNewPart.py" line="162"/>
       <source>Save Document</source>
       <translation>Desa el document</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="141"/>
+      <location filename="../../../CommandInsertNewPart.py" line="77"/>
+      <source>The assembly document must be saved before inserting a new part.</source>
+      <translation>Has de desar el document del muntatge abans d'inserir una part nova.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertNewPart.py" line="80"/>
+      <location filename="../../../CommandInsertNewPart.py" line="164"/>
       <source>Save</source>
       <translation>Desa</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="144"/>
+      <location filename="../../../CommandInsertNewPart.py" line="167"/>
       <source>Do not Link</source>
       <translation>No enllacis</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="488"/>
-      <source>Enter your formula...</source>
-      <translation>Entra la teva fórmula...</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="493"/>
+      <source>Enter your formula…</source>
+      <translation type="unfinished">Enter your formula…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="541"/>
+      <location filename="../../../CommandCreateSimulation.py" line="546"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
       <translation>Les variables que cal substituir per valors reals estan en majúscules. Més detalls sobre cada exemple a la seva descripció emergent.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="544"/>
+      <location filename="../../../CommandCreateSimulation.py" line="549"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - Lineal: C + VEL*temps</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="546"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - Quadràticc: C + VEL*temps + ACC*temps^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="549"/>
+      <location filename="../../../CommandCreateSimulation.py" line="554"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - Harmònic: C + AMP*sin(VEL*temps - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="552"/>
+      <location filename="../../../CommandCreateSimulation.py" line="557"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - Exponencial: C*exp(temps/TIMEC)']</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="558"/>
+      <location filename="../../../CommandCreateSimulation.py" line="563"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - Pas suau: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(temps - T0)))']</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="565"/>
+      <location filename="../../../CommandCreateSimulation.py" line="570"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - Impuls quadrat suau: (H/pi)*(arctan(SLOPE*(temps - T1)) - arctan(SLOPE*(temps - T2)))']</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="572"/>
+      <location filename="../../../CommandCreateSimulation.py" line="577"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - Impuls de rampa suau superior: ((1/pi)*(arctan(1000*(temps - T1)) - arctan(1000*(temps - T2))))*(((H2 - H1)/(T2 - T1))*(temps - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="582"/>
+      <location filename="../../../CommandCreateSimulation.py" line="587"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C és un offset constant. VEL és una velocitat o pendent o gradient de la línia recta.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="590"/>
+      <location filename="../../../CommandCreateSimulation.py" line="595"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -401,7 +407,7 @@ VEL és la velocitat o pendent o gradient de la línia recta.
 ACC és l'acceleració o coeficient de segon ordre. La funció és una paràbola.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="599"/>
+      <location filename="../../../CommandCreateSimulation.py" line="604"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -412,14 +418,14 @@ VEL és la velocitat angular en radians per segon.
 PHASE és la fase de l'ona sinusoidal.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="606"/>
+      <location filename="../../../CommandCreateSimulation.py" line="611"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C és una constant.
 TIMEC és la constant de temps de la funció exponencial.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="614"/>
+      <location filename="../../../CommandCreateSimulation.py" line="619"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -428,7 +434,7 @@ L2 és el nivell del pas després del temps = T0.
 SLOPE defineix la inclinació de la transició entre L1 i L2 al voltant del temps = T0. Valors més alts donen esglaons amb cantonades més pronunciades. SLOPE = 1000 o superior són adequats.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="623"/>
+      <location filename="../../../CommandCreateSimulation.py" line="628"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -439,7 +445,7 @@ T2 és el final de l'impuls.
 SLOPE defineix la inclinació de la transició entre 0 i H al voltant del temps = T1 i T2. Els valors més alts donen impulsos amb cantonades més pronunciades. SLOPE = 1000 o superior és adequat.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="634"/>
+      <location filename="../../../CommandCreateSimulation.py" line="639"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -454,48 +460,98 @@ H2 és l'alçada a T2 al final de la rampa.
 SLOPE defineix la inclinació de la transició entre 0 i H1 i H2 a 0 al voltant del temps = T1 i T2 respectivament. Valors més alts donen impulsos amb cantonades més pronunciades. SLOPE = 1000 o superior són adequats.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="672"/>
-      <location filename="../../../CommandCreateSimulation.py" line="689"/>
+      <location filename="../../../CommandCreateSimulation.py" line="677"/>
+      <location filename="../../../CommandCreateSimulation.py" line="694"/>
       <source>Help</source>
       <translation>Ajuda</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="687"/>
+      <location filename="../../../CommandCreateSimulation.py" line="692"/>
       <source>Hide help</source>
       <translation>Amagar ajuda</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="142"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1044"/>
+      <source>Animation</source>
+      <translation>Animació</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
+      <source>Not enough frames to create an animation.</source>
+      <translation type="unfinished">Not enough frames to create an animation.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1052"/>
+      <source>Save Animation</source>
+      <translation type="unfinished">Save Animation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1074"/>
+      <source>Generating Frames…</source>
+      <translation type="unfinished">Generating Frames…</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
+      <source>Cancel</source>
+      <translation>Cancel·la</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1102"/>
+      <source>Assembling animation…</source>
+      <translation type="unfinished">Assembling animation…</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1118"/>
+      <source>An error occurred while saving the animation</source>
+      <translation type="unfinished">An error occurred while saving the animation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1136"/>
+      <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
+      <translation type="unfinished">Pillow (PIL) is not installed. It is required for GIF export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1159"/>
+      <source>OpenCV is not installed. It is required for video export.</source>
+      <translation type="unfinished">OpenCV is not installed. It is required for video export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1176"/>
+      <source>Could not open video writer. Check codecs.</source>
+      <translation type="unfinished">Could not open video writer. Check codecs.</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="160"/>
       <source>Create</source>
       <translation>Crea</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="158"/>
+      <location filename="../../../InitGui.py" line="176"/>
       <source>Activate</source>
       <translation>Activa</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="192"/>
+      <location filename="../../../InitGui.py" line="210"/>
       <source>Insert</source>
       <translation>Insereix</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="203"/>
+      <location filename="../../../InitGui.py" line="221"/>
       <source>Grounding</source>
       <translation>Bloquejar</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="230"/>
+      <location filename="../../../InitGui.py" line="248"/>
       <source>Constraints</source>
       <translation>Restriccions</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="246"/>
+      <location filename="../../../InitGui.py" line="264"/>
       <source>Tools</source>
       <translation>Eines</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="259"/>
+      <location filename="../../../InitGui.py" line="277"/>
       <source>Simulation</source>
       <translation>Simulació</translation>
     </message>
@@ -503,180 +559,185 @@ SLOPE defineix la inclinació de la transició entre 0 i H1 i H2 a 0 al voltant 
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="183"/>
+      <location filename="../../../JointObject.py" line="184"/>
       <source>The type of the joint</source>
       <translation>El tipus de juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="209"/>
+      <location filename="../../../JointObject.py" line="370"/>
       <source>The first reference of the joint</source>
       <translation>La primera referència de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="221"/>
+      <location filename="../../../JointObject.py" line="218"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation>Aquest és el sistema de coordenades local de la Reference1 de l'objecte, que s'utilitzarà per a la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="233"/>
+      <location filename="../../../JointObject.py" line="230"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation>Això impedeix recalcular Placement1, permetent el posicionament personalitzat de la ubicació</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="245"/>
-      <location filename="../../../JointObject.py" line="516"/>
+      <location filename="../../../JointObject.py" line="242"/>
+      <location filename="../../../JointObject.py" line="563"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>Aquesta és l'equidistància adjunta al primer connector de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="267"/>
+      <location filename="../../../JointObject.py" line="258"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>Aquest és el sistema de coordenades local de la Reference2 de l'objecte, que s'utilitzarà per a la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="279"/>
+      <location filename="../../../JointObject.py" line="270"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation>Això impedeix recalcular Placement2, permetent el posicionament personalitzat de la ubicació</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="291"/>
-      <location filename="../../../JointObject.py" line="527"/>
+      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="574"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>Aquesta és l'equidistància adjunta al segon connector de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
+      <location filename="../../../JointObject.py" line="304"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>Habilita el límit de longitud mínima de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="341"/>
+      <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>Habilita el límit de longitud màxima de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="354"/>
+      <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>Habilita el límit de l'angle mínim de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="367"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>Habilita el límit de l'angle màxim de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="380"/>
+      <location filename="../../../JointObject.py" line="391"/>
+      <source>This is the angle of the joint. It is used only by the Angle joint.</source>
+      <translation>Això és l'angle de la juntura. Només s'utilitza en la juntura angular.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="427"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Aquest és el límit mínim de la longitud entre els dos sistemes de coordenades (al llarg de l'eix Z)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="392"/>
+      <location filename="../../../JointObject.py" line="439"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Aquest és el límit màxim de la longitud entre els dos sistemes de coordenades (al llarg de l'eix Z)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="404"/>
+      <location filename="../../../JointObject.py" line="451"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Aquest és el límit mínim de l'angle entre els dos sistemes de coordenades (entre el seu eix X)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="416"/>
+      <location filename="../../../JointObject.py" line="463"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Aquest és el límit màxim de l'angle entre els dos sistemes de coordenades (entre el seu eix X)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="255"/>
+      <location filename="../../../JointObject.py" line="379"/>
       <source>The second reference of the joint</source>
       <translation>La segona referència de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="435"/>
+      <location filename="../../../JointObject.py" line="482"/>
       <source>The first object of the joint</source>
       <translation>El primer objecte de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="455"/>
+      <location filename="../../../JointObject.py" line="502"/>
       <source>The second object of the joint</source>
       <translation>El segon objecte de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="304"/>
+      <location filename="../../../JointObject.py" line="403"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Aquest és la distància de la juntura. Només és utilitzada per la juntura de Distància, de Pinyó-Cremallera (radi de pas), de Cargol, d'Engranatges i de Corretja (radi 1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="316"/>
+      <location filename="../../../JointObject.py" line="415"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Aquesta és la segona distància de la juntura. Només és utilitzada per la juntura d'Engranatge per a desar el segon radi.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="469"/>
+      <location filename="../../../JointObject.py" line="516"/>
       <source>The {order} reference of the joint</source>
       <translation>La referència {order} a la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1037"/>
+      <location filename="../../../JointObject.py" line="1237"/>
       <source>The object to ground</source>
       <translation>L'objecte a bloquejar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="259"/>
-      <location filename="../../../CommandCreateView.py" line="296"/>
+      <location filename="../../../CommandCreateView.py" line="376"/>
+      <location filename="../../../CommandCreateView.py" line="413"/>
       <source>The objects moved by the move</source>
       <translation>Els objectes desplaçats pel moviment</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="271"/>
+      <location filename="../../../CommandCreateView.py" line="388"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Aquest és el desplaçament del moviment. La ubicació final és el resultat de la ubicació inicial * aquesta ubicació.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="280"/>
+      <location filename="../../../CommandCreateView.py" line="397"/>
       <source>The type of the move</source>
       <translation>El tipus de moviment</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="111"/>
+      <location filename="../../../CommandCreateSimulation.py" line="116"/>
       <source>Simulation start time.</source>
       <translation>Temps d'inici de la simulació.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="123"/>
+      <location filename="../../../CommandCreateSimulation.py" line="128"/>
       <source>Simulation end time.</source>
       <translation>Temps de fi de la simulació.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="135"/>
+      <location filename="../../../CommandCreateSimulation.py" line="140"/>
       <source>Simulation time step for output.</source>
       <translation>Pas de temps de simulació per a la sortida.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="147"/>
+      <location filename="../../../CommandCreateSimulation.py" line="152"/>
       <source>Integration global error tolerance.</source>
       <translation>Tolerància global a l'error d'integració.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="159"/>
+      <location filename="../../../CommandCreateSimulation.py" line="164"/>
       <source>Frames Per Second.</source>
       <translation>Fotogrames per segon.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="211"/>
+      <location filename="../../../CommandCreateSimulation.py" line="216"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>El nombre de decimals que s'ha d'utilitzar per als textos calculats</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="311"/>
+      <location filename="../../../CommandCreateSimulation.py" line="316"/>
       <source>The joint that is moved by the motion</source>
       <translation>La juntura es mou pel moviment</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="323"/>
+      <location filename="../../../CommandCreateSimulation.py" line="328"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
       <translation>Aquesta és la fórmula del moviment. Per exemple, '1.0*temps'.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="332"/>
+      <location filename="../../../CommandCreateSimulation.py" line="337"/>
       <source>The type of the motion</source>
       <translation>El tipus de moviment</translation>
     </message>
@@ -684,37 +745,37 @@ SLOPE defineix la inclinació de la transició entre 0 i H1 i H2 a 0 al voltant 
   <context>
     <name>TaskAssemblyCreateJoint</name>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="55"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
       <source>Distance</source>
       <translation>Distància</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>
       <source>Radius 2</source>
       <translation>Radi 2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
       <source>Offset</source>
       <translation>Equidistància</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
       <source>Rotation</source>
       <translation>Rotació</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="175"/>
       <source>Offset1</source>
       <translation>Desfasament1</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="172"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="196"/>
       <source>Offset2</source>
       <translation>Desfasament2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="191"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="215"/>
       <source>Show advanced offsets</source>
       <translation>Mostra offsets avançats</translation>
     </message>
@@ -729,52 +790,57 @@ SLOPE defineix la inclinació de la transició entre 0 i H1 i H2 a 0 al voltant 
       <translation>Aïllar</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="158"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="55"/>
+      <source>Angle</source>
+      <translation>Angle</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="182"/>
       <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
       <translation>Estableix el desplaçament de la fixació del primer marcador de la unió (sistema de coordenades)</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="179"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="203"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
       <translation>Estableix el desplaçament de la fixació del segon marcador de la unió (sistema de coordenades)</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
       <source>Reverse the direction of the joint</source>
       <translation>Inverteix la direcció de la unió</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="210"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
       <source>Reverse</source>
       <translation>Revers</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="221"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
       <source>Limits</source>
       <translation>Límits</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="227"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
       <source>Min length</source>
       <translation>Longitud mínima</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="250"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
       <source>Max length</source>
       <translation>Longitud màxima</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="273"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min angle</source>
       <translation>Angle mínim</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="302"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
       <source>Max angle</source>
       <translation>Angle màxim</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="334"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
       <source>Reverse rotation</source>
       <translation>Inverteix la rotació</translation>
     </message>
@@ -799,7 +865,7 @@ SLOPE defineix la inclinació de la transició entre 0 i H1 i H2 a 0 al voltant 
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
       <source>Open File</source>
-      <translation>Obrir fitxer</translation>
+      <translation>Obre un fitxer</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="55"/>
@@ -873,63 +939,52 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="207"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
       <source>The object is associated to one or more joints.</source>
       <translation>L'objecte està associat a una o més juntures.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="209"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Vols moure l'objecte i eliminar les juntures associades?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1006"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1104"/>
       <source>Move part</source>
       <translation>Moure peça</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1519"/>
-      <source>ViewProviderAssembly</source>
-      <comment>and %1 more</comment>
-      <translation>Proveïdor del visualitzador de muntatge</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1536"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
       <source>Empty Assembly</source>
       <translation>Muntatge buit</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1540"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1831"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restringit:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1839"/>
       <source>Malformed joints:</source>
       <translation>Juntures mal formades:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1553"/>
-      <source>Redundant joints:</source>
-      <translation>Juntures redundants:</translation>
+      <location filename="../../ViewProviderAssembly.cpp" line="1802"/>
+      <source>and %1 more</source>
+      <translation>i %1 més</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
-      <source>Partially redundant:</source>
-      <translation>Parcialment redundant:</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1566"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
       <source>Solver failed to converge</source>
       <translation>El solucionador no ha pogut convergir</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1572"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1871"/>
       <source>Under-constrained:</source>
       <translation>Sub-restringit:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1574"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n grau de llibertat</numerusform>
@@ -937,7 +992,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1578"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1877"/>
       <source>Fully constrained</source>
       <translation>Esbós completament restringit</translation>
     </message>
@@ -951,8 +1006,8 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="324"/>
-      <source>&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -965,7 +1020,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
     <message>
       <location filename="../../../CommandCreateJoint.py" line="396"/>
       <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Crea una juntura d'engranatge o de cinta que enllaça 2 engranatges girant junts&lt;/p&gt;&lt;p&gt;Seleccioneu el mateix sistema de coordenades que la juntura de revolució.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1066,13 +1121,13 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Crea una llista de materials del muntatge actual. Si un muntatge està actiu, serà una llista de materials d'aquest muntatge. Altrament, serà una llista de materials de tot el document.&lt;/p&gt;&lt;p&gt;L'objecte de la llista de materials és un objecte de document que emmagatzema la configuració de la vostra llista de materials. També és un objecte de full de càlcul, de manera que podeu visualitzar fàcilment la llista de materials. Si no necessiteu que l'objecte de la llista de materials es desi com a objecte de document, podeu simplement exportar-lo i cancel·lar la tasca.&lt;/p&gt;&lt;p&gt;Les columnes 'Índex', 'Nom', 'Nom del fitxer' i 'Quantitat' es generen automàticament en tornar a calcular. Les columnes 'Descripció' i personalitzades no se sobreescriuen.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="584"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Juntures</translation>
     </message>
@@ -1080,7 +1135,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="135"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="168"/>
       <source>Toggle Rigid</source>
       <translation>Commuta rígid</translation>
     </message>
@@ -1165,12 +1220,17 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
       <translation>Tolerància d'error global</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
+      <source>Save the animation as a GIF or video file.</source>
+      <translation type="unfinished">Save the animation as a GIF or video file.</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="197"/>
       <source>Animation Player</source>
       <translation>Reproductor d'animació</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="236"/>
       <source>Frames per second</source>
       <translation>Fotogrames per segon</translation>
     </message>
@@ -1180,42 +1240,42 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
       <translation>Tolerància</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="166"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="168"/>
       <source>Generate</source>
       <translation>Genera</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="205"/>
       <source>Frame</source>
       <translation>Marc</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="225"/>
       <source>0.00 s</source>
       <translation>0.00 s</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="232"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="256"/>
       <source>Step backward</source>
       <translation>Pas enrere</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="252"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="276"/>
       <source>Play backward</source>
       <translation>Mou enrere</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="272"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="296"/>
       <source>Stop</source>
       <translation>Atura</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="292"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="316"/>
       <source>Play forward</source>
       <translation>Mou endavant</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="312"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="336"/>
       <source>Step forward</source>
       <translation>Pas endavant</translation>
     </message>
@@ -1262,7 +1322,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Si un muntatge està actiu: Crea una unió que bloqueja permanentment dues peces juntes, evitant qualsevol moviment o rotació&lt;/p&gt;&lt;p&gt;2 - Si una peça està activa: Posiciona les subpeces fent coincidir els sistemes de coordenades seleccionats. La segona peça seleccionada es mourà.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1327,7 +1387,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
     <message>
       <location filename="../../../CommandCreateJoint.py" line="203"/>
       <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Crea una juntura de distància que fixa la distància entre els objectes seleccionats&lt;/p&gt;&lt;p&gt;Crea una de les diverses juntures basades en la selecció. Per exemple, una distància de 0 entre un pla i un cilindre crea una juntura tangent. Una distància de 0 entre plans els farà coplanars.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1378,8 +1438,8 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="300"/>
-      <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1392,7 +1452,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
     <message>
       <location filename="../../../CommandCreateJoint.py" line="348"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Crea una juntura d'engranatge que enllaça 2 engranatges girant junts. Tindran un sentit de rotació invers&lt;/p&gt;&lt;p&gt;Seleccioneu el mateix sistema de coordenades que la juntura de revolució.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1405,31 +1465,31 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
     <message>
       <location filename="../../../CommandCreateJoint.py" line="372"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Crea una juntura de cinta que enllaça 2 engranatges girant junts. Tindran el mateix sentit de rotació&lt;/p&gt;&lt;p&gt;Seleccioneu el mateix sistema de coordenades que la juntura de revolució.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="429"/>
+      <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Toggle Grounded</source>
       <translation>Commuta bloqueig</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="435"/>
-      <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="437"/>
+      <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
+      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateSimulation</name>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="67"/>
+      <location filename="../../../CommandCreateSimulation.py" line="72"/>
       <source>Simulation</source>
       <translation>Simulació</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="72"/>
+      <location filename="../../../CommandCreateSimulation.py" line="77"/>
       <source>Creates a new simulation of the current assembly</source>
       <translation>Crea una nova simulació del muntatge actual</translation>
     </message>
@@ -1437,12 +1497,12 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>Assembly_CreateView</name>
     <message>
-      <location filename="../../../CommandCreateView.py" line="54"/>
+      <location filename="../../../CommandCreateView.py" line="53"/>
       <source>Exploded View</source>
       <translation>Vista explotada</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="59"/>
+      <location filename="../../../CommandCreateView.py" line="58"/>
       <source>Creates an exploded view of the current assembly</source>
       <translation>Crea una vista d'explosió del muntatge actual</translation>
     </message>
@@ -1450,37 +1510,159 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>Assembly_Insert</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="65"/>
+      <location filename="../../../CommandInsertLink.py" line="64"/>
       <source>Insert Component</source>
       <translation>Insereix un Component</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="222"/>
+      <source>Partially loaded</source>
+      <translation>Carregat parcialment</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="615"/>
+      <source>Fully load document</source>
+      <translation>Document carregat completament</translation>
     </message>
   </context>
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="37"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
       <translation>Missatges del solucionador</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="54"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Click to select these conflicting joints.</source>
       <translation>Prem-ho per a seleccionar aquestes juntures en conflicte.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="57"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Click to select these redundant joints.</source>
       <translation>Prem-ho per a seleccionar aquestes juntures redundants.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="60"/>
-      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
-      <translation>El muntatge té components sense restriccions que donen lloc a aquests graus de llibertat. Prem-ho per a seleccionar aquests components sense restriccions.</translation>
+      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
+Click to select these unconstrained components.
+Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
+      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
+Click to select these unconstrained components.
+Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
       <source>Click to select these malformed joints.</source>
       <translation>Prem-ho per a seleccionar aquestes juntures mal formades.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblyLinkSelectLinked</name>
+    <message>
+      <location filename="../../Commands.cpp" line="101"/>
+      <source>Assembly</source>
+      <translation type="unfinished">Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="102"/>
+      <source>Go to linked Assembly</source>
+      <translation type="unfinished">Go to linked Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="103"/>
+      <source>Selects the linked assembly and switches to its original document</source>
+      <translation type="unfinished">Selects the linked assembly and switches to its original document</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectConflictingConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="165"/>
+      <source>Assembly</source>
+      <translation type="unfinished">Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="166"/>
+      <source>Select conflicting constraints</source>
+      <translation type="unfinished">Select conflicting constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="167"/>
+      <source>Selects conflicting joints in the active assembly</source>
+      <translation type="unfinished">Selects conflicting joints in the active assembly</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectRedundantConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="200"/>
+      <source>Assembly</source>
+      <translation type="unfinished">Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="201"/>
+      <source>Select redundant constraints</source>
+      <translation type="unfinished">Select redundant constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="202"/>
+      <source>Selects redundant joints in the active assembly</source>
+      <translation type="unfinished">Selects redundant joints in the active assembly</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectMalformedConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="233"/>
+      <source>Assembly</source>
+      <translation type="unfinished">Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="234"/>
+      <source>Select malformed constraints</source>
+      <translation type="unfinished">Select malformed constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="235"/>
+      <source>Selects malformed joints in the active assembly</source>
+      <translation type="unfinished">Selects malformed joints in the active assembly</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectComponentsWithDoFs</name>
+    <message>
+      <location filename="../../Commands.cpp" line="267"/>
+      <source>Assembly</source>
+      <translation type="unfinished">Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="268"/>
+      <source>Select components with DoFs</source>
+      <translation type="unfinished">Select components with DoFs</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="269"/>
+      <source>Selects unconstrained components in the active assembly</source>
+      <translation type="unfinished">Selects unconstrained components in the active assembly</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectJointsOfComponent</name>
+    <message>
+      <location filename="../../Commands.cpp" line="310"/>
+      <source>Assembly</source>
+      <translation type="unfinished">Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="311"/>
+      <source>Select component joints</source>
+      <translation type="unfinished">Select component joints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="312"/>
+      <source>Selects all joints referencing the selected component</source>
+      <translation type="unfinished">Selects all joints referencing the selected component</translation>
     </message>
   </context>
 </TS>

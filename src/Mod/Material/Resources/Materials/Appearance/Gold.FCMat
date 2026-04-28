@@ -3,7 +3,7 @@
 General:
   UUID: "85257e2c-be3f-40a1-b03f-0bd4ba58ca08"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Gold"
   Description: "Defines the Gold appearance properties"
 AppearanceModels:

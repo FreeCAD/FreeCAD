@@ -31,8 +31,11 @@ double getArea(const TopoDS_Shape& shape);
 
 double getLength(const TopoDS_Shape& shape);
 
-std::vector<Part::FilletElement>
-_getFilletEdges(const std::vector<int>& edges, double startRadius, double endRadius);
+std::vector<Part::FilletElement> _getFilletEdges(
+    const std::vector<int>& edges,
+    double startRadius,
+    double endRadius
+);
 
 class PartTestHelperClass
 {
@@ -49,14 +52,22 @@ void executePython(const std::vector<std::string>& python);
 
 void rectangle(double height, double width, const char* name);
 
-std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge>
-CreateRectFace(float len = 2.0, float wid = 3.0);
+std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge> CreateRectFace(
+    float len = 2.0,
+    float wid = 3.0
+);
 
-std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Wire>
-CreateFaceWithRoundHole(float len = 2.0, float wid = 3.0, float radius = 1.0);
+std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Wire> CreateFaceWithRoundHole(
+    float len = 2.0,
+    float wid = 3.0,
+    float radius = 1.0
+);
 
-testing::AssertionResult
-boxesMatch(const Base::BoundBox3d& b1, const Base::BoundBox3d& b2, double prec = 1e-05);  // NOLINT
+testing::AssertionResult boxesMatch(
+    const Base::BoundBox3d& b1,
+    const Base::BoundBox3d& b2,
+    double prec = 1e-05
+);  // NOLINT
 
 std::map<IndexedName, MappedName> elementMap(const TopoShape& shape);
 
@@ -66,8 +77,7 @@ std::map<IndexedName, MappedName> elementMap(const TopoShape& shape);
  * @param names The Names
  * @return A test result, suitable for display by the gtest framework
  */
-testing::AssertionResult elementsMatch(const TopoShape& shape,
-                                       const std::vector<std::string>& names);
+testing::AssertionResult elementsMatch(const TopoShape& shape, const std::vector<std::string>& names);
 
 /**
  * Checks that all the names occur in the shape's element map and that there are no additional names
@@ -75,8 +85,7 @@ testing::AssertionResult elementsMatch(const TopoShape& shape,
  * @param names The Names
  * @return A test result, suitable for display by the gtest framework
  */
-testing::AssertionResult allElementsMatch(const TopoShape& shape,
-                                          const std::vector<std::string>& names);
+testing::AssertionResult allElementsMatch(const TopoShape& shape, const std::vector<std::string>& names);
 
 /**
  *

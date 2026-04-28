@@ -55,6 +55,7 @@
 #include "QGSPage.h"
 #include "Rez.h"
 #include "ViewProviderPage.h"
+#include "DrawGuiUtil.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -66,9 +67,6 @@ constexpr double mmPerInch = 25.4;
 
 
 /* TRANSLATOR TechDrawGui::PagePrinter */
-
-//TYPESYSTEM_SOURCE_ABSTRACT(TechDrawGui::PagePrinter)
-
 
 //! retrieve the attributes of a DrawPage and its Template
 PaperAttributes PagePrinter::getPaperAttributes(TechDraw::DrawPage* dPage)
@@ -84,23 +82,19 @@ PaperAttributes PagePrinter::getPaperAttributes(TechDraw::DrawPage* dPage)
         width = pageTemplate->Width.getValue();
         height = pageTemplate->Height.getValue();
     }
-    // result.m_pagewidth = width;
-    // result.m_pageheight = height;
-
-    //Qt's page size determination assumes Portrait orientation. To get the right paper size
-    //we need to ask in the proper form.
-    QPageSize::PageSizeId paperSizeID =
+    // Qt's page size determination assumes Portrait orientation. To get the right paper size
+    // we need to ask in the proper form.
+    QPageSize::PageSizeId paperSizeId =
         QPageSize::id(QSizeF(std::min(width, height), std::max(width, height)),
                       QPageSize::Millimeter, QPageSize::FuzzyOrientationMatch);
-    auto paperSize = paperSizeID;
 
-    auto orientation = (QPageLayout::Orientation)dPage->getOrientation();
-    if (paperSize == QPageSize::Ledger) {
+    auto orientation = static_cast<QPageLayout::Orientation>(dPage->getOrientation());
+    if (paperSizeId == QPageSize::Ledger) {
         // Ledger size paper orientation is reversed inside Qt
         orientation = (QPageLayout::Orientation)(1 - orientation);
     }
 
-    return {orientation, paperSize, width, height};
+    return {orientation, paperSizeId, width, height};
 }
 
 //! retrieve the attributes of a DrawPage by its viewProvider
@@ -118,8 +112,20 @@ void PagePrinter::makePageLayout(TechDraw::DrawPage* dPage, QPageLayout& pageLay
     PaperAttributes attr = getPaperAttributes(dPage);
     width = attr.pageWidth();
     height = attr.pageHeight();
-    pageLayout.setPageSize(QPageSize(attr.pageSize()));
-    pageLayout.setOrientation(attr.orientation());
+    if (attr.pageSizeId() == QPageSize::Custom) {
+        // Qt thinks about pages in portrait orientation
+        QPageSize customPageSize =
+            QPageSize(QSizeF(std::min(width, height), std::max(width, height)), QPageSize::Millimeter);
+        pageLayout.setPageSize(customPageSize);
+        QPageLayout::Orientation orient = width >= height ?
+                    QPageLayout::Orientation::Landscape :
+                    QPageLayout::Orientation::Portrait;
+        pageLayout.setOrientation(orient);
+    } else {
+        pageLayout.setPageSize(QPageSize(attr.pageSizeId()));
+        pageLayout.setOrientation(attr.orientation());
+
+    }
     pageLayout.setMode(QPageLayout::FullPageMode);
     pageLayout.setMargins(QMarginsF());
 }
@@ -176,9 +182,17 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
 //! print all pages in a document to pdf
 void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
 {
-    double dpmm = printer->resolution() / mmPerInch;
-
     QString outputFile = printer->outputFileName();
+    Base::FileInfo fi{outputFile.toStdString()};
+    if (fi.exists() && !fi.isWritable()) {
+        // this guards against a no-write situation on Win (issue #25299)
+        // Note: this does not protect against the case where the proposed file does not exist yet
+        //       and creation of the file will not be permitted (ex attempt to write to restricted
+        //       directory).
+        Base::Console().error("File %s is not available for writing.\n", qPrintable(outputFile));
+        return;
+    }
+
     QString documentName = QString::fromUtf8(doc->getName());
     QPdfWriter pdfWriter(outputFile);
 
@@ -235,12 +249,13 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         }
         firstTime = false;
 
+        double dpmm = printer->resolution() / mmPerInch;
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
         renderPage(vpp, painter, sourceRect, targetRect);
         dPage->redrawCommand();
 
-        ourScene->setExportingPdf(true);
+        ourScene->setExportingPdf(false);
     }
 
     ourDoc->setModified(docModifiedState);
@@ -254,9 +269,9 @@ void PagePrinter::printBannerPage(QPrinter* printer, QPainter& painter, QPageLay
     QFont savePainterFont = painter.font();
     QFont painterFont;
     painterFont.setFamily(Preferences::labelFontQString());
-    int fontSizeMM = Preferences::labelFontSizeMM();
+    int fontSizeMM = (int)Preferences::labelFontSizeMM();
     double dpmm = printer->resolution() / mmPerInch;
-    int fontSizePx = fontSizeMM * dpmm;
+    int fontSizePx = (int)fontSizeMM * dpmm;
     painterFont.setPixelSize(fontSizePx);
     painter.setFont(painterFont);
 
@@ -305,7 +320,7 @@ void PagePrinter::renderPage(ViewProviderPage* vpp, QPainter& painter, QRectF& s
 
 
 /// print the Page associated with the view provider
-void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer)
+void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer, bool isPreview)
 {
     QPageLayout pageLayout = printer->pageLayout();
 
@@ -318,7 +333,8 @@ void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer)
     QPainter painter(printer);
 
     auto ourScene = vpPage->getQGSPage();
-    if (!printer->outputFileName().isEmpty()) {
+    if (!printer->outputFileName().isEmpty() ||
+        isPreview) {
         ourScene->setExportingPdf(true);
     }
     auto ourDoc = Gui::Application::Instance->getDocument(dPage->getDocument());
@@ -338,33 +354,37 @@ void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer)
 void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
 {
     if (file.empty()) {
-        Base::Console().warning("PagePrinter - no file specified\n");
+        return;
+    }
+
+    Base::FileInfo fi{file};
+    if (fi.exists() && !fi.isWritable()) {
+         // this guards against a no-write situation on Win (issue #25299)
+         // See comment in printAllPdf re new file creaion
+        Base::Console().error("File %s is not available for writing.\n", file.c_str());
         return;
     }
 
     auto filespec = Base::Tools::escapeEncodeFilename(file);
     filespec = DU::cleanFilespecBackslash(filespec);
+    QString outputFile = QString::fromStdString(filespec);
 
     // set up the pdfwriter
-    QString outputFile = QString::fromStdString(filespec);
     QPdfWriter pdfWriter(outputFile);
     pdfWriter.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
-    QPageLayout pageLayout = pdfWriter.pageLayout();
-    auto marginsdb = pageLayout.margins(QPageLayout::Millimeter);
     QString documentName = QString::fromUtf8(vpPage->getDrawPage()->getNameInDocument());
     pdfWriter.setTitle(documentName);
-    // default pdfWriter dpi is 1200.
-
+    // default pdfWriter dpi is 1200. no need to set?
     pdfWriter.setCreator(QString::fromStdString(App::Application::getNameWithVersion())
                        + QLatin1String(" TechDraw"));
 
-    // set up the page layout
+    // set up the page layout by modifying the default
+    QPageLayout pageLayout = pdfWriter.pageLayout();
     auto dPage = vpPage->getDrawPage();
-    double width = A4Heightmm;  // default to A4 Landscape 297 x 210
-    double height = A4Widthmm;
+    double width = dPage->getPageWidth();
+    double height = dPage->getPageHeight();
     makePageLayout(dPage, pageLayout, width, height);
     pdfWriter.setPageLayout(pageLayout);
-    marginsdb = pageLayout.margins(QPageLayout::Millimeter);
 
     // first page does not respect page layout unless painter is created after
     // pdfWriter layout is established.
@@ -421,13 +441,13 @@ void PagePrinter::saveDXF(ViewProviderPage* vpPage, const std::string& inFileNam
 
     auto filespec = Base::Tools::escapeEncodeFilename(inFileName);
     filespec = DU::cleanFilespecBackslash(filespec);
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
+    vpPage->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
     Gui::Command::doCommand(Gui::Command::Doc, "import TechDraw");
     Gui::Command::doCommand(Gui::Command::Doc,
                             "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")",
                             PageName.c_str(),
                             filespec.c_str());
-    Gui::Command::commitCommand();
+    vpPage->getDocument()->commitCommand();
 }
 
 // this one is somewhat superfluous (just a redirect).
@@ -437,11 +457,12 @@ void PagePrinter::savePDF(ViewProviderPage* vpPage, const std::string& file)
 }
 
 
-PaperAttributes::PaperAttributes()
+PaperAttributes::PaperAttributes() :
+    m_orientation(QPageLayout::Orientation::Landscape),
+    m_paperSizeId(QPageSize::A4),
+    m_pagewidth(A4Heightmm),
+    m_pageheight(A4Widthmm)
 {
     // set default values to A4 Landscape
-    m_orientation = QPageLayout::Orientation::Landscape;
-    m_paperSize = QPageSize::A4;
-    m_pagewidth = A4Heightmm;
-    m_pageheight = A4Widthmm;
 }
+

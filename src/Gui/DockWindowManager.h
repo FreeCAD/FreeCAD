@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWINDOWMANAGER_H
-#define GUI_DOCKWINDOWMANAGER_H
+#pragma once
 
 #include <QObject>
 #include <Base/Bitmask.h>
@@ -30,7 +29,8 @@
 class QDockWidget;
 class QWidget;
 
-namespace Gui {
+namespace Gui
+{
 
 enum class DockWindowOption
 {
@@ -44,7 +44,8 @@ enum class DockWindowOption
 
 using DockWindowOptions = Base::Flags<DockWindowOption>;
 
-struct DockWindowItem {
+struct DockWindowItem
+{
     QString name;
     Qt::DockWidgetArea pos;
     bool visibility;
@@ -71,7 +72,7 @@ private:
  * Class that manages the widgets inside a QDockWidget.
  * \author Werner Mayer
  */
-class GuiExport DockWindowManager : public QObject
+class GuiExport DockWindowManager: public QObject
 {
     Q_OBJECT
 
@@ -86,8 +87,11 @@ public:
     void setup(DockWindowItems*);
 
     /// Adds a QDockWidget to the main window and sets \a widget as its widget
-    QDockWidget* addDockWindow(const char* name, QWidget* widget,
-                 Qt::DockWidgetArea pos = Qt::AllDockWidgetAreas);
+    QDockWidget* addDockWindow(
+        const char* name,
+        QWidget* widget,
+        Qt::DockWidgetArea pos = Qt::AllDockWidgetAreas
+    );
     /// Removes and destroys the QDockWidget and returns the widget
     /// with name \a name added with @ref addDockWindow.
     QWidget* removeDockWindow(const char* name);
@@ -113,13 +117,13 @@ public:
     bool isOverlayActivated() const;
 
 private Q_SLOTS:
-   /**
-    * \internal
-    */
+    /**
+     * \internal
+     */
     void onDockWidgetDestroyed(QObject*);
-   /**
-    * \internal
-    */
+    /**
+     * \internal
+     */
     void onWidgetDestroyed(QObject*);
 
 private:
@@ -133,8 +137,6 @@ private:
     struct DockWindowManagerP* d;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::DockWindowOption)
-
-#endif // GUI_DOCKWINDOWMANAGER_H

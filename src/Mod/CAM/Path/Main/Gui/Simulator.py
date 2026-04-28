@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
 # *                                                                         *
@@ -259,7 +261,7 @@ class PathSimulation:
             if self.skipStep:
                 self.curpos = self.RapidMove(cmd, self.curpos)
             else:
-                (pathSolid, self.curpos) = self.GetPathSolid(self.tool, cmd, self.curpos)
+                pathSolid, self.curpos = self.GetPathSolid(self.tool, cmd, self.curpos)
 
         if cmd.Name == "G80":
             self.firstDrill = True

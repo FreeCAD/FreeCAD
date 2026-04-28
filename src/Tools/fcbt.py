@@ -1,4 +1,6 @@
 #!python
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 #  FreeCAD Build Tool
 # (c) 2004 Juergen Riegel
 

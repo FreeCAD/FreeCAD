@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMCS_H
-#define PARTDESIGN_DATUMCS_H
+#pragma once
 
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -30,7 +31,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport CoordinateSystem : public Part::Datum
+class PartDesignExport CoordinateSystem: public Part::Datum
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::CoordinateSystem);
 
@@ -38,7 +39,8 @@ public:
     CoordinateSystem();
     ~CoordinateSystem() override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderDatumCoordinateSystem";
     }
 
@@ -46,11 +48,13 @@ public:
     Base::Vector3d getYAxis();
     Base::Vector3d getZAxis();
 
-    App::DocumentObject *getSubObject(const char *subname,
-        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
+    App::DocumentObject* getSubObject(
+        const char* subname,
+        PyObject** pyObj,
+        Base::Matrix4D* pmat,
+        bool transform,
+        int depth
+    ) const override;
 };
 
-} //namespace PartDesign
-
-
-#endif // PARTDESIGN_DATUMCS_H
+}  // namespace PartDesign

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /*****************************************************************************
  *  \author
  *  	Erwin Aertbelien, Div. PMA, Dep. of Mech. Eng., K.U.Leuven
@@ -13,8 +15,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef TRAJECTORY_STATIONARY_H
-#define TRAJECTORY_STATIONARY_H
+#pragma once
 
 #include "trajectory.hpp"
 
@@ -68,5 +69,3 @@ namespace KDL {
 
 
 }
-
-#endif

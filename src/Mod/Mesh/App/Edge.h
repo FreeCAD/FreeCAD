@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_EDGE_H
-#define MESH_EDGE_H
+#pragma once
 
 #include <Base/Handle.h>
 
@@ -61,6 +62,3 @@ public:
 };
 
 }  // namespace Mesh
-
-
-#endif  // MESH_EDGE_H

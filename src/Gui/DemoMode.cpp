@@ -93,8 +93,9 @@ void DemoMode::reset()
     if (view) {
         view->getViewer()->stopAnimating();
     }
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     hGrp->Notify("UseNavigationAnimations");
 }
 
@@ -193,14 +194,13 @@ void DemoMode::onAngleSliderValueChanged(int v)
 void DemoMode::reorientCamera(SoCamera* cam, const SbRotation& rot)
 {
     // Find global coordinates of focal point.
-    SbVec3f direction;
-    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-    SbVec3f focalpoint = cam->position.getValue() + cam->focalDistance.getValue() * direction;
+    SbVec3f focalpoint = activeView()->getViewer()->getFocalPoint();
 
     // Set new orientation value by accumulating the new rotation.
     cam->orientation = rot * cam->orientation.getValue();
 
     // Reposition camera so we are still pointing at the same old focal point.
+    SbVec3f direction;
     cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
     cam->position = focalpoint - cam->focalDistance.getValue() * direction;
 }
@@ -276,8 +276,7 @@ void DemoMode::onAutoPlay()
 
 void DemoMode::startAnimation(Gui::View3DInventor* view)
 {
-    view->getViewer()->startSpinningAnimation(getDirection(view),
-                                              getSpeed(ui->speedSlider->value()));
+    view->getViewer()->startSpinningAnimation(getDirection(view), getSpeed(ui->speedSlider->value()));
 }
 
 void DemoMode::onTimerCheckToggled(bool on)

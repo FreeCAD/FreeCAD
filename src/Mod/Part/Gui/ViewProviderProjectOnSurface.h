@@ -23,18 +23,18 @@
  **************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPROJECTONSURFACE_H
-#define PARTGUI_VIEWPROVIDERPROJECTONSURFACE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
 #include <Mod/Part/Gui/ViewProvider.h>
 
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderProjectOnSurface : public ViewProviderPart
+class PartGuiExport ViewProviderProjectOnSurface: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderProjectOnSurface);
 
@@ -49,8 +49,4 @@ public:
     void unsetEdit(int ModNum) override;
 };
 
-} // namespace PartGui
-
-
-#endif // PARTGUI_VIEWPROVIDERPROJECTONSURFACE_H
-
+}  // namespace PartGui

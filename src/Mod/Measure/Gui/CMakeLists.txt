@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(MeasureGui_LIBS
     Measure
     #Part
@@ -19,6 +21,7 @@ qt_add_resources(MeasureGui_SRCS Resources/Measure.qrc ${Measure_TR_QRC})
 
 SET(MeasureGui_UIC_SRCS
     DlgPrefsMeasureAppearanceImp.ui
+    TaskMassProperties.ui
 )
 
 generate_from_py(QuickMeasure)
@@ -36,12 +39,19 @@ SET(MeasureGui_SRCS
     QuickMeasure.h
     TaskMeasure.cpp
     TaskMeasure.h
+    TaskMassProperties.ui
+    TaskMassProperties.cpp
+    TaskMassProperties.h
     ViewProviderMeasureBase.cpp
     ViewProviderMeasureBase.h
     ViewProviderMeasureAngle.cpp
     ViewProviderMeasureAngle.h
     ViewProviderMeasureDistance.cpp
     ViewProviderMeasureDistance.h
+    SoScreenSpaceScale.cpp
+    SoScreenSpaceScale.h
+    ViewProviderMassPropertiesResult.cpp
+    ViewProviderMassPropertiesResult.h
     DlgPrefsMeasureAppearanceImp.ui
     DlgPrefsMeasureAppearanceImp.cpp
     DlgPrefsMeasureAppearanceImp.h

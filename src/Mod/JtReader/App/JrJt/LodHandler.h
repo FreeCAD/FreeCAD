@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef LodHandler_HEADER
-#define LodHandler_HEADER
+#pragma once
 
 
 class LodHandler
@@ -29,6 +30,3 @@ class LodHandler
 public:
     virtual void startLod() {};
 };
-
-
-#endif

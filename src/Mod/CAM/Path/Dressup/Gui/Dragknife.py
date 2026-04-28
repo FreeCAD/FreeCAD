@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -25,6 +27,7 @@ import Path.Base.Gui.Util as PathGuiUtil
 from PySide import QtCore
 import math
 import PathScripts.PathUtils as PathUtils
+import Path.Dressup.Utils as PathDressup
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
@@ -85,6 +88,10 @@ class ObjectDressup:
 
     def loads(self, state):
         return None
+
+    def onChanged(self, obj, prop):
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def shortcut(self, queue):
         """Determines whether its shorter to twist CW or CCW to align with
@@ -571,6 +578,12 @@ class ViewProviderDressup:
             arg1.Object.Base = None
         return True
 
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.Object), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
+
 
 class CommandDressupDragknife:
     def GetResources(self):
@@ -584,30 +597,12 @@ class CommandDressupDragknife:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        return bool(PathDressup.selection())
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "Select one toolpath object") + "\n"
-            )
-            return
-        if not selection[0].isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "The selected object is not a toolpath") + "\n"
-            )
-            return
-        if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "Select a toolpath object")
-            )
+        op = PathDressup.selection(verbose=True)
+        if not op:
             return
 
         # everything ok!
@@ -618,7 +613,7 @@ class CommandDressupDragknife:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","DragknifeDressup")'
         )
         FreeCADGui.doCommand("Path.Dressup.Gui.Dragknife.ObjectDressup(obj)")
-        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + op.Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")

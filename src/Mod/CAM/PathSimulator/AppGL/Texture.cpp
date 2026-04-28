@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -21,10 +23,13 @@
  ***************************************************************************/
 
 #include "Texture.h"
-#include "GlUtils.h"
 
-namespace MillSim
+// include this last as the defines can mess up other includes
+#include "OpenGlWrapper.h"
+
+namespace CAMSimulator
 {
+
 Texture::~Texture()
 {
     DestroyTexture();
@@ -64,4 +69,4 @@ bool Texture::unbind()
     return true;
 }
 
-}  // namespace MillSim
+}  // namespace CAMSimulator

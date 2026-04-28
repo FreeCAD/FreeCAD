@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *   Copyright (c) 2023 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MeasureGui_DlgPrefsAppearanceImp_H
-#define MeasureGui_DlgPrefsAppearanceImp_H
+#pragma once
 
 #include <memory>
 
@@ -51,5 +52,3 @@ private:
 };
 
 }  // namespace MeasureGui
-
-#endif  // MeasureGui_DlgPrefsAppearanceImp_H

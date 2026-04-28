@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_TRIM_H
-#define MATERIAL_TRIM_H
+#pragma once
 
 #include <algorithm>
 #include <string>
@@ -77,5 +78,3 @@ static inline std::string trim_copy(std::string s)
 }
 
 }  // namespace Materials
-
-#endif  // MATERIAL_TRIM_H

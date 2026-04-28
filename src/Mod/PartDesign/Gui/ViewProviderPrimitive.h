@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,14 +23,14 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPrimitive_H
-#define PARTGUI_ViewProviderPrimitive_H
+#pragma once
 
 #include "ViewProvider.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderPrimitive : public ViewProvider
+class PartDesignGuiExport ViewProviderPrimitive: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPrimitive);
 
@@ -42,12 +44,9 @@ protected:
     QIcon getIcon() const override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
-    TaskDlgFeatureParameters *getEditDialog() override;
+    TaskDlgFeatureParameters* getEditDialog() override;
 
-    std::string                 displayMode;
+    std::string displayMode;
 };
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderBoolean_H
+}  // namespace PartDesignGui

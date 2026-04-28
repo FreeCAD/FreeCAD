@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2020 Carlo Pavan <carlopav@gmail.com>                             *
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
@@ -80,6 +82,7 @@ can have other properties like `App::PropertyPlacement`,
 or which can interact with the 3D view through Coin,
 can be based on the simple `App::FeaturePython` object.
 """
+
 ## \defgroup draftmake draftmake
 # \ingroup DRAFT
 # \brief Modules with functions to create the custom scripted objects.

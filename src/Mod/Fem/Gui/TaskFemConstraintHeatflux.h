@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintHeatflux_H
-#define GUI_TASKVIEW_TaskFemConstraintHeatflux_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -42,8 +41,10 @@ class TaskFemConstraintHeatflux: public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux* ConstraintView,
-                                       QWidget* parent = nullptr);
+    explicit TaskFemConstraintHeatflux(
+        ViewProviderFemConstraintHeatflux* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintHeatflux() override;
     std::string getAmbientTemp() const;
     /*double getFaceTemp(void) const;*/
@@ -86,5 +87,3 @@ public:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintHeatflux_H

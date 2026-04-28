@@ -21,37 +21,35 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WHATSTHIS_H
-#define GUI_WHATSTHIS_H
+#pragma once
 
 #include <QString>
 #include "Command.h"
 
-namespace Gui {
+namespace Gui
+{
 
 /**
  * @author Werner Mayer
  */
-class StdCmdDescription : public Command
+class StdCmdDescription: public Command
 {
 public:
-  StdCmdDescription();
-  ~StdCmdDescription() override;
+    StdCmdDescription();
+    ~StdCmdDescription() override;
 
-  static bool inDescriptionMode();
-  static void enterDescriptionMode();
-  static void leaveDescriptionMode();
+    static bool inDescriptionMode();
+    static void enterDescriptionMode();
+    static void leaveDescriptionMode();
 
-  static void setSource( const QString& );
+    static void setSource(const QString&);
 
 protected:
-  Action* createAction() override;
-  void activated(int iMsg) override;
+    Action* createAction() override;
+    void activated(int iMsg) override;
 
 private:
-  static bool _descrMode;
+    static bool _descrMode;
 };
 
-} // namespace Gui
-
-#endif // GUI_WHATSTHIS_H
+}  // namespace Gui

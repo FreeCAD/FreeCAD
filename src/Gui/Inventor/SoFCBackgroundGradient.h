@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCBACKGROUNDGRADIENT_H
-#define GUI_SOFCBACKGROUNDGRADIENT_H
+#pragma once
 
 #include <Inventor/SbColor.h>
 #include <Inventor/nodes/SoNode.h>
@@ -32,15 +33,18 @@
 class SbColor;
 class SoGLRenderAction;
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport SoFCBackgroundGradient : public SoNode {
+class GuiExport SoFCBackgroundGradient: public SoNode
+{
     using inherited = SoNode;
 
     SO_NODE_HEADER(Gui::SoFCBackgroundGradient);
 
 public:
-    enum Gradient {
+    enum Gradient
+    {
         LINEAR = 0,
         RADIAL = 1
     };
@@ -48,14 +52,11 @@ public:
     static void finish();
     SoFCBackgroundGradient();
 
-    void GLRender (SoGLRenderAction *action) override;
+    void GLRender(SoGLRenderAction* action) override;
     void setGradient(Gradient grad);
     Gradient getGradient() const;
-    void setColorGradient(const SbColor& fromColor,
-                          const SbColor& toColor);
-    void setColorGradient(const SbColor& fromColor,
-                          const SbColor& toColor,
-                          const SbColor& midColor);
+    void setColorGradient(const SbColor& fromColor, const SbColor& toColor);
+    void setColorGradient(const SbColor& fromColor, const SbColor& toColor, const SbColor& midColor);
 
 private:
     Gradient gradient;
@@ -66,8 +67,4 @@ protected:
     SbColor fCol, tCol, mCol;
 };
 
-} // namespace Gui
-
-
-#endif // GUI_SOFCBACKGROUNDGRADIENT_H
-
+}  // namespace Gui

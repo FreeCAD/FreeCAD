@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *   Reimplemented as dressup in 2025  phaseloop <phaseloop@protonmail.com *
@@ -164,6 +166,8 @@ class DressupArray:
     def onChanged(self, obj, prop):
         if prop == "Type":
             self.setEditorModes(obj)
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""

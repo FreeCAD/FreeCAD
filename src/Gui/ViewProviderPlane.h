@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ViewProviderPlane_H
-#define GUI_ViewProviderPlane_H
+#pragma once
 
 #include "ViewProviderDatum.h"
 
@@ -39,15 +38,16 @@ class SoCoordinate3;
 namespace Gui
 {
 
-class GuiExport ViewProviderPlane : public ViewProviderDatum, public SelectionObserver
+class GuiExport ViewProviderPlane: public ViewProviderDatum, public SelectionObserver
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPlane);
+
 public:
     /// Constructor
     ViewProviderPlane();
     ~ViewProviderPlane() override;
 
-    void attach (App::DocumentObject*) override;
+    void attach(App::DocumentObject*) override;
 
     unsigned long getColor(const std::string& role) const;
     std::string getRole() const;
@@ -59,8 +59,8 @@ public:
 private:
     void updatePlaneSize();
 
-    bool isHovered { false };
-    bool isSelected { false };
+    bool isHovered {false};
+    bool isSelected {false};
 
     CoinPtr<SoSwitch> labelSwitch;
     CoinPtr<SoAsciiText> pLabel;
@@ -70,7 +70,4 @@ private:
     ParamHandlers handlers;
 };
 
-} //namespace Gui
-
-
-#endif // GUI_ViewProviderPlane_H
+}  // namespace Gui

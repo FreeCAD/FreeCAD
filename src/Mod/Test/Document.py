@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
-import FreeCAD, os, unittest, tempfile
+import FreeCAD, os, unittest, tempfile, zipfile
 from FreeCAD import Base
 import math
 import xml.etree.ElementTree as ET
@@ -74,6 +74,23 @@ class DocumentBasicCases(unittest.TestCase):
         doc = self.saveAndRestore()
         FreeCAD.closeDocument(doc.Name)
         self.Doc = FreeCAD.newDocument("CreateTest")
+
+    def testIssue24571(self):
+        obj = self.Doc.addObject("App::FeatureTest", "Object")
+        obj.ConstraintInt = (50, 0, 100, 1)
+        obj.ConstraintFloat = (50.0, 0.0, 100.0, 1.0)
+        self.Doc = self.saveAndRestore()
+        obj = self.Doc.getObject("Object")
+        # int
+        obj.ConstraintInt = -1
+        self.assertEqual(obj.ConstraintInt, 0)
+        obj.ConstraintInt = 101
+        self.assertEqual(obj.ConstraintInt, 100)
+        # float
+        obj.ConstraintFloat = -1.0
+        self.assertEqual(obj.ConstraintFloat, 0.0)
+        obj.ConstraintFloat = 101.0
+        self.assertEqual(obj.ConstraintFloat, 100.0)
 
     def testAccessByNameOrID(self):
         obj = self.Doc.addObject("App::DocumentObject", "MyName")
@@ -682,50 +699,6 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument("CreateTest")
 
 
-class DocumentImportCases(unittest.TestCase):
-    def testDXFImportCPPIssue20195(self):
-        if "BUILD_DRAFT" in FreeCAD.__cmake__:
-            import importDXF
-            from draftutils import params
-
-            # Set options, doing our best to restore them:
-            wasShowDialog = params.get_param("dxfShowDialog")
-            wasUseLayers = params.get_param("dxfUseDraftVisGroups")
-            wasUseLegacyImporter = params.get_param("dxfUseLegacyImporter")
-            wasCreatePart = params.get_param("dxfCreatePart")
-            wasCreateDraft = params.get_param("dxfCreateDraft")
-            wasCreateSketch = params.get_param("dxfCreateSketch")
-
-            try:
-                # disable Preferences dialog in gui mode (avoids popup prompt to user)
-                params.set_param("dxfShowDialog", False)
-                # Preserve the DXF layers (makes the checking of document contents easier)
-                params.set_param("dxfUseDraftVisGroups", True)
-                # Use the new C++ importer -- that's where the bug was
-                params.set_param("dxfUseLegacyImporter", False)
-                # create simple part shapes (3 params)
-                # This is required to display the bug because creation of Draft objects clears out the
-                # pending exception this test is looking for, whereas creation of the simple shape object
-                # actually throws on the pending exception so the entity is absent from the document.
-                params.set_param("dxfCreatePart", True)
-                params.set_param("dxfCreateDraft", False)
-                params.set_param("dxfCreateSketch", False)
-                importDXF.insert(
-                    FreeCAD.getHomePath() + "Mod/Test/TestData/DXFSample.dxf", "ImportedDocName"
-                )
-            finally:
-                params.set_param("dxfShowDialog", wasShowDialog)
-                params.set_param("dxfUseDraftVisGroups", wasUseLayers)
-                params.set_param("dxfUseLegacyImporter", wasUseLegacyImporter)
-                params.set_param("dxfCreatePart", wasCreatePart)
-                params.set_param("dxfCreateDraft", wasCreateDraft)
-                params.set_param("dxfCreateSketch", wasCreateSketch)
-            doc = FreeCAD.getDocument("ImportedDocName")
-            # This doc should have 3 objects: The Layers container, the DXF layer called 0, and one Line
-            self.assertEqual(len(doc.Objects), 3)
-            FreeCAD.closeDocument("ImportedDocName")
-
-
 # class must be defined in global scope to allow it to be reloaded on document open
 class SaveRestoreSpecialGroup:
     def __init__(self, obj):
@@ -865,6 +838,66 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("SaveRestoreTests")
+
+
+class DocumentRecoveryCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("RecoveryTests")
+        self.Obj = self.Doc.addObject("App::FeatureTest", "RecoveryObject")
+        self.savedFileName = None
+
+    def tearDown(self):
+        if FreeCAD.getDocument("RecoveryTests") is not None:
+            FreeCAD.closeDocument("RecoveryTests")
+        if self.savedFileName and os.path.exists(self.savedFileName):
+            os.remove(self.savedFileName)
+
+    def testWriteCompressedRecoverySnapshot(self):
+        self.assertTrue(self.Doc.canWriteRecoverySnapshot())
+        self.assertTrue(FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc))
+
+        metadata = os.path.join(self.Doc.TransientDir, "fc_recovery_file.xml")
+        archive = os.path.join(self.Doc.TransientDir, "fc_recovery_file.fcstd")
+
+        self.assertTrue(os.path.isfile(metadata))
+        self.assertTrue(os.path.isfile(archive))
+
+        root = ET.parse(metadata).getroot()
+        self.assertEqual(root.tag, "AutoRecovery")
+
+        with zipfile.ZipFile(archive) as recovery:
+            self.assertIn("Document.xml", recovery.namelist())
+
+    def testWriteUncompressedRecoverySnapshot(self):
+        self.assertTrue(FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc, compressed=False))
+
+        metadata = os.path.join(self.Doc.TransientDir, "fc_recovery_file.xml")
+        document_xml = os.path.join(self.Doc.TransientDir, "fc_recovery_files", "Document.xml")
+
+        self.assertTrue(os.path.isfile(metadata))
+        self.assertTrue(os.path.isfile(document_xml))
+
+    def testRecoveryMetadataEscapesXml(self):
+        self.Doc.Label = 'Recovery <Label> & "Name"'
+        self.savedFileName = os.path.join(tempfile.gettempdir(), "Recovery&Name.FCStd")
+        self.Doc.saveAs(self.savedFileName)
+
+        self.assertTrue(FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc))
+
+        metadata = os.path.join(self.Doc.TransientDir, "fc_recovery_file.xml")
+        root = ET.parse(metadata).getroot()
+
+        self.assertEqual(root.findtext("Label"), self.Doc.Label)
+        self.assertEqual(root.findtext("FileName"), self.savedFileName)
+
+    def testRejectRecoverySnapshotDuringTransaction(self):
+        self.Doc.openTransaction("RecoveryWrite")
+        try:
+            self.assertFalse(self.Doc.canWriteRecoverySnapshot())
+            with self.assertRaises(RuntimeError):
+                FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc)
+        finally:
+            self.Doc.abortTransaction()
 
 
 class DocumentRecomputeCases(unittest.TestCase):
@@ -1467,6 +1500,22 @@ class DocumentGroupCases(unittest.TestCase):
             self.fail("Exception is expected")
 
         self.Doc.recompute()
+
+    def testContainerChainGroupInPart(self):
+        # ContainerChain must not raise when a plain group is nested inside a GeoFeatureGroup
+        from Show.Containers import ContainerChain
+
+        part = self.Doc.addObject("App::Part", "Part")
+        group = self.Doc.addObject("App::DocumentObjectGroup", "Group")
+        obj = self.Doc.addObject("App::FeatureTest", "Obj")
+        part.addObject(group)
+        group.addObject(obj)
+        self.Doc.recompute()
+
+        chain = ContainerChain(obj)
+        objects_in_chain = [c for c in chain if not c.isDerivedFrom("App::Document")]
+        self.assertIn(part, objects_in_chain)
+        self.assertIn(group, objects_in_chain)
 
     def testIssue0003150Part2(self):
         self.box = self.Doc.addObject("App::FeatureTest")
@@ -2718,3 +2767,49 @@ class DocumentAutoCreatedCases(unittest.TestCase):
             FreeCAD.closeDocument("TestDoc")
         self.assertIn("TestDoc", FreeCAD.listDocuments())
         self.assertIn("SavedDoc", FreeCAD.listDocuments())
+
+
+# Test if actions done on two documents are undone together
+# (working toward making this test pass)
+class MultiDocumentUndo(unittest.TestCase):
+    def setUp(self):
+        self.Doc1 = FreeCAD.newDocument("Doc1")
+        self.Doc2 = FreeCAD.newDocument("Doc2")
+        self.Doc1.UndoMode = 1
+        self.Doc2.UndoMode = 1
+
+    def testAddObjects(self):
+        self.Doc1.openTransaction("transact1")
+        self.Doc2.openTransaction("transact2")
+
+        obj1 = self.Doc1.addObject("App::DocumentObject", "Obj1Name")
+        obj2 = self.Doc2.addObject("App::DocumentObject", "Obj2Name")
+
+        self.assertNotEqual(self.Doc1.getBookedTransactionID(), self.Doc2.getBookedTransactionID())
+
+        self.Doc1.commitTransaction()
+        self.Doc2.commitTransaction()
+
+        with self.assertRaises(TypeError):
+            self.Doc1.getObject([1])
+            self.Doc2.getObject([1])
+
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), obj1)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), obj2)
+
+        self.Doc1.undo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), None)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), obj2)
+
+        self.Doc2.undo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), None)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), None)
+
+        self.Doc1.redo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), obj1)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), None)
+
+    def tearDown(self):
+        # closing doc
+        FreeCAD.closeDocument("Doc1")
+        FreeCAD.closeDocument("Doc2")

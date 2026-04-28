@@ -64,7 +64,7 @@
 
 #include "TaskPostBoxes.h"
 #ifdef FC_USE_VTK_PYTHON
-#include "TaskPostExtraction.h"
+# include "TaskPostExtraction.h"
 #endif
 #include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostObject.h"
@@ -75,11 +75,7 @@
 using namespace FemGui;
 namespace sp = std::placeholders;
 
-#ifdef VTK_CELL_ARRAY_V2
 using vtkIdTypePtr = const vtkIdType*;
-#else
-using vtkIdTypePtr = vtkIdType*;
-#endif
 
 // ----------------------------------------------------------------------------
 
@@ -126,7 +122,8 @@ private:
     {
         // NOLINTBEGIN
         this->connectSelection = Gui::Selection().signalSelectionChanged.connect(
-            std::bind(&FemPostObjectSelectionObserver::selectionChanged, this, sp::_1));
+            std::bind(&FemPostObjectSelectionObserver::selectionChanged, this, sp::_1)
+        );
         // NOLINTEND
     }
 
@@ -138,7 +135,7 @@ public:
 
 private:
     std::set<ViewProviderFemPostObject*> views;
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectSelection;
 };
 
@@ -153,31 +150,36 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObje
 ViewProviderFemPostObject::ViewProviderFemPostObject()
 {
     // initialize the properties
-    ADD_PROPERTY_TYPE(Field,
-                      ((long)0),
-                      "Coloring",
-                      App::Prop_None,
-                      "Select the field used for calculating the color");
-    ADD_PROPERTY_TYPE(Component,
-                      ((long)0),
-                      "Coloring",
-                      App::Prop_None,
-                      "Select component to display");
-    ADD_PROPERTY_TYPE(Transparency,
-                      (0),
-                      "Object Style",
-                      App::Prop_None,
-                      "Set object transparency.");
-    ADD_PROPERTY_TYPE(EdgeColor,
-                      (0.0f, 0.0f, 0.0f),
-                      "Object Style",
-                      App::Prop_None,
-                      "Set wireframe line color.");
-    ADD_PROPERTY_TYPE(PlainColorEdgeOnSurface,
-                      (false),
-                      "Object Style",
-                      App::Prop_None,
-                      "Use plain color for edges on surface.");
+    ADD_PROPERTY_TYPE(
+        Field,
+        ((long)0),
+        "Coloring",
+        App::Prop_None,
+        "Select the field used for calculating the color"
+    );
+    ADD_PROPERTY_TYPE(Component, ((long)0), "Coloring", App::Prop_None, "Select component to display");
+    ADD_PROPERTY_TYPE(Transparency, (0), "Object Style", App::Prop_None, "Set object transparency.");
+    ADD_PROPERTY_TYPE(
+        EdgeColor,
+        (0.0f, 0.0f, 0.0f),
+        "Object Style",
+        App::Prop_None,
+        "Set wireframe line color."
+    );
+    ADD_PROPERTY_TYPE(
+        NoneFieldColor,
+        (0.8f, 0.8f, 0.8f),
+        "Object Style",
+        App::Prop_None,
+        "Shape color used if Field property is None."
+    );
+    ADD_PROPERTY_TYPE(
+        PlainColorEdgeOnSurface,
+        (false),
+        "Object Style",
+        App::Prop_None,
+        "Use plain color for edges on surface."
+    );
     ADD_PROPERTY_TYPE(LineWidth, (1), "Object Style", App::Prop_None, "Set wireframe line width.");
     ADD_PROPERTY_TYPE(PointSize, (3), "Object Style", App::Prop_None, "Set node point size.");
 
@@ -288,12 +290,14 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
         Base::Console().destructorError(
             "ViewProviderFemPostObject",
             "ViewProviderFemPostObject destructor threw an exception: %s\n",
-            e.what());
+            e.what()
+        );
     }
     catch (...) {
         Base::Console().destructorError(
             "ViewProviderFemPostObject",
-            "ViewProviderFemPostObject destructor threw an unknown exception");
+            "ViewProviderFemPostObject destructor threw an unknown exception"
+        );
     }
 }
 
@@ -331,8 +335,9 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
     m_separator->addChild(m_faces);
 
     // Check for an already existing color bar
-    Gui::SoFCColorBar* pcBar =
-        static_cast<Gui::SoFCColorBar*>(findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
+    Gui::SoFCColorBar* pcBar = static_cast<Gui::SoFCColorBar*>(
+        findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId())
+    );
     if (pcBar) {
         // Attach to the foreign color bar and delete our own bar
         pcBar->Attach(this);
@@ -434,14 +439,12 @@ void ViewProviderFemPostObject::updateProperties()
             colorArrays.push_back(FieldName);
         }
     }
+    // don't add cell data arrays until they are supported in the 3d view
+    // vtkCellData* cell = poly->GetCellData();
+    // for (int i = 0; i < cell->GetNumberOfArrays(); ++i) {
+    //    colorArrays.emplace_back(cell->GetArrayName(i));
+    //}
 
-    vtkCellData* cell = poly->GetCellData();
-    for (int i = 0; i < cell->GetNumberOfArrays(); ++i) {
-        colorArrays.emplace_back(cell->GetArrayName(i));
-    }
-
-    App::Enumeration empty;
-    Field.setValue(empty);
     m_coloringEnum.setEnums(colorArrays);
     Field.setValue(m_coloringEnum);
 
@@ -497,7 +500,6 @@ void ViewProviderFemPostObject::updateProperties()
         }
     }
 
-    Component.setValue(empty);
     m_vectorEnum.setEnums(colorArrays);
     Component.setValue(m_vectorEnum);
 
@@ -614,9 +616,11 @@ void ViewProviderFemPostObject::update3D()
     }
 }
 
-void ViewProviderFemPostObject::WritePointData(vtkPoints* points,
-                                               vtkDataArray* normals,
-                                               vtkDataArray* tcoords)
+void ViewProviderFemPostObject::WritePointData(
+    vtkPoints* points,
+    vtkDataArray* normals,
+    vtkDataArray* tcoords
+)
 {
     Q_UNUSED(tcoords);
 
@@ -688,7 +692,8 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
     }
 
     if (Field.getEnumVector().empty() || Field.getValue() == 0) {
-        m_material->diffuseColor.setValue(SbColor(0.8, 0.8, 0.8));
+        Base::Color cNone = NoneFieldColor.getValue();
+        m_material->diffuseColor.setValue(SbColor(cNone.r, cNone.g, cNone.b));
         float trans = Base::fromPercent(Transparency.getValue());
         m_material->transparency.setValue(trans);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
@@ -866,6 +871,9 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
         int child = plainColor ? 1 : 0;
         m_switchMatEdges->whichChild.setValue(child);
     }
+    else if (prop == &NoneFieldColor) {
+        WriteColorData(ResetColorBarRange);
+    }
 
     ViewProviderDocumentObject::onChanged(prop);
 }
@@ -1036,9 +1044,11 @@ void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges& 
     }
 }
 
-void ViewProviderFemPostObject::handleChangedPropertyName(Base::XMLReader& reader,
-                                                          const char* typeName,
-                                                          const char* propName)
+void ViewProviderFemPostObject::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
 {
     if (strcmp(propName, "Field") == 0 && strcmp(typeName, "App::PropertyEnumeration") == 0) {
         App::PropertyEnumeration field;

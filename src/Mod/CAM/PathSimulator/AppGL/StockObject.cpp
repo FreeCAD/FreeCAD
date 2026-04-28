@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -21,10 +23,11 @@
  ***************************************************************************/
 
 #include "StockObject.h"
-#include "Shader.h"
 
 #define NUM_PROFILE_POINTS 4
-using namespace MillSim;
+
+namespace CAMSimulator
+{
 
 StockObject::StockObject()
 {}
@@ -43,3 +46,5 @@ void StockObject::GenerateBoxStock(float x, float y, float z, float l, float w, 
 
     shape.ExtrudeProfileLinear(mProfile, NUM_PROFILE_POINTS, x, x + l, 0, 0, true, true);
 }
+
+}  // namespace CAMSimulator

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef APP_SERVICE_PROVIDER_H
-#define APP_SERVICE_PROVIDER_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -130,12 +129,12 @@ public:
 
             std::list<T*> result(source.size());
 
-            std::transform(source.begin(),
-                           source.end(),
-                           result.begin(),
-                           [](const ServiceDescriptor& descriptor) {
-                               return descriptor.get<T>();
-                           });
+            std::transform(
+                source.begin(),
+                source.end(),
+                result.begin(),
+                [](const ServiceDescriptor& descriptor) { return descriptor.get<T>(); }
+            );
 
             return result;
         }
@@ -199,6 +198,3 @@ void registerServiceImplementation(T* implementation)
 }
 
 }  // namespace Base
-
-
-#endif  // APP_SERVICE_PROVIDER_H

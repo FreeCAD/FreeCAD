@@ -1,10 +1,13 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from Wire import Wire
 from Vertex import Vertex
 from TopoShape import TopoShape
 from typing import Final, Tuple, Dict, List, overload
-
 
 @export(
     Twin="TopoShape",
@@ -142,7 +145,7 @@ class TopoShapeEdge(TopoShape):
     """Returns the continuity"""
 
     @constmethod
-    def getParameterByLength(self, pos: float, tolerance: float = 1e-7) -> float:
+    def getParameterByLength(self, pos: float, tolerance: float = 1e-7, /) -> float:
         """
         Get the value of the primary parameter at the given distance along the cartesian length of the edge.
         getParameterByLength(pos, [tolerance = 1e-7]) -> Float
@@ -162,7 +165,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def tangentAt(self, paramval: float) -> Vector:
+    def tangentAt(self, paramval: float, /) -> Vector:
         """
         Get the tangent direction at the given primary parameter value along the Edge if it is defined
         tangentAt(paramval) -> Vector
@@ -200,7 +203,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def valueAt(self, paramval: float) -> Vector:
+    def valueAt(self, paramval: float, /) -> Vector:
         """
         Get the value of the cartesian parameter value at the given parameter value along the Edge
         valueAt(paramval) -> Vector
@@ -242,7 +245,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def parameters(self, face: object = ...) -> List[float]:
+    def parameters(self, face: object = ..., /) -> List[float]:
         """
         Get the list of parameters of the tessellation of an edge.
         parameters([face]) -> list
@@ -253,7 +256,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def parameterAt(self, vertex: object) -> float:
+    def parameterAt(self, vertex: object, /) -> float:
         """
         Get the parameter at the given vertex if lying on the edge
         parameterAt(Vertex) -> Float
@@ -261,7 +264,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def normalAt(self, paramval: float) -> Vector:
+    def normalAt(self, paramval: float, /) -> Vector:
         """
         Get the normal direction at the given parameter value along the Edge if it is defined
         normalAt(paramval) -> Vector
@@ -299,7 +302,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def derivative1At(self, paramval: float) -> Vector:
+    def derivative1At(self, paramval: float, /) -> Vector:
         """
         Get the first derivative at the given parameter value along the Edge if it is defined
         derivative1At(paramval) -> Vector
@@ -337,7 +340,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def derivative2At(self, paramval: float) -> Vector:
+    def derivative2At(self, paramval: float, /) -> Vector:
         """
         Get the second derivative at the given parameter value along the Edge if it is defined
         derivative2At(paramval) -> Vector
@@ -375,7 +378,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def derivative3At(self, paramval: float) -> Vector:
+    def derivative3At(self, paramval: float, /) -> Vector:
         """
         Get the third derivative at the given parameter value along the Edge if it is defined
         derivative3At(paramval) -> Vector
@@ -413,7 +416,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def curvatureAt(self, paramval: float) -> float:
+    def curvatureAt(self, paramval: float, /) -> float:
         """
         Get the curvature at the given parameter [First|Last] if defined
         curvatureAt(paramval) -> Float
@@ -421,7 +424,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def centerOfCurvatureAt(self, paramval: float) -> Vector:
+    def centerOfCurvatureAt(self, paramval: float, /) -> Vector:
         """
         Get the center of curvature at the given parameter [First|Last] if defined
         centerOfCurvatureAt(paramval) -> Vector
@@ -429,7 +432,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def firstVertex(self, Orientation: bool = False) -> Vertex:
+    def firstVertex(self, Orientation: bool = False, /) -> Vertex:
         """
         Returns the Vertex of orientation FORWARD in this edge.
         firstVertex([Orientation=False]) -> Vertex
@@ -440,7 +443,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def lastVertex(self, Orientation: bool = False) -> Vertex:
+    def lastVertex(self, Orientation: bool = False, /) -> Vertex:
         """
         Returns the Vertex of orientation REVERSED in this edge.
         lastVertex([Orientation=False]) -> Vertex
@@ -452,34 +455,27 @@ class TopoShapeEdge(TopoShape):
 
     @constmethod
     @overload
-    def discretize(
-        self, Number: int, First: float = ..., Last: float = ...
-    ) -> List[Vector]: ...
-
+    def discretize(self, Number: int, First: float = ..., Last: float = ...) -> List[Vector]: ...
     @constmethod
     @overload
     def discretize(
         self, QuasiNumber: int, First: float = ..., Last: float = ...
     ) -> List[Vector]: ...
-
     @constmethod
     @overload
     def discretize(
         self, Distance: float, First: float = ..., Last: float = ...
     ) -> List[Vector]: ...
-
     @constmethod
     @overload
     def discretize(
         self, Deflection: float, First: float = ..., Last: float = ...
     ) -> List[Vector]: ...
-
     @constmethod
     @overload
     def discretize(
         self, QuasiDeflection: float, First: float = ..., Last: float = ...
     ) -> List[Vector]: ...
-
     @constmethod
     @overload
     def discretize(
@@ -490,7 +486,6 @@ class TopoShapeEdge(TopoShape):
         First: float = ...,
         Last: float = ...,
     ) -> List[Vector]: ...
-
     @constmethod
     def discretize(self, **kwargs) -> List[Vector]:
         """
@@ -536,7 +531,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def split(self, paramval: float) -> Wire:
+    def split(self, paramval: float, /) -> Wire:
         """
         Splits the edge at the given parameter values and builds a wire out of it
         split(paramval) -> Wire
@@ -554,7 +549,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def isSeam(self, Face: object) -> bool:
+    def isSeam(self, Face: object, /) -> bool:
         """
         Checks whether the edge is a seam edge.
         isSeam(Face)
@@ -562,7 +557,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def curveOnSurface(self, idx: int) -> Tuple[object, object, object, float, float]:
+    def curveOnSurface(self, idx: int, /) -> Tuple[object, object, object, float, float]:
         """
         Returns the 2D curve, the surface, the placement and the parameter range of index idx.
         curveOnSurface(idx) -> None or tuple

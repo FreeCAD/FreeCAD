@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
 # *   Copyright (c) 2016 Eivind Kvedalen <eivind@kvedalen.name>             *
@@ -1870,6 +1872,15 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.getObject("Spreadsheet")
         self.assertEqual(sheet.getContents("A1"), "'36C")
         self.assertEqual(sheet.get("A1"), "36C")
+
+    def testDistantCell(self):
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        sheet.set("ZX12345", "5")
+        sheet.set("A1", "=ZX12345")
+
+        self.doc.recompute()
+
+        self.assertEqual(sheet.A1, 5)
 
     def testVectorFunctions(self):
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")

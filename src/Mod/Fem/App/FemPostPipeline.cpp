@@ -44,6 +44,7 @@
 #include <vtkInformationVector.h>
 
 #include <Base/Console.h>
+#include <Base/Reader.h>
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"
@@ -64,17 +65,15 @@ FemPostPipeline::FemPostPipeline()
 
     FemPostGroupExtension::initExtension(this);
 
-    ADD_PROPERTY_TYPE(Frame,
-                      (long(0)),
-                      "Pipeline",
-                      App::Prop_None,
-                      "The frame used to calculate the data in the pipeline processing (read only, "
-                      "set via pipeline object).");
-    ADD_PROPERTY_TYPE(MergeDuplicate,
-                      (false),
-                      "Pipeline",
-                      App::Prop_None,
-                      "Remove coindent elements.");
+    ADD_PROPERTY_TYPE(
+        Frame,
+        (long(0)),
+        "Pipeline",
+        App::Prop_None,
+        "The frame used to calculate the data in the pipeline processing (read only, "
+        "set via pipeline object)."
+    );
+    ADD_PROPERTY_TYPE(MergeDuplicate, (false), "Pipeline", App::Prop_None, "Remove coindent elements.");
 
     // create our source algorithm
     m_source_algorithm = vtkSmartPointer<vtkFemFrameSourceAlgorithm>::New();
@@ -130,10 +129,10 @@ bool FemPostPipeline::canRead(Base::FileInfo File)
 {
 
     // from FemResult only unstructural mesh is supported in femvtktoools.cpp
-    return File.hasExtension({"vtk", "vtp", "vts", "vtr", "vti", "vtu", "pvtu", "vtm"});
+    return File.hasExtension({"vtk", "vtp", "vts", "vtr", "vti", "vtu", "pvtu", "vtm", "pvd"});
 }
 
-vtkSmartPointer<vtkDataObject> FemPostPipeline::dataObjectFromFile(Base::FileInfo File)
+vtkSmartPointer<vtkDataObject> FemPostPipeline::dataObjectFromFile(const Base::FileInfo& File)
 {
     // checking on the file
     if (!File.isReadable()) {
@@ -164,8 +163,57 @@ vtkSmartPointer<vtkDataObject> FemPostPipeline::dataObjectFromFile(Base::FileInf
     else if (File.hasExtension("vtm")) {
         return readXMLFile<vtkXMLMultiBlockDataReader>(File.filePath());
     }
+    else if (File.hasExtension("pvd")) {
+        return readPVD(File);
+    }
 
     throw Base::FileException("Unknown extension");
+}
+
+vtkSmartPointer<vtkDataObject> FemPostPipeline::readPVD(const Base::FileInfo& file)
+{
+    std::string path = file.filePath();
+
+    std::ifstream ifstr(path, std::ios::in | std::ios::binary);
+    Base::XMLReader reader(path.c_str(), ifstr);
+    reader.readElement("DataSet");
+    std::map<double, std::string> values;
+    std::vector<std::string> files;
+    while (strcmp(reader.localName(), "DataSet") == 0) {
+        values.emplace(
+            std::make_pair(
+                reader.getAttribute<double>("timestep"),
+                reader.getAttribute<std::string>("file")
+            )
+        );
+        reader.readNextElement();
+    }
+
+    auto timeInfo = vtkSmartPointer<vtkStringArray>::New();
+    timeInfo->SetName("TimeInfo");
+    timeInfo->InsertNextValue("TimeStep");
+    // set unit to empty string
+    timeInfo->InsertNextValue("");
+
+    auto multiBlock = vtkSmartPointer<vtkMultiBlockDataSet>::New();
+    multiBlock->GetFieldData()->AddArray(timeInfo);
+
+    int i = 0;
+    std::string dir = file.dirPath();
+    for (auto v : values) {
+        Base::FileInfo fi(dir + "/" + v.second);
+        auto data = dataObjectFromFile(fi);
+        auto time = vtkSmartPointer<vtkFloatArray>::New();
+        time->SetName("TimeValue");
+        time->InsertNextValue(v.first);
+        data->GetFieldData()->AddArray(time);
+        data->GetFieldData()->AddArray(timeInfo);
+
+        multiBlock->SetBlock(i, data);
+        ++i;
+    }
+
+    return multiBlock;
 }
 
 void FemPostPipeline::read(Base::FileInfo File)
@@ -173,10 +221,12 @@ void FemPostPipeline::read(Base::FileInfo File)
     Data.setValue(dataObjectFromFile(File));
 }
 
-void FemPostPipeline::read(std::vector<Base::FileInfo>& files,
-                           std::vector<double>& values,
-                           Base::Unit unit,
-                           std::string& frame_type)
+void FemPostPipeline::read(
+    std::vector<Base::FileInfo>& files,
+    std::vector<double>& values,
+    Base::Unit unit,
+    std::string& frame_type
+)
 {
     if (files.size() != values.size()) {
         throw Base::ValueError("Result files and frame values have different length");
@@ -299,45 +349,7 @@ void FemPostPipeline::onChanged(const Property* prop)
         m_transform_filter->Update();
 
         // change the frame enum to correct values
-        std::string val;
-        if (Frame.hasEnums() && Frame.getValue() >= 0) {
-            val = Frame.getValueAsString();
-        }
-
-        std::vector<double> frames = m_source_algorithm->getFrameValues();
-        std::vector<std::string> frame_values;
-        if (frames.empty()) {
-            frame_values.push_back("No frames available");
-        }
-        else {
-            auto unit = getFrameUnit();
-            for (const double& frame : frames) {
-                auto quantity = Base::Quantity(frame, unit);
-                frame_values.push_back(quantity.getUserString());
-            }
-        }
-
-        App::Enumeration empty;
-        m_block_property = true;
-        Frame.setValue(empty);
-        m_frameEnum.setEnums(frame_values);
-        Frame.setValue(m_frameEnum);
-        Frame.purgeTouched();
-        m_block_property = false;
-
-        std::vector<std::string>::iterator it =
-            std::find(frame_values.begin(), frame_values.end(), val);
-        if (!val.empty() && it != frame_values.end()) {
-            // frame stays the same
-            m_block_property = true;
-            Frame.setValue(val.c_str());
-            m_block_property = false;
-        }
-        else {
-            // frame gets updated
-            Frame.setValue(long(0));
-        }
-
+        updateFrameValues();
         updateData();
         recomputeChildren();
     }
@@ -382,18 +394,19 @@ void FemPostPipeline::onChanged(const Property* prop)
             // case an old document is loaded with "custom" mode, idx 2)
             if (Mode.getValue() == Fem::PostGroupMode::Parallel) {
                 // parallel: all filters get out input
-                nextFilter->getFilterInput()->SetInputConnection(
-                    m_transform_filter->GetOutputPort(0));
+                nextFilter->getFilterInput()->SetInputConnection(m_transform_filter->GetOutputPort(0));
             }
             else {
                 // serial: the next filter gets the previous output, the first one gets our input
                 if (!filter) {
                     nextFilter->getFilterInput()->SetInputConnection(
-                        m_transform_filter->GetOutputPort(0));
+                        m_transform_filter->GetOutputPort(0)
+                    );
                 }
                 else {
                     nextFilter->getFilterInput()->SetInputConnection(
-                        filter->getFilterOutput()->GetOutputPort());
+                        filter->getFilterOutput()->GetOutputPort()
+                    );
                 }
             }
 
@@ -438,6 +451,47 @@ void FemPostPipeline::filterPipelineChanged(FemPostFilter*)
     // As we are cheap we just reconnect everything
     // TODO: Do more efficiently
     onChanged(&Group);
+}
+
+void FemPostPipeline::updateFrameValues()
+{
+    std::string val;
+    if (Frame.hasEnums() && Frame.getValue() >= 0) {
+        val = Frame.getValueAsString();
+    }
+
+    std::vector<double> frames = m_source_algorithm->getFrameValues();
+    std::vector<std::string> frame_values;
+    if (frames.empty()) {
+        frame_values.push_back("No frames available");
+    }
+    else {
+        auto unit = getFrameUnit();
+        for (const double& frame : frames) {
+            auto quantity = Base::Quantity(frame, unit);
+            frame_values.push_back(quantity.getUserString());
+        }
+    }
+
+    App::Enumeration empty;
+    m_block_property = true;
+    Frame.setValue(empty);
+    m_frameEnum.setEnums(frame_values);
+    Frame.setValue(m_frameEnum);
+    Frame.purgeTouched();
+    m_block_property = false;
+
+    std::vector<std::string>::iterator it = std::find(frame_values.begin(), frame_values.end(), val);
+    if (!val.empty() && it != frame_values.end()) {
+        // frame stays the same
+        m_block_property = true;
+        Frame.setValue(val.c_str());
+        m_block_property = false;
+    }
+    else {
+        // frame gets updated
+        Frame.setValue(long(0));
+    }
 }
 
 bool FemPostPipeline::hasFrames()
@@ -496,6 +550,41 @@ Base::Unit FemPostPipeline::getFrameUnit()
     return qty.getUnit();
 }
 
+void FemPostPipeline::setTimeInfo(const std::string& frameType, const Base::Unit& unit)
+{
+    vtkSmartPointer<vtkDataObject> data = Data.getValue();
+
+    // check if we have frame data
+    if (!data || !data->IsA("vtkMultiBlockDataSet")) {
+        return;
+    }
+
+    auto multiblock = vtkMultiBlockDataSet::SafeDownCast(data);
+    auto timeInfo = vtkSmartPointer<vtkStringArray>::New();
+    timeInfo->SetName("TimeInfo");
+    timeInfo->InsertNextValue(frameType);
+    timeInfo->InsertNextValue(unit.getString());
+
+    auto fd_block = multiblock->GetFieldData();
+    if (fd_block) {
+        // add time info to multiblock
+        fd_block->AddArray(timeInfo);
+        for (unsigned int i = 0; i < multiblock->GetNumberOfBlocks(); ++i) {
+            vtkDataObject* grid = multiblock->GetBlock(i);
+            if (!grid) {
+                continue;
+            }
+            auto fd_grid = grid->GetFieldData();
+            if (fd_grid) {
+                // add time info to each grid
+                fd_grid->AddArray(timeInfo);
+            }
+        }
+    }
+
+    updateFrameValues();
+}
+
 std::vector<double> FemPostPipeline::getFrameValues()
 {
     return m_source_algorithm->getFrameValues();
@@ -534,10 +623,12 @@ void FemPostPipeline::load(FemResultObject* res)
 // set multiple result objects as frames for one pipeline
 // Notes:
 //      1. values vector must contain growing value, smallest first
-void FemPostPipeline::load(std::vector<FemResultObject*>& res,
-                           std::vector<double>& values,
-                           Base::Unit unit,
-                           std::string& frame_type)
+void FemPostPipeline::load(
+    std::vector<FemResultObject*>& res,
+    std::vector<double>& values,
+    Base::Unit unit,
+    std::string& frame_type
+)
 {
 
     if (res.size() != values.size()) {
@@ -571,8 +662,7 @@ void FemPostPipeline::load(std::vector<FemResultObject*>& res,
         }
 
         // first copy the mesh over
-        const FemMesh& mesh =
-            static_cast<FemMeshObject*>(res[i]->Mesh.getValue())->FemMesh.getValue();
+        const FemMesh& mesh = static_cast<FemMeshObject*>(res[i]->Mesh.getValue())->FemMesh.getValue();
         vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
         FemVTKTools::exportVTKMesh(&mesh, grid);
 
@@ -594,9 +684,11 @@ void FemPostPipeline::load(std::vector<FemResultObject*>& res,
     Data.setValue(multiblock);
 }
 
-void FemPostPipeline::handleChangedPropertyName(Base::XMLReader& reader,
-                                                const char* typeName,
-                                                const char* propName)
+void FemPostPipeline::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
 {
     if (strcmp(propName, "Filter") == 0
         && Base::Type::fromName(typeName) == App::PropertyLinkList::getClassTypeId()) {
@@ -610,8 +702,10 @@ void FemPostPipeline::handleChangedPropertyName(Base::XMLReader& reader,
         group.insert(group.end(), group_filter.begin(), group_filter.end());
         Group.setValues(group);
     }
-    else if (strcmp(propName, "Functions") == 0
-             && Base::Type::fromName(typeName) == App::PropertyLink::getClassTypeId()) {
+    else if (
+        strcmp(propName, "Functions") == 0
+        && Base::Type::fromName(typeName) == App::PropertyLink::getClassTypeId()
+    ) {
 
         // add the formerly Functions values to the group
         App::PropertyLink functions;
@@ -668,6 +762,13 @@ void FemPostPipeline::renameArrays(const std::map<std::string, std::string>& nam
     }
 
     Data.touch();
+}
+
+void FemPostPipeline::addArrayFromFunction(const std::map<std::string, std::string>& functions)
+{
+    auto data = Data.getValue();
+    FemVTKTools::addArrayFromFunction(data, functions);
+    Data.setValue(data);
 }
 
 PyObject* FemPostPipeline::getPyObject()

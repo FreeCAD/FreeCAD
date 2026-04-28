@@ -24,17 +24,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <cmath>
-#include <algorithm>
-#include <iterator>
-#include <vector>
-#include <vtkUnstructuredGrid.h>
-#include <vtkMultiBlockDataSet.h>
-#include <vtkFieldData.h>
-#include <vtkStreamingDemandDrivenPipeline.h>
-#include <vtkFloatArray.h>
-#include <vtkInformation.h>
-#include <vtkInformationVector.h>
+# include <cmath>
+# include <algorithm>
+# include <iterator>
+# include <vector>
+# include <vtkUnstructuredGrid.h>
+# include <vtkMultiBlockDataSet.h>
+# include <vtkFieldData.h>
+# include <vtkStreamingDemandDrivenPipeline.h>
+# include <vtkFloatArray.h>
+# include <vtkInformation.h>
+# include <vtkInformationVector.h>
 #endif
 
 #include "vtkFemFrameSourceAlgorithm.h"
@@ -80,10 +80,9 @@ std::vector<double> vtkFemFrameSourceAlgorithm::getFrameValues()
     std::vector<double> tFrames(nblocks);
 
     for (unsigned long i = 0; i < nblocks; i++) {
-
         vtkDataObject* block = multiblock->GetBlock(i);
         // check if the TimeValue field is available
-        if (!block->GetFieldData()->HasArray("TimeValue")) {
+        if (!block || !block->GetFieldData() || !block->GetFieldData()->HasArray("TimeValue")) {
             // a frame with no valid value is a undefined state
             return std::vector<double>();
         }
@@ -94,16 +93,17 @@ std::vector<double> vtkFemFrameSourceAlgorithm::getFrameValues()
             // a frame with no valid value is a undefined state
             return std::vector<double>();
         }
-
         tFrames[i] = vtkFloatArray::SafeDownCast(TimeValue)->GetValue(0);
     }
 
     return tFrames;
 }
 
-int vtkFemFrameSourceAlgorithm::RequestInformation(vtkInformation* reqInfo,
-                                                   vtkInformationVector** inVector,
-                                                   vtkInformationVector* outVector)
+int vtkFemFrameSourceAlgorithm::RequestInformation(
+    vtkInformation* reqInfo,
+    vtkInformationVector** inVector,
+    vtkInformationVector* outVector
+)
 {
 
     // setup default information
@@ -134,13 +134,16 @@ int vtkFemFrameSourceAlgorithm::RequestInformation(vtkInformation* reqInfo,
     return 1;
 }
 
-int vtkFemFrameSourceAlgorithm::RequestData(vtkInformation*,
-                                            vtkInformationVector**,
-                                            vtkInformationVector* outVector)
+int vtkFemFrameSourceAlgorithm::RequestData(
+    vtkInformation*,
+    vtkInformationVector**,
+    vtkInformationVector* outVector
+)
 {
     vtkInformation* outInfo = outVector->GetInformationObject(0);
-    vtkUnstructuredGrid* output =
-        vtkUnstructuredGrid::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+    vtkUnstructuredGrid* output = vtkUnstructuredGrid::SafeDownCast(
+        outInfo->Get(vtkDataObject::DATA_OBJECT())
+    );
 
     if (!output) {
         return 0;

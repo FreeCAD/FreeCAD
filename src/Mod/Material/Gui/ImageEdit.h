@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_IMAGEEDIT_H
-#define MATGUI_IMAGEEDIT_H
+#pragma once
 
 #include <memory>
 
@@ -34,6 +35,8 @@
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QVariant>
+
+#include <Gui/FileDialog.h>
 
 #include <Mod/Material/App/Model.h>
 
@@ -92,11 +95,9 @@ private:
     void showPixmap();
     void showSVG();
 
-    QString selectFile(const QString& filePatterns);
+    QString selectFile(const Gui::FileDialog::FilterList& filters);
     void onFileSelectImage();
     void onFileSelectSVG();
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_IMAGEEDIT_H

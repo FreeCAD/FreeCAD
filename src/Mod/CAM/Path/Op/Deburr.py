@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2020-2021 Schildkroet                                   *
@@ -213,7 +215,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         if not hasattr(self, "printInfo"):
             self.printInfo = True
         try:
-            (depth, offset, extraOffset, suppressInfo) = toolDepthAndOffset(
+            depth, offset, extraOffset, suppressInfo = toolDepthAndOffset(
                 obj.Width.Value, obj.ExtraDepth.Value, self.tool, self.printInfo
             )
             self.printInfo = not suppressInfo
@@ -376,7 +378,9 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
             for w in basewires:
                 self.adjusted_basewires.append(w)
-                wire = PathOpUtil.offsetWire(w, base.Shape, offset, True, side)
+                wire = PathOpUtil.offsetWire(
+                    w, base.Shape, offset, True, side, self.job.GeometryTolerance.Value
+                )
                 if wire:
                     wires.append(wire)
 

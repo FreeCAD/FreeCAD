@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_APPEARANCEPREVIEW_H
-#define MATGUI_APPEARANCEPREVIEW_H
+#pragma once
 
 #include <FCConfig.h>
 #include <Gui/View3DInventorViewer.h>
@@ -87,5 +88,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_APPEARANCEPREVIEW_H

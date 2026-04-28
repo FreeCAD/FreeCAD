@@ -21,10 +21,9 @@
  ***************************************************************************/
 
 
-
-# include <sstream>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/nodes/SoDrawStyle.h>
+#include <sstream>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/nodes/SoDrawStyle.h>
 
 
 #include <App/DocumentObject.h>
@@ -43,8 +42,9 @@ ViewProviderPlacement::ViewProviderPlacement()
     // Change root node to SoFCSelectionRoot because we share the same
     // AxisOrigin node for all instances of Placement
     auto newRoot = new SoFCSelectionRoot(true);
-    for(int i=0;i<pcRoot->getNumChildren();++i)
+    for (int i = 0; i < pcRoot->getNumChildren(); ++i) {
         newRoot->addChild(pcRoot->getChild(i));
+    }
     pcRoot->unref();
     pcRoot = newRoot;
     pcRoot->ref();
@@ -57,7 +57,7 @@ ViewProviderPlacement::~ViewProviderPlacement() = default;
 
 void ViewProviderPlacement::onChanged(const App::Property* prop)
 {
-        ViewProviderGeometryObject::onChanged(prop);
+    ViewProviderGeometryObject::onChanged(prop);
 }
 
 std::vector<std::string> ViewProviderPlacement::getDisplayModes() const
@@ -70,8 +70,9 @@ std::vector<std::string> ViewProviderPlacement::getDisplayModes() const
 
 void ViewProviderPlacement::setDisplayMode(const char* ModeName)
 {
-    if (strcmp(ModeName, "Base") == 0)
+    if (strcmp(ModeName, "Base") == 0) {
         setDisplayMaskMode("Base");
+    }
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
@@ -80,9 +81,9 @@ static std::unique_ptr<AxisOrigin> Axis;
 void ViewProviderPlacement::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
-    if(!Axis) {
+    if (!Axis) {
         Axis = std::make_unique<AxisOrigin>();
-        std::map<std::string,std::string> labels;
+        std::map<std::string, std::string> labels;
         labels["O"] = "Origin";
         labels["X"] = "X-Axis";
         labels["Y"] = "Y-Axis";
@@ -100,23 +101,30 @@ void ViewProviderPlacement::updateData(const App::Property* prop)
     ViewProviderGeometryObject::updateData(prop);
 }
 
-bool ViewProviderPlacement::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
-    if(!Axis)
+bool ViewProviderPlacement::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
+{
+    if (!Axis) {
         return false;
-    return Axis->getElementPicked(pp,subname);
+    }
+    return Axis->getElementPicked(pp, subname);
 }
 
 bool ViewProviderPlacement::getDetailPath(
-            const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const
+    const char* subname,
+    SoFullPath* pPath,
+    bool append,
+    SoDetail*& det
+) const
 {
-    if(!Axis)
+    if (!Axis) {
         return false;
+    }
     int length = pPath->getLength();
-    if(append) {
+    if (append) {
         pPath->append(pcRoot);
         pPath->append(pcModeSwitch);
     }
-    if(!Axis->getDetailPath(subname,pPath,det)) {
+    if (!Axis->getDetailPath(subname, pPath, det)) {
         pPath->truncate(length);
         return false;
     }
@@ -131,12 +139,12 @@ bool ViewProviderPlacement::isSelectable() const
 
 // Python feature -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderPlacementPython, Gui::ViewProviderPlacement)
 /// @endcond
 
 // explicit template instantiation
 template class GuiExport ViewProviderFeaturePythonT<ViewProviderPlacement>;
-}
-
+}  // namespace Gui

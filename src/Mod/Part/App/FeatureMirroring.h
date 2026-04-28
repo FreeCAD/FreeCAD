@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREMIRRORING_H
-#define PART_FEATUREMIRRORING_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 
@@ -33,7 +34,7 @@
 namespace Part
 {
 
-class PartExport Mirroring : public Part::Feature
+class PartExport Mirroring: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Mirroring);
 
@@ -48,22 +49,23 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderMirror";
     }
     //@}
 
 protected:
-    void onChanged (const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
 
-    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
-
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
 };
 
-} //namespace Part
-
-
-#endif // PART_FEATUREMIRRORING_H
+}  // namespace Part

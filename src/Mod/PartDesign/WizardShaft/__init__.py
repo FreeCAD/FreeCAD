@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 """
 Shaft Wizard
 """
 
-#/******************************************************************************
+# /******************************************************************************
 # *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
 # *                                                                            *
 # *   This file is part of the FreeCAD CAx development system.                 *

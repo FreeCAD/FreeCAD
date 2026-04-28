@@ -44,9 +44,14 @@ void NavigationAnimation::updateCurrentValue(const QVariant& value)
 void NavigationAnimation::onStop([[maybe_unused]] bool finished)
 {}
 
-FixedTimeAnimation::FixedTimeAnimation(NavigationStyle* navigation, const SbRotation& orientation,
-                                       const SbVec3f& rotationCenter, const SbVec3f& translation,
-                                       int duration, const QEasingCurve::Type easingCurve)
+FixedTimeAnimation::FixedTimeAnimation(
+    NavigationStyle* navigation,
+    const SbRotation& orientation,
+    const SbVec3f& rotationCenter,
+    const SbVec3f& translation,
+    int duration,
+    const QEasingCurve::Type easingCurve
+)
     : NavigationAnimation(navigation)
     , targetOrientation(orientation)
     , targetTranslation(translation)
@@ -67,10 +72,12 @@ void FixedTimeAnimation::initialize()
     prevAngle = 0;
     prevTranslation = SbVec3f(0, 0, 0);
 
-    // Find an axis and angle to rotate from the camera orientation to the target orientation using post-multiplication
+    // Find an axis and angle to rotate from the camera orientation to the target orientation using
+    // post-multiplication
     SbVec3f rotationAxisPost;
     float angle;
-    SbRotation(navigation->getCamera()->orientation.getValue().inverse() * targetOrientation).getValue(rotationAxisPost, angle);
+    SbRotation(navigation->getCamera()->orientation.getValue().inverse() * targetOrientation)
+        .getValue(rotationAxisPost, angle);
     if (angle > std::numbers::pi) {
         angle -= float(2 * std::numbers::pi);
     }
@@ -127,8 +134,7 @@ void FixedTimeAnimation::onStop(bool finished)
  * @param axis The rotation axis in screen coordinates
  * @param velocity The angular velocity in radians per second
  */
-SpinningAnimation::SpinningAnimation(NavigationStyle* navigation, const SbVec3f& axis,
-                                     float velocity)
+SpinningAnimation::SpinningAnimation(NavigationStyle* navigation, const SbVec3f& axis, float velocity)
     : NavigationAnimation(navigation)
     , rotationAxis(axis)
 {
@@ -174,5 +180,7 @@ void SpinningAnimation::onStop([[maybe_unused]] bool finished)
     if (navigation->getViewingMode() != NavigationStyle::SPINNING) {
         return;
     }
-    navigation->setViewingMode(navigation->isViewing() ? NavigationStyle::IDLE : NavigationStyle::INTERACT);
+    navigation->setViewingMode(
+        navigation->isViewing() ? NavigationStyle::IDLE : NavigationStyle::INTERACT
+    );
 }

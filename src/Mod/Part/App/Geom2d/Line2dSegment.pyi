@@ -1,5 +1,9 @@
-from Base.Metadata import export, constmethod
-from typing import Final, overload
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
+from typing import overload
 from Part.Geom2d import Curve2d
 
 @export(
@@ -14,15 +18,15 @@ class Line2dSegment(Curve2d):
     """
     Describes a line segment in 2D space.
 
-To create a line there are several ways:
-Part.Geom2d.Line2dSegment()
-    Creates a default line
+    To create a line there are several ways:
+    Part.Geom2d.Line2dSegment()
+        Creates a default line
 
-Part.Geom2d.Line2dSegment(Line)
-    Creates a copy of the given line
+    Part.Geom2d.Line2dSegment(Line)
+        Creates a copy of the given line
 
-Part.Geom2d.Line2dSegment(Point1,Point2)
-    Creates a line that goes through two given points.
+    Part.Geom2d.Line2dSegment(Point1,Point2)
+        Creates a line that goes through two given points.
     """
 
     StartPoint: object = ...
@@ -33,13 +37,10 @@ Part.Geom2d.Line2dSegment(Point1,Point2)
 
     @overload
     def __init__(self) -> None: ...
-
     @overload
     def __init__(self, Line: "Line2dSegment") -> None: ...
-
     @overload
     def __init__(self, Point1: object, Point2: object) -> None: ...
-
     def setParameterRange(self) -> None:
         """
         Set the parameter range of the underlying line segment geometry.

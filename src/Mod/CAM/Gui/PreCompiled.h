@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATHGUI_PRECOMPILED_H
-#define PATHGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -49,5 +50,3 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
-
-#endif  // PATHGUI_PRECOMPILED_H

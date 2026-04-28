@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -25,7 +27,6 @@ import Path.Base.Generator.dogboneII as dogboneII
 import Path.Base.Language as PathLanguage
 import CAMTests.PathTestUtils as PathTestUtils
 import math
-
 
 # Path.Log.setLevel(Path.Log.Level.DEBUG)
 Path.Log.setLevel(Path.Log.Level.NOTICE)

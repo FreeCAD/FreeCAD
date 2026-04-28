@@ -67,8 +67,10 @@ TEST_F(KDTreeTest, TestKDTreeNearestMaxDist)
 
     Base::Vector3f nor;
     float dist;
-    EXPECT_EQ(tree.FindNearest(Base::Vector3f(0.9F, 0.1F, 0.1F), 0.0F, nor, dist),
-              MeshCore::POINT_INDEX_MAX);
+    EXPECT_EQ(
+        tree.FindNearest(Base::Vector3f(0.9F, 0.1F, 0.1F), 0.0F, nor, dist),
+        MeshCore::POINT_INDEX_MAX
+    );
 }
 
 TEST_F(KDTreeTest, TestKDTreeFindExact)

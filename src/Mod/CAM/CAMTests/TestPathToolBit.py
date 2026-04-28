@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -28,7 +30,6 @@ from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.library import Library
 from Path.Tool.shape import ToolBitShapeBullnose
 from Path.Tool.toolbit import ToolBitEndmill, ToolBitBullnose
-
 
 TOOL_DIR = pathlib.Path(os.path.realpath(__file__)).parent.parent / "Tools"
 SHAPE_DIR = TOOL_DIR / "Shape"

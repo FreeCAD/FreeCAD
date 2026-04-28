@@ -50,7 +50,7 @@ ReaderGltf::ReaderGltf(const Base::FileInfo& file)
 {}
 
 // NOLINTNEXTLINE
-void ReaderGltf::read(Handle(TDocStd_Document) hDoc)
+void ReaderGltf::read(Handle(TDocStd_Document) hDoc, const Message_ProgressRange& theProgress)
 {
     const double unit = 0.001;  // mm
     RWGltf_CafReader aReader;
@@ -60,7 +60,7 @@ void ReaderGltf::read(Handle(TDocStd_Document) hDoc)
     aReader.SetParallel(true);
 
     TCollection_AsciiString filename(file.filePath().c_str());
-    Standard_Boolean ret = aReader.Perform(filename, Message_ProgressRange());
+    Standard_Boolean ret = aReader.Perform(filename, theProgress);
     if (!ret) {
         throw Base::FileException("Cannot read from file: ", file);
     }
@@ -92,8 +92,10 @@ void ReaderGltf::processDocument(Handle(TDocStd_Document) hDoc)
 }
 
 // NOLINTNEXTLINE
-TopoDS_Shape ReaderGltf::processSubShapes(Handle(TDocStd_Document) hDoc,
-                                          const TDF_LabelSequence& subShapeLabels)
+TopoDS_Shape ReaderGltf::processSubShapes(
+    Handle(TDocStd_Document) hDoc,
+    const TDF_LabelSequence& subShapeLabels
+)
 {
     TopoDS_Compound compound;
     Handle(XCAFDoc_ShapeTool) aShapeTool = XCAFDoc_DocumentTool::ShapeTool(hDoc->Main());
@@ -153,7 +155,12 @@ TopoDS_Shape ReaderGltf::fixShape(TopoDS_Shape shape)  // NOLINT
 
     if (cleanup()) {
         sh.sewShape();
-        return sh.removeSplitter();
+        try {
+            return sh.removeSplitter();
+        }
+        catch (const Standard_Failure& e) {
+            return sh.getShape();
+        }
     }
 
     return sh.getShape();

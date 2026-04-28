@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_Path_H
-#define PATH_Path_H
+#pragma once
 
 #include <Base/BoundBox.h>
 #include <Base/Persistence.h>
@@ -57,14 +56,14 @@ public:
     // interface
     void clear();                                         // clears the internal data
     void addCommand(const Command& Cmd);                  // adds a command at the end
+    void addCommandNoRecalc(const Command& Cmd);          // adds a command without recalculation
     void insertCommand(const Command& Cmd, int);          // inserts a command
     void deleteCommand(int);                              // deletes a command
     double getLength();                                   // return the Length (mm) of the Path
     double getCycleTime(double, double, double, double);  // return the Cycle Time (s) of the Path
     void recalculate();                                   // recalculates the points
-    void
-    setFromGCode(const std::string);  // sets the path from the contents of the given GCode string
-    std::string toGCode() const;      // gets a gcode string representation from the Path
+    void setFromGCode(const std::string);  // sets the path from the contents of the given GCode string
+    std::string toGCode() const;           // gets a gcode string representation from the Path
     Base::BoundBox3d getBoundBox() const;
 
     // shortcut functions
@@ -113,6 +112,3 @@ protected:
 };
 
 }  // namespace Path
-
-
-#endif  // PATH_Path_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Manuel Apeltauer, direkt cnc-systeme GmbH          *
  *                                                                         *
@@ -19,8 +21,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#ifndef PARTGUI_DLGPROJECTIONONSURFACE_H
-#define PARTGUI_DLGPROJECTIONONSURFACE_H
+#pragma once
 
 #include "gp_Dir.hxx"
 #include "TopoDS_Edge.hxx"
@@ -46,9 +47,7 @@ namespace Ui
 class DlgProjectionOnSurface;
 }
 
-class DlgProjectionOnSurface: public QWidget,
-                              public Gui::SelectionObserver,
-                              public App::DocumentObserver
+class DlgProjectionOnSurface: public QWidget, public Gui::SelectionObserver, public App::DocumentObserver
 {
     Q_OBJECT
 
@@ -58,6 +57,7 @@ public:
 
     void apply();
     void reject();
+    void setSelectionGate();
 
 private:
     void setupConnections();
@@ -95,34 +95,45 @@ private:
         long transparency = 0;
         double extrudeValue = 0.0;
     };
+    enum class SelectionMode
+    {
+        None,
+        Face,
+        Edge
+    };
 
     // from Gui::SelectionObserver
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 
     void get_camera_direction();
-    void store_current_selected_parts(std::vector<SShapeStore>& iStoreVec,
-                                      unsigned int iColor);
+    void store_current_selected_parts(std::vector<SShapeStore>& iStoreVec, unsigned int iColor);
     bool store_part_in_vector(SShapeStore& iCurrentShape, std::vector<SShapeStore>& iStoreVec);
     void create_projection_wire(std::vector<SShapeStore>& iCurrentShape);
     TopoDS_Shape create_compound(const std::vector<SShapeStore>& iShapeVec);
     void show_projected_shapes(const std::vector<SShapeStore>& iShapeStoreVec);
     void disable_ui_elements(const std::vector<QWidget*>& iObjectVec, QWidget* iExceptThis);
     void enable_ui_elements(const std::vector<QWidget*>& iObjectVec, QWidget* iExceptThis);
-    void higlight_object(Part::Feature* iCurrentObject,
-                         const std::string& iShapeName,
-                         bool iHighlight,
-                         unsigned int iColor);
+    void higlight_object(
+        Part::Feature* iCurrentObject,
+        const std::string& iShapeName,
+        bool iHighlight,
+        unsigned int iColor
+    );
     void get_all_wire_from_face(SShapeStore& ioCurrentSahpe);
     void create_projection_face_from_wire(std::vector<SShapeStore>& iCurrentShape);
     TopoDS_Wire sort_and_heal_wire(const TopoDS_Shape& iShape, const TopoDS_Face& iFaceToProject);
-    TopoDS_Wire sort_and_heal_wire(const std::vector<TopoDS_Edge>& iEdgeVec,
-                                   const TopoDS_Face& iFaceToProject);
+    TopoDS_Wire sort_and_heal_wire(
+        const std::vector<TopoDS_Edge>& iEdgeVec,
+        const TopoDS_Face& iFaceToProject
+    );
     void create_face_extrude(std::vector<SShapeStore>& iCurrentShape);
-    void store_wire_in_vector(const SShapeStore& iCurrentShape,
-                              const TopoDS_Shape& iParentShape,
-                              std::vector<SShapeStore>& iStoreVec,
-                              unsigned int iColor);
+    void store_wire_in_vector(
+        const SShapeStore& iCurrentShape,
+        const TopoDS_Shape& iParentShape,
+        std::vector<SShapeStore>& iStoreVec,
+        unsigned int iColor
+    );
     void set_xyz_dir_spinbox(QDoubleSpinBox* icurrentSpinBox);
     void transform_shape_to_global_position(TopoDS_Shape& ioShape, Part::Feature* iPart);
 
@@ -147,8 +158,7 @@ private:
     App::Document* m_partDocument = nullptr;
     double m_lastDepthVal;
 
-    Gui::SelectionFilterGate* filterEdge;
-    Gui::SelectionFilterGate* filterFace;
+    SelectionMode selectionMode;
 };
 
 class TaskProjectionOnSurface: public Gui::TaskView::TaskDialog
@@ -175,8 +185,7 @@ private:
 
 // ------------------------------------------------------------------------------------------------
 
-class DlgProjectOnSurface : public QWidget,
-                            public Gui::SelectionObserver
+class DlgProjectOnSurface: public QWidget, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -186,12 +195,14 @@ public:
 
     void accept();
     void reject();
+    void setSelectionGate();
 
     // from Gui::SelectionObserver
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
-    enum SelectionMode {
+    enum SelectionMode
+    {
         None,
         SupportFace,
         AddFace,
@@ -222,8 +233,6 @@ private:
 
 private:
     std::unique_ptr<Ui::DlgProjectionOnSurface> ui;
-    Gui::SelectionFilterGate* filterEdge;
-    Gui::SelectionFilterGate* filterFace;
     App::WeakPtrT<Part::ProjectOnSurface> feature;
     SelectionMode selectionMode = SelectionMode::None;
 };
@@ -255,4 +264,3 @@ private:
 
 
 }  // namespace PartGui
-#endif  // PARTGUI_DLGPROJECTIONONSURFACE_H

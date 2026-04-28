@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_DLGSETTINGSFEMCCXIMP_H
-#define FEMGUI_DLGSETTINGSFEMCCXIMP_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -54,5 +53,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // FEMGUI_DLGSETTINGSFEMCCXIMP_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -44,11 +46,11 @@
 
 // suppress annoying warnings from generated source files
 #ifdef _MSC_VER
-#pragma warning(disable : 4003)
-#pragma warning(disable : 4018)
-#pragma warning(disable : 4065)
-#pragma warning(disable : 4273)
-#pragma warning(disable : 4335)  // disable MAC file format warning on VC
+# pragma warning(disable : 4003)
+# pragma warning(disable : 4018)
+# pragma warning(disable : 4065)
+# pragma warning(disable : 4273)
+# pragma warning(disable : 4335)  // disable MAC file format warning on VC
 #endif
 
 using Base::Quantity;
@@ -128,7 +130,8 @@ bool Quantity::operator<(const Quantity& that) const
 {
     if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
-            "Quantity::operator <(): quantities need to have same unit to compare");
+            "Quantity::operator <(): quantities need to have same unit to compare"
+        );
     }
 
     return (myValue < that.myValue);
@@ -138,7 +141,8 @@ bool Quantity::operator>(const Quantity& that) const
 {
     if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
-            "Quantity::operator >(): quantities need to have same unit to compare");
+            "Quantity::operator >(): quantities need to have same unit to compare"
+        );
     }
 
     return (myValue > that.myValue);
@@ -148,7 +152,8 @@ bool Quantity::operator<=(const Quantity& that) const
 {
     if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
-            "Quantity::operator <=(): quantities need to have same unit to compare");
+            "Quantity::operator <=(): quantities need to have same unit to compare"
+        );
     }
 
     return (myValue <= that.myValue);
@@ -158,7 +163,8 @@ bool Quantity::operator>=(const Quantity& that) const
 {
     if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
-            "Quantity::operator >=(): quantities need to have same unit to compare");
+            "Quantity::operator >=(): quantities need to have same unit to compare"
+        );
     }
 
     return (myValue >= that.myValue);
@@ -190,8 +196,10 @@ Quantity Quantity::pow(const Quantity& other) const
         throw Base::UnitsMismatchError("Quantity::pow(): exponent must not have a unit");
     }
 
-    return Quantity(std::pow(myValue, other.myValue),
-                    myUnit.pow(static_cast<signed char>(other.myValue)));
+    return Quantity(
+        std::pow(myValue, other.myValue),
+        myUnit.pow(static_cast<signed char>(other.myValue))
+    );
 }
 
 Quantity Quantity::pow(double exp) const
@@ -280,8 +288,7 @@ std::string Quantity::getUserString(double& factor, std::string& unitString) con
     return Base::UnitsApi::schemaTranslate(*this, factor, unitString);
 }
 
-std::string
-Quantity::getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const
+std::string Quantity::getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const
 {
     return schema->translate(*this, factor, unitString);
 }
@@ -352,6 +359,8 @@ const Quantity Quantity::Minute                 ( 60.0                  , Unit::
 const Quantity Quantity::Hour                   ( 3600.0                , Unit::TimeSpan                );
 
 const Quantity Quantity::Ampere                 ( 1.0                   , Unit::ElectricCurrent         );
+const Quantity Quantity::NanoAmpere             ( 1.0e-9                , Unit::ElectricCurrent         );
+const Quantity Quantity::MicroAmpere            ( 1.0e-6                , Unit::ElectricCurrent         );
 const Quantity Quantity::MilliAmpere            ( 0.001                 , Unit::ElectricCurrent         );
 const Quantity Quantity::KiloAmpere             ( 1000.0                , Unit::ElectricCurrent         );
 const Quantity Quantity::MegaAmpere             ( 1.0e6                 , Unit::ElectricCurrent         );
@@ -360,6 +369,8 @@ const Quantity Quantity::Kelvin                 ( 1.0                   , Unit::
 const Quantity Quantity::MilliKelvin            ( 0.001                 , Unit::Temperature             );
 const Quantity Quantity::MicroKelvin            ( 0.000001              , Unit::Temperature             );
 
+const Quantity Quantity::NanoMole               ( 1e-9                  , Unit::AmountOfSubstance       );
+const Quantity Quantity::MicroMole              ( 1e-6                  , Unit::AmountOfSubstance       );
 const Quantity Quantity::MilliMole              ( 0.001                 , Unit::AmountOfSubstance       );
 const Quantity Quantity::Mole                   ( 1.0                   , Unit::AmountOfSubstance       );
 
@@ -410,6 +421,8 @@ const Quantity Quantity::KSI                    ( psi * 1000            , Unit::
 const Quantity Quantity::MPSI                   ( psi * 1000000         , Unit::Pressure                );
 
 const Quantity Quantity::Watt                   ( 1e+6                  , Unit::Power                   );  // Watt (kg*m^2/s^3)
+const Quantity Quantity::NanoWatt               ( 1e-3                  , Unit::Power                   );
+const Quantity Quantity::MicroWatt              ( 1.0                   , Unit::Power                   );
 const Quantity Quantity::MilliWatt              ( 1e+3                  , Unit::Power                   );
 const Quantity Quantity::KiloWatt               ( 1e+9                  , Unit::Power                   );
 const Quantity Quantity::VoltAmpere             ( 1e+6                  , Unit::Power                   );  // VoltAmpere (kg*m^2/s^3)
@@ -431,6 +444,7 @@ const Quantity Quantity::MegaOhm                ( 1e+12                 , Unit::
 const Quantity Quantity::Coulomb                ( 1.0                   , Unit::ElectricCharge          );  // Coulomb (A*s)
 
 const Quantity Quantity::Tesla                  ( 1.0                   , Unit::MagneticFluxDensity     );  // Tesla (kg/s^2/A)
+const Quantity Quantity::MilliTesla             ( 1e-3                  , Unit::MagneticFluxDensity     );
 const Quantity Quantity::Gauss                  ( 1e-4                  , Unit::MagneticFluxDensity     );  // 1 G = 1e-4 T
 
 const Quantity Quantity::Weber                  ( 1e6                   , Unit::MagneticFlux            );  // Weber (kg*m^2/s^2/A)
@@ -510,8 +524,8 @@ double num_change(char* yytext, char dez_delim, char grp_delim)
 // NOLINTEND
 
 #if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmissing-noreturn"
 #endif
 
 // error func
@@ -521,18 +535,18 @@ void Quantity_yyerror(const char* errorinfo)
 }
 
 #if defined(__clang__)
-#pragma clang diagnostic pop
+# pragma clang diagnostic pop
 #endif
 
 
 #if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wsign-compare"
-#pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wsign-compare"
+# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
 #elif defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsign-compare"
-#pragma GCC diagnostic ignored "-Wfree-nonheap-object"
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wsign-compare"
+# pragma GCC diagnostic ignored "-Wfree-nonheap-object"
 #endif
 
 namespace QuantityParser
@@ -551,7 +565,7 @@ int QuantityLexer();
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in Quantity.l
 // NOLINTNEXTLINE
-#include "Quantity.lex.c"
+# include "Quantity.lex.c"
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 class StringBufferCleaner
@@ -578,16 +592,15 @@ private:
 }  // namespace QuantityParser
 
 #if defined(__clang__)
-#pragma clang diagnostic pop
+# pragma clang diagnostic pop
 #elif defined(__GNUC__)
-#pragma GCC diagnostic pop
+# pragma GCC diagnostic pop
 #endif
 
 Quantity Quantity::parse(const std::string& string)
 {
     // parse from buffer
-    QuantityParser::YY_BUFFER_STATE my_string_buffer =
-        QuantityParser::yy_scan_string(string.c_str());
+    QuantityParser::YY_BUFFER_STATE my_string_buffer = QuantityParser::yy_scan_string(string.c_str());
     QuantityParser::StringBufferCleaner cleaner(my_string_buffer);
     // set the global return variables
     QuantResult = Quantity(std::numeric_limits<double>::min());

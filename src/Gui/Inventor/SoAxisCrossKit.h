@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOSHAPESCALE_H
-#define GUI_SOSHAPESCALE_H
+#pragma once
 
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -37,8 +38,10 @@ class SoState;
 class SbColor;
 class SbVec2s;
 
-namespace Gui {
-class GuiExport SoShapeScale : public SoBaseKit {
+namespace Gui
+{
+class GuiExport SoShapeScale: public SoBaseKit
+{
     using inherited = SoBaseKit;
 
     SO_KIT_HEADER(SoShapeScale);
@@ -55,11 +58,12 @@ public:
     SoSFFloat scaleFactor;
 
 protected:
-    void GLRender(SoGLRenderAction * action) override;
+    void GLRender(SoGLRenderAction* action) override;
     ~SoShapeScale() override;
 };
 
-class GuiExport SoAxisCrossKit : public SoBaseKit {
+class GuiExport SoAxisCrossKit: public SoBaseKit
+{
     using inherited = SoBaseKit;
 
     SO_KIT_HEADER(SoAxisCrossKit);
@@ -77,8 +81,8 @@ public:
     // Overrides default method. All the parts are shapeKits,
     // so this node will not affect the state.
     SbBool affectsState() const override;
-    void addWriteReference(SoOutput * out, SbBool isfromfield = false) override;
-    void getBoundingBox(SoGetBoundingBoxAction * action) override;
+    void addWriteReference(SoOutput* out, SbBool isfromfield = false) override;
+    void getBoundingBox(SoGetBoundingBoxAction* action) override;
 
     static void initClass();
 
@@ -88,7 +92,8 @@ private:
     ~SoAxisCrossKit() override;
 };
 
-class GuiExport SoRegPoint : public SoShape {
+class GuiExport SoRegPoint: public SoShape
+{
     using inherited = SoShape;
 
     SO_NODE_HEADER(SoRegPoint);
@@ -97,7 +102,7 @@ public:
     static void initClass();
     SoRegPoint();
 
-    void notify(SoNotList * node) override;
+    void notify(SoNotList* node) override;
 
     SoSFVec3f base;
     SoSFVec3f normal;
@@ -107,14 +112,12 @@ public:
 
 protected:
     ~SoRegPoint() override;
-    void GLRender(SoGLRenderAction *action) override;
-    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
-    void generatePrimitives(SoAction *action) override;
+    void GLRender(SoGLRenderAction* action) override;
+    void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
+    void generatePrimitives(SoAction* action) override;
 
 private:
     SoSeparator* root;
 };
 
-} // namespace Gui
-
-#endif // GUI_SOSHAPESCALE_H
+}  // namespace Gui

@@ -1,6 +1,8 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2023 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>   *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,21 +22,28 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 
 import Path
 import CAMTests.PathTestUtils as PathTestUtils
-from importlib import reload
-from Path.Post.scripts import linuxcnc_post as postprocessor
+import CAMTests.PostTestMocks as PostTestMocks
+from Path.Post.Processor import PostProcessorFactory
+from Machine.models.machine import Machine, Toolhead, ToolheadType
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestLinuxCNCPost(PathTestUtils.PathTestBase):
+    """Test LinuxCNC-specific features of the linuxcnc_post.py postprocessor.
+
+    This test suite focuses on LinuxCNC-specific functionality such as path blending modes.
+    Generic postprocessor functionality is tested in TestGenericPost.
+    """
+
     @classmethod
     def setUpClass(cls):
         """setUpClass()...
+
         This method is called upon instantiation of this test class.  Add code
         and objects here that are needed for the duration of the test() methods
         in this class.  In other words, set up the 'global' test environment
@@ -43,378 +52,560 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         is able to call static methods within this same class.
         """
 
-        # Open existing FreeCAD document with test geometry
-        FreeCAD.newDocument("Unnamed")
+        # Create mock job with default operation and tool controller
+        cls.job, cls.profile_op, cls.tool_controller = (
+            PostTestMocks.create_default_job_with_operation()
+        )
+
+        # Create postprocessor using the mock job
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "linuxcnc")
 
     @classmethod
     def tearDownClass(cls):
         """tearDownClass()...
+
         This method is called prior to destruction of this test class.  Add
         code and objects here that cleanup the test environment after the
-        test() methods in this class have been executed.  This method does
-        not have access to the class `self` reference.  This method is able
-        to call static methods within this same class.
+        test() methods in this class have been executed.  This method does not
+        have access to the class `self` reference.  This method
+        is able to call static methods within this same class.
         """
-        # Close geometry document without saving
-        FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
+        # No cleanup needed for mock objects
+        pass
 
     # Setup and tear down methods called before and after each unit test
+
     def setUp(self):
         """setUp()...
+
         This method is called prior to each `test()` method.  Add code and
         objects here that are needed for multiple `test()` methods.
         """
-        self.doc = FreeCAD.ActiveDocument
-        self.con = FreeCAD.Console
-        self.docobj = FreeCAD.ActiveDocument.addObject("Path::Feature", "testpath")
-        reload(
-            postprocessor
-        )  # technical debt.  This shouldn't be necessary but here to bypass a bug
+        # allow a full length "diff" if an error occurs
+        self.maxDiff = None
+        # reinitialize the postprocessor data structures between tests
+        self.post.reinitialize()
+        # Create a machine configuration for each test
+        self.post._machine = Machine.create_3axis_config()
+        self.post._machine.name = "Test LinuxCNC Machine"
+        # Add a default toolhead (required by export2)
+        toolhead = Toolhead(
+            name="Default Toolhead",
+            toolhead_type=ToolheadType.ROTARY,
+            min_rpm=0,
+            max_rpm=24000,
+            max_power_kw=1.0,
+        )
+        self.post._machine.toolheads = [toolhead]
 
     def tearDown(self):
         """tearDown()...
+
         This method is called after each test() method. Add cleanup instructions here.
         Such cleanup instructions will likely undo those in the setUp() method.
         """
-        FreeCAD.ActiveDocument.removeObject("testpath")
+        pass
 
-    def compare_sixth_line(self, path_string, expected, args, debug=False):
-        """Perform a test with a single comparison to the sixth line of the output."""
-        nl = "\n"
-        if path_string:
-            self.docobj.Path = Path.Path([Path.Command(path_string)])
-        else:
-            self.docobj.Path = Path.Path([])
-        postables = [self.docobj]
-        gcode = postprocessor.export(postables, "-", args)
-        if debug:
-            print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[5], expected)
+    def test_blend_mode_exact_path(self):
+        """Test EXACT_PATH blend mode outputs G61."""
+        self.profile_op.Path = Path.Path([])
+        # Set blend mode via machine configuration
+        self.post._machine.postprocessor_properties["blend_mode"] = "EXACT_PATH"
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+        gcode = self.post.export2()[0][1]
 
-    def test000(self):
-        """Test Output Generation.
-        Empty path.  Produces only the preamble and postable.
+        # G61 should be in the preamble
+        self.assertIn("G61", gcode)
+        # Should not have G64
+        self.assertNotIn("G64", gcode)
+        # Should not have G61.1
+        self.assertNotIn("G61.1", gcode)
+
+    def test_blend_mode_exact_stop(self):
+        """Test EXACT_STOP blend mode outputs G61.1."""
+        self.profile_op.Path = Path.Path([])
+        # Set blend mode via machine configuration
+        self.post._machine.postprocessor_properties["blend_mode"] = "EXACT_STOP"
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+        gcode = self.post.export2()[0][1]
+
+        # G61.1 should be in the preamble
+        self.assertIn("G61.1", gcode)
+        # Should not have G64
+        self.assertNotIn("G64", gcode)
+
+    def test_blend_mode_blend_default(self):
+        """Test BLEND mode with default tolerance (0) outputs G64."""
+        self.profile_op.Path = Path.Path([])
+        # Set blend mode via machine configuration
+        self.post._machine.postprocessor_properties["blend_mode"] = "BLEND"
+        self.post._machine.postprocessor_properties["blend_tolerance"] = 0.0
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+        gcode = self.post.export2()[0][1]
+
+        # G64 should be in the preamble (without P parameter)
+        lines = gcode.splitlines()
+        has_g64 = any("G64" in line and "P" not in line for line in lines)
+        self.assertTrue(has_g64, "Expected G64 without P parameter")
+
+    def test_blend_mode_blend_with_tolerance(self):
+        """Test BLEND mode with tolerance outputs G64 P<tolerance>."""
+        self.profile_op.Path = Path.Path([])
+        # Set blend mode via machine configuration
+        self.post._machine.postprocessor_properties["blend_mode"] = "BLEND"
+        self.post._machine.postprocessor_properties["blend_tolerance"] = 0.05
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+        gcode = self.post.export2()[0][1]
+
+        # G64 P0.05 should be in the preamble
+        self.assertIn("G64 P0.0500", gcode)
+
+    def test_blend_mode_blend_with_custom_tolerance(self):
+        """Test BLEND mode with custom tolerance value."""
+        self.profile_op.Path = Path.Path([])
+        # Set blend mode via machine configuration
+        self.post._machine.postprocessor_properties["blend_mode"] = "BLEND"
+        self.post._machine.postprocessor_properties["blend_tolerance"] = 0.02
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+        gcode = self.post.export2()[0][1]
+
+        # G64 P0.02 should be in the preamble
+        self.assertIn("G64 P0.0200", gcode)
+
+    def test_blend_mode_in_preamble_position(self):
+        """Test that blend mode command appears in correct position in preamble."""
+        self.profile_op.Path = Path.Path([])
+        # Set blend mode via machine configuration
+        self.post._machine.postprocessor_properties["blend_mode"] = "BLEND"
+        self.post._machine.postprocessor_properties["blend_tolerance"] = 0.1
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+        gcode = self.post.export2()[0][1]
+        lines = gcode.splitlines()
+
+        # Find G64 P line
+        g64_line_idx = None
+        for i, line in enumerate(lines):
+            if "G64 P" in line:
+                g64_line_idx = i
+                break
+
+        self.assertIsNotNone(g64_line_idx, "G64 P command not found")
+        # Should be early in output (within first few lines of preamble)
+        self.assertLess(g64_line_idx, 5, "G64 command should be in preamble")
+
+    def test_blend_tolerance_zero_equals_no_tolerance(self):
+        """Test that blend tolerance of 0 outputs G64 without P parameter."""
+        self.profile_op.Path = Path.Path([])
+        # Set blend mode via machine configuration
+        self.post._machine.postprocessor_properties["blend_mode"] = "BLEND"
+        self.post._machine.postprocessor_properties["blend_tolerance"] = 0
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+        gcode = self.post.export2()[0][1]
+
+        # Should have G64 without P
+        lines = gcode.splitlines()
+        has_g64_without_p = any("G64" in line and "P" not in line for line in lines)
+        self.assertTrue(has_g64_without_p, "Expected G64 without P parameter when tolerance is 0")
+
+    def test_blend_interaction_with_preamble_argument(self):
+        """Test blend mode appears after units command in preamble."""
+        self.profile_op.Path = Path.Path([])
+        # Set blend mode via machine configuration
+        self.post._machine.postprocessor_properties["blend_mode"] = "BLEND"
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+        gcode = self.post.export2()[0][1]
+        lines = gcode.splitlines()
+        # G64 should appear early in the output
+        self.assertIn("G64", gcode)
+        # Find G64 line
+        g64_idx = None
+        for i, line in enumerate(lines):
+            if "G64" in line:
+                g64_idx = i
+                break
+        self.assertIsNotNone(g64_idx)
+        self.assertLess(g64_idx, 5, "G64 should be in preamble")
+
+    def test_rigid_tapping_g84_basic(self):
         """
+        Test G84 rigid tapping conversion to G33.1 sequence.
 
-        self.docobj.Path = Path.Path([])
-        postables = [self.docobj]
+        Expected behavior:
+            BEFORE: G84 Z-10 F1.5 (rigid=True)
 
-        # Test generating with header
-        # Header contains a time stamp that messes up unit testing.
-        # Only test length of result.
-        args = "--no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        self.assertTrue(len(gcode.splitlines()) == 13)
-
-        # Test without header
-        expected = """(begin preamble)
-G17 G54 G40 G49 G80 G90
-G21
-(begin operation: testpath)
-(machine units: mm/min)
-(finish operation: testpath)
-(begin postamble)
-M05
-G17 G54 G90 G80 G40
-M2
-"""
-
-        self.docobj.Path = Path.Path([])
-        postables = [self.docobj]
-
-        args = "--no-header --no-show-editor"
-        # args = ("--no-header --no-comments --no-show-editor --precision=2")
-        gcode = postprocessor.export(postables, "-", args)
-        self.assertEqual(gcode, expected)
-
-        # test without comments
-        expected = """G17 G54 G40 G49 G80 G90
-G21
-M05
-G17 G54 G90 G80 G40
-M2
-"""
-
-        args = "--no-header --no-comments --no-show-editor"
-        # args = ("--no-header --no-comments --no-show-editor --precision=2")
-        gcode = postprocessor.export(postables, "-", args)
-        self.assertEqual(gcode, expected)
-
-    def test010(self):
-        """Test command Generation.
-        Test Precision
-        Test imperial / inches
+            AFTER:  G33.1 K1.5000 Z-10.0000
+                    M4
+                    G33.1 K1.5000 Z0.0000
+                    M3
         """
-        self.compare_sixth_line(
-            "G0 X10 Y20 Z30", "G0 X10.000 Y20.000 Z30.000 ", "--no-header --no-show-editor"
-        )
-        self.compare_sixth_line(
-            "G0 X10 Y20 Z30",
-            "G0 X10.00 Y20.00 Z30.00 ",
-            "--no-header --precision=2 --no-show-editor",
-        )
+        # Setup - create G84 command with rigid annotation
+        command = Path.Command("G84", {"Z": -10.0, "F": 1.5})
+        command.Annotations = {"rigid": "True", "operation": "tapping"}
 
-    def test020(self):
+        # Execute
+        result = self.post._convert_drill_cycle(command)
+
+        # Verify
+        self.assertIn("G33.1", result)
+        self.assertIn("K1.5000", result)
+        self.assertIn("Z-10.0000", result)
+        self.assertIn("M4", result)
+        self.assertIn("M3", result)
+
+    def test_rigid_tapping_g74_basic(self):
         """
-        Test Line Numbers
+        Test G74 rigid tapping conversion to G33.1 sequence.
+
+        Expected behavior:
+            BEFORE: G74 Z-10 F1.5 (rigid=True)
+
+            AFTER:  G33.1 K1.5000 Z-10.0000
+                    M3
+                    G33.1 K1.5000 Z0.0000
+                    M4
         """
-        self.compare_sixth_line(
-            "G0 X10 Y20 Z30",
-            "N160  G0 X10.000 Y20.000 Z30.000 ",
-            "--no-header --line-numbers --no-show-editor",
-        )
+        # Setup - create G74 command with rigid annotation
+        command = Path.Command("G74", {"Z": -10.0, "F": 1.5})
+        command.Annotations = {"rigid": "True", "operation": "tapping"}
 
-    def test030(self):
+        # Execute
+        result = self.post._convert_drill_cycle(command)
+
+        # Verify
+        self.assertIn("G33.1", result)
+        self.assertIn("K1.5000", result)
+        self.assertIn("Z-10.0000", result)
+        self.assertIn("M3", result)
+        self.assertIn("M4", result)
+
+    def test_rigid_tapping_pitch_conversion(self):
         """
-        Test Pre-amble
+        Test pitch (F) parameter conversion to K parameter.
+
+        Expected behavior:
+            BEFORE: G84 Z-10 F1.25 (rigid=True)
+
+            AFTER:  G33.1 K1.2500 Z-10.0000
         """
+        # Setup
+        command = Path.Command("G84", {"Z": -10.0, "F": 1.25})
+        command.Annotations = {"rigid": "True", "operation": "tapping"}
 
-        self.docobj.Path = Path.Path([])
-        postables = [self.docobj]
+        # Execute
+        result = self.post._convert_drill_cycle(command)
 
-        args = "--no-header --no-comments --preamble='G18 G55' --no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        result = gcode.splitlines()[0]
-        self.assertEqual(result, "G18 G55")
+        # Verify
+        self.assertIn("K1.2500", result)
 
-    def test040(self):
+    def test_rigid_tapping_with_retract_height(self):
         """
-        Test Post-amble
+        Test rigid tapping with retract height (R parameter).
+
+        Expected behavior:
+            BEFORE: G84 Z-15 R5 F1.25 (rigid=True)
+
+            AFTER:  G33.1 K1.2500 Z-15.0000
+                    M4
+                    G33.1 K1.2500 Z5.0000
+                    M3
         """
-        self.docobj.Path = Path.Path([])
-        postables = [self.docobj]
-        args = "--no-header --no-comments --postamble='G0 Z50\nM2' --no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        result = gcode.splitlines()[-2]
-        self.assertEqual(result, "G0 Z50")
-        self.assertEqual(gcode.splitlines()[-1], "M2")
+        # Setup
+        command = Path.Command("G84", {"Z": -15.0, "R": 5.0, "F": 1.25})
+        command.Annotations = {"rigid": "True", "operation": "tapping"}
 
-    def test050(self):
+        # Execute
+        result = self.post._convert_drill_cycle(command)
+
+        # Verify
+        self.assertIn("Z-15.0000", result)  # Tap depth
+        self.assertIn("Z5.0000", result)  # Retract height
+
+    def test_rigid_tapping_with_coordinates(self):
         """
-        Test inches
+        Test rigid tapping preserves X and Y coordinates.
+
+        Expected behavior:
+            BEFORE: G84 X10 Y20 Z-10 F1.5 (rigid=True)
+
+            AFTER:  G33.1 K1.5000 X10.0000 Y20.0000 Z-10.0000
         """
+        # Setup
+        command = Path.Command("G84", {"X": 10.0, "Y": 20.0, "Z": -10.0, "F": 1.5})
+        command.Annotations = {"rigid": "True", "operation": "tapping"}
 
-        c = Path.Command("G0 X10 Y20 Z30")
-        self.docobj.Path = Path.Path([c])
-        postables = [self.docobj]
+        # Execute
+        result = self.post._convert_drill_cycle(command)
 
-        args = "--no-header --inches --no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        self.assertEqual(gcode.splitlines()[2], "G20")
+        # Verify
+        self.assertIn("X10.0000", result)
+        self.assertIn("Y20.0000", result)
 
-        result = gcode.splitlines()[5]
-        expected = "G0 X0.3937 Y0.7874 Z1.1811 "
-        self.assertEqual(result, expected)
-
-        # Technical debt.   The following test fails.  Precision not working
-        # with imperial units.
-
-        # args = ("--no-header --inches --precision=2")
-        # gcode = postprocessor.export(postables, "-", args)
-        # result = gcode.splitlines()[5]
-        # expected = "G0 X0.39 Y0.78 Z1.18 "
-        # self.assertEqual(result, expected)
-
-    def test060(self):
+    def test_rigid_tapping_with_dwell(self):
         """
-        Test test modal
-        Suppress the command name if the same as previous
+        Test rigid tapping with dwell (P parameter).
+
+        Expected behavior:
+            BEFORE: G84 Z-10 F1.5 P0.5 (rigid=True)
+
+            AFTER:  G33.1 K1.5000 Z-10.0000
+                    M5
+                    G04 P0.50
+                    M4
+                    G33.1 K1.5000 Z0.0000
+                    M3
         """
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
+        # Setup
+        command = Path.Command("G84", {"Z": -10.0, "F": 1.5, "P": 0.5})
+        command.Annotations = {"rigid": "True", "operation": "tapping"}
 
-        self.docobj.Path = Path.Path([c, c1])
-        postables = [self.docobj]
+        # Execute
+        result = self.post._convert_drill_cycle(command)
 
-        args = "--no-header --modal --no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        result = gcode.splitlines()[6]
-        expected = "X10.000 Y30.000 Z30.000 "
-        self.assertEqual(result, expected)
+        # Verify
+        self.assertIn("M5", result)
+        self.assertIn("G04 P0.50", result)
 
-    def test070(self):
+    def test_rigid_tapping_imperial_units(self):
         """
-        Test axis modal
-        Suppress the axis coordinate if the same as previous
+        Test rigid tapping unit conversion to imperial.
+
+        Expected behavior:
+            BEFORE: G84 Z-10 F1.5 (rigid=True) in imperial units
+
+            AFTER:  G33.1 K0.0591 Z-0.3937
         """
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
+        # Setup - set imperial units
+        from Machine.models.machine import OutputUnits
 
-        self.docobj.Path = Path.Path([c, c1])
-        postables = [self.docobj]
+        self.post._machine.output.units = OutputUnits.IMPERIAL
 
-        args = "--no-header --axis-modal --no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        result = gcode.splitlines()[6]
-        expected = "G0 Y30.000 "
-        self.assertEqual(result, expected)
+        command = Path.Command("G84", {"Z": -10.0, "F": 1.5})
+        command.Annotations = {"rigid": "True", "operation": "tapping"}
 
-    def test080(self):
+        # Execute
+        result = self.post._convert_drill_cycle(command)
+
+        # Verify - converted values (mm to inches)
+        self.assertIn("Z-0.3937", result)  # -10mm / 25.4
+        self.assertIn("K0.0591", result)  # 1.5mm / 25.4
+
+    def test_rigid_tapping_block_delete(self):
         """
-        Test tool change
+        Test rigid tapping with block delete annotation.
+
+        Expected behavior:
+            BEFORE: G84 Z-10 F1.5 (rigid=True, blockdelete=True)
+
+            AFTER:  /G33.1 K1.5000 Z-10.0000
+                    /M4
+                    /G33.1 K1.5000 Z0.0000
+                    /M3
         """
-        c = Path.Command("M6 T2")
-        c2 = Path.Command("M3 S3000")
-        self.docobj.Path = Path.Path([c, c2])
-        postables = [self.docobj]
+        # Setup
+        command = Path.Command("G84", {"Z": -10.0, "F": 1.5})
+        command.Annotations = {"rigid": "True", "operation": "tapping", "blockdelete": True}
 
-        args = "--no-header --no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        self.assertEqual(gcode.splitlines()[5], "M5")
-        self.assertEqual(gcode.splitlines()[6], "M6 T2 ")
-        self.assertEqual(gcode.splitlines()[7], "G43 H2 ")
-        self.assertEqual(gcode.splitlines()[8], "M3 S3000 ")
+        # Execute
+        result = self.post._convert_drill_cycle(command)
 
-        # suppress TLO
-        args = "--no-header --no-tlo --no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        self.assertEqual(gcode.splitlines()[7], "M3 S3000 ")
+        # Verify - all commands should have '/' prefix
+        lines = result.split("\n")
+        for line in lines:
+            if line.strip():
+                self.assertTrue(line.startswith("/"), f"Line missing block delete: {line}")
 
-    def test090(self):
+    def test_rigid_tapping_missing_pitch_fallback(self):
         """
-        Test comment
+        Test rigid tapping falls back to parent when pitch missing.
+
+        Expected behavior:
+            BEFORE: G84 Z-10 (rigid=True, no F parameter)
+
+            AFTER:  [standard G84 conversion, not G33.1]
         """
-        self.compare_sixth_line("(comment)", "(comment) ", "--no-header --no-show-editor")
+        # Setup - command without F (pitch) parameter
+        command = Path.Command("G84", {"Z": -10.0})
+        command.Annotations = {"rigid": "True", "operation": "tapping"}
 
-    def test100(self):
-        """Test A, B, & C axis output for values between 0 and 90 degrees"""
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A40 B50 C60",
-            "G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 ",
-            "--no-header --no-show-editor",
-        )
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A40 B50 C60",
-            "G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 ",
-            "--no-header --inches --no-show-editor",
-        )
+        # Execute
+        result = self.post._convert_drill_cycle(command)
 
-    def test110(self):
-        """Test A, B, & C axis output for 89 degrees"""
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A89 B89 C89",
-            "G1 X10.000 Y20.000 Z30.000 A89.000 B89.000 C89.000 ",
-            "--no-header --no-show-editor",
-        )
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A89 B89 C89",
-            "G1 X0.3937 Y0.7874 Z1.1811 A89.0000 B89.0000 C89.0000 ",
-            "--no-header --inches --no-show-editor",
-        )
+        # Verify - should not contain G33.1 (fallback to parent)
+        self.assertNotIn("G33.1", result)
 
-    def test120(self):
-        """Test A, B, & C axis output for 90 degrees"""
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A90 B90 C90",
-            "G1 X10.000 Y20.000 Z30.000 A90.000 B90.000 C90.000 ",
-            "--no-header --no-show-editor",
-        )
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A90 B90 C90",
-            "G1 X0.3937 Y0.7874 Z1.1811 A90.0000 B90.0000 C90.0000 ",
-            "--no-header --inches --no-show-editor",
-        )
+    def test_rigid_tapping_suppresses_g80(self):
+        """
+        Test G80 is suppressed for rigid tapping operations.
 
-    def test130(self):
-        """Test A, B, & C axis output for 91 degrees"""
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A91 B91 C91",
-            "G1 X10.000 Y20.000 Z30.000 A91.000 B91.000 C91.000 ",
-            "--no-header --no-show-editor",
-        )
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A91 B91 C91",
-            "G1 X0.3937 Y0.7874 Z1.1811 A91.0000 B91.0000 C91.0000 ",
-            "--no-header --inches --no-show-editor",
-        )
+        Expected behavior:
+            BEFORE: G80 (operation=tapping, rigid=True)
 
-    def test140(self):
-        """Test A, B, & C axis output for values between 90 and 180 degrees"""
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A100 B110 C120",
-            "G1 X10.000 Y20.000 Z30.000 A100.000 B110.000 C120.000 ",
-            "--no-header --no-show-editor",
-        )
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A100 B110 C120",
-            "G1 X0.3937 Y0.7874 Z1.1811 A100.0000 B110.0000 C120.0000 ",
-            "--no-header --inches --no-show-editor",
-        )
+            AFTER:  None (command suppressed)
+        """
+        # Setup
+        command = Path.Command("G80", {})
+        command.Annotations = {"operation": "tapping", "rigid": "True"}
 
-    def test150(self):
-        """Test A, B, & C axis output for values between 180 and 360 degrees"""
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A240 B250 C260",
-            "G1 X10.000 Y20.000 Z30.000 A240.000 B250.000 C260.000 ",
-            "--no-header --no-show-editor",
-        )
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A240 B250 C260",
-            "G1 X0.3937 Y0.7874 Z1.1811 A240.0000 B250.0000 C260.0000 ",
-            "--no-header --inches --no-show-editor",
-        )
+        # Execute
+        result = self.post._convert_modal_command(command)
 
-    def test160(self):
-        """Test A, B, & C axis output for values greater than 360 degrees"""
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A440 B450 C460",
-            "G1 X10.000 Y20.000 Z30.000 A440.000 B450.000 C460.000 ",
-            "--no-header --no-show-editor",
-        )
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A440 B450 C460",
-            "G1 X0.3937 Y0.7874 Z1.1811 A440.0000 B450.0000 C460.0000 ",
-            "--no-header --inches --no-show-editor",
-        )
+        # Verify - should return None (suppressed)
+        self.assertIsNone(result)
 
-    def test170(self):
-        """Test A, B, & C axis output for values between 0 and -90 degrees"""
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A-40 B-50 C-60",
-            "G1 X10.000 Y20.000 Z30.000 A-40.000 B-50.000 C-60.000 ",
-            "--no-header --no-show-editor",
-        )
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A-40 B-50 C-60",
-            "G1 X0.3937 Y0.7874 Z1.1811 A-40.0000 B-50.0000 C-60.0000 ",
-            "--no-header --inches --no-show-editor",
-        )
+    def test_rigid_tapping_suppresses_g98(self):
+        """
+        Test G98 is suppressed for rigid tapping operations.
 
-    def test180(self):
-        """Test A, B, & C axis output for values between -90 and -180 degrees"""
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A-100 B-110 C-120",
-            "G1 X10.000 Y20.000 Z30.000 A-100.000 B-110.000 C-120.000 ",
-            "--no-header --no-show-editor",
-        )
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A-100 B-110 C-120",
-            "G1 X0.3937 Y0.7874 Z1.1811 A-100.0000 B-110.0000 C-120.0000 ",
-            "--no-header --inches --no-show-editor",
-        )
+        Expected behavior:
+            BEFORE: G98 (operation=tapping, rigid=True)
 
-    def test190(self):
-        """Test A, B, & C axis output for values between -180 and -360 degrees"""
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A-240 B-250 C-260",
-            "G1 X10.000 Y20.000 Z30.000 A-240.000 B-250.000 C-260.000 ",
-            "--no-header --no-show-editor",
-        )
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A-240 B-250 C-260",
-            "G1 X0.3937 Y0.7874 Z1.1811 A-240.0000 B-250.0000 C-260.0000 ",
-            "--no-header --inches --no-show-editor",
-        )
+            AFTER:  None (command suppressed)
+        """
+        # Setup
+        command = Path.Command("G98", {})
+        command.Annotations = {"operation": "tapping", "rigid": "True"}
 
-    def test200(self):
-        """Test A, B, & C axis output for values below -360 degrees"""
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A-440 B-450 C-460",
-            "G1 X10.000 Y20.000 Z30.000 A-440.000 B-450.000 C-460.000 ",
-            "--no-header --no-show-editor",
+        # Execute
+        result = self.post._convert_modal_command(command)
+
+        # Verify - should return None (suppressed)
+        self.assertIsNone(result)
+
+    def test_rigid_tapping_suppresses_g99(self):
+        """
+        Test G99 is suppressed for rigid tapping operations.
+
+        Expected behavior:
+            BEFORE: G99 (operation=tapping, rigid=True)
+
+            AFTER:  None (command suppressed)
+        """
+        # Setup
+        command = Path.Command("G99", {})
+        command.Annotations = {"operation": "tapping", "rigid": "True"}
+
+        # Execute
+        result = self.post._convert_modal_command(command)
+
+        # Verify - should return None (suppressed)
+        self.assertIsNone(result)
+
+    def test_non_rigid_tapping_not_suppressed(self):
+        """
+        Test G80/G98/G99 are not suppressed for non-rigid tapping.
+
+        Expected behavior:
+            BEFORE: G80 (operation=tapping, rigid=False)
+
+            AFTER:  G80 (command not suppressed)
+        """
+        # Setup
+        command = Path.Command("G80", {})
+        command.Annotations = {"operation": "tapping", "rigid": "False"}
+
+        # Execute
+        result = self.post._convert_modal_command(command)
+
+        # Verify - should not be None (not suppressed)
+        self.assertIsNotNone(result)
+
+    def test_schema_defaults_applied_for_sparse_config(self):
+        """
+        Test that LinuxCNC schema defaults are applied when postprocessor_properties
+        is sparse (simulating a real .fcm file that only stores user-changed values).
+
+        LinuxCNC overrides get_common_property_schema() to set:
+            preamble = "G17 G54 G40 G49 G80 G90"
+            postamble = "M05\\nG17 G54 G90 G80 G40\\nM2"
+            safetyblock = "G40 G49 G80"
+
+        INPUT:
+        - LinuxCNC postprocessor with a machine that has only
+          file_extension and blend_mode in postprocessor_properties
+        - preamble, postamble, safetyblock keys are absent
+
+        EXPECTED OUTPUT:
+        - After export2, postprocessor_properties contains all schema keys
+        - preamble, postamble, safetyblock have LinuxCNC-specific defaults
+        """
+        # Start with a sparse config (only blend_mode set, no blocks)
+        self.post._machine.postprocessor_properties = {
+            "file_extension": "ngc",
+            "blend_mode": "BLEND",
+        }
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+
+        # Verify keys are absent before export
+        self.assertNotIn("preamble", self.post._machine.postprocessor_properties)
+        self.assertNotIn("postamble", self.post._machine.postprocessor_properties)
+        self.assertNotIn("safetyblock", self.post._machine.postprocessor_properties)
+
+        self.profile_op.Path = Path.Path([Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0})])
+        results = self.post.export2()
+
+        # After export2, schema defaults should have been applied
+        props = self.post._machine.postprocessor_properties
+        self.assertIn("preamble", props, "preamble key should exist after export2")
+        self.assertIn("postamble", props, "postamble key should exist after export2")
+        self.assertIn("safetyblock", props, "safetyblock key should exist after export2")
+
+        # Existing value should be preserved
+        self.assertEqual(props["file_extension"], "ngc")
+
+    def test_schema_defaults_blocks_appear_in_output(self):
+        """
+        Test that LinuxCNC schema default blocks actually appear in the G-code
+        output when the .fcm file omits them.
+
+        This simulates the real-world bug: user's .fcm has only file_extension
+        and rotary move properties, but the machine editor shows preamble,
+        postamble, and safetyblock with their schema defaults. After
+        postprocessing, those blocks must appear in the output.
+
+        INPUT:
+        - LinuxCNC postprocessor with sparse postprocessor_properties
+        - No preamble, postamble, or safetyblock keys in config
+
+        EXPECTED OUTPUT:
+        - Preamble default "G17 G54 G40 G49 G80 G90" appears in output
+        - Postamble defaults "M05", "G17 G54 G90 G80 G40", "M2" appear
+        - Safetyblock default "G40 G49 G80" appears in output
+        """
+        self.post._machine.postprocessor_properties = {
+            "file_extension": "ngc",
+            "blend_mode": "BLEND",
+            "blend_tolerance": 0.0,
+        }
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+
+        self.profile_op.Path = Path.Path(
+            [
+                Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0}),
+                Path.Command("G1", {"X": 20.0, "Y": 10.0, "Z": 5.0, "F": 1000.0}),
+            ]
         )
-        self.compare_sixth_line(
-            "G1 X10 Y20 Z30 A-440 B-450 C-460",
-            "G1 X0.3937 Y0.7874 Z1.1811 A-440.0000 B-450.0000 C-460.0000 ",
-            "--no-header --inches --no-show-editor",
-        )
+        results = self.post.export2()
+        gcode = "\n".join(g for _, g in results)
+
+        # LinuxCNC preamble defaults
+        self.assertIn("G17", gcode, "Preamble G17 should appear from schema default")
+        self.assertIn("G54", gcode, "Preamble G54 should appear from schema default")
+        self.assertIn("G80", gcode, "Preamble/safety G80 should appear from schema default")
+
+        # LinuxCNC postamble defaults
+        self.assertIn("M05", gcode, "Postamble M05 should appear from schema default")
+        self.assertIn("M2", gcode, "Postamble M2 should appear from schema default")
+
+        # LinuxCNC safetyblock defaults
+        self.assertIn("G40", gcode, "Safetyblock G40 should appear from schema default")
+        self.assertIn("G49", gcode, "Safetyblock G49 should appear from schema default")

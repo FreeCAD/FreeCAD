@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Kevin Martin <kpmartin@papertrail.ca>              *
  *                                                                         *
@@ -20,12 +22,9 @@
  ***************************************************************************/
 
 
-#ifndef SRC_BASE_UNIQUENAMEMANAGER_H_
-#define SRC_BASE_UNIQUENAMEMANAGER_H_
+#pragma once
 
-#ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
-#endif
 #include <vector>
 #include <string>
 #include <set>
@@ -55,8 +54,7 @@ protected:
     // of the start of the suffix (or name.crbegin() if no suffix).
     // It must return the same suffix length (name.crbegin() - returnValue) for both
     // unique names (one containing digits) and the corresponding base name (with no digits).
-    virtual std::string::const_reverse_iterator
-    getNameSuffixStartPosition(const std::string& name) const
+    virtual std::string::const_reverse_iterator getNameSuffixStartPosition(const std::string& name) const
     {
         return name.crbegin();
     }
@@ -210,8 +208,9 @@ private:
     /// @param name The name to break up
     /// @return a tuple(basePrefix, nameSuffix, uniqueDigitCount, uniqueDigitsValue);
     /// The two latter values will be (0,0) if name is a base name without uniquifying digits.
-    std::tuple<std::string, std::string, unsigned int, UnlimitedUnsigned>
-    decomposeName(const std::string& name) const;
+    std::tuple<std::string, std::string, unsigned int, UnlimitedUnsigned> decomposeName(
+        const std::string& name
+    ) const;
 
 public:
     UniqueNameManager() = default;
@@ -243,5 +242,3 @@ public:
     }
 };
 }  // namespace Base
-
-#endif  // SRC_BASE_UNIQUENAMEMANAGER_H_

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATURESEWING_H
-#define SURFACE_FEATURESEWING_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -52,5 +53,3 @@ public:
 };
 
 }  // Namespace Surface
-
-#endif  // SURFACE_FEATURESEWING_H

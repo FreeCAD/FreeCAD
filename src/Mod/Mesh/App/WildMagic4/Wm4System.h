@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Wild Magic Source Code
 // David Eberly
 // http://www.geometrictools.com
@@ -14,8 +16,7 @@
 //
 // Version: 4.0.1 (2006/08/15)
 
-#ifndef WM4SYSTEM_H
-#define WM4SYSTEM_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Platforms.h"
@@ -209,5 +210,3 @@ template <class T> void Deallocate (T***& raaatArray);
 #include "Wm4TStringHashTable.h"
 #include "Wm4TSmallUnorderedSet.h"  // useful for meshes
 #include "Wm4TTuple.h"  // tuples in any type and any dimension
-
-#endif

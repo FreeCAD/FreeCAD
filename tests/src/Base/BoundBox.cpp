@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 #ifdef WIN32
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <Windows.h>
+# define WIN32_LEAN_AND_MEAN
+# ifndef NOMINMAX
+#  define NOMINMAX
+# endif
+# include <Windows.h>
 #endif
 #include <Base/BoundBox.h>
 #include <boost/beast/core/span.hpp>
@@ -95,9 +95,11 @@ TEST(BoundBox, TestEmptySpan)
 
 TEST(BoundBox, TestNonEmptySpan)
 {
-    std::vector<Base::Vector3d> points = {Base::Vector3d {1.0, 0.0, 0.0},
-                                          Base::Vector3d {0.0, 1.0, 0.0},
-                                          Base::Vector3d {0.0, 0.0, 1.0}};
+    std::vector<Base::Vector3d> points = {
+        Base::Vector3d {1.0, 0.0, 0.0},
+        Base::Vector3d {0.0, 1.0, 0.0},
+        Base::Vector3d {0.0, 0.0, 1.0}
+    };
     Base::BoundBox3d box = createBox({points.data(), 2});
     EXPECT_EQ(box.IsValid(), true);
     EXPECT_EQ(box.MinX, 0);
@@ -110,9 +112,11 @@ TEST(BoundBox, TestNonEmptySpan)
 
 TEST(BoundBox, TestArray)
 {
-    std::vector<Base::Vector3d> points = {Base::Vector3d {1.0, 0.0, 0.0},
-                                          Base::Vector3d {0.0, 1.0, 0.0},
-                                          Base::Vector3d {0.0, 0.0, 1.0}};
+    std::vector<Base::Vector3d> points = {
+        Base::Vector3d {1.0, 0.0, 0.0},
+        Base::Vector3d {0.0, 1.0, 0.0},
+        Base::Vector3d {0.0, 0.0, 1.0}
+    };
     Base::BoundBox3d box(points.data(), points.size());
     EXPECT_EQ(box.IsValid(), true);
     EXPECT_EQ(box.MinX, 0);

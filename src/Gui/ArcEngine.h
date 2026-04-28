@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_ARCENGINE_H
-#define GUI_ARCENGINE_H
+#pragma once
 
 #include <FCGlobal.h>
 #include <Inventor/fields/SoMFColor.h>
@@ -42,13 +41,15 @@ class SoTranslation;
 class SoCoordinate3;
 class SoIndexedLineSet;
 
-namespace Gui {
+namespace Gui
+{
 
 
 // /*used for generating points for arc display*/
-class GuiExport ArcEngine : public SoEngine
+class GuiExport ArcEngine: public SoEngine
 {
     SO_ENGINE_HEADER(ArcEngine);
+
 public:
     ArcEngine();
     static void initClass();
@@ -63,11 +64,11 @@ public:
 
 protected:
     void evaluate() override;
+
 private:
-    ~ArcEngine() override{}
-    void defaultValues(); //some non error values if something goes wrong.
+    ~ArcEngine() override
+    {}
+    void defaultValues();  // some non error values if something goes wrong.
 };
 
-} // namespace Gui
-
-#endif // GUI_ARCENGINE_H
+}  // namespace Gui

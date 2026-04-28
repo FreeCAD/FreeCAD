@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -33,7 +35,6 @@ import csv
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from PySide import QtCore, QtGui
-
 
 __title__ = "CAM Thread Milling Operation UI."
 __author__ = "sliptonic (Brad Collette)"

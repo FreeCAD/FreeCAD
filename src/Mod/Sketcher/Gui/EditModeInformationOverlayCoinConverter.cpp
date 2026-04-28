@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -34,6 +36,8 @@
 #include <Base/Exception.h>
 #include <Base/UnitsApi.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
 #include "EditModeCoinManagerParameters.h"
 #include "EditModeInformationOverlayCoinConverter.h"
 #include "ViewProviderSketchCoinAttorney.h"
@@ -45,7 +49,8 @@ EditModeInformationOverlayCoinConverter::EditModeInformationOverlayCoinConverter
     ViewProviderSketch& vp,
     SoGroup* infogroup,
     OverlayParameters& overlayparameters,
-    DrawingParameters& drawingparameters)
+    DrawingParameters& drawingparameters
+)
     : viewProvider(vp)
     , infoGroup(infogroup)
     , overlayParameters(overlayparameters)
@@ -56,6 +61,14 @@ EditModeInformationOverlayCoinConverter::EditModeInformationOverlayCoinConverter
 
 void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry* geometry, int geoid)
 {
+    if (geoid >= 0) {
+        // Get the SketchObject from the ViewProvider.
+        if (auto* obj = viewProvider.getSketchObject()) {
+            if (obj->isInGroup(geoid, false)) {
+                return;
+            }
+        }
+    }
 
     if (geometry->is<Part::GeomBSplineCurve>()) {
         if (geoid < 0) {
@@ -87,8 +100,10 @@ void EditModeInformationOverlayCoinConverter::addToInfoGroup(SoSwitch* sw)
 }
 
 template<EditModeInformationOverlayCoinConverter::CalculationType calculation>
-void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* geometry,
-                                                        [[maybe_unused]] int geoid)
+void EditModeInformationOverlayCoinConverter::calculate(
+    const Part::Geometry* geometry,
+    [[maybe_unused]] int geoid
+)
 {
 
     if constexpr (calculation == CalculationType::ArcCircleHelper) {
@@ -161,8 +176,8 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
                 controlPolygon.coordinates.emplace_back(poles[0]);
             }
 
-            controlPolygon.indices.push_back(
-                nvertices);  // single continuous polygon starting at index 0
+            controlPolygon.indices.push_back(nvertices);  // single continuous polygon starting at
+                                                          // index 0
         }
         else if constexpr (calculation == CalculationType::BSplineCurvatureComb) {
 
@@ -192,10 +207,9 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
             for (size_t k = 0; k < knots.size() - 1; ++k) {
                 // first and last params are a little off to account for possible discontinuity at
                 // knots
-                double firstparam =
-                    knots[k] + Precision::Approximation() * (knots[k + 1] - knots[k]);
-                double lastparam =
-                    knots[k + 1] - Precision::Approximation() * (knots[k + 1] - knots[k]);
+                double firstparam = knots[k] + Precision::Approximation() * (knots[k + 1] - knots[k]);
+                double lastparam = knots[k + 1]
+                    - Precision::Approximation() * (knots[k + 1] - knots[k]);
 
                 // TODO: Maybe this can be improved, specifically adapted for each piece
                 double step = (lastparam - firstparam) / (ndivPerPiece - 1);
@@ -215,7 +229,8 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
                         Base::Console().developerError(
                             "EditModeInformationOverlayCoinConverter",
                             "Curvature graph for B-spline with GeoId=%d could not be calculated.\n",
-                            geoid);
+                            geoid
+                        );
                         curvaturelist.emplace_back(0);
                     }
 
@@ -237,33 +252,40 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
                 pointatcomblist.emplace_back(
                     pointatcurvelist[i]
                     - overlayParameters.currentBSplineCombRepresentationScale * curvaturelist[i]
-                        * normallist[i]);
+                        * normallist[i]
+                );
             }
 
             curvatureComb.coordinates.reserve(3 * ndiv);  // 2*ndiv +1 points of ndiv separate
                                                           // segments + ndiv points for last segment
-            curvatureComb.indices.reserve(
-                ndiv + 1);  // ndiv separate segments of radials + 1 segment connecting at comb end
+            curvatureComb.indices.reserve(ndiv + 1);      // ndiv separate segments of radials + 1
+                                                          // segment connecting at comb end
 
             auto zInfoH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
                 * drawingParameters.zInfo;
 
             for (int i = 0; i < ndiv; i++) {
                 // note emplace emplaces on the position BEFORE the iterator given.
-                curvatureComb.coordinates.emplace_back(pointatcurvelist[i].x,
-                                                       pointatcurvelist[i].y,
-                                                       zInfoH);  // radials
-                curvatureComb.coordinates.emplace_back(pointatcomblist[i].x,
-                                                       pointatcomblist[i].y,
-                                                       zInfoH);  // radials
+                curvatureComb.coordinates.emplace_back(
+                    pointatcurvelist[i].x,
+                    pointatcurvelist[i].y,
+                    zInfoH
+                );  // radials
+                curvatureComb.coordinates.emplace_back(
+                    pointatcomblist[i].x,
+                    pointatcomblist[i].y,
+                    zInfoH
+                );  // radials
 
                 curvatureComb.indices.emplace_back(2);  // line
             }
 
             for (int i = 0; i < ndiv; i++) {
-                curvatureComb.coordinates.emplace_back(pointatcomblist[i].x,
-                                                       pointatcomblist[i].y,
-                                                       zInfoH);  // // comb endpoint closing segment
+                curvatureComb.coordinates.emplace_back(
+                    pointatcomblist[i].x,
+                    pointatcomblist[i].y,
+                    zInfoH
+                );  // // comb endpoint closing segment
             }
 
             curvatureComb.indices.emplace_back(ndiv);  // Comb line
@@ -292,8 +314,8 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
             for (size_t i = 0; i < poles.size(); i++) {
                 poleWeights.positions.emplace_back(poles[i]);
 
-                QString WeightString =
-                    QStringLiteral("[%1]").arg(weights[i], 0, 'f', Base::UnitsApi::getDecimals());
+                QString WeightString
+                    = QStringLiteral("[%1]").arg(weights[i], 0, 'f', Base::UnitsApi::getDecimals());
 
                 poleWeights.strings.emplace_back(WeightString.toStdString());
             }
@@ -337,9 +359,11 @@ bool EditModeInformationOverlayCoinConverter::isVisible()
 }
 
 template<typename Result>
-void EditModeInformationOverlayCoinConverter::setPolygon(const Result& result,
-                                                         SoLineSet* polygonlineset,
-                                                         SoCoordinate3* polygoncoords)
+void EditModeInformationOverlayCoinConverter::setPolygon(
+    const Result& result,
+    SoLineSet* polygonlineset,
+    SoCoordinate3* polygoncoords
+)
 {
 
     polygoncoords->point.setNum(result.coordinates.size());
@@ -349,10 +373,12 @@ void EditModeInformationOverlayCoinConverter::setPolygon(const Result& result,
     SbVec3f* vts = polygoncoords->point.startEditing();
 
     for (size_t i = 0; i < result.coordinates.size(); i++) {
-        vts[i].setValue(result.coordinates[i].x,
-                        result.coordinates[i].y,
-                        ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
-                            * drawingParameters.zInfo);
+        vts[i].setValue(
+            result.coordinates[i].x,
+            result.coordinates[i].y,
+            ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
+                * drawingParameters.zInfo
+        );
     }
 
     for (size_t i = 0; i < result.indices.size(); i++) {
@@ -425,7 +451,8 @@ void EditModeInformationOverlayCoinConverter::addNode(const Result& result)
                 result.positions[i].x,
                 result.positions[i].y,
                 ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
-                    * drawingParameters.zInfo);
+                    * drawingParameters.zInfo
+            );
 
             SoFont* font = new SoFont;
             font->name.setValue("Helvetica");
@@ -462,7 +489,6 @@ void EditModeInformationOverlayCoinConverter::addNode(const Result& result)
 
         SoSwitch* sw = new SoSwitch();
 
-        // hGrpsk->GetBool("BSplineControlPolygonVisible", true)
         sw->whichChild = isVisible<Result::calculationType>() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
 
         SoSeparator* sep = new SoSeparator();
@@ -503,19 +529,21 @@ void EditModeInformationOverlayCoinConverter::updateNode(const Result& result)
             SoSwitch* sw = static_cast<SoSwitch*>(infoGroup->getChild(nodeId));
 
             if (overlayParameters.visibleInformationChanged) {
-                sw->whichChild =
-                    isVisible<Result::calculationType>() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+                sw->whichChild = isVisible<Result::calculationType>() ? SO_SWITCH_ALL
+                                                                      : SO_SWITCH_NONE;
             }
 
             SoSeparator* sep = static_cast<SoSeparator*>(sw->getChild(0));
 
             static_cast<SoTranslation*>(
-                sep->getChild(static_cast<int>(TextNodePosition::TextCoordinates)))
+                sep->getChild(static_cast<int>(TextNodePosition::TextCoordinates))
+            )
                 ->translation.setValue(
                     result.positions[i].x,
                     result.positions[i].y,
                     ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
-                        * drawingParameters.zInfo);
+                        * drawingParameters.zInfo
+                );
 
             // since the first and last control point of a spline is also treated as knot and thus
             // can also have a displayed multiplicity, we must assure the multiplicity is not
@@ -524,14 +552,20 @@ void EditModeInformationOverlayCoinConverter::updateNode(const Result& result)
             // This could be made into a more generic form, but it is probably not worth the effort
             // at this time.
             if constexpr (Result::calculationType == CalculationType::BSplinePoleWeight) {
-                setText<2>(result.strings[i],
-                           static_cast<SoText2*>(
-                               sep->getChild(static_cast<int>(TextNodePosition::TextInformation))));
+                setText<2>(
+                    result.strings[i],
+                    static_cast<SoText2*>(
+                        sep->getChild(static_cast<int>(TextNodePosition::TextInformation))
+                    )
+                );
             }
             else {
-                setText(result.strings[i],
-                        static_cast<SoText2*>(
-                            sep->getChild(static_cast<int>(TextNodePosition::TextInformation))));
+                setText(
+                    result.strings[i],
+                    static_cast<SoText2*>(
+                        sep->getChild(static_cast<int>(TextNodePosition::TextInformation))
+                    )
+                );
             }
 
             nodeId++;
@@ -548,10 +582,12 @@ void EditModeInformationOverlayCoinConverter::updateNode(const Result& result)
         SoSeparator* sep = static_cast<SoSeparator*>(sw->getChild(0));
 
         SoCoordinate3* polygoncoords = static_cast<SoCoordinate3*>(
-            sep->getChild(static_cast<int>(PolygonNodePosition::PolygonCoordinates)));
+            sep->getChild(static_cast<int>(PolygonNodePosition::PolygonCoordinates))
+        );
 
         SoLineSet* polygonlineset = static_cast<SoLineSet*>(
-            sep->getChild(static_cast<int>(PolygonNodePosition::PolygonLineSet)));
+            sep->getChild(static_cast<int>(PolygonNodePosition::PolygonLineSet))
+        );
 
         setPolygon(result, polygonlineset, polygoncoords);
 

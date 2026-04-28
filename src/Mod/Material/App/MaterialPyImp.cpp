@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -69,7 +71,7 @@ Py::String MaterialPy::getLibraryName() const
     auto library = getMaterialPtr()->getLibrary();
     if (library->isLocal()) {
         auto materialLibrary =
-            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+            std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(library);
         return {materialLibrary ? materialLibrary->getName().toStdString() : ""};
     }
     return "";
@@ -80,7 +82,7 @@ Py::String MaterialPy::getLibraryRoot() const
     auto library = getMaterialPtr()->getLibrary();
     if (library->isLocal()) {
         auto materialLibrary =
-            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+            std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(library);
         return {materialLibrary ? materialLibrary->getDirectoryPath().toStdString() : ""};
     }
     return "";
@@ -91,7 +93,10 @@ Py::Object MaterialPy::getLibraryIcon() const
     auto library = getMaterialPtr()->getLibrary();
     if (library->isLocal()) {
         auto materialLibrary =
-            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+            std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(library);
+        if (!materialLibrary) {
+            return Py::Bytes();
+        }
         auto icon = materialLibrary->getIcon();
         if (icon.isNull()) {
             return Py::Bytes();

@@ -59,7 +59,6 @@ from importers import exportIFCHelper
 from importers import exportIFCStructuralTools
 from importers.importIFCHelper import dd2dms
 
-
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 # Templates and other definitions ****
@@ -170,8 +169,6 @@ def getPreferences():
 
     import ifcopenshell
 
-    if FreeCAD.GuiUp and params.get_param_arch("ifcShowDialog"):
-        FreeCADGui.showPreferencesByName("Import-Export", ":/ui/preferences-ifc-export.ui")
     ifcunit = params.get_param_arch("ifcUnit")
 
     # Factor to multiply the dimension in millimeters
@@ -392,6 +389,9 @@ def export(exportList, filename, colors=None, preferences=None):
         if Draft.getType(obj)
         not in ["Dimension", "Material", "MaterialContainer", "WorkingPlaneProxy"]
     ]
+
+    # Note that the Draft.get_group_contents() function used later will also find children.
+    # Duplicate processing is avoided with the treated list.
     if preferences["FULL_PARAMETRIC"]:
         objectslist = Arch.getAllChildren(objectslist)
 
@@ -1152,19 +1152,24 @@ def export(exportList, filename, colors=None, preferences=None):
         if (Draft.getType(floor) == "Floor") or (
             hasattr(floor, "IfcType") and floor.IfcType == "Building Storey"
         ):
+            f = products[floor.Name]
+            floors.append(f)
+            defaulthost = f
+            treated.append(floor.Name)
+
+            # objs will include the floor itself, we avoid duplicate processing with the treated list.
             objs = Draft.get_group_contents(floor, walls=True, addgroups=True)
             objs = Arch.pruneIncluded(objs)
-            objs.remove(floor)  # get_group_contents + addgroups will include the floor itself
-            buildingelements, spaces = [], []
+            buildingelements = []
+            spaces = []
             for c in objs:
-                if c.Name in products and c.Name not in treated:
+                if c.Name not in treated and c.Name in products:
                     prod = products[c.Name]
                     if prod.is_a() == "IfcSpace":
                         spaces.append(prod)
                     else:
                         buildingelements.append(prod)
                     treated.append(c.Name)
-            f = products[floor.Name]
             if buildingelements:
                 ifcfile.createIfcRelContainedInSpatialStructure(
                     ifcopenshell.guid.new(), history, "StoreyLink", "", buildingelements, f
@@ -1173,8 +1178,6 @@ def export(exportList, filename, colors=None, preferences=None):
                 ifcfile.createIfcRelAggregates(
                     ifcopenshell.guid.new(), history, "StoreyLink", "", f, spaces
                 )
-            floors.append(f)
-            defaulthost = f
 
     # buildings
 
@@ -1184,23 +1187,25 @@ def export(exportList, filename, colors=None, preferences=None):
         if (Draft.getType(building) == "Building") or (
             hasattr(building, "IfcType") and building.IfcType == "Building"
         ):
+            b = products[building.Name]
+            buildings.append(b)
+            if not defaulthost and not preferences["ADD_DEFAULT_STOREY"]:
+                defaulthost = b
+            treated.append(building.Name)
+
+            # objs will include the building itself, we avoid duplicate processing with the treated list.
             objs = Draft.get_group_contents(building, walls=True, addgroups=True)
             objs = Arch.pruneIncluded(objs)
             children = []
             childfloors = []
             for c in objs:
-                if not (c.Name in treated):
-                    if (
-                        c.Name != building.Name
-                    ):  # get_group_contents + addgroups will include the building itself
-                        if c.Name in products:
-                            if Draft.getType(c) in ["Floor", "BuildingPart", "Space"]:
-                                childfloors.append(products[c.Name])
-                                treated.append(c.Name)
-                            elif not (c.Name in treated):
-                                children.append(products[c.Name])
-                                treated.append(c.Name)
-            b = products[building.Name]
+                if c.Name not in treated and c.Name in products:
+                    if Draft.getType(c) in ["Floor", "BuildingPart", "Space"]:
+                        childfloors.append(products[c.Name])
+                        treated.append(c.Name)
+                    else:
+                        children.append(products[c.Name])
+                        treated.append(c.Name)
             if children:
                 ifcfile.createIfcRelContainedInSpatialStructure(
                     ifcopenshell.guid.new(), history, "BuildingLink", "", children, b
@@ -1209,27 +1214,23 @@ def export(exportList, filename, colors=None, preferences=None):
                 ifcfile.createIfcRelAggregates(
                     ifcopenshell.guid.new(), history, "BuildingLink", "", b, childfloors
                 )
-            buildings.append(b)
-            if not defaulthost and not preferences["ADD_DEFAULT_STOREY"]:
-                defaulthost = b
 
     # sites
 
     for site in exportIFCHelper.getObjectsOfIfcType(objectslist, "Site"):
+        sites.append(products[site.Name])
+        treated.append(site.Name)
+
+        # objs will include the site itself, we avoid duplicate processing with the treated list.
         objs = Draft.get_group_contents(site, walls=True, addgroups=True)
         objs = Arch.pruneIncluded(objs)
         children = []
         childbuildings = []
         for c in objs:
-            if (
-                c.Name != site.Name
-            ):  # get_group_contents + addgroups will include the building itself
-                if c.Name in products:
-                    if not (c.Name in treated):
-                        if Draft.getType(c) == "Building":
-                            childbuildings.append(products[c.Name])
-                            treated.append(c.Name)
-        sites.append(products[site.Name])
+            if c.Name not in treated and c.Name in products:
+                if Draft.getType(c) == "Building":
+                    childbuildings.append(products[c.Name])
+                    treated.append(c.Name)
 
     # add default site, building and storey as required
 
@@ -1692,15 +1693,15 @@ def getPropertyData(key, value, preferences):
     if ptype in ["IfcLabel", "IfcText", "IfcIdentifier", "IfcDescriptiveMeasure"]:
         pass
     elif ptype == "IfcBoolean":
-        if pvalue in ["True", "False"]:
-            pvalue = eval(pvalue)
+        if pvalue == "True":
+            pvalue = True
         elif pvalue == ".T.":
             pvalue = True
         else:
             pvalue = False
     elif ptype == "IfcLogical":
-        if pvalue in ["True", "False"]:
-            pvalue = eval(pvalue)
+        if pvalue == "True":
+            pvalue = True
         elif pvalue.upper() == "TRUE":
             pvalue = True
         else:
@@ -2517,29 +2518,21 @@ def getRepresentation(
                         rgbt.append(diffusecolor[0])
                     i += len(sol.Faces)
             for i, shape in enumerate(colorshapes):
-                if i < len(rgbt):
-                    key = rgbt[i]
-                else:
-                    key = rgbt[0]
-                # if hasattr(obj,"Material"):
-                #    if obj.Material:
-                #        key = obj.Material.Name #TODO handle multimaterials
+                # TODO handle multimaterials
+                if i >= len(rgbt):
+                    i = 0
+                key = rgbt[i]
+                mat = None
+                if getattr(obj, "Material", None):
+                    mat = obj.Material.Label
+                    if hasattr(obj.Material, "Transparency"):
+                        # Can obj.Material.Transparency (single material) really
+                        # be different from obj.ViewObject.Transparency?
+                        key = key[:3] + (obj.Material.Transparency / 100.0,)
                 if key in surfstyles:
                     psa = surfstyles[key]
                 else:
-                    m = None
-                    if hasattr(obj, "Material"):
-                        if obj.Material:
-                            m = obj.Material.Label
-                            rgbt[i] = (
-                                rgbt[i][0],
-                                rgbt[i][1],
-                                rgbt[i][2],
-                                obj.Material.Transparency / 100.0,
-                            )
-                    psa = ifcbin.createIfcPresentationStyleAssignment(
-                        m, rgbt[i][0], rgbt[i][1], rgbt[i][2], rgbt[i][3]
-                    )
+                    psa = ifcbin.createIfcPresentationStyleAssignment(mat, *key)
                     surfstyles[key] = psa
                 isi = ifcfile.createIfcStyledItem(shape, [psa], None)
 

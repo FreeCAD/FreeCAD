@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
  *                                                                         *
@@ -20,9 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_EXTRUSIONHELPER_H
-#define PART_EXTRUSIONHELPER_H
+#pragma once
 
+#include <cstdint>
 #include <list>
 #include <vector>
 #include <gp_Dir.hxx>
@@ -38,6 +40,15 @@ namespace Part
 class TopoShape;
 
 /**
+ * @brief Controls how taper is applied to inner wires (holes) during extrusion.
+ */
+enum class InnerWireTaper : std::uint8_t
+{
+    Inverted,
+    SameAsOuter,
+};
+
+/**
  * @brief The ExtrusionParameters struct is supposed to be filled with final
  * extrusion parameters, after resolving links, applying mode logic,
  * reversing, etc., and be passed to extrudeShape.
@@ -51,6 +62,7 @@ struct ExtrusionParameters
     double taperAngleFwd {0};  // in radians
     double taperAngleRev {0};
     std::string faceMakerClass;
+    InnerWireTaper innerWireTaper {InnerWireTaper::Inverted};
 };
 
 class PartExport ExtrusionHelper
@@ -61,40 +73,50 @@ public:
     /**
      * @brief makeDraft: creates a drafted extrusion shape out of the input 2D shape
      */
-    static void makeDraft(const TopoDS_Shape& shape,
-                          const gp_Dir& direction,
-                          const double LengthFwd,
-                          const double LengthRev,
-                          const double AngleFwd,
-                          const double AngleRev,
-                          bool isSolid,
-                          std::list<TopoDS_Shape>& drafts,
-                          bool isPartDesign);
+    static void makeDraft(
+        const TopoDS_Shape& shape,
+        const gp_Dir& direction,
+        const double LengthFwd,
+        const double LengthRev,
+        const double AngleFwd,
+        const double AngleRev,
+        bool isSolid,
+        std::list<TopoDS_Shape>& drafts,
+        bool isPartDesign
+    );
     /**
-     * @brief checkInnerWires: Checks what wires are inner ones by taking a set of prisms created with every wire.
-     * The prisms are cut from each other. If the moment of inertia thereby changes, the prism wire is an inner wire.
-     * Inner wires can have nested inner wires that are then in fact outer wires.
-     * Therefore checkInnerWires is called recursively until all wires are checked.
+     * @brief checkInnerWires: Checks what wires are inner ones by taking a set of prisms created
+     * with every wire. The prisms are cut from each other. If the moment of inertia thereby
+     * changes, the prism wire is an inner wire. Inner wires can have nested inner wires that are
+     * then in fact outer wires. Therefore checkInnerWires is called recursively until all wires are
+     * checked.
      */
-    static void checkInnerWires(std::vector<bool>& isInnerWire, const gp_Dir direction,
-                                std::vector<bool>& checklist, bool forInner, std::vector<TopoDS_Shape> prisms);
+    static void checkInnerWires(
+        std::vector<bool>& isInnerWire,
+        const gp_Dir direction,
+        std::vector<bool>& checklist,
+        bool forInner,
+        std::vector<TopoDS_Shape> prisms
+    );
     /**
      * @brief createTaperedPrismOffset: creates an offset wire from the sourceWire in the specified
      * translation. isSecond determines if the wire is used for the 2nd extrusion direction.
      */
-    static void createTaperedPrismOffset(TopoDS_Wire sourceWire,
-                                         const gp_Vec& translation,
-                                         double offset,
-                                         bool isSecond,
-                                         TopoDS_Wire& result);
+    static void createTaperedPrismOffset(
+        TopoDS_Wire sourceWire,
+        const gp_Vec& translation,
+        double offset,
+        bool isSecond,
+        TopoDS_Wire& result
+    );
     /** Same as makeDraft() with support of element mapping
      */
-    static void makeElementDraft(const ExtrusionParameters& params,
-                                 const TopoShape&,
-                                 std::vector<TopoShape>&,
-                                 App::StringHasherRef hasher);
+    static void makeElementDraft(
+        const ExtrusionParameters& params,
+        const TopoShape&,
+        std::vector<TopoShape>&,
+        App::StringHasherRef hasher
+    );
 };
 
-} //namespace Part
-
-#endif // PART_EXTRUSIONHELPER_H
+}  // namespace Part

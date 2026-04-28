@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QApplication>
-# include <QEventLoop>
-# include <QFileDialog>
-# include <QMutex>
-# include <QMutexLocker>
-# include <QMdiArea>
-# include <QMdiSubWindow>
-# include <QRunnable>
-# include <QThread>
-# include <QThreadPool>
-# include <QTimer>
-# include <QTranslator>
-# include <QWaitCondition>
+#include <QApplication>
+#include <QEventLoop>
+#include <QFileDialog>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QMdiArea>
+#include <QMdiSubWindow>
+#include <QRunnable>
+#include <QThread>
+#include <QThreadPool>
+#include <QTimer>
+#include <QTranslator>
+#include <QWaitCondition>
 
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
@@ -53,27 +53,31 @@ using namespace Gui;
 DEF_STD_CMD(Std_TestQM)
 
 Std_TestQM::Std_TestQM()
-  : Command("Std_TestQM")
+    : Command("Std_TestQM")
 {
-    sGroup        = "Standard-Test";
+    sGroup = "Standard-Test";
     sMenuText = "Test Translation Files";
 
-    sToolTipText  = "Runs a test to verify .qm translation files";
-    sWhatsThis    = "Std_TestQM";
-    sStatusTip    = sToolTipText;
+    sToolTipText = "Runs a test to verify .qm translation files";
+    sWhatsThis = "Std_TestQM";
+    sStatusTip = sToolTipText;
 }
 
 void Std_TestQM::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QStringList files = QFileDialog::getOpenFileNames(getMainWindow(),
-        QStringLiteral("Test translation"), QString(),
-        QStringLiteral("Translation (*.qm)"));
+    QStringList files = QFileDialog::getOpenFileNames(
+        getMainWindow(),
+        QStringLiteral("Test translation"),
+        QString(),
+        QStringLiteral("Translation (*.qm)")
+    );
     if (!files.empty()) {
         Translator::instance()->activateLanguage("English");
         QList<QTranslator*> i18n = qApp->findChildren<QTranslator*>();
-        for (QTranslator* it : i18n)
+        for (QTranslator* it : i18n) {
             qApp->removeTranslator(it);
+        }
         for (const QString& it : files) {
             auto translator = new QTranslator(qApp);
             if (translator->load(it)) {
@@ -92,13 +96,13 @@ void Std_TestQM::activated(int iMsg)
 DEF_STD_CMD(Std_TestReloadQM)
 
 Std_TestReloadQM::Std_TestReloadQM()
-  : Command("Std_TestReloadQM")
+    : Command("Std_TestReloadQM")
 {
-    sGroup        = "Standard-Test";
-    sMenuText     = "Reload Translation Files";
-    sToolTipText  = "Reloads the translation files";
-    sWhatsThis    = "Std_TestReloadQM";
-    sStatusTip    = sToolTipText;
+    sGroup = "Standard-Test";
+    sMenuText = "Reload Translation Files";
+    sToolTipText = "Reloads the translation files";
+    sWhatsThis = "Std_TestReloadQM";
+    sStatusTip = sToolTipText;
 }
 
 void Std_TestReloadQM::activated(int iMsg)
@@ -113,15 +117,15 @@ void Std_TestReloadQM::activated(int iMsg)
 DEF_STD_CMD_A(FCCmdTest1)
 
 FCCmdTest1::FCCmdTest1()
-  : Command("Std_Test1")
+    : Command("Std_Test1")
 {
-    sGroup        = "Standard-Test";
-    sMenuText     = "Test1";
-    sToolTipText  = "Test function 1";
-    sWhatsThis    = "Std_Test1";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Std_Tool1";
-    sAccel        = "Ctrl+T";
+    sGroup = "Standard-Test";
+    sMenuText = "Test1";
+    sToolTipText = "Test function 1";
+    sWhatsThis = "Std_Test1";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool1";
+    sAccel = "Ctrl+T";
 }
 
 void FCCmdTest1::activated(int iMsg)
@@ -131,7 +135,7 @@ void FCCmdTest1::activated(int iMsg)
 
 bool FCCmdTest1::isActive()
 {
-    //return (GetActiveOCCDocument()!=NULL);
+    // return (GetActiveOCCDocument()!=NULL);
     return true;
 }
 
@@ -141,14 +145,14 @@ bool FCCmdTest1::isActive()
 DEF_STD_CMD_A(FCCmdTest2)
 
 FCCmdTest2::FCCmdTest2()
-  : Command("Std_Test2")
+    : Command("Std_Test2")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Test2";
-    sToolTipText    = "Test function 2";
-    sWhatsThis      = "Std_Test2";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Std_Tool2";
+    sGroup = "Standard-Test";
+    sMenuText = "Test2";
+    sToolTipText = "Test function 2";
+    sWhatsThis = "Std_Test2";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool2";
 }
 
 
@@ -168,22 +172,23 @@ bool FCCmdTest2::isActive()
 DEF_STD_CMD_A(FCCmdTest3)
 
 FCCmdTest3::FCCmdTest3()
-  : Command("Std_Test3")
+    : Command("Std_Test3")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Test3";
-    sToolTipText    = "Test function 3";
-    sWhatsThis      = "Std_Test3";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Std_Tool3";
+    sGroup = "Standard-Test";
+    sMenuText = "Test3";
+    sToolTipText = "Test function 3";
+    sWhatsThis = "Std_Test3";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool3";
 }
 
 void FCCmdTest3::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *pcDoc = getDocument();
-    if (!pcDoc)
+    App::Document* pcDoc = getDocument();
+    if (!pcDoc) {
         return;
+    }
 }
 
 
@@ -199,22 +204,23 @@ bool FCCmdTest3::isActive()
 DEF_STD_CMD_A(FCCmdTest4)
 
 FCCmdTest4::FCCmdTest4()
-  : Command("Std_Test4")
+    : Command("Std_Test4")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Test4";
-    sToolTipText    = "Test function 4";
-    sWhatsThis      = "Std_Test4";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Std_Tool4";
+    sGroup = "Standard-Test";
+    sMenuText = "Test4";
+    sToolTipText = "Test function 4";
+    sWhatsThis = "Std_Test4";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool4";
 }
 
 void FCCmdTest4::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *pcDoc = getDocument();
-    if(!pcDoc)
+    App::Document* pcDoc = getDocument();
+    if (!pcDoc) {
         return;
+    }
 }
 
 
@@ -229,27 +235,28 @@ bool FCCmdTest4::isActive()
 DEF_STD_CMD_A(FCCmdTest5)
 
 FCCmdTest5::FCCmdTest5()
-  : Command("Std_Test5")
+    : Command("Std_Test5")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Test5";
-    sToolTipText    = "Test function 5";
-    sWhatsThis      = "Std_Test5";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Std_Tool5";
+    sGroup = "Standard-Test";
+    sMenuText = "Test5";
+    sToolTipText = "Test function 5";
+    sWhatsThis = "Std_Test5";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool5";
 }
 
 void FCCmdTest5::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *pcDoc = getDocument();
-    if(!pcDoc)
+    App::Document* pcDoc = getDocument();
+    if (!pcDoc) {
         return;
+    }
 }
 
 bool FCCmdTest5::isActive()
 {
-  return (getDocument() != nullptr);
+    return (getDocument() != nullptr);
 }
 
 
@@ -259,22 +266,23 @@ bool FCCmdTest5::isActive()
 DEF_STD_CMD_A(FCCmdTest6)
 
 FCCmdTest6::FCCmdTest6()
-  : Command("Std_Test6")
+    : Command("Std_Test6")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Test6";
-    sToolTipText    = "Test function 6";
-    sWhatsThis      = "Std_Test6";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Std_Tool6";
+    sGroup = "Standard-Test";
+    sMenuText = "Test6";
+    sToolTipText = "Test function 6";
+    sWhatsThis = "Std_Test6";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool6";
 }
 
 void FCCmdTest6::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *pcDoc = getDocument();
-    if(!pcDoc)
+    App::Document* pcDoc = getDocument();
+    if (!pcDoc) {
         return;
+    }
 }
 
 bool FCCmdTest6::isActive()
@@ -288,27 +296,30 @@ bool FCCmdTest6::isActive()
 DEF_STD_CMD_A(CmdTestCmdFuncs)
 
 CmdTestCmdFuncs::CmdTestCmdFuncs()
-  : Command("Std_TestCmdFuncs")
+    : Command("Std_TestCmdFuncs")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Test Functions";
-    sToolTipText    = "Test functions";
-    sWhatsThis      = "Std_TestCmdFuncs";
-    sStatusTip      = sToolTipText;
+    sGroup = "Standard-Test";
+    sMenuText = "Test Functions";
+    sToolTipText = "Test functions";
+    sWhatsThis = "Std_TestCmdFuncs";
+    sStatusTip = sToolTipText;
 }
 
 void CmdTestCmdFuncs::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
+    App::Document* doc = getDocument();
     auto obj = doc->addObject("App::Annotation", "obj");
-    if (!obj)
+    if (!obj) {
         return;
+    }
 
     std::string objName = obj->getNameInDocument();
 
     Gui::cmdAppDocument(doc, std::ostringstream() << "getObject('" << objName << "')");
-    std::string cmd = "getObject('"; cmd += objName; cmd += "')";
+    std::string cmd = "getObject('";
+    cmd += objName;
+    cmd += "')";
     Gui::cmdAppDocument(doc, cmd);
 
     Gui::cmdAppDocument(doc, std::ostringstream() << "getObject('" << objName << "')");
@@ -338,14 +349,14 @@ bool CmdTestCmdFuncs::isActive()
 DEF_STD_CMD_A(CmdTestProgress1)
 
 CmdTestProgress1::CmdTestProgress1()
-  : Command("Std_TestProgress1")
+    : Command("Std_TestProgress1")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Breakable Bar";
-    sToolTipText    = "Test a breakable progress bar";
-    sWhatsThis      = "Std_TestProgress1";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Std_Tool7";
+    sGroup = "Standard-Test";
+    sMenuText = "Breakable Bar";
+    sToolTipText = "Test a breakable progress bar";
+    sWhatsThis = "Std_TestProgress1";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool7";
 }
 
 void CmdTestProgress1::activated(int iMsg)
@@ -353,19 +364,16 @@ void CmdTestProgress1::activated(int iMsg)
     Q_UNUSED(iMsg);
     QMutex mutex;
     QMutexLocker ml(&mutex);
-    try
-    {
+    try {
         unsigned long steps = 1000;
         Base::SequencerLauncher seq("Starting progress bar", steps);
 
-        for (unsigned long i=0; i<steps;i++)
-        {
+        for (unsigned long i = 0; i < steps; i++) {
             seq.next(true);
             QWaitCondition().wait(&mutex, 30);
         }
     }
-    catch (...)
-    {
+    catch (...) {
     }
 }
 
@@ -380,14 +388,14 @@ bool CmdTestProgress1::isActive()
 DEF_STD_CMD_A(CmdTestProgress2)
 
 CmdTestProgress2::CmdTestProgress2()
-  : Command("Std_TestProgress2")
+    : Command("Std_TestProgress2")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Unbreakable Bar";
-    sToolTipText    = "Test a unbreakable progress bar";
-    sWhatsThis      = "Std_TestProgress2";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Std_Tool7";
+    sGroup = "Standard-Test";
+    sMenuText = "Unbreakable Bar";
+    sToolTipText = "Test a unbreakable progress bar";
+    sWhatsThis = "Std_TestProgress2";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool7";
 }
 
 void CmdTestProgress2::activated(int iMsg)
@@ -396,25 +404,22 @@ void CmdTestProgress2::activated(int iMsg)
     QMutex mutex;
     QMutexLocker ml(&mutex);
 
-    try
-    {
+    try {
         unsigned long steps = 1000;
         Base::SequencerLauncher seq("Starting progress bar", steps);
 
-        for (unsigned long i=0; i<steps;i++)
-        {
+        for (unsigned long i = 0; i < steps; i++) {
             seq.next(false);
             QWaitCondition().wait(&mutex, 10);
         }
     }
-    catch (...)
-    {
+    catch (...) {
     }
 }
 
 bool CmdTestProgress2::isActive()
 {
-    return ( !Base::Sequencer().isRunning() );
+    return (!Base::Sequencer().isRunning());
 }
 
 //===========================================================================
@@ -423,14 +428,14 @@ bool CmdTestProgress2::isActive()
 DEF_STD_CMD_A(CmdTestProgress3)
 
 CmdTestProgress3::CmdTestProgress3()
-  : Command("Std_TestProgress3")
+    : Command("Std_TestProgress3")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Nested Progress Bar";
-    sToolTipText    = "Test nested progress bar";
-    sWhatsThis      = "Std_TestProgress3";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Std_Tool8";
+    sGroup = "Standard-Test";
+    sMenuText = "Nested Progress Bar";
+    sToolTipText = "Test nested progress bar";
+    sWhatsThis = "Std_TestProgress3";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool8";
 }
 
 void CmdTestProgress3::activated(int iMsg)
@@ -439,37 +444,32 @@ void CmdTestProgress3::activated(int iMsg)
     QMutex mutex;
     QMutexLocker ml(&mutex);
 
-    try
-    {
+    try {
         // level 1
         unsigned long level1 = 5;
         Base::SequencerLauncher seq1("Starting progress bar", level1);
-        for (unsigned long i=0; i<level1;i++)
-        {
+        for (unsigned long i = 0; i < level1; i++) {
             QWaitCondition().wait(&mutex, 200);
             seq1.next(true);
 
             // level 2
             unsigned long level2 = 6;
             Base::SequencerLauncher seq2("Starting progress bar", level2);
-            for (unsigned long j=0; j<level2;j++)
-            {
+            for (unsigned long j = 0; j < level2; j++) {
                 QWaitCondition().wait(&mutex, 150);
                 seq2.next(true);
 
                 // level 3
                 unsigned long level3 = 7;
                 Base::SequencerLauncher seq3("Starting progress bar", level3);
-                for (unsigned long k=0; k<level3;k++)
-                {
+                for (unsigned long k = 0; k < level3; k++) {
                     QWaitCondition().wait(&mutex, 100);
                     seq3.next(true);
 
                     // level 4
                     unsigned long level4 = 8;
                     Base::SequencerLauncher seq4("Starting progress bar", level4);
-                    for (unsigned long l=0; l<level4;l++)
-                    {
+                    for (unsigned long l = 0; l < level4; l++) {
                         QWaitCondition().wait(&mutex, 5);
                         seq4.next(true);
                     }
@@ -477,14 +477,13 @@ void CmdTestProgress3::activated(int iMsg)
             }
         }
     }
-    catch (...)
-    {
+    catch (...) {
     }
 }
 
 bool CmdTestProgress3::isActive()
 {
-    return ( !Base::Sequencer().isRunning() );
+    return (!Base::Sequencer().isRunning());
 }
 
 //===========================================================================
@@ -493,14 +492,14 @@ bool CmdTestProgress3::isActive()
 DEF_STD_CMD_A(CmdTestProgress4)
 
 CmdTestProgress4::CmdTestProgress4()
-  : Command("Std_TestProgress4")
+    : Command("Std_TestProgress4")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Mixed Nested Bar";
-    sToolTipText    = "Test a mixed up nested progress bar";
-    sWhatsThis      = "Std_TestProgress4";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Std_Tool7";
+    sGroup = "Standard-Test";
+    sMenuText = "Mixed Nested Bar";
+    sToolTipText = "Test a mixed up nested progress bar";
+    sWhatsThis = "Std_TestProgress4";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool7";
 }
 
 void CmdTestProgress4::activated(int iMsg)
@@ -509,13 +508,11 @@ void CmdTestProgress4::activated(int iMsg)
     QMutex mutex;
     QMutexLocker ml(&mutex);
 
-    try
-    {
+    try {
         unsigned long steps = 50;
         auto seq = new Base::SequencerLauncher("Starting progress bar", steps);
 
-        for (unsigned long i=0; i<steps;i++)
-        {
+        for (unsigned long i = 0; i < steps; i++) {
             QWaitCondition().wait(&mutex, 5);
             if (i == 45) {
                 delete seq;
@@ -525,15 +522,13 @@ void CmdTestProgress4::activated(int iMsg)
                 seq->next(false);
             }
             Base::SequencerLauncher seq2("Starting second progress bar", steps);
-            for (unsigned long j=0; j<steps;j++)
-            {
+            for (unsigned long j = 0; j < steps; j++) {
                 QWaitCondition().wait(&mutex, (seq ? 5 : 50));
                 seq2.next(true);
             }
         }
     }
-    catch (...)
-    {
+    catch (...) {
     }
 }
 
@@ -548,44 +543,41 @@ bool CmdTestProgress4::isActive()
 DEF_STD_CMD_A(CmdTestProgress5)
 
 CmdTestProgress5::CmdTestProgress5()
-  : Command("Std_TestProgress5")
+    : Command("Std_TestProgress5")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "From Thread";
-    sToolTipText    = "Test a progress bar from a thread";
-    sWhatsThis      = "Std_TestProgress5";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Std_Tool7";
+    sGroup = "Standard-Test";
+    sMenuText = "From Thread";
+    sToolTipText = "Test a progress bar from a thread";
+    sWhatsThis = "Std_TestProgress5";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Tool7";
 }
 
-class BarThread : public QThread
+class BarThread: public QThread
 {
 public:
-    explicit BarThread(unsigned long s) : steps(s)
-    {
-    }
-    ~BarThread() override  = default;
+    explicit BarThread(unsigned long s)
+        : steps(s)
+    {}
+    ~BarThread() override = default;
     void run() override
     {
         QMutex mutex;
         QMutexLocker ml(&mutex);
 
-        try
-        {
+        try {
             Base::SequencerLauncher seq("Starting progress bar in thread", steps);
 
-            for (unsigned long i=0; i<this->steps;i++)
-            {
+            for (unsigned long i = 0; i < this->steps; i++) {
                 seq.next(true);
                 QWaitCondition().wait(&mutex, 5);
             }
         }
-        catch (...)
-        {
+        catch (...) {
         }
 
         this->deleteLater();
-        Base::Console().message("Thread with %d steps finished\n",this->steps);
+        Base::Console().message("Thread with %d steps finished\n", this->steps);
     }
 
 private:
@@ -608,7 +600,7 @@ void CmdTestProgress5::activated(int iMsg)
     timer.setSingleShot(true);
     QObject::connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
     thr2->start();
-    timer.start(2000); // 2s timeout
+    timer.start(2000);  // 2s timeout
     loop.exec();
 
     auto thr3 = new BarThread(1000);
@@ -626,13 +618,13 @@ bool CmdTestProgress5::isActive()
 DEF_STD_CMD_A(CmdTestMDI1)
 
 CmdTestMDI1::CmdTestMDI1()
-  : Command("Std_MDITest1")
+    : Command("Std_MDITest1")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Remove MDI 1";
-    sToolTipText    = "Remove MDI from main window";
-    sWhatsThis      = "Std_MDITest1";
-    sStatusTip      = sToolTipText;
+    sGroup = "Standard-Test";
+    sMenuText = "Remove MDI 1";
+    sToolTipText = "Remove MDI from main window";
+    sWhatsThis = "Std_MDITest1";
+    sStatusTip = sToolTipText;
 }
 
 void CmdTestMDI1::activated(int iMsg)
@@ -650,13 +642,13 @@ bool CmdTestMDI1::isActive()
 DEF_STD_CMD_A(CmdTestMDI2)
 
 CmdTestMDI2::CmdTestMDI2()
-  : Command("Std_MDITest2")
+    : Command("Std_MDITest2")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Remove MDI 2";
-    sToolTipText    = "Remove view from MDI area";
-    sWhatsThis      = "Std_MDITest2";
-    sStatusTip      = sToolTipText;
+    sGroup = "Standard-Test";
+    sMenuText = "Remove MDI 2";
+    sToolTipText = "Remove view from MDI area";
+    sWhatsThis = "Std_MDITest2";
+    sStatusTip = sToolTipText;
 }
 
 void CmdTestMDI2::activated(int iMsg)
@@ -678,13 +670,13 @@ bool CmdTestMDI2::isActive()
 DEF_STD_CMD_A(CmdTestMDI3)
 
 CmdTestMDI3::CmdTestMDI3()
-  : Command("Std_MDITest3")
+    : Command("Std_MDITest3")
 {
-    sGroup          = "Standard-Test";
-    sMenuText       = "Remove MDI 3";
-    sToolTipText    = "Unset parent and remove from main window";
-    sWhatsThis      = "Std_MDITest3";
-    sStatusTip      = sToolTipText;
+    sGroup = "Standard-Test";
+    sMenuText = "Remove MDI 3";
+    sToolTipText = "Unset parent and remove from main window";
+    sWhatsThis = "Std_MDITest3";
+    sStatusTip = sToolTipText;
 }
 
 void CmdTestMDI3::activated(int iMsg)
@@ -692,9 +684,10 @@ void CmdTestMDI3::activated(int iMsg)
     Q_UNUSED(iMsg);
     MDIView* mdi = getMainWindow()->activeWindow();
     getMainWindow()->removeWindow(mdi);
-    mdi->setParent(nullptr, Qt::Window | Qt::WindowTitleHint |
-                   Qt::WindowSystemMenuHint |
-                   Qt::WindowMinMaxButtonsHint);
+    mdi->setParent(
+        nullptr,
+        Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint
+    );
     mdi->show();
 }
 
@@ -706,35 +699,43 @@ bool CmdTestMDI3::isActive()
 DEF_STD_CMD(CmdTestConsoleOutput)
 
 CmdTestConsoleOutput::CmdTestConsoleOutput()
-  : Command("Std_TestConsoleOutput")
+    : Command("Std_TestConsoleOutput")
 {
-    sGroup      = "Standard-Test";
-    sMenuText   = QT_TR_NOOP("Test Console Output");
-    sToolTipText= QT_TR_NOOP("Run test cases to verify console messages");
-    sStatusTip  = sToolTipText;
+    sGroup = "Standard-Test";
+    sMenuText = QT_TR_NOOP("Test Console Output");
+    sToolTipText = QT_TR_NOOP("Run test cases to verify console messages");
+    sStatusTip = sToolTipText;
 }
 
-namespace Gui {
-class TestConsoleObserver : public Base::ILogger
+namespace Gui
+{
+class TestConsoleObserver: public Base::ILogger
 {
     QMutex mutex;
-public:
-    int matchMsg{0};
-    int matchWrn{0};
-    int matchErr{0};
-    int matchLog{0};
-    int matchCritical{0};
-    TestConsoleObserver() = default;
-    void sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
-                 Base::IntendedRecipient recipient, Base::ContentType content) override{
 
-        (void) notifiername;
-        (void) recipient;
-        (void) content;
+public:
+    int matchMsg {0};
+    int matchWrn {0};
+    int matchErr {0};
+    int matchLog {0};
+    int matchCritical {0};
+    TestConsoleObserver() = default;
+    void sendLog(
+        const std::string& notifiername,
+        const std::string& msg,
+        Base::LogStyle level,
+        Base::IntendedRecipient recipient,
+        Base::ContentType content
+    ) override
+    {
+
+        (void)notifiername;
+        (void)recipient;
+        (void)content;
 
         QMutexLocker ml(&mutex);
 
-        switch(level){
+        switch (level) {
             case Base::LogStyle::Warning:
                 matchWrn += strcmp(msg.c_str(), "Write a warning to the console output.\n");
                 break;
@@ -756,57 +757,62 @@ public:
     }
 };
 
-class ConsoleMessageTask : public QRunnable
+class ConsoleMessageTask: public QRunnable
 {
 public:
     void run() override
     {
-        for (int i=0; i<10; i++)
+        for (int i = 0; i < 10; i++) {
             Base::Console().message("Write a message to the console output.\n");
+        }
     }
 };
 
-class ConsoleWarningTask : public QRunnable
+class ConsoleWarningTask: public QRunnable
 {
 public:
     void run() override
     {
-        for (int i=0; i<10; i++)
+        for (int i = 0; i < 10; i++) {
             Base::Console().warning("Write a warning to the console output.\n");
+        }
     }
 };
 
-class ConsoleErrorTask : public QRunnable
+class ConsoleErrorTask: public QRunnable
 {
 public:
     void run() override
     {
-        for (int i=0; i<10; i++)
+        for (int i = 0; i < 10; i++) {
             Base::Console().error("Write an error to the console output.\n");
+        }
     }
 };
 
-class ConsoleLogTask : public QRunnable
+class ConsoleLogTask: public QRunnable
 {
 public:
     void run() override
     {
-        for (int i=0; i<10; i++)
+        for (int i = 0; i < 10; i++) {
             Base::Console().log("Write a log to the console output.\n");
+        }
     }
 };
 
-class ConsoleCriticalTask : public QRunnable
+class ConsoleCriticalTask: public QRunnable
 {
 public:
     void run() override
     {
-        for (int i=0; i<10; i++)
+        for (int i = 0; i < 10; i++) {
             Base::Console().critical("Write a critical message to the console output.\n");
+        }
     }
 };
 
-}
+}  // namespace Gui
 
 void CmdTestConsoleOutput::activated(int iMsg)
 {
@@ -821,17 +827,19 @@ void CmdTestConsoleOutput::activated(int iMsg)
     QThreadPool::globalInstance()->waitForDone();
     Base::Console().detachObserver(&obs);
 
-    if (obs.matchMsg > 0 || obs.matchWrn > 0 || obs.matchErr > 0 || obs.matchLog > 0 || obs.matchCritical > 0) {
+    if (obs.matchMsg > 0 || obs.matchWrn > 0 || obs.matchErr > 0 || obs.matchLog > 0
+        || obs.matchCritical > 0) {
         Base::Console().error("Race condition in Console class\n");
     }
 }
 
 
-namespace Gui {
+namespace Gui
+{
 
 void CreateTestCommands()
 {
-    CommandManager &rcCmdMgr = Application::Instance->commandManager();
+    CommandManager& rcCmdMgr = Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new Std_TestQM());
     rcCmdMgr.addCommand(new Std_TestReloadQM());
@@ -853,4 +861,4 @@ void CreateTestCommands()
     rcCmdMgr.addCommand(new CmdTestConsoleOutput());
 }
 
-} // namespace Gui
+}  // namespace Gui

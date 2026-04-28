@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
   tag: Erwin Aertbelien  Mon Jan 10 16:38:38 CET 2005  error.h 
 
@@ -42,8 +44,7 @@
  *		$Id: error.h,v 1.1.1.1.2.2 2003/04/04 15:39:43 pissaris Exp $
  *		$Name:  $ 
  ****************************************************************************/
-#ifndef ERROR_H_84822 // to make it unique, a random number
-#define ERROR_H_84822
+#pragma once
 
 #include "utility.h"
 #include <string.h>
@@ -245,5 +246,3 @@ public:
 
 
 }
-
-#endif

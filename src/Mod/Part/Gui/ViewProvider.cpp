@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -49,7 +51,7 @@ bool ViewProviderPart::doubleClicked()
 {
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-        Gui::Command::openCommand(text.toUtf8());
+        Gui::Command::openActiveDocumentCommand(text.toStdString());
         Gui::cmdSetEdit(pcObject, Gui::Application::Instance->getUserEditMode());
         return true;
     }
@@ -59,9 +61,11 @@ bool ViewProviderPart::doubleClicked()
     }
 }
 
-void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
-                                  const std::vector<Base::Color>& colBase,
-                                  std::vector<Base::Color>& colBool)
+void ViewProviderPart::applyColor(
+    const Part::ShapeHistory& hist,
+    const std::vector<Base::Color>& colBase,
+    std::vector<Base::Color>& colBool
+)
 {
     // apply color from modified faces
     for (const auto& jt : hist.shapeMap) {
@@ -71,9 +75,11 @@ void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
     }
 }
 
-void ViewProviderPart::applyMaterial(const Part::ShapeHistory& hist,
-                                     const std::vector<App::Material>& colBase,
-                                     std::vector<App::Material>& colBool)
+void ViewProviderPart::applyMaterial(
+    const Part::ShapeHistory& hist,
+    const std::vector<App::Material>& colBase,
+    std::vector<App::Material>& colBool
+)
 {
     // apply color from modified faces
     for (const auto& jt : hist.shapeMap) {

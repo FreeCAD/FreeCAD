@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHPARTGUI_TESSELLATION_H
-#define MESHPARTGUI_TESSELLATION_H
+#pragma once
 
 #include <QPointer>
 #include <memory>
@@ -142,5 +143,3 @@ private:
 };
 
 }  // namespace MeshPartGui
-
-#endif  // MESHPARTGUI_TESSELLATION_H

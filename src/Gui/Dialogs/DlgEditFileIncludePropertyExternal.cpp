@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -36,13 +38,14 @@ using namespace Gui::Dialog;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgEditFileIncludePropertyExternal::
-DlgEditFileIncludePropertyExternal(App::PropertyFileIncluded& Prop,
-                                   QWidget* parent, Qt::WindowFlags fl)
-    : DlgRunExternal(parent, fl), Prop(Prop)
-{
-
-}
+DlgEditFileIncludePropertyExternal::DlgEditFileIncludePropertyExternal(
+    App::PropertyFileIncluded& Prop,
+    QWidget* parent,
+    Qt::WindowFlags fl
+)
+    : DlgRunExternal(parent, fl)
+    , Prop(Prop)
+{}
 
 /**
  *  Destroys the object and frees any allocated resources
@@ -64,8 +67,9 @@ int DlgEditFileIncludePropertyExternal::processFile()
 
     int ret = DlgRunExternal::runProcess();
 
-    if (ret == QDialog::Accepted)
+    if (ret == QDialog::Accepted) {
         Prop.setValue(TempFile.toUtf8());
+    }
 
     QFile::remove(TempFile);
     return ret;

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -35,10 +36,11 @@ class SoSeparator;
 class SbVec3f;
 class SoTransform;
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderCylinderParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderCylinderParametric: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderCylinderParametric);
 
@@ -51,11 +53,6 @@ public:
     std::vector<std::string> getDisplayModes() const override;
 
 protected:
-
 };
 
-} // namespace PartGui
-
-
-#endif // PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H
-
+}  // namespace PartGui

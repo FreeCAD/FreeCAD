@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -518,7 +520,12 @@ TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantityConstraint)
 PropertyLength::PropertyLength()
 {
     setUnit(Base::Unit::Length);
-    setConstraints(&LengthStandard);
+    enableNegative(false);
+}
+
+void PropertyLength::enableNegative(bool on)
+{
+    setConstraints(on ? nullptr : &LengthStandard);
 }
 
 //**************************************************************************
@@ -863,3 +870,4 @@ PropertyYoungsModulus::PropertyYoungsModulus()
 {
     setUnit(Base::Unit::YoungsModulus);
 }
+

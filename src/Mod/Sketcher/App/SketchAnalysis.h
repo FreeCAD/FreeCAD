@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2018 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -21,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SKETCHANALYSIS_H
-#define SKETCHER_SKETCHANALYSIS_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -91,8 +92,10 @@ public:
     /// Point on Point constraint simple routine Detect step (see constructor)
     /// Detect detects only coincident constraints, Analyse converts coincident to endpoint
     /// perpendicular/tangent where appropriate
-    int detectMissingPointOnPointConstraints(double precision = Precision::Confusion() * 1000,
-                                             bool includeconstruction = true);
+    int detectMissingPointOnPointConstraints(
+        double precision = Precision::Confusion() * 1000,
+        bool includeconstruction = true
+    );
     /// Point on Point constraint simple routine Analyse step (see constructor)
     void analyseMissingPointOnPointCoincident(double angleprecision = std::numbers::pi / 8);
     /// Point on Point constraint simple routine Get step (see constructor)
@@ -167,9 +170,11 @@ public:
     /// makes assumptions to avoid redundancies.
     ///
     /// It applies coincidents - vertical/horizontal constraints and equality constraints.
-    int autoconstraint(double precision = Precision::Confusion() * 1000,
-                       double angleprecision = std::numbers::pi / 8,
-                       bool includeconstruction = true);
+    int autoconstraint(
+        double precision = Precision::Confusion() * 1000,
+        double angleprecision = std::numbers::pi / 8,
+        bool includeconstruction = true
+    );
 
     // helper functions, which may be used by more complex methods, and/or called directly by user
     // space (python) methods
@@ -205,5 +210,3 @@ private:
 };
 
 }  // namespace Sketcher
-
-#endif  // SKETCHER_SKETCHANALYSIS_H

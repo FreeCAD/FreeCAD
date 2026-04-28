@@ -25,13 +25,15 @@
 #include <FCConfig.h>
 
 #if defined(_MSC_VER)
-#include <windows.h>
-#include <dbghelp.h>
+# include <windows.h>
+# include <dbghelp.h>
 #endif
 
 #if HAVE_CONFIG_H
-#include <config.h>
+# include <config.h>
 #endif  // HAVE_CONFIG_H
+
+#include <Build/Version.h>  // For FCCopyrightYear
 
 #include <cstdio>
 #include <map>
@@ -43,18 +45,23 @@
 
 // FreeCAD header
 #include <App/Application.h>
+#include <App/ProgramInformation.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/ProgramInformation.h>
 
 
 void PrintInitHelp();
 
-const char sBanner[] =
-    "(C) 2001-2025 FreeCAD contributors\n"
-    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
+const auto sBanner = fmt::format(
+    "(C) 2001-{} FreeCAD contributors\n"
+    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n",
+    FCCopyrightYear
+);
 
 #if defined(_MSC_VER)
 void InitMiniDumpWriter(const std::string&);
@@ -97,26 +104,27 @@ static bool inGuiMode()
         || App::Application::Config()["RunMode"] == "Internal";
 }
 
-static void displayInfo(const QString& msg, bool preformatted = true)
+static void displayInfo(const std::string& msg, bool preformatted = true)
 {
     if (inGuiMode()) {
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QString qMsg = QString::fromStdString(msg);
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Information);
         msgBox.setWindowTitle(appName);
-        msgBox.setDetailedText(msg);
-        msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg);
+        msgBox.setDetailedText(qMsg);
+        msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(qMsg) : qMsg);
         msgBox.exec();
     }
     else {
-        std::cout << msg.toStdString();
+        std::cout << msg;
     }
 }
 
 static void displayCritical(const QString& msg, bool preformatted = true)
 {
     if (inGuiMode()) {
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
         QString title = QObject::tr("Initialization of %1 failed").arg(appName);
         QString text = preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg;
         QMessageBox::critical(nullptr, title, text);
@@ -129,7 +137,11 @@ static void displayCritical(const QString& msg, bool preformatted = true)
 int main(int argc, char** argv)
 {
 #if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-    setlocale(LC_ALL, "");       // use native environment settings
+    setlocale(LC_ALL, "");  // use native environment settings
+    // Preserve the resolved numeric locale before forcing LC_NUMERIC=C for XML parsing.
+    if (const char* localeName = setlocale(LC_NUMERIC, nullptr)) {
+        Base::Tools::setOperatingSystemNumericLocale(localeName);
+    }
     setlocale(LC_NUMERIC, "C");  // except for numbers to not break XML import
     // See https://github.com/FreeCAD/FreeCAD/issues/16724
 
@@ -193,8 +205,9 @@ int main(int argc, char** argv)
     App::Application::Config()["CopyrightInfo"] = sBanner;
     App::Application::Config()["AppIcon"] = "freecad";
     App::Application::Config()["SplashScreen"] = "freecadsplash";
-    App::Application::Config()["AboutImage"] =
-        App::Application::isDevelopmentVersion() ? "freecadaboutdev" : "freecadabout";
+    App::Application::Config()["AboutImage"] = App::Application::isDevelopmentVersion()
+        ? "freecadaboutdev"
+        : "freecadabout";
     App::Application::Config()["StartWorkbench"] = "PartDesignWorkbench";
     // App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment"] = "Bottom|Left";
@@ -219,7 +232,8 @@ int main(int argc, char** argv)
 #endif
         // to set window icon on wayland, the desktop file has to be available to the compositor
         QGuiApplication::setDesktopFileName(
-            QString::fromStdString(App::Application::Config()["DesktopFileName"]));
+            QString::fromStdString(App::Application::Config()["DesktopFileName"])
+        );
 
 #if defined(_MSC_VER)
         // create a dump file when the application crashes
@@ -227,11 +241,13 @@ int main(int argc, char** argv)
         dmpfile += "crash.dmp";
         InitMiniDumpWriter(dmpfile);
 #endif
-        std::map<std::string, std::string>::iterator it =
-            App::Application::Config().find("NavigationStyle");
+        std::map<std::string, std::string>::iterator it = App::Application::Config().find(
+            "NavigationStyle"
+        );
         if (it != App::Application::Config().end()) {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/View");
+                "User parameter:BaseApp/Preferences/View"
+            );
             // if not already defined do it now (for the very first start)
             std::string style = hGrp->GetASCII("NavigationStyle", it->second.c_str());
             hGrp->SetASCII("NavigationStyle", style.c_str());
@@ -252,43 +268,51 @@ int main(int argc, char** argv)
     }
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc, argv);
-        QString msg = QString::fromUtf8(e.what());
-        if (msg == QLatin1String(App::Application::verboseVersionEmitMessage)) {
-            QString data;
-            QTextStream str(&data);
+        if (std::strcmp(e.what(), App::ProgramInformation::verboseVersionEmitMessage) == 0) {
+            std::stringstream str;
             const std::map<std::string, std::string> config = App::Application::Config();
 
-            App::Application::getVerboseCommonInfo(str, config);
-            Gui::Application::getVerboseDPIStyleInfo(str);
-            App::Application::getVerboseAddOnsInfo(str, config);
+            App::ProgramInformation::getVerboseCommonInfo(str, config);
+            Gui::ProgramInformation::getStyleInformation(str);
+            Gui::ProgramInformation::getNavigationStyleInformation(str);
+            Gui::ProgramInformation::getDpiInformation(str);
+            App::ProgramInformation::getVerboseAddOnsInfo(str, config);
 
-            msg = data;
+            displayInfo(str.str());
         }
-        displayInfo(msg);
+        else {
+            displayInfo(e.what());
+        }
         exit(0);
     }
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc, argv);
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
-        QString msg;
-        msg = QObject::tr("While initializing %1 the following exception occurred: '%2'\n\n"
-                          "Python is searching for its files in the following directories:\n%3\n\n"
-                          "Python version information:\n%4\n")
-                  .arg(appName,
-                       QString::fromUtf8(e.what()),
-                       QString::fromStdString(Base::Interpreter().getPythonPath()),
-                       QString::fromLatin1(Py_GetVersion()));
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
+        QString msg = QObject::tr("While initializing %1 the following exception occurred: '%2'\n\n")
+                          .arg(appName, QString::fromUtf8(e.what()));
+        if (Py_IsInitialized()) {
+            msg += QObject::tr("Python is searching for its files in the following directories:\n%1\n\n")
+                       .arg(QString::fromStdString(Base::Interpreter().getPythonPath()));
+        }
+        else {
+            msg += QObject::tr("Python has not initialized yet.\n\n");
+        }
+        msg += QObject::tr("Python version information:\n%1\n")
+                   .arg(QString::fromLatin1(Py_GetVersion()));
         const char* pythonhome = getenv("PYTHONHOME");
         if (pythonhome) {
             msg += QObject::tr("\nThe environment variable PYTHONHOME is set to '%1'.")
                        .arg(QString::fromUtf8(pythonhome));
-            msg += QObject::tr("\nSetting this environment variable might cause Python to fail. "
-                               "Please contact your administrator to unset it on your system.\n\n");
+            msg += QObject::tr(
+                "\nSetting this environment variable might cause Python to fail. "
+                "Please contact your administrator to unset it on your system.\n\n"
+            );
         }
         else {
             msg += QObject::tr(
-                "\nPlease contact the application's support team for more information.\n\n");
+                "\nPlease contact the application's support team for more information.\n\n"
+            );
         }
 
         displayCritical(msg, false);
@@ -297,11 +321,12 @@ int main(int argc, char** argv)
     catch (...) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc, argv);
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
-        QString msg =
-            QObject::tr("Unknown runtime error occurred while initializing %1.\n\n"
-                        "Please contact the application's support team for more information.\n\n")
-                .arg(appName);
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
+        QString msg = QObject::tr(
+                          "Unknown runtime error occurred while initializing %1.\n\n"
+                          "Please contact the application's support team for more information.\n\n"
+        )
+                          .arg(appName);
         displayCritical(msg, false);
         exit(101);
     }
@@ -343,34 +368,34 @@ int main(int argc, char** argv)
     std::cerr.rdbuf(oldcerr);
 
     // Destruction phase ===========================================================
-    Base::Console().log("%s terminating...\n", App::Application::Config()["ExeName"].c_str());
+    Base::Console().log("%s terminating...\n", App::Application::getExecutableName().c_str());
 
     // cleans up
     App::Application::destruct();
 
-    Base::Console().log("%s completely terminated\n",
-                        App::Application::Config()["ExeName"].c_str());
+    Base::Console().log("%s completely terminated\n", App::Application::getExecutableName().c_str());
 
     return 0;
 }
 
 #if defined(_MSC_VER)
 
-typedef BOOL(__stdcall* tMDWD)(IN HANDLE hProcess,
-                               IN DWORD ProcessId,
-                               IN HANDLE hFile,
-                               IN MINIDUMP_TYPE DumpType,
-                               IN CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
-                               OPTIONAL IN CONST PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
-                               OPTIONAL IN CONST PMINIDUMP_CALLBACK_INFORMATION CallbackParam
-                                   OPTIONAL);
+typedef BOOL(__stdcall* tMDWD)(
+    IN HANDLE hProcess,
+    IN DWORD ProcessId,
+    IN HANDLE hFile,
+    IN MINIDUMP_TYPE DumpType,
+    IN CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
+    OPTIONAL IN CONST PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
+    OPTIONAL IN CONST PMINIDUMP_CALLBACK_INFORMATION CallbackParam OPTIONAL
+);
 
 static tMDWD s_pMDWD;
 static HMODULE s_hDbgHelpMod;
 static MINIDUMP_TYPE s_dumpTyp = MiniDumpNormal;
 static std::wstring s_szMiniDumpFileName;  // initialize with whatever appropriate...
 
-#include <Base/StackWalker.h>
+# include <Base/StackWalker.h>
 class MyStackWalker: public StackWalker
 {
     DWORD threadId;
@@ -395,7 +420,7 @@ public:
 
 static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
 {
-#ifdef _M_IX86
+# ifdef _M_IX86
     if (pEx->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW) {
         // be sure that we have enough space...
         static char MyStack[1024 * 128];
@@ -406,7 +431,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
         __asm mov eax, offset MyStack[1024 * 128];
         __asm mov esp, eax;
     }
-#endif
+# endif
     MyStackWalker sw;
     sw.ShowCallstack(GetCurrentThread(), pEx->ContextRecord);
     Base::Console().log("*** Unhandled Exception!\n");
@@ -416,26 +441,22 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
 
     bool bFailed = true;
     HANDLE hFile;
-    hFile = CreateFileW(s_szMiniDumpFileName.c_str(),
-                        GENERIC_WRITE,
-                        0,
-                        NULL,
-                        CREATE_ALWAYS,
-                        FILE_ATTRIBUTE_NORMAL,
-                        NULL);
+    hFile = CreateFileW(
+        s_szMiniDumpFileName.c_str(),
+        GENERIC_WRITE,
+        0,
+        NULL,
+        CREATE_ALWAYS,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL
+    );
     if (hFile != INVALID_HANDLE_VALUE) {
         MINIDUMP_EXCEPTION_INFORMATION stMDEI;
         stMDEI.ThreadId = GetCurrentThreadId();
         stMDEI.ExceptionPointers = pEx;
         stMDEI.ClientPointers = true;
         // try to create a miniDump:
-        if (s_pMDWD(GetCurrentProcess(),
-                    GetCurrentProcessId(),
-                    hFile,
-                    s_dumpTyp,
-                    &stMDEI,
-                    NULL,
-                    NULL)) {
+        if (s_pMDWD(GetCurrentProcess(), GetCurrentProcessId(), hFile, s_dumpTyp, &stMDEI, NULL, NULL)) {
             bFailed = false;  // succeeded
         }
         CloseHandle(hFile);

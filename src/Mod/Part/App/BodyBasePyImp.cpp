@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -35,7 +37,7 @@ std::string BodyBasePy::representation() const
     return {"<body object>"};
 }
 
-PyObject *BodyBasePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* BodyBasePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -44,5 +46,3 @@ int BodyBasePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-
-
