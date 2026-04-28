@@ -159,44 +159,44 @@
   <context>
     <name>StartGui::ThemeSelectorWidget</name>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Classic</source>
       <translation>FreeCAD 经典</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
       <source>FreeCAD Dark</source>
       <translation>FreeCAD 深色</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="117"/>
       <source>FreeCAD Light</source>
       <translation>FreeCAD 浅色</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="245"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
       <source>Theme</source>
       <translation>主题</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="248"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="253"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>寻找更多主题？您可以使用&lt;a href=“freecad:Std_AddonMgr”&gt;插件管理器&lt;/a&gt;获取。</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="255"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="260"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 深色</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="256"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 浅色</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="257"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 经典</translation>
@@ -261,7 +261,7 @@ Multiple folders can be added using ";;" to separate paths.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="125"/>
+      <location filename="../../AppStartGui.cpp" line="139"/>
       <source>Start</source>
       <translation>开始</translation>
     </message>
@@ -269,12 +269,12 @@ Multiple folders can be added using ";;" to separate paths.</source>
   <context>
     <name>Start::DisplayedFilesModel</name>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="188"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="130"/>
       <source>Created at:</source>
       <translation>创建时间：</translation>
     </message>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="189"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Modified at:</source>
       <translation>修改时间：</translation>
     </message>

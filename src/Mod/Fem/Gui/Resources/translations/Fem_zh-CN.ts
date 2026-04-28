@@ -1816,7 +1816,7 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="394"/>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>
@@ -2647,12 +2647,12 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="678"/>
+      <location filename="../../TaskPostBoxes.cpp" line="687"/>
       <source>Data Along a Line Options</source>
       <translation>沿直线数据选项</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1086"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1095"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>长度</translation>
@@ -2661,12 +2661,12 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1120"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1129"/>
       <source>Data at Point Options</source>
       <translation>点数据选项</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1461"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1470"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 在 (%2; %3; %4) 处为：%5 %6</translation>
     </message>
@@ -2674,7 +2674,7 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="526"/>
+      <location filename="../../TaskPostBoxes.cpp" line="535"/>
       <source>Implicit function</source>
       <translation>隐函数</translation>
     </message>
@@ -8192,7 +8192,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostFrames</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="554"/>
+      <location filename="../../TaskPostBoxes.cpp" line="563"/>
       <source>Result Frames</source>
       <translation>结果帧</translation>
     </message>
@@ -8200,7 +8200,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostCalculator</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2248"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2257"/>
       <source>Calculator options</source>
       <translation>计算器选项</translation>
     </message>
@@ -8665,7 +8665,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="453"/>
+      <location filename="../../TaskPostBoxes.cpp" line="462"/>
       <source>Result Display Options</source>
       <translation>结果显示选项</translation>
     </message>
@@ -8673,7 +8673,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostBranch</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="623"/>
+      <location filename="../../TaskPostBoxes.cpp" line="632"/>
       <source>Branch Behaviour</source>
       <translation>分支行为</translation>
     </message>
@@ -8681,7 +8681,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1495"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1504"/>
       <source>Clip Region, Choose Implicit Function</source>
       <translation>裁剪区域，选择隐式函数</translation>
     </message>
@@ -8689,7 +8689,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1646"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1655"/>
       <source>Contours Filter Options</source>
       <translation>等值线过滤器选项</translation>
     </message>
@@ -8697,7 +8697,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1810"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1819"/>
       <source>Function Cut, Choose Implicit Function</source>
       <translation>函数切割，选择隐式函数</translation>
     </message>
@@ -8705,7 +8705,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1943"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1952"/>
       <source>Scalar Clip Options</source>
       <translation>标量裁剪选项</translation>
     </message>
@@ -8713,7 +8713,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2067"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2076"/>
       <source>Warp Options</source>
       <translation>扭曲选项</translation>
     </message>

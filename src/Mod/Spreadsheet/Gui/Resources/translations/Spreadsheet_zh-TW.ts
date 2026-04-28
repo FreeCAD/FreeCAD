@@ -274,7 +274,17 @@
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="920"/>
+      <location filename="../../qtcolorpicker.cpp" line="554"/>
+      <source>Reset</source>
+      <translation>重設</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="558"/>
+      <source>Custom Colors</source>
+      <translation type="unfinished">Custom Colors</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="653"/>
       <source>Custom Color</source>
       <translation>自定顏色</translation>
     </message>
@@ -342,7 +352,7 @@
       <translation>建立試算表</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="269"/>
+      <location filename="../../PropertiesDialog.cpp" line="315"/>
       <source>Set cell properties</source>
       <translation>設定儲存格屬性</translation>
     </message>
@@ -352,14 +362,24 @@
       <translation>編輯儲存格</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="148"/>
+      <location filename="../../Workbench.cpp" line="166"/>
       <source>Set text color</source>
       <translation type="unfinished">Set text color</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="184"/>
+      <location filename="../../Workbench.cpp" line="206"/>
+      <source>Clear text color</source>
+      <translation type="unfinished">Clear text color</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="243"/>
       <source>Set background color</source>
       <translation>設定背景顏色</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="283"/>
+      <source>Clear background color</source>
+      <translation type="unfinished">Clear background color</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="224"/>
@@ -387,7 +407,7 @@
       <translation type="unfinished">Insert Columns</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="193"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <location filename="../../SheetTableView.cpp" line="581"/>
       <source>Clear Cells</source>
       <translation type="unfinished">Clear Cells</translation>
@@ -709,12 +729,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>匯入檔案</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="477"/>
       <source>Alias contains invalid characters!</source>
       <translation>別名包含無效字元!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="497"/>
+      <location filename="../../SpreadsheetView.cpp" line="483"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>參照儲存格使用別名,例如
@@ -748,24 +768,24 @@ Spreadsheet.my_alias_name取代Spreadsheet.B1</translation>
       <translation type="unfinished">Show Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="99"/>
+      <location filename="../../Workbench.cpp" line="104"/>
       <source>Sets the text color of cells</source>
       <translation type="unfinished">Sets the text color of cells</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="100"/>
-      <location filename="../../Workbench.cpp" line="101"/>
+      <location filename="../../Workbench.cpp" line="105"/>
+      <location filename="../../Workbench.cpp" line="106"/>
       <source>Sets the text color of spreadsheet cells</source>
       <translation type="unfinished">Sets the text color of spreadsheet cells</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="122"/>
-      <location filename="../../Workbench.cpp" line="124"/>
+      <location filename="../../Workbench.cpp" line="132"/>
+      <location filename="../../Workbench.cpp" line="134"/>
       <source>Sets the background color of cells</source>
       <translation type="unfinished">Sets the background color of cells</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="123"/>
+      <location filename="../../Workbench.cpp" line="133"/>
       <source>Sets the spreadsheet cells background color</source>
       <translation type="unfinished">Sets the spreadsheet cells background color</translation>
     </message>
@@ -778,110 +798,98 @@ Spreadsheet.my_alias_name取代Spreadsheet.B1</translation>
   <context>
     <name>QtColorPicker</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="285"/>
-      <location filename="../../qtcolorpicker.cpp" line="411"/>
-      <location filename="../../qtcolorpicker.cpp" line="521"/>
+      <location filename="../../qtcolorpicker.cpp" line="294"/>
+      <location filename="../../qtcolorpicker.cpp" line="463"/>
+      <source>Default</source>
+      <translation>預設</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
       <source>Black</source>
       <translation>黑色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="412"/>
-      <location filename="../../qtcolorpicker.cpp" line="522"/>
+      <location filename="../../qtcolorpicker.cpp" line="427"/>
       <source>White</source>
       <translation>白色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="428"/>
       <source>Red</source>
       <translation>紅色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="429"/>
       <source>Dark red</source>
       <translation>暗紅色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="430"/>
       <source>Green</source>
       <translation>綠色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="431"/>
       <source>Dark green</source>
       <translation>深綠色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="417"/>
-      <location filename="../../qtcolorpicker.cpp" line="527"/>
+      <location filename="../../qtcolorpicker.cpp" line="432"/>
       <source>Blue</source>
       <translation>藍色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="418"/>
-      <location filename="../../qtcolorpicker.cpp" line="528"/>
+      <location filename="../../qtcolorpicker.cpp" line="433"/>
       <source>Dark blue</source>
       <translation>深藍色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="419"/>
-      <location filename="../../qtcolorpicker.cpp" line="529"/>
+      <location filename="../../qtcolorpicker.cpp" line="434"/>
       <source>Cyan</source>
       <translation>青色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="420"/>
-      <location filename="../../qtcolorpicker.cpp" line="530"/>
+      <location filename="../../qtcolorpicker.cpp" line="435"/>
       <source>Dark cyan</source>
       <translation>深青色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="421"/>
-      <location filename="../../qtcolorpicker.cpp" line="531"/>
+      <location filename="../../qtcolorpicker.cpp" line="436"/>
       <source>Magenta</source>
       <translation>洋紅色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="422"/>
-      <location filename="../../qtcolorpicker.cpp" line="532"/>
+      <location filename="../../qtcolorpicker.cpp" line="437"/>
       <source>Dark magenta</source>
       <translation>深洋红</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="423"/>
-      <location filename="../../qtcolorpicker.cpp" line="533"/>
+      <location filename="../../qtcolorpicker.cpp" line="438"/>
       <source>Yellow</source>
       <translation>黃色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="424"/>
-      <location filename="../../qtcolorpicker.cpp" line="534"/>
+      <location filename="../../qtcolorpicker.cpp" line="439"/>
       <source>Dark yellow</source>
       <translation>深黃色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="425"/>
-      <location filename="../../qtcolorpicker.cpp" line="535"/>
+      <location filename="../../qtcolorpicker.cpp" line="440"/>
       <source>Gray</source>
       <translation>灰色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <location filename="../../qtcolorpicker.cpp" line="441"/>
       <source>Dark gray</source>
       <translation>深灰色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="427"/>
-      <location filename="../../qtcolorpicker.cpp" line="537"/>
+      <location filename="../../qtcolorpicker.cpp" line="442"/>
       <source>Light gray</source>
       <translation>淺灰色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="449"/>
+      <location filename="../../qtcolorpicker.cpp" line="494"/>
       <source>Custom Color</source>
       <translation>自定顏色</translation>
     </message>
@@ -1169,12 +1177,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="298"/>
+      <location filename="../../SpreadsheetView.cpp" line="284"/>
       <source>Export PDF</source>
       <translation>匯出 PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="300"/>
+      <location filename="../../SpreadsheetView.cpp" line="286"/>
       <source>PDF file</source>
       <translation>PDF 檔</translation>
     </message>

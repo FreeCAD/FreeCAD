@@ -2251,7 +2251,7 @@ projection.</translation>
       <translation>Convertir le maillage</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1490"/>
+      <location filename="../../TaskAttacher.cpp" line="1491"/>
       <source>Edit attachment</source>
       <translation>Modifier l'ancrage</translation>
     </message>
@@ -3209,8 +3209,9 @@ Check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>Fusionne des composés pendant la lecture du fichier (plus lent mais plus détaillé).</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation>Fusionne toutes les formes en un seul ensemble lors de l'importation, en résolvant les instances de pièces et en appliquant les
+transformations. Cela allonge la durée de l'importation, mais n'affecte ni la précision de la géométrie ni la qualité du rendu.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -5842,12 +5843,12 @@ Valeur par défaut : true</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1472"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>Ancrage</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1554"/>
+      <location filename="../../TaskAttacher.cpp" line="1556"/>
       <source>Datum dialog: input error</source>
       <translation>Boîte de dialogue de la référence : erreur de saisie</translation>
     </message>
@@ -6517,7 +6518,7 @@ Continue?</source>
       <translation>Entrer une distance :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation>Apparence par face</translation>
     </message>
@@ -7160,12 +7161,12 @@ volumes se chevauchant seront supprimés.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="319"/>
+      <location filename="../../../App/FaceMaker.cpp" line="332"/>
       <source>Simple</source>
       <translation>Simple</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="324"/>
+      <location filename="../../../App/FaceMaker.cpp" line="337"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Construit des faces planes séparées à partir de chaque polyligne indépendamment. Les trous ne sont pas pris en charge. Les polylignes peuvent être sur différents plans.</translation>
     </message>
@@ -7768,12 +7769,12 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="46"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation>Générateur de BuildFace</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="51"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation>Divise les arêtes aux intersections et identifie toutes les régions de faces contiguës. Prend en charge les géométries qui se chevauchent de
 manière arbitraire.</translation>

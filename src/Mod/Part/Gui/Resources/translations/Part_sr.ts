@@ -2221,7 +2221,7 @@ of the projection.</source>
       <translation>Претвори мрежу</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1490"/>
+      <location filename="../../TaskAttacher.cpp" line="1491"/>
       <source>Edit attachment</source>
       <translation>Уреди придруживање</translation>
     </message>
@@ -3181,8 +3181,8 @@ Check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>Ако је потврђено, састављени објекат ће се сјединити током учитавања датотеке (спорије, али са више детаља)</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation type="unfinished">Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -5804,12 +5804,12 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1472"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>Прилог</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1554"/>
+      <location filename="../../TaskAttacher.cpp" line="1556"/>
       <source>Datum dialog: input error</source>
       <translation>Дијалог помоћних елемената: улазна грешка</translation>
     </message>
@@ -6480,7 +6480,7 @@ Continue?</source>
       <translation>Унеси растојање:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation>Офарбај појединачне странице</translation>
     </message>
@@ -7124,12 +7124,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="319"/>
+      <location filename="../../../App/FaceMaker.cpp" line="332"/>
       <source>Simple</source>
       <translation>Једноставно</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="324"/>
+      <location filename="../../../App/FaceMaker.cpp" line="337"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Прави посебну равну страницу од сваког жичаног елемента независно. Не подржава рупе; жичани елементи могу бити на различитим равнима.</translation>
     </message>
@@ -7731,12 +7731,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="46"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation type="unfinished">BuildFace facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="51"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation type="unfinished">Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
     </message>

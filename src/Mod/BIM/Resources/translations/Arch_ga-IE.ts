@@ -4488,7 +4488,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchComponent.py" line="2429"/>
-      <location filename="../../ArchSectionPlane.py" line="1745"/>
+      <location filename="../../ArchSectionPlane.py" line="1747"/>
       <location filename="../../ArchAxis.py" line="991"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchWindow.py" line="1705"/>
@@ -4510,7 +4510,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchReference.py" line="717"/>
       <location filename="../../ArchComponent.py" line="1938"/>
-      <location filename="../../ArchSectionPlane.py" line="1512"/>
+      <location filename="../../ArchSectionPlane.py" line="1514"/>
       <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchAxis.py" line="824"/>
       <location filename="../../ArchAxisSystem.py" line="222"/>
@@ -4539,8 +4539,8 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1715"/>
-      <location filename="../../ArchMaterial.py" line="880"/>
-      <location filename="../../ArchMaterial.py" line="906"/>
+      <location filename="../../ArchMaterial.py" line="895"/>
+      <location filename="../../ArchMaterial.py" line="921"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
@@ -4556,8 +4556,8 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchStructure.py" line="1578"/>
       <location filename="../../ArchRoof.py" line="1082"/>
-      <location filename="../../ArchMaterial.py" line="882"/>
-      <location filename="../../ArchMaterial.py" line="908"/>
+      <location filename="../../ArchMaterial.py" line="897"/>
+      <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
       <source>Thickness</source>
       <translation>Tiús</translation>
@@ -4738,8 +4738,8 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     </message>
     <message>
       <location filename="../../Arch.py" line="530"/>
-      <location filename="../../ArchMaterial.py" line="881"/>
-      <location filename="../../ArchMaterial.py" line="907"/>
+      <location filename="../../ArchMaterial.py" line="896"/>
+      <location filename="../../ArchMaterial.py" line="922"/>
       <source>Material</source>
       <translation>Ábhar</translation>
     </message>
@@ -4754,17 +4754,17 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Cumaisc Dúblaigh</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="946"/>
+      <location filename="../../ArchMaterial.py" line="961"/>
       <source>New layer</source>
       <translation>Sraith nua</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="983"/>
+      <location filename="../../ArchMaterial.py" line="1007"/>
       <source>Total thickness</source>
       <translation>Tiús iomlán</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="997"/>
+      <location filename="../../ArchMaterial.py" line="1014"/>
       <source>depends on the object</source>
       <translation>ag brath ar an réad</translation>
     </message>
@@ -6055,97 +6055,97 @@ Cruthú urláir curtha ar ceal.</translation>
       <translation>Cruthaigh Plána Rannóige</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1738"/>
+      <location filename="../../ArchSectionPlane.py" line="1740"/>
       <source>Scope</source>
       <translation>Raon feidhme</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1741"/>
+      <location filename="../../ArchSectionPlane.py" line="1743"/>
       <source>Placement and Visuals</source>
       <translation>Socrú agus Amharcléiriú</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1744"/>
+      <location filename="../../ArchSectionPlane.py" line="1746"/>
       <source>Objects seen by this section plane</source>
       <translation>Réada a fheictear ón eitleán alt seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1750"/>
+      <location filename="../../ArchSectionPlane.py" line="1752"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>Baintear rudaí aibhsithe ón liosta thuas</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1751"/>
+      <location filename="../../ArchSectionPlane.py" line="1753"/>
       <source>Add Selected</source>
       <translation>Cuir Roghnaithe leis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1756"/>
+      <location filename="../../ArchSectionPlane.py" line="1758"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>Cuireann sé réada roghnaithe le raon feidhme an eitleáin rannóige seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1757"/>
+      <location filename="../../ArchSectionPlane.py" line="1759"/>
       <source>Cut View</source>
       <translation>Radharc Gearrtha</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1764"/>
+      <location filename="../../ArchSectionPlane.py" line="1766"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>Cruthaíonn sé gearradh beo sa radharc 3D, ag cur geoiméadracht i bhfolach ar thaobh amháin den eitleán le go bhfeicfidh tú taobh istigh de do mhúnla</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1765"/>
+      <location filename="../../ArchSectionPlane.py" line="1767"/>
       <source>Rotate by 90°</source>
       <translation>Rothlaigh 90°</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1769"/>
+      <location filename="../../ArchSectionPlane.py" line="1771"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>Rothlaíonn sé an plána timpeall a ais-X áitiúil</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1773"/>
+      <location filename="../../ArchSectionPlane.py" line="1775"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>Rothlaíonn sé an plána timpeall a ais-Y áitiúil</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1777"/>
+      <location filename="../../ArchSectionPlane.py" line="1779"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>Rothlaíonn sé an plána timpeall a ais-Z áitiúil</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1780"/>
       <source>Resize to Fit</source>
       <translation>Athraigh Méid chun Oiriúnú</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1784"/>
+      <location filename="../../ArchSectionPlane.py" line="1786"/>
       <source>Recenter Plane</source>
       <translation>Plána Athdhírithe</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1766"/>
+      <location filename="../../ArchSectionPlane.py" line="1768"/>
       <source>Rotate X</source>
       <translation>Rothlaigh X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1517"/>
+      <location filename="../../ArchSectionPlane.py" line="1519"/>
       <source>Toggle Cut View</source>
       <translation>Athraigh an Radharc Gearrtha</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1770"/>
+      <location filename="../../ArchSectionPlane.py" line="1772"/>
       <source>Rotate Y</source>
       <translation>Rothlaigh Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1774"/>
+      <location filename="../../ArchSectionPlane.py" line="1776"/>
       <source>Rotate Z</source>
       <translation>Rothlaigh Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1783"/>
+      <location filename="../../ArchSectionPlane.py" line="1785"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Athraíonn méid an eitleáin chun go n-oirfidh sé do na rudaí sa liosta thuas</translation>
     </message>
@@ -6156,7 +6156,7 @@ Cruthú urláir curtha ar ceal.</translation>
       <translation>Lár</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1789"/>
+      <location filename="../../ArchSectionPlane.py" line="1791"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Lárnaíonn sé an plána ar na réada sa liosta thuas</translation>
     </message>
@@ -7062,7 +7062,7 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Clib roghnach don chomhpháirt seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="968"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>Cruth an réada seo</translation>
@@ -7083,7 +7083,7 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Léarscáil MaterialName:SolidIndexesList a nascann ainmneacha ábhar le hinnéacsanna soladacha le húsáid agus tagairt á déanamh don réad seo ó chomhaid eile</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1140"/>
+      <location filename="../../ArchSectionPlane.py" line="1142"/>
       <location filename="../../ArchBuildingPart.py" line="547"/>
       <source>The line width of this object</source>
       <translation>Leithead líne an réada seo</translation>
@@ -8638,7 +8638,7 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="253"/>
-      <location filename="../../ArchSectionPlane.py" line="960"/>
+      <location filename="../../ArchSectionPlane.py" line="962"/>
       <source>The placement of this object</source>
       <translation>Suíomh an réada seo</translation>
     </message>
@@ -8859,80 +8859,80 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Cruth an rebar</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="979"/>
+      <location filename="../../ArchSectionPlane.py" line="981"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Na rudaí a chaithfidh an plána rannóige seo a chur san áireamh. Ciallaíonn folamh an doiciméad ar fad.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="990"/>
+      <location filename="../../ArchSectionPlane.py" line="992"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Más bréagach é, gearrfar neamh-sholaid freisin, agus d’fhéadfadh torthaí míchearta a bheith mar thoradh air sin.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1002"/>
+      <location filename="../../ArchSectionPlane.py" line="1004"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Más Fíor é, gearrfar na radhairc a eascraíonn as sin go dtí limistéar an eitleáin rannóige.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1013"/>
+      <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Más fíor, úsáidfear dath ábhar an réada chun na limistéir ghearrtha a líonadh.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1025"/>
+      <location filename="../../ArchSectionPlane.py" line="1027"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>Gearrfar amach geoiméadracht níos faide ná an luach seo. Coinnigh nialas le haghaidh gan teorainn.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1098"/>
+      <location filename="../../ArchSectionPlane.py" line="1100"/>
       <source>The display length of this section plane</source>
       <translation>Fad taispeána an eitleáin rannóige seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1110"/>
+      <location filename="../../ArchSectionPlane.py" line="1112"/>
       <source>The display height of this section plane</source>
       <translation>Airde taispeána an eitleáin rannóige seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1122"/>
+      <location filename="../../ArchSectionPlane.py" line="1124"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Méid na saigheada den eitleán trasghearrtha seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1131"/>
+      <location filename="../../ArchSectionPlane.py" line="1133"/>
       <source>The transparency of this object</source>
       <translation>Trédhearcacht an réada seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1149"/>
-      <location filename="../../ArchSectionPlane.py" line="1166"/>
+      <location filename="../../ArchSectionPlane.py" line="1151"/>
+      <location filename="../../ArchSectionPlane.py" line="1168"/>
       <source>Show the cut in the 3D view</source>
       <translation>Taispeáin an gearradh sa radharc 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1157"/>
+      <location filename="../../ArchSectionPlane.py" line="1159"/>
       <source>The color of this object</source>
       <translation>Dath an réada seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1179"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>An fad idir an plána gearrtha agus an gearradh radhairc iarbhír (coinnigh luach an-bheag é seo ach ní nialas)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1186"/>
+      <location filename="../../ArchSectionPlane.py" line="1188"/>
       <source>Show the label in the 3D view</source>
       <translation>Taispeáin an lipéad san amharc 3T</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="579"/>
-      <location filename="../../ArchSectionPlane.py" line="1194"/>
+      <location filename="../../ArchSectionPlane.py" line="1196"/>
       <source>The name of the font</source>
       <translation>Ainm an chló</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="597"/>
-      <location filename="../../ArchSectionPlane.py" line="1203"/>
+      <location filename="../../ArchSectionPlane.py" line="1205"/>
       <source>The size of the text font</source>
       <translation>Méid an chló téacs</translation>
     </message>

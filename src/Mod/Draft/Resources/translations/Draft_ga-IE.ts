@@ -2094,42 +2094,55 @@ aghaidhe, cuirtear sreang amh ón gcruth bunaidh leis</translation>
 	Braitheann an luach is fearr ar mhéid absalóideach an allmhairithe. Is idir 1 agus 5 na luachanna tipiciúla.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation>Uasmhéid diall le haghaidh comhfhogasú cuar casta</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation>An diall uasta le haghaidh comhfhogasú eilipsí, hipearbólaí, parabólaí, agus cuar Bézier agus B-splíne go stuaí agus línte. Is féidir é a bheith úsáideach don CAM Workbench.
+Socraigh go náid chun comhfhogasú a dhíchumasú.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>Stíl easpórtála</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>Stíl comhaid SVG le scríobh agus sceitse á easpórtáil</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>Aistrithe (le haghaidh priontála agus taispeántais)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>Amh (le haghaidh CAM)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>Beidh na línte bána go léir le feiceáil i ndubh sa SVG le go mbeidh sé níos inléite i gcoinne cúlra bán</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>Tiontaigh dath na líne bán go dubh</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>Fad uasta na coda le haghaidh stua discréite</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2452,7 +2465,7 @@ a chruthú in ionad réada Dréachta nó Cuid. Sáraíonn sé seo an socrú 'Iom
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>Roghanna Easpórtála</translation>
     </message>
@@ -4066,7 +4079,12 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>%1 roghnaigh an tríú pointe</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation>Ní féidir ach línte dréachta, sreanga agus cuartha a aibhsiú</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>Roghnaigh réad le heagarthóireacht</translation>
     </message>
@@ -6240,12 +6258,12 @@ Suiteáil an breiseán Leabharlann DXF de láimh le do thoil
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Stíl easpórtála SVG anaithnid, ag athrú go Aistrithe</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>Níl aon réad le bosca teorann bailí sa liosta easpórtála</translation>
     </message>

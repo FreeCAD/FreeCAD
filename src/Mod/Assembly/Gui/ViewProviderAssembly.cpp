@@ -130,6 +130,7 @@ ViewProviderAssembly::ViewProviderAssembly()
 ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
+    QObject::disconnect(workbenchConnection);
 
     updateTaskPanel(false);
 };
@@ -400,10 +401,14 @@ void ViewProviderAssembly::setDragger()
 void ViewProviderAssembly::unsetDragger()
 {
     pcRoot->removeChild(asmDraggerSwitch);
-    asmDragger->unref();
-    asmDragger = nullptr;
-    asmDraggerSwitch->unref();
-    asmDraggerSwitch = nullptr;
+    if (asmDragger) {
+        asmDragger->unref();
+        asmDragger = nullptr;
+    }
+    if (asmDraggerSwitch) {
+        asmDraggerSwitch->unref();
+        asmDraggerSwitch = nullptr;
+    }
 }
 
 void ViewProviderAssembly::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)

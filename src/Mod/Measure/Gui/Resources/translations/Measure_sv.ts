@@ -346,7 +346,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="83"/>
       <source>Center of gravity</source>
-      <translation type="unfinished">Center of gravity</translation>
+      <translation>Tyngdpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="110"/>
@@ -498,22 +498,22 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="282"/>
       <source>Physical Properties</source>
-      <translation type="unfinished">Physical Properties</translation>
+      <translation>Fysiska egenskaper</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="285"/>
       <source>Center of Gravity</source>
-      <translation type="unfinished">Center of Gravity</translation>
+      <translation>Tyngdpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="286"/>
       <source>Center of Volume</source>
-      <translation type="unfinished">Center of Volume</translation>
+      <translation>Volymcentrum</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="287"/>
       <source>Inertia</source>
-      <translation type="unfinished">Inertia</translation>
+      <translation>Tröghetsmoment</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="359"/>
@@ -541,12 +541,12 @@
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Mass Properties</source>
-      <translation type="unfinished">Mass Properties</translation>
+      <translation>Massegenskaper</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Calculates mass properties of selected objects</source>
-      <translation type="unfinished">Calculates mass properties of selected objects</translation>
+      <translation>Beräknar massegenskaper för valda objekt</translation>
     </message>
   </context>
 </TS>

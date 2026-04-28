@@ -2951,12 +2951,12 @@ Her iki uzunluk da sıfırsa yönün büyüklüğü kullanılır.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
       <source>Constant radius</source>
-      <translation type="unfinished">Constant radius</translation>
+      <translation>Sabit yarıçap</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="123"/>
       <source>Variable radius</source>
-      <translation type="unfinished">Variable radius</translation>
+      <translation>Değişken yarıçap</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="291"/>
@@ -4079,7 +4079,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2651"/>
       <source>C&amp;reate</source>
-      <translation type="unfinished">C&amp;reate</translation>
+      <translation>O&amp;luştur</translation>
     </message>
   </context>
   <context>

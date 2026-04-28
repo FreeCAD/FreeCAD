@@ -2101,42 +2101,56 @@ a raw wire from the original shape is added</translation>
 	The optimal value depends on the absolute size of the import. Typical values are between 1 and 5.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation type="unfinished">Maximum deviation for approximation of complex curves</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation type="unfinished">Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>სტილის გატანა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>ესკიზის გატანისას SVG ფაილის სტილის ჩაწერა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>გადატანა (დასათვალიერებლად &amp; დასაბეჭდად)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>RAW(კამერიდან)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>SVG-ში თეთრ ფონზე უკეთესად წაკითხვისთვის ყველა თეთრი ხაზი გამოჩნდება შავად</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>ხაზის თეთრი ფერის შავში გადაყვანა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>მაქსიმალური სეგმენტის სიგრძე დისკრეტიზებული რკალებისთვის</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2463,7 +2477,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</transl
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>გატანის მორგება</translation>
     </message>
@@ -4075,7 +4089,12 @@ or try saving to a lower DWG version.</source>
       <translation>%1 აირჩიეთ მესამე წერტილი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation type="unfinished">Only Draft lines, wires, and curves can be highlighted</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>აირჩიეთ ჩასასწორებელი ობიექტი</translation>
     </message>
@@ -6250,12 +6269,12 @@ from menu Tools → Addon Manager</translation>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>SVG გატანის უცნობი სტილი. გამოიყენება Translated</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>გასატანი სია არ შეიცავს ობიექტს სწორი შემომსაზღვრელი ჩარჩოთი</translation>
     </message>

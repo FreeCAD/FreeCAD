@@ -274,7 +274,17 @@
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="920"/>
+      <location filename="../../qtcolorpicker.cpp" line="554"/>
+      <source>Reset</source>
+      <translation>Скінуць</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="558"/>
+      <source>Custom Colors</source>
+      <translation>Карыстальніцкія колеры</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="653"/>
       <source>Custom Color</source>
       <translation>Карыстальніцкі колер</translation>
     </message>
@@ -342,7 +352,7 @@
       <translation>Стварыць аркуш</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="269"/>
+      <location filename="../../PropertiesDialog.cpp" line="315"/>
       <source>Set cell properties</source>
       <translation>Задаць уласцівасці клеткі</translation>
     </message>
@@ -352,14 +362,24 @@
       <translation>Змяніць клетку</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="148"/>
+      <location filename="../../Workbench.cpp" line="166"/>
       <source>Set text color</source>
       <translation>Задаць колер тэксту</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="184"/>
+      <location filename="../../Workbench.cpp" line="206"/>
+      <source>Clear text color</source>
+      <translation>Ачысціць колер тэксту</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="243"/>
       <source>Set background color</source>
       <translation>Задаць колер фону</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="283"/>
+      <source>Clear background color</source>
+      <translation>Ачысціць колер фону</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="224"/>
@@ -387,7 +407,7 @@
       <translation>Уставіць слупкі</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="193"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <location filename="../../SheetTableView.cpp" line="581"/>
       <source>Clear Cells</source>
       <translation>Ачысціць клеткі</translation>
@@ -438,7 +458,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation>Адрас канчатковай клеткі</translation>
+      <translation>Адрас канцавой клеткі</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
@@ -464,7 +484,7 @@ The expression must evaluate to a string of some cell address.</source>
       <source>End cell address to bind to.
 Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation>Адрас канчатковай ячэйкі для прывязкі.
+      <translation>Адрас канцавой ячэйкі для прывязкі.
 Увядзіце '=', каб ужыць выраз.
 У выніку выраз павінен выдаваць радок з адрасамі ячэек.</translation>
     </message>
@@ -544,12 +564,11 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation>Адрас канчатковай ячэйкі.
+      <translation>Адрас канцавой ячэйкі.
 
 Мяркуецца, што першы слупок дыяпазону ўтрымлівае спіс імёнаў наладаў, якія будуць ужывацца для стварэння спісу радкоў і прывязкі да зададзенай уласцівасці, каб карыстальнік мог дынамічна пераключаць налады.
 
-Першы радок дыяпазону будзе прывязаны да любога радка (ускосна), абранай
-па гэтай уласцівасці.
+Першы радок дыяпазону будзе прывязаны да любога радка (ускосна), абранай па гэтай уласцівасці.
 </translation>
     </message>
     <message>
@@ -707,12 +726,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Імпартаваць файл</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="477"/>
       <source>Alias contains invalid characters!</source>
       <translation>Псеўданім змяшчае хібныя знакі!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="497"/>
+      <location filename="../../SpreadsheetView.cpp" line="483"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Звярніцеся да клеткі па псеўданіму, напрыклад
@@ -746,24 +765,24 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Паказаць аркуш</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="99"/>
+      <location filename="../../Workbench.cpp" line="104"/>
       <source>Sets the text color of cells</source>
       <translation>Задае колер тэксту ў клетках</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="100"/>
-      <location filename="../../Workbench.cpp" line="101"/>
+      <location filename="../../Workbench.cpp" line="105"/>
+      <location filename="../../Workbench.cpp" line="106"/>
       <source>Sets the text color of spreadsheet cells</source>
       <translation>Задае колер тэксту ў клетках аркуша</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="122"/>
-      <location filename="../../Workbench.cpp" line="124"/>
+      <location filename="../../Workbench.cpp" line="132"/>
+      <location filename="../../Workbench.cpp" line="134"/>
       <source>Sets the background color of cells</source>
       <translation>Задае колер фону ў клетках</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="123"/>
+      <location filename="../../Workbench.cpp" line="133"/>
       <source>Sets the spreadsheet cells background color</source>
       <translation>Задаць колер фону клетак аркуша</translation>
     </message>
@@ -776,110 +795,98 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
   <context>
     <name>QtColorPicker</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="285"/>
-      <location filename="../../qtcolorpicker.cpp" line="411"/>
-      <location filename="../../qtcolorpicker.cpp" line="521"/>
+      <location filename="../../qtcolorpicker.cpp" line="294"/>
+      <location filename="../../qtcolorpicker.cpp" line="463"/>
+      <source>Default</source>
+      <translation>Першапачаткова</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
       <source>Black</source>
       <translation>Чорны</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="412"/>
-      <location filename="../../qtcolorpicker.cpp" line="522"/>
+      <location filename="../../qtcolorpicker.cpp" line="427"/>
       <source>White</source>
       <translation>Белы</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="428"/>
       <source>Red</source>
       <translation>Чырвоны</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="429"/>
       <source>Dark red</source>
       <translation>Цёмна-чырвоны</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="430"/>
       <source>Green</source>
       <translation>Зялёны</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="431"/>
       <source>Dark green</source>
       <translation>Цёмна-зялёны</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="417"/>
-      <location filename="../../qtcolorpicker.cpp" line="527"/>
+      <location filename="../../qtcolorpicker.cpp" line="432"/>
       <source>Blue</source>
       <translation>Сіні</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="418"/>
-      <location filename="../../qtcolorpicker.cpp" line="528"/>
+      <location filename="../../qtcolorpicker.cpp" line="433"/>
       <source>Dark blue</source>
       <translation>Цёмна-сіні</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="419"/>
-      <location filename="../../qtcolorpicker.cpp" line="529"/>
+      <location filename="../../qtcolorpicker.cpp" line="434"/>
       <source>Cyan</source>
       <translation>Блакітны</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="420"/>
-      <location filename="../../qtcolorpicker.cpp" line="530"/>
+      <location filename="../../qtcolorpicker.cpp" line="435"/>
       <source>Dark cyan</source>
       <translation>Цёмна-блакітны</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="421"/>
-      <location filename="../../qtcolorpicker.cpp" line="531"/>
+      <location filename="../../qtcolorpicker.cpp" line="436"/>
       <source>Magenta</source>
       <translation>Пурпурны</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="422"/>
-      <location filename="../../qtcolorpicker.cpp" line="532"/>
+      <location filename="../../qtcolorpicker.cpp" line="437"/>
       <source>Dark magenta</source>
       <translation>Цёмна-пурпурны</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="423"/>
-      <location filename="../../qtcolorpicker.cpp" line="533"/>
+      <location filename="../../qtcolorpicker.cpp" line="438"/>
       <source>Yellow</source>
       <translation>Жоўты</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="424"/>
-      <location filename="../../qtcolorpicker.cpp" line="534"/>
+      <location filename="../../qtcolorpicker.cpp" line="439"/>
       <source>Dark yellow</source>
       <translation>Цёмна-жоўты</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="425"/>
-      <location filename="../../qtcolorpicker.cpp" line="535"/>
+      <location filename="../../qtcolorpicker.cpp" line="440"/>
       <source>Gray</source>
       <translation>Шэры</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <location filename="../../qtcolorpicker.cpp" line="441"/>
       <source>Dark gray</source>
       <translation>Цёмна-шэры</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="427"/>
-      <location filename="../../qtcolorpicker.cpp" line="537"/>
+      <location filename="../../qtcolorpicker.cpp" line="442"/>
       <source>Light gray</source>
       <translation>Светла-шэры</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="449"/>
+      <location filename="../../qtcolorpicker.cpp" line="494"/>
       <source>Custom Color</source>
       <translation>Карыстальніцкі колер</translation>
     </message>
@@ -1193,12 +1200,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="298"/>
+      <location filename="../../SpreadsheetView.cpp" line="284"/>
       <source>Export PDF</source>
       <translation>Экспартаваць у PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="300"/>
+      <location filename="../../SpreadsheetView.cpp" line="286"/>
       <source>PDF file</source>
       <translation>Файл PDF</translation>
     </message>

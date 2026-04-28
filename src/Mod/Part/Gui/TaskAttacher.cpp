@@ -47,6 +47,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/InputHint.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -1493,10 +1494,27 @@ TaskDlgAttacher::TaskDlgAttacher(
             );
         }
     }
+
+    // Status-bar input hints
+    using enum Gui::InputHint::UserInput;
+    std::list<Gui::InputHint> hints {
+        {
+            .message = tr("%1 select reference"),
+            .sequences = {MouseLeft},
+        },
+    };
+    if (onAccept) {
+        hints.push_back({
+            .message = tr("2x%1 select and confirm"),
+            .sequences = {MouseLeft},
+        });
+    }
+    Gui::getMainWindow()->showHints(hints);
 }
 
 TaskDlgAttacher::~TaskDlgAttacher()
 {
+    Gui::getMainWindow()->hideHints();
     if (dblClickViewer) {
         // Re-enable selection in case it was disabled for a double-click that never completed
         dblClickViewer->setSelectionEnabled(true);

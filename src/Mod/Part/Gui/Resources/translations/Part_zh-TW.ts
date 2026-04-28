@@ -2183,17 +2183,17 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="2572"/>
       <source>Add datum plane</source>
-      <translation type="unfinished">Add datum plane</translation>
+      <translation>新增基準平面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2605"/>
       <source>Add datum line</source>
-      <translation type="unfinished">Add datum line</translation>
+      <translation>新增基準線</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2638"/>
       <source>Add datum point</source>
-      <translation type="unfinished">Add datum point</translation>
+      <translation>新增基準點</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
@@ -2221,7 +2221,7 @@ of the projection.</translation>
       <translation>轉換網格</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1490"/>
+      <location filename="../../TaskAttacher.cpp" line="1491"/>
       <source>Edit attachment</source>
       <translation>編輯附件</translation>
     </message>
@@ -3181,8 +3181,8 @@ Check one or more edge entities first.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation type="unfinished">Merges compounds during file reading (slower but higher details)</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation type="unfinished">Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -5790,12 +5790,12 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1472"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>附件</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1554"/>
+      <location filename="../../TaskAttacher.cpp" line="1556"/>
       <source>Datum dialog: input error</source>
       <translation type="unfinished">Datum dialog: input error</translation>
     </message>
@@ -6467,7 +6467,7 @@ Continue?</translation>
       <translation>輸入距離：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation type="unfinished">Appearance per Face</translation>
     </message>
@@ -7111,12 +7111,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="319"/>
+      <location filename="../../../App/FaceMaker.cpp" line="332"/>
       <source>Simple</source>
       <translation>簡單</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="324"/>
+      <location filename="../../../App/FaceMaker.cpp" line="337"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>從每個獨立的線生成單獨的平面面。不支援孔洞；線可以在不同的平面上。</translation>
     </message>
@@ -7718,12 +7718,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="46"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation type="unfinished">BuildFace facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="51"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation type="unfinished">Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
     </message>

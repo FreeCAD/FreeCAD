@@ -883,7 +883,7 @@
       <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY-plane by 3 points</translation>
+      <translation>Plano XY por 3 puntos</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="190"/>
@@ -1066,7 +1066,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="20"/>
       <source>First Limit</source>
-      <translation type="unfinished">First Limit</translation>
+      <translation>Primer límite</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="40"/>
@@ -1114,7 +1114,7 @@
       <location filename="../../DlgBlock.ui" line="93"/>
       <location filename="../../DlgBlock.ui" line="254"/>
       <source>Limit</source>
-      <translation type="unfinished">Limit</translation>
+      <translation>Límite</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>
@@ -1124,7 +1124,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="181"/>
       <source>Second Limit</source>
-      <translation type="unfinished">Second Limit</translation>
+      <translation>Segundo límite</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="83"/>
@@ -1265,7 +1265,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="115"/>
       <source>Creates a solid cube</source>
-      <translation type="unfinished">Creates a solid cube</translation>
+      <translation>Crea un cubo sólido</translation>
     </message>
   </context>
   <context>
@@ -1301,7 +1301,7 @@
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Creates a solid box</source>
-      <translation type="unfinished">Creates a solid box</translation>
+      <translation>Crea una caja sólida</translation>
     </message>
   </context>
   <context>
@@ -1465,7 +1465,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="203"/>
       <source>Creates a solid cone</source>
-      <translation type="unfinished">Creates a solid cone</translation>
+      <translation>Crea un cono sólido</translation>
     </message>
   </context>
   <context>
@@ -1521,7 +1521,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="71"/>
       <source>Creates a solid cylinder</source>
-      <translation type="unfinished">Creates a solid cylinder</translation>
+      <translation>Crea un cilindro sólido</translation>
     </message>
   </context>
   <context>
@@ -1539,7 +1539,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="463"/>
       <source>Removes the selected features from a shape</source>
-      <translation type="unfinished">Removes the selected features from a shape</translation>
+      <translation>Elimina las operaciones seleccionadas de una forma</translation>
     </message>
   </context>
   <context>
@@ -1629,7 +1629,7 @@
     <message>
       <location filename="../../Command.cpp" line="469"/>
       <source>Unites the selected shapes</source>
-      <translation type="unfinished">Unites the selected shapes</translation>
+      <translation>Une las formas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -1995,7 +1995,7 @@ de la proyección.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Creates a solid cylinder</source>
-      <translation type="unfinished">Creates a solid cylinder</translation>
+      <translation>Crea un cilindro sólido</translation>
     </message>
   </context>
   <context>
@@ -2081,7 +2081,7 @@ de la proyección.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="247"/>
       <source>Creates a solid torus</source>
-      <translation type="unfinished">Creates a solid torus</translation>
+      <translation>Crea un toro sólido</translation>
     </message>
   </context>
   <context>
@@ -2178,7 +2178,7 @@ de la proyección.</translation>
     <message>
       <location filename="../../Command.cpp" line="2534"/>
       <source>Add coordinate system</source>
-      <translation type="unfinished">Add coordinate system</translation>
+      <translation>Añadir sistema de coordenadas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2572"/>
@@ -2198,7 +2198,7 @@ de la proyección.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Crear cilindro</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="200"/>
@@ -2221,7 +2221,7 @@ de la proyección.</translation>
       <translation>Convertir malla</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1490"/>
+      <location filename="../../TaskAttacher.cpp" line="1491"/>
       <source>Edit attachment</source>
       <translation>Editar adjunto</translation>
     </message>
@@ -2312,7 +2312,7 @@ de la proyección.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
       <source>Around X-axis</source>
-      <translation type="unfinished">Around X-axis</translation>
+      <translation>Alrededor del eje X</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="254"/>
@@ -2324,7 +2324,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
       <source>Around Y-axis</source>
-      <translation type="unfinished">Around Y-axis</translation>
+      <translation>Alrededor del eje Y</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="299"/>
@@ -2336,7 +2336,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
       <source>Around Z-axis</source>
-      <translation type="unfinished">Around Z-axis</translation>
+      <translation>Alrededor del eje Z</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
@@ -2360,17 +2360,17 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
       <source>In X-direction</source>
-      <translation type="unfinished">In X-direction</translation>
+      <translation>En dirección X</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
       <source>In Y-direction</source>
-      <translation type="unfinished">In Y-direction</translation>
+      <translation>En dirección Y</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
       <source>In Z-direction</source>
-      <translation type="unfinished">In Z-direction</translation>
+      <translation>En dirección Z</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
@@ -3184,8 +3184,8 @@ Primero seleccione una o más aristas.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation type="unfinished">Merges compounds during file reading (slower but higher details)</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation type="unfinished">Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -5365,7 +5365,7 @@ of the object being attached</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
       <source>In X-direction</source>
-      <translation type="unfinished">In X-direction</translation>
+      <translation>En dirección X</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
@@ -5375,17 +5375,17 @@ of the object being attached</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="172"/>
       <source>In Y-direction</source>
-      <translation type="unfinished">In Y-direction</translation>
+      <translation>En dirección Y</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="208"/>
       <source>In Z-direction</source>
-      <translation type="unfinished">In Z-direction</translation>
+      <translation>En dirección Z</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="244"/>
       <source>Around X-axis</source>
-      <translation type="unfinished">Around X-axis</translation>
+      <translation>Alrededor del eje X</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="257"/>
@@ -5397,7 +5397,7 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="283"/>
       <source>Around Y-axis</source>
-      <translation type="unfinished">Around Y-axis</translation>
+      <translation>Alrededor del eje Y</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="296"/>
@@ -5409,7 +5409,7 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="322"/>
       <source>Around Z-axis</source>
-      <translation type="unfinished">Around Z-axis</translation>
+      <translation>Alrededor del eje Z</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="335"/>
@@ -5802,12 +5802,12 @@ Comprobación de operaciones booleanas individuales:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1472"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>Adjunto</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1554"/>
+      <location filename="../../TaskAttacher.cpp" line="1556"/>
       <source>Datum dialog: input error</source>
       <translation>Diálogo de referencia: error de entrada</translation>
     </message>
@@ -6479,7 +6479,7 @@ Continue?</translation>
       <translation>Ingrese la distancia:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation type="unfinished">Appearance per Face</translation>
     </message>
@@ -6585,7 +6585,7 @@ Continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean Tools</source>
-      <translation type="unfinished">Boolean Tools</translation>
+      <translation>Herramientas booleanas</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -7123,12 +7123,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="319"/>
+      <location filename="../../../App/FaceMaker.cpp" line="332"/>
       <source>Simple</source>
       <translation>Simple</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="324"/>
+      <location filename="../../../App/FaceMaker.cpp" line="337"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Hace caras planas separadas para cada alambre independientemente. No hay soporte para agujeros; los alambres pueden estar en diferentes planos.</translation>
     </message>
@@ -7730,12 +7730,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="46"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation type="unfinished">BuildFace facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="51"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation type="unfinished">Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
     </message>

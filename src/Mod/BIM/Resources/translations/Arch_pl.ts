@@ -4565,7 +4565,7 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
     <message>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchComponent.py" line="2429"/>
-      <location filename="../../ArchSectionPlane.py" line="1745"/>
+      <location filename="../../ArchSectionPlane.py" line="1747"/>
       <location filename="../../ArchAxis.py" line="991"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchWindow.py" line="1705"/>
@@ -4587,7 +4587,7 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchReference.py" line="717"/>
       <location filename="../../ArchComponent.py" line="1938"/>
-      <location filename="../../ArchSectionPlane.py" line="1512"/>
+      <location filename="../../ArchSectionPlane.py" line="1514"/>
       <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchAxis.py" line="824"/>
       <location filename="../../ArchAxisSystem.py" line="222"/>
@@ -4616,8 +4616,8 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1715"/>
-      <location filename="../../ArchMaterial.py" line="880"/>
-      <location filename="../../ArchMaterial.py" line="906"/>
+      <location filename="../../ArchMaterial.py" line="895"/>
+      <location filename="../../ArchMaterial.py" line="921"/>
       <source>Name</source>
       <translation>Nazwa</translation>
     </message>
@@ -4633,8 +4633,8 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
       <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchStructure.py" line="1578"/>
       <location filename="../../ArchRoof.py" line="1082"/>
-      <location filename="../../ArchMaterial.py" line="882"/>
-      <location filename="../../ArchMaterial.py" line="908"/>
+      <location filename="../../ArchMaterial.py" line="897"/>
+      <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
       <source>Thickness</source>
       <translation>Grubość</translation>
@@ -4815,8 +4815,8 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
     </message>
     <message>
       <location filename="../../Arch.py" line="530"/>
-      <location filename="../../ArchMaterial.py" line="881"/>
-      <location filename="../../ArchMaterial.py" line="907"/>
+      <location filename="../../ArchMaterial.py" line="896"/>
+      <location filename="../../ArchMaterial.py" line="922"/>
       <source>Material</source>
       <translation>Materiał</translation>
     </message>
@@ -4831,17 +4831,17 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
       <translation>Scal duplikaty</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="946"/>
+      <location filename="../../ArchMaterial.py" line="961"/>
       <source>New layer</source>
       <translation>Nowa warstwa</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="983"/>
+      <location filename="../../ArchMaterial.py" line="1007"/>
       <source>Total thickness</source>
       <translation>Grubość całkowita</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="997"/>
+      <location filename="../../ArchMaterial.py" line="1014"/>
       <source>depends on the object</source>
       <translation>Zależy od obiektu</translation>
     </message>
@@ -6133,97 +6133,97 @@ Wartości powierzchni zostaną zresetowane do 0.
       <translation>Utwórz płaszczyznę przekroju</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1738"/>
+      <location filename="../../ArchSectionPlane.py" line="1740"/>
       <source>Scope</source>
       <translation>Obszar</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1741"/>
+      <location filename="../../ArchSectionPlane.py" line="1743"/>
       <source>Placement and Visuals</source>
       <translation>Umiejscowienie i wizualizacja</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1744"/>
+      <location filename="../../ArchSectionPlane.py" line="1746"/>
       <source>Objects seen by this section plane</source>
       <translation>Obiekty przecinane przez tę płaszczyznę przekroju</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1750"/>
+      <location filename="../../ArchSectionPlane.py" line="1752"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>Usuń podświetlone obiekty z powyższej listy</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1751"/>
+      <location filename="../../ArchSectionPlane.py" line="1753"/>
       <source>Add Selected</source>
       <translation>Dodaj wybrane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1756"/>
+      <location filename="../../ArchSectionPlane.py" line="1758"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>Dodaje wybrane obiekty do zakresu tej płaszczyzny przekroju</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1757"/>
+      <location filename="../../ArchSectionPlane.py" line="1759"/>
       <source>Cut View</source>
       <translation>Widok przekroju</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1764"/>
+      <location filename="../../ArchSectionPlane.py" line="1766"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>Tworzy dynamiczny przekrój w widoku 3D, ukrywając geometrię po jednej stronie płaszczyzny, aby zajrzeć do wnętrza modelu.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1765"/>
+      <location filename="../../ArchSectionPlane.py" line="1767"/>
       <source>Rotate by 90°</source>
       <translation>Obróć o 90°</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1769"/>
+      <location filename="../../ArchSectionPlane.py" line="1771"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>Obróć płaszczyznę wokół swojej lokalnej osi X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1773"/>
+      <location filename="../../ArchSectionPlane.py" line="1775"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>Obróć płaszczyznę wokół swojej lokalnej osi Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1777"/>
+      <location filename="../../ArchSectionPlane.py" line="1779"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>Obróć płaszczyznę wokół swojej lokalnej osi Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1780"/>
       <source>Resize to Fit</source>
       <translation>Zmień rozmiar na dopasowanie</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1784"/>
+      <location filename="../../ArchSectionPlane.py" line="1786"/>
       <source>Recenter Plane</source>
       <translation>Wyśrodkuj płaszczyznę</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1766"/>
+      <location filename="../../ArchSectionPlane.py" line="1768"/>
       <source>Rotate X</source>
       <translation>Obróć X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1517"/>
+      <location filename="../../ArchSectionPlane.py" line="1519"/>
       <source>Toggle Cut View</source>
       <translation type="unfinished">Toggle Cut View</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1770"/>
+      <location filename="../../ArchSectionPlane.py" line="1772"/>
       <source>Rotate Y</source>
       <translation>Obróć Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1774"/>
+      <location filename="../../ArchSectionPlane.py" line="1776"/>
       <source>Rotate Z</source>
       <translation>Obróć Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1783"/>
+      <location filename="../../ArchSectionPlane.py" line="1785"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Zmień rozmiar płaszczyzny, aby dopasować obiekty z powyższej listy</translation>
     </message>
@@ -6234,7 +6234,7 @@ Wartości powierzchni zostaną zresetowane do 0.
       <translation>Środek</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1789"/>
+      <location filename="../../ArchSectionPlane.py" line="1791"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Wyśrodkuje płaszczyznę na obiektach znajdujących się powyżej</translation>
     </message>
@@ -7146,7 +7146,7 @@ jeśli wysokość tych obiektów jest ustawiona na 0</translation>
       <translation>Opcjonalny znacznik dla tego elementu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="968"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>Kształt tego obiektu</translation>
@@ -7167,7 +7167,7 @@ jeśli wysokość tych obiektów jest ustawiona na 0</translation>
       <translation>Mapowanie MaterialName:SolidIndexesList wiążące nazwy materiałów z indeksami brył, które zostanie zastosowane przy tworzeniu odniesień do tego obiektu w innych plikach</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1140"/>
+      <location filename="../../ArchSectionPlane.py" line="1142"/>
       <location filename="../../ArchBuildingPart.py" line="547"/>
       <source>The line width of this object</source>
       <translation>Szerokość linii tego obiektu</translation>
@@ -8733,7 +8733,7 @@ Narzędzie "Edytuj ścianę kurtynową" jest dostępne w dodatku zewnętrznym ("
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="253"/>
-      <location filename="../../ArchSectionPlane.py" line="960"/>
+      <location filename="../../ArchSectionPlane.py" line="962"/>
       <source>The placement of this object</source>
       <translation>Umiejscowienie tego obiektu</translation>
     </message>
@@ -8954,81 +8954,81 @@ Narzędzie "Edytuj ścianę kurtynową" jest dostępne w dodatku zewnętrznym ("
       <translation>Kształt zbrojenia</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="979"/>
+      <location filename="../../ArchSectionPlane.py" line="981"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Obiekty, które muszą być wzięte pod uwagę w tej płaszczyźnie przekroju. Wartość pusta oznacza cały dokument.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="990"/>
+      <location filename="../../ArchSectionPlane.py" line="992"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Jeśli parametr ma wartość Fałsz, 
 obiekty bez brył też będą cięte, z możliwością pojawienia się błędów.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1002"/>
+      <location filename="../../ArchSectionPlane.py" line="1004"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Jeśli ma wartość Prawda, wynikowe widoki zostaną przycięte do obszaru płaszczyzny przekroju.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1013"/>
+      <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Jeśli parametr ma wartość Prawda, kolor materiału obiektu zostanie użyty do wypełnienia powierzchni przekroju.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1025"/>
+      <location filename="../../ArchSectionPlane.py" line="1027"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>Geometria znajdująca się dalej niż ta wartość zostanie przycięta. Zachowaj zero dla braku ograniczeń.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1098"/>
+      <location filename="../../ArchSectionPlane.py" line="1100"/>
       <source>The display length of this section plane</source>
       <translation>Wyświetlana długość tej płaszczyzny przekroju</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1110"/>
+      <location filename="../../ArchSectionPlane.py" line="1112"/>
       <source>The display height of this section plane</source>
       <translation>Wyświetlana wysokość tej płaszczyzny przekroju</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1122"/>
+      <location filename="../../ArchSectionPlane.py" line="1124"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Rozmiar strzałek tej płaszczyzny przekroju</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1131"/>
+      <location filename="../../ArchSectionPlane.py" line="1133"/>
       <source>The transparency of this object</source>
       <translation>Przezroczystość tego obiektu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1149"/>
-      <location filename="../../ArchSectionPlane.py" line="1166"/>
+      <location filename="../../ArchSectionPlane.py" line="1151"/>
+      <location filename="../../ArchSectionPlane.py" line="1168"/>
       <source>Show the cut in the 3D view</source>
       <translation>Pokaż linię cięcia w oknie widoku 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1157"/>
+      <location filename="../../ArchSectionPlane.py" line="1159"/>
       <source>The color of this object</source>
       <translation>Kolor tego obiektu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1179"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Odległość między płaszczyzną cięcia i rzeczywistym widokiem cięcia (zachowaj bardzo małą wartość, ale nie zerową)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1186"/>
+      <location filename="../../ArchSectionPlane.py" line="1188"/>
       <source>Show the label in the 3D view</source>
       <translation>Pokaż etykietę w oknie widoku 3D</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="579"/>
-      <location filename="../../ArchSectionPlane.py" line="1194"/>
+      <location filename="../../ArchSectionPlane.py" line="1196"/>
       <source>The name of the font</source>
       <translation>Nazwa czcionki</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="597"/>
-      <location filename="../../ArchSectionPlane.py" line="1203"/>
+      <location filename="../../ArchSectionPlane.py" line="1205"/>
       <source>The size of the text font</source>
       <translation>Rozmiar czcionki</translation>
     </message>
