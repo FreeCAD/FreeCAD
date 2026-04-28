@@ -6220,7 +6220,7 @@ enum Status
 // currentStatus is the status enum built by testStatus()
 // overlays is a reference to the main QIcon that needs overlays added
 // Overlays are static icons that may need to be initialized
-void DocumentObjectItem::setIconOverlays(int currentStatus, QPixmap& overlays)
+void DocumentObjectItem::setIconOverlays(int currentStatus, QPixmap& overlays) const
 {
     if (currentStatus & Status::Hidden) {
         static QPixmap pxHidden;
