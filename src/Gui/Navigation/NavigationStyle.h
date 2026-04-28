@@ -522,6 +522,21 @@ protected:
     SbBool processSoEvent(const SoEvent* const ev) override;
 };
 
+class GuiExport AltiumNavigationStyle: public UserNavigationStyle
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    AltiumNavigationStyle();
+    ~AltiumNavigationStyle() override;
+
+    const char* mouseButtons(ViewerMode) override;
+
+protected:
+    /// Intercept OpenInventor events to set the correct navigation modes
+    SbBool processSoEvent(const SoEvent* const ev) override;
+};
+
 class GuiExport OpenSCADNavigationStyle: public UserNavigationStyle
 {
     using inherited = UserNavigationStyle;
