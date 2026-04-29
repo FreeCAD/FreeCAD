@@ -86,7 +86,13 @@ def run_and_capture(cmd: list[str]) -> tuple[int, str]:
     """
     try:
         proc = subprocess.run(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, check=False
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            check=False,
         )
         return proc.returncode, proc.stdout
     except FileNotFoundError:
