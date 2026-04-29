@@ -425,6 +425,79 @@ std::streambuf::pos_type StringIStreambuf::seekpos(
 
 // ----------------------------------------------------------------------
 
+std::streambuf* BufferStreambuf::setbuf(char* s, std::streamsize n)
+{
+    // [spanbuf.virtuals] 8
+    span({s, size_t(n)});
+    return this;
+}
+
+std::streambuf::pos_type BufferStreambuf::seekoff(
+    off_type off,
+    std::ios::seekdir way,
+    std::ios::openmode which
+)
+{
+    // NOLINTBEGIN(modernize-return-braced-init-list,cppcoreguidelines-pro-bounds-pointer-arithmetic)
+    which &= std::ios::in | std::ios::out;
+
+    // [spanbuf.virtuals] 3
+    if (which == (std::ios::in | std::ios::out) && way == std::ios::cur) {
+        // [spanbuf.virtuals] 6
+        return pos_type(off_type(-1));
+    }
+
+    // [spanbuf.virtuals] 4
+    off_type baseOffset = 0;
+    if (way == std::ios::beg) {
+        // [spanbuf.virtuals] 4.1
+        baseOffset = 0;
+    }
+    else {
+        if (which == std::ios::out) {
+            // [spanbuf.virtuals] 4.2 & 4.3.1
+            baseOffset = pptr() - pbase();
+        }
+        else if (way == std::ios::cur) {
+            // [spanbuf.virtuals] 4.2
+            baseOffset = gptr() - eback();
+        }
+        else if (way == std::ios::end) {
+            // [spanbuf.virtuals] 4.3.2
+            baseOffset = off_type(buffer.size());
+        }
+    }
+
+    // [spanbuf.virtuals] 5
+    const off_type newOffset = off + baseOffset;
+    if (newOffset < 0 || size_t(newOffset) > buffer.size()) {
+        // [spanbuf.virtuals] 6
+        return pos_type(off_type(-1));
+    }
+
+    // [spanbuf.virtuals] 2
+    if (which & std::ios::in) {
+        // [spanbuf.virtuals] 2.1
+        setg(eback(), eback() + newOffset, egptr());
+    }
+    if (which & std::ios::out) {
+        // [spanbuf.virtuals] 2.2
+        setp(pbase(), epptr());
+        pbump(int(newOffset));
+    }
+
+    return pos_type(newOffset);
+    // NOLINTEND(modernize-return-braced-init-list,cppcoreguidelines-pro-bounds-pointer-arithmetic)
+}
+
+std::streambuf::pos_type BufferStreambuf::seekpos(pos_type pos, std::ios_base::openmode which)
+{
+    // [spanbuf.virtuals] 7
+    return seekoff(off_type(pos), std::ios_base::beg, which);
+}
+
+// ----------------------------------------------------------------------
+
 // ---------------------------------------------------------
 
 #define PYSTREAM_BUFFERED

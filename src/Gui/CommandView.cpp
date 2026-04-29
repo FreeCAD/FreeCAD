@@ -20,7 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cstddef>
 #include <sstream>
+#include <string>
+#include <unordered_set>
 #include <vector>
 #include <tuple>
 
@@ -57,6 +60,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include "Base/Tools2D.h"
 #include "Command.h"
 #include "Action.h"
 #include "Application.h"
@@ -150,31 +154,26 @@ StdOrthographicCamera::StdOrthographicCamera()
 void StdOrthographicCamera::activated(int iMsg)
 {
     if (iMsg == 1) {
-        auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-        SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
-        if (!cam || cam->getTypeId() != SoOrthographicCamera::getClassTypeId()) {
-
-            doCommand(Command::Gui, "Gui.activeDocument().activeView().setCameraType(\"Orthographic\")");
-        }
+        getGuiApplication()->sendMsgToActiveView("OrthographicCamera");
     }
 }
 
 bool StdOrthographicCamera::isActive()
 {
-    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        // update the action group if needed
-        bool check = _pcAction->isChecked();
-        SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
-        bool mode = cam ? cam->getTypeId() == SoOrthographicCamera::getClassTypeId() : false;
-
-        if (mode != check) {
-            _pcAction->setChecked(mode);
-        }
-        return true;
+    if (!getGuiApplication()->sendHasMsgToActiveView("OrthographicCamera")) {
+        return false;
     }
 
-    return false;
+    auto view = qobject_cast<MDIViewWithCamera*>(getMainWindow()->activeWindow());
+    if (!view) {
+        return false;
+    }
+
+    const std::string& camera = view->getCamera();
+    const bool mode = camera.find("OrthographicCamera") != std::string_view::npos;
+    _pcAction->setChecked(mode);
+
+    return true;
 }
 
 Action* StdOrthographicCamera::createAction()
@@ -202,32 +201,26 @@ StdPerspectiveCamera::StdPerspectiveCamera()
 void StdPerspectiveCamera::activated(int iMsg)
 {
     if (iMsg == 1) {
-        auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-        SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
-        if (!cam || cam->getTypeId() != SoPerspectiveCamera::getClassTypeId()) {
-
-            doCommand(Command::Gui, "Gui.activeDocument().activeView().setCameraType(\"Perspective\")");
-        }
+        getGuiApplication()->sendMsgToActiveView("PerspectiveCamera");
     }
 }
 
 bool StdPerspectiveCamera::isActive()
 {
-    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        // update the action group if needed
-        bool check = _pcAction->isChecked();
-        SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
-        bool mode = cam ? cam->getTypeId() == SoPerspectiveCamera::getClassTypeId() : false;
-
-        if (mode != check) {
-            _pcAction->setChecked(mode);
-        }
-
-        return true;
+    if (!getGuiApplication()->sendHasMsgToActiveView("PerspectiveCamera")) {
+        return false;
     }
 
-    return false;
+    auto view = qobject_cast<MDIViewWithCamera*>(getMainWindow()->activeWindow());
+    if (!view) {
+        return false;
+    }
+
+    const std::string& camera = view->getCamera();
+    const bool mode = camera.find("PerspectiveCamera") != std::string_view::npos;
+    _pcAction->setChecked(mode);
+
+    return true;
 }
 
 Action* StdPerspectiveCamera::createAction()
@@ -399,15 +392,12 @@ void StdCmdFreezeViews::activated(int iMsg)
     }
     else if (iMsg == 3) {
         // Create a new view
-        auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
-        if (!view3d) {
-            Base::Console().developerError(
-                "StdCmdFreezeViews",
-                "Expected the active view to be View3DInventor\n"
-            );
+        auto* view = freecad_cast<MDIViewWithCamera*>(getGuiApplication()->activeView());
+        if (!view) {
             return;
         }
-        const std::string& camera = view3d->getCamera();
+
+        const std::string& camera = view->getCamera();
 
         QList<QAction*> acts = pcAction->actions();
         int index = 1;
@@ -436,16 +426,19 @@ void StdCmdFreezeViews::activated(int iMsg)
         // Activate a view
         QList<QAction*> acts = pcAction->actions();
         QString data = acts[iMsg]->toolTip();
-        MDIView* view = getGuiApplication()->activeView();
-        if (auto* view3D = freecad_cast<View3DInventor*>(view)) {
-            view3D->setCamera(data.toStdString().c_str());
+
+        auto* view = freecad_cast<MDIViewWithCamera*>(getGuiApplication()->activeView());
+        if (!view) {
+            return;
         }
+
+        view->setCamera(data.toStdString().c_str());
     }
 }
 
 bool StdCmdFreezeViews::isActive()
 {
-    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    auto view = qobject_cast<MDIViewWithCamera*>(getMainWindow()->activeWindow());
 
     separator->setVisible(savedViews > 0);
     if (view) {
@@ -465,7 +458,7 @@ void StdCmdFreezeViews::onSaveViews()
         getMainWindow(),
         QObject::tr("Save Frozen Views"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")))
+        FileDialog::FilterList {{QObject::tr("Frozen views"), {"*.cam"}}}
     );
     if (fn.isEmpty()) {
         return;
@@ -527,7 +520,7 @@ void StdCmdFreezeViews::onRestoreViews()
         getMainWindow(),
         QObject::tr("Restore Frozen Views"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")))
+        FileDialog::FilterList {{QObject::tr("Frozen views"), {"*.cam"}}}
     );
     if (fn.isEmpty()) {
         return;
@@ -1445,7 +1438,7 @@ void StdCmdViewHome::activated(int iMsg)
 //===========================================================================
 // Std_ViewBottom
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewBottom)
+DEF_STD_CMD_A(StdCmdViewBottom)
 
 StdCmdViewBottom::StdCmdViewBottom()
     : Command("Std_ViewBottom")
@@ -1463,13 +1456,18 @@ StdCmdViewBottom::StdCmdViewBottom()
 void StdCmdViewBottom::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().viewBottom()");
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewBottom\")");
+}
+
+bool StdCmdViewBottom::isActive()
+{
+    return getGuiApplication()->sendHasMsgToActiveView("ViewBottom");
 }
 
 //===========================================================================
 // Std_ViewFront
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewFront)
+DEF_STD_CMD_A(StdCmdViewFront)
 
 StdCmdViewFront::StdCmdViewFront()
     : Command("Std_ViewFront")
@@ -1487,13 +1485,18 @@ StdCmdViewFront::StdCmdViewFront()
 void StdCmdViewFront::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().viewFront()");
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFront\")");
+}
+
+bool StdCmdViewFront::isActive()
+{
+    return getGuiApplication()->sendHasMsgToActiveView("ViewFront");
 }
 
 //===========================================================================
 // Std_ViewLeft
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewLeft)
+DEF_STD_CMD_A(StdCmdViewLeft)
 
 StdCmdViewLeft::StdCmdViewLeft()
     : Command("Std_ViewLeft")
@@ -1511,13 +1514,18 @@ StdCmdViewLeft::StdCmdViewLeft()
 void StdCmdViewLeft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().viewLeft()");
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewLeft\")");
+}
+
+bool StdCmdViewLeft::isActive()
+{
+    return getGuiApplication()->sendHasMsgToActiveView("ViewLeft");
 }
 
 //===========================================================================
 // Std_ViewRear
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewRear)
+DEF_STD_CMD_A(StdCmdViewRear)
 
 StdCmdViewRear::StdCmdViewRear()
     : Command("Std_ViewRear")
@@ -1535,13 +1543,18 @@ StdCmdViewRear::StdCmdViewRear()
 void StdCmdViewRear::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().viewRear()");
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewRear\")");
+}
+
+bool StdCmdViewRear::isActive()
+{
+    return getGuiApplication()->sendHasMsgToActiveView("ViewRear");
 }
 
 //===========================================================================
 // Std_ViewRight
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewRight)
+DEF_STD_CMD_A(StdCmdViewRight)
 
 StdCmdViewRight::StdCmdViewRight()
     : Command("Std_ViewRight")
@@ -1559,13 +1572,18 @@ StdCmdViewRight::StdCmdViewRight()
 void StdCmdViewRight::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().viewRight()");
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewRight\")");
+}
+
+bool StdCmdViewRight::isActive()
+{
+    return getGuiApplication()->sendHasMsgToActiveView("ViewRight");
 }
 
 //===========================================================================
 // Std_ViewTop
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewTop)
+DEF_STD_CMD_A(StdCmdViewTop)
 
 StdCmdViewTop::StdCmdViewTop()
     : Command("Std_ViewTop")
@@ -1583,14 +1601,19 @@ StdCmdViewTop::StdCmdViewTop()
 void StdCmdViewTop::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().viewTop()");
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewTop\")");
+}
+
+bool StdCmdViewTop::isActive()
+{
+    return getGuiApplication()->sendHasMsgToActiveView("ViewTop");
 }
 
 
 //===========================================================================
 // Std_ViewIsometric
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewIsometric)
+DEF_STD_CMD_A(StdCmdViewIsometric)
 
 StdCmdViewIsometric::StdCmdViewIsometric()
     : Command("Std_ViewIsometric")
@@ -1608,13 +1631,18 @@ StdCmdViewIsometric::StdCmdViewIsometric()
 void StdCmdViewIsometric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().viewIsometric()");
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewAxo\")");
+}
+
+bool StdCmdViewIsometric::isActive()
+{
+    return getGuiApplication()->sendHasMsgToActiveView("ViewAxo");
 }
 
 //===========================================================================
 // Std_ViewDimetric
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewDimetric)
+DEF_STD_CMD_A(StdCmdViewDimetric)
 
 StdCmdViewDimetric::StdCmdViewDimetric()
     : Command("Std_ViewDimetric")
@@ -1631,13 +1659,18 @@ StdCmdViewDimetric::StdCmdViewDimetric()
 void StdCmdViewDimetric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().viewDimetric()");
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewDimetric\")");
+}
+
+bool StdCmdViewDimetric::isActive()
+{
+    return getGuiApplication()->sendHasMsgToActiveView("ViewDimetric");
 }
 
 //===========================================================================
 // Std_ViewTrimetric
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewTrimetric)
+DEF_STD_CMD_A(StdCmdViewTrimetric)
 
 StdCmdViewTrimetric::StdCmdViewTrimetric()
     : Command("Std_ViewTrimetric")
@@ -1654,7 +1687,12 @@ StdCmdViewTrimetric::StdCmdViewTrimetric()
 void StdCmdViewTrimetric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().viewTrimetric()");
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewTrimetric\")");
+}
+
+bool StdCmdViewTrimetric::isActive()
+{
+    return getGuiApplication()->sendHasMsgToActiveView("ViewTrimetric");
 }
 
 //===========================================================================
@@ -1728,13 +1766,11 @@ StdCmdViewFitAll::StdCmdViewFitAll()
 void StdCmdViewFitAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    // doCommand(Command::Gui,"Gui.activeDocument().activeView().fitAll()");
     doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
 bool StdCmdViewFitAll::isActive()
 {
-    // return isViewOfType(Gui::View3DInventor::getClassTypeId());
     return getGuiApplication()->sendHasMsgToActiveView("ViewFit");
 }
 
@@ -2120,8 +2156,7 @@ void StdViewScreenShot::activated(int iMsg)
         QStringList filter;
         QString selFilter;
         for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
-            filter << QStringLiteral("%1 %2 (*.%3)")
-                          .arg((*it).toUpper(), QObject::tr("files"), (*it).toLower());
+            filter << QStringLiteral("%1 files (*.%2)").arg(it->toUpper(), it->toLower());
             if (ext == *it) {
                 selFilter = filter.last();
             }
@@ -2700,15 +2735,16 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
-    if (!view3d) {
+    auto* view = freecad_cast<MDIViewWithCamera*>(getGuiApplication()->activeView());
+    if (!view) {
         Base::Console().developerError(
             "StdCmdViewIvIssueCameraPos",
             "Expected the active view to be View3DInventor\n"
         );
         return;
     }
-    std::string camera = view3d->getCamera();
+
+    std::string camera = view->getCamera();
 
     // remove the #inventor line...
     std::string::size_type pos = camera.find_first_of('\n');
@@ -2730,7 +2766,7 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
 
 bool StdCmdViewIvIssueCamPos::isActive()
 {
-    return freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    return freecad_cast<MDIViewWithCamera*>(getGuiApplication()->activeView());
 }
 
 
@@ -2987,6 +3023,71 @@ using SelectionMode = enum
     INTERSECT
 };
 
+static bool findObjectsOfTypeInBox(
+    const std::string& type,
+    const Base::ViewProjMethod& proj,
+    Data::ComplexGeoData* data,
+    const Base::Polygon2d& polygon,
+    std::vector<std::string>& ret,
+    SelectionMode mode
+)
+{
+    size_t count = data->countSubElements(type.c_str());
+    if (!count) {
+        return false;
+    }
+
+    bool foundElement = false;
+    for (size_t i = 1; i <= count; ++i) {
+        std::string element(type);
+        element += std::to_string(i);
+        std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
+        if (!segment) {
+            continue;
+        }
+        if (type == "Vertex") {
+            Base::Vector3d point;
+            if (data->getFirstVertexFromSubElement(segment.get(), point)) {
+                auto v = proj(point);
+                if (polygon.Contains(Base::Vector2d(v.x, v.y))) {
+                    foundElement = true;
+                    ret.push_back(element);
+                    continue;
+                }
+            }
+        }
+        else {
+            // find lines or faces
+            std::vector<Base::Vector3d> points;
+            std::vector<Data::ComplexGeoData::Line> lines;
+            data->getLinesFromSubElement(segment.get(), points, lines);
+            if (points.empty() || lines.empty()) {
+                continue;
+            }
+            Base::Polygon2d loop;
+            // TODO: can we assume the line returned above are in proper
+            // order if the element is a face?
+            auto v = proj(points[lines.front().I1]);
+            loop.Add(Base::Vector2d(v.x, v.y));
+            for (auto& line : lines) {
+                for (auto i = line.I1; i < line.I2; ++i) {
+                    auto v = proj(points[i + 1]);
+                    loop.Add(Base::Vector2d(v.x, v.y));
+                }
+            }
+            if (!polygon.Intersect(loop)) {
+                continue;
+            }
+            if (mode == CENTER && !polygon.Contains(loop.CalcBoundBox().GetCenter())) {
+                continue;
+            }
+            ret.push_back(element);
+            foundElement = true;
+        }
+    }
+    return foundElement;
+}
+
 static std::vector<std::string> getBoxSelection(
     ViewProviderDocumentObject* vp,
     SelectionMode mode,
@@ -3004,32 +3105,38 @@ static std::vector<std::string> getBoxSelection(
         return ret;
     }
 
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    const auto selectionGate = SelectionSingleton::instance().getSelectionGate(doc);
+
     // DO NOT check this view object Visibility, let the caller do this. Because
     // we may be called by upper object hierarchy that manages our visibility.
 
     auto bbox3 = vp->getBoundingBox(nullptr, transform);
-    if (!bbox3.IsValid()) {
-        return ret;
+    Base::BoundBox2d bbox;
+    const bool isBBox3Valid = bbox3.IsValid();
+    if (isBBox3Valid && selectionGate == nullptr) {
+        bbox = bbox3.Transformed(mat).ProjectBox(&proj);
+
+        // check if both two boundary points are inside polygon, only
+        // valid since we know the given polygon is a box.
+        if (polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
+            && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY))) {
+            ret.emplace_back("");
+            return ret;
+        }
+
+        // we could select the whole polygon if there's no selection filter
+        if (!bbox.Intersect(polygon) && selectionGate == nullptr) {
+            return ret;
+        }
     }
 
-    auto bbox = bbox3.Transformed(mat).ProjectBox(&proj);
-
-    // check if both two boundary points are inside polygon, only
-    // valid since we know the given polygon is a box.
-    if (polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
-        && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY))) {
-        ret.emplace_back("");
-        return ret;
-    }
-
-    if (!bbox.Intersect(polygon)) {
-        return ret;
-    }
-
+    // find subobjects that are contained within the box selection
     const auto& subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
     if (subs.empty()) {
         if (!selectElement) {
-            if (mode == INTERSECT || polygon.Contains(bbox.GetCenter())) {
+            // bbox wasn't created if bbox3 had been invalid
+            if (mode == INTERSECT || (isBBox3Valid && polygon.Contains(bbox.GetCenter()))) {
                 ret.emplace_back("");
             }
             return ret;
@@ -3046,52 +3153,31 @@ static std::vector<std::string> getBoxSelection(
             return ret;
         }
         auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
-        for (auto type : data->getElementTypes()) {
-            size_t count = data->countSubElements(type);
-            if (!count) {
-                continue;
+        const auto& allAllowedDocumentTypes = data->getElementTypes();
+
+        if (selectionGate) {
+            // there's no point to try to iterate over every type of object when a selector is
+            // specified iterate over only those which are allowed
+            auto filteredTypes = selectionGate->getGatedTypes(allAllowedDocumentTypes);
+            if (!filteredTypes.empty()) {
+                for (const auto& type : filteredTypes) {
+                    findObjectsOfTypeInBox(type, proj, data, polygon, ret, mode);
+                }
+                return ret;
             }
-            for (size_t i = 1; i <= count; ++i) {
-                std::string element(type);
-                element += std::to_string(i);
-                std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
-                if (!segment) {
-                    continue;
-                }
-                std::vector<Base::Vector3d> points;
-                std::vector<Data::ComplexGeoData::Line> lines;
-                data->getLinesFromSubElement(segment.get(), points, lines);
-                if (lines.empty()) {
-                    if (points.empty()) {
-                        continue;
-                    }
-                    auto v = proj(points[0]);
-                    if (polygon.Contains(Base::Vector2d(v.x, v.y))) {
-                        ret.push_back(element);
-                    }
-                    continue;
-                }
-                Base::Polygon2d loop;
-                // TODO: can we assume the line returned above are in proper
-                // order if the element is a face?
-                auto v = proj(points[lines.front().I1]);
-                loop.Add(Base::Vector2d(v.x, v.y));
-                for (auto& line : lines) {
-                    for (auto i = line.I1; i < line.I2; ++i) {
-                        auto v = proj(points[i + 1]);
-                        loop.Add(Base::Vector2d(v.x, v.y));
-                    }
-                }
-                if (!polygon.Intersect(loop)) {
-                    continue;
-                }
-                if (mode == CENTER && !polygon.Contains(loop.CalcBoundBox().GetCenter())) {
-                    continue;
-                }
-                ret.push_back(element);
-            }
-            break;
         }
+
+        // if either selectionGate is not present, or filteredTypes = []
+        // the selection process needs iterate from the biggest objects
+        // to the smallest ones ex. if a line can't be selected (ie. out of selector bounds)
+        // then try to select vertices
+        for (auto type : allAllowedDocumentTypes) {
+            if (findObjectsOfTypeInBox(type, proj, data, polygon, ret, mode)) {
+                // notice the break - if a line can be selected - don't go over to vertices
+                break;
+            }
+        }
+
         return ret;
     }
 
@@ -4319,14 +4405,12 @@ StdStoreWorkingView::StdStoreWorkingView()
 void StdStoreWorkingView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    if (auto view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow())) {
-        view->getViewer()->saveHomePosition();
-    }
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"StoreWorkingView\")");
 }
 
 bool StdStoreWorkingView::isActive()
 {
-    return dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    return getGuiApplication()->sendHasMsgToActiveView("StoreWorkingView");
 }
 
 //===========================================================================
@@ -4349,17 +4433,12 @@ StdRecallWorkingView::StdRecallWorkingView()
 void StdRecallWorkingView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    if (auto view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow())) {
-        if (view->getViewer()->hasHomePosition()) {
-            view->getViewer()->resetToHomePosition();
-        }
-    }
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"RecallWorkingView\")");
 }
 
 bool StdRecallWorkingView::isActive()
 {
-    auto view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
-    return view && view->getViewer()->hasHomePosition();
+    return getGuiApplication()->sendHasMsgToActiveView("RecallWorkingView");
 }
 
 //===========================================================================

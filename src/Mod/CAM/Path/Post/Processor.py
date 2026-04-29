@@ -405,6 +405,20 @@ class PostProcessor:
                 "help": translate("CAM", "G-code commands inserted after tool changes."),
             },
             {
+                "name": "pre_rotary_move",
+                "type": "text",
+                "label": translate("CAM", "Pre-Rotary Move"),
+                "default": "",
+                "help": translate("CAM", "G-code commands inserted before rotary axis moves."),
+            },
+            {
+                "name": "post_rotary_move",
+                "type": "text",
+                "label": translate("CAM", "Post-Rotary Move"),
+                "default": "",
+                "help": translate("CAM", "G-code commands inserted after rotary axis moves."),
+            },
+            {
                 "name": "show_dialog",
                 "type": "bool",
                 "label": translate("CAM", "Show Pre-processing Dialogs"),
@@ -523,11 +537,12 @@ class PostProcessor:
         }
         self.reinitialize()
 
+        self._operations = []
         if isinstance(job, dict):
             # process only selected operations
             self._job = job["job"]
             self._operations = job["operations"]
-        else:
+        if not self._operations:
             # get all operations from 'Operations' group
             self._operations = (
                 getattr(self._job.Operations, "Group", []) if self._job is not None else []
@@ -2244,6 +2259,12 @@ class PostProcessor:
                     # Update modal state for unhandled parameters too
                     self._modal_state[parameter] = params[parameter]
 
+        # Suppress commands where all parameters were removed by duplicate suppression
+        # or parameter_order exclusion (e.g., Z suppression for wire EDM).
+        # A bare move (G0, G1, G2, G3) or dwell (G4) with no parameters is meaningless.
+        if params and len(command_line) == 1:
+            return None
+
         # Handle tool length offset (G43) suppression
         if command_name in ("G43",):
             if not self.values.get("OUTPUT_TOOL_LENGTH_OFFSET", True):
@@ -2312,7 +2333,12 @@ class PostProcessor:
 
         This method can be overridden by derived postprocessors to customize tool change handling.
         """
-        return self._convert_move(command)
+        result = self._convert_move(command)
+        # Reset modal state after tool change so that subsequent commands
+        # (M3 S..., G4 P..., G0 X... etc.) are not suppressed as duplicates.
+        for key in self._modal_state:
+            self._modal_state[key] = None
+        return result
 
     def _convert_spindle_command(self, command: Path.Command) -> str:
         """

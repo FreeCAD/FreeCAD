@@ -1,0 +1,178 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *   Copyright (c) 2026 FreeCAD contributors.                              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This workflow runs label-gated CI jobs (macOS and Windows builds).
+# It lives in a separate workflow from CI_primary.yml so that adding a
+# label does not cancel the in-progress Linux build and lint run.
+#
+# Instead of using cancel-in-progress, a Gate job decides whether to
+# proceed or bail out:
+#   - On code changes (synchronize, opened, reopened, push): cancel any
+#     older in-progress runs for the same branch, then proceed.
+#   - On label additions: check whether macOS/Windows builds already ran
+#     (or are running) for the same HEAD SHA.  If so, bail out so we do
+#     not restart builds that are already covered.
+
+name: FreeCAD CI approved
+
+on:
+  workflow_dispatch: ~
+  push:
+    branches:
+      - main
+      - releases/**
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+  merge_group: ~
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  Gate:
+    runs-on: ubuntu-latest
+    outputs:
+      should-run: ${{ steps.check.outputs.should-run }}
+    steps:
+      - name: Decide whether this run is needed
+        id: check
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const isPR = context.eventName === 'pull_request';
+            const action = context.payload.action;
+
+            // For labeled events, check whether builds already exist for this SHA.
+            if (isPR && action === 'labeled') {
+              const headSha = context.payload.pull_request.head.sha;
+              const { data: { workflow_runs: runs } } = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'CI_approved.yml',
+                head_sha: headSha,
+              });
+
+              const otherRuns = runs.filter(r => r.id !== context.runId);
+
+              for (const run of otherRuns) {
+                // Look at the individual jobs to see if builds actually ran
+                // (as opposed to being skipped due to missing label).
+                const { data: { jobs } } = await github.rest.actions.listJobsForWorkflowRun({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: run.id,
+                });
+                const skipPrefixes = ['Gate', 'Prepare', 'WrapUp'];
+                const buildJobs = jobs.filter(j =>
+                  !skipPrefixes.some(p => j.name.startsWith(p))
+                );
+                const activeOrRan = buildJobs.filter(j =>
+                  j.conclusion !== 'skipped'
+                );
+                if (activeOrRan.length > 0) {
+                  core.info(`Skipping: run ${run.id} already covers SHA ${headSha}`);
+                  core.setOutput('should-run', 'false');
+                  return;
+                }
+              }
+
+              // No existing run with real build jobs -- proceed.
+              core.setOutput('should-run', 'true');
+              return;
+            }
+
+            // For code changes and non-PR events, cancel older runs for the
+            // same branch so we do not waste resources on stale code.
+            const branch = isPR
+              ? context.payload.pull_request.head.ref
+              : context.ref.replace('refs/heads/', '');
+
+            for (const status of ['in_progress', 'queued']) {
+              const { data: { workflow_runs: runs } } = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'CI_approved.yml',
+                branch: branch,
+                status: status,
+              });
+              for (const run of runs.filter(r => r.id !== context.runId)) {
+                core.info(`Canceling stale run ${run.id} (status: ${status})`);
+                try {
+                  await github.rest.actions.cancelWorkflowRun({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    run_id: run.id,
+                  });
+                } catch (e) {
+                  core.warning(`Failed to cancel run ${run.id}: ${e.message}`);
+                }
+              }
+            }
+
+            core.setOutput('should-run', 'true');
+
+  Prepare:
+    needs: [Gate]
+    uses: ./.github/workflows/sub_prepare.yml
+    with:
+      artifactBasename: Prepare-approved-${{ github.run_id }}
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
+
+  Pixi:
+    needs: [Gate, Prepare]
+    if: >-
+      needs.Prepare.result == 'success'
+      && (github.event_name != 'pull_request'
+          || startsWith(github.event.pull_request.base.ref, 'releases/')
+          || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
+    uses: ./.github/workflows/sub_buildPixi.yml
+    with:
+      artifactBasename: Pixi-${{ github.run_id }}
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
+
+  Windows:
+    needs: [Gate, Prepare]
+    if: >-
+      needs.Prepare.result == 'success'
+      && !startsWith(github.head_ref, 'refs/heads/backport-')
+      && (github.event_name != 'pull_request'
+          || startsWith(github.event.pull_request.base.ref, 'releases/')
+          || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
+    uses: ./.github/workflows/sub_buildWindows.yml
+    with:
+      artifactBasename: Windows-${{ github.run_id }}
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
+
+  WrapUp:
+    needs: [
+        Gate,
+        Prepare,
+        Pixi,
+        Windows
+      ]
+    if: always()
+    uses: ./.github/workflows/sub_wrapup.yml
+    with:
+      previousSteps: ${{ toJSON(needs) }}

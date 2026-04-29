@@ -675,7 +675,7 @@ def show(item, column=None):
         elif isView(obj):
 
             # case 2: the object is a 2D view
-            ssel = [obj] + obj.OutListRecursive
+            ssel = [obj] + obj.Group
             FreeCADGui.Selection.clearSelection()
             for o in ssel:
                 o.ViewObject.Visibility = True

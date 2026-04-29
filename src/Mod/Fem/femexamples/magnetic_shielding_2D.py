@@ -117,12 +117,12 @@ def setup(doc=None, solvertype="elmer"):
     mat_manager = Materials.MaterialManager()
     air = mat_manager.getMaterial("94370b96-c97e-4a3f-83b2-11d7461f7da7")
     air_obj = ObjectsFem.makeMaterialFluid(doc, "Air")
-    air_obj.UUID = "94370b96-c97e-4a3f-83b2-11d7461f7da7"
+    air_obj.UUID = air.UUID
     air_obj.Material = air.Properties
 
     iron = mat_manager.getMaterial("1826c364-d26a-43fb-8f61-288281236836")
     iron_obj = ObjectsFem.makeMaterialFluid(doc, "Iron")
-    iron_obj.UUID = "1826c364-d26a-43fb-8f61-288281236836"
+    iron_obj.UUID = iron.UUID
     iron_obj.Material = iron.Properties
 
     air_obj.References = [(shell, ("Face1","Face3"))]

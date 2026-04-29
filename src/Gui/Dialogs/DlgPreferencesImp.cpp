@@ -919,7 +919,7 @@ void DlgPreferencesImp::applyChanges()
                     ui->groupWidgetStack->setCurrentIndex(i);
                     pagesStackWidget->setCurrentIndex(j);
 
-                    QMessageBox::warning(this, tr("Wrong parameter"), QString::fromLatin1(e.what()));
+                    QMessageBox::warning(this, tr("Wrong Parameter"), QString::fromLatin1(e.what()));
 
                     this->invalidParameter = true;
 

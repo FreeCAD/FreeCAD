@@ -37,6 +37,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <format>
+#include <optional>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/bimap.hpp>
@@ -63,6 +64,7 @@
 #include <Base/Writer.h>
 #include <Base/Profiler.h>
 #include <Base/Tools.h>
+#include <Base/XMLTools.h>
 #include <Base/Uuid.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
@@ -104,6 +106,17 @@ using namespace zipios;
 #endif
 
 namespace fs = std::filesystem;
+
+namespace
+{
+
+bool transactionStateBlocksRecoveryWrite(const DocumentP& documentPrivate)
+{
+    return documentPrivate.bookedTransaction != NullTransaction
+        || documentPrivate.activeUndoTransaction != nullptr || documentPrivate.committing;
+}
+
+}  // namespace
 
 namespace App
 {
@@ -207,6 +220,7 @@ bool Document::undo(const int id)
         }
 
         signalUndo(*this);  // now signal the undo
+        signalBecameStable(*this);
 
         return true;
     }
@@ -260,6 +274,7 @@ bool Document::redo(const int id)
         }
 
         signalRedo(*this);
+        signalBecameStable(*this);
         return true;
     }
 
@@ -441,7 +456,7 @@ int Document::setActiveTransaction(TransactionName name, int tid)
             return NullTransaction;
         }
         d->bookedTransaction = tid;
- 
+
         if (GetApplication().transactionTmpName(d->bookedTransaction)) {
             GetApplication().setTransactionName(d->bookedTransaction, name);
         }
@@ -562,7 +577,11 @@ void Document::commitTransaction() // NOLINT
         // commit their transaction if their ID matches
         GetApplication().commitTransaction(d->activeUndoTransaction->getID());
     } else {
+        const bool wasRecoveryWriteBlocked = transactionStateBlocksRecoveryWrite(*d);
         d->bookedTransaction = 0; // Reset booked transaction even if it was not used
+        if (wasRecoveryWriteBlocked) {
+            signalBecameStable(*this);
+        }
     }
 }
 
@@ -580,26 +599,33 @@ bool Document::_commitTransaction(const bool notify)
     }
 
     d->bookedTransaction = 0;
+    bool committed = false;
     if (d->activeUndoTransaction) {
-        Base::FlagToggler<> flag(d->committing);
-        Application::TransactionSignaller signaller(false, true);
-        const int id = d->activeUndoTransaction->getID();
+        {
+            Base::FlagToggler<> flag(d->committing);
+            Application::TransactionSignaller signaller(false, true);
+            const int id = d->activeUndoTransaction->getID();
 
-        mUndoTransactions.push_back(d->activeUndoTransaction);
-        d->activeUndoTransaction = nullptr;
+            mUndoTransactions.push_back(d->activeUndoTransaction);
+            d->activeUndoTransaction = nullptr;
 
-        // check the stack for the limits
-        if (mUndoTransactions.size() > d->UndoMaxStackSize) {
-            mUndoMap.erase(mUndoTransactions.front()->getID());
-            delete mUndoTransactions.front();
-            mUndoTransactions.pop_front();
+            // check the stack for the limits
+            if (mUndoTransactions.size() > d->UndoMaxStackSize) {
+                mUndoMap.erase(mUndoTransactions.front()->getID());
+                delete mUndoTransactions.front();
+                mUndoTransactions.pop_front();
+            }
+            signalCommitTransaction(*this);
+
+            // commitTransaction() may call again _commitTransaction()
+            if (notify) {
+                GetApplication().commitTransaction(id);
+            }
         }
-        signalCommitTransaction(*this);
-
-        // commitTransaction() may call again _commitTransaction()
-        if (notify) {
-            GetApplication().commitTransaction(id);
-        }
+        committed = true;
+    }
+    if (committed) {
+        signalBecameStable(*this);
     }
     return true;
 }
@@ -615,7 +641,11 @@ void Document::abortTransaction() const
     if (d->activeUndoTransaction) {
         GetApplication().abortTransaction(d->activeUndoTransaction->getID());
     } else {
+        const bool wasRecoveryWriteBlocked = transactionStateBlocksRecoveryWrite(*d);
         d->bookedTransaction = 0; // Reset booked transaction even if it was not used
+        if (wasRecoveryWriteBlocked) {
+            signalBecameStable(*this);
+        }
     }
 }
 
@@ -628,18 +658,25 @@ void Document::_abortTransaction()
     }
 
     d->bookedTransaction = 0;
+    bool aborted = false;
     if (d->activeUndoTransaction) {
-        Base::FlagToggler<bool> flag(d->rollback);
-        Application::TransactionSignaller signaller(true, true);
+        {
+            Base::FlagToggler<bool> flag(d->rollback);
+            Application::TransactionSignaller signaller(true, true);
 
-        // applying the so far made changes
-        d->activeUndoTransaction->apply(*this, false);
+            // applying the so far made changes
+            d->activeUndoTransaction->apply(*this, false);
 
-        // destroy the undo
-        mUndoMap.erase(d->activeUndoTransaction->getID());
-        delete d->activeUndoTransaction;
-        d->activeUndoTransaction = nullptr;
-        signalAbortTransaction(*this);
+            // destroy the undo
+            mUndoMap.erase(d->activeUndoTransaction->getID());
+            delete d->activeUndoTransaction;
+            d->activeUndoTransaction = nullptr;
+            signalAbortTransaction(*this);
+        }
+        aborted = true;
+    }
+    if (aborted) {
+        signalBecameStable(*this);
     }
 }
 
@@ -1872,6 +1909,13 @@ bool Document::saveCopy(const char* file) const
     return this->FileName.getStrValue() != checked ? saveToFile(checked.c_str()) : false;
 }
 
+bool Document::canWriteRecoverySnapshot() const
+{
+    return !testStatus(Document::PartialDoc) && !testStatus(Document::TempDoc)
+        && !testStatus(Document::Recomputing) && !transactionStateBlocksRecoveryWrite(*d)
+        && !isPerformingTransaction();
+}
+
 // Save the document under the name it has been opened
 bool Document::save()
 {
@@ -1904,7 +1948,13 @@ bool Document::save()
             LastModifiedBy.setValue(Author.c_str());
         }
 
-        return saveToFile(FileName.getValue());
+        bool result = saveToFile(FileName.getValue());
+        if (result) {
+            d->programVersion = Application::Config()["BuildVersionMajor"] + "."
+                + Application::Config()["BuildVersionMinor"] + "R"
+                + Application::Config()["BuildRevision"];
+        }
+        return result;
     }
 
     return false;
@@ -2649,7 +2699,7 @@ Document::getDependencyList(const std::vector<DocumentObject*>& objs, int option
                 ss << '\n';
             }
             FC_ERR(ss.str());
-            FC_THROWM(Base::RuntimeError, e.what());
+            FC_THROWM(Base::BadGraphError, e.what());
         }
         FC_ERR(e.what());
         ret = DocumentP::partialTopologicalSort(objs);
@@ -2761,17 +2811,20 @@ void Document::renameObjectIdentifiers(
     }
 }
 
-void Document::setPreRecomputeHook(const PreRecomputeHook& hook)
-{
-     d->_preRecomputeHook = hook;
-}
-
 int Document::recompute(const std::vector<DocumentObject*>& objs,
                         bool force,
                         bool* hasError,
                         int options)
 {
     ZoneScoped;
+
+    // Recompute can execute Python-backed features. Keep the GIL for the full
+    // recompute so async recompute still serializes Python execution the same
+    // way the main-thread path does, preserving compatibility with existing
+    // Python-backed objects and addons. Main-thread signal hops such as
+    // signalBeforeRecompute() temporarily release it when they need to run
+    // Python on the GUI thread to avoid deadlocks.
+    Base::PyGILStateLocker locker;
 
     if (d->undoing || d->rollback) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
@@ -2804,15 +2857,10 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
     d->clearRecomputeLog();
 
     Base::TimeTracker tracker("Document::recompute");
+    std::optional<Base::ObjectStatusLocker<Document::Status, Document>> recomputingStatus;
+    recomputingStatus.emplace(Document::Recomputing, this);
 
-    Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
-
-    // This will hop into the main thread, fire signalBeforeRecompute(),
-    // and *block* the worker until the main thread is done, avoiding races
-    // between any running Python code and the rest of the recompute call.
-    if (d->_preRecomputeHook) {
-        d->_preRecomputeHook();
-    }
+    signalBeforeRecompute(*this);
 
     //////////////////////////////////////////////////////////////////////////
     // FIXME Comment by Realthunder:
@@ -2930,7 +2978,15 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
         obj->setStatus(ObjectStatus::Recompute2, false);
     }
 
+    // Keep the document marked as Recomputing while signalRecomputed() runs.
+    // Those observers may execute Python or GUI code; clearing the status
+    // first would let re-entrant code see the document as stable before
+    // recompute teardown has finished. signalBecameStable() is the first
+    // point where observers may treat the document as stable again.
+
     signalRecomputed(*this, topoSortedObjects);
+    recomputingStatus.reset();
+    signalBecameStable(*this);
 
     tracker.checkpoint("Recompute total");
 

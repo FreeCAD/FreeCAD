@@ -25,10 +25,15 @@
 
 
 #include <sstream>
+#include <QApplication>
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QTimer>
 #include <Standard_Failure.hxx>
+
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoEventCallback.h>
 
 
 #include <App/Application.h>
@@ -40,7 +45,12 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/InputHint.h>
+#include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
@@ -1259,8 +1269,8 @@ void TaskAttacher::showPlacementUtilities()
         overrides.override(planarViewProvider->ShowPlane, true);
     }
 
-    if (auto partViewProvider = freecad_cast<PartGui::ViewProviderPartExt*>(ViewProvider)) {
-        overrides.override(partViewProvider->ShowPlacement, true);
+    if (auto draggerViewProvider = freecad_cast<Gui::ViewProviderDragger*>(ViewProvider)) {
+        overrides.override(draggerViewProvider->ShowPlacement, true);
     }
 }
 
@@ -1463,7 +1473,6 @@ TaskDlgAttacher::TaskDlgAttacher(
     , onAccept(onAccept)
     , onReject(onReject)
     , accepted(false)
-    , tid(0)
 {
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
@@ -1472,22 +1481,113 @@ TaskDlgAttacher::TaskDlgAttacher(
         parameter = new TaskAttacher(ViewProvider, nullptr, QString(), tr("Attachment"));
         Content.push_back(parameter);
     }
+
+    // Double-click on a valid attachment element in the 3D view confirms the dialog
+    if (onAccept) {
+        auto* view3d = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+        if (view3d) {
+            dblClickViewer = view3d->getViewer();
+            dblClickViewer->addEventCallback(
+                SoMouseButtonEvent::getClassTypeId(),
+                &TaskDlgAttacher::handleMouseButtonCB,
+                this
+            );
+        }
+    }
+
+    // Status-bar input hints
+    using enum Gui::InputHint::UserInput;
+    std::list<Gui::InputHint> hints {
+        {
+            .message = tr("%1 select reference"),
+            .sequences = {MouseLeft},
+        },
+    };
+    if (onAccept) {
+        hints.push_back({
+            .message = tr("2x%1 select and confirm"),
+            .sequences = {MouseLeft},
+        });
+    }
+    Gui::getMainWindow()->showHints(hints);
 }
 
 TaskDlgAttacher::~TaskDlgAttacher()
 {
+    Gui::getMainWindow()->hideHints();
+    if (dblClickViewer) {
+        // Re-enable selection in case it was disabled for a double-click that never completed
+        dblClickViewer->setSelectionEnabled(true);
+        dblClickViewer->removeEventCallback(
+            SoMouseButtonEvent::getClassTypeId(),
+            &TaskDlgAttacher::handleMouseButtonCB,
+            this
+        );
+    }
     if (accepted && onAccept) {
         onAccept();
     }
-};
+}
+
+void TaskDlgAttacher::handleMouseButtonCB(void* userdata, SoEventCallback* cb)
+{
+    auto* self = static_cast<TaskDlgAttacher*>(userdata);
+    const SoEvent* ev = cb->getEvent();
+    if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        return;
+    }
+    const auto* mbe = static_cast<const SoMouseButtonEvent*>(ev);
+
+    if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 || mbe->getState() != SoButtonEvent::DOWN) {
+        return;
+    }
+
+    const SbVec2s pos = mbe->getPosition();
+    const SbTime now = SbTime::getTimeOfDay();
+    const float dci = static_cast<float>(QApplication::doubleClickInterval()) / 1000.0F;
+    constexpr int dblClickRadius = 5;
+
+    const bool inWindow = SbVec2f(pos - self->lastClickPos).length() < dblClickRadius
+        && (now - self->lastClickTime).getValue() < dci;
+
+    auto* pcAttach = self->ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    const bool validState = pcAttach && !pcAttach->AttachmentSupport.getValues().empty()
+        && pcAttach->MapMode.getValue() != mmDeactivated;
+
+    if (inWindow && validState && self->dblClickViewer) {
+        // Block SoFCUnifiedSelection from processing second click (would add the parent object instead)
+        self->dblClickViewer->setSelectionEnabled(false);
+
+        // Anti-retrigger: park tracking far away and reset time
+        self->lastClickTime = SbTime();
+        self->lastClickPos = SbVec2s(-16000, -16000);
+
+        auto* doc = self->ViewProvider->getDocument()->getDocument();
+        QPointer<Gui::View3DInventorViewer> viewer = self->dblClickViewer;
+        QTimer::singleShot(0, [doc, viewer]() {
+            if (viewer) {
+                viewer->setSelectionEnabled(true);
+            }
+            Gui::Control().accept(doc);
+        });
+        return;
+    }
+
+    // Not a double-click
+    self->lastClickTime = now;
+    self->lastClickPos = pos;
+}
 
 //==== calls from the TaskView ===============================================================
 
 
 void TaskDlgAttacher::open()
 {
-    if (!Gui::Command::hasPendingCommand()) {
-        tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    Gui::DocumentT doc(getDocumentName());
+    if (Gui::Document* document = doc.getDocument()) {
+        if (!document->hasPendingCommand()) {
+            document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+        }
     }
 }
 
@@ -1546,7 +1646,7 @@ bool TaskDlgAttacher::accept()
         );
         Gui::cmdAppObject(obj, "recompute()");
 
-        Gui::Command::commitCommand(tid);
+        document->commitCommand();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(
@@ -1572,7 +1672,7 @@ bool TaskDlgAttacher::reject()
     Gui::Document* document = doc.getDocument();
     if (document) {
         // roll back the done things
-        Gui::Command::abortCommand(tid);
+        document->abortCommand();
         Gui::Command::doCommand(Gui::Command::Doc, "%s.recompute()", doc.getAppDocumentPython().c_str());
     }
 

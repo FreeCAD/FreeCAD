@@ -91,9 +91,9 @@ public:
     /* Solve the assembly. It will update first the joints, solve, update placements of the parts
     and redraw the joints Args : enableRedo : This store initial positions to enable undo while
     being in an active transaction (joint creation).*/
-    int solve(bool enableRedo = false, bool updateJCS = true);
+    int solve(bool enableRedo = false);
     int generateSimulation(App::DocumentObject* sim);
-    int updateForFrame(size_t index, bool updateJCS = true);
+    int updateForFrame(size_t index);
     size_t numberOfFrames();
     void preDrag(std::vector<App::DocumentObject*> dragParts);
     void doDragStep();
@@ -154,11 +154,7 @@ public:
     template<typename T>
     T* getGroup();
 
-    std::vector<App::DocumentObject*> getJoints(
-        bool updateJCS = true,
-        bool delBadJoints = false,
-        bool subJoints = true
-    );
+    std::vector<App::DocumentObject*> getJoints(bool delBadJoints = false, bool subJoints = true);
     std::vector<App::DocumentObject*> getGroundedJoints();
     std::vector<App::DocumentObject*> getJointsOfObj(App::DocumentObject* obj);
     std::vector<App::DocumentObject*> getJointsOfPart(App::DocumentObject* part);

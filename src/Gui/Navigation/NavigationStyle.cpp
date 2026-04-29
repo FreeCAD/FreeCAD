@@ -1596,6 +1596,12 @@ void NavigationStyle::stopSelection()
     }
 }
 
+void NavigationStyle::resetButtonState()
+{
+    button1down = button2down = button3down = false;
+    setViewingMode(IDLE);
+}
+
 SbBool NavigationStyle::isSelecting() const
 {
     return (mouseSelection ? true : false);

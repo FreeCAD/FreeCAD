@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trim Mesh</source>
-      <translation type="unfinished">Trim Mesh</translation>
+      <translation>Taglia mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation type="unfinished">Guiding Plane</translation>
+      <translation>Guiding Plane</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -217,9 +217,9 @@
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Premere "Avvia", quindi selezionare i punti sulla mesh; quando si è impostato un numero sufficiente di punti, fare clic con il pulsante destro del mouse e scegliere "Crea". Ripetere questo processo per creare altre spline. Chiudere questo pannello attività per completare l'operazione.
 
-This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+Questo comando funziona solo con un oggetto Mesh, non con una faccia o una superficie normale. Per convertire un oggetto in una mesh, utilizzare gli strumenti dell'ambiente di lavoro Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -341,24 +341,23 @@ questa funzionalità (ad es. il formato OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation</source>
-      <translation type="unfinished">Surface deviation</translation>
+      <translation>Deviazione superficiale</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
       <source>Angular deviation</source>
-      <translation type="unfinished">Angular deviation</translation>
+      <translation>Deviazione angolare</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>La deviazione lineare massima di un segmento di mesh sarà pari alla deviazione superficiale specificata moltiplicata per la lunghezza del segmento di mesh corrente (bordo)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
       <source>Maximum edge length</source>
-      <translation type="unfinished">Maximum edge length</translation>
+      <translation>Lunghezza massima del bordo</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
@@ -420,17 +419,17 @@ Il valore più piccolo è 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading</source>
-      <translation type="unfinished">Mesh size grading</translation>
+      <translation>Gradazione dimensione mesh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge</source>
-      <translation type="unfinished">Elements per edge</translation>
+      <translation>Elementi per bordo</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius</source>
-      <translation type="unfinished">Elements per curvature radius</translation>
+      <translation>Elementi per raggio di curvatura</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
@@ -504,8 +503,8 @@ Impostare la punta del corpo o selezionare una forma diversa.</translation>
       <location filename="../../Tessellation.cpp" line="288"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
-      <translation type="unfinished">Error: shape without faces selected.
-Select a different shape.</translation>
+      <translation>Errore: selezionata una forma senza facce.
+Selezionare una forma diversa.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="293"/>
@@ -523,7 +522,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="205"/>
       <source>Select a plane to section the mesh with.</source>
-      <translation type="unfinished">Select a plane to section the mesh with.</translation>
+      <translation>Selezionare un piano per sezionare la mesh.</translation>
     </message>
   </context>
   <context>
@@ -536,7 +535,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Select a plane to trim the mesh with.</source>
-      <translation type="unfinished">Select a plane to trim the mesh with.</translation>
+      <translation>Selezionare un piano con cui tagliare la mesh.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>

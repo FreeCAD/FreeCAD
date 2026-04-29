@@ -75,16 +75,19 @@ def generate_gmesh_samples_from_example_doc(doc, datapath):
 class TestGMSHBase(unittest.TestCase):
 
     # ********************************************************************************************
+    def setUp(self):
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
+
+    # ********************************************************************************************
     def tearDown(self):
         # tearDown is executed after every test
-        if hasattr(self, "doc"):
-            FreeCAD.closeDocument(self.doc.Name)
+        FreeCAD.closeDocument(self.document.Name)
 
     # ********************************************************************************************
     def load_example_file(self, name):
         # opens a example file to process for testing
         module = importlib.import_module(f"femexamples.{name}")
-        self.doc = module.setup()
+        self.doc = module.setup(doc=self.document)
 
         if FreeCAD.GuiUp:
             import FreeCADGui
@@ -93,7 +96,7 @@ class TestGMSHBase(unittest.TestCase):
 
     def load_and_run_example_file(self, name):
         # opens and runs example file to process for testing
-        self.doc = manager.run_example(name, run_solver=True)
+        self.doc = manager.run_example(name, run_solver=True, doc=self.document)
 
         if FreeCAD.GuiUp:
             import FreeCADGui

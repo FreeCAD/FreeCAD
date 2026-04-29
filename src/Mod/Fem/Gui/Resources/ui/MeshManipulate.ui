@@ -53,7 +53,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Drag the refinement, that should be altered, into the Manipulate object in the document tree</string>
+        <string>Drag the refinement that should be altered into the Manipulate object in the document tree</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -233,7 +233,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Mesh size when distance &lt; DistanceMinimum</string>
+               <string>Mesh size when distance = DistanceMaximum</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -343,7 +343,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Mesh size when distance = DistanceMaximum</string>
+               <string>Mesh size when distance &lt; DistanceMinimum</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -524,7 +524,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
                </size>
               </property>
               <property name="toolTip">
-               <string>Distance at which the mesh size will be SizeMaximum</string>
+               <string>Delta in the aforementioned equation</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -633,7 +633,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
                </size>
               </property>
               <property name="toolTip">
-               <string>Distance at which the mesh size will be SizeMaximum</string>
+               <string>Delta in the aforementioned equation</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -705,7 +705,7 @@ F = div(norm(grad(G)))
                </size>
               </property>
               <property name="toolTip">
-               <string>Distance at which the mesh size will be SizeMaximum</string>
+               <string>Delta in the aforementioned equation</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>
@@ -777,7 +777,7 @@ F = G(x+d,y,z) + G(x-d,y,z) + G(x,y+d,z) + G(x,y-d,z) + G(x,y,z+d) + G(x,y,z-d) 
                </size>
               </property>
               <property name="toolTip">
-               <string>Distance at which the mesh size will be SizeMaximum</string>
+               <string>Delta in the aforementioned equation</string>
               </property>
               <property name="keyboardTracking">
                <bool>false</bool>

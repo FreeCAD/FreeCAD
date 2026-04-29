@@ -607,3 +607,64 @@ class TestMeshGroups(unittest.TestCase):
                 )
             ),
         )
+
+    def test_group_vtk_handling(self):
+        """
+        See if groups can be exported and imported correctly to and from vtk files
+        """
+
+        mesh = Fem.FemMesh()
+        mesh.addNode(0, 0, 0, 1)
+        mesh.addNode(1, 0, 0, 2)
+        mesh.addNode(2, 0, 0, 3)
+        mesh.addNode(3, 0, 0, 4)
+        mesh.addNode(4, 0, 0, 5)
+        mesh.addEdge(1, 2)
+        mesh.addEdge(2, 3)
+        mesh.addEdge(3, 4)
+
+        testfile = join(testtools.get_fem_test_tmp_dir(), "group_mesh.vtu")
+
+        elements_to_be_added = [2, 3]
+        group_id = mesh.addGroup("mynodegroup", "Edge")
+        mesh.addGroupElements(group_id, elements_to_be_added)
+
+        # check workbench export and read with string data
+        mesh.write(testfile, vtk_cell_group_array="groups", highest=False)
+        new_fm = Fem.FemMesh()
+        new_fm.read(testfile, vtk_cell_group_array="groups")
+
+        self.assertEqual(new_fm.GroupCount, 1, msg="Wrong number of groups detected")
+        self.assertEqual(
+            new_fm.getGroupName(new_fm.Groups[0]), "mynodegroup", msg="Group name not retained"
+        )
+        self.assertEqual(
+            new_fm.getGroupElementType(new_fm.Groups[0]), "Edge", msg="Group type not retained"
+        )
+
+        self.assertEqual(
+            mesh.getGroupElements(mesh.Groups[0]),
+            new_fm.getGroupElements(new_fm.Groups[0]),
+            msg="Group elements not retained",
+        )
+
+        # try if this works with integer array data
+        name_id_map = {"mynodegroup": 3}
+        mesh.write(
+            testfile, vtk_cell_group_array="groups", vtk_group_id_map=name_id_map, highest=False
+        )
+        new_fm = Fem.FemMesh()
+        new_fm.read(testfile, vtk_cell_group_array="groups")
+        self.assertEqual(new_fm.GroupCount, 1, msg="Wrong number of groups detected")
+        self.assertEqual(
+            new_fm.getGroupName(new_fm.Groups[0]), "3", msg="Group name not set to group id"
+        )
+        self.assertEqual(
+            new_fm.getGroupElementType(new_fm.Groups[0]), "Edge", msg="Group type not retained"
+        )
+
+        self.assertEqual(
+            mesh.getGroupElements(mesh.Groups[0]),
+            new_fm.getGroupElements(new_fm.Groups[0]),
+            msg="Group elements not retained",
+        )

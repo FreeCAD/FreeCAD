@@ -1,24 +1,23 @@
-/***************************************************************************
- *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2004 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #pragma once
@@ -61,61 +60,78 @@ class GuiExport FileDialog: public QFileDialog
     Q_OBJECT
 
 public:
+    /**
+     * File name filter specification for narrowing down the choice of
+     * files in open/save dialogs.
+     */
+    struct GuiExport Filter
+    {
+        /** Predefined "All files (*.*)" filter. */
+        static Filter AllFiles();
+
+        /** Text displayed for this filter. Translatable. */
+        QString name;
+
+        /**
+         * List of patterns matched by this filter. Note that extensions are
+         * just a subset of patterns in the form of "*.ext".
+         * For example, `{"*.so", "*.exe", "*.dyld", "a.out"}`.
+         */
+        QStringList patterns;
+
+        Filter() = default;
+        ~Filter() = default;
+        Filter(QString name, QStringList patterns)
+            : name(std::move(name))
+            , patterns(std::move(patterns))
+        {}
+
+        /**
+         * Create a filter from its string form.
+         * These take the form of `Filter name (*.ext1 *.ext2)`.
+         */
+        static Filter fromFilterString(const QString& filter);
+
+        QString toFilterString() const;
+
+        bool operator==(const Filter& rhs) const
+        {
+            return name == rhs.name && patterns == rhs.patterns;
+        }
+
+        /** Checks if the filter is a full wildcard, i.e. accepts "*" or "*.*". */
+        bool isWildcard() const;
+    };
+    using FilterList = QList<Filter>;
+
     static QString getOpenFileName(
         QWidget* parent = nullptr,
         const QString& caption = QString(),
-        const QString& dir = QString(),
-        const QStringList& filters = QStringList(),
-        QString* selectedFilter = nullptr,
-        Options options = Options()
-    );
-    [[deprecated("Use getSaveFileName with a QStringList filter list instead")]]
-    static QString getOpenFileName(
-        QWidget* parent = nullptr,
-        const QString& caption = QString(),
-        const QString& dir = QString(),
-        const QString& filter = QString(),
-        QString* selectedFilter = nullptr,
+        const QString& startPath = QString(),
+        const FilterList& filters = {},
+        qsizetype* selectedFilterIndex = nullptr,
         Options options = Options()
     );
     static QString getSaveFileName(
         QWidget* parent = nullptr,
         const QString& caption = QString(),
-        const QString& dir = QString(),
-        const QStringList& filters = QStringList(),
-        QString* selectedFilter = nullptr,
-        Options options = Options()
-    );
-    [[deprecated("Use getSaveFileName with a QStringList filter list instead")]]
-    static QString getSaveFileName(
-        QWidget* parent = nullptr,
-        const QString& caption = QString(),
-        const QString& dir = QString(),
-        const QString& filter = QString(),
-        QString* selectedFilter = nullptr,
+        const QString& startPath = QString(),
+        const FilterList& filters = {},
+        qsizetype* selectedFilterIndex = nullptr,
         Options options = Options()
     );
     static QString getExistingDirectory(
         QWidget* parent = nullptr,
         const QString& caption = QString(),
-        const QString& dir = QString(),
+        const QString& startPath = QString(),
         Options options = ShowDirsOnly
     );
     static QStringList getOpenFileNames(
         QWidget* parent = nullptr,
         const QString& caption = QString(),
-        const QString& dir = QString(),
-        const QStringList& filters = QStringList(),
-        QString* selectedFilter = nullptr,
-        Options options = Options()
-    );
-    [[deprecated("Use getSaveFileName with a QStringList filter list instead")]]
-    static QStringList getOpenFileNames(
-        QWidget* parent = nullptr,
-        const QString& caption = QString(),
-        const QString& dir = QString(),
-        const QString& filter = QString(),
-        QString* selectedFilter = nullptr,
+        const QString& startPath = QString(),
+        const FilterList& filters = {},
+        qsizetype* selectedFilterIndex = nullptr,
         Options options = Options()
     );
 
