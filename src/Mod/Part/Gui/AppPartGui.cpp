@@ -62,6 +62,7 @@
 #include "ViewProviderExt.h"
 #include "ViewProviderExtrusion.h"
 #include "ViewProviderScale.h"
+#include "ViewProviderFlex.h"
 #include "ViewProviderHelixParametric.h"
 #include "ViewProviderPrimitive.h"
 #include "ViewProviderPython.h"
@@ -192,6 +193,7 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderCurveNet                   ::init();
     PartGui::ViewProviderExtrusion                  ::init();
     PartGui::ViewProviderScale                      ::init();
+    PartGui::ViewProviderFlex                       ::init();
     PartGui::ViewProvider2DObject                   ::init();
     PartGui::ViewProvider2DObjectPython             ::init();
     PartGui::ViewProvider2DObjectGrid               ::init();

@@ -22,74 +22,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#pragma once
 
-#include <QDialog>
-#include <string>
+#include "ViewProviderFlex.h"
+#include <Mod/Part/App/FeatureFlex.h>
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Mod/Part/App/FeatureScale.h>
 
-class TopoDS_Shape;
+using namespace PartGui;
 
-namespace PartGui
+PROPERTY_SOURCE(PartGui::ViewProviderFlex, PartGui::ViewProviderPart)
+
+ViewProviderFlex::ViewProviderFlex()
 {
+    sPixmap = "Part_Scale.svg";
+}
 
-class Ui_DlgScale;
-class DlgScale: public QDialog
+ViewProviderFlex::~ViewProviderFlex() = default;
+
+std::vector<App::DocumentObject*> ViewProviderFlex::claimChildren() const
 {
-    Q_OBJECT
+    std::vector<App::DocumentObject*> temp;
+    temp.push_back(getObject<Part::Flex>()->Base.getValue());
 
-public:
-    DlgScale(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgScale() = default;
-    void accept() override;
-    void apply();
-    void reject() override;
-
-    std::vector<App::DocumentObject*> getShapesToScale() const;
-
-    bool validate();
-
-    void writeParametersToFeature(App::DocumentObject& feature, App::DocumentObject* base) const;
-
-protected:
-    void findShapes();
-    bool canScale(const TopoDS_Shape&) const;
-    void changeEvent(QEvent* e) override;
-
-private:
-    void setupConnections();
-    void onUniformScaleToggled(bool on);
-
-private:
-    /// returns link to any of selected source shapes. Throws if nothing is selected for scaling.
-    App::DocumentObject& getShapeToScale() const;
-
-    std::unique_ptr<Ui_DlgScale> ui;
-    std::string m_document, m_label;
-};
-
-class TaskScale: public Gui::TaskView::TaskDialog
-{
-    Q_OBJECT
-
-public:
-    TaskScale();
-
-public:
-    bool accept() override;
-    bool reject() override;
-    void clicked(int) override;
-
-    QDialogButtonBox::StandardButtons getStandardButtons() const override
-    {
-        return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Close;
-    }
-
-private:
-    DlgScale* widget;
-};
-
-}  // namespace PartGui
+    return temp;
+}

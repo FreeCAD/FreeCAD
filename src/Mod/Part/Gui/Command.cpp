@@ -60,6 +60,7 @@
 #include "DlgBooleanOperation.h"
 #include "DlgExtrusion.h"
 #include "DlgScale.h"
+#include "DlgFlex.h"
 #include "DlgFilletEdges.h"
 #include "DlgPrimitives.h"
 #include "DlgProjectionOnSurface.h"
@@ -1481,6 +1482,35 @@ bool CmdPartScale::isActive()
 }
 
 //===========================================================================
+// Part_Flex
+//===========================================================================
+DEF_STD_CMD_A(CmdPartFlex)
+
+CmdPartFlex::CmdPartFlex()
+    : Command("Part_Flex")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Flex");
+    sToolTipText = QT_TR_NOOP("Deform the selected shape");
+    sWhatsThis = "Part_Flex";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_Flex";
+}
+
+void CmdPartFlex::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::Control().showDialog(new PartGui::TaskFlex());
+}
+
+bool CmdPartFlex::isActive()
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
+}
+
+//===========================================================================
 // Part_MakeFace
 //===========================================================================
 DEF_STD_CMD_A(CmdPartMakeFace)
@@ -2696,6 +2726,7 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdPartBoolean());
     rcCmdMgr.addCommand(new CmdPartExtrude());
     rcCmdMgr.addCommand(new CmdPartScale());
+    rcCmdMgr.addCommand(new CmdPartFlex());
     rcCmdMgr.addCommand(new CmdPartMakeFace());
     rcCmdMgr.addCommand(new CmdPartMirror());
     rcCmdMgr.addCommand(new CmdPartRevolve());
