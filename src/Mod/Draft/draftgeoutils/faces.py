@@ -32,10 +32,9 @@
 import lazy_loader.lazy_loader as lz
 
 import DraftVecUtils
-import FreeCAD as App
 from FreeCAD import Base
 from draftgeoutils.geometry import are_coplanar
-from draftutils.messages import _wrn
+from draftutils.messages import _err, _wrn
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -117,6 +116,52 @@ def is_coplanar(faces, tol=-1):
 isCoplanar = is_coplanar
 
 
+def _make_segment_face(edge1, edge2):
+    """Create a face between two matching edges.
+
+    Corresponding edges in offset wires can be oriented such that connecting
+    their start points and end points with the same pairing fails. In that
+    case, retry with the alternate endpoint pairing and keep the first valid
+    face.
+    """
+
+    pairings = (
+        (
+            edge1.Vertexes[0].Point,
+            edge2.Vertexes[0].Point,
+            edge1.Vertexes[-1].Point,
+            edge2.Vertexes[-1].Point,
+        ),
+        (
+            edge1.Vertexes[0].Point,
+            edge2.Vertexes[-1].Point,
+            edge1.Vertexes[-1].Point,
+            edge2.Vertexes[0].Point,
+        ),
+    )
+    for start1, start2, end1, end2 in pairings:
+        face = None
+        try:
+            connector_start = Part.LineSegment(start1, start2).toShape()
+            connector_end = Part.LineSegment(end1, end2).toShape()
+            face = Part.Face(
+                Part.Wire(edge1.Edges + [connector_start] + edge2.Edges + [connector_end])
+            )
+        except Part.OCCError:
+            continue
+
+        if face is None:
+            continue
+
+        if not face.isValid():
+            continue
+
+        return face
+
+    _err("DraftGeomUtils: unable to bind wires")
+    return None
+
+
 def bind(w1, w2, per_segment=False):
     """Bind 2 wires by their endpoints and returns a face / compound of faces.
 
@@ -127,23 +172,8 @@ def bind(w1, w2, per_segment=False):
     a loop that ends in a T-connection (f.e. a wire shaped like a number 6).
     """
 
-    def create_face(w1, w2):
-
-        try:
-            w3 = Part.LineSegment(w1.Vertexes[0].Point, w2.Vertexes[0].Point).toShape()
-            w4 = Part.LineSegment(w1.Vertexes[-1].Point, w2.Vertexes[-1].Point).toShape()
-        except Part.OCCError:
-            App.Console.PrintError("DraftGeomUtils: unable to bind wires\n")
-            return None
-        if w3.section(w4).Vertexes:
-            App.Console.PrintWarning(
-                "DraftGeomUtils: Problem, a segment is self-intersecting, please check!\n"
-            )
-        f = Part.Face(Part.Wire(w1.Edges + [w3] + w2.Edges + [w4]))
-        return f
-
     if not w1 or not w2:
-        App.Console.PrintError("DraftGeomUtils: unable to bind wires\n")
+        _err("DraftGeomUtils: unable to bind wires")
         return None
 
     if per_segment and len(w1.Edges) > 1 and len(w1.Edges) == len(w2.Edges):
@@ -170,7 +200,7 @@ def bind(w1, w2, per_segment=False):
                 faces = []  # Reset original faces variable
                 continue  # Skip the touching edge pair
             else:
-                face = create_face(edge1, edge2)
+                face = _make_segment_face(edge1, edge2)
                 if face is None:
                     return None
                 faces.append(face)
@@ -206,12 +236,12 @@ def bind(w1, w2, per_segment=False):
                 l = len(faces)
                 m = max(countDir.values())  # max(countDir, key=countDir.get)
                 if m != l:
-                    App.Console.PrintWarning(
+                    _wrn(
                         "DraftGeomUtils: Problem, the direction of "
                         + str(l - m)
                         + " out of "
                         + str(l)
-                        + " segment is reversed, please check!\n"
+                        + " segment is reversed, please check!"
                     )
                 if len(faces) > 1:
                     # Below not good if a face is self-intersecting or reversed
@@ -236,12 +266,12 @@ def bind(w1, w2, per_segment=False):
             l = len(faces)
             m = max(countDir.values())  # max(countDir, key=countDir.get)
             if m != l:
-                App.Console.PrintWarning(
+                _wrn(
                     "DraftGeomUtils: Problem, the direction of "
                     + str(l - m)
                     + " out of "
                     + str(l)
-                    + " segment is reversed, please check!\n"
+                    + " segment is reversed, please check!"
                 )
             # Below not good if a face is self-intersecting or reversed
             # return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
@@ -263,10 +293,10 @@ def bind(w1, w2, per_segment=False):
             face.fix(1e-7, 0, 1)
             return face
         except Part.OCCError:
-            App.Console.PrintError("DraftGeomUtils: unable to bind wires\n")
+            _err("DraftGeomUtils: unable to bind wires")
             return None
     else:
-        return create_face(w1, w2)
+        return _make_segment_face(w1, w2)
 
 
 def cleanFaces(shape):
