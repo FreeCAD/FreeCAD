@@ -9,7 +9,12 @@ using namespace Gui;
 // Register the class to FreeCAD's type system
 TYPESYSTEM_SOURCE(Gui::AltiumNavigationStyle, Gui::UserNavigationStyle)
 
-AltiumNavigationStyle::AltiumNavigationStyle() = default;
+AltiumNavigationStyle::AltiumNavigationStyle()
+    : UserNavigationStyle()
+{
+    //lockButton1(false);
+    this->setZoomAtCursor(true);
+}
 
 AltiumNavigationStyle::~AltiumNavigationStyle() = default;
 
@@ -94,33 +99,24 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
                     processed = true;
                 }
-                else if (press
-                         && (this->currentmode == NavigationStyle::PANNING
-                             || this->currentmode == NavigationStyle::ZOOMING)) {
-                    newmode = NavigationStyle::DRAGGING;
-                    saveCursorPosition(ev);
-                    this->centerTime = ev->getTime();
-                    processed = true;
-                }
-                else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
-                    processed = true;
-                }
-                else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
-                    processed = true;
-                }
                 else {
                     processed = processClickEvent(event);
                 }
                 break;
-
-            // LMB
-            case SoMouseButtonEvent::BUTTON2: //changed from button2 to button3 for panning
+            //button2 may be pressed for panning or dragging/rotating
+            case SoMouseButtonEvent::BUTTON2:
                 // If we are in edit mode then simply ignore the RMB events
                 // to pass the event to the base class.
                 this->lockrecenter = true;
                 this->button2down = press;
 
+                if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
+                    newmode = NavigationStyle::SEEK_MODE;
+                    this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
+                    processed = true;
+                }
                 // Don't show the context menu after dragging, panning or zooming
+                // Only panning and dragging are important here since zooming is not done with button2
                 if (!press && (hasDragged || hasPanned || hasZoomed)) {
                     processed = true;
                 }
@@ -133,52 +129,31 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
                         }
                     }
                 }
-
-                // Alternative way of rotating & zooming
-                if (press
-                    && (this->currentmode == NavigationStyle::PANNING
-                        || this->currentmode == NavigationStyle::ZOOMING)) {
-                    newmode = NavigationStyle::DRAGGING;
+                break;
+            // if pressing button3, then we are only zooming
+            case SoMouseButtonEvent::BUTTON3:
+                this->button3down = press;
+                if (press) {
+                    newmode = NavigationStyle::ZOOMING;
                     saveCursorPosition(ev);
                     this->centerTime = ev->getTime();
                     processed = true;
                 }
-
-                break;
-
-            // MMB
-            case SoMouseButtonEvent::BUTTON3: //changed from button3 to button2
-                this->button3down = press;
-                if (press) {
-                    this->centerTime = ev->getTime();
-                    setupPanningPlane(getCamera());
-                    this->lockrecenter = false;
-                }
-                else if (curmode == NavigationStyle::PANNING) {
-                    newmode = NavigationStyle::IDLE;
+                else {
                     processed = true;
                 }
-                /*
-                else {
-                    SbTime tmp = (ev->getTime() - this->centerTime);
-                    float dci = (float)QApplication::doubleClickInterval() / 1000.0f;
-                    // is it just a middle click?
-                    if (tmp.getValue() < dci && !this->lockrecenter) {
-                        lookAtPoint(pos);
-                        processed = true;
-                    }
-                }*/
                 break;
             default:
                 break;
         }
     }
 
-    // Mouse Movement handling
+    // Mouse Movement handling for  Zooming, dragging, panning
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
         const auto event = (const SoLocation2Event*)ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
+            //this->setZoomAtCursor(true);
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
         }
@@ -223,12 +198,12 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         | (this->ctrldown ? CTRLDOWN : 0) | (this->shiftdown ? SHIFTDOWN : 0);
 
     switch (combo) {
-        case 0:
+        case 0: // no button pressed
             if (curmode == NavigationStyle::SPINNING) {
                 break;
             }
             newmode = NavigationStyle::IDLE;
-            // The left mouse button has been released right now
+            // The left mouse button has been released right now so unlock the flag
             if (this->lockButton1) {
                 this->lockButton1 = false;
                 if (curmode != NavigationStyle::SELECTION) {
@@ -236,8 +211,6 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
                 }
             }
             break;
-        // for mouse movement do nothing with just button1down
-        case BUTTON1DOWN:
 
         // multi-selection
         case CTRLDOWN | BUTTON1DOWN:
@@ -250,39 +223,33 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
                 newmode = NavigationStyle::SELECTION;
             }
             break;
-        // do nothing
-        case BUTTON1DOWN | BUTTON2DOWN:
 
         case BUTTON2DOWN: //changed from BUTTON3DOWN
             newmode = NavigationStyle::PANNING;
             break;
 
-        case SHIFTDOWN | BUTTON2DOWN:  //changed from button2down
+        case SHIFTDOWN:
+        case SHIFTDOWN | BUTTON2DOWN:
             if (newmode != NavigationStyle::DRAGGING) {
                 saveCursorPosition(ev);
+                viewer->showRotationCenter(true);
             }
             newmode = NavigationStyle::DRAGGING;
             break;
-        case CTRLDOWN | SHIFTDOWN | BUTTON2DOWN:
-        
-        case CTRLDOWN | BUTTON2DOWN:
-            NEWMODE = NavigationStyle::ZOOMING;
-            break;
 
+        case BUTTON2DOWN | CTRLDOWN | SHIFTDOWN:
+        case BUTTON2DOWN | CTRLDOWN:
         case BUTTON3DOWN | CTRLDOWN:
         case BUTTON3DOWN | SHIFTDOWN:
         case BUTTON3DOWN:
             newmode = NavigationStyle::ZOOMING;
+            saveCursorPosition(ev);
+            viewer->showRotationCenter(true);
             break;
 
+        
         default:
-            // Reset mode to IDLE when button 2 is released
-            // This stops the DRAGGING when button 2is released but SHIFT is still pressed
-            // This stops the ZOOMING when button 2 is released but CTRL is still pressed
-            if ((curmode == NavigationStyle::DRAGGING || curmode == NavigationStyle::ZOOMING)
-                && !this->button2down) {
-                newmode = NavigationStyle::IDLE;
-            }
+
             break;
     }
 
