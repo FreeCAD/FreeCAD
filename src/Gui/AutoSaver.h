@@ -41,19 +41,19 @@ namespace Gui
  * notifications, timer callbacks, and queued stable-state retries.
  *
  * State model:
- * - pendingAutosave: the document changed since the last successful autosave,
- *   or a save attempt was deferred/failed and still needs a retry.
- * - retryScheduled: a queued retry already exists, so repeated
- *   signalBecameStable() notifications should not queue another one.
+ * - dirty: the document changed since the last successful autosave.
+ * - blockedUntilStable: a save was attempted while the document could not write
+ *   a consistent recovery snapshot, so signalBecameStable() should queue one
+ *   retry.
  *
  * Save flow:
- * 1. Document/object changes call markPendingAutosave().
- * 2. A timer pass or queued stable-state retry calls consumePendingAutosave()
- *    to claim the current pending work for one save attempt.
+ * 1. Document/object changes call markDirtyForAutosave().
+ * 2. A timer pass, explicit flush, or queued stable-state retry calls
+ *    beginSaveAttempt() to claim the dirty state for one save attempt.
  * 3. saveDocument() writes a full recovery snapshot through App::Document.
- * 4. If the document is unstable or the save fails, pendingAutosave stays set
- *    and schedulePendingAutosaveRetry() retries once the document becomes
- *    stable.
+ * 4. If the document is unstable, deferSaveUntilStable() keeps the dirty
+ *    state and retries once the document becomes stable. Ordinary document
+ *    changes only mark dirty state; they do not bypass the autosave timeout.
  *
  * All callbacks arrive on the GUI thread: document change signals are delivered
  * via MainThreadSignal, and timer/retry callbacks run on AutoSaver's thread.
@@ -66,13 +66,13 @@ public:
     AutoSaveProperty(const App::Document* doc);
     ~AutoSaveProperty();
     int timerId;
-    void markPendingAutosave();
-    bool consumePendingAutosave();
-    void restorePendingAutosave();
-    bool hasPendingAutosave() const;
+    void markDirtyForAutosave();
+    bool beginSaveAttempt();
+    void deferSaveUntilStable();
+    void restoreFailedSaveAttempt();
 
 private:
-    void schedulePendingAutosaveRetry();
+    void scheduleQueuedRetry();
     void slotDocumentBecameStable(const App::Document&);
     using Connection = fastsignals::connection;
     Connection documentChanged;
@@ -83,10 +83,10 @@ private:
     Connection documentRedo;
     Connection documentStable;
     std::string documentName;
-    // True when newer unsaved document state still needs a save pass.
-    bool pendingAutosave {false};
-    // True when schedulePendingAutosaveRetry() has already queued a retry.
-    bool retryScheduled {false};
+    // True when newer document state still needs a recovery snapshot.
+    bool dirty {false};
+    // True when a save attempt is waiting for a stable document.
+    bool blockedUntilStable {false};
 };
 
 /*!
