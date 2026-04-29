@@ -1127,12 +1127,19 @@ BSpline::BSpline(const TopoDS_Edge &e)
 
     // if the curve is already has degree <= 3, we should not approximate it, but just use the existing curve
     Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(edgeCurve);
-    Handle(Geom_BSplineCurve) splineOut = hCurve->BSpline();
+    Handle(Geom_BSplineCurve) splineOut = hCurve->BSpline();   // the bspline from the edge
     if (hCurve->Degree() > 3) {
+        // if the degree is > 3 Qt can not draw it, so we approximate it as bezier
+        // segments with degree <= 3.
         bool success = GeometryUtils::asCubic(edgeCurve, splineOut);
         if (!success) {
-            // do something. throw? this likely never happens since asCubic will
-            // make a spline from the points if nothing else works.
+            // There will be a missing edge in the drawing and error messages
+            // from PathBuilder if we just pass the high degree spline, so we make
+            // a "spline" of degree 1 from the start point to the endpoint.  This is the original
+            // solution for approximation fails.
+            // this is not a useful message for end user. :(
+            Base::Console().warning("Could not create cubic spline in GeometryUtils::asCubic\n");
+            GeometryUtils::asLinear(edgeCurve, splineOut);
         }
     }
 
@@ -1913,6 +1920,7 @@ opencascade::handle<Geom_TrimmedCurve> GeometryUtils::bestFitArc(opencascade::ha
     return circleArc1;
 }
 
+//! approximates curveIn as a bspline with degree <= 3.
 bool GeometryUtils::asCubic(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplineCurve)& splineOut)
 {
     Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen/paper can't resolve this
@@ -1943,11 +1951,28 @@ bool GeometryUtils::asCubic(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplin
         }
     }
     catch(...) {
-        // this is not a useful message for end user. :(
-        Base::Console().warning("Could not create cubic spline in GeometryUtils::asCubic\n");
         return false;
     }
 
     return true;
-    }
+}
+
+//! make splineOut a linear approximation of curveIn.
+void GeometryUtils::asLinear(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplineCurve)& splineOut)
+{
+    double firstParam = curveIn.FirstParameter();
+    gp_Pnt firstPoint = curveIn.Value(firstParam);
+    double lastParam = curveIn.LastParameter();
+    gp_Pnt lastPoint = curveIn.Value(lastParam);
+
+    constexpr int LowPointIndex{0};
+    constexpr int HighPointIndex{1};
+    TColgp_Array1OfPnt controlPoints(LowPointIndex, HighPointIndex);
+    controlPoints.SetValue(LowPointIndex, firstPoint);
+    controlPoints.SetValue(HighPointIndex, lastPoint);
+
+    constexpr int MinDegree{1};
+    constexpr int MaxDegree{1};
+    splineOut = GeomAPI_PointsToBSpline(controlPoints, MinDegree, MaxDegree).Curve();
+}
 

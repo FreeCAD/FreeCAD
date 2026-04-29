@@ -26,6 +26,7 @@
 #include <memory>
 #include <boost/uuid/uuid.hpp>
 #include <BRepAdaptor_Curve.hxx>
+#include <Geom_TrimmedCurve.hxx>
 
 #include <Base/Reader.h>
 #include <Base/Vector3D.h>
@@ -486,6 +487,7 @@ class TechDrawExport GeometryUtils
                                opencascade::handle<Geom_TrimmedCurve> circleArc1);
 
         static bool asCubic(const BRepAdaptor_Curve& curveIn, Handle(Geom_BSplineCurve)& splineOut);
+        static void asLinear(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplineCurve)& splineOut);
 
 };
 
