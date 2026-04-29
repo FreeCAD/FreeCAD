@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2015 Yorik van Havre <yorik@uncreated.net>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import FreeCADGui
@@ -28,7 +26,6 @@ import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 import Path.Base.Util as PathUtil
 from Path.Dressup.Utils import toolController
-from PySide import QtCore
 
 import random
 
@@ -41,99 +38,7 @@ translate = FreeCAD.Qt.translate
 
 class ObjectArray:
     def __init__(self, obj):
-        obj.addProperty(
-            "App::PropertyLinkList",
-            "Base",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The toolpaths to array"),
-        )
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "Type",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Pattern method"),
-        )
-        obj.addProperty(
-            "App::PropertyVectorDistance",
-            "Offset",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "The spacing between the array copies in linear pattern",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "CopiesX",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in X-direction in linear pattern"
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "CopiesY",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in Y-direction in linear pattern"
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyAngle",
-            "Angle",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Total angle in polar pattern"),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "Copies",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in linear 1D and polar pattern"
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyVector",
-            "Centre",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in polar pattern"),
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "SwapDirection",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Make copies in X direction before Y in Linear 2D pattern",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "JitterPercent",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Percent of copies to randomly offset"),
-        )
-        obj.addProperty(
-            "App::PropertyVectorDistance",
-            "JitterMagnitude",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "JitterSeed",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
-        )
-        obj.addProperty(
-            "App::PropertyLink",
-            "ToolController",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "The tool controller that will be used to calculate the toolpath",
-            ),
-        )
+        # Path properties group
         obj.addProperty(
             "App::PropertyBool",
             "Active",
@@ -141,15 +46,115 @@ class ObjectArray:
             QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"),
         )
         obj.addProperty(
+            "App::PropertyLinkList",
+            "Base",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "The toolpaths to array"),
+        )
+        obj.addProperty(
             "App::PropertyString",
             "CycleTime",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
         )
+        obj.addProperty(
+            "App::PropertyLink",
+            "ToolController",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The tool controller that will be used to calculate the toolpath\nShould be identical for all base operations",
+            ),
+        )
 
-        obj.setEditorMode("CycleTime", 1)  # read-only
+        # Pattern properties group
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Type",
+            "Pattern",
+            QT_TRANSLATE_NOOP("App::Property", "Pattern method"),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "Copies",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The number of copies in Linear1D and Polar pattern"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "Offset",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The spacing between the array copies in linear pattern",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "CopiesX",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The number of copies in X-direction in linear pattern"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "CopiesY",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The number of copies in Y-direction in linear pattern"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyAngle",
+            "Angle",
+            "Pattern",
+            QT_TRANSLATE_NOOP("App::Property", "Total angle in polar pattern"),
+        )
+        obj.addProperty(
+            "App::PropertyVector",
+            "Centre",
+            "Pattern",
+            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in polar pattern"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "SwapDirection",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Make copies in X direction before Y in Linear 2D pattern",
+            ),
+        )
+
+        # Random properties group
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "JitterMagnitude",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
+        )
+        obj.addProperty(
+            "App::PropertyPercent",
+            "JitterPercent",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Percent of copies to randomly offset"),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "JitterSeed",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
+        )
+
         obj.Active = True
         obj.Type = ["Linear1D", "Linear2D", "Polar"]
+        obj.Copies = (0, 0, 99999, 1)
+        obj.CopiesX = (0, 0, 99999, 1)
+        obj.CopiesY = (0, 0, 99999, 1)
+        obj.JitterSeed = (0, 0, 2147483647, 1)
 
         self.setEditorModes(obj)
         obj.Proxy = self
@@ -161,19 +166,21 @@ class ObjectArray:
         return None
 
     def setEditorModes(self, obj):
+        obj.setEditorMode("ToolController", 2)  # hidden
+        obj.setEditorMode("CycleTime", 1)  # read-only
+
+        angleMode = centreMode = copiesXMode = copiesYMode = swapDirectionMode = 2
+        copiesMode = offsetMode = 2
         if obj.Type == "Linear1D":
-            angleMode = centreMode = copiesXMode = copiesYMode = swapDirectionMode = 2
             copiesMode = offsetMode = 0
         elif obj.Type == "Linear2D":
-            angleMode = copiesMode = centreMode = 2
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 0
         elif obj.Type == "Polar":
             angleMode = copiesMode = centreMode = 0
-            copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 2
 
         obj.setEditorMode("Angle", angleMode)
-        obj.setEditorMode("Copies", copiesMode)
         obj.setEditorMode("Centre", centreMode)
+        obj.setEditorMode("Copies", copiesMode)
         obj.setEditorMode("CopiesX", copiesXMode)
         obj.setEditorMode("CopiesY", copiesYMode)
         obj.setEditorMode("Offset", offsetMode)
@@ -181,10 +188,9 @@ class ObjectArray:
         obj.setEditorMode("JitterPercent", 0)
         obj.setEditorMode("JitterMagnitude", 0)
         obj.setEditorMode("JitterSeed", 0)
-        obj.setEditorMode("ToolController", 2)
 
     def onChanged(self, obj, prop):
-        if prop == "Type":
+        if prop == "Type" and not obj.Document.Restoring:
             self.setEditorModes(obj)
 
         if prop == "Active" and obj.ViewObject:
@@ -192,6 +198,8 @@ class ObjectArray:
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
+        if not obj.ViewObject.Proxy:
+            Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)
 
         if not hasattr(obj, "Active"):
             obj.addProperty(
@@ -208,8 +216,8 @@ class ObjectArray:
             obj.addProperty(
                 "App::PropertyInteger",
                 "JitterSeed",
-                "Path",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
+                "Random",
+                QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
             )
             obj.JitterSeed = 0
 
@@ -464,7 +472,7 @@ class ViewProviderArray:
         return []
 
     def onDelete(self, vobj, args):
-        return None
+        return True
 
     def getIcon(self):
         if self.obj.Active:
@@ -532,10 +540,9 @@ class CommandPathArray:
         )
         FreeCADGui.doCommand("obj.Base = %s" % baseString)
 
-        FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)"
-        )
-        FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
+        FreeCADGui.doCommand("Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)")
+        FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(obj.Base[0])")
+        FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj, job.Name)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

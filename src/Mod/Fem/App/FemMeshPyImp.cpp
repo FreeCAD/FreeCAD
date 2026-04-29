@@ -1199,7 +1199,7 @@ PyObject* FemMeshPy::write(PyObject* args, PyObject* kwds) const
             Py::Dict pymap(PyGroupMap);
             for (auto it = pymap.begin(); it != pymap.end(); ++it) {
                 auto group_name = Py::String((*it).first);
-                auto group_index = Py::Int((*it).second);
+                auto group_index = Py::Long((*it).second);
                 GroupMap[group_name.as_std_string()] = group_index.as_long();
             }
         }

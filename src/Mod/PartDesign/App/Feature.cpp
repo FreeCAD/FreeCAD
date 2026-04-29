@@ -93,35 +93,14 @@ App::DocumentObjectExecReturn* Feature::recompute()
 {
     setMaterialToBodyMaterial();
 
-    SuppressedShape.setValue(TopoShape());
-
-    if (!Suppressed.getValue()) {
-        return Part::Feature::recompute();
-    }
-
-    bool failed = false;
-    try {
-        std::unique_ptr<App::DocumentObjectExecReturn> ret(Part::Feature::recompute());
-        if (ret) {
-            throw Base::RuntimeError(ret->Why);
-        }
-    }
-    catch (Base::AbortException&) {
-        throw;
-    }
-    catch (Base::Exception& e) {
-        failed = true;
-        e.reportException();
-        FC_ERR("Failed to recompute suppressed feature " << getFullName());
-    }
-
-    Shape.setValue(getBaseTopoShape(true));
-
-    if (!failed) {
+    if (Suppressed.getValue()) {
+        Shape.setValue(getBaseTopoShape(true));
         updateSuppressedShape();
+        return App::DocumentObject::StdReturn;
     }
 
-    return App::DocumentObject::StdReturn;
+    SuppressedShape.setValue(TopoShape());
+    return Part::Feature::recompute();
 }
 
 App::DocumentObjectExecReturn* Feature::recomputePreview()
@@ -223,6 +202,7 @@ void Feature::onChanged(const App::Property* prop)
         else if (prop == &Suppressed) {
             if (Suppressed.getValue()) {
                 SuppressedPlacement = Placement.getValue();
+                updateSuppressedShape();
             }
             else {
                 Placement.setValue(SuppressedPlacement);
