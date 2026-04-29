@@ -524,6 +524,8 @@ protected:
 
 class GuiExport AltiumNavigationStyle: public UserNavigationStyle
 {
+    using inherited = UserNavigationStyle;
+
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
@@ -533,8 +535,10 @@ public:
     const char* mouseButtons(ViewerMode) override;
 
 protected:
-    /// Intercept OpenInventor events to set the correct navigation modes
     SbBool processSoEvent(const SoEvent* const ev) override;
+
+private:
+    SbBool lockButton1 {false};
 };
 
 class GuiExport OpenSCADNavigationStyle: public UserNavigationStyle
