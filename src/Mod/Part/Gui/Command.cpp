@@ -330,7 +330,7 @@ void CmdPartCut::activated(int iMsg)
     if (Sel.size() != 2) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select 2 shapes")
         );
         return;
@@ -407,7 +407,7 @@ void CmdPartCommon::activated(int iMsg)
     if (Sel.empty()) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.")
         );
         return;
@@ -507,7 +507,7 @@ void CmdPartFuse::activated(int iMsg)
     if (numShapes < 2) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.")
         );
         return;
@@ -949,7 +949,7 @@ void CmdPartCompound::activated(int iMsg)
     if (n < 1) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select at least one shape")
         );
         return;
@@ -1012,7 +1012,7 @@ void CmdPartSection::activated(int iMsg)
     if (Sel.size() != 2) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select 2 shapes")
         );
         return;
@@ -2274,7 +2274,7 @@ void CmdPartRuledSurface::activated(int iMsg)
     if (!ok) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select either 2 edges or 2 wires.")
         );
         return;

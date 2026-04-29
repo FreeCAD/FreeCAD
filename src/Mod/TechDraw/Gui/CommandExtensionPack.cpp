@@ -1862,7 +1862,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
 
     if (subNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("No faces in selection"));
         return;
     }
@@ -1986,7 +1986,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
 
     if (subNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("No edges in selection"));
         return;
     }
