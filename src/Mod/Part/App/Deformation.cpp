@@ -1,0 +1,329 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+/*************************************************************************** \
+ *   Copyright (c) 2026 F. Foinant-Willig <flachyjoe@gmail.com>            * \
+ *                                                                         * \
+ *   This file is part of the FreeCAD CAx development system.              * \
+ *                                                                         * \
+ *   This library is free software; you can redistribute it and/or         * \
+ *   modify it under the terms of the GNU Library General Public           * \
+ *   License as published by the Free Software Foundation; either          * \
+ *   version 2 of the License, or (at your option) any later version.      * \
+ *                                                                         * \
+ *   This library  is distributed in the hope that it will be useful,      * \
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * \
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         * \
+ *   GNU Library General Public License for more details.                  * \
+ *                                                                         * \
+ *   You should have received a copy of the GNU Library General Public     * \
+ *   License along with this library; see the file COPYING.LIB. If not,    * \
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         * \
+ *   Suite 330, Boston, MA  02111-1307, USA                                * \
+ *                                                                         * \
+ ***************************************************************************/
+
+#include "Deformation.h"
+
+#include "Canonizer.h"
+
+using namespace Part;
+
+gp_Pnt Deformation::twistAlongX(gp_Pnt from, float pitch)
+{
+    auto alpha = std::numbers::pi / pitch;
+    auto x = from.X();
+    auto y = from.Y() * cos(alpha * from.X()) - from.Z() * sin(alpha * from.X());
+    auto z = from.Y() * sin(alpha * from.X()) + from.Z() * cos(alpha * from.X());
+
+    return {x, y, z};
+}
+
+gp_Pnt Deformation::bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, float factor)
+{
+    auto u = curve.FirstParameter()
+        + from.X() * factor * (curve.LastParameter() - curve.FirstParameter());
+    gp_Pnt ptCurve;
+    gp_Vec axCurve;
+    curve.D1(u, ptCurve, axCurve);
+    axCurve.Normalize();
+    auto x = ptCurve.X() - axCurve.Y() * from.Y() - axCurve.Z() * from.Z();
+    auto y = from.Y() + ptCurve.Y();
+    auto z = from.Z() + ptCurve.Z();
+
+    return {x, y, z};
+}
+
+TopoDS_Edge Deformation::deform(
+    const TopoDS_Edge& edge,
+    const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
+    int samples
+)
+{
+    // discretize
+    BRepAdaptor_Curve adapt(edge);
+    double first = adapt.FirstParameter();
+    double last = adapt.LastParameter();
+    GCPnts_UniformAbscissa discretizer;
+    discretizer.Initialize(adapt, samples, first, last);
+    int nbPoints = discretizer.NbPoints();
+    TColgp_Array1OfPnt points(1, nbPoints);
+    TColgp_Array1OfPnt deformPoints(1, nbPoints);
+
+    // deform
+    for (int i = 1; i <= nbPoints; i++) {
+        auto p = adapt.Value(discretizer.Parameter(i));
+        points(i) = p;
+        deformPoints(i) = deformFunction(p);
+    }
+
+    // approximate the points
+    GeomAPI_PointsToBSpline fit(
+        deformPoints,
+        Approx_ParametrizationType::Approx_ChordLength,
+        3,
+        samples / 2,
+        GeomAbs_Shape::GeomAbs_C2,
+        Precision::Approximation()
+    );
+    auto resultCurve = fit.Curve();
+
+    // recreate an edge
+    BRepBuilderAPI_MakeEdge mkBuilder(
+        resultCurve,
+        resultCurve->FirstParameter(),
+        resultCurve->LastParameter()
+    );
+    auto ne = TopoDS::Edge(mkBuilder.Shape());
+    ne.Orientation(edge.Orientation());
+    return ne;
+}
+
+TopoDS_Wire Deformation::deform(
+    const TopoDS_Wire& wire,
+    const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
+    int samples
+)
+{
+    std::vector<TopoDS_Edge> newEdges;
+
+    // for each edge
+    for (BRepTools_WireExplorer exp(wire); exp.More(); exp.Next()) {
+        auto edge = TopoDS::Edge(exp.Current());
+        auto ne = deform(edge, deformFunction, samples);
+        newEdges.push_back(ne);
+    }
+
+    BRepBuilderAPI_MakeWire wireBuilder;
+    for (auto& ne : newEdges) {
+        wireBuilder.Add(ne);
+    }
+    wireBuilder.Build();
+
+    TopoDS_Wire newWire;
+    if (wireBuilder.IsDone()) {
+        newWire = wireBuilder.Wire();
+    }
+    newWire.Orientation(wire.Orientation());
+    return newWire;
+}
+
+TopoDS_Face Deformation::deform(
+    const TopoDS_Face& face,
+    const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
+    int samples
+)
+{
+    TopoDS_Face resultFace;
+
+    // deform the outerwire
+    auto outerwire = BRepTools::OuterWire(face);
+    auto newOuter = deform(outerwire, deformFunction, samples);
+    if (newOuter.IsNull()) {
+        return resultFace;
+    }
+
+    // get the surface
+    BRepBuilderAPI_NurbsConvert nurbs_convert;
+    nurbs_convert.Perform(face);
+    TopoDS_Shape face_shape = nurbs_convert.Shape();
+    auto surf = BRep_Tool::Surface(TopoDS::Face(face_shape));
+    auto bSurf = GeomConvert::SurfaceToBSplineSurface(surf);
+
+    // deform the surface
+    double u1, u2, v1, v2;
+    bSurf->Bounds(u1, u2, v1, v2);
+    if (!bSurf->IsUPeriodic()) {
+        auto du = u2 - u1;
+        u1 -= du;
+        u2 += du;
+    }
+    if (!bSurf->IsVPeriodic()) {
+        auto dv = v2 - v1;
+        v1 -= dv;
+        v2 += dv;
+    }
+    TColgp_Array2OfPnt points(1, samples, 1, samples);
+    for (auto i = 1; i <= samples; i++) {
+        auto u = u1 + (u2 - u1) / samples * i;
+        for (auto j = 1; j <= samples; j++) {
+            auto v = v1 + (v2 - v1) / samples * j;
+            auto pt = bSurf->Value(u, v);
+            points(i, j) = deformFunction(pt);
+        }
+    }
+    GeomAPI_PointsToBSplineSurface fiter(points, 3, samples / 2, GeomAbs_C2, Precision::Approximation());
+    auto newSurf = fiter.Surface();
+
+    if (bSurf->IsUPeriodic()) {
+        newSurf->SetUPeriodic();
+    }
+    if (bSurf->IsVPeriodic()) {
+        newSurf->SetVPeriodic();
+    }
+
+    // create a face with a possible broken wire
+    auto tmpFace = BRepBuilderAPI_MakeFace(newSurf, newOuter, /*Inside*/ true).Face();
+
+    // replace the BSplineSurface with a plane if possible
+    BRepBuilderAPI_FindPlane findPlane(tmpFace, Precision::Approximation());
+    if (findPlane.Found()) {
+        auto plane = findPlane.Plane();
+        tmpFace = BRepBuilderAPI_MakeFace(plane->Pln(), newOuter, /*Inside*/ true).Face();
+    }
+
+    // fix the wire on the face
+    ShapeFix_Wire fixer(newOuter, tmpFace, Precision::Approximation());
+    fixer.FixEdgeCurves();
+    fixer.FixConnected();
+    fixer.FixClosed();
+    newOuter = fixer.Wire();
+
+    // recreate the face with the fixed wire
+    resultFace = BRepBuilderAPI_MakeFace(newSurf, newOuter, /*Inside*/ true).Face();
+
+    auto check = BRepCheck_Analyzer(resultFace, false, true);
+    if (!check.IsValid()) {
+        auto res = BRepBuilderAPI_MakeFace(newOuter).Face();
+        if (!res.IsNull()) {
+            check.Init(res, false);
+            if (check.IsValid()) {
+                resultFace = res;
+            }
+        }
+    }
+
+    // compute holes
+    BRepBuilderAPI_MakeFace faceMaker;
+    faceMaker.Init(resultFace);
+    for (TopExp_Explorer exp(face, TopAbs_WIRE); exp.More(); exp.Next()) {
+        auto wire = TopoDS::Wire(exp.Current());
+
+        if (wire.IsNotEqual(outerwire)) {
+            auto w = deform(wire, deformFunction, samples);
+            // fix the wire on the face
+            ShapeFix_Wire fixer(w, resultFace, Precision::Approximation());
+            fixer.FixEdgeCurves();
+            fixer.FixConnected();
+            fixer.FixClosed();
+            w = fixer.Wire();
+            faceMaker.Add(w);
+        }
+    }
+
+    return faceMaker.Face();
+}
+
+TopoDS_Shell Deformation::deform(
+    const TopoDS_Shell& shell,
+    const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
+    int samples
+)
+{
+    TopoDS_Builder topoBuilder;
+
+    TopoDS_Shell resultShell;
+    topoBuilder.MakeShell(resultShell);
+
+    // for each face
+    for (TopExp_Explorer expF(shell, TopAbs_FACE); expF.More(); expF.Next()) {
+        auto face = TopoDS::Face(expF.Current());
+        auto resultFace = deform(face, deformFunction, samples);
+
+        topoBuilder.Add(resultShell, Canonizer::canonize(resultFace, Precision::Approximation()));
+    }
+
+    ShapeUpgrade_ShellSewing sewShell;
+    auto sewed = sewShell.ApplySewing(resultShell);
+    if (!sewed.IsNull()) {
+        resultShell = TopoDS::Shell(sewed);
+        return resultShell;
+    }
+    return resultShell;
+}
+
+TopoDS_Solid Deformation::deform(
+    const TopoDS_Solid& solid,
+    const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
+    int samples
+)
+{
+    // BRepBuilderAPI_MakeSolid solidifer;
+    TopoDS_Builder topoBuilder;
+    TopoDS_Solid resultSolid;
+    topoBuilder.MakeSolid(resultSolid);
+
+    for (TopExp_Explorer expS(solid, TopAbs_SHELL); expS.More(); expS.Next()) {
+        auto shell = TopoDS::Shell(expS.Current());
+        auto resultShell = deform(shell, deformFunction, samples);
+        topoBuilder.Add(resultSolid, resultShell);
+        // solidifer.Add(resultShell);
+    }
+    // resultSolid = solidifer.Solid();
+    ShapeFix_Solid fixer(resultSolid);
+    fixer.Perform();
+    resultSolid = TopoDS::Solid(fixer.Solid());
+    return resultSolid;
+}
+
+TopoDS_Compound Deformation::deform(
+    const TopoDS_Compound& compound,
+    const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
+    int samples
+)
+{
+    TopoDS_Builder topoBuilder;
+    TopoDS_Compound result;
+    topoBuilder.MakeCompound(result);
+
+    for (TopExp_Explorer expC(compound, TopAbs_SOLID); expC.More(); expC.Next()) {
+        auto solid = TopoDS::Solid(expC.Current());
+        auto resultSolid = deform(solid, deformFunction, samples);
+
+        topoBuilder.Add(result, resultSolid);
+    }
+    return result;
+}
+
+TopoDS_Shape Deformation::deform(
+    const TopoDS_Shape& shape,
+    const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
+    int samples
+)
+{
+    switch (shape.ShapeType()) {
+        case TopAbs_EDGE:
+            return deform(TopoDS::Edge(shape), deformFunction, samples);
+        case TopAbs_WIRE:
+            return deform(TopoDS::Wire(shape), deformFunction, samples);
+        case TopAbs_FACE:
+            return deform(TopoDS::Face(shape), deformFunction, samples);
+        case TopAbs_SHELL:
+            return deform(TopoDS::Shell(shape), deformFunction, samples);
+        case TopAbs_SOLID:
+            return deform(TopoDS::Solid(shape), deformFunction, samples);
+        case TopAbs_COMPOUND:
+            return deform(TopoDS::Compound(shape), deformFunction, samples);
+        default:
+            return {};
+    }
+}

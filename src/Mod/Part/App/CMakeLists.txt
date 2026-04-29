@@ -577,8 +577,12 @@ SET(Part_SRCS
     ShapeAnalysis_FreeBoundsFix.h
     BSplineCurveBiArcs.cpp
     BSplineCurveBiArcs.h
+    Canonizer.cpp
+    Canonizer.h
     CrossSection.cpp
     CrossSection.h
+    Deformation.cpp
+    Deformation.h
     ExtrusionHelper.cpp
     ExtrusionHelper.h
     FuzzyHelper.cpp
