@@ -34,6 +34,8 @@ import Path
 import Path.Op.Base as PathOp
 import Path.Op.SurfaceSupport as SurfaceSupport
 import Path.Base.Generator.rotary_dropcutter as rotary_dropcutter
+import Path.Base.Generator.rotary_parallel as rotary_parallel
+import Path.Base.Generator.rotary_rings as rotary_rings
 import Path.Base.Generator.rotary_spiral as rotary_spiral
 import Path.Base.Generator.rotary_wrap as rotary_wrap
 import Path.Main.Stock as PathStock
@@ -217,7 +219,8 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 "CutPattern",
                 "Rotary",
                 QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property", "Toolpath pattern. v1 supports Spiral only."
+                    "App::Property",
+                    "Toolpath pattern. Supports Spiral, Parallel, Rings.",
                 ),
             ),
             (
@@ -282,6 +285,8 @@ class ObjectRotarySurface(PathOp.ObjectOp):
             ],
             "CutPattern": [
                 (translate("CAM_RotarySurface", "Spiral"), "Spiral"),
+                (translate("CAM_RotarySurface", "Parallel"), "Parallel"),
+                (translate("CAM_RotarySurface", "Rings"), "Rings"),
             ],
             "FeedMode": [
                 (translate("CAM_RotarySurface", "Surface Speed"), "SurfaceSpeed"),
@@ -562,6 +567,36 @@ class ObjectRotarySurface(PathOp.ObjectOp):
             Path.Log.error("Rotary Surface: Job has no model objects.")
             return
         model = models[0]
+
+        # Warn when the part centroid sits noticeably off the rotary
+        # axis: rotary surfacing assumes the cutter follows a part
+        # whose center of mass is on (or very near) the spin axis.
+        # BoundBox.Center is a cheap proxy for centroid that catches
+        # the gross mis-centering case without needing CoM computation.
+        shp = getattr(model, "Shape", None)
+        if shp is not None and hasattr(shp, "BoundBox"):
+            # Apply the model's Placement to the shape's local bbox
+            # center so the offset is measured in world coordinates,
+            # not shape-local coordinates.
+            local_c = shp.BoundBox.Center
+            placement = getattr(model, "Placement", None)
+            if placement is not None and hasattr(placement, "multVec"):
+                c = placement.multVec(local_c)
+            else:
+                c = local_c
+            if axis_label == "X":
+                offset = math.hypot(c.y, c.z)
+            elif axis_label == "Y":
+                offset = math.hypot(c.x, c.z)
+            else:
+                offset = math.hypot(c.x, c.y)
+            tol = float(obj.LinearDeflection.Value)
+            if offset > tol:
+                Path.Log.warning(
+                    "Rotary Surface: part centroid is {:.3f}mm off the rotary "
+                    "axis (> LinearDeflection {:.3f}mm). Re-center the part "
+                    "on the spin axis or expect uneven cuts.".format(offset, tol)
+                )
         try:
             stl = SurfaceSupport._makeSTL(model, obj, ocl)
         except Exception as e:
@@ -705,7 +740,8 @@ class ObjectRotarySurface(PathOp.ObjectOp):
             else:
                 cutter_z_floor = None
 
-            raw_commands = rotary_spiral.generate(
+            pattern = str(obj.CutPattern)
+            generator_kwargs = dict(
                 radii=radii,
                 xs=xs,
                 thetas=thetas,
@@ -727,7 +763,14 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 vert_rapid=self.vertRapid,
                 max_feed=max_feed,
                 cutter_z_floor=cutter_z_floor,
+                feed_mode=str(obj.FeedMode),
             )
+            if pattern == "Rings":
+                raw_commands = rotary_rings.generate(**generator_kwargs)
+            elif pattern == "Parallel":
+                raw_commands = rotary_parallel.generate(**generator_kwargs)
+            else:
+                raw_commands = rotary_spiral.generate(**generator_kwargs)
 
             commands = rotary_wrap.apply_wrap_strategy(raw_commands, rotary_letter, wrap_strategy)
 

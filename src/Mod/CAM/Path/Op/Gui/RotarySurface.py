@@ -71,6 +71,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         ]
         enumTups = PathRotarySurface.ObjectRotarySurface.propertyEnumerations(dataType="raw")
         PathGuiUtil.populateCombobox(form, enumTups, comboToPropertyMap)
+        # TODO(rings-visibility): when this page grows pattern-specific
+        # fields, hide/show them based on form.cutPattern.currentData().
+        # Today every CutPattern (Spiral, Parallel, Rings) shares the
+        # same property surface, so no toggle is needed.
         return form
 
     def getFields(self, obj):
@@ -110,6 +114,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.FeedMode, self.form.feedMode)
         self.form.boundaryFromFaces.setChecked(bool(obj.BoundaryFromFaces))
         self.updateQuantitySpinBoxes()
+
+    # TODO(parallel-visibility): If/when CutPattern-specific fields are
+    # added (e.g. AngularStepover for Parallel), wire visibility through
+    # the same mechanism Surface.py uses. The Rotary Surface task panel
+    # currently shares one set of fields across all patterns, so no
+    # per-pattern hide/show is required for Spiral/Parallel/Rings yet.
 
     def updateQuantitySpinBoxes(self, index=None):
         for sb in (

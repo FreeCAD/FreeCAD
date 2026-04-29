@@ -120,21 +120,63 @@ def _world_xyz(rotary_axis, axial, r):
     raise ValueError("rotary_axis must be 'X' or 'Y'; got %r" % rotary_axis)
 
 
-def _effective_feed(horiz_feed, r, max_feed):
-    """Axial-feed scaling: F_axial * 360 / (2*pi*r) = F_axial / r when r in
-    radians-of-arc per unit-axial. We model it as feed scaled to keep
-    surface feed roughly constant; clamp at max_feed to handle r->0.
+class _FeedClamp:
+    """Track centerline-feed-clamp events while generating a path.
+
+    Holds the running count of clamp events, the worst-case radius at
+    which a clamp fired, and the worst-case effective rotary-feed rate
+    that would have been emitted without clamping. The operation logs
+    a single summary at end of generate() rather than per-step spam.
     """
-    if r <= 1e-6:
-        return max_feed if max_feed is not None else horiz_feed
-    f = horiz_feed * (max(r, 1e-6))  # surface-feed proxy
-    # The legacy semantic is: F_linear * 360/(2*pi*r). In practice the
-    # caller passes horiz_feed already in the right units for a flat
-    # surface; we just clamp catastrophic blowup.
-    f = horiz_feed
-    if max_feed is not None and f > max_feed:
-        return max_feed
-    return f
+
+    def __init__(self):
+        self.events = 0
+        self.min_r = None
+        self.max_effective = 0.0
+
+    def feed_for(self, horiz_feed, r, max_feed, feed_mode="AxialOnly"):
+        """Return the F value to emit for a cut move at radius r.
+
+        ``feed_mode == "AxialOnly"`` returns ``horiz_feed`` unchanged
+        on every move (the controller's own feed math determines how
+        the rotary keeps up). ``feed_mode == "SurfaceSpeed"`` scales F
+        per move so the rotary holds a constant surface feed at the
+        cutter contact: ``F = horiz_feed * 360 / (2π·r)``. As r→0 this
+        diverges; when it exceeds ``max_feed`` the value is clamped at
+        ``max_feed`` and the event is recorded for the end-of-generate
+        summary.
+
+        ``max_feed`` also caps ``AxialOnly``: if ``horiz_feed`` itself
+        would imply an effective rotary rate greater than ``max_feed``
+        (very small r), F is scaled down so the controller-side rotary
+        rate stays at ``max_feed``.
+        """
+        if feed_mode == "SurfaceSpeed":
+            r_safe = max(float(r), 1e-9)
+            effective = horiz_feed * 360.0 / (2.0 * math.pi * r_safe)
+            if max_feed and max_feed > 0.0 and effective > max_feed:
+                self.events += 1
+                if self.min_r is None or r_safe < self.min_r:
+                    self.min_r = r_safe
+                if effective > self.max_effective:
+                    self.max_effective = effective
+                return float(max_feed)
+            return effective
+
+        # AxialOnly: F=horiz_feed, but still clamp the controller-side
+        # rotary rate so the rotary servo isn't asked to outrun max_feed.
+        if max_feed is None or max_feed <= 0.0:
+            return horiz_feed
+        r_safe = max(float(r), 1e-9)
+        effective = horiz_feed * 360.0 / (2.0 * math.pi * r_safe)
+        if effective > max_feed:
+            self.events += 1
+            if self.min_r is None or r_safe < self.min_r:
+                self.min_r = r_safe
+            if effective > self.max_effective:
+                self.max_effective = effective
+            return horiz_feed * (max_feed / effective)
+        return horiz_feed
 
 
 def generate(
@@ -159,6 +201,7 @@ def generate(
     vert_rapid,
     max_feed=None,
     cutter_z_floor=None,
+    feed_mode="AxialOnly",
 ):
     """Build a Spiral rotary-surface toolpath.
 
@@ -249,6 +292,10 @@ def generate(
 
     commands = []
 
+    # Tracks centerline-feed clamp events for a single end-of-generate
+    # warning rather than per-step log spam.
+    feed_clamp = _FeedClamp()
+
     # Track the current machine position so every emitted move can be
     # fully qualified with X, Y, Z, and the rotary axis word, regardless
     # of which axes actually changed.
@@ -325,12 +372,23 @@ def generate(
             y=wy,
             z=r,
             a=math.degrees(theta_unwound),
-            feed=_effective_feed(horiz_feed, r, max_feed),
+            feed=feed_clamp.feed_for(horiz_feed, r, max_feed, feed_mode),
         )
         last_r = r
 
     # Retract.
     _emit("G1", z=last_r + 5.0, feed=vert_feed)
     _emit("G0", z=safe_height, feed=vert_rapid)
+
+    if feed_clamp.events:
+        Path.Log.warning(
+            "Rotary Surface: centerline feed clamped {n} time(s); "
+            "min radius {r:.3f}, peak rotary feed {peak:.1f} (capped at {cap:.1f}).".format(
+                n=feed_clamp.events,
+                r=feed_clamp.min_r if feed_clamp.min_r is not None else 0.0,
+                peak=feed_clamp.max_effective,
+                cap=float(max_feed) if max_feed else 0.0,
+            )
+        )
 
     return commands

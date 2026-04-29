@@ -25,7 +25,9 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="toolController"/>
+       <widget class="QComboBox" name="toolController">
+        <property name="toolTip"><string>Tool controller that supplies the cutter geometry, feed and speed for this operation.</string></property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="coolantController_label">
@@ -33,7 +35,9 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="coolantController"/>
+       <widget class="QComboBox" name="coolantController">
+        <property name="toolTip"><string>Coolant mode emitted at the start of the operation.</string></property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -49,7 +53,9 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="rotaryAxis"/>
+       <widget class="QComboBox" name="rotaryAxis">
+        <property name="toolTip"><string>Which world axis the rotary spins about. &quot;From Machine&quot; reads the rotary axis name, vector and limits from the Job's Machine. Pinning to X or Y bypasses the machine and uses A (around X) or B (around Y).</string></property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="cutMode_label">
@@ -57,7 +63,9 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cutMode"/>
+       <widget class="QComboBox" name="cutMode">
+        <property name="toolTip"><string>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</string></property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="cutPattern_label">
@@ -65,7 +73,9 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QComboBox" name="cutPattern"/>
+       <widget class="QComboBox" name="cutPattern">
+        <property name="toolTip"><string>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</string></property>
+       </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="feedMode_label">
@@ -73,7 +83,9 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QComboBox" name="feedMode"/>
+       <widget class="QComboBox" name="feedMode">
+        <property name="toolTip"><string>How the tool controller's HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller's own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</string></property>
+       </widget>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="startX_label">
@@ -81,7 +93,9 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::InputField" name="startX"/>
+       <widget class="Gui::InputField" name="startX">
+        <property name="toolTip"><string>Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</string></property>
+       </widget>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="stopX_label">
@@ -89,7 +103,9 @@
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="Gui::InputField" name="stopX"/>
+       <widget class="Gui::InputField" name="stopX">
+        <property name="toolTip"><string>Axial stop position along the rotary axis (mm). Must be greater than Start X.</string></property>
+       </widget>
       </item>
       <item row="6" column="0">
        <widget class="QLabel" name="startAngle_label">
@@ -97,7 +113,9 @@
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="Gui::InputField" name="startAngle"/>
+       <widget class="Gui::InputField" name="startAngle">
+        <property name="toolTip"><string>Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</string></property>
+       </widget>
       </item>
       <item row="7" column="0">
        <widget class="QLabel" name="stopAngle_label">
@@ -105,16 +123,19 @@
        </widget>
       </item>
       <item row="7" column="1">
-       <widget class="Gui::InputField" name="stopAngle"/>
+       <widget class="Gui::InputField" name="stopAngle">
+        <property name="toolTip"><string>Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine's rotary axis limits.</string></property>
+       </widget>
       </item>
       <item row="8" column="0">
        <widget class="QLabel" name="stepOver_label">
         <property name="text"><string>Step Over</string></property>
-        <property name="toolTip"><string>Axial advance per full revolution (spiral pitch).</string></property>
        </widget>
       </item>
       <item row="8" column="1">
-       <widget class="Gui::InputField" name="stepOver"/>
+       <widget class="Gui::InputField" name="stepOver">
+        <property name="toolTip"><string>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</string></property>
+       </widget>
       </item>
       <item row="9" column="0">
        <widget class="QLabel" name="angularResolution_label">
@@ -122,7 +143,9 @@
        </widget>
       </item>
       <item row="9" column="1">
-       <widget class="Gui::InputField" name="angularResolution"/>
+       <widget class="Gui::InputField" name="angularResolution">
+        <property name="toolTip"><string>Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</string></property>
+       </widget>
       </item>
       <item row="10" column="0">
        <widget class="QLabel" name="radialStockToLeave_label">
@@ -130,7 +153,9 @@
        </widget>
       </item>
       <item row="10" column="1">
-       <widget class="Gui::InputField" name="radialStockToLeave"/>
+       <widget class="Gui::InputField" name="radialStockToLeave">
+        <property name="toolTip"><string>Radial offset added to the cutter Z so the cutter stays this far above the part surface (mm). Use a small positive value for a finish allowance; 0 cuts directly to the surface.</string></property>
+       </widget>
       </item>
       <item row="11" column="0">
        <widget class="QLabel" name="maxFeed_label">
@@ -138,11 +163,14 @@
        </widget>
       </item>
       <item row="11" column="1">
-       <widget class="Gui::InputField" name="maxFeed"/>
+       <widget class="Gui::InputField" name="maxFeed">
+        <property name="toolTip"><string>Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</string></property>
+       </widget>
       </item>
       <item row="12" column="0" colspan="2">
        <widget class="QCheckBox" name="boundaryFromFaces">
         <property name="text"><string>Restrict to Selected Faces</string></property>
+        <property name="toolTip"><string>When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</string></property>
        </widget>
       </item>
      </layout>
