@@ -44,7 +44,7 @@ public:
 
     App::PropertyLink Base;
     App::PropertyFloat Pitch;
-    App::PropertyInteger Samples;
+    App::PropertyIntegerConstraint Samples;
 
     /**
      * @brief The FlexParameters struct is supposed to be filled with final
@@ -67,7 +67,8 @@ public:
         return "PartGui::ViewProviderFlex";
     }
     //@}
-    Flex::FlexParameters computeFinalParameters();
+
+    Flex::FlexParameters computeFinalParameters() const;
 
     /**
      * @brief FlexShape powers the deformation feature.
@@ -78,6 +79,9 @@ public:
     static TopoShape FlexShape(const TopoShape& source, const FlexParameters& params);
     static TopoShape curve(const TopoShape& source, const Flex::FlexParameters& params);
     static TopoShape twist(const TopoShape& source, const Flex::FlexParameters& params);
+
+private:
+    static App::PropertyIntegerConstraint::Constraints sampleRange;
 };
 
 }  // namespace Part
