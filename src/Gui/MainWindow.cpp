@@ -1202,6 +1202,8 @@ bool MainWindow::event(QEvent* e)
         if (std::abs(d->currentStatusType) <= MainWindow::Wrn) {
             return true;
         }
+        showMessage(static_cast<QStatusTipEvent*>(e)->tip());
+        return true;
     }
     return QMainWindow::event(e);
 }
