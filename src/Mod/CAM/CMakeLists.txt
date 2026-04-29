@@ -447,6 +447,7 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/linking.py
     Path/Base/Generator/rotary_dropcutter.py
     Path/Base/Generator/rotary_spiral.py
+    Path/Base/Generator/rotary_wrap.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/spiral.py
     Path/Base/Generator/tapping.py
@@ -573,6 +574,8 @@ SET(Tests_SRCS
     CAMTests/TestPathPropertyBag.py
     CAMTests/TestPathRotaryGenerators.py
     CAMTests/TestPathRotarySurface.py
+    CAMTests/TestPathRotaryPostRegression.py
+    CAMTests/TestPathRotaryWrap.py
     CAMTests/TestPathRotationGenerator.py
     CAMTests/TestPathSetupSheet.py
     CAMTests/TestPathSpiralGenerator.py

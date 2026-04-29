@@ -249,17 +249,37 @@ def generate(
 
     commands = []
 
-    # Approach: rapid to clearance, position, A=0, plunge to first r.
-    commands.append(Path.Command("G0", {"Z": float(clearance_height), "F": float(vert_rapid)}))
-
-    # Initial XY position (above x_min on the axial axis).
+    # Track the current machine position so every emitted move can be
+    # fully qualified with X, Y, Z, and the rotary axis word, regardless
+    # of which axes actually changed.
     x0, y0, _ = _world_xyz(rotary_axis, x_min, max_r + radial_stock_to_leave + 5.0)
-    commands.append(Path.Command("G0", {"X": float(x0), "Y": float(y0), "F": float(horiz_rapid)}))
-    # Rotate to start angle.
     a_start_deg = math.degrees(theta_start)
-    commands.append(
-        Path.Command("G0", {rotary_letter: float(a_start_deg), "F": float(horiz_rapid)})
-    )
+    cur_x, cur_y, cur_z, cur_a = float(x0), float(y0), float(clearance_height), float(a_start_deg)
+
+    def _emit(name, *, x=None, y=None, z=None, a=None, feed):
+        nonlocal cur_x, cur_y, cur_z, cur_a
+        if x is not None:
+            cur_x = float(x)
+        if y is not None:
+            cur_y = float(y)
+        if z is not None:
+            cur_z = float(z)
+        if a is not None:
+            cur_a = float(a)
+        params = {
+            "X": cur_x,
+            "Y": cur_y,
+            "Z": cur_z,
+            rotary_letter: cur_a,
+            "F": float(feed),
+        }
+        commands.append(Path.Command(name, params))
+
+    # Approach: rapid to clearance, position, rotate to start, plunge to r0.
+    _emit("G0", z=clearance_height, feed=vert_rapid)
+    _emit("G0", x=x0, y=y0, feed=horiz_rapid)
+    _emit("G0", a=a_start_deg, feed=horiz_rapid)
+
     # Drop to the radius at the very first sample.
     theta_mod0 = theta_start % (2.0 * math.pi)
     if theta_mod0 < thetas[0]:
@@ -272,7 +292,7 @@ def generate(
     r0 += radial_stock_to_leave
     if cutter_z_floor is not None and r0 < cutter_z_floor:
         r0 = cutter_z_floor
-    commands.append(Path.Command("G1", {"Z": float(r0), "F": float(vert_feed)}))
+    _emit("G1", z=r0, feed=vert_feed)
 
     # Spiral cut.
     last_r = r0
@@ -298,18 +318,19 @@ def generate(
         if cutter_z_floor is not None and r < cutter_z_floor:
             r = cutter_z_floor
 
-        params = {
-            "X": float(_world_xyz(rotary_axis, x, r)[0]),
-            "Y": float(_world_xyz(rotary_axis, x, r)[1]),
-            "Z": float(r),
-            rotary_letter: float(math.degrees(theta_unwound)),
-            "F": float(_effective_feed(horiz_feed, r, max_feed)),
-        }
-        commands.append(Path.Command("G1", params))
+        wx, wy, _ = _world_xyz(rotary_axis, x, r)
+        _emit(
+            "G1",
+            x=wx,
+            y=wy,
+            z=r,
+            a=math.degrees(theta_unwound),
+            feed=_effective_feed(horiz_feed, r, max_feed),
+        )
         last_r = r
 
     # Retract.
-    commands.append(Path.Command("G1", {"Z": float(last_r + 5.0), "F": float(vert_feed)}))
-    commands.append(Path.Command("G0", {"Z": float(safe_height), "F": float(vert_rapid)}))
+    _emit("G1", z=last_r + 5.0, feed=vert_feed)
+    _emit("G0", z=safe_height, feed=vert_rapid)
 
     return commands

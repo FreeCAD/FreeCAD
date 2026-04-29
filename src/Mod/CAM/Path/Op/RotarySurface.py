@@ -35,6 +35,7 @@ import Path.Op.Base as PathOp
 import Path.Op.SurfaceSupport as SurfaceSupport
 import Path.Base.Generator.rotary_dropcutter as rotary_dropcutter
 import Path.Base.Generator.rotary_spiral as rotary_spiral
+import Path.Base.Generator.rotary_wrap as rotary_wrap
 import Path.Main.Stock as PathStock
 import PathScripts.PathUtils as PathUtils
 
@@ -51,6 +52,17 @@ except ImportError:  # pragma: no cover
 
 
 translate = FreeCAD.Qt.translate
+
+
+def _wrap_strategy_value(axis_obj):
+    """Extract the rotary axis's wrap strategy as a plain string.
+
+    Tolerates older RotaryAxis instances that predate the field
+    (returns "unwound") and accepts either a WrapStrategy enum or its
+    string form.
+    """
+    val = getattr(axis_obj, "wrap_strategy", "unwound")
+    return getattr(val, "value", val)
 
 
 if False:
@@ -345,13 +357,18 @@ class ObjectRotarySurface(PathOp.ObjectOp):
         """Decide which world axis carries the rotary, plus its G-code letter.
 
         Returns (axis_label, rotary_letter, rotation_vector_world,
-                 axis_min_deg, axis_max_deg).
+                 axis_min_deg, axis_max_deg, wrap_strategy).
+
+        wrap_strategy is the string value of the rotary axis's
+        WrapStrategy ("unwound", "modulo", "rezero"). Falls back to
+        "unwound" when no machine or no matching axis is found.
         """
         # Try the machine first when RotaryAxis = FromMachine.
         axis_label = obj.RotaryAxis
         rotary_letter = "A"
         rot_vec = FreeCAD.Vector(1, 0, 0)
         amin, amax = -360.0, 360.0
+        wrap_strategy = "unwound"
 
         machine = None
         if job is not None and hasattr(job, "Proxy") and hasattr(job.Proxy, "getMachine"):
@@ -380,6 +397,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 rot_vec = FreeCAD.Vector(rv.x, rv.y, rv.z)
                 amin = float(getattr(axis_obj, "min_limit", -360.0))
                 amax = float(getattr(axis_obj, "max_limit", 360.0))
+                wrap_strategy = _wrap_strategy_value(axis_obj)
                 axis_label = self._axis_label_from_vec(rot_vec)
         else:
             # User pinned X or Y; use those defaults but update rot_vec.
@@ -401,9 +419,10 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                         rotary_letter = ax.name
                         amin = float(getattr(ax, "min_limit", -360.0))
                         amax = float(getattr(ax, "max_limit", 360.0))
+                        wrap_strategy = _wrap_strategy_value(ax)
                         break
 
-        return axis_label, rotary_letter, rot_vec, amin, amax
+        return axis_label, rotary_letter, rot_vec, amin, amax, wrap_strategy
 
     @staticmethod
     def _axis_label_from_vec(v):
@@ -514,7 +533,9 @@ class ObjectRotarySurface(PathOp.ObjectOp):
 
         # Resolve rotary axis + letter from machine / RotaryAxis property.
         try:
-            axis_label, rotary_letter, rot_vec, amin, amax = self._resolve_rotary(obj, job)
+            axis_label, rotary_letter, rot_vec, amin, amax, wrap_strategy = self._resolve_rotary(
+                obj, job
+            )
         except ValueError as e:
             Path.Log.error("Rotary Surface: {}".format(e))
             return
@@ -684,7 +705,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
             else:
                 cutter_z_floor = None
 
-            commands = rotary_spiral.generate(
+            raw_commands = rotary_spiral.generate(
                 radii=radii,
                 xs=xs,
                 thetas=thetas,
@@ -707,6 +728,8 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 max_feed=max_feed,
                 cutter_z_floor=cutter_z_floor,
             )
+
+            commands = rotary_wrap.apply_wrap_strategy(raw_commands, rotary_letter, wrap_strategy)
 
             for cmd in commands:
                 self.commandlist.append(cmd)
