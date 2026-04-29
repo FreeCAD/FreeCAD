@@ -456,7 +456,8 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     //: A context menu action used to show or hide the input hints in the status bar
     d->hintLabel->setWindowTitle(tr("Input Hints"));
 
-    // Use a permanent status bar widget so temporary command/status messages do not hide the input hints.
+    // Use a permanent status bar widget so temporary command/status messages do not hide the input
+    // hints.
     statusBar()->addPermanentWidget(d->hintLabel);
 
     // right side label
