@@ -729,7 +729,6 @@ def removeShape(objs, mark=True):
             if dims:
                 name = obj.Name
                 tp = Draft.getType(obj)
-                print(tp)
                 if tp == "Structure":
                     import ArchStructure
 
