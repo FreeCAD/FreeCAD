@@ -26,7 +26,6 @@
 #include <QMessageBox>
 
 
-#include <App/Application.h>
 #include <App/DocumentObserver.h>
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
@@ -127,15 +126,12 @@ TaskFeatureParameters::~TaskFeatureParameters()
 
 void TaskFeatureParameters::showDraggerHints()
 {
-    if (!Gui::GizmoContainer::isEnabled()) {
-        return;
-    }
-    if (!Gui::GizmoContainer::isCoarseSnapEnabled()) {
+    if (!Gui::GizmoContainer::isEnabled() || !Gui::GizmoContainer::isCoarseSnapEnabled()) {
         return;
     }
 
-    auto modifier = Gui::GizmoContainer::getFineSnapModifier();
-    bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
+    const auto modifier = Gui::GizmoContainer::getFineSnapModifier();
+    const bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
 
     using UserInput = Gui::InputHint::UserInput;
     UserInput key = UserInput::ModifierShift;

@@ -1043,8 +1043,8 @@ void TaskBoxPrimitives::setupGizmos()
     setGizmoPositions();
 
     if (Gui::GizmoContainer::isCoarseSnapEnabled()) {
-        auto modifier = Gui::GizmoContainer::getFineSnapModifier();
-        bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
+        const auto modifier = Gui::GizmoContainer::getFineSnapModifier();
+        const bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
 
         using UserInput = Gui::InputHint::UserInput;
         UserInput key = UserInput::ModifierShift;
