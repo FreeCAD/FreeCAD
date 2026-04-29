@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>360</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="toolOptions">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="toolController_label">
+        <property name="text"><string>Tool Controller</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="toolController"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="coolantController_label">
+        <property name="text"><string>Coolant</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="coolantController"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="rotaryOptions">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="rotaryAxis_label">
+        <property name="text"><string>Rotary Axis</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="rotaryAxis"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="cutMode_label">
+        <property name="text"><string>Cut Mode</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cutMode"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="cutPattern_label">
+        <property name="text"><string>Cut Pattern</string></property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="cutPattern"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="feedMode_label">
+        <property name="text"><string>Feed Mode</string></property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="feedMode"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="startX_label">
+        <property name="text"><string>Start X</string></property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::InputField" name="startX"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="stopX_label">
+        <property name="text"><string>Stop X</string></property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::InputField" name="stopX"/>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="startAngle_label">
+        <property name="text"><string>Start Angle</string></property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::InputField" name="startAngle"/>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="stopAngle_label">
+        <property name="text"><string>Stop Angle</string></property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="Gui::InputField" name="stopAngle"/>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="stepOver_label">
+        <property name="text"><string>Step Over</string></property>
+        <property name="toolTip"><string>Axial advance per full revolution (spiral pitch).</string></property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="Gui::InputField" name="stepOver"/>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="angularResolution_label">
+        <property name="text"><string>Angular Resolution</string></property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="Gui::InputField" name="angularResolution"/>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="radialStockToLeave_label">
+        <property name="text"><string>Radial Stock To Leave</string></property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="Gui::InputField" name="radialStockToLeave"/>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel" name="maxFeed_label">
+        <property name="text"><string>Max Feed</string></property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="Gui::InputField" name="maxFeed"/>
+      </item>
+      <item row="12" column="0" colspan="2">
+       <widget class="QCheckBox" name="boundaryFromFaces">
+        <property name="text"><string>Restrict to Selected Faces</string></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation"><enum>Qt::Vertical</enum></property>
+     <property name="sizeHint" stdset="0"><size><width>20</width><height>40</height></size></property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
