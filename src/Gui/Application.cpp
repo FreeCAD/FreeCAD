@@ -97,6 +97,7 @@
 #include "SoFCDB.h"
 #include "Selection.h"
 #include "SelectionFilterPy.h"
+#include "SelectionPy.h"
 #include "SoQtOffscreenRendererPy.h"
 #include "SplitView3DInventor.h"
 #include "StartupProcess.h"
@@ -645,7 +646,7 @@ Application::Application(bool GUIenabled)
                                                         "Selection",
                                                         "Selection module",
                                                         -1,
-                                                        SelectionSingleton::Methods,
+                                                        SelectionPy::methods(),
                                                         nullptr,
                                                         nullptr,
                                                         nullptr,
