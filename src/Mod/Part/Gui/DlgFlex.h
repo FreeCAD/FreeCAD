@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2026 F. Foinant-Willig <flachyjoe@gmail.com>            *
+ *   Copyright (c) 2023 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,26 +29,26 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/Part/App/FeatureScale.h>
+#include <Mod/Part/App/FeatureFlex.h>
 
 class TopoDS_Shape;
 
 namespace PartGui
 {
 
-class Ui_DlgScale;
-class DlgScale: public QDialog
+class Ui_DlgFlex;
+class DlgFlex: public QDialog
 {
     Q_OBJECT
 
 public:
-    DlgScale(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgScale() = default;
+    DlgFlex(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgFlex() = default;
     void accept() override;
     void apply();
     void reject() override;
 
-    std::vector<App::DocumentObject*> getShapesToScale() const;
+    std::vector<App::DocumentObject*> getShapesToFlex() const;
 
     bool validate();
 
@@ -56,27 +56,27 @@ public:
 
 protected:
     void findShapes();
-    bool canScale(const TopoDS_Shape&) const;
+    bool canFlex(const TopoDS_Shape&) const;
     void changeEvent(QEvent* e) override;
 
 private:
     void setupConnections();
-    void onUniformScaleToggled(bool on);
+    void onUniformFlexToggled(bool on);
 
 private:
     /// returns link to any of selected source shapes. Throws if nothing is selected for scaling.
-    App::DocumentObject& getShapeToScale() const;
+    App::DocumentObject& getShapeToFlex() const;
 
-    std::unique_ptr<Ui_DlgScale> ui;
+    std::unique_ptr<Ui_DlgFlex> ui;
     std::string m_document, m_label;
 };
 
-class TaskScale: public Gui::TaskView::TaskDialog
+class TaskFlex: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskScale();
+    TaskFlex();
 
 public:
     bool accept() override;
@@ -89,7 +89,7 @@ public:
     }
 
 private:
-    DlgScale* widget;
+    DlgFlex* widget;
 };
 
 }  // namespace PartGui

@@ -36,6 +36,7 @@ set(PartGui_UIC_SRCS
     DlgExportHeaderStep.ui
     DlgExtrusion.ui
     DlgScale.ui
+    DlgFlex.ui
     DlgImportStep.ui
     DlgFilletEdges.ui
     DlgImportExportIges.ui
@@ -99,6 +100,9 @@ SET(PartGui_SRCS
     DlgScale.cpp
     DlgScale.h
     DlgScale.ui
+    DlgFlex.cpp
+    DlgFlex.h
+    DlgFlex.ui
     DlgFilletEdges.cpp
     DlgFilletEdges.h
     DlgFilletEdges.ui
@@ -206,6 +210,8 @@ SET(PartGui_SRCS
     ViewProviderExtrusion.h
     ViewProviderScale.cpp
     ViewProviderScale.h
+    ViewProviderFlex.cpp
+    ViewProviderFlex.h
     ViewProvider2DObject.cpp
     ViewProvider2DObject.h
     ViewProviderMirror.cpp
