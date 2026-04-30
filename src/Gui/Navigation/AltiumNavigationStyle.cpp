@@ -94,7 +94,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             case SoMouseButtonEvent::BUTTON1:
                 this->lockrecenter = true;
                 this->button1down = press;
-                if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
+                if (press && (curmode == NavigationStyle::SEEK_WAIT_MODE)) {
                     newmode = NavigationStyle::SEEK_MODE;
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
                     processed = true;
@@ -110,20 +110,21 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
                 this->lockrecenter = true;
                 this->button2down = press;
 
-                if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
+                if (press && (curmode == NavigationStyle::SEEK_WAIT_MODE)) {
                     newmode = NavigationStyle::SEEK_MODE;
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
                     processed = true;
                 }
+                // !press means all buttons are up
                 // Don't show the context menu after dragging, panning or zooming
                 // Only panning and dragging are important here since zooming is not done with button2
                 if (!press && (hasDragged || hasPanned || hasZoomed)) {
                     processed = true;
                 }
                 else if (!press && !viewer->isEditing()) {
-                    if (this->currentmode != NavigationStyle::ZOOMING
-                        && this->currentmode != NavigationStyle::PANNING
-                        && this->currentmode != NavigationStyle::DRAGGING) {
+                    if (curmode != NavigationStyle::ZOOMING
+                        && curmode != NavigationStyle::PANNING
+                        && curmode != NavigationStyle::DRAGGING) {
                         if (this->isPopupMenuEnabled()) {
                             this->openPopupMenu(event->getPosition());
                         }
@@ -152,12 +153,12 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
         const auto event = (const SoLocation2Event*)ev;
-        if (this->currentmode == NavigationStyle::ZOOMING) {
+        if (curmode == NavigationStyle::ZOOMING) {
             //this->setZoomAtCursor(true);
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
         }
-        else if (this->currentmode == NavigationStyle::PANNING) {
+        else if (curmode == NavigationStyle::PANNING) {
             float ratio = vp.getViewportAspectRatio();
             panCamera(
                 viewer->getSoRenderManager()->getCamera(),
@@ -168,7 +169,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             );
             processed = true;
         }
-        else if (this->currentmode == NavigationStyle::DRAGGING) {
+        else if (curmode == NavigationStyle::DRAGGING) {
             this->addToLog(event->getPosition(), event->getTime());
             this->spin(posn);
             moveCursorPosition();
@@ -213,8 +214,9 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             }
             break;
 
+        // BUTTON1 KEY COMBINATIONS
         // multi-selection
-        case CTRLDOWN | BUTTON1DOWN:
+        case BUTTON1DOWN | CTRLDOWN:
             // make sure not to change the selection when stopping spinning
             if (curmode == NavigationStyle::SPINNING
                 || (this->lockButton1 && curmode != NavigationStyle::SELECTION)) {
@@ -225,20 +227,12 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             }
             break;
 
+        // BUTTON2 KEY COMBINATIONS
         case BUTTON2DOWN: //changed from BUTTON3DOWN
             newmode = NavigationStyle::PANNING;
             break;
 
-        case SHIFTDOWN:
-            saveCursorPosition(ev);
-            viewer->showRotationCenter(true);
-
-            // if only shift is down, then go to idle, for example if button2 was released
-            if (curmode == NavigationStyle::DRAGGING) {
-                newmode = NavigationStyle::IDLE;
-            }
-            break;
-        case SHIFTDOWN | BUTTON2DOWN:
+        case BUTTON2DOWN | SHIFTDOWN:
             if (newmode != NavigationStyle::DRAGGING) {
                 saveCursorPosition(ev);
                 viewer->showRotationCenter(true);
@@ -248,13 +242,34 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
 
         case BUTTON2DOWN | CTRLDOWN | SHIFTDOWN:
         case BUTTON2DOWN | CTRLDOWN:
+
+        // BUTTON3 KEY COMBINATIONS
         case BUTTON3DOWN | CTRLDOWN:
         case BUTTON3DOWN | SHIFTDOWN:
-        case BUTTON3DOWN:
             newmode = NavigationStyle::ZOOMING;
+            if (curmode != NavigationStyle::DRAGGING) {
+                saveCursorPosition(ev);
+                viewer->showRotationCenter(true);
+                this->setZoomAtCursor(true);
+            }
+            break;
+
+        // KEYBOARD KEYS ONLY
+        case SHIFTDOWN:
             saveCursorPosition(ev);
             viewer->showRotationCenter(true);
-            this->setZoomAtCursor(true);
+
+            // if only shift is down, then go to idle, for example if button2 was released
+            if (curmode == NavigationStyle::DRAGGING) {
+                newmode = NavigationStyle::IDLE;
+            }
+            break;
+        case CTRLDOWN:
+
+            // if only shift is down, then go to idle, for example if button2 was released
+            if (curmode == NavigationStyle::DRAGGING) {
+                newmode = NavigationStyle::IDLE;
+            }
             break;
         default:
             break;
