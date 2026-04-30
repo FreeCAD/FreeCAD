@@ -75,7 +75,6 @@ def setup(doc=None, solvertype="calculix"):
     l4 = Part.makeLine((0, 75, 0), (0, 25, 0))
     arc = Part.makeCircle(25, App.Vector(0, 0, 0), App.Vector(0, 0, 1), 0, 90)
     wire = Part.Wire([l1, l2, l3, l4, arc])
-    Part.show(wire)
     face = Part.Face(wire)
     face_obj = Part.show(face)
     doc.recompute()
