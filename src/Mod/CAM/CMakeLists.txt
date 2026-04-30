@@ -323,6 +323,7 @@ SET(PathPythonPostGui_SRCS
 SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/__init__.py
     Path/Post/scripts/centroid_legacy_post.py
+    Path/Post/scripts/centroid_post.py
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_legacy_post.py
     Path/Post/scripts/dynapath_4060_legacy_post.py
@@ -339,7 +340,10 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/linuxcnc_legacy_post.py
     Path/Post/scripts/jtech_legacy_post.py
     Path/Post/scripts/mach3_mach4_legacy_post.py
+    Path/Post/scripts/mach3_mach4_post.py
     Path/Post/scripts/marlin_legacy_post.py
+    Path/Post/scripts/marlin_post.py
+    Path/Post/scripts/masso_g3_post.py
     Path/Post/scripts/nccad_legacy_post.py
     Path/Post/scripts/opensbp_legacy_post.py
     Path/Post/scripts/opensbp_post.py
