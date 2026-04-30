@@ -62,6 +62,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             ("layerMode", "LayerMode"),
             ("cutPattern", "CutPattern"),
             ("cutPatternZLevel", "CutPatternZLevel"),
+            ("profileEdges", "ProfileEdges"),
         ]
         enumTups = PathSurface.ObjectSurface.propertyEnumerations(dataType="raw")
         PathGuiUtil.populateCombobox(form, enumTups, comboToPropertyMap)
@@ -87,6 +88,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         if obj.AvoidLastX_Faces != self.form.avoidLastX_Faces.value():
             obj.AvoidLastX_Faces = self.form.avoidLastX_Faces.value()
+
+        obj.ProfileEdges = self.form.profileEdges.currentData()
 
         PathGuiUtil.updateInputField(obj, "DepthOffset", self.form.depthOffset)
         PathGuiUtil.updateInputField(obj, "StockToLeave", self.form.stockToLeave)
@@ -129,6 +132,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.CutPatternZLevel, self.form.cutPatternZLevel)
 
         self.form.avoidLastX_Faces.setValue(obj.AvoidLastX_Faces)
+        self.selectInComboBox(obj.ProfileEdges, self.form.profileEdges)
         self.form.depthOffset.setText(
             FreeCAD.Units.Quantity(obj.DepthOffset.Value, FreeCAD.Units.Length).UserString
         )
@@ -197,6 +201,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.cutPattern.currentIndexChanged)
         signals.append(self.form.cutPatternZLevel.currentIndexChanged)
         signals.append(self.form.avoidLastX_Faces.editingFinished)
+        signals.append(self.form.profileEdges.currentIndexChanged)
         signals.append(self.form.depthOffset.editingFinished)
         signals.append(self.form.boundaryAdjustment.editingFinished)
         signals.append(self.form.stockToLeave.editingFinished)

@@ -46,10 +46,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
 import Path.Op.Base as PathOp
 import Path.Base.Generator.surface_common as surface_common
-import Path.Base.Generator.surface_stl as surface_stl
+import Path.Base.Generator.surface_mesh as surface_mesh
 import Path.Base.Generator.surface_scan as surface_scan
 import Path.Base.Generator.surface_dropcutter as surface_dropcutter
 import Path.Base.Generator.surface_waterline as surface_waterline
+import Path.Base.Generator.surface_postprocess as surface_postprocess
 import PathScripts.PathUtils as PathUtils
 import time
 
@@ -234,6 +235,24 @@ class ObjectSurface(PathOp.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "HandleMultipleFeatures",
+                "Selected Geometry Settings",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Choose how to process multiple Base Geometry features.",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "ProfileEdges",
+                "Selected Geometry Settings",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Profile the edges of the selection.",
                 ),
             ),
             (
@@ -500,6 +519,16 @@ class ObjectSurface(PathOp.ObjectOp):
                 (translate("path_waterline", "Very High"), "16"),
                 (translate("path_waterline", "Ultra"), "32"),
             ],
+            "HandleMultipleFeatures": [
+                (translate("CAM_Surface", "Collectively"), "Collectively"),
+                (translate("CAM_Surface", "Individually"), "Individually"),
+            ],
+            "ProfileEdges": [
+                (translate("CAM_Surface", "None"), "None"),
+                (translate("CAM_Surface", "First"), "First"),
+                (translate("CAM_Surface", "Last"), "Last"),
+                (translate("CAM_Surface", "Only"), "Only"),
+            ],
         }
 
         if dataType == "raw":
@@ -539,6 +568,8 @@ class ObjectSurface(PathOp.ObjectOp):
             "MinSampleInterval": 0.20,
             "BoundaryAdjustment": 0.0,
             "AvoidLastX_Faces": 0,
+            "HandleMultipleFeatures": "Collectively",
+            "ProfileEdges": "None",
             "PatternCenterCustom": FreeCAD.Vector(0.0, 0.0, 0.0),
             "GapThreshold": 0.005,
             "AngularDeflection": 0.25,
@@ -572,22 +603,26 @@ class ObjectSurface(PathOp.ObjectOp):
         is_waterline = strategy == "Waterline"
 
         # Logic Groups:
-        # A: Z-Level Hybrid specific properties
-        # B: SurfacePattern/Mesh-specific properties
-        # C: Pattern-dependent settings (StepOver, etc.)
-        A = show if is_zlevel else hide
-        B = hide if is_zlevel else show
-        C = show if is_surface_pattern else hide
+        # A: Surface Pattern specific properties
+        # B: Z-Level Hybrid specific properties
+        # C: SurfacePattern/Mesh-specific properties
+        # D: Pattern-dependent settings (StepOver, etc.)
+        A = show if is_surface_pattern else hide
+        B = show if is_zlevel else hide
+        C = hide if is_zlevel else show
+        D, E = hide, hide
 
         # SurfacePattern specific contexts
-        obj.setEditorMode("AvoidLastX_Faces", show if is_surface_pattern else hide)
-        obj.setEditorMode("StartPoint", show if is_surface_pattern else hide)
-        obj.setEditorMode("UseStartPoint", show if is_surface_pattern else hide)
-        obj.setEditorMode("CutPattern", show if is_surface_pattern else hide)
-        obj.setEditorMode("CutPatternAngle", show if is_surface_pattern else hide)
-        obj.setEditorMode("KeepToolDown", show if is_surface_pattern else hide)
-        obj.setEditorMode("GapThreshold", show if is_surface_pattern else hide)
-        obj.setEditorMode("LayerMode", show if is_surface_pattern else hide)
+        obj.setEditorMode("AvoidLastX_Faces", A)
+        obj.setEditorMode("HandleMultipleFeatures", A)
+        obj.setEditorMode("StartPoint", A)
+        obj.setEditorMode("UseStartPoint", A)
+        obj.setEditorMode("CutPattern", A)
+        obj.setEditorMode("CutPatternAngle", A)
+        obj.setEditorMode("KeepToolDown", A)
+        obj.setEditorMode("GapThreshold", A)
+        obj.setEditorMode("LayerMode", A)
+        obj.setEditorMode("ProfileEdges", A)
 
         # Adaptive Sampling Logic
         can_adaptive = is_waterline or is_surface_pattern
@@ -601,28 +636,33 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("PatternCenterAt", show if pattern_needs_center else hide)
         obj.setEditorMode("PatternCenterCustom", show if pattern_needs_center else hide)
 
+        # Apply Visibility to Z-Level Group (B)
+        obj.setEditorMode("ClearPlanarOnly", B)
+        obj.setEditorMode("IgnoreOuter", B)
+        obj.setEditorMode("StockToLeave", B)
+        obj.setEditorMode("CutPatternZLevel", B)
+        obj.setEditorMode("SamplingAccuracy", B)
+
+        # Apply Visibility to Mesh/OCL Group (C)
+        obj.setEditorMode("AngularDeflection", C)
+        obj.setEditorMode("LinearDeflection", C)
+        obj.setEditorMode("MeshSimplification", C)
+        obj.setEditorMode("OptimizeLinearPaths", C)
+        obj.setEditorMode("SampleInterval", C)
+
         if is_zlevel:
             z_pattern = getattr(obj, "CutPatternZLevel", "None")
-            C = hide if z_pattern == "None" else show
+            D = hide if z_pattern == "None" else show
+            E = hide if z_pattern in ["None", "Offset"] else show
+        if is_surface_pattern:
+            D = show
+            E = show if obj.CutPattern in ["Line", "ZigZag"] else hide
 
-        # Apply Visibility to Z-Level Group (A)
-        obj.setEditorMode("ClearPlanarOnly", A)
-        obj.setEditorMode("IgnoreOuter", A)
-        obj.setEditorMode("StockToLeave", A)
-        obj.setEditorMode("CutPatternZLevel", A)
-        obj.setEditorMode("SamplingAccuracy", A)
-
-        # Apply Visibility to Mesh/OCL Group (B)
-        obj.setEditorMode("AngularDeflection", B)
-        obj.setEditorMode("LinearDeflection", B)
-        obj.setEditorMode("MeshSimplification", B)
-        obj.setEditorMode("OptimizeLinearPaths", B)
-        obj.setEditorMode("SampleInterval", B)
-
-        # Apply Visibility to Common/Contextual Group (C)
-        obj.setEditorMode("StepOver", C)
-        obj.setEditorMode("CutPatternReversed", C)
-        obj.setEditorMode("CutPatternAngle", C)
+        # Apply Visibility to Common/Contextual Group (D)
+        obj.setEditorMode("StepOver", D)
+        obj.setEditorMode("CutPatternReversed", D)
+        # Apply Visibility to Common/Contextual Group (E)
+        obj.setEditorMode("CutPatternAngle", E)
 
         # Global Properties
         obj.setEditorMode("CutMode", show)
@@ -873,72 +913,81 @@ class ObjectSurface(PathOp.ObjectOp):
             "length_offset": length_offset,
         }
 
-    def _getSelectedFaces(self, obj):
+    def _splitSelectedFaces(self, obj):
         """Extract selected faces from obj.Base, applying AvoidLastX_Faces.
 
-        Returns a list of Part.Face objects to cut, or an empty list if
-        no faces are selected (meaning the whole model should be used).
+        Splits the obj.Base geometry into faces to cut and faces to avoid.
+        Returns two lists: (cutting_faces, avoid_faces)
         """
-        import time
 
         Path.Log.debug(
-            "_getSelectedFaces: hasattr Base={}, Base={}".format(
+            "_splitSelectedFaces: hasattr Base={}, Base={}".format(
                 hasattr(obj, "Base"), obj.Base if hasattr(obj, "Base") else "N/A"
             )
         )
         if not hasattr(obj, "Base") or not obj.Base:
-            Path.Log.debug("_getSelectedFaces: no Base geometry, using whole model")
-            return []
+            Path.Log.debug("_splitSelectedFaces: no Base geometry, using whole model")
+            return [], []
 
         # Benchmark face extraction
         extract_start = time.time()
-        all_faces = []
+        cutting_faces, avoid_faces = [], []
+        all_selected = []
         total_subs = 0
         for base, subs in obj.Base:
-            Path.Log.debug("_getSelectedFaces: base={}, subs={}".format(base.Label, subs))
+            Path.Log.debug("_splitSelectedFaces: base={}, subs={}".format(base.Label, subs))
             for sub in subs:
                 # Skip empty sub-element names - they indicate whole object selection
                 if not sub:
-                    Path.Log.debug("_getSelectedFaces: skipping empty sub-element for whole object")
+                    Path.Log.debug("_splitSelectedFaces: skipping empty sub-element for whole object")
                     continue
                 total_subs += 1
                 shape = getattr(base.Shape, sub, None)
                 if shape is not None and isinstance(shape, Part.Face):
-                    all_faces.append(shape)
-                    Path.Log.debug("_getSelectedFaces: added face {}".format(sub))
+                    all_selected.append(shape)
+                    Path.Log.debug("_splitSelectedFaces: added face {}".format(sub))
                 else:
                     Path.Log.debug(
-                        "_getSelectedFaces: sub '{}' not found or not a face".format(sub)
+                        "_splitSelectedFaces: sub '{}' not found or not a face".format(sub)
                     )
         extract_time = time.time() - extract_start
         Path.Log.debug(
-            "_getSelectedFaces: extraction took {:.3f}s for {} subs, {} faces".format(
-                extract_time, total_subs, len(all_faces)
+            "_splitSelectedFaces: extraction took {:.3f}s for {} subs, {} faces".format(
+                extract_time, total_subs, len(all_selected)
             )
         )
 
-        if not all_faces:
-            return []
+        if not all_selected:
+            return cutting_faces, avoid_faces
 
         # Benchmark AvoidLastX_Faces processing
-        avoid_start = time.time()
-        avoid = obj.AvoidLastX_Faces if hasattr(obj, "AvoidLastX_Faces") else 0
-        if avoid > 0 and avoid < len(all_faces):
-            return all_faces[: len(all_faces) - avoid]
-        elif avoid >= len(all_faces):
-            return []
+        avoid_count_start = time.time()
+        avoid_count = obj.AvoidLastX_Faces if hasattr(obj, "AvoidLastX_Faces") else 0
+        if avoid_count > 0 and avoid_count < len(all_selected):
+            cutting_faces = all_selected[:-avoid_count]
+            avoid_faces = all_selected[-avoid_count:]
+        elif avoid_count >= len(all_selected):
+            avoid_faces = all_selected
+        else:
+            cutting_faces = all_selected
+        avoid_count_time = time.time() - avoid_count_start
+        Path.Log.debug(
+            "_splitSelectedFaces: AvoidLastX_Faces processing took {:.3f}s for {} cut, {} avoid faces".format(
+                avoid_count_time, len(cutting_faces), len(avoid_faces)
+            )
+        )
 
-        return all_faces
+        return cutting_faces, avoid_faces
 
-    def _getBoundBox(self, obj, job, selected_faces=None):
+    def _getBoundBox(self, obj, job, cutting_faces=None):
         """Get the bounding box for the operation based on BoundBox property.
 
-        If selected_faces is provided, the BaseBoundBox is computed from
+        If cutting_faces is provided, the BaseBoundBox is computed from
         those faces instead of the full model.
         """
         Path.Log.debug(
-            "_getBoundBox: BoundBox={}, selected_faces={}".format(
-                obj.BoundBox, len(selected_faces) if selected_faces else 0
+            "_getBoundBox: BoundBox={}, cutting_faces={}".format(
+                obj.BoundBox, len(cutting_faces) if cutting_faces else 0
             )
         )
         if obj.BoundBox == "Stock":
@@ -947,9 +996,9 @@ class ObjectSurface(PathOp.ObjectOp):
             return bb
 
         # If we have selected faces, use their bounding box
-        if selected_faces:
-            bb = selected_faces[0].BoundBox
-            for f in selected_faces[1:]:
+        if cutting_faces:
+            bb = cutting_faces[0].BoundBox
+            for f in cutting_faces[1:]:
                 bb.add(f.BoundBox)
             Path.Log.debug("_getBoundBox: using selected faces BB: {}".format(bb))
             return bb
@@ -962,7 +1011,7 @@ class ObjectSurface(PathOp.ObjectOp):
         Path.Log.debug("_getBoundBox: using model BB: {}".format(bb))
         return bb
 
-    def _executeSurfacePattern(self, obj, job, stl, cutter, tool_diam, bb, selected_faces=None):
+    def _executeSurfacePattern(self, obj, job, stl, safe_stl, cutter, tool_diam, bb, avoid_faces=None, cutting_faces=None):
         """
         Executes the Surface Pattern (projection) strategy.
 
@@ -978,7 +1027,7 @@ class ObjectSurface(PathOp.ObjectOp):
             cutter (ocl.Cutter): The OCL representation of the tool.
             tool_diam (float): The diameter of the active tool.
             bb (BoundBox): The bounding box of the entire operation area.
-            selected_faces (list, optional): A list of Part.Face objects if the user
+            cutting_faces (list, optional): A list of Part.Face objects if the user
                                              has made a specific selection. Defaults to None.
 
         Returns:
@@ -993,61 +1042,104 @@ class ObjectSurface(PathOp.ObjectOp):
         depth_offset = obj.DepthOffset.Value
         sample_interval = obj.SampleInterval.Value
         pattern_reverse = obj.CutPatternReversed
+        if pattern_reverse:
+            cut_climb = not cut_climb
         pattern = obj.CutPattern if hasattr(obj, "CutPattern") else "Line"
         is_adaptive = getattr(obj, "AdaptiveSampling", False)
 
-        if pattern_reverse:
-            cut_climb = not cut_climb
+        # 1. Generate the pattern mask (boundary face)
+        # Gather the source geometry for the mask
+        cutting_faces_for_mask = []
+        if cutting_faces:
+            cutting_faces_for_mask = cutting_faces
+        else:
+            if obj.BoundBox == "Stock" and job.Stock:
+                cutting_faces_for_mask = job.Stock.Shape.Faces
+            else:
+                base_objs = job.Model.Group
+                if base_objs:
+                    cutting_faces_for_mask = Part.Compound([b.Shape for b in base_objs]).Faces
 
-        # Generate the pattern mask (boundary face)
-        boundary_adj = obj.BoundaryAdjustment.Value if hasattr(obj, "BoundaryAdjustment") else 0.0
         boundary_face = surface_common.generate_pattern_mask(
-            job, obj, selected_faces, tool_diam / 2.0, boundary_adj
+            cutting_faces=cutting_faces_for_mask,
+            avoid_faces=avoid_faces,
+            tool_radius=tool_diam / 2.0,
+            boundary_adj=obj.BoundaryAdjustment.Value,
+            tolerance=obj.LinearDeflection.Value
         )
         if boundary_face:
             b_bb = boundary_face.BoundBox
             scan_bb = surface_scan.BBox(b_bb.XMin, b_bb.XMax, b_bb.YMin, b_bb.YMax)
         else:
-            # Fallback
-            scan_bb = surface_scan.BBox(bb.XMin, bb.XMax, bb.YMin, bb.YMax)
-
-        # Generate 2D scan lines based on pattern
-        angle = obj.CutPatternAngle if hasattr(obj, "CutPatternAngle") else 0.0
-        raw_scan_lines = []
-
-        if pattern == "Offset":
-            if boundary_face:
-                raw_scan_lines = surface_scan.generate_offset_scan_lines(
-                    boundary_face, step_over, sample_interval, pattern_reverse, cut_climb
-                )
-            else:
-                Path.Log.warning("Offset pattern requires a valid boundary. Aborting.")
-                return []
-
-        else:  # (Line, ZigZag, Circular, CircularZigZag, Spiral)
-            center = (scan_bb.center[0], scan_bb.center[1])
-            is_zigzag = pattern in ("ZigZag", "CircularZigZag")
-
-            tolerance = obj.LinearDeflection.Value if hasattr(obj, "LinearDeflection") else 0.005
-
-            raw_scan_lines = surface_scan.fast_generate_pattern(
-                pattern,
-                scan_bb,
-                center,
-                step_over,
-                sample_interval,
-                angle,
-                is_zigzag,
-                pattern_reverse,
-                cut_climb,
-                boundary_face,
-                tolerance,
+            Path.Log.error(
+                translate("CAM_Surface", "Failed to generate a valid boundary mask for the toolpath. "
+                          "This can be caused by invalid geometry or an offset that consumes the entire shape. "
+                          "Operation aborted.")
             )
+            return []
 
-        # Build one combined OCL path
+        # 2. Generate 2D scan lines based on pattern
+        angle = obj.CutPatternAngle if hasattr(obj, "CutPatternAngle") else 0.0
+        profile_mode = getattr(obj, "ProfileEdges", "None")
+        main_scan_lines = []
+        profile_scan_lines = []
+
+        # A. Generate Profile Scan if requested
+        if profile_mode != "None" and boundary_face:
+            outer_wire = boundary_face.Wires[0]  # Assume the first wire is the outer boundary
+            pts = outer_wire.discretize(Distance=sample_interval)
+            if len(pts) >= 2:
+                # Ensure the profile is a closed loop for a clean pass
+                if (pts[0] - pts[-1]).Length > 1e-5:
+                    pts.append(pts[0])
+                profile_scan_lines.append([(p.x, p.y, 0.0) for p in pts])
+
+        # B. Generate Main Pattern Scan if needed
+        if profile_mode != "Only":
+            if pattern == "Offset":
+                if boundary_face:
+                    main_scan_lines = surface_scan.generate_offset_scan_lines(
+                        boundary_face, step_over, sample_interval, pattern_reverse, cut_climb
+                    )
+                else:
+                    Path.Log.warning("Offset pattern requires a valid boundary. Aborting.")
+                    return []
+
+            else:  # (Line, ZigZag, Circular, CircularZigZag, Spiral)
+                center = (scan_bb.center[0], scan_bb.center[1])
+                is_zigzag = pattern in ("ZigZag", "CircularZigZag")
+
+                tolerance = obj.LinearDeflection.Value if hasattr(obj, "LinearDeflection") else 0.005
+
+                main_scan_lines = surface_scan.fast_generate_pattern(
+                    pattern,
+                    scan_bb,
+                    center,
+                    step_over,
+                    sample_interval,
+                    angle,
+                    is_zigzag,
+                    pattern_reverse,
+                    cut_climb,
+                    boundary_face,
+                    tolerance,
+                )
+
+        # C. Assemble the final scan list based on Profile Mode
+        scan_lines = []
+        if profile_mode == "First":
+            scan_lines = profile_scan_lines + main_scan_lines
+        elif profile_mode == "Last":
+            scan_lines = main_scan_lines + profile_scan_lines
+        elif profile_mode == "Only":
+            scan_lines = profile_scan_lines
+        else:  # "None"
+            scan_lines = main_scan_lines
+
+        # 2. Build one combined OCL path
         path_obj = ocl.Path()
 
-        for line in raw_scan_lines:
+        for line in scan_lines:
             if len(line) < 2:
                 continue
             for i in range(len(line) - 1):
@@ -1055,7 +1147,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 p2 = ocl.Point(line[i + 1][0], line[i + 1][1], final_depth)
                 path_obj.append(ocl.Line(p1, p2))
 
-        # Project scan lines to 3D surface
+        # 3. Project scan lines to 3D surface
         results_flat = []
 
         adaptive_threshold = 0.25  # Switch to Standard DropCutter beyond this point
@@ -1084,33 +1176,35 @@ class ObjectSurface(PathOp.ObjectOp):
                 )
             else:  # (Circular, Spiral, Offset) - BatchDropCutter
                 results_flat = surface_dropcutter.batch_dropcutter(
-                    stl, cutter, raw_scan_lines, final_depth
+                    stl, cutter, scan_lines, final_depth
                 )
 
-        # Reconstruct & optimize the results
+        # 4. Reconstruct & optimize the results
         scan_lines = surface_scan.reconstruct_scan_lines(results_flat, sample_interval * 2.5)
 
         if obj.OptimizeLinearPaths:
-            scan_lines = [surface_common.filter_cl_points(line, 0.005) for line in scan_lines]
+            scan_lines = [surface_postprocess.filter_cl_points(line, 0.005) for line in scan_lines]
 
-        # Apply Multi-pass roughing
+        # 5. Apply Multi-pass roughing
         if getattr(obj, "LayerMode", "Single-pass") == "Multi-pass":
-            scan_lines = surface_dropcutter.apply_multipass(
+            scan_lines = surface_postprocess.apply_multipass(
                 scan_lines, obj.StartDepth.Value, obj.FinalDepth.Value, obj.StepDown.Value
             )
 
-        # Generate G-Code
+        # 6. Generate G-Code
         opt_transitions = getattr(obj, "KeepToolDown", False)
-        cmds = surface_dropcutter.scan_lines_to_gcode(
+        cmds = surface_postprocess.scan_lines_to_gcode(
             scan_lines,
             horiz_feed=self.horizFeed,
             vert_rapid=self.vertRapid,
             horiz_rapid=self.horizRapid,
             safe_z=obj.SafeHeight.Value,
             clearance_z=obj.ClearanceHeight.Value,
+            final_z=obj.FinalDepth.Value,
+            sample_interval=sample_interval,
             depth_offset=depth_offset,
             optimize_transitions=opt_transitions,
-            safe_stl=stl if opt_transitions else None,
+            safe_stl=safe_stl if opt_transitions else None,
             cutter=cutter if opt_transitions else None,
         )
 
@@ -1172,7 +1266,7 @@ class ObjectSurface(PathOp.ObjectOp):
             for zh in wl_data:
                 filter_loop = []
                 for loop in wl_data[zh]:
-                    filter_loop.append(surface_common.filter_cl_points(loop, tolerance))
+                    filter_loop.append(surface_postprocess.filter_cl_points(loop, tolerance))
                 wl_data[zh] = filter_loop
 
         cmds = surface_waterline.waterline_to_gcode(
@@ -1377,11 +1471,13 @@ class ObjectSurface(PathOp.ObjectOp):
         # Impose property limits
         self.opApplyPropertyLimits(obj)
 
+        # Data preparation (Define what each strategy requires)
         strategy = obj.Strategy
-        is_adaptive = getattr(obj, "AdaptiveSampling", False)
         tool_params = self._extractToolParams(obj)
         tool_diam = tool_params.get("diameter", 0.0)
-        selected_faces, cutter, stl, bb = None, None, None, None
+        is_adaptive = getattr(obj, "AdaptiveSampling", False)
+        cutter, stl, safe_stl = None, None, None
+        cutting_faces, avoid_faces ,bb = None, None, None
 
         base_objs = (
             [base for base, subs in obj.Base]
@@ -1389,17 +1485,19 @@ class ObjectSurface(PathOp.ObjectOp):
             else JOB.Model.Group
         )
 
-        # Data preparation (Based on Strategy Needs)
-        # Define what each strategy requires
-        needs_ocl_cutter = strategy in ["SurfacePattern", "Waterline"]
-        needs_stl = strategy in ["SurfacePattern", "Waterline"]
+        use_cpp = strategy == "SurfacePattern"
         needs_face_selection = strategy == "SurfacePattern"
+        needs_safe_stl = getattr(obj, "KeepToolDown", False)
+        needs_stl = strategy in ["SurfacePattern", "Waterline"]
+        needs_ocl_cutter = strategy in ["SurfacePattern", "Waterline"]
 
+        # Extract and split selected faces
         if needs_face_selection:
-            selected_faces = self._getSelectedFaces(obj)
-            # Get bounding box (constrained to selected faces if available)
-            bb = self._getBoundBox(obj, JOB, selected_faces)
+            cutting_faces, avoid_faces = self._splitSelectedFaces(obj)
+            # Get bounding box (constrained to selected cutting faces if available)
+            bb = self._getBoundBox(obj, JOB, cutting_faces)
 
+        # Create OCL cutter from tool parameters
         if needs_ocl_cutter:
             cutter = surface_common.make_ocl_cutter(
                 tool_params["tool_type"],
@@ -1424,52 +1522,27 @@ class ObjectSurface(PathOp.ObjectOp):
                 )
             )
 
+        # Generate primary and secondary STL meshes
         if needs_stl:
-            if not base_objs:
-                Path.Log.error(translate("CAM_Surface", "No base models found to process."))
-                return
-
             stl_start = time.time()
-            for base in base_objs:
-                model_shape = base.Shape
 
-                if hasattr(base, "TypeId") and base.TypeId.startswith("Mesh"):
-                    Path.Log.info("opExecute: Using mesh-based STL conversion")
-                    mesh = base.Mesh
-                    points = [tuple(p) for p in mesh.Points]
-                    facets = [tuple(f) for f in mesh.Facets]
-                    stl = surface_stl.mesh_to_stl(points, facets)
-                else:
-                    # Check which STL method will be used
-                    if (
-                        hasattr(surface_stl, "_HAS_CPP")
-                        and surface_stl._HAS_CPP
-                        and strategy == "SurfacePattern"
-                    ):
-                        Path.Log.info("opExecute: Using C++ accelerated STL conversion")
-                    else:
-                        Path.Log.info("opExecute: Using Python fallback STL conversion")
-
-                    stl = surface_stl.shape_to_stl(
-                        model_shape,
-                        obj.LinearDeflection.Value,
-                        obj.AngularDeflection.Value,
-                        mesh_simplification=getattr(obj, "MeshSimplification", 1),
-                        final_depth=(
-                            obj.OpFinalDepth.Value if hasattr(obj, "OpFinalDepth") else None
-                        ),
-                        use_cpp=(strategy == "SurfacePattern"),
-                    )
-                break
+            stl, safe_stl = surface_mesh.generate_stl(
+                model_group=JOB.Model.Group,
+                avoid_faces=avoid_faces,
+                tool_radius=tool_diam / 2.0,
+                needs_safe_stl=needs_safe_stl,
+                final_depth=obj.FinalDepth.Value,
+                start_depth=obj.StartDepth.Value,
+                linear_deflection=obj.LinearDeflection.Value,
+                angular_deflection=obj.AngularDeflection.Value,
+                mesh_simplification=getattr(obj, "MeshSimplification", 1),
+                use_cpp=use_cpp,
+            )
             stl_time = time.time() - stl_start
+
             Path.Log.info("opExecute: STL creation took {:.3f}s".format(stl_time))
-
             if stl is None:
-                Path.Log.error(translate("CAM_Surface", "Failed to create STL from model."))
                 return
-
-            # Create the Safe STL for transition avoidance
-            safe_stl = None  # --- Upcoming ---
 
         # Begin GCode for operation with basic information
         if obj.Comment != "":
@@ -1502,7 +1575,7 @@ class ObjectSurface(PathOp.ObjectOp):
         cmds = []
         if strategy == "SurfacePattern":
             strategy_start = time.time()
-            cmds = self._executeSurfacePattern(obj, JOB, stl, cutter, tool_diam, bb, selected_faces)
+            cmds = self._executeSurfacePattern(obj, JOB, stl, safe_stl, cutter, tool_diam, bb, avoid_faces, cutting_faces)
             strategy_time = time.time() - strategy_start
             Path.Log.info(
                 f"DropCutter strategy completed in {strategy_time:.2f}s, {len(cmds)} commands"

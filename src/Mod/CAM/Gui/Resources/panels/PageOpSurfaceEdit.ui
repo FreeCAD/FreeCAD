@@ -410,13 +410,27 @@ Does not affect the toolpath point spacing (Sample Interval).</string>
        </widget>
       </item>
       <item row="1" column="0">
+       <widget class="QLabel" name="profileEdges_label">
+        <property name="text">
+         <string>Profile Edges</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="profileEdges">
+        <property name="toolTip">
+         <string>Add a contour pass around the boundary of the machining area.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
        <widget class="QLabel" name="cutPatternAngle_label">
         <property name="text">
          <string>Pattern Angle</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="Gui::InputField" name="cutPatternAngle">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -432,7 +446,7 @@ Does not affect the toolpath point spacing (Sample Interval).</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QCheckBox" name="cutPatternReversed">
         <property name="toolTip">
          <string>Reverse the cut order of the stepover paths.</string>
@@ -442,7 +456,7 @@ Does not affect the toolpath point spacing (Sample Interval).</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QCheckBox" name="clearPlanarOnly">
         <property name="toolTip">
          <string>If true, clears only detected horizontal floors.</string>
@@ -452,7 +466,7 @@ Does not affect the toolpath point spacing (Sample Interval).</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="QCheckBox" name="ignoreOuter">
         <property name="toolTip">
          <string>Ignore outer waterlines.</string>
@@ -555,6 +569,7 @@ Does not affect the toolpath point spacing (Sample Interval).</string>
   <tabstop>depthOffset</tabstop>
   <tabstop>clearingOptionsGroup</tabstop>
   <tabstop>stepOver</tabstop>
+  <tabstop>profileEdges</tabstop>
   <tabstop>optimizationGroup</tabstop>
   <tabstop>ignoreOuter</tabstop>
   <tabstop>clearPlanarOnly</tabstop>
