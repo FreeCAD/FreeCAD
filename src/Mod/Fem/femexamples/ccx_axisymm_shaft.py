@@ -77,11 +77,9 @@ def setup(doc=None, solvertype="calculix"):
     l6 = Part.makeLine((0, 100, 0), (25, 100, 0))
     arc = Part.makeCircle(5, App.Vector(30, 55, 0), App.Vector(0, 0, 1), 180, 270)
     wire = Part.Wire([l1, l2, l3, l4, arc, l5, l6])
-    Part.show(wire)
     face = Part.Face(wire)
-    face_output = Part.show(face)
-    face_obj = doc.addObject("Part::Reverse", "Reverse")
-    face_obj.Source = face_output
+    face.reverse()
+    face_obj = Part.show(face)
     doc.recompute()
     if App.GuiUp:
         face_obj.ViewObject.Document.activeView().viewTop()
