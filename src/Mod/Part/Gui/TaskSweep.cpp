@@ -410,10 +410,10 @@ bool SweepWidget::accept()
         )
                   .arg(
                       list,
-                      QLatin1String(selection.c_str()),
+                      selection.c_str(),
                       solid,
                       frenet,
-                      QString::fromLatin1(d->document.c_str())
+                      d->document.c_str()
                   );
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
@@ -421,7 +421,7 @@ bool SweepWidget::accept()
             throw Base::RuntimeError("Document doesn't exist anymore");
         }
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Sweep"));
-        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
         if (obj && !obj->isValid()) {
