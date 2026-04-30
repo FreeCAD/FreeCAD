@@ -200,9 +200,6 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
 
     switch (combo) {
         case 0: // no button pressed
-            if (curmode == NavigationStyle::SPINNING) {
-                break;
-            }
             viewer->showRotationCenter(false);
             newmode = NavigationStyle::IDLE;
             // The left mouse button has been released right now so unlock the flag
@@ -233,6 +230,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             break;
 
         case BUTTON2DOWN | SHIFTDOWN:
+            // prevent re-updating the cursor position, as it should lock to where the shift key was pressed
             if (newmode != NavigationStyle::DRAGGING) {
                 saveCursorPosition(ev);
                 viewer->showRotationCenter(true);
@@ -243,16 +241,8 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         case BUTTON2DOWN | CTRLDOWN | SHIFTDOWN:
         case BUTTON2DOWN | CTRLDOWN:
 
-        // BUTTON3 KEY COMBINATIONS
-        case BUTTON3DOWN | CTRLDOWN:
-        case BUTTON3DOWN | SHIFTDOWN:
-            newmode = NavigationStyle::ZOOMING;
-            if (curmode != NavigationStyle::DRAGGING) {
-                saveCursorPosition(ev);
-                viewer->showRotationCenter(true);
-                this->setZoomAtCursor(true);
-            }
-            break;
+        // BUTTON3 KEY COMBINATIONS not here since all combos result in zooming
+
 
         // KEYBOARD KEYS ONLY
         case SHIFTDOWN:
@@ -260,14 +250,14 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             viewer->showRotationCenter(true);
 
             // if only shift is down, then go to idle, for example if button2 was released
+            // dont disable the rotationcenter display until shift has been released
             if (curmode == NavigationStyle::DRAGGING) {
                 newmode = NavigationStyle::IDLE;
             }
             break;
         case CTRLDOWN:
-
-            // if only shift is down, then go to idle, for example if button2 was released
-            if (curmode == NavigationStyle::DRAGGING) {
+            // if only ctrl is down, then go to idle, for example if button2 was released
+            if (curmode == NavigationStyle::ZOOMING) {
                 newmode = NavigationStyle::IDLE;
             }
             break;
