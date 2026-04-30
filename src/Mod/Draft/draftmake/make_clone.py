@@ -113,7 +113,8 @@ def make_clone(obj, delta=None, forcedraft=False):
                     except Exception:
                         pass
                 if App.GuiUp:
-                    gui_utils.format_object(cl, base)
+                    # Shape of clone may not yet be available (v1.1 regression). See below.
+                    QtCore.QTimer.singleShot(0, lambda: gui_utils.format_object(cl, base))
                     gui_utils.select(cl)
                 return cl
 
