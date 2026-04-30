@@ -408,13 +408,7 @@ bool SweepWidget::accept()
                   "App.getDocument('%5').ActiveObject.Solid=%3\n"
                   "App.getDocument('%5').ActiveObject.Frenet=%4\n"
         )
-                  .arg(
-                      list,
-                      selection.c_str(),
-                      solid,
-                      frenet,
-                      d->document.c_str()
-                  );
+                  .arg(list, selection.c_str(), solid, frenet, d->document.c_str());
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) {
