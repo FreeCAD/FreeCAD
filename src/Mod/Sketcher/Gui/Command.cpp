@@ -173,7 +173,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         if (selection.size() > 1) {
             Gui::TranslatedUserWarning(
                 getActiveGuiDocument(),
-                QObject::tr("Invalid selection"),
+                QObject::tr("Invalid Selection"),
                 QObject::tr("Too many objects selected"));
                 return;
         }

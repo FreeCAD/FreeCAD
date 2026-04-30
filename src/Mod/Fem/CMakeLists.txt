@@ -54,6 +54,7 @@ SET(FemExamples_SRCS
     femexamples/boxanalysis_frequency.py
     femexamples/buckling_platebuckling.py
     femexamples/buckling_lateraltorsionalbuckling.py
+    femexamples/ccx_1D_fluid_network.py
     femexamples/ccx_buckling_flexuralbuckling.py
     femexamples/ccx_cantilever_base_edge.py
     femexamples/ccx_cantilever_base_face.py
