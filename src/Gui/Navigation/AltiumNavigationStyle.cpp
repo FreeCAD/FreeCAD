@@ -52,7 +52,12 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
     const SbVec2s pos(ev->getPosition());
     const SbVec2f posn = normalizePixelPos(pos);
+    SbVec2f posn_drag;      // saves mouse position when shift was pressed
+    auto drag_event = (const SoLocation2Event*)ev;  // saves the drag point when shift was pressed
+    bool drag_location_lock = false;
 
+    // posn & lastmouseposition is latest mouse position
+    // lastmouseposition used within NavigationStyle?
     const SbVec2f prevnormalized = this->lastmouseposition;
     this->lastmouseposition = posn;
 
@@ -131,12 +136,14 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
                     }
                 }
                 break;
-            // if pressing button3, then we are only zooming
+            // if pressing button3, then we are zooming
             case SoMouseButtonEvent::BUTTON3:
                 this->button3down = press;
                 if (press) {
                     newmode = NavigationStyle::ZOOMING;
                     saveCursorPosition(ev);
+                    // show zoom location like in altium
+                    viewer->showRotationCenter(true);
                     this->centerTime = ev->getTime();
                     processed = true;
                 }
@@ -154,7 +161,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         this->lockrecenter = true;
         const auto event = (const SoLocation2Event*)ev;
         if (curmode == NavigationStyle::ZOOMING) {
-            //this->setZoomAtCursor(true);
+            this->setZoomAtCursor(true);
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
         }
@@ -172,7 +179,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         else if (curmode == NavigationStyle::DRAGGING) {
             this->addToLog(event->getPosition(), event->getTime());
             this->spin(posn);
-            moveCursorPosition();
+            //moveCursorPosition();
             processed = true;
         }
     }
@@ -201,6 +208,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     switch (combo) {
         case 0: // no button pressed
             viewer->showRotationCenter(false);
+            drag_location_lock = false;
             newmode = NavigationStyle::IDLE;
             // The left mouse button has been released right now so unlock the flag
             if (this->lockButton1) {
@@ -227,33 +235,51 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         // BUTTON2 KEY COMBINATIONS
         case BUTTON2DOWN: //changed from BUTTON3DOWN
             newmode = NavigationStyle::PANNING;
+            processed = true;
             break;
 
         case BUTTON2DOWN | SHIFTDOWN:
-            // prevent re-updating the cursor position, as it should lock to where the shift key was pressed
-            if (newmode != NavigationStyle::DRAGGING) {
+            // Switching from other states to dragging/rotating, so save location
+            if (curmode != NavigationStyle::DRAGGING) {
+                newmode = NavigationStyle::DRAGGING;
+            }
+            if (drag_location_lock == false) {
+                drag_location_lock = true;
+                posn_drag = posn;
                 saveCursorPosition(ev);
                 viewer->showRotationCenter(true);
             }
-            newmode = NavigationStyle::DRAGGING;
+            // if already dragging, keep dragging, dont do anything new
+            processed = true;
             break;
 
-        case BUTTON2DOWN | CTRLDOWN | SHIFTDOWN:
-        case BUTTON2DOWN | CTRLDOWN:
+        case BUTTON2DOWN | CTRLDOWN | SHIFTDOWN: //zoom
+        case BUTTON2DOWN | CTRLDOWN: //zoom
+            newmode = NavigationStyle::ZOOMING;
+            saveCursorPosition(ev);
+            // show zoom location like in altium
+            viewer->showRotationCenter(true);
+            this->centerTime = ev->getTime();
+            processed = true;
+            break;
 
         // BUTTON3 KEY COMBINATIONS not here since all combos result in zooming
 
-
         // KEYBOARD KEYS ONLY
         case SHIFTDOWN:
-            saveCursorPosition(ev);
-            viewer->showRotationCenter(true);
 
-            // if only shift is down, then go to idle, for example if button2 was released
-            // dont disable the rotationcenter display until shift has been released
-            if (curmode == NavigationStyle::DRAGGING) {
-                newmode = NavigationStyle::IDLE;
+            // change the rotationcenter location only if starting a drag
+            // shift down only locks and displays cursor position. need to also right click
+            // to actually drag
+            if (drag_location_lock == false) {
+                drag_location_lock = true;
+                //drag_event = (const SoLocation2Event*)ev;
+                posn_drag = posn;
+                saveCursorPosition(ev);
+                viewer->showRotationCenter(true); 
             }
+            newmode = NavigationStyle::IDLE;
+            processed = true;
             break;
         case CTRLDOWN:
             // if only ctrl is down, then go to idle, for example if button2 was released
