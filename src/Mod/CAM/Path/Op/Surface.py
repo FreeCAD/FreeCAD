@@ -939,7 +939,9 @@ class ObjectSurface(PathOp.ObjectOp):
             for sub in subs:
                 # Skip empty sub-element names - they indicate whole object selection
                 if not sub:
-                    Path.Log.debug("_splitSelectedFaces: skipping empty sub-element for whole object")
+                    Path.Log.debug(
+                        "_splitSelectedFaces: skipping empty sub-element for whole object"
+                    )
                     continue
                 total_subs += 1
                 shape = getattr(base.Shape, sub, None)
@@ -1011,7 +1013,9 @@ class ObjectSurface(PathOp.ObjectOp):
         Path.Log.debug("_getBoundBox: using model BB: {}".format(bb))
         return bb
 
-    def _executeSurfacePattern(self, obj, job, stl, safe_stl, cutter, tool_diam, bb, avoid_faces=None, cutting_faces=None):
+    def _executeSurfacePattern(
+        self, obj, job, stl, safe_stl, cutter, tool_diam, bb, avoid_faces=None, cutting_faces=None
+    ):
         """
         Executes the Surface Pattern (projection) strategy.
 
@@ -1065,16 +1069,19 @@ class ObjectSurface(PathOp.ObjectOp):
             avoid_faces=avoid_faces,
             tool_radius=tool_diam / 2.0,
             boundary_adj=obj.BoundaryAdjustment.Value,
-            tolerance=obj.LinearDeflection.Value
+            tolerance=obj.LinearDeflection.Value,
         )
         if boundary_face:
             b_bb = boundary_face.BoundBox
             scan_bb = surface_scan.BBox(b_bb.XMin, b_bb.XMax, b_bb.YMin, b_bb.YMax)
         else:
             Path.Log.error(
-                translate("CAM_Surface", "Failed to generate a valid boundary mask for the toolpath. "
-                          "This can be caused by invalid geometry or an offset that consumes the entire shape. "
-                          "Operation aborted.")
+                translate(
+                    "CAM_Surface",
+                    "Failed to generate a valid boundary mask for the toolpath. "
+                    "This can be caused by invalid geometry or an offset that consumes the entire shape. "
+                    "Operation aborted.",
+                )
             )
             return []
 
@@ -1109,7 +1116,9 @@ class ObjectSurface(PathOp.ObjectOp):
                 center = (scan_bb.center[0], scan_bb.center[1])
                 is_zigzag = pattern in ("ZigZag", "CircularZigZag")
 
-                tolerance = obj.LinearDeflection.Value if hasattr(obj, "LinearDeflection") else 0.005
+                tolerance = (
+                    obj.LinearDeflection.Value if hasattr(obj, "LinearDeflection") else 0.005
+                )
 
                 main_scan_lines = surface_scan.fast_generate_pattern(
                     pattern,
@@ -1477,7 +1486,7 @@ class ObjectSurface(PathOp.ObjectOp):
         tool_diam = tool_params.get("diameter", 0.0)
         is_adaptive = getattr(obj, "AdaptiveSampling", False)
         cutter, stl, safe_stl = None, None, None
-        cutting_faces, avoid_faces ,bb = None, None, None
+        cutting_faces, avoid_faces, bb = None, None, None
 
         base_objs = (
             [base for base, subs in obj.Base]
@@ -1575,7 +1584,9 @@ class ObjectSurface(PathOp.ObjectOp):
         cmds = []
         if strategy == "SurfacePattern":
             strategy_start = time.time()
-            cmds = self._executeSurfacePattern(obj, JOB, stl, safe_stl, cutter, tool_diam, bb, avoid_faces, cutting_faces)
+            cmds = self._executeSurfacePattern(
+                obj, JOB, stl, safe_stl, cutter, tool_diam, bb, avoid_faces, cutting_faces
+            )
             strategy_time = time.time() - strategy_start
             Path.Log.info(
                 f"DropCutter strategy completed in {strategy_time:.2f}s, {len(cmds)} commands"

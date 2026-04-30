@@ -148,7 +148,9 @@ def filter_cl_points(cl_points, tolerance):
     result = [(cl.x, cl.y, cl.z) for cl in f.getCLPoints()]
 
     Path.Log.debug(
-        "filter_cl_points: {} -> {} points in {:.3f}s".format(len(cl_points), len(result), filter_time)
+        "filter_cl_points: {} -> {} points in {:.3f}s".format(
+            len(cl_points), len(result), filter_time
+        )
     )
 
     return result
@@ -200,7 +202,9 @@ def _optimize_travel(
         xy_dist_sqrd = dx * dx + dy * dy
 
         if xy_dist_sqrd <= (cutter_diam) ** 2:
-            transition_cmds = _dropcutter_transition(last_point, next_point, safe_pdc, safe_z, horiz_feed)
+            transition_cmds = _dropcutter_transition(
+                last_point, next_point, safe_pdc, safe_z, horiz_feed
+            )
             if transition_cmds:
                 return transition_cmds
 
@@ -219,7 +223,7 @@ def _dropcutter_transition(start, end, safe_pdc, safe_z, horiz_feed):
     p1 = ocl.Point(start[0], start[1], safe_z)
     p2 = ocl.Point(end[0], end[1], safe_z)
     path.append(ocl.Line(p1, p2))
-    
+
     safe_pdc.setPath(path)
     safe_pdc.run()
 
@@ -229,10 +233,10 @@ def _dropcutter_transition(start, end, safe_pdc, safe_z, horiz_feed):
 
     # Use a math-based "z-floor" to prevent the tool from diving into holes or off edges
     z_floor = min(start[2], end[2])
-    commands =[]
-    
+    commands = []
+
     # Generate G1 moves that follow the probed surface
-    for pt in cl_points[1:-1]: # Skip first and last point to avoid duplicating moves
+    for pt in cl_points[1:-1]:  # Skip first and last point to avoid duplicating moves
         z = max(pt.z, z_floor) + 0.1  # Plus a small buffer to avoid touching previous on Multi-pass
         commands.append(Path.Command("G1", {"X": pt.x, "Y": pt.y, "Z": z, "F": horiz_feed}))
 

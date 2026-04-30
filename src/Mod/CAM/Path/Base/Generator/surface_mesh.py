@@ -151,9 +151,7 @@ def _shape_to_stl_cpp(shape, linear_deflection, angular_deflection):
 
     # C++ tessellation
     cpp_start = time.perf_counter()
-    verts, faces = _stl_cpp.shape_tessellate_fast(
-        shape, linear_deflection, angular_deflection
-    )
+    verts, faces = _stl_cpp.shape_tessellate_fast(shape, linear_deflection, angular_deflection)
     cpp_time = time.perf_counter() - cpp_start
 
     total_time = time.perf_counter() - start_time
@@ -195,9 +193,7 @@ def _shape_to_stl_python(shape, linear_deflection, angular_deflection):
 
     # Python tessellation
     py_start = time.perf_counter()
-    verts, faces = _shape_to_stl_arrays(
-        shape, linear_deflection, angular_deflection
-    )
+    verts, faces = _shape_to_stl_arrays(shape, linear_deflection, angular_deflection)
     py_time = time.perf_counter() - py_start
 
     total_time = time.perf_counter() - start_time
@@ -269,11 +265,7 @@ def _shape_to_stl_arrays(shape, linear_deflection, angular_deflection):
 
 
 def _shape_to_stl(
-    shape,
-    linear_deflection,
-    angular_deflection,
-    mesh_simplification=1,
-    use_cpp=False
+    shape, linear_deflection, angular_deflection, mesh_simplification=1, use_cpp=False
 ):
     """Convert a Part.Shape / Compound to ocl.STLSurf using raw arrays.
 
@@ -408,13 +400,13 @@ def _mesh_to_stl(mesh_points, mesh_facets):
 
 
 def _shape_to_safe_stl(
-    model_shape, 
-    avoid_faces, 
-    tool_radius, 
-    start_depth, 
-    final_depth, 
-    linear_deflection, 
-    angular_deflection
+    model_shape,
+    avoid_faces,
+    tool_radius,
+    start_depth,
+    final_depth,
+    linear_deflection,
+    angular_deflection,
 ):
     """
     Generates the secondary (safety) STL mesh for collision avoidance.
@@ -445,8 +437,10 @@ def _shape_to_safe_stl(
         bb = model_shape.BoundBox
         plate_padding = tool_radius * 2
         base_plate = Part.makeBox(
-            bb.XLength + plate_padding*2, bb.YLength + plate_padding*2, 1.0,
-            FreeCAD.Vector(bb.XMin - plate_padding, bb.YMin - plate_padding, bb.ZMin - 1.0)
+            bb.XLength + plate_padding * 2,
+            bb.YLength + plate_padding * 2,
+            1.0,
+            FreeCAD.Vector(bb.XMin - plate_padding, bb.YMin - plate_padding, bb.ZMin - 1.0),
         )
         fused_shapes.append(base_plate)
 
@@ -456,6 +450,7 @@ def _shape_to_safe_stl(
                 f"surface_mesh._shape_to_safe_stl: Generating extruded envelope for {len(avoid_faces)} avoided faces."
             )
             from . import surface_common
+
             boundary_face = surface_common.make_boundary_face(avoid_faces, tool_radius)
 
             height = abs(start_depth - final_depth) + 0.1  # Plus 0.1 for safety
@@ -475,7 +470,7 @@ def _shape_to_safe_stl(
             linear_deflection * 3,
             angular_deflection * 2,
             mesh_simplification=5,
-            use_cpp=True
+            use_cpp=True,
         )
         Path.Log.info("surface_mesh._shape_to_safe_stl: Safe STL generated successfully.")
         return safe_stl
@@ -489,15 +484,15 @@ def _shape_to_safe_stl(
 
 def generate_stl(
     model_group,
-    avoid_faces, 
-    tool_radius, 
+    avoid_faces,
+    tool_radius,
     needs_safe_stl,
     final_depth,
     start_depth,
     linear_deflection,
     angular_deflection,
     mesh_simplification,
-    use_cpp
+    use_cpp,
 ):
     """
     Orchestrates the creation of the primary (machining) and secondary (safety) STL meshes.
@@ -542,8 +537,10 @@ def generate_stl(
     padding = 1.0
 
     clipper_box = Part.makeBox(
-        bbox.XLength + padding*2, bbox.YLength + padding*2, bbox.ZMax - final_depth + padding,
-        FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth)
+        bbox.XLength + padding * 2,
+        bbox.YLength + padding * 2,
+        bbox.ZMax - final_depth + padding,
+        FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth),
     )
     clipped_shape = model_shape.common(clipper_box)
 
@@ -569,12 +566,12 @@ def generate_stl(
     # Generate the Safe STL
     if needs_safe_stl:
         safe_stl = _shape_to_safe_stl(
-            model_shape, 
-            avoid_faces, 
-            tool_radius, 
-            start_depth, 
-            final_depth, 
-            linear_deflection, 
+            model_shape,
+            avoid_faces,
+            tool_radius,
+            start_depth,
+            final_depth,
+            linear_deflection,
             angular_deflection,
         )
 

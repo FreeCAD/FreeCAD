@@ -277,12 +277,14 @@ def make_boundary_face(cutting_faces, offset, tolerance=0.005):
     # Convert the offset 2D wire into a solid masking face
     boundary_face = Part.makeFace(offset_shape)
     if not boundary_face:
-        Path.Log.warning(f"surface_common.make_boundary_face: Failed to create smooth boundary face: {e}")
+        Path.Log.warning(
+            f"surface_common.make_boundary_face: Failed to create smooth boundary face: {e}"
+        )
         return None
 
     if boundary_face.BoundBox.ZMin != 0.0:
         boundary_face.translate(FreeCAD.Vector(0, 0, -boundary_face.BoundBox.ZMin))
-        
+
     return boundary_face
 
 
@@ -335,7 +337,7 @@ def generate_pattern_mask(cutting_faces, avoid_faces, tool_radius, boundary_adj,
 
     # For avoid zones, we want to keep the tool center away, so we expand the boundary
     epsilon = tolerance + 0.001  # Allow some extra room to avoid "path spikes" on vertical walls
-    avoid_boundary = make_boundary_face(avoid_faces, tool_radius+epsilon, tolerance)
+    avoid_boundary = make_boundary_face(avoid_faces, tool_radius + epsilon, tolerance)
 
     if not avoid_boundary:
         Path.Log.warning(
@@ -357,4 +359,3 @@ def generate_pattern_mask(cutting_faces, avoid_faces, tool_radius, boundary_adj,
             f"surface_common.generate_pattern_mask: Failed to cut avoid_faces from boundary mask: {e}"
         )
         return main_boundary
-
