@@ -130,6 +130,7 @@ ViewProviderAssembly::ViewProviderAssembly()
 ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
+    QObject::disconnect(workbenchConnection);
 
     updateTaskPanel(false);
 };
@@ -297,7 +298,8 @@ bool ViewProviderAssembly::setEdit(int mode)
             this->getObject()->getNameInDocument()
         );
 
-        setupActiveAndInEdit();
+        setDragger();
+        attachSelection();
 
         updateTaskPanel(true);
 
@@ -335,7 +337,8 @@ void ViewProviderAssembly::unsetEdit(int mode)
         partMoving = false;
         docsToMove.clear();
 
-        unsetupActiveAndInEdit();
+        unsetDragger();
+        detachSelection();
 
         // Check if the view is still active before trying to deactivate the assembly.
         auto activeView = getDocument()->getActiveView();
@@ -400,10 +403,14 @@ void ViewProviderAssembly::setDragger()
 void ViewProviderAssembly::unsetDragger()
 {
     pcRoot->removeChild(asmDraggerSwitch);
-    asmDragger->unref();
-    asmDragger = nullptr;
-    asmDraggerSwitch->unref();
-    asmDraggerSwitch = nullptr;
+    if (asmDragger) {
+        asmDragger->unref();
+        asmDragger = nullptr;
+    }
+    if (asmDraggerSwitch) {
+        asmDraggerSwitch->unref();
+        asmDraggerSwitch = nullptr;
+    }
 }
 
 void ViewProviderAssembly::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
@@ -419,26 +426,6 @@ bool ViewProviderAssembly::isInEditMode() const
 {
     return asmDragger != nullptr;
 }
-void ViewProviderAssembly::setupActiveAndInEdit()
-{
-    setDragger();
-    attachSelection();
-}
-void ViewProviderAssembly::unsetupActiveAndInEdit()
-{
-    unsetDragger();
-    detachSelection();
-}
-void ViewProviderAssembly::setActive(bool active)
-{
-    if (active) {
-        setupActiveAndInEdit();
-    }
-    else {
-        unsetupActiveAndInEdit();
-    }
-}
-
 
 App::DocumentObject* ViewProviderAssembly::getActivePart() const
 {

@@ -594,7 +594,7 @@ void CmdTechDrawBrokenView::activated(int iMsg)
 
     // we need either a base view (dvp) or some shape objects in the selection
     if (!dvp && (shapes.empty() && xShapes.empty())) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty Selection"),
             QObject::tr("Select objects to break or a base view and break definition objects"));
         return;
     }
@@ -1194,14 +1194,14 @@ bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
 {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("Select an object first"));
         return false;
     }
 
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() > maxObjs) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("Too many objects selected"));
         return false;
     }
@@ -1209,7 +1209,7 @@ bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
     std::vector<App::DocumentObject*> pages =
         cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (pages.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("Create a page first"));
         return false;
     }
@@ -1221,7 +1221,7 @@ bool _checkDrawViewPartBalloon(Gui::Command* cmd)
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
     if (!objFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("No view of a part in selection"));
         return false;
     }

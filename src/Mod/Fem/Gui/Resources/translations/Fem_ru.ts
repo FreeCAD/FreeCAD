@@ -1841,7 +1841,7 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="394"/>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
@@ -2672,12 +2672,12 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="678"/>
+      <location filename="../../TaskPostBoxes.cpp" line="687"/>
       <source>Data Along a Line Options</source>
       <translation>Данные по параметрам строки</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1086"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1095"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Длина</translation>
@@ -2686,12 +2686,12 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1120"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1129"/>
       <source>Data at Point Options</source>
       <translation>Данные в точке</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1461"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1470"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 в (%2; %3; %4): %5 %6</translation>
     </message>
@@ -2699,7 +2699,7 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="526"/>
+      <location filename="../../TaskPostBoxes.cpp" line="535"/>
       <source>Implicit function</source>
       <translation>Неявная функция</translation>
     </message>
@@ -7780,7 +7780,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../TaskPostBranch.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выбирает входные данные, которые получит дочерний фильтр:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Последовательный:&lt;/span&gt; Первый фильтр в ветви получит входные данные Branches в качестве своих собственных входных данных. Следующий фильтр затем получит выходные данные первого фильтра в качестве входных данных и т. д.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Параллельный:&lt;/span&gt; Все фильтры в ветви получат входные данные Branches в качестве своих собственных входных данных.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выбирает входные данные, которые получит дочерний фильтр:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Последовательный:&lt;/span&gt; Первый фильтр в ветви получит входные данные Branches в качестве своих собственных входных данных. Следующий фильтр затем получит выходные данные первого фильтра в качестве входных данных и т.д.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Параллельный:&lt;/span&gt; Все фильтры в ветви получат входные данные Branches в качестве своих собственных входных данных.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
@@ -7790,7 +7790,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выбирает входные данные, которые получат дочерние фильтры:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Последовательный:&lt;/span&gt; Первый фильтр в ветви получит входные данные Branches в качестве своих собственных входных данных. Следующий фильтр затем получит выходные данные первых фильтров в качестве входных данных и т. д.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Параллельный:&lt;/span&gt; Все фильтры в ветви получат входные данные Branches в качестве своих собственных входных данных.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выбирает входные данные, которые получат дочерние фильтры:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Последовательный:&lt;/span&gt; Первый фильтр в ветви получит входные данные Branches в качестве своих собственных входных данных. Следующий фильтр затем получит выходные данные первых фильтров в качестве входных данных и т.д.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Параллельный:&lt;/span&gt; Все фильтры в ветви получат входные данные Branches в качестве своих собственных входных данных.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="54"/>
@@ -8220,7 +8220,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostFrames</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="554"/>
+      <location filename="../../TaskPostBoxes.cpp" line="563"/>
       <source>Result Frames</source>
       <translation>Результирующие фреймы</translation>
     </message>
@@ -8228,7 +8228,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostCalculator</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2248"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2257"/>
       <source>Calculator options</source>
       <translation>Параметры калькулятора</translation>
     </message>
@@ -8693,7 +8693,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="453"/>
+      <location filename="../../TaskPostBoxes.cpp" line="462"/>
       <source>Result Display Options</source>
       <translation>Параметры отображения результата</translation>
     </message>
@@ -8701,7 +8701,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostBranch</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="623"/>
+      <location filename="../../TaskPostBoxes.cpp" line="632"/>
       <source>Branch Behaviour</source>
       <translation>Поведение ветви</translation>
     </message>
@@ -8709,7 +8709,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1495"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1504"/>
       <source>Clip Region, Choose Implicit Function</source>
       <translation>Область клипа, выбрать неявную функцию</translation>
     </message>
@@ -8717,7 +8717,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1646"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1655"/>
       <source>Contours Filter Options</source>
       <translation>Параметры фильтра контуров</translation>
     </message>
@@ -8725,7 +8725,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1810"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1819"/>
       <source>Function Cut, Choose Implicit Function</source>
       <translation>Вырезать, выбрать неявную функцию</translation>
     </message>
@@ -8733,7 +8733,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1943"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1952"/>
       <source>Scalar Clip Options</source>
       <translation>Параметры скалярного клипа</translation>
     </message>
@@ -8741,7 +8741,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2067"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2076"/>
       <source>Warp Options</source>
       <translation>Опции деформации</translation>
     </message>

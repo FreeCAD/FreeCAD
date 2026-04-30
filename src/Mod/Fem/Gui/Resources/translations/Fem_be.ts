@@ -1235,7 +1235,7 @@ the constraint or material is applied.</source>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="69"/>
       <source>FEM</source>
-      <translation>МКЭ (Метад канчатковых элементаў)</translation>
+      <translation>МКЭ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="77"/>
@@ -1645,7 +1645,7 @@ iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
       <translation>Найбольшая колькасць кропак у вектары супадзенняў.
 (колькасць вузлоў на элемент, памножанае на колькасць канчатковых элементаў)
-Магчыма, вам спатрэбіцца павялічыць гэтае значэнне пры ўжыванні паўтарэння сродку рашэння, інакш вы атрымаеце паведамленне пра памылку, што "MAXKOI" неабходна павялічыць.</translation>
+Магчыма, спатрэбіцца павялічыць гэтае значэнне пры ўжыванні паўтарэння сродку рашэння, інакш атрымаеце паведамленне пра памылку, што "MAXKOI" неабходна павялічыць.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="169"/>
@@ -1827,7 +1827,7 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="394"/>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
       <source>Input error</source>
       <translation>Памылка ўводу</translation>
     </message>
@@ -2660,12 +2660,12 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="678"/>
+      <location filename="../../TaskPostBoxes.cpp" line="687"/>
       <source>Data Along a Line Options</source>
       <translation>Налады дадзеных наўздоўж лініі</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1086"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1095"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Даўжыня</translation>
@@ -2674,12 +2674,12 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1120"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1129"/>
       <source>Data at Point Options</source>
       <translation>Налады дадзеных у кропцы</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1461"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1470"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 у (%2; %3; %4) складае: %5 %6</translation>
     </message>
@@ -2687,7 +2687,7 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="526"/>
+      <location filename="../../TaskPostBoxes.cpp" line="535"/>
       <source>Implicit function</source>
       <translation>Няяўная функцыя</translation>
     </message>
@@ -4479,7 +4479,7 @@ Notes:
       <location filename="../../AppFemGui.cpp" line="199"/>
       <location filename="../../AppFemGui.cpp" line="200"/>
       <source>FEM</source>
-      <translation>МКЭ (Метад канчатковых элементаў)</translation>
+      <translation>МКЭ</translation>
     </message>
     <message>
       <location filename="../../AppFemGui.cpp" line="203"/>
@@ -6017,7 +6017,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>FEM</source>
-      <translation>МКЭ (Метад канчатковых элементаў)</translation>
+      <translation>МКЭ</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -8222,7 +8222,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostFrames</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="554"/>
+      <location filename="../../TaskPostBoxes.cpp" line="563"/>
       <source>Result Frames</source>
       <translation>Выніковыя кадры</translation>
     </message>
@@ -8230,7 +8230,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostCalculator</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2248"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2257"/>
       <source>Calculator options</source>
       <translation>Налады вылічэння</translation>
     </message>
@@ -8695,7 +8695,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="453"/>
+      <location filename="../../TaskPostBoxes.cpp" line="462"/>
       <source>Result Display Options</source>
       <translation>Налады адлюстравання вынікаў</translation>
     </message>
@@ -8703,7 +8703,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostBranch</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="623"/>
+      <location filename="../../TaskPostBoxes.cpp" line="632"/>
       <source>Branch Behaviour</source>
       <translation>Паводзіны галіны</translation>
     </message>
@@ -8711,7 +8711,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1495"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1504"/>
       <source>Clip Region, Choose Implicit Function</source>
       <translation>Абрэзаць вобласць, абраць няяўную функцыю</translation>
     </message>
@@ -8719,7 +8719,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1646"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1655"/>
       <source>Contours Filter Options</source>
       <translation>Налады фільтра контураў</translation>
     </message>
@@ -8727,7 +8727,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1810"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1819"/>
       <source>Function Cut, Choose Implicit Function</source>
       <translation>Функцыя выразання, абраць няяўную функцыю</translation>
     </message>
@@ -8735,7 +8735,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1943"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1952"/>
       <source>Scalar Clip Options</source>
       <translation>Налады скалярнага зрэзу</translation>
     </message>
@@ -8743,7 +8743,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2067"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2076"/>
       <source>Warp Options</source>
       <translation>Налады дэфармацыі</translation>
     </message>

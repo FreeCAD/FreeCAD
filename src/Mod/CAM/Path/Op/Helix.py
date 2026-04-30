@@ -683,6 +683,20 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         # exclude overlap inner and outer helices
                         args["inner_radius"] = args["outer_radius"]
 
+            if (args["outer_radius"] < 0 and not Path.Geom.isRoughly(args["outer_radius"], 0)) or (
+                args["inner_radius"] < 0 and not Path.Geom.isRoughly(args["inner_radius"], 0)
+            ):
+                # skip hole which can not be processed
+                posX = hole["x"]
+                posY = hole["y"]
+                posXQty = FreeCAD.Units.Quantity(posX, FreeCAD.Units.Length)
+                posYQty = FreeCAD.Units.Quantity(posY, FreeCAD.Units.Length)
+                posXString = posXQty.getUserPreferred("Length")[0]
+                posYString = posYQty.getUserPreferred("Length")[0]
+                posStr = f"X = {posXString}, Y = {posYString}"
+                Path.Log.warning(translate("PathHelix", "Skipped hole at position %s") % posStr)
+                continue
+
             # Split depth by step down
             work_distance = obj.StartDepth.Value - obj.FinalDepth.Value
             iters = math.ceil(round(work_distance / obj.StepDown.Value, 6))

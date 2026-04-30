@@ -234,7 +234,7 @@ bool TaskDlgFemConstraint::accept()
         else {
             QMessageBox::warning(
                 parameter,
-                tr("Input error"),
+                tr("Input Error"),
                 tr("You must specify at least one reference")
             );
             return false;
@@ -256,7 +256,7 @@ bool TaskDlgFemConstraint::accept()
     }
     catch (const Base::Exception& e) {
         ConstraintView->getDocument()->abortCommand();
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 

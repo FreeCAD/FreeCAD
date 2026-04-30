@@ -1619,7 +1619,7 @@ void StdCmdDelete::activated(int iMsg)
                         manageDocCommand(obj->getDocument());
                         // ask the ViewProvider if it wants to do some clean up
                         // skip if user explicitly confirmed deletion of objects with dependencies
-                        if (forceDeletion || vp->onDelete(sel.getSubNames())) {
+                        if (vp->onDelete(sel.getSubNames()) || forceDeletion) {
                             docs.insert(obj->getDocument());
                             FCMD_OBJ_DOC_CMD(obj, "removeObject('" << obj->getNameInDocument() << "')");
                         }

@@ -191,12 +191,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="291"/>
       <source>Set Default Values</source>
-      <translation type="unfinished">Set Default Values</translation>
+      <translation>Definir Valores Padrão</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="292"/>
       <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Define os valores padrão de velocidade, aceleração e continuidade para os comandos subsequentes de criação de pontos de referência</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Set Home Position</source>
-      <translation type="unfinished">Set Home Position</translation>
+      <translation>Definir Posição Inicial</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Sets the home position</source>
-      <translation type="unfinished">Sets the home position</translation>
+      <translation>Define a posição inicial</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Simulate Trajectory</source>
-      <translation type="unfinished">Simulate Trajectory</translation>
+      <translation>Simular Trajetória</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="246"/>
@@ -842,7 +842,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
       <source>Do not change position &amp; orientation</source>
-      <translation type="unfinished">Do not change position &amp; orientation</translation>
+      <translation>Não altere a posição e a orientação</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
@@ -852,12 +852,12 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="170"/>
       <source>Add position</source>
-      <translation type="unfinished">Add position</translation>
+      <translation>Adicionar posição</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="175"/>
       <source>Add orientation</source>
-      <translation type="unfinished">Add orientation</translation>
+      <translation>Adicionar orientação</translation>
     </message>
   </context>
   <context>
@@ -875,7 +875,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Export Trajectory</source>
-      <translation type="unfinished">Export Trajectory</translation>
+      <translation>Exportar Trajetória</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>

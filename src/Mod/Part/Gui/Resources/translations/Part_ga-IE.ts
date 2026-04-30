@@ -2221,7 +2221,7 @@ teilgean.</translation>
       <translation>Tiontaigh mogalra</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1490"/>
+      <location filename="../../TaskAttacher.cpp" line="1491"/>
       <source>Edit attachment</source>
       <translation>Cuir an ceangaltán in eagar</translation>
     </message>
@@ -3183,8 +3183,8 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>Cumascann comhdhúile le linn léamh comhad (mall ach le sonraí níos airde)</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation>Cuireann sé na cruthanna uile le chéile i gcomhdhúil amháin le linn allmhairithe, ag réiteach samplaí páirte agus ag cur claochluithe i bhfeidhm. Méadaíonn sé an t-am allmhairithe ach ní dhéanann sé difear do chruinneas na geoiméadrachta ná do cháilíocht an rindreála.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -5809,12 +5809,12 @@ Seiceálacha oibríochta booléan aonair:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1472"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>Ceangaltán</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1554"/>
+      <location filename="../../TaskAttacher.cpp" line="1556"/>
       <source>Datum dialog: input error</source>
       <translation>Dialóg sonraí: earráid ionchuir</translation>
     </message>
@@ -6486,7 +6486,7 @@ Leanúint ar aghaidh?</translation>
       <translation>Cuir isteach an fad:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation>Dealramh in aghaidh an Aghaidhe</translation>
     </message>
@@ -7130,12 +7130,12 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="319"/>
+      <location filename="../../../App/FaceMaker.cpp" line="332"/>
       <source>Simple</source>
       <translation>Simplí</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="324"/>
+      <location filename="../../../App/FaceMaker.cpp" line="337"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Déanann sé aghaidh phlána ar leithligh ó gach sreang go neamhspleách. Gan tacaíocht do phoill; is féidir sreanga a bheith ar phlánaí difriúla.</translation>
     </message>
@@ -7737,12 +7737,12 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="46"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation>Déantóir aghaidhe BuildFace</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="51"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
     </message>

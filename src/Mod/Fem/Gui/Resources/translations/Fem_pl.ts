@@ -1835,7 +1835,7 @@ solvera Cholesky i otrzymasz komunikat o błędzie,
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="394"/>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -2666,12 +2666,12 @@ solvera Cholesky i otrzymasz komunikat o błędzie,
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="678"/>
+      <location filename="../../TaskPostBoxes.cpp" line="687"/>
       <source>Data Along a Line Options</source>
       <translation>Opcje danych wzdłuż linii</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1086"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1095"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Długość</translation>
@@ -2680,12 +2680,12 @@ solvera Cholesky i otrzymasz komunikat o błędzie,
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1120"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1129"/>
       <source>Data at Point Options</source>
       <translation>Opcje danych w punkcie</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1461"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1470"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 w (%2; %3; %4) to: %5 %6</translation>
     </message>
@@ -2693,7 +2693,7 @@ solvera Cholesky i otrzymasz komunikat o błędzie,
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="526"/>
+      <location filename="../../TaskPostBoxes.cpp" line="535"/>
       <source>Implicit function</source>
       <translation>Funkcja niejawna</translation>
     </message>
@@ -3544,7 +3544,7 @@ z harmonicznym / oscylującym prądem</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
       <source>Drag the refinement, that should be altered, into the Manipulate object in the document tree</source>
-      <translation>Przeciągnij zagęszczenie, które powinno zostać zmienione do obiektu Manipulate w drzewie dokumentu</translation>
+      <translation>Przeciągnij wybrany element do modyfikacji do obiektu Manipulate w drzewie dokumentu</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="70"/>
@@ -3570,7 +3570,7 @@ z harmonicznym / oscylującym prądem</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="99"/>
       <source>Gradient</source>
-      <translation>Gradient</translation>
+      <translation>Przejście kolorów</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="104"/>
@@ -3585,7 +3585,7 @@ z harmonicznym / oscylującym prądem</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="138"/>
       <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation>Ogranicz stosowanie podrzędnych zagęszczeń do wybranych elementów odniesienia.</translation>
+      <translation>Ogranicz zastosowanie operacji zagęszczeń podrzędnych do wybranych elementów odniesienia.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="160"/>
@@ -3609,7 +3609,7 @@ z harmonicznym / oscylującym prądem</translation>
       <location filename="../ui/MeshAdvanced.ui" line="399"/>
       <location filename="../ui/MeshDistance.ui" line="68"/>
       <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation>Rozmiar siatki gdy odległość jest mniejsza od odległości minimalnej</translation>
+      <translation>Rozmiar siatki, gdy odległość jest mniejsza od odległości minimalnej</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="283"/>
@@ -3635,7 +3635,7 @@ z harmonicznym / oscylującym prądem</translation>
       <location filename="../ui/MeshAdvanced.ui" line="430"/>
       <location filename="../ui/MeshDistance.ui" line="178"/>
       <source>Mesh size when distance = DistanceMaximum</source>
-      <translation>Rozmiar siatki gdy odległość jest równa odległości maksymalnej</translation>
+      <translation>Rozmiar siatki, gdy odległość jest równa odległości maksymalnej</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="365"/>
@@ -8217,7 +8217,7 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>FemGui::TaskPostFrames</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="554"/>
+      <location filename="../../TaskPostBoxes.cpp" line="563"/>
       <source>Result Frames</source>
       <translation>Klatki wyników</translation>
     </message>
@@ -8225,7 +8225,7 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>FemGui::TaskPostCalculator</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2248"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2257"/>
       <source>Calculator options</source>
       <translation>Opcje kalkulatora</translation>
     </message>
@@ -8690,7 +8690,7 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="453"/>
+      <location filename="../../TaskPostBoxes.cpp" line="462"/>
       <source>Result Display Options</source>
       <translation>Opcje wyświetlania wyników</translation>
     </message>
@@ -8698,7 +8698,7 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>FemGui::TaskPostBranch</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="623"/>
+      <location filename="../../TaskPostBoxes.cpp" line="632"/>
       <source>Branch Behaviour</source>
       <translation>Zachowanie gałęzi</translation>
     </message>
@@ -8706,7 +8706,7 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1495"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1504"/>
       <source>Clip Region, Choose Implicit Function</source>
       <translation>Cięcie obszaru, wybierz funkcję niejawną</translation>
     </message>
@@ -8714,7 +8714,7 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1646"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1655"/>
       <source>Contours Filter Options</source>
       <translation>Opcje filtra konturów</translation>
     </message>
@@ -8722,7 +8722,7 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1810"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1819"/>
       <source>Function Cut, Choose Implicit Function</source>
       <translation>Cięcie funkcją, wybierz funkcję niejawną</translation>
     </message>
@@ -8730,7 +8730,7 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1943"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1952"/>
       <source>Scalar Clip Options</source>
       <translation>Opcje przycinania skalarnego</translation>
     </message>
@@ -8738,7 +8738,7 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2067"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2076"/>
       <source>Warp Options</source>
       <translation>Opcje wizualizacji deformacji</translation>
     </message>

@@ -349,7 +349,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="493"/>
       <source>Enter your formula…</source>
-      <translation type="unfinished">Enter your formula…</translation>
+      <translation>Formülü gir…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="546"/>
@@ -474,22 +474,22 @@ SLOPE, sırasıyla time = T1 civarında 0 ile H1 arasındaki ve time = T2 civar�
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1044"/>
       <source>Animation</source>
-      <translation type="unfinished">Animation</translation>
+      <translation>Animasyon</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1045"/>
       <source>Not enough frames to create an animation.</source>
-      <translation type="unfinished">Not enough frames to create an animation.</translation>
+      <translation>Animasyon oluşturmak için yeterli kare yok.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1052"/>
       <source>Save Animation</source>
-      <translation type="unfinished">Save Animation</translation>
+      <translation>Animasyonu Kaydet</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1074"/>
       <source>Generating Frames…</source>
-      <translation type="unfinished">Generating Frames…</translation>
+      <translation>Kareler Oluşturuluyor…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1075"/>
@@ -504,22 +504,22 @@ SLOPE, sırasıyla time = T1 civarında 0 ile H1 arasındaki ve time = T2 civar�
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1118"/>
       <source>An error occurred while saving the animation</source>
-      <translation type="unfinished">An error occurred while saving the animation</translation>
+      <translation>Animasyon kaydedilirken bir hata oluştu</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1136"/>
       <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
-      <translation type="unfinished">Pillow (PIL) is not installed. It is required for GIF export.</translation>
+      <translation>Pillow (PIL) yüklü değil. GIF dışa aktarımı için gereklidir.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1159"/>
       <source>OpenCV is not installed. It is required for video export.</source>
-      <translation type="unfinished">OpenCV is not installed. It is required for video export.</translation>
+      <translation>OpenCV yüklü değil. Video dışa aktarımı için gereklidir.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1176"/>
       <source>Could not open video writer. Check codecs.</source>
-      <translation type="unfinished">Could not open video writer. Check codecs.</translation>
+      <translation>Video yazıcı açılamadı. Kodekleri kontrol edin.</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="160"/>
@@ -1222,7 +1222,7 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
       <source>Save the animation as a GIF or video file.</source>
-      <translation type="unfinished">Save the animation as a GIF or video file.</translation>
+      <translation>Animasyonu bir GIF veya video dosyası olarak kaydedin.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="197"/>
@@ -1567,7 +1567,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="102"/>
       <source>Go to linked Assembly</source>
-      <translation type="unfinished">Go to linked Assembly</translation>
+      <translation>Bağlantılı montaja git</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>

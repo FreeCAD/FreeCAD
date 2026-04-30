@@ -159,44 +159,44 @@
   <context>
     <name>StartGui::ThemeSelectorWidget</name>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Classic</source>
       <translation>FreeCAD klasszikus</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
       <source>FreeCAD Dark</source>
       <translation>FreeCAD sötét</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="117"/>
       <source>FreeCAD Light</source>
       <translation>FreeCAD világos</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="245"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
       <source>Theme</source>
       <translation>Téma</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="248"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="253"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>További témákat keres? Ezeket a &lt;a href="freecad:Std_AddonMgr"&gt;Kiegészítő kezelője&lt;/a&gt; segítségével szerezheti be.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="255"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="260"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD sötét</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="256"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD világos</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="257"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD klasszikus</translation>
@@ -261,7 +261,7 @@ Több mappa is hozzáadható a mappák elérési útjainak pontosvesszővel ";;"
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="125"/>
+      <location filename="../../AppStartGui.cpp" line="139"/>
       <source>Start</source>
       <translation>Kezdés</translation>
     </message>
@@ -269,12 +269,12 @@ Több mappa is hozzáadható a mappák elérési útjainak pontosvesszővel ";;"
   <context>
     <name>Start::DisplayedFilesModel</name>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="188"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="130"/>
       <source>Created at:</source>
       <translation>Létrehozva:</translation>
     </message>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="189"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Modified at:</source>
       <translation>Utoljára módosítva:</translation>
     </message>

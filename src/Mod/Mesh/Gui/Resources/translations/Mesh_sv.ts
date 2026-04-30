@@ -371,7 +371,7 @@
     <message>
       <location filename="../../Command.cpp" line="694"/>
       <source>Segment</source>
-      <translation>Segmentet</translation>
+      <translation>Segment</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="695"/>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1229"/>
       <source>Refinement</source>
-      <translation>Förädling</translation>
+      <translation>Förfining</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1230"/>
@@ -556,7 +556,7 @@
     <message>
       <location filename="../../Command.cpp" line="1355"/>
       <source>Smooth</source>
-      <translation>Smidig</translation>
+      <translation>Jämna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1356"/>

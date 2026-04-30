@@ -648,12 +648,12 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1494"/>
       <source>Horizontal Chain Dimension</source>
-      <translation type="unfinished">Horizontal Chain Dimension</translation>
+      <translation>Cota en cadena horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1495"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</source>
-      <translation type="unfinished">Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</translation>
+      <translation>Inserta una secuencia de dimensiones horizontales alineadas en al menos tres vértices seleccionados, donde los dos primeros definen la dirección</translation>
     </message>
   </context>
   <context>
@@ -671,7 +671,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1865"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>Agrega dimensiones horizontales uniformemente espaciadas entre 3 o más vértices alineados a una línea base común</translation>
     </message>
   </context>
   <context>
@@ -690,12 +690,12 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1275"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices</source>
-      <translation type="unfinished">Inserts a sequence of aligned horizontal dimensions to at least three selected vertices</translation>
+      <translation>Inserta una secuencia de dimensiones horizontales alineadas en al menos tres vértices seleccionados</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1568"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</source>
-      <translation type="unfinished">Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</translation>
+      <translation>Inserta una secuencia de dimensiones horizontales alineadas en al menos tres vértices seleccionados, donde los dos primeros definen la dirección</translation>
     </message>
   </context>
   <context>
@@ -735,7 +735,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionDims.cpp" line="1640"/>
       <location filename="../../CommandExtensionDims.cpp" line="1937"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>Agrega dimensiones horizontales uniformemente espaciadas entre 3 o más vértices alineados a una línea base común</translation>
     </message>
   </context>
   <context>
@@ -753,7 +753,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2197"/>
       <source>Inserts an arc length dimension to the selected arc</source>
-      <translation type="unfinished">Inserts an arc length dimension to the selected arc</translation>
+      <translation>Inserta una cota de longitud de arco en el arco seleccionado</translation>
     </message>
   </context>
   <context>
@@ -767,13 +767,13 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionDims.cpp" line="1462"/>
       <location filename="../../CommandExtensionDims.cpp" line="1577"/>
       <source>Oblique Chain Dimension</source>
-      <translation type="unfinished">Oblique Chain Dimension</translation>
+      <translation>Cota en cadena inclinada</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1463"/>
       <location filename="../../CommandExtensionDims.cpp" line="1578"/>
       <source>Inserts a sequence of aligned oblique dimensions to at least three selected vertices, where the first two define the direction</source>
-      <translation type="unfinished">Inserts a sequence of aligned oblique dimensions to at least three selected vertices, where the first two define the direction</translation>
+      <translation>Inserta una secuencia de dimensiones oblicuas alineadas en al menos tres vértices seleccionados, donde los dos primeros definen la dirección</translation>
     </message>
   </context>
   <context>
@@ -787,13 +787,13 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionDims.cpp" line="1833"/>
       <location filename="../../CommandExtensionDims.cpp" line="1946"/>
       <source>Oblique Coordinate Dimension</source>
-      <translation type="unfinished">Oblique Coordinate Dimension</translation>
+      <translation>Cota de coordenadas oblicuas</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1834"/>
       <location filename="../../CommandExtensionDims.cpp" line="1947"/>
       <source>Adds evenly spaced oblique dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced oblique dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>Agrega cotas oblicuas uniformemente espaciadas entre 3 o más vértices alineados a una línea base común</translation>
     </message>
   </context>
   <context>
@@ -807,17 +807,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionDims.cpp" line="1340"/>
       <location filename="../../CommandExtensionDims.cpp" line="1572"/>
       <source>Vertical Chain Dimension</source>
-      <translation type="unfinished">Vertical Chain Dimension</translation>
+      <translation>Cota en cadena vertical</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1341"/>
       <source>Inserts a sequence of aligned vertical dimensions to at least three selected vertices</source>
-      <translation type="unfinished">Inserts a sequence of aligned vertical dimensions to at least three selected vertices</translation>
+      <translation>Inserta una secuencia de cotas verticales alineadas en al menos tres vértices seleccionados</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1573"/>
       <source>Inserts a sequence of aligned vertical dimensions to at least three selected vertices, where the first two define the direction</source>
-      <translation type="unfinished">Inserts a sequence of aligned vertical dimensions to at least three selected vertices, where the first two define the direction</translation>
+      <translation>Inserta una secuencia de cotas verticales alineadas en al menos tres vértices seleccionados, donde los dos primeros definen la dirección</translation>
     </message>
   </context>
   <context>
@@ -837,7 +837,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionDims.cpp" line="2072"/>
       <location filename="../../CommandExtensionDims.cpp" line="2173"/>
       <source>Inserts a vertical size and angle dimension for a chamfer from 2 selected vertices</source>
-      <translation type="unfinished">Inserts a vertical size and angle dimension for a chamfer from 2 selected vertices</translation>
+      <translation>Inserta una cota vertical y angular para un chaflán a partir de 2 vértices seleccionados</translation>
     </message>
   </context>
   <context>
@@ -851,13 +851,13 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionDims.cpp" line="1708"/>
       <location filename="../../CommandExtensionDims.cpp" line="1941"/>
       <source>Vertical Coordinate Dimension</source>
-      <translation type="unfinished">Vertical Coordinate Dimension</translation>
+      <translation>Cota de coordenadas verticales</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1709"/>
       <location filename="../../CommandExtensionDims.cpp" line="1942"/>
       <source>Adds evenly spaced vertical dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced vertical dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>Agrega cotas verticales uniformemente espaciadas entre 3 o más vértices alineados a una línea base común</translation>
     </message>
   </context>
   <context>
@@ -875,7 +875,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2246"/>
       <source>Customizes the format label of a selected dimension or balloon</source>
-      <translation type="unfinished">Customizes the format label of a selected dimension or balloon</translation>
+      <translation>Personaliza la etiqueta de formato de una cota o globo seleccionado</translation>
     </message>
   </context>
   <context>
@@ -908,12 +908,12 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1203"/>
       <source>Cosmetic 1 Point Circle</source>
-      <translation type="unfinished">Cosmetic 1 Point Circle</translation>
+      <translation>Círculo cosmético de 1 punto</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1204"/>
       <source>Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</source>
-      <translation type="unfinished">Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</translation>
+      <translation>Agrega un círculo cosmético basado en dos vértices, donde la primera selección es el punto central y la segunda es el radio</translation>
     </message>
   </context>
   <context>
@@ -927,17 +927,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionPack.cpp" line="1049"/>
       <location filename="../../CommandExtensionPack.cpp" line="1305"/>
       <source>Cosmetic Arc</source>
-      <translation type="unfinished">Cosmetic Arc</translation>
+      <translation>Arco cosmético</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1050"/>
       <source>Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point</source>
-      <translation type="unfinished">Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point</translation>
+      <translation>Agrega un arco cosmético en sentido contrario a las agujas del reloj basado en tres vértices, donde la primera selección es el punto central y la segunda es el radio y el punto de inicio</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1306"/>
       <source>Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point.</source>
-      <translation type="unfinished">Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point.</translation>
+      <translation>Agrega un arco cosmético en sentido contrario a las agujas del reloj basado en tres vértices, donde la primera selección es el punto central y la segunda es el radio y el punto de inicio.</translation>
     </message>
   </context>
   <context>
@@ -951,17 +951,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionPack.cpp" line="1109"/>
       <location filename="../../CommandExtensionPack.cpp" line="1290"/>
       <source>Cosmetic 2 Point Circle</source>
-      <translation type="unfinished">Cosmetic 2 Point Circle</translation>
+      <translation>Círculo cosmético de 2 puntos</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1110"/>
       <source>Adds a cosmetic circle based on two selected vertices, where the first is the center point and the second is the radius</source>
-      <translation type="unfinished">Adds a cosmetic circle based on two selected vertices, where the first is the center point and the second is the radius</translation>
+      <translation>Agrega un círculo cosmético basado en dos vértices seleccionados, donde el primero es el punto central y el segundo es el radio</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1292"/>
       <source>Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</source>
-      <translation type="unfinished">Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</translation>
+      <translation>Agrega un círculo cosmético basado en dos vértices, donde la primera selección es el punto central y la segunda es el radio</translation>
     </message>
   </context>
   <context>
@@ -975,7 +975,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionPack.cpp" line="1172"/>
       <location filename="../../CommandExtensionPack.cpp" line="1300"/>
       <source>Adds a cosmetic circle that passes through 3 selected perimeter points</source>
-      <translation type="unfinished">Adds a cosmetic circle that passes through 3 selected perimeter points</translation>
+      <translation>Agrega un círculo cosmético que pasa por 3 puntos del perímetro seleccionados</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1171"/>
@@ -1015,17 +1015,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionPack.cpp" line="171"/>
       <location filename="../../CommandExtensionPack.cpp" line="352"/>
       <source>Bolt Circle Centerlines</source>
-      <translation type="unfinished">Bolt Circle Centerlines</translation>
+      <translation>Líneas centrales del círculo de perno</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="172"/>
       <source>Adds centerlines to a circular pattern of three or more selected circles</source>
-      <translation type="unfinished">Adds centerlines to a circular pattern of three or more selected circles</translation>
+      <translation>Agrega líneas centrales a un patrón circular de tres o más círculos seleccionados</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="353"/>
       <source>Adds centerlines to a circular pattern of selected circles</source>
-      <translation type="unfinished">Adds centerlines to a circular pattern of selected circles</translation>
+      <translation>Agrega líneas centrales a un patrón circular de círculos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -1045,7 +1045,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionDims.cpp" line="447"/>
       <location filename="../../CommandExtensionDims.cpp" line="574"/>
       <source>Increases the number of decimal places of the dimension</source>
-      <translation type="unfinished">Increases the number of decimal places of the dimension</translation>
+      <translation>Aumenta el número de decimales de la cota</translation>
     </message>
   </context>
   <context>
@@ -1063,7 +1063,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="509"/>
       <source>Increases the number of decimal places of the dimension</source>
-      <translation type="unfinished">Increases the number of decimal places of the dimension</translation>
+      <translation>Aumenta el número de decimales de la dimensión</translation>
     </message>
   </context>
   <context>
@@ -1083,7 +1083,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionDims.cpp" line="150"/>
       <location filename="../../CommandExtensionDims.cpp" line="379"/>
       <source>Inserts a &apos;⌀&apos; symbol at the beginning of the dimension</source>
-      <translation type="unfinished">Inserts a &apos;⌀&apos; symbol at the beginning of the dimension</translation>
+      <translation>Inserta un símbolo &apos;⌀&apos; al principio de la cota</translation>
     </message>
   </context>
   <context>
@@ -1101,7 +1101,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="300"/>
       <source>Inserts a &apos;⌀&apos; symbol at the beginning of the dimension text</source>
-      <translation type="unfinished">Inserts a &apos;⌀&apos; symbol at the beginning of the dimension text</translation>
+      <translation>Inserta un símbolo &apos;⌀&apos; al principio del texto de la cota</translation>
     </message>
   </context>
   <context>
@@ -1121,7 +1121,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionDims.cpp" line="181"/>
       <location filename="../../CommandExtensionDims.cpp" line="384"/>
       <source>Inserts a &apos;□&apos; symbol at the beginning of the dimension</source>
-      <translation type="unfinished">Inserts a &apos;□&apos; symbol at the beginning of the dimension</translation>
+      <translation>Inserta un símbolo &apos;□&apos; al principio de la cota</translation>
     </message>
   </context>
   <context>
@@ -1134,12 +1134,12 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1448"/>
       <source>Cosmetic Parallel Line</source>
-      <translation type="unfinished">Cosmetic Parallel Line</translation>
+      <translation>Línea paralela cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1449"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
-      <translation type="unfinished">Adds a cosmetic line parallel to the selected line through the selected vertex</translation>
+      <translation>Agrega una línea cosmética paralela a la línea seleccionada que pasa por el vértice seleccionado</translation>
     </message>
   </context>
   <context>
@@ -1153,17 +1153,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionPack.cpp" line="1385"/>
       <location filename="../../CommandExtensionPack.cpp" line="1515"/>
       <source>Cosmetic Parallel Line</source>
-      <translation type="unfinished">Cosmetic Parallel Line</translation>
+      <translation>Línea paralela cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1386"/>
       <source>Adds a cosmetic circle to 3 selected vertices</source>
-      <translation type="unfinished">Adds a cosmetic circle to 3 selected vertices</translation>
+      <translation>Agrega un círculo cosmético a 3 vértices seleccionados</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1517"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
-      <translation type="unfinished">Adds a cosmetic line parallel to the selected line through the selected vertex</translation>
+      <translation>Agrega una línea cosmética paralela a la línea seleccionada que pasa por el vértice seleccionado</translation>
     </message>
   </context>
   <context>
@@ -1177,13 +1177,13 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionPack.cpp" line="1416"/>
       <location filename="../../CommandExtensionPack.cpp" line="1521"/>
       <source>Cosmetic Perpendicular Line</source>
-      <translation type="unfinished">Cosmetic Perpendicular Line</translation>
+      <translation>Línea perpendicular cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1418"/>
       <location filename="../../CommandExtensionPack.cpp" line="1523"/>
       <source>Adds a cosmetic line perpendicular to the selected line through the selected vertex</source>
-      <translation type="unfinished">Adds a cosmetic line perpendicular to the selected line through the selected vertex</translation>
+      <translation>Agrega una línea cosmética perpendicular a la línea seleccionada que pasa por el vértice seleccionado</translation>
     </message>
   </context>
   <context>
@@ -1196,12 +1196,12 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1547"/>
       <source>Toggle View Lock</source>
-      <translation type="unfinished">Toggle View Lock</translation>
+      <translation>Bloqueo de alternancia de vistas</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1548"/>
       <source>Locks or unlocks the position of the selected views</source>
-      <translation type="unfinished">Locks or unlocks the position of the selected views</translation>
+      <translation>Bloquea o desbloquea la posición de las vistas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -1214,12 +1214,12 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="793"/>
       <source>Align Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Align Horizontal Chain Dimensions</translation>
+      <translation>Alinear cotas de cadena horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="794"/>
       <source>Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Alinea las cotas horizontales para crear una cota de cadena: &lt;br> - Seleccione dos o más cotas horizontales &lt;br> - La primera cota define la posición &lt;br> - Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -1232,13 +1232,13 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="629"/>
       <source>Align Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Align Horizontal Chain Dimensions</translation>
+      <translation>Alinear cotas de cadena horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="630"/>
       <location filename="../../CommandExtensionDims.cpp" line="869"/>
       <source>Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Alinea las cotas horizontales para crear una cota de cadena: &lt;br> - Seleccione dos o más cotas horizontales &lt;br> - La primera cota define la posición &lt;br> - Haga clic en esta herramienta</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="868"/>
@@ -1256,13 +1256,13 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="758"/>
       <source>Align Oblique Chain Dimensions</source>
-      <translation type="unfinished">Align Oblique Chain Dimensions</translation>
+      <translation>Alinear cotas de cadena inclinadas</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="759"/>
       <location filename="../../CommandExtensionDims.cpp" line="885"/>
       <source>Aligns the oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Aligns the oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Alinea las cotas oblicuas para crear una cota de cadena:&lt;br&gt; - Seleccione dos o más cotas oblicuas paralelas&lt;br&gt; - La primera cota define la posición&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="884"/>
@@ -1280,13 +1280,13 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="691"/>
       <source>Align Vertical Chain Dimensions</source>
-      <translation type="unfinished">Align Vertical Chain Dimensions</translation>
+      <translation>Cotas de la cadena vertical de alineación</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="692"/>
       <location filename="../../CommandExtensionDims.cpp" line="877"/>
       <source>Aligns the vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Aligns the vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Alinea las cotas verticales para crear una cota de cadena:&lt;br&gt; - Seleccione dos o más cotas verticales&lt;br&gt; - La primera cota define la posición&lt;br&gt; - Haga clic en esta herramienta</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="876"/>
@@ -1309,7 +1309,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="269"/>
       <source>Removes the prefix symbols at the beginning of the dimension</source>
-      <translation type="unfinished">Removes the prefix symbols at the beginning of the dimension</translation>
+      <translation>Elimina los símbolos de prefijo al principio de la cota</translation>
     </message>
   </context>
   <context>
@@ -1327,7 +1327,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="711"/>
       <source>Configures the default attributes for cosmetic lines and centerlines, including cascade spacing and delta distance</source>
-      <translation type="unfinished">Configures the default attributes for cosmetic lines and centerlines, including cascade spacing and delta distance</translation>
+      <translation>Acorta una línea cosmética o línea central seleccionada en ambos extremos en la distancia delta especificada</translation>
     </message>
   </context>
   <context>
@@ -1347,7 +1347,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionPack.cpp" line="1710"/>
       <location filename="../../CommandExtensionPack.cpp" line="1813"/>
       <source>Shortens a selected cosmetic line or centerline at both ends by the specified delta distance</source>
-      <translation type="unfinished">Shortens a selected cosmetic line or centerline at both ends by the specified delta distance</translation>
+      <translation>Acorta una línea cosmética o línea central seleccionada en ambos extremos en la distancia delta especificada</translation>
     </message>
   </context>
   <context>
@@ -1361,13 +1361,13 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
       <location filename="../../CommandExtensionPack.cpp" line="550"/>
       <location filename="../../CommandExtensionPack.cpp" line="684"/>
       <source>Cosmetic Thread Bolt Bottom View</source>
-      <translation type="unfinished">Cosmetic Thread Bolt Bottom View</translation>
+      <translation>Vista inferior del perno de rosca cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="552"/>
       <location filename="../../CommandExtensionPack.cpp" line="686"/>
       <source>Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods</source>
-      <translation type="unfinished">Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods</translation>
+      <translation>Agrega una rosca cosmética a la vista superior o inferior de los pernos/tornillos/varillas seleccionados</translation>
     </message>
   </context>
   <context>
@@ -1517,7 +1517,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandAnnotate.cpp" line="680"/>
       <source>Adds a centerline to selected faces</source>
-      <translation type="unfinished">Adds a centerline to selected faces</translation>
+      <translation>Añade un eje a las caras seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -1530,7 +1530,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandDecorate.cpp" line="270"/>
       <source>Geometric Hatch</source>
-      <translation type="unfinished">Geometric Hatch</translation>
+      <translation>Sombreado geométrico</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="271"/>
@@ -1548,7 +1548,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandDecorate.cpp" line="175"/>
       <source>Image Hatch</source>
-      <translation type="unfinished">Image Hatch</translation>
+      <translation>Sombreado de imagen</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="176"/>
@@ -1566,7 +1566,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1629"/>
       <source>Horizontal Length Dimension</source>
-      <translation type="unfinished">Horizontal Length Dimension</translation>
+      <translation>Cota de longitud horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1630"/>
@@ -1627,7 +1627,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandDecorate.cpp" line="362"/>
       <source>Select an image file</source>
-      <translation type="unfinished">Select an image file</translation>
+      <translation>Seleccione un archivo de imagen</translation>
     </message>
   </context>
   <context>
@@ -1658,7 +1658,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1582"/>
       <source>Length Dimension</source>
-      <translation type="unfinished">Length Dimension</translation>
+      <translation>Cota de longitud</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1583"/>
@@ -1694,7 +1694,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../Command.cpp" line="108"/>
       <source>New Page</source>
-      <translation type="unfinished">New Page</translation>
+      <translation>Nueva hoja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="109"/>
@@ -1722,7 +1722,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../Command.cpp" line="181"/>
       <source>Select a template file</source>
-      <translation type="unfinished">Select a template file</translation>
+      <translation>Seleccione un archivo de plantilla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="182"/>
@@ -1745,7 +1745,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Prints all pages with the print dialog</source>
-      <translation type="unfinished">Prints all pages with the print dialog</translation>
+      <translation>Imprime todas las páginas con el cuadro de diálogo de impresión</translation>
     </message>
   </context>
   <context>
@@ -1812,7 +1812,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1486"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Cota del radio</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1487"/>
@@ -1930,7 +1930,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../Command.cpp" line="1739"/>
       <source>Spreadsheet View</source>
-      <translation type="unfinished">Spreadsheet View</translation>
+      <translation>Vista de hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1740"/>
@@ -2058,12 +2058,12 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1458"/>
       <source>Surface Finish Symbol</source>
-      <translation type="unfinished">Surface Finish Symbol</translation>
+      <translation>Símbolo de acabado superficial</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1459"/>
       <source>Adds a surface finish symbol in the selected view</source>
-      <translation type="unfinished">Adds a surface finish symbol in the selected view</translation>
+      <translation>Añade un símbolo de acabado superficial en la vista seleccionada</translation>
     </message>
   </context>
   <context>
@@ -2094,7 +2094,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1677"/>
       <source>Vertical Length Dimension</source>
-      <translation type="unfinished">Vertical Length Dimension</translation>
+      <translation>Cota de longitud vertical</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1678"/>
@@ -2150,7 +2150,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1394"/>
       <source>Weld Symbol</source>
-      <translation type="unfinished">Weld Symbol</translation>
+      <translation>Símbolo de soldadura</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1395"/>
@@ -2170,12 +2170,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="360"/>
       <location filename="../../Command.cpp" line="1712"/>
       <source>Create BIM view</source>
-      <translation type="unfinished">Create BIM view</translation>
+      <translation>Crea una vista BIM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>Create image</source>
-      <translation type="unfinished">Create image</translation>
+      <translation>Crear una imagen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="500"/>
@@ -2207,7 +2207,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1358"/>
       <source>Create clip</source>
-      <translation type="unfinished">Create clip</translation>
+      <translation>Crear un clip</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1430"/>
@@ -2290,12 +2290,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="247"/>
       <source>Insert dimension</source>
-      <translation type="unfinished">Insert dimension</translation>
+      <translation>Insertar cota</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="780"/>
       <source>Add area dimension</source>
-      <translation type="unfinished">Add area dimension</translation>
+      <translation>Añadir cota de area</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="791"/>
@@ -2331,7 +2331,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
       <source>Add angle dimension</source>
-      <translation type="unfinished">Add angle dimension</translation>
+      <translation>Añadir cota angular</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="932"/>
@@ -2507,7 +2507,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskDetail.cpp" line="433"/>
       <source>Create Detail view</source>
-      <translation type="unfinished">Create Detail view</translation>
+      <translation>Crear vista de detalle</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="475"/>
@@ -3263,7 +3263,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="834"/>
       <location filename="../../Command.cpp" line="897"/>
       <source>Task in progress</source>
-      <translation type="unfinished">Task in progress</translation>
+      <translation>Tarea en progreso</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="101"/>
@@ -3325,7 +3325,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1208"/>
       <source>Create a page first</source>
-      <translation type="unfinished">Create a page first</translation>
+      <translation>Cree primero una página</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1220"/>
@@ -3370,7 +3370,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1619"/>
       <source>Select at least one object</source>
-      <translation type="unfinished">Select at least one object</translation>
+      <translation>Seleccione al menos un objeto</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1694"/>
@@ -3431,7 +3431,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2140"/>
       <source>There is no dimension in your selection</source>
-      <translation type="unfinished">There is no dimension in your selection</translation>
+      <translation>No hay cotas en su selección</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2207"/>
@@ -3585,7 +3585,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2219"/>
       <source>Select 2 straight lines</source>
-      <translation type="unfinished">Select 2 straight lines</translation>
+      <translation>Seleccione 2 líneas rectas</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="768"/>
@@ -3742,7 +3742,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="418"/>
       <source>Select a face first</source>
-      <translation type="unfinished">Select a face first</translation>
+      <translation>Seleccione una cara primero</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="425"/>
@@ -3761,22 +3761,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">No faces to hatch in this selection</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="307"/>
+      <location filename="../../DrawGuiUtil.cpp" line="309"/>
       <source>No page found</source>
       <translation>No se encontró una página</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="308"/>
+      <location filename="../../DrawGuiUtil.cpp" line="310"/>
       <source>No Drawing Pages available.</source>
       <translation>No hay páginas de dibujo disponibles.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="413"/>
+      <location filename="../../DrawGuiUtil.cpp" line="415"/>
       <source>No page selected</source>
       <translation type="unfinished">No page selected</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="414"/>
+      <location filename="../../DrawGuiUtil.cpp" line="416"/>
       <source>This function needs a page.</source>
       <translation type="unfinished">This function needs a page.</translation>
     </message>
@@ -3819,7 +3819,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../MDIViewPage.cpp" line="540"/>
       <source>Export page as DXF</source>
-      <translation type="unfinished">Export page as DXF</translation>
+      <translation>Exportar página como DXF</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
@@ -6352,152 +6352,147 @@ Do you want to continue?</source>
       <translation>Globo</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="29"/>
+      <location filename="../../TaskBalloon.ui" line="20"/>
+      <source>Annotation</source>
+      <translation>Anotación</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="36"/>
       <source>Text to be displayed</source>
       <translation>Texto que será mostrado</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="43"/>
+      <location filename="../../TaskBalloon.ui" line="50"/>
       <source>Color for text</source>
       <translation type="unfinished">Color for text</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="57"/>
+      <location filename="../../TaskBalloon.ui" line="64"/>
       <source>Font size</source>
       <translation>Tamaño de la fuente</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="76"/>
+      <location filename="../../TaskBalloon.ui" line="83"/>
       <source>Font size for text</source>
       <translation type="unfinished">Font size for text</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
+      <source>Bubble Appearance</source>
+      <translation type="unfinished">Bubble Appearance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="118"/>
       <source>Shape of the balloon bubble</source>
       <translation>Forma de la burbuja del globo</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="106"/>
+      <location filename="../../TaskBalloon.ui" line="122"/>
       <source>Circular</source>
       <translation>Circular</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="115"/>
+      <location filename="../../TaskBalloon.ui" line="131"/>
       <source>None</source>
       <translation>Ninguno</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="124"/>
+      <location filename="../../TaskBalloon.ui" line="140"/>
       <source>Triangle</source>
       <translation>Triángulo</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="133"/>
+      <location filename="../../TaskBalloon.ui" line="149"/>
       <source>Inspection</source>
       <translation>Inspección</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="142"/>
+      <location filename="../../TaskBalloon.ui" line="158"/>
       <source>Hexagon</source>
       <translation>Hexágono</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="151"/>
+      <location filename="../../TaskBalloon.ui" line="167"/>
       <source>Square</source>
       <translation>Cuadrado</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="160"/>
+      <location filename="../../TaskBalloon.ui" line="176"/>
       <source>Rectangle</source>
       <translation>Rectángulo</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="169"/>
+      <location filename="../../TaskBalloon.ui" line="185"/>
       <source>Line</source>
       <translation>Línea</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="181"/>
+      <location filename="../../TaskBalloon.ui" line="197"/>
       <source>Shape scale</source>
       <translation type="unfinished">Shape scale</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="213"/>
-      <source>End symbol</source>
-      <translation type="unfinished">End symbol</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="227"/>
-      <source>End symbol scale</source>
-      <translation type="unfinished">End symbol scale</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="259"/>
-      <source>Line visible</source>
-      <translation type="unfinished">Line visible</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="266"/>
-      <source>Controls whether the leader line is visible or not</source>
-      <translation type="unfinished">Controls whether the leader line is visible or not</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="286"/>
-      <source>Line width</source>
-      <translation>Ancho de línea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="324"/>
-      <source>Leader kink length</source>
-      <translation type="unfinished">Leader kink length</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="194"/>
+      <location filename="../../TaskBalloon.ui" line="210"/>
       <source>Bubble shape scale factor</source>
       <translation>Factor de escala de forma de burbuja</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="22"/>
+      <location filename="../../TaskBalloon.ui" line="29"/>
       <source>Text</source>
       <translation>Texto</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="36"/>
+      <location filename="../../TaskBalloon.ui" line="43"/>
       <source>Text color</source>
       <translation>Color del texto</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="95"/>
+      <location filename="../../TaskBalloon.ui" line="111"/>
       <source>Bubble shape</source>
       <translation type="unfinished">Bubble shape</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="220"/>
+      <location filename="../../TaskBalloon.ui" line="229"/>
+      <source>Leader Line</source>
+      <translation>Línea de referencia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="291"/>
+      <source>Kink length</source>
+      <translation type="unfinished">Kink length</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="298"/>
+      <source>Width</source>
+      <translation>Ancho</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="305"/>
       <source>End symbol for the balloon line</source>
       <translation>Símbolo Final para la línea de globo</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="240"/>
+      <location filename="../../TaskBalloon.ui" line="247"/>
       <source>End symbol scale factor</source>
       <translation>Factor de escala del símbolo final</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="273"/>
-      <source>False</source>
-      <translation>Falso</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="278"/>
-      <source>True</source>
-      <translation>Verdadero</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="305"/>
+      <location filename="../../TaskBalloon.ui" line="275"/>
       <source>Leader line width</source>
       <translation>Ancho de línea de referencia</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="343"/>
+      <location filename="../../TaskBalloon.ui" line="312"/>
+      <source>Symbol scale</source>
+      <translation type="unfinished">Symbol scale</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="319"/>
+      <source>Symbol</source>
+      <translation>Símbolo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="338"/>
       <source>Length of balloon leader line kink</source>
       <translation>Longitud del pliegue de la línea de referencia del globo</translation>
     </message>
@@ -7556,7 +7551,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="26"/>
       <source>Geometric Hatch</source>
-      <translation type="unfinished">Geometric Hatch</translation>
+      <translation>Sombreado geométrico</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="38"/>
@@ -8723,7 +8718,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="394"/>
       <source>Removes the prefix symbols at the beginning of the dimension</source>
-      <translation type="unfinished">Removes the prefix symbols at the beginning of the dimension</translation>
+      <translation>Elimina los símbolos de prefijo al principio de la cota</translation>
     </message>
   </context>
   <context>
@@ -9424,7 +9419,7 @@ there is an open task dialog.</source>
       <location filename="../../CommandExtensionPack.cpp" line="860"/>
       <location filename="../../CommandExtensionPack.cpp" line="1283"/>
       <source>Cosmetic 1 Point Circle</source>
-      <translation type="unfinished">Cosmetic 1 Point Circle</translation>
+      <translation>Círculo cosmético de 1 punto</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="861"/>
@@ -10118,7 +10113,7 @@ hay un diálogo de tareas abierto.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Adds a centerline to selected faces</source>
-      <translation type="unfinished">Adds a centerline to selected faces</translation>
+      <translation>Añade un eje a las caras seleccionadas</translation>
     </message>
   </context>
   <context>

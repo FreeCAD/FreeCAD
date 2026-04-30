@@ -951,7 +951,7 @@ medan du gör ett vänster- eller högerklick och flyttar musen uppåt eller ned
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="58"/>
       <source>Tooltip</source>
-      <translation>Tips</translation>
+      <translation>Verktygstips</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="20"/>
@@ -6706,7 +6706,7 @@ Hur vill du gå vidare?</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1193"/>
       <source>Tooltip</source>
-      <translation>Tips</translation>
+      <translation>Verktygstips</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1222"/>
@@ -12297,7 +12297,7 @@ regionen inte är ogenomskinliga.</translation>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="326"/>
       <source>Opens the Python Modules documentation</source>
-      <translation>Öppnar dokumentationen för Python Modules</translation>
+      <translation>Öppnar dokumentationen för Python-moduler</translation>
     </message>
   </context>
   <context>
@@ -12310,7 +12310,7 @@ regionen inte är ogenomskinliga.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="346"/>
       <source>Starts FreeCAD without any modules or plugins loaded</source>
-      <translation>Startar FreeCAD utan att några moduler eller plugins är inlästa</translation>
+      <translation>Startar FreeCAD utan att några moduler eller insticksprogram är inlästa</translation>
     </message>
   </context>
   <context>
@@ -13039,7 +13039,7 @@ regionen inte är ogenomskinliga.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="905"/>
       <source>Continue?</source>
-      <translation>Fortsätta?</translation>
+      <translation>Fortsätt?</translation>
     </message>
   </context>
   <context>
@@ -14650,7 +14650,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
     <message>
       <location filename="../Navigation/SiemensNXNavigationStyle.cpp" line="427"/>
       <source>Press middle mouse button</source>
-      <translation>Tryck på mittre musknapp</translation>
+      <translation>Tryck på musens mittknapp</translation>
     </message>
     <message>
       <location filename="../Navigation/SiemensNXNavigationStyle.cpp" line="429"/>
@@ -14815,7 +14815,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
     <message>
       <location filename="../TaskCommandLink.ui" line="14"/>
       <source>Insert</source>
-      <translation>Infoga</translation>
+      <translation>infoga</translation>
     </message>
   </context>
   <context>

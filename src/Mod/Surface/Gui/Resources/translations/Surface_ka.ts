@@ -482,7 +482,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="433"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>წიბოს მეზობელი ზედაპირები არ აქვს</translation>
     </message>
   </context>
   <context>
@@ -524,9 +524,9 @@ This command only works with a mesh object.</translation>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="616"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent faces</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
+      <translation>
+        <numerusform>წიბოს აქვს %n მეზობელი ზედაპირი</numerusform>
+        <numerusform>წიბოს აქვს %n მეზობელი ზედაპირი</numerusform>
       </translation>
     </message>
     <message>
@@ -537,7 +537,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="641"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>წიბოს მეზობელი ზედაპირები არ აქვს</translation>
     </message>
   </context>
   <context>

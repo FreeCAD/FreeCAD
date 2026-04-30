@@ -172,7 +172,6 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
     }
 
     detailExec(shape3d, dvp, dvs);
-    addPoints();
 
     dvp->requestPaint();//to refresh detail highlight in base view
     return DrawView::execute();

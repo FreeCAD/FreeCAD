@@ -442,7 +442,6 @@ App::DocumentObjectExecReturn* DrawViewSection::execute()
     }
 
     sectionExec(baseShape);
-    addPoints();
 
     return DrawView::execute();     //NOLINT
 }
