@@ -202,6 +202,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             if (curmode == NavigationStyle::SPINNING) {
                 break;
             }
+            viewer->showRotationCenter(false);
             newmode = NavigationStyle::IDLE;
             // The left mouse button has been released right now so unlock the flag
             if (this->lockButton1) {
@@ -229,6 +230,14 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             break;
 
         case SHIFTDOWN:
+            saveCursorPosition(ev);
+            viewer->showRotationCenter(true);
+
+            // if only shift is down, then go to idle, for example if button2 was released
+            if (curmode == NavigationStyle::DRAGGING) {
+                newmode = NavigationStyle::IDLE;
+            }
+            break;
         case SHIFTDOWN | BUTTON2DOWN:
             if (newmode != NavigationStyle::DRAGGING) {
                 saveCursorPosition(ev);
@@ -245,11 +254,9 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             newmode = NavigationStyle::ZOOMING;
             saveCursorPosition(ev);
             viewer->showRotationCenter(true);
+            this->setZoomAtCursor(true);
             break;
-
-        
         default:
-
             break;
     }
 
