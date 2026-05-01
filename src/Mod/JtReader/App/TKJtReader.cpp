@@ -42,6 +42,9 @@ const Handle(Standard_Type) Type_JtNode_Shape_Base              = STANDARD_TYPE(
 const Handle(Standard_Type) Type_JtNode_Shape_Vertex            = STANDARD_TYPE(JtNode_Shape_Vertex);
 const Handle(Standard_Type) Type_JtNode_Shape_TriStripSet       = STANDARD_TYPE(JtNode_Shape_TriStripSet);
 // clang-format on
+
+const Handle(Standard_Type) Type_JtElement_ShapeLOD_PolygonSet  = STANDARD_TYPE(JtElement_ShapeLOD_PolygonSet);
+const Handle(Standard_Type) Type_JtElement_ShapeLOD_PolylineSet = STANDARD_TYPE(JtElement_ShapeLOD_PolylineSet);
 }  // namespace
 
 TKJtReader::TKJtReader()
@@ -58,6 +61,8 @@ void TKJtReader::open(const std::string& filename)
 {
     clear();
 
+    fprintf(stderr, "TKJtReader::open(%s)\n", filename.c_str());
+
     Base::FileInfo file(filename);
     jtDir = TCollection_ExtendedString(TCollection_AsciiString((file.dirPath() + '/').c_str()));
 
@@ -69,6 +74,7 @@ void TKJtReader::open(const std::string& filename)
         if (!aNode.IsNull()) {
             rootNode = aNode;
 
+            fprintf(stderr, "TKJtReader: model init OK, traversing graph\n");
             builder.addHeader();
             builder.beginSeparator();
             Base::ShapeHintsItem shapeHints;
@@ -78,7 +84,14 @@ void TKJtReader::open(const std::string& filename)
             traverseGraph(aNode);
             builder.endSeparator();
             rootNode.Nullify();
+            fprintf(stderr, "TKJtReader: done, output size=%zu bytes\n", result.str().size());
         }
+        else {
+            fprintf(stderr, "TKJtReader: aModel->Init() returned null\n");
+        }
+    }
+    else {
+        fprintf(stderr, "TKJtReader: JtData_Model is null (file not found or unreadable)\n");
     }
 }
 
@@ -151,6 +164,18 @@ void TKJtReader::readShapeVertex(const Handle(JtNode_Shape_Vertex) & aShape)
                 aLOD = Handle(JtElement_ShapeLOD_TriStripSet)::DownCast(anObject);
             if (!aLOD.IsNull()) {
                 getTriangleStripSet(aLOD);
+                continue;
+            }
+            if (anObject->IsKind(Type_JtElement_ShapeLOD_PolygonSet)) {
+                Handle(JtElement_ShapeLOD_PolygonSet)
+                    aPolyLOD = Handle(JtElement_ShapeLOD_PolygonSet)::DownCast(anObject);
+                getPolygonSet(aPolyLOD);
+                continue;
+            }
+            if (anObject->IsKind(Type_JtElement_ShapeLOD_PolylineSet)) {
+                Handle(JtElement_ShapeLOD_PolylineSet)
+                    aLineLOD = Handle(JtElement_ShapeLOD_PolylineSet)::DownCast(anObject);
+                getPolylineSet(aLineLOD);
             }
         }
     }
@@ -179,6 +204,50 @@ void TKJtReader::getTriangleStripSet(const Handle(JtElement_ShapeLOD_TriStripSet
     builder.addNode(Base::FaceSetItem {faces});
 }
 
+void TKJtReader::getPolygonSet(const Handle(JtElement_ShapeLOD_PolygonSet) & aLOD)
+{
+    // Polygon set: vertices are already flat triangles via the same Indices/Vertices layout
+    // as TriStripSet — treat identically (indices are already triangle-indexed after decode).
+    const int pointsPerFace = 3;
+    std::vector<Base::Vector3f> points;
+    std::vector<int> faces;
+    const JtElement_ShapeLOD_Vertex::VertexData& vertices = aLOD->Vertices();
+    const JtElement_ShapeLOD_Vertex::IndicesVec& indices = aLOD->Indices();
+    float* data = vertices.Data();
+    // NOLINTBEGIN
+    for (int index = 0; index < indices.Count(); index += 3) {
+        int coordIndex = indices[index] * 3;
+        points.emplace_back(data[coordIndex], data[coordIndex + 1], data[coordIndex + 2]);
+        coordIndex = indices[index + 1] * 3;
+        points.emplace_back(data[coordIndex], data[coordIndex + 1], data[coordIndex + 2]);
+        coordIndex = indices[index + 2] * 3;
+        points.emplace_back(data[coordIndex], data[coordIndex + 1], data[coordIndex + 2]);
+        faces.push_back(pointsPerFace);
+    }
+    // NOLINTEND
+    builder.addNode(Base::Coordinate3Item {points});
+    builder.addNode(Base::FaceSetItem {faces});
+}
+
+void TKJtReader::getPolylineSet(const Handle(JtElement_ShapeLOD_PolylineSet) & aLOD)
+{
+    // Polyline set: emit each indexed vertex as a point in a line set.
+    std::vector<Base::Vector3f> points;
+    const JtElement_ShapeLOD_Vertex::VertexData& vertices = aLOD->Vertices();
+    const JtElement_ShapeLOD_Vertex::IndicesVec& indices = aLOD->Indices();
+    float* data = vertices.Data();
+    // NOLINTBEGIN
+    for (int index = 0; index < indices.Count(); ++index) {
+        int coordIndex = indices[index] * 3;
+        points.emplace_back(data[coordIndex], data[coordIndex + 1], data[coordIndex + 2]);
+    }
+    // NOLINTEND
+    if (!points.empty()) {
+        builder.addNode(Base::Coordinate3Item {points});
+        builder.addNode(Base::LineSetItem {});
+    }
+}
+
 void TKJtReader::readPartition(const Handle(JtNode_Partition) & aPart)
 {
     if (rootNode != aPart) {
@@ -196,7 +265,7 @@ void TKJtReader::readPartition(const Handle(JtNode_Partition) & aPart)
 void TKJtReader::readGroup(const Handle(JtNode_Group) & aGroup)
 {
     if (!transformations.empty()) {
-        builder.addNode(Base::TransformItem {transformations.back()});
+        builder.addNode(Base::TransformItem(transformations.back()));
         transformations.pop_back();
     }
     const auto& aChildren = aGroup->Children();
