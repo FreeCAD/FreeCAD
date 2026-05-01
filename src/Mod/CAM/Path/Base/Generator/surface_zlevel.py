@@ -33,12 +33,71 @@ to provide a complete hybrid finishing strategy for both steep walls and flat ar
 import math
 import FreeCAD
 import Path
+import Part
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
+# ---------------------------------------------------------------------------
+# Boundary preparation
+# ---------------------------------------------------------------------------
+
+
+    def extendedBoundBox(wBB, bbBfr, zDep):
+        """
+        Creates a large, oversized rectangular wire from a given bounding box.
+
+        This wire serves as the absolute outermost boundary or "canvas" for the Z-Level
+        strategy. It is intentionally made much larger than the stock to ensure that
+        any boolean subtractions near the model's edge have a clean, unambiguous
+        area to cut from.
+
+        Args:
+            wBB (FreeCAD.BoundBox): The source bounding box (typically from the stock or model).
+            bbBfr (float): The buffer or margin distance to expand the box by in X and Y.
+            zDep (float): The Z-height at which to create the 2D wire.
+
+        Returns:
+            Part.Wire: A closed, rectangular Part.Wire object.
+        """
+        p1 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMin - bbBfr, zDep)
+        p2 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMin - bbBfr, zDep)
+        p3 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMax + bbBfr, zDep)
+        p4 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMax + bbBfr, zDep)
+        return Part.makePolygon([p1, p2, p3, p4, p1])
+
+
+    def getTrimFace(borderFace, bbFace, wpc):
+        """
+        Calculates the 'Outside World' mask used to clip the toolpath.
+
+        This function takes a giant outer boundary (`borderFace`) and subtracts the
+        model's actual 2D silhouette (`bbFace`) from it. The result is a face with a
+        hole in it, representing everything *outside* the area to be machined. This
+        "trim face" is used in later boolean operations to ensure the toolpath does
+        not extend beyond the model's perimeter.
+
+        Args:
+            borderFace (Part.Face): The oversized outer boundary created by extendedBoundBox.
+            bbFace (Part.Face): The 2D silhouette of the model or stock.
+            wpc (Part.Wire): The workplane context for the Path.Area (ClipperLib) engine.
+
+        Returns:
+            Part.Shape: The final trim face shape, or an empty shape on failure.
+        """
+        trim_engine = Path.Area()
+        trim_engine.setPlane(wpc)
+        trim_engine.add(borderFace)
+
+        if bbFace:
+            bbFace.translate(FreeCAD.Vector(0, 0, -bbFace.BoundBox.ZMin))
+            trim_engine.add(bbFace, op=1)
+
+        return trim_engine.getShape()
 
 
 # ---------------------------------------------------------------------------

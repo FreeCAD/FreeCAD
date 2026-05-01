@@ -427,46 +427,47 @@ def _shape_to_safe_stl(
     Returns:
         ocl.STLSurf: The generated safety mesh, or None on failure.
     """
+    fused_shapes = []
+    boundary_face = None
+
+    fused_shapes.append(model_shape)
+
+    # Add the "Invisible Floor" base plate
+    bb = model_shape.BoundBox
+    plate_padding = tool_radius * 2
+    base_plate = Part.makeBox(
+        bb.XLength + plate_padding*2, bb.YLength + plate_padding*2, 0.1,
+        FreeCAD.Vector(bb.XMin - plate_padding, bb.YMin - plate_padding, bb.ZMin - 0.1)
+    )
+    fused_shapes.append(base_plate)
+
+    # Create and add the extruded "Keep-Out Pillars" for avoided faces
+    if avoid_faces:
+        Path.Log.debug(
+            f"surface_mesh._shape_to_safe_stl: Generating extruded envelope for {len(avoid_faces)} avoided faces."
+        )
+        from . import surface_common
+        boundary_face = surface_common.make_boundary_face(avoid_faces, tool_radius, linear_deflection)
+
+        if not boundary_face:
+            Path.Log.error(
+                f"Failed to generate Safe STL. Transitions may not be collision-safe. Error: {e}"
+            )
+            return None
+
+        height = abs(bb.ZMax - bb.ZMin) + 0.1  # Plus 0.1 for safety
+        avoid_solid = boundary_face.extrude(FreeCAD.Vector(0, 0, -height))
+        avoid_solid.translate(FreeCAD.Vector(0, 0, bb.ZMax + 0.1))
+        fused_shapes.append(avoid_solid)
+
+    # Fuse, Hollow, and create a coarse mesh
+    safe_compound = Part.Compound(fused_shapes)
+
+    hollow_shape = safe_compound
+    if safe_compound.Shells:
+        hollow_shape = Part.makeCompound(safe_compound.Shells)
 
     try:
-        fused_shapes = []
-
-        fused_shapes.append(model_shape)
-
-        # Add the "Invisible Floor" base plate
-        bb = model_shape.BoundBox
-        plate_padding = tool_radius * 2
-        base_plate = Part.makeBox(
-            bb.XLength + plate_padding * 2,
-            bb.YLength + plate_padding * 2,
-            1.0,
-            FreeCAD.Vector(bb.XMin - plate_padding, bb.YMin - plate_padding, bb.ZMin - 1.0),
-        )
-        fused_shapes.append(base_plate)
-
-        # Create and add the extruded "Keep-Out Pillars" for avoided faces
-        if avoid_faces:
-            Path.Log.info(
-                f"surface_mesh._shape_to_safe_stl: Generating extruded envelope for {len(avoid_faces)} avoided faces."
-            )
-            from . import surface_common
-
-            boundary_face = surface_common.make_boundary_face(
-                avoid_faces, tool_radius, linear_deflection
-            )
-
-            height = abs(start_depth - final_depth) + 0.1  # Plus 0.1 for safety
-            avoid_solid = boundary_face.extrude(FreeCAD.Vector(0, 0, -height))
-            avoid_solid.translate(FreeCAD.Vector(0, 0, start_depth - avoid_solid.BoundBox.ZMax))
-            fused_shapes.append(avoid_solid)
-
-        # Fuse, Hollow, and create a coarse mesh
-        safe_compound = Part.Compound(fused_shapes)
-
-        hollow_shape = safe_compound
-        if safe_compound.Shells:
-            hollow_shape = Part.makeCompound(safe_compound.Shells)
-
         safe_stl = _shape_to_stl(
             hollow_shape,
             linear_deflection * 3,
@@ -474,14 +475,15 @@ def _shape_to_safe_stl(
             mesh_simplification=5,
             use_cpp=True,
         )
-        Path.Log.info("surface_mesh._shape_to_safe_stl: Safe STL generated successfully.")
-        return safe_stl
 
+        Path.Log.debug("surface_mesh._shape_to_safe_stl: Safe STL generated successfully.")
     except Exception as e:
         Path.Log.error(
             f"Failed to generate Safe STL. Transitions may not be collision-safe. Error: {e}"
         )
         return None
+
+    return safe_stl
 
 
 def generate_stl(
@@ -561,8 +563,11 @@ def generate_stl(
         use_cpp,
     )
 
-    if stl is None:
-        Path.Log.error("Failed to create primary STL from model.")
+    # Check if the STL object is None OR if it contains zero triangles.
+    if stl is None or stl.size() == 0:
+        Path.Log.debug(
+            "surface_mesh.generate_stl.Failed to create a valid STL from the model (mesh is empty)."
+        )
         return None, None
 
     # Generate the Safe STL

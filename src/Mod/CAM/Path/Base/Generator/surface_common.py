@@ -30,7 +30,6 @@ and geometry are passed in by the operation wrapper.
 import Path
 import Part
 import FreeCAD
-import time
 
 __title__ = "Surface Common Utilities"
 __author__ = "sliptonic (Brad Collette)"

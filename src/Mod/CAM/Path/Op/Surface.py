@@ -1163,10 +1163,10 @@ class ObjectSurface(PathOp.ObjectOp):
                 if hasattr(obj, "MinSampleInterval")
                 else sample_interval / 10.0
             )
-
             results_flat = surface_dropcutter.adaptive_path_dropcutter(
                 stl, cutter, scan_lines, final_depth, sample_interval, min_sampling
             )
+
         else:
             if pattern in ("Line", "ZigZag"):  # PathDropCutter
                 results_flat = surface_dropcutter.path_dropcutter(
@@ -1300,37 +1300,7 @@ class ObjectSurface(PathOp.ObjectOp):
         6. Dispatch to surface_zlevel generator for C++ accelerated geometry stacking.
         7. Convert the resulting geometry stack into optimized G-code Path commands.
         """
-
-        def _makeExtendedBoundBox(wBB, bbBfr, zDep):
-            """Creates a large rectangular wire around the stock."""
-            p1 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMin - bbBfr, zDep)
-            p2 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMin - bbBfr, zDep)
-            p3 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMax + bbBfr, zDep)
-            p4 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMax + bbBfr, zDep)
-            return Part.makePolygon([p1, p2, p3, p4, p1])
-
-        def _getZLevelTrimFace(shape, borderFace, radius, wpc):
-            """Calculates the 'Outside World' mask to clip the toolpath."""
-
-            # In Z-Level Hybrid, we always use the entire model silhouette
-            # make_boundary_face(faces, radius, extra_offset)
-            adj = obj.BoundaryAdjustment.Value - 0.01
-            offset = adj - radius
-
-            if obj.BoundBox == "Stock":
-                bbFace = surface_common.make_boundary_face(job.Stock.Shape.Faces, offset)
-            else:
-                bbFace = surface_common.make_boundary_face(shape.Faces, offset)
-
-            trim_engine = Path.Area()
-            trim_engine.setPlane(wpc)
-            trim_engine.add(borderFace)
-
-            if bbFace:
-                bbFace.translate(FreeCAD.Vector(0, 0, -bbFace.BoundBox.ZMin))
-                trim_engine.add(bbFace, op=1)
-
-            return trim_engine.getShape()
+        import Path.Base.Generator.surface_zlevel as surface_zlevel
 
         startTime = time.time()
 
@@ -1360,11 +1330,11 @@ class ObjectSurface(PathOp.ObjectOp):
         wpc = Part.makeCircle(2.0, FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1))
 
         clear_planar_only = getattr(obj, "ClearPlanarOnly", True)
-        depth_offset = obj.DepthOffset.Value
         ignore_outer = getattr(obj, "IgnoreOuter", False)
         accuracy_val = getattr(obj, "SamplingAccuracy", "4")
         step_over = (obj.StepOver / 100.0) * (radius * 2)
         stock_to_leave = obj.StockToLeave.Value
+        depth_offset = obj.DepthOffset.Value
 
         zlevel_tool_params = {
             "radius": radius,
@@ -1394,11 +1364,15 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # 4. Boundary preparation
         buffer = radius * 10.0
-        border_poly = _makeExtendedBoundBox(job.Stock.Shape.BoundBox, buffer, 0.0)
+        border_poly = surface_zlevel.extendedBoundBox(job.Stock.Shape.BoundBox, buffer, 0.0)
         borderFace = Part.makeFace(border_poly)
-        trimFace = _getZLevelTrimFace(shape, borderFace, radius, wpc)
+        offset = obj.BoundaryAdjustment.Value - radius - 0.01
 
-        import Path.Base.Generator.surface_zlevel as surface_zlevel
+        if obj.BoundBox == "Stock":
+            bbFace = surface_common.make_boundary_face(job.Stock.Shape.Faces, offset)
+        else:
+            bbFace = surface_common.make_boundary_face(shape.Faces, offset)
+        trimFace = surface_zlevel.getTrimFace(borderFace, bbFace, wpc)
 
         # 5. Depth categorization
         cat_steps = surface_zlevel.categorize_floor_steps(
@@ -1540,6 +1514,9 @@ class ObjectSurface(PathOp.ObjectOp):
 
             Path.Log.info("opExecute: STL creation took {:.3f}s".format(stl_time))
             if stl is None:
+                Path.Log.error(
+                    "Failed to create a valid Mesh from the model (Check the Start and Final Depth)."
+                )
                 return
 
         # Begin GCode for operation with basic information
