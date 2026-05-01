@@ -120,6 +120,16 @@ TEST(SelectionPickPolicyTest, canFinalizeSinglePickWhenNoGateIsInstalled)
     EXPECT_TRUE(Gui::SelectionPickPolicy::canFinalizeSinglePick(candidates));
 }
 
+TEST(SelectionPickPolicyTest, doesNotExpandPickRadiusWhenNoGateIsInstalled)
+{
+    int owner {};
+    std::vector<Gui::SelectionPickPolicy::Candidate> candidates {
+        pickCandidate(&owner, 0, true, false, true),
+    };
+
+    EXPECT_FALSE(Gui::SelectionPickPolicy::shouldExpandPickRadius(candidates));
+}
+
 TEST(SelectionPickPolicyTest, continuesSinglePickWhenGateRejectedAllCurrentCandidates)
 {
     int owner {};
@@ -128,6 +138,40 @@ TEST(SelectionPickPolicyTest, continuesSinglePickWhenGateRejectedAllCurrentCandi
     };
 
     EXPECT_FALSE(Gui::SelectionPickPolicy::canFinalizeSinglePick(candidates));
+}
+
+TEST(SelectionPickPolicyTest, expandsPickRadiusWhenGateRejectedAllCurrentCandidates)
+{
+    int owner {};
+    std::vector<Gui::SelectionPickPolicy::Candidate> candidates {
+        pickCandidate(&owner, 0, true, true, false),
+    };
+
+    EXPECT_TRUE(Gui::SelectionPickPolicy::shouldExpandPickRadius(candidates));
+}
+
+TEST(SelectionPickPolicyTest, doesNotExpandPickRadiusWhenCurrentPickAlreadyPassesGate)
+{
+    int firstOwner {};
+    int secondOwner {};
+    std::vector<Gui::SelectionPickPolicy::Candidate> candidates {
+        pickCandidate(&firstOwner, 1, true, true, false),
+        pickCandidate(&secondOwner, 0, true, true, true),
+    };
+
+    EXPECT_FALSE(Gui::SelectionPickPolicy::shouldExpandPickRadius(candidates));
+}
+
+TEST(SelectionPickPolicyTest, doesNotExpandPickRadiusWhenAnotherSelectableCandidateIsPresent)
+{
+    int firstOwner {};
+    int secondOwner {};
+    std::vector<Gui::SelectionPickPolicy::Candidate> candidates {
+        pickCandidate(&firstOwner, 1, true, true, false),
+        pickCandidate(&secondOwner, 0, true, false, true),
+    };
+
+    EXPECT_FALSE(Gui::SelectionPickPolicy::shouldExpandPickRadius(candidates));
 }
 
 TEST(SelectionPickPolicyTest, choosesAllowedCandidateWhenPreferredPickIsRejected)
