@@ -32,6 +32,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoFaceDetail.h>
@@ -118,20 +119,24 @@ namespace Gui::SelectionPickPolicy
 
 bool canFinalizeSinglePick(const std::vector<Candidate>& picked)
 {
+    return !shouldExpandPickRadius(picked);
+}
+
+bool shouldExpandPickRadius(const std::vector<Candidate>& picked)
+{
     bool foundSelectionGate = false;
     for (const auto& info : picked) {
+        if (info.passesGate) {
+            return false;
+        }
         if (!info.hasGate) {
             continue;
         }
 
         foundSelectionGate = true;
-        if (info.passesGate) {
-            return true;
-        }
     }
 
-    // Preserve the existing first-object behavior unless an active gate rejected every pick so far.
-    return !foundSelectionGate;
+    return foundSelectionGate;
 }
 
 std::size_t choosePreferredPick(const std::vector<Candidate>& picked)
@@ -437,21 +442,33 @@ bool SoFCUnifiedSelection::canFinalizeSinglePick(const std::vector<PickedInfo>& 
     return SelectionPickPolicy::canFinalizeSinglePick(getPickCandidates(picked, nullptr));
 }
 
-std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedList(
-    SoHandleEventAction* action,
-    bool singlePick
+bool SoFCUnifiedSelection::shouldExpandPickRadius(const std::vector<PickedInfo>& picked)
+{
+    return SelectionPickPolicy::shouldExpandPickRadius(getPickCandidates(picked, nullptr));
+}
+
+std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::collectPickedList(
+    const SoPickedPointList& points,
+    const SoPath* actionPath,
+    bool singlePick,
+    bool copyPickedPoints
 ) const
 {
     ViewProvider* last_vp = nullptr;
     std::vector<PickedInfo> ret;
-    const SoPickedPointList& points = action->getPickedPointList();
     for (int i = 0, count = points.getLength(); i < count; ++i) {
         PickedInfo info;
-        info.pp = points[i];
+        if (copyPickedPoints) {
+            info.ownedPoint = std::shared_ptr<const SoPickedPoint>(new SoPickedPoint(*points[i]));
+            info.pp = info.ownedPoint.get();
+        }
+        else {
+            info.pp = points[i];
+        }
         info.vpd = nullptr;
         ViewProvider* vp = nullptr;
         auto path = Gui::toFullPath(info.pp->getPath());
-        if (this->pcDocument && path && path->containsPath(action->getCurPath())) {
+        if (this->pcDocument && path && actionPath && path->containsPath(actionPath)) {
             vp = this->pcDocument->getViewProviderByPathFromHead(path);
             if (singlePick && last_vp && last_vp != vp && canFinalizeSinglePick(ret)) {
                 break;
@@ -486,6 +503,63 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedLis
             last_vp = vp;
         }
         ret.push_back(info);
+    }
+
+    return ret;
+}
+
+std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getExpandedPickedList(
+    SoHandleEventAction* action
+) const
+{
+    if (!action || !action->getEvent()) {
+        return {};
+    }
+
+    const SoPath* actionPath = action->getCurPath();
+    if (!actionPath) {
+        return {};
+    }
+
+    SoNode* sceneRoot = actionPath->getHead();
+    if (!sceneRoot) {
+        return {};
+    }
+
+    constexpr float expandedPickRadiusMultiplier = 2.0F;
+
+    SoRayPickAction pickAction(action->getViewportRegion());
+    pickAction.setPoint(action->getEvent()->getPosition());
+    pickAction.setRadius(action->getPickRadius() * expandedPickRadiusMultiplier);
+    pickAction.setPickAll(true);
+    pickAction.apply(sceneRoot);
+
+    auto expanded = collectPickedList(pickAction.getPickedPointList(), actionPath, false, true);
+    if (expanded.empty()) {
+        return {};
+    }
+
+    auto candidates = getPickCandidates(expanded, this->pcDocument);
+    if (SelectionPickPolicy::shouldExpandPickRadius(candidates)) {
+        return {};
+    }
+
+    auto pickedIndex = SelectionPickPolicy::choosePreferredPick(candidates);
+    return {expanded[pickedIndex]};
+}
+
+std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedList(
+    SoHandleEventAction* action,
+    bool singlePick
+) const
+{
+    auto ret = collectPickedList(action->getPickedPointList(), action->getCurPath(), singlePick);
+
+    if (singlePick && shouldExpandPickRadius(ret)) {
+        auto expanded = getExpandedPickedList(action);
+        if (!expanded.empty()) {
+            return expanded;
+        }
     }
 
     if (ret.size() <= 1) {
