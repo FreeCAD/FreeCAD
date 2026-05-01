@@ -436,8 +436,10 @@ def _shape_to_safe_stl(
     bb = model_shape.BoundBox
     plate_padding = tool_radius * 2
     base_plate = Part.makeBox(
-        bb.XLength + plate_padding*2, bb.YLength + plate_padding*2, 0.1,
-        FreeCAD.Vector(bb.XMin - plate_padding, bb.YMin - plate_padding, bb.ZMin - 0.1)
+        bb.XLength + plate_padding * 2,
+        bb.YLength + plate_padding * 2,
+        0.1,
+        FreeCAD.Vector(bb.XMin - plate_padding, bb.YMin - plate_padding, bb.ZMin - 0.1),
     )
     fused_shapes.append(base_plate)
 
@@ -447,7 +449,10 @@ def _shape_to_safe_stl(
             f"surface_mesh._shape_to_safe_stl: Generating extruded envelope for {len(avoid_faces)} avoided faces."
         )
         from . import surface_common
-        boundary_face = surface_common.make_boundary_face(avoid_faces, tool_radius, linear_deflection)
+
+        boundary_face = surface_common.make_boundary_face(
+            avoid_faces, tool_radius, linear_deflection
+        )
 
         if not boundary_face:
             Path.Log.error(

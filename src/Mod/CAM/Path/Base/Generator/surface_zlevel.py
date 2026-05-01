@@ -41,11 +41,9 @@ if False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-
-# ---------------------------------------------------------------------------
-# Boundary preparation
-# ---------------------------------------------------------------------------
-
+    # ---------------------------------------------------------------------------
+    # Boundary preparation
+    # ---------------------------------------------------------------------------
 
     def extendedBoundBox(wBB, bbBfr, zDep):
         """
@@ -69,7 +67,6 @@ else:
         p3 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMax + bbBfr, zDep)
         p4 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMax + bbBfr, zDep)
         return Part.makePolygon([p1, p2, p3, p4, p1])
-
 
     def getTrimFace(borderFace, bbFace, wpc):
         """
