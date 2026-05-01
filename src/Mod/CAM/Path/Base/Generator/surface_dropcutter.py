@@ -125,10 +125,11 @@ def path_dropcutter(stl, cutter, polylines, min_z, sampling, timer=None):
 
     ocl_path = ocl.Path()
     for line in polylines:
-        if len(line) < 2: continue
+        if len(line) < 2:
+            continue
         for i in range(len(line) - 1):
             p1 = ocl.Point(line[i][0], line[i][1], min_z)
-            p2 = ocl.Point(line[i+1][0], line[i+1][1], min_z)
+            p2 = ocl.Point(line[i + 1][0], line[i + 1][1], min_z)
             ocl_path.append(ocl.Line(p1, p2))
 
     pdc = ocl.PathDropCutter()
@@ -155,7 +156,9 @@ def path_dropcutter(stl, cutter, polylines, min_z, sampling, timer=None):
 # ---------------------------------------------------------------------------
 
 
-def adaptive_path_dropcutter(stl, cutter, polylines, min_z, sampling, min_sampling=None, timer=None):
+def adaptive_path_dropcutter(
+    stl, cutter, polylines, min_z, sampling, min_sampling=None, timer=None
+):
     """Run OCL AdaptivePathDropCutter along a path.
 
     Automatically refines sampling in areas of high curvature.
@@ -179,10 +182,11 @@ def adaptive_path_dropcutter(stl, cutter, polylines, min_z, sampling, min_sampli
 
     ocl_path = ocl.Path()
     for line in polylines:
-        if len(line) < 2: continue
+        if len(line) < 2:
+            continue
         for i in range(len(line) - 1):
             p1 = ocl.Point(line[i][0], line[i][1], min_z)
-            p2 = ocl.Point(line[i+1][0], line[i+1][1], min_z)
+            p2 = ocl.Point(line[i + 1][0], line[i + 1][1], min_z)
             ocl_path.append(ocl.Line(p1, p2))
 
     if min_sampling is None:
