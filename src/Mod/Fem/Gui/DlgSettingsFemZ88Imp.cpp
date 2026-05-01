@@ -83,7 +83,7 @@ void DlgSettingsFemZ88Imp::changeEvent(QEvent* e)
 void DlgSettingsFemZ88Imp::populateSolverType()
 {
     std::list<std::pair<std::string, std::string>> mapValues = {
-        {QT_TR_NOOP("Succesive over-relaxation (SOR)"), "sorcg"},
+        {QT_TR_NOOP("Successive over-relaxation (SOR)"), "sorcg"},
         {QT_TR_NOOP("Shifted incomplete Cholesky (SIC)"), "siccg"},
         {QT_TR_NOOP("Simple Cholesky"), "choly"},
     };

@@ -844,7 +844,7 @@ int SelectionSingleton::setPreselect(
     }
 
     if (DocName == pDocName && FeatName == pObjectName && SubName == pSubName) {
-        return -1;  // Already pre-selected
+        return -1;  // Already preselected
     }
 
     rmvPreselect();

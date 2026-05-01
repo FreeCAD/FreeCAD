@@ -420,7 +420,7 @@ class GenericPlasma(PostProcessor):
                         ):
 
                             # Mark the entry point
-                            # 1. Keep move decending to cut height (torch on)
+                            # 1. Keep move descending to cut height (torch on)
                             new_commands.append(cmd)
 
                             # 2. Very short delay (torch mark)

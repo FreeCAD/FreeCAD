@@ -318,7 +318,7 @@ private:
     // State tracking for the two-stage "Select All" operation
     bool lastSelectAllParent = false;   // true if last select was group-level, used for double-tap
                                         // detection
-    bool inSelectAllOperation = false;  // prevents context from reseting when we change selection
+    bool inSelectAllOperation = false;  // prevents context from resetting when we change selection
                                         // in code
 
     friend class DocumentItem;

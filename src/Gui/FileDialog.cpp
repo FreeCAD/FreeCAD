@@ -288,7 +288,7 @@ Filter Filter::fromFilterString(const QString& filter)
     const auto name = filter.left(start).trimmed();
     const auto patternsPart = filter.mid(start + 1, end - start - 1);
     // ";" separators are explicitly not supported as this could
-    // encourage having more than one canonical string represenation.
+    // encourage having more than one canonical string representation.
     return {name, patternsPart.split(QLatin1Char(' '), Qt::SkipEmptyParts)};
 }
 
@@ -534,7 +534,7 @@ QString FileDialog::getSaveFileName(
         // to existing dir), don't touch it and don't use QFileDialog::selectFile() later.
         if (!(fi.fileName().isEmpty() || fi.isDir())) {
             // If there is a file name at the end, make sure it matches one of the patterns
-            // of the pre-selected filter, if applicable.
+            // of the preselected filter, if applicable.
             hasFilename = true;
             if (actuallySelectedFilterIndex >= 0) {
                 FileDialogInternal::normalizeSavePath(

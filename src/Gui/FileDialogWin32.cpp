@@ -136,7 +136,7 @@ static QStringList legacyNativeFileDialog(
         ofn.nFilterIndex = selectedFilterIndex + 1;  // OPENFILENAMEW index is 1-based
     }
 
-    // Pre-select file name, if any
+    // Preselect file name, if any
     constexpr const DWORD SelectionBufferSize = 65535;
     auto selectedFile = std::make_unique<wchar_t[]>(SelectionBufferSize);
 
@@ -335,7 +335,7 @@ QStringList FileDialogInternal::nativeFileDialog(
         fileDialog->SetFileTypeIndex(selectedFilterIndex + 1);  // FileTypeIndex is 1-based
     }
 
-    // Pre-select file name, if any
+    // Preselect file name, if any
     const QFileInfo startPathInfo(startPath);
     const auto startFileName = qStringToWCharArray(startPathInfo.fileName());
     fileDialog->SetFileName(startFileName.get());

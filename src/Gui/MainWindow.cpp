@@ -2072,7 +2072,7 @@ void MainWindow::loadWindowSettings()
         winPos.setY(qMax(qMin(winPos.y(), screen.bottom() - winGeometry.height()), screen.y()));
     }
 
-    // Scale before move reducing, or vice versa, so a dpi change wont make window to be moved
+    // Scale before move reducing, or vice versa, so a dpi change wont force window to be moved
     resize(winSize.boundedTo(size()));
     move(winPos);
     resize(winSize);
