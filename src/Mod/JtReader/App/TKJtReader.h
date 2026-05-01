@@ -27,6 +27,8 @@
 # include <JtAttribute_GeometricTransform.hxx>
 # include <JtAttribute_Material.hxx>
 # include <JtData_Model.hxx>
+# include <JtElement_ShapeLOD_PolygonSet.hxx>
+# include <JtElement_ShapeLOD_PolylineSet.hxx>
 # include <JtElement_ShapeLOD_TriStripSet.hxx>
 # include <JtNode_Instance.hxx>
 # include <JtNode_Partition.hxx>
@@ -35,7 +37,9 @@
 # include <JtNode_Shape_Vertex.hxx>
 # include <TCollection_AsciiString.hxx>
 # include <TCollection_ExtendedString.hxx>
+# include <list>
 # include <Base/Builder3D.h>
+# include <Base/Matrix.h>
 
 namespace JtReaderNS
 {
@@ -59,6 +63,8 @@ private:
     void readInstance(const Handle(JtNode_Instance) & anInstance);
     void readAttributes(const JtData_Object::VectorOfObjects& attr);
     void getTriangleStripSet(const Handle(JtElement_ShapeLOD_TriStripSet) & aLOD);
+    void getPolygonSet(const Handle(JtElement_ShapeLOD_PolygonSet) & aLOD);
+    void getPolylineSet(const Handle(JtElement_ShapeLOD_PolylineSet) & aLOD);
 
 private:
     TCollection_ExtendedString jtDir;
