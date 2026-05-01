@@ -1145,17 +1145,6 @@ class ObjectSurface(PathOp.ObjectOp):
         else:  # "None"
             scan_lines = main_scan_lines
 
-        # 2. Build one combined OCL path
-        path_obj = ocl.Path()
-
-        for line in scan_lines:
-            if len(line) < 2:
-                continue
-            for i in range(len(line) - 1):
-                p1 = ocl.Point(line[i][0], line[i][1], final_depth)
-                p2 = ocl.Point(line[i + 1][0], line[i + 1][1], final_depth)
-                path_obj.append(ocl.Line(p1, p2))
-
         # 3. Project scan lines to 3D surface
         results_flat = []
 
@@ -1176,12 +1165,12 @@ class ObjectSurface(PathOp.ObjectOp):
             )
 
             results_flat = surface_dropcutter.adaptive_path_dropcutter(
-                stl, cutter, path_obj, final_depth, sample_interval, min_sampling
+                stl, cutter, scan_lines, final_depth, sample_interval, min_sampling
             )
         else:
             if pattern in ("Line", "ZigZag"):  # PathDropCutter
                 results_flat = surface_dropcutter.path_dropcutter(
-                    stl, cutter, path_obj, final_depth, sample_interval
+                    stl, cutter, scan_lines, final_depth, sample_interval
                 )
             else:  # (Circular, Spiral, Offset) - BatchDropCutter
                 results_flat = surface_dropcutter.batch_dropcutter(

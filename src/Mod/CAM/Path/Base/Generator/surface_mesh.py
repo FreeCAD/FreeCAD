@@ -451,7 +451,7 @@ def _shape_to_safe_stl(
             )
             from . import surface_common
 
-            boundary_face = surface_common.make_boundary_face(avoid_faces, tool_radius)
+            boundary_face = surface_common.make_boundary_face(avoid_faces, tool_radius, linear_deflection)
 
             height = abs(start_depth - final_depth) + 0.1  # Plus 0.1 for safety
             avoid_solid = boundary_face.extrude(FreeCAD.Vector(0, 0, -height))

@@ -104,7 +104,7 @@ def batch_dropcutter(stl, cutter, polylines, min_z, threads=None, timer=None):
 # ---------------------------------------------------------------------------
 
 
-def path_dropcutter(stl, cutter, ocl_path, min_z, sampling, timer=None):
+def path_dropcutter(stl, cutter, polylines, min_z, sampling, timer=None):
     """Run OCL PathDropCutter along a path (Line/Arc segments).
 
     Fixed-interval sampling.  Use for circular/arc scan paths where
@@ -122,6 +122,14 @@ def path_dropcutter(stl, cutter, ocl_path, min_z, sampling, timer=None):
         List of ``(x, y, z)`` tuples.
     """
     ocl = _get_ocl()
+
+    ocl_path = ocl.Path()
+    for line in polylines:
+        if len(line) < 2: continue
+        for i in range(len(line) - 1):
+            p1 = ocl.Point(line[i][0], line[i][1], min_z)
+            p2 = ocl.Point(line[i+1][0], line[i+1][1], min_z)
+            ocl_path.append(ocl.Line(p1, p2))
 
     pdc = ocl.PathDropCutter()
     pdc.setSTL(stl)
@@ -147,7 +155,7 @@ def path_dropcutter(stl, cutter, ocl_path, min_z, sampling, timer=None):
 # ---------------------------------------------------------------------------
 
 
-def adaptive_path_dropcutter(stl, cutter, ocl_path, min_z, sampling, min_sampling=None, timer=None):
+def adaptive_path_dropcutter(stl, cutter, polylines, min_z, sampling, min_sampling=None, timer=None):
     """Run OCL AdaptivePathDropCutter along a path.
 
     Automatically refines sampling in areas of high curvature.
@@ -168,6 +176,14 @@ def adaptive_path_dropcutter(stl, cutter, ocl_path, min_z, sampling, min_samplin
         List of ``(x, y, z)`` tuples.
     """
     ocl = _get_ocl()
+
+    ocl_path = ocl.Path()
+    for line in polylines:
+        if len(line) < 2: continue
+        for i in range(len(line) - 1):
+            p1 = ocl.Point(line[i][0], line[i][1], min_z)
+            p2 = ocl.Point(line[i+1][0], line[i+1][1], min_z)
+            ocl_path.append(ocl.Line(p1, p2))
 
     if min_sampling is None:
         min_sampling = sampling / 10.0
