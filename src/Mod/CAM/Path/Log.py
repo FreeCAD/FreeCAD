@@ -236,9 +236,7 @@ def setLevel(level, module=None):
     Otherwise the module specific log level is changed (use RESET to clear)."""
     global _defaultLogLevel
     global _moduleLoggers
-    if module:
-        getModuleLogger(module).setLevel(level)
-    else:
+    if module is None:
         if level == Level.RESET:
             _defaultLogLevel = Level.NOTICE
 
@@ -246,6 +244,8 @@ def setLevel(level, module=None):
                 module.setLevel(Level.RESET)
         else:
             _defaultLogLevel = level
+    else:
+        getModuleLogger(module).setLevel(level)
 
 
 def getLevel(module=None):
@@ -253,10 +253,10 @@ def getLevel(module=None):
 
     deprecated - use logger.getLevel instead
     """
-    if module:
+    if module is None:
+        return _defaultLogLevel
+    else:
         return getModuleLogger(module).getLevel()
-
-    return _defaultLogLevel
 
 
 def trackModule(module=None):
