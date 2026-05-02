@@ -50,7 +50,7 @@ namespace
 {
 bool recomputeResultWasCanceled(const App::RecomputeResult& result)
 {
-    return result.exception && std::string(result.exception->what()) == "User aborted";
+    return result.failure == App::RecomputeFailure::Canceled;
 }
 
 const char* recomputeFailureName(App::RecomputeFailure failure)
