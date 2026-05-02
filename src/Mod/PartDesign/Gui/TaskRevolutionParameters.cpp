@@ -937,33 +937,15 @@ TaskDlgRevolutionBase::TaskDlgRevolutionBase(PartDesignGui::ViewProvider* vp)
     : TaskDlgSketchBasedParameters(vp)
 {}
 
-void TaskDlgRevolutionBase::ensureDeferredRejectConnection()
-{
-    ensureDeferredDialogRejectConnection(
-        deferredReject,
-        parameter,
-        &TaskRevolutionParameters::recomputeSettled,
-        this,
-        &TaskDlgRevolutionBase::onParameterRecomputeSettled
-    );
-}
-
-void TaskDlgRevolutionBase::setDeferredRejectPending(bool pending)
-{
-    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
-        if (parameter) {
-            parameter->setDeferredClosePending(pending);
-        }
-    });
-}
-
 bool TaskDlgRevolutionBase::accept()
 {
-    if (!parameter || deferredReject.pending) {
+    if (!parameter || hasDeferredRejectPending()) {
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameter, &TaskRevolutionParameters::recomputeSettled, [this]() {
+        return TaskDlgSketchBasedParameters::reject();
+    });
     parameter->clearInteractiveSelection();
 
     return TaskDlgSketchBasedParameters::accept();
@@ -975,33 +957,17 @@ bool TaskDlgRevolutionBase::reject()
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameter, &TaskRevolutionParameters::recomputeSettled, [this]() {
+        return TaskDlgSketchBasedParameters::reject();
+    });
     parameter->clearInteractiveSelection();
     parameter->stopPendingRecompute();
-    if (!parameter->hasOutstandingRecompute()) {
-        return TaskDlgSketchBasedParameters::reject();
-    }
-
-    if (!deferredReject.pending) {
-        auto* feature = getObject<PartDesign::Feature>();
-        deferredReject.documentName = feature && feature->getDocument()
-            ? std::string(feature->getDocument()->getName())
-            : std::string();
-        setDeferredRejectPending(true);
-    }
-
-    return false;
+    return finishRejectOrDefer(getObject<PartDesign::Feature>());
 }
 
 void TaskDlgRevolutionBase::onParameterRecomputeSettled()
 {
-    finishDeferredDialogReject(
-        this,
-        deferredReject,
-        parameter && !parameter->hasOutstandingRecompute(),
-        [this]() { return TaskDlgSketchBasedParameters::reject(); },
-        [this](bool pending) { setDeferredRejectPending(pending); }
-    );
+    finishRejectOrDefer(getObject<PartDesign::Feature>());
 }
 
 TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(ViewProviderRevolution* RevolutionView)

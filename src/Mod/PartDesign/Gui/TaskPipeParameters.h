@@ -240,8 +240,6 @@ protected Q_SLOTS:
     void onButtonToggled(QAbstractButton* button, bool checked);
 
 private:
-    void ensureDeferredRejectConnection();
-    void setDeferredRejectPending(bool pending);
     void clearInteractiveSelection();
     bool performReject();
 

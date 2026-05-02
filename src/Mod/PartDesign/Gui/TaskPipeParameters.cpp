@@ -1386,32 +1386,6 @@ void TaskDlgPipeParameters::onButtonToggled(QAbstractButton* button, bool checke
 //==== calls from the TaskView ===============================================================
 
 
-void TaskDlgPipeParameters::ensureDeferredRejectConnection()
-{
-    ensureDeferredDialogRejectConnection(
-        deferredReject,
-        parameter,
-        &TaskPipeParameters::recomputeSettled,
-        this,
-        &TaskDlgPipeParameters::onParameterRecomputeSettled
-    );
-}
-
-void TaskDlgPipeParameters::setDeferredRejectPending(bool pending)
-{
-    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
-        if (parameter) {
-            parameter->setDeferredClosePending(pending);
-        }
-        if (orientation) {
-            orientation->setEnabled(!pending);
-        }
-        if (scaling) {
-            scaling->setEnabled(!pending);
-        }
-    });
-}
-
 void TaskDlgPipeParameters::clearInteractiveSelection()
 {
     if (buttonGroup) {
@@ -1449,11 +1423,23 @@ bool TaskDlgPipeParameters::performReject()
 
 bool TaskDlgPipeParameters::accept()
 {
-    if (!parameter || deferredReject.pending) {
+    if (!parameter || hasDeferredRejectPending()) {
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(
+        parameter,
+        &TaskPipeParameters::recomputeSettled,
+        [this]() { return performReject(); },
+        [this](bool pending) {
+            if (orientation) {
+                orientation->setEnabled(!pending);
+            }
+            if (scaling) {
+                scaling->setEnabled(!pending);
+            }
+        }
+    );
     clearInteractiveSelection();
     parameter->flushPendingRecompute();
     return parameter->accept();
@@ -1465,33 +1451,27 @@ bool TaskDlgPipeParameters::reject()
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(
+        parameter,
+        &TaskPipeParameters::recomputeSettled,
+        [this]() { return performReject(); },
+        [this](bool pending) {
+            if (orientation) {
+                orientation->setEnabled(!pending);
+            }
+            if (scaling) {
+                scaling->setEnabled(!pending);
+            }
+        }
+    );
     clearInteractiveSelection();
     parameter->stopPendingRecompute();
-    if (!parameter->hasOutstandingRecompute()) {
-        return performReject();
-    }
-
-    if (!deferredReject.pending) {
-        auto* pipe = getObject<PartDesign::Pipe>();
-        deferredReject.documentName = pipe && pipe->getDocument()
-            ? std::string(pipe->getDocument()->getName())
-            : std::string();
-        setDeferredRejectPending(true);
-    }
-
-    return false;
+    return finishRejectOrDefer(getObject<PartDesign::Pipe>());
 }
 
 void TaskDlgPipeParameters::onParameterRecomputeSettled()
 {
-    finishDeferredDialogReject(
-        this,
-        deferredReject,
-        parameter && !parameter->hasOutstandingRecompute(),
-        [this]() { return performReject(); },
-        [this](bool pending) { setDeferredRejectPending(pending); }
-    );
+    finishRejectOrDefer(getObject<PartDesign::Pipe>());
 }
 
 #include "moc_TaskPipeParameters.cpp"

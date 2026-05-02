@@ -862,35 +862,17 @@ TaskDlgFeatureParameters::AcceptRecomputeMode TaskDlgTransformedParameters::acce
                            : AcceptRecomputeMode::CommandDocument;
 }
 
-void TaskDlgTransformedParameters::ensureDeferredRejectConnection()
-{
-    ensureDeferredDialogRejectConnection(
-        deferredReject,
-        parameter,
-        &TaskTransformedParameters::recomputeSettled,
-        this,
-        &TaskDlgTransformedParameters::onParameterRecomputeSettled
-    );
-}
-
-void TaskDlgTransformedParameters::setDeferredRejectPending(bool pending)
-{
-    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
-        if (parameter) {
-            parameter->setDeferredClosePending(pending);
-        }
-    });
-}
-
 //==== calls from the TaskView ===============================================================
 
 bool TaskDlgTransformedParameters::accept()
 {
-    if (!parameter || deferredReject.pending) {
+    if (!parameter || hasDeferredRejectPending()) {
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameter, &TaskTransformedParameters::recomputeSettled, [this]() {
+        return TaskDlgFeatureParameters::reject();
+    });
     parameter->exitSelectionMode();
 
     // The user may have changed a value and immediately hit OK before the
@@ -908,35 +890,19 @@ bool TaskDlgTransformedParameters::reject()
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameter, &TaskTransformedParameters::recomputeSettled, [this]() {
+        return TaskDlgFeatureParameters::reject();
+    });
 
     // ensure that we are not in selection mode
     parameter->exitSelectionMode();
     parameter->cancelPendingRecompute();
-    if (!parameter->hasOutstandingRecompute()) {
-        return TaskDlgFeatureParameters::reject();
-    }
-
-    if (!deferredReject.pending) {
-        auto* feature = getObject<PartDesign::Feature>();
-        deferredReject.documentName = feature && feature->getDocument()
-            ? std::string(feature->getDocument()->getName())
-            : std::string();
-        setDeferredRejectPending(true);
-    }
-
-    return false;
+    return finishRejectOrDefer(getObject<PartDesign::Feature>());
 }
 
 void TaskDlgTransformedParameters::onParameterRecomputeSettled()
 {
-    finishDeferredDialogReject(
-        this,
-        deferredReject,
-        parameter && !parameter->hasOutstandingRecompute(),
-        [this]() { return TaskDlgFeatureParameters::reject(); },
-        [this](bool pending) { setDeferredRejectPending(pending); }
-    );
+    finishRejectOrDefer(getObject<PartDesign::Feature>());
 }
 
 #include "moc_TaskTransformedParameters.cpp"

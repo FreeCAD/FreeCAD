@@ -912,33 +912,15 @@ TaskDlgHelixParameters::TaskDlgHelixParameters(ViewProviderHelix* HelixView)
     Content.push_back(preview);
 }
 
-void TaskDlgHelixParameters::ensureDeferredRejectConnection()
-{
-    ensureDeferredDialogRejectConnection(
-        deferredReject,
-        parameter,
-        &TaskHelixParameters::recomputeSettled,
-        this,
-        &TaskDlgHelixParameters::onParameterRecomputeSettled
-    );
-}
-
-void TaskDlgHelixParameters::setDeferredRejectPending(bool pending)
-{
-    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
-        if (parameter) {
-            parameter->setDeferredClosePending(pending);
-        }
-    });
-}
-
 bool TaskDlgHelixParameters::accept()
 {
-    if (!parameter || deferredReject.pending) {
+    if (!parameter || hasDeferredRejectPending()) {
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameter, &TaskHelixParameters::recomputeSettled, [this]() {
+        return TaskDlgSketchBasedParameters::reject();
+    });
     parameter->clearInteractiveSelection();
     return TaskDlgSketchBasedParameters::accept();
 }
@@ -949,33 +931,17 @@ bool TaskDlgHelixParameters::reject()
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameter, &TaskHelixParameters::recomputeSettled, [this]() {
+        return TaskDlgSketchBasedParameters::reject();
+    });
     parameter->clearInteractiveSelection();
     parameter->stopPendingRecompute();
-    if (!parameter->hasOutstandingRecompute()) {
-        return TaskDlgSketchBasedParameters::reject();
-    }
-
-    if (!deferredReject.pending) {
-        auto* helix = getObject<PartDesign::Helix>();
-        deferredReject.documentName = helix && helix->getDocument()
-            ? std::string(helix->getDocument()->getName())
-            : std::string();
-        setDeferredRejectPending(true);
-    }
-
-    return false;
+    return finishRejectOrDefer(getObject<PartDesign::Helix>());
 }
 
 void TaskDlgHelixParameters::onParameterRecomputeSettled()
 {
-    finishDeferredDialogReject(
-        this,
-        deferredReject,
-        parameter && !parameter->hasOutstandingRecompute(),
-        [this]() { return TaskDlgSketchBasedParameters::reject(); },
-        [this](bool pending) { setDeferredRejectPending(pending); }
-    );
+    finishRejectOrDefer(getObject<PartDesign::Helix>());
 }
 
 #include "moc_TaskHelixParameters.cpp"

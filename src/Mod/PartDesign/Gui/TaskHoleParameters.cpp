@@ -1682,33 +1682,15 @@ TaskDlgHoleParameters::TaskDlgHoleParameters(ViewProviderHole* HoleView)
 
 TaskDlgHoleParameters::~TaskDlgHoleParameters() = default;
 
-void TaskDlgHoleParameters::ensureDeferredRejectConnection()
-{
-    ensureDeferredDialogRejectConnection(
-        deferredReject,
-        parameter,
-        &TaskHoleParameters::recomputeSettled,
-        this,
-        &TaskDlgHoleParameters::onParameterRecomputeSettled
-    );
-}
-
-void TaskDlgHoleParameters::setDeferredRejectPending(bool pending)
-{
-    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
-        if (parameter) {
-            parameter->setDeferredClosePending(pending);
-        }
-    });
-}
-
 bool TaskDlgHoleParameters::accept()
 {
-    if (!parameter || deferredReject.pending) {
+    if (!parameter || hasDeferredRejectPending()) {
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameter, &TaskHoleParameters::recomputeSettled, [this]() {
+        return TaskDlgSketchBasedParameters::reject();
+    });
 
     return TaskDlgSketchBasedParameters::accept();
 }
@@ -1719,32 +1701,16 @@ bool TaskDlgHoleParameters::reject()
         return false;
     }
 
-    ensureDeferredRejectConnection();
-    parameter->cancelPendingRecompute();
-    if (!parameter->hasOutstandingRecompute()) {
+    prepareDeferredReject(parameter, &TaskHoleParameters::recomputeSettled, [this]() {
         return TaskDlgSketchBasedParameters::reject();
-    }
-
-    if (!deferredReject.pending) {
-        auto* hole = getObject<PartDesign::Hole>();
-        deferredReject.documentName = hole && hole->getDocument()
-            ? std::string(hole->getDocument()->getName())
-            : std::string();
-        setDeferredRejectPending(true);
-    }
-
-    return false;
+    });
+    parameter->cancelPendingRecompute();
+    return finishRejectOrDefer(getObject<PartDesign::Hole>());
 }
 
 void TaskDlgHoleParameters::onParameterRecomputeSettled()
 {
-    finishDeferredDialogReject(
-        this,
-        deferredReject,
-        parameter && !parameter->hasOutstandingRecompute(),
-        [this]() { return TaskDlgSketchBasedParameters::reject(); },
-        [this](bool pending) { setDeferredRejectPending(pending); }
-    );
+    finishRejectOrDefer(getObject<PartDesign::Hole>());
 }
 
 #include "moc_TaskHoleParameters.cpp"
