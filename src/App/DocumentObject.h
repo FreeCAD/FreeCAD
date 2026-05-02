@@ -56,6 +56,12 @@ class DocumentObjectGroup;
 class DocumentObjectPy;
 class Expression;
 
+enum class RecomputeIssueKind
+{
+    Failure,
+    Canceled,
+};
+
 // clang-format off
 /// Defines the position of the status bits for document objects.
 enum ObjectStatus
@@ -110,14 +116,19 @@ public:
      * @param[in] WhichObject The object that caused the failed execution.
      */
     explicit DocumentObjectExecReturn(const std::string& sWhy,
-                                      DocumentObject* WhichObject = nullptr)
+                                      DocumentObject* WhichObject = nullptr,
+                                      RecomputeIssueKind issueKind = RecomputeIssueKind::Failure)
         : Why(sWhy)
         , Which(WhichObject)
+        , Kind(issueKind)
     {}
 
     /// @copydoc DocumentObjectExecReturn::DocumentObjectExecReturn(const std::string&, DocumentObject*)
-    explicit DocumentObjectExecReturn(const char* sWhy, DocumentObject* WhichObject = nullptr)
+    explicit DocumentObjectExecReturn(const char* sWhy,
+                                      DocumentObject* WhichObject = nullptr,
+                                      RecomputeIssueKind issueKind = RecomputeIssueKind::Failure)
         : Which(WhichObject)
+        , Kind(issueKind)
     {
         if (sWhy) {
             Why = sWhy;
@@ -129,6 +140,19 @@ public:
 
     /// The object that caused the failed execution.
     DocumentObject* Which;
+
+    /// The structured kind of recompute issue represented by this return object.
+    RecomputeIssueKind Kind {RecomputeIssueKind::Failure};
+
+    bool shouldReportAsError() const
+    {
+        return Kind != RecomputeIssueKind::Canceled;
+    }
+
+    bool shouldSetErrorState() const
+    {
+        return shouldReportAsError();
+    }
 };
 
 

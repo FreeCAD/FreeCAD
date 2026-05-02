@@ -454,7 +454,7 @@ DocumentObjectExecReturn* FeatureTestAsyncBlocker::execute()
     lock.unlock();
 
     if (App::currentRecomputeWasCanceled()) {
-        throw Base::AbortException("User aborted");
+        throw Base::UserAbortException();
     }
 
     return StdReturn;

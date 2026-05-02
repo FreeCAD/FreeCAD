@@ -373,7 +373,7 @@ void markCanceledRecomputeResult(RecomputeResult& result)
     result.success = false;
     result.failure = RecomputeFailure::Canceled;
     if (!result.exception) {
-        result.exception = std::make_unique<Base::AbortException>("User aborted");
+        result.exception = std::make_unique<Base::UserAbortException>();
     }
 }
 
@@ -394,6 +394,11 @@ RecomputeResult processRecomputeRequest(RecomputeRequest& request)
         else if (Document* document = request.resolveDocument()) {
             document->recompute({}, request.force, nullptr, request.options);
         }
+    }
+    catch (Base::UserAbortException& exception) {
+        result.exception = std::make_unique<Base::UserAbortException>(std::move(exception));
+        result.failure = RecomputeFailure::Canceled;
+        result.success = false;
     }
     catch (Base::AbortException& exception) {
         result.exception = std::make_unique<Base::AbortException>(std::move(exception));
@@ -820,7 +825,7 @@ void App::throwIfRecomputeCanceled()
 {
     if (auto* progress = currentRecomputeProgress()) {
         if (progress->wasCanceled()) {
-            throw Base::AbortException("User aborted");
+            throw Base::UserAbortException();
         }
         return;
     }

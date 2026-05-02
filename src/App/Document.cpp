@@ -2949,7 +2949,7 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                 }
 
                 if (objectScope && objectScope->wasCanceled()) {
-                    throw Base::AbortException("User aborted");
+                    throw Base::UserAbortException();
                 }
 
                 auto obj = topoSortedObjects[idx];
@@ -3028,7 +3028,9 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
         }
     }
     catch (Base::Exception& e) {
-        e.reportException();
+        if (!Base::isUserAbortException(e)) {
+            e.reportException();
+        }
     }
 
     tracker.checkpoint("Recompute");
@@ -3057,9 +3059,9 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
         if (!testStatus(Status::IgnoreErrorOnRecompute)) {
             for (auto it : topoSortedObjects) {
                 if (it->isError()) {
-                    const char* text = getErrorDescription(it);
-                    if (text) {
-                        Base::Console().error("%s: %s\n", it->Label.getValue(), text);
+                    if (const auto* issue = d->findRecomputeIssue(it);
+                        issue && issue->shouldReportAsError()) {
+                        Base::Console().error("%s: %s\n", it->Label.getValue(), issue->Why.c_str());
                     }
                 }
             }
@@ -3285,8 +3287,12 @@ int Document::_recomputeFeature(DocumentObject* Feat) // NOLINT
         }
     }
     catch (Base::AbortException& e) {
+        const bool userCanceled = Base::isUserAbortException(e);
         FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
-        d->addRecomputeLog("User aborted", Feat);
+        d->addRecomputeLog(userCanceled ? "User aborted" : e.what(),
+                           Feat,
+                           userCanceled ? RecomputeIssueKind::Canceled
+                                        : RecomputeIssueKind::Failure);
         return -1;
     }
     catch (const Base::MemoryException& e) {
