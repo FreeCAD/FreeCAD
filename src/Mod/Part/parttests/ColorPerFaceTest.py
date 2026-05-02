@@ -4,6 +4,7 @@
 # test to check color per face when after restore
 
 import FreeCAD as App
+import FreeCADGui
 import Part
 import os
 import tempfile
@@ -109,6 +110,7 @@ class ColorPerFaceTest(unittest.TestCase):
 
         box.ViewObject.Transparency = 35
         self.assertEqual(box.ViewObject.Transparency, 35)
+        FreeCADGui.updateGui()
 
         sa = coin.SoSearchAction()
         sa.setType(coin.SoMaterialBinding.getClassTypeId())
@@ -145,6 +147,7 @@ class ColorPerFaceTest(unittest.TestCase):
         self.assertEqual(fuse.TypeId, "Part::MultiFuse")
         fuse.Refine = False
         self.doc.recompute()
+        FreeCADGui.updateGui()
 
         sa = coin.SoSearchAction()
         sa.setType(coin.SoMaterialBinding.getClassTypeId())

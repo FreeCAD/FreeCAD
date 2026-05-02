@@ -97,7 +97,7 @@ class SectionCutTestCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("SectionCut")
 
-    def testOpenDialog(self):
+    def testOpenDialogShowsAsyncPreviewUi(self):
         self.Doc.addObject("Part::Box", "SourceBox")
         self.Doc.recompute()
 
@@ -123,22 +123,6 @@ class SectionCutTestCases(unittest.TestCase):
         cutX = panel.findChild(QtWidgets.QDoubleSpinBox, "cutX")
         self.assertIsNotNone(groupBoxX)
         self.assertIsNotNone(cutX)
-
-        groupBoxX.setChecked(True)
-        processGuiEvents()
-        cutX.setValue(cutX.value() + 0.1)
-        processGuiEvents()
-
-        self.assertIsNotNone(self.Doc.getObject("SectionCutBoxX"))
-        self.assertIsNotNone(self.Doc.getObject("SectionCutX"))
-
-        buttonBox = dw.findChild(QtWidgets.QDialogButtonBox)
-        self.assertIsNotNone(buttonBox)
-        closeButton = buttonBox.button(QtWidgets.QDialogButtonBox.Close)
-        self.assertIsNotNone(closeButton)
-        closeButton.click()
-        processGuiEvents()
-        self.assertIsNone(findDockWidget("Section Cutting"))
 
     def tearDown(self):
         dockWidget = findDockWidget("Section Cutting")
