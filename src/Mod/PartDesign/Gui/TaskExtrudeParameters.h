@@ -313,13 +313,8 @@ public:
     bool accept() override;
     bool reject() override;
 
-private:
-    void ensureDeferredRejectConnection();
-    void setDeferredRejectPending(bool pending);
-
 private Q_SLOTS:
     void onParameterRecomputeSettled();
-
 
 protected:
     virtual TaskExtrudeParameters* getTaskParameters() = 0;

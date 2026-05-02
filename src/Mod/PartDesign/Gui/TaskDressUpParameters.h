@@ -179,10 +179,6 @@ public:
     bool accept() override;
     bool reject() override;
 
-private:
-    void ensureDeferredRejectConnection();
-    void setDeferredRejectPending(bool pending);
-
 private Q_SLOTS:
     void onParameterRecomputeSettled();
 

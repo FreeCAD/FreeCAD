@@ -128,8 +128,6 @@ public:
     bool reject() override;
 
 private:
-    void ensureDeferredRejectConnection();
-    void setDeferredRejectPending(bool pending);
     bool performReject();
 
 private Q_SLOTS:

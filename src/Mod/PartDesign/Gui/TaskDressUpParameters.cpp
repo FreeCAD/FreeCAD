@@ -669,33 +669,15 @@ TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgDressUpParameters::ensureDeferredRejectConnection()
-{
-    ensureDeferredDialogRejectConnection(
-        deferredReject,
-        parameter,
-        &TaskDressUpParameters::recomputeSettled,
-        this,
-        &TaskDlgDressUpParameters::onParameterRecomputeSettled
-    );
-}
-
-void TaskDlgDressUpParameters::setDeferredRejectPending(bool pending)
-{
-    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
-        if (parameter) {
-            parameter->setDeferredClosePending(pending);
-        }
-    });
-}
-
 bool TaskDlgDressUpParameters::accept()
 {
-    if (!parameter || deferredReject.pending) {
+    if (!parameter || hasDeferredRejectPending()) {
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameter, &TaskDressUpParameters::recomputeSettled, [this]() {
+        return TaskDlgFeatureParameters::reject();
+    });
     parameter->clearInteractiveSelection();
     getViewObject<ViewProviderDressUp>()->highlightReferences(false);
     std::vector<std::string> refs = parameter->getReferences();
@@ -716,34 +698,18 @@ bool TaskDlgDressUpParameters::reject()
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameter, &TaskDressUpParameters::recomputeSettled, [this]() {
+        return TaskDlgFeatureParameters::reject();
+    });
     parameter->clearInteractiveSelection();
     parameter->stopPendingRecompute();
     getViewObject<ViewProviderDressUp>()->highlightReferences(false);
-    if (!parameter->hasOutstandingRecompute()) {
-        return TaskDlgFeatureParameters::reject();
-    }
-
-    if (!deferredReject.pending) {
-        auto* feature = getObject<PartDesign::Feature>();
-        deferredReject.documentName = feature && feature->getDocument()
-            ? std::string(feature->getDocument()->getName())
-            : std::string();
-        setDeferredRejectPending(true);
-    }
-
-    return false;
+    return finishRejectOrDefer(getObject<PartDesign::Feature>());
 }
 
 void TaskDlgDressUpParameters::onParameterRecomputeSettled()
 {
-    finishDeferredDialogReject(
-        this,
-        deferredReject,
-        parameter && !parameter->hasOutstandingRecompute(),
-        [this]() { return TaskDlgFeatureParameters::reject(); },
-        [this](bool pending) { setDeferredRejectPending(pending); }
-    );
+    finishRejectOrDefer(getObject<PartDesign::Feature>());
 }
 
 #include "moc_TaskDressUpParameters.cpp"

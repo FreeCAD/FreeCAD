@@ -1573,34 +1573,16 @@ TaskDlgExtrudeParameters::TaskDlgExtrudeParameters(PartDesignGui::ViewProviderEx
     : TaskDlgSketchBasedParameters(vp)
 {}
 
-void TaskDlgExtrudeParameters::ensureDeferredRejectConnection()
-{
-    ensureDeferredDialogRejectConnection(
-        deferredReject,
-        getTaskParameters(),
-        &TaskExtrudeParameters::recomputeSettled,
-        this,
-        &TaskDlgExtrudeParameters::onParameterRecomputeSettled
-    );
-}
-
-void TaskDlgExtrudeParameters::setDeferredRejectPending(bool pending)
-{
-    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
-        if (auto* parameters = getTaskParameters()) {
-            parameters->setDeferredClosePending(pending);
-        }
-    });
-}
-
 bool TaskDlgExtrudeParameters::accept()
 {
     auto* parameters = getTaskParameters();
-    if (!parameters || deferredReject.pending) {
+    if (!parameters || hasDeferredRejectPending()) {
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameters, &TaskExtrudeParameters::recomputeSettled, [this]() {
+        return TaskDlgSketchBasedParameters::reject();
+    });
     parameters->setSelectionMode(TaskExtrudeParameters::None);
 
     return TaskDlgSketchBasedParameters::accept();
@@ -1613,34 +1595,17 @@ bool TaskDlgExtrudeParameters::reject()
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameters, &TaskExtrudeParameters::recomputeSettled, [this]() {
+        return TaskDlgSketchBasedParameters::reject();
+    });
     parameters->stopPendingRecompute();
     parameters->setSelectionMode(TaskExtrudeParameters::None);
-    if (!parameters->hasOutstandingRecompute()) {
-        return TaskDlgSketchBasedParameters::reject();
-    }
-
-    if (!deferredReject.pending) {
-        auto* feature = getObject<PartDesign::Feature>();
-        deferredReject.documentName = feature && feature->getDocument()
-            ? std::string(feature->getDocument()->getName())
-            : std::string();
-        setDeferredRejectPending(true);
-    }
-
-    return false;
+    return finishRejectOrDefer(getObject<PartDesign::Feature>());
 }
 
 void TaskDlgExtrudeParameters::onParameterRecomputeSettled()
 {
-    auto* parameters = getTaskParameters();
-    finishDeferredDialogReject(
-        this,
-        deferredReject,
-        parameters && !parameters->hasOutstandingRecompute(),
-        [this]() { return TaskDlgSketchBasedParameters::reject(); },
-        [this](bool pending) { setDeferredRejectPending(pending); }
-    );
+    finishRejectOrDefer(getObject<PartDesign::Feature>());
 }
 
 #include "moc_TaskExtrudeParameters.cpp"

@@ -194,6 +194,57 @@ TaskDlgFeatureParameters::AcceptRecomputeMode TaskDlgFeatureParameters::acceptRe
     return AcceptRecomputeMode::AsyncDocument;
 }
 
+bool TaskDlgFeatureParameters::hasDeferredRejectPending() const
+{
+    return deferredReject.pending;
+}
+
+bool TaskDlgFeatureParameters::finishRejectOrDefer(App::DocumentObject* object)
+{
+    if (!deferredRejectReady || !deferredRejectAction || !deferredRejectSetPending) {
+        return false;
+    }
+
+    if (deferredRejectReady()) {
+        return deferredRejectAction();
+    }
+
+    if (!deferredReject.pending) {
+        deferredReject.documentName = object && object->getDocument()
+            ? std::string(object->getDocument()->getName())
+            : std::string();
+        deferredRejectSetPending(true);
+    }
+
+    return false;
+}
+
+void TaskDlgFeatureParameters::onDeferredRejectRecomputeSettled()
+{
+    if (!deferredRejectReady || !deferredRejectAction || !deferredRejectSetPending) {
+        return;
+    }
+
+    finishDeferredDialogReject(
+        this,
+        deferredReject,
+        deferredRejectReady(),
+        [this]() { return deferredRejectAction ? deferredRejectAction() : false; },
+        [this](bool pending) {
+            if (deferredRejectSetPending) {
+                deferredRejectSetPending(pending);
+            }
+        }
+    );
+}
+
+void TaskDlgFeatureParameters::clearDeferredRejectHandlers()
+{
+    deferredRejectReady = {};
+    deferredRejectAction = {};
+    deferredRejectSetPending = {};
+}
+
 bool PartDesignGui::runAsyncAcceptDocumentRecompute(App::Document* document)
 {
     if (!document) {

@@ -176,14 +176,8 @@ public:
 protected:
     TaskRevolutionParameters* parameter = nullptr;
 
-private:
-    void ensureDeferredRejectConnection();
-    void setDeferredRejectPending(bool pending);
-
 private Q_SLOTS:
     void onParameterRecomputeSettled();
-
-private:
 };
 
 class PartDesignGuiExport TaskDlgRevolutionParameters: public TaskDlgRevolutionBase

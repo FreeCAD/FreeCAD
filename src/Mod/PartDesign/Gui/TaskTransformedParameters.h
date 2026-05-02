@@ -278,10 +278,6 @@ public:
 private Q_SLOTS:
     void onParameterRecomputeSettled();
 
-private:
-    void ensureDeferredRejectConnection();
-    void setDeferredRejectPending(bool pending);
-
 protected:
     AcceptRecomputeMode acceptRecomputeMode(bool isUpdateBlocked) const override;
 

@@ -521,26 +521,6 @@ TaskDlgLoftParameters::TaskDlgLoftParameters(ViewProviderLoft* LoftView, bool ne
 
 TaskDlgLoftParameters::~TaskDlgLoftParameters() = default;
 
-void TaskDlgLoftParameters::ensureDeferredRejectConnection()
-{
-    ensureDeferredDialogRejectConnection(
-        deferredReject,
-        parameter,
-        &TaskLoftParameters::recomputeSettled,
-        this,
-        &TaskDlgLoftParameters::onParameterRecomputeSettled
-    );
-}
-
-void TaskDlgLoftParameters::setDeferredRejectPending(bool pending)
-{
-    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
-        if (parameter) {
-            parameter->setDeferredClosePending(pending);
-        }
-    });
-}
-
 bool TaskDlgLoftParameters::performReject()
 {
     if (parameter) {
@@ -552,12 +532,14 @@ bool TaskDlgLoftParameters::performReject()
 
 bool TaskDlgLoftParameters::accept()
 {
-    if (!parameter || deferredReject.pending) {
+    if (!parameter || hasDeferredRejectPending()) {
         return false;
     }
 
     if (auto loft = getObject<PartDesign::Loft>()) {
-        ensureDeferredRejectConnection();
+        prepareDeferredReject(parameter, &TaskLoftParameters::recomputeSettled, [this]() {
+            return performReject();
+        });
         parameter->clearInteractiveSelection();
 
         // First verify that the loft can be built and then hide the sections as otherwise
@@ -580,33 +562,17 @@ bool TaskDlgLoftParameters::reject()
         return false;
     }
 
-    ensureDeferredRejectConnection();
+    prepareDeferredReject(parameter, &TaskLoftParameters::recomputeSettled, [this]() {
+        return performReject();
+    });
     parameter->clearInteractiveSelection();
     parameter->stopPendingRecompute();
-    if (!parameter->hasOutstandingRecompute()) {
-        return performReject();
-    }
-
-    if (!deferredReject.pending) {
-        auto* loft = getObject<PartDesign::Loft>();
-        deferredReject.documentName = loft && loft->getDocument()
-            ? std::string(loft->getDocument()->getName())
-            : std::string();
-        setDeferredRejectPending(true);
-    }
-
-    return false;
+    return finishRejectOrDefer(getObject<PartDesign::Loft>());
 }
 
 void TaskDlgLoftParameters::onParameterRecomputeSettled()
 {
-    finishDeferredDialogReject(
-        this,
-        deferredReject,
-        parameter && !parameter->hasOutstandingRecompute(),
-        [this]() { return performReject(); },
-        [this](bool pending) { setDeferredRejectPending(pending); }
-    );
+    finishRejectOrDefer(getObject<PartDesign::Loft>());
 }
 
 #include "moc_TaskLoftParameters.cpp"

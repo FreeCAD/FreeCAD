@@ -215,10 +215,6 @@ private Q_SLOTS:
     void onParameterRecomputeSettled();
 
 private:
-    void ensureDeferredRejectConnection();
-    void setDeferredRejectPending(bool pending);
-
-private:
     TaskHoleParameters* parameter;
 };
 
