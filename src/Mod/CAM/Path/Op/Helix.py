@@ -597,9 +597,14 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "local_clearance": safeHeight,
             "global_clearance": clearanceHeight,
             "solids": solids,
-            "tool_shape": self.tool.Shape,
-            "tolerance": abs(safeHeight - obj.StartDepth.Value),
+            "tool_shape": None,
+            "tool_diameter": None,
+            "safety_margin": obj.LinkingSafetyMargin.Value,
         }
+        if obj.LinkingMode == "Safest":
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
+        elif obj.LinkingMode == "Compromise":
+            linkingArgs["tool_diameter"] = tooldiameter
 
         obj.Direction = _caclulatePathDirection(obj)
 
