@@ -29,6 +29,7 @@
 #include "App/Application.h"
 #include "App/Document.h"
 #include "App/FeatureTest.h"
+#include "Base/Interpreter.h"
 #include <src/App/InitApplication.h>
 
 using namespace std::chrono_literals;
@@ -329,6 +330,34 @@ TEST_F(AsyncRecomputeTest, CancelRecomputeRequestReportsCanceledResult)
     EXPECT_TRUE(blocker->isError());
     ASSERT_NE(_doc->getErrorDescription(blocker), nullptr);
     EXPECT_STREQ(_doc->getErrorDescription(blocker), "User aborted");
+}
+
+TEST_F(AsyncRecomputeTest, InFlightWorkerRecomputeDoesNotMonopolizeGil)
+{
+    auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
+        _doc->addObject("App::FeatureTestAsyncBlocker", "BlockingFeature")
+    );
+    ASSERT_NE(blocker, nullptr);
+
+    App::FeatureTestAsyncBlocker::resetBlocker();
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        App::FeatureTestAsyncBlocker::releaseBlocker();
+    };
+
+    blocker->touch();
+    App::GetApplication().queueRecomputeRequest(App::RecomputeRequest::fromDocumentObject(*blocker));
+    ASSERT_TRUE(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+
+    auto gilProbe = std::async(std::launch::async, [] {
+        Base::PyGILStateLocker lock;
+        return true;
+    });
+
+    EXPECT_EQ(gilProbe.wait_for(100ms), std::future_status::ready);
+    EXPECT_TRUE(gilProbe.get());
+
+    App::FeatureTestAsyncBlocker::releaseBlocker();
 }
 
 namespace
