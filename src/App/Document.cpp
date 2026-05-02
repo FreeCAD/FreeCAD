@@ -2853,14 +2853,6 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
 {
     ZoneScoped;
 
-    // Recompute can execute Python-backed features. Keep the GIL for the full
-    // recompute so async recompute still serializes Python execution the same
-    // way the main-thread path does, preserving compatibility with existing
-    // Python-backed objects and addons. Main-thread signal hops such as
-    // signalBeforeRecompute() temporarily release it when they need to run
-    // Python on the GUI thread to avoid deadlocks.
-    Base::PyGILStateLocker locker;
-
     if (d->undoing || d->rollback) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Ignore document recompute on undo/redo");
