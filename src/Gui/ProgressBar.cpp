@@ -379,7 +379,7 @@ void SequencerBar::abort()
 {
     // resets
     resetData();
-    Base::AbortException exc("User aborted");
+    Base::UserAbortException exc;
     throw exc;
 }
 

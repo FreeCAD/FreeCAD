@@ -157,7 +157,7 @@ public:
         }
 
         if (App::currentRecomputeWasCanceled()) {
-            throw Base::AbortException("User aborted");
+            throw Base::UserAbortException();
         }
 
         return std::forward<ExecuteBase>(executeBase)();
