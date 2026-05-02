@@ -849,6 +849,14 @@ Qt::KeyboardModifier GizmoContainer::getFineSnapModifier()
     return Qt::ShiftModifier;
 }
 
+InputHint::UserInput GizmoContainer::getFineSnapKey()
+{
+    if (getFineSnapModifier() == Qt::ControlModifier) {
+        return InputHint::UserInput::ModifierCtrl;
+    }
+    return InputHint::UserInput::ModifierShift;
+}
+
 bool GizmoContainer::isCoarseByDefault()
 {
     return getGizmoParameterGroup()->GetInt(

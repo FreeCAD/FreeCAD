@@ -130,14 +130,8 @@ void TaskFeatureParameters::showDraggerHints()
         return;
     }
 
-    const auto modifier = Gui::GizmoContainer::getFineSnapModifier();
+    const Gui::InputHint::UserInput key = Gui::GizmoContainer::getFineSnapKey();
     const bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
-
-    using UserInput = Gui::InputHint::UserInput;
-    UserInput key = UserInput::ModifierShift;
-    if (modifier == Qt::ControlModifier) {
-        key = UserInput::ModifierCtrl;
-    }
 
     QString message;
     if (coarseByDefault) {

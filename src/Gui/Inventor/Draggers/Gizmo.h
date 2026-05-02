@@ -37,6 +37,7 @@
 
 #include <Base/Placement.h>
 #include <Gui/DocumentObserver.h>
+#include <Gui/InputHint.h>
 
 #include <FCGlobal.h>
 
@@ -244,6 +245,8 @@ public:
     static bool isCoarseSnapEnabled();
     // Returns the modifier key used for fine snapping (Shift or Ctrl)
     static Qt::KeyboardModifier getFineSnapModifier();
+    // Returns the InputHint key for the fine snap modifier
+    static InputHint::UserInput getFineSnapKey();
     // Returns true when coarse dragging is the default behavior
     static bool isCoarseByDefault();
 
