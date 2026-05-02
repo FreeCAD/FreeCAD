@@ -109,14 +109,18 @@ struct DocumentP
 
     DocumentP();
 
-    void addRecomputeLog(const char* why, App::DocumentObject* obj)
+    void addRecomputeLog(const char* why,
+                         App::DocumentObject* obj,
+                         RecomputeIssueKind kind = RecomputeIssueKind::Failure)
     {
-        addRecomputeLog(new DocumentObjectExecReturn(why, obj));
+        addRecomputeLog(new DocumentObjectExecReturn(why, obj, kind));
     }
 
-    void addRecomputeLog(const std::string& why, App::DocumentObject* obj)
+    void addRecomputeLog(const std::string& why,
+                         App::DocumentObject* obj,
+                         RecomputeIssueKind kind = RecomputeIssueKind::Failure)
     {
-        addRecomputeLog(new DocumentObjectExecReturn(why, obj));
+        addRecomputeLog(new DocumentObjectExecReturn(why, obj, kind));
     }
 
     void addRecomputeLog(DocumentObjectExecReturn* returnCode)
@@ -127,7 +131,9 @@ struct DocumentP
         }
         _RecomputeLog.emplace(returnCode->Which,
                               std::unique_ptr<DocumentObjectExecReturn>(returnCode));
-        returnCode->Which->setStatus(ObjectStatus::Error, true);
+        if (returnCode->shouldSetErrorState()) {
+            returnCode->Which->setStatus(ObjectStatus::Error, true);
+        }
     }
 
     void clearRecomputeLog(const App::DocumentObject* obj = nullptr)
@@ -156,11 +162,19 @@ struct DocumentP
 
     const char* findRecomputeLog(const App::DocumentObject* obj)
     {
+        if (const auto* issue = findRecomputeIssue(obj)) {
+            return issue->Why.c_str();
+        }
+        return nullptr;
+    }
+
+    const DocumentObjectExecReturn* findRecomputeIssue(const App::DocumentObject* obj) const
+    {
         auto range = _RecomputeLog.equal_range(obj);
         if (range.first == range.second) {
             return nullptr;
         }
-        return (--range.second)->second->Why.c_str();
+        return (--range.second)->second.get();
     }
 
     static void findAllPathsAt(const std::vector<Node>& all_nodes,

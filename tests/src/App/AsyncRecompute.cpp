@@ -19,9 +19,12 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <algorithm>
 #include <chrono>
 #include <future>
+#include <mutex>
 #include <thread>
+#include <vector>
 
 #include <boost/scope_exit.hpp>
 #include <gtest/gtest.h>
@@ -29,10 +32,71 @@
 #include "App/Application.h"
 #include "App/Document.h"
 #include "App/FeatureTest.h"
+#include "Base/Console.h"
 #include "Base/Interpreter.h"
 #include <src/App/InitApplication.h>
 
 using namespace std::chrono_literals;
+
+namespace
+{
+
+struct CapturedLog
+{
+    std::string notifier;
+    std::string msg;
+    Base::LogStyle level;
+};
+
+class CapturingLogger final: public Base::ILogger
+{
+public:
+    explicit CapturingLogger(std::vector<CapturedLog>& out, std::mutex& outMutex)
+        : output(out)
+        , mutex(outMutex)
+    {}
+
+    void sendLog(
+        const std::string& notifiername,
+        const std::string& msg,
+        Base::LogStyle level,
+        Base::IntendedRecipient,
+        Base::ContentType
+    ) override
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        output.push_back({notifiername, msg, level});
+    }
+
+private:
+    std::vector<CapturedLog>& output;
+    std::mutex& mutex;
+};
+
+class ScopedObserver
+{
+public:
+    explicit ScopedObserver(Base::ILogger& logger)
+        : logger(logger)
+    {
+        Base::Console().attachObserver(&logger);
+    }
+
+    ~ScopedObserver()
+    {
+        Base::Console().detachObserver(&logger);
+    }
+
+    ScopedObserver(const ScopedObserver&) = delete;
+    ScopedObserver(ScopedObserver&&) = delete;
+    ScopedObserver& operator=(const ScopedObserver&) = delete;
+    ScopedObserver& operator=(ScopedObserver&&) = delete;
+
+private:
+    Base::ILogger& logger;
+};
+
+}  // namespace
 
 class AsyncRecomputeTest: public ::testing::Test
 {
@@ -301,6 +365,11 @@ TEST_F(AsyncRecomputeTest, CancelRecomputeRequestReportsCanceledResult)
     bool callbackSuccess = true;
     App::RecomputeFailure callbackFailure = App::RecomputeFailure::None;
     std::string callbackMessage;
+    std::mutex logMutex;
+    std::vector<CapturedLog> logs;
+    CapturingLogger logger(logs, logMutex);
+    ScopedObserver scoped(logger);
+    Base::Console().setConnectionMode(Base::ConsoleSingleton::Direct);
 
     blocker->touch();
     App::RecomputeRequest request = App::RecomputeRequest::fromDocumentObject(*blocker);
@@ -327,9 +396,18 @@ TEST_F(AsyncRecomputeTest, CancelRecomputeRequestReportsCanceledResult)
     EXPECT_FALSE(callbackSuccess);
     EXPECT_EQ(callbackFailure, App::RecomputeFailure::Canceled);
     EXPECT_EQ(callbackMessage, "User aborted");
-    EXPECT_TRUE(blocker->isError());
+    EXPECT_FALSE(blocker->isError());
     ASSERT_NE(_doc->getErrorDescription(blocker), nullptr);
     EXPECT_STREQ(_doc->getErrorDescription(blocker), "User aborted");
+
+    {
+        std::lock_guard<std::mutex> lock(logMutex);
+        const bool reportedAsError = std::any_of(logs.begin(), logs.end(), [](const CapturedLog& log) {
+            return log.level == Base::LogStyle::Error
+                && log.msg.find("User aborted") != std::string::npos;
+        });
+        EXPECT_FALSE(reportedAsError);
+    }
 }
 
 TEST_F(AsyncRecomputeTest, InFlightWorkerRecomputeDoesNotMonopolizeGil)

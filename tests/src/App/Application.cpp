@@ -52,7 +52,7 @@ protected:
     {
         ++checkAbortCalls;
         if (throwOnCheckAbort) {
-            throw Base::AbortException("User aborted");
+            throw Base::UserAbortException();
         }
     }
 };
