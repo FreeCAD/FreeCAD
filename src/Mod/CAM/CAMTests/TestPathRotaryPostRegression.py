@@ -1,24 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *   Copyright (c) 2026 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2026 <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """Multi-post regression coverage for rotary surfacing G-code.
 
@@ -39,7 +38,7 @@ import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
 from CAMTests.PathTestUtils import PathTestBase
 from Path.Post.Processor import PostProcessorFactory
-from Machine.models.machine import Machine, Toolhead, ToolheadType
+from Machine.models.machine import Machine, RotaryAxis, Toolhead, ToolheadType
 
 try:
     import ocl  # noqa: F401
@@ -144,6 +143,7 @@ def _setup_cyl_stock(job, radius, length):
         try:
             FreeCAD.ActiveDocument.removeObject(job.Stock.Name)
         except Exception:
+            """Ignore removal errors"""
             pass
     job.Stock = new_stock
     return new_stock
@@ -161,10 +161,24 @@ class TestPathRotaryPostRegression(PathTestBase):
         part = _make_part(cls.doc, length=cls.length, r0=8.0, r1=cls.radius)
         cls.job = PathJob.Create("Job_RotaryPost", [part])
         _setup_cyl_stock(cls.job, radius=cls.radius + 0.5, length=cls.length)
+
+        # Rotary Surface requires a Machine with at least one rotary
+        # axis. Pin a stub A-around-X axis on the Job so the resolver
+        # picks it up.
+        class _StubMachine:
+            rotary_axes = {
+                "A": RotaryAxis(
+                    name="A",
+                    rotation_vector=FreeCAD.Vector(1, 0, 0),
+                    min_limit=-360.0,
+                    max_limit=360.0,
+                )
+            }
+
+        cls.job.Proxy.getMachine = lambda: _StubMachine()
         cls.doc.recompute()
 
         cls.op = PathRotarySurface.Create("RotaryOp", parentJob=cls.job)
-        cls.op.RotaryAxis = "X"
         cls.op.StartX = -cls.length / 2.0
         cls.op.StopX = cls.length / 2.0
         cls.op.StartAngle = 0.0

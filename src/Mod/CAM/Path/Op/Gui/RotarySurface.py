@@ -1,24 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *   Copyright (c) 2026 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2026 <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
@@ -64,7 +64,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getForm(self):
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpRotarySurfaceEdit.ui")
         comboToPropertyMap = [
-            ("rotaryAxis", "RotaryAxis"),
             ("cutMode", "CutMode"),
             ("cutPattern", "CutPattern"),
             ("feedMode", "FeedMode"),
@@ -81,8 +80,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
-        if obj.RotaryAxis != str(self.form.rotaryAxis.currentData()):
-            obj.RotaryAxis = str(self.form.rotaryAxis.currentData())
         if obj.CutMode != str(self.form.cutMode.currentData()):
             obj.CutMode = str(self.form.cutMode.currentData())
         if obj.CutPattern != str(self.form.cutPattern.currentData()):
@@ -108,7 +105,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def setFields(self, obj):
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
-        self.selectInComboBox(obj.RotaryAxis, self.form.rotaryAxis)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
         self.selectInComboBox(obj.FeedMode, self.form.feedMode)
@@ -138,7 +134,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals = [
             self.form.toolController.currentIndexChanged,
             self.form.coolantController.currentIndexChanged,
-            self.form.rotaryAxis.currentIndexChanged,
             self.form.cutMode.currentIndexChanged,
             self.form.cutPattern.currentIndexChanged,
             self.form.feedMode.currentIndexChanged,

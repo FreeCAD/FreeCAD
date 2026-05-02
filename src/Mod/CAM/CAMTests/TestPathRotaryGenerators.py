@@ -1,30 +1,31 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *   Copyright (c) 2026 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2026 <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import math
 import unittest
 
+import numpy
+
 import Path
-import CAMTests.PathTestUtils as PathTestUtils
+from CAMTests import PathTestUtils
 
 try:
     import ocl
@@ -39,14 +40,14 @@ except ImportError:
         HAVE_OCL = False
 
 if HAVE_OCL:
-    import numpy
-    import Path.Base.Generator.rotary_dropcutter as rotary_dropcutter
+    from Path.Base.Generator import rotary_dropcutter
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
 def _add_quad(stl, p_l1, p_r1, p_r2, p_l2):
+    """Add two triangles forming a quad to an OCL STLSurf."""
     stl.addTriangle(ocl.Triangle(p_l1, p_r1, p_r2))
     stl.addTriangle(ocl.Triangle(p_l1, p_r2, p_l2))
 
@@ -183,6 +184,7 @@ class TestPathRotaryGenerators(PathTestUtils.PathTestBase):
     """Analytic-shape verification of the rotary drop-cutter sampler."""
 
     def assertRadiiClose(self, expected, actual, tol):
+        """Assert two radii grids are close, with NaN-aware comparison."""
         # NaN-aware comparison; expected may have NaN where actual must too
         for i in range(actual.shape[0]):
             for j in range(actual.shape[1]):
@@ -242,7 +244,7 @@ class TestPathRotaryGenerators(PathTestUtils.PathTestBase):
         self.assertRadiiClose(expected, radii, tol=0.05)
 
     def test03_y_axis_rotary(self):
-        """Cylinder built around +Y axis; sample with axis_vec=(0,1,0)."""
+        """Cylinder around +Y axis sampled with axis_vec=(0,1,0)."""
         stl = ocl.STLSurf()
         radius = 5.0
         y_min, y_max = -4.0, 4.0
@@ -312,16 +314,19 @@ class TestPathRotaryGenerators(PathTestUtils.PathTestBase):
             self.assertAlmostEqual(a, b, delta=1e-3)
 
     def test06_rejects_non_axis_aligned_axis(self):
+        """Non-axis-aligned rotary axis raises NotImplementedError."""
         stl = _build_cylinder_stl(5.0, -1.0, 1.0)
         with self.assertRaises(NotImplementedError):
             rotary_dropcutter.sample(stl, (1.0, 1.0, 0.0), [0.0], [0.0])
 
     def test07_rejects_zero_axis(self):
+        """Zero vector axis raises ValueError."""
         stl = _build_cylinder_stl(5.0, -1.0, 1.0)
         with self.assertRaises(ValueError):
             rotary_dropcutter.sample(stl, (0.0, 0.0, 0.0), [0.0], [0.0])
 
     def test08_empty_inputs_return_empty(self):
+        """Empty xs or thetas returns appropriately-shaped empty array."""
         stl = _build_cylinder_stl(5.0, -1.0, 1.0)
         out = rotary_dropcutter.sample(stl, (1.0, 0.0, 0.0), [], [0.0])
         self.assertEqual(out.shape, (0, 1))

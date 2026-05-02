@@ -1,24 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *   Copyright (c) 2026 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2026 <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 
 __title__ = "CAM Rotary Surface Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -92,32 +92,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
         self.initOpProperties(obj)
 
     def opOnDocumentRestored(self, obj):
-        # Migrate legacy AxialStepover -> StepOver for documents saved
-        # before the rename.
-        if hasattr(obj, "AxialStepover") and not hasattr(obj, "StepOver"):
-            self.initOpProperties(obj, warn=True)
-            try:
-                obj.StepOver = obj.AxialStepover
-            except Exception:
-                pass
-            try:
-                obj.removeProperty("AxialStepover")
-            except Exception:
-                pass
-        # Also migrate documents that have both (mid-migration state).
-        if hasattr(obj, "AxialStepover") and hasattr(obj, "StepOver"):
-            try:
-                obj.removeProperty("AxialStepover")
-            except Exception:
-                pass
-        # Legacy RadialStepdown -> StepDown (FeatureStepDown ensures StepDown).
-        if hasattr(obj, "RadialStepdown"):
-            try:
-                if hasattr(obj, "StepDown"):
-                    obj.StepDown = obj.RadialStepdown
-                obj.removeProperty("RadialStepdown")
-            except Exception:
-                pass
+        pass
 
     def initOpProperties(self, obj, warn=False):
         Path.Log.track()
@@ -142,16 +117,6 @@ class ObjectRotarySurface(PathOp.ObjectOp):
 
     def opPropertyDefinitions(self):
         return [
-            (
-                "App::PropertyEnumeration",
-                "RotaryAxis",
-                "Rotary",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Which world axis the rotary lies along. "
-                    "FromMachine reads from the Job's Machine.",
-                ),
-            ),
             (
                 "App::PropertyDistance",
                 "StartX",
@@ -274,11 +239,6 @@ class ObjectRotarySurface(PathOp.ObjectOp):
     def propertyEnumerations(cls, dataType="data"):
         Path.Log.track()
         enums = {
-            "RotaryAxis": [
-                (translate("CAM_RotarySurface", "From Machine"), "FromMachine"),
-                (translate("CAM_RotarySurface", "X"), "X"),
-                (translate("CAM_RotarySurface", "Y"), "Y"),
-            ],
             "CutMode": [
                 (translate("CAM_RotarySurface", "Climb"), "Climb"),
                 (translate("CAM_RotarySurface", "Conventional"), "Conventional"),
@@ -303,7 +263,6 @@ class ObjectRotarySurface(PathOp.ObjectOp):
 
     def opPropertyDefaults(self, obj, job):
         return {
-            "RotaryAxis": "FromMachine",
             "StepOver": 1.0,
             "AngularResolution": 5.0,
             "RadialStockToLeave": 0.0,
@@ -359,22 +318,14 @@ class ObjectRotarySurface(PathOp.ObjectOp):
     # ------------------------------------------------------------------
 
     def _resolve_rotary(self, obj, job):
-        """Decide which world axis carries the rotary, plus its G-code letter.
+        """Read the rotary axis from the Job's Machine.
 
         Returns (axis_label, rotary_letter, rotation_vector_world,
                  axis_min_deg, axis_max_deg, wrap_strategy).
 
-        wrap_strategy is the string value of the rotary axis's
-        WrapStrategy ("unwound", "modulo", "rezero"). Falls back to
-        "unwound" when no machine or no matching axis is found.
+        Raises ValueError if the Job has no Machine, or the Machine
+        declares no rotary axes.
         """
-        # Try the machine first when RotaryAxis = FromMachine.
-        axis_label = obj.RotaryAxis
-        rotary_letter = "A"
-        rot_vec = FreeCAD.Vector(1, 0, 0)
-        amin, amax = -360.0, 360.0
-        wrap_strategy = "unwound"
-
         machine = None
         if job is not None and hasattr(job, "Proxy") and hasattr(job.Proxy, "getMachine"):
             try:
@@ -383,49 +334,23 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 Path.Log.debug("getMachine failed: {}".format(e))
                 machine = None
 
-        if axis_label == "FromMachine":
-            if machine is None:
-                raise ValueError(
-                    "no machine configured on the Job. Configure a machine "
-                    "with at least one rotary axis, or pin RotaryAxis to X or Y."
-                )
-            if not getattr(machine, "rotary_axes", None):
-                raise ValueError(
-                    "the configured machine declares no rotary axes. Pick "
-                    "a machine with a rotary axis, or pin RotaryAxis to X or Y."
-                )
-            else:
-                # Take the first rotary axis the machine declares.
-                axis_obj = next(iter(machine.rotary_axes.values()))
-                rotary_letter = axis_obj.name
-                rv = axis_obj.rotation_vector
-                rot_vec = FreeCAD.Vector(rv.x, rv.y, rv.z)
-                amin = float(getattr(axis_obj, "min_limit", -360.0))
-                amax = float(getattr(axis_obj, "max_limit", 360.0))
-                wrap_strategy = _wrap_strategy_value(axis_obj)
-                axis_label = self._axis_label_from_vec(rot_vec)
-        else:
-            # User pinned X or Y; use those defaults but update rot_vec.
-            if axis_label == "X":
-                rot_vec = FreeCAD.Vector(1, 0, 0)
-            elif axis_label == "Y":
-                rot_vec = FreeCAD.Vector(0, 1, 0)
-                rotary_letter = "B"
-            if machine is not None and getattr(machine, "rotary_axes", None):
-                # Honor the letter from the machine if it agrees with the
-                # axis the user picked.
-                for ax in machine.rotary_axes.values():
-                    rv = FreeCAD.Vector(
-                        ax.rotation_vector.x,
-                        ax.rotation_vector.y,
-                        ax.rotation_vector.z,
-                    )
-                    if self._axis_label_from_vec(rv) == axis_label:
-                        rotary_letter = ax.name
-                        amin = float(getattr(ax, "min_limit", -360.0))
-                        amax = float(getattr(ax, "max_limit", 360.0))
-                        wrap_strategy = _wrap_strategy_value(ax)
-                        break
+        if machine is None:
+            raise ValueError(
+                "no machine configured on the Job. Configure a machine "
+                "with at least one rotary axis."
+            )
+        if not getattr(machine, "rotary_axes", None):
+            raise ValueError("the configured machine declares no rotary axes.")
+
+        # Take the first rotary axis the machine declares.
+        axis_obj = next(iter(machine.rotary_axes.values()))
+        rv = axis_obj.rotation_vector
+        rot_vec = FreeCAD.Vector(rv.x, rv.y, rv.z)
+        rotary_letter = axis_obj.name
+        amin = float(getattr(axis_obj, "min_limit", -360.0))
+        amax = float(getattr(axis_obj, "max_limit", 360.0))
+        wrap_strategy = _wrap_strategy_value(axis_obj)
+        axis_label = self._axis_label_from_vec(rot_vec)
 
         return axis_label, rotary_letter, rot_vec, amin, amax, wrap_strategy
 
@@ -536,7 +461,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
             Path.Log.error("Rotary Surface: no parent Job.")
             return
 
-        # Resolve rotary axis + letter from machine / RotaryAxis property.
+        # Resolve rotary axis + letter from the Job's Machine.
         try:
             axis_label, rotary_letter, rot_vec, amin, amax, wrap_strategy = self._resolve_rotary(
                 obj, job
@@ -781,7 +706,6 @@ class ObjectRotarySurface(PathOp.ObjectOp):
 def SetupProperties():
     """Property names the Setup Sheet may persist defaults for."""
     return [
-        "RotaryAxis",
         "StepOver",
         "AngularResolution",
         "RadialStockToLeave",

@@ -1,24 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *   Copyright (c) 2026 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2026 <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import math
 import unittest
@@ -101,6 +100,38 @@ def _commands_with_axis(commands, letter):
     return [c for c in commands if letter in c.Parameters]
 
 
+def _install_stub_machine(job, axis, min_limit=-360.0, max_limit=360.0):
+    """Attach a single-rotary-axis stub Machine to the Job.
+
+    The Rotary Surface op now requires a Machine with at least one
+    rotary axis, so every test fixture installs one matching the
+    fixture's world axis. ``axis`` is "X" (A around X) or "Y" (B
+    around Y).
+    """
+    from Machine.models.machine import RotaryAxis
+
+    if axis == "X":
+        name = "A"
+        rot_vec = FreeCAD.Vector(1, 0, 0)
+    elif axis == "Y":
+        name = "B"
+        rot_vec = FreeCAD.Vector(0, 1, 0)
+    else:
+        raise ValueError("axis must be 'X' or 'Y'")
+
+    class _StubMachine:
+        rotary_axes = {
+            name: RotaryAxis(
+                name=name,
+                rotation_vector=rot_vec,
+                min_limit=float(min_limit),
+                max_limit=float(max_limit),
+            )
+        }
+
+    job.Proxy.getMachine = lambda: _StubMachine()
+
+
 @unittest.skipUnless(HAVE_OCL, "OpenCamLib not available")
 class TestPathRotarySurface(PathTestBase):
     """Integration tests for the Rotary Surface operation MVP."""
@@ -119,12 +150,12 @@ class TestPathRotarySurface(PathTestBase):
         part = _make_tapered_part(self.doc, length=length, axis=axis)
         job = PathJob.Create("Job_Rotary", [part])
         _setup_cyl_stock_along_axis(job, radius=radius + 0.5, length=length, axis=axis)
+        _install_stub_machine(job, axis)
         self.doc.recompute()
         return job, part
 
     def _build_op(self, job, axis="X", radius=12.0, length=40.0):
         op = PathRotarySurface.Create("RotaryOp", parentJob=job)
-        op.RotaryAxis = axis
         op.StartX = -length / 2.0
         op.StopX = length / 2.0
         op.StartAngle = 0.0
@@ -306,6 +337,7 @@ class TestPathRotarySurface(PathTestBase):
         self.doc.recompute()
         job = PathJob.Create("Job_Rotary_Off", [part])
         _setup_cyl_stock_along_axis(job, radius=15.0, length=40.0, axis="X")
+        _install_stub_machine(job, "X")
         self.doc.recompute()
         op = self._build_op(job, axis="X")
         op.Proxy.execute(op)
@@ -320,25 +352,12 @@ class TestPathRotarySurface(PathTestBase):
         narrower than that — a typical 4th-axis indexer with ±90°
         travel — and letting the default StopAngle=360 exceed it.
         """
-        from Machine.models.machine import RotaryAxis
-
-        class _StubMachine:
-            rotary_axes = {
-                "A": RotaryAxis(
-                    name="A",
-                    rotation_vector=FreeCAD.Vector(1, 0, 0),
-                    min_limit=-90.0,
-                    max_limit=90.0,
-                )
-            }
-
         warnings = self._capture_warnings()
         job, _ = self._build_job(axis="X")
         op = self._build_op(job, axis="X")
-        # Force `_resolve_rotary` to read from our stub machine. The
-        # job/proxy is destroyed by tearDown so no restoration cleanup
-        # is needed.
-        job.Proxy.getMachine = lambda: _StubMachine()
+        # Override the default ±360 stub from _build_job with a narrower
+        # ±90 rotary so the default StopAngle=360 exceeds the limit.
+        _install_stub_machine(job, "X", min_limit=-90.0, max_limit=90.0)
         op.Proxy.execute(op)
         msgs = "\n".join(warnings)
         self.assertIn("rotary limits", msgs.lower())
