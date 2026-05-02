@@ -414,7 +414,8 @@ void SectionCut::setDeferredRejectPending(bool pending)
 bool SectionCut::rejectNow()
 {
     QDialog::reject();
-    if (auto* dw = qobject_cast<QDockWidget*>(parent())) {
+    if (auto* dw = qobject_cast<QDockWidget*>(parentWidget())) {
+        dw->close();
         dw->deleteLater();
     }
     return true;
@@ -1599,7 +1600,7 @@ SectionCut* SectionCut::makeDockWidget(QWidget* parent)
     auto sectionCut = new SectionCut(parent);
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     // the dialog is designed that you can see the tree, thus put it to the right side
-    QDockWidget* dw = pDockMgr->addDockWindow("Section cutting", sectionCut, Qt::RightDockWidgetArea);
+    QDockWidget* dw = pDockMgr->addDockWindow("Section Cutting", sectionCut, Qt::RightDockWidgetArea);
     dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     // dw->setFloating(true);
     dw->show();
