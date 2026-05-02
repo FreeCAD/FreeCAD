@@ -55,13 +55,14 @@ void TKJtReader::clear()
 {
     result.str(std::string());
     result.clear();
+    myShapeCount = 0;
+    myFileName.clear();
 }
 
 void TKJtReader::open(const std::string& filename)
 {
     clear();
-
-    fprintf(stderr, "TKJtReader::open(%s)\n", filename.c_str());
+    myFileName = filename;
 
     Base::FileInfo file(filename);
     jtDir = TCollection_ExtendedString(TCollection_AsciiString((file.dirPath() + '/').c_str()));
@@ -73,8 +74,6 @@ void TKJtReader::open(const std::string& filename)
         Handle(JtNode_Partition) aNode = aModel->Init();
         if (!aNode.IsNull()) {
             rootNode = aNode;
-
-            fprintf(stderr, "TKJtReader: model init OK, traversing graph\n");
             builder.addHeader();
             builder.beginSeparator();
             Base::ShapeHintsItem shapeHints;
@@ -84,20 +83,23 @@ void TKJtReader::open(const std::string& filename)
             traverseGraph(aNode);
             builder.endSeparator();
             rootNode.Nullify();
-            fprintf(stderr, "TKJtReader: done, output size=%zu bytes\n", result.str().size());
         }
-        else {
-            fprintf(stderr, "TKJtReader: aModel->Init() returned null\n");
-        }
-    }
-    else {
-        fprintf(stderr, "TKJtReader: JtData_Model is null (file not found or unreadable)\n");
     }
 }
 
 std::string TKJtReader::getOutput() const
 {
     return result.str();
+}
+
+int TKJtReader::shapeCount() const
+{
+    return myShapeCount;
+}
+
+std::string TKJtReader::fileName() const
+{
+    return myFileName;
 }
 
 void TKJtReader::readMaterialAttribute(const Handle(JtAttribute_Material) & aMaterial)
@@ -202,6 +204,7 @@ void TKJtReader::getTriangleStripSet(const Handle(JtElement_ShapeLOD_TriStripSet
     // NOLINTEND
     builder.addNode(Base::Coordinate3Item {points});
     builder.addNode(Base::FaceSetItem {faces});
+    ++myShapeCount;
 }
 
 void TKJtReader::getPolygonSet(const Handle(JtElement_ShapeLOD_PolygonSet) & aLOD)
@@ -227,6 +230,7 @@ void TKJtReader::getPolygonSet(const Handle(JtElement_ShapeLOD_PolygonSet) & aLO
     // NOLINTEND
     builder.addNode(Base::Coordinate3Item {points});
     builder.addNode(Base::FaceSetItem {faces});
+    ++myShapeCount;
 }
 
 void TKJtReader::getPolylineSet(const Handle(JtElement_ShapeLOD_PolylineSet) & aLOD)
@@ -245,6 +249,7 @@ void TKJtReader::getPolylineSet(const Handle(JtElement_ShapeLOD_PolylineSet) & a
     if (!points.empty()) {
         builder.addNode(Base::Coordinate3Item {points});
         builder.addNode(Base::LineSetItem {});
+        ++myShapeCount;
     }
 }
 
