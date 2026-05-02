@@ -24,6 +24,7 @@
 
 import os
 import sys
+import time
 import unittest
 import FreeCAD
 import FreeCADGui
@@ -47,6 +48,17 @@ def processGuiEvents():
     app = QtWidgets.QApplication.instance()
     if app:
         app.processEvents()
+
+
+def spin_events(predicate=None, timeout=1.5, step=0.01):
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        processGuiEvents()
+        if predicate is not None and predicate():
+            return True
+        time.sleep(step)
+    processGuiEvents()
+    return predicate() if predicate is not None else True
 
 
 """
@@ -123,6 +135,40 @@ class SectionCutTestCases(unittest.TestCase):
         cutX = panel.findChild(QtWidgets.QDoubleSpinBox, "cutX")
         self.assertIsNotNone(groupBoxX)
         self.assertIsNotNone(cutX)
+
+    def testAsyncPreviewCreatesCutObjects(self):
+        self.Doc.addObject("Part::Box", "SourceBox")
+        self.Doc.recompute()
+
+        FreeCADGui.activateView("Gui::View3DInventor", True)
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        processGuiEvents()
+
+        FreeCADGui.runCommand("Part_SectionCut")
+        self.assertTrue(spin_events(lambda: findDockWidget("Section Cutting") is not None))
+
+        dw = findDockWidget("Section Cutting")
+        self.assertIsNotNone(dw, "Section cutting panel was not opened")
+
+        panel = dw.widget()
+        self.assertIsNotNone(panel, "Section cutting dock widget has no content widget")
+
+        groupBoxX = panel.findChild(QtWidgets.QGroupBox, "groupBoxX")
+        cutX = panel.findChild(QtWidgets.QDoubleSpinBox, "cutX")
+        self.assertIsNotNone(groupBoxX)
+        self.assertIsNotNone(cutX)
+
+        groupBoxX.setChecked(True)
+        processGuiEvents()
+        cutX.setValue(cutX.value() + 0.1)
+
+        self.assertTrue(
+            spin_events(
+                lambda: self.Doc.getObject("SectionCutBoxX") is not None
+                and self.Doc.getObject("SectionCutX") is not None,
+                timeout=2.0,
+            )
+        )
 
     def tearDown(self):
         dockWidget = findDockWidget("Section Cutting")
