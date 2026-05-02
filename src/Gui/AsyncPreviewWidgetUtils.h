@@ -93,14 +93,25 @@ void updateAsyncPreviewWidgets(
         return;
     }
 
-    if (!controller || !controller->isInProgress() || !showProgressUi) {
+    if (!controller || !controller->isInProgress()) {
         widgets.statusWidget->hide();
         widgets.progressBar->hide();
+        widgets.statusLabel->hide();
+        return;
+    }
+
+    widgets.cancelButton->setEnabled(!controller->isCancelRequested() && !deferredClosePending);
+
+    if (!showProgressUi) {
+        widgets.statusWidget->show();
+        widgets.progressBar->hide();
+        widgets.statusLabel->hide();
         return;
     }
 
     widgets.statusWidget->show();
     widgets.progressBar->show();
+    widgets.statusLabel->show();
     if (controller->isProgressDeterminate()) {
         widgets.progressBar->setRange(0, 100);
         widgets.progressBar->setValue(controller->progressPercent());
@@ -124,7 +135,6 @@ void updateAsyncPreviewWidgets(
 
     widgets.statusLabel->setText(status);
     widgets.statusLabel->setToolTip(status);
-    widgets.cancelButton->setEnabled(!controller->isCancelRequested() && !deferredClosePending);
 }
 
 }  // namespace Gui
