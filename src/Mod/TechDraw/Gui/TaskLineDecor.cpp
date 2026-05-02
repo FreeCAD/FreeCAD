@@ -63,7 +63,7 @@ TaskLineDecor::TaskLineDecor(TechDraw::DrawViewPart* partFeat,
     connect(ui->cb_Style, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskLineDecor::onStyleChanged);
     connect(ui->cc_Color, &ColorButton::changed, this, &TaskLineDecor::onColorChanged);
     connect(ui->dsb_Weight, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskLineDecor::onWeightChanged);
-    connect(ui->cb_Visible, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskLineDecor::onVisibleChanged);
+    connect(ui->cb_Visible, &QCheckBox::toggled, this, &TaskLineDecor::onVisibleChanged);
 }
 
 TaskLineDecor::~TaskLineDecor()
@@ -76,21 +76,13 @@ void TaskLineDecor::initUi()
     std::string viewName = m_partFeat->getNameInDocument();
     ui->le_View->setText(QString::fromStdString(viewName));
 
-    std::stringstream ss;
-    for (auto& e: m_edges) {
-        int num = DrawUtil::getIndexFromName(e);
-        ss << num << ", ";
-    }
-    std::string temp = ss.str();
-    if (!temp.empty()) {
-        temp.resize(temp.length() - 2);
-    }
-    ui->le_Lines->setText(QString::fromStdString(temp));
+    int n = m_edges.size();
+    ui->le_Lines->setText(QString::number(n) + tr(n == 1 ? " line" : " lines"));
 
     ui->cc_Color->setColor(m_color.asValue<QColor>());
     ui->dsb_Weight->setValue(m_weight);
     ui->dsb_Weight->setSingleStep(0.1);
-    ui->cb_Visible->setCurrentIndex(m_visible);
+    ui->cb_Visible->setChecked(m_visible);
 
     // line numbering starts at 1, not 0
     DrawGuiUtil::loadLineStyleChoices(ui->cb_Style, m_lineGenerator);
@@ -200,9 +192,9 @@ void TaskLineDecor::onWeightChanged()
     m_partFeat->requestPaint();
 }
 
-void TaskLineDecor::onVisibleChanged()
+void TaskLineDecor::onVisibleChanged(bool checked)
 {
-    m_visible = ui->cb_Visible->currentIndex();
+    m_visible = checked;
     applyDecorations();
     m_partFeat->requestPaint();
 }
@@ -364,7 +356,7 @@ int TaskRestoreLines::countInvisibleCosmetics()
             iCosmos++;
         }
     }
-    return iCosmos++;
+    return iCosmos;
 }
 
 int TaskRestoreLines::countInvisibleCenters()
@@ -376,7 +368,7 @@ int TaskRestoreLines::countInvisibleCenters()
             iCenter++;
         }
     }
-    return iCenter++;
+    return iCenter;
 }
 
 void TaskRestoreLines::restoreInvisibleLines()
