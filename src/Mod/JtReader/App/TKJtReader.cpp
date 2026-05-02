@@ -43,8 +43,12 @@ const Handle(Standard_Type) Type_JtNode_Shape_Vertex            = STANDARD_TYPE(
 const Handle(Standard_Type) Type_JtNode_Shape_TriStripSet       = STANDARD_TYPE(JtNode_Shape_TriStripSet);
 // clang-format on
 
-const Handle(Standard_Type) Type_JtElement_ShapeLOD_PolygonSet  = STANDARD_TYPE(JtElement_ShapeLOD_PolygonSet);
-const Handle(Standard_Type) Type_JtElement_ShapeLOD_PolylineSet = STANDARD_TYPE(JtElement_ShapeLOD_PolylineSet);
+const Handle(Standard_Type) Type_JtElement_ShapeLOD_PolygonSet = STANDARD_TYPE(
+    JtElement_ShapeLOD_PolygonSet
+);
+const Handle(Standard_Type) Type_JtElement_ShapeLOD_PolylineSet = STANDARD_TYPE(
+    JtElement_ShapeLOD_PolylineSet
+);
 }  // namespace
 
 TKJtReader::TKJtReader()
