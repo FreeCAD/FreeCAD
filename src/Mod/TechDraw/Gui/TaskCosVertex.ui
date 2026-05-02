@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>250</width>
-    <height>167</height>
+    <width>425</width>
+    <height>309</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,10 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="gridLayout" columnstretch="1,1">
+     <property name="verticalSpacing">
+      <number>12</number>
+     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
@@ -36,7 +39,7 @@
         <bool>false</bool>
        </property>
        <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
+        <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
@@ -46,11 +49,27 @@
     </layout>
    </item>
    <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>8</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -63,14 +82,14 @@
      <item>
       <widget class="QPushButton" name="pbTracker">
        <property name="text">
-        <string>Point Picker</string>
+        <string>Pick Point</string>
        </property>
       </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -85,7 +104,7 @@
    <item>
     <widget class="Line" name="line">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -99,36 +118,16 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string notr="true">X</string>
-          </property>
-         </widget>
-        </item>
+       <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,1">
+        <property name="verticalSpacing">
+         <number>12</number>
+        </property>
         <item row="0" column="1">
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>28</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="2">
-         <widget class="Gui::QuantitySpinBox" name="dsbX">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="minimum">
+         <widget class="Gui::QuantitySpinBox" name="dsbX" native="true">
+          <property name="minimum" stdset="0">
            <double>-2147483647.000000000000000</double>
           </property>
-          <property name="maximum">
+          <property name="maximum" stdset="0">
            <double>2147483647.000000000000000</double>
           </property>
           <property name="decimals" stdset="0">
@@ -136,22 +135,26 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0" colspan="2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string notr="true">X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string notr="true">Y</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="Gui::QuantitySpinBox" name="dsbY">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="minimum">
+        <item row="1" column="1">
+         <widget class="Gui::QuantitySpinBox" name="dsbY" native="true">
+          <property name="minimum" stdset="0">
            <double>-2147483647.000000000000000</double>
           </property>
-          <property name="maximum">
+          <property name="maximum" stdset="0">
            <double>2147483647.000000000000000</double>
           </property>
           <property name="decimals" stdset="0">
