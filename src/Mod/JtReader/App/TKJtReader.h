@@ -28,6 +28,7 @@
 # include <JtAttribute_Material.hxx>
 # include <JtData_Model.hxx>
 # include <JtElement_ShapeLOD_PolygonSet.hxx>
+# include <Standard_Failure.hxx>
 # include <JtElement_ShapeLOD_PolylineSet.hxx>
 # include <JtElement_ShapeLOD_TriStripSet.hxx>
 # include <JtNode_Instance.hxx>
@@ -51,6 +52,8 @@ public:
     void open(const std::string& filename);
     void clear();
     std::string getOutput() const;
+    int shapeCount() const;
+    std::string fileName() const;
 
 private:
     void traverseGraph(const Handle(JtNode_Base) & aNode);
@@ -72,6 +75,8 @@ private:
     std::stringstream result;
     Base::InventorBuilder builder;
     std::list<Base::Matrix4D> transformations;
+    std::string myFileName;
+    int myShapeCount {0};
 };
 
 };  // namespace JtReaderNS
