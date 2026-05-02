@@ -1231,12 +1231,12 @@ di quel progetto, indifferentemente se espansi o meno.</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="14"/>
       <source>Spaces Manager</source>
-      <translation type="unfinished">Spaces Manager</translation>
+      <translation>Gestore spazi</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="20"/>
       <source>This screen enables checking the spaces configuration and editing of attributes in the project.</source>
-      <translation type="unfinished">This screen enables checking the spaces configuration and editing of attributes in the project.</translation>
+      <translation>Questa schermata consente di verificare la configurazione degli spazi e di modificare gli attributi del progetto.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="37"/>
@@ -1731,17 +1731,17 @@ di quel progetto, indifferentemente se espansi o meno.</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="14"/>
       <source>Custom Properties</source>
-      <translation type="unfinished">Custom Properties</translation>
+      <translation>Proprietà personalizzate</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="44"/>
       <source>A description of this property. Supports any language.</source>
-      <translation type="unfinished">A description of this property. Supports any language.</translation>
+      <translation>Descrizione di questa proprietà. Supporta qualsiasi lingua.</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="51"/>
       <source>The property will be hidden in the interface, and can only be modified via Python scripting</source>
-      <translation type="unfinished">The property will be hidden in the interface, and can only be modified via Python scripting</translation>
+      <translation>La proprietà sarà nascosta nell'interfaccia e potrà essere modificata solo tramite script Python</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="54"/>
@@ -1836,7 +1836,7 @@ di quel progetto, indifferentemente se espansi o meno.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="206"/>
       <source>Opens a 3D preview of the selected file</source>
-      <translation type="unfinished">Opens a 3D preview of the selected file</translation>
+      <translation>Apre un'anteprima 3D del file selezionato</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="209"/>
@@ -2031,7 +2031,7 @@ di quel progetto, indifferentemente se espansi o meno.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="246"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even a custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even a custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I sistemi di classificazione, come UniClass o MasterFormat, o anche un sistema personalizzato, sono in alcuni casi una parte importante di un progetto edilizio. Questo test garantirà che tutti gli oggetti e i materiali BIM presenti nel modello abbiano la proprietà del codice standard debitamente compilata.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="273"/>
@@ -2229,7 +2229,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="32"/>
       <source>Group by</source>
-      <translation type="unfinished">Group by</translation>
+      <translation>Raggruppa per</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="97"/>
@@ -2386,7 +2386,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="183"/>
       <source>When enabling this, the original version of objects dropped onto an IFC project tree will not be deleted</source>
-      <translation type="unfinished">When enabling this, the original version of objects dropped onto an IFC project tree will not be deleted</translation>
+      <translation>Quando si abilita questa opzione, la versione originale degli oggetti trascinati nella struttura di un progetto IFC non verrà eliminata</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="246"/>
@@ -2401,7 +2401,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="306"/>
       <source>Enables asking the above question every time a project is created</source>
-      <translation type="unfinished">Enables asking the above question every time a project is created</translation>
+      <translation>Consente di porre la domanda di cui sopra ogni volta che viene creato un progetto</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="328"/>
@@ -2411,17 +2411,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="334"/>
       <source>When enabled, converting objects to IFC types will always keep the original object</source>
-      <translation type="unfinished">When enabled, converting objects to IFC types will always keep the original object</translation>
+      <translation>Quando abilitata, la conversione degli oggetti in tipi IFC manterrà sempre l'oggetto originale</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="337"/>
       <source>Always keep original object when converting to type</source>
-      <translation type="unfinished">Always keep original object when converting to type</translation>
+      <translation>Conserva sempre l'oggetto originale durante la conversione al tipo</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="350"/>
       <source>When enabled, a dialog will be shown each time when converting objects to IFC types</source>
-      <translation type="unfinished">When enabled, a dialog will be shown each time when converting objects to IFC types</translation>
+      <translation>Quando questa opzione è abilitata, verrà visualizzata una finestra di dialogo ogni volta che si convertono oggetti in tipi IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="353"/>
@@ -2520,12 +2520,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="20"/>
       <source>Object Creation</source>
-      <translation type="unfinished">Object Creation</translation>
+      <translation>Creazione oggetto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="42"/>
       <source>When two similar walls are connected, their underlying sketches are merged and the walls are combined into a single object</source>
-      <translation type="unfinished">When two similar walls are connected, their underlying sketches are merged and the walls are combined into a single object</translation>
+      <translation>Quando due muri simili vengono collegati, i loro schizzi sottostanti vengono uniti e i muri vengono combinati in un unico oggetto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="77"/>
@@ -2595,12 +2595,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="74"/>
       <source>If this is checked, when a BIM object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation type="unfinished">If this is checked, when a BIM object has a material, the object will take the color of the material. This can be overridden for each object.</translation>
+      <translation>Se questa opzione è selezionata, quando un oggetto BIM ha un materiale, l'oggetto assumerà il colore del materiale. Questa impostazione può essere modificata per ogni singolo oggetto.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="93"/>
       <source>If this is checked, when an object becomes subtraction or addition of a BIM object, it will receive the Draft construction color.</source>
-      <translation type="unfinished">If this is checked, when an object becomes subtraction or addition of a BIM object, it will receive the Draft construction color.</translation>
+      <translation>Se questa opzione è selezionata, quando un oggetto viene sottratto o aggiunto a un oggetto BIM, riceverà il colore di costruzione di Draft.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="109"/>
@@ -2695,7 +2695,7 @@ invece del'ambiente di lavoro web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="371"/>
       <source>2D Rendering</source>
-      <translation type="unfinished">2D Rendering</translation>
+      <translation>Rendering 2D</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="486"/>
@@ -3734,15 +3734,15 @@ Un piano di edificio non è obbligatorio, ma è una pratica comune averne almeno
 
 The default template is located at:
 &lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </source>
-      <translation type="unfinished">A custom WebGL HTML template is used for export. Otherwise, the default template will be used.
+      <translation>Per l'esportazione viene utilizzato un modello HTML WebGL personalizzato. In caso contrario, verrà utilizzato il modello predefinito.
 
-The default template is located at:
-&lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </translation>
+Il modello predefinito si trova in:
+&lt;directory di installazione di FreeCAD&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="38"/>
       <source>Use custom export template</source>
-      <translation type="unfinished">Use custom export template</translation>
+      <translation>Utilizza un modello di esportazione personalizzato</translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="59"/>
@@ -3752,7 +3752,7 @@ The default template is located at:
     <message>
       <location filename="../ui/preferences-webgl.ui" line="70"/>
       <source>The path to the custom WebGL HTML template</source>
-      <translation type="unfinished">The path to the custom WebGL HTML template</translation>
+      <translation>Il percorso al modello HTML WebGL personalizzato</translation>
     </message>
   </context>
   <context>
@@ -4275,7 +4275,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="927"/>
       <source>Choose File</source>
-      <translation type="unfinished">Choose File</translation>
+      <translation>Scegli file</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="938"/>
@@ -4482,7 +4482,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchComponent.py" line="2429"/>
-      <location filename="../../ArchSectionPlane.py" line="1745"/>
+      <location filename="../../ArchSectionPlane.py" line="1747"/>
       <location filename="../../ArchAxis.py" line="991"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchWindow.py" line="1705"/>
@@ -4504,7 +4504,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchReference.py" line="717"/>
       <location filename="../../ArchComponent.py" line="1938"/>
-      <location filename="../../ArchSectionPlane.py" line="1512"/>
+      <location filename="../../ArchSectionPlane.py" line="1514"/>
       <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchAxis.py" line="824"/>
       <location filename="../../ArchAxisSystem.py" line="222"/>
@@ -4533,8 +4533,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1715"/>
-      <location filename="../../ArchMaterial.py" line="880"/>
-      <location filename="../../ArchMaterial.py" line="906"/>
+      <location filename="../../ArchMaterial.py" line="895"/>
+      <location filename="../../ArchMaterial.py" line="921"/>
       <source>Name</source>
       <translation>Nome</translation>
     </message>
@@ -4550,8 +4550,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchStructure.py" line="1578"/>
       <location filename="../../ArchRoof.py" line="1082"/>
-      <location filename="../../ArchMaterial.py" line="882"/>
-      <location filename="../../ArchMaterial.py" line="908"/>
+      <location filename="../../ArchMaterial.py" line="897"/>
+      <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
       <source>Thickness</source>
       <translation>Spessore</translation>
@@ -4732,8 +4732,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../Arch.py" line="530"/>
-      <location filename="../../ArchMaterial.py" line="881"/>
-      <location filename="../../ArchMaterial.py" line="907"/>
+      <location filename="../../ArchMaterial.py" line="896"/>
+      <location filename="../../ArchMaterial.py" line="922"/>
       <source>Material</source>
       <translation>Materiale</translation>
     </message>
@@ -4748,17 +4748,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Merge Duplicates</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="946"/>
+      <location filename="../../ArchMaterial.py" line="961"/>
       <source>New layer</source>
       <translation>Nuovo layer</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="983"/>
+      <location filename="../../ArchMaterial.py" line="1007"/>
       <source>Total thickness</source>
       <translation>Spessore totale</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="997"/>
+      <location filename="../../ArchMaterial.py" line="1014"/>
       <source>depends on the object</source>
       <translation>dipende dall'oggetto</translation>
     </message>
@@ -5616,7 +5616,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1729"/>
       <source>Empty Report</source>
-      <translation type="unfinished">Empty Report</translation>
+      <translation>Report vuoto</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1730"/>
@@ -6049,97 +6049,97 @@ Creazione del Piano interrotta.</translation>
       <translation>Crea Piano di Sezione</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1738"/>
+      <location filename="../../ArchSectionPlane.py" line="1740"/>
       <source>Scope</source>
       <translation>Ambito</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1741"/>
+      <location filename="../../ArchSectionPlane.py" line="1743"/>
       <source>Placement and Visuals</source>
       <translation type="unfinished">Placement and Visuals</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1744"/>
+      <location filename="../../ArchSectionPlane.py" line="1746"/>
       <source>Objects seen by this section plane</source>
       <translation type="unfinished">Objects seen by this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1750"/>
+      <location filename="../../ArchSectionPlane.py" line="1752"/>
       <source>Removes highlighted objects from the list above</source>
       <translation type="unfinished">Removes highlighted objects from the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1751"/>
+      <location filename="../../ArchSectionPlane.py" line="1753"/>
       <source>Add Selected</source>
       <translation type="unfinished">Add Selected</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1756"/>
+      <location filename="../../ArchSectionPlane.py" line="1758"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation type="unfinished">Adds selected objects to the scope of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1757"/>
+      <location filename="../../ArchSectionPlane.py" line="1759"/>
       <source>Cut View</source>
       <translation type="unfinished">Cut View</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1764"/>
+      <location filename="../../ArchSectionPlane.py" line="1766"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation type="unfinished">Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1765"/>
+      <location filename="../../ArchSectionPlane.py" line="1767"/>
       <source>Rotate by 90°</source>
       <translation type="unfinished">Rotate by 90°</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1769"/>
+      <location filename="../../ArchSectionPlane.py" line="1771"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation type="unfinished">Rotates the plane around its local X-axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1773"/>
+      <location filename="../../ArchSectionPlane.py" line="1775"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation type="unfinished">Rotates the plane around its local Y-axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1777"/>
+      <location filename="../../ArchSectionPlane.py" line="1779"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation type="unfinished">Rotates the plane around its local Z-axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1780"/>
       <source>Resize to Fit</source>
       <translation type="unfinished">Resize to Fit</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1784"/>
+      <location filename="../../ArchSectionPlane.py" line="1786"/>
       <source>Recenter Plane</source>
       <translation type="unfinished">Recenter Plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1766"/>
+      <location filename="../../ArchSectionPlane.py" line="1768"/>
       <source>Rotate X</source>
       <translation>Ruota X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1517"/>
+      <location filename="../../ArchSectionPlane.py" line="1519"/>
       <source>Toggle Cut View</source>
       <translation type="unfinished">Toggle Cut View</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1770"/>
+      <location filename="../../ArchSectionPlane.py" line="1772"/>
       <source>Rotate Y</source>
       <translation>Ruota Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1774"/>
+      <location filename="../../ArchSectionPlane.py" line="1776"/>
       <source>Rotate Z</source>
       <translation>Ruota Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1783"/>
+      <location filename="../../ArchSectionPlane.py" line="1785"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Ridimensiona il piano per adattare gli oggetti nella lista precedente</translation>
     </message>
@@ -6150,7 +6150,7 @@ Creazione del Piano interrotta.</translation>
       <translation>Centro</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1789"/>
+      <location filename="../../ArchSectionPlane.py" line="1791"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centra il piano sugli oggetti nella lista precedente</translation>
     </message>
@@ -6205,7 +6205,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="920"/>
       <source>Space Type</source>
-      <translation type="unfinished">Space Type</translation>
+      <translation>Tipo spazio</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="921"/>
@@ -6215,17 +6215,17 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="922"/>
       <source>Finish Floor</source>
-      <translation type="unfinished">Finish Floor</translation>
+      <translation>Finitura pavimento</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="923"/>
       <source>Finish Walls</source>
-      <translation type="unfinished">Finish Walls</translation>
+      <translation>Finitura muri</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="924"/>
       <source>Finish Ceiling</source>
-      <translation type="unfinished">Finish Ceiling</translation>
+      <translation>Finitura soffitto</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="932"/>
@@ -7056,7 +7056,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Un tag opzionale per questo componente</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="968"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>La forma di questo oggetto</translation>
@@ -7077,7 +7077,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Una lista di corrispondenza MaterialName:SolidIndexesList che collega nomi materiali con indici solidi da usare quando si fa riferimento a questo oggetto da altri file</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1140"/>
+      <location filename="../../ArchSectionPlane.py" line="1142"/>
       <location filename="../../ArchBuildingPart.py" line="547"/>
       <source>The line width of this object</source>
       <translation>Lo spessore della linea di questo oggetto</translation>
@@ -8632,7 +8632,7 @@ The ladybug or pysolar Python module is required.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="253"/>
-      <location filename="../../ArchSectionPlane.py" line="960"/>
+      <location filename="../../ArchSectionPlane.py" line="962"/>
       <source>The placement of this object</source>
       <translation>Il posizionamento di questo oggetto</translation>
     </message>
@@ -8853,80 +8853,80 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Forma del tondino</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="979"/>
+      <location filename="../../ArchSectionPlane.py" line="981"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Gli oggetti che devono essere considerati da questo piano di sezione. Vuoto significa tutto il documento.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="990"/>
+      <location filename="../../ArchSectionPlane.py" line="992"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Se falso, verranno tagliati anche i non solidi, con possibili risultati sbagliati.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1002"/>
+      <location filename="../../ArchSectionPlane.py" line="1004"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Se vero, le visualizzazioni risultanti verranno ritagliate nell'area di piano della sezione.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1013"/>
+      <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Se vero, il colore del materiale degli oggetti verrà utilizzato per riempire le aree tagliate.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1025"/>
+      <location filename="../../ArchSectionPlane.py" line="1027"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>La geometria oltre a questo valore verrà tagliata. Mantieni zero per un valore illimitato.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1098"/>
+      <location filename="../../ArchSectionPlane.py" line="1100"/>
       <source>The display length of this section plane</source>
       <translation>La lunghezza di visualizzazione di questo piano di sezione</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1110"/>
+      <location filename="../../ArchSectionPlane.py" line="1112"/>
       <source>The display height of this section plane</source>
       <translation>L'altezza di visualizzazione di questo piano di sezione</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1122"/>
+      <location filename="../../ArchSectionPlane.py" line="1124"/>
       <source>The size of the arrows of this section plane</source>
       <translation>La dimensione delle frecce di questo piano di sezione</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1131"/>
+      <location filename="../../ArchSectionPlane.py" line="1133"/>
       <source>The transparency of this object</source>
       <translation>La trasparenza di questo oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1149"/>
-      <location filename="../../ArchSectionPlane.py" line="1166"/>
+      <location filename="../../ArchSectionPlane.py" line="1151"/>
+      <location filename="../../ArchSectionPlane.py" line="1168"/>
       <source>Show the cut in the 3D view</source>
       <translation>Mostra il taglio nella vista 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1157"/>
+      <location filename="../../ArchSectionPlane.py" line="1159"/>
       <source>The color of this object</source>
       <translation>Il colore di questo oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1179"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>La distanza tra il piano di taglio e la vista di taglio attuale (tenere questo un valore molto piccolo ma non zero)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1186"/>
+      <location filename="../../ArchSectionPlane.py" line="1188"/>
       <source>Show the label in the 3D view</source>
       <translation>Mostra l'etichetta nella vista 3D</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="579"/>
-      <location filename="../../ArchSectionPlane.py" line="1194"/>
+      <location filename="../../ArchSectionPlane.py" line="1196"/>
       <source>The name of the font</source>
       <translation>Il nome del carattere</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="597"/>
-      <location filename="../../ArchSectionPlane.py" line="1203"/>
+      <location filename="../../ArchSectionPlane.py" line="1205"/>
       <source>The size of the text font</source>
       <translation>La dimensione del carattere di testo</translation>
     </message>
@@ -9008,7 +9008,7 @@ The ladybug or pysolar Python module is required.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="570"/>
       <source>The text to show. Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive), or $floor, $walls, $ceiling for finishes, to insert the respective data</source>
-      <translation type="unfinished">The text to show. Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive), or $floor, $walls, $ceiling for finishes, to insert the respective data</translation>
+      <translation>Il testo da visualizzare. Utilizzare $area, $label, $longname, $description o qualsiasi altro nome di proprietà preceduto da $ (senza distinzione tra maiuscole e minuscole), oppure $floor, $walls, $ceiling per le finiture, per inserire i dati corrispondenti</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="588"/>
@@ -9981,7 +9981,7 @@ The ladybug or pysolar Python module is required.</translation>
       <location filename="../../BimStatus.py" line="46"/>
       <location filename="../../BimStatus.py" line="56"/>
       <source>Custom…</source>
-      <translation type="unfinished">Custom…</translation>
+      <translation>Personalizzato…</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="53"/>
@@ -10254,7 +10254,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="127"/>
       <source>Custom property sets can be defined in</source>
-      <translation type="unfinished">Custom property sets can be defined in</translation>
+      <translation>È possibile definire i set di proprietà personalizzate in</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="132"/>
@@ -10874,7 +10874,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="142"/>
       <source>Install them from menu Tools -&gt; Addon Manager.</source>
-      <translation type="unfinished">Install them from menu Tools -&gt; Addon Manager.</translation>
+      <translation>Installali dal menu Strumenti -&gt; Addon Manager.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="181"/>
@@ -11206,9 +11206,9 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <source>Custom WebGL template file '{}' could not be read.
 
 Do you want to proceed using the default template?</source>
-      <translation type="unfinished">Custom WebGL template file '{}' could not be read.
+      <translation>Impossibile leggere il file modello WebGL personalizzato '{}'.
 
-Do you want to proceed using the default template?</translation>
+Si desidera procedere utilizzando il modello predefinito?</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="134"/>
@@ -11220,9 +11220,9 @@ Do you want to proceed using the default template?</translation>
       <source>The default WebGL export template is not available at path: {}
 
 Please check your FreeCAD installation or provide a custom template under menu Preferences → Import-Export → WebGL.</source>
-      <translation type="unfinished">The default WebGL export template is not available at path: {}
+      <translation>Il modello di esportazione WebGL predefinito non è disponibile al percorso: {}
 
-Please check your FreeCAD installation or provide a custom template under menu Preferences → Import-Export → WebGL.</translation>
+Verificare l'installazione di FreeCAD o fornire un modello personalizzato nel menu Preferenze → Importa/Esporta → WebGL.</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="175"/>
@@ -13025,17 +13025,17 @@ Do you want to proceed?</translation>
     <message>
       <location filename="../../ArchSql.py" line="685"/>
       <source>Converts text to lowercase.</source>
-      <translation type="unfinished">Converts text to lowercase.</translation>
+      <translation>Converte il testo in minuscolo.</translation>
     </message>
     <message>
       <location filename="../../ArchSql.py" line="705"/>
       <source>Converts text to uppercase.</source>
-      <translation type="unfinished">Converts text to uppercase.</translation>
+      <translation>Converte il testo in maiuscolo.</translation>
     </message>
     <message>
       <location filename="../../ArchSql.py" line="725"/>
       <source>Joins multiple strings and properties together.</source>
-      <translation type="unfinished">Joins multiple strings and properties together.</translation>
+      <translation>Unisce più stringhe e proprietà insieme.</translation>
     </message>
     <message>
       <location filename="../../ArchSql.py" line="750"/>

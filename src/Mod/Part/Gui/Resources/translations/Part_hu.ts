@@ -226,7 +226,7 @@
       <location filename="../../AttacherTexts.cpp" line="798"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Végpont</translation>
+      <translation>Pontra</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="799"/>
@@ -606,7 +606,7 @@
       <location filename="../../AttacherTexts.cpp" line="371"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normál az élhez</translation>
+      <translation>Élre merőleges</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="372"/>
@@ -2221,7 +2221,7 @@ irányát.</translation>
       <translation>Rács konvertálása</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1490"/>
+      <location filename="../../TaskAttacher.cpp" line="1491"/>
       <source>Edit attachment</source>
       <translation>Csatolmány szerkesztése</translation>
     </message>
@@ -3183,8 +3183,8 @@ Válasszon ki egy vagy több élt.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>Összeolvasztja az egyesített objektumokat a fájlolvasás során (lassabb, de több részletet biztosít)</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation type="unfinished">Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -4868,13 +4868,13 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../Location.ui" line="114"/>
       <source>Pick Position</source>
-      <translation type="unfinished">Pick Position</translation>
+      <translation>Pozíció kiválasztása</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="244"/>
       <location filename="../../Location.ui" line="254"/>
       <source>Rotation angle around the specified axis</source>
-      <translation type="unfinished">Rotation angle around the specified axis</translation>
+      <translation>A megadott tengely körüli forgatás szöge</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="247"/>
@@ -5632,7 +5632,7 @@ Egyedi logikai művelet ellenőrzés:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1454"/>
       <source>Run Check</source>
-      <translation type="unfinished">Run Check</translation>
+      <translation>Ellenőrzés futtatása</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
@@ -5795,12 +5795,12 @@ Egyedi logikai művelet ellenőrzés:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1472"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>Melléklet</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1554"/>
+      <location filename="../../TaskAttacher.cpp" line="1556"/>
       <source>Datum dialog: input error</source>
       <translation>Hivatkozás párbeszéd: Beviteli hiba</translation>
     </message>
@@ -6471,7 +6471,7 @@ Folytassa?</translation>
       <translation>Távolság megadása:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation>Felületenkénti megjelenés</translation>
     </message>
@@ -6544,7 +6544,7 @@ Folytassa?</translation>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="101"/>
       <source>Edit Attachment</source>
-      <translation type="unfinished">Edit Attachment</translation>
+      <translation>Illesztés szerkesztése</translation>
     </message>
   </context>
   <context>
@@ -7115,12 +7115,12 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="319"/>
+      <location filename="../../../App/FaceMaker.cpp" line="332"/>
       <source>Simple</source>
       <translation>Egyszerű</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="324"/>
+      <location filename="../../../App/FaceMaker.cpp" line="337"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Külön sík felület létrehozása minden dróthálóhoz függetlenül. Nincs lyuk támogatás; drótok lehetnek különböző síkokon.</translation>
     </message>
@@ -7722,12 +7722,12 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="46"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation type="unfinished">BuildFace facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="51"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation type="unfinished">Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
     </message>

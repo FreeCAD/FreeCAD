@@ -2100,42 +2100,56 @@ a raw wire from the original shape is added</source>
 Il valore ottimale dipende dalla dimensione assoluta dell'importazione. I valori tipici sono compresi tra 1 e 5.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation>Deviazione massima per approssimazione delle curve complesse</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation>Deviazione massima per l'approssimazione di ellissi, iperbole, parabole, curve di Bézier e
+curve B-spline ad archi e linee. Può essere utile per l'ambiente di lavoro CAM.
+Impostare a zero per disabilitare l'approssimazione.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>Stile di esportazione</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>Stile del file SVG da scrivere quando si esporta uno schizzo</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>Tradotto (per stampa &amp; visualizzazione)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>Raw (per CAM)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>Tutte le linee bianche appariranno in nero nel SVG per una migliore leggibilità su sfondi bianchi</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>Trasforma le linee bianche in linee nere</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>Lunghezza massima del segmento per archi discretizzati</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2446,7 +2460,7 @@ anziché oggetti Draft o Part. Questa opzione sovrascrive l'impostazione "Import
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>Opzioni di esportazione</translation>
     </message>
@@ -4057,7 +4071,12 @@ or try saving to a lower DWG version.</source>
       <translation>%1 selezionare il terzo punto</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation>Solo linee di costruzione, polilinee e curve possono essere evidenziate</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>Seleziona un oggetto da modificare</translation>
     </message>
@@ -6231,12 +6250,12 @@ dal menu Strumenti → Addon Manager</translation>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Stile di esportazione SVG sconosciuto, verrà esportato come Tradotto</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>L'elenco di esportazione non contiene alcun oggetto con un contenitore di delimitazione valido</translation>
     </message>

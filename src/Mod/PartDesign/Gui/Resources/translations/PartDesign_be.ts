@@ -1358,7 +1358,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
       <source>End point</source>
-      <translation>Канчатковая кропка</translation>
+      <translation>Канцавая кропка</translation>
     </message>
   </context>
   <context>
@@ -4321,12 +4321,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="54"/>
       <source>End edge type</source>
-      <translation>Тып канчатковага рабра</translation>
+      <translation>Тып канцавога рабра</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="55"/>
       <source>End edge size</source>
-      <translation>Памер канчатковага рабра</translation>
+      <translation>Памер канцавога рабра</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="69"/>

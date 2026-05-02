@@ -184,7 +184,7 @@
     <message>
       <location filename="../TaskElementColors.cpp" line="202"/>
       <source>Set colors</source>
-      <translation type="unfinished">Set colors</translation>
+      <translation>Renkleri ayarla</translation>
     </message>
   </context>
   <context>
@@ -5189,7 +5189,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="656"/>
       <source>Import Error</source>
-      <translation type="unfinished">Import Error</translation>
+      <translation>İçe Aktarım Hatası</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="676"/>
@@ -5317,7 +5317,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="967"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1014"/>
       <source>Existing Item</source>
-      <translation type="unfinished">Existing Item</translation>
+      <translation>Halihazırda Olan Öğe</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="830"/>
@@ -6096,12 +6096,12 @@ Tüm değişiklikler kaydedilsin mi?</translation>
       <location filename="../CommandDoc.cpp" line="697"/>
       <location filename="../GraphvizView.cpp" line="505"/>
       <source>Export Graph</source>
-      <translation type="unfinished">Export Graph</translation>
+      <translation>Grafiği Dışa Aktar</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="606"/>
       <source>Export graph</source>
-      <translation type="unfinished">Export graph</translation>
+      <translation>Grafiği dışa aktar</translation>
     </message>
   </context>
   <context>
@@ -6274,7 +6274,7 @@ Tüm değişiklikler kaydedilsin mi?</translation>
       <location filename="../MainWindow.cpp" line="457"/>
       <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
-      <translation type="unfinished">Input Hints</translation>
+      <translation>Giriş İpuçları</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="467"/>
@@ -7451,12 +7451,12 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <message>
       <location filename="Translator.cpp" line="257"/>
       <source>Tamil</source>
-      <translation type="unfinished">Tamil</translation>
+      <translation>Tamilce</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="258"/>
       <source>Irish</source>
-      <translation type="unfinished">Irish</translation>
+      <translation>İrlandaca</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="222"/>
@@ -8183,12 +8183,12 @@ Ayrıntılar için Rapor Görünümünü kontrol edin.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="139"/>
       <source>Open Document</source>
-      <translation type="unfinished">Open Document</translation>
+      <translation>Belgeyi Aç</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="258"/>
       <source>Import File</source>
-      <translation type="unfinished">Import File</translation>
+      <translation>Dosyayı İçe Aktar</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="539"/>
@@ -8214,7 +8214,7 @@ Ayrıntılar için Rapor Görünümünü kontrol edin.</translation>
       <location filename="../CommandDoc.cpp" line="1634"/>
       <location filename="../CommandDoc.cpp" line="1644"/>
       <source>Delete Failed</source>
-      <translation type="unfinished">Delete Failed</translation>
+      <translation>Silme Başarısız Oldu</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="2142"/>
@@ -8234,7 +8234,7 @@ Ayrıntılar için Rapor Görünümünü kontrol edin.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="2262"/>
       <source>Expression Error</source>
-      <translation type="unfinished">Expression Error</translation>
+      <translation>İfade Hatası</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="2263"/>
@@ -8246,7 +8246,7 @@ Ayrıntılar için Rapor Görünümünü kontrol edin.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1698"/>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>Bağımlılık hatası</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="2145"/>
@@ -8346,13 +8346,13 @@ Devam edilsin mi?</translation>
     <message>
       <location filename="../CommandView.cpp" line="455"/>
       <source>Save Frozen Views</source>
-      <translation type="unfinished">Save Frozen Views</translation>
+      <translation>Dondurulmuş Görünümleri Kaydet</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="501"/>
       <location filename="../CommandView.cpp" line="528"/>
       <source>Restore Views</source>
-      <translation type="unfinished">Restore Views</translation>
+      <translation>Görünümleri Geri Yükle</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="517"/>
@@ -13500,7 +13500,7 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
     <message>
       <location filename="../CommandStd.cpp" line="466"/>
       <source>Cu&amp;stomize</source>
-      <translation type="unfinished">Cu&amp;stomize</translation>
+      <translation>Öze&amp;lleştir</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="467"/>
@@ -14150,7 +14150,7 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
     <message>
       <location filename="../CommandView.cpp" line="3743"/>
       <source>Sync View</source>
-      <translation type="unfinished">Sync View</translation>
+      <translation>Görünümü Eşitle</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3744"/>
@@ -14163,7 +14163,7 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
     <message>
       <location filename="../CommandView.cpp" line="3763"/>
       <source>Sync Selection</source>
-      <translation type="unfinished">Sync Selection</translation>
+      <translation>Seçimi Eşitle</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3764"/>
@@ -14176,7 +14176,7 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
     <message>
       <location filename="../CommandView.cpp" line="3783"/>
       <source>Sync Placement</source>
-      <translation type="unfinished">Sync Placement</translation>
+      <translation>Yerleşimi Eşitle</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3785"/>
@@ -14189,7 +14189,7 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
     <message>
       <location filename="../CommandView.cpp" line="3822"/>
       <source>Record Selection</source>
-      <translation type="unfinished">Record Selection</translation>
+      <translation>Seçimi Kaydet</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3824"/>
@@ -14579,7 +14579,7 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="71"/>
       <source>Tuple</source>
-      <translation type="unfinished">Tuple</translation>
+      <translation>Çok Ögeli</translation>
     </message>
   </context>
   <context>
@@ -14804,7 +14804,7 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
     <message>
       <location filename="../FreeCADGuiInit.py" line="463"/>
       <source>Portable Document Format</source>
-      <translation type="unfinished">Portable Document Format</translation>
+      <translation>Taşınabilir Belge Formatı (PDF)</translation>
     </message>
   </context>
   <context>
@@ -14825,7 +14825,7 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="984"/>
       <source>Annotation Label</source>
-      <translation type="unfinished">Annotation Label</translation>
+      <translation>Ek Açıklama Etiketi</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="985"/>
@@ -14838,7 +14838,7 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4246"/>
       <source>Toggle Bottom Panels</source>
-      <translation type="unfinished">Toggle Bottom Panels</translation>
+      <translation>Alt panelleri aç/kapat</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4247"/>

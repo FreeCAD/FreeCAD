@@ -3759,22 +3759,22 @@ Mura roghnaítear aon réad, osclaítear brabhsálaí comhad chun comhad SVG nó
       <translation>Gan aon aghaidheanna le gor sa rogha seo</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="307"/>
+      <location filename="../../DrawGuiUtil.cpp" line="309"/>
       <source>No page found</source>
       <translation>Níor aimsíodh aon leathanach</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="308"/>
+      <location filename="../../DrawGuiUtil.cpp" line="310"/>
       <source>No Drawing Pages available.</source>
       <translation>Níl aon leathanaigh líníochta ar fáil.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="413"/>
+      <location filename="../../DrawGuiUtil.cpp" line="415"/>
       <source>No page selected</source>
       <translation>Níl aon leathanach roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="414"/>
+      <location filename="../../DrawGuiUtil.cpp" line="416"/>
       <source>This function needs a page.</source>
       <translation>Teastaíonn leathanach don fheidhm seo.</translation>
     </message>
@@ -6351,152 +6351,147 @@ Ar mhaith leat leanúint ar aghaidh?</translation>
       <translation>Balún</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="29"/>
+      <location filename="../../TaskBalloon.ui" line="20"/>
+      <source>Annotation</source>
+      <translation>Anótáil</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="36"/>
       <source>Text to be displayed</source>
       <translation>Téacs le taispeáint</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="43"/>
+      <location filename="../../TaskBalloon.ui" line="50"/>
       <source>Color for text</source>
       <translation>Dath don téacs</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="57"/>
+      <location filename="../../TaskBalloon.ui" line="64"/>
       <source>Font size</source>
       <translation>Méid cló</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="76"/>
+      <location filename="../../TaskBalloon.ui" line="83"/>
       <source>Font size for text</source>
       <translation>Méid cló don téacs</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
+      <source>Bubble Appearance</source>
+      <translation>Dealramh na mBoilgeog</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="118"/>
       <source>Shape of the balloon bubble</source>
       <translation>Cruth na mboilgeog balúin</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="106"/>
+      <location filename="../../TaskBalloon.ui" line="122"/>
       <source>Circular</source>
       <translation>Ciorclach</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="115"/>
+      <location filename="../../TaskBalloon.ui" line="131"/>
       <source>None</source>
       <translation>Dada</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="124"/>
+      <location filename="../../TaskBalloon.ui" line="140"/>
       <source>Triangle</source>
       <translation>Triantán</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="133"/>
+      <location filename="../../TaskBalloon.ui" line="149"/>
       <source>Inspection</source>
       <translation>Cigireacht</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="142"/>
+      <location filename="../../TaskBalloon.ui" line="158"/>
       <source>Hexagon</source>
       <translation>Heicseagán</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="151"/>
+      <location filename="../../TaskBalloon.ui" line="167"/>
       <source>Square</source>
       <translation>Cearnóg</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="160"/>
+      <location filename="../../TaskBalloon.ui" line="176"/>
       <source>Rectangle</source>
       <translation>Dronuilleog</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="169"/>
+      <location filename="../../TaskBalloon.ui" line="185"/>
       <source>Line</source>
       <translation>Líne</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="181"/>
+      <location filename="../../TaskBalloon.ui" line="197"/>
       <source>Shape scale</source>
       <translation>Scála cruth</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="213"/>
-      <source>End symbol</source>
-      <translation>Siombail deiridh</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="227"/>
-      <source>End symbol scale</source>
-      <translation>Scála siombail deiridh</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="259"/>
-      <source>Line visible</source>
-      <translation>Líne le feiceáil</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="266"/>
-      <source>Controls whether the leader line is visible or not</source>
-      <translation>Rialaíonn sé an bhfuil an líne ceannaire le feiceáil nó nach bhfuil</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="286"/>
-      <source>Line width</source>
-      <translation>Leithead líne</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="324"/>
-      <source>Leader kink length</source>
-      <translation>Fad an chiorcail cheannaire</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="194"/>
+      <location filename="../../TaskBalloon.ui" line="210"/>
       <source>Bubble shape scale factor</source>
       <translation>Fachtóir scála cruth na mboilgeog</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="22"/>
+      <location filename="../../TaskBalloon.ui" line="29"/>
       <source>Text</source>
       <translation>Téacs</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="36"/>
+      <location filename="../../TaskBalloon.ui" line="43"/>
       <source>Text color</source>
       <translation>Dath an téacs</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="95"/>
+      <location filename="../../TaskBalloon.ui" line="111"/>
       <source>Bubble shape</source>
       <translation>Cruth boilgeog</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="220"/>
+      <location filename="../../TaskBalloon.ui" line="229"/>
+      <source>Leader Line</source>
+      <translation>Líne Ceannaire</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="291"/>
+      <source>Kink length</source>
+      <translation>Fad an chnapáin</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="298"/>
+      <source>Width</source>
+      <translation>Leithead</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="305"/>
       <source>End symbol for the balloon line</source>
       <translation>Siombail deiridh don líne balún</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="240"/>
+      <location filename="../../TaskBalloon.ui" line="247"/>
       <source>End symbol scale factor</source>
       <translation>Fachtóir scála siombail deiridh</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="273"/>
-      <source>False</source>
-      <translation>Bréagach</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="278"/>
-      <source>True</source>
-      <translation>Fíor</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="305"/>
+      <location filename="../../TaskBalloon.ui" line="275"/>
       <source>Leader line width</source>
       <translation>Leithead líne ceannaire</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="343"/>
+      <location filename="../../TaskBalloon.ui" line="312"/>
+      <source>Symbol scale</source>
+      <translation>Scála siombail</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="319"/>
+      <source>Symbol</source>
+      <translation>Siombail</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="338"/>
       <source>Length of balloon leader line kink</source>
       <translation>Fad an lúbadh i líne ceannaire an bhalúin</translation>
     </message>

@@ -1137,7 +1137,7 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1449"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
-      <translation>Lägger till en kosmetisk linje parallell med den valda linjen genom det valda toppunktet</translation>
+      <translation>Lägger till en kosmetisk linje parallell med den valda linjen genom det valda toppunkten</translation>
     </message>
   </context>
   <context>
@@ -1161,7 +1161,7 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1517"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
-      <translation>Lägger till en kosmetisk linje parallell med den valda linjen genom det valda toppunktet</translation>
+      <translation>Lägger till en kosmetisk linje parallell med den valda linjen genom det valda toppunkten</translation>
     </message>
   </context>
   <context>
@@ -1181,7 +1181,7 @@ Om du vänsterklickar på ett tomt utrymme valideras den aktuella dimensionen. H
       <location filename="../../CommandExtensionPack.cpp" line="1418"/>
       <location filename="../../CommandExtensionPack.cpp" line="1523"/>
       <source>Adds a cosmetic line perpendicular to the selected line through the selected vertex</source>
-      <translation>Lägger till en kosmetisk linje vinkelrätt mot den valda linjen genom det valda toppunktet</translation>
+      <translation>Lägger till en kosmetisk linje vinkelrätt mot den valda linjen genom det valda toppunkten</translation>
     </message>
   </context>
   <context>
@@ -9797,7 +9797,7 @@ det finns en dialogruta med en öppen uppgift.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="55"/>
       <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation>Justerar den valda sektionsvyn med dess källvy ortogonalt eller den valda kanten i sektionsvyn till det valda toppunktet i basvyn</translation>
+      <translation>Justerar den valda sektionsvyn med dess källvy ortogonalt eller den valda kanten i sektionsvyn till det valda toppunkten i basvyn</translation>
     </message>
   </context>
   <context>

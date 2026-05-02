@@ -53,8 +53,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.parameter_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshDistance.svg"))
         self._init_parameter_widget()
 
-        self._init_parameter_widget()
-
         # geometry selection widget
         # only allow valid distance objects!
         self.selection_widget = selection_widgets.GeometryElementsSelection(

@@ -1835,7 +1835,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="394"/>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -2666,12 +2666,12 @@ que "MAXGS" s'ha d'augmentar.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="678"/>
+      <location filename="../../TaskPostBoxes.cpp" line="687"/>
       <source>Data Along a Line Options</source>
       <translation>Opcions de dades al llarg d'una línia</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1086"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1095"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Longitud</translation>
@@ -2680,12 +2680,12 @@ que "MAXGS" s'ha d'augmentar.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1120"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1129"/>
       <source>Data at Point Options</source>
       <translation>Opcions de dades en un punt</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1461"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1470"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 a (%2; %3; %4) és: %5 %6</translation>
     </message>
@@ -2693,7 +2693,7 @@ que "MAXGS" s'ha d'augmentar.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="526"/>
+      <location filename="../../TaskPostBoxes.cpp" line="535"/>
       <source>Implicit function</source>
       <translation>Funció implícita</translation>
     </message>
@@ -8216,7 +8216,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
   <context>
     <name>FemGui::TaskPostFrames</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="554"/>
+      <location filename="../../TaskPostBoxes.cpp" line="563"/>
       <source>Result Frames</source>
       <translation>Marcs de resultats</translation>
     </message>
@@ -8224,7 +8224,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
   <context>
     <name>FemGui::TaskPostCalculator</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2248"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2257"/>
       <source>Calculator options</source>
       <translation>Opcions del calculador</translation>
     </message>
@@ -8689,7 +8689,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="453"/>
+      <location filename="../../TaskPostBoxes.cpp" line="462"/>
       <source>Result Display Options</source>
       <translation>Opcions de visualització de resultats</translation>
     </message>
@@ -8697,7 +8697,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
   <context>
     <name>FemGui::TaskPostBranch</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="623"/>
+      <location filename="../../TaskPostBoxes.cpp" line="632"/>
       <source>Branch Behaviour</source>
       <translation>Comportament de la branca</translation>
     </message>
@@ -8705,7 +8705,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1495"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1504"/>
       <source>Clip Region, Choose Implicit Function</source>
       <translation>Regió de tall, tria funció implícita</translation>
     </message>
@@ -8713,7 +8713,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1646"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1655"/>
       <source>Contours Filter Options</source>
       <translation>Opcions del filtre de contorns</translation>
     </message>
@@ -8721,7 +8721,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1810"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1819"/>
       <source>Function Cut, Choose Implicit Function</source>
       <translation>Tall de funció, tria funció implícita</translation>
     </message>
@@ -8729,7 +8729,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1943"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1952"/>
       <source>Scalar Clip Options</source>
       <translation>Opcions de clip escalar</translation>
     </message>
@@ -8737,7 +8737,7 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2067"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2076"/>
       <source>Warp Options</source>
       <translation>Opcions de deformació</translation>
     </message>

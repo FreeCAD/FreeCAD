@@ -346,7 +346,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="83"/>
       <source>Center of gravity</source>
-      <translation type="unfinished">Center of gravity</translation>
+      <translation>Centro de gravidade</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="110"/>
@@ -391,12 +391,12 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="200"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Densidade</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="214"/>
       <source>Surface area</source>
-      <translation type="unfinished">Surface area</translation>
+      <translation>Área de superfície</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="254"/>
@@ -430,32 +430,32 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="531"/>
       <source>Jox</source>
-      <translation type="unfinished">Jox</translation>
+      <translation>Jox</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="545"/>
       <source>Jxy</source>
-      <translation type="unfinished">Jxy</translation>
+      <translation>Jxy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="559"/>
       <source>Jzx</source>
-      <translation type="unfinished">Jzx</translation>
+      <translation>Jzx</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="573"/>
       <source>Joy</source>
-      <translation type="unfinished">Joy</translation>
+      <translation>Joy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="587"/>
       <source>Jzy</source>
-      <translation type="unfinished">Jzy</translation>
+      <translation>Jzy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="601"/>
       <source>Joz</source>
-      <translation type="unfinished">Joz</translation>
+      <translation>Joz</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="625"/>
@@ -465,17 +465,17 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
       <source>Jx</source>
-      <translation type="unfinished">Jx</translation>
+      <translation>Jx</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="677"/>
       <source>Jy</source>
-      <translation type="unfinished">Jy</translation>
+      <translation>Jy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="704"/>
       <source>Jz</source>
-      <translation type="unfinished">Jz</translation>
+      <translation>Jz</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
@@ -498,22 +498,22 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="282"/>
       <source>Physical Properties</source>
-      <translation type="unfinished">Physical Properties</translation>
+      <translation>Propriedades Físicas</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="285"/>
       <source>Center of Gravity</source>
-      <translation type="unfinished">Center of Gravity</translation>
+      <translation>Centro de Gravidade</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="286"/>
       <source>Center of Volume</source>
-      <translation type="unfinished">Center of Volume</translation>
+      <translation>Centro de Volume</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="287"/>
       <source>Inertia</source>
-      <translation type="unfinished">Inertia</translation>
+      <translation>Inércia</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="359"/>
@@ -533,7 +533,7 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="1126"/>
       <source> (Average)</source>
-      <translation type="unfinished"> (Average)</translation>
+      <translation> (Média)</translation>
     </message>
   </context>
   <context>
@@ -541,12 +541,12 @@
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Mass Properties</source>
-      <translation type="unfinished">Mass Properties</translation>
+      <translation>Propriedades de Massa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Calculates mass properties of selected objects</source>
-      <translation type="unfinished">Calculates mass properties of selected objects</translation>
+      <translation>Calcula as propriedades de massa de objetos selecionados</translation>
     </message>
   </context>
 </TS>

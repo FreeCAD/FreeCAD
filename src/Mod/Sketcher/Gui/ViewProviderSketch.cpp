@@ -2682,7 +2682,20 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         resetPreselectPoint();
         preselection.blockedPreselection = false;
         updateToolTip(); // Clear tooltip when no point picked
-
+        // when no point is preselected, the cursor will stay as Qt::ForbiddenCursor
+        // because the code hasn't entered SelectionSingleton::setPreselect
+        // so the cursor has to be restored to normal
+        const Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (!doc)
+        {
+          return false;
+        }
+        Gui::MDIView* mdi = doc->getActiveView();
+        if (!mdi)
+        {
+          return false;
+        }
+        mdi->restoreOverrideCursor();
         return true;
     }
 

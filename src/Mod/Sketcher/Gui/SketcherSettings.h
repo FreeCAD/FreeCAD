@@ -72,6 +72,8 @@ public:
     explicit SketcherSettingsGrid(QWidget* parent = nullptr);
     ~SketcherSettingsGrid() override;
 
+    bool event(QEvent* event) override;
+
     void saveSettings() override;
     void loadSettings() override;
 
@@ -118,6 +120,8 @@ class SketcherSettingsAppearance: public Gui::Dialog::PreferencePage
 public:
     explicit SketcherSettingsAppearance(QWidget* parent = nullptr);
     ~SketcherSettingsAppearance() override;
+
+    bool event(QEvent* event) override;
 
     void saveSettings() override;
     void loadSettings() override;

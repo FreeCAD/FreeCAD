@@ -2111,42 +2111,56 @@ dodaće se žičani okvir originalnog oblika</translation>
 Optimalna vrijednost ovisi o apsolutnoj veličini uvoza. Tipične vrijednosti su između 1 i 5.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation type="unfinished">Maximum deviation for approximation of complex curves</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation type="unfinished">Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>Izvezi stil</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>Stil  za pisanje SVG datoteke kod izvoza skice</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>Pomaknuto (za ispis i pregled)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>Raw (za CAM)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>Sve će bijele linije u SVG-u biti crne boje radi bolje čitljivosti na bijelim pozadinama</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>Pretvori bijelu boju linije u crnu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>Maksimalna duljina segmenta za diskretizirane lukove</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2469,7 +2483,7 @@ objekte Skiciranja umjesto objekata Nacrta ili Dio. To poništava postavku 'Uvez
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>Izvozne opcije </translation>
     </message>
@@ -4091,7 +4105,12 @@ ili pokušajte spremiti u nižu DWG verziju.</translation>
       <translation>%1 odaberi treču točku</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation type="unfinished">Only Draft lines, wires, and curves can be highlighted</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>Odaberite objekt za uređivanje</translation>
     </message>
@@ -6270,12 +6289,12 @@ iz izbornika Alati-&gt; Upravitelj dodataka</translation>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Nepoznati SVG stil izvoza, prebacivanje na Prevedeno</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>Popis izvoza ne sadrži objekt s važećim graničnim okvirom</translation>
     </message>

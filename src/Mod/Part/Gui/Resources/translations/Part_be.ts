@@ -2223,7 +2223,7 @@ of the projection.</source>
       <translation>Пераўтварыць паліганальную сетку</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1490"/>
+      <location filename="../../TaskAttacher.cpp" line="1491"/>
       <source>Edit attachment</source>
       <translation>Змяніць мацаванне</translation>
     </message>
@@ -3023,7 +3023,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="305"/>
       <source>End radius</source>
-      <translation>Канчатковы радыус</translation>
+      <translation>Канцавы радыус</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="819"/>
@@ -3185,8 +3185,9 @@ Check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>Аб'ядноўвае злучэнні падчас чытання файла (павольна, але з больш высокай дэталізацыяй)</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation>Аб'ядноўвае ўсе фігуры ў адзінае злучэнне падчас імпартавання, дазваляючы асобнікі дэталяў і ўжываючы пераўтварэнні.
+Павялічвае час імпартавання, але не ўплывае на дакладнасць геаметрыі ці якасць візуалізацыі.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -4011,7 +4012,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2549"/>
       <source>Z coordinate of the end point</source>
-      <translation>Каардыната Z канечнай кропкі</translation>
+      <translation>Каардыната Z канцавой кропкі</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2623"/>
@@ -4058,7 +4059,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2438"/>
       <source>End point</source>
-      <translation>Канчатковая кропка</translation>
+      <translation>Канцавая кропка</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2102"/>
@@ -5812,12 +5813,12 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1472"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>Прымацаваць</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1554"/>
+      <location filename="../../TaskAttacher.cpp" line="1556"/>
       <source>Datum dialog: input error</source>
       <translation>Дыялог пункту адліку: памылка ўводу</translation>
     </message>
@@ -6490,7 +6491,7 @@ Continue?</source>
       <translation>Увядзіце адлегласць:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation>Знешні выгляд для кожнай грані</translation>
     </message>
@@ -7137,12 +7138,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="319"/>
+      <location filename="../../../App/FaceMaker.cpp" line="332"/>
       <source>Simple</source>
       <translation>Просты</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="324"/>
+      <location filename="../../../App/FaceMaker.cpp" line="337"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Зрабіць асобную плоскую грані з кожнай ломанай лініі незалежна. Без падтрымкі для адтулін; ломаныя лініі могуць знаходзіцца ў розных плоскасцях.</translation>
     </message>
@@ -7746,12 +7747,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="46"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation>Майстар будаўнічай паверхні (BuildFace)</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="51"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation>Падзяляе рэбры на скрыжаваннях і знаходзіць усе абмежаваныя вобласці граняў.
 Апрацоўвае адвольную геаметрыю, якая перакрываецца.</translation>

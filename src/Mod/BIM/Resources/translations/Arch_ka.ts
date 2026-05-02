@@ -4332,7 +4332,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importers/importSHP.py" line="144"/>
       <source>Shapefile Module Not Found</source>
-      <translation type="unfinished">Shapefile Module Not Found</translation>
+      <translation>Shapefile მოდული ვერ მოიძებნა</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="148"/>
@@ -4488,7 +4488,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchComponent.py" line="2429"/>
-      <location filename="../../ArchSectionPlane.py" line="1745"/>
+      <location filename="../../ArchSectionPlane.py" line="1747"/>
       <location filename="../../ArchAxis.py" line="991"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchWindow.py" line="1705"/>
@@ -4510,7 +4510,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchReference.py" line="717"/>
       <location filename="../../ArchComponent.py" line="1938"/>
-      <location filename="../../ArchSectionPlane.py" line="1512"/>
+      <location filename="../../ArchSectionPlane.py" line="1514"/>
       <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchAxis.py" line="824"/>
       <location filename="../../ArchAxisSystem.py" line="222"/>
@@ -4539,8 +4539,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1715"/>
-      <location filename="../../ArchMaterial.py" line="880"/>
-      <location filename="../../ArchMaterial.py" line="906"/>
+      <location filename="../../ArchMaterial.py" line="895"/>
+      <location filename="../../ArchMaterial.py" line="921"/>
       <source>Name</source>
       <translation>სახელი</translation>
     </message>
@@ -4556,8 +4556,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchStructure.py" line="1578"/>
       <location filename="../../ArchRoof.py" line="1082"/>
-      <location filename="../../ArchMaterial.py" line="882"/>
-      <location filename="../../ArchMaterial.py" line="908"/>
+      <location filename="../../ArchMaterial.py" line="897"/>
+      <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
       <source>Thickness</source>
       <translation>სისქე</translation>
@@ -4738,8 +4738,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../Arch.py" line="530"/>
-      <location filename="../../ArchMaterial.py" line="881"/>
-      <location filename="../../ArchMaterial.py" line="907"/>
+      <location filename="../../ArchMaterial.py" line="896"/>
+      <location filename="../../ArchMaterial.py" line="922"/>
       <source>Material</source>
       <translation>მასალა</translation>
     </message>
@@ -4754,17 +4754,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>დუბლიკატების შერწყმა</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="946"/>
+      <location filename="../../ArchMaterial.py" line="961"/>
       <source>New layer</source>
       <translation>ახალი ფენა</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="983"/>
+      <location filename="../../ArchMaterial.py" line="1007"/>
       <source>Total thickness</source>
       <translation>სრული სისქე</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="997"/>
+      <location filename="../../ArchMaterial.py" line="1014"/>
       <source>depends on the object</source>
       <translation>დამოკიდებულია ობიექტზე</translation>
     </message>
@@ -6055,97 +6055,97 @@ Floor creation aborted.</source>
       <translation>ჭრილის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1738"/>
+      <location filename="../../ArchSectionPlane.py" line="1740"/>
       <source>Scope</source>
       <translation>გამოყენების ფარგლები</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1741"/>
+      <location filename="../../ArchSectionPlane.py" line="1743"/>
       <source>Placement and Visuals</source>
       <translation>მოთავსება და ვიზუალები</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1744"/>
+      <location filename="../../ArchSectionPlane.py" line="1746"/>
       <source>Objects seen by this section plane</source>
       <translation>ობიექტების სია, რომლებიც ამ ჭრილიდან მოჩანს</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1750"/>
+      <location filename="../../ArchSectionPlane.py" line="1752"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>წაშლის მონიშნულ ობიექტებს ზემოთ მოცემული სიიდან</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1751"/>
+      <location filename="../../ArchSectionPlane.py" line="1753"/>
       <source>Add Selected</source>
       <translation>მონიშნულის დამატება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1756"/>
+      <location filename="../../ArchSectionPlane.py" line="1758"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>დაამატებს მონიშნულ ობიექტ(ებ)-ს ამ სექციის სიბრტყის კვეთის საზღვრებში</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1757"/>
+      <location filename="../../ArchSectionPlane.py" line="1759"/>
       <source>Cut View</source>
       <translation>ხედის გაჭრა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1764"/>
+      <location filename="../../ArchSectionPlane.py" line="1766"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation type="unfinished">Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1765"/>
+      <location filename="../../ArchSectionPlane.py" line="1767"/>
       <source>Rotate by 90°</source>
       <translation>შებრუნება 90°-ით</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1769"/>
+      <location filename="../../ArchSectionPlane.py" line="1771"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>შეაბრუნებს სიბრტყეს მისი ლოკალური X-ღერძის გარშემო</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1773"/>
+      <location filename="../../ArchSectionPlane.py" line="1775"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>შეაბრუნებს სიბრტყეს მისი ლოკალური Y-ღერძის გარშემო</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1777"/>
+      <location filename="../../ArchSectionPlane.py" line="1779"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>შეაბრუნებს სიბრტყეს მისი ლოკალური Z-ღერძის გარშემო</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1780"/>
       <source>Resize to Fit</source>
       <translation>ზომის შეცვლა ჩასატევად</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1784"/>
+      <location filename="../../ArchSectionPlane.py" line="1786"/>
       <source>Recenter Plane</source>
       <translation>სიბრტყის თავიდან დაცენტრება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1766"/>
+      <location filename="../../ArchSectionPlane.py" line="1768"/>
       <source>Rotate X</source>
       <translation>შებრუნება X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1517"/>
+      <location filename="../../ArchSectionPlane.py" line="1519"/>
       <source>Toggle Cut View</source>
       <translation>ჭრილის ხედის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1770"/>
+      <location filename="../../ArchSectionPlane.py" line="1772"/>
       <source>Rotate Y</source>
       <translation>შებრუნება Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1774"/>
+      <location filename="../../ArchSectionPlane.py" line="1776"/>
       <source>Rotate Z</source>
       <translation>შებრუნება Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1783"/>
+      <location filename="../../ArchSectionPlane.py" line="1785"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>სიბრტყის ზომის შეცვლა ზემოთ ჩამოთვლილ ობიექტებში ჩასატევად</translation>
     </message>
@@ -6156,7 +6156,7 @@ Floor creation aborted.</source>
       <translation>ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1789"/>
+      <location filename="../../ArchSectionPlane.py" line="1791"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>სიბრტყის ზემოთ მოცემულ სიაში არსებულ ობიექტებზე დაცენტრება</translation>
     </message>
@@ -6770,7 +6770,7 @@ The ladybug or pysolar Python module is required.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="745"/>
       <source>Horizontal Mullion Height</source>
-      <translation type="unfinished">Horizontal Mullion Height</translation>
+      <translation>ჰორიზონტალური წოლანას სიმაღლე</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="747"/>
@@ -7063,7 +7063,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>კომპონენტის არააუცილებელი ჭდე</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="968"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>ამ ობიექტის ფორმა</translation>
@@ -7084,7 +7084,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>MaterialName:SolidIndexesList რუკა, რომელიც აკავშირებს მასალის სახელებს მყარ ინდექსებთან, რომლებიც გამოყენებული იქნება ამ ობიექტზე სხვა ფაილებიდან მიბმისას</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1140"/>
+      <location filename="../../ArchSectionPlane.py" line="1142"/>
       <location filename="../../ArchBuildingPart.py" line="547"/>
       <source>The line width of this object</source>
       <translation>ამ ობიექტის ხაზის სიგანე</translation>
@@ -8645,7 +8645,7 @@ The ladybug or pysolar Python module is required.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="253"/>
-      <location filename="../../ArchSectionPlane.py" line="960"/>
+      <location filename="../../ArchSectionPlane.py" line="962"/>
       <source>The placement of this object</source>
       <translation>ობიექტის განლაგება</translation>
     </message>
@@ -8866,80 +8866,80 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>არმატურის ფორმა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="979"/>
+      <location filename="../../ArchSectionPlane.py" line="981"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>ობიექტები, რომლებიც უნდა ჩანდეს ამ სიბრტყით კვეთაში. ცარიელი ნიშნავს მთელ დოკუმენტს.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="990"/>
+      <location filename="../../ArchSectionPlane.py" line="992"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>თუ გამორთულია, არა-მყარი სხეულებიც გაიკვეთება, შესაძლო არასწორი შედეგებით.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1002"/>
+      <location filename="../../ArchSectionPlane.py" line="1004"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>თუ ჩართულია, ნაჩვენები ხედები სექციის სიბრტყეში ამოიჭრება.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1013"/>
+      <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>თუ ჩართულია, ობიექტის მასალის ფერი გამოყენებული იქნება კვეთების შესავსებად.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1025"/>
+      <location filename="../../ArchSectionPlane.py" line="1027"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>ამ წერტილის შემდეგ არსებული გეომეტრია მოიჭრება. ულიმიტო ჭრისთვის დატოვეთ ნულოვანი.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1098"/>
+      <location filename="../../ArchSectionPlane.py" line="1100"/>
       <source>The display length of this section plane</source>
       <translation>ამ სიბრტყის კვეთის სიგრძის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1110"/>
+      <location filename="../../ArchSectionPlane.py" line="1112"/>
       <source>The display height of this section plane</source>
       <translation>ამ სიბრტყის კვეთის სიმაღლის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1122"/>
+      <location filename="../../ArchSectionPlane.py" line="1124"/>
       <source>The size of the arrows of this section plane</source>
       <translation>ამ ჭრილში ისრების ზომა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1131"/>
+      <location filename="../../ArchSectionPlane.py" line="1133"/>
       <source>The transparency of this object</source>
       <translation>ამ ობიექტის გამჭვირვალობა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1149"/>
-      <location filename="../../ArchSectionPlane.py" line="1166"/>
+      <location filename="../../ArchSectionPlane.py" line="1151"/>
+      <location filename="../../ArchSectionPlane.py" line="1168"/>
       <source>Show the cut in the 3D view</source>
       <translation>კვეთის 3D ხედში ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1157"/>
+      <location filename="../../ArchSectionPlane.py" line="1159"/>
       <source>The color of this object</source>
       <translation>ამ ობიექტის ფერი</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1179"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>მანძილი სიბრტყის კვეთასა და ნამდვილ სიბრტყის კვეთას შორის (გქონდეთ ძალიან მცირე მნიშვნელობა, მაგრამ არა ნული)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1186"/>
+      <location filename="../../ArchSectionPlane.py" line="1188"/>
       <source>Show the label in the 3D view</source>
       <translation>ჭდის 3D ხედში ჩვენება</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="579"/>
-      <location filename="../../ArchSectionPlane.py" line="1194"/>
+      <location filename="../../ArchSectionPlane.py" line="1196"/>
       <source>The name of the font</source>
       <translation>ფონტის სახელი</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="597"/>
-      <location filename="../../ArchSectionPlane.py" line="1203"/>
+      <location filename="../../ArchSectionPlane.py" line="1205"/>
       <source>The size of the text font</source>
       <translation>ფონტის ზომა</translation>
     </message>

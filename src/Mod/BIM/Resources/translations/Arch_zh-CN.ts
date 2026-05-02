@@ -2507,7 +2507,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="96"/>
       <source>Apply Draft construction style to subcomponents</source>
-      <translation>将草稿构造样式应用于子组件</translation>
+      <translation>将草绘构造样式应用于子组件</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="157"/>
@@ -2761,7 +2761,7 @@ a footprint display mode</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="20"/>
       <source>Visual</source>
-      <translation>视角</translation>
+      <translation>视觉</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="26"/>
@@ -4491,7 +4491,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchComponent.py" line="2429"/>
-      <location filename="../../ArchSectionPlane.py" line="1745"/>
+      <location filename="../../ArchSectionPlane.py" line="1747"/>
       <location filename="../../ArchAxis.py" line="991"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchWindow.py" line="1705"/>
@@ -4513,7 +4513,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchReference.py" line="717"/>
       <location filename="../../ArchComponent.py" line="1938"/>
-      <location filename="../../ArchSectionPlane.py" line="1512"/>
+      <location filename="../../ArchSectionPlane.py" line="1514"/>
       <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchAxis.py" line="824"/>
       <location filename="../../ArchAxisSystem.py" line="222"/>
@@ -4542,8 +4542,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1715"/>
-      <location filename="../../ArchMaterial.py" line="880"/>
-      <location filename="../../ArchMaterial.py" line="906"/>
+      <location filename="../../ArchMaterial.py" line="895"/>
+      <location filename="../../ArchMaterial.py" line="921"/>
       <source>Name</source>
       <translation>名称</translation>
     </message>
@@ -4559,8 +4559,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchStructure.py" line="1578"/>
       <location filename="../../ArchRoof.py" line="1082"/>
-      <location filename="../../ArchMaterial.py" line="882"/>
-      <location filename="../../ArchMaterial.py" line="908"/>
+      <location filename="../../ArchMaterial.py" line="897"/>
+      <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
       <source>Thickness</source>
       <translation>厚度</translation>
@@ -4741,8 +4741,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../Arch.py" line="530"/>
-      <location filename="../../ArchMaterial.py" line="881"/>
-      <location filename="../../ArchMaterial.py" line="907"/>
+      <location filename="../../ArchMaterial.py" line="896"/>
+      <location filename="../../ArchMaterial.py" line="922"/>
       <source>Material</source>
       <translation>材质</translation>
     </message>
@@ -4757,17 +4757,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>合并重复项</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="946"/>
+      <location filename="../../ArchMaterial.py" line="961"/>
       <source>New layer</source>
       <translation>新建图层</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="983"/>
+      <location filename="../../ArchMaterial.py" line="1007"/>
       <source>Total thickness</source>
       <translation>总厚度</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="997"/>
+      <location filename="../../ArchMaterial.py" line="1014"/>
       <source>depends on the object</source>
       <translation>取决于对象</translation>
     </message>
@@ -6056,97 +6056,97 @@ Floor creation aborted.</source>
       <translation>创建剖面</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1738"/>
+      <location filename="../../ArchSectionPlane.py" line="1740"/>
       <source>Scope</source>
       <translation>范围</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1741"/>
+      <location filename="../../ArchSectionPlane.py" line="1743"/>
       <source>Placement and Visuals</source>
       <translation>放置和视觉</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1744"/>
+      <location filename="../../ArchSectionPlane.py" line="1746"/>
       <source>Objects seen by this section plane</source>
       <translation>此剖面平面可见的对象</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1750"/>
+      <location filename="../../ArchSectionPlane.py" line="1752"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>从上方列表中移除高亮显示的对象</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1751"/>
+      <location filename="../../ArchSectionPlane.py" line="1753"/>
       <source>Add Selected</source>
       <translation>添加所选</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1756"/>
+      <location filename="../../ArchSectionPlane.py" line="1758"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>将选定对象添加到此剖面平面的范围</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1757"/>
+      <location filename="../../ArchSectionPlane.py" line="1759"/>
       <source>Cut View</source>
       <translation>剖切视图</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1764"/>
+      <location filename="../../ArchSectionPlane.py" line="1766"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>在 3D 视图中创建实时剖切，隐藏平面一侧的几何体以查看模型内部</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1765"/>
+      <location filename="../../ArchSectionPlane.py" line="1767"/>
       <source>Rotate by 90°</source>
       <translation>旋转 90°</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1769"/>
+      <location filename="../../ArchSectionPlane.py" line="1771"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>围绕其局部 X 轴旋转平面</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1773"/>
+      <location filename="../../ArchSectionPlane.py" line="1775"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>围绕其局部 Y 轴旋转平面</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1777"/>
+      <location filename="../../ArchSectionPlane.py" line="1779"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>围绕其局部 Z 轴旋转平面</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1780"/>
       <source>Resize to Fit</source>
       <translation>调整大小以适应</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1784"/>
+      <location filename="../../ArchSectionPlane.py" line="1786"/>
       <source>Recenter Plane</source>
       <translation>重新居中平面</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1766"/>
+      <location filename="../../ArchSectionPlane.py" line="1768"/>
       <source>Rotate X</source>
       <translation>沿 X 轴旋转</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1517"/>
+      <location filename="../../ArchSectionPlane.py" line="1519"/>
       <source>Toggle Cut View</source>
       <translation>切换剖切视图</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1770"/>
+      <location filename="../../ArchSectionPlane.py" line="1772"/>
       <source>Rotate Y</source>
       <translation>沿 Y 轴旋转</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1774"/>
+      <location filename="../../ArchSectionPlane.py" line="1776"/>
       <source>Rotate Z</source>
       <translation>沿 Z 轴旋转</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1783"/>
+      <location filename="../../ArchSectionPlane.py" line="1785"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>调整平面尺寸以适合上面列表中的对象</translation>
     </message>
@@ -6157,7 +6157,7 @@ Floor creation aborted.</source>
       <translation>中心</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1789"/>
+      <location filename="../../ArchSectionPlane.py" line="1791"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>将上述列表对象平面居中</translation>
     </message>
@@ -7054,7 +7054,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>此组件的可选标签</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="968"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>此对象的形状</translation>
@@ -7075,7 +7075,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>一个 MaterialName:SolidIndexesList 映射，将材质名称与实体索引相关联，用于从其他文件引用此对象时</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1140"/>
+      <location filename="../../ArchSectionPlane.py" line="1142"/>
       <location filename="../../ArchBuildingPart.py" line="547"/>
       <source>The line width of this object</source>
       <translation>此对象的线宽</translation>
@@ -8630,7 +8630,7 @@ The ladybug or pysolar Python module is required.</source>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="253"/>
-      <location filename="../../ArchSectionPlane.py" line="960"/>
+      <location filename="../../ArchSectionPlane.py" line="962"/>
       <source>The placement of this object</source>
       <translation>此对象的位置</translation>
     </message>
@@ -8851,80 +8851,80 @@ The ladybug or pysolar Python module is required.</source>
       <translation>钢筋的形状</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="979"/>
+      <location filename="../../ArchSectionPlane.py" line="981"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>必须由此剖面平面考虑的对象。空表示整个文档。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="990"/>
+      <location filename="../../ArchSectionPlane.py" line="992"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>如果为假，非实体也将被切割，可能产生错误结果。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1002"/>
+      <location filename="../../ArchSectionPlane.py" line="1004"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>如果为真，生成的视图将被裁剪到剖面平面区域。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1013"/>
+      <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>如果为真，对象材质的颜色将用于填充切割区域。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1025"/>
+      <location filename="../../ArchSectionPlane.py" line="1027"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>超过此值的几何体将被切断。保持为零表示无限制。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1098"/>
+      <location filename="../../ArchSectionPlane.py" line="1100"/>
       <source>The display length of this section plane</source>
       <translation>此剖面平面的显示长度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1110"/>
+      <location filename="../../ArchSectionPlane.py" line="1112"/>
       <source>The display height of this section plane</source>
       <translation>此剖面平面的显示高度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1122"/>
+      <location filename="../../ArchSectionPlane.py" line="1124"/>
       <source>The size of the arrows of this section plane</source>
       <translation>此剖面平面箭头的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1131"/>
+      <location filename="../../ArchSectionPlane.py" line="1133"/>
       <source>The transparency of this object</source>
       <translation>此对象的透明度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1149"/>
-      <location filename="../../ArchSectionPlane.py" line="1166"/>
+      <location filename="../../ArchSectionPlane.py" line="1151"/>
+      <location filename="../../ArchSectionPlane.py" line="1168"/>
       <source>Show the cut in the 3D view</source>
       <translation>在3D视图中显示切割</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1157"/>
+      <location filename="../../ArchSectionPlane.py" line="1159"/>
       <source>The color of this object</source>
       <translation>此对象的颜色</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1179"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>切割平面与实际视图切割之间的距离（保持此值为非常小的值但不为零）</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1186"/>
+      <location filename="../../ArchSectionPlane.py" line="1188"/>
       <source>Show the label in the 3D view</source>
       <translation>在3D视图中显示标签</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="579"/>
-      <location filename="../../ArchSectionPlane.py" line="1194"/>
+      <location filename="../../ArchSectionPlane.py" line="1196"/>
       <source>The name of the font</source>
       <translation>字体名称</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="597"/>
-      <location filename="../../ArchSectionPlane.py" line="1203"/>
+      <location filename="../../ArchSectionPlane.py" line="1205"/>
       <source>The size of the text font</source>
       <translation>文本字体的大小</translation>
     </message>
@@ -9219,7 +9219,7 @@ The ladybug or pysolar Python module is required.</source>
     <message>
       <location filename="../../InitGui.py" line="508"/>
       <source>Drafting Tools</source>
-      <translation>绘图工具</translation>
+      <translation>草绘工具</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="509"/>
@@ -9965,7 +9965,7 @@ The ladybug or pysolar Python module is required.</source>
     <message>
       <location filename="../../InitGui.py" line="597"/>
       <source>Draft</source>
-      <translation>拔模</translation>
+      <translation>草绘</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="843"/>
@@ -10941,7 +10941,7 @@ Alt+/ 在自动和手动模式之间切换</translation>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="138"/>
       <source>Draft clones are not supported yet!</source>
-      <translation>尚不支持Draft克隆！</translation>
+      <translation>尚不支持草绘克隆！</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="142"/>
@@ -11186,7 +11186,7 @@ Alt+/ 在自动和手动模式之间切换</translation>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="76"/>
       <source>No section view, Draft object, or page found or selected in the document</source>
-      <translation>文档中未找到或未选择任何剖面视图、草图对象或页面</translation>
+      <translation>文档中未找到或未选择任何剖面视图、草绘对象或页面</translation>
     </message>
     <message>
       <location filename="../../importers/importSH3DHelper.py" line="524"/>

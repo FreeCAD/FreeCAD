@@ -1551,6 +1551,24 @@ std::vector<std::shared_ptr<MbD::ASMTJoint>> AssemblyObject::makeMbdJoint(App::D
         }
     }
     std::vector<App::DocumentObject*> done;
+
+    auto replaceInitialValue =
+        [](std::string& form, App::DocumentObject* jnt, const std::string& mType) {
+            if (form.find("initialValue") != std::string::npos) {
+                double val = getJointCurrentValue(jnt, mType == "Angular");
+
+                std::ostringstream out;
+                out.precision(10);
+                out << val;
+                std::string valStr = out.str();
+
+                size_t pos;
+                while ((pos = form.find("initialValue")) != std::string::npos) {
+                    form.replace(pos, 12, valStr);
+                }
+            }
+        };
+
     // Add motions if needed
     for (auto* motion : motions) {
         if (std::ranges::find(done, motion) != done.end()) {
@@ -1576,6 +1594,8 @@ std::vector<std::shared_ptr<MbD::ASMTJoint>> AssemblyObject::makeMbdJoint(App::D
             continue;
         }
         std::string motionType = pType->getValueAsString();
+
+        replaceInitialValue(formula, joint, motionType);
 
         // check if there is a second motion as cylindrical can have both,
         // in which case the solver needs a general motion.
@@ -1604,6 +1624,8 @@ std::vector<std::shared_ptr<MbD::ASMTJoint>> AssemblyObject::makeMbdJoint(App::D
             if (motionType2 == motionType) {
                 continue;  // only if both motions are different. ie one angular and one linear.
             }
+
+            replaceInitialValue(formula2, joint, motionType2);
 
             auto ASMTmotion = CREATE<ASMTGeneralMotion>::With();
             ASMTmotion->setName(joint->getFullName() + "-ScrewMotion");

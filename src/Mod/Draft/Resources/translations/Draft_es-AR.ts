@@ -2094,42 +2094,56 @@ se añade un alambre crudo de la forma original</translation>
 	El valor óptimo depende del tamaño absoluto de la importación. Los valores típicos están entre 1 y 5.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation type="unfinished">Maximum deviation for approximation of complex curves</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation type="unfinished">Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>Estilo de exportación</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>Estilo del archivo SVG a escribir al exportar un croquis</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>Trasladado (para imprimir y mostrar)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>Raw (para CAM)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>Todas las líneas blancas aparecerán en negro en el SVG para una mejor legibilidad contra fondos blancos</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>Convertir color de líneas blancas a negro</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>Longitud de segmento máxima de arcos discretizados</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2452,7 +2466,7 @@ en lugar de Borrador u objetos de partes. Esto anula la configuración 'Importar
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>Opciones de exportación</translation>
     </message>
@@ -4066,7 +4080,12 @@ Intente mover el archivo DWG a un directorio cuyo camino no contenga espacios ni
       <translation type="unfinished">%1 pick third point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation type="unfinished">Only Draft lines, wires, and curves can be highlighted</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>Seleccione un objeto a editar</translation>
     </message>
@@ -5833,7 +5852,7 @@ de los objetos existentes en todos los documentos abiertos?</translation>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="555"/>
       <source>Reassign Properties of All Layers</source>
-      <translation type="unfinished">Reassign Properties of All Layers</translation>
+      <translation>Reasignar las propiedades de todas las capas</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="563"/>
@@ -6241,12 +6260,12 @@ desde el menú Herramientas → Administrador de complementos</translation>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Estilo de exportado SVG desconocido, conmutando a Traducido</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>La lista a exportar no contiene objetos con un cuadro delimitador (bounding box) válido</translation>
     </message>

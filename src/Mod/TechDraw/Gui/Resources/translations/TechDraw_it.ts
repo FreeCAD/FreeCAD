@@ -3759,22 +3759,22 @@ Se non è selezionato alcun oggetto, si apre un browser di file per selezionare 
       <translation>Nessuna faccia da tratteggiare in questa selezione</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="307"/>
+      <location filename="../../DrawGuiUtil.cpp" line="309"/>
       <source>No page found</source>
       <translation>Nessuna pagina trovata</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="308"/>
+      <location filename="../../DrawGuiUtil.cpp" line="310"/>
       <source>No Drawing Pages available.</source>
       <translation>Nessuna Pagina di Disegno disponibile.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="413"/>
+      <location filename="../../DrawGuiUtil.cpp" line="415"/>
       <source>No page selected</source>
       <translation>Nessuna pagina selezionata</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="414"/>
+      <location filename="../../DrawGuiUtil.cpp" line="416"/>
       <source>This function needs a page.</source>
       <translation>Questa funzione ha bisogno di una pagina.</translation>
     </message>
@@ -6347,152 +6347,147 @@ Do you want to continue?</source>
       <translation>Bolla</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="29"/>
+      <location filename="../../TaskBalloon.ui" line="20"/>
+      <source>Annotation</source>
+      <translation>Annotazione</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="36"/>
       <source>Text to be displayed</source>
       <translation>Testo da visualizzare</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="43"/>
+      <location filename="../../TaskBalloon.ui" line="50"/>
       <source>Color for text</source>
       <translation>Colore per il testo</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="57"/>
+      <location filename="../../TaskBalloon.ui" line="64"/>
       <source>Font size</source>
       <translation>Dimensione del carattere</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="76"/>
+      <location filename="../../TaskBalloon.ui" line="83"/>
       <source>Font size for text</source>
       <translation>Dimensione carattere per il testo</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
+      <source>Bubble Appearance</source>
+      <translation>Aspetto della pallinatura</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="118"/>
       <source>Shape of the balloon bubble</source>
       <translation>Forma della bolla</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="106"/>
+      <location filename="../../TaskBalloon.ui" line="122"/>
       <source>Circular</source>
       <translation>Cerchio</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="115"/>
+      <location filename="../../TaskBalloon.ui" line="131"/>
       <source>None</source>
       <translation>Nessuno</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="124"/>
+      <location filename="../../TaskBalloon.ui" line="140"/>
       <source>Triangle</source>
       <translation>Triangolo</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="133"/>
+      <location filename="../../TaskBalloon.ui" line="149"/>
       <source>Inspection</source>
       <translation>Ispezione</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="142"/>
+      <location filename="../../TaskBalloon.ui" line="158"/>
       <source>Hexagon</source>
       <translation>Esagono</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="151"/>
+      <location filename="../../TaskBalloon.ui" line="167"/>
       <source>Square</source>
       <translation>Quadrato</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="160"/>
+      <location filename="../../TaskBalloon.ui" line="176"/>
       <source>Rectangle</source>
       <translation>Rettangolo</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="169"/>
+      <location filename="../../TaskBalloon.ui" line="185"/>
       <source>Line</source>
       <translation>Linea</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="181"/>
+      <location filename="../../TaskBalloon.ui" line="197"/>
       <source>Shape scale</source>
       <translation>Scala della forma</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="213"/>
-      <source>End symbol</source>
-      <translation>Simbolo finale</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="227"/>
-      <source>End symbol scale</source>
-      <translation>Scala simbolo finale</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="259"/>
-      <source>Line visible</source>
-      <translation>Linea visibile</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="266"/>
-      <source>Controls whether the leader line is visible or not</source>
-      <translation>Controlla se la linea guida è visibile o meno</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="286"/>
-      <source>Line width</source>
-      <translation>Spessore linea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="324"/>
-      <source>Leader kink length</source>
-      <translation>Lunghezza della piega della linea guida</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="194"/>
+      <location filename="../../TaskBalloon.ui" line="210"/>
       <source>Bubble shape scale factor</source>
       <translation>Fattore scala pallinatura</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="22"/>
+      <location filename="../../TaskBalloon.ui" line="29"/>
       <source>Text</source>
       <translation>Testo</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="36"/>
+      <location filename="../../TaskBalloon.ui" line="43"/>
       <source>Text color</source>
       <translation>Colore testo</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="95"/>
+      <location filename="../../TaskBalloon.ui" line="111"/>
       <source>Bubble shape</source>
       <translation>Forma pallinatura</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="220"/>
+      <location filename="../../TaskBalloon.ui" line="229"/>
+      <source>Leader Line</source>
+      <translation>Linea guida</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="291"/>
+      <source>Kink length</source>
+      <translation>Lunghezza piega</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="298"/>
+      <source>Width</source>
+      <translation>Larghezza</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="305"/>
       <source>End symbol for the balloon line</source>
       <translation>Simbolo finale per la linea delle bolle</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="240"/>
+      <location filename="../../TaskBalloon.ui" line="247"/>
       <source>End symbol scale factor</source>
       <translation>Fattore di scala del simbolo finale</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="273"/>
-      <source>False</source>
-      <translation>Falso</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="278"/>
-      <source>True</source>
-      <translation>Vero</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="305"/>
+      <location filename="../../TaskBalloon.ui" line="275"/>
       <source>Leader line width</source>
       <translation>Larghezza predefinita della linea guida</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="343"/>
+      <location filename="../../TaskBalloon.ui" line="312"/>
+      <source>Symbol scale</source>
+      <translation>Simbolo di scala</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="319"/>
+      <source>Symbol</source>
+      <translation>Simbolo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="338"/>
       <source>Length of balloon leader line kink</source>
       <translation>Lunghezza della piega della linea guida della pallinatura</translation>
     </message>

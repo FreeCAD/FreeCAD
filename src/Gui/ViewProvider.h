@@ -476,6 +476,12 @@ public:
         return {};
     }
 
+    /// Override to remap the drop cursor icon shown when dragging over this view provider.
+    virtual Qt::DropAction getDropActionForTarget(Qt::DropAction action) const
+    {
+        return action;
+    }
+
     /** Add an object with full qualified name to the view provider by drag and drop
      *
      * @param obj: the object being dropped
