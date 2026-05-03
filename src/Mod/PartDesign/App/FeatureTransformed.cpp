@@ -110,9 +110,23 @@ App::DocumentObjectExecReturn* abortIfCanceled(
 {
     if (scope.wasCanceled()) {
         appendTransformedDebugLog(transformed, "canceled", std::string("phase=") + phase);
-        return new App::DocumentObjectExecReturn("User aborted");
+        return new App::DocumentObjectExecReturn(
+            "User aborted",
+            nullptr,
+            App::RecomputeIssueKind::Canceled
+        );
     }
     return nullptr;
+}
+
+App::DocumentObjectExecReturn* makeExecReturnFromBaseException(const Base::Exception& exception)
+{
+    return new App::DocumentObjectExecReturn(
+        exception.what(),
+        nullptr,
+        Base::isUserAbortException(exception) ? App::RecomputeIssueKind::Canceled
+                                              : App::RecomputeIssueKind::Failure
+    );
 }
 
 Part::BooleanRunMode selectInteractiveBooleanRunMode(std::size_t shapeCount)
@@ -461,7 +475,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
     }
     catch (Base::Exception& e) {
         appendTransformedDebugLog(*this, "getTransformations error", e.what());
-        return new App::DocumentObjectExecReturn(e.what());
+        return makeExecReturnFromBaseException(e);
     }
     catch (const Standard_Failure& e) {
         appendTransformedDebugLog(*this, "getTransformations std_failure", e.GetMessageString());
@@ -481,7 +495,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
     }
     catch (Base::Exception& e) {
         appendTransformedDebugLog(*this, "getBaseObject error", e.what());
-        return new App::DocumentObjectExecReturn(e.what());
+        return makeExecReturnFromBaseException(e);
     }
 
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
@@ -802,7 +816,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
     }
     catch (Base::Exception& e) {
         appendTransformedDebugLog(*this, "execute base_exception", e.what());
-        return new App::DocumentObjectExecReturn(e.what());
+        return makeExecReturnFromBaseException(e);
     }
 }
 
