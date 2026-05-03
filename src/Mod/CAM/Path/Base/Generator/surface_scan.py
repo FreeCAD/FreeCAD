@@ -233,7 +233,7 @@ def extract_polygons_from_face(boundary_face, tolerance=0.005):
         list: A nested list of polygons in the format [[[x1, y1], [x2, y2], ...], ...]
     """
     polygons = []
-    if not boundary_face or boundary_face.isNull():
+    if not boundary_face:
         return polygons
 
     for wire in boundary_face.Wires:

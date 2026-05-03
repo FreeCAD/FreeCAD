@@ -96,6 +96,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         PathGuiUtil.updateInputField(obj, "BoundaryAdjustment", self.form.boundaryAdjustment)
         PathGuiUtil.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
         PathGuiUtil.updateInputField(obj, "MinSampleInterval", self.form.minSampleInterval)
+        PathGuiUtil.updateInputField(obj, "CutPatternAngle", self.form.cutPatternAngle)
 
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
@@ -143,12 +144,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.stockToLeave.setText(
             FreeCAD.Units.Quantity(obj.StockToLeave.Value, FreeCAD.Units.Length).UserString
         )
+
         self.form.stepOver.setValue(obj.StepOver)
+
         self.form.sampleInterval.setText(
             FreeCAD.Units.Quantity(obj.SampleInterval.Value, FreeCAD.Units.Length).UserString
         )
         self.form.minSampleInterval.setText(
             FreeCAD.Units.Quantity(obj.MinSampleInterval.Value, FreeCAD.Units.Length).UserString
+        )
+        self.form.cutPatternAngle.setText(
+            FreeCAD.Units.Quantity(obj.CutPatternAngle, FreeCAD.Units.Angle).UserString
         )
 
         if obj.UseStartPoint:
@@ -206,6 +212,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.boundaryAdjustment.editingFinished)
         signals.append(self.form.stockToLeave.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
+        signals.append(self.form.cutPatternAngle.editingFinished)
         signals.append(self.form.sampleInterval.editingFinished)
         signals.append(self.form.minSampleInterval.editingFinished)
         signals.append(self.form.accuracySlider.valueChanged)
@@ -325,15 +332,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.adaptiveSampling.setEnabled(can_show_adaptive and is_adaptive_useful)
 
         # The Min Sample Interval field is only visible and enabled if adaptive is checked and active
-        is_min_sample_visible = (
-            self.form.adaptiveSampling.isVisible() and self.form.adaptiveSampling.isChecked()
-        )
+        is_min_sample_visible = self.form.adaptiveSampling.isVisible() and self.form.adaptiveSampling.isChecked()
         self.form.minSampleInterval.setVisible(is_min_sample_visible)
         self.form.minSampleInterval_label.setVisible(is_min_sample_visible)
 
-        is_min_sample_enabled = (
-            self.form.adaptiveSampling.isEnabled() and self.form.adaptiveSampling.isChecked()
-        )
+        is_min_sample_enabled = self.form.adaptiveSampling.isEnabled() and self.form.adaptiveSampling.isChecked()
         self.form.minSampleInterval.setEnabled(is_min_sample_enabled)
         self.form.minSampleInterval_label.setEnabled(is_min_sample_enabled)
 

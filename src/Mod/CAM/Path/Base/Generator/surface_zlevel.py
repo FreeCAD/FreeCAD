@@ -41,9 +41,11 @@ if False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-    # ---------------------------------------------------------------------------
-    # Boundary preparation
-    # ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# Boundary preparation
+# ---------------------------------------------------------------------------
+
 
     def extendedBoundBox(wBB, bbBfr, zDep):
         """
@@ -67,6 +69,7 @@ else:
         p3 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMax + bbBfr, zDep)
         p4 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMax + bbBfr, zDep)
         return Part.makePolygon([p1, p2, p3, p4, p1])
+
 
     def getTrimFace(borderFace, bbFace, wpc):
         """
@@ -356,7 +359,7 @@ def zlevel_hybrid_stack(
                 currentSilhouette = currentSilhouette.removeSplitter()
         except Exception as e:
             Path.Log.error(
-                f"Z-Level Hybrid: Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}"
+                f"Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}"
             )
             continue
 
@@ -386,7 +389,7 @@ def zlevel_hybrid_stack(
             cutArea = layer_engine.getShape()
         except Exception as e:
             Path.Log.error(
-                f"Z-Level Hybrid: Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}"
+                f"Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}"
             )
             cutArea = None
 
@@ -554,7 +557,7 @@ def _update_machining_mask(wpc, allPrevComp, currentSilhouette, status, floor_ge
     try:
         allPrevComp = mask_engine.getShape()
     except Exception as e:
-        Path.Log.error(f"Z-Level Hybrid: Machining mask update failed: {str(e)}")
+        Path.Log.error(f"Machining mask update failed: {str(e)}")
 
     return allPrevComp
 
@@ -688,7 +691,6 @@ def zlevel_hybrid_to_gcode(
     # Return to clearance height
     commands.append(Path.Command("G0", {"Z": clear_hght, "F": v_rapid}))
 
-    Path.Log.info(f"Z-Level Hybrid: G-code generation complete. {len(commands)} commands.")
     return commands
 
 
@@ -731,7 +733,7 @@ def _generatePattern(
 
     # 1. Validation Guards
     if not cutArea or cutArea.isNull():
-        Path.Log.warning("Z-Level Hybrid: Pattern generation skipped - Null cutArea.")
+        Path.Log.warning("Pattern generation skipped - Empty cutting area.")
         return []
 
     if cutArea.Area < 1e-7:
@@ -756,7 +758,7 @@ def _generatePattern(
     elif cut_pattern == "Grid":
         pattern_mode = 6
     else:
-        Path.Log.error(f"Z-Level Hybrid: Unsupported pattern type '{cut_pattern}'")
+        Path.Log.error(f"Unsupported pattern type '{cut_pattern}'")
         return []
 
     # 4. Configure C++ Solver Parameters
@@ -776,7 +778,7 @@ def _generatePattern(
         engine.makePocket()
         res_area = engine.getShape()
     except Exception as e:
-        Path.Log.error(f"Z-Level Hybrid: Pattern G-code generation failed: {str(e)}")
+        Path.Log.error(f"Pattern G-code generation failed: {str(e)}")
         return []
 
     if not res_area or res_area.isNull():
@@ -843,7 +845,7 @@ def _generate_wire_path(wire, z_target, safe_hght, start_p, feed_params):
     try:
         pp = Path.fromShapes(**path_params)
     except Exception as e:
-        Path.Log.error(f"Z-Level Hybrid: Path.fromShapes failed at Z={z_target}: {str(e)}")
+        Path.Log.error(f"Path.fromShapes failed at Z={z_target}: {str(e)}")
         return []
 
     # Extend Commands list

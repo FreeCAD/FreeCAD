@@ -115,7 +115,7 @@ def _apply_mesh_simplification(vertices, facets, simplification_level):
         return simplified_vertices, simplified_facets
 
     except Exception as e:
-        Path.Log.warning(f"surface_mesh: Mesh simplification failed: {e}, using original mesh")
+        Path.Log.warning(f"Mesh simplification failed: {e}, using original mesh")
         return vertices, facets
 
 
@@ -151,7 +151,9 @@ def _shape_to_stl_cpp(shape, linear_deflection, angular_deflection):
 
     # C++ tessellation
     cpp_start = time.perf_counter()
-    verts, faces = _stl_cpp.shape_tessellate_fast(shape, linear_deflection, angular_deflection)
+    verts, faces = _stl_cpp.shape_tessellate_fast(
+        shape, linear_deflection, angular_deflection
+    )
     cpp_time = time.perf_counter() - cpp_start
 
     total_time = time.perf_counter() - start_time
@@ -193,7 +195,9 @@ def _shape_to_stl_python(shape, linear_deflection, angular_deflection):
 
     # Python tessellation
     py_start = time.perf_counter()
-    verts, faces = _shape_to_stl_arrays(shape, linear_deflection, angular_deflection)
+    verts, faces = _shape_to_stl_arrays(
+        shape, linear_deflection, angular_deflection
+    )
     py_time = time.perf_counter() - py_start
 
     total_time = time.perf_counter() - start_time
@@ -265,7 +269,11 @@ def _shape_to_stl_arrays(shape, linear_deflection, angular_deflection):
 
 
 def _shape_to_stl(
-    shape, linear_deflection, angular_deflection, mesh_simplification=1, use_cpp=False
+    shape,
+    linear_deflection,
+    angular_deflection,
+    mesh_simplification=1,
+    use_cpp=False
 ):
     """Convert a Part.Shape / Compound to ocl.STLSurf using raw arrays.
 
@@ -305,6 +313,9 @@ def _shape_to_stl(
     simp_start = time.perf_counter()
     verts, faces = _apply_mesh_simplification(verts, faces, mesh_simplification)
     simp_time = time.perf_counter() - simp_start
+    Path.Log.debug(
+        f"surface_mesh._shape_to_stl: Mesh simplification time: {simp_time:.4f}s"
+    )
 
     total_tess_time = time.perf_counter() - tess_start
     Path.Log.debug(
@@ -340,19 +351,29 @@ def _shape_to_stl(
     return stl
 
 
-def _mesh_to_stl(mesh_points, mesh_facets):
-    """Convert raw mesh data (points + facet indices) to ``ocl.STLSurf``.
+def _mesh_to_stl(mesh_obj):
+    """
+    Converts a FreeCAD Mesh object directly to an ocl.STLSurf.
 
-    Useful when the caller already has mesh data (e.g. from a Mesh
-    object rather than a Part.Shape).
+    This function handles the entire conversion process, from extracting raw
+    point and facet data to constructing the final OCL mesh object.
 
     Args:
-        mesh_points: Sequence of point-like objects (each with x,y,z or [x,y,z]).
-        mesh_facets: Sequence of facet index triples (each [i0,i1,i2]).
+        mesh_obj (Mesh::Feature): The source FreeCAD Mesh object.
+        timer (callable, optional): A callback for performance instrumentation.
 
     Returns:
-        An ``ocl.STLSurf`` object.
+        ocl.STLSurf: The generated OCL mesh object, or None on failure.
     """
+    if not hasattr(mesh_obj, "Mesh") or not mesh_obj.Mesh.Facets:
+        Path.Log.error("The provided object is not a valid mesh or is empty.")
+        return None
+
+    mesh_start = time.perf_counter()
+    mesh_data = mesh_obj.Mesh
+    mesh_points = [tuple(p) for p in mesh_data.Points]
+    mesh_facets = [tuple(f.PointIndices) for f in mesh_data.Facets]
+
     Path.Log.debug(
         f"surface_mesh.mesh_to_stl: input {len(mesh_points)} points, {len(mesh_facets)} facets"
     )
@@ -363,12 +384,10 @@ def _mesh_to_stl(mesh_points, mesh_facets):
     Point = ocl.Point
     Triangle = ocl.Triangle
 
-    mesh_start = time.perf_counter()
-
     for facet in mesh_facets:
         # Handle different point formats
         if len(facet) != 3:
-            Path.Log.warning(f"surface_mesh.mesh_to_stl: skipping invalid facet {facet}")
+            Path.Log.warning(f"Mesh_to_STL: skipping invalid facet {facet}")
             continue
 
         i0, i1, i2 = facet
@@ -436,10 +455,8 @@ def _shape_to_safe_stl(
     bb = model_shape.BoundBox
     plate_padding = tool_radius * 2
     base_plate = Part.makeBox(
-        bb.XLength + plate_padding * 2,
-        bb.YLength + plate_padding * 2,
-        0.1,
-        FreeCAD.Vector(bb.XMin - plate_padding, bb.YMin - plate_padding, bb.ZMin - 0.1),
+        bb.XLength + plate_padding*2, bb.YLength + plate_padding*2, 0.1,
+        FreeCAD.Vector(bb.XMin - plate_padding, bb.YMin - plate_padding, bb.ZMin - 0.1)
     )
     fused_shapes.append(base_plate)
 
@@ -449,14 +466,11 @@ def _shape_to_safe_stl(
             f"surface_mesh._shape_to_safe_stl: Generating extruded envelope for {len(avoid_faces)} avoided faces."
         )
         from . import surface_common
-
-        boundary_face = surface_common.make_boundary_face(
-            avoid_faces, tool_radius, linear_deflection
-        )
+        boundary_face = surface_common.make_boundary_face(avoid_faces, tool_radius, linear_deflection)
 
         if not boundary_face:
             Path.Log.error(
-                f"Failed to generate Safe STL. Transitions may not be collision-safe. Error: {e}"
+                "Failed to generate Safe STL. Transitions may not be collision-safe."
             )
             return None
 
@@ -475,10 +489,10 @@ def _shape_to_safe_stl(
     try:
         safe_stl = _shape_to_stl(
             hollow_shape,
-            linear_deflection * 3,
-            angular_deflection * 2,
+            linear_deflection,
+            angular_deflection ,
             mesh_simplification=5,
-            use_cpp=True,
+            use_cpp=True
         )
 
         Path.Log.debug("surface_mesh._shape_to_safe_stl: Safe STL generated successfully.")
@@ -492,7 +506,7 @@ def _shape_to_safe_stl(
 
 
 def generate_stl(
-    model_group,
+    base_objs,
     avoid_faces,
     tool_radius,
     needs_safe_stl,
@@ -511,7 +525,7 @@ def generate_stl(
     delegates the creation of the complex safety STL to the _shape_to_safe_stl helper.
 
     Args:
-        model_group (list): A list of all model objects from the Job.
+        base_objs (list): The source geometric objects from the Job (can be Part or Mesh). 
         selected_faces (list): A list of Part.Face objects to be machined.
         avoid_faces (list): A list of Part.Face objects to be avoided.
         tool_radius (float): The radius of the active tool.
@@ -527,67 +541,79 @@ def generate_stl(
         tuple: (stl, safe_stl), where stl is the primary mesh and safe_stl is the
                collision mesh (or a copy of stl if generation failed or wasn't needed).
     """
-    import TechDraw
-
     stl, safe_stl = None, None
-
-    # Generate the primary machining STL
-    if not model_group:
-        Path.Log.error("No base models in Job to process for STL generation.")
+    
+    if not base_objs:
+        Path.Log.error("No base models provided for STL generation.")
         return None, None
 
-    model_shape = Part.Compound([b.Shape for b in model_group])
-    if not model_shape or model_shape.isNull():
-        Path.Log.error("Could not create a valid shape for primary STL generation.")
-        return None, None
+    # Dispatch based on geometry type
+    is_mesh_op = hasattr(base_objs[0], "TypeId") and base_objs[0].TypeId.startswith("Mesh")
 
-    # Pre-clip the full model shape to the final depth
-    bbox = model_shape.BoundBox
-    padding = 1.0
-
-    clipper_box = Part.makeBox(
-        bbox.XLength + padding * 2,
-        bbox.YLength + padding * 2,
-        bbox.ZMax - final_depth + padding,
-        FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth),
-    )
-    clipped_shape = model_shape.common(clipper_box)
-
-    if clipped_shape.isNull():
-        Path.Log.warning(
-            "Pre-clipping the machining shape resulted in an empty shape. Using original full model."
-        )
-        clipped_shape = model_shape
-
-    # Generate the primary STL
-    stl = _shape_to_stl(
-        clipped_shape,
-        linear_deflection,
-        angular_deflection,
-        mesh_simplification,
-        use_cpp,
-    )
-
-    # Check if the STL object is None OR if it contains zero triangles.
-    if stl is None or stl.size() == 0:
+    if is_mesh_op:
         Path.Log.debug(
-            "surface_mesh.generate_stl.Failed to create a valid STL from the model (mesh is empty)."
+            "surface_mesh.generate_stl. Mesh object detected as Base. Using direct mesh conversion."
         )
-        return None, None
+        stl = mesh_to_stl(base_objs[0])
+        if stl is None:
+            Path.Log.error("Could not create a valid shape for primary STL generation.")
+            return None, None
 
-    # Generate the Safe STL
-    if needs_safe_stl:
-        safe_stl = _shape_to_safe_stl(
-            model_shape,
-            avoid_faces,
-            tool_radius,
-            start_depth,
-            final_depth,
+        return stl, stl
+    else:
+        # Generate the primary machining STL
+        model_group = base_objs
+    
+        model_shape = Part.Compound([b.Shape for b in base_objs])
+        if not model_shape or model_shape.isNull():
+            Path.Log.error("Could not create a valid shape for primary STL generation.")
+            return None, None
+
+        # Pre-clip the full model shape to the final depth
+        bbox = model_shape.BoundBox
+        padding = 1.0
+
+        clipper_box = Part.makeBox(
+            bbox.XLength + padding*2, bbox.YLength + padding*2, bbox.ZMax - final_depth + padding,
+            FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth)
+        )
+        clipped_shape = model_shape.common(clipper_box)
+
+        if clipped_shape.isNull():
+            Path.Log.warning(
+                "Pre-clipping the machining shape resulted in an empty shape. Using original full model."
+            )
+            clipped_shape = model_shape
+
+        # Generate the primary STL
+        stl = _shape_to_stl(
+            clipped_shape,
             linear_deflection,
             angular_deflection,
+            mesh_simplification,
+            use_cpp,
         )
 
-    if safe_stl is None:
-        safe_stl = stl
+        # Check if the STL object is None OR if it contains zero triangles.
+        if stl is None or stl.size() == 0:
+            Path.Log.debug(
+                "surface_mesh.generate_stl.Failed to create a valid STL from the model (mesh is empty)."
+            )
+            return None, None
 
-    return stl, safe_stl
+        # Generate the Safe STL
+        if needs_safe_stl:
+            safe_stl = _shape_to_safe_stl(
+                model_shape, 
+                avoid_faces, 
+                tool_radius, 
+                start_depth, 
+                final_depth, 
+                linear_deflection, 
+                angular_deflection,
+            )
+
+        if safe_stl is None:
+            safe_stl = stl
+
+        return stl, safe_stl

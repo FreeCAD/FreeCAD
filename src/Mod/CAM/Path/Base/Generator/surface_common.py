@@ -217,7 +217,7 @@ def make_safe_cutter(
 # ---------------------------------------------------------------------------
 
 
-def make_boundary_face(cutting_faces, offset, tolerance=0.005):
+def make_boundary_face(original_faces, offset, tolerance=0.005):
     """
     Creates a mathematically precise 2D boundary face (mask) on the XY plane.
 
@@ -239,24 +239,24 @@ def make_boundary_face(cutting_faces, offset, tolerance=0.005):
     import TechDraw
     import PathScripts.PathUtils as PathUtils
 
-    if not cutting_faces:
+    if not original_faces:
         return None
 
-    offset_face = None
+    outer_wire = None
+    offset_shape = None
     boundary_face = None
 
     # Create a single compound of the 3D faces to find the global silhouette
-    compound = Part.Compound(cutting_faces)
+    compound = Part.Compound(original_faces)
 
     # Extract the exact 2D projection outline looking down the Z-axis
-    outer_wire = TechDraw.findShapeOutline(compound, 1, FreeCAD.Vector(0, 0, 1))
-
-    # Fallback if the TechDraw projection module fails on complex geometry
-    if not outer_wire or not hasattr(outer_wire, "Edges") or len(outer_wire.Edges) == 0:
-        Path.Log.warning(
-            "surface_common.make_boundary_face: TechDraw could not find a valid outline. Attempting fallback."
+    try:
+        outer_wire = TechDraw.findShapeOutline(compound, 1, FreeCAD.Vector(0, 0, 1))
+    except Exception as e:
+        Path.Log.error(
+            f"TechDraw failed to extract the 2D projection outline: {e}"
         )
-        outer_wire = compound
+        return None
 
     # Let PathUtils (ClipperLib) handle the offsetting natively.
     offset_shape = PathUtils.getOffsetArea(
@@ -269,16 +269,14 @@ def make_boundary_face(cutting_faces, offset, tolerance=0.005):
 
     if not offset_shape or not hasattr(offset_shape, "Edges") or len(offset_shape.Edges) == 0:
         Path.Log.warning(
-            "surface_common.make_boundary_face: Offsetting the selected faces resulted in an empty shape."
+            "Offsetting the selected faces resulted in an empty shape."
         )
         return None
 
     # Convert the offset 2D wire into a solid masking face
     boundary_face = Part.makeFace(offset_shape)
     if not boundary_face:
-        Path.Log.warning(
-            f"surface_common.make_boundary_face: Failed to create smooth boundary face: {e}"
-        )
+        Path.Log.warning(f"Failed to create smooth boundary face: {e}")
         return None
 
     if boundary_face.BoundBox.ZMin != 0.0:
@@ -312,7 +310,7 @@ def generate_pattern_mask(cutting_faces, avoid_faces, tool_radius, boundary_adj,
     """
     if not cutting_faces:
         Path.Log.warning(
-            "surface_common.generate_pattern_mask:Could not determine geometry for main boundary mask."
+            "Could not determine geometry for main boundary mask."
         )
         return None
 
@@ -322,7 +320,7 @@ def generate_pattern_mask(cutting_faces, avoid_faces, tool_radius, boundary_adj,
 
     if not main_boundary:
         Path.Log.warning(
-            "surface_common.generate_pattern_mask: Could not determine geometry for main boundary mask."
+            "Could not determine geometry for main boundary mask."
         )
         return None
 
@@ -330,31 +328,27 @@ def generate_pattern_mask(cutting_faces, avoid_faces, tool_radius, boundary_adj,
     if not avoid_faces:
         return main_boundary
 
-    Path.Log.info(
-        f"surface_common.generate_pattern_mask: Punching {len(avoid_faces)} holes for avoided faces."
-    )
-
     # For avoid zones, we want to keep the tool center away, so we expand the boundary
     epsilon = tolerance + 0.001  # Allow some extra room to avoid "path spikes" on vertical walls
-    avoid_boundary = make_boundary_face(avoid_faces, tool_radius + epsilon, tolerance)
+    avoid_boundary = make_boundary_face(avoid_faces, tool_radius+epsilon, tolerance)
 
     if not avoid_boundary:
         Path.Log.warning(
-            "surface_common.generate_pattern_mask: Failed to generate boundary for avoid_faces."
+            "Failed to generate boundary for avoid_faces."
         )
         return main_boundary
-
     # 3. Punch the holes
     try:
         final_mask = main_boundary.cut(avoid_boundary)
         if final_mask.isNull():
             Path.Log.warning(
-                "surface_common.generate_pattern_mask: Boolean cut for avoid_faces failed."
+                "Boolean cut for avoid_faces failed."
             )
             return main_boundary
         return final_mask
     except Exception as e:
         Path.Log.error(
-            f"surface_common.generate_pattern_mask: Failed to cut avoid_faces from boundary mask: {e}"
+            f"Failed to cut avoid_faces from boundary mask: {e}"
         )
         return main_boundary
+

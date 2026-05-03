@@ -48,7 +48,7 @@ from Path.Base.Generator.surface_common import _get_ocl
 # ---------------------------------------------------------------------------
 
 
-def batch_dropcutter(stl, cutter, polylines, min_z, threads=None, timer=None):
+def batch_dropcutter(stl, cutter, polylines, min_z, threads=None):
     """Run OCL BatchDropCutter on a list of pre-discretized polylines.
 
     Uses KDTree acceleration and OpenMP parallelism (via ``setThreads()``).
@@ -61,7 +61,6 @@ def batch_dropcutter(stl, cutter, polylines, min_z, threads=None, timer=None):
         polylines: A list of scan lines, where each line is a list of (x,y,z) tuples.
         min_z: Minimum Z depth.
         threads: Number of OpenMP threads (*None* = auto-detect).
-        timer: Optional ``timer(stage_name, elapsed_seconds)`` callback.
 
     Returns:
         A list of (x, y, z) tuples with Z-heights set by the drop-cutter
@@ -86,9 +85,6 @@ def batch_dropcutter(stl, cutter, polylines, min_z, threads=None, timer=None):
     bdc.run()
     t1 = time.time()
 
-    if timer:
-        timer("batch_dropcutter", t1 - t0)
-
     Path.Log.debug("batch_dropcutter: {} points in {:.3f}s".format(total_points, t1 - t0))
 
     # Extract results
@@ -104,7 +100,7 @@ def batch_dropcutter(stl, cutter, polylines, min_z, threads=None, timer=None):
 # ---------------------------------------------------------------------------
 
 
-def path_dropcutter(stl, cutter, polylines, min_z, sampling, timer=None):
+def path_dropcutter(stl, cutter, polylines, min_z, sampling):
     """Run OCL PathDropCutter along a path (Line/Arc segments).
 
     Fixed-interval sampling.  Use for circular/arc scan paths where
@@ -116,7 +112,6 @@ def path_dropcutter(stl, cutter, polylines, min_z, sampling, timer=None):
         ocl_path: ``ocl.Path`` (sequence of Line/Arc).
         min_z: Minimum Z depth.
         sampling: Sampling interval along the path (mm).
-        timer: Optional callback.
 
     Returns:
         List of ``(x, y, z)`` tuples.
@@ -125,11 +120,10 @@ def path_dropcutter(stl, cutter, polylines, min_z, sampling, timer=None):
 
     ocl_path = ocl.Path()
     for line in polylines:
-        if len(line) < 2:
-            continue
+        if len(line) < 2: continue
         for i in range(len(line) - 1):
             p1 = ocl.Point(line[i][0], line[i][1], min_z)
-            p2 = ocl.Point(line[i + 1][0], line[i + 1][1], min_z)
+            p2 = ocl.Point(line[i+1][0], line[i+1][1], min_z)
             ocl_path.append(ocl.Line(p1, p2))
 
     pdc = ocl.PathDropCutter()
@@ -143,9 +137,6 @@ def path_dropcutter(stl, cutter, polylines, min_z, sampling, timer=None):
     pdc.run()
     t1 = time.time()
 
-    if timer:
-        timer("path_dropcutter", t1 - t0)
-
     Path.Log.debug("path_dropcutter: {:.3f}s".format(t1 - t0))
 
     return [(cl.x, cl.y, cl.z) for cl in pdc.getCLPoints()]
@@ -156,9 +147,7 @@ def path_dropcutter(stl, cutter, polylines, min_z, sampling, timer=None):
 # ---------------------------------------------------------------------------
 
 
-def adaptive_path_dropcutter(
-    stl, cutter, polylines, min_z, sampling, min_sampling=None, timer=None
-):
+def adaptive_path_dropcutter(stl, cutter, polylines, min_z, sampling, min_sampling=None):
     """Run OCL AdaptivePathDropCutter along a path.
 
     Automatically refines sampling in areas of high curvature.
@@ -173,7 +162,6 @@ def adaptive_path_dropcutter(
         sampling: Base sampling interval (mm).
         min_sampling: Minimum sampling interval for adaptive refinement.
                       If *None*, defaults to ``sampling / 10``.
-        timer: Optional callback.
 
     Returns:
         List of ``(x, y, z)`` tuples.
@@ -182,11 +170,10 @@ def adaptive_path_dropcutter(
 
     ocl_path = ocl.Path()
     for line in polylines:
-        if len(line) < 2:
-            continue
+        if len(line) < 2: continue
         for i in range(len(line) - 1):
             p1 = ocl.Point(line[i][0], line[i][1], min_z)
-            p2 = ocl.Point(line[i + 1][0], line[i + 1][1], min_z)
+            p2 = ocl.Point(line[i+1][0], line[i+1][1], min_z)
             ocl_path.append(ocl.Line(p1, p2))
 
     if min_sampling is None:
@@ -203,9 +190,6 @@ def adaptive_path_dropcutter(
     t0 = time.time()
     apdc.run()
     t1 = time.time()
-
-    if timer:
-        timer("adaptive_path_dropcutter", t1 - t0)
 
     Path.Log.debug("adaptive_path_dropcutter: {:.3f}s".format(t1 - t0))
 

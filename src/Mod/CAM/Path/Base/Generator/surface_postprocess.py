@@ -148,9 +148,7 @@ def filter_cl_points(cl_points, tolerance):
     result = [(cl.x, cl.y, cl.z) for cl in f.getCLPoints()]
 
     Path.Log.debug(
-        "filter_cl_points: {} -> {} points in {:.3f}s".format(
-            len(cl_points), len(result), filter_time
-        )
+        "filter_cl_points: {} -> {} points in {:.3f}s".format(len(cl_points), len(result), filter_time)
     )
 
     return result
@@ -165,6 +163,7 @@ def _optimize_travel(
     last_point,
     next_point,
     safe_z,
+    step_down,
     clearance_z,
     horiz_feed,
     horiz_rapid,
@@ -184,6 +183,7 @@ def _optimize_travel(
         last_point: (x, y, z) end of previous scan line.
         next_point: (x, y, z) start of next scan line.
         safe_z: Safe retract height.
+        step_down: Step Down height
         clearance_z: Clearance height.
         horiz_feed: Horizontal cutting feed rate.
         horiz_rapid: Horizontal rapid rate.
@@ -201,10 +201,8 @@ def _optimize_travel(
         dy = next_point[1] - last_point[1]
         xy_dist_sqrd = dx * dx + dy * dy
 
-        if xy_dist_sqrd <= (cutter_diam) ** 2:
-            transition_cmds = _dropcutter_transition(
-                last_point, next_point, safe_pdc, safe_z, horiz_feed
-            )
+        if xy_dist_sqrd <= ((cutter_diam) ** 2) * 2:
+            transition_cmds = _dropcutter_transition(last_point, next_point, safe_pdc, safe_z, step_down, horiz_feed)
             if transition_cmds:
                 return transition_cmds
 
@@ -215,7 +213,7 @@ def _optimize_travel(
     ]
 
 
-def _dropcutter_transition(start, end, safe_pdc, safe_z, horiz_feed):
+def _dropcutter_transition(start, end, safe_pdc, safe_z, step_down, horiz_feed):
     """Probes a transition path and returns surface-following G1 commands."""
     ocl = _get_ocl()
     path = ocl.Path()
@@ -231,12 +229,24 @@ def _dropcutter_transition(start, end, safe_pdc, safe_z, horiz_feed):
     if not cl_points:
         return None
 
+    # Check the Z-climb required for the very first segment of the transition.
+    first_transition_pt = cl_points[1]
+    initial_climb = abs(first_transition_pt.z - start[2])
+    step_over_transition = start[2] == end[2]  # Possibly a step-over transition (stay down)
+
+    # If the initial climb is more than half a step-down, it's faster to retract.
+    if step_down > 0 and initial_climb > (step_down / 2.0) and not step_over_transition:
+        Path.Log.debug(
+            f"Keep-down move aborted: initial climb ({initial_climb:.2f}mm) exceeds half step-down ({step_down/2.0:.2f}mm)."
+        )
+        return None # Abort the transition
+
     # Use a math-based "z-floor" to prevent the tool from diving into holes or off edges
     z_floor = min(start[2], end[2])
-    commands = []
+    commands =[]
 
     # Generate G1 moves that follow the probed surface
-    for pt in cl_points[1:-1]:  # Skip first and last point to avoid duplicating moves
+    for pt in cl_points[1:-1]: # Skip first and last point to avoid duplicating moves
         z = max(pt.z, z_floor) + 0.1  # Plus a small buffer to avoid touching previous on Multi-pass
         commands.append(Path.Command("G1", {"X": pt.x, "Y": pt.y, "Z": z, "F": horiz_feed}))
 
@@ -267,6 +277,7 @@ def scan_lines_to_gcode(
     vert_rapid,
     horiz_rapid,
     safe_z,
+    step_down,
     sample_interval,
     clearance_z,
     final_z,
@@ -286,6 +297,7 @@ def scan_lines_to_gcode(
         vert_rapid: Vertical rapid feed rate.
         horiz_rapid: Horizontal rapid feed rate.
         safe_z: Safe height.
+        step_down: Step Down height
         sample_interval: Sample_interval.
         clearance_z: Clearance height.
         final_z: Final depth.
@@ -327,6 +339,7 @@ def scan_lines_to_gcode(
                     last_point,
                     first_point,
                     safe_z,
+                    step_down,
                     clearance_z,
                     horiz_feed,
                     horiz_rapid,
