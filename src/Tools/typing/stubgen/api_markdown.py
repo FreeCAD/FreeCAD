@@ -122,16 +122,16 @@ def render_aliases(aliases: tuple[str, ...]) -> list[str]:
     return [f"- `{alias}`" for alias in aliases]
 
 
-def render_source_section(
+def render_page_metadata(
     lines: list[str],
+    *,
+    import_line: str,
     location: ApiSourceLocation | None,
     source_base_url: str | None,
 ) -> None:
-    if location is None:
-        return
-    lines.append("## Source")
-    lines.append("")
-    lines.append(f"- {source_link(location, source_base_url)}")
+    lines.append(f"- **Import:** `{import_line}`")
+    if location is not None:
+        lines.append(f"- **Source:** {source_link(location, source_base_url)}")
     lines.append("")
 
 
@@ -140,23 +140,23 @@ def render_callable_group(
     *,
     source_base_url: str | None,
 ) -> list[str]:
-    lines = [f"### `{group.name}`", ""]
+    lines = [f"#### `{group.name}`", ""]
+    if group.doc:
+        lines.append(group.doc)
+        lines.append("")
     if group.overload:
         lines.append(f"{len(group.signatures)} overloads.")
         lines.append("")
         for index, signature in enumerate(group.signatures, start=1):
-            lines.append(f"#### Overload {index}")
+            lines.append(f"**Overload {index}**")
             lines.append("")
             lines.append(fenced_python([f"def {signature.display_signature}"]))
             lines.append("")
     else:
         lines.append(fenced_python([f"def {group.signatures[0].display_signature}"]))
         lines.append("")
-    if group.doc:
-        lines.append(group.doc)
-        lines.append("")
     if group.location is not None:
-        lines.append(f"Source: {source_link(group.location, source_base_url)}")
+        lines.append(f"- **Source:** {source_link(group.location, source_base_url)}")
         lines.append("")
     return lines
 
@@ -241,12 +241,12 @@ def render_module_page(
         lines.append(module.doc)
         lines.append("")
 
-    lines.append("## Import")
-    lines.append("")
-    lines.append(fenced_python([f"import {module.name}"]))
-    lines.append("")
-
-    render_source_section(lines, module.location, source_base_url)
+    render_page_metadata(
+        lines,
+        import_line=f"import {module.name}",
+        location=module.location,
+        source_base_url=source_base_url,
+    )
 
     if module.aliases:
         lines.append("## Aliases")
@@ -317,12 +317,12 @@ def render_class_page(
         lines.append(klass.doc)
         lines.append("")
 
-    lines.append("## Import")
-    lines.append("")
-    lines.append(fenced_python([f"from {klass.module_name} import {klass.name}"]))
-    lines.append("")
-
-    render_source_section(lines, klass.location, source_base_url)
+    render_page_metadata(
+        lines,
+        import_line=f"from {klass.module_name} import {klass.name}",
+        location=klass.location,
+        source_base_url=source_base_url,
+    )
 
     if klass.aliases:
         lines.append("## Aliases")
