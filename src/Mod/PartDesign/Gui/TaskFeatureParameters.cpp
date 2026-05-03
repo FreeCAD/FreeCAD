@@ -492,23 +492,26 @@ bool TaskDlgFeatureParameters::reject()
         }
     }
 
-    const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
-        Gui::getMainWindow(),
-        tr("Feature parameters"),
-        tr("Restoring document..."),
-        document,
-        /*force=*/false,
-        [document]() {
-            if (document) {
-                document->recompute();
+    if (document->mustExecute()) {
+        const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+            Gui::getMainWindow(),
+            tr("Feature parameters"),
+            tr("Restoring document..."),
+            document,
+            /*force=*/false,
+            [document]() {
+                if (document) {
+                    document->recompute();
+                }
             }
-        }
-    );
-    if (!outcome.success && !outcome.canceled) {
-        Base::Console().error(
-            "%s\n",
-            outcome.message.empty() ? "Feature rollback recompute failed" : outcome.message.c_str()
         );
+        if (!outcome.success && !outcome.canceled) {
+            Base::Console().error(
+                "%s\n",
+                outcome.message.empty() ? "Feature rollback recompute failed"
+                                        : outcome.message.c_str()
+            );
+        }
     }
     Gui::cmdGuiDocument(document, "resetEdit()");
 
