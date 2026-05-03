@@ -131,10 +131,13 @@ def render_aliases(aliases: tuple[str, ...]) -> list[str]:
 def render_page_metadata(
     lines: list[str],
     *,
+    qualified_name: str | None,
     import_line: str,
     location: ApiSourceLocation | None,
     source_base_url: str | None,
 ) -> None:
+    if qualified_name is not None:
+        lines.append(f"- **Qualified name:** `{qualified_name}`")
     lines.append(f"- **Import:** `{import_line}`")
     if location is not None:
         lines.append(f"- **Source:** {source_link(location, source_base_url)}")
@@ -237,7 +240,7 @@ def render_module_page(
             sidebar_order=MODULE_ORDER.get(module.name, TOP_LEVEL_MODULE_ORDER.get(module.name)),
         )
     ]
-    lines.append(f"# `{module.name}`")
+    lines.append(f"# {module.name}")
     lines.append("")
     if module.doc:
         lines.append(module.doc)
@@ -245,6 +248,7 @@ def render_module_page(
 
     render_page_metadata(
         lines,
+        qualified_name=None,
         import_line=f"import {module.name}",
         location=module.location,
         source_base_url=source_base_url,
@@ -303,7 +307,7 @@ def render_class_page(
             sidebar_label=klass.name,
         )
     ]
-    lines.append(f"# `{klass.module_name}.{klass.name}`")
+    lines.append(f"# {klass.name}")
     lines.append("")
     if klass.doc:
         lines.append(klass.doc)
@@ -311,6 +315,7 @@ def render_class_page(
 
     render_page_metadata(
         lines,
+        qualified_name=f"{klass.module_name}.{klass.name}",
         import_line=f"from {klass.module_name} import {klass.name}",
         location=klass.location,
         source_base_url=source_base_url,
