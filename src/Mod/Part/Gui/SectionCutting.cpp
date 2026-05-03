@@ -106,6 +106,9 @@ SectionCut::SectionCut(QWidget* parent)
     if (!doc) {
         throw Base::RuntimeError("Section cut error: there is no document");
     }
+    documentDeleteConnection = App::GetApplication().signalDeleteDocument.connect(
+        [this](const App::Document& deletedDoc) { onObservedDocumentDeleted(deletedDoc); }
+    );
 
     Gui::AsyncPreviewController::Callbacks callbacks;
     callbacks.makeRequest = [this]() {
@@ -416,7 +419,9 @@ bool SectionCut::rejectNow()
     QDialog::reject();
     if (auto* dw = qobject_cast<QDockWidget*>(parentWidget())) {
         dw->close();
-        dw->deleteLater();
+    }
+    else {
+        deleteLater();
     }
     return true;
 }
@@ -1602,6 +1607,7 @@ SectionCut* SectionCut::makeDockWidget(QWidget* parent)
     // the dialog is designed that you can see the tree, thus put it to the right side
     QDockWidget* dw = pDockMgr->addDockWindow("Section Cutting", sectionCut, Qt::RightDockWidgetArea);
     dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    dw->setAttribute(Qt::WA_DeleteOnClose);
     // dw->setFloating(true);
     dw->show();
 
@@ -1611,6 +1617,7 @@ SectionCut* SectionCut::makeDockWidget(QWidget* parent)
 /** Destroys the object and frees any allocated resources */
 SectionCut::~SectionCut()
 {
+    documentDeleteConnection.disconnect();
     stopPendingRecompute();
 
     // there might be no document
@@ -1637,6 +1644,24 @@ void SectionCut::reject()
     }
 
     rejectNow();
+}
+
+void SectionCut::onObservedDocumentDeleted(const App::Document& deletedDoc)
+{
+    if (&deletedDoc != doc) {
+        return;
+    }
+
+    stopPendingRecompute();
+    doc = nullptr;
+
+    if (auto* dw = qobject_cast<QDockWidget*>(parentWidget())) {
+        dw->close();
+        return;
+    }
+
+    close();
+    deleteLater();
 }
 
 void SectionCut::onRecomputeSettled()
