@@ -459,8 +459,6 @@ def _shape_to_safe_stl(
         )
         from . import surface_common
 
-        is_whole_model_job = False  # Needed by the `create_boundary_from_faces` below
-
         boundary_face = surface_common.create_boundary_from_faces(
             avoid_faces, tool_radius, linear_deflection
         )
