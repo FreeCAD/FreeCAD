@@ -10,7 +10,7 @@
             "python3 ../generate_stubs.py docs --root ../../../../ --out-dir src/Tools/typing/site/src/content/docs --sidebar-out src/Tools/typing/site/src/generated/python-api-sidebar.ts"
     },
     "devDependencies": {
-        "@astrojs/starlight": "^0.35.2",
-        "astro": "^5.13.5"
+        "@astrojs/starlight": "^0.38.4",
+        "astro": "^6.2.1"
     }
 }
