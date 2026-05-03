@@ -541,6 +541,10 @@ private Q_SLOTS:
     void polarCancelPreviewStopsAsyncRunWithoutClosingDialog()  // NOLINT
     {
         prepareTransformedFixture(TransformedKind::Polar);
+        auto* pattern = dynamic_cast<PartDesign::BlockingPolarPatternTest*>(
+            doc->getObject("BlockingPolarPattern")
+        );
+        QVERIFY(pattern != nullptr);
 
         auto* dialog = new PartDesignGui::TaskDlgLinearPatternParameters(transformedView);
         QPointer<PartDesignGui::TaskDlgLinearPatternParameters> guard(dialog);
@@ -576,6 +580,7 @@ private Q_SLOTS:
         PartDesign::BlockingPolarPatternTest::releaseBlocker();
 
         QTRY_VERIFY_WITH_TIMEOUT(!taskBox->hasOutstandingRecompute(), 3000);
+        QVERIFY(!pattern->isError());
         QVERIFY(!guard.isNull());
         QCOMPARE(Gui::Control().activeDialog(doc), static_cast<Gui::TaskView::TaskDialog*>(dialog));
         QCOMPARE(PartDesign::BlockingPolarPatternTest::getExecutionCount(), 1);
