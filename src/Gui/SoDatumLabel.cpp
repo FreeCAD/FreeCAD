@@ -1567,14 +1567,14 @@ void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, con
         GLfloat mv[16];
         glGetFloatv(GL_MODELVIEW_MATRIX, mv);
 
-        SbVec3f axisX(mv[0], mv[1], mv[2]);   // dimension line in eye space
-        SbVec3f curZ(mv[8], mv[9], mv[10]);    // current text normal
+        SbVec3f axisX(mv[0], mv[1], mv[2]);  // dimension line in eye space
+        SbVec3f curZ(mv[8], mv[9], mv[10]);  // current text normal
         axisX.normalize();
         curZ.normalize();
 
         // Project current and desired normals onto the plane perpendicular
         // to the dimension line to obtain the tilt angle around it.
-        SbVec3f target(0.0f, 0.0f, 1.0f);     // toward camera in eye space
+        SbVec3f target(0.0f, 0.0f, 1.0f);  // toward camera in eye space
         SbVec3f curProj = curZ - axisX * curZ.dot(axisX);
         SbVec3f tgtProj = target - axisX * target.dot(axisX);
 
