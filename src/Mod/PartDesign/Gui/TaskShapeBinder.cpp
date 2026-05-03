@@ -556,24 +556,26 @@ bool TaskDlgShapeBinder::rejectNow()
     App::Document* doc = vp->getObject()->getDocument();
     vp->getDocument()->abortCommand();
     Gui::cmdGuiDocument(doc, "resetEdit()");
-    const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
-        parameter,
-        tr("Shape binder"),
-        tr("Restoring document..."),
-        doc,
-        /*force=*/false,
-        [doc]() {
-            if (doc) {
-                doc->recompute();
+    if (doc->mustExecute()) {
+        const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+            parameter,
+            tr("Shape binder"),
+            tr("Restoring document..."),
+            doc,
+            /*force=*/false,
+            [doc]() {
+                if (doc) {
+                    doc->recompute();
+                }
             }
-        }
-    );
-    if (!outcome.success && !outcome.canceled) {
-        Base::Console().error(
-            "%s\n",
-            outcome.message.empty() ? "Shape binder rollback recompute failed"
-                                    : outcome.message.c_str()
         );
+        if (!outcome.success && !outcome.canceled) {
+            Base::Console().error(
+                "%s\n",
+                outcome.message.empty() ? "Shape binder rollback recompute failed"
+                                        : outcome.message.c_str()
+            );
+        }
     }
     return true;
 }
