@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import shutil
 
 from .cpp_api_model import (
@@ -58,7 +59,11 @@ def namespace_slug(qualified_name: str) -> str:
 
 
 def class_slug_token(klass: CppApiClass) -> str:
-    return klass.display_name.replace("::", ".")
+    token = klass.display_name.replace("::", "-")
+    token = re.sub(r"[^0-9A-Za-z_-]+", "-", token)
+    token = re.sub(r"-{2,}", "-", token)
+    token = token.strip("-")
+    return token or klass.name
 
 
 def class_slug(klass: CppApiClass) -> str:
