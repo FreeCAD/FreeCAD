@@ -217,29 +217,25 @@ def make_safe_cutter(
 # ---------------------------------------------------------------------------
 
 
-def make_boundary_face(original_faces, offset, tolerance=0.005):
+def get_whole_model_boundary(model_faces, offset, tolerance=0.005):
     """
-    Creates a mathematically precise 2D boundary face (mask) on the XY plane.
+    Creates a 2D boundary mask from the silhouette of an entire model.
 
-    This function takes an array of 3D faces, projects their absolute silhouette
-    onto the Z=0 plane, and cleanly offsets that silhouette using ClipperLib.
-    It guarantees a contiguous, non-crisscrossing polygon that smoothly matches
-    the user's exact accuracy settings.
+    This function uses the high-speed TechDraw module to find the 2D projection
+    of a full model shape, which is very efficient for this specific task.
 
     Args:
-        faces_to_mask (list): A list of Part.Face objects to derive the silhouette from.
-        offset (float): The expansion (positive) or contraction (negative) distance.
-        tolerance (float): The deflection tolerance used for drawing smooth arcs.
-                           Derived directly from the user's LinearDeflection property.
+        model_faces (list): A list of all faces from a Part.Compound of the model.
+        offset (float): The expansion or contraction distance for the boundary.
+        tolerance (float): The deflection tolerance for discretizing curves.
 
     Returns:
-        Part.Face: A single, flat 2D face on the XY plane representing the clipping boundary.
-                   Returns None if geometry extraction or offsetting fails.
+        Part.Face: The final 2D boundary face, or None on failure.
     """
     import TechDraw
     import PathScripts.PathUtils as PathUtils
 
-    if not original_faces:
+    if not model_faces:
         return None
 
     outer_wire = None
@@ -247,13 +243,15 @@ def make_boundary_face(original_faces, offset, tolerance=0.005):
     boundary_face = None
 
     # Create a single compound of the 3D faces to find the global silhouette
-    compound = Part.Compound(original_faces)
+    compound = Part.Compound(model_faces)
 
     # Extract the exact 2D projection outline looking down the Z-axis
     try:
         outer_wire = TechDraw.findShapeOutline(compound, 1, FreeCAD.Vector(0, 0, 1))
     except Exception as e:
-        Path.Log.error(f"TechDraw failed to extract the 2D projection outline: {e}")
+        Path.Log.error(
+            f"TechDraw failed to extract the 2D projection outline from Model: {e}"
+        )
         return None
 
     # Let PathUtils (ClipperLib) handle the offsetting natively.
@@ -266,13 +264,15 @@ def make_boundary_face(original_faces, offset, tolerance=0.005):
     )
 
     if not offset_shape or not hasattr(offset_shape, "Edges") or len(offset_shape.Edges) == 0:
-        Path.Log.warning("Offsetting the selected faces resulted in an empty shape.")
+        Path.Log.warning(
+            "Offsetting the Model faces resulted in an empty shape."
+        )
         return None
 
     # Convert the offset 2D wire into a solid masking face
     boundary_face = Part.makeFace(offset_shape)
     if not boundary_face:
-        Path.Log.warning(f"Failed to create smooth boundary face: {e}")
+        Path.Log.warning(f"Failed to create smooth Model boundary: {e}")
         return None
 
     if boundary_face.BoundBox.ZMin != 0.0:
@@ -281,7 +281,62 @@ def make_boundary_face(original_faces, offset, tolerance=0.005):
     return boundary_face
 
 
-def generate_pattern_mask(cutting_faces, avoid_faces, tool_radius, boundary_adj, tolerance):
+def create_boundary_from_faces(source_faces, offset, tolerance):
+    """
+    Creates a single, unified 2D boundary face from a list of source faces.
+
+    This is the definitive function for boundary creation. It robustly handles all
+    cases (single face, multiple faces, whole model) by projecting each face to
+    the XY plane to preserve holes, fusing the results, and then applying the
+    offset.
+
+    Args:
+        source_faces (list): A list of Part.Face objects to derive the boundary from.
+        offset (float): The expansion (positive) or contraction (negative) distance.
+        tolerance (float): The geometric tolerance for the offsetting operation.
+
+    Returns:
+        Part.Face: The final 2D boundary face, or None on failure.
+    """
+    import PathScripts.PathUtils as PathUtils
+
+    if not source_faces:
+        return None
+
+    projected_faces = []
+    fused_shape = None
+    boundary_shape = None
+
+    # Create a copy and translate it flat onto the XY plane
+    for face in source_faces:
+        proj_face = face.copy()
+        proj_face.translate(FreeCAD.Vector(0, 0, -proj_face.BoundBox.ZMin))
+        projected_faces.append(proj_face)
+
+    # Fuse the 2D Footprints
+    if len(projected_faces) > 1:
+        fused_shape = projected_faces[0].fuse(projected_faces[1:])
+    else:
+        fused_shape = projected_faces[0]
+
+    if not fused_shape:
+        Path.Log.error("Failed to fuse face footprints for boundary creation.")
+        return None
+    if hasattr(fused_shape, "removeSplitter"):
+        fused_shape = fused_shape.removeSplitter()
+
+    # Offset the Final Fused Shape
+    boundary_shape = PathUtils.getOffsetArea(
+        fused_shape, offset, removeHoles=False, tolerance=tolerance, plane=Part.makeCircle(2.0)
+    )
+
+    if not boundary_shape or not hasattr(boundary_shape, "Edges") or len(boundary_shape.Edges) == 0:
+        Path.Log.error("A critical error occurred when creating a boundary for selected faces.")
+        return None
+
+    return boundary_shape
+
+def generate_pattern_mask(is_whole_model_job, cutting_faces, avoid_faces, tool_radius, boundary_adj, tolerance):
     """
     Generates a universal 2D boundary face, punching out
     holes for any user-defined avoid_faces.
@@ -305,29 +360,39 @@ def generate_pattern_mask(cutting_faces, avoid_faces, tool_radius, boundary_adj,
         Part.Face: The final 2D clipping boundary. Returns None on failure.
     """
     if not cutting_faces:
-        Path.Log.warning("Could not determine geometry for main boundary mask.")
+        Path.Log.warning(
+            "Could not determine geometry for main boundary mask."
+        )
         return None
 
-    # 1. Create the Main Outer Boundary
+    # Create the Main Outer Boundary
+    main_boundary = None
     outer_offset = -tool_radius + boundary_adj
-    main_boundary = make_boundary_face(cutting_faces, outer_offset, tolerance)
+
+    if is_whole_model_job:
+        # Use TechDraw.findShapeOutline for whole model silhouette
+        main_boundary = get_whole_model_boundary(cutting_faces, outer_offset, tolerance)
+    else:
+        main_boundary = create_boundary_from_faces(cutting_faces, outer_offset, tolerance)
 
     if not main_boundary:
-        Path.Log.warning("Could not determine geometry for main boundary mask.")
+        Path.Log.warning(
+            "Could not determine geometry for main boundary mask."
+        )
         return None
 
-    # 2. Create the "Keep-Out" Zones from Avoid Faces
+    # Create the "Keep-Out" Zones from Avoid Faces
     if not avoid_faces:
         return main_boundary
 
     # For avoid zones, we want to keep the tool center away, so we expand the boundary
     epsilon = tolerance + 0.001  # Allow some extra room to avoid "path spikes" on vertical walls
-    avoid_boundary = make_boundary_face(avoid_faces, tool_radius + epsilon, tolerance)
+    avoid_boundary = create_boundary_from_faces(avoid_faces, tool_radius + epsilon, tolerance)
 
     if not avoid_boundary:
         Path.Log.warning("Failed to generate boundary for avoid_faces.")
         return main_boundary
-    # 3. Punch the holes
+    # Punch the holes
     try:
         final_mask = main_boundary.cut(avoid_boundary)
         if final_mask.isNull():

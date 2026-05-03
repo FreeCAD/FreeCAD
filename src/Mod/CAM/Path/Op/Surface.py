@@ -940,9 +940,7 @@ class ObjectSurface(PathOp.ObjectOp):
             for sub in subs:
                 # Skip empty sub-element names - they indicate whole object selection
                 if not sub:
-                    Path.Log.debug(
-                        "_splitSelectedFaces: skipping empty sub-element for whole object"
-                    )
+                    Path.Log.debug("_splitSelectedFaces: skipping empty sub-element for whole object")
                     continue
                 total_subs += 1
                 shape = getattr(base.Shape, sub, None)
@@ -1029,21 +1027,16 @@ class ObjectSurface(PathOp.ObjectOp):
                 cutting_faces = Part.Compound([b.Shape for b in base_objs]).Faces
                 return [cutting_faces]
             if not cutting_faces:
-                Path.Log.error(
-                    "Could not determine source faces for pattern generation. Operation aborted."
-                )
+                Path.Log.error("Could not determine source faces for pattern generation. Operation aborted.")
                 return []
-        if (
-            getattr(obj, "HandleMultipleFeatures", "Collectively") == "Individually"
-            and cutting_faces
-        ):
+        if getattr(obj, "HandleMultipleFeatures", "Collectively") == "Individually" and cutting_faces:
             Path.Log.info(f"Preparing to process {len(cutting_faces)} features individually.")
             return [[face] for face in cutting_faces]
         else:
             Path.Log.info("Preparing to process all features collectively.")
             return [cutting_faces]
 
-    def _generate_scan_lines(self, obj, job, tool_diam, bb, cutting_faces, avoid_faces):
+    def _generate_scan_lines(self, obj, job, tool_diam, bb, cutting_faces, avoid_faces, is_whole_model_job):
         """Generates the raw 2D scan line geometry for a given machining area."""
 
         # 1. Gather parameters
@@ -1058,11 +1051,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # 2. Generate boundary mask
         boundary_adj = obj.BoundaryAdjustment.Value
         boundary_face = surface_common.generate_pattern_mask(
-            cutting_faces,
-            avoid_faces,
-            tool_diam / 2.0,
-            obj.BoundaryAdjustment.Value,
-            obj.LinearDeflection.Value,
+            is_whole_model_job, cutting_faces, avoid_faces, tool_diam / 2.0, obj.BoundaryAdjustment.Value, obj.LinearDeflection.Value
         )
 
         scan_bb = surface_scan.BBox.from_bbox(bb)
@@ -1083,8 +1072,7 @@ class ObjectSurface(PathOp.ObjectOp):
             outer_wire = boundary_face.Wires[0]
             pts = outer_wire.discretize(Distance=sample_interval)
             if len(pts) >= 2:
-                if (pts[0] - pts[-1]).Length > 1e-5:
-                    pts.append(pts[0])
+                if (pts[0] - pts[-1]).Length > 1e-5: pts.append(pts[0])
                 profile_scan_lines.append([(p.x, p.y, 0.0) for p in pts])
 
         # B. Generate Main Pattern Scan
@@ -1105,17 +1093,8 @@ class ObjectSurface(PathOp.ObjectOp):
                 is_zigzag = pattern in ("ZigZag", "CircularZigZag")
 
                 main_scan_lines = surface_scan.fast_generate_pattern(
-                    pattern,
-                    scan_bb,
-                    center_point,
-                    step_over,
-                    sample_interval,
-                    angle,
-                    is_zigzag,
-                    pattern_reverse,
-                    cut_climb,
-                    boundary_face,
-                    obj.LinearDeflection.Value,
+                    pattern, scan_bb, center_point, step_over, sample_interval, 
+                    angle, is_zigzag, pattern_reverse, cut_climb, boundary_face, obj.LinearDeflection.Value
                 )
 
         # C. Assemble final list based on Profile Mode
@@ -1139,7 +1118,7 @@ class ObjectSurface(PathOp.ObjectOp):
         sample_interval = obj.SampleInterval.Value
         final_depth = obj.FinalDepth.Value
 
-        adaptive_threshold = 0.25
+        adaptive_threshold = 0.30  # adaptive_threshold also in /Gui/Surface.py
         is_truly_adaptive = is_adaptive and sample_interval >= adaptive_threshold
 
         if is_adaptive and not is_truly_adaptive:
@@ -1168,9 +1147,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return scan_lines
 
-    def _executeSurfacePattern(
-        self, obj, job, stl, safe_stl, cutter, tool_diam, bb, cutting_faces=None, avoid_faces=None
-    ):
+    def _executeSurfacePattern(self, obj, job, stl, safe_stl, cutter, tool_diam, bb, cutting_faces=None, avoid_faces=None):
         """
         Executes the Surface Pattern (projection) strategy.
 
@@ -1197,6 +1174,7 @@ class ObjectSurface(PathOp.ObjectOp):
         all_final_cmds = []
         sample_interval = obj.SampleInterval.Value
         opt_transitions = getattr(obj, "KeepToolDown", False)
+        is_whole_model_job = False if cutting_faces else True
 
         # Construct the list of face groups to process based on user's choice
         feature_groups = self._get_feature_groups(obj, job, cutting_faces)
@@ -1209,9 +1187,7 @@ class ObjectSurface(PathOp.ObjectOp):
             group_bb = self._getBoundBox(obj, job, face_group)
 
             # B. Generate all 2D scan lines for this group
-            raw_scan_lines = self._generate_scan_lines(
-                obj, job, tool_diam, group_bb, face_group, avoid_faces
-            )
+            raw_scan_lines = self._generate_scan_lines(obj, job, tool_diam, group_bb, face_group, avoid_faces, is_whole_model_job)
             if not raw_scan_lines:
                 continue
 
@@ -1220,15 +1196,11 @@ class ObjectSurface(PathOp.ObjectOp):
 
             # D. Add linking moves if we are in "Individual" mode
             if all_final_cmds and len(feature_groups) > 1:
-                all_final_cmds.append(
-                    Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-                )
+                all_final_cmds.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
 
             # E. Post-process and generate G-code for this group
             if obj.OptimizeLinearPaths:
-                scan_lines = [
-                    surface_postprocess.filter_cl_points(line, 0.005) for line in scan_lines
-                ]
+                scan_lines = [surface_postprocess.filter_cl_points(line, 0.005) for line in scan_lines]
 
             # F. Multi-pass operation
             if getattr(obj, "LayerMode", "Single-pass") == "Multi-pass":
@@ -1239,9 +1211,7 @@ class ObjectSurface(PathOp.ObjectOp):
             # G. Generate G-Code
             # For "Individual" mode, we force full retracts between features.
             # For "Collective" mode, we allow "Keep Tool Down".
-            can_optimize_transitions = len(feature_groups) == 1 and getattr(
-                obj, "KeepToolDown", False
-            )
+            can_optimize_transitions = len(feature_groups) == 1 and getattr(obj, "KeepToolDown", False)
 
             group_cmds = surface_postprocess.scan_lines_to_gcode(
                 scan_lines,
@@ -1503,7 +1473,7 @@ class ObjectSurface(PathOp.ObjectOp):
         tool_diam = tool_params.get("diameter", 0.0)
         is_adaptive = getattr(obj, "AdaptiveSampling", False)
         cutter, stl, safe_stl = None, None, None
-        cutting_faces, avoid_faces, bb = None, None, None
+        cutting_faces, avoid_faces ,bb = None, None, None
 
         base_objs = (
             [base for base, subs in obj.Base]
@@ -1553,7 +1523,6 @@ class ObjectSurface(PathOp.ObjectOp):
             stl_start = time.time()
 
             stl, safe_stl = surface_mesh.generate_stl(
-                # model_group=JOB.Model.Group,
                 base_objs=base_objs,
                 avoid_faces=avoid_faces,
                 tool_radius=tool_diam / 2.0,
@@ -1604,9 +1573,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # Dispatch to strategy
         cmds = []
         if strategy == "SurfacePattern":
-            cmds = self._executeSurfacePattern(
-                obj, JOB, stl, safe_stl, cutter, tool_diam, bb, cutting_faces, avoid_faces
-            )
+            cmds = self._executeSurfacePattern(obj, JOB, stl, safe_stl, cutter, tool_diam, bb, cutting_faces, avoid_faces)
         elif strategy == "Waterline":
             cmds = self._executeWaterline(obj, JOB, stl, cutter, tool_diam, is_adaptive=is_adaptive)
         elif strategy == "ZLevelHybrid":
@@ -1658,5 +1625,6 @@ def SetupProperties():
     setup.append("GapThreshold")
     setup.append("UseStartPoint")
     setup.append("StartPoint")
-
+    
     return setup
+           
