@@ -9,6 +9,7 @@ Module layout:
 - ``naming`` holds tiny shared naming helpers used across the pipeline.
 - ``signature_parser`` holds reusable Python callable-signature parsing helpers.
 - ``api_model`` holds the neutral public API model shared by future renderers.
+- ``api_extract`` builds that neutral API model from curated stub inputs.
 - ``discovery`` inventories C++ registrations and PyCXX contexts.
 - ``source_inputs`` reads binding specs plus curated source-adjacent stub files.
 - ``render`` formats individual stub fragments and inventory skeletons.
@@ -20,7 +21,7 @@ Module layout:
 - ``cli`` wires the pipeline to the public command-line interface.
 
 A useful reading order is ``model`` -> ``parsing`` -> ``signature_parser`` ->
-``api_model`` -> ``naming`` -> ``discovery`` -> ``source_inputs`` ->
-``render`` -> ``module_merge`` -> ``class_merge`` ->
+``api_model`` -> ``api_extract`` -> ``naming`` -> ``discovery`` ->
+``source_inputs`` -> ``render`` -> ``module_merge`` -> ``class_merge`` ->
 ``type_context_rules`` -> ``generator`` -> ``cli``.
 """
