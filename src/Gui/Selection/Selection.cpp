@@ -34,6 +34,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
+#include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -1909,10 +1910,17 @@ void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
 
         if (vp) {
             if (visible < 0) {
-                // VisToggle: delegate to the VP, which may redirect to a container.
-                vp->toggleVisibility();
+                // Toggle link instead of the original object
+                ViewProvider* toggleVp = vp;
+                if (parent
+                    && parent->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId(), true)) {
+                    if (auto* parentVp = Application::Instance->getViewProvider(parent)) {
+                        toggleVp = parentVp;
+                    }
+                }
+                toggleVp->toggleVisibility();
                 updateSelection(
-                    vp->isShow(),
+                    toggleVp->isShow(),
                     sel.DocName.c_str(),
                     sel.FeatName.c_str(),
                     sel.SubName.c_str()
