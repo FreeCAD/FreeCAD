@@ -179,6 +179,9 @@ public:
     bool accept() override;
     bool reject() override;
 
+protected:
+    AcceptPendingRecomputeAction acceptPendingRecomputeAction() const override;
+
 private Q_SLOTS:
     void onParameterRecomputeSettled();
 

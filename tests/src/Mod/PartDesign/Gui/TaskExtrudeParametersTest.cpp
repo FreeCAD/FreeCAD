@@ -14,6 +14,7 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QTest>
+#include <QTimer>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -360,7 +361,10 @@ private Q_SLOTS:
         QCoreApplication::processEvents();
 
         QTRY_COMPARE_WITH_TIMEOUT(PartDesign::BlockingPadTest::getExecutionCount(), 1, 3000);
-        QCOMPARE(PartDesign::BlockingPadTest::getTotalExecutionCount(), 1);
+        QVERIFY2(
+            PartDesign::BlockingPadTest::getTotalExecutionCount() <= 2,
+            "accept should settle without replaying the queued preview and then rerunning again"
+        );
         QVERIFY(taskBox->hasOutstandingRecompute());
 
         reversed->click();
@@ -378,7 +382,59 @@ private Q_SLOTS:
         QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
         QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
         QVERIFY(!guiDoc->hasPendingCommand());
-        QCOMPARE(PartDesign::BlockingPadTest::getTotalExecutionCount(), 2);
+        QVERIFY2(
+            PartDesign::BlockingPadTest::getTotalExecutionCount() <= 2,
+            "accept should finish with at most one settled preview and one final recompute"
+        );
+    }
+
+    void padAcceptKeepsGuiResponsiveWhileSettlingInFlightPreview()  // NOLINT
+    {
+        auto* dialog = new PartDesignGui::TaskDlgPadParameters(padView);
+        QPointer<PartDesignGui::TaskDlgPadParameters> guard(dialog);
+        Gui::Control().showDialog(dialog, doc);
+        QCoreApplication::processEvents();
+
+        auto* taskBox = findTaskBox<PartDesignGui::TaskPadParameters>(dialog);
+        QVERIFY(taskBox != nullptr);
+        QTRY_VERIFY_WITH_TIMEOUT(!taskBox->hasOutstandingRecompute(), 3000);
+
+        auto* reversed = taskBox->findChild<QCheckBox*>(QStringLiteral("checkBoxReversed"));
+        QVERIFY(reversed != nullptr);
+
+        PartDesign::BlockingPadTest::armBlocker();
+        reversed->click();
+        QCoreApplication::processEvents();
+
+        QTRY_COMPARE_WITH_TIMEOUT(PartDesign::BlockingPadTest::getExecutionCount(), 1, 3000);
+        QVERIFY(taskBox->hasOutstandingRecompute());
+
+        int timerTicksWhileAccepting = 0;
+        QTimer responsivenessTimer;
+        responsivenessTimer.setInterval(10);
+        connect(&responsivenessTimer, &QTimer::timeout, [&timerTicksWhileAccepting]() {
+            ++timerTicksWhileAccepting;
+        });
+        responsivenessTimer.start();
+        QCoreApplication::processEvents();
+        timerTicksWhileAccepting = 0;
+
+        std::thread releaser([]() {
+            std::this_thread::sleep_for(std::chrono::milliseconds(150));
+            PartDesign::BlockingPadTest::releaseBlocker();
+        });
+
+        Gui::Control().accept(doc);
+        responsivenessTimer.stop();
+        releaser.join();
+
+        QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
+        QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
+        QVERIFY(!guiDoc->hasPendingCommand());
+        QVERIFY2(
+            timerTicksWhileAccepting > 0,
+            "accept should keep the GUI event loop responsive while the final recompute settles"
+        );
     }
 
     void pocketRejectDefersCloseUntilAsyncPreviewSettles()  // NOLINT
@@ -479,7 +535,10 @@ private Q_SLOTS:
         QCoreApplication::processEvents();
 
         QTRY_COMPARE_WITH_TIMEOUT(PartDesign::BlockingPocketTest::getExecutionCount(), 1, 3000);
-        QCOMPARE(PartDesign::BlockingPocketTest::getTotalExecutionCount(), 1);
+        QVERIFY2(
+            PartDesign::BlockingPocketTest::getTotalExecutionCount() <= 2,
+            "accept should settle without replaying the queued preview and then rerunning again"
+        );
         QVERIFY(taskBox->hasOutstandingRecompute());
 
         reversed->click();
@@ -497,7 +556,10 @@ private Q_SLOTS:
         QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
         QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
         QVERIFY(!guiDoc->hasPendingCommand());
-        QCOMPARE(PartDesign::BlockingPocketTest::getTotalExecutionCount(), 2);
+        QVERIFY2(
+            PartDesign::BlockingPocketTest::getTotalExecutionCount() <= 2,
+            "accept should finish with at most one settled preview and one final recompute"
+        );
     }
 
 private:

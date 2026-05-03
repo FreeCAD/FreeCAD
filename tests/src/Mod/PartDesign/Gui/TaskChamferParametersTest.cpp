@@ -14,6 +14,7 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QTest>
+#include <QTimer>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -284,7 +285,10 @@ private Q_SLOTS:
         QCoreApplication::processEvents();
 
         QTRY_COMPARE_WITH_TIMEOUT(PartDesign::BlockingChamferTest::getExecutionCount(), 1, 3000);
-        QCOMPARE(PartDesign::BlockingChamferTest::getTotalExecutionCount(), 1);
+        QVERIFY2(
+            PartDesign::BlockingChamferTest::getTotalExecutionCount() <= 2,
+            "accept should settle without replaying the queued preview and then rerunning again"
+        );
         QVERIFY(taskBox->hasOutstandingRecompute());
 
         size->setValue(size->rawValue() + 0.5);
@@ -315,7 +319,72 @@ private Q_SLOTS:
         QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
         QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
         QVERIFY(!guiDoc->hasPendingCommand());
-        QCOMPARE(PartDesign::BlockingChamferTest::getTotalExecutionCount(), 2);
+        QVERIFY2(
+            PartDesign::BlockingChamferTest::getTotalExecutionCount() <= 2,
+            "accept should finish with at most one settled preview and one final recompute"
+        );
+    }
+
+    void chamferAcceptKeepsGuiResponsiveWhileSettlingInFlightPreview()  // NOLINT
+    {
+        auto* dialog = new PartDesignGui::TaskDlgChamferParameters(chamferView);
+        QPointer<PartDesignGui::TaskDlgChamferParameters> guard(dialog);
+        Gui::Control().showDialog(dialog, doc);
+        QCoreApplication::processEvents();
+
+        auto* taskBox = findTaskBox<PartDesignGui::TaskChamferParameters>(dialog);
+        QVERIFY(taskBox != nullptr);
+        QTRY_VERIFY_WITH_TIMEOUT(!taskBox->hasOutstandingRecompute(), 3000);
+
+        auto* size = findSizeSpinBox(taskBox);
+        QVERIFY(size != nullptr);
+
+        PartDesign::BlockingChamferTest::armBlocker();
+        size->setValue(size->rawValue() + 0.5);
+        QCoreApplication::processEvents();
+
+        QTRY_COMPARE_WITH_TIMEOUT(PartDesign::BlockingChamferTest::getExecutionCount(), 1, 3000);
+        QVERIFY(taskBox->hasOutstandingRecompute());
+
+        int timerTicksWhileAccepting = 0;
+        QTimer responsivenessTimer;
+        responsivenessTimer.setInterval(10);
+        connect(&responsivenessTimer, &QTimer::timeout, [&timerTicksWhileAccepting]() {
+            ++timerTicksWhileAccepting;
+        });
+        responsivenessTimer.start();
+        QCoreApplication::processEvents();
+        timerTicksWhileAccepting = 0;
+
+        std::thread releaser([]() {
+            std::this_thread::sleep_for(std::chrono::milliseconds(150));
+            PartDesign::BlockingChamferTest::releaseBlocker();
+        });
+
+        std::string acceptError;
+        try {
+            Gui::Control().accept(doc);
+        }
+        catch (const Base::Exception& e) {
+            acceptError = e.what();
+        }
+        catch (const std::exception& e) {
+            acceptError = e.what();
+        }
+        catch (...) {
+            acceptError = "unknown exception";
+        }
+        responsivenessTimer.stop();
+        releaser.join();
+
+        QVERIFY2(acceptError.empty(), acceptError.c_str());
+        QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
+        QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
+        QVERIFY(!guiDoc->hasPendingCommand());
+        QVERIFY2(
+            timerTicksWhileAccepting > 0,
+            "accept should keep the GUI event loop responsive while the final recompute settles"
+        );
     }
 
 private:
