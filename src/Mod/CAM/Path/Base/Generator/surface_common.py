@@ -249,9 +249,7 @@ def get_whole_model_boundary(model_faces, offset, tolerance=0.005):
     try:
         outer_wire = TechDraw.findShapeOutline(compound, 1, FreeCAD.Vector(0, 0, 1))
     except Exception as e:
-        Path.Log.error(
-            f"TechDraw failed to extract the 2D projection outline from Model: {e}"
-        )
+        Path.Log.error(f"TechDraw failed to extract the 2D projection outline from Model: {e}")
         return None
 
     # Let PathUtils (ClipperLib) handle the offsetting natively.
@@ -264,9 +262,7 @@ def get_whole_model_boundary(model_faces, offset, tolerance=0.005):
     )
 
     if not offset_shape or not hasattr(offset_shape, "Edges") or len(offset_shape.Edges) == 0:
-        Path.Log.warning(
-            "Offsetting the Model faces resulted in an empty shape."
-        )
+        Path.Log.warning("Offsetting the Model faces resulted in an empty shape.")
         return None
 
     # Convert the offset 2D wire into a solid masking face
@@ -336,7 +332,10 @@ def create_boundary_from_faces(source_faces, offset, tolerance):
 
     return boundary_shape
 
-def generate_pattern_mask(is_whole_model_job, cutting_faces, avoid_faces, tool_radius, boundary_adj, tolerance):
+
+def generate_pattern_mask(
+    is_whole_model_job, cutting_faces, avoid_faces, tool_radius, boundary_adj, tolerance
+):
     """
     Generates a universal 2D boundary face, punching out
     holes for any user-defined avoid_faces.
@@ -360,9 +359,7 @@ def generate_pattern_mask(is_whole_model_job, cutting_faces, avoid_faces, tool_r
         Part.Face: The final 2D clipping boundary. Returns None on failure.
     """
     if not cutting_faces:
-        Path.Log.warning(
-            "Could not determine geometry for main boundary mask."
-        )
+        Path.Log.warning("Could not determine geometry for main boundary mask.")
         return None
 
     # Create the Main Outer Boundary
@@ -376,9 +373,7 @@ def generate_pattern_mask(is_whole_model_job, cutting_faces, avoid_faces, tool_r
         main_boundary = create_boundary_from_faces(cutting_faces, outer_offset, tolerance)
 
     if not main_boundary:
-        Path.Log.warning(
-            "Could not determine geometry for main boundary mask."
-        )
+        Path.Log.warning("Could not determine geometry for main boundary mask.")
         return None
 
     # Create the "Keep-Out" Zones from Avoid Faces

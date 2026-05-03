@@ -302,8 +302,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def _updateStrategyWidgets(self, strategy, cut_pattern, cut_pattern_zlevel):
         """Manages widgets in the 'Strategy' group."""
-        is_surface_pattern = (strategy == "SurfacePattern")
-        is_zlevel = (strategy == "ZLevelHybrid")
+        is_surface_pattern = strategy == "SurfacePattern"
+        is_zlevel = strategy == "ZLevelHybrid"
 
         self.form.cutPattern.setVisible(is_surface_pattern)
         self.form.cutPattern_label.setVisible(is_surface_pattern)
@@ -316,8 +316,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def _updatePerformanceWidgets(self, strategy, sample_interval):
         """Manages widgets in the 'Performance and Accuracy' group."""
-        is_zlevel = (strategy == "ZLevelHybrid")
-        is_waterline = (strategy == "Waterline")
+        is_zlevel = strategy == "ZLevelHybrid"
+        is_waterline = strategy == "Waterline"
 
         self.form.performanceAccuracyGroup.setVisible(not is_zlevel)
 
@@ -325,25 +325,29 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         is_adaptive_useful = sample_interval >= adaptive_threshold
 
         # The checkbox itself is only visible for strategies that can use it
-        can_show_adaptive = (strategy == "SurfacePattern" or is_waterline)
+        can_show_adaptive = strategy == "SurfacePattern" or is_waterline
         self.form.adaptiveSampling.setVisible(can_show_adaptive)
 
         # It's only ENABLED if it's both visible and useful
         self.form.adaptiveSampling.setEnabled(can_show_adaptive and is_adaptive_useful)
 
         # The Min Sample Interval field is only visible and enabled if adaptive is checked and active
-        is_min_sample_visible = self.form.adaptiveSampling.isVisible() and self.form.adaptiveSampling.isChecked()
+        is_min_sample_visible = (
+            self.form.adaptiveSampling.isVisible() and self.form.adaptiveSampling.isChecked()
+        )
         self.form.minSampleInterval.setVisible(is_min_sample_visible)
         self.form.minSampleInterval_label.setVisible(is_min_sample_visible)
 
-        is_min_sample_enabled = self.form.adaptiveSampling.isEnabled() and self.form.adaptiveSampling.isChecked()
+        is_min_sample_enabled = (
+            self.form.adaptiveSampling.isEnabled() and self.form.adaptiveSampling.isChecked()
+        )
         self.form.minSampleInterval.setEnabled(is_min_sample_enabled)
         self.form.minSampleInterval_label.setEnabled(is_min_sample_enabled)
 
     def _updateBoundaryWidgets(self, strategy):
         """Manages widgets in the 'Boundary Control' group."""
-        is_waterline = (strategy == "Waterline")
-        is_zlevel = (strategy == "ZLevelHybrid")
+        is_waterline = strategy == "Waterline"
+        is_zlevel = strategy == "ZLevelHybrid"
 
         self.form.boundaryGroup.setVisible(not is_waterline)
         self.form.stockToLeave.setVisible(is_zlevel)
@@ -351,9 +355,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def _updateClearingWidgets(self, strategy, cut_pattern, cut_pattern_zlevel):
         """Manages widgets in the 'Clearing Options' group."""
-        is_surface_pattern = (strategy == "SurfacePattern")
-        is_zlevel = (strategy == "ZLevelHybrid")
-        
+        is_surface_pattern = strategy == "SurfacePattern"
+        is_zlevel = strategy == "ZLevelHybrid"
+
         self.form.clearingOptionsGroup.setVisible(is_surface_pattern or is_zlevel)
 
         # Pattern Angle is enabled for linear patterns in either strategy
@@ -374,7 +378,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def _updateOptimizationWidgets(self, strategy):
         """Manages widgets in the 'Optimization' group."""
-        is_zlevel = (strategy == "ZLevelHybrid")
+        is_zlevel = strategy == "ZLevelHybrid"
         self.form.optimizationGroup.setVisible(not is_zlevel)
 
     def registerSignalHandlers(self, obj):
