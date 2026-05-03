@@ -45,6 +45,30 @@
 using namespace PartDesignGui;
 using namespace Gui;
 
+namespace
+{
+
+Gui::AsyncRecomputeDialogOptions acceptedFeatureRecomputeDialogOptions()
+{
+    Gui::AsyncRecomputeDialogOptions options;
+    options.cancelable = false;
+    options.dynamicLabel = false;
+    options.forceIndeterminate = true;
+    return options;
+}
+
+Gui::AsyncRecomputeDialogOptions rollbackRecomputeDialogOptions()
+{
+    Gui::AsyncRecomputeDialogOptions options;
+    options.showDelayMs = 450;
+    options.cancelable = false;
+    options.dynamicLabel = false;
+    options.forceIndeterminate = true;
+    return options;
+}
+
+}  // namespace
+
 /*********************************************************************
  *                      Task Feature Parameters                      *
  *********************************************************************/
@@ -262,9 +286,10 @@ bool PartDesignGui::runAsyncAcceptDocumentRecompute(App::Document* document)
     const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
         Gui::getMainWindow(),
         QApplication::translate("PartDesignGui::TaskDlgFeatureParameters", "Feature parameters"),
-        QApplication::translate("PartDesignGui::TaskDlgFeatureParameters", "Computing feature..."),
+        QApplication::translate("PartDesignGui::TaskDlgFeatureParameters", "Applying changes..."),
         document,
         /*force=*/false,
+        acceptedFeatureRecomputeDialogOptions(),
         [document]() {
             if (document) {
                 document->recompute();
@@ -496,9 +521,10 @@ bool TaskDlgFeatureParameters::reject()
         const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
             Gui::getMainWindow(),
             tr("Feature parameters"),
-            tr("Restoring document..."),
+            tr("Discarding changes..."),
             document,
             /*force=*/false,
+            rollbackRecomputeDialogOptions(),
             [document]() {
                 if (document) {
                     document->recompute();

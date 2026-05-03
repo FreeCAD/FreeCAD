@@ -58,6 +58,20 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskShapeBinder */
 
+namespace
+{
+
+Gui::AsyncRecomputeDialogOptions shapeBinderRollbackDialogOptions()
+{
+    Gui::AsyncRecomputeDialogOptions options;
+    options.showDelayMs = 450;
+    options.cancelable = false;
+    options.dynamicLabel = false;
+    options.forceIndeterminate = true;
+    return options;
+}
+
+}  // namespace
 
 //**************************************************************************
 //**************************************************************************
@@ -560,9 +574,10 @@ bool TaskDlgShapeBinder::rejectNow()
         const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
             parameter,
             tr("Shape binder"),
-            tr("Restoring document..."),
+            tr("Discarding changes..."),
             doc,
             /*force=*/false,
+            shapeBinderRollbackDialogOptions(),
             [doc]() {
                 if (doc) {
                     doc->recompute();
