@@ -38,6 +38,7 @@
 namespace Gui
 {
 class DebouncedFunction;
+class Gizmo;
 
 /**
  * @brief GUI-side controller for an async interactive preview recompute.
@@ -120,6 +121,7 @@ Q_SIGNALS:
     void recomputeSettled();
 
 private:
+    int effectiveSchedulerIntervalMs() const;
     void waitForOutstandingRecomputeToSettle();
     void finishRecompute(
         std::uint64_t generation,
@@ -140,6 +142,7 @@ private:
 private:
     Callbacks callbacks;
     std::unique_ptr<Gui::DebouncedFunction> recomputeScheduler;
+    int schedulerIntervalMs = 0;
     std::shared_ptr<App::RecomputeProgressHandle> recomputeProgress;
     std::uint64_t recomputeGeneration = 0;
     std::uint64_t appliedRecomputeGeneration = 0;
