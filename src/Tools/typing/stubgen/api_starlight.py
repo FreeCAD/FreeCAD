@@ -28,6 +28,10 @@ def class_slug(klass: ApiClass) -> str:
     return "/".join((module_slug(klass.module_name), "types", klass.name))
 
 
+def page_link(slug: str) -> str:
+    return f"/{slug}"
+
+
 def module_group_label(module: ApiModule) -> str:
     return module.name.rsplit(".", 1)[-1]
 
@@ -48,7 +52,10 @@ def module_group_items(
         items.append(
             {
                 "label": "Types",
-                "items": [{"slug": class_slug(klass)} for klass in module.classes],
+                "items": [
+                    {"link": page_link(class_slug(klass)), "label": klass.name}
+                    for klass in module.classes
+                ],
             }
         )
     return items
@@ -58,13 +65,15 @@ def module_sidebar_group(
     module: ApiModule,
     modules: tuple[ApiModule, ...],
 ) -> dict[str, object]:
-    items: list[dict[str, object]] = [{"slug": module_slug(module.name), "label": "Overview"}]
+    items: list[dict[str, object]] = [
+        {"link": page_link(module_slug(module.name)), "label": "Overview"}
+    ]
     items.extend(module_group_items(module, modules))
     return {"label": module_group_label(module), "items": items}
 
 
 def sidebar_items(model: ApiModel) -> list[dict[str, object]]:
-    items: list[dict[str, object]] = [{"slug": PYTHON_API_ROOT, "label": "Overview"}]
+    items: list[dict[str, object]] = [{"link": page_link(PYTHON_API_ROOT), "label": "Overview"}]
     for module in model.modules:
         if "." in module.name:
             continue
@@ -80,9 +89,9 @@ def render_sidebar_fragment(model: ApiModel) -> str:
     )
 
 
-def write_starlight_sidebar_fragment(out_dir: Path, model: ApiModel) -> Path:
-    """Write the generated Starlight sidebar fragment next to the docs tree."""
+def write_starlight_sidebar_fragment(path: Path, model: ApiModel) -> Path:
+    """Write the generated Starlight sidebar fragment."""
 
-    path = out_dir / "sidebar.ts"
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(render_sidebar_fragment(model), encoding="utf-8")
     return path

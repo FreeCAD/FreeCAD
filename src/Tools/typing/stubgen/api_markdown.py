@@ -47,6 +47,14 @@ def module_slug_parts(module_name: str) -> tuple[str, ...]:
     return tuple(part.lower() for part in module_name.split("."))
 
 
+def module_slug(module_name: str) -> str:
+    return "/".join((PYTHON_API_ROOT, *module_slug_parts(module_name)))
+
+
+def class_slug(klass: ApiClass) -> str:
+    return "/".join((module_slug(klass.module_name), TYPE_GROUP_DIR, klass.name))
+
+
 def module_doc_dir(out_dir: Path, module_name: str) -> Path:
     return content_root_dir(out_dir).joinpath(*module_slug_parts(module_name))
 
@@ -188,6 +196,7 @@ def frontmatter(
     title: str,
     description: str | None = None,
     *,
+    slug: str | None = None,
     sidebar_label: str | None = None,
     sidebar_order: int | None = None,
     sidebar_hidden: bool = False,
@@ -196,6 +205,8 @@ def frontmatter(
     if description:
         escaped = summary_text(description).replace('"', '\\"')
         lines.append(f'description: "{escaped}"')
+    if slug is not None:
+        lines.append(f"slug: {slug}")
     if sidebar_label is not None or sidebar_order is not None or sidebar_hidden:
         lines.append("sidebar:")
         if sidebar_label is not None:
@@ -219,6 +230,7 @@ def render_module_page(
         frontmatter(
             module_title(module.name),
             module.doc,
+            slug=module_slug(module.name),
             sidebar_label=module_title(module.name),
             sidebar_order=MODULE_ORDER.get(module.name, TOP_LEVEL_MODULE_ORDER.get(module.name)),
         )
@@ -295,6 +307,7 @@ def render_class_page(
         frontmatter(
             class_title(klass),
             klass.doc,
+            slug=class_slug(klass),
             sidebar_label=klass.name,
         )
     ]
@@ -344,6 +357,7 @@ def render_root_index(out_dir: Path, model: ApiModel) -> str:
         frontmatter(
             "Python API",
             "Generated documentation for the curated FreeCAD Python API stubs.",
+            slug=PYTHON_API_ROOT,
             sidebar_label="Python API",
         )
     ]
@@ -374,9 +388,9 @@ def write_api_markdown_docs(
 ) -> int:
     """Write one Starlight-ready MDX page tree for the API model."""
 
-    shutil.rmtree(out_dir, ignore_errors=True)
     out_dir.mkdir(parents=True, exist_ok=True)
     content_root = content_root_dir(out_dir)
+    shutil.rmtree(content_root, ignore_errors=True)
     content_root.mkdir(parents=True, exist_ok=True)
     (content_root / "index.mdx").write_text(render_root_index(out_dir, model), encoding="utf-8")
 

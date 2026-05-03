@@ -132,6 +132,14 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
                 "blob URL prefix."
             ),
         )
+        parser.add_argument(
+            "--sidebar-out",
+            type=Path,
+            help=(
+                "Optional output path for the generated Starlight sidebar fragment. "
+                "Defaults to <out-dir>/sidebar.ts."
+            ),
+        )
         parser.set_defaults(command="docs")
         return parser.parse_args(argv[1:])
 
@@ -299,7 +307,10 @@ def run_generate_docs(args: argparse.Namespace) -> int:
         model,
         source_base_url=args.source_base_url,
     )
-    sidebar_path = write_starlight_sidebar_fragment(out_dir, model)
+    sidebar_out = args.sidebar_out if args.sidebar_out and args.sidebar_out.is_absolute() else None
+    if sidebar_out is None:
+        sidebar_out = root / args.sidebar_out if args.sidebar_out else out_dir / "sidebar.ts"
+    sidebar_path = write_starlight_sidebar_fragment(sidebar_out, model)
     print(f"Wrote {page_count} MDX API docs and {sidebar_path.relative_to(root)}")
     return 0
 

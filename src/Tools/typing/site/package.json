@@ -1,0 +1,16 @@
+{
+    "name": "freecad-python-api-docs",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview",
+        "generate:api":
+            "python3 ../generate_stubs.py docs --root ../../../../ --out-dir src/Tools/typing/site/src/content/docs --sidebar-out src/Tools/typing/site/src/generated/python-api-sidebar.ts"
+    },
+    "devDependencies": {
+        "@astrojs/starlight": "^0.35.2",
+        "astro": "^5.13.5"
+    }
+}

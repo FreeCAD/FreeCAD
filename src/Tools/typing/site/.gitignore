@@ -1,0 +1,5 @@
+.astro/
+node_modules/
+dist/
+src/content/docs/python-api/
+src/generated/python-api-sidebar.ts
