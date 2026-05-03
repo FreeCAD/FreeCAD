@@ -1184,20 +1184,28 @@ bool TaskDlgPrimitiveParameters::accept()
 
     parameter->flushPendingAttachmentUpdate();
     parameter->stopPendingAttachmentUpdate();
-    primitive->flushPendingRecompute();
+    const bool hadOutstandingPreview = primitive->hasOutstandingRecompute();
+    if (hadOutstandingPreview) {
+        primitive->stopPendingRecompute();
+    }
+    else {
+        primitive->flushPendingRecompute();
+    }
 
     bool primitiveOK = primitive->setPrimitive(feature);
     if (!primitiveOK) {
         return primitiveOK;
     }
 
-    // setPrimitive() records the final UI values through Python commands, which
-    // retouches the primitive even when the async preview already computed the
-    // same state. Clear that redundant touch so the final document recompute can
-    // skip the primitive and only update downstream dependents.
-    Gui::cmdAppObject(feature, "purgeTouched()");
-    for (auto parent : feature->getInList()) {
-        parent->touch();
+    if (!hadOutstandingPreview) {
+        // setPrimitive() records the final UI values through Python commands, which
+        // retouches the primitive even when the async preview already computed the
+        // same state. Clear that redundant touch so the final document recompute can
+        // skip the primitive and only update downstream dependents.
+        Gui::cmdAppObject(feature, "purgeTouched()");
+        for (auto parent : feature->getInList()) {
+            parent->touch();
+        }
     }
 
     if (!runAsyncAcceptDocumentRecompute(document)) {

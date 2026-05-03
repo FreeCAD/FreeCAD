@@ -111,7 +111,7 @@ public:
     );
     ~TaskPipeParameters() override;
 
-    bool accept();
+    bool accept(bool previewSettled = true);
     void flushPendingRecompute() override;
     void stopPendingRecompute() override;
     void runImmediateRecompute();
