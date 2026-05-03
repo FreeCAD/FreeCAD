@@ -332,11 +332,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.adaptiveSampling.setEnabled(can_show_adaptive and is_adaptive_useful)
 
         # The Min Sample Interval field is only visible and enabled if adaptive is checked and active
-        is_min_sample_visible = self.form.adaptiveSampling.isVisible() and self.form.adaptiveSampling.isChecked()
+        is_min_sample_visible = (
+            self.form.adaptiveSampling.isVisible() and self.form.adaptiveSampling.isChecked()
+        )
         self.form.minSampleInterval.setVisible(is_min_sample_visible)
         self.form.minSampleInterval_label.setVisible(is_min_sample_visible)
 
-        is_min_sample_enabled = self.form.adaptiveSampling.isEnabled() and self.form.adaptiveSampling.isChecked()
+        is_min_sample_enabled = (
+            self.form.adaptiveSampling.isEnabled() and self.form.adaptiveSampling.isChecked()
+        )
         self.form.minSampleInterval.setEnabled(is_min_sample_enabled)
         self.form.minSampleInterval_label.setEnabled(is_min_sample_enabled)
 

@@ -151,9 +151,7 @@ def _shape_to_stl_cpp(shape, linear_deflection, angular_deflection):
 
     # C++ tessellation
     cpp_start = time.perf_counter()
-    verts, faces = _stl_cpp.shape_tessellate_fast(
-        shape, linear_deflection, angular_deflection
-    )
+    verts, faces = _stl_cpp.shape_tessellate_fast(shape, linear_deflection, angular_deflection)
     cpp_time = time.perf_counter() - cpp_start
 
     total_time = time.perf_counter() - start_time
@@ -195,9 +193,7 @@ def _shape_to_stl_python(shape, linear_deflection, angular_deflection):
 
     # Python tessellation
     py_start = time.perf_counter()
-    verts, faces = _shape_to_stl_arrays(
-        shape, linear_deflection, angular_deflection
-    )
+    verts, faces = _shape_to_stl_arrays(shape, linear_deflection, angular_deflection)
     py_time = time.perf_counter() - py_start
 
     total_time = time.perf_counter() - start_time
@@ -269,11 +265,7 @@ def _shape_to_stl_arrays(shape, linear_deflection, angular_deflection):
 
 
 def _shape_to_stl(
-    shape,
-    linear_deflection,
-    angular_deflection,
-    mesh_simplification=1,
-    use_cpp=False
+    shape, linear_deflection, angular_deflection, mesh_simplification=1, use_cpp=False
 ):
     """Convert a Part.Shape / Compound to ocl.STLSurf using raw arrays.
 
@@ -313,9 +305,7 @@ def _shape_to_stl(
     simp_start = time.perf_counter()
     verts, faces = _apply_mesh_simplification(verts, faces, mesh_simplification)
     simp_time = time.perf_counter() - simp_start
-    Path.Log.debug(
-        f"surface_mesh._shape_to_stl: Mesh simplification time: {simp_time:.4f}s"
-    )
+    Path.Log.debug(f"surface_mesh._shape_to_stl: Mesh simplification time: {simp_time:.4f}s")
 
     total_tess_time = time.perf_counter() - tess_start
     Path.Log.debug(
@@ -455,8 +445,10 @@ def _shape_to_safe_stl(
     bb = model_shape.BoundBox
     plate_padding = tool_radius * 2
     base_plate = Part.makeBox(
-        bb.XLength + plate_padding*2, bb.YLength + plate_padding*2, 0.1,
-        FreeCAD.Vector(bb.XMin - plate_padding, bb.YMin - plate_padding, bb.ZMin - 0.1)
+        bb.XLength + plate_padding * 2,
+        bb.YLength + plate_padding * 2,
+        0.1,
+        FreeCAD.Vector(bb.XMin - plate_padding, bb.YMin - plate_padding, bb.ZMin - 0.1),
     )
     fused_shapes.append(base_plate)
 
@@ -466,12 +458,13 @@ def _shape_to_safe_stl(
             f"surface_mesh._shape_to_safe_stl: Generating extruded envelope for {len(avoid_faces)} avoided faces."
         )
         from . import surface_common
-        boundary_face = surface_common.make_boundary_face(avoid_faces, tool_radius, linear_deflection)
+
+        boundary_face = surface_common.make_boundary_face(
+            avoid_faces, tool_radius, linear_deflection
+        )
 
         if not boundary_face:
-            Path.Log.error(
-                "Failed to generate Safe STL. Transitions may not be collision-safe."
-            )
+            Path.Log.error("Failed to generate Safe STL. Transitions may not be collision-safe.")
             return None
 
         height = abs(bb.ZMax - bb.ZMin) + 0.1  # Plus 0.1 for safety
@@ -488,11 +481,7 @@ def _shape_to_safe_stl(
 
     try:
         safe_stl = _shape_to_stl(
-            hollow_shape,
-            linear_deflection,
-            angular_deflection ,
-            mesh_simplification=5,
-            use_cpp=True
+            hollow_shape, linear_deflection, angular_deflection, mesh_simplification=5, use_cpp=True
         )
 
         Path.Log.debug("surface_mesh._shape_to_safe_stl: Safe STL generated successfully.")
@@ -525,7 +514,7 @@ def generate_stl(
     delegates the creation of the complex safety STL to the _shape_to_safe_stl helper.
 
     Args:
-        base_objs (list): The source geometric objects from the Job (can be Part or Mesh). 
+        base_objs (list): The source geometric objects from the Job (can be Part or Mesh).
         selected_faces (list): A list of Part.Face objects to be machined.
         avoid_faces (list): A list of Part.Face objects to be avoided.
         tool_radius (float): The radius of the active tool.
@@ -542,7 +531,7 @@ def generate_stl(
                collision mesh (or a copy of stl if generation failed or wasn't needed).
     """
     stl, safe_stl = None, None
-    
+
     if not base_objs:
         Path.Log.error("No base models provided for STL generation.")
         return None, None
@@ -563,7 +552,7 @@ def generate_stl(
     else:
         # Generate the primary machining STL
         model_group = base_objs
-    
+
         model_shape = Part.Compound([b.Shape for b in base_objs])
         if not model_shape or model_shape.isNull():
             Path.Log.error("Could not create a valid shape for primary STL generation.")
@@ -574,8 +563,10 @@ def generate_stl(
         padding = 1.0
 
         clipper_box = Part.makeBox(
-            bbox.XLength + padding*2, bbox.YLength + padding*2, bbox.ZMax - final_depth + padding,
-            FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth)
+            bbox.XLength + padding * 2,
+            bbox.YLength + padding * 2,
+            bbox.ZMax - final_depth + padding,
+            FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth),
         )
         clipped_shape = model_shape.common(clipper_box)
 
@@ -604,12 +595,12 @@ def generate_stl(
         # Generate the Safe STL
         if needs_safe_stl:
             safe_stl = _shape_to_safe_stl(
-                model_shape, 
-                avoid_faces, 
-                tool_radius, 
-                start_depth, 
-                final_depth, 
-                linear_deflection, 
+                model_shape,
+                avoid_faces,
+                tool_radius,
+                start_depth,
+                final_depth,
+                linear_deflection,
                 angular_deflection,
             )
 

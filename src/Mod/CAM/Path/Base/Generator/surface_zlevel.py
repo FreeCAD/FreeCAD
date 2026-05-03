@@ -41,11 +41,9 @@ if False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-
-# ---------------------------------------------------------------------------
-# Boundary preparation
-# ---------------------------------------------------------------------------
-
+    # ---------------------------------------------------------------------------
+    # Boundary preparation
+    # ---------------------------------------------------------------------------
 
     def extendedBoundBox(wBB, bbBfr, zDep):
         """
@@ -69,7 +67,6 @@ else:
         p3 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMax + bbBfr, zDep)
         p4 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMax + bbBfr, zDep)
         return Part.makePolygon([p1, p2, p3, p4, p1])
-
 
     def getTrimFace(borderFace, bbFace, wpc):
         """
@@ -358,9 +355,7 @@ def zlevel_hybrid_stack(
             if hasattr(currentSilhouette, "removeSplitter"):
                 currentSilhouette = currentSilhouette.removeSplitter()
         except Exception as e:
-            Path.Log.error(
-                f"Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}"
-            )
+            Path.Log.error(f"Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}")
             continue
 
         # Clearing engine (Clipper Booleans)
@@ -388,9 +383,7 @@ def zlevel_hybrid_stack(
         try:
             cutArea = layer_engine.getShape()
         except Exception as e:
-            Path.Log.error(
-                f"Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}"
-            )
+            Path.Log.error(f"Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}")
             cutArea = None
 
         # Reconciliation & Translation

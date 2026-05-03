@@ -253,9 +253,7 @@ def make_boundary_face(original_faces, offset, tolerance=0.005):
     try:
         outer_wire = TechDraw.findShapeOutline(compound, 1, FreeCAD.Vector(0, 0, 1))
     except Exception as e:
-        Path.Log.error(
-            f"TechDraw failed to extract the 2D projection outline: {e}"
-        )
+        Path.Log.error(f"TechDraw failed to extract the 2D projection outline: {e}")
         return None
 
     # Let PathUtils (ClipperLib) handle the offsetting natively.
@@ -268,9 +266,7 @@ def make_boundary_face(original_faces, offset, tolerance=0.005):
     )
 
     if not offset_shape or not hasattr(offset_shape, "Edges") or len(offset_shape.Edges) == 0:
-        Path.Log.warning(
-            "Offsetting the selected faces resulted in an empty shape."
-        )
+        Path.Log.warning("Offsetting the selected faces resulted in an empty shape.")
         return None
 
     # Convert the offset 2D wire into a solid masking face
@@ -309,9 +305,7 @@ def generate_pattern_mask(cutting_faces, avoid_faces, tool_radius, boundary_adj,
         Part.Face: The final 2D clipping boundary. Returns None on failure.
     """
     if not cutting_faces:
-        Path.Log.warning(
-            "Could not determine geometry for main boundary mask."
-        )
+        Path.Log.warning("Could not determine geometry for main boundary mask.")
         return None
 
     # 1. Create the Main Outer Boundary
@@ -319,9 +313,7 @@ def generate_pattern_mask(cutting_faces, avoid_faces, tool_radius, boundary_adj,
     main_boundary = make_boundary_face(cutting_faces, outer_offset, tolerance)
 
     if not main_boundary:
-        Path.Log.warning(
-            "Could not determine geometry for main boundary mask."
-        )
+        Path.Log.warning("Could not determine geometry for main boundary mask.")
         return None
 
     # 2. Create the "Keep-Out" Zones from Avoid Faces
@@ -330,25 +322,18 @@ def generate_pattern_mask(cutting_faces, avoid_faces, tool_radius, boundary_adj,
 
     # For avoid zones, we want to keep the tool center away, so we expand the boundary
     epsilon = tolerance + 0.001  # Allow some extra room to avoid "path spikes" on vertical walls
-    avoid_boundary = make_boundary_face(avoid_faces, tool_radius+epsilon, tolerance)
+    avoid_boundary = make_boundary_face(avoid_faces, tool_radius + epsilon, tolerance)
 
     if not avoid_boundary:
-        Path.Log.warning(
-            "Failed to generate boundary for avoid_faces."
-        )
+        Path.Log.warning("Failed to generate boundary for avoid_faces.")
         return main_boundary
     # 3. Punch the holes
     try:
         final_mask = main_boundary.cut(avoid_boundary)
         if final_mask.isNull():
-            Path.Log.warning(
-                "Boolean cut for avoid_faces failed."
-            )
+            Path.Log.warning("Boolean cut for avoid_faces failed.")
             return main_boundary
         return final_mask
     except Exception as e:
-        Path.Log.error(
-            f"Failed to cut avoid_faces from boundary mask: {e}"
-        )
+        Path.Log.error(f"Failed to cut avoid_faces from boundary mask: {e}")
         return main_boundary
-
