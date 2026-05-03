@@ -4,7 +4,8 @@
 
 This renderer turns the structured ``ApiModel`` into package-shaped Markdown
 pages that can later be consumed by an Astro Starlight site. The output is
-static documentation content, not a site scaffold.
+static documentation content, not a site scaffold, so it keeps site-specific
+logic out of the generator and focuses on durable API page structure.
 """
 
 from __future__ import annotations
@@ -13,7 +14,14 @@ import os
 from pathlib import Path
 import shutil
 
-from .api_model import ApiAttribute, ApiCallableGroup, ApiClass, ApiModel, ApiModule
+from .api_model import (
+    ApiAttribute,
+    ApiCallableGroup,
+    ApiClass,
+    ApiModel,
+    ApiModule,
+    ApiSourceLocation,
+)
 
 
 def module_doc_dir(out_dir: Path, module_name: str) -> Path:
@@ -21,11 +29,11 @@ def module_doc_dir(out_dir: Path, module_name: str) -> Path:
 
 
 def module_doc_path(out_dir: Path, module_name: str) -> Path:
-    return module_doc_dir(out_dir, module_name) / "index.md"
+    return module_doc_dir(out_dir, module_name) / "index.mdx"
 
 
 def class_doc_path(out_dir: Path, module_name: str, class_name: str) -> Path:
-    return module_doc_dir(out_dir, module_name) / f"{class_name}.md"
+    return module_doc_dir(out_dir, module_name) / f"{class_name}.mdx"
 
 
 def relative_link(from_path: Path, to_path: Path) -> str:
@@ -44,6 +52,21 @@ def summary_text(text: str | None) -> str | None:
     return " ".join(first_paragraph.split())
 
 
+def source_text(location: ApiSourceLocation) -> str:
+    if location.line is None:
+        return location.path
+    return f"{location.path}:{location.line}"
+
+
+def source_link(location: ApiSourceLocation, source_base_url: str | None) -> str:
+    if source_base_url is None:
+        return f"`{source_text(location)}`"
+    path = location.path
+    if location.line is not None:
+        return f"[`{source_text(location)}`]({source_base_url.rstrip('/')}/{path}#L{location.line})"
+    return f"[`{path}`]({source_base_url.rstrip('/')}/{path})"
+
+
 def render_attribute(attribute: ApiAttribute) -> str:
     parts = [attribute.name]
     if attribute.annotation:
@@ -56,20 +79,45 @@ def render_attribute(attribute: ApiAttribute) -> str:
     return line
 
 
-def render_callable_group(group: ApiCallableGroup) -> list[str]:
-    lines = [f"### `{group.name}`", ""]
-    signature_lines = [
-        (
-            f"def {signature.display_signature}"
-            if not signature.display_signature.startswith(group.name)
-            else f"def {signature.display_signature}"
-        )
-        for signature in group.signatures
-    ]
-    lines.append(fenced_python(signature_lines))
+def render_aliases(aliases: tuple[str, ...]) -> list[str]:
+    return [f"- `{alias}`" for alias in aliases]
+
+
+def render_source_section(
+    lines: list[str],
+    location: ApiSourceLocation | None,
+    source_base_url: str | None,
+) -> None:
+    if location is None:
+        return
+    lines.append("## Source")
     lines.append("")
+    lines.append(f"- {source_link(location, source_base_url)}")
+    lines.append("")
+
+
+def render_callable_group(
+    group: ApiCallableGroup,
+    *,
+    source_base_url: str | None,
+) -> list[str]:
+    lines = [f"### `{group.name}`", ""]
+    if group.overload:
+        lines.append(f"{len(group.signatures)} overloads.")
+        lines.append("")
+        for index, signature in enumerate(group.signatures, start=1):
+            lines.append(f"#### Overload {index}")
+            lines.append("")
+            lines.append(fenced_python([f"def {signature.display_signature}"]))
+            lines.append("")
+    else:
+        lines.append(fenced_python([f"def {group.signatures[0].display_signature}"]))
+        lines.append("")
     if group.doc:
         lines.append(group.doc)
+        lines.append("")
+    if group.location is not None:
+        lines.append(f"Source: {source_link(group.location, source_base_url)}")
         lines.append("")
     return lines
 
@@ -114,7 +162,13 @@ def frontmatter(title: str, description: str | None = None) -> str:
     return "\n".join(lines)
 
 
-def render_module_page(out_dir: Path, module: ApiModule, modules: tuple[ApiModule, ...]) -> str:
+def render_module_page(
+    out_dir: Path,
+    module: ApiModule,
+    modules: tuple[ApiModule, ...],
+    *,
+    source_base_url: str | None,
+) -> str:
     lines = [frontmatter(module.name, module.doc)]
     lines.append(f"# `{module.name}`")
     lines.append("")
@@ -126,6 +180,16 @@ def render_module_page(out_dir: Path, module: ApiModule, modules: tuple[ApiModul
     lines.append("")
     lines.append(fenced_python([f"import {module.name}"]))
     lines.append("")
+
+    render_source_section(lines, module.location, source_base_url)
+
+    if module.aliases:
+        lines.append("## Aliases")
+        lines.append("")
+        lines.extend(
+            f"- `{alias.public_path}` -> `{alias.target_path}`" for alias in module.aliases
+        )
+        lines.append("")
 
     submodules = child_modules(module.name, modules)
     if submodules:
@@ -151,7 +215,7 @@ def render_module_page(out_dir: Path, module: ApiModule, modules: tuple[ApiModul
         lines.append("## Functions")
         lines.append("")
         for group in module.functions:
-            lines.extend(render_callable_group(group))
+            lines.extend(render_callable_group(group, source_base_url=source_base_url))
 
     if module.classes:
         lines.append("## Classes")
@@ -168,7 +232,12 @@ def render_module_page(out_dir: Path, module: ApiModule, modules: tuple[ApiModul
     return "\n".join(lines).rstrip() + "\n"
 
 
-def render_class_page(out_dir: Path, klass: ApiClass) -> str:
+def render_class_page(
+    out_dir: Path,
+    klass: ApiClass,
+    *,
+    source_base_url: str | None,
+) -> str:
     lines = [frontmatter(f"{klass.module_name}.{klass.name}", klass.doc)]
     lines.append(f"# `{klass.module_name}.{klass.name}`")
     lines.append("")
@@ -180,6 +249,14 @@ def render_class_page(out_dir: Path, klass: ApiClass) -> str:
     lines.append("")
     lines.append(fenced_python([f"from {klass.module_name} import {klass.name}"]))
     lines.append("")
+
+    render_source_section(lines, klass.location, source_base_url)
+
+    if klass.aliases:
+        lines.append("## Aliases")
+        lines.append("")
+        lines.extend(render_aliases(klass.aliases))
+        lines.append("")
 
     if klass.bases:
         lines.append("## Bases")
@@ -198,7 +275,7 @@ def render_class_page(out_dir: Path, klass: ApiClass) -> str:
         lines.append("## Methods")
         lines.append("")
         for group in klass.methods:
-            lines.extend(render_callable_group(group))
+            lines.extend(render_callable_group(group, source_base_url=source_base_url))
 
     return "\n".join(lines).rstrip() + "\n"
 
@@ -217,7 +294,7 @@ def render_root_index(out_dir: Path, model: ApiModel) -> str:
     lines.append("")
     lines.append("## Modules")
     lines.append("")
-    root_page = out_dir / "index.md"
+    root_page = out_dir / "index.mdx"
     for module in model.modules:
         if "." in module.name:
             continue
@@ -228,23 +305,43 @@ def render_root_index(out_dir: Path, model: ApiModel) -> str:
     return "\n".join(lines)
 
 
-def write_api_markdown_docs(out_dir: Path, model: ApiModel) -> int:
-    """Write one package-shaped Markdown page tree for the API model."""
+def write_api_markdown_docs(
+    out_dir: Path,
+    model: ApiModel,
+    *,
+    source_base_url: str | None = None,
+) -> int:
+    """Write one package-shaped MDX page tree for the API model."""
 
     shutil.rmtree(out_dir, ignore_errors=True)
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "index.md").write_text(render_root_index(out_dir, model), encoding="utf-8")
+    (out_dir / "index.mdx").write_text(render_root_index(out_dir, model), encoding="utf-8")
 
     page_count = 1
     for module in model.modules:
         module_page = module_doc_path(out_dir, module.name)
         module_page.parent.mkdir(parents=True, exist_ok=True)
-        module_page.write_text(render_module_page(out_dir, module, model.modules), encoding="utf-8")
+        module_page.write_text(
+            render_module_page(
+                out_dir,
+                module,
+                model.modules,
+                source_base_url=source_base_url,
+            ),
+            encoding="utf-8",
+        )
         page_count += 1
         for klass in module.classes:
             class_page = class_doc_path(out_dir, module.name, klass.name)
             class_page.parent.mkdir(parents=True, exist_ok=True)
-            class_page.write_text(render_class_page(out_dir, klass), encoding="utf-8")
+            class_page.write_text(
+                render_class_page(
+                    out_dir,
+                    klass,
+                    source_base_url=source_base_url,
+                ),
+                encoding="utf-8",
+            )
             page_count += 1
 
     return page_count

@@ -44,6 +44,8 @@ class ApiModuleBuilder:
 
     name: str
     doc: str | None = None
+    origin: ApiOrigin = ApiOrigin.GENERATED
+    location: ApiSourceLocation | None = None
     functions: dict[str, ApiCallableGroup] = field(default_factory=dict)
     classes: dict[str, ApiClass] = field(default_factory=dict)
     attributes: dict[str, ApiAttribute] = field(default_factory=dict)
@@ -235,6 +237,9 @@ def module_attributes(
 def merge_module_piece(builder: ApiModuleBuilder, piece: ApiModule) -> None:
     if piece.doc and not builder.doc:
         builder.doc = piece.doc
+    if piece.location and builder.location is None:
+        builder.location = piece.location
+        builder.origin = piece.origin
     builder.functions.update({group.name: group for group in piece.functions})
     builder.classes.update({klass.name: klass for klass in piece.classes})
     builder.attributes.update({attribute.name: attribute for attribute in piece.attributes})
@@ -328,6 +333,8 @@ def extract_curated_api_model(root: Path, source_dir: Path) -> ApiModel:
                 functions=tuple(builder.functions[name] for name in sorted(builder.functions)),
                 classes=tuple(builder.classes[name] for name in sorted(builder.classes)),
                 attributes=tuple(builder.attributes[name] for name in sorted(builder.attributes)),
+                origin=builder.origin,
+                location=builder.location,
             )
             for builder in (modules[name] for name in sorted(modules))
         )

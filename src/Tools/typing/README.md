@@ -35,7 +35,7 @@ That command writes under `src/Tools/typing/generated/`:
   is the output used by the smoke checks. It is disposable local output; the
   repository only keeps `generated/.gitignore`, so regenerate it instead of
   editing it directly.
-- `api-docs/`: package-shaped Markdown API reference pages generated from the
+- `api-docs/`: package-shaped MDX API reference pages generated from the
   curated source-adjacent stub inputs. This tree is also disposable local
   output and is intended as the input content for future site generation.
 
@@ -80,15 +80,18 @@ Use the documentation linter to audit the curated source-adjacent stub files:
 python3 src/Tools/typing/generate_stubs.py lint-docs --root .
 ```
 
-Generate Markdown API docs from the curated source-adjacent stubs with:
+Generate MDX API docs from the curated source-adjacent stubs with:
 
 ```sh
 python3 src/Tools/typing/generate_stubs.py docs --root . --out-dir src/Tools/typing/generated/api-docs
 ```
 
 This command reads the same curated stub inputs as the typing pipeline and
-emits package-shaped Markdown pages that are suitable for later integration
+emits package-shaped MDX pages that are suitable for later integration
 with Astro Starlight or another static documentation site.
+
+Pass `--source-base-url` to include links back to the authored `.pyi` files in
+the generated reference pages.
 
 This lint checks the curated source files that now carry hand-written typing
 documentation, not the entire generated public stub tree. It requires module

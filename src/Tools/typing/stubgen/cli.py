@@ -112,7 +112,7 @@ def add_generation_args(parser: argparse.ArgumentParser) -> None:
 def parse_args(argv: list[str]) -> argparse.Namespace:
     if argv and argv[0] == "docs":
         parser = argparse.ArgumentParser(
-            description="Generate Markdown API docs from curated source-adjacent stubs."
+            description="Generate MDX API docs from curated source-adjacent stubs."
         )
         add_common_path_args(parser)
         parser.add_argument(
@@ -120,8 +120,15 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
             type=Path,
             default=DEFAULT_API_DOCS_OUT_DIR,
             help=(
-                "Directory for generated Markdown API docs, relative to --root unless absolute. "
+                "Directory for generated MDX API docs, relative to --root unless absolute. "
                 f"Defaults to {DEFAULT_API_DOCS_OUT_DIR}."
+            ),
+        )
+        parser.add_argument(
+            "--source-base-url",
+            help=(
+                "Optional base URL for source links in generated docs, such as a GitHub "
+                "blob URL prefix."
             ),
         )
         parser.set_defaults(command="docs")
@@ -286,8 +293,12 @@ def run_generate_docs(args: argparse.Namespace) -> int:
 
     out_dir = args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
     model = extract_curated_api_model(root, source_dir)
-    page_count = write_api_markdown_docs(out_dir, model)
-    print(f"Wrote {page_count} Markdown API docs to {out_dir}")
+    page_count = write_api_markdown_docs(
+        out_dir,
+        model,
+        source_base_url=args.source_base_url,
+    )
+    print(f"Wrote {page_count} MDX API docs to {out_dir}")
     return 0
 
 
