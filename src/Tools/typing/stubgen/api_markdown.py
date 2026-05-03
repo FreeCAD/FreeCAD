@@ -2,10 +2,10 @@
 
 """Markdown emission for the neutral public API model.
 
-This renderer turns the structured ``ApiModel`` into package-shaped Markdown
-pages that can later be consumed by an Astro Starlight site. The output is
-static documentation content, not a site scaffold, so it keeps site-specific
-logic out of the generator and focuses on durable API page structure.
+This renderer turns the structured ``ApiModel`` into package-shaped MDX pages
+that match Starlight's content-collection layout. The output is still static
+content, not a site scaffold, so the generator stays focused on durable API
+page structure and leaves Astro configuration to the docs site.
 """
 
 from __future__ import annotations
@@ -23,9 +23,32 @@ from .api_model import (
     ApiSourceLocation,
 )
 
+PYTHON_API_ROOT = "python-api"
+TYPE_GROUP_DIR = "types"
+TOP_LEVEL_MODULE_ORDER = {
+    "FreeCAD": 1,
+    "FreeCADGui": 2,
+    "Part": 3,
+    "QtUnitGui": 4,
+}
+MODULE_ORDER = {
+    "FreeCAD.Console": 1,
+    "FreeCAD.Qt": 2,
+    "FreeCAD.Units": 3,
+    "FreeCADGui.Selection": 1,
+}
+
+
+def content_root_dir(out_dir: Path) -> Path:
+    return out_dir / PYTHON_API_ROOT
+
+
+def module_slug_parts(module_name: str) -> tuple[str, ...]:
+    return tuple(part.lower() for part in module_name.split("."))
+
 
 def module_doc_dir(out_dir: Path, module_name: str) -> Path:
-    return out_dir.joinpath(*module_name.split("."))
+    return content_root_dir(out_dir).joinpath(*module_slug_parts(module_name))
 
 
 def module_doc_path(out_dir: Path, module_name: str) -> Path:
@@ -33,7 +56,15 @@ def module_doc_path(out_dir: Path, module_name: str) -> Path:
 
 
 def class_doc_path(out_dir: Path, module_name: str, class_name: str) -> Path:
-    return module_doc_dir(out_dir, module_name) / f"{class_name}.mdx"
+    return module_doc_dir(out_dir, module_name) / TYPE_GROUP_DIR / f"{class_name}.mdx"
+
+
+def module_title(module_name: str) -> str:
+    return module_name.rsplit(".", 1)[-1]
+
+
+def class_title(klass: ApiClass) -> str:
+    return klass.name
 
 
 def relative_link(from_path: Path, to_path: Path) -> str:
@@ -153,11 +184,26 @@ def child_modules(module_name: str, modules: tuple[ApiModule, ...]) -> tuple[Api
     return tuple(direct)
 
 
-def frontmatter(title: str, description: str | None = None) -> str:
+def frontmatter(
+    title: str,
+    description: str | None = None,
+    *,
+    sidebar_label: str | None = None,
+    sidebar_order: int | None = None,
+    sidebar_hidden: bool = False,
+) -> str:
     lines = ["---", f"title: {title}"]
     if description:
         escaped = summary_text(description).replace('"', '\\"')
         lines.append(f'description: "{escaped}"')
+    if sidebar_label is not None or sidebar_order is not None or sidebar_hidden:
+        lines.append("sidebar:")
+        if sidebar_label is not None:
+            lines.append(f"  label: {sidebar_label}")
+        if sidebar_order is not None:
+            lines.append(f"  order: {sidebar_order}")
+        if sidebar_hidden:
+            lines.append("  hidden: true")
     lines.extend(["---", ""])
     return "\n".join(lines)
 
@@ -169,7 +215,14 @@ def render_module_page(
     *,
     source_base_url: str | None,
 ) -> str:
-    lines = [frontmatter(module.name, module.doc)]
+    lines = [
+        frontmatter(
+            module_title(module.name),
+            module.doc,
+            sidebar_label=module_title(module.name),
+            sidebar_order=MODULE_ORDER.get(module.name, TOP_LEVEL_MODULE_ORDER.get(module.name)),
+        )
+    ]
     lines.append(f"# `{module.name}`")
     lines.append("")
     if module.doc:
@@ -238,7 +291,13 @@ def render_class_page(
     *,
     source_base_url: str | None,
 ) -> str:
-    lines = [frontmatter(f"{klass.module_name}.{klass.name}", klass.doc)]
+    lines = [
+        frontmatter(
+            class_title(klass),
+            klass.doc,
+            sidebar_label=klass.name,
+        )
+    ]
     lines.append(f"# `{klass.module_name}.{klass.name}`")
     lines.append("")
     if klass.doc:
@@ -283,7 +342,9 @@ def render_class_page(
 def render_root_index(out_dir: Path, model: ApiModel) -> str:
     lines = [
         frontmatter(
-            "Python API", "Generated documentation for the curated FreeCAD Python API stubs."
+            "Python API",
+            "Generated documentation for the curated FreeCAD Python API stubs.",
+            sidebar_label="Python API",
         )
     ]
     lines.append("# Python API")
@@ -294,7 +355,7 @@ def render_root_index(out_dir: Path, model: ApiModel) -> str:
     lines.append("")
     lines.append("## Modules")
     lines.append("")
-    root_page = out_dir / "index.mdx"
+    root_page = content_root_dir(out_dir) / "index.mdx"
     for module in model.modules:
         if "." in module.name:
             continue
@@ -311,11 +372,13 @@ def write_api_markdown_docs(
     *,
     source_base_url: str | None = None,
 ) -> int:
-    """Write one package-shaped MDX page tree for the API model."""
+    """Write one Starlight-ready MDX page tree for the API model."""
 
     shutil.rmtree(out_dir, ignore_errors=True)
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "index.mdx").write_text(render_root_index(out_dir, model), encoding="utf-8")
+    content_root = content_root_dir(out_dir)
+    content_root.mkdir(parents=True, exist_ok=True)
+    (content_root / "index.mdx").write_text(render_root_index(out_dir, model), encoding="utf-8")
 
     page_count = 1
     for module in model.modules:

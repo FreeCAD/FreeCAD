@@ -35,9 +35,11 @@ That command writes under `src/Tools/typing/generated/`:
   is the output used by the smoke checks. It is disposable local output; the
   repository only keeps `generated/.gitignore`, so regenerate it instead of
   editing it directly.
-- `api-docs/`: package-shaped MDX API reference pages generated from the
-  curated source-adjacent stub inputs. This tree is also disposable local
-  output and is intended as the input content for future site generation.
+- `api-docs/`: Starlight-ready MDX API reference pages generated from the
+  curated source-adjacent stub inputs. The generated content lives under a
+  `python-api/` root, with module pages at `index.mdx` paths and class pages
+  grouped under per-module `types/` directories. This tree is also disposable
+  local output and is intended as the input content for future site generation.
 
 Keep residual hand-written public overlays under `src/Tools/typing/inputs/overlays/`. Keep
 source-adjacent PyCXX type signature inputs in plain `.pyi` files such as
@@ -87,8 +89,8 @@ python3 src/Tools/typing/generate_stubs.py docs --root . --out-dir src/Tools/typ
 ```
 
 This command reads the same curated stub inputs as the typing pipeline and
-emits package-shaped MDX pages that are suitable for later integration
-with Astro Starlight or another static documentation site.
+emits Starlight-ready MDX content under a `python-api/` directory, suitable for
+later integration with Astro Starlight or another static documentation site.
 
 Pass `--source-base-url` to include links back to the authored `.pyi` files in
 the generated reference pages.
