@@ -24,6 +24,14 @@ namespace Gui
 /// Delay before showing accepted-operation progress, avoiding modal flicker for fast recomputes.
 inline constexpr int AsyncRecomputeProgressDialogDelayMs = 150;
 
+struct AsyncRecomputeDialogOptions
+{
+    int showDelayMs = AsyncRecomputeProgressDialogDelayMs;
+    bool cancelable = true;
+    bool dynamicLabel = true;
+    bool forceIndeterminate = false;
+};
+
 /**
  * @brief Result captured from an async recompute progress dialog helper.
  */
@@ -94,11 +102,14 @@ inline QString asyncRecomputeProgressLabel(
 inline void updateAsyncRecomputeProgressDialog(
     QProgressDialog& dialog,
     const AsyncPreviewController& controller,
-    const QString& fallbackLabel
+    const QString& fallbackLabel,
+    const AsyncRecomputeDialogOptions& options
 )
 {
-    dialog.setLabelText(asyncRecomputeProgressLabel(controller, fallbackLabel));
-    if (controller.isProgressDeterminate()) {
+    dialog.setLabelText(
+        options.dynamicLabel ? asyncRecomputeProgressLabel(controller, fallbackLabel) : fallbackLabel
+    );
+    if (!options.forceIndeterminate && controller.isProgressDeterminate()) {
         dialog.setRange(0, 100);
         dialog.setValue(controller.progressPercent());
     }
@@ -121,6 +132,7 @@ void runAsyncRecomputeProgressDialog(
     const QString& windowTitle,
     const QString& fallbackLabel,
     AsyncPreviewController& controller,
+    const AsyncRecomputeDialogOptions& options,
     StartFn&& start
 )
 {
@@ -133,19 +145,24 @@ void runAsyncRecomputeProgressDialog(
     dialog.setMinimumDuration(0);
     dialog.setRange(0, 0);
     dialog.setLabelText(fallbackLabel);
+    if (!options.cancelable) {
+        dialog.setCancelButton(nullptr);
+    }
 
     QEventLoop loop;
     QTimer showTimer;
     showTimer.setSingleShot(true);
-    QObject::connect(&dialog, &QProgressDialog::canceled, &controller, [&controller]() {
-        controller.stopPendingRecompute();
-    });
+    if (options.cancelable) {
+        QObject::connect(&dialog, &QProgressDialog::canceled, &controller, [&controller]() {
+            controller.stopPendingRecompute();
+        });
+    }
     QObject::connect(
         &controller,
         &AsyncPreviewController::stateChanged,
         &dialog,
-        [&dialog, &controller, fallbackLabel, &loop, &showTimer]() {
-            updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel);
+        [&dialog, &controller, fallbackLabel, &options, &loop, &showTimer]() {
+            updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel, options);
             if (!controller.hasOutstandingRecompute()) {
                 showTimer.stop();
                 dialog.hide();
@@ -163,13 +180,18 @@ void runAsyncRecomputeProgressDialog(
             loop.quit();
         }
     );
-    QObject::connect(&showTimer, &QTimer::timeout, &dialog, [&dialog, &controller, fallbackLabel]() {
-        if (!controller.hasOutstandingRecompute()) {
-            return;
+    QObject::connect(
+        &showTimer,
+        &QTimer::timeout,
+        &dialog,
+        [&dialog, &controller, fallbackLabel, &options]() {
+            if (!controller.hasOutstandingRecompute()) {
+                return;
+            }
+            updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel, options);
+            dialog.show();
         }
-        updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel);
-        dialog.show();
-    });
+    );
 
     start();
 
@@ -177,9 +199,28 @@ void runAsyncRecomputeProgressDialog(
         return;
     }
 
-    updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel);
-    showTimer.start(AsyncRecomputeProgressDialogDelayMs);
+    updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel, options);
+    showTimer.start(std::max(0, options.showDelayMs));
     loop.exec();
+}
+
+template<typename StartFn>
+void runAsyncRecomputeProgressDialog(
+    QWidget* parent,
+    const QString& windowTitle,
+    const QString& fallbackLabel,
+    AsyncPreviewController& controller,
+    StartFn&& start
+)
+{
+    runAsyncRecomputeProgressDialog(
+        parent,
+        windowTitle,
+        fallbackLabel,
+        controller,
+        AsyncRecomputeDialogOptions {},
+        std::forward<StartFn>(start)
+    );
 }
 
 /**
@@ -195,6 +236,7 @@ AsyncRecomputeProgressOutcome runAsyncDocumentObjectRecomputeProgressDialog(
     const QString& fallbackLabel,
     App::DocumentObject* object,
     bool recursive,
+    const AsyncRecomputeDialogOptions& options,
     RunSyncFn&& runSync
 )
 {
@@ -225,10 +267,36 @@ AsyncRecomputeProgressOutcome runAsyncDocumentObjectRecomputeProgressDialog(
     };
 
     AsyncPreviewController controller(std::move(callbacks), parent);
-    runAsyncRecomputeProgressDialog(parent, windowTitle, fallbackLabel, controller, [&controller]() {
-        controller.requestRecompute(/*waitForCompletion=*/false);
-    });
+    runAsyncRecomputeProgressDialog(
+        parent,
+        windowTitle,
+        fallbackLabel,
+        controller,
+        options,
+        [&controller]() { controller.requestRecompute(/*waitForCompletion=*/false); }
+    );
     return outcome;
+}
+
+template<typename RunSyncFn>
+AsyncRecomputeProgressOutcome runAsyncDocumentObjectRecomputeProgressDialog(
+    QWidget* parent,
+    const QString& windowTitle,
+    const QString& fallbackLabel,
+    App::DocumentObject* object,
+    bool recursive,
+    RunSyncFn&& runSync
+)
+{
+    return runAsyncDocumentObjectRecomputeProgressDialog(
+        parent,
+        windowTitle,
+        fallbackLabel,
+        object,
+        recursive,
+        AsyncRecomputeDialogOptions {},
+        std::forward<RunSyncFn>(runSync)
+    );
 }
 
 /**
@@ -245,6 +313,7 @@ AsyncRecomputeProgressOutcome runAsyncDocumentRecomputeProgressDialog(
     const QString& fallbackLabel,
     App::Document* document,
     bool force,
+    const AsyncRecomputeDialogOptions& options,
     RunSyncFn&& runSync
 )
 {
@@ -276,10 +345,36 @@ AsyncRecomputeProgressOutcome runAsyncDocumentRecomputeProgressDialog(
     };
 
     AsyncPreviewController controller(std::move(callbacks), parent);
-    runAsyncRecomputeProgressDialog(parent, windowTitle, fallbackLabel, controller, [&controller]() {
-        controller.requestRecompute(/*waitForCompletion=*/false);
-    });
+    runAsyncRecomputeProgressDialog(
+        parent,
+        windowTitle,
+        fallbackLabel,
+        controller,
+        options,
+        [&controller]() { controller.requestRecompute(/*waitForCompletion=*/false); }
+    );
     return outcome;
+}
+
+template<typename RunSyncFn>
+AsyncRecomputeProgressOutcome runAsyncDocumentRecomputeProgressDialog(
+    QWidget* parent,
+    const QString& windowTitle,
+    const QString& fallbackLabel,
+    App::Document* document,
+    bool force,
+    RunSyncFn&& runSync
+)
+{
+    return runAsyncDocumentRecomputeProgressDialog(
+        parent,
+        windowTitle,
+        fallbackLabel,
+        document,
+        force,
+        AsyncRecomputeDialogOptions {},
+        std::forward<RunSyncFn>(runSync)
+    );
 }
 
 }  // namespace Gui
