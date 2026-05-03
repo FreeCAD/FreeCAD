@@ -28,6 +28,7 @@ SKIPPED_SOURCE_PREFIXES = (
 )
 DEFAULT_SOURCE_DIR = Path("src")
 DEFAULT_STUBS_OUT_DIR = Path("src/Tools/typing/generated")
+DEFAULT_API_DOCS_OUT_DIR = Path("src/Tools/typing/generated/api-docs")
 DEFAULT_OVERLAY_DIR = Path("src/Tools/typing/inputs/overlays")
 MODULE_STUB_PYI_SUFFIX = ".module.pyi"
 

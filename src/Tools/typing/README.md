@@ -2,6 +2,7 @@
 
 This directory contains the generated-stub workflow for FreeCAD's Python API:
 - the helper script that regenerates local stub output
+- the helper script mode that generates Markdown API docs from curated stubs
 - the smoke-check inputs used by Pyright and Pyrefly
 - the remaining manual overlay inputs
 - the documentation for curated source-adjacent stub inputs
@@ -34,6 +35,9 @@ That command writes under `src/Tools/typing/generated/`:
   is the output used by the smoke checks. It is disposable local output; the
   repository only keeps `generated/.gitignore`, so regenerate it instead of
   editing it directly.
+- `api-docs/`: package-shaped Markdown API reference pages generated from the
+  curated source-adjacent stub inputs. This tree is also disposable local
+  output and is intended as the input content for future site generation.
 
 Keep residual hand-written public overlays under `src/Tools/typing/inputs/overlays/`. Keep
 source-adjacent PyCXX type signature inputs in plain `.pyi` files such as
@@ -75,6 +79,16 @@ Use the documentation linter to audit the curated source-adjacent stub files:
 ```sh
 python3 src/Tools/typing/generate_stubs.py lint-docs --root .
 ```
+
+Generate Markdown API docs from the curated source-adjacent stubs with:
+
+```sh
+python3 src/Tools/typing/generate_stubs.py docs --root . --out-dir src/Tools/typing/generated/api-docs
+```
+
+This command reads the same curated stub inputs as the typing pipeline and
+emits package-shaped Markdown pages that are suitable for later integration
+with Astro Starlight or another static documentation site.
 
 This lint checks the curated source files that now carry hand-written typing
 documentation, not the entire generated public stub tree. It requires module

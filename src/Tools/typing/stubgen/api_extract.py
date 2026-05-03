@@ -16,6 +16,7 @@ curated stub sources independently.
 from __future__ import annotations
 
 import ast
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -53,6 +54,16 @@ def module_stub_name(path: Path) -> str:
     if not path.name.endswith(suffix):
         raise ValueError(f"{path}: invalid module stub filename")
     return path.name.removesuffix(suffix)
+
+
+def class_is_protocol(node: ast.ClassDef) -> bool:
+    return any(ast.unparse(base).split(".", 1)[-1] == "Protocol" for base in node.bases)
+
+
+def include_module_stub_class(node: ast.ClassDef) -> bool:
+    if class_is_protocol(node):
+        return False
+    return not node.name.startswith("_")
 
 
 def source_location(root: Path, path: Path, line: int | None = None) -> ApiSourceLocation:
@@ -186,6 +197,25 @@ def class_from_node(
     )
 
 
+def module_classes(
+    root: Path,
+    path: Path,
+    module_name: str,
+    body: list[ast.stmt],
+    *,
+    origin: ApiOrigin,
+    include_class: Callable[[ast.ClassDef], bool] | None = None,
+) -> tuple[ApiClass, ...]:
+    classes: list[ApiClass] = []
+    for node in body:
+        if not isinstance(node, ast.ClassDef):
+            continue
+        if include_class is not None and not include_class(node):
+            continue
+        classes.append(class_from_node(root, path, module_name, node, origin=origin))
+    return tuple(classes)
+
+
 def module_attributes(
     root: Path,
     path: Path,
@@ -217,6 +247,8 @@ def module_from_stub_file(
     *,
     origin: ApiOrigin,
     include_module_doc: bool,
+    include_attributes: bool = True,
+    include_class: Callable[[ast.ClassDef], bool] | None = None,
 ) -> ApiModule:
     source = path.read_text(encoding="utf-8")
     tree = ast.parse(source, filename=str(path))
@@ -234,12 +266,17 @@ def module_from_stub_file(
         if callable_group is not None:
             functions.append(callable_group)
 
-    classes = tuple(
-        class_from_node(root, path, module_name, node, origin=origin)
-        for node in tree.body
-        if isinstance(node, ast.ClassDef)
+    classes = module_classes(
+        root,
+        path,
+        module_name,
+        tree.body,
+        origin=origin,
+        include_class=include_class,
     )
-    attributes = module_attributes(root, path, tree.body, origin=origin)
+    attributes = (
+        module_attributes(root, path, tree.body, origin=origin) if include_attributes else ()
+    )
 
     return ApiModule(
         name=module_name,
@@ -264,18 +301,21 @@ def extract_curated_api_model(root: Path, source_dir: Path) -> ApiModel:
             module_stub_name(path),
             origin=ApiOrigin.MODULE_STUB,
             include_module_doc=True,
+            include_class=include_module_stub_class,
         )
         builder = modules.setdefault(piece.name, ApiModuleBuilder(name=piece.name))
         merge_module_piece(builder, piece)
 
     for path in sorted(iter_type_stub_pyi_files(root, source_dir)):
-        module_name, _ = parse_type_stub_target(path)
+        module_name, class_symbol = parse_type_stub_target(path)
         piece = module_from_stub_file(
             root,
             path,
             module_name,
             origin=ApiOrigin.TYPE_STUB,
             include_module_doc=False,
+            include_attributes=False,
+            include_class=lambda node, class_symbol=class_symbol: node.name == class_symbol,
         )
         builder = modules.setdefault(piece.name, ApiModuleBuilder(name=piece.name))
         merge_module_piece(builder, piece)

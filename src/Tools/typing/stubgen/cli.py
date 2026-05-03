@@ -20,13 +20,20 @@ from pathlib import Path
 import subprocess
 import sys
 
+from .api_extract import extract_curated_api_model
+from .api_markdown import write_api_markdown_docs
 from .doc_lint import lint_curated_stub_docs
 from .discovery import collect_methods, collect_type_registrations
 from .generator import (
     markdown_report,
     write_outputs,
 )
-from .model import DEFAULT_OVERLAY_DIR, DEFAULT_SOURCE_DIR, DEFAULT_STUBS_OUT_DIR
+from .model import (
+    DEFAULT_API_DOCS_OUT_DIR,
+    DEFAULT_OVERLAY_DIR,
+    DEFAULT_SOURCE_DIR,
+    DEFAULT_STUBS_OUT_DIR,
+)
 from .parsing import iter_source_files
 from .source_inputs import (
     collect_binding_classes,
@@ -103,6 +110,23 @@ def add_generation_args(parser: argparse.ArgumentParser) -> None:
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
+    if argv and argv[0] == "docs":
+        parser = argparse.ArgumentParser(
+            description="Generate Markdown API docs from curated source-adjacent stubs."
+        )
+        add_common_path_args(parser)
+        parser.add_argument(
+            "--out-dir",
+            type=Path,
+            default=DEFAULT_API_DOCS_OUT_DIR,
+            help=(
+                "Directory for generated Markdown API docs, relative to --root unless absolute. "
+                f"Defaults to {DEFAULT_API_DOCS_OUT_DIR}."
+            ),
+        )
+        parser.set_defaults(command="docs")
+        return parser.parse_args(argv[1:])
+
     if argv and argv[0] == "check":
         parser = argparse.ArgumentParser(
             description="Generate binding stubs and run the smoke type checks."
@@ -253,6 +277,20 @@ def run_check(args: argparse.Namespace) -> int:
     return 0 if pyright_code == 0 and pyrefly_code == 0 else 1
 
 
+def run_generate_docs(args: argparse.Namespace) -> int:
+    root = args.root.resolve()
+    source_dir = args.source_dir if args.source_dir.is_absolute() else root / args.source_dir
+    if not source_dir.exists():
+        print_stderr(f"source directory does not exist: {source_dir}\n")
+        return 2
+
+    out_dir = args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
+    model = extract_curated_api_model(root, source_dir)
+    page_count = write_api_markdown_docs(out_dir, model)
+    print(f"Wrote {page_count} Markdown API docs to {out_dir}")
+    return 0
+
+
 def run_lint_docs(args: argparse.Namespace) -> int:
     root = args.root.resolve()
     source_dir = args.source_dir if args.source_dir.is_absolute() else root / args.source_dir
@@ -284,6 +322,8 @@ def run_lint_docs(args: argparse.Namespace) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
+    if args.command == "docs":
+        return run_generate_docs(args)
     if args.command == "check":
         return run_check(args)
     if args.command == "lint-docs":
