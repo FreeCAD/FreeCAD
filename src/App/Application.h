@@ -323,7 +323,7 @@ public:
      * @param[in] objName: the object that is attempted to be loaded.
      * @param[in] allowPartial: whether to allow partial loading if some objects are missing.
      *
-     * @return -1 if unsuccessful, 0 if the application is not restoring, and 1
+     * @return -1 if unsuccesful, 0 if the application is not restoring, and 1
      * if successfully added.
      */
     int addPendingDocument(const char* FileName, const char* objName, bool allowPartial);
@@ -788,7 +788,7 @@ public:
     /// Get the home path of the application.
     static std::string getHomePath();
 
-    /// Get the executable name of the application.
+    /// Get the exectuable name of the application.
     static std::string getExecutableName();
 
     /// Get the executable name with version information.
