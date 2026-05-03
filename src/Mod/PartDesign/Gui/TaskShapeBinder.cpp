@@ -463,6 +463,11 @@ bool TaskShapeBinder::hasOutstandingRecompute() const
     return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
 }
 
+bool TaskShapeBinder::canReuseAcceptedPreviewResult() const
+{
+    return asyncPreviewSession && asyncPreviewSession->didLastRecomputeSucceed();
+}
+
 void TaskShapeBinder::setDeferredClosePending(bool pending)
 {
     if (asyncPreviewSession) {
@@ -584,7 +589,8 @@ bool TaskDlgShapeBinder::accept()
             PartDesign::ShapeBinder* binder = vp->getObject<PartDesign::ShapeBinder>();
             parameter->clearInteractiveSelection();
             parameter->accept();
-            const bool previewSettled = !parameter->hasOutstandingRecompute();
+            const bool previewSettled = !parameter->hasOutstandingRecompute()
+                && parameter->canReuseAcceptedPreviewResult();
             if (previewSettled) {
                 parameter->flushPendingRecompute();
                 Gui::cmdAppDocument(binder, "purgeTouched()");

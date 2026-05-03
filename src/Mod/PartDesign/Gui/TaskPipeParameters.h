@@ -117,6 +117,7 @@ public:
     void runImmediateRecompute();
     void schedulePendingRecompute();
     bool hasOutstandingRecompute() const override;
+    bool canReuseAcceptedPreviewResult() const override;
     void setDeferredClosePending(bool pending);
 
 Q_SIGNALS:

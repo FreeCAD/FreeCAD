@@ -443,6 +443,12 @@ bool TaskTransformedParameters::hasOutstandingRecompute() const
     return previewSession && previewSession->hasOutstandingRecompute();
 }
 
+bool TaskTransformedParameters::canReuseAcceptedPreviewResult() const
+{
+    auto* previewSession = getAsyncPreviewSession();
+    return previewSession && previewSession->didLastRecomputeSucceed();
+}
+
 void TaskTransformedParameters::setDeferredClosePending(bool pending)
 {
     if (insideMultiTransform && parentTask) {
@@ -851,9 +857,13 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransform
 
 TaskDlgFeatureParameters::AcceptRecomputeMode TaskDlgTransformedParameters::acceptRecomputeMode(
     bool isUpdateBlocked,
-    AcceptPendingRecomputeAction
+    AcceptPendingRecomputeAction pendingRecomputeAction
 ) const
 {
+    if (pendingRecomputeAction == AcceptPendingRecomputeAction::Stop) {
+        return AcceptRecomputeMode::AsyncDocument;
+    }
+
     // When no preview work is outstanding, accept() keeps the existing command
     // path: the settled preview already computed the transformed feature, so the
     // remaining document recompute only needs to propagate touched parents.
@@ -874,10 +884,6 @@ bool TaskDlgTransformedParameters::accept()
     });
     parameter->exitSelectionMode();
 
-    if (!parameter->hasOutstandingRecompute()) {
-        return TaskDlgFeatureParameters::accept();
-    }
-
     auto* feature = getObject();
     if (!feature) {
         return false;
@@ -885,12 +891,20 @@ bool TaskDlgTransformedParameters::accept()
 
     bool isUpdateBlocked = false;
     try {
-        // When a heavy preview is already in flight, flushing it here blocks the
-        // task dialog until that preview finishes. Stop the preview instead, then
-        // serialize the final UI state and run one accepted recompute behind the
-        // shared async progress dialog.
-        applyAcceptedFeatureParameters(AcceptPendingRecomputeAction::Stop, isUpdateBlocked);
-        static_cast<void>(isUpdateBlocked);
+        const bool canReusePreviewResult = !parameter->hasOutstandingRecompute()
+            && parameter->canReuseAcceptedPreviewResult();
+        if (canReusePreviewResult) {
+            parameter->flushPendingRecompute();
+        }
+        else {
+            // When a heavy preview is already in flight, or the last settled preview
+            // was canceled, do not replay preview work on the GUI thread. Stop the
+            // preview path, serialize the final UI state, and let the accepted
+            // document recompute produce the final feature result.
+            parameter->stopPendingRecompute();
+        }
+        parameter->apply();
+        isUpdateBlocked = parameter->isUpdateBlocked();
 
         if (!feature->isDerivedFrom<PartDesign::Feature>()) {
             throw Base::TypeError("Bad object processed in the feature dialog.");
@@ -901,7 +915,15 @@ bool TaskDlgTransformedParameters::accept()
             throw Base::RuntimeError("Feature document is not available.");
         }
 
-        if (!runAsyncAcceptDocumentRecompute(document)) {
+        const auto pendingRecomputeAction = canReusePreviewResult
+                && parameter->canReuseAcceptedPreviewResult()
+            ? AcceptPendingRecomputeAction::Flush
+            : AcceptPendingRecomputeAction::Stop;
+        prepareAcceptedFeatureForDocumentRecompute(feature, isUpdateBlocked, pendingRecomputeAction);
+        if (!runAcceptedFeatureRecompute(
+                document,
+                acceptRecomputeMode(isUpdateBlocked, pendingRecomputeAction)
+            )) {
             return false;
         }
 

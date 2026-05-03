@@ -452,6 +452,10 @@ private Q_SLOTS:
     void linearAcceptWaitsForQueuedPreviewWithoutExtraRerun()  // NOLINT
     {
         prepareTransformedFixture(TransformedKind::Linear);
+        auto* pattern = dynamic_cast<PartDesign::BlockingLinearPatternTest*>(
+            doc->getObject("BlockingLinearPattern")
+        );
+        QVERIFY(pattern != nullptr);
 
         auto* dialog = new PartDesignGui::TaskDlgLinearPatternParameters(transformedView);
         QPointer<PartDesignGui::TaskDlgLinearPatternParameters> guard(dialog);
@@ -476,7 +480,8 @@ private Q_SLOTS:
         QCOMPARE(getBlockingTransformedTotalExecutionCount(), 1);
         QVERIFY(taskBox->hasOutstandingRecompute());
 
-        occurrences->setValue(occurrences->value() + 1);
+        const int finalOccurrences = occurrences->value() + 1;
+        occurrences->setValue(finalOccurrences);
         QCoreApplication::processEvents();
         QVERIFY(taskBox->hasOutstandingRecompute());
 
@@ -491,6 +496,7 @@ private Q_SLOTS:
         QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
         QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
         QVERIFY(!guiDoc->hasPendingCommand());
+        QCOMPARE(pattern->Occurrences.getValue(), finalOccurrences);
         QCOMPARE(getBlockingTransformedTotalExecutionCount(), 2);
     }
 
@@ -575,9 +581,80 @@ private Q_SLOTS:
         QCOMPARE(PartDesign::BlockingPolarPatternTest::getExecutionCount(), 1);
     }
 
+    void polarAcceptAfterCanceledPreviewRunsFinalRecompute()  // NOLINT
+    {
+        prepareTransformedFixture(TransformedKind::Polar);
+        auto* pattern = dynamic_cast<PartDesign::BlockingPolarPatternTest*>(
+            doc->getObject("BlockingPolarPattern")
+        );
+        QVERIFY(pattern != nullptr);
+
+        auto* dialog = new PartDesignGui::TaskDlgLinearPatternParameters(transformedView);
+        QPointer<PartDesignGui::TaskDlgLinearPatternParameters> guard(dialog);
+        Gui::Control().showDialog(dialog, doc);
+        QCoreApplication::processEvents();
+
+        auto* taskBox = findTaskBox<PartDesignGui::TaskPatternParameters>(dialog);
+        QVERIFY(taskBox != nullptr);
+
+        auto* widget = findPrimaryPatternParametersWidget(taskBox);
+        QVERIFY(widget != nullptr);
+
+        auto* occurrences = findOccurrencesSpinBox(widget);
+        QVERIFY(occurrences != nullptr);
+
+        auto* cancelPreview = findCancelPreviewButton(taskBox);
+        QVERIFY(cancelPreview != nullptr);
+
+        PartDesign::BlockingPolarPatternTest::armBlocker();
+        const int acceptedOccurrences = occurrences->value() + 1;
+        occurrences->setValue(acceptedOccurrences);
+        QCoreApplication::processEvents();
+
+        QTRY_COMPARE_WITH_TIMEOUT(PartDesign::BlockingPolarPatternTest::getExecutionCount(), 1, 3000);
+        QCOMPARE(getBlockingTransformedTotalExecutionCount(), 1);
+        QVERIFY(taskBox->hasOutstandingRecompute());
+        QVERIFY(cancelPreview->isEnabled());
+
+        cancelPreview->click();
+        QCoreApplication::processEvents();
+
+        QVERIFY(taskBox->hasOutstandingRecompute());
+
+        PartDesign::BlockingPolarPatternTest::releaseBlocker();
+
+        QTRY_VERIFY_WITH_TIMEOUT(!taskBox->hasOutstandingRecompute(), 3000);
+        QVERIFY(!guard.isNull());
+
+        std::string acceptError;
+        try {
+            Gui::Control().accept(doc);
+        }
+        catch (const Base::Exception& e) {
+            acceptError = e.what();
+        }
+        catch (const std::exception& e) {
+            acceptError = e.what();
+        }
+        catch (...) {
+            acceptError = "unknown exception";
+        }
+
+        QVERIFY2(acceptError.empty(), acceptError.c_str());
+        QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
+        QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
+        QVERIFY(!guiDoc->hasPendingCommand());
+        QCOMPARE(pattern->Occurrences.getValue(), acceptedOccurrences);
+        QCOMPARE(getBlockingTransformedTotalExecutionCount(), 2);
+    }
+
     void polarAcceptKeepsGuiResponsiveWhileSettlingInFlightPreview()  // NOLINT
     {
         prepareTransformedFixture(TransformedKind::Polar);
+        auto* pattern = dynamic_cast<PartDesign::BlockingPolarPatternTest*>(
+            doc->getObject("BlockingPolarPattern")
+        );
+        QVERIFY(pattern != nullptr);
 
         auto* dialog = new PartDesignGui::TaskDlgLinearPatternParameters(transformedView);
         QPointer<PartDesignGui::TaskDlgLinearPatternParameters> guard(dialog);
@@ -595,7 +672,8 @@ private Q_SLOTS:
         QVERIFY(extent != nullptr);
 
         PartDesign::BlockingPolarPatternTest::armBlocker();
-        extent->setValue(extent->rawValue() - 45.0);
+        const double acceptedAngle = extent->rawValue() - 45.0;
+        extent->setValue(acceptedAngle);
         QCoreApplication::processEvents();
 
         QTRY_COMPARE_WITH_TIMEOUT(PartDesign::BlockingPolarPatternTest::getExecutionCount(), 1, 3000);
@@ -628,12 +706,17 @@ private Q_SLOTS:
             timerTicksWhileAccepting > 0,
             "accept should keep the GUI event loop responsive while the final recompute settles"
         );
-        QCOMPARE(getBlockingTransformedTotalExecutionCount(), 1);
+        QCOMPARE(pattern->Angle.getValue(), acceptedAngle);
+        QCOMPARE(getBlockingTransformedTotalExecutionCount(), 2);
     }
 
     void polarAcceptWaitsForQueuedPreviewWithoutExtraRerun()  // NOLINT
     {
         prepareTransformedFixture(TransformedKind::Polar);
+        auto* pattern = dynamic_cast<PartDesign::BlockingPolarPatternTest*>(
+            doc->getObject("BlockingPolarPattern")
+        );
+        QVERIFY(pattern != nullptr);
 
         auto* dialog = new PartDesignGui::TaskDlgLinearPatternParameters(transformedView);
         QPointer<PartDesignGui::TaskDlgLinearPatternParameters> guard(dialog);
@@ -658,7 +741,8 @@ private Q_SLOTS:
         QCOMPARE(getBlockingTransformedTotalExecutionCount(), 1);
         QVERIFY(taskBox->hasOutstandingRecompute());
 
-        extent->setValue(extent->rawValue() + 15.0);
+        const double finalAngle = extent->rawValue() + 15.0;
+        extent->setValue(finalAngle);
         QCoreApplication::processEvents();
         QVERIFY(taskBox->hasOutstandingRecompute());
 
@@ -673,6 +757,7 @@ private Q_SLOTS:
         QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
         QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
         QVERIFY(!guiDoc->hasPendingCommand());
+        QCOMPARE(pattern->Angle.getValue(), finalAngle);
         QCOMPARE(getBlockingTransformedTotalExecutionCount(), 2);
     }
     void mirroredRejectDefersCloseUntilAsyncPreviewSettles()  // NOLINT
@@ -1205,7 +1290,7 @@ private Q_SLOTS:
         QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
         QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
         QVERIFY(!guiDoc->hasPendingCommand());
-        QCOMPARE(getBlockingTransformedTotalExecutionCount(), 2);
+        QCOMPARE(getBlockingTransformedTotalExecutionCount(), 3);
     }
 
 private:

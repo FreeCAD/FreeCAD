@@ -105,6 +105,10 @@ public:
     {
         return false;
     }
+    virtual bool canReuseAcceptedPreviewResult() const
+    {
+        return true;
+    }
     virtual void setDeferredClosePending(bool)
     {}
 
