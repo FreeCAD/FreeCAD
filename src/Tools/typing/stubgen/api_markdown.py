@@ -75,8 +75,8 @@ def class_title(klass: ApiClass) -> str:
     return klass.name
 
 
-def relative_link(from_path: Path, to_path: Path) -> str:
-    return Path(os.path.relpath(to_path, from_path.parent)).as_posix()
+def page_link(slug: str) -> str:
+    return f"/{slug}/"
 
 
 def fenced_python(lines: list[str]) -> str:
@@ -145,15 +145,17 @@ def render_callable_group(
         lines.append(group.doc)
         lines.append("")
     if group.overload:
-        lines.append(f"{len(group.signatures)} overloads.")
+        overload_lines: list[str] = []
+        for signature in group.signatures:
+            overload_lines.append("@overload")
+            overload_lines.append(f"def {signature.display_signature}: ...")
+            overload_lines.append("")
+        if overload_lines[-1] == "":
+            overload_lines.pop()
+        lines.append(fenced_python(overload_lines))
         lines.append("")
-        for index, signature in enumerate(group.signatures, start=1):
-            lines.append(f"**Overload {index}**")
-            lines.append("")
-            lines.append(fenced_python([f"def {signature.display_signature}"]))
-            lines.append("")
     else:
-        lines.append(fenced_python([f"def {group.signatures[0].display_signature}"]))
+        lines.append(fenced_python([f"def {group.signatures[0].display_signature}: ..."]))
         lines.append("")
     if group.location is not None:
         lines.append(f"- **Source:** {source_link(group.location, source_base_url)}")
@@ -161,8 +163,8 @@ def render_callable_group(
     return lines
 
 
-def render_class_summary(class_page: Path, module_page: Path, klass: ApiClass) -> str:
-    link = relative_link(module_page, class_page)
+def render_class_summary(klass: ApiClass) -> str:
+    link = page_link(class_slug(klass))
     summary = f"- [`{klass.name}`]({link})"
     doc = summary_text(klass.doc)
     if doc:
@@ -170,8 +172,8 @@ def render_class_summary(class_page: Path, module_page: Path, klass: ApiClass) -
     return summary
 
 
-def render_module_summary(child_page: Path, module_page: Path, module: ApiModule) -> str:
-    link = relative_link(module_page, child_page)
+def render_module_summary(module: ApiModule) -> str:
+    link = page_link(module_slug(module.name))
     summary = f"- [`{module.name}`]({link})"
     doc = summary_text(module.doc)
     if doc:
@@ -260,11 +262,7 @@ def render_module_page(
     if submodules:
         lines.append("## Submodules")
         lines.append("")
-        module_page = module_doc_path(out_dir, module.name)
-        lines.extend(
-            render_module_summary(module_doc_path(out_dir, child.name), module_page, child)
-            for child in submodules
-        )
+        lines.extend(render_module_summary(child) for child in submodules)
         lines.append("")
 
     public_attributes = tuple(
@@ -285,13 +283,7 @@ def render_module_page(
     if module.classes:
         lines.append("## Classes")
         lines.append("")
-        module_page = module_doc_path(out_dir, module.name)
-        lines.extend(
-            render_class_summary(
-                class_doc_path(out_dir, module.name, klass.name), module_page, klass
-            )
-            for klass in module.classes
-        )
+        lines.extend(render_class_summary(klass) for klass in module.classes)
         lines.append("")
 
     return "\n".join(lines).rstrip() + "\n"
@@ -369,13 +361,10 @@ def render_root_index(out_dir: Path, model: ApiModel) -> str:
     lines.append("")
     lines.append("## Modules")
     lines.append("")
-    root_page = content_root_dir(out_dir) / "index.mdx"
     for module in model.modules:
         if "." in module.name:
             continue
-        lines.append(
-            render_module_summary(module_doc_path(out_dir, module.name), root_page, module)
-        )
+        lines.append(render_module_summary(module))
     lines.append("")
     return "\n".join(lines)
 
