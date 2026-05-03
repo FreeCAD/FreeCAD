@@ -11,6 +11,7 @@ Module layout:
 - ``api_model`` holds the neutral public API model shared by future renderers.
 - ``api_extract`` builds that neutral API model from curated stub inputs.
 - ``api_markdown`` renders package-shaped Markdown pages from that model.
+- ``api_starlight`` renders Starlight-specific sidebar config from that model.
 - ``discovery`` inventories C++ registrations and PyCXX contexts.
 - ``source_inputs`` reads binding specs plus curated source-adjacent stub files.
 - ``render`` formats individual stub fragments and inventory skeletons.
@@ -22,7 +23,8 @@ Module layout:
 - ``cli`` wires the pipeline to the public command-line interface.
 
 A useful reading order is ``model`` -> ``parsing`` -> ``signature_parser`` ->
-``api_model`` -> ``api_extract`` -> ``api_markdown`` -> ``naming`` ->
-``discovery`` -> ``source_inputs`` -> ``render`` -> ``module_merge`` ->
-``class_merge`` -> ``type_context_rules`` -> ``generator`` -> ``cli``.
+``api_model`` -> ``api_extract`` -> ``api_markdown`` -> ``api_starlight`` ->
+``naming`` -> ``discovery`` -> ``source_inputs`` -> ``render`` ->
+``module_merge`` -> ``class_merge`` -> ``type_context_rules`` ->
+``generator`` -> ``cli``.
 """

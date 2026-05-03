@@ -22,6 +22,7 @@ import sys
 
 from .api_extract import extract_curated_api_model
 from .api_markdown import write_api_markdown_docs
+from .api_starlight import write_starlight_sidebar_fragment
 from .doc_lint import lint_curated_stub_docs
 from .discovery import collect_methods, collect_type_registrations
 from .generator import (
@@ -298,7 +299,8 @@ def run_generate_docs(args: argparse.Namespace) -> int:
         model,
         source_base_url=args.source_base_url,
     )
-    print(f"Wrote {page_count} MDX API docs to {out_dir}")
+    sidebar_path = write_starlight_sidebar_fragment(out_dir, model)
+    print(f"Wrote {page_count} MDX API docs and {sidebar_path.relative_to(root)}")
     return 0
 
 
