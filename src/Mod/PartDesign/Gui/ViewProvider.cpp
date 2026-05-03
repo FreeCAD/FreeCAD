@@ -491,13 +491,16 @@ void ViewProvider::toggleVisibility()
         Gui::ViewProvider::toggleVisibility();
         return;
     }
-    auto body = PartDesign::Body::findBodyOf(getObject());
-    auto doc = getDocument();
-    if (body && doc) {
-        if (auto* bodyVp = doc->getViewProvider(body)) {
-            bodyVp->toggleVisibility();
-            return;
+    if (auto* bodyVp = getBodyViewProvider()) {
+        if (bodyVp->isActiveBody()) {
+            // Inside the active body, toggle the feature itself.
+            Gui::ViewProvider::toggleVisibility();
         }
+        else {
+            // Outside the active body, toggle the whole body.
+            bodyVp->toggleVisibility();
+        }
+        return;
     }
     Gui::ViewProvider::toggleVisibility();
 }
