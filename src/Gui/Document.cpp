@@ -538,6 +538,9 @@ Document::Document(App::Document* pcDocument, Application* app)
     // mustn't increment it (Werner Jan-12-2006)
     Base::PyGILStateLocker lock;
     _pcDocPy = new Gui::DocumentPy(this);
+    // Gui::Document acts as a controller/service proxy, not as a tracked child
+    // Python attribute, so wrapper notify bookkeeping is unnecessary here.
+    _pcDocPy->setShouldNotify(false);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Document"
