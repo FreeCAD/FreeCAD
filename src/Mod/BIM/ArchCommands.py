@@ -575,7 +575,7 @@ def getCutVolume(cutplane, shapes, clip=False, depth=None):
         if depth or clip:
             cutvolume = cutvolume.removeSplitter()
             invcutvolume = invcutvolume.removeSplitter()
-        return cutface, cutvolume, invcutvolume.
+        return cutface, cutvolume, invcutvolume
 
 
 def getShapeFromMesh(mesh, fast=True, tolerance=0.001, flat=False, cut=True):
