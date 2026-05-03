@@ -63,8 +63,14 @@ def module_doc_path(out_dir: Path, module_name: str) -> Path:
     return module_doc_dir(out_dir, module_name) / "index.mdx"
 
 
+def class_doc_filename(class_name: str) -> str:
+    if class_name.startswith("_"):
+        return f"cls-{class_name}.mdx"
+    return f"{class_name}.mdx"
+
+
 def class_doc_path(out_dir: Path, module_name: str, class_name: str) -> Path:
-    return module_doc_dir(out_dir, module_name) / TYPE_GROUP_DIR / f"{class_name}.mdx"
+    return module_doc_dir(out_dir, module_name) / TYPE_GROUP_DIR / class_doc_filename(class_name)
 
 
 def module_title(module_name: str) -> str:
