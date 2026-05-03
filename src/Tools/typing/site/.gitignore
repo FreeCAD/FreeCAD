@@ -2,4 +2,6 @@
 node_modules/
 dist/
 src/content/docs/python-api/
+src/content/docs/cpp-api/
 src/generated/python-api-sidebar.ts
+src/generated/cpp-api-sidebar.ts

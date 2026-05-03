@@ -6,8 +6,11 @@
         "dev": "astro dev",
         "build": "astro build",
         "preview": "astro preview",
-        "generate:api":
-            "python3 ../generate_stubs.py docs --root ../../../../ --out-dir src/Tools/typing/site/src/content/docs --sidebar-out src/Tools/typing/site/src/generated/python-api-sidebar.ts"
+        "generate:python-api":
+            "python3 ../generate_stubs.py docs --root ../../../../ --out-dir src/Tools/typing/site/src/content/docs --sidebar-out src/Tools/typing/site/src/generated/python-api-sidebar.ts",
+        "generate:cpp-api":
+            "python3 ../generate_stubs.py cpp-docs --root ../../../../ --out-dir src/Tools/typing/site/src/content/docs --sidebar-out src/Tools/typing/site/src/generated/cpp-api-sidebar.ts --run-doxygen",
+        "generate:api": "npm run generate:python-api && npm run generate:cpp-api"
     },
     "devDependencies": {
         "@astrojs/starlight": "^0.38.4",
