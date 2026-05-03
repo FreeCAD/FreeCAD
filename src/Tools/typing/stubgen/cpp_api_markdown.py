@@ -286,6 +286,15 @@ def render_class_page(
         lines.extend(f"- `{base}`" for base in klass.bases)
         lines.append("")
 
+    if klass.constructors:
+        lines.extend(["## Constructors", ""])
+        for constructor in klass.constructors:
+            lines.extend(render_function(constructor, source_base_url=source_base_url))
+
+    if klass.destructor is not None:
+        lines.extend(["## Destructor", ""])
+        lines.extend(render_function(klass.destructor, source_base_url=source_base_url))
+
     if klass.methods:
         lines.extend(["## Methods", ""])
         for method in klass.methods:

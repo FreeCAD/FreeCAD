@@ -82,6 +82,8 @@ class CppApiClass:
     kind: str
     doc: str | None = None
     bases: tuple[str, ...] = ()
+    constructors: tuple[CppApiFunction, ...] = ()
+    destructor: CppApiFunction | None = None
     methods: tuple[CppApiFunction, ...] = ()
     enums: tuple[CppApiEnum, ...] = ()
     location: CppSourceLocation | None = None

@@ -187,6 +187,7 @@ def extract_class(root: Path, compound: ET.Element) -> CppApiClass | None:
     location = source_location(root, compound.find("location"))
     if not project_source_location(location):
         return None
+    class_name = qualified_name.rsplit("::", 1)[-1]
     methods: list[CppApiFunction] = []
     enums: list[CppApiEnum] = []
     for section in compound.findall("sectiondef"):
@@ -200,16 +201,25 @@ def extract_class(root: Path, compound: ET.Element) -> CppApiClass | None:
         for base in compound.findall("basecompoundref")
         if compact_text("".join(base.itertext()))
     )
+    constructors = tuple(method for method in methods if method.name == class_name)
+    destructor = next((method for method in methods if method.name == f"~{class_name}"), None)
+    regular_methods = tuple(
+        method
+        for method in methods
+        if method.name != class_name and method.name != f"~{class_name}"
+    )
     return CppApiClass(
         qualified_name=qualified_name,
-        name=qualified_name.rsplit("::", 1)[-1],
+        name=class_name,
         display_name=class_display_name(qualified_name),
         top_namespace=top_namespace(qualified_name),
         kind=compound.get("kind", "class"),
         doc=description_text(compound.find("briefdescription"))
         or description_text(compound.find("detaileddescription")),
         bases=bases,
-        methods=tuple(methods),
+        constructors=constructors,
+        destructor=destructor,
+        methods=regular_methods,
         enums=tuple(enums),
         location=location,
     )
