@@ -482,7 +482,13 @@ bool TaskDlgBooleanParameters::accept()
             QMessageBox::warning(parameter, tr("Empty body list"), tr("The body list cannot be empty"));
             return false;
         }
-        parameter->flushPendingRecompute();
+        const bool hadOutstandingPreview = parameter->hasOutstandingRecompute();
+        if (hadOutstandingPreview) {
+            parameter->stopPendingRecompute();
+        }
+        else {
+            parameter->flushPendingRecompute();
+        }
         std::stringstream str;
         str << Gui::Command::getObjectCmd(obj) << ".setObjects( [";
         for (const auto& body : bodies) {
@@ -493,12 +499,14 @@ bool TaskDlgBooleanParameters::accept()
         Gui::Command::runCommand(Gui::Command::Doc, str.str().c_str());
         FCMD_OBJ_CMD(obj, "Type = " << parameter->getType());
 
-        // The async preview already settled the latest boolean state. Clear the
-        // redundant touch from the command serialization above so the final
-        // document recompute only updates downstream dependents.
-        Gui::cmdAppObject(obj, "purgeTouched()");
-        for (auto parent : obj->getInList()) {
-            parent->touch();
+        if (!hadOutstandingPreview) {
+            // The async preview already settled the latest boolean state. Clear the
+            // redundant touch from the command serialization above so the final
+            // document recompute only updates downstream dependents.
+            Gui::cmdAppObject(obj, "purgeTouched()");
+            for (auto parent : obj->getInList()) {
+                parent->touch();
+            }
         }
 
         if (!runAsyncAcceptDocumentRecompute(document)) {

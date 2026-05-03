@@ -49,6 +49,7 @@
 
 #include "ui_TaskShapeBinder.h"
 #include "TaskShapeBinder.h"
+#include "TaskFeatureParameters.h"
 #include "DeferredDialogRejectUtils.h"
 
 
@@ -583,10 +584,22 @@ bool TaskDlgShapeBinder::accept()
             PartDesign::ShapeBinder* binder = vp->getObject<PartDesign::ShapeBinder>();
             parameter->clearInteractiveSelection();
             parameter->accept();
-            parameter->flushPendingRecompute();
-            Gui::cmdAppDocument(binder, "purgeTouched()");
-            if (!binder->isValid()) {
-                throw Base::RuntimeError(binder->getStatusString());
+            const bool previewSettled = !parameter->hasOutstandingRecompute();
+            if (previewSettled) {
+                parameter->flushPendingRecompute();
+                Gui::cmdAppDocument(binder, "purgeTouched()");
+                if (!binder->isValid()) {
+                    throw Base::RuntimeError(binder->getStatusString());
+                }
+            }
+            else {
+                parameter->stopPendingRecompute();
+                if (!runAsyncAcceptDocumentRecompute(binder->getDocument())) {
+                    return false;
+                }
+                if (!binder->isValid()) {
+                    throw Base::RuntimeError(binder->getStatusString());
+                }
             }
             Gui::cmdGuiDocument(binder, "resetEdit()");
             vp->getDocument()->commitCommand();

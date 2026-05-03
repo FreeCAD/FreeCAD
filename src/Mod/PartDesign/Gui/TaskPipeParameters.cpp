@@ -564,7 +564,7 @@ void TaskPipeParameters::setVisibilityOfSpineAndProfile()
     }
 }
 
-bool TaskPipeParameters::accept()
+bool TaskPipeParameters::accept(bool previewSettled)
 {
     // see what to do with external references
     // check the prerequisites for the selected objects
@@ -678,13 +678,15 @@ bool TaskPipeParameters::accept()
         App::PropertyLinkT propT(spine, subNames);
         Gui::cmdAppObjectArgs(pipe, "Spine = %s", propT.getPropertyPython());
 
-        Gui::cmdAppDocument(pipe, "purgeTouched()");
-        if (!getObject()->isValid()) {
-            throw Base::RuntimeError(getObject()->getStatusString());
-        }
+        if (previewSettled) {
+            Gui::cmdAppDocument(pipe, "purgeTouched()");
+            if (!getObject()->isValid()) {
+                throw Base::RuntimeError(getObject()->getStatusString());
+            }
 
-        for (auto obj : pipe->getInList()) {
-            obj->touch();
+            for (auto obj : pipe->getInList()) {
+                obj->touch();
+            }
         }
         if (!runAsyncAcceptDocumentRecompute(pipe->getDocument())) {
             return false;
@@ -1441,8 +1443,14 @@ bool TaskDlgPipeParameters::accept()
         }
     );
     clearInteractiveSelection();
-    parameter->flushPendingRecompute();
-    return parameter->accept();
+    const bool previewSettled = !parameter->hasOutstandingRecompute();
+    if (previewSettled) {
+        parameter->flushPendingRecompute();
+    }
+    else {
+        parameter->stopPendingRecompute();
+    }
+    return parameter->accept(previewSettled);
 }
 
 bool TaskDlgPipeParameters::reject()
