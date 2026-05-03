@@ -41,6 +41,7 @@
 #include <App/DocumentObject.h>
 #include <App/MainThreadSignal.h>
 #include <Gui/ActionFunction.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
 
 #include "AsyncPreviewController.h"
 
@@ -178,12 +179,14 @@ AsyncPreviewController::~AsyncPreviewController()
 
 void AsyncPreviewController::setSchedulerInterval(int intervalMs)
 {
+    schedulerIntervalMs = std::max(0, intervalMs);
+
     if (!recomputeScheduler) {
         recomputeScheduler = std::make_unique<Gui::DebouncedFunction>(this);
         recomputeScheduler->setFunction([this]() { requestRecompute(/*waitForCompletion=*/false); });
     }
 
-    recomputeScheduler->setInterval(intervalMs);
+    recomputeScheduler->setInterval(effectiveSchedulerIntervalMs());
 }
 
 bool AsyncPreviewController::hasScheduledRecompute() const
@@ -204,11 +207,25 @@ bool AsyncPreviewController::triggerScheduledRecomputeNow()
 void AsyncPreviewController::scheduleRecompute()
 {
     if (recomputeScheduler) {
+        recomputeScheduler->setInterval(effectiveSchedulerIntervalMs());
         recomputeScheduler->start();
         return;
     }
 
     requestRecompute(/*waitForCompletion=*/false);
+}
+
+int AsyncPreviewController::effectiveSchedulerIntervalMs() const
+{
+    if (schedulerIntervalMs <= 0) {
+        return schedulerIntervalMs;
+    }
+
+    if (Gui::Gizmo::isAnyDragActive()) {
+        return std::min(schedulerIntervalMs, Gui::Gizmo::activeDragPreviewDebounceMs());
+    }
+
+    return schedulerIntervalMs;
 }
 
 void AsyncPreviewController::stopScheduledRecompute()
