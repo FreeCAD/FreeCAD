@@ -1147,9 +1147,15 @@ class _Wall(ArchComponent.Component):
                         for ig, edge in enumerate(shpEdges):
                             if isinstance(
                                 edge.Curve,
-                                (Part.Line, Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse)
-                             ):
-                                 baseEdges.append(edge)
+                                (
+                                    Part.Line,
+                                    Part.LineSegment,
+                                    Part.Circle,
+                                    Part.ArcOfCircle,
+                                    Part.Ellipse,
+                                ),
+                            ):
+                                baseEdges.append(edge)
                         clusters = Part.getSortedClusters(baseEdges)
                         self.basewires = clusters
                         # Previously :
@@ -1464,9 +1470,15 @@ class _Wall(ArchComponent.Component):
                         if baseface:
                             base, placement = self.rebase(baseface)
 
-                    else:  #if not self.basewires:
+                    else:  # if not self.basewires:
                         FreeCAD.Console.PrintWarning(
-                            obj.Label + " " + translate("Arch", "has Base object, but it contains no supported edge type (Line, Line Segment, Circle, Arc Of Circle, Ellipse) ") + "\n"
+                            obj.Label
+                            + " "
+                            + translate(
+                                "Arch",
+                                "has Base object, but it contains no supported edge type (Line, Line Segment, Circle, Arc Of Circle, Ellipse) ",
+                            )
+                            + "\n"
                         )
 
         # Build Wall from scratch if there is no obj.Base or even obj.Base is not valid
