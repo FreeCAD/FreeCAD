@@ -2981,20 +2981,16 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGrpSelect);
     setConstraintSelectability();  // Ensure default value;
 
-    // disable depth testing for constraint icons so they render ON TOP of geometry lines
-    // check issues #25840 and #11603
-    SoDepthBuffer* constrDepthOff = new SoDepthBuffer();
-    constrDepthOff->test.setValue(false);
-    editModeScenegraphNodes.EditRoot->addChild(constrDepthOff);
+    // Render constraint icons ON TOP of geometry lines without
+    // affecting depth state for other nodes (#28639).
+    // See also issues #25840 and #11603.
+    SoAnnotation* constrAnnotation = new SoAnnotation();
 
     editModeScenegraphNodes.constrGroup = new SmSwitchboard();
     editModeScenegraphNodes.constrGroup->setName("ConstraintGroup");
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGroup);
+    constrAnnotation->addChild(editModeScenegraphNodes.constrGroup);
 
-    // re-enable depth testing for the rest of the nodes
-    SoDepthBuffer* constrDepthOn = new SoDepthBuffer();
-    constrDepthOn->test.setValue(true);
-    editModeScenegraphNodes.EditRoot->addChild(constrDepthOn);
+    editModeScenegraphNodes.EditRoot->addChild(constrAnnotation);
 
     SoPickStyle* ps = new SoPickStyle();  // used to following nodes aren't impacted
     ps->style.setValue(SoPickStyle::SHAPE);
