@@ -189,7 +189,15 @@ TaskDlgFeatureParameters::TaskDlgFeatureParameters(PartDesignGui::ViewProvider* 
 
 TaskDlgFeatureParameters::~TaskDlgFeatureParameters() = default;
 
-TaskDlgFeatureParameters::AcceptRecomputeMode TaskDlgFeatureParameters::acceptRecomputeMode(bool) const
+TaskDlgFeatureParameters::AcceptPendingRecomputeAction TaskDlgFeatureParameters::acceptPendingRecomputeAction() const
+{
+    return AcceptPendingRecomputeAction::Flush;
+}
+
+TaskDlgFeatureParameters::AcceptRecomputeMode TaskDlgFeatureParameters::acceptRecomputeMode(
+    bool,
+    AcceptPendingRecomputeAction
+) const
 {
     return AcceptRecomputeMode::AsyncDocument;
 }
@@ -275,23 +283,130 @@ bool PartDesignGui::runAsyncAcceptDocumentRecompute(App::Document* document)
     return true;
 }
 
+bool TaskDlgFeatureParameters::applyAcceptedFeatureParameters(
+    AcceptPendingRecomputeAction pendingRecomputeAction,
+    bool& isUpdateBlocked
+)
+{
+    isUpdateBlocked = false;
+
+    // Iterate over parameter dialogs and apply all parameters from them.
+    for (QWidget* wgt : Content) {
+        TaskFeatureParameters* param = qobject_cast<TaskFeatureParameters*>(wgt);
+        if (!param) {
+            continue;
+        }
+
+        switch (pendingRecomputeAction) {
+            case AcceptPendingRecomputeAction::Flush:
+                param->flushPendingRecompute();
+                break;
+            case AcceptPendingRecomputeAction::Stop:
+                param->stopPendingRecompute();
+                break;
+        }
+
+        param->saveHistory();
+        param->apply();
+        isUpdateBlocked |= param->isUpdateBlocked();
+    }
+
+    return true;
+}
+
+void TaskDlgFeatureParameters::prepareAcceptedFeatureForDocumentRecompute(
+    App::DocumentObject* feature,
+    bool isUpdateBlocked,
+    AcceptPendingRecomputeAction pendingRecomputeAction
+)
+{
+    if (isUpdateBlocked || pendingRecomputeAction == AcceptPendingRecomputeAction::Stop) {
+        return;
+    }
+
+    // object was already computed, nothing more to do with it...
+    Gui::cmdAppDocument(feature, "purgeTouched()");
+
+    if (!feature->isValid()) {
+        throw Base::RuntimeError(getObject()->getStatusString());
+    }
+
+    // ...but touch parents to signal the change...
+    for (auto obj : feature->getInList()) {
+        obj->touch();
+    }
+}
+
+bool TaskDlgFeatureParameters::runAcceptedFeatureRecompute(
+    App::Document* document,
+    AcceptRecomputeMode mode
+)
+{
+    switch (mode) {
+        case AcceptRecomputeMode::AsyncDocument:
+            return runAsyncAcceptDocumentRecompute(document);
+        case AcceptRecomputeMode::CommandDocument:
+            Gui::cmdAppDocument(document, "recompute()");
+            return true;
+    }
+
+    return true;
+}
+
+void TaskDlgFeatureParameters::finalizeAcceptedFeature(App::DocumentObject* feature)
+{
+    if (!feature->isValid()) {
+        throw Base::RuntimeError(getObject()->getStatusString());
+    }
+
+    App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(
+        /* silent = */ true
+    );
+    Gui::cmdAppObjectHide(previous);
+
+    // detach the task panel from the selection to avoid to invoke
+    // eventually onAddSelection when the selection changes
+    std::vector<QWidget*> subwidgets = getDialogContent();
+    for (auto it : subwidgets) {
+        TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
+        if (param) {
+            param->detachSelection();
+        }
+    }
+
+    Gui::cmdGuiDocument(feature, "resetEdit()");
+    feature->getDocument()->commitTransaction();
+}
+
+bool TaskDlgFeatureParameters::reportAcceptException(const Base::Exception& e) const
+{
+    QString errorText = QString::fromUtf8(e.what());
+    QString statusText = QString::fromUtf8(getObject()->getStatusString());
+
+    // generic, fallback error message
+    if (errorText == QStringLiteral("Error") || errorText.isEmpty()) {
+        if (!statusText.isEmpty() && statusText != QStringLiteral("Error")) {
+            errorText = statusText;
+        }
+        else {
+            errorText = tr(
+                "The feature could not be created with the given parameters.\n"
+                "The geometry may be invalid or the parameters may be incompatible.\n"
+                "Adjust the parameters and try again."
+            );
+        }
+    }
+    Base::Console().error("%s\n", errorText.toUtf8().constData());
+    return false;
+}
+
 bool TaskDlgFeatureParameters::accept()
 {
     App::DocumentObject* feature = getObject();
     bool isUpdateBlocked = false;
+    const auto pendingRecomputeAction = acceptPendingRecomputeAction();
     try {
-        // Iterate over parameter dialogs and apply all parameters from them
-        for (QWidget* wgt : Content) {
-            TaskFeatureParameters* param = qobject_cast<TaskFeatureParameters*>(wgt);
-            if (!param) {
-                continue;
-            }
-
-            param->flushPendingRecompute();
-            param->saveHistory();
-            param->apply();
-            isUpdateBlocked |= param->isUpdateBlocked();
-        }
+        applyAcceptedFeatureParameters(pendingRecomputeAction, isUpdateBlocked);
         // Make sure the feature is what we are expecting
         // Should be fine but you never know...
         if (!feature->isDerivedFrom<PartDesign::Feature>()) {
@@ -303,72 +418,18 @@ bool TaskDlgFeatureParameters::accept()
             throw Base::RuntimeError("Feature document is not available.");
         }
 
-        if (!isUpdateBlocked) {
-            // object was already computed, nothing more to do with it...
-            Gui::cmdAppDocument(feature, "purgeTouched()");
-
-            if (!feature->isValid()) {
-                throw Base::RuntimeError(getObject()->getStatusString());
-            }
-
-            // ...but touch parents to signal the change...
-            for (auto obj : feature->getInList()) {
-                obj->touch();
-            }
+        prepareAcceptedFeatureForDocumentRecompute(feature, isUpdateBlocked, pendingRecomputeAction);
+        if (!runAcceptedFeatureRecompute(
+                document,
+                acceptRecomputeMode(isUpdateBlocked, pendingRecomputeAction)
+            )) {
+            return false;
         }
 
-        switch (acceptRecomputeMode(isUpdateBlocked)) {
-            case AcceptRecomputeMode::AsyncDocument:
-                if (!runAsyncAcceptDocumentRecompute(document)) {
-                    return false;
-                }
-                break;
-            case AcceptRecomputeMode::CommandDocument:
-                Gui::cmdAppDocument(document, "recompute()");
-                break;
-        }
-
-        if (!feature->isValid()) {
-            throw Base::RuntimeError(getObject()->getStatusString());
-        }
-
-        App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(
-            /* silent = */ true
-        );
-        Gui::cmdAppObjectHide(previous);
-
-        // detach the task panel from the selection to avoid to invoke
-        // eventually onAddSelection when the selection changes
-        std::vector<QWidget*> subwidgets = getDialogContent();
-        for (auto it : subwidgets) {
-            TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
-            if (param) {
-                param->detachSelection();
-            }
-        }
-
-        Gui::cmdGuiDocument(feature, "resetEdit()");
-        feature->getDocument()->commitTransaction();
+        finalizeAcceptedFeature(feature);
     }
     catch (const Base::Exception& e) {
-        QString errorText = QString::fromUtf8(e.what());
-        QString statusText = QString::fromUtf8(getObject()->getStatusString());
-
-        // generic, fallback error message
-        if (errorText == QStringLiteral("Error") || errorText.isEmpty()) {
-            if (!statusText.isEmpty() && statusText != QStringLiteral("Error")) {
-                errorText = statusText;
-            }
-            else {
-                errorText = tr(
-                    "The feature could not be created with the given parameters.\n"
-                    "The geometry may be invalid or the parameters may be incompatible.\n"
-                    "Adjust the parameters and try again."
-                );
-            }
-        }
-        Base::Console().error("%s\n", errorText.toUtf8().constData());
-        return false;
+        return reportAcceptException(e);
     }
     return true;
 }

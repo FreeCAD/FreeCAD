@@ -213,13 +213,35 @@ public:
     }
 
 protected:
+    enum class AcceptPendingRecomputeAction
+    {
+        Flush,
+        Stop
+    };
+
     enum class AcceptRecomputeMode
     {
         AsyncDocument,
         CommandDocument
     };
 
-    virtual AcceptRecomputeMode acceptRecomputeMode(bool isUpdateBlocked) const;
+    virtual AcceptPendingRecomputeAction acceptPendingRecomputeAction() const;
+    virtual AcceptRecomputeMode acceptRecomputeMode(
+        bool isUpdateBlocked,
+        AcceptPendingRecomputeAction pendingRecomputeAction
+    ) const;
+    bool applyAcceptedFeatureParameters(
+        AcceptPendingRecomputeAction pendingRecomputeAction,
+        bool& isUpdateBlocked
+    );
+    void prepareAcceptedFeatureForDocumentRecompute(
+        App::DocumentObject* feature,
+        bool isUpdateBlocked,
+        AcceptPendingRecomputeAction pendingRecomputeAction
+    );
+    bool runAcceptedFeatureRecompute(App::Document* document, AcceptRecomputeMode mode);
+    void finalizeAcceptedFeature(App::DocumentObject* feature);
+    bool reportAcceptException(const Base::Exception& e) const;
     bool hasDeferredRejectPending() const;
     bool finishRejectOrDefer(App::DocumentObject* object);
 

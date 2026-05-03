@@ -850,14 +850,13 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransform
 {}
 
 TaskDlgFeatureParameters::AcceptRecomputeMode TaskDlgTransformedParameters::acceptRecomputeMode(
-    bool isUpdateBlocked
+    bool isUpdateBlocked,
+    AcceptPendingRecomputeAction
 ) const
 {
-    // With live preview enabled, accept() flushes pending preview work before
-    // applying. The remaining document recompute intentionally stays on the
-    // command path because it only propagates touched parents; queueing a
-    // document-wide async recompute here would re-run the transformed feature
-    // after the flushed preview and break the no-extra-rerun accept contract.
+    // When no preview work is outstanding, accept() keeps the existing command
+    // path: the settled preview already computed the transformed feature, so the
+    // remaining document recompute only needs to propagate touched parents.
     return isUpdateBlocked ? AcceptRecomputeMode::AsyncDocument
                            : AcceptRecomputeMode::CommandDocument;
 }
@@ -875,13 +874,44 @@ bool TaskDlgTransformedParameters::accept()
     });
     parameter->exitSelectionMode();
 
-    // The user may have changed a value and immediately hit OK before the
-    // preview debounce timer fired. Flush that pending preview here so apply()
-    // stays focused on serializing the UI state into document commands.
-    parameter->flushPendingRecompute();
-    parameter->apply();
+    if (!parameter->hasOutstandingRecompute()) {
+        return TaskDlgFeatureParameters::accept();
+    }
 
-    return TaskDlgFeatureParameters::accept();
+    auto* feature = getObject();
+    if (!feature) {
+        return false;
+    }
+
+    bool isUpdateBlocked = false;
+    try {
+        // When a heavy preview is already in flight, flushing it here blocks the
+        // task dialog until that preview finishes. Stop the preview instead, then
+        // serialize the final UI state and run one accepted recompute behind the
+        // shared async progress dialog.
+        applyAcceptedFeatureParameters(AcceptPendingRecomputeAction::Stop, isUpdateBlocked);
+        static_cast<void>(isUpdateBlocked);
+
+        if (!feature->isDerivedFrom<PartDesign::Feature>()) {
+            throw Base::TypeError("Bad object processed in the feature dialog.");
+        }
+
+        App::Document* document = feature->getDocument();
+        if (!document) {
+            throw Base::RuntimeError("Feature document is not available.");
+        }
+
+        if (!runAsyncAcceptDocumentRecompute(document)) {
+            return false;
+        }
+
+        finalizeAcceptedFeature(feature);
+    }
+    catch (const Base::Exception& e) {
+        return reportAcceptException(e);
+    }
+
+    return true;
 }
 
 bool TaskDlgTransformedParameters::reject()
