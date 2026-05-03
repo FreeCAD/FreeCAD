@@ -1142,7 +1142,15 @@ class _Wall(ArchComponent.Component):
                         #
                         # Now, adopt approach same as for Sketch
                         self.basewires = []
-                        clusters = Part.getSortedClusters(obj.Base.Shape.Edges)
+                        shpEdges = obj.Base.Shape.Edges
+                        baseEdges = []
+                        for ig, edge in enumerate(shpEdges):
+                            if isinstance(
+                                edge.Curve,
+                                (Part.Line, Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse)
+                             ):
+                                 baseEdges.append(edge)
+                        clusters = Part.getSortedClusters(baseEdges)
                         self.basewires = clusters
                         # Previously :
                         # Found case that after sorting below, direction of
@@ -1455,6 +1463,11 @@ class _Wall(ArchComponent.Component):
 
                         if baseface:
                             base, placement = self.rebase(baseface)
+
+                    else:  #if not self.basewires:
+                        FreeCAD.Console.PrintWarning(
+                            obj.Label + " " + translate("Arch", "has Base object, but it contains no supported edge type (Line, Line Segment, Circle, Arc Of Circle, Ellipse) ") + "\n"
+                        )
 
         # Build Wall from scratch if there is no obj.Base or even obj.Base is not valid
         else:
