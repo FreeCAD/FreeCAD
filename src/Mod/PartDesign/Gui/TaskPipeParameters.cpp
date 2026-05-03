@@ -278,6 +278,11 @@ bool TaskPipeParameters::hasOutstandingRecompute() const
     return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
 }
 
+bool TaskPipeParameters::canReuseAcceptedPreviewResult() const
+{
+    return asyncPreviewSession && asyncPreviewSession->didLastRecomputeSucceed();
+}
+
 void TaskPipeParameters::setDeferredClosePending(bool pending)
 {
     if (asyncPreviewSession) {
@@ -1443,7 +1448,8 @@ bool TaskDlgPipeParameters::accept()
         }
     );
     clearInteractiveSelection();
-    const bool previewSettled = !parameter->hasOutstandingRecompute();
+    const bool previewSettled = !parameter->hasOutstandingRecompute()
+        && parameter->canReuseAcceptedPreviewResult();
     if (previewSettled) {
         parameter->flushPendingRecompute();
     }

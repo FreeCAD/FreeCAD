@@ -71,6 +71,7 @@ public:
     void flushPendingRecompute();
     void stopPendingRecompute();
     bool hasOutstandingRecompute() const;
+    bool canReuseAcceptedPreviewResult() const;
     void setDeferredClosePending(bool pending);
     void clearInteractiveSelection();
 

@@ -794,6 +794,11 @@ bool TaskBoxPrimitives::hasOutstandingRecompute() const
     return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
 }
 
+bool TaskBoxPrimitives::canReuseAcceptedPreviewResult() const
+{
+    return asyncPreviewSession && asyncPreviewSession->didLastRecomputeSucceed();
+}
+
 void TaskBoxPrimitives::setDeferredClosePending(bool pending)
 {
     if (asyncPreviewSession) {
@@ -1184,8 +1189,9 @@ bool TaskDlgPrimitiveParameters::accept()
 
     parameter->flushPendingAttachmentUpdate();
     parameter->stopPendingAttachmentUpdate();
-    const bool hadOutstandingPreview = primitive->hasOutstandingRecompute();
-    if (hadOutstandingPreview) {
+    const bool previewSettled = !primitive->hasOutstandingRecompute()
+        && primitive->canReuseAcceptedPreviewResult();
+    if (!previewSettled) {
         primitive->stopPendingRecompute();
     }
     else {
@@ -1197,7 +1203,7 @@ bool TaskDlgPrimitiveParameters::accept()
         return primitiveOK;
     }
 
-    if (!hadOutstandingPreview) {
+    if (previewSettled) {
         // setPrimitive() records the final UI values through Python commands, which
         // retouches the primitive even when the async preview already computed the
         // same state. Clear that redundant touch so the final document recompute can

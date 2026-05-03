@@ -404,7 +404,20 @@ bool TaskDlgFeatureParameters::accept()
 {
     App::DocumentObject* feature = getObject();
     bool isUpdateBlocked = false;
-    const auto pendingRecomputeAction = acceptPendingRecomputeAction();
+    auto pendingRecomputeAction = acceptPendingRecomputeAction();
+    if (pendingRecomputeAction == AcceptPendingRecomputeAction::Flush) {
+        for (QWidget* widget : Content) {
+            auto* param = qobject_cast<TaskFeatureParameters*>(widget);
+            if (!param) {
+                continue;
+            }
+
+            if (!param->canReuseAcceptedPreviewResult()) {
+                pendingRecomputeAction = AcceptPendingRecomputeAction::Stop;
+                break;
+            }
+        }
+    }
     try {
         applyAcceptedFeatureParameters(pendingRecomputeAction, isUpdateBlocked);
         // Make sure the feature is what we are expecting

@@ -357,6 +357,11 @@ bool TaskBooleanParameters::hasOutstandingRecompute() const
     return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
 }
 
+bool TaskBooleanParameters::canReuseAcceptedPreviewResult() const
+{
+    return asyncPreviewSession && asyncPreviewSession->didLastRecomputeSucceed();
+}
+
 void TaskBooleanParameters::setDeferredClosePending(bool pending)
 {
     if (asyncPreviewSession) {
@@ -482,8 +487,9 @@ bool TaskDlgBooleanParameters::accept()
             QMessageBox::warning(parameter, tr("Empty body list"), tr("The body list cannot be empty"));
             return false;
         }
-        const bool hadOutstandingPreview = parameter->hasOutstandingRecompute();
-        if (hadOutstandingPreview) {
+        const bool previewSettled = !parameter->hasOutstandingRecompute()
+            && parameter->canReuseAcceptedPreviewResult();
+        if (!previewSettled) {
             parameter->stopPendingRecompute();
         }
         else {
@@ -499,7 +505,7 @@ bool TaskDlgBooleanParameters::accept()
         Gui::Command::runCommand(Gui::Command::Doc, str.str().c_str());
         FCMD_OBJ_CMD(obj, "Type = " << parameter->getType());
 
-        if (!hadOutstandingPreview) {
+        if (previewSettled) {
             // The async preview already settled the latest boolean state. Clear the
             // redundant touch from the command serialization above so the final
             // document recompute only updates downstream dependents.

@@ -108,6 +108,7 @@ public:
     bool isInProgress() const;
     bool isQueued() const;
     bool isCancelRequested() const;
+    bool didLastRecomputeSucceed() const;
     bool isProgressDeterminate() const;
     int progressPercent() const;
     const std::string& progressText() const;

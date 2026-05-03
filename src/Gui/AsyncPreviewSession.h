@@ -182,6 +182,11 @@ public:
         return deferredClosePending;
     }
 
+    bool didLastRecomputeSucceed() const
+    {
+        return previewController && previewController->didLastRecomputeSucceed();
+    }
+
     /**
      * @brief Mark that the task is waiting for preview cancellation before close.
      *

@@ -448,6 +448,11 @@ bool AsyncPreviewController::isCancelRequested() const
     return recomputeCancelRequested;
 }
 
+bool AsyncPreviewController::didLastRecomputeSucceed() const
+{
+    return lastRecomputeSucceeded;
+}
+
 bool AsyncPreviewController::isProgressDeterminate() const
 {
     return recomputeProgressDeterminate;
