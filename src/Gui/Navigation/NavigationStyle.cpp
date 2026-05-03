@@ -1932,6 +1932,15 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
     camera->enableNotify(false);
     camera->orientation.setValue(newRotation);
     camera->position = finalPosition;
+
+    // Recompute focalDistance for the new camera position so that
+    // perspective-dependent screen-space elements (e.g. Sketcher labels)
+    // scale correctly during SpaceMouse motion.
+    float newFocalDist = (center - finalPosition).dot(newDirection);
+    if (newFocalDist > 0.0f) {
+        camera->focalDistance = newFocalDist;
+    }
+
     camera->enableNotify(true);
     camera->touch();
 
