@@ -23,6 +23,7 @@
 
 #include "Gizmo.h"
 
+#include <atomic>
 #include <cmath>
 #include <QApplication>
 
@@ -55,6 +56,8 @@ using namespace Gui;
 
 namespace
 {
+std::atomic<int> g_activeGizmoDragCount {0};
+
 enum class DefaultDragBehavior
 {
     Coarse = 0,
@@ -70,6 +73,27 @@ Base::Reference<ParameterGrp> getGizmoParameterGroup()
     return hGrp;
 }
 
+Qt::KeyboardModifiers getFineSnapModifier()
+{
+    auto modifier = static_cast<Qt::KeyboardModifier>(
+        getGizmoParameterGroup()->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
+    );
+    if (modifier == Qt::ControlModifier) {
+        return modifier;
+    }
+    return Qt::ShiftModifier;
+}
+
+bool isCoarseSnapEnabled()
+{
+    return getGizmoParameterGroup()->GetBool("EnableCoarseSnap", true);
+}
+
+int getGizmoPreviewDebounceMs()
+{
+    int interval = static_cast<int>(getGizmoParameterGroup()->GetInt("GizmoPreviewDebounceMs", 60));
+    return std::max(0, interval);
+}
 int getCoarseLinearSnapMultiplier()
 {
     int multiplier = static_cast<int>(
@@ -103,17 +127,43 @@ void Gizmo::setDraggerPlacement(const Base::Vector3d& pos, const Base::Vector3d&
 
 bool Gizmo::isDelayedUpdateEnabled()
 {
-    // When async recompute is enabled, favor drag-end updates by default to
-    // avoid flooding task-panel preview recomputes from high-frequency gizmo motion.
-    return getGizmoParameterGroup()->GetBool(
-        "DelayedGizmoUpdate",
-        App::GetApplication().isAsyncRecomputeEnabled()
-    );
+    // Continuous preview is the default so gizmo interaction stays close to
+    // mainline behavior. Users can still opt into drag-end-only updates for
+    // heavy models through the preference.
+    return getGizmoParameterGroup()->GetBool("DelayedGizmoUpdate", false);
 }
 
 void Gizmo::setDeferredUpdateHandler(std::function<void()> handler)
 {
     deferredUpdateHandler = std::move(handler);
+}
+
+bool Gizmo::isAnyDragActive()
+{
+    return g_activeGizmoDragCount.load(std::memory_order_relaxed) > 0;
+}
+
+int Gizmo::activeDragPreviewDebounceMs()
+{
+    return getGizmoPreviewDebounceMs();
+}
+
+void Gizmo::setDragInteractionActive(bool active)
+{
+    if (dragInteractionActive == active) {
+        return;
+    }
+
+    dragInteractionActive = active;
+    if (active) {
+        g_activeGizmoDragCount.fetch_add(1, std::memory_order_relaxed);
+    }
+    else {
+        int previous = g_activeGizmoDragCount.fetch_sub(1, std::memory_order_relaxed);
+        if (previous <= 0) {
+            g_activeGizmoDragCount.store(0, std::memory_order_relaxed);
+        }
+    }
 }
 
 double Gizmo::getMultFactor()
@@ -164,6 +214,8 @@ SoInteractionKit* LinearGizmo::initDragger()
 
 void LinearGizmo::uninitDragger()
 {
+    setDragInteractionActive(false);
+
     if (dragger) {
         dragger->removeStartCallback(&LinearGizmo::startDragCB, this);
         dragger->removeFinishCallback(&LinearGizmo::finishDragCB, this);
@@ -287,6 +339,7 @@ void LinearGizmo::setVisibility(bool visible)
 
 void LinearGizmo::draggingStarted()
 {
+    setDragInteractionActive(true);
     initialValue = property->value().getValue();
     dragger->translationIncrementCount.setValue(0);
 
@@ -297,6 +350,7 @@ void LinearGizmo::draggingStarted()
 
 void LinearGizmo::draggingFinished()
 {
+    setDragInteractionActive(false);
     if (isDelayedUpdateEnabled()) {
         property->blockSignals(false);
         if (deferredUpdateHandler) {
@@ -389,6 +443,8 @@ SoInteractionKit* RotationGizmo::initDragger()
 
 void RotationGizmo::uninitDragger()
 {
+    setDragInteractionActive(false);
+
     if (dragger) {
         dragger->removeStartCallback(&RotationGizmo::startDragCB, this);
         dragger->removeFinishCallback(&RotationGizmo::finishDragCB, this);
@@ -517,6 +573,7 @@ SoRotationDraggerContainer* RotationGizmo::getDraggerContainer()
 
 void RotationGizmo::draggingStarted()
 {
+    setDragInteractionActive(true);
     initialValue = property->value().getValue();
     dragger->rotationIncrementCount.setValue(0);
 
@@ -527,6 +584,7 @@ void RotationGizmo::draggingStarted()
 
 void RotationGizmo::draggingFinished()
 {
+    setDragInteractionActive(false);
     if (isDelayedUpdateEnabled()) {
         property->blockSignals(false);
         if (deferredUpdateHandler) {
