@@ -98,6 +98,9 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
+
+protected:
+    AcceptPendingRecomputeAction acceptPendingRecomputeAction() const override;
 };
 
 }  // namespace PartDesignGui

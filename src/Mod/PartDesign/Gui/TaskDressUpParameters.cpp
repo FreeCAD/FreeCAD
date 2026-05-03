@@ -667,6 +667,11 @@ TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp* DressUpV
 
 TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;
 
+TaskDlgFeatureParameters::AcceptPendingRecomputeAction TaskDlgDressUpParameters::acceptPendingRecomputeAction() const
+{
+    return AcceptPendingRecomputeAction::Stop;
+}
+
 //==== calls from the TaskView ===============================================================
 
 bool TaskDlgDressUpParameters::accept()

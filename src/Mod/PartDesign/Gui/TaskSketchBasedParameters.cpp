@@ -309,6 +309,12 @@ TaskDlgSketchBasedParameters::TaskDlgSketchBasedParameters(PartDesignGui::ViewPr
 
 TaskDlgSketchBasedParameters::~TaskDlgSketchBasedParameters() = default;
 
+TaskDlgFeatureParameters::AcceptPendingRecomputeAction TaskDlgSketchBasedParameters::
+    acceptPendingRecomputeAction() const
+{
+    return AcceptPendingRecomputeAction::Stop;
+}
+
 //==== calls from the TaskView ===============================================================
 
 
