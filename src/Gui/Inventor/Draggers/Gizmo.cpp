@@ -142,18 +142,9 @@ SoInteractionKit* LinearGizmo::initDragger()
     draggerContainer->color.setValue(1, 0, 0);
     dragger = draggerContainer->getDragger();
 
-    dragger->addStartCallback(
-        [](void* data, SoDragger*) { static_cast<LinearGizmo*>(data)->draggingStarted(); },
-        this
-    );
-    dragger->addFinishCallback(
-        [](void* data, SoDragger*) { static_cast<LinearGizmo*>(data)->draggingFinished(); },
-        this
-    );
-    dragger->addMotionCallback(
-        [](void* data, SoDragger*) { static_cast<LinearGizmo*>(data)->draggingContinued(); },
-        this
-    );
+    dragger->addStartCallback(&LinearGizmo::startDragCB, this);
+    dragger->addFinishCallback(&LinearGizmo::finishDragCB, this);
+    dragger->addMotionCallback(&LinearGizmo::motionDragCB, this);
 
     dragger->labelVisible = false;
 
@@ -173,6 +164,19 @@ SoInteractionKit* LinearGizmo::initDragger()
 
 void LinearGizmo::uninitDragger()
 {
+    if (dragger) {
+        dragger->removeStartCallback(&LinearGizmo::startDragCB, this);
+        dragger->removeFinishCallback(&LinearGizmo::finishDragCB, this);
+        dragger->removeMotionCallback(&LinearGizmo::motionDragCB, this);
+    }
+
+    QObject::disconnect(quantityChangedConnection);
+    QObject::disconnect(formulaDialogConnection);
+    quantityChangedConnection = {};
+    formulaDialogConnection = {};
+    deferredUpdateHandler = {};
+    property = nullptr;
+
     dragger = nullptr;
     draggerContainer = nullptr;
 }
@@ -307,6 +311,21 @@ void LinearGizmo::draggingFinished()
     property->selectAll();
 }
 
+void LinearGizmo::startDragCB(void* data, SoDragger*)
+{
+    static_cast<LinearGizmo*>(data)->draggingStarted();
+}
+
+void LinearGizmo::finishDragCB(void* data, SoDragger*)
+{
+    static_cast<LinearGizmo*>(data)->draggingFinished();
+}
+
+void LinearGizmo::motionDragCB(void* data, SoDragger*)
+{
+    static_cast<LinearGizmo*>(data)->draggingContinued();
+}
+
 void LinearGizmo::draggingContinued()
 {
     double value = initialValue + getDragLength();
@@ -357,18 +376,9 @@ SoInteractionKit* RotationGizmo::initDragger()
     rotator->arcRadius = 16.0f;
     dragger->setPart("rotator", rotator);
 
-    dragger->addStartCallback(
-        [](void* data, SoDragger*) { static_cast<RotationGizmo*>(data)->draggingStarted(); },
-        this
-    );
-    dragger->addFinishCallback(
-        [](void* data, SoDragger*) { static_cast<RotationGizmo*>(data)->draggingFinished(); },
-        this
-    );
-    dragger->addMotionCallback(
-        [](void* data, SoDragger*) { static_cast<RotationGizmo*>(data)->draggingContinued(); },
-        this
-    );
+    dragger->addStartCallback(&RotationGizmo::startDragCB, this);
+    dragger->addFinishCallback(&RotationGizmo::finishDragCB, this);
+    dragger->addMotionCallback(&RotationGizmo::motionDragCB, this);
 
     setProperty(property);
 
@@ -379,12 +389,26 @@ SoInteractionKit* RotationGizmo::initDragger()
 
 void RotationGizmo::uninitDragger()
 {
+    if (dragger) {
+        dragger->removeStartCallback(&RotationGizmo::startDragCB, this);
+        dragger->removeFinishCallback(&RotationGizmo::finishDragCB, this);
+        dragger->removeMotionCallback(&RotationGizmo::motionDragCB, this);
+    }
+
+    QObject::disconnect(quantityChangedConnection);
+    QObject::disconnect(formulaDialogConnection);
+    quantityChangedConnection = {};
+    formulaDialogConnection = {};
+    deferredUpdateHandler = {};
+    property = nullptr;
+
     dragger = nullptr;
     draggerContainer = nullptr;
 
     translationSensor.detach();
     translationSensor.setData(nullptr);
     translationSensor.setFunction(nullptr);
+    linearGizmo = nullptr;
 }
 
 void RotationGizmo::updateColorTheme()
@@ -515,6 +539,21 @@ void RotationGizmo::draggingFinished()
 
     property->setFocus();
     property->selectAll();
+}
+
+void RotationGizmo::startDragCB(void* data, SoDragger*)
+{
+    static_cast<RotationGizmo*>(data)->draggingStarted();
+}
+
+void RotationGizmo::finishDragCB(void* data, SoDragger*)
+{
+    static_cast<RotationGizmo*>(data)->draggingFinished();
+}
+
+void RotationGizmo::motionDragCB(void* data, SoDragger*)
+{
+    static_cast<RotationGizmo*>(data)->draggingContinued();
 }
 
 void RotationGizmo::draggingContinued()
