@@ -23,6 +23,10 @@ import sys
 from .api_extract import extract_curated_api_model
 from .api_markdown import write_api_markdown_docs
 from .api_starlight import write_starlight_sidebar_fragment
+from .cpp_api_extract import extract_cpp_api_model
+from .cpp_api_markdown import write_cpp_api_markdown_docs
+from .cpp_api_starlight import write_cpp_starlight_sidebar_fragment
+from .cpp_doxygen import run_doxygen_xml
 from .doc_lint import lint_curated_stub_docs
 from .discovery import collect_methods, collect_type_registrations
 from .generator import (
@@ -31,6 +35,7 @@ from .generator import (
 )
 from .model import (
     DEFAULT_API_DOCS_OUT_DIR,
+    DEFAULT_CPP_DOXYGEN_OUT_DIR,
     DEFAULT_OVERLAY_DIR,
     DEFAULT_SOURCE_DIR,
     DEFAULT_STUBS_OUT_DIR,
@@ -110,37 +115,77 @@ def add_generation_args(parser: argparse.ArgumentParser) -> None:
     )
 
 
+def add_docs_args(parser: argparse.ArgumentParser, *, default_out_dir: Path) -> None:
+    add_common_path_args(parser)
+    parser.add_argument(
+        "--out-dir",
+        type=Path,
+        default=default_out_dir,
+        help=(
+            "Directory for generated MDX API docs, relative to --root unless absolute. "
+            f"Defaults to {default_out_dir}."
+        ),
+    )
+    parser.add_argument(
+        "--source-base-url",
+        help=(
+            "Optional base URL for source links in generated docs, such as a GitHub "
+            "blob URL prefix."
+        ),
+    )
+    parser.add_argument(
+        "--sidebar-out",
+        type=Path,
+        help=(
+            "Optional output path for the generated Starlight sidebar fragment. "
+            "Defaults to <out-dir>/sidebar.ts."
+        ),
+    )
+
+
+def resolve_sidebar_out(root: Path, out_dir: Path, sidebar_out: Path | None) -> Path:
+    if sidebar_out is None:
+        return out_dir / "sidebar.ts"
+    return sidebar_out if sidebar_out.is_absolute() else root / sidebar_out
+
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
     if argv and argv[0] == "docs":
         parser = argparse.ArgumentParser(
             description="Generate MDX API docs from curated source-adjacent stubs."
         )
-        add_common_path_args(parser)
-        parser.add_argument(
-            "--out-dir",
-            type=Path,
-            default=DEFAULT_API_DOCS_OUT_DIR,
-            help=(
-                "Directory for generated MDX API docs, relative to --root unless absolute. "
-                f"Defaults to {DEFAULT_API_DOCS_OUT_DIR}."
-            ),
-        )
-        parser.add_argument(
-            "--source-base-url",
-            help=(
-                "Optional base URL for source links in generated docs, such as a GitHub "
-                "blob URL prefix."
-            ),
-        )
-        parser.add_argument(
-            "--sidebar-out",
-            type=Path,
-            help=(
-                "Optional output path for the generated Starlight sidebar fragment. "
-                "Defaults to <out-dir>/sidebar.ts."
-            ),
-        )
+        add_docs_args(parser, default_out_dir=DEFAULT_API_DOCS_OUT_DIR)
         parser.set_defaults(command="docs")
+        return parser.parse_args(argv[1:])
+
+    if argv and argv[0] == "cpp-docs":
+        parser = argparse.ArgumentParser(
+            description="Generate MDX API docs from FreeCAD Doxygen XML."
+        )
+        add_docs_args(parser, default_out_dir=DEFAULT_API_DOCS_OUT_DIR)
+        parser.add_argument(
+            "--doxygen-xml-dir",
+            type=Path,
+            help=(
+                "Existing Doxygen XML directory to read. Defaults to "
+                f"{DEFAULT_CPP_DOXYGEN_OUT_DIR / 'xml'}."
+            ),
+        )
+        parser.add_argument(
+            "--doxygen-out-dir",
+            type=Path,
+            default=DEFAULT_CPP_DOXYGEN_OUT_DIR,
+            help=(
+                "Directory where generated Doxygen XML artifacts should live when "
+                f"--run-doxygen is used. Defaults to {DEFAULT_CPP_DOXYGEN_OUT_DIR}."
+            ),
+        )
+        parser.add_argument(
+            "--run-doxygen",
+            action="store_true",
+            help="Regenerate Doxygen XML before extracting C++ API docs.",
+        )
+        parser.set_defaults(command="cpp-docs")
         return parser.parse_args(argv[1:])
 
     if argv and argv[0] == "check":
@@ -307,11 +352,42 @@ def run_generate_docs(args: argparse.Namespace) -> int:
         model,
         source_base_url=args.source_base_url,
     )
-    sidebar_out = args.sidebar_out if args.sidebar_out and args.sidebar_out.is_absolute() else None
-    if sidebar_out is None:
-        sidebar_out = root / args.sidebar_out if args.sidebar_out else out_dir / "sidebar.ts"
+    sidebar_out = resolve_sidebar_out(root, out_dir, args.sidebar_out)
     sidebar_path = write_starlight_sidebar_fragment(sidebar_out, model)
     print(f"Wrote {page_count} MDX API docs and {sidebar_path.relative_to(root)}")
+    return 0
+
+
+def run_generate_cpp_docs(args: argparse.Namespace) -> int:
+    root = args.root.resolve()
+    out_dir = args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
+    doxygen_out_dir = (
+        args.doxygen_out_dir if args.doxygen_out_dir.is_absolute() else root / args.doxygen_out_dir
+    )
+    if args.run_doxygen:
+        xml_dir = run_doxygen_xml(root, doxygen_out_dir)
+    else:
+        xml_dir = (
+            args.doxygen_xml_dir
+            if args.doxygen_xml_dir and args.doxygen_xml_dir.is_absolute()
+            else root / args.doxygen_xml_dir if args.doxygen_xml_dir else doxygen_out_dir / "xml"
+        )
+    if not xml_dir.exists():
+        print_stderr(f"Doxygen XML directory does not exist: {xml_dir}\n")
+        return 2
+
+    model = extract_cpp_api_model(root, xml_dir)
+    page_count = write_cpp_api_markdown_docs(
+        out_dir,
+        model,
+        source_base_url=args.source_base_url,
+    )
+    sidebar_out = resolve_sidebar_out(root, out_dir, args.sidebar_out)
+    sidebar_path = write_cpp_starlight_sidebar_fragment(sidebar_out, model)
+    print(
+        f"Wrote {page_count} C++ MDX API docs from {xml_dir.relative_to(root)} "
+        f"and {sidebar_path.relative_to(root)}"
+    )
     return 0
 
 
@@ -346,6 +422,8 @@ def run_lint_docs(args: argparse.Namespace) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
+    if args.command == "cpp-docs":
+        return run_generate_cpp_docs(args)
     if args.command == "docs":
         return run_generate_docs(args)
     if args.command == "check":

@@ -40,6 +40,8 @@ That command writes under `src/Tools/typing/generated/`:
   `python-api/` root, with module pages at `index.mdx` paths and class pages
   grouped under per-module `types/` directories. This tree is also disposable
   local output and is intended as the input content for future site generation.
+- `cpp-doxygen/`: local Doxygen XML artifacts used as the extraction input for
+  generated C++ API pages. This tree is disposable local output.
 
 Keep residual hand-written public overlays under `src/Tools/typing/inputs/overlays/`. Keep
 source-adjacent PyCXX type signature inputs in plain `.pyi` files such as
@@ -172,6 +174,19 @@ surface stays clean.
 
 Use `src/Tools/typing/generate_stubs.py` in scripts and documentation. Do not
 introduce another entrypoint name for the same pipeline.
+
+## C++ API Docs
+
+Generate the Starlight-shaped C++ API reference from Doxygen XML with:
+
+```sh
+python3 src/Tools/typing/generate_stubs.py cpp-docs --root . --run-doxygen
+```
+
+This writes MDX pages under the requested docs output root in a generated
+`cpp-api/` subtree and emits a matching Starlight sidebar fragment. The C++
+docs pipeline currently uses Doxygen XML as the extraction source and keeps the
+resulting docs separate from the generated `python-api/` tree.
 
 When a PyCXX type context still needs a manual rule, add it in
 `src/Tools/typing/stubgen/type_context_rules.py`. Use an internal reason
