@@ -92,6 +92,8 @@ public:
     void reject() override;
 
 private:
+    void onObservedDocumentDeleted(const App::Document& deletedDoc);
+
     struct Args
     {
         Base::Vector3f origin;
@@ -208,9 +210,11 @@ private:
     double getPosZ(Part::Box* box) const;
 
 private:
+    using Connection = fastsignals::connection;
     std::unique_ptr<Ui_SectionCut> ui;
     std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
     std::vector<App::DocumentObjectT> ObjectsListVisible;
+    Connection documentDeleteConnection;
     App::Document* doc = nullptr;  // pointer to active document
     Gui::DeferredDialogRejectState deferredReject;
     bool hasBoxX = false;

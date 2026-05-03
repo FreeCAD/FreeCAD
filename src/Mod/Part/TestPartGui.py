@@ -174,5 +174,5 @@ class SectionCutTestCases(unittest.TestCase):
         dockWidget = findDockWidget("Section Cutting")
         if dockWidget:
             dockWidget.close()
-            processGuiEvents()
+            self.assertTrue(spin_events(lambda: findDockWidget("Section Cutting") is None))
         FreeCAD.closeDocument("SectionCut")
