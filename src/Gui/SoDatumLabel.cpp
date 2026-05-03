@@ -1560,6 +1560,40 @@ void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, con
     // Apply a rotation and translation matrix
     glTranslatef(textOffset[0], textOffset[1], textOffset[2]);
     glRotatef(Base::toDegrees<GLfloat>(angle), 0, 0, 1);
+
+    // Cylindrical billboard: tilt the text around the dimension line axis
+    // (local X) so that it faces the camera regardless of view angle.
+    {
+        GLfloat mv[16];
+        glGetFloatv(GL_MODELVIEW_MATRIX, mv);
+
+        SbVec3f axisX(mv[0], mv[1], mv[2]);   // dimension line in eye space
+        SbVec3f curZ(mv[8], mv[9], mv[10]);    // current text normal
+        axisX.normalize();
+        curZ.normalize();
+
+        // Project current and desired normals onto the plane perpendicular
+        // to the dimension line to obtain the tilt angle around it.
+        SbVec3f target(0.0f, 0.0f, 1.0f);     // toward camera in eye space
+        SbVec3f curProj = curZ - axisX * curZ.dot(axisX);
+        SbVec3f tgtProj = target - axisX * target.dot(axisX);
+
+        if (curProj.length() > 1e-6f && tgtProj.length() > 1e-6f) {
+            curProj.normalize();
+            tgtProj.normalize();
+
+            float cosA = curProj.dot(tgtProj);
+            float sinA = curProj.cross(tgtProj).dot(axisX);
+            float tilt = atan2f(sinA, cosA);
+            glRotatef(Base::toDegrees<GLfloat>(tilt), 1.0f, 0.0f, 0.0f);
+
+            // Crossing the sketch plane (tilt > 90°) desynchronizes the
+            // UV flip computed earlier from the camera-vs-normal test.
+            if (cosA < 0.0f) {
+                flip = !flip;
+            }
+        }
+    }
     glBegin(GL_QUADS);
 
     glColor3f(1.F, 1.F, 1.F);
