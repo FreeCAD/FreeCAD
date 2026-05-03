@@ -24,6 +24,8 @@
  **************************************************************************/
 
 
+#include <algorithm>
+#include <cmath>
 #include <sstream>
 #include <QApplication>
 #include <Inventor/engines/SoCalculator.h>
@@ -38,7 +40,6 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFontStyle.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
@@ -46,10 +47,11 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoResetTransform.h>
+#include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoNodes.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/nodes/SoCallback.h>
 
-
-#include <Gui/Inventor/MarkerBitmaps.h>
 
 #include <App/Document.h>
 #include <Base/BaseClass.h>
@@ -96,7 +98,7 @@ MeasureGui::DimensionLinear::DimensionLinear()
     SO_NODE_ADD_FIELD(text, ("test"));                // dimension text
     SO_NODE_ADD_FIELD(dColor, (1.0, 0.0, 0.0));       // dimension color.
     SO_NODE_ADD_FIELD(backgroundColor, (1.0, 1.0, 1.0));
-    SO_NODE_ADD_FIELD(showArrows, (false));  // display dimension arrows
+    SO_NODE_ADD_FIELD(showArrows, (true));   // display arrowheads at dimension endpoints
     SO_NODE_ADD_FIELD(fontSize, (12.0));     // size of the dimension font
 }
 
@@ -137,44 +139,76 @@ void MeasureGui::DimensionLinear::setupDimension()
     // color
     SoMaterial* material = new SoMaterial;
     material->diffuseColor.connectFrom(&dColor);
-
-    // dimension arrows
-    float dimLength = (point2.getValue() - point1.getValue()).length();
-    float coneHeight = dimLength * 0.06;
-    float coneRadius = coneHeight * 0.5;
+    material->transparency.setValue(0.0f);
 
     SoComposeVec3f* vec = new SoComposeVec3f;
     vec->x.connectFrom(&length);
     vec->y.setValue(0.0);
     vec->z.setValue(0.0);
 
-    // NOTE: showArrows is only respected at setup stage and cannot be changed later
-    if (showArrows.getValue()) {
-        SoCone* cone = new SoCone();
-        cone->bottomRadius.setValue(coneRadius);
-        cone->height.setValue(coneHeight);
+    // Proportional arrowhead sizing: height = 6% of length (min 0.3), radius = 2.5% (min 0.12).
+    auto* sizingCalc = new SoCalculator();
+    sizingCalc->a.connectFrom(&length);
+    sizingCalc->expression.set1Value(0, "oa = (a * 0.06 > 0.3) ? a * 0.06 : 0.3");
+    sizingCalc->expression.set1Value(1, "ob = (a * 0.025 > 0.12) ? a * 0.025 : 0.12");
 
-        char lStr[100];
-        char rStr[100];
-        snprintf(lStr, sizeof(lStr), "translation %.6f 0.0 0.0", coneHeight * 0.5);
-        snprintf(rStr, sizeof(rStr), "translation 0.0 -%.6f 0.0", coneHeight * 0.5);
+    auto* rightCone = new SoCone();
+    rightCone->height.connectFrom(&sizingCalc->oa);
+    rightCone->bottomRadius.connectFrom(&sizingCalc->ob);
 
-        setPart("leftArrow.shape", cone);
-        set("leftArrow.transform", "rotation 0.0 0.0 1.0 1.5707963");
-        set("leftArrow.transform", lStr);
-        setPart("rightArrow.shape", cone);
-        set("rightArrow.transform", "rotation 0.0 0.0 -1.0 1.5707963");  // no constant for PI.
-        // have use local here to do the offset because the main is wired up to length of dimension.
-        set("rightArrow.localTransform", rStr);
+    // Offset each cone by half its height so its tip touches the dimension endpoint.
+    auto* rightPosCalc = new SoCalculator();
+    rightPosCalc->a.connectFrom(&length);
+    rightPosCalc->b.connectFrom(&sizingCalc->oa);
+    rightPosCalc->expression.set1Value(0, "oA = vec3f(a - b * 0.5, 0.0, 0.0)");
 
-        SoTransform* transform = static_cast<SoTransform*>(getPart("rightArrow.transform", false));
-        if (!transform) {
-            return;  // what to do here?
-        }
-        transform->translation.connectFrom(&vec->vector);
+    auto* rightTransform = new SoTransform();
+    rightTransform->translation.connectFrom(&rightPosCalc->oA);
+    // Rotate the +Y cone to point in +X (right endpoint direction).
+    rightTransform->rotation.setValue(
+        SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), SbVec3f(1.0f, 0.0f, 0.0f))
+    );
 
-        setPart("leftArrow.material", material);
-        setPart("rightArrow.material", material);
+    auto* rightArrowSep = new SoSeparator();
+    rightArrowSep->addChild(material);
+    rightArrowSep->addChild(rightTransform);
+    rightArrowSep->addChild(rightCone);
+
+    auto* leftCone = new SoCone();
+    leftCone->height.connectFrom(&sizingCalc->oa);
+    leftCone->bottomRadius.connectFrom(&sizingCalc->ob);
+
+    auto* leftPosCalc = new SoCalculator();
+    leftPosCalc->b.connectFrom(&sizingCalc->oa);
+    leftPosCalc->expression.set1Value(0, "oA = vec3f(b * 0.5, 0.0, 0.0)");
+
+    auto* leftTransform = new SoTransform();
+    leftTransform->translation.connectFrom(&leftPosCalc->oA);
+    // Rotate the +Y cone to point in -X (left endpoint direction).
+    leftTransform->rotation.setValue(
+        SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), SbVec3f(-1.0f, 0.0f, 0.0f))
+    );
+
+    auto* leftArrowSep = new SoSeparator();
+    leftArrowSep->addChild(material);
+    leftArrowSep->addChild(leftTransform);
+    leftArrowSep->addChild(leftCone);
+
+    // SoSwitch uses -3 (SO_SWITCH_ALL) to show and -1 (SO_SWITCH_NONE) to hide;
+    // a SoCalculator bridges the bool showArrows field to the integer whichChild.
+    auto* arrowVisCalc = new SoCalculator();
+    arrowVisCalc->a.connectFrom(&showArrows);
+    arrowVisCalc->expression.set1Value(0, "oa = (a > 0.5) ? -3.0 : -1.0");
+
+    auto* arrowSwitch = new SoSwitch();
+    arrowSwitch->whichChild.connectFrom(&arrowVisCalc->oa);
+    arrowSwitch->addChild(rightArrowSep);
+    arrowSwitch->addChild(leftArrowSep);
+
+    // Add to topSeparator (not annotate) so delta arrows stay in the measurement frame's 3D space.
+    auto* topGroup = static_cast<SoGroup*>(getPart("topSeparator", true));
+    if (topGroup) {
+        topGroup->addChild(arrowSwitch);
     }
 
     // line
@@ -205,8 +239,9 @@ void MeasureGui::DimensionLinear::setupDimension()
 
     SoCalculator* textVecCalc = new SoCalculator();
     textVecCalc->A.connectFrom(&vec->vector);
-    textVecCalc->B.set1Value(0, 0.0, 0.250, 0.0);
-    textVecCalc->expression.set1Value(0, "oA = (A / 2) + B");
+    textVecCalc->a.connectFrom(&length);
+    // Label at midpoint of the dimension line, offset 15% below the axis.
+    textVecCalc->expression.set1Value(0, "oA = (A / 2) + vec3f(0.0, a * -0.15, 0.0)");
 
     SoTransform* textTransform = new SoTransform();
     textTransform->translation.connectFrom(&textVecCalc->oA);
@@ -251,7 +286,8 @@ SbMatrix ViewProviderMeasureDistance::getMatrix()
 
     // X and Y axis have to be 90° to each other
     assert(fabs(localYAxis.Dot(localXAxis)) < tolerance);
-    Base::Vector3d localZAxis = localYAxis.Cross(localXAxis).Normalize();
+    // Cross product order matters: X×Y gives the correct outward normal for a right-handed frame.
+    Base::Vector3d localZAxis = localXAxis.Cross(localYAxis).Normalize();
 
     SbMatrix matrix = SbMatrix(
         localXAxis.x,
@@ -318,76 +354,114 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
         "Display the X, Y and Z components of the distance"
     );
 
-    // vert indexes used to create the annotation lines
-    const size_t lineCount(3);
-    static const int32_t lines[lineCount] = {
-        2,
-        3,
-        -1  // dimension line
-    };
-
-    const size_t lineCountSecondary(9);
-    static const int32_t linesSecondary[lineCountSecondary] = {
-        0,
-        2,
-        -1,  // extension line 1
-        1,
-        3,
-        -1,  // extension line 2
-        2,
-        4,
-        -1  // label helper line
-    };
-
-    // Line Coordinates
-    // 0-1 points on shape (dimension points)
-    // 2-3 ends of extension lines/dimension line
-    // 4 label position
-    pCoords = new SoCoordinate3();
-    pCoords->ref();
-
-    auto engineCoords = new SoCalculator();
-    engineCoords->a.connectFrom(&fieldDistance);
-    engineCoords->A.connectFrom(&pLabelTranslation->translation);
-    engineCoords->expression.setValue(
-        "ta=a/2; tb=A[1]; oA=vec3f(ta, 0, 0); oB=vec3f(-ta, 0, 0); "
-        "oC=vec3f(ta, tb, 0); oD=vec3f(-ta, tb, 0)"
+    ADD_PROPERTY_TYPE(
+        ShowArrows,
+        (true),
+        "Appearance",
+        App::Prop_None,
+        "Display arrowheads at the measurement endpoints"
     );
 
-    auto engineCat = new SoConcatenate(SoMFVec3f::getClassTypeId());
-    engineCat->input[0]->connectFrom(&engineCoords->oA);
-    engineCat->input[1]->connectFrom(&engineCoords->oB);
-    engineCat->input[2]->connectFrom(&engineCoords->oC);
-    engineCat->input[3]->connectFrom(&engineCoords->oD);
-    engineCat->input[4]->connectFrom(&pLabelTranslation->translation);
+    ADD_PROPERTY_TYPE(
+        ArrowSize,
+        (1.0f),
+        "Appearance",
+        App::Prop_None,
+        "Scale factor applied to arrowhead dimensions; 1.0 is the default size"
+    );
 
-    pCoords->point.connectFrom(engineCat->output);
-    pCoords->point.setNum(engineCat->output->getNumConnections());
+    auto* lineColor = new SoBaseColor();
+    lineColor->rgb.setValue(0.0f, 1.0f, 0.0f);
+    pLineSeparator->addChild(lineColor);
 
+    pCoords = new SoCoordinate3();
+    pCoords->ref();
+    pCoords->point.setNum(2);
+
+    static const int32_t lineIndices[] = {0, 1, -1};
     pLines = new SoIndexedLineSet();
     pLines->ref();
-    pLines->coordIndex.setNum(lineCount);
-    pLines->coordIndex.setValues(0, lineCount, lines);
+    pLines->coordIndex.setNum(3);
+    pLines->coordIndex.setValues(0, 3, lineIndices);
 
     pLineSeparator->addChild(pCoords);
     pLineSeparator->addChild(pLines);
 
+    // Leader line: connects the local annotation origin to the draggable label.
+    // SoConcatenate merges the fixed origin point and the live label translation into a 2-vertex polyline.
+    auto* leaderCatEngine = new SoConcatenate(SoMFVec3f::getClassTypeId());
+    auto* leaderOriginNode = new SoCoordinate3();
+    leaderOriginNode->point.set1Value(0, SbVec3f(0.0f, 0.0f, 0.0f));
+    leaderCatEngine->input[0]->connectFrom(&leaderOriginNode->point);
+    leaderCatEngine->input[1]->connectFrom(&pLabelTranslation->translation);
 
-    // Secondary Lines
-    auto lineSetSecondary = new SoIndexedLineSet();
-    lineSetSecondary->coordIndex.setNum(lineCountSecondary);
-    lineSetSecondary->coordIndex.setValues(0, lineCountSecondary, linesSecondary);
+    auto* leaderVerts = new SoVertexProperty();
+    leaderVerts->vertex.connectFrom(leaderCatEngine->output);
 
-    pLineSeparatorSecondary->addChild(pCoords);
-    pLineSeparatorSecondary->addChild(lineSetSecondary);
+    static const int32_t leaderIdx[] = {0, 1, -1};
+    auto* leaderLine = new SoIndexedLineSet();
+    leaderLine->vertexProperty = leaderVerts;
+    leaderLine->coordIndex.setValues(0, 3, leaderIdx);
 
-    auto points = new SoMarkerSet();
-    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
-        "CROSS",
-        ViewParams::instance()->getMarkerSize()
-    );
-    points->numPoints = 2;
-    pLineSeparator->addChild(points);
+    // Thin leader line keeps it visually secondary to the main measurement line.
+    auto* leaderDrawStyle = new SoDrawStyle();
+    leaderDrawStyle->lineWidth.setValue(1.0f);
+
+    auto* leaderSep = new SoSeparator();
+    leaderSep->addChild(leaderOriginNode);
+    leaderSep->addChild(leaderDrawStyle);
+    leaderSep->addChild(leaderLine);
+    pLineSeparator->addChild(leaderSep);
+
+
+    // SoAnnotation draws after all opaque geometry, keeping arrowheads visible
+    // even when they overlap the measured solid.
+    auto* arrowAnnotation = new SoAnnotation();
+
+    auto* arrowPickStyle = new SoPickStyle();
+    arrowPickStyle->style = SoPickStyle::UNPICKABLE;
+    arrowAnnotation->addChild(arrowPickStyle);
+
+    auto* arrowColor = new SoBaseColor();
+    arrowColor->rgb.setValue(0.0f, 1.0f, 0.0f);
+    arrowAnnotation->addChild(arrowColor);
+
+    // SoCallback fires on every GL render pass so arrowheads maintain a
+    // constant screen size as the user zooms the viewport.
+    auto* arrowSizeNode = new SoCallback();
+    arrowSizeNode->setCallback(arrowSizeCallback, this);
+    arrowAnnotation->addChild(arrowSizeNode);
+
+    pArrowTransformRight = new SoTransform();
+    pArrowTransformRight->ref();
+    pArrowConeRight = new SoCone();
+    pArrowConeRight->ref();
+    // Start at zero so no geometry appears before the first camera callback fires.
+    pArrowConeRight->height.setValue(0.0f);
+    pArrowConeRight->bottomRadius.setValue(0.0f);
+    auto rightArrowSep = new SoSeparator();
+    rightArrowSep->addChild(pArrowTransformRight);
+    rightArrowSep->addChild(pArrowConeRight);
+    arrowAnnotation->addChild(rightArrowSep);
+
+    pArrowTransformLeft = new SoTransform();
+    pArrowTransformLeft->ref();
+    pArrowConeLeft = new SoCone();
+    pArrowConeLeft->ref();
+    pArrowConeLeft->height.setValue(0.0f);
+    pArrowConeLeft->bottomRadius.setValue(0.0f);
+    auto leftArrowSep = new SoSeparator();
+    leftArrowSep->addChild(pArrowTransformLeft);
+    leftArrowSep->addChild(pArrowConeLeft);
+    arrowAnnotation->addChild(leftArrowSep);
+
+    // Top-level switch for the arrow annotation; toggling ShowArrows changes whichChild
+    // without rebuilding the scene graph subtree.
+    pArrowSwitch = new SoSwitch();
+    pArrowSwitch->ref();
+    pArrowSwitch->whichChild.setValue(SO_SWITCH_ALL);
+    pArrowSwitch->addChild(arrowAnnotation);
+    pGlobalSeparator->addChild(pArrowSwitch);
 
 
     // Delta Dimensions
@@ -455,6 +529,11 @@ ViewProviderMeasureDistance::~ViewProviderMeasureDistance()
     pCoords->unref();
     pLines->unref();
     pDeltaDimensionSwitch->unref();
+    pArrowTransformRight->unref();
+    pArrowTransformLeft->unref();
+    pArrowConeRight->unref();
+    pArrowConeLeft->unref();
+    pArrowSwitch->unref();
 }
 
 
@@ -475,11 +554,26 @@ void ViewProviderMeasureDistance::redrawAnnotation()
     auto vec1 = prop1->getValue();
     auto vec2 = prop2->getValue();
 
+    // Skip coincident points; measurement direction would be undefined.
+    if ((vec2 - vec1).Length() < 1e-10) {
+        return;
+    }
+
     fieldPosition1.setValue(SbVec3f(vec1.x, vec1.y, vec1.z));
     fieldPosition2.setValue(SbVec3f(vec2.x, vec2.y, vec2.z));
 
     // Set the distance
     fieldDistance = (vec2 - vec1).Length();
+    const float distance = fieldDistance.getValue();
+    const float ta = distance / 2.0f;
+
+    // Endpoints at ±half-distance along the local X axis (the measurement axis).
+    pCoords->point.set1Value(0, ta, 0.0f, 0.0f);
+    pCoords->point.set1Value(1, -ta, 0.0f, 0.0f);
+
+    // Force an immediate geometry update; the per-frame callback only reacts to
+    // zoom changes, not to changes in the measured endpoint positions.
+    updateArrowSizes(vec1, vec2);
 
     auto propDistance = dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
     setLabelValue(propDistance->getQuantityValue().getUserString());
@@ -519,22 +613,201 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
             ShowDelta.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE
         );
     }
+    else if (prop == &ShowArrows) {
+        pArrowSwitch->whichChild.setValue(
+            ShowArrows.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE
+        );
+        if (ShowArrows.getValue()) {
+            // Invalidate the cached scale so the next render pass recalculates sizes.
+            _lastArrowViewScale = -1.0f;
+        }
+        else {
+            clearArrows();
+        }
+    }
+    else if (prop == &ArrowSize) {
+        // Clamp to [0.1, 10.0]; bail early to avoid a recursive onChanged call.
+        const double clamped = std::clamp(ArrowSize.getValue(), 0.1, 10.0);
+        if (clamped != ArrowSize.getValue()) {
+            ArrowSize.setValue(clamped);
+            return;
+        }
+        SbVec3f p1v = fieldPosition1.getValue();
+        SbVec3f p2v = fieldPosition2.getValue();
+        if ((p2v - p1v).length() >= 1e-10f) {
+            updateArrowSizes(
+                Base::Vector3d(p1v[0], p1v[1], p1v[2]),
+                Base::Vector3d(p2v[0], p2v[1], p2v[2])
+            );
+            updateView();
+        }
+    }
     else if (prop == &TextBackgroundColor) {
         auto bColor = TextBackgroundColor.getValue();
         static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))
-            ->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
+            ->backgroundColor.setValue(bColor.r, bColor.g, bColor.b);
         static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))
-            ->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
+            ->backgroundColor.setValue(bColor.r, bColor.g, bColor.b);
         static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
-            ->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
+            ->backgroundColor.setValue(bColor.r, bColor.g, bColor.b);
     }
 
     ViewProviderMeasureBase::onChanged(prop);
 }
 
 
+void ViewProviderMeasureDistance::arrowSizeCallback(void* data, SoAction* action)
+{
+    // Only GL render actions provide a valid camera context for computing view scale;
+    // pick actions, bounding-box queries, etc. do not and must be ignored.
+    if (!action->isOfType(SoGLRenderAction::getClassTypeId())) {
+        return;
+    }
+    static_cast<ViewProviderMeasureDistance*>(data)->updateArrowSizesFromCamera();
+}
+
+void ViewProviderMeasureDistance::updateArrowSizesFromCamera()
+{
+    if (!pcObject) {
+        return;
+    }
+
+    float viewScale = getViewScale();
+
+    // 0.1% threshold avoids invalidating the scene graph on every stationary frame.
+    if (_lastArrowViewScale > 0.0f
+            && std::fabs(viewScale - _lastArrowViewScale) < _lastArrowViewScale * 0.001f) {
+        return;
+    }
+    _lastArrowViewScale = viewScale;
+
+    SbVec3f p1v = fieldPosition1.getValue();
+    SbVec3f p2v = fieldPosition2.getValue();
+    if ((p2v - p1v).length() < 1e-10f) {
+        return;
+    }
+
+    Base::Vector3d p1(p1v[0], p1v[1], p1v[2]);
+    Base::Vector3d p2(p2v[0], p2v[1], p2v[2]);
+    updateArrowSizes(p1, p2);
+}
+
+
+void ViewProviderMeasureDistance::updateArrowSizes(
+    const Base::Vector3d& point1,
+    const Base::Vector3d& point2)
+{
+    if (!pArrowConeRight || !pArrowConeLeft
+        || !pArrowTransformRight || !pArrowTransformLeft) {
+        return;
+    }
+
+    const float arrowH = getArrowHeight();
+    const float arrowR = arrowH * 0.35f;
+
+    Base::Vector3d dir = point2 - point1;
+    // Guard against zero-length direction before normalizing.
+    if (dir.Length() > 1e-10) {
+        dir.Normalize();
+    }
+
+    const SbVec3f fromY(0.0f, 1.0f, 0.0f);
+    // SbRotation(from, to) is undefined when vectors are antiparallel;
+    // fall back to an explicit 180° rotation around X to handle the -Y direction.
+    auto makeRot = [&](float dx, float dy, float dz) -> SbRotation {
+        SbVec3f to(dx, dy, dz);
+        return (to.dot(fromY) < -0.9999f)
+            ? SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), static_cast<float>(M_PI))
+            : SbRotation(fromY, to);
+    };
+
+    // Translate each cone by halfH so its tip aligns exactly with the measured endpoint.
+    const float halfH = arrowH * 0.5f;
+
+    pArrowConeRight->height.setValue(arrowH);
+    pArrowConeRight->bottomRadius.setValue(arrowR);
+    pArrowTransformRight->rotation.setValue(makeRot(dir.x, dir.y, dir.z));
+    pArrowTransformRight->translation.setValue(
+        static_cast<float>(point2.x) - dir.x * halfH,
+        static_cast<float>(point2.y) - dir.y * halfH,
+        static_cast<float>(point2.z) - dir.z * halfH
+    );
+
+    pArrowConeLeft->height.setValue(arrowH);
+    pArrowConeLeft->bottomRadius.setValue(arrowR);
+    pArrowTransformLeft->rotation.setValue(makeRot(-dir.x, -dir.y, -dir.z));
+    pArrowTransformLeft->translation.setValue(
+        static_cast<float>(point1.x) + dir.x * halfH,
+        static_cast<float>(point1.y) + dir.y * halfH,
+        static_cast<float>(point1.z) + dir.z * halfH
+    );
+}
+
+
+float ViewProviderMeasureDistance::getArrowHeight()
+{
+    // 3% of the viewport world-unit extent, scaled by ArrowSize.
+    return getViewScale() * 0.03f * static_cast<float>(ArrowSize.getValue());
+}
+
+
+void ViewProviderMeasureDistance::clearArrows()
+{
+    // Zero out cone dimensions so no residual geometry lingers while arrows are hidden.
+    if (!pArrowConeRight || !pArrowConeLeft || !pArrowTransformRight || !pArrowTransformLeft) {
+        return;
+    }
+    pArrowConeRight->height.setValue(0.0f);
+    pArrowConeRight->bottomRadius.setValue(0.0f);
+    pArrowConeLeft->height.setValue(0.0f);
+    pArrowConeLeft->bottomRadius.setValue(0.0f);
+    pArrowTransformRight->translation.setValue(0.0f, 0.0f, 0.0f);
+    pArrowTransformLeft->translation.setValue(0.0f, 0.0f, 0.0f);
+    _lastArrowViewScale = -1.0f;  // force recalculation when arrows are re-enabled.
+}
+
+
+void ViewProviderMeasureDistance::onLabelMoved()
+{
+    updateView();  // redraw after the user drags the label to a new position.
+}
+
+
+
 void ViewProviderMeasureDistance::positionAnno(const Measure::MeasureBase* measureObject)
 {
     (void)measureObject;
-    setLabelTranslation(SbVec3f(0, 0.1 * getViewScale(), 0));
+
+    if (!pcObject) {
+        return;
+    }
+
+    auto prop1 = freecad_cast<App::PropertyVector*>(pcObject->getPropertyByName("Position1"));
+    auto prop2 = freecad_cast<App::PropertyVector*>(pcObject->getPropertyByName("Position2"));
+    if (!prop1 || !prop2) {
+        return;
+    }
+
+    auto vec1 = prop1->getValue();
+    auto vec2 = prop2->getValue();
+    Base::Vector3d diff = vec2 - vec1;
+
+    // Coincident points produce a zero-length diff; skip to avoid undefined direction vectors.
+    if (diff.Length() < 1e-10) {
+        return;
+    }
+
+    Base::Vector3d midpoint = (vec1 + vec2) / 2.0;
+    Base::Vector3d localXAxis = diff.Normalized();
+    Base::Vector3d localYAxis = getTextDirection(localXAxis);
+
+    float bboxExtent = static_cast<float>(
+        std::max({std::abs(diff.x), std::abs(diff.y), std::abs(diff.z)})
+    );
+    // Offset perpendicular to the measurement axis by 70% of the longest component,
+    // with a viewport-scale floor to keep the label readable at any zoom level.
+    float offset = std::max(bboxExtent * 0.7f, 0.15f * getViewScale());
+    Base::Vector3d textPos = midpoint + localYAxis * offset;
+    setLabelTranslation(SbVec3f(textPos.x, textPos.y, textPos.z));
+    updateView();
 }
