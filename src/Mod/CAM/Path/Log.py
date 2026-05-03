@@ -126,9 +126,9 @@ class ModuleLogger:
 
     def setLevel(self, level):
         if level == Level.RESET:
-            self.level = None
+            self._logLevel = None
         else:
-            self.level = level
+            self._logLevel = level
 
     def willLogAt(self, level):
         """(level)"""
