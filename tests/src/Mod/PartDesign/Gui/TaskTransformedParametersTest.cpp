@@ -16,6 +16,7 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QTest>
+#include <QTimer>
 
 #include <App/Application.h>
 #include <App/Datums.h>
@@ -574,7 +575,7 @@ private Q_SLOTS:
         QCOMPARE(PartDesign::BlockingPolarPatternTest::getExecutionCount(), 1);
     }
 
-    void polarAcceptWaitsForInFlightPreviewAndClosesDialog()  // NOLINT
+    void polarAcceptKeepsGuiResponsiveWhileSettlingInFlightPreview()  // NOLINT
     {
         prepareTransformedFixture(TransformedKind::Polar);
 
@@ -601,17 +602,32 @@ private Q_SLOTS:
         QCOMPARE(getBlockingTransformedTotalExecutionCount(), 1);
         QVERIFY(taskBox->hasOutstandingRecompute());
 
+        int timerTicksWhileAccepting = 0;
+        QTimer responsivenessTimer;
+        responsivenessTimer.setInterval(10);
+        connect(&responsivenessTimer, &QTimer::timeout, [&timerTicksWhileAccepting]() {
+            ++timerTicksWhileAccepting;
+        });
+        responsivenessTimer.start();
+        QCoreApplication::processEvents();
+        timerTicksWhileAccepting = 0;
+
         std::thread releaser([]() {
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            std::this_thread::sleep_for(std::chrono::milliseconds(150));
             PartDesign::BlockingPolarPatternTest::releaseBlocker();
         });
 
         Gui::Control().accept(doc);
+        responsivenessTimer.stop();
         releaser.join();
 
         QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
         QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
         QVERIFY(!guiDoc->hasPendingCommand());
+        QVERIFY2(
+            timerTicksWhileAccepting > 0,
+            "accept should keep the GUI event loop responsive while the final recompute settles"
+        );
         QCOMPARE(getBlockingTransformedTotalExecutionCount(), 1);
     }
 

@@ -279,7 +279,10 @@ private Q_SLOTS:
     void onParameterRecomputeSettled();
 
 protected:
-    AcceptRecomputeMode acceptRecomputeMode(bool isUpdateBlocked) const override;
+    AcceptRecomputeMode acceptRecomputeMode(
+        bool isUpdateBlocked,
+        AcceptPendingRecomputeAction pendingRecomputeAction
+    ) const override;
 
     TaskTransformedParameters* parameter = nullptr;
     TaskTransformedMessages* message = nullptr;
