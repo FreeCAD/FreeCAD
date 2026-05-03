@@ -145,15 +145,9 @@ def render_callable_group(
         lines.append(group.doc)
         lines.append("")
     if group.overload:
-        overload_lines: list[str] = []
         for signature in group.signatures:
-            overload_lines.append("@overload")
-            overload_lines.append(f"def {signature.display_signature}: ...")
-            overload_lines.append("")
-        if overload_lines[-1] == "":
-            overload_lines.pop()
-        lines.append(fenced_python(overload_lines))
-        lines.append("")
+            lines.append(fenced_python([f"def {signature.display_signature}: ..."]))
+            lines.append("")
     else:
         lines.append(fenced_python([f"def {group.signatures[0].display_signature}: ..."]))
         lines.append("")
