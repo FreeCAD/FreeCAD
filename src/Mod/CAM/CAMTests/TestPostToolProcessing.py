@@ -33,7 +33,6 @@ import CAMTests.PostTestMocks as PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
 
 
-
 class TestToolLengthOffset(unittest.TestCase):
     """Test tool length offset (G43) suppression functionality."""
 
@@ -51,23 +50,23 @@ class TestToolLengthOffset(unittest.TestCase):
         machine = Machine("Test Machine")
         machine.output.output_tool_length_offset = False
 
-        job, profile_op, tool_controller = (
-            PostTestMocks.create_default_job_with_operation()
-        )
+        job, profile_op, tool_controller = PostTestMocks.create_default_job_with_operation()
 
         # Create post processor
         processor = PostProcessorFactory.get_post_processor(job, "test")
         processor._machine = machine
 
         # Create a simple path with G43 command
-        profile_op.Path = Path.Path( [ Path.Command("G43", {"H": 1}) ] )
+        profile_op.Path = Path.Path([Path.Command("G43", {"H": 1})])
 
         # Convert G43 command
         result = processor.export2()[0][1]
 
         # Should return None (suppressed)
         self.assertNotIn(
-            "G43", result, f"G43 command should be suppressed when output_tool_length_offset is False in\n{result}"
+            "G43",
+            result,
+            f"G43 command should be suppressed when output_tool_length_offset is False in\n{result}",
         )
 
     def test_g43_output_enabled(self):
@@ -76,16 +75,14 @@ class TestToolLengthOffset(unittest.TestCase):
         machine = Machine("Test Machine")
         machine.output.output_tool_length_offset = True
 
-        job, profile_op, tool_controller = (
-            PostTestMocks.create_default_job_with_operation()
-        )
+        job, profile_op, tool_controller = PostTestMocks.create_default_job_with_operation()
 
         # Create post processor
         processor = PostProcessorFactory.get_post_processor(job, "test")
         processor._machine = machine
 
         # Create a simple path with G43 command
-        profile_op.Path = Path.Path( [ Path.Command("G43", {"H": 1}) ] )
+        profile_op.Path = Path.Path([Path.Command("G43", {"H": 1})])
 
         # Convert G43 command
         result = processor.export2()[0][1]
