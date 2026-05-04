@@ -450,6 +450,7 @@ class StockEdit(object):
             obj.Document.removeObject(obj.Stock.Name)
         Path.Log.track(stock.Name)
         obj.Stock = stock
+        PathStock.ApplyStockViewDefaults(stock)
         if stock.ViewObject and stock.ViewObject.Proxy:
             stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
@@ -835,6 +836,7 @@ class TaskPanel:
                 material_manager = Materials.MaterialManager()
                 material = material_manager.getMaterial(dialog.uuid)
                 self.obj.Stock.ShapeMaterial = material
+                PathStock.ApplyStockViewDefaults(self.obj.Stock)
 
     def preCleanup(self):
         Path.Log.track()
