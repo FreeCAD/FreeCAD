@@ -816,24 +816,12 @@ class _ViewProviderAxis:
         menu.addAction(actionEdit)
 
         # The default Part::FeaturePython context menu contains a `Set colors`
-        # option. This option makes no sense for Axis objects. We therefore
-        # override this menu and have to add our own `Transform` item.
+        # option. This option makes no sense for Axis objects.
         # To override the default menu this function must return `True`.
-        action_transform = QtGui.QAction(
-            FreeCADGui.getIcon("Std_TransformManip.svg"),
-            translate("Command", "Transform"),  # Context `Command` instead of `Arch`.
-            menu,
-        )
-        QtCore.QObject.connect(action_transform, QtCore.SIGNAL("triggered()"), self.transform)
-        menu.addAction(action_transform)
-
         return True
 
     def edit(self):
         FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
-
-    def transform(self):
-        FreeCADGui.ActiveDocument.setEdit(self.Object, 1)
 
     def dumps(self):
 

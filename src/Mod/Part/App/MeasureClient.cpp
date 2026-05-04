@@ -93,14 +93,15 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
         return {};
     }
 
-    Part::TopoShape shape = Part::Feature::getTopoShape(
+    TopoDS_Shape shape = Part::Feature::getShape(
         obj,
-        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform,
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+            | Part::ShapeOption::Transform,
         subject.getElementName(),
         mat
     );
 
-    if (shape.isNull()) {
+    if (shape.IsNull()) {
         Base::Console().log(
             "Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n",
             obj->getNameInDocument(),
@@ -109,19 +110,7 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
         return {};
     }
 
-    auto placement
-        = App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName());
-    shape.setPlacement(placement);
-
-    // Don't get the subShape from datum elements
-    if (obj->isDerivedFrom<Part::Datum>()) {
-        return shape.getShape();
-    }
-
-    if (!subject.getElementName()) {
-        return shape.getShape();
-    }
-    return shape.getSubShape(subject.getElementName(), true);
+    return shape;
 }
 
 

@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="55"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation>&lt;p&gt;활성 어셈블리에 구성요소를 삽입합니다. 이 작업은 부품, 바디, 기본 형상, 어셈블리에 대한 동적 링크를 만듭니다. 외부 구성요소를 삽입하려면 해당 파일이 &lt;b&gt;현재 세션에서 열려 있어야 합니다&lt;/b&gt;.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;목록의 항목을 왼쪽 클릭하여 삽입합니다.&lt;/li&gt;&lt;li&gt;목록의 항목을 오른쪽 클릭하여 제거합니다.&lt;/li&gt;&lt;li&gt;Shift 키를 누른 채 뷰를 클릭하면 동일한 구성요소 인스턴스를 여러 개 추가할 수 있습니다.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;활성 어셈블리에 구성요소를 삽입합니다. 이 작업은 파트, 바디, 기본 형상, 어셈블리에 대한 동적 링크를 만듭니다. 외부 구성요소를 삽입하려면 해당 파일이 &lt;b&gt;현재 세션에서 열려 있어야 합니다&lt;/b&gt;.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;목록의 항목을 왼쪽 클릭하여 삽입합니다.&lt;/li&gt;&lt;li&gt;목록의 항목을 오른쪽 클릭하여 제거합니다.&lt;/li&gt;&lt;li&gt;Shift 키를 누른 채 뷰를 클릭하면 동일한 구성요소 인스턴스를 여러 개 추가할 수 있습니다.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1809"/>
+      <location filename="../../../JointObject.py" line="1852"/>
       <source>Distance</source>
       <translation>거리</translation>
     </message>
@@ -175,29 +175,29 @@
       <translation>다음 위치의 손상된 링크: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1628"/>
+      <location filename="../../../JointObject.py" line="1671"/>
       <source>Select 2 elements from 2 separate parts</source>
-      <translation>서로 다른 두 부품에서 요소 2개를 선택하세요</translation>
+      <translation>서로 다른 두 파트에서 요소 2개를 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1811"/>
+      <location filename="../../../JointObject.py" line="1854"/>
       <source>Radius 1</source>
       <translation>반지름 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1813"/>
+      <location filename="../../../JointObject.py" line="1856"/>
       <source>Thread pitch</source>
       <translation>나사 피치</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1815"/>
+      <location filename="../../../JointObject.py" line="1858"/>
       <source>Pitch radius</source>
       <translation>피치 반지름</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
       <source>Ask</source>
-      <translation>묻기</translation>
+      <translation>확인</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="50"/>
@@ -257,17 +257,17 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="372"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
-      <translation>하위 어셈블리의 하위 항목: 하위 어셈블리의 하위 항목을 부품 명세서에 포함합니다</translation>
+      <translation>하위 어셈블리의 하위 항목: 하위 어셈블리의 하위 항목을 부품 명세서에 포함됩니다</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="378"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
-      <translation>부품의 하위 항목: 부품의 하위 항목을 부품 명세서에 추가합니다</translation>
+      <translation>파츠의 하위 항목: 파츠의 하위 항목이 부품 명세서에 추가됩니다</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="384"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
-      <translation>부품만: 부품 컨테이너와 하위 어셈블리만 부품 명세서에 추가합니다. Part Design 바디, 패스너, Part 작업대의 기본 형상 같은 솔리드는 무시합니다.</translation>
+      <translation>파트만: 파트 컨테이너와 하위 어셈블리만 부품 명세서에 추가됩니다. Part Design 바디, 패스너, Part 작업대의 기본 형상 같은 솔리드는 무시됩니다.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="386"/>
@@ -302,27 +302,27 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="108"/>
       <source>Part name</source>
-      <translation>부품 이름</translation>
+      <translation>파트 이름</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="113"/>
       <source>Part</source>
-      <translation>부품</translation>
+      <translation>파트</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="118"/>
       <source>Create part in new file</source>
-      <translation>새 파일에서 부품 생성</translation>
+      <translation>새 파일에서 파트 생성</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="125"/>
       <source>Joint new part origin</source>
-      <translation>새 부품 원점을 조인트로 연결</translation>
+      <translation>새 파트 원점을 조인트로 연결</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="161"/>
       <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
-      <translation>새 문서를 저장하지 않으면 새 부품을 어셈블리에 링크할 수 없습니다.</translation>
+      <translation>새 문서를 저장하지 않으면 새 파트를 어셈블리에 링크할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="78"/>
@@ -333,7 +333,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="77"/>
       <source>The assembly document must be saved before inserting a new part.</source>
-      <translation>새 부품을 삽입하기 전에 어셈블리 문서를 저장해야 합니다.</translation>
+      <translation>새 파트를 삽입하기 전에 어셈블리 문서를 저장해야 합니다.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="80"/>
@@ -347,59 +347,59 @@
       <translation>링크하지 않음</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="493"/>
+      <location filename="../../../CommandCreateSimulation.py" line="495"/>
       <source>Enter your formula…</source>
-      <translation type="unfinished">Enter your formula…</translation>
+      <translation>수식을 입력하세요…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="546"/>
-      <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation>대문자로 표시된 항목은 실제 값으로 바꿔야 하는 변수입니다. 각 예제의 자세한 내용은 도구 설명에서 확인할 수 있습니다.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
+      <source>In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</source>
+      <translation>대문자로 표시된 변수는 실제 값으로 대체해야 합니다. 'initialValue'는 현재 각도 또는 거리로 동적으로 대체됩니다. 각 예시에 대한 자세한 내용은 해당 도구 설명을 참조하세요.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="549"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - 선형: C + VEL*time</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="551"/>
+      <location filename="../../../CommandCreateSimulation.py" line="553"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - 2차: C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="554"/>
+      <location filename="../../../CommandCreateSimulation.py" line="556"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - 조화: C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="557"/>
+      <location filename="../../../CommandCreateSimulation.py" line="559"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - 지수: C*exp(time/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="563"/>
+      <location filename="../../../CommandCreateSimulation.py" line="565"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - 스무스 스텝: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="570"/>
+      <location filename="../../../CommandCreateSimulation.py" line="572"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - 스무스 사각 임펄스: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="577"/>
+      <location filename="../../../CommandCreateSimulation.py" line="579"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - 스무스 램프 상단 임펄스: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="587"/>
+      <location filename="../../../CommandCreateSimulation.py" line="589"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C는 상수 오프셋입니다.
 VEL은 직선의 속도 또는 기울기입니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="595"/>
+      <location filename="../../../CommandCreateSimulation.py" line="597"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -408,7 +408,7 @@ VEL은 직선의 속도 또는 기울기입니다.
 ACC는 가속도 또는 2차항의 계수입니다. 이 함수는 포물선입니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="604"/>
+      <location filename="../../../CommandCreateSimulation.py" line="606"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -419,14 +419,14 @@ VEL은 초당 라디안 단위의 각속도입니다.
 PHASE는 사인파의 위상입니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="611"/>
+      <location filename="../../../CommandCreateSimulation.py" line="613"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C는 상수입니다.
 TIMEC는 지수 함수의 시정수입니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="619"/>
+      <location filename="../../../CommandCreateSimulation.py" line="621"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -435,7 +435,7 @@ L2는 time = T0 이후의 스텝 레벨입니다.
 SLOPE는 time = T0 부근에서 L1과 L2 사이 전이의 가파른 정도를 정의합니다. 값이 클수록 모서리가 더 날카로운 스텝이 됩니다. SLOPE는 1000 이상이 적당합니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="628"/>
+      <location filename="../../../CommandCreateSimulation.py" line="630"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -446,14 +446,14 @@ T2는 임펄스의 끝 시점입니다.
 SLOPE는 time = T1 및 T2 부근에서 0과 H 사이 전이의 가파른 정도를 정의합니다. 값이 클수록 모서리가 더 날카로운 임펄스가 됩니다. SLOPE는 1000 이상이 적당합니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="639"/>
+      <location filename="../../../CommandCreateSimulation.py" line="641"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
 H1 is the height at T1 at the beginning of the ramp.
 H2 is the height at T2 at the end of the ramp.
 SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation>이 식은 사각 임펄스와 비슷하지만 상단에 기울어진 램프가 있습니다. 이러한 식을 여러 개 더해 매끄러운 구간별 선형 함수를 만들기에 좋습니다.
+      <translation>이 식은 사각 임펄스와 비슷하지만 상단에 기울어진 램프가 있습니다. 이러한 식을 여러 개 더해 매끄러운 구간별 선형 함수를 만드는 데 좋습니다.
 T1은 임펄스의 시작 시점입니다.
 T2는 임펄스의 끝 시점입니다.
 H1은 램프 시작점인 T1에서의 높이입니다.
@@ -461,65 +461,65 @@ H2는 램프 끝점인 T2에서의 높이입니다.
 SLOPE는 각각 time = T1 및 T2 부근에서 0과 H1, 그리고 H2와 0 사이 전이의 가파른 정도를 정의합니다. 값이 클수록 모서리가 더 날카로운 임펄스가 됩니다. SLOPE는 1000 이상이 적당합니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="677"/>
-      <location filename="../../../CommandCreateSimulation.py" line="694"/>
+      <location filename="../../../CommandCreateSimulation.py" line="679"/>
+      <location filename="../../../CommandCreateSimulation.py" line="696"/>
       <source>Help</source>
       <translation>도움말</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="692"/>
+      <location filename="../../../CommandCreateSimulation.py" line="694"/>
       <source>Hide help</source>
       <translation>도움말 숨기기</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1044"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
       <source>Animation</source>
       <translation>애니메이션</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1046"/>
       <source>Not enough frames to create an animation.</source>
-      <translation type="unfinished">Not enough frames to create an animation.</translation>
+      <translation>애니메이션을 만들기에 프레임이 부족합니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1052"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1053"/>
       <source>Save Animation</source>
-      <translation type="unfinished">Save Animation</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1074"/>
-      <source>Generating Frames…</source>
-      <translation type="unfinished">Generating Frames…</translation>
+      <translation>애니메이션 저장</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1075"/>
+      <source>Generating Frames…</source>
+      <translation>프레임 생성 중…</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1076"/>
       <source>Cancel</source>
       <translation>취소하기</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1102"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1103"/>
       <source>Assembling animation…</source>
-      <translation type="unfinished">Assembling animation…</translation>
+      <translation>애니메이션 조립 중…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1118"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1119"/>
       <source>An error occurred while saving the animation</source>
-      <translation type="unfinished">An error occurred while saving the animation</translation>
+      <translation>애니메이션 저장 중 오류가 발생했습니다</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1136"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1137"/>
       <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
-      <translation type="unfinished">Pillow (PIL) is not installed. It is required for GIF export.</translation>
+      <translation>Pillow (PIL)이 설치되어 있지 않습니다. GIF 내보내기에 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1159"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1160"/>
       <source>OpenCV is not installed. It is required for video export.</source>
-      <translation type="unfinished">OpenCV is not installed. It is required for video export.</translation>
+      <translation>OpenCV가 설치되어 있지 않습니다. 동영상 내보내기에 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1176"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1177"/>
       <source>Could not open video writer. Check codecs.</source>
-      <translation type="unfinished">Could not open video writer. Check codecs.</translation>
+      <translation>동영상 기록기를 열 수 없습니다. 코덱을 확인하세요.</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="160"/>
@@ -624,7 +624,7 @@ SLOPE는 각각 time = T1 및 T2 부근에서 0과 H1, 그리고 H2와 0 사이 
     <message>
       <location filename="../../../JointObject.py" line="391"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
-      <translation>조인트의 각도입니다. 각도 조인트에서만 사용합니다.</translation>
+      <translation>조인트의 각도입니다. 각도 조인트에서만 사용됩니다.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="427"/>
@@ -664,12 +664,12 @@ SLOPE는 각각 time = T1 및 T2 부근에서 0과 H1, 그리고 H2와 0 사이 
     <message>
       <location filename="../../../JointObject.py" line="403"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
-      <translation>조인트의 거리입니다. 거리 조인트, 랙 피니언 조인트(피치 반지름), 스크루 조인트, 기어 및 벨트 조인트(반지름 1)에서만 사용합니다.</translation>
+      <translation>조인트의 거리입니다. 거리 조인트, 랙 피니언 조인트(피치 반지름), 스크루 조인트, 기어 및 벨트 조인트(반지름 1)에서만 사용됩니다.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="415"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
-      <translation>조인트의 두 번째 거리입니다. 두 번째 반지름을 저장하는 기어 조인트에서만 사용합니다.</translation>
+      <translation>조인트의 두 번째 거리입니다. 두 번째 반지름을 저장하는 기어 조인트에서만 사용됩니다.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="516"/>
@@ -677,7 +677,7 @@ SLOPE는 각각 time = T1 및 T2 부근에서 0과 H1, 그리고 H2와 0 사이 
       <translation>조인트의 {order}번째 기준</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1237"/>
+      <location filename="../../../JointObject.py" line="1280"/>
       <source>The object to ground</source>
       <translation>고정할 대상체</translation>
     </message>
@@ -685,7 +685,7 @@ SLOPE는 각각 time = T1 및 T2 부근에서 0과 H1, 그리고 H2와 0 사이 
       <location filename="../../../CommandCreateView.py" line="376"/>
       <location filename="../../../CommandCreateView.py" line="413"/>
       <source>The objects moved by the move</source>
-      <translation>이 이동에 의해 이동되는 객체들</translation>
+      <translation>이 이동에 의해 이동된 객체들</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="388"/>
@@ -730,12 +730,12 @@ SLOPE는 각각 time = T1 및 T2 부근에서 0과 H1, 그리고 H2와 0 사이 
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="316"/>
       <source>The joint that is moved by the motion</source>
-      <translation>동작에 의해 구동되는 조인트</translation>
+      <translation>동작에 의해 구동된 조인트</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="328"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
-      <translation>동작에 사용할 수식입니다. 예: '1.0*time'.</translation>
+      <translation>동작에 사용되는 수식입니다. 예: '1.0*time'.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="337"/>
@@ -813,7 +813,7 @@ SLOPE는 각각 time = T1 및 T2 부근에서 0과 H1, 그리고 H2와 0 사이 
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
       <source>Reverse</source>
-      <translation>뒤집기</translation>
+      <translation>반전</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
@@ -843,7 +843,7 @@ SLOPE는 각각 time = T1 및 T2 부근에서 0과 H1, 그리고 H2와 0 사이 
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
       <source>Reverse rotation</source>
-      <translation>역 회전</translation>
+      <translation>회전 반전</translation>
     </message>
   </context>
   <context>
@@ -856,12 +856,12 @@ SLOPE는 각각 time = T1 및 T2 부근에서 0과 H1, 그리고 H2와 0 사이 
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
       <source>Search parts…</source>
-      <translation>부품 찾기…</translation>
+      <translation>파츠 찾기…</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
       <source>Cannot find the part? </source>
-      <translation>부품을 찾을 수 없나요? </translation>
+      <translation>파트를 찾을 수 없나요? </translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -871,12 +871,12 @@ SLOPE는 각각 time = T1 및 T2 부근에서 0과 H1, 그리고 H2와 0 사이 
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="55"/>
       <source>Shows only parts in the list</source>
-      <translation>목록에서 부품만 표시합니다</translation>
+      <translation>목록에서 파트만 표시합니다</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="58"/>
       <source>Show only parts</source>
-      <translation>부품만 보기</translation>
+      <translation>파트만 보기</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="74"/>
@@ -886,8 +886,8 @@ Flexible means that the added sub-assembly will allow movement of its individual
 You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
 'Turn rigid'/'Turn flexible' command there, or by editing its Rigid property in the property editor.</source>
       <translation>삽입된 하위 어셈블리를 강체로 할지 유연하게 할지 설정합니다.
-강체는 추가된 하위 어셈블리를 상위 어셈블리 안에서 하나의 강체 단위로 취급한다는 뜻입니다.
-유연은 추가된 하위 어셈블리의 개별 구성요소 조인트가 상위 어셈블리 안에서 움직일 수 있음을 뜻합니다.
+강체는 추가된 하위 어셈블리가 상위 어셈블리 안에서 하나의 강체 단위로 취급된다는 뜻입니다.
+유연은 추가된 하위 어셈블리의 개별 구성요소 조인트가 상위 어셈블리 안에서 움직일 수 있도록 허용된다는 뜻입니다.
 이 동작은 언제든지 문서 트리에서 하위 어셈블리를 오른쪽 클릭해
 '강체로 전환'/'유연하게 전환' 명령을 사용하거나, 속성 편집기에서 Rigid 속성을 수정하여 바꿀 수 있습니다.</translation>
     </message>
@@ -919,12 +919,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../preferences/Assembly.ui" line="59"/>
       <source>Ground first part</source>
-      <translation>첫 번째 부품 고정</translation>
+      <translation>첫 번째 파트 고정</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="66"/>
       <source>When inserting the first part in the assembly, it can be grounded automatically</source>
-      <translation>어셈블리에 첫 번째 부품을 삽입할 때 자동으로 고정할 수 있습니다</translation>
+      <translation>어셈블리에 첫 번째 파트를 삽입할 때 자동으로 고정할 수 있습니다</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
@@ -950,49 +950,49 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>이 객체를 이동하고 연결된 조인트를 삭제하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1104"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1103"/>
       <source>Move part</source>
-      <translation>부품 이동</translation>
+      <translation>파트 이동</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1816"/>
       <source>Empty Assembly</source>
       <translation>빈 어셈블리</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1831"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1828"/>
       <source>Over-constrained:</source>
       <translation>과도한 구속:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1839"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1836"/>
       <source>Malformed joints:</source>
       <translation>잘못된 조인트:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1802"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1801"/>
       <source>and %1 more</source>
       <translation>외 %1개</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1860"/>
       <source>Solver failed to converge</source>
       <translation>솔버가 수렴하지 못했습니다</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1871"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1868"/>
       <source>Under-constrained:</source>
       <translation>구속 부족:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1870"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n 자유도</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1877"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1874"/>
       <source>Fully constrained</source>
       <translation>완전히 구속됨</translation>
     </message>
@@ -1007,7 +1007,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="324"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;슬라이더 조인트가 있는 파트를 회전 조인트가 있는 파트에 연결하는 스크루 조인트를 만듭니다.&lt;/p&gt;&lt;p&gt;회전 조인트 및 슬라이더 조인트와 동일한 좌표계를 선택하세요. 피치 반지름은 회전하는 스크루와 슬라이딩 파트 사이의 이동 비율을 정의합니다.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1033,12 +1033,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="20"/>
       <source>If checked, parts will be selected as a single solid</source>
-      <translation>선택하면 부품을 단일 솔리드로 선택합니다.</translation>
+      <translation>선택하면 파트를 단일 솔리드로 선택합니다.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="23"/>
       <source>Parts as single solid</source>
-      <translation>부품을 단일 솔리드로 취급</translation>
+      <translation>파트를 단일 솔리드로 취급</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="42"/>
@@ -1063,7 +1063,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="42"/>
       <source>Parts children</source>
-      <translation>하위 부품</translation>
+      <translation>하위 파트</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="14"/>
@@ -1073,22 +1073,22 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="20"/>
       <source>Includes children of sub-assemblies in the bill of materials</source>
-      <translation>하위 어셈블리의 하위 항목을 부품 명세서에 포함합니다</translation>
+      <translation>하위 어셈블리의 하위 항목을 부품 명세서에 포함됩니다</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="39"/>
       <source>Include child parts in the bill of materials</source>
-      <translation>하위 부품을 부품 명세서에 포함합니다</translation>
+      <translation>하위 파트를 부품 명세서에 포함됩니다</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</source>
-      <translation>부품 컨테이너와 하위 어셈블리만 부품 명세서에 추가합니다. 솔리드(예: 바디, 패스너, 기본 형상)는 제외됩니다.</translation>
+      <translation>파트 컨테이너와 하위 어셈블리만 부품 명세서에 추가됩니다. 솔리드(예: 바디, 패스너, 기본 형상)는 제외됩니다.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
       <source>Only parts</source>
-      <translation>부품만</translation>
+      <translation>파트만</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="77"/>
@@ -1121,13 +1121,13 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;현재 어셈블리의 부품 명세서를 만듭니다. 활성 어셈블리가 있으면 해당 어셈블리의 BOM을 만들고, 없으면 문서 전체의 BOM을 만듭니다.&lt;/p&gt;&lt;p&gt;BOM 객체는 BOM 설정을 저장하는 문서 객체입니다. 또한 스프레드시트 객체이기도 하므로 BOM을 쉽게 확인할 수 있습니다. BOM 객체를 문서 객체로 저장할 필요가 없다면, 그냥 내보낸 뒤 작업을 취소하면 됩니다.&lt;/p&gt;&lt;p&gt;'번호', '이름', '파일 이름', '수량' 열은 다시 계산할 때 자동으로 생성됩니다. '설명' 및 사용자 정의 열은 덮어써지지 않습니다.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;현재 어셈블리의 부품 명세서를 만듭니다. 활성 어셈블리가 있으면 해당 어셈블리의 BOM이 만들어지고, 없으면 문서 전체의 BOM이 만들어집니다.&lt;/p&gt;&lt;p&gt;BOM 객체는 BOM 설정을 저장하는 문서 객체입니다. 또한 스프레드시트 객체이기도 하므로 BOM을 쉽게 확인할 수 있습니다. BOM 객체를 문서 객체로 저장할 필요가 없다면, 그냥 내보낸 뒤 작업을 취소하면 됩니다.&lt;/p&gt;&lt;p&gt;'번호', '이름', '파일 이름', '수량' 열은 다시 계산될 때 자동으로 생성됩니다. '설명' 및 사용자 정의 열은 덮어써지지 않습니다.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="689"/>
       <source>Joints</source>
       <translation>조인트</translation>
     </message>
@@ -1145,12 +1145,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="54"/>
       <source>New Part</source>
-      <translation>새 부품</translation>
+      <translation>새 파트</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="59"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
-      <translation>활성 어셈블리에 새 부품을 삽입합니다. 새 부품의 원점은 어셈블리 안에 배치할 수 있습니다.</translation>
+      <translation>활성 어셈블리에 새 파트를 삽입합니다. 새 파트의 원점은 어셈블리 안에 배치할 수 있습니다.</translation>
     </message>
   </context>
   <context>
@@ -1222,7 +1222,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
       <source>Save the animation as a GIF or video file.</source>
-      <translation type="unfinished">Save the animation as a GIF or video file.</translation>
+      <translation>애니메이션을 GIF 또는 동영상 파일로 저장합니다.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="197"/>
@@ -1322,7 +1322,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;1 - 어셈블리가 활성 상태이면 두 부품을 영구적으로 고정해 어떤 이동이나 회전도 하지 못하게 하는 조인트를 만듭니다.&lt;/p&gt;&lt;p&gt;2 - 부품이 활성 상태이면 선택한 좌표계를 일치시켜 하위 부품의 위치를 맞춥니다. 두 번째로 선택한 부품이 이동합니다.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - 어셈블리가 활성 상태이면 두 파트를 영구적으로 고정해 어떤 이동이나 회전도 하지 못하게 하는 조인트를 만듭니다.&lt;/p&gt;&lt;p&gt;2 - 파트가 활성 상태이면 선택한 좌표계를 일치시켜 하위 파트의 위치를 맞춥니다. 두 번째로 선택된 파트가 이동합니다.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1335,7 +1335,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="109"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
-      <translation>선택한 부품 사이에서 단일 축을 중심으로 회전을 허용하는 회전 조인트를 만듭니다.</translation>
+      <translation>선택한 파트 사이에서 단일 축을 중심으로 회전을 허용하는 회전 조인트를 만듭니다.</translation>
     </message>
   </context>
   <context>
@@ -1348,7 +1348,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="132"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
-      <translation>조립된 부품 사이에서 단일 축을 중심으로 한 회전과 축 방향 이동을 허용하는 원통 조인트를 만듭니다.</translation>
+      <translation>조립된 파트 사이에서 단일 축을 중심으로 한 회전과 축 방향 이동을 허용하는 원통 조인트를 만듭니다.</translation>
     </message>
   </context>
   <context>
@@ -1361,7 +1361,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="155"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
-      <translation>선택한 부품 사이에서 단일 축을 따라 직선 이동을 허용하지만 회전은 제한하는 슬라이더 조인트를 만듭니다.</translation>
+      <translation>선택한 파트 사이에서 단일 축을 따라 직선 이동을 허용하지만 회전은 제한하는 슬라이더 조인트를 만듭니다.</translation>
     </message>
   </context>
   <context>
@@ -1374,7 +1374,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="178"/>
       <source>Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</source>
-      <translation>한 점에서 부품을 연결하며, 연결점이 접촉을 유지하는 한 제한 없이 움직일 수 있는 볼 조인트를 만듭니다.</translation>
+      <translation>한 점에서 파트를 연결하며, 연결점이 접촉을 유지하는 한 제한 없이 움직일 수 있는 볼 조인트를 만듭니다.</translation>
     </message>
   </context>
   <context>
@@ -1439,7 +1439,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="300"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;슬라이더 조인트가 있는 파트를 회전 조인트가 있는 파트에 연결하는 랙 피니언 조인트를 만듭니다.&lt;/p&gt;&lt;p&gt;회전 조인트 및 슬라이더 조인트와 동일한 좌표계를 선택하세요. 피치 반지름은 랙과 피니언 사이의 이동 비율을 정의합니다.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1478,7 +1478,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="437"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
-      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</translation>
+      <translation>&lt;p&gt;파트의 고정 상태를 전환합니다.&lt;/p&gt;&lt;p&gt;파트를 고정하면 어셈블리 안에서 해당 파트의 위치가 영구적으로 잠겨 어떤 이동이나 회전도 하지 못하게 됩니다.</translation>
     </message>
   </context>
   <context>
@@ -1547,9 +1547,9 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
 Click to select these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
-Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
+      <translation>어셈블리에 구속되지 않은 구성요소가 있어 해당 자유도가 발생합니다.
+이 구속되지 않은 구성요소를 선택하려면 클릭하세요.
+참고: 현재는 연결되지 않은 파트만 선택되며, 여전히 자유도가 있는 구속된 파트는 선택되지 않습니다.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
@@ -1562,17 +1562,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="101"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>어셈블리</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
       <source>Go to linked Assembly</source>
-      <translation type="unfinished">Go to linked Assembly</translation>
+      <translation>연결된 어셈블리로 이동</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
       <source>Selects the linked assembly and switches to its original document</source>
-      <translation type="unfinished">Selects the linked assembly and switches to its original document</translation>
+      <translation>연결된 어셈블리를 선택하고 해당 원본 문서로 전환합니다.</translation>
     </message>
   </context>
   <context>
@@ -1580,17 +1580,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="165"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>어셈블리</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
       <source>Select conflicting constraints</source>
-      <translation type="unfinished">Select conflicting constraints</translation>
+      <translation>충돌하는 구속 선택</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
       <source>Selects conflicting joints in the active assembly</source>
-      <translation type="unfinished">Selects conflicting joints in the active assembly</translation>
+      <translation>활성 어셈블리에서 충돌하는 조인트를 선택합니다.</translation>
     </message>
   </context>
   <context>
@@ -1598,17 +1598,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="200"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>어셈블리</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
       <source>Select redundant constraints</source>
-      <translation type="unfinished">Select redundant constraints</translation>
+      <translation>중복 구속 선택</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="202"/>
       <source>Selects redundant joints in the active assembly</source>
-      <translation type="unfinished">Selects redundant joints in the active assembly</translation>
+      <translation>활성 어셈블리에서 중복 조인트를 선택합니다.</translation>
     </message>
   </context>
   <context>
@@ -1616,17 +1616,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="233"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>어셈블리</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
       <source>Select malformed constraints</source>
-      <translation type="unfinished">Select malformed constraints</translation>
+      <translation>잘못된 구속 선택</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
       <source>Selects malformed joints in the active assembly</source>
-      <translation type="unfinished">Selects malformed joints in the active assembly</translation>
+      <translation>활성 어셈블리에서 잘못된 조인트를 선택합니다.</translation>
     </message>
   </context>
   <context>
@@ -1634,17 +1634,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="267"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>어셈블리</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
       <source>Select components with DoFs</source>
-      <translation type="unfinished">Select components with DoFs</translation>
+      <translation>자유도가 있는 구성요소 선택</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
       <source>Selects unconstrained components in the active assembly</source>
-      <translation type="unfinished">Selects unconstrained components in the active assembly</translation>
+      <translation>활성 어셈블리에서 구속되지 않은 구성요소를 선택합니다.</translation>
     </message>
   </context>
   <context>
@@ -1652,17 +1652,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="310"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>어셈블리</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
       <source>Select component joints</source>
-      <translation type="unfinished">Select component joints</translation>
+      <translation>구성요소 조인트 선택</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>
       <source>Selects all joints referencing the selected component</source>
-      <translation type="unfinished">Selects all joints referencing the selected component</translation>
+      <translation>선택된 구성요소를 참조하는 모든 조인트를 선택합니다.</translation>
     </message>
   </context>
 </TS>

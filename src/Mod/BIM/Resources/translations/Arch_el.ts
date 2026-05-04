@@ -555,7 +555,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="30"/>
       <source>Adds a default building structure consisting of IfcSite, IfcBuilding, and IfcBuildingStorey. The structure can also be added manually at a later stage.</source>
-      <translation type="unfinished">Adds a default building structure consisting of IfcSite, IfcBuilding, and IfcBuildingStorey. The structure can also be added manually at a later stage.</translation>
+      <translation>Προσθέτει μια προεπιλεγμένη δομή κτιρίου που αποτελείται από IfcSite, IfcBuilding, και IfcBuildingStorey. Η δομή μπορεί επίσης να προστεθεί με το χέρι σε μεταγενέστερο στάδιο.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="33"/>

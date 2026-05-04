@@ -234,6 +234,9 @@ class Tag:
     def nextIntersectionClosestTo(self, edge, solid, refPt):
         # debugEdge(edge, 'intersects_')
 
+        if not edge.BoundBox.intersect(solid.BoundBox):
+            return None
+
         vertexes = edge.common(solid).Vertexes
         if vertexes:
             pt = sorted(vertexes, key=lambda v: (v.Point - refPt).Length)[0].Point
@@ -625,25 +628,47 @@ class MapWireToTag:
 
 class _RapidEdges:
     def __init__(self, rapid):
-        self.rapid = rapid
+        self.rapid_coords = set()
+
+        # Calculate precision based on Path.Geom.Tolerance
+        # e.g., 0.001 -> 3 decimal places
+        try:
+            tol = Path.Geom.Tolerance
+            self.precision = max(0, int(math.ceil(-math.log10(tol))))
+        except (AttributeError, ValueError, OverflowError):
+            self.precision = 6  # Reasonable default
+
+        for edge in rapid:
+            self.markRapid(edge)
+
+    def _get_coords_key(self, edge):
+        """Generates a hashable tuple of rounded coordinates."""
+        try:
+            if type(edge.Curve) not in [Part.Line, Part.LineSegment]:
+                return None
+
+            v0 = edge.Vertexes[0].Point
+            v1 = edge.Vertexes[1].Point
+
+            return (
+                round(v0.x, self.precision),
+                round(v0.y, self.precision),
+                round(v0.z, self.precision),
+                round(v1.x, self.precision),
+                round(v1.y, self.precision),
+                round(v1.z, self.precision),
+            )
+        except (AttributeError, IndexError):
+            return None
 
     def isRapid(self, edge):
-        if type(edge.Curve) in [Part.Line, Part.LineSegment]:
-            v0 = edge.Vertexes[0]
-            v1 = edge.Vertexes[1]
-            for r in self.rapid:
-                r0 = r.Vertexes[0]
-                r1 = r.Vertexes[1]
-                if (
-                    Path.Geom.isRoughly(r0.X, v0.X)
-                    and Path.Geom.isRoughly(r0.Y, v0.Y)
-                    and Path.Geom.isRoughly(r0.Z, v0.Z)
-                    and Path.Geom.isRoughly(r1.X, v1.X)
-                    and Path.Geom.isRoughly(r1.Y, v1.Y)
-                    and Path.Geom.isRoughly(r1.Z, v1.Z)
-                ):
-                    return True
-        return False
+        key = self._get_coords_key(edge)
+        return key is not None and key in self.rapid_coords
+
+    def markRapid(self, edge):
+        key = self._get_coords_key(edge)
+        if key is not None:
+            self.rapid_coords.add(key)
 
 
 class PathData:
@@ -702,7 +727,11 @@ class PathData:
         self, obj, count, width=None, height=None, angle=None, radius=None, spacing=None
     ):
         Path.Log.track(count, width, height, angle, spacing)
-        # for e in self.baseWire.Edges:
+
+        # copy edge list into python array for (much) faster random access
+        Edges = list(self.baseWire.Edges)
+
+        # for e in Edges:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
 
         if spacing:
@@ -718,14 +747,14 @@ class PathData:
         # start assigning tags on the longest segment
         shortestEdge, longestEdge = self.shortestAndLongestPathEdge()
         startIndex = 0
-        for i in range(0, len(self.baseWire.Edges)):
-            edge = self.baseWire.Edges[i]
+        for i in range(0, len(Edges)):
+            edge = Edges[i]
             Path.Log.debug("  %d: %.2f" % (i, edge.Length))
             if Path.Geom.isRoughly(edge.Length, longestEdge.Length):
                 startIndex = i
                 break
 
-        startEdge = self.baseWire.Edges[startIndex]
+        startEdge = Edges[startIndex]
         startCount = int(startEdge.Length / tagDistance)
         if (longestEdge.Length - shortestEdge.Length) > shortestEdge.Length:
             startCount = int(startEdge.Length / tagDistance) + 1
@@ -755,13 +784,13 @@ class PathData:
 
         edgeDict = {startIndex: startCount}
 
-        for i in range(startIndex + 1, len(self.baseWire.Edges)):
-            edge = self.baseWire.Edges[i]
+        for i in range(startIndex + 1, len(Edges)):
+            edge = Edges[i]
             currentLength, lastTagLength = self.processEdge(
                 i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
             )
         for i in range(0, startIndex):
-            edge = self.baseWire.Edges[i]
+            edge = Edges[i]
             currentLength, lastTagLength = self.processEdge(
                 i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
             )
@@ -769,7 +798,7 @@ class PathData:
         tags = []
 
         for i, count in edgeDict.items():
-            edge = self.baseWire.Edges[i]
+            edge = Edges[i]
             Path.Log.debug(" %d: %d" % (i, count))
             # debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
             # debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
@@ -829,9 +858,9 @@ class PathData:
         tagCount = 0
         currentLength += edge.Length
         if edge.Length >= minLength:
-            while lastTagLength + tagDistance < currentLength:
-                tagCount += 1
-                lastTagLength += tagDistance
+            steps = max(0, math.ceil((currentLength - lastTagLength) / tagDistance) - 1)
+            tagCount += steps
+            lastTagLength += steps * tagDistance
             if tagCount > 0:
                 Path.Log.debug("      index=%d -> count=%d" % (index, tagCount))
                 edgeDict[index] = tagCount
@@ -1164,7 +1193,10 @@ class ObjectTagDressup:
         for i, tag in enumerate(self.pathData.sortedTags(rawTags)):
             if tag.enabled:
                 if prev:
-                    if prev.solid.common(tag.solid).Faces:
+                    if (
+                        prev.solid.BoundBox.intersect(tag.solid.BoundBox)
+                        and prev.solid.common(tag.solid).Faces
+                    ):
                         Path.Log.info("Tag #%d intersects with previous tag - disabling\n" % i)
                         Path.Log.debug("this tag = %d [%s]" % (i, tag.solid.BoundBox))
                         tag.enabled = False

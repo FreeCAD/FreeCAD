@@ -1740,7 +1740,7 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez le solveur de Cho
   <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="476"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
@@ -2246,55 +2246,55 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez le solveur de Cho
   <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="93"/>
       <source>Select geometry of type: </source>
       <translation>Sélectionner une géométrie de type : </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="93"/>
       <source>Vertex, Edge, Face</source>
       <translation>Sommet, arête, face</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="134"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="184"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="207"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="216"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="185"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
       <source>Selection error</source>
       <translation>Erreur de sélection</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="207"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
       <source>Nothing selected!</source>
       <translation>Rien n'a été sélectionné !</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="134"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="216"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
       <source>Selected object is not a part!</source>
       <translation>L'objet sélectionné n'est pas une pièce !</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
       <source>External object selection is not supported</source>
       <translation>La sélection d'objet externe n'est pas prise en charge.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="180"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="181"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Un seul type de sélection (sommet, face ou arête) est autorisé par fonction d'analyse !</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="332"/>
       <source>Wrong selection</source>
       <translation>Sélection non valide</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
       <source>Select an edge or a face.</source>
       <translation>Sélectionner une arête ou une face</translation>
     </message>
@@ -3534,8 +3534,8 @@ avec un courant primaire harmonique/oscillant.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
-      <source>Drag the refinement, that should be altered, into the Manipulate object in the document tree</source>
-      <translation>Fait glisser la densification, qui doit être modifiée, dans l'objet « Manipulate » de l'arborescence du document.</translation>
+      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
+      <translation>Fait glisser la densification à modifier dans l'objet « Manipulate » de l'arborescence du document.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="70"/>
@@ -3599,15 +3599,11 @@ avec un courant primaire harmonique/oscillant.</translation>
       <location filename="../ui/MeshAdvanced.ui" line="210"/>
       <location filename="../ui/MeshAdvanced.ui" line="399"/>
       <location filename="../ui/MeshDistance.ui" line="68"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation>Maillage lorsque la distance est &lt; à la distance minimum.</translation>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation>Taille du maillage lorsque la distance est = à la distance maximum.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <location filename="../ui/MeshManipulate.ui" line="527"/>
-      <location filename="../ui/MeshManipulate.ui" line="636"/>
-      <location filename="../ui/MeshManipulate.ui" line="708"/>
-      <location filename="../ui/MeshManipulate.ui" line="780"/>
       <location filename="../ui/MeshAdvanced.ui" line="179"/>
       <location filename="../ui/MeshDistance.ui" line="115"/>
       <source>Distance at which the mesh size will be SizeMaximum</source>
@@ -3620,13 +3616,11 @@ avec un courant primaire harmonique/oscillant.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
       <location filename="../ui/MeshAdvanced.ui" line="337"/>
       <location filename="../ui/MeshAdvanced.ui" line="430"/>
       <location filename="../ui/MeshDistance.ui" line="178"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation>Taille du maillage lorsque la distance est = à la distance maximum.</translation>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation>Maillage lorsque la distance est &lt; à la distance minimum.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="365"/>
@@ -3684,6 +3678,14 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="761"/>
       <source>Delta</source>
       <translation>Delta</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <source>Delta in the aforementioned equation</source>
+      <translation>Delta dans l'équation susmentionnée</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="565"/>
@@ -3872,6 +3874,11 @@ densification.</translation>
       <translation>Crée un nombre défini de nœuds de maillage sur les arêtes à l'aide d'un algorithme structuré.</translation>
     </message>
     <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
+      <source>Number of nodes on the edge</source>
+      <translation>Nombre de nœuds sur l'arête</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
@@ -3908,6 +3915,11 @@ densification.</translation>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
       <source>Coefficient</source>
       <translation>Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
+      <source>Coefficient for bump/progression growth rate</source>
+      <translation>Coefficient de croissance pour la densification bilatérale/progression</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="34"/>
@@ -3980,7 +3992,7 @@ points d'échantillonnage, par rapport auxquels la distance est effectivement ca
       <location filename="../ui/MeshAdvanced.ui" line="539"/>
       <location filename="../ui/MeshAdvanced.ui" line="659"/>
       <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
-      <translation>Fait glisser les densifications vers l'objet de maillage avancé dans l'arborescence pour les rendre accessibles dans la formule.</translation>
+      <translation>Fait glisser les densifications vers l'objet « advanced Mesh » dans l'arborescence pour les rendre accessibles dans la formule.</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="569"/>
@@ -4069,8 +4081,8 @@ courbes et les surfaces sont remplacées par un ensemble de points.</translation
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
-      <source>Uses a datafield from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
-      <translation>Utilise un champ de données issu d'un pipeline de post-traitement FEM en tant que taille de maillage. Cela permet d'adapter le maillage en
+      <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
+      <translation>Utilise un champ de données issu d'un pipeline de post-traitement de FEM comme taille du maillage. Cela permet d'adapter le maillage en
 fonction du comportement physique du résultat.</translation>
     </message>
     <message>
@@ -4080,8 +4092,8 @@ fonction du comportement physique du résultat.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5 or 6 sided volumes</source>
-      <translation>Sélectionner un nombre quelconque de volumes à 5 ou 6 faces</translation>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation>Sélectionner n'importe quel nombre de volumes à 5 ou 6 côtés</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
@@ -4096,14 +4108,14 @@ triangles), le volume doit également être maillé en activant l'option « Él�
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surface belonging to the selected volumes that do not have a transfinite definitions already become transfinite automatically.
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
 Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
 
 Notes:
 1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works with any number of volumes, either connected or unconnected </source>
-      <translation>Si cette option est activée, toutes les arêtes et surfaces appartenant aux volumes sélectionnés qui ne disposent pas encore de définitions
-transfinies deviennent automatiquement transfinies.
+      <translation>Si cette option est activée, toutes les arêtes et surfaces appartenant aux volumes sélectionnés qui ne disposent pas encore d'une définition
+transfinie deviennent automatiquement transfinies.
 Utiliser des définitions de courbes et de surfaces transfinies placées stratégiquement pour guider l'algorithme automatique.
 
 Remarques :
@@ -4194,8 +4206,8 @@ Remarques :
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on distance to chosen reference geometries.</source>
-      <translation>Définit la taille des éléments de maillage en fonction de la distance par rapport aux géométries de référence choisies.</translation>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation>Définit la taille des éléments du maillage en fonction de la distance par rapport aux géométries de référence choisies.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="140"/>
@@ -4214,9 +4226,9 @@ Remarques :
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surface it is the sampling size per direction.</source>
-      <translation>Nombre de points d'échantillonnage utilisés pour discrétiser les courbes et les surfaces. Pour les surfaces, il s'agit de la taille de l'échantillon
-dans chaque direction.</translation>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation>Nombre de points d'échantillonnage utilisés pour discrétiser les courbes et les surfaces. Pour les surfaces, il s'agit de la taille
+d'échantillonnage par direction.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="329"/>
@@ -4257,11 +4269,9 @@ dans chaque direction.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="184"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinements mesh size output: It shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh, therefore details smaller then the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Affiche les résultats de la densification des tailles du maillage : les tailles du maillage obtenues grâce à la
-densification sont représentées par des couleurs sur un maillage de prévisualisation.
-Remarque : la prévisualisation évalue la densification sur un maillage grossier ; par conséquent, les détails plus petits que la taille de
-maillage peuvent ne pas être visibles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Affiche la taille du maillage résultant de la densification : les tailles obtenues du maillage par la densification apparaissent sous forme de couleurs sur un maillage de prévisualisation.
+Notez que la prévisualisation évalue la densification sur un maillage grossier ; par conséquent, les détails plus petits que la taille du maillage peuvent ne pas être visibles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="187"/>
@@ -4275,8 +4285,8 @@ maillage peuvent ne pas être visibles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</tra
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
-      <source>Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</source>
-      <translation>Sélectionner plusieurs faces comportant 3 ou 4 arêtes, éventuellement avec les sommets des coins des faces à 3 côtés.</translation>
+      <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
+      <translation>Sélectionner plusieurs faces comportant 3 ou 4 arêtes, éventuellement avec les sommets des angles des faces à 3 côtés.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
@@ -6237,12 +6247,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="558"/>
       <source>FEM Examples</source>
-      <translation>Exemples de l'atelier FEM</translation>
+      <translation>Ouvrir des exemples de l'atelier FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="559"/>
       <source>Opens the FEM examples</source>
-      <translation>Ouvrir des exemples de l'atelier FEM</translation>
+      <translation>Ouvrir les exemples de l'atelier FEM</translation>
     </message>
   </context>
   <context>
@@ -8839,7 +8849,7 @@ visualisation des données de sommets.</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="705"/>
-      <source>Adds a structured layer of mesh elmenets on 2D model boundaries</source>
+      <source>Adds a structured layer of mesh elements on 2D model boundaries</source>
       <translation>Ajoute une couche structurée d'éléments de maillage aux limites du modèle 2D.</translation>
     </message>
   </context>
@@ -8916,11 +8926,11 @@ visualisation des données de sommets.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="963"/>
       <source>Structured Transfinite Curve</source>
-      <translation>Courbe transfinie structurée</translation>
+      <translation>Courbe structurée transfinie</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="967"/>
-      <source>Creates a fixed amount of nodes on an endge with a structured algorithm</source>
+      <source>Creates a fixed number of nodes on an edge with a structured algorithm</source>
       <translation>Crée un nombre fixe de nœuds sur une arête à l'aide d'un algorithme structuré.</translation>
     </message>
   </context>
@@ -8942,11 +8952,11 @@ visualisation des données de sommets.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="994"/>
       <source>Structured Transfinite Volume</source>
-      <translation>Volume transfini structuré</translation>
+      <translation>Volume structuré transfini</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="998"/>
-      <source>Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces</source>
+      <source>Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</source>
       <translation>Crée un maillage structuré dans un volume à 4 ou 5 faces délimité par des surfaces transfinies.</translation>
     </message>
   </context>

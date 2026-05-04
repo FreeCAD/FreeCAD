@@ -4485,7 +4485,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importers/importSHP.py" line="148"/>
       <source>The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</source>
       <translation>Бібліятэка Python shapefile не была знойдзеная ў вашай сістэме.
-Ці жадаеце вы загрузіць яго цяпер з %1?
+Ці загрузіць яго цяпер з %1?
 Ён будзе размешчаны ў каталогу макрасаў.</translation>
     </message>
     <message>
@@ -11307,7 +11307,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="83"/>
       <source>Would you like to install that update?</source>
-      <translation>Ці жадаеце вы ўсталяваць гэтае абнаўленне?</translation>
+      <translation>Ці ўсталяваць дадзенае абнаўленне?</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="87"/>
@@ -11322,7 +11322,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="92"/>
       <source>Would you like to install the most recent version?</source>
-      <translation>Ці жадаеце вы ўсталяваць самую апошнюю версію?</translation>
+      <translation>Ці ўсталяваць самую апошнюю версію?</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="99"/>

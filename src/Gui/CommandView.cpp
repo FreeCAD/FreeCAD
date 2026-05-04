@@ -4325,7 +4325,7 @@ void StdCmdToggleBottomPanels::activated(int iMsg)
         // No visible bottom panels: restore the previously hidden ones. The default covers a fresh
         // install with no saved state.
         const auto savedNames = QString::fromStdString(
-            hGrp->GetASCII("HiddenBottomWidgets", "Python console;;Report view;;Selection view")
+            hGrp->GetASCII("HiddenBottomWidgets", "Python console;;Report view")
         );
         QStringList panelNamesToRestore = savedNames.split(QStringLiteral(";;"));
 

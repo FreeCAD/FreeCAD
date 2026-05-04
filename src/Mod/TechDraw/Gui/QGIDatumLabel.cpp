@@ -113,7 +113,11 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
     else if (change == ItemPositionHasChanged && scene()) {
         if (!(QApplication::keyboardModifiers() & Qt::AltModifier)) {
             QPointF newPos = value.toPointF();    //position within parent!
-            snapPosition(newPos);
+            if (!m_inhibitSnapOnPosChange) {
+                // we don't want to snap if snap caused this position change
+                snapPosition(newPos);
+            }
+            m_inhibitSnapOnPosChange = false;
         }
 
         m_dragState = DragState::Dragging;
@@ -125,6 +129,10 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
 
 void QGIDatumLabel::snapPosition(QPointF& pos)
 {
+    if (!Preferences::SnapViews()) {
+        return;
+    }
+
     qreal snapPercent = 0.4;
     double dimSpacing = Rez::guiX(activeDimAttributes.getCascadeSpacing());
 
@@ -145,6 +153,10 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
 
     // 1 - We try to snap the label to its center position.
     pointPair pp = dim->getLinearPoints();
+    if (pp.first().IsEqual(pp.second(), EWTOLERANCE)) {
+        // probably a broken dim
+        return;
+    }
     Base::Vector3d p1_3d = Rez::guiX(pp.first());
     Base::Vector3d p2_3d = Rez::guiX(pp.second());
     Base::Vector2d p1 = Base::Vector2d(p1_3d.x, p1_3d.y);
@@ -238,8 +250,9 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
         }
     }
 
-
-    setPos(pos); // no infinite loop because if pos doesn't change then itemChanged is not triggered.
+    // block itemChange from calling snapPosition again
+    m_inhibitSnapOnPosChange = true;
+    setPos(pos);
 }
 
 void QGIDatumLabel::mousePressEvent(QGraphicsSceneMouseEvent* event)

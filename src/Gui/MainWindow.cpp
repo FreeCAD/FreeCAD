@@ -82,6 +82,7 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Inventor/SoDB.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
 
@@ -432,10 +433,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     // the rightmost permanent widget.
     auto* toggleBottomPanelsButton = new QToolButton(statusBar());
     toggleBottomPanelsButton->setObjectName(QStringLiteral("toggleBottomPanelsButton"));
-    int iconSize = App::GetApplication()
-                       .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                       ->GetInt("ToolbarIconSize", 24);
-    toggleBottomPanelsButton->setIconSize(QSize(iconSize, iconSize));
+    //: A context menu action used to show or hide the Toggle Bottom Panels button in the status bar
+    toggleBottomPanelsButton->setWindowTitle(tr("Bottom Panel Toggle"));
+    toggleBottomPanelsButton->setIconSize(QSize(16, 16));
     toggleBottomPanelsButton->setIcon(BitmapFactory().pixmap("Std_ToggleBottomPanels"));
     toggleBottomPanelsButton->setCheckable(true);
     // Starts checked because FreeCAD shows bottom panels by default on first launch. On subsequent
@@ -2556,9 +2556,16 @@ void MainWindow::changeEvent(QEvent* e)
         App::GetApplication().retranslateExportTypes();
     }
     else if (e->type() == QEvent::ActivationChange) {
+        static SbTime savedRealTimeInterval = SoDB::getRealTimeInterval();
         if (isActiveWindow()) {
             QMdiSubWindow* mdi = d->mdiArea->currentSubWindow();
             setActiveSubWindow(mdi);
+            SoDB::enableRealTimeSensor(true);
+            SoDB::setRealTimeInterval(savedRealTimeInterval);
+        }
+        else {
+            savedRealTimeInterval = SoDB::getRealTimeInterval();
+            SoDB::enableRealTimeSensor(false);
         }
     }
     else {

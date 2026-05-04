@@ -3195,7 +3195,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="591"/>
       <source>Length</source>
-      <translation>길이:</translation>
+      <translation>길이</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="592"/>
@@ -3316,7 +3316,7 @@ Uncheck to use working plane coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="666"/>
       <source>Undo</source>
-      <translation>실행취소</translation>
+      <translation>실행 취소</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="700"/>
@@ -6294,7 +6294,7 @@ from menu Tools → Addon Manager</source>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="42"/>
       <source>Hatch</source>
-      <translation>선무늬</translation>
+      <translation>해칭</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="46"/>
@@ -6562,7 +6562,7 @@ Objects added to this layer can share the same visual properties.</source>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="58"/>
       <source>Rectangle</source>
-      <translation>사각형</translation>
+      <translation>직사각형</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="59"/>
@@ -7735,7 +7735,7 @@ the 'First Angle' 및 'Last Angle' 속성.</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="179"/>
       <source>Line color</source>
-      <translation>선 색</translation>
+      <translation>선 색상</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="113"/>

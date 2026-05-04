@@ -271,12 +271,12 @@ Multiple folders can be added using ";;" to separate paths.</source>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="130"/>
       <source>Created at:</source>
-      <translation type="unfinished">Created at:</translation>
+      <translation>최초 작성일:</translation>
     </message>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Modified at:</source>
-      <translation type="unfinished">Modified at:</translation>
+      <translation>최종 수정일:</translation>
     </message>
   </context>
 </TS>

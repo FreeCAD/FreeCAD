@@ -752,10 +752,15 @@ int ProfileBased::getUpToShapeFromLinkSubList(
     const App::PropertyLinkSubList& refShape
 )
 {
-    int ret = 0;
-
     auto subSets = refShape.getSubListValues();
 
+    // early returns if only one full shape is selected
+    if (subSets.size() == 1 && (subSets[0].second.empty() || subSets[0].second[0].empty())) {
+        upToShape = Part::Feature::getTopoShape(subSets[0].first, Part::ShapeOption::ResolveLink);
+        return 2;  // 0 and 1 have special treatment but true face count isn't relevant
+    }
+
+    int ret = 0;
     std::vector<TopoShape> faceList;
     for (auto& subSet : subSets) {
         auto ref = subSet.first;
@@ -776,22 +781,19 @@ int ProfileBased::getUpToShapeFromLinkSubList(
                         | Part::ShapeOption::Transform
                 );
 
-
-                for (auto face : baseShape.getSubTopoShapes(TopAbs_FACE)) {
+                for (const auto& face : baseShape.getSubTopoShapes(TopAbs_FACE)) {
                     faceList.push_back(face);
                     ret++;
                 }
             }
             else {
                 for (auto& subString : subStrings) {
-                    auto shape = Part::Feature::getShape(
+                    TopoShape face = Part::Feature::getTopoShape(
                         ref,
                         Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
                             | Part::ShapeOption::Transform,
                         subString.c_str()
                     );
-
-                    TopoShape face = shape;
                     face = face.makeElementFace();
                     if (face.isNull()) {
                         throw Base::ValueError("SketchBased: Failed to extract face");

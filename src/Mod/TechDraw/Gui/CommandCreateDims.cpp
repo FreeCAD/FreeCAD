@@ -1998,7 +1998,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("No view of a part in selection."));
         cmd->abortCommand();
         return;
@@ -2014,7 +2014,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
         for (auto& ref : references2d) {
             if (!ref.getSubName().empty()) {
                 QMessageBox::warning(Gui::getMainWindow(),
-                    QObject::tr("Incorrect selection"),
+                    QObject::tr("Incorrect Selection"),
                     QObject::tr("Selection contains both 2D and 3D geometry"));
                 cmd->abortCommand();
                 return;
@@ -2136,7 +2136,7 @@ void CmdTechDrawDimensionRepair::activated(int iMsg)
     TechDraw::DrawViewDimension* dim = nullptr;
     if (dimObjs.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("There is no dimension in your selection"));
         return;
     } else {
@@ -2188,7 +2188,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
         QMessageBox::warning(Gui::getMainWindow(),
-            QObject::tr("Incorrect selection"),
+            QObject::tr("Incorrect Selection"),
             QObject::tr("No view of a part in selection."));
         return;
     }
@@ -2203,7 +2203,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
     if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
-            QObject::tr("Incorrect selection"),
+            QObject::tr("Incorrect Selection"),
             QObject::tr("Cannot make 2D dimension from selection"));
         return;
     }
@@ -2361,7 +2361,7 @@ bool _checkSelection(Gui::Command* cmd, unsigned maxObjs)
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("Select an object first"));
         return false;
     }
@@ -2369,7 +2369,7 @@ bool _checkSelection(Gui::Command* cmd, unsigned maxObjs)
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() > maxObjs) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("Too many objects selected"));
         return false;
     }
@@ -2378,7 +2378,7 @@ bool _checkSelection(Gui::Command* cmd, unsigned maxObjs)
         cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (pages.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("Create a page first."));
         return false;
     }

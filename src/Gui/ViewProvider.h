@@ -233,8 +233,13 @@ public:
     {
         return pcTransform;
     }
-    // returns the root for the Annotations.
-    SoSeparator* getAnnotation();
+    // returns the annotation root, or nullptr if it doesn't exist
+    SoSeparator* getAnnotation() const
+    {
+        return pcAnnotation;
+    }
+    // returns the annotation root, creating it if it doesn't exist
+    SoSeparator* getOrCreateAnnotation();
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getFrontRoot() const;
     // returns the root node where the children gets collected(3D)
