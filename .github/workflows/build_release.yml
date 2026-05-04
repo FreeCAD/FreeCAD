@@ -17,6 +17,7 @@ concurrency:
 jobs:
   upload_src:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'FreeCAD'
     outputs:
       build_tag: ${{ steps.get_tag.outputs.build_tag }}
     steps:
