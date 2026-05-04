@@ -76,12 +76,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="698"/>
+      <location filename="../../Command.cpp" line="703"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="699"/>
+      <location filename="../../Command.cpp" line="704"/>
       <source>Active View</source>
       <translation>활성 보기</translation>
     </message>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1726"/>
       <source>Inserts an angle dimension between two edges</source>
-      <translation>두 에지 사이에 각도 치수를 삽입합니다.</translation>
+      <translation>두 모서리 사이에 각도 치수를 삽입합니다.</translation>
     </message>
   </context>
   <context>
@@ -125,17 +125,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1673"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1666"/>
+      <location filename="../../Command.cpp" line="1674"/>
       <source>BIM View</source>
       <translation>BIM 보기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1667"/>
+      <location filename="../../Command.cpp" line="1675"/>
       <source>Inserts a view of a BIM section plane</source>
       <translation>BIM 단면 평면의 보기를 삽입합니다.</translation>
     </message>
@@ -143,17 +143,17 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1276"/>
+      <location filename="../../Command.cpp" line="1281"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1277"/>
+      <location filename="../../Command.cpp" line="1282"/>
       <source>Balloon Annotation</source>
       <translation>풍선 주석</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1278"/>
+      <location filename="../../Command.cpp" line="1283"/>
       <source>Inserts a new balloon annotation in the selected view</source>
       <translation>선택한 보기에 새 풍선 주석을 삽입합니다.</translation>
     </message>
@@ -173,28 +173,28 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="577"/>
       <source>Inserts a centerline to a face, or between 2 lines or edges</source>
-      <translation>면 또는 두 선/에지 사이에 중심선을 삽입합니다.</translation>
+      <translation>면 또는 두 선/모서리 사이에 중심선을 삽입합니다.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="649"/>
       <source>Centerline on Face</source>
-      <translation type="unfinished">Centerline on Face</translation>
+      <translation>면 중심선</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1340"/>
+      <location filename="../../Command.cpp" line="1345"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1341"/>
+      <location filename="../../Command.cpp" line="1346"/>
       <source>Clip Group</source>
       <translation>클립 그룹</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1342"/>
+      <location filename="../../Command.cpp" line="1347"/>
       <source>Inserts a new clip group for the selected view</source>
       <translation>선택한 보기에 새 클립 그룹을 삽입합니다.</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1382"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1378"/>
+      <location filename="../../Command.cpp" line="1383"/>
       <source>Add View To Clip Group</source>
       <translation>클립 그룹에 보기 추가</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1379"/>
+      <location filename="../../Command.cpp" line="1384"/>
       <source>Adds the selected view to a clip group</source>
       <translation>선택한 보기를 클립 그룹에 추가합니다.</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1461"/>
+      <location filename="../../Command.cpp" line="1466"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1462"/>
+      <location filename="../../Command.cpp" line="1467"/>
       <source>Remove From Clip Group</source>
       <translation>클립 그룹에서 제거</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1463"/>
+      <location filename="../../Command.cpp" line="1468"/>
       <source>Removes a view based on the selected clip group</source>
       <translation>선택한 클립 그룹에서 보기를 제거합니다.</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="889"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="890"/>
       <source>Complex Section View</source>
       <translation>복합 단면도</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="891"/>
       <source>Inserts a complex section view based on the selected view in the current page</source>
       <translation>현재 페이지에서 선택한 보기를 기준으로 복합 단면도를 삽입합니다.</translation>
     </message>
@@ -323,23 +323,23 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1248"/>
       <source>Opens the &apos;Line decoration&apos; dialog to edit the selected lines</source>
-      <translation>선택한 줄을 편집하기 위해 &apos;줄 장식&apos; 대화 상자를 엽니다</translation>
+      <translation>선택한 선을 편집하기 위해 &apos;선 장식&apos; 대화 상자를 엽니다</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="1010"/>
+      <location filename="../../Command.cpp" line="1015"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1011"/>
+      <location filename="../../Command.cpp" line="1016"/>
       <source>Detail View</source>
       <translation>상세 보기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1012"/>
+      <location filename="../../Command.cpp" line="1017"/>
       <source>Inserts a new detail view based on the selected view in the current page</source>
       <translation>현재 페이지에서 선택한 보기를 기준으로 새 상세 보기를 삽입합니다.</translation>
     </message>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1535"/>
       <source>Inserts a diameter dimension of a circular edge or arc</source>
-      <translation>원형 에지 또는 호의 지름 치수를 삽입합니다.</translation>
+      <translation>원형 모서리 또는 호의 지름 치수를 삽입합니다.</translation>
     </message>
   </context>
   <context>
@@ -387,17 +387,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1601"/>
+      <location filename="../../Command.cpp" line="1607"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>Draft View</source>
       <translation>Draft 보기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1604"/>
+      <location filename="../../Command.cpp" line="1610"/>
       <source>Inserts a view of a Draft object</source>
       <extracomment>&quot;Draft&quot; is a workbench and should not be translated</extracomment>
       <translation>Draft 객체의 보기를 삽입합니다.</translation>
@@ -406,40 +406,35 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1854"/>
+      <location filename="../../Command.cpp" line="1864"/>
       <source>File</source>
       <translation>파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1855"/>
+      <location filename="../../Command.cpp" line="1865"/>
       <source>Export Page as DXF</source>
       <translation>페이지를 DXF로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1856"/>
+      <location filename="../../Command.cpp" line="1866"/>
       <source>Exports the current page as a DXF</source>
       <translation>현재 페이지를 DXF로 내보냅니다.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1889"/>
-      <source>Save DXF file</source>
-      <translation>DXF 파일 저장</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1811"/>
+      <location filename="../../Command.cpp" line="1821"/>
       <source>File</source>
       <translation>파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1812"/>
+      <location filename="../../Command.cpp" line="1822"/>
       <source>Export Page as SVG</source>
       <translation>페이지를 SVG로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1813"/>
+      <location filename="../../Command.cpp" line="1823"/>
       <source>Exports the current page as an SVG</source>
       <translation>현재 페이지를 SVG로 내보냅니다.</translation>
     </message>
@@ -459,7 +454,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1742"/>
       <source>Extends a selected cosmetic line or centerline at both ends by the specified delta distance</source>
-      <translation>선택한 보조 선 또는 중심선을 지정한 델타 거리만큼 양쪽 끝에서 연장합니다.</translation>
+      <translation>선택한 보조 선 또는 중심선을 지정한 거리만큼 양쪽 끝에서 연장합니다.</translation>
     </message>
   </context>
   <context>
@@ -490,7 +485,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1120"/>
       <source>Cascade Horizontal Dimensions</source>
-      <translation>수평 치수 균등배치</translation>
+      <translation>수평 치수 균등 배치</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1121"/>
@@ -509,7 +504,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="942"/>
       <location filename="../../CommandExtensionDims.cpp" line="1196"/>
       <source>Cascade Horizontal Dimensions</source>
-      <translation>가로 치수 균등배치</translation>
+      <translation>수평 치수 균등 배치</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="943"/>
@@ -529,7 +524,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1084"/>
       <location filename="../../CommandExtensionDims.cpp" line="1214"/>
       <source>Cascade Oblique Dimensions</source>
-      <translation>사선 치수 균등배치</translation>
+      <translation>사선 치수 균등 배치</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1085"/>
@@ -549,7 +544,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1009"/>
       <location filename="../../CommandExtensionDims.cpp" line="1205"/>
       <source>Cascade Vertical Dimensions</source>
-      <translation>수직 치수 균등배치</translation>
+      <translation>수직 치수 균등 배치</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1010"/>
@@ -887,7 +882,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="477"/>
       <location filename="../../CommandExtensionDims.cpp" line="578"/>
       <source>Decrease Decimal Places</source>
-      <translation>소수점 이하 자릿수 감소</translation>
+      <translation>소수 자릿수 감소</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="478"/>
@@ -999,7 +994,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1678"/>
       <location filename="../../CommandExtensionPack.cpp" line="1808"/>
       <source>Extends a selected cosmetic line or centerline at both ends by the specified delta distance</source>
-      <translation>선택한 보조 선 또는 중심선을 지정한 델타 거리만큼 양쪽 끝에서 연장합니다.</translation>
+      <translation>선택한 보조 선 또는 중심선을 지정한 거리만큼 양쪽 끝에서 연장합니다.</translation>
     </message>
   </context>
   <context>
@@ -1018,7 +1013,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="172"/>
       <source>Adds centerlines to a circular pattern of three or more selected circles</source>
-      <translation>선택한 세 개 이상의 원으로 이루어진 원형 패턴에 중심선을 추가합니다.</translation>
+      <translation>선택한 세 개 이상의 원의 원형 패턴에 중심선을 추가합니다.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="353"/>
@@ -1037,7 +1032,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="446"/>
       <location filename="../../CommandExtensionDims.cpp" line="573"/>
       <source>Increase Decimal Places</source>
-      <translation>소수점 자릿수 증가</translation>
+      <translation>소수 자릿수 증가</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="447"/>
@@ -1056,7 +1051,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="508"/>
       <source>Increase Decimal Places</source>
-      <translation>소수점 자릿수 증가</translation>
+      <translation>소수 자릿수 증가</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="509"/>
@@ -1278,7 +1273,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="691"/>
       <source>Align Vertical Chain Dimensions</source>
-      <translation type="unfinished">Align Vertical Chain Dimensions</translation>
+      <translation>수직 체인 치수 정렬</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="692"/>
@@ -1345,7 +1340,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1710"/>
       <location filename="../../CommandExtensionPack.cpp" line="1813"/>
       <source>Shortens a selected cosmetic line or centerline at both ends by the specified delta distance</source>
-      <translation>선택한 보조 선 또는 중심선을 지정한 델타 거리만큼 양쪽 끝에서 줄입니다.</translation>
+      <translation>선택한 보조 선 또는 중심선을 지정한 거리만큼 양쪽 끝에서 줄입니다.</translation>
     </message>
   </context>
   <context>
@@ -1469,7 +1464,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="802"/>
       <source>Adds cosmetic vertices at the intersections of selected edges</source>
-      <translation>선택한 에지의 교차점에 보조 꼭짓점을 추가합니다.</translation>
+      <translation>선택한 모서리의 교차점에 보조 꼭짓점을 추가합니다.</translation>
     </message>
   </context>
   <context>
@@ -1510,7 +1505,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="679"/>
       <source>Centerline on Face</source>
-      <translation type="unfinished">Centerline on Face</translation>
+      <translation>면 중심선</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="680"/>
@@ -1569,7 +1564,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1630"/>
       <source>Inserts a horizontal length dimension of an edge or distance between two points</source>
-      <translation>에지의 수평 길이 또는 두 점 사이의 거리를 나타내는 치수를 삽입합니다.</translation>
+      <translation>모서리의 수평 길이 또는 두 점 사이의 거리를 나타내는 치수를 삽입합니다.</translation>
     </message>
   </context>
   <context>
@@ -1612,21 +1607,6 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <source>Insert bitmap from a file into a page</source>
       <translation>파일에서 페이지로 비트맵 삽입</translation>
     </message>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="359"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
-      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp)</translation>
-    </message>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="360"/>
-      <source>All files (*)</source>
-      <translation type="unfinished">All files (*)</translation>
-    </message>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="362"/>
-      <source>Select an image file</source>
-      <translation>이미지 파일을 선택하십시오.</translation>
-    </message>
   </context>
   <context>
     <name>CmdTechDrawLeaderLine</name>
@@ -1638,7 +1618,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="87"/>
       <source>Leader Line</source>
-      <translation>지시선 선</translation>
+      <translation>지시선</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="88"/>
@@ -1661,7 +1641,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1583"/>
       <source>Inserts a length dimension of an edge or distance between two points</source>
-      <translation>에지의 길이 또는 두 점 사이의 거리를 나타내는 치수를 삽입합니다.</translation>
+      <translation>모서리의 길이 또는 두 점 사이의 거리를 나타내는 치수를 삽입합니다.</translation>
     </message>
   </context>
   <context>
@@ -1679,7 +1659,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="449"/>
       <source>Adds cosmetic vertices at the midpoint of the selected edges</source>
-      <translation>선택한 에지의 중점에 보조 꼭짓점을 추가합니다.</translation>
+      <translation>선택한 모서리의 중점에 보조 꼭짓점을 추가합니다.</translation>
     </message>
   </context>
   <context>
@@ -1717,16 +1697,6 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <source>Creates a new page from a custom template</source>
       <translation>사용자 정의 템플릿에서 새 페이지를 생성합니다.</translation>
     </message>
-    <message>
-      <location filename="../../Command.cpp" line="181"/>
-      <source>Select a template file</source>
-      <translation>템플릿 파일을 선택하십시오.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="182"/>
-      <source>Template (*.svg)</source>
-      <translation>템플릿 (*.svg)</translation>
-    </message>
   </context>
   <context>
     <name>CmdTechDrawPrintAll</name>
@@ -1738,28 +1708,28 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Print All Pages</source>
-      <translation>모든 페이지를 출력</translation>
+      <translation>모든 페이지 인쇄</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Prints all pages with the print dialog</source>
-      <translation>인쇄 대화 상자를 사용해 모든 페이지를 인쇄합니다.</translation>
+      <translation>인쇄 대화 상자를 사용하여 모든 페이지를 인쇄합니다.</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1918"/>
+      <location filename="../../Command.cpp" line="1928"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1919"/>
+      <location filename="../../Command.cpp" line="1929"/>
       <source>Project Shape</source>
       <translation>형상 투영</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1920"/>
+      <location filename="../../Command.cpp" line="1930"/>
       <source>Creates a projected geometry of the selected object in the 3D view from the current camera angle</source>
       <translation>현재 카메라 각도에서 3D 보기의 선택한 객체에 대한 투상 형상을 생성합니다.</translation>
     </message>
@@ -1767,17 +1737,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1054"/>
+      <location filename="../../Command.cpp" line="1059"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1055"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>Projection Group</source>
       <translation>투상 그룹</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1056"/>
+      <location filename="../../Command.cpp" line="1061"/>
       <source>Inserts multiple new linked views of the selected objects in the current page</source>
       <translation>현재 페이지에 선택한 객체의 새 연결 보기를 여러 개 삽입합니다.</translation>
     </message>
@@ -1815,7 +1785,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1487"/>
       <source>Inserts a radius dimension of a circular edge or arc</source>
-      <translation>원형 에지 또는 호의 반지름 치수를 삽입합니다.</translation>
+      <translation>원형 모서리 또는 호의 반지름 치수를 삽입합니다.</translation>
     </message>
   </context>
   <context>
@@ -1857,27 +1827,27 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="729"/>
+      <location filename="../../Command.cpp" line="734"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="735"/>
       <source>Section View (Simple or Complex)</source>
       <translation>단면 보기(단순 또는 복합)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="731"/>
+      <location filename="../../Command.cpp" line="736"/>
       <source>Inserts a simple or complex section view in the current page</source>
       <translation>현재 페이지에 단순 또는 복합 단면도를 삽입합니다.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="795"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>Section View</source>
       <translation>단면 보기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="804"/>
       <source>Complex Section View</source>
       <translation>복합 단면도</translation>
     </message>
@@ -1885,17 +1855,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="821"/>
+      <location filename="../../Command.cpp" line="826"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="822"/>
+      <location filename="../../Command.cpp" line="827"/>
       <source>Section View</source>
       <translation>단면 보기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="823"/>
+      <location filename="../../Command.cpp" line="828"/>
       <source>Inserts a new section view based on the selected view in the current page</source>
       <translation>현재 페이지에서 선택한 보기를 기준으로 새 단면도를 삽입합니다.</translation>
     </message>
@@ -1910,28 +1880,28 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1329"/>
       <source>Toggle Edge Visibility</source>
-      <translation>에지 표시 전환</translation>
+      <translation>모서리 표시 전환</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1330"/>
       <source>Toggles the visibility of the selected edges</source>
-      <translation>선택한 에지의 표시 여부를 전환합니다.</translation>
+      <translation>선택한 모서리의 표시 여부를 전환합니다.</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1738"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1739"/>
+      <location filename="../../Command.cpp" line="1747"/>
       <source>Spreadsheet View</source>
       <translation>스프레드시트 보기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1740"/>
+      <location filename="../../Command.cpp" line="1748"/>
       <source>Inserts a view of a spreadsheet in the current page</source>
       <translation>현재 페이지에 스프레드시트 보기를 삽입합니다.</translation>
     </message>
@@ -1982,12 +1952,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="63"/>
       <source>View Stacking Order</source>
-      <translation>보기 쌓기 순서</translation>
+      <translation>보기 배치 순서</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="64"/>
       <source>Adjusts the stacking order of the selected views</source>
-      <translation>선택한 보기의 쌓기 순서를 조정합니다.</translation>
+      <translation>선택한 보기의 배치 순서를 조정합니다.</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="141"/>
@@ -2056,7 +2026,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1458"/>
       <source>Surface Finish Symbol</source>
-      <translation>표면 마감 기호</translation>
+      <translation>표면 거칠기 기호</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1459"/>
@@ -2067,17 +2037,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1534"/>
+      <location filename="../../Command.cpp" line="1539"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1535"/>
+      <location filename="../../Command.cpp" line="1540"/>
       <source>Insert SVG</source>
       <translation>SVG 삽입</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1536"/>
+      <location filename="../../Command.cpp" line="1541"/>
       <source>Inserts a symbol from an SVG file</source>
       <translation>SVG 파일에서 기호를 삽입합니다.</translation>
     </message>
@@ -2097,7 +2067,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1678"/>
       <source>Inserts a vertical length dimension of an edge or distance between two points</source>
-      <translation>에지의 수직 길이 또는 두 점 사이의 거리를 나타내는 치수를 삽입합니다.</translation>
+      <translation>모서리의 수직 길이 또는 두 점 사이의 거리를 나타내는 치수를 삽입합니다.</translation>
     </message>
   </context>
   <context>
@@ -2128,7 +2098,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="298"/>
       <source>New View</source>
-      <translation>새 뷰</translation>
+      <translation>새 보기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="299"/>
@@ -2165,66 +2135,66 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>도면 페이지 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="360"/>
-      <location filename="../../Command.cpp" line="1712"/>
+      <location filename="../../Command.cpp" line="362"/>
+      <location filename="../../Command.cpp" line="1720"/>
       <source>Create BIM view</source>
       <translation>BIM 보기 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="482"/>
+      <location filename="../../Command.cpp" line="487"/>
       <source>Create image</source>
       <translation>이미지 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="500"/>
+      <location filename="../../Command.cpp" line="505"/>
       <source>Create view</source>
       <translation>보기 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Create broken view</source>
       <translation>파단 보기 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1897"/>
+      <location filename="../../Command.cpp" line="1907"/>
       <location filename="../../PagePrinter.cpp" line="444"/>
       <source>Save page to DXF</source>
       <translation>페이지를 DXF로 저장</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
-      <location filename="../../Command.cpp" line="1564"/>
+      <location filename="../../Command.cpp" line="462"/>
+      <location filename="../../Command.cpp" line="1570"/>
       <source>Create Symbol</source>
       <translation>기호 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1138"/>
+      <location filename="../../Command.cpp" line="1143"/>
       <source>Create projection group</source>
       <translation>투상 그룹 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1358"/>
+      <location filename="../../Command.cpp" line="1363"/>
       <source>Create clip</source>
       <translation>클립 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1435"/>
       <source>Add clip group</source>
       <translation>클립 그룹 추가</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1506"/>
       <source>Remove clip group</source>
-      <translation>클립 그룹을 제거합니다.</translation>
+      <translation>클립 그룹 제거</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1638"/>
+      <location filename="../../Command.cpp" line="1644"/>
       <source>Create DraftView</source>
-      <translation>제도 보기 생성</translation>
+      <translation>Draft 보기 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
-      <location filename="../../Command.cpp" line="1764"/>
+      <location filename="../../Command.cpp" line="1772"/>
       <source>Create spreadsheet view</source>
       <translation>스프레드시트 보기 생성</translation>
     </message>
@@ -2236,7 +2206,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="360"/>
       <source>Add Quadrant vertices</source>
-      <translation type="unfinished">Add Quadrant vertices</translation>
+      <translation>사분점 꼭짓점 추가</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="543"/>
@@ -2283,7 +2253,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1030"/>
       <source>Add edge length dimension</source>
-      <translation>에지 길이 치수 추가</translation>
+      <translation>모서리 길이 치수 추가</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="247"/>
@@ -2415,7 +2385,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1301"/>
       <source>Add oblique coord dimensions</source>
-      <translation>경사 병렬 치수 추가</translation>
+      <translation>경사 좌표 치수 추가</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1368"/>
@@ -2440,12 +2410,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskHatch.cpp" line="200"/>
       <source>Create Hatch</source>
-      <translation>선무늬 생성</translation>
+      <translation>해칭 생성</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="237"/>
       <source>Update Hatch</source>
-      <translation>선무늬 갱신</translation>
+      <translation>해칭 업데이트</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="221"/>
@@ -2455,10 +2425,10 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="299"/>
       <source>Create GeomHatch</source>
-      <translation>기하학적 선무늬 생성</translation>
+      <translation>기하학적 해칭 생성</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandDecorate.cpp" line="374"/>
       <source>Create Image</source>
       <translation>이미지 생성</translation>
     </message>
@@ -2485,22 +2455,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="175"/>
       <source>Create Cosmetic Line</source>
-      <translation>장식 선 만들기</translation>
+      <translation>보조 선 생성</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="251"/>
       <source>Update Cosmetic Line</source>
-      <translation>업데이트 보조 선</translation>
+      <translation>보조 선 업데이트</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="229"/>
       <source>Create Cosmetic Circle</source>
-      <translation>장식 원 만들기</translation>
+      <translation>보조 원 생성</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="301"/>
       <source>Update Cosmetic Circle</source>
-      <translation>업데이트 보조 원</translation>
+      <translation>보조 원 업데이트</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="433"/>
@@ -2571,17 +2541,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="911"/>
       <source>Cascade Horizontal Dimension</source>
-      <translation>수평 치수 균등배치</translation>
+      <translation>수평 치수 균등 배치</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="977"/>
       <source>Cascade Vertical Dimension</source>
-      <translation>수직 치수 균등배치</translation>
+      <translation>수직 치수 균등 배치</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1044"/>
       <source>Cascade Oblique Dimension</source>
-      <translation>경사 치수 균등배치</translation>
+      <translation>경사 치수 균등 배치</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1243"/>
@@ -2696,7 +2666,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="758"/>
       <source>Change line attributes</source>
-      <translation>선 속성을 변경합니다.</translation>
+      <translation>선 속성 변경</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="814"/>
@@ -2731,7 +2701,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1139"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
-      <translation>기술도면 보조 3점 원</translation>
+      <translation>TechDraw 보조 3점 원</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1142"/>
@@ -2756,7 +2726,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1592"/>
       <source>TechDraw Extend/Shorten Line</source>
-      <translation>기술도면 선 연장/단축</translation>
+      <translation>TechDraw 선 연장/단축</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1595"/>
@@ -2781,7 +2751,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2012"/>
       <source>Calculate Edge Length</source>
-      <translation>모사리 길이 계산</translation>
+      <translation>모서리 길이 계산</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.cpp" line="184"/>
@@ -2791,7 +2761,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="400"/>
       <source>Surface Finish Symbols</source>
-      <translation>표면 마감 기호</translation>
+      <translation>표면 거칠기 기호</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="401"/>
@@ -2816,7 +2786,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskRichAnno.cpp" line="112"/>
       <source>Edit Annotation</source>
-      <translation type="unfinished">Edit Annotation</translation>
+      <translation>주석 편집</translation>
     </message>
   </context>
   <context>
@@ -2847,7 +2817,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="35"/>
       <source>Save changes</source>
-      <translation>변경사항 저장</translation>
+      <translation>변경 사항 저장</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="49"/>
@@ -2862,7 +2832,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="99"/>
       <source>Undo</source>
-      <translation>실행취소</translation>
+      <translation>실행 취소</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="122"/>
@@ -2873,7 +2843,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="148"/>
       <source>Cut</source>
-      <translation>자르기</translation>
+      <translation>잘라내기</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="171"/>
@@ -2888,7 +2858,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="224"/>
       <source>Link</source>
-      <translation>연결</translation>
+      <translation>링크</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="257"/>
@@ -2983,12 +2953,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="473"/>
       <source>Text foreground color</source>
-      <translation>문자 전경색</translation>
+      <translation>텍스트 전경색</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="496"/>
       <source>Text background color</source>
-      <translation>문자 배경색</translation>
+      <translation>텍스트 배경색</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="499"/>
@@ -3059,17 +3029,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.cpp" line="353"/>
       <source>Create a link</source>
-      <translation>연결 생성</translation>
+      <translation>링크 생성</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="354"/>
       <source>Link URL:</source>
-      <translation>연결 URL</translation>
+      <translation>링크 URL:</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="687"/>
       <source>Select an image</source>
-      <translation>이미지를 선택하십시오.</translation>
+      <translation>이미지를 선택하세요</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="689"/>
@@ -3109,71 +3079,86 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1425"/>
       <location filename="../../CommandHelpers.cpp" line="87"/>
       <location filename="../../CommandHelpers.cpp" line="100"/>
-      <location filename="../../Command.cpp" line="631"/>
-      <location filename="../../Command.cpp" line="641"/>
-      <location filename="../../Command.cpp" line="858"/>
-      <location filename="../../Command.cpp" line="975"/>
-      <location filename="../../Command.cpp" line="982"/>
+      <location filename="../../Command.cpp" line="636"/>
+      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="863"/>
+      <location filename="../../Command.cpp" line="980"/>
       <location filename="../../Command.cpp" line="987"/>
-      <location filename="../../Command.cpp" line="1025"/>
-      <location filename="../../Command.cpp" line="1124"/>
-      <location filename="../../Command.cpp" line="1390"/>
-      <location filename="../../Command.cpp" line="1407"/>
+      <location filename="../../Command.cpp" line="992"/>
+      <location filename="../../Command.cpp" line="1030"/>
+      <location filename="../../Command.cpp" line="1129"/>
+      <location filename="../../Command.cpp" line="1395"/>
       <location filename="../../Command.cpp" line="1412"/>
-      <location filename="../../Command.cpp" line="1421"/>
-      <location filename="../../Command.cpp" line="1474"/>
-      <location filename="../../Command.cpp" line="1493"/>
-      <location filename="../../Command.cpp" line="1618"/>
-      <location filename="../../Command.cpp" line="1693"/>
-      <location filename="../../Command.cpp" line="1699"/>
-      <location filename="../../Command.cpp" line="1758"/>
+      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1426"/>
+      <location filename="../../Command.cpp" line="1479"/>
+      <location filename="../../Command.cpp" line="1498"/>
+      <location filename="../../Command.cpp" line="1624"/>
+      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1707"/>
+      <location filename="../../Command.cpp" line="1766"/>
       <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="597"/>
       <source>Empty selection</source>
       <translation>빈 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="425"/>
+      <location filename="../../Command.cpp" line="429"/>
       <source>To insert a view from existing objects, select them before invoking this tool. Without a selection, a file browser will open to insert an SVG or image file.</source>
-      <translation>기존 객체에서 보기를 삽입하려면 이 도구를 실행하기 전에 객체를 선택하십시오. 선택 항목이 없으면 SVG 또는 이미지 파일을 삽입할 수 있도록 파일 브라우저가 열립니다.</translation>
+      <translation>기존 객체에서 보기를 삽입하려면 이 도구를 실행하기 전에 객체를 선택하세요. 선택 항목이 없으면 SVG 또는 이미지 파일을 삽입할 수 있는 파일 브라우저가 열립니다.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="430"/>
+      <location filename="../../Command.cpp" line="434"/>
       <source>Do not show this message again</source>
-      <translation>이 알림말을 다시 보이지 않습니다</translation>
+      <translation>이 메시지를 다시 표시하지 않음</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="452"/>
       <source>Select a SVG or Image file to open</source>
-      <translation>열 SVG 또는 이미지 파일을 선택하십시오.</translation>
+      <translation>열 SVG 또는 이미지 파일을 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="444"/>
+      <location filename="../../Command.cpp" line="448"/>
       <source>SVG or Image files</source>
       <translation>SVG 또는 이미지 파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="988"/>
+      <location filename="../../Command.cpp" line="181"/>
+      <source>Select a template file</source>
+      <translation>템플릿 파일 선택</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="182"/>
+      <source>Template</source>
+      <translation>템플릿</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="993"/>
       <source>No profile object found in selection</source>
-      <translation>선택한 것 중에 윤곽 대상체가 없습니다</translation>
+      <translation>선택 항목에 프로파일 객체가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1408"/>
+      <location filename="../../Command.cpp" line="1413"/>
       <source>Select exactly one view to add to clip group</source>
-      <translation>클립 그룹에 추가할 보기를 정확히 하나 선택하십시오.</translation>
+      <translation>클립 그룹에 추가할 보기를 정확히 하나 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1475"/>
+      <location filename="../../Command.cpp" line="1480"/>
       <source>Select exactly one view to remove from clip group</source>
-      <translation>클립 그룹에서 제거할 보기를 정확히 하나 선택하십시오.</translation>
+      <translation>클립 그룹에서 제거할 보기를 정확히 하나 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1839"/>
+      <location filename="../../Command.cpp" line="1849"/>
       <source>FreeCAD could not find a page to export</source>
-      <translation>FreeCAD가 내보낼 페이지를 찾을 수 없습니다.</translation>
+      <translation>FreeCAD가 내보낼 페이지를 찾을 수 없습니다</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1899"/>
+      <source>Save DXF file</source>
+      <translation>DXF 파일 저장</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2001"/>
@@ -3186,33 +3171,33 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="2381"/>
       <location filename="../../CommandExtensionPack.cpp" line="1865"/>
       <location filename="../../CommandExtensionPack.cpp" line="1989"/>
-      <location filename="../../CommandDecorate.cpp" line="417"/>
-      <location filename="../../CommandDecorate.cpp" line="424"/>
-      <location filename="../../CommandDecorate.cpp" line="431"/>
-      <location filename="../../Command.cpp" line="1192"/>
-      <location filename="../../Command.cpp" line="1199"/>
-      <location filename="../../Command.cpp" line="1207"/>
-      <location filename="../../Command.cpp" line="1219"/>
+      <location filename="../../CommandDecorate.cpp" line="418"/>
+      <location filename="../../CommandDecorate.cpp" line="425"/>
+      <location filename="../../CommandDecorate.cpp" line="432"/>
+      <location filename="../../Command.cpp" line="1197"/>
+      <location filename="../../Command.cpp" line="1204"/>
+      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1224"/>
       <location filename="../../TaskDimRepair.cpp" line="137"/>
       <location filename="../../TaskDimRepair.cpp" line="148"/>
       <source>Incorrect selection</source>
-      <translation>부정확한 선택</translation>
+      <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="593"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source>Select objects to break or a base view and break definition objects</source>
-      <translation>분할할 객체 또는 기준 보기와 분할 정의 객체를 선택하십시오.</translation>
+      <translation>분할할 객체 또는 기준 보기와 분할 정의 객체를 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="637"/>
       <source>No break objects found in this selection</source>
-      <translation>이 선택 항목에서 분할 객체를 찾을 수 없습니다.</translation>
+      <translation>이 선택 항목에서 분할 객체를 찾을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="642"/>
-      <location filename="../../Command.cpp" line="1125"/>
+      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="1130"/>
       <source>No shapes, groups, or links in this selection</source>
-      <translation>이 선택 항목에 형상, 그룹 또는 링크가 없습니다.</translation>
+      <translation>이 선택 항목에 형상, 그룹 또는 링크가 없습니다</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
@@ -3257,9 +3242,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="1214"/>
       <location filename="../../CommandExtensionPack.cpp" line="1459"/>
       <location filename="../../CommandExtensionPack.cpp" line="1752"/>
-      <location filename="../../Command.cpp" line="741"/>
-      <location filename="../../Command.cpp" line="834"/>
-      <location filename="../../Command.cpp" line="897"/>
+      <location filename="../../Command.cpp" line="746"/>
+      <location filename="../../Command.cpp" line="839"/>
+      <location filename="../../Command.cpp" line="902"/>
       <source>Task in progress</source>
       <translation>작업 진행 중</translation>
     </message>
@@ -3286,114 +3271,104 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionDims.cpp" line="1507"/>
       <location filename="../../CommandExtensionDims.cpp" line="1876"/>
       <location filename="../../CommandExtensionDims.cpp" line="2114"/>
-      <location filename="../../Command.cpp" line="742"/>
-      <location filename="../../Command.cpp" line="835"/>
-      <location filename="../../Command.cpp" line="898"/>
+      <location filename="../../Command.cpp" line="747"/>
+      <location filename="../../Command.cpp" line="840"/>
+      <location filename="../../Command.cpp" line="903"/>
       <source>Close active task dialog and try again</source>
-      <translation>활성 작업 대화 상자를 닫고 다시 시도하십시오.</translation>
+      <translation>활성 작업 대화 상자를 닫고 다시 시도하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="859"/>
-      <location filename="../../Command.cpp" line="1026"/>
+      <location filename="../../Command.cpp" line="864"/>
+      <location filename="../../Command.cpp" line="1031"/>
       <source>Select at least 1 DrawViewPart object as base</source>
-      <translation>기준으로 사용할 DrawViewPart 객체를 하나 이상 선택하십시오.</translation>
+      <translation>기준으로 사용할 DrawViewPart 객체를 하나 이상 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="976"/>
+      <location filename="../../Command.cpp" line="981"/>
       <source>No base view selected</source>
-      <translation>기준 보기가 선택되지 않았습니다.</translation>
+      <translation>기준 보기가 선택되지 않았습니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="988"/>
       <source>No base view, shapes, groups, or links in this selection</source>
-      <translation>이 선택 항목에 기준 보기, 형상, 그룹 또는 링크가 없습니다.</translation>
+      <translation>이 선택 항목에 기준 보기, 형상, 그룹 또는 링크가 없습니다</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2365"/>
-      <location filename="../../Command.cpp" line="1193"/>
+      <location filename="../../Command.cpp" line="1198"/>
       <source>Select an object first</source>
-      <translation>먼저 대상체를 선택하세요</translation>
+      <translation>먼저 객체를 선택하세요</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2373"/>
-      <location filename="../../Command.cpp" line="1200"/>
+      <location filename="../../Command.cpp" line="1205"/>
       <source>Too many objects selected</source>
-      <translation>너무 많은 대상체들이 선택되었습니다</translation>
+      <translation>선택한 객체가 너무 많습니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../Command.cpp" line="1213"/>
       <source>Create a page first</source>
-      <translation>먼저 페이지를 생성하십시오</translation>
+      <translation>먼저 페이지를 생성하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1220"/>
+      <location filename="../../Command.cpp" line="1225"/>
       <source>No view of a part in selection</source>
-      <translation>선택 항목에 부품 보기가 없습니다.</translation>
+      <translation>선택 항목에 Part 보기가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1391"/>
+      <location filename="../../Command.cpp" line="1396"/>
       <source>Select one clip group and one view</source>
-      <translation>클립 그룹 하나와 보기 하나를 선택하십시오.</translation>
+      <translation>클립 그룹 하나와 보기 하나를 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1875"/>
+      <location filename="../../Command.cpp" line="1885"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>페이지에 내보내지지 않는 BIM 보기가 포함되어 있습니다. 계속하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1413"/>
+      <location filename="../../Command.cpp" line="1418"/>
       <source>Select exactly one clip group</source>
-      <translation>클립 그룹을 정확히 하나 선택하십시오.</translation>
+      <translation>클립 그룹을 정확히 하나 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1422"/>
+      <location filename="../../Command.cpp" line="1427"/>
       <source>Clip and view must be from same page</source>
-      <translation>클립과 보기는 같은 페이지에 있어야 합니다.</translation>
+      <translation>클립과 보기는 같은 페이지에 있어야 합니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1499"/>
       <source>View does not belong to a clip</source>
-      <translation>보기가 클립에 속하지 않습니다.</translation>
+      <translation>보기가 클립에 속하지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
-      <source>Scalable vector graphic</source>
-      <translation>확장 가능한 벡터 그래픽</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1554"/>
-      <source>All files</source>
-      <translation>모든 파일</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1619"/>
+      <location filename="../../Command.cpp" line="1625"/>
       <source>Select at least one object</source>
-      <translation>최소 하나의 대상체를 선택하세요</translation>
+      <translation>최소 하나의 객체를 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1694"/>
+      <location filename="../../Command.cpp" line="1702"/>
       <source>Select only 1 BIM section plane</source>
-      <translation>BIM 단면 평면을 하나만 선택하십시오.</translation>
+      <translation>BIM 단면 평면을 하나만 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1700"/>
+      <location filename="../../Command.cpp" line="1708"/>
       <source>No BIM section plane in selection</source>
-      <translation>선택 항목에 BIM 단면 평면이 없습니다.</translation>
+      <translation>선택 항목에 BIM 단면 평면이 없습니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1759"/>
+      <location filename="../../Command.cpp" line="1767"/>
       <source>Select exactly one spreadsheet object</source>
-      <translation>스프레드시트 대상체를 하나만 선택하세요</translation>
+      <translation>스프레드시트 객체를 정확히 하나 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1838"/>
+      <location filename="../../Command.cpp" line="1848"/>
       <source>No drawing page</source>
-      <translation>도면 페이지가 없습니다.</translation>
+      <translation>도면 페이지가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1874"/>
+      <location filename="../../Command.cpp" line="1884"/>
       <source>Cannot export selection</source>
-      <translation>선택 항목을 내보낼 수 없습니다.</translation>
+      <translation>선택 항목을 내보낼 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1500"/>
@@ -3408,13 +3383,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1976"/>
       <location filename="../../CommandCreateDims.cpp" line="2101"/>
       <source>Close the active task dialog and try again</source>
-      <translation>활성 작업 대화 상자를 닫고 다시 시도하십시오.</translation>
+      <translation>활성 작업 대화 상자를 닫고 다시 시도하세요.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2002"/>
       <location filename="../../CommandCreateDims.cpp" line="2192"/>
       <source>No view of a part in selection.</source>
-      <translation>선택 항목에 부품 보기가 없습니다.</translation>
+      <translation>선택 항목에 Part 보기가 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2044"/>
@@ -3439,7 +3414,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2214"/>
       <source>Cannot make 3D dimension without 3d references</source>
-      <translation type="unfinished">Cannot make 3D dimension without 3d references</translation>
+      <translation>3D 참조 없이 3D 치수를 만들 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2229"/>
@@ -3469,17 +3444,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2382"/>
       <source>Create a page first.</source>
-      <translation>먼저 페이지를 생성하십시오.</translation>
+      <translation>먼저 페이지를 생성하세요.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="1562"/>
       <source>Choose an SVG file to open</source>
-      <translation>열 SVG 파일을 선택하십시오.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="445"/>
-      <source>All Files</source>
-      <translation>모든 파일</translation>
+      <translation>열 SVG 파일을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2043"/>
@@ -3487,11 +3457,11 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="2213"/>
       <location filename="../../CommandCreateDims.cpp" line="2228"/>
       <location filename="../../TaskDimension.cpp" line="551"/>
-      <location filename="../../CommandDecorate.cpp" line="438"/>
-      <location filename="../../CommandDecorate.cpp" line="444"/>
+      <location filename="../../CommandDecorate.cpp" line="439"/>
+      <location filename="../../CommandDecorate.cpp" line="445"/>
       <location filename="../../CommandAlign.cpp" line="53"/>
       <source>Incorrect Selection</source>
-      <translation>부정확한 선택</translation>
+      <translation>잘못된 선택</translation>
     </message>
     <message>
       <location filename="../../CommandAlign.cpp" line="54"/>
@@ -3508,7 +3478,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2254"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
-      <translation>선택된 에지는 B-스플라인 입니다. 값은 근사치가 될 것입니다. 계속할까요?</translation>
+      <translation>선택한 에지가 B-스플라인입니다. 값은 근사치가 됩니다. 계속하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2018"/>
@@ -3521,7 +3491,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandStack.cpp" line="250"/>
       <location filename="../../CommandStack.cpp" line="310"/>
       <source>Close the active task dialog and try again.</source>
-      <translation>활성 작업 대화 상자를 닫고 다시 시도하십시오.</translation>
+      <translation>활성 작업 대화 상자를 닫고 다시 시도하세요.</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="369"/>
@@ -3543,12 +3513,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="1460"/>
       <location filename="../../CommandExtensionPack.cpp" line="1753"/>
       <source>Close active task dialog and try again.</source>
-      <translation>활성화된 작업창을 닫고 다시 시도하세요.</translation>
+      <translation>활성 작업 대화 상자를 닫고 다시 시도하세요.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="889"/>
       <source>Selection is empty.</source>
-      <translation>선택 항목이 비어 있습니다..</translation>
+      <translation>선택 항목이 비어 있습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="912"/>
@@ -3563,7 +3533,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="970"/>
       <source>Please select a center for the circle.</source>
-      <translation>원의 중심을 선택하십시오.</translation>
+      <translation>원의 중심을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1866"/>
@@ -3583,7 +3553,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2219"/>
       <source>Select 2 straight lines</source>
-      <translation>직선 두 개를 선택하십시오.</translation>
+      <translation>직선 두 개를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="768"/>
@@ -3593,7 +3563,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="933"/>
       <location filename="../../CommandExtensionPack.cpp" line="969"/>
       <source>Wrong Selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation>잘못된 선택</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="312"/>
@@ -3644,7 +3614,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="849"/>
       <source>Selection not understood</source>
-      <translation>선택 항목을 이해할 수 없습니다.</translation>
+      <translation>선택 항목을 인식할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="940"/>
@@ -3654,7 +3624,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="962"/>
       <source>Select 2 vertices or 1 centerline</source>
-      <translation>꼭짓점 두 개 또는 중심선 하나를 선택하십시오.</translation>
+      <translation>꼭짓점 2개 또는 중심선 1개를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1053"/>
@@ -3675,12 +3645,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1155"/>
       <location filename="../../CommandAnnotate.cpp" line="1355"/>
       <source>Nothing selected</source>
-      <translation>아무것도 선택되지않음</translation>
+      <translation>아무것도 선택되지 않음</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1163"/>
       <source>At least 1 object in selection is not a part view</source>
-      <translation>선택 항목 중 하나 이상이 부품 보기가 아닙니다.</translation>
+      <translation>선택 항목 중 하나 이상이 Part 보기가 아닙니다.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1210"/>
@@ -3700,22 +3670,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1362"/>
       <source>No part views in this selection</source>
-      <translation>이 선택 항목에 부품 보기가 없습니다.</translation>
+      <translation>이 선택 항목에 Part 보기가 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1426"/>
       <source>Select exactly one leader line or one weld symbol</source>
-      <translation>지시선 하나 또는 용접 기호 하나를 정확히 선택하십시오.</translation>
+      <translation>지시선 하나 또는 용접 기호 하나를 정확히 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1485"/>
       <source>SurfaceFinishSymbols</source>
-      <translation>표면 마감 기호</translation>
+      <translation>표면 거칠기 기호</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1486"/>
       <source>Selected object is not a part view, nor a leader line</source>
-      <translation>선택한 객체는 부품 보기나 지시선이 아닙니다.</translation>
+      <translation>선택한 객체는 Part 보기가 아니며 지시선도 아닙니다.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="103"/>
@@ -3730,31 +3700,41 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="209"/>
       <source>Replace hatch?</source>
-      <translation>해칭을 바꾸시겠습니까?</translation>
+      <translation>해칭을 변경하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="210"/>
       <source>Some faces in the selection are already hatched. Replace?</source>
-      <translation>선택 항목의 일부 면은 이미 해칭되어 있습니다. 바꾸시겠습니까?</translation>
+      <translation>선택 항목의 일부 면에 이미 해칭이 적용되어 있습니다. 변경하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="418"/>
+      <location filename="../../CommandDecorate.cpp" line="359"/>
+      <source>Image files</source>
+      <translation>이미지 파일</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="363"/>
+      <source>Select an image file</source>
+      <translation>이미지 파일을 선택하세요.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="419"/>
       <source>Select a face first</source>
-      <translation>먼저 면을 선택하십시오.</translation>
+      <translation>먼저 면을 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="425"/>
+      <location filename="../../CommandDecorate.cpp" line="426"/>
       <source>No TechDraw object in selection</source>
       <translation>선택 항목에 TechDraw 객체가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="432"/>
+      <location filename="../../CommandDecorate.cpp" line="433"/>
       <source>Create a page to insert</source>
-      <translation>삽입할 페이지를 생성하십시오</translation>
+      <translation>삽입할 페이지를 생성하세요.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="439"/>
-      <location filename="../../CommandDecorate.cpp" line="445"/>
+      <location filename="../../CommandDecorate.cpp" line="440"/>
+      <location filename="../../CommandDecorate.cpp" line="446"/>
       <source>No faces to hatch in this selection</source>
       <translation>이 선택 항목에 해칭할 면이 없습니다.</translation>
     </message>
@@ -3779,52 +3759,36 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>이 기능은 페이지가 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="581"/>
-      <source>Unable to Write File</source>
-      <translation type="unfinished">Unable to Write File</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="582"/>
-      <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
-      <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="593"/>
-      <source>PDF (*.pdf)</source>
-      <translation>PDF (*.pdf)</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="594"/>
-      <source>All Files (*.*)</source>
-      <translation>모든 파일 (*.*)</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="597"/>
+      <location filename="../../MDIViewPage.cpp" line="600"/>
       <source>Export Page as PDF</source>
       <translation>페이지를 PDF로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="516"/>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
-      <source>All files (*.*)</source>
-      <translation>모든 파일 (*.*)</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="518"/>
+      <location filename="../../MDIViewPage.cpp" line="519"/>
       <source>Export page as SVG</source>
       <translation>페이지를 SVG로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="540"/>
+      <location filename="../../MDIViewPage.cpp" line="542"/>
       <source>Export page as DXF</source>
       <translation>페이지를 DXF로 내보내기</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="583"/>
+      <source>Unable to Write File</source>
+      <translation>파일을 쓸 수 없음</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="584"/>
+      <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
+      <translation>FreeCAD가 쓰기 위해 파일 %1을(를) 열 수 없습니다. 다른 프로그램에서 파일이 열려 있을 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <location filename="../../ViewProviderPage.cpp" line="217"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
       <source>Are you sure you want to continue?</source>
-      <translation>계속 진행 하시겠습니까?</translation>
+      <translation>계속 진행하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="237"/>
@@ -3849,17 +3813,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskRichAnno.cpp" line="376"/>
       <source>Rich text editor</source>
-      <translation>서식 있는 주석 편집기</translation>
+      <translation>서식 있는 텍스트 편집기</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="105"/>
       <source>New Cosmetic Vertex</source>
-      <translation>새 보조 선</translation>
+      <translation>새 보조 꼭짓점</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.cpp" line="59"/>
       <source>Select a symbol</source>
-      <translation>기호를 선택하십시오.</translation>
+      <translation>기호를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="230"/>
@@ -3889,7 +3853,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskSectionView.cpp" line="157"/>
       <source>Edit Section View</source>
-      <translation>단면도 편집</translation>
+      <translation>단면 보기 편집</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="136"/>
@@ -3899,7 +3863,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskComplexSection.cpp" line="177"/>
       <source>Edit Complex Section</source>
-      <translation>복합 단면도 편집</translation>
+      <translation>복합 단면 편집</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="228"/>
@@ -3921,7 +3885,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskComplexSection.cpp" line="525"/>
       <source>Check SectionNormal, Direction and/or XDirection.</source>
-      <translation>SectionNormal, Direction 및/또는 XDirection을 확인하십시오.</translation>
+      <translation>SectionNormal, Direction 및/또는 XDirection을 확인하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="638"/>
@@ -3942,12 +3906,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="111"/>
       <source>Create Cosmetic Line</source>
-      <translation>장식 선 만들기</translation>
+      <translation>보조 선 생성</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="153"/>
       <source>Edit Cosmetic Line</source>
-      <translation>장식 선 편집</translation>
+      <translation>보조 선 편집</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="95"/>
@@ -3963,7 +3927,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../ViewProviderDimension.cpp" line="137"/>
       <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <source>Edit %1</source>
-      <translation>수정</translation>
+      <translation>%1 수정</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="109"/>
@@ -4025,19 +3989,19 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionDims.cpp" line="907"/>
       <location filename="../../CommandExtensionDims.cpp" line="916"/>
       <source>TechDraw CascadeHorizDimension</source>
-      <translation>TechDraw 수평 치수 균등배치</translation>
+      <translation>TechDraw 수평 치수 균등 배치</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="973"/>
       <location filename="../../CommandExtensionDims.cpp" line="982"/>
       <source>TechDraw CascadeVertDimension</source>
-      <translation>TechDraw 수직 치수 균등배치</translation>
+      <translation>TechDraw 수직 치수 균등 배치</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1040"/>
       <location filename="../../CommandExtensionDims.cpp" line="1049"/>
       <source>TechDraw CascadeObliqueDimension</source>
-      <translation>TechDraw 경사 치수 균등배치</translation>
+      <translation>TechDraw 경사 치수 균등 배치</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1239"/>
@@ -4105,12 +4069,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionDims.cpp" line="2345"/>
       <location filename="../../CommandExtensionPack.cpp" line="2137"/>
       <source>No object selected</source>
-      <translation>선택된 대상체 없음</translation>
+      <translation>선택된 객체 없음</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="123"/>
       <source>Fewer than three circles selected</source>
-      <translation>세 개 미만의 원이 선택되었습니다.</translation>
+      <translation>3개 미만의 원이 선택되었습니다.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="197"/>
@@ -4127,12 +4091,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskDimension.cpp" line="552"/>
       <source>Select 2 vertices or 1 edge</source>
-      <translation>꼭짓점 두 개 또는 에지 하나를 선택하십시오.</translation>
+      <translation>꼭짓점 2개 또는 에지 1개를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="229"/>
       <source>Select a line group</source>
-      <translation>선 그룹을 선택하십시오.</translation>
+      <translation>선 그룹을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="240"/>
@@ -4203,7 +4167,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskDimRepair.cpp" line="123"/>
       <source>This will change the dimension&apos;s owner view. Continue?</source>
-      <translation>이 작업을 수행하면 치수가 속한 뷰가 변경됩니다. 계속하시겠습니까?</translation>
+      <translation>이 작업을 수행하면 치수가 속한 보기가 변경됩니다. 계속하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
@@ -4225,12 +4189,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="124"/>
       <source>Create Cosmetic Circle</source>
-      <translation>장식 원 만들기</translation>
+      <translation>보조 원 생성</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="173"/>
       <source>Edit Cosmetic Circle</source>
-      <translation>장식 원 편집</translation>
+      <translation>보조 원 편집</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="202"/>
@@ -4250,12 +4214,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskProjGroup.cpp" line="186"/>
       <source>New View</source>
-      <translation>새 뷰</translation>
+      <translation>새 보기</translation>
     </message>
     <message>
       <location filename="../../CommandHelpers.cpp" line="88"/>
       <source>No part view in selection</source>
-      <translation>선택 항목에 부품 보기가 없습니다.</translation>
+      <translation>선택 항목에 Part 보기가 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandHelpers.cpp" line="101"/>
@@ -4285,17 +4249,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskRichAnno.cpp" line="374"/>
       <source>Rich text creator</source>
-      <translation type="unfinished">Rich text creator</translation>
+      <translation>서식 있는 텍스트 작성기</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="54"/>
       <source>Click to update text</source>
-      <translation>텍스트를 업데이트하려면 클릭하십시오.</translation>
+      <translation>텍스트를 업데이트하려면 클릭하세요.</translation>
     </message>
     <message>
       <location filename="../../QGIRichAnno.cpp" line="400"/>
       <source>Resize Rich Annotation</source>
-      <translation type="unfinished">Resize Rich Annotation</translation>
+      <translation>서식 있는 주석 크기 조정</translation>
     </message>
   </context>
   <context>
@@ -4309,7 +4273,7 @@ it has a weld symbol that would become broken.</source>
     <message>
       <location filename="../../ViewProviderViewPart.cpp" line="378"/>
       <source>Close open dialog before deleting detail object</source>
-      <translation>상세 객체를 삭제하기 전에 열린 대화 상자를 닫으십시오.</translation>
+      <translation>상세 객체를 삭제하기 전에 열린 대화 상자를 닫으세요.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderViewPart.cpp" line="393"/>
@@ -4330,7 +4294,7 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
       <source>Object dependencies</source>
-      <translation>대상체 종속성</translation>
+      <translation>객체 종속성</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="151"/>
@@ -4395,12 +4359,12 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="20"/>
       <source>Crop</source>
-      <translation type="unfinished">Crop</translation>
+      <translation>자르기</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="47"/>
       <source>Crops the captured image to this height</source>
-      <translation type="unfinished">Crops the captured image to this height</translation>
+      <translation>캡처된 이미지를 이 높이로 자릅니다.</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="70"/>
@@ -4410,7 +4374,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="89"/>
       <source>Crops the captured image to this width</source>
-      <translation type="unfinished">Crops the captured image to this width</translation>
+      <translation>캡처된 이미지를 이 너비로 자릅니다.</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="108"/>
@@ -4431,7 +4395,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="130"/>
       <source>Solid</source>
-      <translation>고체</translation>
+      <translation>단색</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="135"/>
@@ -4441,7 +4405,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="152"/>
       <source>Sets the background color</source>
-      <translation type="unfinished">Sets the background color</translation>
+      <translation>배경색을 설정합니다.</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="159"/>
@@ -4560,7 +4524,7 @@ Angle, surface finish, root</source>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="219"/>
       <source>Flip sides</source>
-      <translation>반대쪽으로</translation>
+      <translation>측면 뒤집기</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="241"/>
@@ -4584,7 +4548,7 @@ at the kink in the leader line</source>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="256"/>
       <source>All around</source>
-      <translation>전주</translation>
+      <translation>전 둘레</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="277"/>
@@ -4629,12 +4593,12 @@ This directory will be used for the symbol selection.</source>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
       <source>FreeCAD could not determine which page to use. Select a page.</source>
-      <translation>FreeCAD가 사용할 페이지를 결정할 수 없습니다. 페이지를 선택하십시오.</translation>
+      <translation>FreeCAD가 사용할 페이지를 결정할 수 없습니다. 페이지를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="39"/>
       <source>Select a page that should be used</source>
-      <translation>사용할 페이지를 선택하십시오.</translation>
+      <translation>사용할 페이지를 선택하세요.</translation>
     </message>
   </context>
   <context>
@@ -4780,12 +4744,12 @@ For large scales, errors may occur due to excessive tiling.
 Increase the limit if necessary.</source>
       <translation>단일 면을 해칭하는 데 사용할 64×64 픽셀 SVG 타일 수를 제한합니다.
 큰 배율에서는 과도한 타일링으로 인해 오류가 발생할 수 있습니다.
-필요한 경우 제한을 늘리십시오.</translation>
+필요한 경우 제한을 늘리세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="511"/>
       <source>Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</source>
-      <translation>OS 및 탐색 스타일 키 바인딩의 일부 조합은 풍선 끌기와 보기 스냅 재정의의 기본 보조 키와 충돌할 수 있으므로 충돌하지 않는 키 바인딩을 선택하십시오.</translation>
+      <translation>OS 및 탐색 스타일 키 바인딩의 일부 조합은 풍선 끌기와 보기 스냅 재정의의 기본 보조 키와 충돌할 수 있으므로 충돌하지 않는 키 바인딩을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="525"/>
@@ -4837,7 +4801,7 @@ Increase the limit if necessary.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="522"/>
       <source>Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</source>
-      <translation>기본 보조 키를 사용하려면 이 상자를 선택하십시오. 다른 키 조합을 설정하려면 이 상자의 선택을 해제하십시오.</translation>
+      <translation>기본 보조 키를 사용하려면 이 상자를 선택하세요. 다른 키 조합을 설정하려면 이 상자의 선택을 해제하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="373"/>
@@ -4861,7 +4825,7 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="549"/>
       <source>Check this box to include the Alt key in the modifiers.</source>
-      <translation>보조 키에 Alt 키를 포함하려면 이 상자를 선택하십시오.</translation>
+      <translation>보조 키에 Alt 키를 포함하려면 이 상자를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="552"/>
@@ -4871,7 +4835,7 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="559"/>
       <source>Check this box to include the Shift key in the modifiers.</source>
-      <translation>보조 키에 Shift 키를 포함하려면 이 상자를 선택하십시오.</translation>
+      <translation>보조 키에 Shift 키를 포함하려면 이 상자를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="562"/>
@@ -4881,7 +4845,7 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="569"/>
       <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
-      <translation>보조 키에 Meta/Start/Super 키를 포함하려면 이 상자를 선택하십시오.</translation>
+      <translation>보조 키에 Meta/Start/Super 키를 포함하려면 이 상자를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="572"/>
@@ -4891,7 +4855,7 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="579"/>
       <source>Check this box to include the Control key in the modifiers.</source>
-      <translation>보조 키에 Control 키를 포함하려면 이 상자를 선택하십시오.</translation>
+      <translation>보조 키에 Control 키를 포함하려면 이 상자를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="582"/>
@@ -5030,7 +4994,7 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="375"/>
       <source>No break lines</source>
-      <translation>분할선이 없습니다.</translation>
+      <translation>분할선 없음</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="380"/>
@@ -5151,7 +5115,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="716"/>
       <source>Square</source>
-      <translation>정사각형</translation>
+      <translation>사각</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="628"/>
@@ -5171,7 +5135,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="466"/>
       <source>Length of balloon leader line kink</source>
-      <translation>풍선에 연결된 꺾인 지시선의 길이</translation>
+      <translation>풍선 지시선 꺾임 길이</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="321"/>
@@ -5181,7 +5145,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="67"/>
       <source>Show arc center marks in views</source>
-      <translation>보기에서 호 중심 표시 표시</translation>
+      <translation>보기에서 호 중심 표시</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
@@ -5196,7 +5160,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="721"/>
       <source>Flat</source>
-      <translation>평평한</translation>
+      <translation>평면</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="849"/>
@@ -5215,7 +5179,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="592"/>
       <source>Grid color</source>
-      <translation>격자선 색상</translation>
+      <translation>격자 색상</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="604"/>
@@ -5235,7 +5199,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="528"/>
       <source>Hidden line color</source>
-      <translation>숨은 선 색상</translation>
+      <translation>숨은선 색상</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="248"/>
@@ -5295,7 +5259,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
       <source>Leader line</source>
-      <translation>지시선 선</translation>
+      <translation>지시선</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="280"/>
@@ -5315,7 +5279,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="404"/>
       <source>Hatch</source>
-      <translation>선무늬</translation>
+      <translation>해칭</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
@@ -5325,7 +5289,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="327"/>
       <source>Hatch image color</source>
-      <translation>선무늬 색상</translation>
+      <translation>해칭 이미지 색상</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="565"/>
@@ -5335,7 +5299,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="367"/>
       <source>Geometric hatch pattern color</source>
-      <translation>기하학적 선무늬 색상</translation>
+      <translation>기하학적 해칭 패턴 색상</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="177"/>
@@ -5355,7 +5319,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="418"/>
       <source>Section line</source>
-      <translation>단면 선</translation>
+      <translation>단면선</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="425"/>
@@ -5561,7 +5525,7 @@ Multiplier of &apos;Font size&apos;</source>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="420"/>
       <source>Leave blank for automatic dimension format. Use %f, %g or %w specifiers to override.</source>
-      <translation>자동 치수 형식을 사용하려면 비워 두십시오. 재정의하려면 %f, %g 또는 %w 지정자를 사용하십시오.</translation>
+      <translation>자동 치수 형식을 사용하려면 비워 두세요. 재정의하려면 %f, %g 또는 %w 지정자를 사용하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="438"/>
@@ -5654,7 +5618,7 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="163"/>
       <source>Both</source>
-      <translation>둘다</translation>
+      <translation>둘 다</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="181"/>
@@ -5664,7 +5628,7 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="182"/>
       <source>Diameter</source>
-      <translation>직경</translation>
+      <translation>지름</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="183"/>
@@ -5705,7 +5669,7 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="220"/>
       <source>Font for labels</source>
-      <translation>이름표에 사용할 글꼴</translation>
+      <translation>레이블에 사용할 글꼴</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="239"/>
@@ -5845,7 +5809,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="564"/>
       <source>Starting directory for &apos;Insert Page From Template&apos; tool</source>
-      <translation>&apos;템플릿에서 페이지 삽입&apos; 도구의 시작 디렉터리</translation>
+      <translation>'템플릿에서 페이지 삽입' 도구의 시작 디렉터리</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="577"/>
@@ -5875,7 +5839,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="714"/>
       <source>Set &apos;Show grid&apos; property to true on new pages</source>
-      <translation>새 페이지에서 &apos;그리드 표시&apos; 속성을 true로 설정</translation>
+      <translation>새 페이지에서 '그리드 표시' 속성을 true로 설정</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="717"/>
@@ -5940,7 +5904,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
       <source>Snaps views into alignment when being dragged</source>
-      <translation>보기를 끌 때 정렬 위치에 맞춰 스냅합니다.</translation>
+      <translation>보기를 끌 때 정렬 위치에 맞춰 스냅됩니다.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="913"/>
@@ -5955,7 +5919,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="643"/>
       <source>Diamond</source>
-      <translation>다이아몬드</translation>
+      <translation>마름모</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="664"/>
@@ -5975,12 +5939,12 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="772"/>
       <source>Selection</source>
-      <translation>선택 항목</translation>
+      <translation>선택</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="786"/>
       <source>If enabled, clicking without Ctrl does not clear existing vertex/edge/face selection</source>
-      <translation>활성화하면 Ctrl 없이 클릭해도 기존 꼭짓점/에지/면 선택이 해제되지 않습니다.</translation>
+      <translation>활성화되면 Ctrl 없이 클릭해도 기존 꼭짓점/에지/면 선택이 해제되지 않습니다.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="816"/>
@@ -5990,17 +5954,17 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="902"/>
       <source>Snapping</source>
-      <translation>포착하기</translation>
+      <translation>스냅</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>
       <source>Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</source>
-      <translation>상세 보기 강조 표시를 끌 때 가장 가까운 꼭짓점에 스냅하려면 이 상자를 선택하십시오.</translation>
+      <translation>상세 보기 강조 표시를 끌 때 가장 가까운 꼭짓점에 스냅되도록 하려면 이 상자를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="948"/>
       <source>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</source>
-      <translation>보기를 끌 때 올바른 정렬 위치에서 보기 크기의 이 비율 이내에 있으면 정렬 위치로 스냅합니다.</translation>
+      <translation>보기를 끌 때 올바른 정렬 위치에서 보기 크기의 이 비율 이내에 있으면 정렬 위치로 스냅됩니다.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="980"/>
@@ -6015,7 +5979,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="994"/>
       <source>Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</source>
-      <translation>강조 표시의 스냅 반경을 제어합니다. 꼭짓점은 스냅 대상이 되려면 강조 표시 크기의 이 계수 배수 이내에 있어야 합니다.</translation>
+      <translation>강조 표시의 스냅 반경을 제어합니다. 꼭짓점이 스냅 대상이 되려면 강조 표시 크기의 이 계수 배수 이내에 있어야 합니다.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1042"/>
@@ -6050,7 +6014,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="140"/>
       <source>Shows hard and outline edges (always shown)</source>
-      <translation>하드 에지와 외곽 에지를 표시합니다(항상 표시).</translation>
+      <translation>하드 에지와 외곽 에지를 표시합니다(항상 표시됨).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="143"/>
@@ -6086,7 +6050,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="314"/>
       <source>Makes lines of equal parameterization</source>
-      <translation>등매개변수 선을 만듭니다.</translation>
+      <translation>등매개변수 선을 생성합니다.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="317"/>
@@ -6148,7 +6112,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="147"/>
       <source>Default scale for new pages</source>
-      <translation>새 페이지의 기본 척도</translation>
+      <translation>새 페이지의 기본 배율</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="73"/>
@@ -6163,7 +6127,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="107"/>
       <source>Default scale for new views</source>
-      <translation>새 보기의 기본 척도</translation>
+      <translation>새 보기의 기본 배율</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="117"/>
@@ -6183,7 +6147,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="184"/>
       <source>Default scale for views if &apos;View scale type&apos; is &apos;Custom&apos;</source>
-      <translation>&apos;뷰 축척 유형&apos;이 &apos;사용자 지정&apos;일 때 뷰의 기본 축척</translation>
+      <translation>&apos;보기 배율 유형&apos;이 &apos;사용자 정의&apos;일 때 보기의 기본 배율</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="214"/>
@@ -6193,7 +6157,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="226"/>
       <source>Uses the original (incorrect) scaling method for SVG symbols, Spreadsheet views and Draft views as used in v1.0 and earlier. Otherwise, a more accurate method will be used.</source>
-      <translation>v1.0 및 이전 버전에서 사용한 SVG 기호, 스프레드시트 보기, Draft 보기의 기존(부정확한) 배율 방식을 사용합니다. 그렇지 않으면 더 정확한 방법을 사용합니다.</translation>
+      <translation>v1.0 및 이전 버전에서 사용된 SVG 기호, 스프레드시트 보기, Draft 보기의 기존(부정확한) 배율 방식을 사용합니다. 그렇지 않으면 더 정확한 방법이 사용됩니다.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="229"/>
@@ -6266,12 +6230,12 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="97"/>
       <source>Toggle &amp;Grid</source>
-      <translation type="unfinished">Toggle &amp;Grid</translation>
+      <translation>격자 전환(&amp;G)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="100"/>
       <source>&amp;Export SVG</source>
-      <translation>SVG로 내보내기</translation>
+      <translation>SVG로 내보내기(&amp;E)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="104"/>
@@ -6286,7 +6250,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Print All Pages</source>
-      <translation>모든 페이지를 출력</translation>
+      <translation>모든 페이지 출력</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="409"/>
@@ -6313,9 +6277,9 @@ Do you want to continue?</source>
 계속하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1139"/>
+      <location filename="../../MDIViewPage.cpp" line="1142"/>
       <source>Selected:</source>
-      <translation>선택:</translation>
+      <translation>선택됨:</translation>
     </message>
   </context>
   <context>
@@ -6328,7 +6292,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../SymbolChooser.ui" line="26"/>
       <source>Select a symbol that should be used</source>
-      <translation>사용할 기호를 선택하십시오.</translation>
+      <translation>사용할 기호를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.ui" line="48"/>
@@ -6356,7 +6320,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="36"/>
       <source>Text to be displayed</source>
-      <translation>풍선 안에 표시되는 글자</translation>
+      <translation>표시될 텍스트</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="50"/>
@@ -6376,12 +6340,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
       <source>Bubble Appearance</source>
-      <translation type="unfinished">Bubble Appearance</translation>
+      <translation>풍선 외형</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="118"/>
       <source>Shape of the balloon bubble</source>
-      <translation>풍선의 모양</translation>
+      <translation>풍선 버블의 모양</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="122"/>
@@ -6416,7 +6380,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="176"/>
       <source>Rectangle</source>
-      <translation>사각형</translation>
+      <translation>직사각형</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="185"/>
@@ -6431,7 +6395,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="210"/>
       <source>Bubble shape scale factor</source>
-      <translation>풍선 크기의 배율</translation>
+      <translation>풍선 모양 배율 계수</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="29"/>
@@ -6441,7 +6405,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="43"/>
       <source>Text color</source>
-      <translation>문자 색</translation>
+      <translation>텍스트 색상</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="111"/>
@@ -6451,12 +6415,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="229"/>
       <source>Leader Line</source>
-      <translation>지시선 선</translation>
+      <translation>지시선</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="291"/>
       <source>Kink length</source>
-      <translation type="unfinished">Kink length</translation>
+      <translation>꺾임 길이</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="298"/>
@@ -6466,22 +6430,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="305"/>
       <source>End symbol for the balloon line</source>
-      <translation>풍선 주석의 지시선 끝 기호</translation>
+      <translation>풍선 지시선의 끝 기호</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="247"/>
       <source>End symbol scale factor</source>
-      <translation>지시선 끝 기호의 배율</translation>
+      <translation>끝 기호 배율 계수</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="275"/>
       <source>Leader line width</source>
-      <translation>지시선의 선 두께</translation>
+      <translation>지시선 두께</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="312"/>
       <source>Symbol scale</source>
-      <translation type="unfinished">Symbol scale</translation>
+      <translation>기호 배율</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="319"/>
@@ -6491,7 +6455,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="338"/>
       <source>Length of balloon leader line kink</source>
-      <translation>풍선에 연결된 꺾인 지시선의 길이</translation>
+      <translation>풍선 지시선 꺾임의 길이</translation>
     </message>
   </context>
   <context>
@@ -6524,17 +6488,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="261"/>
       <source>Rotate</source>
-      <translation>회전하기</translation>
+      <translation>회전</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="274"/>
       <source>Rotate line +CCW or -CW</source>
-      <translation>선을 +반시계 방향 또는 -시계 방향으로 회전</translation>
+      <translation>선을 +반시계 또는 -시계 방향으로 회전</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="303"/>
       <source>Make the line a little longer.</source>
-      <translation>선을 조금 더 길게 만듭니다.</translation>
+      <translation>선을 약간 더 길게 만듭니다.</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="146"/>
@@ -6577,7 +6541,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="177"/>
       <source>Weight</source>
-      <translation>가중치</translation>
+      <translation>두께</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="184"/>
@@ -6607,7 +6571,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="290"/>
       <source>Extend by</source>
-      <translation>다음만큼 연장</translation>
+      <translation>연장량</translation>
     </message>
   </context>
   <context>
@@ -6620,7 +6584,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="36"/>
       <source>Object Selection</source>
-      <translation>대상체 선택</translation>
+      <translation>객체 선택</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="44"/>
@@ -6636,7 +6600,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="59"/>
       <source>Profile object</source>
-      <translation>윤곽 대상체</translation>
+      <translation>프로파일 객체</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="93"/>
@@ -6646,7 +6610,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="107"/>
       <source>Scale Page/Auto/Custom</source>
-      <translation>배율 페이지/자동/사용자 지정</translation>
+      <translation>배율 페이지/자동/사용자 정의</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="111"/>
@@ -6681,7 +6645,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="204"/>
       <source>No parallel</source>
-      <translation>평행 요소가 없습니다.</translation>
+      <translation>평행 없음</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="232"/>
@@ -6691,38 +6655,38 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="274"/>
       <source>Preset view direction looking up</source>
-      <translation>위쪽을 보는 프리셋 보기 방향</translation>
+      <translation>아래에서 위쪽을 보는 프리셋 보기 방향</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="304"/>
       <source>Preset view direction looking down</source>
-      <translation>아래쪽을 보는 프리셋 보기 방향</translation>
+      <translation>위에서 아래쪽을 보는 프리셋 보기 방향</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="331"/>
       <source>Preset view direction looking left</source>
-      <translation>왼쪽을 보는 프리셋 보기 방향</translation>
+      <translation>오른쪽에서 왼쪽을 보는 프리셋 보기 방향</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="358"/>
       <source>Preset view direction looking right</source>
-      <translation>오른쪽을 보는 프리셋 보기 방향</translation>
+      <translation>왼쪽에서 오른쪽을 보는 프리셋 보기 방향</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="395"/>
       <source>Check to update display after every property change</source>
-      <translation>속성이 바뀔 때마다 표시를 업데이트하려면 선택하십시오.</translation>
+      <translation>속성이 변경될 때마다 표시를 업데이트하려면 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="405"/>
       <source>Rebuild display now. May be slow for complex models</source>
-      <translation>지금 표시를 다시 빌드합니다. 복잡한 모델에서는 느릴 수 있습니다.</translation>
+      <translation>지금 표시를 다시 빌드합니다. 복잡한 모델에서는 느려질 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="187"/>
       <location filename="../../TaskComplexSection.ui" line="194"/>
       <source>Offset</source>
-      <translation>편차</translation>
+      <translation>오프셋</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="199"/>
@@ -6797,7 +6761,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosVertex.ui" line="95"/>
       <source>Position from the view center</source>
-      <translation>보기 중심에서 위치 지정</translation>
+      <translation>보기 중심에서의 위치</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="98"/>
@@ -6807,7 +6771,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="170"/>
       <source>Pick a point for cosmetic vertex</source>
-      <translation>보조 꼭짓점을 위한 점을 찍습니다</translation>
+      <translation>보조 꼭짓점을 위한 점을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="156"/>
@@ -6818,17 +6782,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="173"/>
       <source>Escape Picking</source>
-      <translation type="unfinished">Escape Picking</translation>
+      <translation>점 찍기 취소</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="201"/>
       <source>Left click to set a point</source>
-      <translation>왼쪽 클릭으로 점을 설정</translation>
+      <translation>왼쪽 클릭으로 점을 설정하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="276"/>
       <source>In progress edit abandoned. Start over.</source>
-      <translation>진행 중인 편집을 중단했습니다. 처음부터 다시 시작하십시오.</translation>
+      <translation>진행 중인 편집이 중단되었습니다. 처음부터 다시 시작하세요.</translation>
     </message>
   </context>
   <context>
@@ -6836,7 +6800,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="26"/>
       <source>Cosmetic Line</source>
-      <translation>장식 선</translation>
+      <translation>보조 선</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="34"/>
@@ -6916,7 +6880,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="156"/>
       <source>Position</source>
-      <translation>위치</translation>
+      <translation>위치도</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="166"/>
@@ -6926,7 +6890,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="176"/>
       <source>Symmetry</source>
-      <translation>대칭</translation>
+      <translation>대칭도</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="188"/>
@@ -7061,7 +7025,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="428"/>
       <source>Diameter</source>
-      <translation>직경</translation>
+      <translation>지름</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="438"/>
@@ -7086,7 +7050,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="479"/>
       <source>Degree</source>
-      <translation>차수</translation>
+      <translation>도</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="521"/>
@@ -7190,7 +7154,7 @@ Do you want to continue?</source>
       <location filename="../../TaskDetail.ui" line="89"/>
       <location filename="../../TaskDetail.cpp" line="252"/>
       <source>Drag Highlight</source>
-      <translation>강조표시 잡아 끌기</translation>
+      <translation>강조 표시 끌기</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="242"/>
@@ -7205,7 +7169,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="86"/>
       <source>Enables dragging of the detail highlight to a new position</source>
-      <translation>상세 강조 표시를 새 위치로 끌 수 있게 합니다.</translation>
+      <translation>상세 강조 표시를 새 위치로 끌 수 있도록 설정합니다.</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="120"/>
@@ -7215,7 +7179,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="127"/>
       <source>Reference label</source>
-      <translation>참조 이름표</translation>
+      <translation>참조 레이블</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="140"/>
@@ -7225,7 +7189,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="168"/>
       <source>Y-position of detail highlight within view</source>
-      <translation>보기 내부 상세 강조 표시의 Y 위치</translation>
+      <translation>보기 내 상세 강조 표시의 Y 위치</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="184"/>
@@ -7240,7 +7204,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="229"/>
       <source>X position of detail highlight within view</source>
-      <translation>보기 내부 상세 강조 표시의 X 위치</translation>
+      <translation>보기 내 상세 강조 표시의 X 위치</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="256"/>
@@ -7289,17 +7253,17 @@ Custom: custom scale factor is used</source>
     <message>
       <location filename="../../TaskDimension.ui" line="222"/>
       <source>Reverses usual direction of dimension line terminators</source>
-      <translation>치수선 종단 기호의 일반 방향을 반대로 합니다.</translation>
+      <translation>치수선 종단 기호의 일반적인 방향을 반전합니다.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="95"/>
       <source>Assign same value to over and under tolerance</source>
-      <translation>상한 및 하한 공차에 같은 값 할당</translation>
+      <translation>상한 및 하한 공차에 동일한 값 할당</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="35"/>
       <source>Text to be displayed</source>
-      <translation>풍선 안에 표시되는 글자</translation>
+      <translation>표시될 텍스트</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="105"/>
@@ -7324,7 +7288,7 @@ Custom: custom scale factor is used</source>
     <message>
       <location filename="../../TaskDimension.ui" line="298"/>
       <source>Standard and style according to which dimension is drawn</source>
-      <translation>치수를 그릴 때 따르는 표준과 스타일</translation>
+      <translation>치수를 그릴 때 적용되는 표준과 스타일</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="136"/>
@@ -7334,7 +7298,7 @@ Custom: custom scale factor is used</source>
     <message>
       <location filename="../../TaskDimension.ui" line="139"/>
       <source>Theoretically exact</source>
-      <translation>이론적으로 정확함</translation>
+      <translation>이론적으로 정확한</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="98"/>
@@ -7352,7 +7316,7 @@ Custom: custom scale factor is used</source>
 If &apos;Equal tolerance&apos; is checked this is also
 the negated value for &apos;Undertolerance&apos;.</source>
       <translation>상한 공차 값
-&apos;대칭 공차&apos;를 선택하면 이 값은 
+&apos;대칭 공차&apos;를 선택하면 이 값은
 &apos;하한 공차&apos;의 음수 값으로도 사용됩니다.</translation>
     </message>
     <message>
@@ -7377,7 +7341,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskDimension.ui" line="42"/>
       <source>Sets use of &apos;Format spec&apos; instead of the dimension value</source>
-      <translation>치수 값 대신 &apos;형식 지정&apos;을 사용하도록 지정</translation>
+      <translation>치수 값 대신 &apos;형식 지정&apos;을 사용하도록 설정</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="45"/>
@@ -7562,12 +7526,12 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="59"/>
       <source>The PAT file containing the pattern</source>
-      <translation>패턴이 들어 있는 PAT 파일</translation>
+      <translation>패턴이 포함된 PAT 파일</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="70"/>
       <source>Pattern scale</source>
-      <translation>계단식 패턴</translation>
+      <translation>패턴 배율</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="97"/>
@@ -7577,7 +7541,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="104"/>
       <source>Offset X</source>
-      <translation>편차 X</translation>
+      <translation>오프셋 X</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="117"/>
@@ -7597,17 +7561,17 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="188"/>
       <source>Line color</source>
-      <translation>선 색</translation>
+      <translation>선 색상</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="223"/>
       <source>Offset Y</source>
-      <translation>편차 Y</translation>
+      <translation>오프셋 Y</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="201"/>
       <source>Enlarges/shrinks the pattern</source>
-      <translation>패턴 확대/축소</translation>
+      <translation>패턴을 확대/축소합니다.</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="90"/>
@@ -7625,7 +7589,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
       <source>Select an SVG or bitmap file</source>
-      <translation>SVG 또는 비트맵 파일을 선택하십시오.</translation>
+      <translation>SVG 또는 비트맵 파일을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="41"/>
@@ -7635,7 +7599,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskHatch.ui" line="55"/>
       <source>Choose an SVG or bitmap file as a pattern</source>
-      <translation>패턴으로 사용할 SVG 또는 비트맵 파일을 선택하십시오.</translation>
+      <translation>패턴으로 사용할 SVG 또는 비트맵 파일을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="62"/>
@@ -7645,7 +7609,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskHatch.ui" line="85"/>
       <source>Enlarges/shrinks the pattern (SVG only)</source>
-      <translation>패턴 확대/축소(SVG만)</translation>
+      <translation>패턴을 확대/축소합니다(SVG만 해당).</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="107"/>
@@ -7655,12 +7619,12 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskHatch.ui" line="114"/>
       <source>Offset X</source>
-      <translation>편차 X</translation>
+      <translation>오프셋 X</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
       <source>Color of pattern lines (SVG only)</source>
-      <translation>패턴 선 색상(SVG만)</translation>
+      <translation>패턴 선 색상(SVG만 해당)</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="140"/>
@@ -7680,7 +7644,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskHatch.ui" line="173"/>
       <source>Offset Y</source>
-      <translation>편차 Y</translation>
+      <translation>오프셋 Y</translation>
     </message>
   </context>
   <context>
@@ -7688,12 +7652,12 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="26"/>
       <source>Leader Line</source>
-      <translation>지시선 선</translation>
+      <translation>지시선</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="93"/>
       <source>Discard Changes</source>
-      <translation>변경 내용 취소</translation>
+      <translation>변경 내용 버리기</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="118"/>
@@ -7713,7 +7677,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
 then at least one more point.
 You can pick further points to get line segments.</source>
       <translation>먼저 선의 시작점을 선택한 다음,
-점 하나 이상을 더 선택하십시오.
+점 하나 이상을 더 선택하세요.
 추가 점을 선택하여 선 세그먼트를 만들 수 있습니다.</translation>
     </message>
     <message>
@@ -7734,7 +7698,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="212"/>
       <source>Line color</source>
-      <translation>선 색</translation>
+      <translation>선 색상</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="226"/>
@@ -7759,7 +7723,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="278"/>
       <source>No line</source>
-      <translation>선이 없습니다.</translation>
+      <translation>없음</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="287"/>
@@ -7790,12 +7754,12 @@ You can pick further points to get line segments.</source>
       <location filename="../../TaskLeaderLine.cpp" line="530"/>
       <location filename="../../TaskLeaderLine.cpp" line="582"/>
       <source>Pick a starting point for leader line</source>
-      <translation>지시선의 시작점을 찍으세요</translation>
+      <translation>지시선의 시작점을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="565"/>
       <source>Click and drag markers to adjust leader line</source>
-      <translation>마커를 클릭하여 끌어서 지시선을 조정합니다.</translation>
+      <translation>마커를 클릭하여 끌어서 지시선을 조정하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="272"/>
@@ -7804,33 +7768,33 @@ You can pick further points to get line segments.</source>
       <location filename="../../TaskLeaderLine.cpp" line="757"/>
       <location filename="../../TaskLeaderLine.cpp" line="779"/>
       <source>Edit Points</source>
-      <translation type="unfinished">Edit Points</translation>
+      <translation>점 편집</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="533"/>
       <source>Save Points</source>
-      <translation type="unfinished">Save Points</translation>
+      <translation>점 저장</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="568"/>
       <location filename="../../TaskLeaderLine.cpp" line="585"/>
       <source>Save Changes</source>
-      <translation type="unfinished">Save Changes</translation>
+      <translation>변경 내용 저장</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="616"/>
       <source>Left click to set a point</source>
-      <translation>왼쪽 클릭으로 점을 설정</translation>
+      <translation>왼쪽 클릭으로 점을 설정하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="642"/>
       <source>Press OK or Cancel to continue</source>
-      <translation>계속하려면 확인 또는 취소를 누르십시오.</translation>
+      <translation>계속하려면 확인 또는 취소를 누르세요.</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="774"/>
       <source>In progress edit abandoned. Start over.</source>
-      <translation>진행 중인 편집을 중단했습니다. 처음부터 다시 시작하십시오.</translation>
+      <translation>진행 중인 편집이 중단되었습니다. 처음부터 다시 시작하세요.</translation>
     </message>
   </context>
   <context>
@@ -7838,7 +7802,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLineDecor.ui" line="26"/>
       <source>Line Decoration</source>
-      <translation>선 꾸미기</translation>
+      <translation>선 장식</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="92"/>
@@ -7848,7 +7812,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLineDecor.ui" line="99"/>
       <source>The use of the Qt line style is being phased out. Use a standard line style instead.</source>
-      <translation>Qt 선 스타일 사용은 점차 중단되고 있습니다. 대신 표준 선 스타일을 사용하십시오.</translation>
+      <translation>Qt 선 스타일 사용은 점차 중단되고 있습니다. 대신 표준 선 스타일을 사용하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="145"/>
@@ -7873,7 +7837,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLineDecor.ui" line="45"/>
       <source>Weight</source>
-      <translation>가중치</translation>
+      <translation>두께</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="158"/>
@@ -7883,12 +7847,12 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLineDecor.ui" line="72"/>
       <source>False</source>
-      <translation>거짓</translation>
+      <translation>끔</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="77"/>
       <source>True</source>
-      <translation>참</translation>
+      <translation>켜기</translation>
     </message>
   </context>
   <context>
@@ -7926,7 +7890,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
       <source>To these dimensions</source>
-      <translation>이 치수들에</translation>
+      <translation>다음 치수에 연결</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.cpp" line="55"/>
@@ -7980,7 +7944,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="41"/>
       <source>Scale Page/Auto/Custom</source>
-      <translation>배율 페이지/자동/사용자 지정</translation>
+      <translation>배율 페이지/자동/사용자 정의</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="50"/>
@@ -8035,7 +7999,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="303"/>
       <source>Sets the direction of the camera, or selected face if any, as the primary direction</source>
-      <translation>카메라 방향 또는 선택한 면이 있으면 그 방향을 주 방향으로 설정합니다.</translation>
+      <translation>카메라 방향 또는 선택한 면이 있으면 해당 방향을 주 방향으로 설정합니다.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="333"/>
@@ -8207,7 +8171,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskProjection.ui" line="62"/>
       <source>Visible isoparameters</source>
-      <translation>보이는 등매개변수</translation>
+      <translation>표시되는 등매개변수</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="72"/>
@@ -8232,7 +8196,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskProjection.ui" line="100"/>
       <source>Hidden iso-parameters</source>
-      <translation>숨겨진 iso-매개변수</translation>
+      <translation>숨겨진 등매개변수</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.cpp" line="62"/>
@@ -8242,7 +8206,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskProjection.cpp" line="63"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation>현재 작업을 완료할 활성 문서가 없습니다</translation>
+      <translation>현재 작업을 완료할 활성 문서가 없습니다.</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.cpp" line="68"/>
@@ -8252,7 +8216,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskProjection.cpp" line="69"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation>현재 작업을 완료할 활성 뷰가 없습니다</translation>
+      <translation>현재 작업을 완료할 활성 보기가 없습니다.</translation>
     </message>
   </context>
   <context>
@@ -8288,7 +8252,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskRichAnno.ui" line="14"/>
       <source>Rich Text Annotation Block</source>
-      <translation>서식 있는 주석 블럭</translation>
+      <translation>서식 있는 주석 블록</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="24"/>
@@ -8303,7 +8267,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskRichAnno.ui" line="162"/>
       <source>Line color</source>
-      <translation>선 색</translation>
+      <translation>선 색상</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="38"/>
@@ -8313,7 +8277,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskRichAnno.ui" line="45"/>
       <source>Maximal width of the annotation block, if -1 then automatic width</source>
-      <translation type="unfinished">Maximal width of the annotation block, if -1 then automatic width</translation>
+      <translation>주석 블록의 최대 너비, -1이면 자동 너비</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="61"/>
@@ -8406,7 +8370,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskSectionView.ui" line="94"/>
       <source>Scale Page/Auto/Custom</source>
-      <translation>배율 페이지/자동/사용자 지정</translation>
+      <translation>배율 페이지/자동/사용자 정의</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="98"/>
@@ -8441,22 +8405,22 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskSectionView.ui" line="167"/>
       <source>Preset view direction looking up</source>
-      <translation>위쪽을 보는 프리셋 보기 방향</translation>
+      <translation>아래에서 위쪽을 보는 프리셋 보기 방향</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="203"/>
       <source>Preset view direction looking down</source>
-      <translation>아래쪽을 보는 프리셋 보기 방향</translation>
+      <translation>위에서 아래쪽을 보는 프리셋 보기 방향</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="233"/>
       <source>Preset view direction looking left</source>
-      <translation>왼쪽을 보는 프리셋 보기 방향</translation>
+      <translation>오른쪽에서 왼쪽을 보는 프리셋 보기 방향</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="263"/>
       <source>Preset view direction looking right</source>
-      <translation>오른쪽을 보는 프리셋 보기 방향</translation>
+      <translation>왼쪽에서 오른쪽을 보는 프리셋 보기 방향</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="295"/>
@@ -8466,12 +8430,12 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskSectionView.ui" line="455"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rebuild display now. May be slow for complex models.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;지금 표시를 다시 빌드합니다. 복잡한 모델에서는 느릴 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;지금 표시를 다시 빌드합니다. 복잡한 모델에서는 느려질 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="465"/>
       <source>Check to update display after every property change</source>
-      <translation>속성이 바뀔 때마다 표시를 업데이트하려면 선택하십시오.</translation>
+      <translation>속성이 변경될 때마다 표시를 업데이트하려면 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="468"/>
@@ -8497,7 +8461,7 @@ using the given X/Y spacings</source>
       <location filename="../../TaskSectionView.cpp" line="426"/>
       <source>%n update(s) pending</source>
       <translation>
-        <numerusform>%n 개 업데이트 보류 중</numerusform>
+        <numerusform>%n개 업데이트 보류 중</numerusform>
       </translation>
     </message>
     <message>
@@ -8531,32 +8495,32 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="55"/>
       <source>Thin 0,18</source>
-      <translation>가는 선 0,18</translation>
+      <translation>가는 선 0.18</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="68"/>
       <source>Middle 0,35</source>
-      <translation>굵은 선 0,35</translation>
+      <translation>중간 선 0.35</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="84"/>
       <source>Thick 0,70</source>
-      <translation>아주 굵은 선 0,70</translation>
+      <translation>굵은 선 0.70</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="104"/>
       <source>Line color</source>
-      <translation>선 색</translation>
+      <translation>선 색상</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="124"/>
       <source>Cascade spacing</source>
-      <translation>계단식 간격</translation>
+      <translation>균등 배치 간격</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="138"/>
       <source>Delta distance</source>
-      <translation>델타 거리</translation>
+      <translation>변위 거리</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.cpp" line="114"/>
@@ -8570,7 +8534,7 @@ using the given X/Y spacings</source>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="26"/>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="248"/>
       <source>Surface Finish Symbols</source>
-      <translation>표면 마감 기호</translation>
+      <translation>표면 거칠기 기호</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="61"/>
@@ -8630,12 +8594,12 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="37"/>
       <source>Shaft fit</source>
-      <translation>축 끼워 맞춤</translation>
+      <translation>축 끼워맞춤</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="47"/>
       <source>Hole fit</source>
-      <translation>구멍 끼워 맞춤</translation>
+      <translation>구멍 끼워맞춤</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="145"/>
@@ -8661,7 +8625,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="382"/>
       <source>other</source>
-      <translation>기타</translation>
+      <translation>반대쪽</translation>
     </message>
   </context>
   <context>
@@ -8669,7 +8633,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../DlgTemplateField.ui" line="17"/>
       <source>Change Editable Field</source>
-      <translation>편집 가능한 필드를 변경합니다.</translation>
+      <translation>편집 가능한 필드 변경</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="28"/>
@@ -8679,7 +8643,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../DlgTemplateField.ui" line="42"/>
       <source>Value</source>
-      <translation>보기</translation>
+      <translation>값</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="52"/>
@@ -8694,7 +8658,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
-      <translation>텍스트 라벨</translation>
+      <translation>텍스트 레이블</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>
@@ -8755,7 +8719,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>TechDraw Attributes</source>
-      <translation>기술도면 속성</translation>
+      <translation>TechDraw 속성</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
@@ -8835,7 +8799,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Hatching</source>
-      <translation>선무늬 넣기</translation>
+      <translation>해칭</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -8868,7 +8832,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="84"/>
       <source>Select view to move from list.</source>
-      <translation>목록에서 이동할 보기를 선택하십시오.</translation>
+      <translation>목록에서 이동할 보기를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="85"/>
@@ -8878,12 +8842,12 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="107"/>
       <source>Select from page.</source>
-      <translation>페이지에서 선택하십시오.</translation>
+      <translation>원본 페이지를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="130"/>
       <source>Select to page.</source>
-      <translation>대상 페이지를 선택하십시오.</translation>
+      <translation>대상 페이지를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="108"/>
@@ -8917,17 +8881,17 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="85"/>
       <source>Select view to share from list.</source>
-      <translation>목록에서 공유할 보기를 선택하십시오.</translation>
+      <translation>목록에서 공유할 보기를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="108"/>
       <source>Select from page.</source>
-      <translation>페이지에서 선택하십시오.</translation>
+      <translation>원본 페이지를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="132"/>
       <source>Select to page.</source>
-      <translation>대상 페이지를 선택하십시오.</translation>
+      <translation>대상 페이지를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="86"/>
@@ -8961,7 +8925,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskDimRepair.ui" line="35"/>
       <source>Label</source>
-      <translation>이름표</translation>
+      <translation>레이블</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="119"/>
@@ -8981,12 +8945,12 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskDimRepair.ui" line="86"/>
       <source>Replace References With Current Selection</source>
-      <translation type="unfinished">Replace References With Current Selection</translation>
+      <translation>현재 선택으로 참조 교체</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="106"/>
       <source>Object</source>
-      <translation>대상체</translation>
+      <translation>객체</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="138"/>
@@ -9009,12 +8973,12 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2124"/>
       <source>Repair Dimension References</source>
-      <translation>Repair 치수 References</translation>
+      <translation>치수 참조 복구</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2125"/>
       <source>Repairs broken or incorrect dimension references</source>
-      <translation>Repairs broken 또는 incorrect 치수 references</translation>
+      <translation>손상되었거나 잘못된 치수 참조를 복구합니다.</translation>
     </message>
   </context>
   <context>
@@ -9027,17 +8991,17 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="55"/>
       <source>Adds a hole or shaft fit to a selected length or diameter dimension</source>
-      <translation>a 선택한 length 또는 diameter 치수에 구멍 또는 축 끼워맞춤을 추가합니다.</translation>
+      <translation>선택한 길이 또는 지름 치수에 구멍 또는 축 끼워맞춤을 추가합니다.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="70"/>
       <source>Add a hole or shaft fit to a dimension</source>
-      <translation>치수에 구멍 또는 축 끼워맞춤 추가</translation>
+      <translation>치수에 구멍 또는 축 끼워맞춤을 추가</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="74"/>
       <source>Select one length dimension or diameter dimension and retry</source>
-      <translation>길이 치수 하나 또는 지름 치수 하나를 선택한 뒤 다시 시도하십시오.</translation>
+      <translation>길이 치수 또는 지름 치수를 하나 선택한 뒤 다시 시도하세요.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="43"/>
@@ -9075,7 +9039,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="33"/>
       <source>Tick</source>
-      <translation>두꺼움</translation>
+      <translation>눈금</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="34"/>
@@ -9095,7 +9059,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="36"/>
       <source>Fork</source>
-      <translation>포크</translation>
+      <translation>갈래</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="38"/>
@@ -9162,12 +9126,12 @@ using the given X/Y spacings</source>
       <location filename="../../ViewProviderBalloon.cpp" line="187"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
-      <translation>현재 작업창이 열려 있으므로 이 풍선을 삭제할 수 없습니다.</translation>
+      <translation>작업 대화 상자가 열려 있으므로 이 풍선 주석을 삭제할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBalloon.cpp" line="190"/>
       <source>Can Not Delete</source>
-      <translation>삭제 할 수 없음</translation>
+      <translation>삭제할 수 없음</translation>
     </message>
   </context>
   <context>
@@ -9247,7 +9211,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Image</source>
-      <translation>화상</translation>
+      <translation>이미지</translation>
     </message>
   </context>
   <context>
@@ -9303,7 +9267,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Hatch</source>
-      <translation>선무늬</translation>
+      <translation>해칭</translation>
     </message>
   </context>
   <context>
@@ -9311,7 +9275,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>GeomHatch</source>
-      <translation>기하학적 선무늬</translation>
+      <translation>기하학적 해칭</translation>
     </message>
   </context>
   <context>
@@ -9319,7 +9283,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="26"/>
       <source>Cosmetic Circle</source>
-      <translation>장식 원</translation>
+      <translation>보조 원</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="34"/>
@@ -9329,7 +9293,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="61"/>
       <source>Treats the center point as a 2D point within the parent view. The Z coordinate is ignored.</source>
-      <translation>Treats 중심점 as a 2D 점 within parent 보기. 해당 Z 좌표 입니다 ignored.</translation>
+      <translation>중심점을 상위 보기 내의 2D 점으로 처리합니다. Z 좌표는 무시됩니다.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="64"/>
@@ -9339,7 +9303,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="77"/>
       <source>Treats the center point as a 3D point and project it onto the parent view</source>
-      <translation>Treats 중심점 as a 3D 점 및 project it on대상 parent 보기</translation>
+      <translation>중심점을 3D 점으로 처리하고 상위 보기로 투영합니다.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="80"/>
@@ -9349,7 +9313,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="90"/>
       <source>Circle center</source>
-      <translation>원 중심</translation>
+      <translation>원의 중심</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="147"/>
@@ -9379,27 +9343,27 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="215"/>
       <source>Uses angles and create a circular arc</source>
-      <translation>Uses 각도 및 생성 a circular 호</translation>
+      <translation>각도를 사용하여 원호를 생성합니다.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="218"/>
       <source>Arc of circle</source>
-      <translation>원의 호</translation>
+      <translation>원호</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="191"/>
       <source>Clockwise Angle</source>
-      <translation>시계방향 각도</translation>
+      <translation>시계 방향 각도</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="171"/>
       <source>Start angle (conventional) of arc in degrees.</source>
-      <translation>Start 각도 (conventional) of 호 in degrees.</translation>
+      <translation>호의 시작 각도(관례형, 도 단위).</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="201"/>
       <source>Radius must be non-zero positive number</source>
-      <translation>반지름은 0이 아닌 양수여야 합니다</translation>
+      <translation>반지름은 0이 아닌 양수여야 합니다.</translation>
     </message>
   </context>
   <context>
@@ -9419,7 +9383,7 @@ there is an open task dialog.</source>
       <location filename="../../CommandExtensionPack.cpp" line="861"/>
       <location filename="../../CommandExtensionPack.cpp" line="1285"/>
       <source>Adds a cosmetic circle based on a selected centerpoint</source>
-      <translation>a 선택한 중심점를 기준으로 cosmetic 원을 추가합니다.</translation>
+      <translation>선택한 중심점을 기준으로 보조 원을 추가합니다.</translation>
     </message>
   </context>
   <context>
@@ -9450,7 +9414,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="31"/>
       <source>Position from the view center</source>
-      <translation>보기 중심에서 위치 지정</translation>
+      <translation>보기 중심에서의 위치</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="34"/>
@@ -9470,7 +9434,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
       <source>Enter X offset value</source>
-      <translation>X 편차값 입력</translation>
+      <translation>X 오프셋 값 입력</translation>
     </message>
   </context>
   <context>
@@ -9502,7 +9466,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="406"/>
       <source>Update All</source>
-      <translation>모두 갱신</translation>
+      <translation>모두 업데이트</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandFillTemplateFields.py" line="50"/>
@@ -9512,7 +9476,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/CommandFillTemplateFields.py" line="54"/>
       <source>Uses document info to populate the template fields</source>
-      <translation>Uses document info 대상 populate template fields</translation>
+      <translation>문서 정보를 사용하여 템플릿 필드를 채웁니다.</translation>
     </message>
   </context>
   <context>
@@ -9520,17 +9484,17 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="82"/>
       <source> file does not contain the correct field names therefore exiting</source>
-      <translation>파일 does 않음 contain correct field names therefore exiting</translation>
+      <translation>파일에 올바른 필드 이름이 포함되어 있지 않으므로 종료합니다.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="88"/>
       <source> file has not been found therefore exiting</source>
-      <translation>파일 has 않음 been found therefore exiting</translation>
+      <translation>파일을 찾을 수 없으므로 종료합니다.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="109"/>
       <source>View or projection group missing</source>
-      <translation>보기 또는 투상 그룹 누락된</translation>
+      <translation>보기 또는 투상 그룹이 누락되었습니다.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="446"/>
@@ -9557,13 +9521,13 @@ there is an open task dialog.</source>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="186"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="218"/>
       <source>Select at least </source>
-      <translation>at least 선택</translation>
+      <translation>최소 </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="187"/>
       <source> vertexes</source>
-      <translation>꼭짓점es</translation>
+      <translation>개의 꼭짓점을 선택하세요</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
@@ -9575,7 +9539,7 @@ there is an open task dialog.</source>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="219"/>
       <source> edges</source>
-      <translation> 에지</translation>
+      <translation>개의 에지를 선택하세요</translation>
     </message>
   </context>
   <context>
@@ -9623,12 +9587,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="66"/>
       <source>LongDashShortDash</source>
-      <translation>긴 대시 짧은 대시</translation>
+      <translation>긴 파선-짧은 파선</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="67"/>
       <source>LongDashDoubleShortDash</source>
-      <translation>긴 대시 이중 짧은 대시</translation>
+      <translation>긴 파선-짧은 파선 2개</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="68"/>
@@ -9681,12 +9645,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="82"/>
       <source>LongDashDashed</source>
-      <translation>긴 대시 파선</translation>
+      <translation>긴 파선-파선</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="83"/>
       <source>LongDashDoubleDashed</source>
-      <translation>긴 대시 이중 파선</translation>
+      <translation>긴 파선-이중 파선</translation>
     </message>
   </context>
   <context>
@@ -9714,7 +9678,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="93"/>
       <source>Center</source>
-      <translation>가운데</translation>
+      <translation>중심</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="94"/>
@@ -9729,7 +9693,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="96"/>
       <source>Extension</source>
-      <translation>연장</translation>
+      <translation>보조선</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="97"/>
@@ -9744,12 +9708,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="99"/>
       <source>ViewingPlane</source>
-      <translation>보기 평면</translation>
+      <translation>투시 평면</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="100"/>
       <source>OtherPlane</source>
-      <translation>다른 평면</translation>
+      <translation>기타 평면</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="101"/>
@@ -9769,12 +9733,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="104"/>
       <source>Stitch1</source>
-      <translation>스티치1</translation>
+      <translation>점선1</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="105"/>
       <source>Stitch2</source>
-      <translation>스티치2</translation>
+      <translation>점선2</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="106"/>
@@ -9806,13 +9770,13 @@ there is an open task dialog.</source>
       <location filename="../../CommandExtensionDims.cpp" line="211"/>
       <location filename="../../CommandExtensionDims.cpp" line="388"/>
       <source>Insert &apos;n×&apos; Prefix</source>
-      <translation>&apos;n×&apos; 접두어 삽입</translation>
+      <translation>'n×' 접두사 삽입</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="212"/>
       <location filename="../../CommandExtensionDims.cpp" line="389"/>
       <source>Inserts a repeated feature count at the beginning of the dimension</source>
-      <translation>치수의 repeated 피처 개수 at beginning을 삽입합니다.</translation>
+      <translation>치수 앞에 반복 피처 횟수를 삽입합니다.</translation>
     </message>
   </context>
   <context>
@@ -9820,7 +9784,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/Preferences.cpp" line="468"/>
       <source>The LineStandard parameter is invalid. Using zero instead.</source>
-      <translation>해당 LineStandard parameter 입니다 invalid. Using zero instead.</translation>
+      <translation>LineStandard 매개변수가 유효하지 않습니다. 0을 대신 사용합니다.</translation>
     </message>
   </context>
   <context>
@@ -9829,30 +9793,30 @@ there is an open task dialog.</source>
       <location filename="../../ViewProviderDimension.cpp" line="323"/>
       <source>You cannot delete this dimension now because
 there is an open task dialog.</source>
-      <translation>You cannot delete 이 치수 now because there 입니다 an open task dialog.</translation>
+      <translation>작업 대화 상자가 열려 있으므로 이 치수를 삭제할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDimension.cpp" line="326"/>
       <source>Can Not Delete</source>
-      <translation>삭제 할 수 없음</translation>
+      <translation>삭제할 수 없음</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawBrokenView</name>
     <message>
-      <location filename="../../Command.cpp" line="549"/>
+      <location filename="../../Command.cpp" line="554"/>
       <source>TechDraw</source>
       <translation>기술도면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="555"/>
       <source>Broken View</source>
       <translation>파단 보기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="551"/>
+      <location filename="../../Command.cpp" line="556"/>
       <source>Inserts a new broken view for the selected objects or base view and break definition objects</source>
-      <translation>선택한 객체 또는 기준 보기 및 break definition 객체의 새 파단 보기를 삽입합니다.</translation>
+      <translation>선택한 객체 또는 기준 보기와 분할 정의 객체에 대한 새 파단 보기를 삽입합니다.</translation>
     </message>
   </context>
   <context>
@@ -9870,12 +9834,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="1004"/>
       <source>Cancel</source>
-      <translation>취소하기</translation>
+      <translation>취소</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="1010"/>
       <source>Rotate by</source>
-      <translation>회전 기준</translation>
+      <translation>회전 각도</translation>
     </message>
   </context>
   <context>
@@ -9932,12 +9896,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/MattingPropEnum.cpp" line="31"/>
       <source>Circle</source>
-      <translation>원</translation>
+      <translation>원형</translation>
     </message>
     <message>
       <location filename="../../../App/MattingPropEnum.cpp" line="32"/>
       <source>Square</source>
-      <translation>정사각형</translation>
+      <translation>사각형</translation>
     </message>
   </context>
   <context>
@@ -9975,7 +9939,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/BalloonPropEnum.cpp" line="37"/>
       <source>Rectangle</source>
-      <translation>사각형</translation>
+      <translation>직사각형</translation>
     </message>
     <message>
       <location filename="../../../App/BalloonPropEnum.cpp" line="38"/>
@@ -10001,7 +9965,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAlign.cpp" line="122"/>
       <source>Align Vertices/Edge Vertically</source>
-      <translation>꼭짓점/에지를 수직 정렬</translation>
+      <translation>꼭짓점/에지 수직 정렬</translation>
     </message>
     <message>
       <location filename="../../CommandAlign.cpp" line="123"/>
@@ -10019,7 +9983,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAlign.cpp" line="155"/>
       <source>Align Vertices/Edge Horizontally</source>
-      <translation>꼭짓점/에지를 수평 정렬</translation>
+      <translation>꼭짓점/에지 수평 정렬</translation>
     </message>
     <message>
       <location filename="../../CommandAlign.cpp" line="156"/>
@@ -10032,7 +9996,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="476"/>
       <source> updates pending</source>
-      <translation>updates pending</translation>
+      <translation>개 업데이트 보류 중</translation>
     </message>
   </context>
   <context>
@@ -10040,7 +10004,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
-      <translation>Axonometric 길이 치수</translation>
+      <translation>축측 길이 치수</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
@@ -10064,7 +10028,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="796"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Inserts a simple section view</source>
       <translation>단순 단면도를 삽입합니다.</translation>
     </message>
@@ -10072,7 +10036,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="806"/>
       <source>Inserts a complex section view</source>
       <translation>복합 단면도를 삽입합니다.</translation>
     </message>
@@ -10082,7 +10046,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="276"/>
       <source>Inserts a cosmetic vertex into a view</source>
-      <translation>a 보기에 cosmetic 꼭짓점을 삽입합니다.</translation>
+      <translation>보기에 보조 꼭짓점을 삽입합니다.</translation>
     </message>
   </context>
   <context>
@@ -10090,7 +10054,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="280"/>
       <source>Inserts cosmetic vertices at the midpoint of the selected edges</source>
-      <translation>Inserts cosmetic 꼭짓점 at 중점 of 선택한 에지</translation>
+      <translation>선택한 에지의 중점에 보조 꼭짓점을 삽입합니다.</translation>
     </message>
   </context>
   <context>
@@ -10098,7 +10062,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="284"/>
       <source>Inserts cosmetic vertices at the quadrant points of the selected circles</source>
-      <translation>Inserts cosmetic 꼭짓점 at 사분점 of 선택한 원</translation>
+      <translation>선택한 원의 사분점에 보조 꼭짓점을 삽입합니다.</translation>
     </message>
   </context>
   <context>
@@ -10130,7 +10094,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1936"/>
       <source>Insert horizontal extent dimension</source>
-      <translation>Insert 수평 extent 치수</translation>
+      <translation>수평 전체 길이 치수 삽입</translation>
     </message>
   </context>
   <context>
@@ -10138,7 +10102,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1940"/>
       <source>Insert vertical extent dimension</source>
-      <translation>Insert 수직 extent 치수</translation>
+      <translation>수직 전체 길이 치수 삽입</translation>
     </message>
   </context>
   <context>
@@ -10183,7 +10147,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
       <source>Object label</source>
-      <translation>대상체의 이름표</translation>
+      <translation>객체 레이블</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
@@ -10238,12 +10202,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandDecorate.cpp" line="76"/>
       <source>Toggle View Frames</source>
-      <translation type="unfinished">Toggle View Frames</translation>
+      <translation>보기 프레임 전환</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="77"/>
       <source>Toggles visibility of view frames and vertices</source>
-      <translation type="unfinished">Toggles visibility of view frames and vertices</translation>
+      <translation>보기 프레임과 꼭짓점의 표시를 전환합니다.</translation>
     </message>
   </context>
   <context>
@@ -10261,7 +10225,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandDecorate.cpp" line="140"/>
       <source>Toggles the grid on the active page</source>
-      <translation type="unfinished">Toggles the grid on the active page</translation>
+      <translation>활성 페이지의 격자를 전환합니다.</translation>
     </message>
   </context>
   <context>

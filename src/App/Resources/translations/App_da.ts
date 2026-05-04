@@ -66,7 +66,7 @@ Man bør derefter klikke på Opdater knappen i hovedværktøjslinjen.
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation type="unfinished">Origin-Point</translation>
+      <translation>Origo</translation>
     </message>
   </context>
   <context>
@@ -75,8 +75,7 @@ Man bør derefter klikke på Opdater knappen i hovedværktøjslinjen.
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link
-that links to the same configurable object</translation>
+      <translation>Gemmer det sidste brugervalg om, hvorvidt CopyOnChange opsætning skal anvendes på alle links, der refererer til det samme konfigurerbare objekt</translation>
     </message>
   </context>
 </TS>

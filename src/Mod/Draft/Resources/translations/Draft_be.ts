@@ -3766,7 +3766,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftutils/utils.py" line="891"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s мае агульную аснову з %d іншымі аб'ектамі.
-Праверце, ці жадаеце вы гэтае змяніць.</translation>
+Праверце, ці неабходна гэтае змяніць.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1037"/>
@@ -5703,7 +5703,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftutils/params.py" line="225"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
-      <translation>Ці жадаеце вы абнавіць налады шаблону SVG існуючых аб'ектаў ва ўсіх адчыненых дакументах?</translation>
+      <translation>Ці абнавіць налады шаблону SVG існуючых аб'ектаў ва ўсіх адчыненых дакументах?</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="73"/>

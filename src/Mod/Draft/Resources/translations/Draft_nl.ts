@@ -3526,7 +3526,7 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
     <message>
       <location filename="../../InitGui.py" line="46"/>
       <source>Draft</source>
-      <translation>Kantel</translation>
+      <translation>Tekening</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="299"/>
@@ -7948,7 +7948,7 @@ beyond the dimension line</translation>
       <location filename="../../InitGui.py" line="156"/>
       <location filename="../../InitGui.py" line="159"/>
       <source>Draft</source>
-      <translation>Kantel</translation>
+      <translation>2D schets</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="253"/>

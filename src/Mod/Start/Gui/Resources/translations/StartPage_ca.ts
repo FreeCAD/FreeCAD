@@ -271,12 +271,12 @@ Es poden afegir diverses carpetes mitjançant ";;" per separar els camins.</tran
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="130"/>
       <source>Created at:</source>
-      <translation type="unfinished">Created at:</translation>
+      <translation>Creat:</translation>
     </message>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Modified at:</source>
-      <translation type="unfinished">Modified at:</translation>
+      <translation>Modificat:</translation>
     </message>
   </context>
 </TS>

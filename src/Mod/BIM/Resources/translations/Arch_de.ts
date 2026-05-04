@@ -6759,7 +6759,7 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="747"/>
       <source>Panel Thickness</source>
-      <translation type="unfinished">Panel Thickness</translation>
+      <translation>Wandstärke</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="748"/>
@@ -12095,7 +12095,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
     <message>
       <location filename="../ui/dialogSetup.ui" line="108"/>
       <source>Major grid line every</source>
-      <translation type="unfinished">Major grid line every</translation>
+      <translation>Haupt-Rasterlinie alle</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="115"/>
