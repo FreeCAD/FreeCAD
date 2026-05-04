@@ -412,8 +412,6 @@ def _shape_to_safe_stl(
     model_shape,
     avoid_faces,
     tool_radius,
-    start_depth,
-    final_depth,
     linear_deflection,
     angular_deflection,
 ):
@@ -428,8 +426,6 @@ def _shape_to_safe_stl(
         model_shape (Part.Shape): The complete, un-clipped model geometry.
         avoid_faces (list): A list of Part.Face objects to be avoided.
         tool_radius (float): The radius of the active tool.
-        start_depth (float): The upper Z-bound of the operation.
-        final_depth (float): The lower Z-bound of the operation.
         linear_deflection (float): The base linear deflection for calculating a coarse mesh.
         angular_deflection (float): The base angular deflection for calculating a coarse mesh.
 
@@ -459,18 +455,21 @@ def _shape_to_safe_stl(
         )
         from . import surface_common
 
-        boundary_face = surface_common.create_boundary_from_faces(
-            avoid_faces, tool_radius, linear_deflection
-        )
+        for avoid in avoid_faces:
+            boundary_face = surface_common.create_boundary_from_faces(
+                [avoid], tool_radius, linear_deflection
+            )
+    
+            if not boundary_face:
+                Path.Log.error("Failed to generate Safe STL. Transitions may not be collision-safe.")
+                return None
 
-        if not boundary_face:
-            Path.Log.error("Failed to generate Safe STL. Transitions may not be collision-safe.")
-            return None
+            start_z_extrusion = avoid.BoundBox.ZMax
+            end_z_extrusion = bb.ZMin
+            height = start_z_extrusion - end_z_extrusion + 0.1 # Add 0.1 buffer downwards
 
-        height = abs(bb.ZMax - bb.ZMin) + 0.1  # Plus 0.1 for safety
-        avoid_solid = boundary_face.extrude(FreeCAD.Vector(0, 0, -height))
-        avoid_solid.translate(FreeCAD.Vector(0, 0, bb.ZMax + 0.1))
-        fused_shapes.append(avoid_solid)
+            avoid_solid = boundary_face.extrude(FreeCAD.Vector(0, 0, -height))
+            fused_shapes.append(avoid_solid)
 
     # Fuse, Hollow, and create a coarse mesh
     safe_compound = Part.Compound(fused_shapes)
@@ -500,7 +499,6 @@ def generate_stl(
     tool_radius,
     needs_safe_stl,
     final_depth,
-    start_depth,
     linear_deflection,
     angular_deflection,
     mesh_simplification,
@@ -520,7 +518,6 @@ def generate_stl(
         tool_radius (float): The radius of the active tool.
         needs_safe_stl (bool): Flag indicating if the safety model is required.
         final_depth (float): The lower Z-bound of the operation.
-        start_depth (float): The upper Z-bound of the operation.
         linear_deflection (float): The user-set linear deflection for the primary mesh.
         angular_deflection (float): The user-set angular deflection for the primary mesh.
         mesh_simplification (int): The user-set simplification level for the primary mesh.
@@ -598,8 +595,6 @@ def generate_stl(
                 model_shape,
                 avoid_faces,
                 tool_radius,
-                start_depth,
-                final_depth,
                 linear_deflection,
                 angular_deflection,
             )

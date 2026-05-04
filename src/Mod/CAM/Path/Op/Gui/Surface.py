@@ -352,6 +352,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.boundaryGroup.setVisible(not is_waterline)
         self.form.stockToLeave.setVisible(is_zlevel)
         self.form.stockToLeave_label.setVisible(is_zlevel)
+        self.form.avoidLastX_Faces.setVisible(not is_zlevel)
+        self.form.avoidLastX_Faces_label.setVisible(not is_zlevel)
+        self.form.profileEdges.setVisible(not is_zlevel)
+        self.form.profileEdges_label.setVisible(not is_zlevel)
+        self.form.cutPatternAngle.setVisible(not is_zlevel)
+        self.form.cutPatternAngle_label.setVisible(not is_zlevel)
 
     def _updateClearingWidgets(self, strategy, cut_pattern, cut_pattern_zlevel):
         """Manages widgets in the 'Clearing Options' group."""

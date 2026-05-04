@@ -1427,9 +1427,9 @@ class ObjectSurface(PathOp.ObjectOp):
         offset = obj.BoundaryAdjustment.Value - radius - 0.01
 
         if obj.BoundBox == "Stock":
-            bbFace = surface_common.make_boundary_face(job.Stock.Shape.Faces, offset)
+            bbFace = surface_common.create_boundary_from_faces(job.Stock.Shape.Faces, offset)
         else:
-            bbFace = surface_common.make_boundary_face(shape.Faces, offset)
+            bbFace = surface_common.create_boundary_from_faces(shape.Faces, offset)
         trimFace = surface_zlevel.getTrimFace(borderFace, bbFace, wpc)
 
         # 5. Depth categorization
@@ -1562,7 +1562,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 tool_radius=tool_diam / 2.0,
                 needs_safe_stl=needs_safe_stl,
                 final_depth=obj.FinalDepth.Value,
-                start_depth=obj.StartDepth.Value,
                 linear_deflection=obj.LinearDeflection.Value,
                 angular_deflection=obj.AngularDeflection.Value,
                 mesh_simplification=getattr(obj, "MeshSimplification", 1),

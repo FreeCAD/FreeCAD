@@ -238,9 +238,7 @@ def get_whole_model_boundary(model_faces, offset, tolerance=0.005):
     if not model_faces:
         return None
 
-    outer_wire = None
-    offset_shape = None
-    boundary_face = None
+    outer_wire, offset_shape, boundary_face = None, None, None
 
     # Create a single compound of the 3D faces to find the global silhouette
     compound = Part.Compound(model_faces)
@@ -277,7 +275,7 @@ def get_whole_model_boundary(model_faces, offset, tolerance=0.005):
     return boundary_face
 
 
-def create_boundary_from_faces(source_faces, offset, tolerance):
+def create_boundary_from_faces(source_faces, offset, tolerance=0.005):
     """
     Creates a single, unified 2D boundary face from a list of source faces.
 
@@ -300,8 +298,7 @@ def create_boundary_from_faces(source_faces, offset, tolerance):
         return None
 
     projected_faces = []
-    fused_shape = None
-    boundary_shape = None
+    fused_shape, boundary_shape = None, None
 
     # Create a copy and translate it flat onto the XY plane
     for face in source_faces:

@@ -81,8 +81,9 @@ def apply_multipass(scan_lines, start_depth, final_depth, step_down):
         curr_z -= step_down
 
     # Ensure final depth is always the last pass
-    if not depthparams or abs(depthparams[-1] - final_depth) > 1e-5:
-        depthparams.append(final_depth)
+    """if not depthparams or abs(depthparams[-1] - final_depth) > 1e-5:
+        depthparams.append(final_depth)"""
+    # Implementing this in a more intelligent manner is necessary  --- bypass for now!
 
     all_multipass_lines = []
 
