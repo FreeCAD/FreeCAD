@@ -250,6 +250,10 @@ private:
     )
     {
         if (MainThreadSignalConfig::isMainThread()) {
+            std::optional<Base::PyGILStateLocker> lock;
+            if (Py_IsInitialized()) {
+                lock.emplace();
+            }
             return self->sig_(std::forward<typename ::fastsignals::signal_arg_t<Arguments>>(args)...);
         }
 
@@ -267,6 +271,10 @@ private:
         if constexpr (std::is_void_v<result_type>) {
             MainThreadSignalConfig::invoke(
                 [self, caps = std::move(caps)]() mutable {
+                    std::optional<Base::PyGILStateLocker> lock;
+                    if (Py_IsInitialized()) {
+                        lock.emplace();
+                    }
                     std::apply([self](auto&... c) { self->sig_(c.get()...); }, caps);
                 },
                 /*blocking=*/true
@@ -276,6 +284,10 @@ private:
             std::optional<detail::non_void_t<result_type>> result;
             MainThreadSignalConfig::invoke(
                 [self, caps = std::move(caps), &result]() mutable {
+                    std::optional<Base::PyGILStateLocker> lock;
+                    if (Py_IsInitialized()) {
+                        lock.emplace();
+                    }
                     result.emplace(
                         std::apply([self](auto&... c) { return self->sig_(c.get()...); }, caps)
                     );
