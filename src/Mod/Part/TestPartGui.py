@@ -107,14 +107,19 @@ class PartGuiViewProviderTestCases(unittest.TestCase):
 
 class SectionCutTestCases(unittest.TestCase):
     def setUp(self):
-        self.Doc = FreeCAD.newDocument("SectionCut")
+        self.docName = f"SectionCut_{self._testMethodName}"
+        self.Doc = FreeCAD.newDocument(self.docName)
 
     def testOpenDialogShowsAsyncPreviewUi(self):
         self.Doc.addObject("Part::Box", "SourceBox")
         self.Doc.recompute()
 
-        FreeCADGui.runCommand("Part_SectionCut")
+        FreeCADGui.activateView("Gui::View3DInventor", True)
+        FreeCADGui.SendMsgToActiveView("ViewFit")
         processGuiEvents()
+
+        FreeCADGui.runCommand("Part_SectionCut")
+        self.assertTrue(spin_events(lambda: findDockWidget("Section Cutting") is not None))
 
         dw = findDockWidget("Section Cutting")
         self.assertIsNotNone(dw, "Section cutting panel was not opened")
@@ -173,6 +178,10 @@ class SectionCutTestCases(unittest.TestCase):
     def tearDown(self):
         dockWidget = findDockWidget("Section Cutting")
         if dockWidget:
-            dockWidget.close()
-            self.assertTrue(spin_events(lambda: findDockWidget("Section Cutting") is None))
-        FreeCAD.closeDocument("SectionCut")
+            panel = dockWidget.widget()
+            if panel is not None:
+                panel.reject()
+            else:
+                dockWidget.close()
+        FreeCAD.closeDocument(self.docName)
+        self.assertTrue(spin_events(lambda: findDockWidget("Section Cutting") is None))
