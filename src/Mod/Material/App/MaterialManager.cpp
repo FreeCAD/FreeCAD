@@ -132,6 +132,21 @@ void MaterialManager::refresh()
     _localManager->refresh();
 }
 
+void MaterialManager::notifyCreatedMaterial(const Material& material)
+{
+    signalCreatedMaterial(material);
+}
+
+void MaterialManager::notifyChangedMaterial(const Material& material)
+{
+    signalChangedMaterial(material);
+}
+
+void MaterialManager::notifyDeletedMaterial(const Material& material)
+{
+    signalDeletedMaterial(material);
+}
+
 //=====
 //
 // Defaults

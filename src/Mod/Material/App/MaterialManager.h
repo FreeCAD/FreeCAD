@@ -27,6 +27,8 @@
 
 #include <filesystem>
 
+#include <fastsignals/signal.h>
+
 #include <Base/Parameter.h>
 #include <Mod/Material/MaterialGlobal.h>
 
@@ -57,6 +59,8 @@ class MaterialsExport MaterialManager: public Base::BaseClass, ParameterGrp::Obs
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
+    using MaterialSignal = fastsignals::signal<void(const Material&)>;
+
     ~MaterialManager() override;
 
     static MaterialManager& getManager();
@@ -141,8 +145,19 @@ public:
     void dereference(std::shared_ptr<Material> material) const;
     void dereference() const;
 
+    void notifyCreatedMaterial(const Material& material);
+    void notifyChangedMaterial(const Material& material);
+    void notifyDeletedMaterial(const Material& material);
+
     /// Observer message from the ParameterGrp
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
+
+    /// Signal emitted after a new material becomes available through the manager.
+    MaterialSignal signalCreatedMaterial;
+    /// Signal emitted after an existing material changes, including path moves.
+    MaterialSignal signalChangedMaterial;
+    /// Signal emitted after a material is removed from the manager.
+    MaterialSignal signalDeletedMaterial;
 
 #if defined(BUILD_MATERIAL_EXTERNAL)
     void migrateToExternal(const std::shared_ptr<Materials::MaterialLibrary>& library);
