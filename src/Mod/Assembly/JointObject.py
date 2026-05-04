@@ -1281,13 +1281,12 @@ class GroundedJoint:
             locked=True,
         )
         joint.ObjectToGround = obj_to_ground
-        obj_to_ground.setPropertyStatus("Placement", "ReadOnly")
+        self.setReadOnly(joint, True)
 
     def onDocumentRestored(self, joint):
         self.migrationScript(joint)
 
-        if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
-            joint.ObjectToGround.setPropertyStatus("Placement", "ReadOnly")
+        self.setReadOnly(joint, True)
 
     def migrationScript(self, joint):
         if (
@@ -1309,19 +1308,27 @@ class GroundedJoint:
     def onChanged(self, joint, prop):
         """Do something when a property has changed"""
         if prop == "ObjectToGround":
-            if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
-                joint.ObjectToGround.setPropertyStatus("Placement", "ReadOnly")
-        pass
+            self.setReadOnly(joint, True)
 
     def onBeforeChange(self, joint, prop):
         if prop == "ObjectToGround":
-            if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
-                joint.ObjectToGround.setPropertyStatus("Placement", "-ReadOnly")
+            self.setReadOnly(joint, False)
 
     def onDelete(self, joint, args):
-        if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
-            joint.ObjectToGround.setPropertyStatus("Placement", "-ReadOnly")
+        self.setReadOnly(joint, False)
         return True
+
+    def setReadOnly(self, joint, value):
+        if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
+            tag = "-ReadOnly"
+            if value:
+                tag = "ReadOnly"
+            
+            propList = obj.PropertiesList
+            if "Placement" in propList:
+                joint.ObjectToGround.setPropertyStatus("Placement", tag)
+            if "LinkPlacement" in propList:
+                joint.ObjectToGround.setPropertyStatus("LinkPlacement", tag)
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
