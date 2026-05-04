@@ -2,7 +2,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "ef0e4040-a498-48c3-a87b-e996bfd89195"
-  License: "GPL-2.0-or-later"
+  Author: "Uwe Stoehr"
+  License: "LGPL-2.1-or-later"
   Name: "Carbon Dioxide"
   Description: "Carbon dioxide properties at 20 Degrees Celsius and 1 atm"
 Models:

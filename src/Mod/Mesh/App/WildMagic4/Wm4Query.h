@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY_H
-#define WM4QUERY_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 
@@ -49,5 +48,3 @@ protected:
 }
 
 #include "Wm4Query.inl"
-
-#endif

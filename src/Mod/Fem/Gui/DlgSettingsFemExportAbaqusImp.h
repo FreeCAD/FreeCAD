@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
-#define FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
+#pragma once
 
 #include <memory>
 
@@ -52,5 +51,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H

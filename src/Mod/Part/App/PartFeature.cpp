@@ -25,7 +25,9 @@
 
 #include <sstream>
 #include <Bnd_Box.hxx>
+#include <BRep_Builder.hxx>
 #include <BRepAdaptor_Curve.hxx>
+#include <TopoDS_Compound.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 #include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 #include <BRepBndLib.hxx>
@@ -38,9 +40,12 @@
 #include <BRepGProp.hxx>
 #include <BRepGProp_Face.hxx>
 #include <BRepIntCurveSurface_Inter.hxx>
+#include <gce_MakeCirc.hxx>
 #include <gce_MakeDir.hxx>
 #include <gce_MakeLin.hxx>
 #include <gp_Ax1.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Ax3.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Trsf.hxx>
@@ -582,6 +587,8 @@ static std::vector<std::pair<long, Data::MappedName>> getElementSource(
             }
             break;
         }
+        // "Compact" makes an owned copy to ensure we don't have a dangling point later on
+        original.compact();
         ret.emplace_back(tag, original);
     }
     return ret;
@@ -1873,31 +1880,82 @@ bool Feature::getCameraAlignmentDirection(
 
     // Edge direction
     const size_t edgeCount = topoShape.countSubShapes(TopAbs_EDGE);
-    if (edgeCount == 1) {
-        if (topoShape.isLinearEdge()) {
-            if (const std::unique_ptr<Geometry> geometry
-                = Geometry::fromShape(topoShape.getSubShape(TopAbs_EDGE, 1), true)) {
-                if (const auto geomLine = static_cast<GeomCurve*>(geometry.get())->toLine()) {
-                    directionZ = geomLine->getDir().Normalize();
-                    return true;
-                }
-            }
-        }
-        else {
-            // Planar curves
-            if (gp_Pln plane; topoShape.findPlane(plane)) {
-                directionZ = Base::Vector3d(
-                                 plane.Axis().Direction().X(),
-                                 plane.Axis().Direction().Y(),
-                                 plane.Axis().Direction().Z()
-                )
-                                 .Normalize();
+    if (edgeCount == 1 && topoShape.isLinearEdge()) {
+        if (const std::unique_ptr<Geometry> geometry
+            = Geometry::fromShape(topoShape.getSubShape(TopAbs_EDGE, 1), true)) {
+            if (const auto geomLine = static_cast<GeomCurve*>(geometry.get())->toLine()) {
+                directionZ = geomLine->getDir().Normalize();
                 return true;
             }
         }
     }
+    if (edgeCount >= 1) {
+        if (gp_Pln plane; topoShape.findPlane(plane)) {
+            directionZ = Base::convertTo<Base::Vector3d>(plane.Axis().Direction());
+            return true;
+        }
+    }
 
     return GeoFeature::getCameraAlignmentDirection(directionZ, directionX, subname);
+}
+
+bool Feature::getCameraAlignmentDirection(
+    Base::Vector3d& directionZ,
+    const std::vector<std::string>& subnames
+) const
+{
+    if (subnames.empty()) {
+        Base::Vector3d unused;
+        return getCameraAlignmentDirection(directionZ, unused, static_cast<const char*>(nullptr));
+    }
+
+    std::vector<std::string> faceSubnames;
+    std::vector<TopoDS_Shape> edgeShapes;
+    bool hasOther = false;
+
+    for (const auto& sub : subnames) {
+        const auto shape = getTopoShape(
+            this,
+            ShapeOptions(
+                ShapeOption::NeedSubElement | ShapeOption::ResolveLink | ShapeOption::Transform
+            ),
+            sub.c_str()
+        );
+        if (shape.isNull()) {
+            continue;
+        }
+        switch (shape.getShape().ShapeType()) {
+            case TopAbs_FACE:
+                faceSubnames.push_back(sub);
+                break;
+            case TopAbs_EDGE:
+                edgeShapes.push_back(shape.getShape());
+                break;
+            default:
+                hasOther = true;
+                break;
+        }
+    }
+
+    if (!faceSubnames.empty()) {
+        return GeoFeature::getCameraAlignmentDirection(directionZ, faceSubnames);
+    }
+
+    if (!edgeShapes.empty() && !hasOther) {
+        BRep_Builder builder;
+        TopoDS_Compound compound;
+        builder.MakeCompound(compound);
+        for (const auto& edge : edgeShapes) {
+            builder.Add(compound, edge);
+        }
+        gp_Pln plane;
+        if (TopoShape(compound).findPlane(plane)) {
+            directionZ = Base::convertTo<Base::Vector3d>(plane.Axis().Direction());
+            return true;
+        }
+    }
+
+    return GeoFeature::getCameraAlignmentDirection(directionZ, subnames);
 }
 
 void Feature::guessNewLink(std::string& replacementName, DocumentObject* base, const char* oldLink)
@@ -1987,9 +2045,8 @@ void FilletBase::onUpdateElementReference(const App::Property* prop)
             FC_WARN("fillet edge count mismatch in object " << getFullName());
             break;
         }
-        int idx = 0;
-        sscanf(subs[i].c_str(), "Edge%d", &idx);
-        if (idx) {
+        int idx = Data::indexOfElement(subs[i], "Edge");
+        if (idx != 0) {
             values[i].edgeid = idx;
         }
         else {
@@ -2029,53 +2086,6 @@ PyObject* Part::FeaturePython::getPyObject()
 // explicit template instantiation
 template class PartExport FeaturePythonT<Part::Feature>;
 }  // namespace App
-
-// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-std::vector<Part::cutFaces> Part::findAllFacesCutBy(
-    const TopoDS_Shape& shape,
-    const TopoDS_Shape& face,
-    const gp_Dir& dir
-)
-{
-    // Find the centre of gravity of the face
-    GProp_GProps props;
-    BRepGProp::SurfaceProperties(face, props);
-    gp_Pnt cog = props.CentreOfMass();
-
-    // create a line through the centre of gravity
-    gp_Lin line = gce_MakeLin(cog, dir);
-
-    // Find intersection of line with all faces of the shape
-    std::vector<cutFaces> result;
-    BRepIntCurveSurface_Inter mkSection;
-    // TODO: Less precision than Confusion() should be OK?
-
-    for (mkSection.Init(shape, line, Precision::Confusion()); mkSection.More(); mkSection.Next()) {
-        gp_Pnt iPnt = mkSection.Pnt();
-        double dsq = cog.SquareDistance(iPnt);
-
-        if (dsq < Precision::Confusion()) {
-            continue;  // intersection with original face
-        }
-
-        // Find out which side of the original face the intersection is on
-        gce_MakeDir mkDir(cog, iPnt);
-        if (!mkDir.IsDone()) {
-            continue;  // some error (appears highly unlikely to happen, though...)
-        }
-
-        if (mkDir.Value().IsOpposite(dir, Precision::Confusion())) {
-            continue;  // wrong side of face (opposite to extrusion direction)
-        }
-
-        cutFaces newF;
-        newF.face = mkSection.Face();
-        newF.distsq = dsq;
-        result.push_back(newF);
-    }
-
-    return result;
-}
 
 std::vector<Part::cutTopoShapeFaces> Part::findAllFacesCutBy(
     const TopoShape& shape,
@@ -2119,6 +2129,87 @@ std::vector<Part::cutTopoShapeFaces> Part::findAllFacesCutBy(
         newF.face = mkSection.Face();
         newF.face.mapSubElement(shape);
         newF.distsq = dsq;
+        result.push_back(newF);
+    }
+
+    return result;
+}
+
+std::vector<Part::cutTopoShapeFaces> Part::findAllFacesCutBy(
+    const TopoShape& shape,
+    const TopoShape& face,
+    const gp_Ax1& axis
+)
+{
+    // Find the centre of gravity of the face
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(face.getShape(), props);
+    gp_Pnt cog = props.CentreOfMass();
+
+    // Get the projection of cog on the line defined by axis.
+    // This is equal to the intersection point of the plane that goes
+    // through cog and the axis direction as normal.
+    gp_XYZ aCoord = cog.XYZ();
+    aCoord.Subtract(axis.Location().XYZ());
+    double parameter = aCoord.Dot(axis.Direction().XYZ());
+    gp_XYZ aPoP = axis.Location().XYZ();
+    aPoP.Add(axis.Direction().XYZ() * parameter);
+    gp_Pnt center(aPoP);
+
+    // Find intersection of circle with all faces of the shape
+    std::vector<cutTopoShapeFaces> result;
+
+    // TODO: Less precision than Confusion() should be OK?
+    gp_Lin line = gce_MakeLin(axis);
+    Standard_Real radius = line.Distance(cog);
+    if (radius < Precision::Confusion()) {
+        return result;
+    }
+
+    // Create a circle through the centre of gravity
+    Handle(Geom_Circle) circle = new Geom_Circle(gce_MakeCirc(center, axis.Direction(), radius));
+    GeomAdaptor_Curve adaptor(circle);
+
+    // Construct transformation matrix to convert to local coordinates
+    gp_Dir vx(gp_Vec(center, cog));
+    gp_Ax2 rhs(center, axis.Direction(), vx);
+    gp_Ax3 lcs(rhs);
+    gp_Trsf mat;
+    mat.SetTransformation(lcs);
+
+    BRepIntCurveSurface_Inter mkSection;
+    for (mkSection.Init(shape.getShape(), adaptor, Precision::Confusion()); mkSection.More();
+         mkSection.Next()) {
+        gp_Pnt iPnt = mkSection.Pnt();
+
+        double dsq = cog.SquareDistance(iPnt);
+        if (dsq < Precision::Confusion()) {
+            continue;  // intersection with original face
+        }
+
+        // Find out which side of the original face the intersection is on
+        gce_MakeDir mkDir(cog, iPnt);
+        if (!mkDir.IsDone()) {
+            continue;  // some error (appears highly unlikely to happen, though...)
+        }
+
+        if (mkDir.Value().IsParallel(axis.Direction(), Precision::Confusion())) {
+            continue;
+        }
+
+        // Intersection point in local coords
+        gp_Pnt iLoc = iPnt.Transformed(mat);
+        // Get angle with local X axis
+        double x = Base::clamp(iLoc.X(), -radius, radius);
+        double angle = std::acos(x / radius);
+        if (iLoc.Y() < 0.0) {
+            angle = 2.0 * std::numbers::pi - angle;
+        }
+
+        cutTopoShapeFaces newF;
+        newF.face = mkSection.Face();
+        newF.face.mapSubElement(shape);
+        newF.distsq = angle * radius;
         result.push_back(newF);
     }
 

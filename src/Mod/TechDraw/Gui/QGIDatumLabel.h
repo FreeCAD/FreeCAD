@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGRAPHICSITEMVIEWDATUMLABEL_H
-#define TECHDRAWGUI_QGRAPHICSITEMVIEWDATUMLABEL_H
+#pragma once
 
 #include <QGraphicsObject>
 
@@ -125,10 +124,9 @@ private:
     bool m_ctrl;
 
     DragState m_dragState;
+    bool m_inhibitSnapOnPosChange{false};
 
 private:
 };
 
 }  // namespace TechDrawGui
-
-#endif

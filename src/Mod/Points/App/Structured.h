@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef POINTS_VIEW_FEATURE_H
-#define POINTS_VIEW_FEATURE_H
+#pragma once
 
 #include "PointsFeature.h"
 
@@ -62,6 +61,3 @@ public:
 using StructuredCustom = App::FeatureCustomT<Structured>;
 
 }  // namespace Points
-
-
-#endif

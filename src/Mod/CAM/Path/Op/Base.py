@@ -26,10 +26,10 @@ from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
 import Path.Base.Util as PathUtil
+import Path.Geom
 import PathScripts.PathUtils as PathUtils
 import math
 import time
-
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -57,6 +57,7 @@ FeatureStartPoint = 0x0008  # StartPoint
 FeatureFinishDepth = 0x0010  # FinishDepth
 FeatureStepDown = 0x0020  # StepDown
 FeatureNoFinalDepth = 0x0040  # edit or not edit FinalDepth
+FeatureLinking = 0x0080  # Linking
 FeatureBaseVertexes = 0x0100  # Base
 FeatureBaseEdges = 0x0200  # Base
 FeatureBaseFaces = 0x0400  # Base
@@ -157,6 +158,26 @@ class ObjectOp(object):
             )
             obj.setEditorMode("OpStockZMin", 1)  # read-only
 
+    def addLinking(self, obj):
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "LinkingMode",
+            "Linking",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Method collision detection to create optimal path between areas"
+                "\n\nCompromise: uses tool diameter (middle long time computation)"
+                "\nFastest: not related from tool size (fast computation)"
+                "\nSafest: uses cross section of tool shape (most long time computation)",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "LinkingSafetyMargin",
+            "Linking",
+            QT_TRANSLATE_NOOP("App::Property", "Distance for collision detection"),
+        )
+
     def __init__(self, obj, name, parentJob=None):
         Path.Log.track()
 
@@ -166,6 +187,14 @@ class ObjectOp(object):
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property", "Make False, to prevent operation from generating code"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "BlockDelete",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Enable post processor to add block delete commands"
             ),
         )
         obj.addProperty(
@@ -187,6 +216,12 @@ class ObjectOp(object):
             QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
+
+        # Add attachment extension to enable attaching operations to geometry
+        # This allows operations to automatically position/orient based on attached faces
+        # Only add to real objects, not OpPrototypes
+        if hasattr(obj, "hasExtension") and not obj.hasExtension("Part::AttachExtension"):
+            obj.addExtension("Part::AttachExtensionPython")
 
         features = self.opFeatures(obj)
 
@@ -313,6 +348,9 @@ class ObjectOp(object):
                 QT_TRANSLATE_NOOP("App::Property", "Upper limit of the turning diameter."),
             )
 
+        if FeatureLinking & features:
+            self.addLinking(obj)
+
         # members being set later
         self.commandlist = None
         self.horizFeed = None
@@ -362,6 +400,11 @@ class ObjectOp(object):
                 (translate("CAM_Operation", "None"), "None"),
                 (translate("CAM_Operation", "Flood"), "Flood"),
                 (translate("CAM_Operation", "Mist"), "Mist"),
+            ],
+            "LinkingMode": [
+                (translate("CAM_Operation", "Fastest"), "Fastest"),
+                (translate("CAM_Operation", "Compromise"), "Compromise"),
+                (translate("CAM_Operation", "Safest"), "Safest"),
             ],
         }
 
@@ -443,6 +486,15 @@ class ObjectOp(object):
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
             )
+        if not hasattr(obj, "BlockDelete"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "BlockDelete",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Enable post processor to add block delete commands"
+                ),
+            )
 
         if FeatureStepDown & features and not hasattr(obj, "StepDown"):
             obj.addProperty(
@@ -452,6 +504,14 @@ class ObjectOp(object):
                 QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"),
             )
             obj.StepDown = 0
+
+        if FeatureLinking & features and not hasattr(obj, "LinkingMode"):
+            self.addLinking(obj)
+            for n in self.opPropertyEnumerations():
+                if hasattr(obj, n[0]):
+                    setattr(obj, n[0], n[1])
+            obj.LinkingMode = "Fastest"
+            self.applyExpression(obj, "LinkingSafetyMargin", "OpToolDiameter")
 
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
@@ -611,6 +671,10 @@ class ObjectOp(object):
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
+
+        if FeatureLinking & features:
+            obj.LinkingMode = "Fastest"
+            self.applyExpression(obj, "LinkingSafetyMargin", "OpToolDiameter")
 
         self.opSetDefaultValues(obj, job)
         return job
@@ -803,7 +867,50 @@ class ObjectOp(object):
             # Let's finish by rapid to clearance...just for safety
             self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
+        # Add block delete annotations if enabled
+        if hasattr(obj, "BlockDelete") and obj.BlockDelete:
+            for command in self.commandlist:
+                annotations = command.Annotations
+                annotations["BlockDelete"] = True
+                command.Annotations = annotations
+
+        # Add handling of coolant commands.
+        # if the coolant mode is not None, add the command to turn it on right before the first non-rapid
+        # move in the command list.
+        # Add the command to turn it off right after the last non-rapid move in the command list.
+        if hasattr(obj, "CoolantMode") and obj.CoolantMode != "None":
+            # Find the first and last cutting moves (includes G1, G2, G3, and canned drill cycles)
+            # Use Path.Geom.CmdMove which includes: G1, G2, G3, G73, G81, G82, G83, G85
+            first_feed_index = None
+            last_feed_index = None
+
+            for i, cmd in enumerate(self.commandlist):
+                if cmd.Name in Path.Geom.CmdMove:
+                    if first_feed_index is None:
+                        first_feed_index = i
+                    last_feed_index = i
+
+            # Insert coolant commands if we found cutting moves
+            if first_feed_index is not None:
+                # Insert coolant on command before first cutting move
+                if obj.CoolantMode == "Flood":
+                    coolant_on = Path.Command("M8", {})
+                elif obj.CoolantMode == "Mist":
+                    coolant_on = Path.Command("M7", {})
+                else:
+                    coolant_on = None
+
+                if coolant_on:
+                    self.commandlist.insert(first_feed_index, coolant_on)
+                    # Adjust last_feed_index since we inserted a command
+                    last_feed_index += 1
+
+                    # Insert coolant off command after last cutting move
+                    coolant_off = Path.Command("M9", {})
+                    self.commandlist.insert(last_feed_index + 1, coolant_off)
+
         path = Path.Path(self.commandlist)
+
         obj.Path = path
         obj.CycleTime = getCycleTimeEstimate(obj)
         self.job.Proxy.getCycleTime()

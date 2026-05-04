@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskMassProperties</class>
+ <widget class="QWidget" name="TaskMassProperties">
+  <property name="geometry">
+   <rect>
+	<x>0</x>
+	<y>0</y>
+	<width>480</width>
+	<height>720</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+	<number>0</number>
+   </property>
+   <property name="leftMargin">
+	<number>0</number>
+   </property>
+   <property name="topMargin">
+	<number>0</number>
+   </property>
+   <property name="rightMargin">
+	<number>0</number>
+   </property>
+   <property name="bottomMargin">
+	<number>0</number>
+   </property>
+   <item>
+	<widget class="QWidget" name="parametersPage">
+	 <layout class="QVBoxLayout" name="parametersLayout">
+	  <property name="spacing">
+	   <number>8</number>
+	  </property>
+	  <item>
+	   <widget class="QLabel" name="objectsLabel">
+		<property name="text">
+		 <string>Objects to measure</string>
+		</property>
+		<property name="wordWrap">
+		 <bool>true</bool>
+		</property>
+	   </widget>
+	  </item>
+	  <item>
+	   <widget class="QListWidget" name="objectList">
+		<property name="maximumHeight">
+		 <number>75</number>
+		</property>
+		<property name="selectionMode">
+		 <enum>QAbstractItemView::ExtendedSelection</enum>
+		</property>
+	   </widget>
+	  </item>
+	  <item>
+	   <widget class="QLabel" name="referenceLabel">
+		<property name="text">
+		 <string>Reference</string>
+		</property>
+	   </widget>
+	  </item>
+	  <item>
+	   <widget class="QWidget" name="referenceWidget">
+		<layout class="QVBoxLayout" name="referenceLayout">
+		 <property name="spacing">
+		  <number>6</number>
+		 </property>
+		 <property name="leftMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="topMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="rightMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="bottomMargin">
+		  <number>0</number>
+		 </property>
+		 <item>
+		  <widget class="QRadioButton" name="centerOfGravityRadioButton">
+		   <property name="text">
+			<string>Center of gravity</string>
+		   </property>
+		   <property name="checked">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		 <item>
+		  <layout class="QHBoxLayout" name="customControlsLayout">
+		   <property name="spacing">
+			<number>6</number>
+		   </property>
+		   <property name="leftMargin">
+			<number>0</number>
+		   </property>
+		   <property name="topMargin">
+			<number>0</number>
+		   </property>
+		   <property name="rightMargin">
+			<number>0</number>
+		   </property>
+		   <property name="bottomMargin">
+			<number>0</number>
+		   </property>
+		   <item>
+			<widget class="QRadioButton" name="customRadioButton">
+			 <property name="text">
+			  <string>Custom</string>
+			 </property>
+			</widget>
+		   </item>
+		   <item>
+			<widget class="QLineEdit" name="customEdit">
+			 <property name="readOnly">
+			  <bool>true</bool>
+			 </property>
+			</widget>
+		   </item>
+		   <item>
+			<widget class="QPushButton" name="selectCustomButton">
+			 <property name="text">
+			  <string>Select…</string>
+			 </property>
+			</widget>
+		   </item>
+		  </layout>
+		 </item>
+		</layout>
+	   </widget>
+	  </item>
+	  <item>
+	   <widget class="QComboBox" name="unitsComboBox">
+		<item>
+		 <property name="text">
+		  <string>mm, kg, kg*mm^2</string>
+		 </property>
+		</item>
+		<item>
+		 <property name="text">
+		  <string>m, kg, kg*m^2</string>
+		 </property>
+		</item>
+		<item>
+		 <property name="text">
+		  <string>in, lb, lb*in^2</string>
+		 </property>
+		</item>
+		<item>
+		 <property name="text">
+		  <string>ft, lb, lb*ft^2</string>
+		 </property>
+		</item>
+	   </widget>
+	  </item>
+	 </layout>
+	</widget>
+   </item>
+   <item>
+	<widget class="QWidget" name="physicalPropertiesPage">
+	 <layout class="QFormLayout" name="physicalPropertiesLayout">
+	  <property name="horizontalSpacing">
+	   <number>6</number>
+	  </property>
+	  <property name="verticalSpacing">
+	   <number>6</number>
+	  </property>
+	  <item row="0" column="0">
+	   <widget class="QLabel" name="volumeLabel">
+		<property name="text">
+		 <string>Volume</string>
+		</property>
+	   </widget>
+	  </item>
+	  <item row="0" column="1">
+	   <widget class="QLineEdit" name="volumeEdit">
+		<property name="readOnly">
+		 <bool>true</bool>
+		</property>
+	   </widget>
+	  </item>
+	  <item row="1" column="0">
+	   <widget class="QLabel" name="massLabel">
+		<property name="text">
+		 <string>Mass</string>
+		</property>
+	   </widget>
+	  </item>
+	  <item row="1" column="1">
+	   <widget class="QLineEdit" name="massEdit">
+		<property name="readOnly">
+		 <bool>true</bool>
+		</property>
+	   </widget>
+	  </item>
+	  <item row="2" column="0">
+	   <widget class="QLabel" name="densityLabel">
+		<property name="text">
+		 <string>Density</string>
+		</property>
+	   </widget>
+	  </item>
+	  <item row="2" column="1">
+	   <widget class="QLineEdit" name="densityEdit">
+		<property name="readOnly">
+		 <bool>true</bool>
+		</property>
+	   </widget>
+	  </item>
+	  <item row="3" column="0">
+	   <widget class="QLabel" name="surfaceAreaLabel">
+		<property name="text">
+		 <string>Surface area</string>
+		</property>
+	   </widget>
+	  </item>
+	  <item row="3" column="1">
+	   <widget class="QLineEdit" name="surfaceAreaEdit">
+		<property name="readOnly">
+		 <bool>true</bool>
+		</property>
+	   </widget>
+	  </item>
+	 </layout>
+	</widget>
+   </item>
+   <item>
+	<widget class="QWidget" name="centerOfGravityPage">
+	 <layout class="QVBoxLayout" name="centerOfGravityLayout">
+	  <property name="spacing">
+	   <number>8</number>
+	  </property>
+	  <item>
+	   <layout class="QHBoxLayout" name="cogFieldsLayout">
+		<property name="spacing">
+		 <number>6</number>
+		</property>
+		<property name="leftMargin">
+		 <number>0</number>
+		</property>
+		<property name="topMargin">
+		 <number>0</number>
+		</property>
+		<property name="rightMargin">
+		 <number>0</number>
+		</property>
+		<property name="bottomMargin">
+		 <number>0</number>
+		</property>
+		<item>
+		 <widget class="QLabel" name="cogXLabel">
+		  <property name="text">
+		   <string>X</string>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <widget class="QLineEdit" name="cogXText">
+		  <property name="readOnly">
+		   <bool>true</bool>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <spacer name="cogSpacer1">
+		  <property name="orientation">
+		   <enum>Qt::Horizontal</enum>
+		  </property>
+		  <property name="sizeHint" stdset="0">
+		   <size>
+			<width>8</width>
+			<height>20</height>
+		   </size>
+		  </property>
+		 </spacer>
+		</item>
+		<item>
+		 <widget class="QLabel" name="cogYLabel">
+		  <property name="text">
+		   <string>Y</string>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <widget class="QLineEdit" name="cogYText">
+		  <property name="readOnly">
+		   <bool>true</bool>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <spacer name="cogSpacer2">
+		  <property name="orientation">
+		   <enum>Qt::Horizontal</enum>
+		  </property>
+		  <property name="sizeHint" stdset="0">
+		   <size>
+			<width>8</width>
+			<height>20</height>
+		   </size>
+		  </property>
+		 </spacer>
+		</item>
+		<item>
+		 <widget class="QLabel" name="cogZLabel">
+		  <property name="text">
+		   <string>Z</string>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <widget class="QLineEdit" name="cogZText">
+		  <property name="readOnly">
+		   <bool>true</bool>
+		  </property>
+		 </widget>
+		</item>
+	   </layout>
+	  </item>
+	  <item>
+	   <layout class="QHBoxLayout" name="cogButtonLayout">
+		<item>
+		 <spacer name="cogButtonSpacer1">
+		  <property name="orientation">
+		   <enum>Qt::Horizontal</enum>
+		  </property>
+		  <property name="sizeHint" stdset="0">
+		   <size>
+			<width>40</width>
+			<height>20</height>
+		   </size>
+		  </property>
+		 </spacer>
+		</item>
+		<item>
+		 <widget class="QPushButton" name="cogDatumButton">
+		  <property name="text">
+		   <string>Create Datum Point</string>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <spacer name="cogButtonSpacer2">
+		  <property name="orientation">
+		   <enum>Qt::Horizontal</enum>
+		  </property>
+		  <property name="sizeHint" stdset="0">
+		   <size>
+			<width>40</width>
+			<height>20</height>
+		   </size>
+		  </property>
+		 </spacer>
+		</item>
+	   </layout>
+	  </item>
+	 </layout>
+	</widget>
+   </item>
+   <item>
+	<widget class="QWidget" name="centerOfVolumePage">
+	 <layout class="QVBoxLayout" name="centerOfVolumeLayout">
+	  <property name="spacing">
+	   <number>8</number>
+	  </property>
+	  <item>
+	   <layout class="QHBoxLayout" name="covFieldsLayout">
+		<property name="spacing">
+		 <number>6</number>
+		</property>
+		<property name="leftMargin">
+		 <number>0</number>
+		</property>
+		<property name="topMargin">
+		 <number>0</number>
+		</property>
+		<property name="rightMargin">
+		 <number>0</number>
+		</property>
+		<property name="bottomMargin">
+		 <number>0</number>
+		</property>
+		<item>
+		 <widget class="QLabel" name="covXLabel">
+		  <property name="text">
+		   <string>X</string>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <widget class="QLineEdit" name="covXText">
+		  <property name="readOnly">
+		   <bool>true</bool>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <spacer name="covSpacer1">
+		  <property name="orientation">
+		   <enum>Qt::Horizontal</enum>
+		  </property>
+		  <property name="sizeHint" stdset="0">
+		   <size>
+			<width>8</width>
+			<height>20</height>
+		   </size>
+		  </property>
+		 </spacer>
+		</item>
+		<item>
+		 <widget class="QLabel" name="covYLabel">
+		  <property name="text">
+		   <string>Y</string>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <widget class="QLineEdit" name="covYText">
+		  <property name="readOnly">
+		   <bool>true</bool>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <spacer name="covSpacer2">
+		  <property name="orientation">
+		   <enum>Qt::Horizontal</enum>
+		  </property>
+		  <property name="sizeHint" stdset="0">
+		   <size>
+			<width>8</width>
+			<height>20</height>
+		   </size>
+		  </property>
+		 </spacer>
+		</item>
+		<item>
+		 <widget class="QLabel" name="covZLabel">
+		  <property name="text">
+		   <string>Z</string>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <widget class="QLineEdit" name="covZText">
+		  <property name="readOnly">
+		   <bool>true</bool>
+		  </property>
+		 </widget>
+		</item>
+	   </layout>
+	  </item>
+	  <item>
+	   <layout class="QHBoxLayout" name="covButtonLayout">
+		<item>
+		 <spacer name="covButtonSpacer1">
+		  <property name="orientation">
+		   <enum>Qt::Horizontal</enum>
+		  </property>
+		  <property name="sizeHint" stdset="0">
+		   <size>
+			<width>40</width>
+			<height>20</height>
+		   </size>
+		  </property>
+		 </spacer>
+		</item>
+		<item>
+		 <widget class="QPushButton" name="covDatumButton">
+		  <property name="text">
+		   <string>Create Datum Point</string>
+		  </property>
+		 </widget>
+		</item>
+		<item>
+		 <spacer name="covButtonSpacer2">
+		  <property name="orientation">
+		   <enum>Qt::Horizontal</enum>
+		  </property>
+		  <property name="sizeHint" stdset="0">
+		   <size>
+			<width>40</width>
+			<height>20</height>
+		   </size>
+		  </property>
+		 </spacer>
+		</item>
+	   </layout>
+	  </item>
+	 </layout>
+	</widget>
+   </item>
+   <item>
+	<widget class="QWidget" name="inertiaPage">
+	 <layout class="QVBoxLayout" name="inertiaLayout">
+	  <property name="spacing">
+	   <number>8</number>
+	  </property>
+	  <item>
+	   <widget class="QLabel" name="inertiaMatrixLabel">
+		<property name="text">
+		 <string>Inertia Matrix</string>
+		</property>
+	   </widget>
+	  </item>
+	  <item>
+	   <widget class="QWidget" name="inertiaMatrixWidget">
+		<layout class="QGridLayout" name="inertiaMatrixLayout">
+		 <property name="horizontalSpacing">
+		  <number>6</number>
+		 </property>
+		 <property name="verticalSpacing">
+		  <number>6</number>
+		 </property>
+		 <property name="leftMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="topMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="rightMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="bottomMargin">
+		  <number>0</number>
+		 </property>
+		 <item row="0" column="0">
+		  <widget class="QLabel" name="inertiaJoxLabel">
+		   <property name="text">
+			<string>Jox</string>
+		   </property>
+		  </widget>
+		 </item>
+		 <item row="0" column="1">
+		  <widget class="QLineEdit" name="inertiaJoxText">
+		   <property name="readOnly">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		 <item row="0" column="2">
+		  <widget class="QLabel" name="inertiaJxyLabel">
+		   <property name="text">
+			<string>Jxy</string>
+		   </property>
+		  </widget>
+		 </item>
+		 <item row="0" column="3">
+		  <widget class="QLineEdit" name="inertiaJxyText">
+		   <property name="readOnly">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		 <item row="0" column="4">
+		  <widget class="QLabel" name="inertiaJzxLabel">
+		   <property name="text">
+			<string>Jzx</string>
+		   </property>
+		  </widget>
+		 </item>
+		 <item row="0" column="5">
+		  <widget class="QLineEdit" name="inertiaJzxText">
+		   <property name="readOnly">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		 <item row="1" column="2">
+		  <widget class="QLabel" name="inertiaJoyLabel">
+		   <property name="text">
+			<string>Joy</string>
+		   </property>
+		  </widget>
+		 </item>
+		 <item row="1" column="3">
+		  <widget class="QLineEdit" name="inertiaJoyText">
+		   <property name="readOnly">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		 <item row="1" column="4">
+		  <widget class="QLabel" name="inertiaJzyLabel">
+		   <property name="text">
+			<string>Jzy</string>
+		   </property>
+		  </widget>
+		 </item>
+		 <item row="1" column="5">
+		  <widget class="QLineEdit" name="inertiaJzyText">
+		   <property name="readOnly">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		 <item row="2" column="4">
+		  <widget class="QLabel" name="inertiaJozLabel">
+		   <property name="text">
+			<string>Joz</string>
+		   </property>
+		  </widget>
+		 </item>
+		 <item row="2" column="5">
+		  <widget class="QLineEdit" name="inertiaJozText">
+		   <property name="readOnly">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		</layout>
+	   </widget>
+	  </item>
+	  <item>
+	   <widget class="Line" name="inertiaSeparator">
+		<property name="orientation">
+		 <enum>Qt::Horizontal</enum>
+		</property>
+	   </widget>
+	  </item>
+	  <item>
+	   <widget class="QLabel" name="inertiaPrincipalLabel">
+		<property name="text">
+		 <string>Principal Moments of Inertia</string>
+		</property>
+	   </widget>
+	  </item>
+	  <item>
+	   <widget class="QWidget" name="inertiaDiagWidget">
+		<layout class="QHBoxLayout" name="inertiaDiagLayout">
+		 <property name="spacing">
+		  <number>6</number>
+		 </property>
+		 <property name="leftMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="topMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="rightMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="bottomMargin">
+		  <number>0</number>
+		 </property>
+		 <item>
+		  <widget class="QLabel" name="inertiaJxLabel">
+		   <property name="text">
+			<string>Jx</string>
+		   </property>
+		  </widget>
+		 </item>
+		 <item>
+		  <widget class="QLineEdit" name="inertiaJxText">
+		   <property name="readOnly">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		 <item>
+		  <spacer name="inertiaDiagSpacer1">
+		   <property name="orientation">
+			<enum>Qt::Horizontal</enum>
+		   </property>
+		   <property name="sizeHint" stdset="0">
+			<size>
+			 <width>8</width>
+			 <height>20</height>
+			</size>
+		   </property>
+		  </spacer>
+		 </item>
+		 <item>
+		  <widget class="QLabel" name="inertiaJyLabel">
+		   <property name="text">
+			<string>Jy</string>
+		   </property>
+		  </widget>
+		 </item>
+		 <item>
+		  <widget class="QLineEdit" name="inertiaJyText">
+		   <property name="readOnly">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		 <item>
+		  <spacer name="inertiaDiagSpacer2">
+		   <property name="orientation">
+			<enum>Qt::Horizontal</enum>
+		   </property>
+		   <property name="sizeHint" stdset="0">
+			<size>
+			 <width>8</width>
+			 <height>20</height>
+			</size>
+		   </property>
+		  </spacer>
+		 </item>
+		 <item>
+		  <widget class="QLabel" name="inertiaJzLabel">
+		   <property name="text">
+			<string>Jz</string>
+		   </property>
+		  </widget>
+		 </item>
+		 <item>
+		  <widget class="QLineEdit" name="inertiaJzText">
+		   <property name="readOnly">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		</layout>
+	   </widget>
+	  </item>
+	  <item>
+	   <widget class="QWidget" name="inertiaLcsWidget">
+		<layout class="QHBoxLayout" name="inertiaLcsLayout">
+		 <property name="leftMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="topMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="rightMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="bottomMargin">
+		  <number>0</number>
+		 </property>
+		 <item>
+		  <spacer name="inertiaLcsSpacer1">
+		   <property name="orientation">
+			<enum>Qt::Horizontal</enum>
+		   </property>
+		   <property name="sizeHint" stdset="0">
+			<size>
+			 <width>40</width>
+			 <height>20</height>
+			</size>
+		   </property>
+		  </spacer>
+		 </item>
+		 <item>
+		  <widget class="QPushButton" name="inertiaLcsButton">
+		   <property name="text">
+			<string>Create Principal Axes LCS</string>
+		   </property>
+		  </widget>
+		 </item>
+		 <item>
+		  <spacer name="inertiaLcsSpacer2">
+		   <property name="orientation">
+			<enum>Qt::Horizontal</enum>
+		   </property>
+		   <property name="sizeHint" stdset="0">
+			<size>
+			 <width>40</width>
+			 <height>20</height>
+			</size>
+		   </property>
+		  </spacer>
+		 </item>
+		</layout>
+	   </widget>
+	  </item>
+	  <item>
+	   <widget class="QWidget" name="axisInertiaWidget">
+		<layout class="QHBoxLayout" name="axisInertiaLayout">
+		 <property name="spacing">
+		  <number>6</number>
+		 </property>
+		 <property name="leftMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="topMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="rightMargin">
+		  <number>0</number>
+		 </property>
+		 <property name="bottomMargin">
+		  <number>0</number>
+		 </property>
+		 <item>
+		  <widget class="QLabel" name="axisLabel">
+		   <property name="text">
+			<string>Inertia around axis</string>
+		   </property>
+		   <property name="wordWrap">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		 <item>
+		  <widget class="QLineEdit" name="axisInertiaText">
+		   <property name="readOnly">
+			<bool>true</bool>
+		   </property>
+		  </widget>
+		 </item>
+		</layout>
+	   </widget>
+	  </item>
+	 </layout>
+	</widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

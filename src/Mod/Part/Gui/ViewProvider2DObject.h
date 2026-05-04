@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDER2DOBJECT_H
-#define PARTGUI_VIEWPROVIDER2DOBJECT_H
+#pragma once
 
 #include "ViewProvider.h"
 #include <App/PropertyUnits.h>
@@ -125,6 +124,3 @@ private:
 using ViewProvider2DObjectPython = Gui::ViewProviderFeaturePythonT<ViewProvider2DObject>;
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDER2DOBJECT_H

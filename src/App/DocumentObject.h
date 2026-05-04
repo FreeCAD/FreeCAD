@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef SRC_APP_DOCUMENTOBJECT_H_
-#define SRC_APP_DOCUMENTOBJECT_H_
+#pragma once
 
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
@@ -184,6 +183,9 @@ public:
      * @brief Signal that the property of this object has changed.
      *
      * Subscribers will get the current object and the property that has changed.
+     * This is a raw same-thread signal. It is not marshaled back to the GUI
+     * thread; GUI code should generally subscribe to App::Document's
+     * document-scoped MainThreadSignal notifications instead.
      *
      * @param[in] obj  The document object whose property just changed.
      * @param[in] prop The property that was changed.
@@ -194,6 +196,8 @@ public:
      * @brief Emitted immediately after any property of this object has changed.
      *
      * This is fired before the outer "document-scoped" change notification.
+     * It intentionally keeps same-thread semantics and is not suitable for GUI
+     * observers that require main-thread delivery.
      *
      * @param[in] obj  The document object whose property just changed.
      * @param[in] prop The property that was changed.
@@ -1187,6 +1191,20 @@ public:
     }
 
     /**
+     * @brief Whether this object's recompute path is safe to run on the worker thread.
+     *
+     * This is used by async recompute scheduling. Objects that can touch GUI or
+     * other thread-affine state during recompute must return false. Returning
+     * true means the recompute path is limited to worker-safe App/model work
+     * and does not depend on GUI, Qt event-loop state, or other thread-affine
+     * APIs.
+     */
+    virtual bool canRecomputeOnWorker() const
+    {
+        return true;
+    }
+
+    /**
      * @brief Called when an element reference is updated.
      *
      * @param[in] prop The property that was updated.
@@ -1365,5 +1383,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // SRC_APP_DOCUMENTOBJECT_H_

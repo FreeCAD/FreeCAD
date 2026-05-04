@@ -398,26 +398,32 @@
         </item>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_13">
-        <property name="text">
-         <string>Hide first rapid move</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
+      <item row="2" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="HideFirstRapid">
         <property name="toolTip">
          <string>Hide the initial rapid move in path visualization by setting the start index to the first feed move</string>
         </property>
         <property name="text">
-         <string/>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
+         <string>Hide first rapid move</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>HideFirstRapid</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/CAM</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="PostProcessorShowEditor">
+        <property name="toolTip">
+         <string>Pop up the G-code editor for review and editing before writing the output file</string>
+        </property>
+        <property name="text">
+         <string>Show editor before writing G-code</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PostProcessorShowEditor</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/CAM</cstring>

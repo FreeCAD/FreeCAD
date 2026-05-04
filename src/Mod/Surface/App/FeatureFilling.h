@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATUREFILLING_H
-#define SURFACE_FEATUREFILLING_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
@@ -94,5 +93,3 @@ private:
 };
 
 }  // Namespace Surface
-
-#endif

@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTTEMPERATURE_H
-#define FEM_CONSTRAINTTEMPERATURE_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -45,7 +44,7 @@ public:
 
     // Temperature parameters
     App::PropertyTemperature Temperature;
-    App::PropertyPower CFlux;
+    App::PropertyPower ConcentratedHeatFlux;
     App::PropertyEnumeration ConstraintType;
 
 
@@ -61,10 +60,12 @@ protected:
         const char* TypeName,
         App::Property* prop
     ) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
+    ) override;
     void onChanged(const App::Property* prop) override;
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINTTEMPERATURE_H

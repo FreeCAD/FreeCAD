@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPocket_H
-#define PARTGUI_ViewProviderPocket_H
+#pragma once
 
 #include "ViewProviderExtrude.h"
 
@@ -51,6 +50,3 @@ protected:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderPocket_H

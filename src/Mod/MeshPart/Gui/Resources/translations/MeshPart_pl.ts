@@ -154,7 +154,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation>Licznik</translation>
+      <translation>Ilość</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>

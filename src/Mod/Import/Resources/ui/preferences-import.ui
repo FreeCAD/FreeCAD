@@ -83,7 +83,7 @@
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBox">
      <property name="toolTip">
-      <string>If this is checked, Compound merge will be done during file reading (slower but higher details).</string>
+      <string>If checked, all shapes in the STEP file are merged into a single compound during import. Part instances are resolved and transforms applied, which increases import time. Geometry accuracy and rendering quality are not affected.</string>
      </property>
      <property name="text">
       <string>Enable STEP Compound merge</string>

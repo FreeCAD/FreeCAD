@@ -23,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderLinearPattern_H
-#define PARTGUI_ViewProviderLinearPattern_H
+#pragma once
 
 #include "ViewProviderTransformed.h"
 
@@ -53,6 +52,3 @@ protected:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderLinearPattern_H

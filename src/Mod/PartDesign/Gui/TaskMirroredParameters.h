@@ -22,8 +22,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskMirroredParameters_H
-#define GUI_TASKVIEW_TaskMirroredParameters_H
+#pragma once
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderMirrored.h"
@@ -89,5 +88,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

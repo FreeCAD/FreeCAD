@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SKETCHERSETTINGS_H
-#define SKETCHERGUI_SKETCHERSETTINGS_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -73,6 +72,8 @@ public:
     explicit SketcherSettingsGrid(QWidget* parent = nullptr);
     ~SketcherSettingsGrid() override;
 
+    bool event(QEvent* event) override;
+
     void saveSettings() override;
     void loadSettings() override;
 
@@ -120,6 +121,8 @@ public:
     explicit SketcherSettingsAppearance(QWidget* parent = nullptr);
     ~SketcherSettingsAppearance() override;
 
+    bool event(QEvent* event) override;
+
     void saveSettings() override;
     void loadSettings() override;
 
@@ -144,5 +147,3 @@ enum class AutoScaleMode : int
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_SKETCHERSETTINGS_H

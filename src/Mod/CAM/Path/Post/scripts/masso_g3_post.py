@@ -25,6 +25,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+#
+# DEPRECATED: This post processor is deprecated and replaced by the generic
+# post processor with Masso_G3.fcm machine configuration file.
+# Use the generic post processor instead.
 
 from typing import Any, Dict
 
@@ -89,9 +93,7 @@ class Masso_G3(PostProcessor):
             "D",
             "P",
         ]
-        values[
-            "POSTAMBLE"
-        ] = """M05
+        values["POSTAMBLE"] = """M05
 G17 G54 G90 G80 G40
 M2"""
         values["PREAMBLE"] = """G17 G54 G40 G49 G80 G90"""

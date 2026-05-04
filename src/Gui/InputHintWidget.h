@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef INPUTHINTWIDGET_H
-#define INPUTHINTWIDGET_H
+#pragma once
 
 #include <optional>
 
@@ -50,4 +49,3 @@ private:
 };
 
 }  // Namespace Gui
-#endif  // INPUTHINTWIDGET_H

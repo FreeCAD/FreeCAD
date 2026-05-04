@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_MODELSELECT_H
-#define MATGUI_MODELSELECT_H
+#pragma once
 
 #include <memory>
 
@@ -103,5 +102,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_MODELSELECT_H

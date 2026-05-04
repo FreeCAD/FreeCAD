@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATURE_EXTRUDE_H
-#define PARTDESIGN_FEATURE_EXTRUDE_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -126,5 +125,3 @@ protected:
 }  // namespace PartDesign
 
 ENABLE_BITMASK_OPERATORS(PartDesign::FeatureExtrude::ExtrudeOption)
-
-#endif  // PARTDESIGN_FEATURE_EXTRUDE_H

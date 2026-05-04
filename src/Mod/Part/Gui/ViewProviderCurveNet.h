@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERCURVENET_H
-#define PARTGUI_VIEWPROVIDERCURVENET_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -95,6 +94,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERCURVENET_H

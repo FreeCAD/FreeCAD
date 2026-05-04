@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
-import FreeCAD, os, unittest, tempfile
+import FreeCAD, os, unittest, tempfile, zipfile
 from FreeCAD import Base
 import math
 import xml.etree.ElementTree as ET
@@ -840,6 +840,66 @@ class DocumentSaveRestoreCases(unittest.TestCase):
         FreeCAD.closeDocument("SaveRestoreTests")
 
 
+class DocumentRecoveryCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("RecoveryTests")
+        self.Obj = self.Doc.addObject("App::FeatureTest", "RecoveryObject")
+        self.savedFileName = None
+
+    def tearDown(self):
+        if FreeCAD.getDocument("RecoveryTests") is not None:
+            FreeCAD.closeDocument("RecoveryTests")
+        if self.savedFileName and os.path.exists(self.savedFileName):
+            os.remove(self.savedFileName)
+
+    def testWriteCompressedRecoverySnapshot(self):
+        self.assertTrue(self.Doc.canWriteRecoverySnapshot())
+        self.assertTrue(FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc))
+
+        metadata = os.path.join(self.Doc.TransientDir, "fc_recovery_file.xml")
+        archive = os.path.join(self.Doc.TransientDir, "fc_recovery_file.fcstd")
+
+        self.assertTrue(os.path.isfile(metadata))
+        self.assertTrue(os.path.isfile(archive))
+
+        root = ET.parse(metadata).getroot()
+        self.assertEqual(root.tag, "AutoRecovery")
+
+        with zipfile.ZipFile(archive) as recovery:
+            self.assertIn("Document.xml", recovery.namelist())
+
+    def testWriteUncompressedRecoverySnapshot(self):
+        self.assertTrue(FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc, compressed=False))
+
+        metadata = os.path.join(self.Doc.TransientDir, "fc_recovery_file.xml")
+        document_xml = os.path.join(self.Doc.TransientDir, "fc_recovery_files", "Document.xml")
+
+        self.assertTrue(os.path.isfile(metadata))
+        self.assertTrue(os.path.isfile(document_xml))
+
+    def testRecoveryMetadataEscapesXml(self):
+        self.Doc.Label = 'Recovery <Label> & "Name"'
+        self.savedFileName = os.path.join(tempfile.gettempdir(), "Recovery&Name.FCStd")
+        self.Doc.saveAs(self.savedFileName)
+
+        self.assertTrue(FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc))
+
+        metadata = os.path.join(self.Doc.TransientDir, "fc_recovery_file.xml")
+        root = ET.parse(metadata).getroot()
+
+        self.assertEqual(root.findtext("Label"), self.Doc.Label)
+        self.assertEqual(root.findtext("FileName"), self.savedFileName)
+
+    def testRejectRecoverySnapshotDuringTransaction(self):
+        self.Doc.openTransaction("RecoveryWrite")
+        try:
+            self.assertFalse(self.Doc.canWriteRecoverySnapshot())
+            with self.assertRaises(RuntimeError):
+                FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc)
+        finally:
+            self.Doc.abortTransaction()
+
+
 class DocumentRecomputeCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("RecomputeTests")
@@ -1440,6 +1500,22 @@ class DocumentGroupCases(unittest.TestCase):
             self.fail("Exception is expected")
 
         self.Doc.recompute()
+
+    def testContainerChainGroupInPart(self):
+        # ContainerChain must not raise when a plain group is nested inside a GeoFeatureGroup
+        from Show.Containers import ContainerChain
+
+        part = self.Doc.addObject("App::Part", "Part")
+        group = self.Doc.addObject("App::DocumentObjectGroup", "Group")
+        obj = self.Doc.addObject("App::FeatureTest", "Obj")
+        part.addObject(group)
+        group.addObject(obj)
+        self.Doc.recompute()
+
+        chain = ContainerChain(obj)
+        objects_in_chain = [c for c in chain if not c.isDerivedFrom("App::Document")]
+        self.assertIn(part, objects_in_chain)
+        self.assertIn(group, objects_in_chain)
 
     def testIssue0003150Part2(self):
         self.box = self.Doc.addObject("App::FeatureTest")
@@ -2691,3 +2767,49 @@ class DocumentAutoCreatedCases(unittest.TestCase):
             FreeCAD.closeDocument("TestDoc")
         self.assertIn("TestDoc", FreeCAD.listDocuments())
         self.assertIn("SavedDoc", FreeCAD.listDocuments())
+
+
+# Test if actions done on two documents are undone together
+# (working toward making this test pass)
+class MultiDocumentUndo(unittest.TestCase):
+    def setUp(self):
+        self.Doc1 = FreeCAD.newDocument("Doc1")
+        self.Doc2 = FreeCAD.newDocument("Doc2")
+        self.Doc1.UndoMode = 1
+        self.Doc2.UndoMode = 1
+
+    def testAddObjects(self):
+        self.Doc1.openTransaction("transact1")
+        self.Doc2.openTransaction("transact2")
+
+        obj1 = self.Doc1.addObject("App::DocumentObject", "Obj1Name")
+        obj2 = self.Doc2.addObject("App::DocumentObject", "Obj2Name")
+
+        self.assertNotEqual(self.Doc1.getBookedTransactionID(), self.Doc2.getBookedTransactionID())
+
+        self.Doc1.commitTransaction()
+        self.Doc2.commitTransaction()
+
+        with self.assertRaises(TypeError):
+            self.Doc1.getObject([1])
+            self.Doc2.getObject([1])
+
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), obj1)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), obj2)
+
+        self.Doc1.undo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), None)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), obj2)
+
+        self.Doc2.undo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), None)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), None)
+
+        self.Doc1.redo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), obj1)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), None)
+
+    def tearDown(self):
+        # closing doc
+        FreeCAD.closeDocument("Doc1")
+        FreeCAD.closeDocument("Doc2")

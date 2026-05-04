@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PreferencesGui_h_
-#define PreferencesGui_h_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -78,6 +77,7 @@ static TechDraw::ArrowType dimArrowStyle();
 static double      dimArrowSize();
 
 static double      edgeFuzz();
+static double      markFuzz();
 
 static QString     weldingDirectory();
 
@@ -104,4 +104,3 @@ static void setViewFrameMode(ViewFrameMode newMode);
 };
 
 } //end namespace TechDrawGui
-#endif

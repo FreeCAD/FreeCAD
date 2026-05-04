@@ -4,7 +4,7 @@ General:
   UUID: "169e4200-586d-4bde-aae5-4527392012f8"
   Name: "hatch45R"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   Pattern File:
     UUID: "c6596294-e97d-4812-87db-28e1d66521a3"

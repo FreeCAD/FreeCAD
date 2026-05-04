@@ -22,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef APP_INDEXEDNAME_H
-#define APP_INDEXEDNAME_H
+#pragma once
 
 #include <cassert>
 #include <cstring>
@@ -467,5 +466,3 @@ struct ByteArrayHasher
 };
 
 }  // namespace Data
-
-#endif  // APP_INDEXEDNAME_H

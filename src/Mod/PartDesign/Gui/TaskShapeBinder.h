@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskDatumShapeBinder_H
-#define GUI_TASKVIEW_TaskDatumShapeBinder_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -50,7 +49,7 @@ namespace PartDesignGui
 {
 
 
-class TaskShapeBinder: public Gui::TaskView::TaskBox, Gui::SelectionObserver
+class TaskShapeBinder: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -120,5 +119,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

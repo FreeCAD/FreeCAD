@@ -10,6 +10,10 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: build-release-${{ github.event_name }}
+  cancel-in-progress: true
+
 jobs:
   upload_src:
     runs-on: ubuntu-latest
@@ -17,11 +21,11 @@ jobs:
       build_tag: ${{ steps.get_tag.outputs.build_tag }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
+        uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
         with:
           egress-policy: audit
 
-      - name: Checkout Source
+      - name: Checkout source
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.sha }}
@@ -29,7 +33,7 @@ jobs:
           fetch-tags: true
           submodules: 'recursive'
 
-      - name: get tag and create release if weekly
+      - name: Get tag and create release if weekly
         id: get_tag
         shell: bash -l {0}
         env:
@@ -38,15 +42,26 @@ jobs:
           if [ "${{ github.event_name }}" = "release" ]; then
             export BUILD_TAG="${{ github.event.release.tag_name }}"
           else
-            export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
-            gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" -F .github/workflows/weekly-build-notes.md --prerelease || true
+            BRANCH="${{ github.ref_name }}"
+            DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+            if [ "$BRANCH" = "$DEFAULT_BRANCH" ]; then
+              export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
+            else
+              # Sanitize branch name for use in a tag (replace non-alphanumeric with -)
+              SAFE_BRANCH=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9._-]/-/g')
+              export BUILD_TAG=${SAFE_BRANCH}-$(date "+%Y.%m.%d")
+            fi
+            gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" \
+                                           -F .github/workflows/weekly-build-notes.md \
+                                           --prerelease || \
+            gh release view ${BUILD_TAG} > /dev/null  # fail if it doesn't exist
           fi
           echo "BUILD_TAG=${BUILD_TAG}" >> "$GITHUB_ENV"
           echo "build_tag=${BUILD_TAG}" >> "$GITHUB_OUTPUT"
 
       - name: Trigger notes updater workflow (only for weekly)
         if: startsWith(steps.get_tag.outputs.build_tag, 'weekly-')
-        uses: actions/github-script@v7
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3  # v9.0.0
         env:
           WEEKLY_TAG: ${{ steps.get_tag.outputs.build_tag }}
         with:
@@ -105,7 +120,7 @@ jobs:
     environment: weekly-build
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
+        uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
         with:
           egress-policy: audit
 
@@ -118,7 +133,7 @@ jobs:
           remove-android: 'true'      # (frees ~9 GB)
           remove-cached-tools: 'true' # (frees ~8.3 GB)
 
-      - name: Set Platform Environment Variables
+      - name: Set platform environment variables
         shell: bash -l {0}
         env:
           OPERATING_SYSTEM: ${{ runner.os }}
@@ -128,7 +143,7 @@ jobs:
             echo 'RATTLER_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
           fi
 
-      - name: Checkout Source
+      - name: Checkout source
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.sha }}
@@ -136,13 +151,13 @@ jobs:
           fetch-tags: true
           submodules: 'recursive'
 
-      - uses: prefix-dev/setup-pixi@a0af7a228712d6121d37aba47adf55c1332c9c2e # v0.9.4
+      - uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
         with:
           pixi-version: v0.59.0
           cache: false
 
       - name: Install the Apple certificate and provisioning profile
-        id: get_cert
+        id: macos_get_cert
         if: runner.os == 'macOS'
         env:
           APP_SPECIFIC_PASSWORD: ${{ secrets.APP_SPECIFIC_PASSWORD }}
@@ -150,7 +165,6 @@ jobs:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
           BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
           DEVELOPER_TEAM_ID: ${{ secrets.DEVELOPER_TEAM_ID }}
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
         run: |
           if [ -z "$BUILD_CERTIFICATE_BASE64" ]; then
@@ -186,23 +200,81 @@ jobs:
 
           xcrun notarytool store-credentials "FreeCAD" --keychain "$KEYCHAIN_PATH" --apple-id "${APPLE_ID}" --password "${APP_SPECIFIC_PASSWORD}" --team-id "${DEVELOPER_TEAM_ID}"
 
-      - name: Build and Release Packages
+      - name: Setup .NET 10 SDK
+        if: runner.os == 'Windows'
+        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+        with:
+          dotnet-version: '10.0.103'
+
+      - name: Install sign tool
+        if: runner.os == 'Windows'
+        run: |
+          # NOTE: The sign tool is ONLY available as a prerelease package, they never issue real releases.
+          dotnet tool install --global --prerelease sign
+          echo "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          dotnet --info
+          sign --version
+
+      - name: Build packages
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
-          SIGN_RELEASE: ${{ steps.get_cert.outputs.has_cert }}
           TARGET_PLATFORM: ${{ matrix.target }}
-          MAKE_INSTALLER: "true"
-          UPLOAD_RELEASE: "true"
           BUILD_TAG: ${{ needs.upload_src.outputs.build_tag }}
         run: |
+          set -euo pipefail
           if [[ "${{ runner.os }}" == "macOS" ]]; then
             export MACOS_DEPLOYMENT_TARGET="${{ matrix.deploy_target }}"
           fi
           python3 package/scripts/write_version_info.py ../freecad_version.txt
           cd package/rattler-build
           pixi install
+
+      - name: Azure login for Windows build code signing
+        id: azure_login
+        if: runner.os == 'Windows'
+        continue-on-error: true
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43 # v3.0.0
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - name: Release packages with optional code-signing on Windows and macOS
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_PLATFORM: ${{ matrix.target }}
+          MAKE_INSTALLER: "true"
+          UPLOAD_RELEASE: "true"
+          BUILD_TAG: ${{ needs.upload_src.outputs.build_tag }}
+        run: |
+          set -euo pipefail
+
+          export MACOS_SIGN_RELEASE=0
+          export WINDOWS_SIGN_RELEASE=0
+
+          case "${RUNNER_OS}" in
+            Windows)
+              export WINDOWS_SIGN_RELEASE="${{ steps.azure_login.outcome }}"
+              export WINDOWS_AZURE_ENDPOINT="${{ vars.AZURE_TRUSTED_SIGNING_ENDPOINT }}"
+              export WINDOWS_AZURE_CERTIFICATE_PROFILE="${{ vars.AZURE_TRUSTED_SIGNING_CERTIFICATE_PROFILE }}"
+              export WINDOWS_AZURE_SIGNING_ACCOUNT="${{ vars.AZURE_TRUSTED_SIGNING_ACCOUNT }}"
+
+              # For good measure, normalize the azure_login result to 1 or 0
+              if [[ "${WINDOWS_SIGN_RELEASE:-}" == "success" ]]; then
+                export WINDOWS_SIGN_RELEASE=1
+              else
+                export WINDOWS_SIGN_RELEASE=0
+              fi
+              ;;
+
+            macOS)
+              export MACOS_SIGN_RELEASE="${{ steps.macos_get_cert.outputs.has_cert }}"
+              export MACOS_SIGNING_KEY_ID="${{ secrets.SIGNING_KEY_ID }}"
+              export MACOS_DEPLOYMENT_TARGET="${{ matrix.deploy_target }}"
+              ;;
+          esac
+
+          cd package/rattler-build
           pixi run -e package create_bundle
 
       ## Needed if running on a self-hosted runner:

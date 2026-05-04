@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PATH_ViewProviderPathShape_H
-#define PATH_ViewProviderPathShape_H
+#pragma once
 
 #include "ViewProviderPath.h"
 
@@ -53,6 +52,3 @@ public:
 };
 
 }  // namespace PathGui
-
-
-#endif  // PATH_ViewProviderPathShape_H

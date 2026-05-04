@@ -1128,17 +1128,33 @@ PyObject* FemMeshPy::copy(PyObject* args) const
     return new FemMeshPy(new FemMesh(mesh));
 }
 
-PyObject* FemMeshPy::read(PyObject* args)
+PyObject* FemMeshPy::read(PyObject* args, PyObject* kwds)
 {
+    static const std::array<const char*, 3> kwlist {"file_name", "vtk_cell_group_array", nullptr};
+
     char* Name;
-    if (!PyArg_ParseTuple(args, "et", "utf-8", &Name)) {
+    char* ArrayName = nullptr;
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kwds, "et|et", kwlist, "utf-8", &Name, "utf-8", &ArrayName)
+    ) {
         return nullptr;
     }
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
 
+    std::string EncodedArrayName;
+    if (ArrayName != nullptr) {
+        EncodedArrayName = std::string(ArrayName);
+        PyMem_Free(ArrayName);
+    }
+
     try {
-        getFemMeshPtr()->read(EncodedName.c_str());
+        if (EncodedArrayName.empty()) {
+            getFemMeshPtr()->read(EncodedName.c_str());
+        }
+        else {
+            getFemMeshPtr()->readVTKWithGroups(EncodedName.c_str(), EncodedArrayName.c_str());
+        }
     }
     catch (const std::exception& e) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
@@ -1147,17 +1163,68 @@ PyObject* FemMeshPy::read(PyObject* args)
     Py_Return;
 }
 
-PyObject* FemMeshPy::write(PyObject* args) const
+PyObject* FemMeshPy::write(PyObject* args, PyObject* kwds) const
 {
+
+    static const std::array<const char*, 5>
+        kwlist {"file_name", "highest", "vtk_cell_group_array", "vtk_group_id_map", nullptr};
+
     char* Name;
-    if (!PyArg_ParseTuple(args, "et", "utf-8", &Name)) {
+    PyObject* Highest = nullptr;
+    char* ArrayName = nullptr;
+    PyObject* PyGroupMap = nullptr;
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "et|OetO",
+            kwlist,
+            "utf-8",
+            &Name,
+            &Highest,
+            "utf-8",
+            &ArrayName,
+            &PyGroupMap
+        )) {
         return nullptr;
     }
+
+    // VTK with groups export handling
+    std::string EncodedArrayName;
+    std::map<std::string, int> GroupMap;
+    if (ArrayName != nullptr) {
+        EncodedArrayName = std::string(ArrayName);
+        PyMem_Free(ArrayName);
+
+        if (PyGroupMap != nullptr) {
+            Py::Dict pymap(PyGroupMap);
+            for (auto it = pymap.begin(); it != pymap.end(); ++it) {
+                auto group_name = Py::String((*it).first);
+                auto group_index = Py::Long((*it).second);
+                GroupMap[group_name.as_std_string()] = group_index.as_long();
+            }
+        }
+    }
+
+    bool parsed_highest = true;
+    if (Highest != nullptr) {
+        parsed_highest = Base::asBoolean(Highest);
+    }
+
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
 
     try {
-        getFemMeshPtr()->write(EncodedName.c_str());
+        if (EncodedArrayName.empty()) {
+            getFemMeshPtr()->write(EncodedName.c_str());
+        }
+        else {
+            getFemMeshPtr()->writeVTKWithGroups(
+                EncodedName.c_str(),
+                EncodedArrayName.c_str(),
+                GroupMap,
+                parsed_highest
+            );
+        }
     }
     catch (const std::exception& e) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());

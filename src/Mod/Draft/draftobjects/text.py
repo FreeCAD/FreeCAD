@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Text object."""
+
 ## @package text
 # \ingroup draftobjects
 # \brief Provides the object code for the Text object.

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_NOTIFICATIONS_H
-#define GUI_NOTIFICATIONS_H
+#pragma once
 
 #include <QMessageBox>
 #include <QCoreApplication>
@@ -184,36 +183,38 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             // Send also to log for developer only
             auto msg = std::string(message).append("\n");  // use untranslated message
 
-            if constexpr (std::is_base_of_v<
-                              App::DocumentObject,
-                              std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            if constexpr (
+                std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console()
                     .send<type, Base::IntendedRecipient::Developer, Base::ContentType::Untranslated>(
                         notifier->getFullLabel(),
                         msg.c_str()
                     );
             }
-            else if constexpr (std::is_base_of_v<
-                                   Gui::ViewProviderDocumentObject,
-                                   std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            else if constexpr (
+                std::is_base_of_v<
+                    Gui::ViewProviderDocumentObject,
+                    std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console()
                     .send<type, Base::IntendedRecipient::Developer, Base::ContentType::Untranslated>(
                         notifier->getObject()->getFullLabel(),
                         msg.c_str()
                     );
             }
-            else if constexpr (std::is_base_of_v<
-                                   Gui::Document,
-                                   std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            else if constexpr (
+                std::is_base_of_v<Gui::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console()
                     .send<type, Base::IntendedRecipient::Developer, Base::ContentType::Untranslated>(
                         notifier->getDocument()->Label.getStrValue(),
                         msg.c_str()
                     );
             }
-            else if constexpr (std::is_base_of_v<
-                                   App::Document,
-                                   std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            else if constexpr (
+                std::is_base_of_v<App::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console()
                     .send<type, Base::IntendedRecipient::Developer, Base::ContentType::Untranslated>(
                         notifier->Label.getStrValue(),
@@ -270,30 +271,32 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             // trailing newline is not necessary as translated messages are not shown in logs
             auto msg = QStringLiteral("%1. %2").arg(caption).arg(message);  // QString
 
-            if constexpr (std::is_base_of_v<
-                              App::DocumentObject,
-                              std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            if constexpr (
+                std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console().send<type, recipient, content>(notifier->getFullLabel(), msg.toUtf8());
             }
-            else if constexpr (std::is_base_of_v<
-                                   Gui::ViewProviderDocumentObject,
-                                   std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            else if constexpr (
+                std::is_base_of_v<
+                    Gui::ViewProviderDocumentObject,
+                    std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console().send<type, recipient, content>(
                     notifier->getObject()->getFullLabel(),
                     msg.toUtf8()
                 );
             }
-            else if constexpr (std::is_base_of_v<
-                                   Gui::Document,
-                                   std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            else if constexpr (
+                std::is_base_of_v<Gui::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console().send<type, recipient, content>(
                     notifier->getDocument()->Label.getStrValue(),
                     msg.toUtf8()
                 );
             }
-            else if constexpr (std::is_base_of_v<
-                                   App::Document,
-                                   std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            else if constexpr (
+                std::is_base_of_v<App::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console().send<type, recipient, content>(
                     notifier->Label.getStrValue(),
                     msg.toUtf8()
@@ -308,30 +311,32 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             // (depending on the configuration).
             auto msg = std::string(message).append("\n");
 
-            if constexpr (std::is_base_of_v<
-                              App::DocumentObject,
-                              std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            if constexpr (
+                std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console().send<type, recipient, content>(notifier->getFullLabel(), msg.c_str());
             }
-            else if constexpr (std::is_base_of_v<
-                                   Gui::ViewProviderDocumentObject,
-                                   std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            else if constexpr (
+                std::is_base_of_v<
+                    Gui::ViewProviderDocumentObject,
+                    std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console().send<type, recipient, content>(
                     notifier->getObject()->getFullLabel(),
                     msg.c_str()
                 );
             }
-            else if constexpr (std::is_base_of_v<
-                                   Gui::Document,
-                                   std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            else if constexpr (
+                std::is_base_of_v<Gui::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console().send<type, recipient, content>(
                     notifier->getDocument()->Label.getStrValue(),
                     msg.c_str()
                 );
             }
-            else if constexpr (std::is_base_of_v<
-                                   App::Document,
-                                   std::remove_pointer_t<typename std::decay<TNotifier>::type>>) {
+            else if constexpr (
+                std::is_base_of_v<App::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
+            ) {
                 Base::Console().send<type, recipient, content>(
                     notifier->Label.getStrValue(),
                     msg.c_str()
@@ -425,5 +430,3 @@ inline void Gui::Notification(TNotifier&& notifier, TCaption&& caption, TMessage
         std::forward<TMessage>(message)
     );
 }
-
-#endif  // GUI_NOTIFICATIONS_H

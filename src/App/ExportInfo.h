@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#ifndef SRC_APP_EXPORTINFO_H_
-#define SRC_APP_EXPORTINFO_H_
+#pragma once
 
 #include "DocumentObject.h"
 
@@ -17,11 +16,9 @@ namespace App
 struct ExportInfo {
     std::string location {};
     std::string filename {};
-    std::string filter {};
+    std::string filterName {};
     bool generatedName {false};
     App::DocumentObject* object {nullptr};
 };
 
 }
-
-#endif

@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskBooleanParameters_H
-#define GUI_TASKVIEW_TaskBooleanParameters_H
+#pragma once
 
 #include "TaskFeatureParameters.h"
 
@@ -113,7 +112,7 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user presses the help button
+
     bool isAllowedAlterDocument() const override
     {
         return false;
@@ -132,5 +131,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_VIEW_PARAMS_H
-#define GUI_VIEW_PARAMS_H
+#pragma once
 
 
 #include <Base/Parameter.h>
@@ -113,5 +112,3 @@ private:
 #undef FC_VIEW_PARAM
 
 }  // namespace Gui
-
-#endif  // GUI_VIEW_PARAMS_H

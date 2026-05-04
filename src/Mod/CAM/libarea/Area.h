@@ -5,8 +5,7 @@
 // This program is released under the BSD license. See the file COPYING for details.
 // repository now moved to github
 
-#ifndef AREA_HEADER
-#define AREA_HEADER
+#pragma once
 
 #include "Curve.h"
 #include "clipper.hpp"
@@ -142,5 +141,3 @@ eOverlapType GetOverlapType(const CCurve& c1, const CCurve& c2);
 eOverlapType GetOverlapType(const CArea& a1, const CArea& a2);
 bool IsInside(const Point& p, const CCurve& c);
 bool IsInside(const Point& p, const CArea& a);
-
-#endif  // #define AREA_HEADER

@@ -26,6 +26,7 @@ This module provides Coin (pivy) based objects
 that are used by the Draft Workbench to draw temporary geometry,
 that is, previews, of the real objects that will be created on the 3D view.
 """
+
 ## @package gui_trackers
 # \ingroup draftguitools
 # \brief Provides Coin based objects used to preview objects being built.
@@ -42,7 +43,6 @@ import pivy.coin as coin
 
 import FreeCAD
 import FreeCADGui
-import Draft
 import DraftVecUtils
 from FreeCAD import Vector
 from draftutils import grid_observer
@@ -95,7 +95,7 @@ class Tracker:
 
     def get_scene_graph(self):
         """Returns the current scenegraph or None if this is not a 3D view"""
-        v = Draft.get3DView()
+        v = gui_utils.get_3d_view()
         if v:
             return v.getSceneGraph()
         else:
@@ -518,7 +518,7 @@ class bsplineTracker(Tracker):
             c = Part.BSplineCurve()
             # DNC: allows one to close the curve by placing ends close to each other
             if len(self.points) >= 3 and (
-                (self.points[0] - self.points[-1]).Length < Draft.tolerance()
+                (self.points[0] - self.points[-1]).Length < utils.tolerance()
             ):
                 # YVH: Added a try to bypass some hazardous situations
                 try:
@@ -1049,8 +1049,8 @@ class PlaneTracker(Tracker):
 
     def __init__(self):
         # getting screen distance
-        p1 = Draft.get3DView().getPoint((100, 100))
-        p2 = Draft.get3DView().getPoint((110, 100))
+        p1 = gui_utils.get_3d_view().getPoint((100, 100))
+        p2 = gui_utils.get_3d_view().getPoint((110, 100))
         bl = (p2.sub(p1)).Length * (params.get_param("snapRange") / 2.0)
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
@@ -1670,7 +1670,7 @@ class archDimTracker(Tracker):
         self.param2 = self.dimnode.param2
         self.pnts = self.dimnode.pnts
         self.string = self.dimnode.string
-        self.view = Draft.get3DView()
+        self.view = gui_utils.get_3d_view()
         self.camera = self.view.getCameraNode()
         self.setMode(mode)
         self.setString()
@@ -1712,14 +1712,15 @@ class archDimTracker(Tracker):
         self.matrix.setValue(*plane.get_placement().Matrix.transposed().A)
         self.string.setValue(text.encode("utf8"))
         # change the text position to external depending on the distance and scale values
-        volume = self.camera.getViewVolume()
-        scale = self.view.getSize()[1] / volume.getHeight()
-        if scale * self.Distance > self.size_pixel * len(text):
-            self.param2.setValue(0)
-        else:
-            self.param2.setValue(
-                1 / 2 * self.Distance + 3 / 5 * self.size_pixel * len(text) / scale
-            )
+        if self.camera:
+            volume = self.camera.getViewVolume()
+            scale = self.view.getSize()[1] / volume.getHeight()
+            if scale * self.Distance > self.size_pixel * len(text):
+                self.param2.setValue(0)
+            else:
+                self.param2.setValue(
+                    1 / 2 * self.Distance + 3 / 5 * self.size_pixel * len(text) / scale
+                )
 
     def setMode(self, mode=1):
         """Set the mode.

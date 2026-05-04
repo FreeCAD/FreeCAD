@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskTransformedMessages_H
-#define GUI_TASKVIEW_TaskTransformedMessages_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 
@@ -63,5 +62,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskTransformedMessages_H

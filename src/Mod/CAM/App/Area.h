@@ -21,8 +21,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PATH_AREA_H
-#define PATH_AREA_H
+#pragma once
 
 #include <chrono>
 #include <list>
@@ -166,6 +165,14 @@ protected:
         bool from_center = false
     );
 
+    /** Perform a single offset operation on myArea and return the result */
+    std::shared_ptr<CArea> performSingleOffset(double offset);
+
+    /** Check if there's a gap between two offset areas
+     *
+     * Returns true if there's uncovered area between prev and curr after
+     * accounting for tool coverage.
+     */
     /** Make a pocket of the combined shape
      *
      * User #AREA_PARAMS_POCKET setting in myParams.
@@ -260,7 +267,7 @@ public:
         const TopoDS_Shape& plane = TopoDS_Shape()
     );
 
-    std::shared_ptr<Area> getClearedArea(
+    static std::shared_ptr<Area> getClearedArea(
         const Toolpath* path,
         double diameter,
         double zmax,
@@ -446,5 +453,3 @@ public:
 };
 
 }  // namespace Path
-
-#endif  // PATH_AREA_H

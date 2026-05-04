@@ -132,7 +132,7 @@ App::DocumentObjectExecReturn* AssemblyObject::execute()
         "User parameter:BaseApp/Preferences/Mod/Assembly"
     );
     if (hGrp->GetBool("SolveOnRecompute", true)) {
-        solve(false, false);  // No need to update jcs since recompute updated them.
+        solve(false);
     }
     return ret;
 }
@@ -145,7 +145,7 @@ void AssemblyObject::onChanged(const App::Property* prop)
     App::Part::onChanged(prop);
 }
 
-int AssemblyObject::solve(bool enableRedo, bool updateJCS)
+int AssemblyObject::solve(bool enableRedo)
 {
     ensureIdentityPlacements();
 
@@ -159,7 +159,7 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
         return -6;
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(updateJCS);
+    std::vector<App::DocumentObject*> joints = getJoints();
 
     removeUnconnectedJoints(joints, groundedObjs);
 
@@ -320,7 +320,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getMotionsFromSimulation(App::
     return prop->getValue();
 }
 
-int Assembly::AssemblyObject::updateForFrame(size_t index, bool updateJCS)
+int Assembly::AssemblyObject::updateForFrame(size_t index)
 {
     if (!mbdAssembly) {
         return -1;
@@ -333,7 +333,7 @@ int Assembly::AssemblyObject::updateForFrame(size_t index, bool updateJCS)
 
     mbdAssembly->updateForFrame(index);
     setNewPlacements();
-    auto jointDocs = getJoints(updateJCS);
+    auto jointDocs = getJoints();
     redrawJointPlacements(jointDocs);
     return 0;
 }
@@ -419,7 +419,7 @@ void AssemblyObject::doDragStep()
         if (validateNewPlacements()) {
             setNewPlacements();
 
-            auto joints = getJoints(false);
+            auto joints = getJoints();
             for (auto* joint : joints) {
                 if (joint->Visibility.getValue()) {
                     // redraw only the moving joint as its quite slow as its python code.
@@ -455,9 +455,7 @@ bool AssemblyObject::validateNewPlacements()
     // First we check if a grounded object has moved. It can happen that they flip.
     auto groundedParts = getGroundedParts();
     for (auto* obj : groundedParts) {
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (propPlacement) {
             Base::Placement oldPlc = propPlacement->getValue();
 
@@ -505,7 +503,7 @@ void AssemblyObject::savePlacementsForUndo()
         savePair.first = obj;
 
         // Check if the object has a "Placement" property
-        auto* propPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+        auto* propPlc = obj->getPlacementProperty();
         if (!propPlc) {
             continue;
         }
@@ -528,9 +526,7 @@ void AssemblyObject::undoSolve()
         }
 
         // Check if the object has a "Placement" property
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (!propPlacement) {
             continue;
         }
@@ -540,7 +536,7 @@ void AssemblyObject::undoSolve()
     previousPositions.clear();
 
     // update joint placements:
-    getJoints(/*updateJCS*/ true, /*delBadJoints*/ false);
+    getJoints();
 }
 
 void AssemblyObject::clearUndo()
@@ -572,9 +568,7 @@ void AssemblyObject::setNewPlacements()
         }
 
         // Check if the object has a "Placement" property
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (!propPlacement) {
             continue;
         }
@@ -723,7 +717,7 @@ ViewGroup* AssemblyObject::getExplodedViewGroup() const
     return nullptr;
 }
 
-std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS, bool delBadJoints, bool subJoints)
+std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool delBadJoints, bool subJoints)
 {
     std::vector<App::DocumentObject*> joints = {};
 
@@ -805,7 +799,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfObj(App::DocumentOb
         return {};
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
@@ -825,7 +819,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfPart(App::DocumentO
         return {};
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
@@ -1124,7 +1118,7 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
     }
 
     auto groundedObjs = getGroundedParts();
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
 
     std::vector<ObjRef> connectedParts;
 
@@ -1557,6 +1551,24 @@ std::vector<std::shared_ptr<MbD::ASMTJoint>> AssemblyObject::makeMbdJoint(App::D
         }
     }
     std::vector<App::DocumentObject*> done;
+
+    auto replaceInitialValue =
+        [](std::string& form, App::DocumentObject* jnt, const std::string& mType) {
+            if (form.find("initialValue") != std::string::npos) {
+                double val = getJointCurrentValue(jnt, mType == "Angular");
+
+                std::ostringstream out;
+                out.precision(10);
+                out << val;
+                std::string valStr = out.str();
+
+                size_t pos;
+                while ((pos = form.find("initialValue")) != std::string::npos) {
+                    form.replace(pos, 12, valStr);
+                }
+            }
+        };
+
     // Add motions if needed
     for (auto* motion : motions) {
         if (std::ranges::find(done, motion) != done.end()) {
@@ -1582,6 +1594,8 @@ std::vector<std::shared_ptr<MbD::ASMTJoint>> AssemblyObject::makeMbdJoint(App::D
             continue;
         }
         std::string motionType = pType->getValueAsString();
+
+        replaceInitialValue(formula, joint, motionType);
 
         // check if there is a second motion as cylindrical can have both,
         // in which case the solver needs a general motion.
@@ -1610,6 +1624,8 @@ std::vector<std::shared_ptr<MbD::ASMTJoint>> AssemblyObject::makeMbdJoint(App::D
             if (motionType2 == motionType) {
                 continue;  // only if both motions are different. ie one angular and one linear.
             }
+
+            replaceInitialValue(formula2, joint, motionType2);
 
             auto ASMTmotion = CREATE<ASMTGeneralMotion>::With();
             ASMTmotion->setName(joint->getFullName() + "-ScrewMotion");
@@ -1663,20 +1679,20 @@ std::string AssemblyObject::handleOneSideOfJoint(
     Base::Placement plc = getPlacementFromProp(joint, propPlcName);
     // Now we have plc which is the JCS placement, but its relative to the Object, not to the
     // containing Part.
-
-    if (obj->getNameInDocument() != part->getNameInDocument()) {
-
-        auto* ref = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(propRefName));
-        if (!ref) {
-            return "";
-        }
-
-        Base::Placement obj_global_plc = getGlobalPlacement(obj, ref);
-        plc = obj_global_plc * plc;
-
-        Base::Placement part_global_plc = getGlobalPlacement(part, ref);
-        plc = part_global_plc.inverse() * plc;
+    auto* ref = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(propRefName));
+    if (!ref) {
+        return "";
     }
+
+    // This plc adjustment should be necessary only if obj != part. But for some objects like
+    // draft links, we can have obj == part and still need to get global placement to adjust
+    // by the element placement.
+    Base::Placement obj_global_plc = getGlobalPlacement(nullptr, ref);
+    plc = obj_global_plc * plc;
+    // Note part is supposed to be root of ref, so we could use part.Placement directly.
+    Base::Placement part_global_plc = getGlobalPlacement(part, ref);
+    plc = part_global_plc.inverse() * plc;
+
     // check if we need to add an offset in case of bundled parts.
     if (!data.offsetPlc.isIdentity()) {
         plc = data.offsetPlc * plc;
@@ -1795,7 +1811,7 @@ int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     int slidingFound = 0;
-    for (auto* jt : getJoints(false, false)) {
+    for (auto* jt : getJoints()) {
         if (getJointType(jt) == JointType::Slider) {
             App::DocumentObject* jpart1 = getMovingPartFromRef(jt, "Reference1");
             App::DocumentObject* jpart2 = getMovingPartFromRef(jt, "Reference2");
@@ -1967,7 +1983,7 @@ std::vector<ObjRef> AssemblyObject::getDownstreamParts(
         setJointActivated(joint, false);
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
 
     std::vector<ObjRef> connectedParts = {{part, nullptr}};
     traverseAndMarkConnectedParts(part, connectedParts, joints);
@@ -2054,7 +2070,7 @@ void AssemblyObject::ensureIdentityPlacements()
         // When used in assembly, link groups must have identity placements.
         if (obj->isLinkGroup()) {
             auto* link = dynamic_cast<App::Link*>(obj);
-            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            auto* pPlc = obj->getPlacementProperty();
             if (!pPlc || !link) {
                 continue;
             }
@@ -2070,7 +2086,7 @@ void AssemblyObject::ensureIdentityPlacements()
             // To keep the LinkElement positions, we apply plc to their placements
             std::vector<App::DocumentObject*> elts = link->ElementList.getValues();
             for (auto* elt : elts) {
-                pPlc = dynamic_cast<App::PropertyPlacement*>(elt->getPropertyByName("Placement"));
+                pPlc = elt->getPlacementProperty();
                 pPlc->setValue(plc * pPlc->getValue());
                 elt->purgeTouched();
             }

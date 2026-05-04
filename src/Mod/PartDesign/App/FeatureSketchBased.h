@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_SketchBased_H
-#define PARTDESIGN_SketchBased_H
+#pragma once
 
 #include <Mod/Part/App/Part2DObject.h>
 #include "FeatureAddSub.h"
@@ -112,14 +111,12 @@ public:
      * @param silent: if profile property is malformed and the parameter is true
      *                silently returns nullptr, otherwise throw a Base::Exception.
      *                Default is false.
-     * @param doFit: Whether to fitting according to the 'Fit' property
      * @param allowOpen: Whether allow open wire
      * @param profile: optional profile object, if not given then use 'Profile' property
      * @param subs: optional profile sub-object names, if not given then use 'Profile' property
      */
     TopoShape getTopoShapeVerifiedFace(
         bool silent = false,
-        bool doFit = true,
         bool allowOpen = false,
         const App::DocumentObject* profile = nullptr,
         const std::vector<std::string>& subs = {}
@@ -161,8 +158,6 @@ public:
     double getThroughAllLength() const;
 
 protected:
-    void remapSupportShape(const TopoDS_Shape&);
-
     TopoDS_Face getSupportFace(const Part::Part2DObject*) const;
     TopoDS_Face getSupportFace(const App::PropertyLinkSub& link) const;
 
@@ -173,7 +168,7 @@ protected:
     static void getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace);
 
     /// Create a shape with shapes and faces from a given LinkSubList
-    /// return 0 if almost one full shape is selected else the face count
+    /// return the face count or 2 if a unique full shape is selected
     static int getUpToShapeFromLinkSubList(
         TopoShape& upToShape,
         const App::PropertyLinkSubList& refShape
@@ -186,6 +181,15 @@ protected:
         const TopoShape& sketchshape,
         const std::string& method,
         gp_Dir& dir
+    );
+
+    /// Find a valid face to revolve up to
+    static void getUpToFace(
+        TopoShape& upToFace,
+        const TopoShape& support,
+        const TopoShape& sketchshape,
+        const std::string& method,
+        const gp_Ax1& axis
     );
 
     /// Add an offset to the face
@@ -219,6 +223,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_SketchBased_H

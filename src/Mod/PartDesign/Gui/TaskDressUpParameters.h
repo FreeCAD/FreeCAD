@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskDressUpParameters_H
-#define GUI_TASKVIEW_TaskDressUpParameters_H
+#pragma once
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskView.h>
@@ -69,6 +68,8 @@ public:
         return transactionID;
     }
 
+    void setSelectionGate();
+
     bool event(QEvent* event) override;
 
 protected Q_SLOTS:
@@ -81,6 +82,7 @@ protected Q_SLOTS:
     void createAddAllEdgesAction(QListWidget* parentList);
 
 protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
     void referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget);
     bool wasDoubleClicked = false;
     void keyPressEvent(QKeyEvent* ke) override;
@@ -144,5 +146,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskDressUpParameters_H

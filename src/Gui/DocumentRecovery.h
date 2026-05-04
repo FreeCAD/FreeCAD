@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DOCUMENTRECOVERY_H
-#define GUI_DIALOG_DOCUMENTRECOVERY_H
+#pragma once
 
 #include <QDialog>
 #include <QFileInfo>
@@ -109,6 +108,3 @@ private:
 }  // namespace Dialog
 
 }  // namespace Gui
-
-
-#endif  // GUI_DIALOG_DOCUMENTRECOVERY_H

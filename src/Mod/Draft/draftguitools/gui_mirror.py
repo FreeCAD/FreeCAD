@@ -31,6 +31,7 @@ as the one created by the Part module.
 
 Perhaps in the future a specific Draft `Mirror` object can be defined.
 """
+
 ## @package gui_mirror
 # \ingroup draftguitools
 # \brief Provides GUI tools to create mirrored objects.

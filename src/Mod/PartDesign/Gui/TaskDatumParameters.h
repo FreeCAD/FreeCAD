@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskDatumParameters_H
-#define GUI_TASKVIEW_TaskDatumParameters_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/Gui/TaskAttacher.h>
@@ -72,5 +71,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

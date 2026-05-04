@@ -34,15 +34,18 @@
 #  define WINVER 0x502 // needed for SetDllDirectory
 #  include <Windows.h>
 # endif
+
 # include <boost/algorithm/string.hpp>
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
 # include <boost/scope_exit.hpp>
 # include <chrono>
+# include <optional>
 # include <random>
 # include <memory>
 # include <utility>
 # include <set>
+# include <string>
 # include <list>
 # include <algorithm>
 # include <iostream>
@@ -65,7 +68,6 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
-#include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
 #include <LibraryVersions.h>
@@ -93,6 +95,8 @@
 #include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
 #include <Base/UniqueNameManager.h>
+#include <Base/TimeInfo.h>
+#include <Base/SystemHandler.h>
 #include <Base/Tools.h>
 #include <Base/Translate.h>
 #include <Base/Type.h>
@@ -108,6 +112,8 @@
 #include "ApplicationPy.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
+#include "ConsoleQtBridge.h"
+#include "TranslationQtBridge.h"
 #include "Services.h"
 #include "DocumentObjectFileIncluded.h"
 #include "DocumentObjectGroup.h"
@@ -130,6 +136,7 @@
 #include "Datums.h"
 #include "OriginGroupExtension.h"
 #include "OriginGroupExtensionPy.h"
+#include "ProgramInformation.h"
 #include "SuppressibleExtension.h"
 #include "Part.h"
 #include "GeoFeaturePy.h"
@@ -161,23 +168,120 @@
 
 #include "SafeMode.h"
 
-#ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
-# pragma warning( disable : 4535 )
-# if !defined(_DEBUG) && defined(HAVE_SEH)
-# define FC_SE_TRANSLATOR
-# endif
-
-# include <new.h>
-# include <eh.h> // VC exception handling
-#else // Ansi C/C++ new handler
-# include <new>
+#ifdef FC_OS_WIN32
+#include <windows.h>
 #endif
+
+std::optional<std::string> getenvUTF8(const char* name) {
+#ifdef FC_OS_WIN32
+    int wideLength = MultiByteToWideChar(CP_UTF8, 0, name, -1, nullptr, 0);
+    std::wstring wideName(wideLength ? wideLength - 1 : 0, L'\0');
+    if (wideLength) {
+        MultiByteToWideChar(CP_UTF8, 0, name, -1, wideName.data(), wideLength);
+    }
+
+    DWORD needed = GetEnvironmentVariableW(wideName.c_str(), nullptr, 0);
+    if (needed == 0) {
+        return std::nullopt;
+    }
+
+    std::wstring wideValue(needed, L'\0');
+    DWORD written = GetEnvironmentVariableW(wideName.c_str(), wideValue.data(), needed);
+    if (written == 0) {
+        return std::nullopt;
+    }
+    wideValue.resize(written);
+    return Base::Tools::wstringToString(wideValue);
+#else
+    if (const char* v = std::getenv(name)) {
+        return std::string(v);
+    }
+    return std::nullopt;
+#endif
+}
 
 FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 namespace sp = std::placeholders;
 namespace fs = std::filesystem;
+
+namespace
+{
+
+RecomputeRequest takeNextRecomputeRequest(std::deque<RecomputeRequest>& requests)
+{
+    RecomputeRequest request = std::move(requests.front());
+    requests.pop_front();
+    return request;
+}
+
+bool requestTargetsDocument(const RecomputeRequest& request, const std::string& documentName)
+{
+    return request.documentName == documentName;
+}
+
+bool documentCanRecomputeOnWorker(const Document& document)
+{
+    try {
+        const auto& objects = document.getObjects();
+        std::vector<DocumentObject*> recomputeRoots(objects.begin(), objects.end());
+        const auto recomputeObjects = Document::getDependencyList(recomputeRoots, Document::DepSort);
+
+        return std::ranges::all_of(recomputeObjects, [](const DocumentObject* object) {
+            return object && object->canRecomputeOnWorker();
+        });
+    }
+    catch (const Base::BadGraphError&) {
+        return false;
+    }
+}
+
+void reportRecomputeException(const Base::Exception& exception)
+{
+    if (App::MainThreadSignalConfig::hasHooks()) {
+        if (auto* app = QCoreApplication::instance()) {
+            QMetaObject::invokeMethod(
+                app,
+                [exception]() mutable { exception.reportException(); },
+                Qt::QueuedConnection
+            );
+            return;
+        }
+    }
+
+    exception.reportException();
+}
+
+RecomputeResult processRecomputeRequest(RecomputeRequest& request)
+{
+    RecomputeResult result;
+
+    try {
+        if (Document* document = request.resolveDocument()) {
+            document->recompute({}, request.force, nullptr, request.options);
+        }
+
+        if (DocumentObject* documentObject = request.resolveDocumentObject()) {
+            documentObject->recomputeFeature(request.recursive);
+        }
+    }
+    catch (Base::BadGraphError& exception) {
+        result.exception = std::make_unique<Base::BadGraphError>(std::move(exception));
+        result.failure = RecomputeFailure::DependencyCycle;
+        result.success = false;
+    }
+    catch (Base::Exception& exception) {
+        reportRecomputeException(exception);
+        result.exception = std::make_unique<Base::Exception>(std::move(exception));
+        result.failure = RecomputeFailure::Exception;
+        result.success = false;
+    }
+
+    return result;
+}
+
+}  // namespace
 
 //==========================================================================
 // Application
@@ -190,6 +294,50 @@ Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string, std::string> Application::mConfig;
 std::unique_ptr<ApplicationDirectories> Application::_appDirs;
+
+RecomputeRequest RecomputeRequest::fromDocument(const Document& document, bool force, int options)
+{
+    RecomputeRequest request;
+    request.documentName = document.getName();
+    request.force = force;
+    request.options = options;
+    return request;
+}
+
+RecomputeRequest RecomputeRequest::fromDocumentObject(const DocumentObject& documentObject, bool recursive)
+{
+    RecomputeRequest request;
+
+    if (const Document* document = documentObject.getDocument()) {
+        request.documentName = document->getName();
+    }
+
+    request.documentObjectName = documentObject.getNameInDocument();
+    request.recursive = recursive;
+    return request;
+}
+
+Document* RecomputeRequest::resolveDocument() const
+{
+    if (documentName.empty()) {
+        return nullptr;
+    }
+
+    return GetApplication().getDocument(documentName.c_str());
+}
+
+DocumentObject* RecomputeRequest::resolveDocumentObject() const
+{
+    if (documentObjectName.empty()) {
+        return nullptr;
+    }
+
+    if (Document* document = resolveDocument()) {
+        return document->getObject(documentObjectName.c_str());
+    }
+
+    return nullptr;
+}
 
 
 //**************************************************************************
@@ -266,10 +414,22 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     mpcPramManager["System parameter"] = _pcSysParamMngr;
     mpcPramManager["User parameter"] = _pcUserParamMngr;
 
+    _stopRecomputeThread = false;
+    _recomputeThread = std::thread(&Application::recomputeWorker, this);
+
     setupPythonTypes();
 }
 
-Application::~Application() = default;
+Application::~Application()
+{
+    // Signal the recompute worker thread to stop and join it.
+    _stopRecomputeThread = true;
+    _recomputeRequestAvailable.notify_all();
+
+    if (_recomputeThread.joinable()) {
+        _recomputeThread.join();
+    }
+}
 
 void Application::setupPythonTypes()
 {
@@ -512,8 +672,17 @@ Document* Application::newDocument(const char * proposedName, const char * propo
     return doc;
 }
 
+bool Application::closeDocument(const Document* doc)
+{
+    return closeDocument(doc->getName());
+}
+
 bool Application::closeDocument(const char* name)
 {
+    const std::string documentName(name);
+
+    cancelRecomputeRequestsForDocument(documentName);
+
     const auto pos = DocMap.find( name );
     if (pos == DocMap.end()) // no such document
         return false;
@@ -557,6 +726,15 @@ Document* Application::getDocument(const char *Name) const
         return nullptr;
 
     return pos->second;
+}
+Document* Application::getDocumentOrActive(const char *Name) const
+{
+    if (!Base::Tools::isNullOrEmpty(Name)) {
+        return getDocument(Name);
+    }
+    else {
+        return getActiveDocument();
+    }
 }
 
 const char * Application::getDocumentName(const Document* doc) const
@@ -633,13 +811,83 @@ bool Application::isClosingAll() const {
     return _isClosingAll;
 }
 
-struct DocTiming {
-    FC_DURATION_DECLARE(d1);
-    FC_DURATION_DECLARE(d2);
-    DocTiming() {
-        FC_DURATION_INIT(d1);
-        FC_DURATION_INIT(d2);
+bool Application::isAsyncRecomputeEnabled()
+{
+    static const ParameterGrp::handle hGrp = GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Document"
+    );
+    bool enableAsyncRecompute = hGrp->GetBool("EnableAsyncRecompute", true);
+    return enableAsyncRecompute;
+}
+
+bool Application::canRecomputeRequestOnWorker(const RecomputeRequest& req) const
+{
+    if (DocumentObject* documentObject = req.resolveDocumentObject()) {
+        return documentObject->canRecomputeOnWorker();
     }
+
+    Document* document = req.resolveDocument();
+    return !document || documentCanRecomputeOnWorker(*document);
+}
+
+void Application::queueRecomputeRequest(RecomputeRequest req)
+{
+    if (!canRecomputeRequestOnWorker(req)) {
+        RecomputeResult result;
+
+        // Requests that are not worker-safe stay on the caller thread unless a
+        // GUI main-thread hop is required. In App-only/headless mode there are
+        // no GUI hooks, so processing inline preserves the "stay off the
+        // worker" guarantee without inventing a synthetic main thread.
+        if (App::MainThreadSignalConfig::hasHooks()
+            && !App::MainThreadSignalConfig::isMainThread()) {
+            App::MainThreadSignalConfig::invoke(
+                [&req, &result]() { result = processRecomputeRequest(req); },
+                /*blocking=*/true
+            );
+        }
+        else {
+            result = processRecomputeRequest(req);
+        }
+
+        if (req.callback) {
+            req.callback(req, result);
+        }
+        return;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_recomputeMutex);
+        _recomputeRequests.push_back(std::move(req));
+    }
+    notifyRecomputeWorker();
+}
+
+void Application::cancelRecomputeRequestsForDocument(const std::string& documentName)
+{
+    if (documentName.empty()) {
+        return;
+    }
+
+    std::unique_lock<std::mutex> lock(_recomputeMutex);
+    _recomputeStateChanged.wait(lock, [this, &documentName] {
+        return !_recomputeDocumentsInProgress.contains(documentName);
+    });
+
+    // Cancellation runs on document-close boundaries, so a linear scan keeps
+    // the queue simple without affecting the steady-state worker path.
+    std::erase_if(_recomputeRequests, [&documentName](const RecomputeRequest& request) {
+        return requestTargetsDocument(request, documentName);
+    });
+}
+
+struct DocTiming {
+    std::chrono::duration<double> d1;
+    std::chrono::duration<double> d2;
+    DocTiming()
+        : d1(std::chrono::duration<double>(0))
+        , d2(std::chrono::duration<double>(0))
+    {}
 };
 
 class DocOpenGuard {
@@ -739,7 +987,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     std::map<DocumentT, DocTiming> timings;
 
-    FC_TIME_INIT(t);
+    Base::TimeTracker tracker("Application::openDocuments");
 
     std::vector<DocumentT> openedDocs;
 
@@ -765,8 +1013,8 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                     }
                 }
 
-                FC_TIME_INIT(t1);
                 DocTiming timing;
+                std::chrono::high_resolution_clock::time_point startTime = std::chrono::high_resolution_clock::now();
 
                 const char *path = name.c_str();
                 const char *label = nullptr;
@@ -779,7 +1027,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 }
 
                 auto doc = openDocumentPrivate(path, name.c_str(), label, isMainDoc, initFlags, std::move(objNames));
-                FC_DURATION_PLUS(timing.d1,t1);
+                timing.d1 += std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - startTime);
                 if (doc) {
                     timings[doc].d1 += timing.d1;
                     newDocs.emplace(doc);
@@ -868,7 +1116,8 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             }
 
             auto &timing = timings[doc];
-            FC_TIME_INIT(t1);
+            std::chrono::high_resolution_clock::time_point startTime = std::chrono::high_resolution_clock::now();
+
             // Finalize document restoring with the correct order
             if(doc->afterRestore(true)) {
                 openedDocs.emplace_back(doc);
@@ -885,7 +1134,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 _pendingDocs.emplace_back(doc->FileName.getValue());
                 _pendingDocMap.erase(doc->FileName.getValue());
             }
-            FC_DURATION_PLUS(timing.d2,t1);
+            timing.d2 += std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - startTime);
             seq.next();
         }
         // Close the document for reloading
@@ -905,10 +1154,9 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     for (auto &doc : openedDocs) {
         auto &timing = timings[doc];
-        FC_DURATION_LOG(timing.d1, doc.getDocumentName() << " restore");
-        FC_DURATION_LOG(timing.d2, doc.getDocumentName() << " postprocess");
+        Base::Console().log("%s restore time: %f\n", doc.getDocumentName(), timing.d1.count());
+        Base::Console().log("%s postprocess time: %f\n", doc.getDocumentName(), timing.d2.count());
     }
-    FC_TIME_LOG(t,"total");
     PropertyLinkBase::updateAllElementReferences();
     _isRestoring = false;
 
@@ -957,7 +1205,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                         // add it to _pendingDocsReopen to delay reloading.
                         for(auto obj2 : doc->getObjects())
                             objNames.emplace_back(obj2->getNameInDocument());
-                        _pendingDocMap[doc->FileName.getValue()] = std::move(objNames);
+                        _pendingDocMap[doc->FileName.getValue()] = objNames;
                         break;
                     }
                 }
@@ -1447,6 +1695,93 @@ void Application::addExportType(const char* filter, const char* moduleName)
     }
 }
 
+namespace {
+    // To enable changing languages while the program is running, cache the translatable export type
+    // entries so that their addition can be "replayed" when the language changes (after removing
+    // the originals).
+
+    struct TranslatableTypeCacheEntry {
+        std::string description;
+        const std::vector<std::string> extensions;
+        std::string moduleName;
+    };
+
+    class TranslatableTypeCache {
+    public:
+        TranslatableTypeCache() = default;
+        void addCacheEntry(TranslatableTypeCacheEntry entry) {
+            _cache.push_back(std::move(entry));
+        }
+        std::vector<TranslatableTypeCacheEntry> getCache() const {
+            return _cache;
+        }
+        void clear()
+        {
+            _cache.clear();
+        }
+    private:
+        std::vector<TranslatableTypeCacheEntry> _cache;
+    };
+
+    TranslatableTypeCache translatableExportTypeCache;
+
+    // Given a description string and a list of extensions, construct a type string that Qt's file
+    // dialogs will recognize
+    void appendTypeString(std::string &description, const std::vector<std::string> &extensions) {
+        description = fmt::format("{} (*.{})", description, fmt::join(extensions, " *."));
+    }
+}
+
+void Application::addTranslatableExportType(const std::string &description,
+                                            const std::vector<std::string> &extensions,
+                                            const std::string &moduleName)
+{
+    assert(!extensions.empty());  // Programming error, there must be extensions
+
+    // Branding: replace "FreeCAD" in a file type description with the branded application name
+    auto replaceFreeCAD =
+    [](std::string& s)
+    {
+        constexpr std::string_view freecad = "FreeCAD";
+        if (auto pos = s.find(freecad); pos != std::string::npos) {
+            s.replace(pos, freecad.size(), getExecutableName());
+            return true;  // Contained the app name
+        }
+        return false;  // Did NOT contain the app name
+    };
+
+    translatableExportTypeCache.addCacheEntry({description, extensions, moduleName});
+    auto translatedDescription = QCoreApplication::translate("FileFormat", description.c_str()).toStdString();
+    bool containsAppName = replaceFreeCAD(translatedDescription);  // Run *AFTER* translation
+    appendTypeString(translatedDescription, extensions);
+
+    FileTypeItem item;
+    item.filter = translatedDescription;
+    item.module = moduleName;
+    item.types = extensions;
+    item.translatable = true;
+
+    if (containsAppName) {
+        // put to the front of the array
+        _mExportTypes.insert(_mExportTypes.begin(),std::move(item));
+    }
+    else {
+        _mExportTypes.push_back(std::move(item));
+    }
+}
+
+void Application::retranslateExportTypes()
+{
+    auto cache = translatableExportTypeCache.getCache();
+    translatableExportTypeCache.clear();
+    std::erase_if(_mExportTypes, [](const FileTypeItem& item) {
+        return item.translatable;
+    });
+    for (const auto &cacheEntry : cache) {
+        addTranslatableExportType(cacheEntry.description, cacheEntry.extensions, cacheEntry.moduleName);
+    }
+}
+
 void Application::changeExportModule(const char* filter, const char* oldModuleName, const char* newModuleName)
 {
     for (auto& it : _mExportTypes) {
@@ -1734,175 +2069,59 @@ void Application::destructObserver()
     }
 }
 
-/** freecadNewHandler()
- * prints an error message and throws an exception
- */
-#ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
-int __cdecl freecadNewHandler(size_t size )
+namespace
 {
-    // throw an exception
-    throw Base::MemoryException();
-    return 0;
-}
-#else // Ansi C/C++ new handler
-static void freecadNewHandler ()
+void initExceptions()
 {
-    // throw an exception
-    throw Base::MemoryException();
+    // register exception producer types
+    // NOLINTBEGIN
+    new Base::ExceptionProducer<Base::AbortException>;
+    new Base::ExceptionProducer<Base::XMLBaseException>;
+    new Base::ExceptionProducer<Base::XMLParseException>;
+    new Base::ExceptionProducer<Base::XMLAttributeError>;
+    new Base::ExceptionProducer<Base::FileException>;
+    new Base::ExceptionProducer<Base::FileSystemError>;
+    new Base::ExceptionProducer<Base::BadFormatError>;
+    new Base::ExceptionProducer<Base::MemoryException>;
+    new Base::ExceptionProducer<Base::AccessViolation>;
+    new Base::ExceptionProducer<Base::AbnormalProgramTermination>;
+    new Base::ExceptionProducer<Base::UnknownProgramOption>;
+    new Base::ExceptionProducer<Base::ProgramInformation>;
+    new Base::ExceptionProducer<Base::TypeError>;
+    new Base::ExceptionProducer<Base::ValueError>;
+    new Base::ExceptionProducer<Base::IndexError>;
+    new Base::ExceptionProducer<Base::NameError>;
+    new Base::ExceptionProducer<Base::ImportError>;
+    new Base::ExceptionProducer<Base::AttributeError>;
+    new Base::ExceptionProducer<Base::RuntimeError>;
+    new Base::ExceptionProducer<Base::BadGraphError>;
+    new Base::ExceptionProducer<Base::NotImplementedError>;
+    new Base::ExceptionProducer<Base::ZeroDivisionError>;
+    new Base::ExceptionProducer<Base::ReferenceError>;
+    new Base::ExceptionProducer<Base::ExpressionError>;
+    new Base::ExceptionProducer<Base::ParserError>;
+    new Base::ExceptionProducer<Base::UnicodeError>;
+    new Base::ExceptionProducer<Base::OverflowError>;
+    new Base::ExceptionProducer<Base::UnderflowError>;
+    new Base::ExceptionProducer<Base::UnitsMismatchError>;
+    new Base::ExceptionProducer<Base::CADKernelError>;
+    new Base::ExceptionProducer<Base::RestoreError>;
+    new Base::ExceptionProducer<Base::PropertyError>;
+    // NOLINTEND
 }
-#endif
-
-#if defined(FC_OS_LINUX)
-#include <execinfo.h>
-#include <dlfcn.h>
-#include <cxxabi.h>
-
-#include <cstdio>
-#include <cstdlib>
-#include <string>
-#include <sstream>
-
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-// This function produces a stack backtrace with demangled function & method names.
-void printBacktrace(size_t skip=0)
-{
-#if defined HAVE_BACKTRACE_SYMBOLS
-    void *callstack[128];
-    size_t nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);
-    size_t nFrames = backtrace(callstack, nMaxFrames);
-    char **symbols = backtrace_symbols(callstack, nFrames);
-
-    for (size_t i = skip; i < nFrames; i++) {
-        char *demangled = nullptr;
-        int status = -1;
-        Dl_info info;
-        if (dladdr(callstack[i], &info) && info.dli_sname && info.dli_fname) {
-            if (info.dli_sname[0] == '_') {
-                demangled = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, &status);
-            }
-        }
-
-        std::stringstream str;
-        if (status == 0) {
-            void* offset = (void*)((char*)callstack[i] - (char*)info.dli_saddr);
-            str << "#" << (i-skip) << "  " << callstack[i] << " in " << demangled << " from " << info.dli_fname << "+" << offset << '\n';
-            free(demangled);
-        }
-        else {
-            str << "#" << (i-skip) << "  " << symbols[i] << '\n';
-        }
-
-        // cannot directly print to cerr when using --write-log
-        std::cerr << str.str();
-    }
-
-    free(symbols);
-#else //HAVE_BACKTRACE_SYMBOLS
-    (void)skip;
-    std::cerr << "Cannot print the stacktrace because the C runtime library doesn't provide backtrace or backtrace_symbols\n";
-#endif
 }
-#endif
-
-void segmentation_fault_handler(int sig)
-{
-#if defined(FC_OS_LINUX)
-    (void)sig;
-    std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
-    printBacktrace(2);
-#if defined(FC_DEBUG)
-    abort();
-#else
-    _exit(1);
-#endif
-#else
-    switch (sig) {
-        case SIGSEGV:
-            std::cerr << "Illegal storage access..." << '\n';
-#if !defined(_DEBUG)
-            throw Base::AccessViolation("Illegal storage access! Please save your work under a new file name and restart the application!");
-#endif
-            break;
-        case SIGABRT:
-            std::cerr << "Abnormal program termination..." << '\n';
-#if !defined(_DEBUG)
-            throw Base::AbnormalProgramTermination("Break signal occurred");
-#endif
-            break;
-        default:
-            std::cerr << "Unknown error occurred..." << '\n';
-            break;
-    }
-#endif // FC_OS_LINUX
-}
-
-void unhandled_exception_handler()
-{
-    std::cerr << "Terminating..." << '\n';
-}
-
-void unexpection_error_handler()
-{
-    std::cerr << "Unexpected error occurred..." << '\n';
-    // try to throw an exception and give the user chance to save their work
-#if !defined(_DEBUG)
-    throw Base::AbnormalProgramTermination("Unexpected error occurred! Please save your work under a new file name and restart the application!");
-#else
-    terminate();
-#endif
-}
-
-#if defined(FC_SE_TRANSLATOR) // Microsoft compiler
-void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
-{
-    Q_UNUSED(pExp)
-    switch (code)
-    {
-    case EXCEPTION_ACCESS_VIOLATION:
-        throw Base::AccessViolation();
-    case EXCEPTION_FLT_DIVIDE_BY_ZERO:
-    case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        Base::Console().error("SEH exception (%u): Division by zero\n", code);
-        return;
-    }
-
-    std::stringstream str;
-    str << "SEH exception of type: " << code;
-    // general C++ SEH exception for things we don't need to handle separately....
-    throw Base::RuntimeError(str.str());
-}
-#endif
 
 void Application::init(int argc, char ** argv)
 {
     try {
-        // install our own new handler
-#ifdef _MSC_VER // Microsoft compiler
-        _set_new_handler ( freecadNewHandler ); // Setup new handler
-        _set_new_mode( 1 ); // Re-route malloc failures to new handler !
-#else   // Ansi compiler
-        std::set_new_handler (freecadNewHandler); // ANSI new handler
-#endif
-        // if an unexpected crash occurs we can install a handler function to
-        // write some additional information
-#if defined (_MSC_VER) // Microsoft compiler
-        std::signal(SIGSEGV,segmentation_fault_handler);
-        std::signal(SIGABRT,segmentation_fault_handler);
-        std::set_terminate(unhandled_exception_handler);
-           ::set_unexpected(unexpection_error_handler);
-#elif defined(FC_OS_LINUX)
-        std::signal(SIGSEGV,segmentation_fault_handler);
-#endif
-#if defined(FC_SE_TRANSLATOR)
-        _set_se_translator(my_se_translator_filter);
-#endif
+        Base::SystemHandler::installNewHandler();
+        Base::SystemHandler::installSegfaultHandler();
+
         initTypes();
 
         initConfig(argc,argv);
         initApplication();
+        initExceptions();
     }
     catch (...) {
         // force the log to flush
@@ -2087,6 +2306,7 @@ void Application::initTypes()
     App::FeatureTestAbsAddress     ::init();
     App::FeatureTestPlacement      ::init();
     App::FeatureTestAttribute      ::init();
+    App::FeatureTestAsyncBlocker   ::init();
 
     // Feature class
     App::FeaturePython             ::init();
@@ -2142,6 +2362,7 @@ void Application::initTypes()
             (DocumentObject::getClassTypeId());
 
     // register exception producer types
+    // NOLINTBEGIN
     new Base::ExceptionProducer<Base::AbortException>;
     new Base::ExceptionProducer<Base::XMLBaseException>;
     new Base::ExceptionProducer<Base::XMLParseException>;
@@ -2174,6 +2395,7 @@ void Application::initTypes()
     new Base::ExceptionProducer<Base::CADKernelError>;
     new Base::ExceptionProducer<Base::RestoreError>;
     new Base::ExceptionProducer<Base::PropertyError>;
+    // NOLINTEND
 
     Base::registerServiceImplementation<CenterOfMassProvider>(new NullCenterOfMass);
 }
@@ -2354,6 +2576,9 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
         std::stringstream str;
         str << mConfig["ExeName"] << " " << mConfig["ExeVersion"]
             << " Revision: " << mConfig["BuildRevision"] << '\n';
+        if (vm.count("verbose")) {
+            App::ProgramInformation::getVerboseCommonInfo(str, mConfig);
+        }
         throw Base::ProgramInformation(str.str());
     }
 
@@ -2490,7 +2715,9 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
 void Application::initConfig(int argc, char ** argv)
 {
     // find the home path....
-    mConfig["AppHomePath"] = ApplicationDirectories::findHomePath(argv[0]).string();
+    mConfig["AppHomePath"] = Base::FileInfo::pathToString(
+        ApplicationDirectories::findHomePath(argv[0])
+    );
 
     // Version of the application extracted from SubWCRef into src/Build/Version.h
     // We only set these keys if not yet defined. Therefore it suffices to search
@@ -2616,6 +2843,9 @@ void Application::initConfig(int argc, char ** argv)
     else
         _pConsoleObserverFile = nullptr;
 
+    App::installConsoleQtBridge();
+    App::installTranslationQtBridge();
+
     // Banner ===========================================================
     if (mConfig["RunMode"] != "Cmd" && !(vm.contains("verbose") && vm.contains("version"))) {
         // Remove banner if FreeCAD is invoked via the -c command as regular
@@ -2731,15 +2961,15 @@ void Application::initConfig(int argc, char ** argv)
 
     if (vm.contains("verbose") && vm.contains("version")) {
         Application::_pcSingleton = new Application(mConfig);
-        throw Base::ProgramInformation(Application::verboseVersionEmitMessage);
+        throw Base::ProgramInformation(ProgramInformation::verboseVersionEmitMessage);
     }
 }
 
 void Application::SaveEnv(const char* s)
 {
-    const char *c = getenv(s);
-    if (c)
-        mConfig[s] = c;
+    if (auto c = getenvUTF8(s)) {
+        mConfig[s] = c.value();
+    }
 }
 
 void Application::initApplication()
@@ -2804,7 +3034,6 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
     std::list<std::string> processed;
     Base::Console().log("Init: Processing command line files\n");
     for (const auto & it : files) {
-
         Base::FileInfo file(it);
         // Can we safely remove the isSymlink check and directly query the canonical
         // path for every string? The reason for avoiding it currently is that
@@ -2820,7 +3049,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
         Base::Console().log("Init:     Processing file: %s\n",file.filePath().c_str());
 
         try {
-            if (file.hasExtension("fcstd") || file.hasExtension("std")) {
+            if (file.hasExtension("fcstd") || file.hasExtension("fcbak")
+                || file.hasExtension("std")) {
                 // try to open
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
                 processed.push_back(it);
@@ -2940,6 +3170,48 @@ void Application::runApplication()
     }
     else {
         Base::Console().log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
+    }
+}
+
+void Application::notifyRecomputeWorker()
+{
+    _recomputeRequestAvailable.notify_one();
+}
+
+void Application::recomputeWorker()
+{
+    while (!_stopRecomputeThread) {
+        std::unique_lock<std::mutex> lock(_recomputeMutex);
+        // Wait until either stop is signaled or there is at least one pending request.
+        _recomputeRequestAvailable.wait(lock, [this] {
+            return _stopRecomputeThread || !_recomputeRequests.empty();
+        });
+        if (_stopRecomputeThread) {
+            break;
+        }
+
+        // Process all pending recompute requests.
+        while (!_recomputeRequests.empty()) {
+            RecomputeRequest request = takeNextRecomputeRequest(_recomputeRequests);
+            if (!request.documentName.empty()) {
+                _recomputeDocumentsInProgress.insert(request.documentName);
+            }
+
+            // Unlock while processing to allow other threads to add new requests.
+            lock.unlock();
+
+            RecomputeResult result = processRecomputeRequest(request);
+
+            if (request.callback) {
+                request.callback(request, result);
+            }
+
+            lock.lock();
+            if (!request.documentName.empty()) {
+                _recomputeDocumentsInProgress.erase(request.documentName);
+                _recomputeStateChanged.notify_all();
+            }
+        }
     }
 }
 
@@ -3416,9 +3688,9 @@ std::string Application::FindHomePath(const char* sCall)
     }
 
     // should be an absolute path now
-    std::string::size_type pos = absPath.find_last_of("/");
+    std::string::size_type pos = absPath.find_last_of('/');
     homePath.assign(absPath,0,pos);
-    pos = homePath.find_last_of("/");
+    pos = homePath.find_last_of('/');
     homePath.assign(homePath,0,pos+1);
 
     return homePath;
@@ -3506,283 +3778,3 @@ std::string Application::FindHomePath(const char* sCall)
 #else
 # error "std::string Application::FindHomePath(const char*) not implemented"
 #endif
-
-QString Application::prettyProductInfoWrapper()
-{
-    auto productName = QSysInfo::prettyProductName();
-#ifdef FC_OS_MACOSX
-    auto macosVersionFile =
-        QStringLiteral("/System/Library/CoreServices/.SystemVersionPlatform.plist");
-    auto fi = QFileInfo(macosVersionFile);
-    if (fi.exists() && fi.isReadable()) {
-        auto plistFile = QFile(macosVersionFile);
-        plistFile.open(QIODevice::ReadOnly);
-        while (!plistFile.atEnd()) {
-            auto line = plistFile.readLine();
-            if (line.contains("ProductUserVisibleVersion")) {
-                auto nextLine = plistFile.readLine();
-                if (nextLine.contains("<string>")) {
-                    QRegularExpression re(QStringLiteral("\\s*<string>(.*)</string>"));
-                    auto matches = re.match(QString::fromUtf8(nextLine));
-                    if (matches.hasMatch()) {
-                        productName = QStringLiteral("macOS ") + matches.captured(1);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-#endif
-#ifdef FC_OS_WIN64
-    QSettings regKey {
-        QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"),
-        QSettings::NativeFormat};
-    if (regKey.contains(QStringLiteral("CurrentBuildNumber"))) {
-        auto buildNumber = regKey.value(QStringLiteral("CurrentBuildNumber")).toInt();
-        if (buildNumber > 0) {
-            if (buildNumber < 9200) {
-                productName = QStringLiteral("Windows 7 build %1").arg(buildNumber);
-            }
-            else if (buildNumber < 10240) {
-                productName = QStringLiteral("Windows 8 build %1").arg(buildNumber);
-            }
-            else if (buildNumber < 22000) {
-                productName = QStringLiteral("Windows 10 build %1").arg(buildNumber);
-            }
-            else {
-                productName = QStringLiteral("Windows 11 build %1").arg(buildNumber);
-            }
-        }
-    }
-#endif
-    return productName;
-}
-
-void Application::addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod)
-{
-    QFileInfo mod(modPath);
-    if (mod.isHidden()) {  // Ignore hidden directories
-        return;
-    }
-    if (firstMod) {
-        firstMod = false;
-        str << "Installed mods: \n";
-    }
-    QString addonName = mod.isDir() ? QDir(modPath).dirName() : mod.fileName();
-    QString versionString;
-    try {
-        auto metadataFile =
-            std::filesystem::path(mod.absoluteFilePath().toStdString()) / "package.xml";
-        if (std::filesystem::exists(metadataFile)) {
-            App::Metadata metadata(metadataFile);
-            if (!metadata.name().empty()) {
-                addonName = QString::fromStdString(metadata.name());
-            }
-            if (metadata.version() != App::Meta::Version()) {
-                versionString = QString::fromStdString(" " + metadata.version().str());
-            }
-        }
-    }
-    catch (const Base::Exception& e) {
-        auto what = QString::fromUtf8(e.what()).trimmed().replace(QChar::fromLatin1('\n'),
-                                                                  QChar::fromLatin1(' '));
-        str << " (Malformed metadata: " << what << ")";
-    }
-    str << "  * " << addonName << versionString;
-    QFileInfo disablingFile(mod.absoluteFilePath(), QStringLiteral("ADDON_DISABLED"));
-    if (disablingFile.exists()) {
-        str << " (Disabled)";
-    }
-
-    str << "\n";
-}
-
-QString Application::getValueOrEmpty(const std::map<std::string, std::string>& map, const std::string& key) {
-    auto it = map.find(key);
-    return (it != map.end()) ? QString::fromStdString(it->second) : QString();
-}
-
-void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig)
-{
-    std::map<std::string, std::string>::iterator it;
-    const QString deskEnv =
-    QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"),
-                                                   QString());
-    const QString deskSess =
-        QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"),
-                                                    QString());
-  
-    const QString major = getValueOrEmpty(mConfig, "BuildVersionMajor");
-    const QString minor = getValueOrEmpty(mConfig, "BuildVersionMinor");
-    const QString point = getValueOrEmpty(mConfig, "BuildVersionPoint");
-    const QString suffix = getValueOrEmpty(mConfig, "BuildVersionSuffix");
-    const QString build = getValueOrEmpty(mConfig, "BuildRevision");
-    const QString buildDate = getValueOrEmpty(mConfig, "BuildRevisionDate");
-
-    QStringList deskInfoList;
-    QString deskInfo;
-
-    if (!deskEnv.isEmpty()) {
-        deskInfoList.append(deskEnv);
-    }
-    if (!deskSess.isEmpty()) {
-        deskInfoList.append(deskSess);
-    }
-
-    const QString sysType = QSysInfo::productType();
-    if (sysType != QLatin1String("windows") && sysType != QLatin1String("macos")) {
-        QString sessionType = QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_SESSION_TYPE"),
-             QString());
-        if (sessionType == QLatin1String("x11")) {
-            sessionType = QStringLiteral("xcb");
-        }
-        deskInfoList.append(sessionType);
-    }
-    if (!deskInfoList.isEmpty()) {
-        deskInfo = QLatin1String(" (") + deskInfoList.join(QLatin1String("/")) + QLatin1String(")");
-    }
-
-    str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
-    if (QSysInfo::buildCpuArchitecture() == QSysInfo::currentCpuArchitecture()) {
-        str << "Architecture: " << QSysInfo::buildCpuArchitecture() << "\n";
-    }
-    else {
-        str << "Architecture: " << QSysInfo::buildCpuArchitecture()
-            << "(running on: " << QSysInfo::currentCpuArchitecture() << ")\n";
-    }
-    str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
-
-#ifdef FC_CONDA
-    str << " Conda";
-#endif
-#ifdef FC_FLATPAK
-    str << " Flatpak";
-#endif
-    const char* appimage = getenv("APPIMAGE");
-    if (appimage) {
-        str << " AppImage";
-    }
-    const char* snap = getenv("SNAP_REVISION");
-    if (snap) {
-        str << " Snap " << snap;
-    }
-    str << '\n';
-    str << "Build date: " << buildDate << "\n";
-
-#if defined(_DEBUG) || defined(DEBUG)
-    str << "Build type: Debug\n";
-#elif defined(NDEBUG)
-    str << "Build type: Release\n";
-#elif defined(CMAKE_BUILD_TYPE)
-    str << "Build type: " << CMAKE_BUILD_TYPE << '\n';
-#else
-    str << "Build type: Unknown\n";
-#endif
-    const QString buildRevisionBranch = getValueOrEmpty(mConfig, "BuildRevisionBranch");
-    if (!buildRevisionBranch.isEmpty()) {
-        str << "Branch: " << buildRevisionBranch << '\n';
-    }
-    const QString buildRevisionHash = getValueOrEmpty(mConfig, "BuildRevisionHash");
-    if (!buildRevisionHash.isEmpty()) {
-        str << "Hash: " << buildRevisionHash << '\n';
-    }
-    // report also the version numbers of the most important libraries in FreeCAD
-    str << "Python " << PY_VERSION << ", ";
-    str << "Qt " << QT_VERSION_STR << ", ";
-    str << "Coin " << fcCoin3dVersion << ", ";
-    str << "Vtk " << fcVtkVersion << ", ";
-    str << "boost " << BOOST_LIB_VERSION << ", ";
-    str << "Eigen3 " << fcEigen3Version << ", ";
-    str << "PySide " << fcPysideVersion << '\n';
-    str << "shiboken " << fcShibokenVersion << ", ";
-#ifdef SMESH_VERSION_STR
-    str << "SMESH " << SMESH_VERSION_STR << ", ";
-#endif
-    str << "xerces-c " << fcXercescVersion << ", ";
-
-    try {
-        Base::PyGILStateLocker lock;
-        Py::Module module(PyImport_ImportModule("ifcopenshell"), true);
-        if (!module.isNull() && module.hasAttr("version")) {
-            Py::String version(module.getAttr("version"));
-            auto ver_str = static_cast<std::string>(version);
-            str << "IfcOpenShell " << ver_str.c_str() << ", ";
-        }
-        else {
-            Base::Console().log("Module 'ifcopenshell' not found (safe to ignore, unless using "
-                                "the BIM workbench and IFC).\n");
-        }
-    }
-    catch (const Py::Exception&) {
-        Base::PyGILStateLocker lock;
-        Base::PyException e;
-        Base::Console().log("%s\n", e.what());
-    }
-
-#if defined(HAVE_OCC_VERSION)
-    str << "OCC " << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE
-#ifdef OCC_VERSION_DEVELOPMENT
-        << "." OCC_VERSION_DEVELOPMENT
-#endif
-        << '\n';
-#endif
-    QLocale loc;
-    str << "Locale: " << QLocale::languageToString(loc.language()) << "/"
-#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
-        << QLocale::countryToString(loc.country())
-#else
-        << QLocale::territoryToString(loc.territory())
-#endif
-        << " (" << loc.name() << ")";
-    if (loc != QLocale::system()) {
-        loc = QLocale::system();
-        str << " [ OS: " << QLocale::languageToString(loc.language()) << "/"
-#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
-            << QLocale::countryToString(loc.country())
-#else
-            << QLocale::territoryToString(loc.territory())
-#endif
-            << " (" << loc.name() << ") ]";
-    }
-    str << "\n";
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-
-    QString navStyle = QString::fromStdString(hGrp->GetASCII("NavigationStyle", "Gui::CADNavigationStyle"));
-    // All navigation styles are named on the format "Gui::<Name>NavigationStyle"
-    // so we remove the "Gui::" prefix and the "NavigationStyle" suffix before printing.
-    navStyle.replace(QRegularExpression(QLatin1String("^Gui::")), {});
-    navStyle.replace(QRegularExpression(QLatin1String("NavigationStyle$")), {});
-
-    const QString orbitStyle = QStringLiteral("Turntable,Trackball,Free Turntable,Trackball Classic,Rounded Arcball")
-                               .split(QLatin1Char(','))
-                               .at(hGrp->GetInt("OrbitStyle", 4));
-    const QString rotMode = QStringLiteral("Window center,Drag at cursor,Object center")
-                            .split(QLatin1Char(','))
-                            .at(hGrp->GetInt("RotationMode", 0));
-
-    str << QStringLiteral("Navigation Style/Orbit Style/Rotation Mode: %1/%2/%3\n").arg(navStyle, orbitStyle, rotMode);
-}
-
-void Application::getVerboseAddOnsInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig) {
-    // Add installed module information:
-    const auto modDir = fs::path(Application::getUserAppDataDir()) / "Mod";
-    bool firstMod = true;
-    if (fs::exists(modDir) && fs::is_directory(modDir)) {
-        for (const auto& mod : fs::directory_iterator(modDir)) {
-            if (!fs::is_directory(mod)) {
-                continue; // Ignore files, only show directories
-            }
-            auto dirName = mod.path().string();
-            addModuleInfo(str, QString::fromStdString(dirName), firstMod);
-        }
-    }
-    const QString additionalModules = getValueOrEmpty(mConfig, "AdditionalModulePaths");
-
-    if (!additionalModules.isEmpty()) {
-        auto mods = additionalModules.split(QChar::fromLatin1(';'));
-        for (const auto& mod : mods) {
-            addModuleInfo(str, mod, firstMod);
-        }
-    }
-}

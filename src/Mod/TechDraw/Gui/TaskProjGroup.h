@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TASKVIEWGROUP_H
-#define GUI_TASKVIEW_TASKVIEWGROUP_H
+#pragma once
 
 #include <QString>
 #include <QDialog>
@@ -202,5 +201,3 @@ private:
 };
 
 } //namespace TechDrawGui
-
-#endif // #ifndef GUI_TASKVIEW_TASKVIEWGROUP_H

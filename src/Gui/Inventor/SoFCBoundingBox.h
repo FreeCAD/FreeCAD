@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef COIN_SOFCBOUNDINGBOX_H
-#define COIN_SOFCBOUNDINGBOX_H
+#pragma once
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -140,6 +139,3 @@ The new API is added to check for NaN to improve robustness in bound box
 checking.*/
 bool GuiExport isValidBBox(const SbBox3f& bbox);
 }  // namespace Gui
-
-
-#endif  // COIN_SOFCBOUNDINGBOX_H

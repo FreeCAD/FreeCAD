@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CAMSimulator_CAMSim_H
-#define CAMSimulator_CAMSim_H
+#pragma once
 
 #include <memory>
 #include <TopoDS_Shape.hxx>
@@ -60,7 +59,7 @@ public:
     CAMSim() = default;
 
     void BeginSimulation(const Part::TopoShape& stock, float resolution);
-    void resetSimulation();
+    void resetSimulation(Gui::Document* doc);
     void addTool(
         const std::vector<float>& toolProfilePoints,
         int toolNumber,
@@ -72,6 +71,3 @@ public:
 };
 
 }  // namespace CAMSimulator
-
-
-#endif  // CAMSimulator_CAMSim_H

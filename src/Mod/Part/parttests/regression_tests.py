@@ -185,6 +185,48 @@ class RegressionTests(unittest.TestCase):
         for name, pos, normal, xaxis in expected_planes:
             check_plane(name, pos, normal, xaxis)
 
+    def test_transformShape_copy_returns_independent_shape(self):
+        shp = Part.makeBox(1, 2, 3)
+
+        # Regression: copy=True must return an independent shape object, even for identity transform.
+        cloned = shp.transformShape(FreeCAD.Matrix(), True)
+        self.assertIsNot(cloned, shp)
+        self.assertFalse(cloned.isEqual(shp))
+        self.assertAlmostEqual(shp.BoundBox.XMin, 0.0)
+
+        # Transforming the returned copy must not affect the original.
+        moved = cloned.transformShape(
+            FreeCAD.Placement(FreeCAD.Vector(5, 0, 0), FreeCAD.Rotation()).toMatrix(), False
+        )
+        self.assertIs(moved, cloned)
+        self.assertAlmostEqual(shp.BoundBox.XMin, 0.0)
+        self.assertAlmostEqual(cloned.BoundBox.XMin, 5.0)
+
+    def test_issue_15716_AttacherEngine_sync(self):
+        """
+        15716: AttacherType and AttacherEngine property conflict
+
+        When creating a Part2DObject (like a Sketch), the AttacherEngine property
+        should be synchronized with AttacherType. Previously, AttacherType was
+        correctly set to "Attacher::AttachEnginePlane" but AttacherEngine stayed
+        at the default "Engine 3D" instead of "Engine Plane".
+        """
+        if "BUILD_SKETCHER" in FreeCAD.__cmake__:
+            # Create a new sketch (which inherits from Part2DObject)
+            sketch = self.Doc.addObject("Sketcher::SketchObject", "TestSketch")
+            self.Doc.recompute()
+
+            # The visible AttacherEngine property should match the actual engine type
+            # AttacherType is the internal type name, AttacherEngine is the user-visible enum
+            attacher_type = sketch.AttacherType
+            attacher_engine = sketch.AttacherEngine
+
+            # For a sketch, AttacherType should be AttachEnginePlane
+            self.assertEqual(attacher_type, "Attacher::AttachEnginePlane")
+
+            # AttacherEngine should show "Engine Plane" (not "Engine 3D")
+            self.assertEqual(attacher_engine, "Engine Plane")
+
     def tearDown(self):
         """Clean up our test, optionally preserving the test document"""
         # This flag allows doing something like this:

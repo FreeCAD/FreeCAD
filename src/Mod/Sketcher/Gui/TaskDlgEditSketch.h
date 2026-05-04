@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_TaskDlgEditSketch_H
-#define SKETCHERGUI_TaskDlgEditSketch_H
+#pragma once
 
 #include <fastsignals/signal.h>
 
@@ -65,6 +64,7 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
+    void deactivate();
     bool isAllowedAlterDocument() const override
     {
         return false;
@@ -97,9 +97,8 @@ protected:
 
 private:
     Connection connectionToolSettings;
+    bool isEscapeAction {false};
 };
 
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_TaskDlgEditSketch_H

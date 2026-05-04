@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawComplexSection_h_
-#define DrawComplexSection_h_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -132,6 +131,8 @@ public:
                                            const std::vector<std::pair<int, Base::Vector3d>>& normalKV,
                                            const std::vector<TopoDS_Edge>& segmentEdges);
 
+    static bool pointOnFace(Base::Vector3d point, const TopoDS_Face& face);
+
 public Q_SLOTS:
     void onSectionCutFinished() override;
 
@@ -171,7 +172,7 @@ private:
                                       const TopoDS_Face& faceToSearch);
     static bool normalLess(const std::pair<int, Base::Vector3d>& n1,
                            const std::pair<int, Base::Vector3d>& n2);
-    static bool pointOnFace(Base::Vector3d point, const TopoDS_Face& face);
+    
 
 
     TopoDS_Edge mapEdgeToBase(const TopoDS_Edge& inEdge);
@@ -198,5 +199,3 @@ private:
 using DrawComplexSectionPython = App::FeaturePythonT<DrawComplexSection>;
 
 }//namespace TechDraw
-
-#endif

@@ -23,8 +23,7 @@
  **************************************************************************/
 
 
-#ifndef MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H
-#define MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H
+#pragma once
 
 #include <QObject>
 
@@ -103,6 +102,10 @@ protected:
         Base::Vector3d elementDirection,
         double tolerance = defaultTolerance
     ) override;
+    // Keep the label draggable in the distance annotation's local measurement frame instead of
+    // rotating the dragger into the current view plane.
+    void onLabelMoveStart() override
+    {}
     void onChanged(const App::Property* prop) override;
 
 private:
@@ -120,6 +123,3 @@ private:
 };
 
 }  // namespace MeasureGui
-
-
-#endif  // MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H

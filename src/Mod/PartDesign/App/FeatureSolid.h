@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureSolid_H
-#define PARTDESIGN_FeatureSolid_H
+#pragma once
 
 #include "Feature.h"
 
@@ -48,6 +47,3 @@ protected:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_Feature_H

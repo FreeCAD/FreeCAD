@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4APPRLINEFIT3_H
-#define WM4APPRLINEFIT3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Line3.h"
@@ -31,5 +30,3 @@ template <class Real> WM4_FOUNDATION_ITEM
 Line3<Real> OrthogonalLineFit3 (int iQuantity, const Vector3<Real>* akPoint);
 
 }
-
-#endif

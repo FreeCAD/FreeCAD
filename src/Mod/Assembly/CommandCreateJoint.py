@@ -78,7 +78,7 @@ class CommandCreateJointFixed:
             "Accel": "F",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointFixed",
-                "<p>1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation</p>"
+                "<p>1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation</p>"
                 "<p>2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.</p>",
             ),
             "CmdType": "ForEdit",
@@ -455,7 +455,7 @@ class CommandToggleGrounded:
         if not selection:
             return
 
-        App.setActiveTransaction("Toggle grounded")
+        App.ActiveDocument.openTransaction("Toggle grounded")
         for sel in selection:
             # If you select 2 solids (bodies for example) within an assembly.
             # There'll be a single sel but 2 SubElementNames.
@@ -500,7 +500,7 @@ class CommandToggleGrounded:
 
                 # Create groundedJoint.
                 createGroundedJoint(moving_part)
-        App.closeActiveTransaction()
+        App.ActiveDocument.commitTransaction()
 
 
 if App.GuiUp:

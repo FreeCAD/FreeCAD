@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <boost_graph_adjacency_list.hpp>
+#include <boost/graph/topological_sort.hpp>
 
 #include <QApplication>
 #include <QKeyEvent>
@@ -52,6 +54,7 @@
 #include "Document.h"
 #include "DockWindowManager.h"
 #include "SoFCDB.h"
+#include "SoFullPathHelper.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
@@ -195,7 +198,10 @@ void ViewProvider::setEditViewer(View3DInventorViewer*, int ModNum)
 
 void ViewProvider::unsetEditViewer(View3DInventorViewer*)
 {}
-
+void ViewProvider::setActive(bool active)
+{
+    Q_UNUSED(active);
+}
 bool ViewProvider::isUpdatesEnabled() const
 {
     return testStatus(UpdateData);
@@ -325,7 +331,7 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
     }
 }
 
-SoSeparator* ViewProvider::getAnnotation()
+SoSeparator* ViewProvider::getOrCreateAnnotation()
 {
     if (!pcAnnotation) {
         pcAnnotation = new SoSeparator();
@@ -613,7 +619,6 @@ PyObject* ViewProvider::getPyObject()
     return pyViewObject;
 }
 
-#include <boost/graph/topological_sort.hpp>
 
 namespace Gui
 {
@@ -1064,7 +1069,7 @@ int ViewProvider::partialRender(const std::vector<std::string>& elements, bool c
         }
     }
     int count = 0;
-    auto path = static_cast<SoFullPath*>(new SoPath);
+    auto path = Gui::toFullPath(new SoPath);
     path->ref();
     SoSelectionElementAction action;
     action.setSecondary(true);

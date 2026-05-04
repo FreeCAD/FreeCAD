@@ -226,7 +226,7 @@ def process_body(body, returnObj, names, i):
 def isBodySubObject(obj):
     return (
         obj.isDerivedFrom("Sketcher::SketchObject")
-        or obj.isDerivedFrom("PartDesign::Datum")
+        or obj.isDerivedFrom("Part::Datum")
         or obj.isDerivedFrom("App::DatumElement")
         or obj.isDerivedFrom("App::LocalCoordinateSystem")
     )
@@ -364,11 +364,6 @@ def getGlobalPlacement(ref, targetObj=None):
     if not isRefValid(ref, 1):
         return App.Placement()
 
-    if targetObj is None:  # If no targetObj is given, we consider it's the getObject(ref)
-        targetObj = getObject(ref)
-        if targetObj is None:
-            return App.Placement()
-
     rootObj = ref[0]
     subName = ref[1][0]
     # ref[0] is no longer the root object. Now it's the moving part.
@@ -385,6 +380,9 @@ def getGlobalPlacement(ref, targetObj=None):
 
 
 def isThereOneRootAssembly():
+    if Gui.activeDocument() is None:
+        return False
+
     for part in Gui.activeDocument().TreeRootObjects:
         if part.TypeId == "Assembly::AssemblyObject":
             return True
@@ -795,7 +793,7 @@ def getObjMassAndCom(obj, containingPart=None):
         obj = obj.getLinkedObject()
 
     if obj.TypeId == "PartDesign::Body":
-        part = part.Tip
+        obj = obj.Tip
 
     if obj.isDerivedFrom("Part::Feature"):
         mass = obj.Shape.Volume
@@ -1098,9 +1096,9 @@ def findPlacement(ref, ignoreVertex=False):
         if hasattr(surface, "Rotation") and surface.Rotation is not None:
             plc.Rotation = App.Rotation(surface.Rotation)
 
-    # Now plc is the placement relative to the origin determined by the object placement.
-    # But it does not take into account Part placements. So if the solid is in a part and
-    # if the part has a placement then plc is wrong.
+    if hasattr(obj, "ExpandArray"):
+        # For draft arrays, the Shape has both the array placement and the base placement.
+        plc = obj.Base.Placement.inverse() * plc
 
     # change plc to be relative to the object placement.
     plc = obj.Placement.inverse() * plc
@@ -1113,13 +1111,6 @@ def findPlacement(ref, ignoreVertex=False):
         plane_origin = App.Vector(0, 0, 0)
         plane = Part.Plane(plane_origin, plane_normal)
         plc.Rotation = App.Rotation(plane.Rotation)
-
-    # change plc to be relative to the origin of the document.
-    # global_plc = getGlobalPlacement(obj, part)
-    # plc = global_plc * plc
-
-    # change plc to be relative to the assembly.
-    # plc = activeAssembly().Placement.inverse() * plc
 
     return plc
 

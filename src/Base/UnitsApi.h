@@ -22,16 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_UNITSAPI_H
-#define BASE_UNITSAPI_H
+#pragma once
 
 #include "UnitsSchema.h"
 #include "UnitsSchemas.h"
 #include "UnitsSchemasData.h"
 #include "Quantity.h"
-
-
-class QString;
 
 using PyObject = struct _object;
 using PyMethodDef = struct PyMethodDef;
@@ -50,6 +46,8 @@ public:
     static std::string schemaTranslate(const Quantity& quant, double& factor, std::string& unitString);
 
     static std::string schemaTranslate(const Quantity& quant);
+
+    static std::string toUnicodeSuperscript(const std::string& str);
 
     static double toDouble(PyObject* args, const Base::Unit& u = Base::Unit());
 
@@ -90,5 +88,3 @@ protected:
 };
 
 }  // namespace Base
-
-#endif  // BASE_UNITSAPI_H

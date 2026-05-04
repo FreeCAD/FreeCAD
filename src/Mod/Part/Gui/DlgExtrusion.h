@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGEXTRUSION_H
-#define PARTGUI_DLGEXTRUSION_H
+#pragma once
 
 #include <QDialog>
 #include <string>
@@ -66,6 +65,8 @@ public:
 
     void writeParametersToFeature(App::DocumentObject& feature, App::DocumentObject* base) const;
 
+    void setSelectionGate();
+
 protected:
     void findShapes();
     bool canExtrude(const TopoDS_Shape&) const;
@@ -102,6 +103,7 @@ private:
     std::string document, label;
     class EdgeSelection;
     EdgeSelection* filter;
+    bool filterSelection;
 };
 
 class TaskExtrusion: public Gui::TaskView::TaskDialog
@@ -126,5 +128,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGEXTRUSION_H

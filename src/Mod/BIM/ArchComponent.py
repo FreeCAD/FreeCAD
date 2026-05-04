@@ -66,13 +66,10 @@ else:
     # \endcond
 
 
-def addToComponent(compobject, addobject, mod=None):
-    """Add an object to a component's properties.
+def addToComponent(compobject, addobject, prop):
+    """Add an object to a component's property.
 
-    Does not run if the addobject already exists in the component's properties.
-    Adds the object to the first property found of Base, Group, or Hosts.
-
-    If mod is provided, adds the object to that property instead.
+    Does not run if the addobject already exists in the component's OutListRecursive.
 
     Parameters
     ----------
@@ -80,52 +77,31 @@ def addToComponent(compobject, addobject, mod=None):
         The component object to add the object to.
     addobject: <App::DocumentObject>
         The object to add to the component.
-    mod: str, optional
+    prop: str
         The property to add the object to.
     """
 
     import Draft
 
+    if not hasattr(compobject, prop):
+        return
     if compobject == addobject:
         return
-    # first check zis already there
-    found = False
-    attribs = ["Additions", "Objects", "Components", "Subtractions", "Base", "Group", "Hosts"]
-    for a in attribs:
-        if hasattr(compobject, a):
-            if a == "Base":
-                if addobject == getattr(compobject, a):
-                    found = True
-            else:
-                if addobject in getattr(compobject, a):
-                    found = True
-    if not found:
-        if mod:
-            if hasattr(compobject, mod):
-                if mod == "Base":
-                    setattr(compobject, mod, addobject)
-                    addobject.ViewObject.hide()
-                elif mod == "Axes":
-                    if Draft.getType(addobject) == "Axis":
-                        l = getattr(compobject, mod)
-                        l.append(addobject)
-                        setattr(compobject, mod, l)
-                else:
-                    l = getattr(compobject, mod)
-                    l.append(addobject)
-                    setattr(compobject, mod, l)
-                    if mod != "Objects":
-                        addobject.ViewObject.hide()
-                        if Draft.getType(compobject) == "PanelSheet":
-                            addobject.Placement.move(compobject.Placement.Base.negative())
-        else:
-            for a in attribs[:3]:
-                if hasattr(compobject, a):
-                    l = getattr(compobject, a)
-                    l.append(addobject)
-                    setattr(compobject, a, l)
-                    addobject.ViewObject.hide()
-                    break
+    if addobject in compobject.OutListRecursive:
+        return
+
+    if prop == "Base":
+        setattr(compobject, prop, addobject)
+        addobject.Visibility = False
+    elif prop == "Axes":
+        if Draft.getType(addobject) == "Axis":
+            setattr(compobject, prop, getattr(compobject, prop) + [addobject])
+    else:
+        setattr(compobject, prop, getattr(compobject, prop) + [addobject])
+        if prop not in ("Hosts", "Objects"):
+            addobject.Visibility = False
+            if Draft.getType(compobject) == "PanelSheet":
+                addobject.Placement.move(compobject.Placement.Base.negative())
 
 
 def removeFromComponent(compobject, subobject):
@@ -200,6 +176,10 @@ class Component(ArchIFC.IfcProduct):
     obj: <App::FeaturePython>
         The object to turn into an Arch Component
     """
+
+    # List of properties to override in App::Link.
+    # Subclasses which require overrides (e.g. Window, Rebar) should populate the overrides list.
+    LinkOverrideProperties = []
 
     def __init__(self, obj):
         obj.Proxy = self
@@ -279,12 +259,24 @@ class Component(ArchIFC.IfcProduct):
             )
         if not "Material" in pl:
             obj.addProperty(
-                "App::PropertyLink",
+                "App::PropertyLinkGlobal",
                 "Material",
                 "Component",
                 QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
                 locked=True,
             )
+        elif obj.getTypeIdOfProperty("Material") == "App::PropertyLink":
+            mat = obj.Material
+            obj.setPropertyStatus("Material", "-LockDynamic")
+            obj.removeProperty("Material")
+            obj.addProperty(
+                "App::PropertyLinkGlobal",
+                "Material",
+                "Component",
+                QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
+                locked=True,
+            )
+            obj.Material = mat
         if "BaseMaterial" in pl:
             obj.Material = obj.BaseMaterial
             obj.removeProperty("BaseMaterial")
@@ -391,16 +383,34 @@ class Component(ArchIFC.IfcProduct):
         obj: <App::FeaturePython>
             The component object.
         """
+        import Part
 
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
+        if getattr(obj, "Base", None) is None:
+            # Do not modify Arch_Components without a Base object.
             return
-        if obj.Base:
-            shape = self.spread(obj, obj.Base.Shape)
-            if obj.Additions or obj.Subtractions:
-                shape = self.processSubShapes(obj, shape)
-            obj.Shape = shape
+
+        if hasattr(obj.Base, "Shape") and not obj.Base.Shape.isNull():
+            # The Base object contains valid geometry.
+            # Create a standalone shape as a deep copy of the base geometry, to avoid modifying
+            # the original source.
+            base_shape = Part.Shape(obj.Base.Shape)
+
+            # Reset the shape's internal placement to Identity. This strips the placement
+            # inherited from the Base object, ensuring the geometry is centered at (0,0,0) for
+            # Boolean operations in processSubShapes. This also prevents the shape's placement from
+            # overwriting the Component's own Placement property during assignment in applyShape.
+            base_shape.Placement = FreeCAD.Placement()
+
+            # Localize the CSG shapes: pass the object's placement to processSubShapes, so that the
+            # placements of any additions and subtractions are also localized to the local origin of
+            # the Arch Component.
+            final_shape = self.processSubShapes(obj, base_shape, obj.Placement)
+            self.applyShape(obj, final_shape, obj.Placement, allownosolid=True)
+        else:
+            # Clear the shape to avoid leaving a stale shape.
+            obj.Shape = Part.Shape()
 
     def dumps(self):
         return None
@@ -828,7 +838,7 @@ class Component(ArchIFC.IfcProduct):
                                 if Draft.getType(o) == "Roof":
                                     continue
                             o.ViewObject.hide()
-            elif prop in ["Mesh"]:
+            elif prop == "HiRes":
                 if hasattr(obj, prop):
                     o = getattr(obj, prop)
                     if o:
@@ -1267,6 +1277,8 @@ class Component(ArchIFC.IfcProduct):
     def ensureBase(self, obj):
         """Returns False if the object has a Base but of the wrong type.
         Either returns True"""
+        # TODO: this method has a third undocumented state: None, which is returned if the object
+        # has no Base. This should either be fixed if unintended, or documented if intended.
 
         if getattr(obj, "Base", None):
             if obj.Base.isDerivedFrom("Part::Feature"):
@@ -1303,6 +1315,20 @@ class Component(ArchIFC.IfcProduct):
             if self._isInternalLinkgroup(inObj):
                 return True
         return False
+
+    def appLinkExecute(self, obj, linkObj, index, linkElement):
+        """
+        App::Link hook: called when a link to a BIM object is created.
+        Used to setup shadow properties for lightweight instancing.
+        """
+        # Shadow the given property so multiple links can have independent values without triggering
+        # a deep copy of the BIM object geometry.
+        if self.LinkOverrideProperties:
+            ArchCommands.override_link_properties(linkObj, self.LinkOverrideProperties)
+
+        # Execute features in the SketchArch External Add-on, if present
+        if hasattr(self, "executeSketchArchFeatures"):
+            self.executeSketchArchFeatures(obj, linkObj, index, linkElement)
 
 
 class AreaCalculator:
@@ -1860,7 +1886,7 @@ class ViewProviderComponent:
                 if hasattr(self.Object, link):
                     objlink = getattr(self.Object, link)
                     c.extend(objlink)
-            for link in ["Tool", "Subvolume", "Mesh", "HiRes"]:
+            for link in ["Tool", "Subvolume", "HiRes"]:
                 if hasattr(self.Object, link):
                     objlink = getattr(self.Object, link)
                     if objlink:
@@ -2310,23 +2336,21 @@ class ComponentTaskPanel:
     def addElement(self):
         """This method is run as a callback when the user selects the add button.
 
-        Get the object selected in the 3D view, and get the attribute folder
+        Get the objects selected in the 3D view, and get the attribute folder
         selected in the tree widget.
 
-        Add the object selected in the 3D view to the attribute associated with
+        Add the objects selected in the 3D view to the attribute associated with
         the selected folder, by using function addToComponent().
         """
-
         it = self.tree.currentItem()
         if it:
-            mod = None
-            for a in self.attribs:
-                if it.text(0) == getattr(self, "tree" + a).text(0):
-                    mod = a
-            for o in FreeCADGui.Selection.getSelection():
-                addToComponent(self.obj, o, mod)
-            self.obj.recompute()
-        self.update()
+            for prop in self.attribs:
+                if it.text(0) == getattr(self, "tree" + prop).text(0):
+                    for o in FreeCADGui.Selection.getSelection():
+                        addToComponent(self.obj, o, prop)
+                    self.obj.recompute()
+                    self.update()
+                    break
 
     def removeElement(self):
         """
@@ -2589,13 +2613,11 @@ class ComponentTaskPanel:
             ifcData["IfcUID"] = self.ifcEditor.labelUUID.text()
             ifcData["FlagForceBrep"] = str(self.ifcEditor.checkBrep.isChecked())
             ifcData["FlagParametric"] = str(self.ifcEditor.checkParametric.isChecked())
-            if (ifcdict != self.obj.IfcProperties) or (ifcData != self.obj.IfcData):
-                FreeCAD.ActiveDocument.openTransaction("Change Ifc Properties")
-                if ifcdict != self.obj.IfcProperties:
-                    self.obj.IfcProperties = ifcdict
-                if ifcData != self.obj.IfcData:
-                    self.obj.IfcData = ifcData
-                FreeCAD.ActiveDocument.commitTransaction()
+            # The transaction context is implicitly opened by the C++ layer when entering edit mode.
+            if ifcdict != self.obj.IfcProperties:
+                self.obj.IfcProperties = ifcdict
+            if ifcData != self.obj.IfcData:
+                self.obj.IfcData = ifcData
             del self.ifcEditor
 
     def addIfcProperty(self, idx=0, pset=None, prop=None, ptype=None):
@@ -2734,6 +2756,174 @@ class ComponentTaskPanel:
         FreeCADGui.Selection.clearSelection()
         FreeCADGui.Selection.addSelection(self.obj)
         FreeCADGui.runCommand("BIM_Classification")
+
+
+class ComponentOptionsTaskPanel(ComponentTaskPanel):
+    """
+    A generic TaskPanel that generates UI widgets based on a provided configuration.
+    It inherits from ComponentTaskPanel to keep the standard 'Components' tree functionality.
+    """
+
+    def __init__(self, obj, property_definitions):
+        """
+        obj: The FreeCAD object being edited.
+        property_definitions: A list of dictionaries defining the properties.
+                              e.g. [{'prop': 'Length'}]
+                              or [{'prop': 'Length', 'label': translate("Arch", "Total Length")}]
+        """
+        import re
+
+        super().__init__()
+        self.obj = obj
+        self.update()  # Populate the components tree now that self.obj is set
+        self.property_definitions = property_definitions
+        self.property_widgets = {}  # Map property name to {'widget': widget, 'type': type_id}
+
+        self.options_widget = QtGui.QWidget()
+        self.options_widget.setWindowTitle(translate("Arch", "Options"))
+        layout = QtGui.QFormLayout(self.options_widget)
+        loader = FreeCADGui.UiLoader()
+
+        for item in self.property_definitions:
+            prop_name = item["prop"]
+
+            # Heuristics for label: Use provided label or fallback to split CamelCase
+            label_text = item.get("label", re.sub(r"(?<!^)(?=[A-Z])", " ", prop_name))
+
+            # Check if property exists on Data object or View object
+            target_obj = self.obj
+            if not hasattr(target_obj, prop_name):
+                if hasattr(self.obj, "ViewObject") and hasattr(self.obj.ViewObject, prop_name):
+                    target_obj = self.obj.ViewObject
+                else:
+                    continue
+
+            prop_val = getattr(target_obj, prop_name)
+            prop_type_id = target_obj.getTypeIdOfProperty(prop_name)
+            widget = None
+
+            # Quantity types
+            if prop_type_id in [
+                "App::PropertyLength",
+                "App::PropertyDistance",
+                "App::PropertyArea",
+                "App::PropertyVolume",
+                "App::PropertyAngle",
+            ]:
+                widget = loader.createWidget("Gui::QuantitySpinBox")
+                FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
+                widget.setProperty("value", prop_val)
+
+            # Float
+            elif prop_type_id == "App::PropertyFloat":
+                widget = loader.createWidget("Gui::DoubleSpinBox")
+                FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
+                # Unlike `Gui::QuantitySpinbox`, `Gui::DoubleSpinBox` requires explicit initialization
+                widget.setDecimals(
+                    FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+                        "Decimals", 2
+                    )
+                )
+                widget.setRange(-(2**31), 2**31)
+                widget.setValue(float(prop_val))
+
+            # Integer types
+            elif prop_type_id in ["App::PropertyInteger", "App::PropertyPercent"]:
+                widget = loader.createWidget("Gui::IntSpinBox")
+                FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
+                widget.setProperty("value", int(prop_val))
+
+                if prop_type_id == "App::PropertyPercent":
+                    widget.setProperty("minimum", 0)
+                    widget.setProperty("maximum", 100)
+
+            # Boolean
+            elif prop_type_id == "App::PropertyBool":
+                widget = QtGui.QCheckBox()
+                widget.setChecked(prop_val)
+
+            # Enumeration (ComboBox)
+            elif prop_type_id == "App::PropertyEnumeration":
+                widget = QtGui.QComboBox()
+                # Combo boxes tend to have long texts in BIM. Do not use them to calculate the
+                # size of the task boxes, which would appear too wide and would grow beyond their
+                # task panel container
+                widget.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToMinimumContentsLengthWithIcon)
+                widget.setMinimumContentsLength(20)
+                widget.addItems(target_obj.getEnumerationsOfProperty(prop_name))
+                idx = widget.findText(prop_val)
+                if idx >= 0:
+                    widget.setCurrentIndex(idx)
+
+            # String
+            elif prop_type_id == "App::PropertyString":
+                widget = loader.createWidget("Gui::ExpLineEdit")
+                FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
+                widget.setProperty("text", prop_val)
+
+            # String List
+            elif prop_type_id == "App::PropertyStringList":
+                widget = QtGui.QPlainTextEdit()
+                widget.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+                if prop_val:
+                    widget.setPlainText("\n".join(prop_val))
+
+            if widget:
+                tooltip = target_obj.getDocumentationOfProperty(prop_name)
+                if tooltip:
+                    widget.setToolTip(tooltip)
+                layout.addRow(label_text, widget)
+                self.property_widgets[prop_name] = {
+                    "widget": widget,
+                    "type": prop_type_id,
+                    "object": target_obj,
+                }
+
+        # Prepend the options widget to the form list (inherited from ComponentTaskPanel)
+        self.form = [self.options_widget, self.baseform]
+
+    def accept(self):
+        """Automatically save values back to the object"""
+        for prop_name, data in self.property_widgets.items():
+            widget = data["widget"]
+            prop_type = data["type"]
+            target_obj = data["object"]
+
+            try:
+                # Quantities, Floats and Integers
+                if prop_type in [
+                    "App::PropertyLength",
+                    "App::PropertyDistance",
+                    "App::PropertyArea",
+                    "App::PropertyVolume",
+                    "App::PropertyAngle",
+                    "App::PropertyFloat",
+                    "App::PropertyInteger",
+                    "App::PropertyPercent",
+                ]:
+                    setattr(target_obj, prop_name, widget.property("value"))
+
+                # Bools
+                elif prop_type == "App::PropertyBool":
+                    setattr(target_obj, prop_name, widget.isChecked())
+
+                # Enumerations
+                elif prop_type == "App::PropertyEnumeration":
+                    setattr(target_obj, prop_name, widget.currentText())
+
+                # Strings
+                elif prop_type == "App::PropertyString":
+                    setattr(target_obj, prop_name, widget.text())
+
+                # String Lists
+                elif prop_type == "App::PropertyStringList":
+                    setattr(target_obj, prop_name, widget.toPlainText().splitlines())
+
+            except Exception as e:
+                msg = translate("Arch", "Error saving property")
+                FreeCAD.Console.PrintError(f"{msg} {prop_name}: {str(e)}\n")
+
+        return super().accept()
 
 
 if FreeCAD.GuiUp:

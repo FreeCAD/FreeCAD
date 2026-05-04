@@ -337,9 +337,11 @@ generate_from_py(LinkView)
 generate_from_py(ViewProviderLink)
 generate_from_py(AxisOrigin)
 generate_from_py(Command)
+generate_from_py(EditableDatumLabel)
 generate_from_py(Navigation/NavigationStyle)
 
 generate_embed_from_py(FreeCADGuiInit GuiInitScript.h)
+generate_embed_from_py(FreeCADGuiTest GuiTestScript.h)
 
 # The Pyi files
 SET(FreeCADGui_Pyi_SRCS
@@ -355,6 +357,7 @@ SET(FreeCADGui_Pyi_SRCS
     ViewProviderLink.pyi
     AxisOrigin.pyi
     Command.pyi
+    EditableDatumLabel.pyi
 )
 SOURCE_GROUP("Pyi" FILES ${FreeCADGui_Pyi_SRCS})
 
@@ -490,6 +493,7 @@ SET(Gui_UIC_SRCS
     InputVector.ui
     Placement.ui
     TaskTransform.ui
+    TaskCommandLink.ui
     TextureMapping.ui
     TaskView/TaskAppearance.ui
     TaskView/TaskOrientation.ui
@@ -578,6 +582,7 @@ SET(Dialog_CPP_SRCS
     TaskDlgRelocation.cpp
     Dialogs/DlgCheckableMessageBox.cpp
     TaskTransform.cpp
+    TaskCommandLink.cpp
     Dialogs/DlgUndoRedo.cpp
     InputVector.cpp
     Placement.cpp
@@ -620,6 +625,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgVersionMigrator.h
     TaskDlgRelocation.h
     TaskTransform.h
+    TaskCommandLink.h
     Dialogs/DlgUndoRedo.h
     InputVector.h
     Placement.h
@@ -1138,6 +1144,7 @@ SET(Inventor_CPP_SRCS
     Inventor/SoDrawingGrid.cpp
     Inventor/SoFCBackgroundGradient.cpp
     Inventor/SoFCBoundingBox.cpp
+    Inventor/SoNaviCube.cpp
     Inventor/SoMouseWheelEvent.cpp
     Inventor/SoFCTransform.cpp
     Inventor/SoToggleSwitch.cpp
@@ -1178,6 +1185,7 @@ SET(Inventor_SRCS
     Inventor/SoDrawingGrid.h
     Inventor/SoFCBackgroundGradient.h
     Inventor/SoFCBoundingBox.h
+    Inventor/SoNaviCube.h
     Inventor/SoMouseWheelEvent.h
     Inventor/SoFCTransform.h
     Inventor/SoToggleSwitch.h
@@ -1237,9 +1245,16 @@ SET(Widget_CPP_SRCS
     FontScaledSVG.cpp
     SplitButton.cpp
 )
+if(WIN32)
+    SET(Widget_CPP_SRCS
+        ${Widget_CPP_SRCS}
+        FileDialogWin32.cpp
+    )
+endif(WIN32)
 SET(Widget_HPP_SRCS
     ComboLinks.h
     FileDialog.h
+    FileDialogInternal.h
     MainWindow.h
     MainWindowPy.h
     NotificationBox.h
@@ -1293,6 +1308,7 @@ SET(View_CPP_SRCS
     MDIView.cpp
     MDIViewPy.cpp
     MDIViewPyWrap.cpp
+    MDIViewWithCamera.cpp
     GraphvizView.cpp
     ImageView.cpp
     ActiveObjectList.cpp
@@ -1301,6 +1317,7 @@ SET(View_HPP_SRCS
     MDIView.h
     MDIViewPy.h
     MDIViewPyWrap.h
+    MDIViewWithCamera.h
     GraphvizView.h
     ImageView.h
     ActiveObjectList.h
@@ -1374,6 +1391,7 @@ SET(FreeCADGui_CPP_SRCS
     DocumentObserver.cpp
     DocumentObserverPython.cpp
     EditableDatumLabel.cpp
+    EditableDatumLabelPyImp.cpp
     ExpressionBinding.cpp
     ExpressionBindingPy.cpp
     GraphicsViewZoom.cpp
@@ -1395,6 +1413,7 @@ SET(FreeCADGui_CPP_SRCS
     SpaceballEvent.cpp
     StatusBarLabel.cpp
     PreferencePackManager.cpp
+    ProgramInformation.cpp
     Thumbnail.cpp
     Utilities.cpp
     WaitCursor.cpp
@@ -1402,6 +1421,7 @@ SET(FreeCADGui_CPP_SRCS
     StartupProcess.cpp
     TransactionObject.cpp
     ToolHandler.cpp
+    StyleParameters/Value.cpp
     StyleParameters/Parser.cpp
     StyleParameters/ParameterManager.cpp
 )
@@ -1418,6 +1438,7 @@ SET(FreeCADGui_SRCS
     ExpressionBindingPy.h
     ExpressionCompleter.h
     FreeCADGuiInit.py
+    FreeCADGuiTest.py
     FreeCADStyle.h
     GraphicsViewZoom.h
     GuiApplication.h
@@ -1438,6 +1459,7 @@ SET(FreeCADGui_SRCS
     Control.h
     SpaceballEvent.h
     PreferencePackManager.h
+    ProgramInformation.h
     Thumbnail.h
     Tools.h
     Utilities.h
@@ -1447,6 +1469,7 @@ SET(FreeCADGui_SRCS
     StatusBarLabel.h
     TransactionObject.h
     ToolHandler.h
+    StyleParameters/Value.h
     StyleParameters/Parser.h
     StyleParameters/ParameterManager.h
 )

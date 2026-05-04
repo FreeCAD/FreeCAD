@@ -123,9 +123,11 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent* const ev)
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
                     processed = true;
                 }
-                else if (press
-                         && (this->currentmode == NavigationStyle::PANNING
-                             || this->currentmode == NavigationStyle::ZOOMING)) {
+                else if (
+                    press
+                    && (this->currentmode == NavigationStyle::PANNING
+                        || this->currentmode == NavigationStyle::ZOOMING)
+                ) {
                     newmode = NavigationStyle::DRAGGING;
                     saveCursorPosition(ev);
                     this->centerTime = ev->getTime();

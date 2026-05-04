@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_VIEWPROVIDERPARTEXT_H
-#define PARTGUI_VIEWPROVIDERPARTEXT_H
+#pragma once
 
 #include "SoFCShapeObject.h"
 
@@ -82,9 +81,6 @@ public:
     App::PropertyAngle AngularDeflection;
     App::PropertyEnumeration Lighting;
     App::PropertyEnumeration DrawStyle;
-    /// Property controlling visibility of the placement indicator, useful for displaying origin
-    /// position of attached Document Object.
-    App::PropertyBool ShowPlacement;
     // Points
     App::PropertyFloatConstraint PointSize;
     App::PropertyColor PointColor;
@@ -260,5 +256,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_VIEWPROVIDERPARTEXT_H

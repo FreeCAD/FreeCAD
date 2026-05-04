@@ -24,6 +24,8 @@
 #include <QApplication>
 #include <QKeyEvent>
 #include <QPainter>
+#include <QMouseEvent>
+#include <QTextBlock>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QShortcut>
@@ -68,7 +70,9 @@ TextEdit::TextEdit(QWidget* parent)
     auto shortcutFind = new QShortcut(this);
     shortcutFind->setKey(QKeySequence::Find);
     shortcutFind->setContext(Qt::WidgetShortcut);
-    connect(shortcutFind, &QShortcut::activated, this, &TextEdit::showSearchBar);
+    connect(shortcutFind, &QShortcut::activated, this, [this]() {
+        Q_EMIT showSearchBar(selectionForSearch());
+    });
 
     auto shortcutNext = new QShortcut(this);
     shortcutNext->setKey(QKeySequence::FindNext);
@@ -139,6 +143,25 @@ int TextEdit::getInputStringPosition()
 QString TextEdit::getInputString()
 {
     return textCursor().block().text();
+}
+
+/**
+ * Return selected text or word under cursor if none. Normalize line breaks.
+ */
+QString TextEdit::selectionForSearch() const
+{
+    QTextCursor cursor = textCursor();
+    QString text = cursor.selectedText();
+
+    if (text.isEmpty()) {
+        cursor.select(QTextCursor::WordUnderCursor);
+        text = cursor.selectedText();
+    }
+
+    // Qt replaces line breaks with U+2029 in selectedText
+    text.replace(QChar::ParagraphSeparator, QLatin1Char('\n'));
+
+    return text;
 }
 
 void TextEdit::wheelEvent(QWheelEvent* e)
@@ -613,16 +636,88 @@ LineMarker::LineMarker(TextEditor* editor)
     , textEditor(editor)
 {}
 
-LineMarker::~LineMarker() = default;
-
 QSize LineMarker::sizeHint() const
 {
     return {textEditor->lineNumberAreaWidth(), 0};
 }
 
-void LineMarker::paintEvent(QPaintEvent* e)
+void LineMarker::paintEvent(QPaintEvent* event)
 {
-    textEditor->lineNumberAreaPaintEvent(e);
+    textEditor->lineNumberAreaPaintEvent(event);
+}
+
+QTextBlock LineMarker::blockAtPosition(int y) const
+{
+    const QTextCursor cursor = textEditor->cursorForPosition(QPoint(1, y));
+    return cursor.block();
+}
+
+void LineMarker::selectBlocks(int firstLine, int lastLine)
+{
+    if (firstLine > lastLine) {
+        std::swap(firstLine, lastLine);
+    }
+
+    QTextBlock start = textEditor->document()->findBlockByNumber(firstLine);
+    QTextBlock end = textEditor->document()->findBlockByNumber(lastLine);
+
+    if (!start.isValid() || !end.isValid()) {
+        return;
+    }
+
+    QTextCursor cursor(start);
+    cursor.setPosition(end.position(), QTextCursor::KeepAnchor);
+    cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+    textEditor->setTextCursor(cursor);
+}
+
+void LineMarker::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() != Qt::LeftButton) {
+        event->ignore();
+        return;
+    }
+
+    const QTextBlock block = blockAtPosition(event->pos().y());
+    if (!block.isValid()) {
+        return;
+    }
+
+    const int line = block.blockNumber();
+
+    if (event->modifiers() & Qt::ShiftModifier && anchorLine >= 0) {
+        selectBlocks(anchorLine, line);
+    }
+    else {
+        anchorLine = line;
+        selectBlocks(line, line);
+    }
+
+    dragging = true;
+    event->accept();
+}
+
+void LineMarker::mouseMoveEvent(QMouseEvent* event)
+{
+    if (!dragging) {
+        return;
+    }
+
+    const QTextBlock block = blockAtPosition(event->pos().y());
+    if (!block.isValid()) {
+        return;
+    }
+
+    selectBlocks(anchorLine, block.blockNumber());
+}
+
+void LineMarker::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton) {
+        dragging = false;
+    }
+
+    event->accept();
 }
 
 // ------------------------------------------------------------------------------

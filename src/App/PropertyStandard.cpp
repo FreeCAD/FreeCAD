@@ -1546,11 +1546,11 @@ void PropertyString::setValue(const char* newValue)
             // OnProposedLabelChange has changed the new value to what the current value is
             return;
         }
-        if (!propChanges.empty() && !GetApplication().getActiveTransaction()) {
+        if (!propChanges.empty() && obj->getDocument()->getBookedTransactionID() == 0) {
             commit = true;
             std::ostringstream str;
             str << "Change " << obj->getNameInDocument() << ".Label";
-            GetApplication().setActiveTransaction(str.str().c_str());
+            obj->getDocument()->openTransaction(str.str().c_str());
         }
     }
 
@@ -1563,7 +1563,7 @@ void PropertyString::setValue(const char* newValue)
     }
 
     if (commit) {
-        GetApplication().closeActiveTransaction();
+        obj->getDocument()->commitTransaction();
     }
 }
 
@@ -1966,11 +1966,51 @@ void PropertyMap::setValue(const std::string& key, const std::string& value)
     hasSetValue();
 }
 
+void PropertyMap::setValue(const char* key, const char* value)
+{
+    if (!key) {
+        return;
+    }
+    if (!value) {
+        auto it = _lValueList.find(key);
+        if (it == _lValueList.end()) {
+            return;
+        }
+        aboutToSetValue();
+        _lValueList.erase(it);
+        hasSetValue();
+        return;
+    }
+
+    aboutToSetValue();
+    _lValueList[key] = value;
+    hasSetValue();
+}
+
 void PropertyMap::setValues(const std::map<std::string, std::string>& map)
 {
     aboutToSetValue();
     _lValueList = map;
     hasSetValue();
+}
+
+void PropertyMap::setValues(std::map<std::string, std::string>&& map)
+{
+    aboutToSetValue();
+    _lValueList = std::move(map);
+    hasSetValue();
+}
+
+const char* PropertyMap::getValue(const char* key) const
+{
+    if (!key) {
+        return nullptr;
+    }
+    auto it = _lValueList.find(key);
+    if (it == _lValueList.end()) {
+        return nullptr;
+    }
+    return it->second.c_str();
 }
 
 const std::string& PropertyMap::operator[](const std::string& key) const
@@ -3628,3 +3668,4 @@ void PropertyPersistentObject::setValue(const char* type)
     }
     hasSetValue();
 }
+

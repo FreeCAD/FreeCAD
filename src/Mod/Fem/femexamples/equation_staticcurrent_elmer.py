@@ -38,6 +38,7 @@ from BasicShapes import Shapes
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -45,7 +46,7 @@ def get_information():
         "name": "Joule heating",
         "meshtype": "solid",
         "meshelement": "Tet10",
-        "constraints": ["electrostatic potential", "current density"],
+        "constraints": ["electromagnetic", "current density"],
         "solvers": ["elmer"],
         "material": "solid",
         "equations": ["static current"],
@@ -134,7 +135,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(material_obj)
 
     # voltage on one end
-    Voltage = ObjectsFem.makeConstraintElectrostaticPotential(doc, "Voltage")
+    Voltage = ObjectsFem.makeConstraintElectromagnetic(doc, "Voltage")
     Voltage.References = [(Wire, "Face2")]
     Voltage.Potential = "0 V"
     analysis.addObject(Voltage)
@@ -148,7 +149,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # constraint initial temperature
     con_inittemp = ObjectsFem.makeConstraintInitialTemperature(doc, "ConstraintInitialTemperature")
-    con_inittemp.initialTemperature = 300.0
+    con_inittemp.InitialTemperature = 300.0
     analysis.addObject(con_inittemp)
 
     # mesh
@@ -159,14 +160,7 @@ def setup(doc=None, solvertype="elmer"):
     femmesh_obj.ViewObject.Visibility = False
 
     # generate the mesh
-    from femmesh import gmshtools
-
-    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
-    try:
-        error = gmsh_mesh.create_mesh()
-    except Exception:
-        error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
+    generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
 
     doc.recompute()
     return doc

@@ -3652,7 +3652,7 @@ Evolumes
 ** Displacement constraint applied
 ** FemConstraintDisplacement
 *BOUNDARY
-FemConstraintDisplacement,1,1,0.0
+FemConstraintDisplacement,1,1,0
 
 
 ***********************************************************

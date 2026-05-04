@@ -39,11 +39,12 @@
 
 
 #include <App/Document.h>
+#include <App/ImagePlane.h>
+#include <Gui/Document.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/TaskView/TaskImage.h>
-#include <App/ImagePlane.h>
 
 #include "ViewProviderImagePlane.h"
 
@@ -167,7 +168,7 @@ void ViewProviderImagePlane::onChanged(const App::Property* prop)
 void ViewProviderImagePlane::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* action = menu->addAction(QObject::tr("Change Image"));
+    QAction* action = menu->addAction(QObject::tr("Edit Image Plane"));
     action->setIcon(QIcon(QLatin1String("images:image-scaling.svg")));
     func->trigger(action, [this]() { this->manipulateImage(); });
 
@@ -184,7 +185,7 @@ void ViewProviderImagePlane::manipulateImage()
 {
     auto dialog = new TaskImageDialog(getObject<Image::ImagePlane>());
 
-    Gui::Control().showDialog(dialog);
+    Gui::Control().showDialog(dialog, getDocument()->getDocument());
 }
 
 void ViewProviderImagePlane::resizePlane(float xsize, float ysize)

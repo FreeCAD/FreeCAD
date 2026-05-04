@@ -71,14 +71,12 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // Copy line
         LineSegmentPy* pcLine = static_cast<LineSegmentPy*>(pLine);
         // get Geom_Line of line segment
-        Handle(Geom_TrimmedCurve) that_curv = Handle(Geom_TrimmedCurve)::DownCast(
-            pcLine->getGeomLineSegmentPtr()->handle()
-        );
+        Handle(Geom_TrimmedCurve)
+            that_curv = Handle(Geom_TrimmedCurve)::DownCast(pcLine->getGeomLineSegmentPtr()->handle());
         Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast(that_curv->BasisCurve());
         // get Geom_Line of line segment
-        Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(
-            this->getGeomLineSegmentPtr()->handle()
-        );
+        Handle(Geom_TrimmedCurve)
+            this_curv = Handle(Geom_TrimmedCurve)::DownCast(this->getGeomLineSegmentPtr()->handle());
         Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast(this_curv->BasisCurve());
 
         // Assign the lines
@@ -93,14 +91,12 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // Copy line
         LineSegmentPy* pcLine = static_cast<LineSegmentPy*>(pLine);
         // get Geom_Line of line segment
-        Handle(Geom_TrimmedCurve) that_curv = Handle(Geom_TrimmedCurve)::DownCast(
-            pcLine->getGeomLineSegmentPtr()->handle()
-        );
+        Handle(Geom_TrimmedCurve)
+            that_curv = Handle(Geom_TrimmedCurve)::DownCast(pcLine->getGeomLineSegmentPtr()->handle());
         Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast(that_curv->BasisCurve());
         // get Geom_Line of line segment
-        Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(
-            this->getGeomLineSegmentPtr()->handle()
-        );
+        Handle(Geom_TrimmedCurve)
+            this_curv = Handle(Geom_TrimmedCurve)::DownCast(this->getGeomLineSegmentPtr()->handle());
         Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast(this_curv->BasisCurve());
 
         // Assign the lines
@@ -116,9 +112,8 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // get Geom_Line of line segment
         Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast(pcLine->getGeomLinePtr()->handle());
         // get Geom_Line of line segment
-        Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(
-            this->getGeomLineSegmentPtr()->handle()
-        );
+        Handle(Geom_TrimmedCurve)
+            this_curv = Handle(Geom_TrimmedCurve)::DownCast(this->getGeomLineSegmentPtr()->handle());
         Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast(this_curv->BasisCurve());
 
         // Assign the lines
@@ -187,9 +182,8 @@ PyObject* LineSegmentPy::setParameterRange(PyObject* args)
     }
 
     try {
-        Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast(
-            this->getGeomLineSegmentPtr()->handle()
-        );
+        Handle(Geom_TrimmedCurve)
+            this_curve = Handle(Geom_TrimmedCurve)::DownCast(this->getGeomLineSegmentPtr()->handle());
         this_curve->SetTrim(first, last);
     }
     catch (Standard_Failure& e) {
@@ -202,9 +196,8 @@ PyObject* LineSegmentPy::setParameterRange(PyObject* args)
 
 Py::Object LineSegmentPy::getStartPoint() const
 {
-    Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast(
-        this->getGeomLineSegmentPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        this_curve = Handle(Geom_TrimmedCurve)::DownCast(this->getGeomLineSegmentPtr()->handle());
     gp_Pnt pnt = this_curve->StartPoint();
     return Py::Vector(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
 }
@@ -212,9 +205,8 @@ Py::Object LineSegmentPy::getStartPoint() const
 void LineSegmentPy::setStartPoint(Py::Object arg)
 {
     gp_Pnt p1, p2;
-    Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(
-        this->getGeomLineSegmentPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        this_curv = Handle(Geom_TrimmedCurve)::DownCast(this->getGeomLineSegmentPtr()->handle());
     p2 = this_curv->EndPoint();
 
     PyObject* p = arg.ptr();
@@ -260,9 +252,8 @@ void LineSegmentPy::setStartPoint(Py::Object arg)
 
 Py::Object LineSegmentPy::getEndPoint() const
 {
-    Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast(
-        this->getGeomLineSegmentPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        this_curve = Handle(Geom_TrimmedCurve)::DownCast(this->getGeomLineSegmentPtr()->handle());
     gp_Pnt pnt = this_curve->EndPoint();
     return Py::Vector(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
 }
@@ -270,9 +261,8 @@ Py::Object LineSegmentPy::getEndPoint() const
 void LineSegmentPy::setEndPoint(Py::Object arg)
 {
     gp_Pnt p1, p2;
-    Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(
-        this->getGeomLineSegmentPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        this_curv = Handle(Geom_TrimmedCurve)::DownCast(this->getGeomLineSegmentPtr()->handle());
     p1 = this_curv->StartPoint();
 
     PyObject* p = arg.ptr();

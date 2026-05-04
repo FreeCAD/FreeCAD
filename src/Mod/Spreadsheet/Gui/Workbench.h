@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef SPREADSHEET_WORKBENCH_H
-#define SPREADSHEET_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 #include <Mod/Spreadsheet/SpreadsheetGlobal.h>
@@ -46,7 +45,9 @@ class SpreadsheetGuiExport WorkbenchHelper: public QObject
 
 public Q_SLOTS:
     void setForegroundColor(const QColor& color);
+    void clearForegroundColor();
     void setBackgroundColor(const QColor& color);
+    void clearBackgroundColor();
 };
 
 class SpreadsheetGuiExport Workbench: public Gui::StdWorkbench
@@ -69,6 +70,3 @@ protected:
 };
 
 }  // namespace SpreadsheetGui
-
-
-#endif  // SPREADSHEET_WORKBENCH_H

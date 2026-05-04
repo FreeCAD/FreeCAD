@@ -25,8 +25,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_COMPLEX_GEO_DATA_H
-#define APP_COMPLEX_GEO_DATA_H
+#pragma once
 
 #include <algorithm>
 #include <optional>
@@ -182,6 +181,19 @@ public:
     virtual void getLinesFromSubElement(const Segment* segment,
                                         std::vector<Base::Vector3d>& Points,
                                         std::vector<Line>& lines) const;
+
+    /**
+     * @brief Get the first vertex from a segment.
+     *
+     * @param[in] segment The segment to get the vertex from.
+     *
+     * @param[in,out] Point The point used in the segment.
+     * @return true if point was found
+     */
+    virtual bool getFirstVertexFromSubElement(
+        const Data::Segment* segment,
+        Base::Vector3d& Point
+    ) const;
 
     /**
      * @brief Get the faces from a segment.
@@ -749,4 +761,3 @@ protected:
 }  // namespace Data
 
 ENABLE_BITMASK_OPERATORS(Data::SearchOption)
-#endif

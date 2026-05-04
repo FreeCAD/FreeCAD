@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_ROBOT6AXIS_H
-#define ROBOT_ROBOT6AXIS_H
+#pragma once
 
 #include "kdl_cp/chain.hpp"
 #include "kdl_cp/jntarray.hpp"
@@ -94,5 +93,3 @@ protected:
 };
 
 }  // namespace Robot
-
-#endif  // ROBOT_ROBOT6AXIS_H

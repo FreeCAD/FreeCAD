@@ -1382,7 +1382,8 @@ void Geom2dArcOfEllipse::Restore(Base::XMLReader& reader)
 
         Handle(Geom2d_TrimmedCurve) tmpcurve = ma.Value();
         Handle(Geom2d_Ellipse) tmpellipse = Handle(Geom2d_Ellipse)::DownCast(tmpcurve->BasisCurve());
-        Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(this->myCurve->BasisCurve());
+        Handle(Geom2d_Ellipse)
+            ellipse = Handle(Geom2d_Ellipse)::DownCast(this->myCurve->BasisCurve());
 
         ellipse->SetElips2d(tmpellipse->Elips2d());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
@@ -1637,12 +1638,10 @@ void Geom2dArcOfHyperbola::Restore(Base::XMLReader& reader)
         }
 
         Handle(Geom2d_TrimmedCurve) tmpcurve = ma.Value();
-        Handle(Geom2d_Hyperbola) tmphyperbola = Handle(Geom2d_Hyperbola)::DownCast(
-            tmpcurve->BasisCurve()
-        );
-        Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
-            this->myCurve->BasisCurve()
-        );
+        Handle(Geom2d_Hyperbola)
+            tmphyperbola = Handle(Geom2d_Hyperbola)::DownCast(tmpcurve->BasisCurve());
+        Handle(Geom2d_Hyperbola)
+            hyperbola = Handle(Geom2d_Hyperbola)::DownCast(this->myCurve->BasisCurve());
 
         hyperbola->SetHypr2d(tmphyperbola->Hypr2d());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
@@ -1858,10 +1857,10 @@ void Geom2dArcOfParabola::Restore(Base::XMLReader& reader)
         }
 
         Handle(Geom2d_TrimmedCurve) tmpcurve = ma.Value();
-        Handle(Geom2d_Parabola) tmpparabola = Handle(Geom2d_Parabola)::DownCast(tmpcurve->BasisCurve());
-        Handle(Geom2d_Parabola) parabola = Handle(Geom2d_Parabola)::DownCast(
-            this->myCurve->BasisCurve()
-        );
+        Handle(Geom2d_Parabola)
+            tmpparabola = Handle(Geom2d_Parabola)::DownCast(tmpcurve->BasisCurve());
+        Handle(Geom2d_Parabola)
+            parabola = Handle(Geom2d_Parabola)::DownCast(this->myCurve->BasisCurve());
 
         parabola->SetParab2d(tmpparabola->Parab2d());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
@@ -2324,7 +2323,8 @@ std::unique_ptr<Geom2dCurve> makeFromTrimmedCurve2d(const Handle(Geom2d_Curve) &
         std::unique_ptr<Geom2dCurve> arc(new Geom2dArcOfHyperbola());
 
         Handle(Geom2d_TrimmedCurve) this_arc = Handle(Geom2d_TrimmedCurve)::DownCast(arc->handle());
-        Handle(Geom2d_Hyperbola) this_hypr = Handle(Geom2d_Hyperbola)::DownCast(this_arc->BasisCurve());
+        Handle(Geom2d_Hyperbola)
+            this_hypr = Handle(Geom2d_Hyperbola)::DownCast(this_arc->BasisCurve());
         this_hypr->SetHypr2d(hypr->Hypr2d());
         this_arc->SetTrim(f, l);
         return arc;
@@ -2401,7 +2401,8 @@ std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d& ada
         }
         case GeomAbs_Hyperbola: {
             geoCurve = std::make_unique<Geom2dHyperbola>();
-            Handle(Geom2d_Hyperbola) this_curv = Handle(Geom2d_Hyperbola)::DownCast(geoCurve->handle());
+            Handle(Geom2d_Hyperbola)
+                this_curv = Handle(Geom2d_Hyperbola)::DownCast(geoCurve->handle());
             this_curv->SetHypr2d(adapt.Hyperbola());
             break;
         }

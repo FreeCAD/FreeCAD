@@ -101,7 +101,7 @@ void DlgMacroRecordImp::onButtonStartClicked()
     if (ui->lineEditPath->text().isEmpty()) {
         QMessageBox::information(
             getMainWindow(),
-            tr("Macro recorder"),
+            tr("Macro Recorder"),
             tr("Specify a place to save first.")
         );
         return;
@@ -111,7 +111,7 @@ void DlgMacroRecordImp::onButtonStartClicked()
     if (!dir.exists()) {
         QMessageBox::information(
             getMainWindow(),
-            tr("Macro recorder"),
+            tr("Macro Recorder"),
             tr("The macro directory does not exist. Choose another one.")
         );
         return;
@@ -127,7 +127,7 @@ void DlgMacroRecordImp::onButtonStartClicked()
     if (fi.isFile() && fi.exists()) {
         if (QMessageBox::question(
                 this,
-                tr("Existing macro"),
+                tr("Existing Macro"),
                 tr("The macro '%1' already exists. Overwrite it?").arg(fn),
                 QMessageBox::Yes | QMessageBox::No,
                 QMessageBox::No
@@ -141,7 +141,7 @@ void DlgMacroRecordImp::onButtonStartClicked()
     if (!file.open(QFile::WriteOnly)) {
         QMessageBox::information(
             getMainWindow(),
-            tr("Macro recorder"),
+            tr("Macro Recorder"),
             tr("You have no write permission for the directory. Choose another one.")
         );
         return;
@@ -188,11 +188,26 @@ void DlgMacroRecordImp::onButtonStopClicked()
 void DlgMacroRecordImp::onButtonChooseDirClicked()
 {
     QString newDir
-        = QFileDialog::getExistingDirectory(nullptr, tr("Choose macro directory"), macroPath);
+        = QFileDialog::getExistingDirectory(nullptr, tr("Choose Macro Directory"), macroPath);
     if (!newDir.isEmpty()) {
         macroPath = QDir::toNativeSeparators(newDir + QDir::separator());
         ui->lineEditMacroPath->setText(macroPath);
-        getWindowParameter()->SetASCII("MacroPath", macroPath.toUtf8());
+
+        std::filesystem::path chosenPath(macroPath.toStdString());
+        if (chosenPath.filename().empty()) {
+            chosenPath = chosenPath.parent_path();
+        }
+        std::filesystem::path userMacroDir(App::Application::getUserMacroDir());
+        if (userMacroDir.filename().empty()) {
+            userMacroDir = userMacroDir.parent_path();
+        }
+        if (chosenPath != userMacroDir) {
+            getWindowParameter()->SetASCII("MacroPath", macroPath.toUtf8());
+        }
+        else if (getWindowParameter()->GetASCII("MacroPath", "UNSET") != "UNSET") {
+            // If the new path IS the default path, remove any existing storage of the path
+            getWindowParameter()->RemoveASCII("MacroPath");
+        }
     }
 }
 
