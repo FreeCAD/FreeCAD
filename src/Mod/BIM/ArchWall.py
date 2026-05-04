@@ -1144,7 +1144,7 @@ class _Wall(ArchComponent.Component):
                         self.basewires = []
                         shpEdges = obj.Base.Shape.Edges
                         baseEdges = []
-                        for ig, edge in enumerate(shpEdges):
+                        for edge in shpEdges:
                             if isinstance(
                                 edge.Curve,
                                 (
