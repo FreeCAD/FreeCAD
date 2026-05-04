@@ -46,6 +46,13 @@ public:
     App::PropertyFloat Pitch;
     App::PropertyIntegerConstraint Samples;
 
+    enum class FlexMode
+    {
+        Bend,
+        Twist,
+        Identity,
+    };
+
     /**
      * @brief The FlexParameters struct is supposed to be filled with final
      * Flex parameters and be passed to FlexShape.
@@ -54,6 +61,7 @@ public:
     {
         double pitch {10.0};
         int samples {10};
+        FlexMode mode {FlexMode::Twist};
     };
 
     /** @name methods override feature */
@@ -77,8 +85,10 @@ public:
      * @return result of deformation
      */
     static TopoShape FlexShape(const TopoShape& source, const FlexParameters& params);
+
     static TopoShape curve(const TopoShape& source, const Flex::FlexParameters& params);
     static TopoShape twist(const TopoShape& source, const Flex::FlexParameters& params);
+    static TopoShape identity(const TopoShape& source, const Flex::FlexParameters& params);
 
 private:
     static App::PropertyIntegerConstraint::Constraints sampleRange;

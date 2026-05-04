@@ -22,53 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
 #include <Base/Exception.h>
 
 #include "FeatureFlex.h"
 #include "Deformation.h"
-
-#include <BRepAdaptor_Curve.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepBuilderAPI_FindPlane.hxx>
-#include <BRepBuilderAPI_GTransform.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_NurbsConvert.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepCheck_Analyzer.hxx>
-#include <BRepLib.hxx>
-#include <BRepTools.hxx>
-#include <BRepTools_WireExplorer.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <GeomAPI_PointsToBSpline.hxx>
-#include <GeomAPI_PointsToBSplineSurface.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <GeomConvert.hxx>
-#include <Geom_Circle.hxx>
-#include <Geom_ConicalSurface.hxx>
-#include <Geom_CylindricalSurface.hxx>
-#include <Geom_Ellipse.hxx>
-#include <Geom_Line.hxx>
-#include <Geom_Plane.hxx>
-#include <Geom_SphericalSurface.hxx>
-#include <ShapeAnalysis_CanonicalRecognition.hxx>
-#include <ShapeFix_Solid.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <ShapeUpgrade_ShellSewing.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Builder.hxx>
-#include <TopoDS_Shell.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_GTrsf.hxx>
-#include <gp_Trsf.hxx>
-#include <Precision.hxx>
 
 using namespace Part;
 
@@ -104,31 +61,50 @@ Flex::FlexParameters Flex::computeFinalParameters() const
 
 TopoShape Flex::FlexShape(const TopoShape& source, const Flex::FlexParameters& params)
 {
-    TopoShape result;
-
-    return twist(source, params);
+    switch (params.mode) {
+        case FlexMode::Bend:
+            return twist(source, params);
+        case FlexMode::Twist:
+            return twist(source, params);
+        case FlexMode::Identity:
+            return identity(source, params);
+    }
 }
 
 
 TopoShape Flex::twist(const TopoShape& source, const Flex::FlexParameters& params)
 {
     double pitch = params.pitch;
-    const TopoDS_Shape shape = source.getShape();
+    const TopoDS_Shape& shape = source.getShape();
 
     auto func = [pitch](gp_Pnt pt) {
         return Deformation::twistAlongX(pt, pitch);
     };
 
-    TopoShape transTopo;
     try {
-        auto result = Deformation::deform(shape, func, params.samples);
-        transTopo.setShape(result);
+        return {Deformation::deform(shape, func, params.samples)};
     }
     catch (...) {
         Base::Console().warning("FeatureFlex failed on twist\n");
-        return transTopo;
+        return {};
     }
-    return transTopo;
+}
+
+TopoShape Flex::identity(const TopoShape& source, const Flex::FlexParameters& params)
+{
+    const TopoDS_Shape& shape = source.getShape();
+
+    auto identity = [](gp_Pnt pt) {
+        return pt;
+    };
+
+    try {
+        return {Deformation::deform(shape, identity, params.samples)};
+    }
+    catch (...) {
+        Base::Console().warning("FeatureFlex failed on identity\n");
+        return {};
+    }
 }
 
 App::DocumentObjectExecReturn* Flex::execute()
@@ -145,6 +121,9 @@ App::DocumentObjectExecReturn* Flex::execute()
             Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform),
             params
         );
+        if (result.isNull()) {
+            return new App::DocumentObjectExecReturn("Null shape");
+        }
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }
