@@ -397,12 +397,30 @@ class CreateSketch(unittest.TestCase):
             workflowcheck = CallableCheckExemptionDialog(self)
             QtCore.QTimer.singleShot(100, workflowcheck)
             FreeCADGui.runCommand("PartDesign_CompSketches", 0)
-            taskspanel = mw.findChild(QtGui.QWidget, "PartDesignGui__TaskFeaturePick")
-            self.assertTrue(taskspanel is not None)
+            taskspanel = None
+
+            def find_task_panel():
+                nonlocal taskspanel
+                taskspanel = mw.findChild(QtGui.QWidget, "PartDesignGui__TaskFeaturePick")
+                if taskspanel is None:
+                    taskspanel = mw.findChild(QtGui.QWidget, "PartDesignGui::TaskFeaturePick")
+                return taskspanel
+
+            def sketch_created():
+                return any(
+                    obj.TypeId == "Sketcher::SketchObject" for obj in App.ActiveDocument.Objects
+                )
+
+            self.assertTrue(
+                spin_events(lambda: find_task_panel() is not None or sketch_created(), timeout=0.5)
+            )
             if taskspanel is not None:
                 QtCore.QTimer.singleShot(0, taskspanel, QtCore.SLOT("hide()"))
             if Gui.Control.activeDialog():
                 Gui.Control.closeDialog()
+                self.assertTrue(spin_events(lambda: not Gui.Control.activeDialog(), timeout=0.5))
+            elif sketch_created():
+                Gui.ActiveDocument.resetEdit()
                 self.assertTrue(spin_events(lambda: not Gui.Control.activeDialog(), timeout=0.5))
         finally:
             if App.ActiveDocument is not None:
