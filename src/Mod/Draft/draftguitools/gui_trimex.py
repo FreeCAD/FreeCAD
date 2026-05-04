@@ -105,8 +105,6 @@ class Trimex(gui_base_original.Modifier):
             self.finish()
             return
         self.obj = sel[0]
-        self.ui.trimUi(title=translate("draft", self.featureName))
-        self.linetrack = trackers.lineTracker()
 
         import DraftGeomUtils
         import Part
@@ -116,6 +114,13 @@ class Trimex(gui_base_original.Modifier):
             self.finish()
             _err(translate("draft", "This object is not supported"))
             return
+        if self.obj.isDerivedFrom("Sketcher::SketchObject"):
+            self.obj = None
+            self.finish()
+            _err(translate("draft", "Trimex does not support this object type"))
+            return
+        self.ui.trimUi(title=translate("draft", self.featureName))
+        self.linetrack = trackers.lineTracker()
         if hasattr(self.obj, "Placement"):
             self.placement = self.obj.Placement
         if self.obj.Shape.Faces:
