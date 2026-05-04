@@ -250,15 +250,10 @@ private:
     )
     {
         if (MainThreadSignalConfig::isMainThread()) {
-            std::optional<Base::PyGILStateLocker> lock;
-            if (Py_IsInitialized()) {
-                lock.emplace();
-            }
             return self->sig_(std::forward<typename ::fastsignals::signal_arg_t<Arguments>>(args)...);
         }
 
-        auto* currentThreadState = Py_IsInitialized() ? _PyThreadState_UncheckedGet() : nullptr;
-        const bool shouldReleaseGil = currentThreadState != nullptr;
+        const bool shouldReleaseGil = Py_IsInitialized() && PyGILState_Check();
         std::optional<Base::PyGILStateRelease> release;
         if (shouldReleaseGil) {
             release.emplace();
