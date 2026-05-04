@@ -3664,7 +3664,11 @@ bool ViewProviderSketch::setEdit(int ModNum)
     auto gridnode = getGridNode();
     Base::Placement plm = getEditingPlacement();
     setGridOrientation(plm.getPosition(), plm.getRotation());
-    addNodeToRoot(gridnode);
+
+    pcGridAnnotation = new Gui::So3DAnnotation;
+    pcGridAnnotation->setName("Sketch_GridAnnotation");
+    pcGridAnnotation->addChild(gridnode);
+    addNodeToRoot(pcGridAnnotation);
 
     // create the container for the additional edit data
     assert(!isInEditMode());
@@ -3964,6 +3968,11 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     setGridEnabled(nullptr);
     auto gridnode = getGridNode();
     pcRoot->removeChild(gridnode);
+
+    if (pcGridAnnotation) {
+        pcRoot->removeChild(pcGridAnnotation);
+        pcGridAnnotation = nullptr;
+    }
 
     if (listener) {
         Gui::getMainWindow()->removeEventFilter(listener.get());

@@ -44,6 +44,7 @@
 #include <Base/Color.h>
 #include <Gui/ViewParams.h>
 #include <Gui/Inventor/SmSwitchboard.h>
+#include <Gui/Inventor/So3DAnnotation.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
 #include "ViewProviderSketchGeometryExtension.h"
@@ -399,7 +400,7 @@ struct EditModeScenegraphNodes
 {
     /** @name Point nodes*/
     //@{
-    SoSeparator* EditRoot;
+    Gui::So3DAnnotation* EditRoot;
     SmSwitchboard* PointsGroup;
     std::vector<SoMaterial*> PointsMaterials;
     std::vector<SoCoordinate3*> PointsCoordinate;

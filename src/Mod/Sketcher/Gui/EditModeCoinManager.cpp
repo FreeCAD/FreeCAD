@@ -884,7 +884,7 @@ void EditModeCoinManager::updateGeometryLayersConfiguration()
 void EditModeCoinManager::createEditModeInventorNodes()
 {
     // 1 - Create the edit root node
-    editModeScenegraphNodes.EditRoot = new SoSeparator;
+    editModeScenegraphNodes.EditRoot = new Gui::So3DAnnotation;
     editModeScenegraphNodes.EditRoot->ref();  // Node is unref in the destructor of EditModeCoinManager
     editModeScenegraphNodes.EditRoot->setName("Sketch_EditRoot");
     ViewProviderSketchCoinAttorney::addNodeToRoot(viewProvider, editModeScenegraphNodes.EditRoot);
