@@ -417,8 +417,9 @@ void SectionCut::setDeferredRejectPending(bool pending)
 bool SectionCut::rejectNow()
 {
     QDialog::reject();
-    if (auto* dw = qobject_cast<QDockWidget*>(parentWidget())) {
-        dw->close();
+    if (qobject_cast<QDockWidget*>(parentWidget())) {
+        Gui::DockWindowManager::instance()->removeDockWindow(this);
+        deleteLater();
     }
     else {
         deleteLater();
@@ -1655,8 +1656,9 @@ void SectionCut::onObservedDocumentDeleted(const App::Document& deletedDoc)
     stopPendingRecompute();
     doc = nullptr;
 
-    if (auto* dw = qobject_cast<QDockWidget*>(parentWidget())) {
-        dw->close();
+    if (qobject_cast<QDockWidget*>(parentWidget())) {
+        Gui::DockWindowManager::instance()->removeDockWindow(this);
+        deleteLater();
         return;
     }
 

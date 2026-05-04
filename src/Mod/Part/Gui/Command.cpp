@@ -24,6 +24,7 @@
 
 
 #include <QFileInfo>
+#include <QDockWidget>
 #include <QPointer>
 #include <QString>
 #include <Standard_Version.hxx>
@@ -2478,9 +2479,17 @@ void CmdPartSectionCut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     static QPointer<PartGui::SectionCut> sectionCut = nullptr;
-    if (!sectionCut) {
-        sectionCut = PartGui::SectionCut::makeDockWidget(Gui::getMainWindow());
+    if (sectionCut) {
+        if (auto* dock = qobject_cast<QDockWidget*>(sectionCut->parentWidget())) {
+            dock->show();
+            dock->raise();
+            return;
+        }
+
+        sectionCut = nullptr;
     }
+
+    sectionCut = PartGui::SectionCut::makeDockWidget(Gui::getMainWindow());
 }
 
 bool CmdPartSectionCut::isActive()
