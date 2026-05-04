@@ -76,8 +76,8 @@ public:
     Deformation() = default;
 
 
-    static gp_Pnt twistAlongX(gp_Pnt from, float pitch);
-    static gp_Pnt bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, float factor);
+    static gp_Pnt twistAlongX(gp_Pnt from, double pitch);
+    static gp_Pnt bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, double factor);
 
     static TopoDS_Edge deform(
         const TopoDS_Edge& edge,

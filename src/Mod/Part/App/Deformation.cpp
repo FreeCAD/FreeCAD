@@ -23,14 +23,17 @@
  ***************************************************************************/
 
 #include "Deformation.h"
-
 #include "Canonizer.h"
+
+#include "Base/Console.h"
+#include <ShapeFix_Face.hxx>
+#include <ShapeFix_Shell.hxx>
 
 using namespace Part;
 
-gp_Pnt Deformation::twistAlongX(gp_Pnt from, float pitch)
+gp_Pnt Deformation::twistAlongX(gp_Pnt from, double pitch)
 {
-    auto alpha = std::numbers::pi / pitch;
+    auto alpha = 2. * std::numbers::pi / pitch;
     auto x = from.X();
     auto y = from.Y() * cos(alpha * from.X()) - from.Z() * sin(alpha * from.X());
     auto z = from.Y() * sin(alpha * from.X()) + from.Z() * cos(alpha * from.X());
@@ -38,7 +41,7 @@ gp_Pnt Deformation::twistAlongX(gp_Pnt from, float pitch)
     return {x, y, z};
 }
 
-gp_Pnt Deformation::bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, float factor)
+gp_Pnt Deformation::bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, double factor)
 {
     auto u = curve.FirstParameter()
         + from.X() * factor * (curve.LastParameter() - curve.FirstParameter());
@@ -79,10 +82,10 @@ TopoDS_Edge Deformation::deform(
     // approximate the points
     GeomAPI_PointsToBSpline fit(
         deformPoints,
-        Approx_ParametrizationType::Approx_ChordLength,
+        Approx_ParametrizationType::Approx_IsoParametric,
         3,
         samples / 2,
-        GeomAbs_Shape::GeomAbs_C2,
+        GeomAbs_C2,
         Precision::Approximation()
     );
     auto resultCurve = fit.Curve();
@@ -104,17 +107,12 @@ TopoDS_Wire Deformation::deform(
     int samples
 )
 {
-    std::vector<TopoDS_Edge> newEdges;
+    BRepBuilderAPI_MakeWire wireBuilder;
 
     // for each edge
     for (BRepTools_WireExplorer exp(wire); exp.More(); exp.Next()) {
         auto edge = TopoDS::Edge(exp.Current());
         auto ne = deform(edge, deformFunction, samples);
-        newEdges.push_back(ne);
-    }
-
-    BRepBuilderAPI_MakeWire wireBuilder;
-    for (auto& ne : newEdges) {
         wireBuilder.Add(ne);
     }
     wireBuilder.Build();
@@ -147,39 +145,43 @@ TopoDS_Face Deformation::deform(
     nurbs_convert.Perform(face);
     TopoDS_Shape face_shape = nurbs_convert.Shape();
     auto surf = BRep_Tool::Surface(TopoDS::Face(face_shape));
-    auto bSurf = GeomConvert::SurfaceToBSplineSurface(surf);
 
     // deform the surface
     double u1, u2, v1, v2;
-    bSurf->Bounds(u1, u2, v1, v2);
-    if (!bSurf->IsUPeriodic()) {
-        auto du = u2 - u1;
-        u1 -= du;
-        u2 += du;
+    surf->Bounds(u1, u2, v1, v2);
+    auto uSampleRange = samples - 1;
+    auto vSampleRange = samples - 1;
+    // for periodic surface,
+    // the last vertex shouldn't be equal to the fisrt
+    if (surf->IsUPeriodic()) {
+        uSampleRange += 2;
     }
-    if (!bSurf->IsVPeriodic()) {
-        auto dv = v2 - v1;
-        v1 -= dv;
-        v2 += dv;
+    if (surf->IsVPeriodic()) {
+        vSampleRange += 2;
     }
     TColgp_Array2OfPnt points(1, samples, 1, samples);
-    for (auto i = 1; i <= samples; i++) {
-        auto u = u1 + (u2 - u1) / samples * i;
-        for (auto j = 1; j <= samples; j++) {
-            auto v = v1 + (v2 - v1) / samples * j;
-            auto pt = bSurf->Value(u, v);
-            points(i, j) = deformFunction(pt);
+    for (auto i = 0; i < samples; i++) {
+        auto u = u1 + (u2 - u1) / uSampleRange * i;
+        for (auto j = 0; j < samples; j++) {
+            auto v = v1 + (v2 - v1) / vSampleRange * j;
+            auto pt = surf->Value(u, v);
+            auto np = deformFunction(pt);
+            points.SetValue(i + 1, j + 1, np);
+            Base::Console().log("deform: %f %f %f", np.X(), np.Y(), np.Z());
         }
     }
-    GeomAPI_PointsToBSplineSurface fiter(points, 3, samples / 2, GeomAbs_C2, Precision::Approximation());
-    auto newSurf = fiter.Surface();
 
-    if (bSurf->IsUPeriodic()) {
-        newSurf->SetUPeriodic();
-    }
-    if (bSurf->IsVPeriodic()) {
-        newSurf->SetVPeriodic();
-    }
+    GeomAPI_PointsToBSplineSurface fiter;
+    fiter.Init(
+        points,
+        Approx_IsoParametric,
+        3,
+        samples / 2,
+        GeomAbs_C2,
+        Precision::Approximation(),
+        surf->IsUPeriodic() || surf->IsVPeriodic()
+    );
+    auto newSurf = fiter.Surface();
 
     // create a face with a possible broken wire
     auto tmpFace = BRepBuilderAPI_MakeFace(newSurf, newOuter, /*Inside*/ true).Face();
@@ -230,7 +232,12 @@ TopoDS_Face Deformation::deform(
         }
     }
 
-    return faceMaker.Face();
+    // fix the face
+    ShapeFix_Face fFixer(faceMaker.Face());
+    fFixer.AutoCorrectPrecisionMode() = true;
+    fFixer.FixPeriodicDegeneratedMode() = true;
+    fFixer.SetPrecision(Precision::Approximation());
+    return fFixer.Face();
 }
 
 TopoDS_Shell Deformation::deform(
@@ -251,14 +258,21 @@ TopoDS_Shell Deformation::deform(
 
         topoBuilder.Add(resultShell, Canonizer::canonize(resultFace, Precision::Approximation()));
     }
-
+    // sew the shell
     ShapeUpgrade_ShellSewing sewShell;
-    auto sewed = sewShell.ApplySewing(resultShell);
-    if (!sewed.IsNull()) {
-        resultShell = TopoDS::Shell(sewed);
+    auto sewed = sewShell.ApplySewing(resultShell, Precision::Approximation());
+    resultShell = TopoDS::Shell(sewed);
+
+    // fix the shell
+    ShapeFix_Shell fixer(resultShell);
+    fixer.Perform();
+    resultShell = fixer.Shell();
+
+    if (!resultShell.IsNull()) {
         return resultShell;
     }
-    return resultShell;
+    Base::Console().warning("deform: null shell");
+    return {};
 }
 
 TopoDS_Solid Deformation::deform(
@@ -267,22 +281,20 @@ TopoDS_Solid Deformation::deform(
     int samples
 )
 {
-    // BRepBuilderAPI_MakeSolid solidifer;
-    TopoDS_Builder topoBuilder;
-    TopoDS_Solid resultSolid;
-    topoBuilder.MakeSolid(resultSolid);
+    // TODO: multi-shell solid (i.e. with internal cavities) are not implemented
 
-    for (TopExp_Explorer expS(solid, TopAbs_SHELL); expS.More(); expS.Next()) {
-        auto shell = TopoDS::Shell(expS.Current());
-        auto resultShell = deform(shell, deformFunction, samples);
-        topoBuilder.Add(resultSolid, resultShell);
-        // solidifer.Add(resultShell);
+    TopExp_Explorer expS(solid, TopAbs_SHELL);
+    auto resultShell = deform(TopoDS::Shell(expS.Current()), deformFunction, samples);
+    if (resultShell.IsNull()) {
+        return {};
     }
-    // resultSolid = solidifer.Solid();
+
+    BRepBuilderAPI_MakeSolid solidifer(resultShell);
+    auto resultSolid = solidifer.Solid();
     ShapeFix_Solid fixer(resultSolid);
+    fixer.SolidFromShell(resultShell);
     fixer.Perform();
-    resultSolid = TopoDS::Solid(fixer.Solid());
-    return resultSolid;
+    return TopoDS::Solid(fixer.Solid());
 }
 
 TopoDS_Compound Deformation::deform(
