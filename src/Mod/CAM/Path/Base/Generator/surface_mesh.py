@@ -459,14 +459,16 @@ def _shape_to_safe_stl(
             boundary_face = surface_common.create_boundary_from_faces(
                 [avoid], tool_radius, linear_deflection
             )
-    
+
             if not boundary_face:
-                Path.Log.error("Failed to generate Safe STL. Transitions may not be collision-safe.")
+                Path.Log.error(
+                    "Failed to generate Safe STL. Transitions may not be collision-safe."
+                )
                 return None
 
             start_z_extrusion = avoid.BoundBox.ZMax
             end_z_extrusion = bb.ZMin
-            height = start_z_extrusion - end_z_extrusion + 0.1 # Add 0.1 buffer downwards
+            height = start_z_extrusion - end_z_extrusion + 0.1  # Add 0.1 buffer downwards
 
             avoid_solid = boundary_face.extrude(FreeCAD.Vector(0, 0, -height))
             fused_shapes.append(avoid_solid)
