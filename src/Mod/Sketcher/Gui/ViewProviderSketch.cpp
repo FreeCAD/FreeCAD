@@ -3588,7 +3588,7 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 {
     ViewProvider2DObject::attach(pcFeat);
 
-    getAnnotation()->addChild(pcSketchFacesToggle);
+    getOrCreateAnnotation()->addChild(pcSketchFacesToggle);
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

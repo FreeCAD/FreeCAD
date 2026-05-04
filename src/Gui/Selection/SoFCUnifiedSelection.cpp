@@ -232,6 +232,23 @@ void SoFCUnifiedSelection::write(SoWriteAction* action)
     }
 }
 
+// Returns true if the pick path goes through any view provider's annotation root.
+static bool isAnnotationPick(const SoPickedPoint* pp, const Document* doc)
+{
+    auto path = Gui::toFullPath(pp->getPath());
+    if (!path) {
+        return false;
+    }
+    auto vps = doc->getViewProvidersByPath(path);
+    for (auto& [vp, idx] : vps) {
+        auto* annot = vp->getAnnotation();
+        if (annot && path->containsNode(annot)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 int SoFCUnifiedSelection::getPriority(const SoPickedPoint* p)
 {
     const SoDetail* detail = p->getDetail();
@@ -323,9 +340,23 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedLis
         int cur_prio = getPriority(info.pp);
         const SbVec3f& cur_pt = info.pp->getPoint();
 
-        if ((cur_prio > picked_prio) && picked_pt.equals(cur_pt, 0.2F)) {
+        if (!picked_pt.equals(cur_pt, 0.2F)) {
+            continue;
+        }
+
+        if (cur_prio > picked_prio) {
             itPicked = it;
             picked_prio = cur_prio;
+        }
+        // When priorities are equal, prefer annotation picks (overlays)
+        // over regular shape picks, so that e.g. sketch internal faces
+        // on a solid surface are picked before the solid face.
+        else if (cur_prio == picked_prio && this->pcDocument) {
+            bool curIsAnnotation = isAnnotationPick(info.pp, this->pcDocument);
+            bool pickedIsAnnotation = isAnnotationPick(itPicked->pp, this->pcDocument);
+            if (curIsAnnotation && !pickedIsAnnotation) {
+                itPicked = it;
+            }
         }
     }
 

@@ -95,7 +95,8 @@ bool MeasureAngle::isValidSelection(const App::MeasureSelection& selection)
         }
 
         if (!(type == App::MeasureElementType::LINE || type == App::MeasureElementType::PLANE
-              || type == App::MeasureElementType::LINESEGMENT)) {
+              || type == App::MeasureElementType::LINESEGMENT
+              || type == App::MeasureElementType::DISC)) {
             return false;
         }
     }
