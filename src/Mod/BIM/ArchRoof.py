@@ -777,7 +777,9 @@ class _Roof(ArchComponent.Component):
                             Vector(-profilCurr["overhang"], -overhangV, 0.0),
                             Vector(profilCurr["run"], profilCurr["height"], 0.0),
                             Vector(profilCurr["run"], profilCurr["height"] + self._SUPERSIZE, 0.0),
-                            Vector(-profilCurr["overhang"], profilCurr["height"] + self._SUPERSIZE, 0.0),
+                            Vector(
+                                -profilCurr["overhang"], profilCurr["height"] + self._SUPERSIZE, 0.0
+                            ),
                         ]
                         self.subVolShps.append(
                             self.createProfilShape(
