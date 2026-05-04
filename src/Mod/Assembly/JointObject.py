@@ -1323,7 +1323,7 @@ class GroundedJoint:
             tag = "-ReadOnly"
             if value:
                 tag = "ReadOnly"
-            
+
             propList = obj.PropertiesList
             if "Placement" in propList:
                 joint.ObjectToGround.setPropertyStatus("Placement", tag)
