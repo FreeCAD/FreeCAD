@@ -27,6 +27,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 
+#include <BRepAdaptor_Curve.hxx>
 #include <Mod/Part/PartGlobal.h>
 
 #include "PartFeature.h"
@@ -34,6 +35,13 @@
 
 namespace Part
 {
+
+enum FlexMode
+{
+    Bend,
+    Twist,
+    Inflate,
+};
 
 class PartExport Flex: public Part::Feature
 {
@@ -43,15 +51,14 @@ public:
     Flex();
 
     App::PropertyLink Base;
-    App::PropertyFloat Pitch;
     App::PropertyIntegerConstraint Samples;
+    App::PropertyEnumeration Mode;
+    App::PropertyPosition Origin;
+    App::PropertyVector Direction;
+    App::PropertyFloat Pitch;
+    App::PropertyLinkSub Curve;
+    App::PropertyFloat Factor;
 
-    enum class FlexMode
-    {
-        Bend,
-        Twist,
-        Identity,
-    };
 
     /**
      * @brief The FlexParameters struct is supposed to be filled with final
@@ -59,9 +66,12 @@ public:
      */
     struct FlexParameters
     {
-        double pitch {10.0};
         int samples {10};
-        FlexMode mode {FlexMode::Twist};
+        int mode {FlexMode::Bend};
+        double pitch {10.0};
+        BRepAdaptor_Curve curve;
+        double factor {1.};
+        gp_Ax3 coord;
     };
 
     /** @name methods override feature */
@@ -76,6 +86,7 @@ public:
     }
     //@}
 
+    bool fetchCurveLink(const App::PropertyLinkSub& curveLink, BRepAdaptor_Curve& curve) const;
     Flex::FlexParameters computeFinalParameters() const;
 
     /**
@@ -86,12 +97,13 @@ public:
      */
     static TopoShape FlexShape(const TopoShape& source, const FlexParameters& params);
 
-    static TopoShape curve(const TopoShape& source, const Flex::FlexParameters& params);
+    static TopoShape bend(const TopoShape& source, const Flex::FlexParameters& params);
     static TopoShape twist(const TopoShape& source, const Flex::FlexParameters& params);
-    static TopoShape identity(const TopoShape& source, const Flex::FlexParameters& params);
+    static TopoShape inflate(const TopoShape& source, const Flex::FlexParameters& params);
 
 private:
     static App::PropertyIntegerConstraint::Constraints sampleRange;
+    static const char* ModeEnums[];
 };
 
 }  // namespace Part

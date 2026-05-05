@@ -87,30 +87,10 @@ void DlgFlex::changeEvent(QEvent* e)
     QDialog::changeEvent(e);
 }
 
-void DlgFlex::onUniformFlexToggled(bool state)
-{
-    // //    Base::Console().message("DS::onUniformFlexToggled()\n");
-    // if (state) {
-    //     // this is uniform scaling, so hide the non-uniform input fields
-    //     ui->dsbUniformFlex->setEnabled(true);
-    //     ui->dsbXFlex->setEnabled(false);
-    //     ui->dsbYFlex->setEnabled(false);
-    //     ui->dsbZFlex->setEnabled(false);
-    // }
-    // else {
-    //     // this is non-uniform scaling, so hide the uniform input fields
-    //     ui->dsbUniformFlex->setEnabled(false);
-    //     ui->dsbXFlex->setEnabled(true);
-    //     ui->dsbYFlex->setEnabled(true);
-    //     ui->dsbZFlex->setEnabled(true);
-    // }
-}
-
-//! find all the scalable objects in the active document and load them into the
+//! find all the deformable objects in the active document and load them into the
 //! list widget
 void DlgFlex::findShapes()
 {
-    //    Base::Console().message("DS::findShapes()\n");
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc) {
         return;
@@ -154,11 +134,11 @@ bool DlgFlex::canFlex(const TopoDS_Shape& shape) const
     // if the shape is a solid or a compound containing shapes, then we can Flex it
     TopAbs_ShapeEnum type = shape.ShapeType();
 
-    if (type == TopAbs_VERTEX) {
+    if (type == TopAbs_VERTEX || type == TopAbs_COMPSOLID) {
         return false;
     }
 
-    if (type == TopAbs_COMPOUND || type == TopAbs_COMPSOLID) {
+    if (type == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
         xp.Init(shape, TopAbs_EDGE);
         for (; xp.More(); xp.Next()) {
@@ -173,13 +153,9 @@ bool DlgFlex::canFlex(const TopoDS_Shape& shape) const
         // did not find a non-null shape
         return false;
     }
-    else {
-        // not a Vertex, Compound or CompSolid, must be one of Edge, Wire, Face, Shell or
-        // Solid, all of which we can Flex.
-        return true;
-    }
-
-    return false;
+    // not a Vertex, Compound or CompSolid, must be one of Edge, Wire, Face, Shell or
+    // Solid, all of which we can Flex.
+    return true;
 }
 
 void DlgFlex::accept()
