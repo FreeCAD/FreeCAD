@@ -950,13 +950,13 @@ private:
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
 
-                seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
+                seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.F, 0.F));
             } break;
             case SelectMode::SeekSecond: {
                 toolWidgetManager.drawDirectionAtCursor(onSketchPos, getLastPoint());
 
                 double angle1 = (onSketchPos - getLastPoint()).Angle() - previousDirectionAngle;
-                double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
+                double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * std::numbers::pi;
                 dirChangeAngle = abs(angle1 - dirChangeAngle) < abs(angle2 - dirChangeAngle)
                     ? angle1
                     : angle2;
@@ -1055,20 +1055,22 @@ private:
             else {
                 // check if coincident with first point
                 for (auto& ac : sugConstraints[1]) {
-                    if (ac.Type == Sketcher::Coincident || ac.Type == Sketcher::Tangent) {
-                        if (ac.GeoId == geoEltIds[0].GeoId && ac.PosId == Sketcher::PointPos::start) {
-                            isClosed = true;
-                        }
-                        else {
-                            // The coincidence with first point may be indirect
-                            const auto coincidents = sketchgui->getSketchObject()
-                                                         ->getAllCoincidentPoints(ac.GeoId, ac.PosId);
+                    if (ac.Type != Sketcher::Coincident && ac.Type != Sketcher::Tangent) {
+                        continue;
+                    }
 
-                            auto it = coincidents.find(geoEltIds[0].GeoId);
-                            if (it != coincidents.end() && it->second == Sketcher::PointPos::start) {
-                                isClosed = true;
-                            }
-                        }
+                    if (ac.GeoId == geoEltIds[0].GeoId && ac.PosId == Sketcher::PointPos::start) {
+                        isClosed = true;
+                        continue;
+                    }
+
+                    // The coincidence with first point may be indirect
+                    const auto coincidents = sketchgui->getSketchObject()
+                                                    ->getAllCoincidentPoints(ac.GeoId, ac.PosId);
+
+                    auto it = coincidents.find(geoEltIds[0].GeoId);
+                    if (it != coincidents.end() && it->second == Sketcher::PointPos::start) {
+                        isClosed = true;
                     }
                 }
             }
@@ -1134,33 +1136,33 @@ private:
 
     Base::Vector2d getPreviousDirection()
     {
-        if (points.size() > 1) {
-            int geoId = geoEltIds.back().GeoId;
-
-            auto* geom = sketchgui->getSketchObject()->getGeometry(geoId);
-            if (geom && isArcOfCircle(*geom)) {
-                auto* obj = sketchgui->getSketchObject();
-                Base::Vector2d start = toVector2d(obj->getPoint(geoId, PointPos::start));
-                Base::Vector2d end = toVector2d(obj->getPoint(geoId, PointPos::end));
-                Base::Vector2d center = toVector2d(obj->getPoint(geoId, PointPos::mid));
-
-                Base::Vector2d dir;
-                if (geoEltIds.back().Pos == PointPos::end) {
-                    dir = end - center;
-                    dir = Base::Vector2d(dir.y, -dir.x);
-                }
-                else {
-                    dir = start - center;
-                    dir = Base::Vector2d(-dir.y, dir.x);
-                }
-                return dir.Normalize();
-            }
-            else {
-                return (points[points.size() - 2] - points[points.size() - 1]).Normalize();
-            }
+        if (points.size() <= 1) {
+            return Base::Vector2d(1., 0.);
         }
 
-        return Base::Vector2d(1., 0.);
+        int geoId = geoEltIds.back().GeoId;
+
+        auto* geom = sketchgui->getSketchObject()->getGeometry(geoId);
+        if (!geom || !isArcOfCircle(*geom)) {
+            return (points[points.size() - 2] - points[points.size() - 1]).Normalize();
+        }
+
+        auto* obj = sketchgui->getSketchObject();
+        Base::Vector2d start = toVector2d(obj->getPoint(geoId, PointPos::start));
+        Base::Vector2d end = toVector2d(obj->getPoint(geoId, PointPos::end));
+        Base::Vector2d center = toVector2d(obj->getPoint(geoId, PointPos::mid));
+
+        Base::Vector2d dir;
+        if (geoEltIds.back().Pos == PointPos::end) {
+            dir = end - center;
+            dir = Base::Vector2d(dir.y, -dir.x);
+        }
+        else {
+            dir = start - center;
+            dir = Base::Vector2d(-dir.y, dir.x);
+        }
+
+        return dir.Normalize();
     }
 
     Base::Vector2d getCurrentInitialDirection()
@@ -1169,10 +1171,10 @@ private:
         if (constructionMethod() == ConstructionMethod::Line) {
             return prevCursorPos - getLastPoint();
         }
-        else {
-            dir = getPreviousDirection();
-            dir.Rotate(angleToPrevious);
-        }
+
+        dir = getPreviousDirection();
+        dir.Rotate(angleToPrevious);
+
 
         return dir;
     }
@@ -1198,19 +1200,19 @@ private:
 
     void quit() override
     {
-        if (state() == SelectMode::SeekSecond) {
-            if (geoEltIds.size() > 0) {
-                setState(SelectMode::End);
-                finish();
-            }
-            else {
-                // We don't want to finish() as that'll create auto-constraints
-                handleContinuousMode();
-            }
-        }
-        else {
+        if (state() != SelectMode::SeekSecond) {
             DrawSketchHandler::quit();
+            return;
         }
+
+        if (geoEltIds.size() <= 0) {
+            // We don't want to finish() as that'll create auto-constraints
+            handleContinuousMode();
+            return;
+        }
+
+        setState(SelectMode::End);
+        finish();
     }
 
     void rightButtonOrEsc() override
@@ -1288,11 +1290,14 @@ private:
                     // We must first remove the point on object constraint.
                     const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues();
                     for (int i = constraints.size() - 1; i >= 0; --i) {
-                        if (constraints[i]->Type == PointOnObject
-                            && ((constraints[i]->First == pointGeoId
-                                 && constraints[i]->Second == prevGeoId)
-                                || (constraints[i]->First == prevGeoId
-                                    && constraints[i]->Second == pointGeoId))) {
+                        if (constraints[i]->Type != PointOnObject) {
+                            continue;
+                        }
+                        int first = constraints[i]->getGeoId(0);
+                        int second = constraints[i]->getGeoId(1);
+                        bool case1 = first == pointGeoId && second == prevGeoId;
+                        bool case2 = first == prevGeoId && second == pointGeoId;
+                        if (case1 || case2) {
                             obj->delConstraint(i);
                             break;
                         }
@@ -1365,7 +1370,7 @@ private:
         if ((x2 * y3 - x3 * y2) - (x1 * y3 - x3 * y1) + (x1 * y2 - x2 * y1) > 0) {
             radius *= -1;
         }
-        if (boost::math::isnan(radius) || boost::math::isinf(radius)) {
+        if (std::isnan(radius) || std::isinf(radius)) {
             radius = 0.0;
         }
 
@@ -1459,6 +1464,7 @@ private:
 
     void createShape(bool onlyeditoutline) override
     {
+        using std::numbers::pi;
         ShapeGeometry.clear();
         ShapeConstraints.clear();
 
@@ -1496,8 +1502,8 @@ private:
                     ? 1
                     : -1;
 
-                angleToPrevious = sign * (currentDir.GetAngle(prevDir) - M_PI);
-                angleToPrevious = std::round(angleToPrevious / (M_PI * 0.5)) * (M_PI * 0.5);
+                angleToPrevious = sign * (currentDir.GetAngle(prevDir) - pi);
+                angleToPrevious = std::round(angleToPrevious / (pi * 0.5)) * (pi * 0.5);
             }
 
             Base::Vector2d Tangent = getCurrentInitialDirection();
@@ -1525,10 +1531,10 @@ private:
                 range = 0.f;
             }
             if (radius >= 0 && range > 0) {
-                range -= 2 * M_PI;
+                range -= 2 * pi;
             }
             if (radius < 0 && range < 0) {
-                range += 2 * M_PI;
+                range += 2 * pi;
             }
 
             double endAngle = startAngle + range;
@@ -1549,10 +1555,10 @@ private:
 
             // range is weirdly handled before. We fix the range for the OVP
             if (radius < 0) {
-                range = -2 * M_PI + range;
+                range = -2 * pi + range;
             }
             else {
-                range = 2 * M_PI + range;
+                range = 2 * pi + range;
             }
         }
 
@@ -1602,8 +1608,8 @@ private:
                 }
             }
             else {
-                double roundedByPi = std::round(angleToPrevious / (M_PI)) * M_PI;
-                double roundedByHalfPi = std::round(angleToPrevious / (M_PI * 0.5)) * (M_PI * 0.5);
+                double roundedByPi = std::round(angleToPrevious / (pi)) * pi;
+                double roundedByHalfPi = std::round(angleToPrevious / (pi * 0.5)) * (pi * 0.5);
 
                 if (fabs(angleToPrevious - roundedByPi) < Precision::Confusion()) {
                     addToShapeConstraints(Sketcher::Tangent, geoId, geoEltIds.back().Pos, geoId2, posId);
@@ -2063,6 +2069,9 @@ void DSHPolyLineController::addStepConstraints()
                 constrainty0();
             }
         }
+
+        deactivateOnViewParameter(OnViewParameter::First);
+        deactivateOnViewParameter(OnViewParameter::Second);
     }
 
     auto p3 = onViewParameters[OnViewParameter::Third]->getValue();
