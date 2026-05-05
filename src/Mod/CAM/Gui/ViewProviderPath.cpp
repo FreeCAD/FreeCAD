@@ -814,7 +814,7 @@ void ViewProviderPath::updateVisual(bool rebuild)
 Base::BoundBox3d ViewProviderPath::_getBoundingBox(
     const char*,
     const Base::Matrix4D* _mat,
-    unsigned transform,
+    bool transform,
     const Gui::View3DInventorViewer*,
     int
 ) const
