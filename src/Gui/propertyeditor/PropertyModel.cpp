@@ -545,10 +545,14 @@ void PropertyModel::appendProperty(const App::Property& _prop)
     endInsertRows();
 }
 
-void PropertyModel::removeProperty(const App::Property& _prop)
+void PropertyModel::removeProperty(const App::Property* prop)
 {
-    auto prop = const_cast<App::Property*>(&_prop);
-    auto it = itemMap.find(prop);
+    if (!prop) {
+        return;
+    }
+
+    auto mutableProp = const_cast<App::Property*>(prop);
+    auto it = itemMap.find(mutableProp);
     if (it == itemMap.end() || !it->second) {
         return;
     }
@@ -563,10 +567,14 @@ void PropertyModel::removeProperty(const App::Property& _prop)
     }
 }
 
-void PropertyModel::renameProperty(const App::Property& _prop)
+void PropertyModel::renameProperty(const App::Property* prop)
 {
-    auto prop = const_cast<App::Property*>(&_prop);
-    auto it = itemMap.find(prop);
+    if (!prop) {
+        return;
+    }
+
+    auto mutableProp = const_cast<App::Property*>(prop);
+    auto it = itemMap.find(mutableProp);
     if (it == itemMap.end() || !it->second) {
         return;
     }

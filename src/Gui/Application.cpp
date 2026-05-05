@@ -443,6 +443,29 @@ void qtInvokeOnMain(std::function<void()>&& fn, bool blocking)
     );
 }
 
+DynamicPropertyChangeEvent makeDynamicPropertyChangeEvent(
+    DynamicPropertyChangeEvent::Kind kind,
+    const App::Property& prop,
+    std::string oldName = {}
+)
+{
+    DynamicPropertyChangeEvent event;
+    event.kind = kind;
+    event.container = prop.getContainer();
+    event.property = &prop;
+    event.name = prop.getName() ? prop.getName() : "";
+    event.oldName = std::move(oldName);
+    event.hidden = (prop.getType() & App::Prop_Hidden) || prop.testStatus(App::Property::Hidden);
+    return event;
+}
+
+void emitDynamicPropertyChangeOnMain(Application& app, DynamicPropertyChangeEvent event)
+{
+    App::MainThreadSignalConfig::callOnMainThreadSync([&app, event = std::move(event)]() {
+        app.signalDynamicPropertyChanged(event);
+    });
+}
+
 }  // namespace Gui
 
 void Application::initStyleParameterManager()
@@ -544,6 +567,12 @@ Application::Application(bool GUIenabled)
             std::bind(&Gui::Application::slotRelabelDocument, this, sp::_1));
         App::GetApplication().signalShowHidden.connect(
             std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
+        App::GetApplication().signalAppendDynamicProperty.connect(
+            std::bind(&Gui::Application::slotAppendDynamicProperty, this, sp::_1));
+        App::GetApplication().signalRemoveDynamicProperty.connect(
+            std::bind(&Gui::Application::slotRemoveDynamicProperty, this, sp::_1));
+        App::GetApplication().signalRenameDynamicProperty.connect(
+            std::bind(&Gui::Application::slotRenameDynamicProperty, this, sp::_1, sp::_2));
         // NOLINTEND
         // install the last active language
         ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
@@ -1407,6 +1436,34 @@ void Application::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
 void Application::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
 {
     this->signalResetEdit(vp);
+}
+
+void Application::slotAppendDynamicProperty(const App::Property& prop)
+{
+    emitDynamicPropertyChangeOnMain(
+        *this,
+        makeDynamicPropertyChangeEvent(DynamicPropertyChangeEvent::Kind::Add, prop)
+    );
+}
+
+void Application::slotRemoveDynamicProperty(const App::Property& prop)
+{
+    emitDynamicPropertyChangeOnMain(
+        *this,
+        makeDynamicPropertyChangeEvent(DynamicPropertyChangeEvent::Kind::Remove, prop)
+    );
+}
+
+void Application::slotRenameDynamicProperty(const App::Property& prop, const char* oldName)
+{
+    emitDynamicPropertyChangeOnMain(
+        *this,
+        makeDynamicPropertyChangeEvent(
+            DynamicPropertyChangeEvent::Kind::Rename,
+            prop,
+            oldName ? oldName : ""
+        )
+    );
 }
 
 void Application::onLastWindowClosed(Gui::Document* pcDoc)
