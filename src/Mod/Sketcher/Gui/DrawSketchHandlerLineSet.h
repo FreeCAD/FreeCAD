@@ -1065,8 +1065,8 @@ private:
                     }
 
                     // The coincidence with first point may be indirect
-                    const auto coincidents = sketchgui->getSketchObject()
-                                                    ->getAllCoincidentPoints(ac.GeoId, ac.PosId);
+                    const auto coincidents
+                        = sketchgui->getSketchObject()->getAllCoincidentPoints(ac.GeoId, ac.PosId);
 
                     auto it = coincidents.find(geoEltIds[0].GeoId);
                     if (it != coincidents.end() && it->second == Sketcher::PointPos::start) {
