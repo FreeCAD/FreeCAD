@@ -24,8 +24,8 @@
 
 
 import Path
-import CAMTests.PathTestUtils as PathTestUtils
-import CAMTests.PostTestMocks as PostTestMocks
+from CAMTests import PathTestUtils
+from CAMTests import PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
 from Machine.models.machine import Machine, Toolhead, ToolheadType
 
@@ -428,6 +428,7 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         command.Annotations = {"rigid": "True", "operation": "tapping"}
 
         # Execute
+        self.post.apply_configuration_bundle()
         result = self.post._convert_drill_cycle(command)
 
         # Verify - should not contain G33.1 (fallback to parent)
@@ -542,7 +543,7 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         self.assertNotIn("safetyblock", self.post._machine.postprocessor_properties)
 
         self.profile_op.Path = Path.Path([Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0})])
-        results = self.post.export2()
+        self.post.export2()
 
         # After export2, schema defaults should have been applied
         props = self.post._machine.postprocessor_properties
