@@ -604,13 +604,13 @@ bool DrawSketchHandler::seekAlignmentAutoConstraint(
 
                 Sketcher::ConstraintType candidateConstraint = Sketcher::None;
                 if (std::abs(lineAngle - angle) < angleDevRad
-                    || std::abs(lineAngle - angle + M_PI) < angleDevRad
-                    || std::abs(lineAngle - angle - M_PI) < angleDevRad) {
+                    || std::abs(lineAngle - angle + pi) < angleDevRad
+                    || std::abs(lineAngle - angle - pi) < angleDevRad) {
                     candidateConstraint = Sketcher::Parallel;
                 }
                 else if (
-                    std::abs(lineAngle - angle - M_PI_2) < angleDevRad
-                    || std::abs(lineAngle - angle + M_PI_2) < angleDevRad
+                    std::abs(lineAngle - angle - 2.0 * pi) < angleDevRad
+                    || std::abs(lineAngle - angle + 2.0 * pi) < angleDevRad
                 ) {
                     candidateConstraint = Sketcher::Perpendicular;
                 }
@@ -689,14 +689,9 @@ bool DrawSketchHandler::seekTangentAutoConstraint(
     Base::Vector3d tmpStart(Pos.x - Dir.x, Pos.y - Dir.y, 0.f);  // Start point
 
     auto removeCoincidentConstraint = [&](int geoId, PointPos pos) {
-        auto newEnd = std::remove_if(
-            suggestedConstraints.begin(),
-            suggestedConstraints.end(),
-            [geoId, pos](const AutoConstraint& c) {
-                return (c.Type == Coincident && c.GeoId == geoId && c.PosId == pos);
-            }
-        );
-        suggestedConstraints.erase(newEnd, suggestedConstraints.end());
+        std::erase_if(suggestedConstraints, [geoId, pos](const AutoConstraint& c) {
+            return c.Type == Coincident && c.GeoId == geoId && c.PosId == pos;
+        });
     };
 
     int i = -1;
@@ -768,7 +763,7 @@ bool DrawSketchHandler::seekTangentAutoConstraint(
                 Base::Vector3d start = arc->getStartPoint();
                 Base::Vector3d end = arc->getEndPoint();
 
-                if ((start - tmpPos).Length() < Precision::Confusion()) {
+                if ((start - tmpPos).Sqr() < Precision::SquareConfusion()) {
                     tanPos = PointPos::start;
                     tangId = i;
                     tangDeviation = projDist;
@@ -776,14 +771,14 @@ bool DrawSketchHandler::seekTangentAutoConstraint(
                     // There must be a coincident autoconstraint added before. So we remove it
                     removeCoincidentConstraint(tangId, tanPos);
                 }
-                else if ((start - tmpStart).Length() < Precision::Confusion()) {
+                else if ((start - tmpStart).Sqr() < Precision::SquareConfusion()) {
                     tanPos = PointPos::start;
                     tangId = i;
                     tangDeviation = projDist;
                     // Coincident is added somewhere else so it has to be handled after the geo
                     // creation.
                 }
-                else if ((end - tmpPos).Length() < Precision::Confusion()) {
+                else if ((end - tmpPos).Sqr() < Precision::SquareConfusion()) {
                     tanPos = PointPos::end;
                     tangId = i;
                     tangDeviation = projDist;
@@ -791,7 +786,7 @@ bool DrawSketchHandler::seekTangentAutoConstraint(
                     // There must be a coincident autoconstraint added before. So we remove it
                     removeCoincidentConstraint(tangId, tanPos);
                 }
-                else if ((end - tmpStart).Length() < Precision::Confusion()) {
+                else if ((end - tmpStart).Sqr() < Precision::SquareConfusion()) {
                     tanPos = PointPos::end;
                     tangId = i;
                     tangDeviation = projDist;
@@ -841,24 +836,24 @@ bool DrawSketchHandler::seekTangentAutoConstraint(
                 Base::Vector3d start = aoe->getStartPoint();
                 Base::Vector3d end = aoe->getEndPoint();
 
-                if ((start - tmpPos).Length() < Precision::Confusion()) {
+                if ((start - tmpPos).Sqr() < Precision::SquareConfusion()) {
                     tanPos = PointPos::start;
                     tangId = i;
                     tangDeviation = error;
                     removeCoincidentConstraint(tangId, tanPos);
                 }
-                else if ((start - tmpStart).Length() < Precision::Confusion()) {
+                else if ((start - tmpStart).Sqr() < Precision::SquareConfusion()) {
                     tanPos = PointPos::start;
                     tangId = i;
                     tangDeviation = error;
                 }
-                else if ((end - tmpPos).Length() < Precision::Confusion()) {
+                else if ((end - tmpPos).Sqr() < Precision::SquareConfusion()) {
                     tanPos = PointPos::end;
                     tangId = i;
                     tangDeviation = error;
                     removeCoincidentConstraint(tangId, tanPos);
                 }
-                else if ((end - tmpStart).Length() < Precision::Confusion()) {
+                else if ((end - tmpStart).Sqr() < Precision::SquareConfusion()) {
                     tanPos = PointPos::end;
                     tangId = i;
                     tangDeviation = error;
