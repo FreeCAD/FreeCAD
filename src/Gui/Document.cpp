@@ -91,7 +91,7 @@ bool issue29844DiagnosticsEnabled()
         if (const char* value = std::getenv("FC_ISSUE_29844_DIAGNOSTICS")) {
             return value[0] != '\0' && value[0] != '0';
         }
-        return false;
+        return true;
     }();
     return enabled;
 }
