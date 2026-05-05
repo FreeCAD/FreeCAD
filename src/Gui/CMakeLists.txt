@@ -1363,11 +1363,20 @@ SET(Workbench_SRCS
 SOURCE_GROUP("Workbench" FILES ${Workbench_SRCS})
 
 SET(Selection_SRCS
+    Selection/SelectionChanges.h
+    Selection/SelectionGate.h
     Selection/SelectionObjectPyImp.cpp
     Selection/SelectionObject.h
     Selection/SelectionObject.cpp
+    Selection/SelectionObserver.h
+    Selection/SelectionObserver.cpp
     Selection/Selection.h
     Selection/Selection.cpp
+    Selection/SelectionStack.cpp
+    Selection/SelectionVisibility.cpp
+    Selection/SelectionPy.h
+    Selection/SelectionPyImp.cpp
+    Selection/SelectionTypes.h
     Selection/SelectionFilter.h
     Selection/SelectionFilter.cpp
     Selection/SelectionFilterPy.h

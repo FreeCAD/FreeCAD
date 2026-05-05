@@ -26,18 +26,21 @@
 
 #include <deque>
 #include <list>
+#include <map>
+#include <set>
 #include <string>
 #include <unordered_set>
 #include <vector>
 
 #include <App/DocumentObject.h>
-#include <App/DocumentObserver.h>
 #include <Base/Observer.h>
 
+#include "SelectionChanges.h"
+#include "SelectionGate.h"
 #include "SelectionObject.h"
+#include "SelectionObserver.h"
+#include "SelectionTypes.h"
 
-
-using PyObject = struct _object;
 
 namespace App
 {
@@ -49,260 +52,8 @@ class PropertyLinkSubList;
 namespace Gui
 {
 
-enum class ResolveMode
-{
-    /// No resolve
-    NoResolve,
-    /// Sub-object with old style element name
-    OldStyleElement,
-    /// Sub-object with new style element name
-    NewStyleElement,
-    /// Resolve sub-object and follow link
-    FollowLink
-};
-
 class SelectionObject;
 class SelectionFilter;
-
-/** Transport the changes of the Selection
- * This class transports closer information what was changed in the
- * selection. It's an optional information and not all commands set this
- * information. If not set all observer of the selection assume a full change
- * and update everything (e.g 3D view). This is not a very good idea if, e.g. only
- * a small parameter has changed. Therefore one can use this class and make the
- * update of the document much faster!
- * @see Base::Observer
- */
-class GuiExport SelectionChanges
-{
-public:
-    enum MsgType
-    {
-        AddSelection,
-        RmvSelection,
-        SetSelection,
-        ClrSelection,
-        SetPreselect,  // to signal observer the preselect has changed
-        RmvPreselect,
-        SetPreselectSignal,  // to request 3D view to change preselect
-        PickedListChanged,
-        ShowSelection,       // to show a selection
-        HideSelection,       // to hide a selection
-        RmvPreselectSignal,  // to request 3D view to remove preselect
-        MovePreselect,       // to signal observer the mouse movement when preselect
-    };
-    enum class MsgSource
-    {
-        Any = 0,
-        Internal = 1,
-        TreeView = 2
-    };
-
-    SelectionChanges(
-        MsgType type = ClrSelection,
-        const char* docName = nullptr,
-        const char* objName = nullptr,
-        const char* subName = nullptr,
-        const char* typeName = nullptr,
-        float x = 0,
-        float y = 0,
-        float z = 0,
-        MsgSource subtype = MsgSource::Any
-    )
-        : Type(type)
-        , SubType(subtype)
-        , x(x)
-        , y(y)
-        , z(z)
-        , Object(docName, objName, subName)
-    {
-        pDocName = Object.getDocumentName().c_str();
-        pObjectName = Object.getObjectName().c_str();
-        pSubName = Object.getSubName().c_str();
-        if (typeName) {
-            TypeName = typeName;
-        }
-        pTypeName = TypeName.c_str();
-    }  // explicit bombs
-
-    SelectionChanges(
-        MsgType type,
-        const std::string& docName,
-        const std::string& objName,
-        const std::string& subName,
-        const std::string& typeName = std::string(),
-        float x = 0,
-        float y = 0,
-        float z = 0,
-        MsgSource subtype = MsgSource::Any
-    )
-        : Type(type)
-        , SubType(subtype)
-        , x(x)
-        , y(y)
-        , z(z)
-        , Object(docName.c_str(), objName.c_str(), subName.c_str())
-        , TypeName(typeName)
-    {
-        pDocName = Object.getDocumentName().c_str();
-        pObjectName = Object.getObjectName().c_str();
-        pSubName = Object.getSubName().c_str();
-        pTypeName = TypeName.c_str();
-    }
-
-    SelectionChanges(const SelectionChanges& other)
-    {
-        *this = other;
-    }
-
-    SelectionChanges& operator=(const SelectionChanges& other)
-    {
-        Type = other.Type;
-        SubType = other.SubType;
-        x = other.x;
-        y = other.y;
-        z = other.z;
-        Object = other.Object;
-        TypeName = other.TypeName;
-        pDocName = Object.getDocumentName().c_str();
-        pObjectName = Object.getObjectName().c_str();
-        pSubName = Object.getSubName().c_str();
-        pTypeName = TypeName.c_str();
-        pOriginalMsg = other.pOriginalMsg;
-        return *this;
-    }
-
-    SelectionChanges(SelectionChanges&& other)
-    {
-        *this = std::move(other);
-    }
-
-    SelectionChanges& operator=(SelectionChanges&& other)
-    {
-        Type = other.Type;
-        SubType = other.SubType;
-        x = other.x;
-        y = other.y;
-        z = other.z;
-        Object = std::move(other.Object);
-        TypeName = std::move(other.TypeName);
-        pDocName = Object.getDocumentName().c_str();
-        pObjectName = Object.getObjectName().c_str();
-        pSubName = Object.getSubName().c_str();
-        pTypeName = TypeName.c_str();
-        pOriginalMsg = other.pOriginalMsg;
-        return *this;
-    }
-
-    MsgType Type;
-    MsgSource SubType;
-
-    const char* pDocName;
-    const char* pObjectName;
-    const char* pSubName;
-    const char* pTypeName;
-    float x;
-    float y;
-    float z;
-
-    App::SubObjectT Object;
-    std::string TypeName;
-
-    // Original selection message in case resolve!=0
-    const SelectionChanges* pOriginalMsg = nullptr;
-};
-
-class ViewProviderDocumentObject;
-
-/**
- * The SelectionObserver class simplifies the step to write classes that listen
- * to what happens to the selection.
- *
- * @author Werner Mayer
- */
-class GuiExport SelectionObserver
-{
-
-public:
-    /** Constructor
-     *
-     * @param attach: whether to   attach this observer on construction
-     * @param resolve: sub-object resolving mode.
-     */
-    explicit SelectionObserver(bool attach = true, ResolveMode resolve = ResolveMode::OldStyleElement);
-    /** Constructor
-     *
-     * @param vp: filtering view object.
-     * @param attach: whether to attach this observer on construction
-     * @param resolve: sub-object resolving mode.
-     *
-     * Constructs an selection observer that receives only selection event of
-     * objects within the same document as the input view object.
-     */
-    explicit SelectionObserver(
-        const Gui::ViewProviderDocumentObject* vp,
-        bool attach = true,
-        ResolveMode resolve = ResolveMode::OldStyleElement
-    );
-
-    virtual ~SelectionObserver();
-    bool blockSelection(bool block);
-    bool isSelectionBlocked() const;
-    bool isSelectionAttached() const;
-
-    /** Attaches to the selection. */
-    void attachSelection();
-    /** Detaches from the selection. */
-    void detachSelection();
-    /** clears the document scope filter, allowing cross-document selection events. */
-    void clearDocumentScope()
-    {
-        documentScopeName.clear();
-    }
-
-private:
-    virtual void onSelectionChanged(const SelectionChanges& msg) = 0;
-    void _onSelectionChanged(const SelectionChanges& msg);
-
-private:
-    using Connection = fastsignals::connection;
-    Connection connectSelection;
-    std::string filterDocName;
-    std::string filterObjName;
-    ResolveMode resolve;
-    std::string documentScopeName;
-    bool blockedSelection;
-};
-
-/** SelectionGate
- * The selection gate allows or disallows selection of certain types.
- * It has to be registered to the selection.
- */
-class GuiExport SelectionGate
-{
-public:
-    virtual ~SelectionGate() = default;
-    virtual bool allow(App::Document*, App::DocumentObject*, const char*) = 0;
-    /** @brief filter all available types
-     *  @param allTypesForGeometry Every type available to select (ex. {"Vertex", "Edge"})
-     *  @returns a set of filtered types (ex. {"Vertex"})
-     */
-    virtual std::unordered_set<std::string> getGatedTypes(
-        const std::vector<const char*>& allTypesForGeometry
-    ) const
-    {
-        (void)allTypesForGeometry;
-        return {};
-    }
-
-    /**
-     * @brief notAllowedReason is a string that sets the message to be
-     * displayed in statusbar for cluing the user on why is the selection not
-     * allowed. Set this variable in allow() implementation. Enclose the
-     * literal into QT_TR_NOOP() for translatability.
-     */
-    std::string notAllowedReason;
-};
 
 /** The Selection class
  *  The selection singleton keeps track of the selection state of
@@ -730,37 +481,6 @@ public:
     static void destruct();
     friend class SelectionFilter;
 
-    // Python interface
-    static PyMethodDef Methods[];
-
-protected:
-    static PyObject* sAddSelection(PyObject* self, PyObject* args);
-    static PyObject* sUpdateSelection(PyObject* self, PyObject* args);
-    static PyObject* sRemoveSelection(PyObject* self, PyObject* args);
-    static PyObject* sClearSelection(PyObject* self, PyObject* args);
-    static PyObject* sIsSelected(PyObject* self, PyObject* args);
-    static PyObject* sCountObjectsOfType(PyObject* self, PyObject* args);
-    static PyObject* sGetSelection(PyObject* self, PyObject* args);
-    static PyObject* sSetPreselection(PyObject* self, PyObject* args, PyObject* kwd);
-    static PyObject* sGetPreselection(PyObject* self, PyObject* args);
-    static PyObject* sRemPreselection(PyObject* self, PyObject* args);
-    static PyObject* sGetCompleteSelection(PyObject* self, PyObject* args);
-    static PyObject* sGetSelectionEx(PyObject* self, PyObject* args);
-    static PyObject* sGetSelectionObject(PyObject* self, PyObject* args);
-    static PyObject* sSetSelectionStyle(PyObject* self, PyObject* args);
-    static PyObject* sAddSelObserver(PyObject* self, PyObject* args);
-    static PyObject* sRemSelObserver(PyObject* self, PyObject* args);
-    static PyObject* sAddSelectionGate(PyObject* self, PyObject* args);
-    static PyObject* sRemoveSelectionGate(PyObject* self, PyObject* args);
-    static PyObject* sGetPickedList(PyObject* self, PyObject* args);
-    static PyObject* sEnablePickedList(PyObject* self, PyObject* args);
-    static PyObject* sPreselect(PyObject* self, PyObject* args);
-    static PyObject* sSetVisible(PyObject* self, PyObject* args);
-    static PyObject* sPushSelStack(PyObject* self, PyObject* args);
-    static PyObject* sHasSelection(PyObject* self, PyObject* args);
-    static PyObject* sHasSubSelection(PyObject* self, PyObject* args);
-    static PyObject* sGetSelectionFromStack(PyObject* self, PyObject* args);
-
 protected:
     /// Construction
     SelectionSingleton();
@@ -781,6 +501,11 @@ protected:
     {
         notify(SelectionChanges(Chng));
     }
+    bool selectionChangeIsCurrent(const SelectionChanges& msg) const;
+    bool preselectionChangeIsCurrent(const SelectionChanges& msg) const;
+    bool notificationShouldDispatch(const SelectionChanges& msg) const;
+    void dispatchSelectionNotification(const SelectionChanges& msg);
+    void drainNotificationQueue();
 
     struct SelectionDescription
     {
@@ -802,7 +527,14 @@ protected:
         std::string getSubString() const;
     };
 
-    int checkSelection(
+    enum class SelectionCheckResult
+    {
+        Invalid,
+        Available,
+        Selected
+    };
+
+    SelectionCheckResult checkSelection(
         const char* pDocName,
         const char* pObjectName,
         const char* pSubName,
@@ -810,6 +542,61 @@ protected:
         SelectionDescription& sel,
         const std::list<SelectionDescription>* selList = nullptr
     ) const;
+    SelectionCheckResult resolveSelectionDescription(
+        const char* pDocName,
+        const char* pObjectName,
+        const char*& pSubName,
+        ResolveMode resolve,
+        SelectionDescription& sel,
+        std::string& subNamePrefix,
+        bool reportErrors
+    ) const;
+    SelectionCheckResult resolveSelectionDocument(
+        const char* pDocName,
+        SelectionDescription& sel,
+        bool reportErrors
+    ) const;
+    SelectionCheckResult resolveSelectionObject(
+        const char* pObjectName,
+        SelectionDescription& sel,
+        bool reportErrors
+    ) const;
+    SelectionCheckResult resolveSelectionSubElement(
+        const char*& pSubName,
+        ResolveMode resolve,
+        SelectionDescription& sel,
+        std::string& subNamePrefix,
+        bool reportErrors
+    ) const;
+    const std::list<SelectionDescription>* selectionListForCheck(
+        const char* pDocName,
+        const std::list<SelectionDescription>* selList
+    ) const;
+    static SelectionCheckResult findSelectionMatch(
+        const std::string& subNamePrefix,
+        ResolveMode resolve,
+        const SelectionDescription& sel,
+        const std::list<SelectionDescription>& selList
+    );
+    static bool matchesSelectionIdentity(
+        const SelectionDescription& selected,
+        const SelectionDescription& sel
+    );
+    static bool matchesExactSelection(const SelectionDescription& selected, const char* pSubName);
+    static bool matchesNewStyleSelection(
+        const SelectionDescription& selected,
+        const std::string& subNamePrefix,
+        ResolveMode resolve
+    );
+    static bool matchesOldStyleSelection(
+        const SelectionDescription& selected,
+        const char* pSubName,
+        const SelectionDescription& sel
+    );
+    static bool selectedElementContainsSubName(
+        const SelectionDescription& selected,
+        const char* pSubName
+    );
 
     std::vector<Gui::SelectionObject> getObjectList(
         const char* pDocName,
@@ -818,6 +605,42 @@ protected:
         ResolveMode resolve,
         bool single = false
     ) const;
+    static bool appendSelectionSubElement(
+        SelectionObject& selection,
+        const char* subelement,
+        const SelectionDescription& sel,
+        ResolveMode resolve
+    );
+    static bool appendObjectListEntry(
+        std::vector<SelectionObject>& selections,
+        std::map<App::DocumentObject*, size_t>& objectIndices,
+        App::DocumentObject* obj,
+        const char* subelement,
+        const SelectionDescription& sel,
+        ResolveMode resolve,
+        bool single
+    );
+    struct SelectionInResult
+    {
+        App::DocumentObject* root {nullptr};
+        std::string subName;
+    };
+    bool selectionInResult(
+        SelectionObject& sel,
+        const std::string& subName,
+        App::DocumentObject* container,
+        Base::Type typeId,
+        App::Document*& doc,
+        bool& containerPassed,
+        SelectionInResult& result
+    ) const;
+    static bool appendSelectionInResult(
+        std::vector<SelectionObject>& selections,
+        std::map<App::DocumentObject*, size_t>& objectIndices,
+        const SelectionInResult& result,
+        const Base::Vector3d& pickedPoint,
+        bool single
+    );
 
     static App::DocumentObject* getObjectOfType(
         const SelectionDescription& sel,
@@ -858,10 +681,176 @@ protected:
         const SelectionInfo* info;
         std::string docName;
     };
+    struct VisibilitySelection
+    {
+        std::string DocName;
+        std::string FeatName;
+        std::string SubName;
+        VisibilitySelection(
+            const std::string& docName,
+            const std::string& featName,
+            const std::string& subName
+        )
+            : DocName(docName)
+            , FeatName(featName)
+            , SubName(subName)
+        {}
+    };
+    struct VisibilityTarget
+    {
+        App::DocumentObject* object {nullptr};
+        App::DocumentObject* parent {nullptr};
+        std::string elementName;
+    };
+    enum class VisibilityElementResult
+    {
+        Handled,
+        Fallback
+    };
+    using VisibilityFilter = std::set<std::pair<App::DocumentObject*, App::DocumentObject*>>;
+    struct VisibilityOperation
+    {
+        explicit VisibilityOperation(int visible)
+            : visible(visible)
+        {}
+
+        int visible;
+        VisibilityFilter filter;
+    };
+    std::vector<SelectionChanges> removeDeletedObjectSelections(
+        SelectionInfo& info,
+        const App::DocumentObject& obj
+    );
+    bool removeDeletedObjectFromPickedList(SelectionInfo& info, const App::DocumentObject& obj);
+    SelStackItem selectionStackItem(const SelectionContext& context) const;
+    bool restoreSelectionStackItem(const SelStackItem& item);
+    bool prepareSelectionDescription(
+        const char* pDocName,
+        const char* pObjectName,
+        const char* pSubName,
+        SelectionDescription& sel
+    ) const;
+    bool prepareSelectionAdd(
+        const char* pDocName,
+        const char* pObjectName,
+        const char* pSubName,
+        float x,
+        float y,
+        float z,
+        SelectionDescription& sel
+    ) const;
+    void logSelectionAdd(SelectionDescription& sel, bool clearPreselect) const;
+    void appendSelectionDescription(SelectionContext& context, const SelectionDescription& sel);
+    void notifySingleSelectionAdded(const SelectionContext& context, const SelectionDescription& sel);
+    void logBulkSelection(
+        const char* pDocName,
+        const char* pObjectName,
+        const std::vector<std::string>& subNames
+    ) const;
+    bool appendBulkSelection(
+        SelectionContext& context,
+        const char* pDocName,
+        const char* pObjectName,
+        const std::string& pSubName,
+        std::vector<std::string>* loggedSubNames
+    );
+    void notifyBulkSelectionAdded(const SelectionContext& context, const SelectionDescription& sel);
+    std::vector<VisibilitySelection> visibilitySelectionSnapshot(const SelectionContext& context) const;
+    bool resolveVisibilityTarget(const VisibilitySelection& sel, VisibilityTarget& target) const;
+    VisibilityElementResult applyElementVisibility(
+        const VisibilitySelection& sel,
+        const VisibilityTarget& target,
+        VisibilityOperation& operation
+    );
+    void applyObjectVisibility(
+        const VisibilitySelection& sel,
+        App::DocumentObject* obj,
+        VisibilityOperation& operation
+    );
 
     // Returns a selection context or nullptr if the document is not found
     SelectionContext getSelectionContext(const char* pDocName);
     SelectionConstContext getSelectionContext(const char* pDocName) const;
+    bool selectionGateAllows(const SelectionContext& context, const SelectionDescription& sel) const;
+    bool preselectionGateAllows(
+        const SelectionContext& context,
+        App::Document* pDoc,
+        const char* pDocName,
+        const char* pObjectName,
+        const char* pSubName,
+        SelectionChanges::MsgSource signal
+    ) const;
+    std::vector<SelectionChanges> removeSelectionMatches(
+        SelectionContext& context,
+        const SelectionDescription& sel
+    );
+    static bool matchesSelectionRemoval(
+        const SelectionDescription& selected,
+        const SelectionDescription& removal
+    );
+    static bool matchesSelectionRemovalObject(
+        const SelectionDescription& selected,
+        const SelectionDescription& removal
+    );
+    static bool matchesSelectionRemovalSubElement(
+        const SelectionDescription& selected,
+        const SelectionDescription& removal
+    );
+    static bool removalCoversSelectedSubElement(
+        const std::string& selectedSubName,
+        const std::string& removalSubName
+    );
+    bool clearDocumentSelectionEntries(SelectionContext& context);
+    void notifyViewProvidersOfClearSelection(
+        const std::list<SelectionDescription>& selections,
+        const char* pDocName
+    ) const;
+    void logClearSelection(
+        const SelectionContext& context,
+        bool clearCompleteSelection,
+        bool clearPreSelect
+    ) const;
+    static bool isCompleteSelectionClearRequest(const char* pDocName);
+    void clearPreselectionIfRequested(
+        const SelectionContext& context,
+        bool clearCompleteSelection,
+        bool clearPreSelect
+    );
+    void notifySelectionCleared(const std::string& docName);
+    void clearPickedList(SelectionContext& context);
+    void replacePickedList(SelectionContext& context, const std::vector<SelObj>& pickedList);
+    void notifySelectionRemovals(std::vector<SelectionChanges>& changes);
+
+    struct PreselectionState
+    {
+        std::string docName;
+        std::string objectName;
+        std::string subName;
+
+        bool empty() const
+        {
+            return docName.empty();
+        }
+
+        bool matches(const char* document, const char* object, const char* subElement) const
+        {
+            return docName == document && objectName == object && subName == subElement;
+        }
+
+        void set(const std::string& document, const char* object, const char* subElement)
+        {
+            docName = document;
+            objectName = object;
+            subName = subElement;
+        }
+
+        void reset()
+        {
+            docName.clear();
+            objectName.clear();
+            subName.clear();
+        }
+    };
 
     static SelectionSingleton* _pcSingleton;
 
@@ -883,12 +872,8 @@ protected:
     SelectionAllowance isSelectionAllowed(
         const SelectionContext& context,
         const SelectionDescription& sel
-    );
-    // Preselection helpers, it's a mess, needs clarifying -theo-vt
-    std::string DocName;
-    std::string FeatName;
-    std::string SubName;
-    float hx {0.0f}, hy {0.0f}, hz {0.0f};
+    ) const;
+    PreselectionState preselection;
     SelectionChanges CurrentPreselection;
 
 

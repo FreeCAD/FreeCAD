@@ -33,4 +33,5 @@ FreeCAD.__unit_test__ += [
     "UnicodeTests",
     "TestPythonSyntax",
     "TestCoinNodeSnapshots",
+    "TestSelection",
 ]
