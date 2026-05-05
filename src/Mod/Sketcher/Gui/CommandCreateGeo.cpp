@@ -151,7 +151,7 @@ public:
 
         setCheckable(false);
 
-        addCommand("Sketcher_CreatePolyline2");
+        addCommand("Sketcher_CreatePolyline");
         addCommand("Sketcher_CreateLine");
     }
 
@@ -220,12 +220,12 @@ bool CmdSketcherCreateLine::isActive()
     return isCommandActive(getActiveGuiDocument());
 }
 
-// Polyline ================================================================
+// Polyline old tool ======================================================
 
-DEF_STD_CMD_AU(CmdSketcherCreatePolyline)
+DEF_STD_CMD_AU(CmdSketcherCreatePolylineLegacy)
 
-CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
-    : Command("Sketcher_CreatePolyline")
+CmdSketcherCreatePolylineLegacy::CmdSketcherCreatePolylineLegacy()
+    : Command("Sketcher_CreatePolylineLegacy")
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
@@ -233,31 +233,31 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sToolTipText = QT_TR_NOOP(
         "Creates a continuous polyline. Press the 'M' key to switch segment modes"
     );
-    sWhatsThis = "Sketcher_CreatePolyline";
+    sWhatsThis = "Sketcher_CreatePolylineLegacy";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePolyline";
     sAccel = "G, M";
     eType = ForEdit;
 }
 
-CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolyline, "Sketcher_CreatePolyline")
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolylineLegacy, "Sketcher_CreatePolylineLegacy")
 
-void CmdSketcherCreatePolyline::activated(int iMsg)
+void CmdSketcherCreatePolylineLegacy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerLineSet>());
 }
 
-bool CmdSketcherCreatePolyline::isActive()
+bool CmdSketcherCreatePolylineLegacy::isActive()
 {
     return isCommandActive(getActiveGuiDocument());
 }
-// Polyline2 ================================================================
+// Polyline ================================================================
 
-DEF_STD_CMD_AU(CmdSketcherCreatePolyline2)
+DEF_STD_CMD_AU(CmdSketcherCreatePolyline)
 
-CmdSketcherCreatePolyline2::CmdSketcherCreatePolyline2()
-    : Command("Sketcher_CreatePolyline2")
+CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
+    : Command("Sketcher_CreatePolyline")
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
@@ -270,15 +270,15 @@ CmdSketcherCreatePolyline2::CmdSketcherCreatePolyline2()
     eType = ForEdit;
 }
 
-CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolyline2, "Sketcher_CreatePolyline2")
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolyline, "Sketcher_CreatePolyline")
 
-void CmdSketcherCreatePolyline2::activated(int iMsg)
+void CmdSketcherCreatePolyline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolyLine>());
 }
 
-bool CmdSketcherCreatePolyline2::isActive()
+bool CmdSketcherCreatePolyline::isActive()
 {
     return isCommandActive(getActiveGuiDocument());
 }
@@ -1992,7 +1992,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreatePeriodicBSplineByInterpolation());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
-    rcCmdMgr.addCommand(new CmdSketcherCreatePolyline2());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePolylineLegacy());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangleCenter());
     rcCmdMgr.addCommand(new CmdSketcherCreateOblong());
