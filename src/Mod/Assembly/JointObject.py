@@ -1320,15 +1320,16 @@ class GroundedJoint:
 
     def setReadOnly(self, joint, value):
         if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
+            obj = joint.ObjectToGround
             tag = "-ReadOnly"
             if value:
                 tag = "ReadOnly"
 
             propList = obj.PropertiesList
             if "Placement" in propList:
-                joint.ObjectToGround.setPropertyStatus("Placement", tag)
+                obj.setPropertyStatus("Placement", tag)
             if "LinkPlacement" in propList:
-                joint.ObjectToGround.setPropertyStatus("LinkPlacement", tag)
+                obj.setPropertyStatus("LinkPlacement", tag)
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
