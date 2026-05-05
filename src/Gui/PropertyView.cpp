@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+#include <cstdlib>
 #include <QEvent>
 #include <QGridLayout>
 #include <QTimer>
@@ -28,6 +29,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/MainThreadSignal.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
@@ -49,6 +51,22 @@ using namespace Gui;
 using namespace Gui::DockWnd;
 using namespace Gui::PropertyEditor;
 namespace sp = std::placeholders;
+
+namespace
+{
+
+bool issue29844DiagnosticsEnabled()
+{
+    static const bool enabled = []() {
+        if (const char* value = std::getenv("FC_ISSUE_29844_DIAGNOSTICS")) {
+            return value[0] != '\0' && value[0] != '0';
+        }
+        return false;
+    }();
+    return enabled;
+}
+
+}  // namespace
 
 static ParameterGrp::handle _GetParam()
 {
@@ -219,6 +237,13 @@ void PropertyView::slotRollback()
 void PropertyView::slotChangePropertyData(const App::Property& prop)
 {
     if (propertyEditorData->propOwners.contains(prop.getContainer())) {
+        if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+            Base::Console().log(
+                "issue-29844 diagnostics: PropertyView::slotChangePropertyData off-thread "
+                "prop=%s\n",
+                prop.getFullName().c_str()
+            );
+        }
         propertyEditorData->updateProperty(prop);
         timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
@@ -227,6 +252,13 @@ void PropertyView::slotChangePropertyData(const App::Property& prop)
 void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::Property& prop)
 {
     if (propertyEditorView->propOwners.contains(prop.getContainer())) {
+        if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+            Base::Console().log(
+                "issue-29844 diagnostics: PropertyView::slotChangePropertyView off-thread "
+                "prop=%s\n",
+                prop.getFullName().c_str()
+            );
+        }
         propertyEditorView->updateProperty(prop);
         timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
@@ -297,6 +329,13 @@ void PropertyView::slotChangePropertyEditor(const App::Document&, const App::Pro
     App::PropertyContainer* parent = prop.getContainer();
     if (propertyEditorData->propOwners.contains(parent)
         || propertyEditorView->propOwners.contains(parent)) {
+        if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+            Base::Console().log(
+                "issue-29844 diagnostics: PropertyView::slotChangePropertyEditor off-thread "
+                "prop=%s\n",
+                prop.getFullName().c_str()
+            );
+        }
         timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
 }

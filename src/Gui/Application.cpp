@@ -46,6 +46,7 @@
 
 #include <QLoggingCategory>
 #include <fmt/format.h>
+#include <cstdlib>
 #include <list>
 #include <ranges>
 
@@ -56,6 +57,9 @@
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#ifdef FC_OS_WIN32
+# include <Base/StackWalker.h>
+#endif
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
@@ -174,10 +178,78 @@ extern const long NlErrorCode;  // initialized before main() by navlib_load.cpp
 namespace Gui
 {
 
+namespace
+{
+
+bool issue29844DiagnosticsEnabled()
+{
+    static const bool enabled = []() {
+        if (const char* value = std::getenv("FC_ISSUE_29844_DIAGNOSTICS")) {
+            return value[0] != '\0' && value[0] != '0';
+        }
+        return false;
+    }();
+    return enabled;
+}
+
+void logIssue29844Diagnostic(const std::string& message)
+{
+    if (issue29844DiagnosticsEnabled()) {
+        Base::Console().log("issue-29844 diagnostics: %s\n", message.c_str());
+    }
+}
+
+#ifdef FC_OS_WIN32
+class Issue29844StackWalker: public Base::StackWalker
+{
+public:
+    Issue29844StackWalker()
+        : Base::StackWalker(
+              Base::StackWalker::RetrieveVerbose | Base::StackWalker::SymBuildPath
+              | Base::StackWalker::SymUseSymSrv
+          )
+    {}
+
+    void OnOutput(LPCSTR text) override
+    {
+        Base::Console().log("issue-29844 stack: %s", text);
+    }
+};
+
+void logIssue29844StackTrace()
+{
+    if (!issue29844DiagnosticsEnabled()) {
+        return;
+    }
+
+    Base::Console().log("issue-29844 diagnostics: Windows call stack follows\n");
+    Issue29844StackWalker walker;
+    walker.ShowCallstack();
+}
+#endif
+
+}  // namespace
+
 void requireMainThread(const char* api)
 {
     if (App::MainThreadSignalConfig::isMainThread()) {
         return;
+    }
+
+    if (issue29844DiagnosticsEnabled()) {
+        const auto* currentThread = QThread::currentThread();
+        const auto* mainThread = qApp ? qApp->thread() : nullptr;
+        logIssue29844Diagnostic(
+            fmt::format(
+                "off-thread GUI API api={} currentThread={} mainThread={}",
+                api,
+                fmt::ptr(currentThread),
+                fmt::ptr(mainThread)
+            )
+        );
+#ifdef FC_OS_WIN32
+        logIssue29844StackTrace();
+#endif
     }
 
     Base::Console().error("GUI API '%s' may only be used from the main thread.\n", api);
@@ -1793,6 +1865,11 @@ void Application::hideViewProvider(const App::DocumentObject* obj)
 
 Gui::ViewProvider* Application::getViewProvider(const App::DocumentObject* obj) const
 {
+    if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+        logIssue29844Diagnostic(
+            fmt::format("Gui::Application::getViewProvider obj={}", obj ? obj->getFullName() : "<null>")
+        );
+    }
     requireMainThread("Gui::Application::getViewProvider");
     return d->viewproviderMap.getViewProvider(obj);
 }
