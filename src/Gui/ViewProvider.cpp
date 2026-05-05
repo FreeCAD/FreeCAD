@@ -1362,6 +1362,11 @@ Base::BoundBox3d ViewProvider::_getBoundingBox(
     float minX, minY, minZ, maxX, maxY, maxZ;
     bbox.getMax().getValue(maxX, maxY, maxZ);
     bbox.getMin().getValue(minX, minY, minZ);
+
+    if (bboxAction) {
+        bboxAction->setResetPath(nullptr, false);
+    }
+
     return Base::BoundBox3d(minX, minY, minZ, maxX, maxY, maxZ);
 }
 
