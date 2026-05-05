@@ -3819,12 +3819,12 @@ void View3DInventorViewer::viewAll(float factor)
         box.getCenter().getValue(x, y, z);
 
         box.setBounds(
-            x - dx * factor,
-            y - dy * factor,
-            z - dz * factor,
-            x + dx * factor,
-            y + dy * factor,
-            z + dz * factor
+            x - (dx / 2.0f) * factor,
+            y - (dy / 2.0f) * factor,
+            z - (dz / 2.0f) * factor,
+            x + (dx / 2.0f) * factor,
+            y + (dy / 2.0f) * factor,
+            z + (dz / 2.0f) * factor
         );
 
         viewBoundBox(box);
