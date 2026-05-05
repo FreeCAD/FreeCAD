@@ -1793,7 +1793,8 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                 Base::Vector2d dir = onSketchPos - prevPoint;
 
                 if (fourthParam->isSet) {
-                    const double angle = Base::toRadians(fourthParam->getValue());
+                    const double angle = handler->previousDirectionAngle
+                        + Base::toRadians(fourthParam->getValue());
                     const Base::Vector2d ovpDir(cos(angle), sin(angle));
                     handler->capturedDirection = ovpDir;
                 }
@@ -1815,7 +1816,6 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                     onSketchPos = prevPoint + length * handler->capturedDirection;
                 }
                 else if (fourthParam->isSet) {
-                    double arcAngle = Base::toRadians(fourthParam->getValue());
                     onSketchPos.ProjectToLine(onSketchPos - prevPoint, handler->capturedDirection);
                     onSketchPos += prevPoint;
                 }
