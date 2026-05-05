@@ -26,8 +26,6 @@
 #include "Canonizer.h"
 
 #include "Base/Console.h"
-#include <ShapeFix_Face.hxx>
-#include <ShapeFix_Shell.hxx>
 
 using namespace Part;
 
@@ -313,6 +311,8 @@ TopoDS_Compound Deformation::deform(
 
         topoBuilder.Add(result, resultSolid);
     }
+    ShapeFix_ShapeTolerance tolFixer;
+    tolFixer.SetTolerance(result, Precision::Approximation(), TopAbs_SHAPE);
     return result;
 }
 

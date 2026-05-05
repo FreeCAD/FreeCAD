@@ -30,20 +30,13 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepBuilderAPI_FindPlane.hxx>
-#include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_NurbsConvert.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepLib.hxx>
 #include <BRepTools.hxx>
 #include <BRepTools_WireExplorer.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <GeomAPI_PointsToBSpline.hxx>
-#include <GeomAPI_PointsToBSplineSurface.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BSplineSurface.hxx>
 #include <GeomConvert.hxx>
@@ -55,16 +48,9 @@
 #include <Geom_Plane.hxx>
 #include <Geom_SphericalSurface.hxx>
 #include <ShapeAnalysis_CanonicalRecognition.hxx>
-#include <ShapeFix_Solid.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <ShapeUpgrade_ShellSewing.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
-#include <TopoDS_Builder.hxx>
 #include <TopoDS_Shell.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_GTrsf.hxx>
-#include <gp_Trsf.hxx>
 #include <Precision.hxx>
 
 namespace Part
