@@ -48,7 +48,8 @@ DlgSheetConf::DlgSheetConf(Sheet* sheet, Range range, QWidget* parent)
 
     ui->lineEditStart->setText(QString::fromLatin1(range.from().toString().c_str()));
     ui->lineEditEnd->setText(QString::fromLatin1(range.to().toString().c_str()));
-    ui->verticalCheckBox->setChecked(range.from().col() == range.to().col());
+    ui->radioButtonOrientationHorizontal->setChecked(range.from().col() != range.to().col());
+    ui->radioButtonOrientationVertical->setChecked(range.from().col() == range.to().col());
 
     ui->lineEditProp->setDocumentObject(sheet, false);
 
@@ -91,7 +92,7 @@ App::Property* DlgSheetConf::prepare(
     // configurations. We'll bind the string list to a PropertyEnumeration for
     // dynamical switching of the configuration.
 
-    if (ui->verticalCheckBox->isChecked()) {
+    if (ui->radioButtonOrientationVertical->isChecked()) {
         if (from.row() >= to.row()) {
             FC_THROWM(Base::RuntimeError, "Invalid cell range");
         }
@@ -272,7 +273,7 @@ void DlgSheetConf::accept()
             prop->getFullName()
         );
 
-        if (ui->verticalCheckBox->isChecked()) {
+        if (ui->radioButtonOrientationVertical->isChecked()) {
             // Adjust the range to skip the first cell (containing variant string)
             range = Range(from.row() + 1, from.col(), to.row(), to.col());
 
