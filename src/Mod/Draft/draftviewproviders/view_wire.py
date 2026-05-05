@@ -111,14 +111,17 @@ class ViewProviderWire(ViewProviderDraft):
 
     def updateData(self, obj, prop):
         if (
-            prop == "Points"
+            prop == "Shape"
             and hasattr(obj, "Points")
             and len(obj.Points) >= 2
             and hasattr(self, "coords1")
             and hasattr(self, "coords2")
         ):
+            shp = obj.Shape
+            if shp.isNull():
+                return
+
             if utils.get_type(obj) == "BSpline":
-                shp = obj.Shape
                 rot = obj.Placement.Rotation.inverted()
                 v1 = rot.multVec(shp.tangentAt(shp.FirstParameter))
                 v2 = -rot.multVec(shp.tangentAt(shp.LastParameter))
