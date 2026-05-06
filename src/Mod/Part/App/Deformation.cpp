@@ -26,7 +26,6 @@
 #include "Canonizer.h"
 
 #include "Base/Console.h"
-#include <gp_Quaternion.hxx>
 
 using namespace Part;
 
