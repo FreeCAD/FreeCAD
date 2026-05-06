@@ -447,7 +447,7 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/toolchange.py
     Path/Base/Generator/surface_common.py
     Path/Base/Generator/surface_dropcutter.py
-    Path/Base/Generator/surface_scan.py
+    Path/Base/Generator/surface_pattern.py
     Path/Base/Generator/surface_mesh.py
     Path/Base/Generator/surface_waterline.py
     Path/Base/Generator/surface_postprocess.py

@@ -412,6 +412,7 @@ def _shape_to_safe_stl(
     model_shape,
     avoid_faces,
     tool_radius,
+    start_depth,
     linear_deflection,
     angular_deflection,
 ):
@@ -426,6 +427,7 @@ def _shape_to_safe_stl(
         model_shape (Part.Shape): The complete, un-clipped model geometry.
         avoid_faces (list): A list of Part.Face objects to be avoided.
         tool_radius (float): The radius of the active tool.
+        start_depth (float): The upper Z-bound of the operation.
         linear_deflection (float): The base linear deflection for calculating a coarse mesh.
         angular_deflection (float): The base angular deflection for calculating a coarse mesh.
 
@@ -463,14 +465,13 @@ def _shape_to_safe_stl(
             Path.Log.error("Failed to generate Safe STL. Transitions may not be collision-safe.")
             return None
 
-        height = abs(bb.ZMax - bb.ZMin) + 0.1  # Plus 0.1 for safety
+        height = abs(start_depth - bb.ZMin) + 0.1  # Plus 0.1 for safety
         avoid_solid = boundary_face.extrude(FreeCAD.Vector(0, 0, -height))
-        avoid_solid.translate(FreeCAD.Vector(0, 0, bb.ZMax + 0.1))
+        avoid_solid.translate(FreeCAD.Vector(0, 0, start_depth + 0.1))
         fused_shapes.append(avoid_solid)
 
     # Fuse, Hollow, and create a coarse mesh
     safe_compound = Part.Compound(fused_shapes)
-
     hollow_shape = safe_compound
     if safe_compound.Shells:
         hollow_shape = Part.makeCompound(safe_compound.Shells)
@@ -495,6 +496,7 @@ def generate_stl(
     avoid_faces,
     tool_radius,
     needs_safe_stl,
+    start_depth,
     final_depth,
     linear_deflection,
     angular_deflection,
@@ -514,6 +516,7 @@ def generate_stl(
         avoid_faces (list): A list of Part.Face objects to be avoided.
         tool_radius (float): The radius of the active tool.
         needs_safe_stl (bool): Flag indicating if the safety model is required.
+        start_depth (float): The upper Z-bound of the operation.
         final_depth (float): The lower Z-bound of the operation.
         linear_deflection (float): The user-set linear deflection for the primary mesh.
         angular_deflection (float): The user-set angular deflection for the primary mesh.
@@ -556,13 +559,22 @@ def generate_stl(
         bbox = model_shape.BoundBox
         padding = 1.0
 
-        clipper_box = Part.makeBox(
-            bbox.XLength + padding * 2,
-            bbox.YLength + padding * 2,
-            bbox.ZMax - final_depth + padding,
-            FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth),
-        )
-        clipped_shape = model_shape.common(clipper_box)
+        try:
+            clipper_box = Part.makeBox(
+                bbox.XLength + padding * 2,
+                bbox.YLength + padding * 2,
+                bbox.ZMax - final_depth + padding,
+                FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth),
+            )
+
+            clipped_shape = model_shape.common(clipper_box)
+        except Exception as e:
+            # Catch any other OpenCASCADE topology errors gracefully
+            clipped_shape = model_shape
+            Path.Log.warning(
+                f"Failed to create clipping boundary. Check your Job Origin and Depths. "
+                f"Using original full model. (Error: {e})"
+            )
 
         if clipped_shape.isNull():
             Path.Log.warning(
@@ -592,6 +604,7 @@ def generate_stl(
                 model_shape,
                 avoid_faces,
                 tool_radius,
+                start_depth,
                 linear_deflection,
                 angular_deflection,
             )

@@ -68,7 +68,7 @@ def apply_multipass(scan_lines, start_depth, final_depth, step_down):
         step_down: Maximum depth per pass.
 
     Returns:
-        A flat list of scan lines ordered by layer, suitable for scan_lines_to_gcode.
+        A flat list of scan lines ordered by layer.
     """
     if step_down <= 0.0 or final_depth >= start_depth:
         return scan_lines
@@ -80,10 +80,9 @@ def apply_multipass(scan_lines, start_depth, final_depth, step_down):
         depthparams.append(curr_z)
         curr_z -= step_down
 
-    # Ensure final depth is always the last pass
-    """if not depthparams or abs(depthparams[-1] - final_depth) > 1e-5:
-        depthparams.append(final_depth)"""
-    # Implementing this in a more intelligent manner is necessary  --- bypass for now!
+    # Ensure absolute final depth is always the last pass
+    if not depthparams or abs(depthparams[-1] - final_depth) > 1e-5:
+        depthparams.append(final_depth)
 
     all_multipass_lines = []
 
@@ -92,21 +91,37 @@ def apply_multipass(scan_lines, start_depth, final_depth, step_down):
 
         for line in scan_lines:
             current_segment = []
+            last_pt_above = None
+
             for pt in line:
                 x, y, z = pt
 
-                # Check if the point is above the already-cleared material (adding a tiny
-                # tolerance to prevent floating point noise from falsely lifting the tool)
-                if z > prvDep + 1e-4:
-                    if current_segment:
-                        # End the current cutting segment because we hit the "air"
-                        all_multipass_lines.append(current_segment)
-                        current_segment = []
-                else:
-                    # Point is cutting material. Clamp to the current layer depth
-                    new_z = layDep if z < layDep else z
-                    current_segment.append((x, y, new_z))
+                # The true Z is maintained so we don't gouge the final model geometry
+                clamped_z = layDep if z < layDep else z
+                clamped_pt = (x, y, clamped_z)
 
+                # A point is "above" if it was fully machined in a previous pass
+                # (- 1e-4 ensures flat floors cut on the previous pass are successfully skipped here)
+                is_above = z >= prvDep - 1e-4
+
+                if is_above:
+                    if current_segment:
+                        # We just climbed out of the cutting zone.
+                        # Add this point to close the segment seamlessly against the wall
+                        current_segment.append(clamped_pt)
+                        all_multipass_lines.append(current_segment)
+                        current_segment = [] # Reset segment safely
+                    last_pt_above = clamped_pt
+                else:
+                    # We are IN the cutting zone (z < prvDep - 1e-4)
+                    if not current_segment and last_pt_above:
+                        # We just dropped into the cutting zone.
+                        # Start with the last point above to ramp in seamlessly
+                        current_segment.append(last_pt_above)
+
+                    current_segment.append(clamped_pt)
+
+            # End of the line - if we have an active cutting segment, save it
             if current_segment:
                 all_multipass_lines.append(current_segment)
 
@@ -165,6 +180,7 @@ def filter_cl_points(cl_points, tolerance):
 def _optimize_travel(
     last_point,
     next_point,
+    start_z,
     safe_z,
     step_down,
     clearance_z,
@@ -185,6 +201,7 @@ def _optimize_travel(
     Args:
         last_point: (x, y, z) end of previous scan line.
         next_point: (x, y, z) start of next scan line.
+        start_z: Start Depth.
         safe_z: Safe retract height.
         step_down: Step Down height
         clearance_z: Clearance height.
@@ -204,9 +221,9 @@ def _optimize_travel(
         dy = next_point[1] - last_point[1]
         xy_dist_sqrd = dx * dx + dy * dy
 
-        if xy_dist_sqrd <= ((cutter_diam) ** 2) * 2:
+        if xy_dist_sqrd <= (cutter_diam * 2.0) ** 2:
             transition_cmds = _dropcutter_transition(
-                last_point, next_point, safe_pdc, safe_z, step_down, horiz_feed
+                last_point, next_point, safe_pdc, start_z, safe_z, step_down, horiz_feed
             )
             if transition_cmds:
                 return transition_cmds
@@ -218,7 +235,7 @@ def _optimize_travel(
     ]
 
 
-def _dropcutter_transition(start, end, safe_pdc, safe_z, step_down, horiz_feed):
+def _dropcutter_transition(start, end, safe_pdc, start_z, safe_z, step_down, horiz_feed):
     """Probes a transition path and returns surface-following G1 commands."""
     ocl = _get_ocl()
     path = ocl.Path()
@@ -237,10 +254,11 @@ def _dropcutter_transition(start, end, safe_pdc, safe_z, step_down, horiz_feed):
     # Check the Z-climb required for the very first segment of the transition.
     first_transition_pt = cl_points[1]
     initial_climb = abs(first_transition_pt.z - start[2])
-    step_over_transition = start[2] == end[2]  # Possibly a step-over transition (stay down)
+    step_over_transition = abs(start[2] - end[2]) < 1e-3   # Possibly a step-over transition (stay down)
+    above_start_z = False if start_z > start[2] else True
 
     # If the initial climb is more than half a step-down, it's faster to retract.
-    if step_down > 0 and initial_climb > (step_down / 2.0) and not step_over_transition:
+    if (step_down > 0 and initial_climb > (step_down / 2.0) and not step_over_transition) or above_start_z:
         Path.Log.debug(
             f"Keep-down move aborted: initial climb ({initial_climb:.2f}mm) exceeds half step-down ({step_down/2.0:.2f}mm)."
         )
@@ -285,6 +303,7 @@ def scan_lines_to_gcode(
     step_down,
     sample_interval,
     clearance_z,
+    start_z,
     final_z,
     depth_offset=0.0,
     optimize_transitions=False,
@@ -305,6 +324,7 @@ def scan_lines_to_gcode(
         step_down: Step Down height
         sample_interval: Sample_interval.
         clearance_z: Clearance height.
+        start_z: Start Depth.
         final_z: Final depth.
         depth_offset: Optional Z offset.
         optimize_transitions: If True, short transitions (≤ 2× cutter
@@ -343,6 +363,7 @@ def scan_lines_to_gcode(
                 travel_cmds = _optimize_travel(
                     last_point,
                     first_point,
+                    start_z,
                     safe_z,
                     step_down,
                     clearance_z,

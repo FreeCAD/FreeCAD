@@ -315,13 +315,19 @@ def create_boundary_from_faces(source_faces, offset, tolerance=0.005):
     if not fused_shape:
         Path.Log.error("Failed to fuse face footprints for boundary creation.")
         return None
-    if hasattr(fused_shape, "removeSplitter"):
-        fused_shape = fused_shape.removeSplitter()
 
     # Offset the Final Fused Shape
     boundary_shape = PathUtils.getOffsetArea(
         fused_shape, offset, removeHoles=False, tolerance=tolerance, plane=Part.makeCircle(2.0)
     )
+
+    # Verify if PathUtils did not return a valid fused_shape
+    # Most probably the area has been consumed by a negative offset value
+    # Fall back to `removeHoles=True`. We might still be able to return something.
+    if not boundary_shape:
+        boundary_shape = PathUtils.getOffsetArea(
+            fused_shape, offset, removeHoles=True, tolerance=tolerance, plane=Part.makeCircle(2.0)
+        )
 
     if not boundary_shape or not hasattr(boundary_shape, "Edges") or len(boundary_shape.Edges) == 0:
         Path.Log.error("A critical error occurred when creating a boundary for selected faces.")
@@ -331,7 +337,7 @@ def create_boundary_from_faces(source_faces, offset, tolerance=0.005):
 
 
 def generate_pattern_mask(
-    is_whole_model_job, cutting_faces, avoid_faces, tool_radius, boundary_adj, tolerance
+    is_whole_model_job, bb_face, cutting_faces, avoid_faces, tool_radius, boundary_adj, tolerance
 ):
     """
     Generates a universal 2D boundary face, punching out
@@ -365,7 +371,7 @@ def generate_pattern_mask(
 
     if is_whole_model_job:
         # Use TechDraw.findShapeOutline for whole model silhouette
-        main_boundary = get_whole_model_boundary(cutting_faces, outer_offset, tolerance)
+        main_boundary = bb_face
     else:
         main_boundary = create_boundary_from_faces(cutting_faces, outer_offset, tolerance)
 

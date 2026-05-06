@@ -20,15 +20,27 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Scan pattern generation for 3D surface operations.
+"""
+2D Pattern Generation Engine for the 3D Surface Operation.
 
-Acts as a high-performance bridge to the C++ surface_generator module.
-Passes bounding boxes, centers, and high-resolution boundary polygons
-to C++ for instant pattern generation and exact binary-search clipping.
+This module is the single source of truth for creating 2D toolpath coordinates
+for all pattern-based strategies (Line, ZigZag, Circular, Spiral, Offset).
+
+It serves two primary roles:
+1.  **C++ Bridge:** It acts as the high-performance bridge to the compiled C++
+    `surface_generator` module, which instantly generates and clips the raw
+    coordinates for linear and radial patterns.
+2.  **Offset Generator:** It contains the pure Python implementation for the
+    'Offset' pattern, which relies on OpenCASCADE's robust offsetting engine
+    via `PathUtils`.
+
+The functions in this module return lists of 2D (x,y,z=0) coordinates that
+are ready to be projected onto the 3D model by the OCL drop-cutter engine.
 """
 
 import math
 import Path
+import Part
 
 try:
     import surface_generator as _pattern_cpp
@@ -96,6 +108,123 @@ class BBox:
     @property
     def diagonal(self):
         return math.hypot(self.x_length, self.y_length)
+
+
+# ---------------------------------------------------------------------------
+# Operation Data Extraction
+# ---------------------------------------------------------------------------
+
+
+def get_operation_boundbox(bb_face, model_group, cutting_faces=None):
+    """Calculates the definitive bounding box for the operation."""
+    if cutting_faces:
+        # Use Part.Compound to safely get the true union of all face bounding boxes
+        bb = Part.Compound(cutting_faces).BoundBox
+        Path.Log.debug(f"surface_pattern.get_operation_boundbox: using selected faces BB: {bb}")
+        return bb
+
+    else:
+        Path.Log.debug(f"surface_pattern.get_operation_boundbox: using Boundary Box faces BB: {bb_face}")
+        return bb_face.BoundBox
+
+    # Fallback: union of all model bounding boxes
+    if model_group:
+        bb = Part.Compound([m.Shape for m in model_group]).BoundBox
+        Path.Log.debug(f"surface_pattern.get_operation_boundbox: using model BB: {bb}")
+        return bb
+        
+    return None
+
+
+def split_selected_features(base_property, avoid_count):
+    """
+    Extracts and splits face geometry from an operation's Base property.
+
+    This pure function takes the raw Base property and an integer, and it
+    separates the Part.Face objects it finds into two lists: those to be
+    machined and those to be avoided.
+
+    Args:
+        base_property (list): The operation's `obj.Base` list of (object, subnames).
+        avoid_count (int): The number of faces from the end of the list to treat as 'avoid'.
+
+    Returns:
+        tuple: (cutting_faces, avoid_faces)
+    """
+
+    if not base_property:
+        Path.Log.debug("surface_pattern.split_selected_features: no Base geometry, using whole model")
+        return [], []
+
+    all_selected = []
+    cutting_faces, avoid_faces = [], []
+    total_subs = 0
+    for base, subs in base_property:
+        Path.Log.debug(
+            "surface_pattern.split_selected_features: base={}, subs={}".format(base.Label, subs)
+        )
+        for sub in subs:
+            if not sub:
+                Path.Log.debug(
+                    "surface_pattern.split_selected_features: skipping empty sub-element for whole object"
+                )
+                continue
+            total_subs += 1
+            try:
+                shape = base.Shape.getElement(sub)
+                if shape and isinstance(shape, Part.Face):
+                    all_selected.append(shape)
+            except Exception:
+                continue
+
+    Path.Log.debug(
+        "surface_pattern.split_selected_features: extraction completed for {} subs, {} faces".format(
+            total_subs, len(all_selected)
+        )
+    )
+
+    if not all_selected:
+        return cutting_faces, avoid_faces
+
+    if avoid_count > 0 and avoid_count < len(all_selected):
+        cutting_faces = all_selected[:-avoid_count]
+        avoid_faces = all_selected[-avoid_count:]
+    elif avoid_count >= len(all_selected):
+        avoid_faces = all_selected
+    else:
+        cutting_faces = all_selected
+
+    Path.Log.debug(
+        "surface_pattern.split_selected_features: AvoidLastX_Faces process completed for {} cut, {} avoid faces".format(
+            len(cutting_faces), len(avoid_faces)
+        )
+    )
+
+    return cutting_faces, avoid_faces
+
+
+def group_features(faces_to_group, handle_mode):
+    """
+    Groups a list of faces based on the requested strategy.
+
+    This is a pure utility function that takes a list of faces and returns a
+    list of face-groups to be processed by the main operation loop.
+
+    Args:
+        faces_to_group (list): The definitive list of Part.Face objects to process.
+        handle_mode (str): The user's selection ("Individually" or "Collectively").
+
+    Returns:
+        list: A list of lists, e.g., `[[f1, f2]]` for collective or `[[f1], [f2]]` for individual.
+    """
+    if handle_mode == "Individually" and faces_to_group:
+        Path.Log.info(f"Preparing to process {len(faces_to_group)} features individually.")
+        return [[face] for face in faces_to_group]
+    else:
+        # Default to collective mode for safety and for the "whole model" case
+        if len(faces_to_group) > 1:
+             Path.Log.info("Preparing to process all selected features collectively.")
+        return [faces_to_group]
 
 
 # ---------------------------------------------------------------------------
@@ -216,7 +345,7 @@ def generate_offset_scan_lines(
     return offset_lines
 
 
-def extract_polygons_from_face(boundary_face, tolerance=0.005):
+def _extract_polygons_from_face(boundary_face, tolerance=0.005):
     """
     Converts the wires of a Part.Face into raw 2D point arrays for the C++ Ray-Caster.
 
@@ -283,7 +412,7 @@ def fast_generate_pattern(
               is a list of (x, y, z) tuples.
     """
 
-    polys = extract_polygons_from_face(boundary_face, tolerance)
+    polys = _extract_polygons_from_face(boundary_face, tolerance)
 
     if pattern_type in ("Line", "ZigZag"):
         # C++ now returns just the clipped endpoints for maximum OCL performance

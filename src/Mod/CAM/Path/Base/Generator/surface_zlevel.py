@@ -122,7 +122,7 @@ def categorize_floor_steps(shape, start_z, final_z, step_down):
     """
     # 1. Generate standard Z-heights list top-down
     z_heights = []
-    curr_z = start_z
+    curr_z = start_z - step_down
     while curr_z > (final_z + 0.0001):
         z_heights.append(round(curr_z, 5))
         curr_z -= step_down
@@ -213,7 +213,7 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
         if is_upward(face):
             if isAccessibleFromTop(face, shape, abs_top):
                 z = round(face.Vertexes[0].Z, 5)
-                if (z >= z_min - tolerance) and (z <= z_max + tolerance):
+                if (z >= z_min - tolerance) and (z < z_max):
                     f_copy = face.copy()
                     f_copy.translate(FreeCAD.Vector(0, 0, -f_copy.BoundBox.ZMin))
 
