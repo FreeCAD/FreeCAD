@@ -821,9 +821,8 @@ double Measurement::radius() const
                 .Radius();
         }
     }
-    else {
-        Base::Console().error("Measurement::radius - Invalid References3D Provided\n");
-    }
+    
+    Base::Console().error("Measurement::radius - Invalid References3D Provided\n");
     return 0.0;
 }
 double Measurement::diameter() const
