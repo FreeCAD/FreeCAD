@@ -32,6 +32,10 @@
 #include <QMetaObject>
 #include <fastsignals/signal.h>
 #include <memory>
+#include <set>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include <Base/Parameter.h>
 #include <Base/Placement.h>
@@ -77,6 +81,12 @@ class SoTranslation;
 class SbString;
 class SbTime;
 
+namespace App
+{
+class DocumentObject;
+class Property;
+}  // namespace App
+
 namespace Part
 {
 class Geometry;
@@ -85,7 +95,8 @@ class Geometry;
 namespace Gui
 {
 class View3DInventorViewer;
-}
+class ViewProvider;
+}  // namespace Gui
 
 namespace Sketcher
 {
@@ -98,6 +109,7 @@ namespace SketcherGui
 {
 
 class EditModeCoinManager;
+class LazyExternalGeometryLayer;
 class SnapManager;
 class DrawSketchHandler;
 class ViewProviderSketchCommandConstraintsAttorney;
@@ -225,6 +237,8 @@ private:
             App::Property* property
         );
 
+        void updateLazyExternalGeometryEnabled(const std::string& string, App::Property* property);
+
     private:
         ViewProviderSketch& Client;
         std::map<
@@ -349,7 +363,8 @@ private:
         {
             InvalidPoint = -1,
             InvalidCurve = -1,
-            ExternalCurve = -3
+            ExternalCurve = -3,
+            InvalidLazyExternal = InvalidPoint
         };
 
         enum class Axes
@@ -369,6 +384,8 @@ private:
         {
             PreselectPoint = InvalidPoint;
             PreselectCurve = InvalidCurve;
+            PreselectLazyExternalId = InvalidLazyExternal;
+            PreselectLazyExternalVertex = false;
             PreselectCross = Axes::None;
             PreselectConstraintSet.clear();
             blockedPreselection = false;
@@ -394,6 +411,18 @@ private:
         {
             return PreselectCurve <= ExternalCurve;
         }
+        bool isLazyExternalPreselected() const
+        {
+            return PreselectLazyExternalId > InvalidLazyExternal;
+        }
+        bool isLazyExternalVertex() const
+        {
+            return isLazyExternalPreselected() && PreselectLazyExternalVertex;
+        }
+        bool isLazyExternalEdge() const
+        {
+            return isLazyExternalPreselected() && !PreselectLazyExternalVertex;
+        }
 
         int getPreselectionVertexIndex() const
         {
@@ -408,11 +437,13 @@ private:
             return -PreselectCurve - 2;
         }
 
-        int PreselectPoint;   // VertexN, with N = PreselectPoint + 1, same as DragPoint indexing
-                              // (NOTE -1 is NOT the root point)
-        int PreselectCurve;   // EdgeN, with N = PreselectCurve + 1 for positive values ;
-                              // ExternalEdgeN, with N = -PreselectCurve - 2
-        Axes PreselectCross;  // 0 => rootPoint, 1 => HAxis, 2 => VAxis
+        int PreselectPoint;  // VertexN, with N = PreselectPoint + 1, same as DragPoint indexing
+                             // (NOTE -1 is NOT the root point)
+        int PreselectCurve;  // EdgeN, with N = PreselectCurve + 1 for positive values ;
+                             // ExternalEdgeN, with N = -PreselectCurve - 2
+        int PreselectLazyExternalId;
+        bool PreselectLazyExternalVertex;
+        Axes PreselectCross;                   // 0 => rootPoint, 1 => HAxis, 2 => VAxis
         std::set<int> PreselectConstraintSet;  // ConstraintN, N = index + 1
         bool blockedPreselection;
     };
@@ -474,6 +505,7 @@ private:
         bool handleEscapeButton = false;
         bool autoRecompute = false;
         bool recalculateInitialSolutionWhileDragging = false;
+        bool lazyExternalGeometryEnabled = true;
 
         bool isShownVirtualSpace = false;  // indicates whether the present virtual space view is the
                                            // Real Space or the Virtual Space (virtual space 1 or 2)
@@ -736,6 +768,7 @@ public:
     friend class ViewProviderSketchCoinAttorney;
     friend class ViewProviderSketchSnapAttorney;
     friend class ViewProviderSketchCommandConstraintsAttorney;
+    friend class ViewProviderSketchLazySelectionAttorney;
     //@}
 
     bool editingCancelled;
@@ -747,6 +780,27 @@ protected:
     void unsetEdit(int ModNum) override;
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(Gui::View3DInventorViewer*) override;
+
+public:
+    /** @name Lazy external geometry edit-session layer */
+    //@{
+    int materializeLazyExternalReference(int lazyExternalId);
+    Base::Type getLazyExternalGeometryType(int lazyExternalId) const;
+    bool isLazyExternalReferenceVertex(int lazyExternalId) const;
+    void setLazyExternalReferenceSelected(int lazyExternalId, bool selected);
+    void toggleLazyExternalReferenceSelected(int lazyExternalId);
+    std::vector<int> getSelectedLazyExternalReferenceIds() const;
+    void clearSelectedLazyExternalReferences();
+    void suspendLazyExternalGeometryLayer();
+    void resumeLazyExternalGeometryLayer();
+    bool syncLazySources();
+    void redrawLazyExternalGeometryLayer();
+    bool isLazyExternalGeometryEnabled() const;
+    void setLazyExternalGeometryPreferenceEnabled(bool enabled);
+    //@}
+
+protected:
+    bool ensureLazyExternalGeometryLayer();
     static void camSensCB(void* data, SoSensor*);        // camera sensor callback
     static void camSensDeleteCB(void* data, SoSensor*);  // camera sensor callback
     void onCameraChanged(SoCamera* cam);
@@ -789,6 +843,7 @@ protected:
     //@{
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
+    void slotChangedViewProvider(const Gui::ViewProvider& vp, const App::Property& prop);
     //@}
 
     /// hook after property restoring to change some property statuses
@@ -817,13 +872,20 @@ private:
     /** @name preselection functions */
     //@{
     /// helper to detect preselection
-    bool detectAndShowPreselection(SoPickedPoint* Point);
+    bool detectAndShowPreselection(
+        SoPickedPoint* Point,
+        const SbVec2s* cursorPos = nullptr,
+        const Gui::View3DInventorViewer* viewer = nullptr
+    );
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
+    int getPreselectLazyExternal() const;
+    bool isPreselectLazyExternalVertex() const;
     void setPreselectPoint(int PreselectPoint);
     void setPreselectRootPoint();
     void resetPreselectPoint();
+    void clearLazyPreselectionIfNeeded(bool hadLazyPreselection);
 
     bool setPreselect(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
     //@}
@@ -910,6 +972,11 @@ private:
     Base::Placement getEditingPlacement() const;
 
     std::unique_ptr<SoRayPickAction> getRayPickAction() const;
+    int getClosestLazyExternalAtCursor(
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer,
+        bool& vertex
+    );
 
     SbVec2f getScreenCoordinates(SbVec2f sketchcoordinates) const;
 
@@ -989,6 +1056,7 @@ private:
     fastsignals::connection connectRedoDocument;
     fastsignals::connection connectSolverUpdate;
     fastsignals::connection connectConstraintAdded;
+    fastsignals::connection connectViewProviderChanged;
 
     QMetaObject::Connection screenChangeConnection;
 
@@ -1013,6 +1081,8 @@ private:
     std::unique_ptr<ShortcutListener> listener;
 
     std::unique_ptr<EditModeCoinManager> editCoinManager;
+    std::unique_ptr<LazyExternalGeometryLayer> lazyExternalGeometryLayer;
+    int lazyExternalGeometryLayerSuspendCount = 0;
 
     std::unique_ptr<SnapManager> snapManager;
 

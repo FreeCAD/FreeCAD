@@ -138,6 +138,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxHorVerAuto->onSave();
     ui->checkBoxLineGroup->onSave();
     ui->checkBoxAddExtGeo->onSave();
+    ui->checkBoxLazyExternalGeometry->onSave();
     ui->checkBoxMakeInternals->onSave();
 
     enum
@@ -219,6 +220,7 @@ void SketcherSettings::loadSettings()
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
     ui->checkBoxLineGroup->onRestore();
     ui->checkBoxAddExtGeo->onRestore();
+    ui->checkBoxLazyExternalGeometry->onRestore();
     ui->checkBoxMakeInternals->onRestore();
 
     // Dimensioning constraints mode

@@ -52,6 +52,7 @@
 #include "EditModeGeometryCoinConverter.h"
 #include "EditModeGeometryCoinManager.h"
 #include "EditModeInformationOverlayCoinConverter.h"
+#include "LazyExternalGeometryLayer.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchCoinAttorney.h"
@@ -1223,6 +1224,15 @@ void EditModeCoinManager::updateInventorColors()
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(0, drawingParameters.CrossColorH);
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(1, drawingParameters.CrossColorV);
     editModeScenegraphNodes.textMaterial->diffuseColor = drawingParameters.CursorTextColor;
+}
+
+void EditModeCoinManager::drawLazyExternalGeometryLayer(LazyExternalGeometryLayer& layer)
+{
+    layer.attachTo(editModeScenegraphNodes.EditRoot);
+    layer.draw(
+        drawingParameters,
+        ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
+    );
 }
 
 /************************ Edit node access ************************/

@@ -144,6 +144,20 @@ inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const 
     return vp.getPreselectCross();
 }
 
+inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectLazyExternal(
+    const ViewProviderSketch& vp
+)
+{
+    return vp.getPreselectLazyExternal();
+}
+
+inline bool ViewProviderSketchDrawSketchHandlerAttorney::isPreselectLazyExternalVertex(
+    const ViewProviderSketch& vp
+)
+{
+    return vp.isPreselectLazyExternalVertex();
+}
+
 inline void ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(
     ViewProviderSketch& vp,
     bool enable,
@@ -1142,6 +1156,16 @@ int DrawSketchHandler::getPreselectCurve() const
 int DrawSketchHandler::getPreselectCross() const
 {
     return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(*sketchgui);
+}
+
+int DrawSketchHandler::getPreselectLazyExternal() const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectLazyExternal(*sketchgui);
+}
+
+bool DrawSketchHandler::isPreselectLazyExternalVertex() const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::isPreselectLazyExternalVertex(*sketchgui);
 }
 
 Sketcher::SketchObject* DrawSketchHandler::getSketchObject()

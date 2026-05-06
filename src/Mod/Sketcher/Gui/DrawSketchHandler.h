@@ -127,6 +127,8 @@ private:
     static inline int getPreselectPoint(const ViewProviderSketch& vp);
     static inline int getPreselectCurve(const ViewProviderSketch& vp);
     static inline int getPreselectCross(const ViewProviderSketch& vp);
+    static inline int getPreselectLazyExternal(const ViewProviderSketch& vp);
+    static inline bool isPreselectLazyExternalVertex(const ViewProviderSketch& vp);
 
     static inline void moveConstraint(
         ViewProviderSketch& vp,
@@ -296,6 +298,8 @@ protected:
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
+    int getPreselectLazyExternal() const;
+    bool isPreselectLazyExternalVertex() const;
 
     Sketcher::SketchObject* getSketchObject();
 

@@ -27,6 +27,7 @@
 #include <App/FeaturePython.h>
 #include <App/IndexedName.h>
 #include <App/PropertyFile.h>
+#include <memory>
 #include <Base/Axis.h>
 #include <Base/Bitmask.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -247,6 +248,12 @@ public:
         bool defining = false,
         bool intersection = false
     );
+    /// Build the projected geometry for an external edge/vertex without adding it to the sketch.
+    std::vector<std::unique_ptr<Part::Geometry>> buildProjectedExternalGeometry(
+        App::DocumentObject* Obj,
+        const char* SubName,
+        bool intersection = false
+    ) const;
     /** delete external
      *  ExtGeoId >= 0 with 0 corresponding to the first user defined
      *  external geometry

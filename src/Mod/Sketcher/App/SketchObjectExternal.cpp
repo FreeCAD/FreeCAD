@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -2292,7 +2293,334 @@ void processFace (const Rotation& invRot,
     }
 }
 
+void importProjectedVertex(const TopoDS_Shape& vertexShape,
+                           std::vector<std::unique_ptr<Part::Geometry>>& geos,
+                           const Handle(Geom_Plane)& gPlane,
+                           const Base::Placement& invPlm)
+{
+    gp_Pnt point = BRep_Tool::Pnt(TopoDS::Vertex(vertexShape));
+    GeomAPI_ProjectPointOnSurf projection(point, gPlane);
+    point = projection.NearestPoint();
+
+    Base::Vector3d projectedPoint(point.X(), point.Y(), point.Z());
+    invPlm.multVec(projectedPoint, projectedPoint);
+
+    auto* geomPoint = new Part::GeomPoint(projectedPoint);
+    GeometryFacade::setConstruction(geomPoint, true);
+    geos.emplace_back(geomPoint);
+}
+
+TopoDS_Shape resolveExternalGeometrySubShape(const App::DocumentObject* Obj,
+                                             const std::string& SubElement)
+{
+    TopoDS_Shape refSubShape;
+
+    // Handles LCS ,resolve to actual datum object
+    const App::DocumentObject* resolvedObj = Obj;
+    if (auto* lcs = freecad_cast<const App::LocalCoordinateSystem*>(Obj); lcs && !SubElement.empty()) {
+        // get the datum element by name
+        App::DatumElement* datum = lcs->getDatumElement(SubElement.c_str());
+        if (datum) {
+            resolvedObj = datum;
+        }
+    }
+
+    if (auto* datum = freecad_cast<const Part::Datum*>(resolvedObj)) {
+        refSubShape = datum->getShape();
+    }
+    else if (auto* refObj = freecad_cast<const Part::Feature*>(resolvedObj)) {
+        const Part::TopoShape& refShape = refObj->Shape.getShape();
+        refSubShape = refShape.getSubShape(SubElement.c_str());
+    }
+    else if (auto* pl = freecad_cast<const App::Plane*>(resolvedObj)) {
+        Base::Vector3d base = pl->getBasePoint();
+        Base::Vector3d normal = pl->getDirection();
+        gp_Pln plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
+        BRepBuilderAPI_MakeFace fBuilder(plane);
+        if (!fBuilder.IsDone())
+            throw Base::RuntimeError(
+                "Sketcher: addExternal(): Failed to build face from App::Plane");
+
+        TopoDS_Face f = TopoDS::Face(fBuilder.Shape());
+        refSubShape = f;
+    }
+    else if (auto* line = freecad_cast<const Part::DatumLine*>(resolvedObj)) {
+        Base::Placement plm = line->Placement.getValue();
+        Base::Vector3d base = plm.getPosition();
+        Base::Vector3d dir = line->getDirection();
+        gp_Lin l(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
+        BRepBuilderAPI_MakeEdge eBuilder(l);
+        if (!eBuilder.IsDone()) {
+            throw Base::RuntimeError(
+                "Sketcher: addExternal(): Failed to build edge from Part::DatumLine");
+        }
+
+        TopoDS_Edge e = TopoDS::Edge(eBuilder.Shape());
+        refSubShape = e;
+    }
+    else if (auto* point = freecad_cast<const Part::DatumPoint*>(resolvedObj)) {
+        Base::Placement plm = point->Placement.getValue();
+        Base::Vector3d base = plm.getPosition();
+        gp_Pnt p(base.x, base.y, base.z);
+        BRepBuilderAPI_MakeVertex eBuilder(p);
+        if (!eBuilder.IsDone()) {
+            throw Base::RuntimeError(
+                "Sketcher: addExternal(): Failed to build vertex from Part::DatumPoint");
+        }
+
+        TopoDS_Vertex v = TopoDS::Vertex(eBuilder.Shape());
+        refSubShape = v;
+    }
+    else if (auto* line = freecad_cast<const App::Line*>(resolvedObj)) {
+        Base::Vector3d base = line->getBasePoint();
+        Base::Vector3d dir = line->getDirection();
+        gp_Lin l(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
+        BRepBuilderAPI_MakeEdge eBuilder(l);
+        if (!eBuilder.IsDone()) {
+            throw Base::RuntimeError(
+                "Sketcher: addExternal(): Failed to build edge from App::Line");
+        }
+
+        TopoDS_Edge e = TopoDS::Edge(eBuilder.Shape());
+        refSubShape = e;
+    }
+    else if (auto* point = freecad_cast<const App::Point*>(resolvedObj)) {
+        Base::Vector3d base = point->getBasePoint();
+        gp_Pnt p(base.x, base.y, base.z);
+        BRepBuilderAPI_MakeVertex eBuilder(p);
+        if (!eBuilder.IsDone()) {
+            throw Base::RuntimeError(
+                "Sketcher: addExternal(): Failed to build vertex from App::Point");
+        }
+
+        TopoDS_Vertex v = TopoDS::Vertex(eBuilder.Shape());
+        refSubShape = v;
+    }
+    else {
+        throw Base::TypeError(
+            "Datum feature type is not yet supported as external geometry for a sketch");
+    }
+
+    return refSubShape;
+}
+
+void appendExternalGeometryProjection(TopoDS_Shape& refSubShape,
+                                      std::vector<std::unique_ptr<Part::Geometry>>& geos,
+                                      const Rotation& invRot,
+                                      const Placement& invPlm,
+                                      const gp_Trsf& mov,
+                                      const gp_Pln& sketchPlane,
+                                      const Handle(Geom_Plane)& gPlane,
+                                      gp_Ax3& sketchAx3,
+                                      TopoDS_Shape& aProjFace)
+{
+    switch (refSubShape.ShapeType()) {
+    case TopAbs_FACE: {
+        processFace(invRot, invPlm, mov, sketchPlane, gPlane, sketchAx3, aProjFace, geos, refSubShape);
+    } break;
+    case TopAbs_EDGE: {
+        const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
+        processEdge(edge,
+                    geos,
+                    gPlane,
+                    invPlm,
+                    mov,
+                    sketchPlane,
+                    invRot,
+                    sketchAx3,
+                    aProjFace);
+    } break;
+    case TopAbs_VERTEX: {
+        importProjectedVertex(refSubShape, geos, gPlane, invPlm);
+    } break;
+    default:
+        throw Base::TypeError("Unknown type of geometry");
+        break;
+    }
+}
+
+void appendExternalGeometryIntersection(TopoDS_Shape& refSubShape,
+                                        std::vector<std::unique_ptr<Part::Geometry>>& geos,
+                                        const Rotation& invRot,
+                                        const Placement& invPlm,
+                                        const gp_Trsf& mov,
+                                        const gp_Pln& sketchPlane,
+                                        const Handle(Geom_Plane)& gPlane,
+                                        gp_Ax3& sketchAx3,
+                                        TopoDS_Shape& aProjFace,
+                                        double arcFitTolerance)
+{
+    FCBRepAlgoAPI_Section maker(refSubShape, sketchPlane);
+    maker.Approximation(Standard_True);
+    if (!maker.IsDone())
+        FC_THROWM(Base::CADKernelError, "Failed to get intersection");
+    Part::TopoShape intersectionShape(maker.Shape());
+    auto edges = intersectionShape.getSubTopoShapes(TopAbs_EDGE);
+    for (const auto& s : edges) {
+        TopoDS_Edge edge = TopoDS::Edge(s.getShape());
+        processEdge(edge,
+                    geos,
+                    gPlane,
+                    invPlm,
+                    mov,
+                    sketchPlane,
+                    invRot,
+                    sketchAx3,
+                    aProjFace);
+    }
+    // Section of some face (e.g. sphere) produce more than one arcs
+    // from the same circle. So we try to fit the arcs with a single
+    // circle/arc.
+    if (refSubShape.ShapeType() == TopAbs_FACE && geos.size() > 1) {
+        auto wires = Part::TopoShape().makeElementWires(edges);
+        if (wires.countSubShapes(TopAbs_WIRE) == 1) {
+            TopoDS_Vertex firstVertex, lastVertex;
+            BRepTools_WireExplorer exp(TopoDS::Wire(wires.getSubShape(TopAbs_WIRE, 1)));
+            firstVertex = exp.CurrentVertex();
+            while (!exp.More())
+                exp.Next();
+            lastVertex = exp.CurrentVertex();
+            gp_Pnt P1 = BRep_Tool::Pnt(firstVertex);
+            gp_Pnt P2 = BRep_Tool::Pnt(lastVertex);
+            if (auto geo = fitArcs(geos, P1, P2, arcFitTolerance)) {
+                geos.clear();
+                geos.emplace_back(geo);
+            }
+        }
+    }
+    for (const auto& s : intersectionShape.getSubShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
+        importProjectedVertex(s, geos, gPlane, invPlm);
+    }
+}
+
 }  // anonymous namespace
+
+
+std::vector<std::unique_ptr<Part::Geometry>> SketchObject::buildProjectedExternalGeometry(
+    App::DocumentObject* Obj,
+    const char* SubName,
+    bool intersection
+) const
+{
+    std::vector<std::unique_ptr<Part::Geometry>> geos;
+
+    if (!Obj || Base::Tools::isNullOrEmpty(SubName)) {
+        return geos;
+    }
+
+    if (!isExternalAllowed(Obj->getDocument(), Obj)) {
+        return geos;
+    }
+
+    const std::string subName(SubName);
+    const Data::IndexedName indexedSubName(subName.c_str());
+    const bool hasValidIndex = indexedSubName && indexedSubName.getIndex() > 0;
+    const bool isEdge = hasValidIndex && std::strcmp(indexedSubName.getType(), "Edge") == 0;
+    const bool isVertex = hasValidIndex && std::strcmp(indexedSubName.getType(), "Vertex") == 0;
+
+    if (!isEdge && !isVertex) {
+        return geos;
+    }
+
+    Base::Placement Plm = Placement.getValue();
+    Base::Vector3d Pos = Plm.getPosition();
+    Base::Rotation Rot = Plm.getRotation();
+    Base::Rotation invRot = Rot.inverse();
+    Base::Vector3d dN(0, 0, 1);
+    Rot.multVec(dN, dN);
+    Base::Vector3d dX(1, 0, 0);
+    Rot.multVec(dX, dX);
+
+    Base::Placement invPlm = Plm.inverse();
+    Base::Matrix4D invMat = invPlm.toMatrix();
+    gp_Trsf mov;
+    mov.SetValues(invMat[0][0],
+                  invMat[0][1],
+                  invMat[0][2],
+                  invMat[0][3],
+                  invMat[1][0],
+                  invMat[1][1],
+                  invMat[1][2],
+                  invMat[1][3],
+                  invMat[2][0],
+                  invMat[2][1],
+                  invMat[2][2],
+                  invMat[2][3]);
+
+    gp_Ax3 sketchAx3(
+        gp_Pnt(Pos.x, Pos.y, Pos.z), gp_Dir(dN.x, dN.y, dN.z), gp_Dir(dX.x, dX.y, dX.z));
+    gp_Pln sketchPlane(sketchAx3);
+    Handle(Geom_Plane) gPlane = new Geom_Plane(sketchPlane);
+    BRepBuilderAPI_MakeFace mkFace(sketchPlane);
+    TopoDS_Shape aProjFace = mkFace.Shape();
+
+    try {
+        TopoDS_Shape refSubShape = resolveExternalGeometrySubShape(Obj, subName);
+
+        if (isEdge && refSubShape.ShapeType() == TopAbs_EDGE) {
+            if (intersection) {
+                appendExternalGeometryIntersection(refSubShape,
+                                                   geos,
+                                                   invRot,
+                                                   invPlm,
+                                                   mov,
+                                                   sketchPlane,
+                                                   gPlane,
+                                                   sketchAx3,
+                                                   aProjFace,
+                                                   ArcFitTolerance.getValue());
+            }
+            else {
+                appendExternalGeometryProjection(refSubShape,
+                                                 geos,
+                                                 invRot,
+                                                 invPlm,
+                                                 mov,
+                                                 sketchPlane,
+                                                 gPlane,
+                                                 sketchAx3,
+                                                 aProjFace);
+            }
+        }
+        else if (isVertex && refSubShape.ShapeType() == TopAbs_VERTEX) {
+            appendExternalGeometryProjection(refSubShape,
+                                             geos,
+                                             invRot,
+                                             invPlm,
+                                             mov,
+                                             sketchPlane,
+                                             gPlane,
+                                             sketchAx3,
+                                             aProjFace);
+        }
+    }
+    catch (const Base::Exception& e) {
+        FC_ERR("Failed to build lazy external geometry preview in "
+               << getFullName() << ": " << Obj->getNameInDocument() << "." << subName
+               << std::endl << e.what());
+        geos.clear();
+    }
+    catch (const Standard_Failure& e) {
+        FC_ERR("Failed to build lazy external geometry preview in "
+               << getFullName() << ": " << Obj->getNameInDocument() << "." << subName
+               << std::endl << e.GetMessageString());
+        geos.clear();
+    }
+    catch (const std::exception& e) {
+        FC_ERR("Failed to build lazy external geometry preview in "
+               << getFullName() << ": " << Obj->getNameInDocument() << "." << subName
+               << std::endl << e.what());
+        geos.clear();
+    }
+    catch (...) {
+        FC_ERR("Failed to build lazy external geometry preview in "
+               << getFullName() << ": " << Obj->getNameInDocument() << "." << subName
+               << std::endl << "Unknown exception");
+        geos.clear();
+    }
+
+    return geos;
+}
 
 void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd)
 {
@@ -2426,124 +2754,19 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
 
         std::vector<std::unique_ptr<Part::Geometry> > geos;
 
-        auto importVertex = [&](const TopoDS_Shape& refSubShape) {
-            gp_Pnt P = BRep_Tool::Pnt(TopoDS::Vertex(refSubShape));
-            GeomAPI_ProjectPointOnSurf proj(P, gPlane);
-            P = proj.NearestPoint();
-            Base::Vector3d p(P.X(), P.Y(), P.Z());
-            invPlm.multVec(p, p);
-
-            auto* point = new Part::GeomPoint(p);
-            GeometryFacade::setConstruction(point, true);
-            geos.emplace_back(point);
-        };
-
         try {
-            TopoDS_Shape refSubShape;
-
-            // Handles LCS ,resolve to actual datum object
-            const App::DocumentObject* resolvedObj = Obj;
-            if (Obj->isDerivedFrom<App::LocalCoordinateSystem>() && !SubElement.empty()) {
-                auto* lcs = static_cast<const App::LocalCoordinateSystem*>(Obj);
-                // get the datum element by name
-                App::DatumElement* datum = lcs->getDatumElement(SubElement.c_str());
-                if (datum) {
-                    resolvedObj = datum;
-                }
-            }
-
-            if (auto* datum = freecad_cast<const Part::Datum*>(resolvedObj)) {
-                refSubShape = datum->getShape();
-            }
-            else if (auto* refObj = freecad_cast<const Part::Feature*>(resolvedObj)) {
-                const Part::TopoShape& refShape = refObj->Shape.getShape();
-                refSubShape = refShape.getSubShape(SubElement.c_str());
-            }
-            else if (auto* pl = freecad_cast<const App::Plane*>(resolvedObj)) {
-                Base::Vector3d base = pl->getBasePoint();
-                Base::Vector3d normal = pl->getDirection();
-                gp_Pln plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
-                BRepBuilderAPI_MakeFace fBuilder(plane);
-                if (!fBuilder.IsDone())
-                    throw Base::RuntimeError(
-                        "Sketcher: addExternal(): Failed to build face from App::Plane");
-
-                TopoDS_Face f = TopoDS::Face(fBuilder.Shape());
-                refSubShape = f;
-            }
-            else if (auto* line = freecad_cast<const Part::DatumLine*>(resolvedObj)) {
-                Base::Placement plm = line->Placement.getValue();
-                Base::Vector3d base = plm.getPosition();
-                Base::Vector3d dir = line->getDirection();
-                gp_Lin l(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
-                BRepBuilderAPI_MakeEdge eBuilder(l);
-                if (!eBuilder.IsDone()) {
-                    throw Base::RuntimeError(
-                        "Sketcher: addExternal(): Failed to build edge from Part::DatumLine");
-                }
-
-                TopoDS_Edge e = TopoDS::Edge(eBuilder.Shape());
-                refSubShape = e;
-            }
-            else if (auto* point = freecad_cast<const Part::DatumPoint*>(resolvedObj)) {
-                Base::Placement plm = point->Placement.getValue();
-                Base::Vector3d base = plm.getPosition();
-                gp_Pnt p(base.x, base.y, base.z);
-                BRepBuilderAPI_MakeVertex eBuilder(p);
-                if (!eBuilder.IsDone()) {
-                    throw Base::RuntimeError(
-                        "Sketcher: addExternal(): Failed to build vertex from Part::DatumPoint");
-                }
-
-                TopoDS_Vertex v = TopoDS::Vertex(eBuilder.Shape());
-                refSubShape = v;
-            }
-            else if (auto* line = freecad_cast<const App::Line*>(resolvedObj)) {
-                Base::Vector3d base = line->getBasePoint();
-                Base::Vector3d dir = line->getDirection();
-                gp_Lin l(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
-                BRepBuilderAPI_MakeEdge eBuilder(l);
-                if (!eBuilder.IsDone()) {
-                    throw Base::RuntimeError(
-                        "Sketcher: addExternal(): Failed to build edge from App::Line");
-                }
-
-                TopoDS_Edge e = TopoDS::Edge(eBuilder.Shape());
-                refSubShape = e;
-            }
-            else if (auto* point = freecad_cast<const App::Point*>(resolvedObj)) {
-                Base::Vector3d base = point->getBasePoint();
-                gp_Pnt p(base.x, base.y, base.z);
-                BRepBuilderAPI_MakeVertex eBuilder(p);
-                if (!eBuilder.IsDone()) {
-                    throw Base::RuntimeError(
-                        "Sketcher: addExternal(): Failed to build vertex from App::Point");
-                }
-
-                TopoDS_Vertex v = TopoDS::Vertex(eBuilder.Shape());
-                refSubShape = v;
-            }
-            else {
-                throw Base::TypeError(
-                    "Datum feature type is not yet supported as external geometry for a sketch");
-            }
+            TopoDS_Shape refSubShape = resolveExternalGeometrySubShape(Obj, SubElement);
 
             if (projection && !refSubShape.IsNull()) {
-                switch (refSubShape.ShapeType()) {
-                case TopAbs_FACE: {
-                    processFace(invRot, invPlm, mov, sketchPlane, gPlane, sketchAx3, aProjFace, geos, refSubShape);
-                } break;
-                case TopAbs_EDGE: {
-                    const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
-                    processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
-                } break;
-                case TopAbs_VERTEX: {
-                    importVertex(refSubShape);
-                } break;
-                default:
-                    throw Base::TypeError("Unknown type of geometry");
-                    break;
-                }
+                appendExternalGeometryProjection(refSubShape,
+                                                 geos,
+                                                 invRot,
+                                                 invPlm,
+                                                 mov,
+                                                 sketchPlane,
+                                                 gPlane,
+                                                 sketchAx3,
+                                                 aProjFace);
                 if (beingCreated && !extToAdd->intersection) {
                     // We are adding the projections, so we need to initialize those
                     for (auto& geo : geos) {
@@ -2555,39 +2778,16 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
             int projSize = geos.size();
 
             if (intersection && !refSubShape.IsNull()) {
-                FCBRepAlgoAPI_Section maker(refSubShape, sketchPlane);
-                maker.Approximation(Standard_True);
-                if (!maker.IsDone())
-                    FC_THROWM(Base::CADKernelError, "Failed to get intersection");
-                Part::TopoShape intersectionShape(maker.Shape());
-                auto edges = intersectionShape.getSubTopoShapes(TopAbs_EDGE);
-                for (const auto& s : edges) {
-                    TopoDS_Edge edge = TopoDS::Edge(s.getShape());
-                    processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
-                }
-                // Section of some face (e.g. sphere) produce more than one arcs
-                // from the same circle. So we try to fit the arcs with a single
-                // circle/arc.
-                if (refSubShape.ShapeType() == TopAbs_FACE && geos.size() > 1) {
-                    auto wires = Part::TopoShape().makeElementWires(edges);
-                    if (wires.countSubShapes(TopAbs_WIRE) == 1) {
-                        TopoDS_Vertex firstVertex, lastVertex;
-                        BRepTools_WireExplorer exp(TopoDS::Wire(wires.getSubShape(TopAbs_WIRE, 1)));
-                        firstVertex = exp.CurrentVertex();
-                        while (!exp.More())
-                            exp.Next();
-                        lastVertex = exp.CurrentVertex();
-                        gp_Pnt P1 = BRep_Tool::Pnt(firstVertex);
-                        gp_Pnt P2 = BRep_Tool::Pnt(lastVertex);
-                        if (auto geo = fitArcs(geos, P1, P2, ArcFitTolerance.getValue())) {
-                            geos.clear();
-                            geos.emplace_back(geo);
-                        }
-                    }
-                }
-                for (const auto& s : intersectionShape.getSubShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
-                    importVertex(s);
-                }
+                appendExternalGeometryIntersection(refSubShape,
+                                                   geos,
+                                                   invRot,
+                                                   invPlm,
+                                                   mov,
+                                                   sketchPlane,
+                                                   gPlane,
+                                                   sketchAx3,
+                                                   aProjFace,
+                                                   ArcFitTolerance.getValue());
 
                 if (beingCreated && extToAdd->intersection) {
                     // We are adding the projections, so we need to initialize those
