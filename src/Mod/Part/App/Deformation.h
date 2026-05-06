@@ -44,6 +44,7 @@
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BSplineSurface.hxx>
 #include <GeomConvert.hxx>
+#include <Precision.hxx>
 #include <ShapeFix_Face.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeFix_Shell.hxx>
@@ -55,7 +56,7 @@
 #include <TopoDS_Builder.hxx>
 #include <TopoDS_Shell.hxx>
 #include <gp_Pnt.hxx>
-#include <Precision.hxx>
+#include <gp_Quaternion.hxx>
 
 namespace Part
 {
