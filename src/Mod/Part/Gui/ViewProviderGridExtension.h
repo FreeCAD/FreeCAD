@@ -52,7 +52,7 @@ public:
     ViewProviderGridExtension();
     ~ViewProviderGridExtension() override;
 
-    void setGridEnabled(Gui::View3DInventor* view);
+    void setGridEnabled(Gui::View3DInventor* view_);
 
     void drawGrid(bool cameraUpdate);
 

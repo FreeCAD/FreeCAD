@@ -250,7 +250,7 @@ struct ApplicationP
     std::map<const App::Document*, Gui::Document*> documents;
     /// Active document
     Gui::Document* activeDocument {nullptr};
-    std::vector<Gui::Document*> editDocuments;
+    Gui::Document* editDocument {nullptr};
 
     MacroManager* macroMngr;
     PreferencePackManager* prefPackManager;
@@ -1346,9 +1346,6 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"), Py::None());
             }
         }
-        if (!d->activeDocument->workbench().empty()) {
-            activateWorkbench(d->activeDocument->workbench().c_str());
-        }
 
         // Update the application to show the unit change
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -1555,64 +1552,26 @@ Gui::Document* Application::activeDocument() const
 
 Gui::Document* Application::editDocument() const
 {
-    if (d->editDocuments.empty()) {
-        return nullptr;
-    }
-    return d->editDocuments[0];
+    return d->editDocument;
 }
-Gui::Document* Application::editDocument(const std::function<bool(Gui::Document*)>& eval)
-{
-    auto found = std::ranges::find_if(d->editDocuments, eval);
 
-    return found == d->editDocuments.end() ? nullptr : *found;
-}
-std::vector<Gui::Document*> Application::editDocuments() const
-{
-    return d->editDocuments;
-}
-bool Application::isInEdit(Gui::Document* pcDocument) const
-{
-    return std::ranges::find(d->editDocuments, pcDocument) != d->editDocuments.end();
-}
-void Application::unsetEditDocument(Gui::Document* pcDocument)
-{
-    if (std::erase(d->editDocuments, pcDocument) == 0) {
-        return;
-    }
-
-    pcDocument->_resetEdit();
-    updateActions();
-}
-void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
-{
-    std::vector<Gui::Document*> matched, unmatched;
-    ranges::partition_copy(d->editDocuments, back_inserter(matched), back_inserter(unmatched), eval);
-    std::swap(d->editDocuments, unmatched);
-    for (auto doc : matched) {
-        doc->_resetEdit();
-    }
-    updateActions();
-}
 Gui::MDIView* Application::editViewOfNode(SoNode* node) const
 {
-    for (auto editDoc : d->editDocuments) {
-        if (Gui::MDIView* view = editDoc->getViewOfNode(node)) {
-            return view;
-        }
-    }
-    return nullptr;
+    return d->editDocument ? d->editDocument->getViewOfNode(node) : nullptr;
 }
 
-void Application::setEditDocument(Gui::Document* pcDocument)
+void Application::setEditDocument(Gui::Document* doc)
 {
-    if (pcDocument == nullptr) {
+    if (!doc) {
+        d->editDocument = nullptr;
+    }
+    else if (doc == d->editDocument) {
         return;
     }
-    if (std::ranges::find(d->editDocuments, pcDocument) != d->editDocuments.end()) {
-        return;
+    for (auto& v : d->documents) {
+        v.second->_resetEdit();
     }
-    d->editDocuments.push_back(pcDocument);
-
+    d->editDocument = doc;
     updateActions();
 }
 
@@ -1633,18 +1592,12 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
             return;
         }
     }
-    if (d->activeDocument) {
-        d->activeDocument->setIsActive(false);
-    }
     d->activeDocument = pcDocument;
-
     std::string nameApp, nameGui;
 
     // This adds just a line to the macro file but does not set the active document
     // Macro recording of this is problematic, thus it's written out as comment.
     if (pcDocument) {
-        pcDocument->setIsActive(true);
-
         nameApp += "App.setActiveDocument(\"";
         nameApp += pcDocument->getDocument()->getName();
         nameApp += "\")\n";
@@ -2003,9 +1956,6 @@ bool Application::activateWorkbench(const char* name)
                     ->SetASCII("LastModule", nameWb.c_str());
             }
             newWb->activated();
-        }
-        if (activeDocument()) {
-            activeDocument()->setWorkbench(name);
         }
     }
     catch (Py::Exception&) {

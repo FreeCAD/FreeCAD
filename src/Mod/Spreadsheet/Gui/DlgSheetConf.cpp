@@ -25,6 +25,7 @@
 
 #include <QMessageBox>
 
+#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
 #include <App/Range.h>
@@ -201,7 +202,7 @@ void DlgSheetConf::accept()
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
         }
 
-        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Setup conf table"));
+        AutoTransaction guard("Setup conf table");
         commandActive = true;
 
         // unbind any previous binding
@@ -283,14 +284,14 @@ void DlgSheetConf::accept()
         );
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        sheet->getDocument()->commitTransaction();
+        Gui::Command::commitCommand();
         QDialog::accept();
     }
     catch (Base::Exception& e) {
         e.reportException();
         QMessageBox::critical(this, tr("Setup Configuration Table"), QString::fromUtf8(e.what()));
         if (commandActive) {
-            sheet->getDocument()->abortTransaction();
+            Gui::Command::abortCommand();
         }
     }
 }
@@ -306,7 +307,7 @@ void DlgSheetConf::onDiscard()
 
         Range range(from, to);
 
-        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Unsetup conf table"));
+        AutoTransaction guard("Unsetup conf table");
         commandActive = true;
 
         // unbind any previous binding
@@ -340,14 +341,14 @@ void DlgSheetConf::onDiscard()
         }
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        sheet->getDocument()->commitTransaction();
+        Gui::Command::commitCommand();
         QDialog::accept();
     }
     catch (Base::Exception& e) {
         e.reportException();
         QMessageBox::critical(this, tr("Unsetup Configuration Table"), QString::fromUtf8(e.what()));
         if (commandActive) {
-            sheet->getDocument()->abortTransaction();
+            Gui::Command::abortCommand();
         }
     }
 }

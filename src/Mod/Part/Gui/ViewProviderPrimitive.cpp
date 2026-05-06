@@ -29,7 +29,6 @@
 
 #include <Gui/ActionFunction.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
 #include "ViewProviderPrimitive.h"
@@ -81,7 +80,7 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
 void ViewProviderPrimitive::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog(getDocument()->getDocument());
+        Gui::Control().closeDialog();
     }
     else {
         ViewProviderPart::unsetEdit(ModNum);

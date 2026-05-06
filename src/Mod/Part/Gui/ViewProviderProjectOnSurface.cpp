@@ -29,7 +29,6 @@
 #include "ViewProviderProjectOnSurface.h"
 #include "DlgProjectionOnSurface.h"
 #include <Gui/Control.h>
-#include <Gui/Document.h>
 
 
 using namespace PartGui;
@@ -77,7 +76,7 @@ bool ViewProviderProjectOnSurface::setEdit(int ModNum)
 void ViewProviderProjectOnSurface::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog(getDocument()->getDocument());
+        Gui::Control().closeDialog();
     }
     else {
         ViewProviderPart::unsetEdit(ModNum);

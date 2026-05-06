@@ -30,7 +30,6 @@
 #include <vector>
 
 #include <App/Material.h>
-#include <App/TransactionDefs.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -115,7 +114,6 @@ public:
 private:
     DlgMaterialImp* widget;
     Gui::TaskView::TaskBox* taskbox;
-    int tid {App::NullTransaction};
 };
 
 }  // namespace MatGui

@@ -240,7 +240,8 @@ void DlgBindSheet::accept()
                 }
             }
         }
-        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Bind cells"));
+
+        Gui::Command::openCommand("Bind cells");
         commandActive = true;
 
         if (ui->checkBoxHREF->isChecked()) {
@@ -273,7 +274,7 @@ void DlgBindSheet::accept()
             );
         }
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        sheet->getDocument()->commitTransaction();
+        Gui::Command::commitCommand();
         QDialog::accept();
     }
     catch (Base::Exception& e) {
@@ -284,7 +285,7 @@ void DlgBindSheet::accept()
             tr("Error:\n") + QString::fromUtf8(e.what())
         );
         if (commandActive) {
-            sheet->getDocument()->abortTransaction();
+            Gui::Command::abortCommand();
         }
     }
 }
@@ -294,7 +295,7 @@ void DlgBindSheet::onDiscard()
     try {
         std::string fromStart(ui->lineEditFromStart->text().trimmed().toLatin1().constData());
         std::string fromEnd(ui->lineEditFromEnd->text().trimmed().toLatin1().constData());
-        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Unbind cells"));
+        Gui::Command::openCommand("Unbind cells");
         Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.Bind.%s.%s', None)", fromStart, fromEnd);
         Gui::cmdAppObjectArgs(
             sheet,
@@ -303,13 +304,13 @@ void DlgBindSheet::onDiscard()
             fromEnd
         );
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        sheet->getDocument()->commitTransaction();
+        Gui::Command::commitCommand();
         reject();
     }
     catch (Base::Exception& e) {
         e.reportException();
         QMessageBox::critical(this, tr("Unbind Cells"), QString::fromUtf8(e.what()));
-        sheet->getDocument()->abortTransaction();
+        Gui::Command::abortCommand();
     }
 }
 

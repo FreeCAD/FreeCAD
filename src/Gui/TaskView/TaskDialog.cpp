@@ -106,7 +106,7 @@ void TaskDialog::associateToObject3dView(App::DocumentObject* obj)
         return;
     }
 
-    Gui::Document* guiDoc = Gui::Application::Instance->activeDocument();
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
     auto* vp = Gui::Application::Instance->getViewProvider(obj);
     auto* vpdo = static_cast<Gui::ViewProviderDocumentObject*>(vp);
     auto* view = guiDoc->openEditingView3D(vpdo);
@@ -156,12 +156,6 @@ void TaskDialog::onUndo()
 {}
 
 void TaskDialog::onRedo()
-{}
-
-void TaskDialog::activate()
-{}
-
-void TaskDialog::deactivate()
 {}
 
 

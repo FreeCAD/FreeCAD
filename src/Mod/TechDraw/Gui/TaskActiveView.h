@@ -91,7 +91,6 @@ private:
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
-    int m_tid;
 };
 
 

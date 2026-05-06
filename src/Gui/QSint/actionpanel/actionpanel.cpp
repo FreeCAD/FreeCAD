@@ -93,5 +93,10 @@ ActionGroup *ActionPanel::createGroup(const QPixmap &icon, const QString &title,
     return group;
 }
 
+QSize ActionPanel::minimumSizeHint() const
+{
+    return {200,150};
+}
+
 } // namespace QSint
 

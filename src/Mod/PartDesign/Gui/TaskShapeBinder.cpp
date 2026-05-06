@@ -433,11 +433,10 @@ bool TaskDlgShapeBinder::accept()
                 throw Base::RuntimeError(vp->getObject()->getStatusString());
             }
             Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
-            vp->getDocument()->commitCommand();
+            Gui::Command::commitCommand();
         }
     }
     catch (const Base::Exception& e) {
-        vp->getDocument()->abortCommand();
         QMessageBox::warning(
             parameter,
             tr("Input Error"),
@@ -452,10 +451,9 @@ bool TaskDlgShapeBinder::accept()
 bool TaskDlgShapeBinder::reject()
 {
     if (!vp.expired()) {
-        // roll back the done things (deletes 'vp')
-        // Gui::Command::abortCommand();
-        vp->getDocument()->abortCommand();
         App::Document* doc = vp->getObject()->getDocument();
+        // roll back the done things (deletes 'vp')
+        Gui::Command::abortCommand();
         Gui::cmdGuiDocument(doc, "resetEdit()");
         Gui::cmdAppDocument(doc, "recompute()");
     }

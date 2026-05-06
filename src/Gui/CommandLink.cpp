@@ -34,11 +34,9 @@
 #include "Action.h"
 #include "Application.h"
 #include "Command.h"
-#include "Control.h"
 #include "Document.h"
 #include "MainWindow.h"
 #include "Selection.h"
-#include "TaskCommandLink.h"
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
 #include "WaitCursor.h"
@@ -282,51 +280,6 @@ void StdCmdLinkMake::activated(int)
         return;
     }
 
-    auto exec = [=](std::vector<App::DocumentObject*> objs) {
-        doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Make link"));
-        try {
-            if (objs.empty()) {
-                std::string name = doc->getUniqueObjectName("Link");
-                Command::doCommand(
-                    Command::Doc,
-                    "App.getDocument('%s').addObject('App::Link','%s')",
-                    doc->getName(),
-                    name.c_str()
-                );
-                Selection().addSelection(doc->getName(), name.c_str());
-            }
-            else {
-                for (auto obj : objs) {
-                    std::string name = doc->getUniqueObjectName("Link");
-                    Command::doCommand(
-                        Command::Doc,
-                        "App.getDocument('%s').addObject('App::Link','%s').setLink(App.getDocument("
-                        "'%s'"
-                        ").%s)",
-                        doc->getName(),
-                        name.c_str(),
-                        obj->getDocument()->getName(),
-                        obj->getNameInDocument()
-                    );
-                    setLinkLabel(obj, doc->getName(), name.c_str());
-                    Selection().addSelection(doc->getName(), name.c_str());
-                }
-            }
-            Selection().selStackPush();
-            doc->commitTransaction();
-        }
-        catch (const Base::Exception& e) {
-            doc->abortTransaction();
-            QMessageBox::critical(
-                getMainWindow(),
-                QObject::tr("Create link failed"),
-                QString::fromLatin1(e.what())
-            );
-            e.reportException();
-        }
-    };
-
-
     std::set<App::DocumentObject*> objs;
     for (auto& sel : Selection().getCompleteSelection()) {
         if (sel.pObject && sel.pObject->isAttachedToDocument()) {
@@ -334,13 +287,48 @@ void StdCmdLinkMake::activated(int)
         }
     }
 
-    if (objs.empty()) {
-        Gui::Control().showDialog(new TaskCommandLinkDialog(exec));
-    }
-    else {
+    Selection().selStackPush();
+    Selection().clearCompleteSelection();
+
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make link"));
+    try {
+        if (objs.empty()) {
+            std::string name = doc->getUniqueObjectName("Link");
+            Command::doCommand(
+                Command::Doc,
+                "App.getDocument('%s').addObject('App::Link','%s')",
+                doc->getName(),
+                name.c_str()
+            );
+            Selection().addSelection(doc->getName(), name.c_str());
+        }
+        else {
+            for (auto obj : objs) {
+                std::string name = doc->getUniqueObjectName("Link");
+                Command::doCommand(
+                    Command::Doc,
+                    "App.getDocument('%s').addObject('App::Link','%s').setLink(App.getDocument('%s'"
+                    ").%s)",
+                    doc->getName(),
+                    name.c_str(),
+                    obj->getDocument()->getName(),
+                    obj->getNameInDocument()
+                );
+                setLinkLabel(obj, doc->getName(), name.c_str());
+                Selection().addSelection(doc->getName(), name.c_str());
+            }
+        }
         Selection().selStackPush();
-        Selection().clearCompleteSelection();
-        exec(std::vector<App::DocumentObject*>(objs.begin(), objs.end()));
+        Command::commitCommand();
+    }
+    catch (const Base::Exception& e) {
+        Command::abortCommand();
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Create link failed"),
+            QString::fromLatin1(e.what())
+        );
+        e.reportException();
     }
 }
 
@@ -488,7 +476,7 @@ static void linkConvert(bool unlink)
 
     // now, do actual operation
     const char* transactionName = unlink ? "Unlink" : "Replace with link";
-    int tid = 0;
+    Command::openCommand(transactionName);
     try {
         std::unordered_map<App::DocumentObject*, App::DocumentObjectT> recomputeSet;
         for (auto& v : infos) {
@@ -505,12 +493,6 @@ static void linkConvert(bool unlink)
                 recomputeSet.emplace(parent, parent);
             }
             auto doc = parent->getDocument();
-
-            tid = doc->openTransaction(
-                App::TransactionName {.name = transactionName, .temporary = false},
-                tid
-            );
-
             App::DocumentObject* replaceObj;
             if (unlink) {
                 replaceObj = obj->getLinkedObject(false);
@@ -570,10 +552,10 @@ static void linkConvert(bool unlink)
             recomputes.front()->getDocument()->recompute(recomputes);
         }
 
-        App::GetApplication().commitTransaction(tid);
+        Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        App::GetApplication().abortTransaction(tid);
+        Command::abortCommand();
         auto title = unlink ? QObject::tr("Unlink failed") : QObject::tr("Replace link failed");
         QMessageBox::critical(getMainWindow(), title, QString::fromLatin1(e.what()));
         e.reportException();

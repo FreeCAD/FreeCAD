@@ -133,8 +133,6 @@ private:
 
     QPointer<MRichTextEdit> m_toolbar {nullptr};
     QPointer<QWidget> m_viewport {nullptr};
-
-    int m_tid {0};
 };
 
 class TaskDlgRichAnno : public Gui::TaskView::TaskDialog

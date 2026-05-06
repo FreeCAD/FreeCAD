@@ -222,7 +222,6 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a Body"));
-    bool openedModal = false;
 
     std::string bodyName = getUniqueObjectName("Body");
     const char* bodyString = bodyName.c_str();
@@ -368,10 +367,6 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     updateActive();
-
-    if (!openedModal) {
-        commitCommand();
-    }
 }
 
 bool CmdPartDesignBody::isActive()
@@ -526,7 +521,9 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to bodies"));
+    Gui::Command::openCommand(
+        QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to bodies")
+    );
 
     for (auto chainIt = featureChains.begin(); !featureChains.empty();
          featureChains.erase(chainIt), chainIt = featureChains.begin()) {
@@ -808,8 +805,6 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
     }
 
     updateActive();
-
-    commitCommand();
 }
 
 bool CmdPartDesignDuplicateSelection::isActive()
@@ -1009,8 +1004,6 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     }*/
 
     updateActive();
-
-    commitCommand();
 }
 
 bool CmdPartDesignMoveFeature::isActive()
@@ -1208,8 +1201,6 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     }
 
     updateActive();
-
-    commitCommand();
 }
 
 bool CmdPartDesignMoveFeatureInTree::isActive()

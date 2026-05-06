@@ -837,8 +837,8 @@ bool TaskProjGroup::reject()
     }
     else {
         //set the DPG and its views back to entry state.
-        if (doc->hasPendingCommand()) {
-            doc->abortCommand();
+        if (Gui::Command::hasPendingCommand()) {
+            Gui::Command::abortCommand();
         }
         // Restore views to initial spacing
         if (multiView) {
@@ -885,10 +885,10 @@ void TaskDlgProjGroup::open()
 {
     if (!widget->getCreateMode())  {    //this is an edit session, start a transaction
         if (dynamic_cast<TechDraw::DrawProjGroup*>(view)) {
-            App::GetApplication().setActiveTransaction(App::TransactionName{.name="Edit Projection Group", .temporary=true});
+            App::GetApplication().setActiveTransaction("Edit Projection Group", true);
         }
         else {
-            App::GetApplication().setActiveTransaction(App::TransactionName{.name="Edit Part View", .temporary=true});
+            App::GetApplication().setActiveTransaction("Edit Part View", true);
         }
     }
 }

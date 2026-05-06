@@ -179,7 +179,7 @@ public:
             if (obj->is<Sketcher::SketchObject>() || sketchArchType == obj->getTypeId().getName()) {
 
                 try {
-                    openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "carbonCopy(\"%s\",%s)",
@@ -187,7 +187,7 @@ public:
                         constructionModeAsBooleanText()
                     );
 
-                    commitCommand();
+                    Gui::Command::commitCommand();
 
                     tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
@@ -203,7 +203,7 @@ public:
                         QT_TRANSLATE_NOOP("Notifications", "Error"),
                         QT_TRANSLATE_NOOP("Notifications", "Failed to add carbon copy")
                     );
-                    abortCommand();
+                    Gui::Command::abortCommand();
                 }
                 return true;
             }

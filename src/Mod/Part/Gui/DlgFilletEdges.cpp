@@ -264,7 +264,8 @@ DlgFilletEdges::DlgFilletEdges(
     ui->filletEndRadius->setUnit(Base::Unit::Length);
 
     d->object = nullptr;
-    setSelectionGate();
+    d->selection = new EdgeFaceSelection(d->object);
+    Gui::Selection().addSelectionGate(d->selection);
 
     d->fillet = fillet;
     // NOLINTBEGIN
@@ -1124,11 +1125,6 @@ bool DlgFilletEdges::accept()
     Gui::Command::copyVisual(to, "LineColor", from);
     Gui::Command::copyVisual(to, "PointColor", from);
     return true;
-}
-void DlgFilletEdges::setSelectionGate()
-{
-    d->selection = new EdgeFaceSelection(d->object);
-    Gui::Selection().addSelectionGate(d->selection);
 }
 
 // ---------------------------------------

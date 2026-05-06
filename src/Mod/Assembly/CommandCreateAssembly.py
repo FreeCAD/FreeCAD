@@ -68,7 +68,7 @@ class CommandCreateAssembly:
         return App.ActiveDocument is not None
 
     def Activated(self):
-        Gui.ActiveDocument.openCommand("New assembly")
+        App.setActiveTransaction("New Assembly")
 
         activeAssembly = UtilsAssembly.activeAssembly()
         Gui.addModule("UtilsAssembly")
@@ -89,7 +89,7 @@ class CommandCreateAssembly:
         if not activeAssembly:
             Gui.doCommandGui("Gui.ActiveDocument.setEdit(assembly)")
 
-        Gui.ActiveDocument.commitCommand()
+        App.closeActiveTransaction()
 
 
 class ActivateAssemblyTaskPanel:

@@ -208,7 +208,7 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
 
         self.createPart()
 
-        Gui.ActiveDocument.commitCommand()
+        App.closeActiveTransaction()
 
         return True
 

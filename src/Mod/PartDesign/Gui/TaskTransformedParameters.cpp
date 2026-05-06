@@ -30,7 +30,6 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Transactions.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Gui/Document.h>
@@ -71,6 +70,9 @@ TaskTransformedParameters::TaskTransformedParameters(
 {
     Gui::Document* doc = TransformedView->getDocument();
     this->attachDocument(doc);
+
+    // remember initial transaction ID
+    App::GetApplication().getActiveTransaction(&transactionID);
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters* parentTask)
@@ -274,16 +276,16 @@ void TaskTransformedParameters::setupTransaction()
         return;
     }
 
-    int tid = obj->getDocument()->getBookedTransactionID();
-    if (tid != App::NullTransaction) {
+    int tid = 0;
+    App::GetApplication().getActiveTransaction(&tid);
+    if (tid != 0 && tid == transactionID) {
         return;
     }
 
     // open a transaction if none is active
-    // where is this transaction committed - theo-vt?
     std::string name("Edit ");
     name += obj->Label.getValue();
-    transactionID = obj->getDocument()->openTransaction(name.c_str());
+    transactionID = App::GetApplication().setActiveTransaction(name.c_str());
 }
 
 void TaskTransformedParameters::setEnabledTransaction(bool on)
@@ -634,5 +636,6 @@ bool TaskDlgTransformedParameters::reject()
     parameter->exitSelectionMode();
     return TaskDlgFeatureParameters::reject();
 }
+
 
 #include "moc_TaskTransformedParameters.cpp"

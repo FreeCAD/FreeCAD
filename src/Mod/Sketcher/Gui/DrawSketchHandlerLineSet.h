@@ -459,7 +459,9 @@ public:
                 // issue the geometry
                 try {
                     // open the transaction
-                    openCommand(QT_TRANSLATE_NOOP("Command", "Add line to sketch polyline"));
+                    Gui::Command::openCommand(
+                        QT_TRANSLATE_NOOP("Command", "Add line to sketch polyline")
+                    );
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
@@ -477,7 +479,7 @@ public:
                         QT_TRANSLATE_NOOP("Notifications", "Error"),
                         QT_TRANSLATE_NOOP("Notifications", "Failed to add line")
                     );
-                    abortCommand();
+                    Gui::Command::abortCommand();
                 }
 
                 firstsegment = false;
@@ -489,7 +491,9 @@ public:
                 }
 
                 try {
-                    openCommand(QT_TRANSLATE_NOOP("Command", "Add arc to sketch polyline"));
+                    Gui::Command::openCommand(
+                        QT_TRANSLATE_NOOP("Command", "Add arc to sketch polyline")
+                    );
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "addGeometry(Part.ArcOfCircle"
@@ -510,7 +514,7 @@ public:
                         QT_TRANSLATE_NOOP("Notifications", "Failed to add arc")
                     );
 
-                    abortCommand();
+                    Gui::Command::abortCommand();
                 }
 
                 firstsegment = false;
@@ -582,7 +586,7 @@ public:
                     );
                     firstsegment = true;
                 }
-                commitCommand();
+                Gui::Command::commitCommand();
 
                 tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
             }
@@ -665,7 +669,7 @@ public:
                 }
             }
             else {
-                commitCommand();
+                Gui::Command::commitCommand();
 
                 // Add auto constraints
                 if (!sugConstr1.empty()) {  // this is relevant only to the very first point

@@ -330,7 +330,7 @@ void execMidpoints(Gui::Command* cmd)
     if (!dvp || selectedEdges.empty())
         return;
 
-    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Add midpoint vertices"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add midpoint vertices"));
 
     const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
     for (auto& s: selectedEdges) {
@@ -343,7 +343,7 @@ void execMidpoints(Gui::Command* cmd)
         dvp->addCosmeticVertex(mid);
     }
 
-    cmd->commitCommand();
+    Gui::Command::commitCommand();
 
     dvp->recomputeFeature();
 }
@@ -357,7 +357,7 @@ void execQuadrants(Gui::Command* cmd)
     if (!dvp || selectedEdges.empty())
         return;
 
-    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Add Quadrant vertices"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Quadrant vertices"));
 
     const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
     for (auto& s: selectedEdges) {
@@ -372,7 +372,7 @@ void execQuadrants(Gui::Command* cmd)
         }
     }
 
-    cmd->commitCommand();
+    Gui::Command::commitCommand();
 
     dvp->recomputeFeature();
 }

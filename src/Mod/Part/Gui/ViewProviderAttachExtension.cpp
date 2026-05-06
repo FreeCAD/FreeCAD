@@ -28,7 +28,6 @@
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
 #include <Mod/Part/App/AttachExtension.h>
 
 #include "ViewProviderAttachExtension.h"
@@ -111,11 +110,12 @@ void ViewProviderAttachExtension::showAttachmentEditor(
     std::function<void()> onReject
 )
 {
-    if (Gui::Control().activeDialog(getExtendedViewProvider()->getDocument()->getDocument())) {
-        Gui::Control().closeDialog(getExtendedViewProvider()->getDocument()->getDocument());
+    if (Gui::Control().activeDialog()) {
+        Gui::Control().closeDialog();
     }
-    auto* task = new TaskDlgAttacher(getExtendedViewProvider(), true, onAccept, onReject);
-    Gui::Control().showDialog(task, getExtendedViewProvider()->getDocument()->getDocument());
+
+    TaskDlgAttacher* task = new TaskDlgAttacher(getExtendedViewProvider(), true, onAccept, onReject);
+    Gui::Control().showDialog(task);
 }
 
 namespace Gui

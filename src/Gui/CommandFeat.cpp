@@ -85,12 +85,12 @@ void StdCmdFeatRecompute::activated(int iMsg)
             return;
         }
 
-        App::AutoTransaction committer(doc, "Recompute");
+        App::AutoTransaction committer("Recompute");
         doc->recompute();
         return;
     }
 
-    App::AutoTransaction committer(selectedObjectsByDocument.begin()->first, "Recompute object");
+    App::AutoTransaction committer("Recompute object");
     for (auto& [doc, objects] : selectedObjectsByDocument) {
         doc->recompute(objects, true);
     }

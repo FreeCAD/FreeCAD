@@ -217,12 +217,10 @@ bool OffsetWidget::accept()
         if (!d->offset->isValid()) {
             throw Base::CADKernelError(d->offset->getStatusString());
         }
-
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
-        d->offset->getDocument()->commitTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
+        Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        d->offset->getDocument()->abortTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
         QMessageBox::warning(
             this,
             tr("Input error"),
@@ -243,7 +241,7 @@ bool OffsetWidget::reject()
     }
 
     // roll back the done things
-    d->offset->getDocument()->abortTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
+    Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     Gui::Command::updateActive();
 

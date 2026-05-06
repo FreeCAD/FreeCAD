@@ -101,8 +101,6 @@ void StdCmdPart::activated(int iMsg)
         PartName.c_str()
     );
 
-    commitCommand();
-
     updateActive();
 }
 

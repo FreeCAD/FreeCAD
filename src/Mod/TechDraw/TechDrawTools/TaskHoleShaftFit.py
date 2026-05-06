@@ -95,7 +95,7 @@ class TaskHoleShaftFit:
         self.form.rbShaftBase.clicked.connect(partial(self.on_HoleShaftChanged, False))
         self.form.cbField.currentIndexChanged.connect(self.on_FieldChanged)
 
-        App.ActiveDocument.openTransaction("Add hole or shaft fit")
+        App.setActiveTransaction("Add hole or shaft fit")
 
     def setHoleFields(self):
         """set hole fields in the combo box"""
@@ -170,10 +170,10 @@ class TaskHoleShaftFit:
         else:
             dim.FormatSpecUnderTolerance = "( %-0.6w)"
         Gui.Control.closeDialog()
-        App.ActiveDocument.commitTransaction()
+        App.closeActiveTransaction()
 
     def reject(self):
-        App.ActiveDocument.abortTransaction()
+        App.closeActiveTransaction(True)
         return True
 
 

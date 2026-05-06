@@ -109,9 +109,9 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
 
-    std::string shapeType(primitiveIntToName(iMsg));
+    auto shapeType(primitiveIntToName(iMsg));
 
-    openCommand("Make additive " + shapeType);
+    Gui::Command::openCommand((std::string("Make additive ") + shapeType).c_str());
     if (shouldMakeBody) {
         pcActiveBody = PartDesignGui::makeBody(doc);
     }
@@ -120,7 +120,7 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
         return;
     }
 
-    auto FeatName(getUniqueObjectName(shapeType.c_str(), pcActiveBody));
+    auto FeatName(getUniqueObjectName(shapeType, pcActiveBody));
 
     FCMD_OBJ_DOC_CMD(
         pcActiveBody,
@@ -315,7 +315,7 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     auto shapeType(primitiveIntToName(iMsg));
     auto FeatName(getUniqueObjectName(shapeType, pcActiveBody));
 
-    openCommand(std::string("Make subtractive ") + shapeType);
+    Gui::Command::openCommand((std::string("Make subtractive ") + shapeType).c_str());
     FCMD_OBJ_CMD(
         pcActiveBody,
         "newObject('PartDesign::Subtractive" << shapeType << "','" << FeatName << "')"

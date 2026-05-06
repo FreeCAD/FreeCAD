@@ -246,7 +246,7 @@ void QGIView::dragFinished()
     bool ownTransaction = (viewObj->getDocument()->getTransactionID(true) == 0);
 
     if (ownTransaction) {
-        viewObj->getDocument()->openTransaction("Drag view");
+        Gui::Command::openCommand("Drag view");
     }
     // tell the feature that we have moved
     Gui::ViewProvider *vp = getViewProvider(viewObj);
@@ -264,7 +264,7 @@ void QGIView::dragFinished()
         snapping = false;
     }
     if (ownTransaction) {
-        viewObj->getDocument()->commitTransaction();
+        Gui::Command::commitCommand();
     }
 }
 

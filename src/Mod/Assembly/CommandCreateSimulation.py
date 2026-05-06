@@ -830,10 +830,10 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
         if simFeaturePy:
             self.simFeaturePy = simFeaturePy
-            Gui.ActiveDocument.openCommand("Edit " + simFeaturePy.Label + " Simulation")
+            App.setActiveTransaction("Edit " + simFeaturePy.Label + " Simulation")
             self.onMotionsChanged()
         else:
-            Gui.ActiveDocument.openCommand("Create Simulation")
+            App.setActiveTransaction("Create Simulation")
             self.createSimulationObject()
 
         self.setUiInitialValues()
@@ -868,12 +868,12 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
     def accept(self):
         self.deactivate()
         UtilsAssembly.restoreAssemblyPartsPlacements(self.assembly, self.initialPlcs)
-        Gui.ActiveDocument.commitCommand()
+        App.closeActiveTransaction()
         return True
 
     def reject(self):
         self.deactivate()
-        Gui.ActiveDocument.abortCommand()
+        App.closeActiveTransaction(True)
         return True
 
     def deactivate(self):

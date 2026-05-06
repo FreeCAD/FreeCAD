@@ -58,8 +58,6 @@ public:
     explicit TaskCreateNodeSet(Fem::FemSetNodesObject* pcObject, QWidget* parent = nullptr);
     ~TaskCreateNodeSet() override;
 
-    void setSelectionGate();
-
     std::set<long> tempSet;
     ViewProviderFemMesh* MeshViewProvider;
 

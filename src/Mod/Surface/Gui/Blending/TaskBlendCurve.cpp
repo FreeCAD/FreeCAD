@@ -32,7 +32,6 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/Tools.h>
 #include <Gui/Widgets.h>
@@ -209,8 +208,8 @@ void BlendCurvePanel::bindProperties()
 void BlendCurvePanel::onFirstEdgeButton(bool checked)
 {
     if (checked) {
+        onStartSelection();
         selectionMode = StartEdge;
-        setSelectionGate();
         onUncheckSecondEdgeButton();
     }
     else {
@@ -221,8 +220,8 @@ void BlendCurvePanel::onFirstEdgeButton(bool checked)
 void BlendCurvePanel::onSecondEdgeButton(bool checked)
 {
     if (checked) {
+        onStartSelection();
         selectionMode = EndEdge;
-        setSelectionGate();
         onUncheckFirstEdgeButton();
     }
     else {
@@ -308,9 +307,9 @@ void BlendCurvePanel::onSecondEdgeSizeChanged(double value)
     fea->recomputeFeature();
 }
 
-void BlendCurvePanel::setSelectionGate()
+void BlendCurvePanel::onStartSelection()
 {
-    if (vp.expired() || selectionMode == None) {
+    if (vp.expired()) {
         return;
     }
 
@@ -406,22 +405,22 @@ void BlendCurvePanel::clearSelection()
 
 void BlendCurvePanel::checkOpenCommand()
 {
-    if (!vp->getDocument()->hasPendingCommand()) {
-        vp->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit blending curve"));
+    if (!Gui::Command::hasPendingCommand()) {
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit blending curve"));
     }
 }
 
 bool BlendCurvePanel::accept()
 {
     Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
-    vp->getDocument()->commitCommand();
+    Gui::Command::commitCommand();
     Gui::Command::updateActive();
     return true;
 }
 
 bool BlendCurvePanel::reject()
 {
-    vp->getDocument()->abortCommand();
+    Gui::Command::abortCommand();
     Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
     Gui::Command::updateActive();
     return true;
@@ -448,13 +447,4 @@ bool TaskBlendCurve::accept()
 bool TaskBlendCurve::reject()
 {
     return widget->reject();
-}
-void TaskBlendCurve::activate()
-{
-    widget->setSelectionGate();
-    widget->attachSelection();
-}
-void TaskBlendCurve::deactivate()
-{
-    widget->detachSelection();
 }

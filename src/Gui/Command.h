@@ -473,24 +473,11 @@ public:
     /** @name Helper methods for the Undo/Redo and Update handling */
     //@{
     /// Open a new Undo transaction on the active document
-    int openCommand(App::TransactionName name);
-    int openCommand(std::string name);
-    static int openActiveDocumentCommand(App::TransactionName name, int tid = App::NullTransaction);
-    static int openActiveDocumentCommand(std::string name, int tid = App::NullTransaction);
-
-    void rename(const std::string& name);
-
+    static void openCommand(const char* sName = nullptr);
     /// Commit the Undo transaction on the active document
-    void commitCommand();
-    static void commitCommand(int tid);
-
+    static void commitCommand();
     /// Abort the Undo transaction on the active document
-    void abortCommand();
-    static void abortCommand(int tid);
-
-    int transactionID() const;
-    void resetTransactionID();
-
+    static void abortCommand();
     /// Check if an Undo transaction is open on the active document
     static bool hasPendingCommand();
     /// Updates the (active) document (propagate changes)
@@ -728,8 +715,6 @@ protected:
     /// Indicate if the command shall log to MacroManager
     bool bCanLog;
     //@}
-
-    int currentTransactionID {0};  // TransactionID created in _invoke
 private:
     static int _busy;
     bool bEnabled;

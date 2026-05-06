@@ -57,11 +57,11 @@ class TaskMoveView:
 
         self.dialogOpen = False
 
-        App.ActiveDocument.openTransaction("Move view")
+        App.setActiveTransaction("Move view")
 
     def accept(self):
 #        print ("Accept")
-        App.ActiveDocument.commitTransaction()
+        App.closeActiveTransaction()
         view = App.ActiveDocument.getObject(self.viewName)
         fromPage = App.ActiveDocument.getObject(self.fromPageName)
         toPage = App.ActiveDocument.getObject(self.toPageName)
@@ -70,7 +70,7 @@ class TaskMoveView:
 
     def reject(self):
 #        print ("Reject")
-        App.ActiveDocument.abortTransaction()
+        App.closeActiveTransaction(True)
         return True
 
     def pickView(self):

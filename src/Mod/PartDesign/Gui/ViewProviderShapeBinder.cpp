@@ -225,7 +225,7 @@ void ViewProviderShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, c
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     func->trigger(act, [this]() {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-        getDocument()->openCommand(text.toUtf8());
+        Gui::Command::openCommand(text.toUtf8());
 
         Gui::Document* document = this->getDocument();
         if (document) {
@@ -436,14 +436,13 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction)
         return;
     }
 
-
-    getDocument()->openCommand("Sync binder");
+    App::GetApplication().setActiveTransaction("Sync binder");
     try {
         if (relative) {
             self->Context.setValue(parent, parentSub.c_str());
         }
         self->update(PartDesign::SubShapeBinder::UpdateForced);
-        getDocument()->commitCommand();
+        App::GetApplication().closeActiveTransaction();
         return;
     }
     catch (Base::Exception& e) {
@@ -461,7 +460,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction)
         }
         FC_ERR(str.str());
     }
-    getDocument()->abortCommand();
+    App::GetApplication().closeActiveTransaction(true);
 }
 
 std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren() const

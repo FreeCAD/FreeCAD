@@ -669,11 +669,7 @@ protected:
     {
         Gui::View3DInventorViewer* viewer = handler->getViewer();
 
-        auto doc = viewer->getDocument();
-        if (!doc->getInEdit()) {
-            return;
-        }
-
+        auto doc = Gui::Application::Instance->editDocument();
         auto placement = Base::Placement(doc->getEditingTransform());
 
         onViewParameters.clear();

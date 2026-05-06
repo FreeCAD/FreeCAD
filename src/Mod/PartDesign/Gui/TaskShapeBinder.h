@@ -49,7 +49,7 @@ namespace PartDesignGui
 {
 
 
-class TaskShapeBinder: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskShapeBinder: public Gui::TaskView::TaskBox, Gui::SelectionObserver
 {
     Q_OBJECT
 

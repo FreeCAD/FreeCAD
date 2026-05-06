@@ -827,21 +827,20 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
         // We need to convert the short name in the selection to a full element path to look it up
         // Ex:  Body.Pad.Face9  to Body.Pad.;g3;SKT;:H12dc,E;FAC;:H12dc:4,F;:G0;XTR;:H12dc:8,F.Face9
         getFullSubElementName(subName);
-        std::string subSelected
+        const char* subSelected
             = Gui::Selection().getSelectedElement(vpd->getObject(), subName.c_str());
 
         FC_TRACE(
-            "select " << (!subSelected.empty() ? subSelected : "'null'") << ", " << objectName
-                      << ", " << subName
+            "select " << (subSelected ? subSelected : "'null'") << ", " << objectName << ", " << subName
         );
         std::string newElement;
-        if (!subSelected.empty()) {
-            newElement = Data::newElementName(subSelected.c_str());
+        if (subSelected) {
+            newElement = Data::newElementName(subSelected);
             subSelected = newElement.c_str();
             std::string nextsub;
-            size_t next = subSelected.rfind('.');
-            if (next != std::string::npos && next != 0) {
-                if (next == subSelected.size() - 1) {
+            const char* next = strrchr(subSelected, '.');
+            if (next && next != subSelected) {
+                if (next[1] == 0) {
                     // The convention of dot separated SubName demands a mandatory
                     // ending dot for every object name reference inside SubName.
                     // The non-object sub-element, however, must not end with a dot.
@@ -849,13 +848,17 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
                     // selection (because no sub-element), so we shall search
                     // upwards for the second last dot, which is the end of the
                     // parent name of the current selected object
-                    next = subSelected.rfind('.', next - 1);
+                    for (--next; next != subSelected; --next) {
+                        if (*next == '.') {
+                            break;
+                        }
+                    }
                 }
-                if (next != std::string::npos) {
-                    nextsub = subSelected.substr(0, next + 1);
+                if (*next == '.') {
+                    nextsub = std::string(subSelected, next - subSelected + 1);
                 }
             }
-            if (!nextsub.empty() || !subSelected.empty()) {
+            if (nextsub.length() || *subSelected != 0) {
                 hasNext = true;
                 subName = nextsub;
                 detailPath->truncate(0);

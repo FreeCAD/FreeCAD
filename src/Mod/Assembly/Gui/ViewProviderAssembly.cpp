@@ -299,6 +299,7 @@ bool ViewProviderAssembly::setEdit(int mode)
         );
 
         setDragger();
+
         attachSelection();
 
         updateTaskPanel(true);
@@ -440,7 +441,7 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 {
     if (key == SoKeyboardEvent::ESCAPE) {
         if (isInEditMode()) {
-            if (Gui::Control().activeDialog(nullptr)) {
+            if (Gui::Control().activeDialog()) {
                 return true;
             }
 
@@ -1087,7 +1088,7 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
     }
 
     if (moveInCommand) {
-        getDocument()->openCommand(tr("Move part").toStdString().c_str());
+        Gui::Command::openCommand(tr("Move part").toStdString().c_str());
     }
     partMoving = true;
 
@@ -1150,7 +1151,7 @@ void ViewProviderAssembly::endMove()
     }
 
     if (moveInCommand) {
-        getDocument()->commitCommand();
+        Gui::Command::commitCommand();
     }
 }
 
@@ -1877,11 +1878,11 @@ void ViewProviderAssembly::updateTaskPanel(bool show)
 
     if (show && !taskSolver) {
         taskSolver = new TaskAssemblyMessages(this);
-        taskView->addContextualPanel(taskSolver, this->getObject()->getDocument());
+        taskView->addContextualPanel(taskSolver);
         UpdateSolverInformation();
     }
     else if (!show && taskSolver) {
-        taskView->removeContextualPanel(taskSolver, this->getObject()->getDocument());
+        taskView->removeContextualPanel(taskSolver);
         taskSolver = nullptr;
     }
 }

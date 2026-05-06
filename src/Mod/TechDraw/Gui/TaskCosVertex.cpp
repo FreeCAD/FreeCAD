@@ -131,14 +131,14 @@ void TaskCosVertex::updateUi()
 //! create the cv as entered, addCosmeticVertex will invert it
 void TaskCosVertex::addCosVertex(QPointF qPos)
 {
-    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Add Cosmetic Vertex"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Cosmetic Vertex"));
 
 //    Base::Vector3d pos = DU::invertY(DU::toVector3d(qPos));
 //    int idx =
     (void) m_baseFeat->addCosmeticVertex(DU::toVector3d(qPos));
     m_baseFeat->requestPaint();
 
-    Gui::Command::commitCommand(tid);
+    Gui::Command::commitCommand();
 }
 
 

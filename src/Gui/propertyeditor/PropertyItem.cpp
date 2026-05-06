@@ -61,7 +61,6 @@
 #include <Gui/SpinBox.h>
 #include <Gui/VectorListEditor.h>
 #include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/Document.h>
 
 // NOLINTBEGIN(cppcoreguidelines-pro-*,cppcoreguidelines-prefer-member-initializer)
 using namespace Gui::PropertyEditor;
@@ -2651,14 +2650,12 @@ PlacementEditor::~PlacementEditor() = default;
 
 void PlacementEditor::browse()
 {
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(
-        Gui::Application::Instance->activeDocument()->getDocument()
-    );
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     Gui::Dialog::TaskPlacement* task {};
     task = qobject_cast<Gui::Dialog::TaskPlacement*>(dlg);
     if (dlg && !task) {
         // there is already another task dialog which must be closed first
-        Gui::Control().showDialog(dlg, Gui::Application::Instance->activeDocument()->getDocument());
+        Gui::Control().showDialog(dlg);
         return;
     }
     if (!task) {
@@ -2672,7 +2669,7 @@ void PlacementEditor::browse()
     task->setPropertyName(propertyname);
     task->setSelection(Gui::Selection().getSelectionEx());
     task->bindObject();
-    Gui::Control().showDialog(task, Gui::Application::Instance->activeDocument()->getDocument());
+    Gui::Control().showDialog(task);
 }
 
 void PlacementEditor::showValue(const QVariant& d)

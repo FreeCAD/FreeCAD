@@ -57,7 +57,7 @@ class TaskShareView:
 
         self.dialogOpen = False
 
-        App.ActiveDocument.openTransaction("Share view")
+        App.setActiveTransaction("Share view")
 
     def accept(self):
 #        print ("Accept")
@@ -66,12 +66,12 @@ class TaskShareView:
         toPage = App.ActiveDocument.getObject(self.toPageName)
         TDToolsMovers.moveView(view, fromPage, toPage, True)
 
-        App.ActiveDocument.commitTransaction()
+        App.closeActiveTransaction()
         return True
 
     def reject(self):
 #        print ("Reject")
-        App.ActiveDocument.abortTransaction()
+        App.closeActiveTransaction(True)
         return True
 
     def pickView(self):

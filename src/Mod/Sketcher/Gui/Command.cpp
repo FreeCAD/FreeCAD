@@ -273,7 +273,6 @@ void CmdSketcherNewSketch::activated(int iMsg)
                           FeatName.c_str());
             }
         }
-        commitCommand();
     }
     else {
         // ask user for orientation
@@ -316,7 +315,6 @@ void CmdSketcherNewSketch::activated(int iMsg)
                   FeatName.c_str(),
                   AttachEngine::getModeName(Attacher::mmDeactivated).c_str());
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
-        commitCommand();
     }
 }
 
@@ -633,7 +631,6 @@ void CmdSketcherReorientSketch::activated(int iMsg)
         r[2],
         r[3]);
     doCommand(Gui, "Gui.ActiveDocument.setEdit('%s')", sketch->getNameInDocument());
-    commitCommand();
 }
 
 bool CmdSketcherReorientSketch::isActive()
@@ -834,7 +831,6 @@ void CmdSketcherMapSketch::activated(int iMsg)
             Gui::cmdAppObjectArgs(
                 sketch, "MapMode = \"%s\"", AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "AttachmentSupport = %s", supportString.c_str());
-            // commitCommand();
             commitCommand();
             doCommand(Gui, "App.activeDocument().recompute()");
         }
@@ -843,7 +839,6 @@ void CmdSketcherMapSketch::activated(int iMsg)
             Gui::cmdAppObjectArgs(
                 sketch, "MapMode = \"%s\"", AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "AttachmentSupport = None");
-            // commitCommand();
             commitCommand();
             doCommand(Gui, "App.activeDocument().recompute()");
         }
@@ -884,11 +879,13 @@ CmdSketcherViewSketch::CmdSketcherViewSketch()
 void CmdSketcherViewSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-
-    if (Gui::Application::Instance->isInEdit(getActiveGuiDocument())) {
+    Gui::Document* doc = getActiveGuiDocument();
+    SketcherGui::ViewProviderSketch* vp =
+        dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    if (vp) {
         runCommand(Gui,
                    "Gui.ActiveDocument.ActiveView.setCameraOrientation("
-                   "App.Placement(Gui.ActiveDocument.EditingTransform).Rotation.Q)");
+                   "App.Placement(Gui.editDocument().EditingTransform).Rotation.Q)");
     }
 }
 
@@ -1056,7 +1053,6 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
         delete tempsketch;
     }
 
-    commitCommand();
     doCommand(Gui, "App.activeDocument().recompute()");
 }
 
@@ -1398,8 +1394,6 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     doCommand(Doc,
               "App.activeDocument().ActiveObject.Placement = App.activeDocument().%s.Placement",
               selection.front().getFeatName());
-
-    commitCommand();
     doCommand(Doc, "App.activeDocument().recompute()");
 }
 
@@ -1431,9 +1425,8 @@ void CmdSketcherViewSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmdStr =
-        QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, None, %1)\n");
+        QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, None, %1)\n");
     Gui::Document* doc = getActiveGuiDocument();
-
     bool revert = false;
     if (doc) {
         SketcherGui::ViewProviderSketch* vp =

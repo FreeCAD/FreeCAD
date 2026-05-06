@@ -26,7 +26,6 @@
 #include <QDialogButtonBox>
 
 
-#include <App/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
@@ -167,13 +166,11 @@ bool TaskSmoothing::accept()
     }
 
     Gui::WaitCursor wc;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"));
 
-    int tid = 0;
     bool hasSelection = false;
     for (auto it : meshes) {
         Mesh::Feature* mesh = static_cast<Mesh::Feature*>(it);
-        tid = mesh->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"), tid);
-
         std::vector<Mesh::FacetIndex> selection;
         if (widget->smoothSelection()) {
             // clear the selection before editing the mesh to avoid
@@ -224,12 +221,12 @@ bool TaskSmoothing::accept()
         mesh->Mesh.finishEditing();
     }
 
-    if (widget->smoothSelection() && !hasSelection && tid) {
-        App::GetApplication().abortTransaction(tid);
+    if (widget->smoothSelection() && !hasSelection) {
+        Gui::Command::abortCommand();
         return false;
     }
 
-    App::GetApplication().commitTransaction(tid);
+    Gui::Command::commitCommand();
     return true;
 }
 

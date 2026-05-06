@@ -53,11 +53,11 @@ bool ViewProviderBase::doubleClicked()
         try {
             std::string Msg("Edit ");
             Msg += base->Label.getValue();
-            getDocument()->openCommand(Msg.c_str());
+            Gui::Command::openCommand(Msg.c_str());
             Gui::cmdSetEdit(base, Gui::Application::Instance->getUserEditMode());
         }
         catch (const Base::Exception&) {
-            getDocument()->commitCommand();
+            Gui::Command::abortCommand();
         }
         return true;
     }

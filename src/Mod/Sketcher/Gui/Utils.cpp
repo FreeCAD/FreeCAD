@@ -30,7 +30,6 @@
 #include <QFileInfo>
 
 #include <App/Application.h>
-#include <App/Transactions.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
@@ -165,21 +164,6 @@ void SketcherGui::tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj)
         if (autoremoveredundants) {
             obj->autoRemoveRedundants();
         }
-    }
-}
-
-void SketcherGui::closeAndRecompute(int& tid, bool abort, Sketcher::SketchObject* Obj)
-{
-    if (tid == App::NullTransaction) {
-        tryAutoRecompute(Obj);
-    }
-    if (abort) {
-        Gui::Command::abortCommand(tid);
-        tryAutoRecompute(Obj);
-    }
-    else {
-        tryAutoRecompute(Obj);
-        Gui::Command::commitCommand(tid);
     }
 }
 

@@ -111,7 +111,12 @@ TaskMeasure::TaskMeasure()
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
     delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), true).toBool();
     mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave).toBool();
-    mGreedySelection = settings.value(QLatin1String(taskMeasureGreedySelection), false).toBool();
+    if (settings.value(QLatin1String(taskMeasureGreedySelection), false).toBool()) {
+        Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
+    }
+    else {
+        Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
+    }
     settings.endGroup();
 
     showDelta = new QCheckBox();
@@ -215,6 +220,7 @@ TaskMeasure::TaskMeasure()
     Content.emplace_back(taskbox);
 
     // engage the selectionObserver
+    attachSelection();
 
     if (auto* doc = App::GetApplication().getActiveDocument()) {
         m_deletedConnection = doc->signalDeletedObject.connect([this](auto&& obj) {
@@ -222,9 +228,8 @@ TaskMeasure::TaskMeasure()
         });
     }
 
-    if (auto* doc = Gui::Application::Instance->activeDocument()) {
-        mTargetDoc = doc;
-        mTargetDoc->openCommand("Add Measurement");
+    if (!App::GetApplication().getActiveTransaction()) {
+        App::GetApplication().setActiveTransaction("Add Measurement");
     }
 
     setAutoCloseOnDeletedDocument(true);
@@ -600,10 +605,8 @@ bool TaskMeasure::apply(bool reset)
     }
 
     // Commit transaction
-    if (mTargetDoc) {
-        mTargetDoc->commitCommand();
-        mTargetDoc->openCommand("Add Measurement");
-    }
+    App::GetApplication().closeActiveTransaction();
+    App::GetApplication().setActiveTransaction("Add Measurement");
     return false;
 }
 
@@ -611,12 +614,8 @@ bool TaskMeasure::reject()
 {
     removeObject();
 
-    // Commit after removing the preview measurement so only intended changes (sector flip)
-    // remain in the document transaction.
-    if (mTargetDoc) {
-        mTargetDoc->commitCommand();
-    }
-    closeDialog();
+    // Abort transaction
+    App::GetApplication().closeActiveTransaction(true);
     return false;
 }
 
@@ -635,15 +634,6 @@ void TaskMeasure::reset()
     // explicitMode = false;
 
     this->update();
-}
-void TaskMeasure::activate()
-{
-    updateSelectionType();
-    qApp->installEventFilter(this);
-}
-void TaskMeasure::deactivate()
-{
-    qApp->removeEventFilter(this);
 }
 
 
@@ -790,23 +780,18 @@ void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
 {
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
-    mGreedySelection = checked;
-    updateSelectionType();
-
-    settings.endGroup();
-}
-void TaskMeasure::updateSelectionType()
-{
-    if (mGreedySelection) {
-        Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
+    if (!checked) {
+        Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
+        settings.setValue(QLatin1String(taskMeasureGreedySelection), false);
     }
     else {
-        Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
+        Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
+        settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
     }
+    settings.endGroup();
 
     std::list<Gui::InputHint> hints;
-    if (mGreedySelection) {
+    if (checked) {
         hints = std::list<Gui::InputHint> {
             {tr("%1 new measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
         };

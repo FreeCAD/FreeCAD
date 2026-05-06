@@ -625,18 +625,18 @@ void SheetModel::setCellData(QModelIndex index, QString str)
 {
     try {
         CellAddress address(index.row(), index.column());
-        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Edit cell"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit cell"));
         // Because of possible complication of recursively escaped
         // characters, let's take a shortcut and bypass the command
         // interface for now.
 
         sheet->setContent(address, str.toUtf8().constData());
-        sheet->getDocument()->commitTransaction();
+        Gui::Command::commitCommand();
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::Exception& e) {
         e.reportException();
-        sheet->getDocument()->abortTransaction();
+        Gui::Command::abortCommand();
     }
 }
 

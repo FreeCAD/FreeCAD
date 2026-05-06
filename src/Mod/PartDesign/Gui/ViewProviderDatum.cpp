@@ -302,7 +302,7 @@ bool ViewProviderDatum::doubleClicked()
 
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();
-    getDocument()->openCommand(Msg.c_str());
+    Gui::Command::openCommand(Msg.c_str());
 
     Part::Datum* pcDatum = getObject<Part::Datum>();
     PartDesign::Body* activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);

@@ -532,15 +532,17 @@ class TaskFillTemplateFields:
         transactionName = QtCore.QT_TRANSLATE_NOOP(
             "Techdraw_FillTemplateFields", "Fill template fields"
         )
-        App.ActiveDocument.openTransaction(transactionName)
+        App.setActiveTransaction(transactionName)
         i = 0
         for cb in self.checkBoxList:
             if cb.isChecked():
                 self.texts[keyLst[i]] = self.lineTextList[i].text()
             i += 1
         self.page.Template.EditableTexts = self.texts
-        App.ActiveDocument.commitTransaction()
+        App.closeActiveTransaction(False)
         self.close()
+
+        App.closeActiveTransaction()
 
     def close(self):
         self.dialog.hide()
