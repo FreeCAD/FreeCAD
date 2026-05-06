@@ -1149,7 +1149,6 @@ class _Wall(ArchComponent.Component):
                                 edge.Curve,
                                 (
                                     Part.Line,
-                                    Part.LineSegment,
                                     Part.Circle,
                                     Part.ArcOfCircle,
                                     Part.Ellipse,
