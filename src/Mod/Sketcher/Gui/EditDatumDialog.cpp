@@ -303,7 +303,8 @@ void EditDatumDialog::accepted()
             std::string constraintName = ui_ins_datum->name->text().trimmed().toStdString();
             std::string currConstraintName = sketch->Constraints[ConstrNbr]->Name;
 
-            if (constraintName != currConstraintName && SketcherGui::checkConstraintName(sketch, constraintName)) {
+            if (constraintName != currConstraintName
+                && SketcherGui::checkConstraintName(sketch, constraintName)) {
                 Gui::cmdAppObjectArgs(
                     sketch,
                     "renameConstraint(%d, u'%s')",
