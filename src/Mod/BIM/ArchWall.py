@@ -1475,7 +1475,7 @@ class _Wall(ArchComponent.Component):
                             + " "
                             + translate(
                                 "Arch",
-                                "has Base object, but it contains no supported edge type (Line, Line Segment, Circle, Arc Of Circle, Ellipse) ",
+                                f"has Base object, but it does not contain supported edge type (line, circle, arc, ellipse) ",
                             )
                             + "\n"
                         )
