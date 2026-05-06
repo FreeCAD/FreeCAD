@@ -217,7 +217,7 @@ def make_safe_cutter(
 # ---------------------------------------------------------------------------
 
 
-def get_whole_model_boundary(model_faces, offset, tolerance=0.005):
+def create_boundary_face(model_faces, offset, tolerance=0.005):
     """
     Creates a 2D boundary mask from the silhouette of an entire model.
 
@@ -238,7 +238,7 @@ def get_whole_model_boundary(model_faces, offset, tolerance=0.005):
     if not model_faces:
         return None
 
-    outer_wire, offset_shape, boundary_face = None, None, None
+    outer_wire, offset_shape = None, None
 
     # Create a single compound of the 3D faces to find the global silhouette
     compound = Part.Compound(model_faces)
@@ -263,77 +263,10 @@ def get_whole_model_boundary(model_faces, offset, tolerance=0.005):
         Path.Log.warning("Offsetting the Model faces resulted in an empty shape.")
         return None
 
-    # Convert the offset 2D wire into a solid masking face
-    boundary_face = Part.makeFace(offset_shape)
-    if not boundary_face:
-        Path.Log.warning(f"Failed to create smooth Model boundary: {e}")
-        return None
+    if offset_shape.BoundBox.ZMin != 0.0:
+        offset_shape.translate(FreeCAD.Vector(0, 0, -offset_shape.BoundBox.ZMin))
 
-    if boundary_face.BoundBox.ZMin != 0.0:
-        boundary_face.translate(FreeCAD.Vector(0, 0, -boundary_face.BoundBox.ZMin))
-
-    return boundary_face
-
-
-def create_boundary_from_faces(source_faces, offset, tolerance=0.005):
-    """
-    Creates a single, unified 2D boundary face from a list of source faces.
-
-    This is the definitive function for boundary creation. It robustly handles all
-    cases (single face, multiple faces, whole model) by projecting each face to
-    the XY plane to preserve holes, fusing the results, and then applying the
-    offset.
-
-    Args:
-        source_faces (list): A list of Part.Face objects to derive the boundary from.
-        offset (float): The expansion (positive) or contraction (negative) distance.
-        tolerance (float): The geometric tolerance for the offsetting operation.
-
-    Returns:
-        Part.Face: The final 2D boundary face, or None on failure.
-    """
-    import PathScripts.PathUtils as PathUtils
-
-    if not source_faces:
-        return None
-
-    projected_faces = []
-    fused_shape, boundary_shape = None, None
-
-    # Create a copy and translate it flat onto the XY plane
-    for face in source_faces:
-        proj_face = face.copy()
-        proj_face.translate(FreeCAD.Vector(0, 0, -proj_face.BoundBox.ZMin))
-        projected_faces.append(proj_face)
-
-    # Fuse the 2D Footprints
-    if len(projected_faces) > 1:
-        fused_shape = projected_faces[0].fuse(projected_faces[1:])
-    else:
-        fused_shape = projected_faces[0]
-
-    if not fused_shape:
-        Path.Log.error("Failed to fuse face footprints for boundary creation.")
-        return None
-
-    # Offset the Final Fused Shape
-    boundary_shape = PathUtils.getOffsetArea(
-        fused_shape, offset, removeHoles=False, tolerance=tolerance, plane=Part.makeCircle(2.0)
-    )
-
-    # Verify if PathUtils did not return a valid fused_shape
-    # Most probably the area has been consumed by a negative offset value
-    # Fall back to `removeHoles=True`. We might still be able to return something.
-    if not boundary_shape:
-        boundary_shape = PathUtils.getOffsetArea(
-            fused_shape, offset, removeHoles=True, tolerance=tolerance, plane=Part.makeCircle(2.0)
-        )
-
-    if not boundary_shape or not hasattr(boundary_shape, "Edges") or len(boundary_shape.Edges) == 0:
-        Path.Log.error("A critical error occurred when creating a boundary for selected faces.")
-        return None
-
-    return boundary_shape
+    return offset_shape
 
 
 def generate_pattern_mask(
@@ -373,7 +306,7 @@ def generate_pattern_mask(
         # Use TechDraw.findShapeOutline for whole model silhouette
         main_boundary = bb_face
     else:
-        main_boundary = create_boundary_from_faces(cutting_faces, outer_offset, tolerance)
+        main_boundary = build_optimized_boundary([cutting_faces], outer_offset, tolerance)
 
     if not main_boundary:
         Path.Log.warning("Could not determine geometry for main boundary mask.")
@@ -385,7 +318,7 @@ def generate_pattern_mask(
 
     # For avoid zones, we want to keep the tool center away, so we expand the boundary
     epsilon = tolerance + 0.001  # Allow some extra room to avoid "path spikes" on vertical walls
-    avoid_boundary = create_boundary_from_faces(avoid_faces, tool_radius + epsilon, tolerance)
+    avoid_boundary = build_optimized_boundary([avoid_faces], tool_radius + epsilon, tolerance)
 
     if not avoid_boundary:
         Path.Log.warning("Failed to generate boundary for avoid_faces.")
@@ -400,3 +333,126 @@ def generate_pattern_mask(
     except Exception as e:
         Path.Log.error(f"Failed to cut avoid_faces from boundary mask: {e}")
         return main_boundary
+
+
+def build_optimized_boundary(faces, offset, tolerance=0.005):
+    """
+    Acts as a middleman to optimize boundary creation.
+    Separates faces into touching and isolated groups. Passes touching faces
+    as a single batch, and isolated faces one by one to prevent TechDraw/ClipperLib artifacts.
+    """
+    if not faces:
+        return None
+
+    # Get our separated lists
+    touching_faces, isolated_faces = _separate_touching_faces(faces, tolerance)
+
+    Path.Log.debug(
+        f"Boundary Optimization: Processing {len(touching_faces)} touching faces and {len(isolated_faces)} isolated faces."
+    )
+
+    generated_boundaries =[]
+
+    # 1. Process all touching faces at once
+    if touching_faces:
+        # Wrapped in a list so create_boundary_face treats them as one group
+        touching_bnd = create_boundary_face(touching_faces, offset, tolerance)
+        if touching_bnd and not touching_bnd.isNull():
+            generated_boundaries.append(touching_bnd)
+
+    # 2. Process isolated faces one by one
+    if isolated_faces:
+        for face in isolated_faces:
+            # Wrapped in a double list so create_boundary_face treats it as a single group of 1 face
+            isolated_bnd = create_boundary_face([face], offset, tolerance)
+            if isolated_bnd and not isolated_bnd.isNull():
+                generated_boundaries.append(isolated_bnd)
+
+    if not generated_boundaries:
+        return None
+
+    # 3. Combine all successfully generated boundaries into one final mask
+    if len(generated_boundaries) > 1:
+        final_boundary = generated_boundaries[0].fuse(generated_boundaries[1:])
+        # Clean up any seams left over from fusing
+        if hasattr(final_boundary, "removeSplitter"):
+            final_boundary = final_boundary.removeSplitter()
+    else:
+        final_boundary = generated_boundaries[0]
+
+    return final_boundary
+
+
+def _separate_touching_faces(faces, tolerance=0.005):
+    """
+    Separate Touching vs. Isolated Faces
+
+    TechDraw.findShapeOutline and PathUtils.getOffsetArea often fail or produce
+    artifacts when processing faces that are disjoint (far apart from each other).
+
+    This function evaluates a list of faces and separates them into two groups:
+    1. touching_faces: Faces that physically touch at least one other face.
+    2. isolated_faces: Faces that are completely alone and touch nothing.
+
+    By separating them, isolated faces can be processed individually and
+    compounded safely at the end, completely bypassing OpenCASCADE's
+    sensitivity to disjoint bodies.
+
+    Args:
+        faces (list): A list of Part.Face objects (or a nested list of faces).
+        tolerance (float): Maximum distance to be considered "touching".
+
+    Returns:
+        tuple: (touching_faces, isolated_faces) as lists of Part.Face objects.
+    """
+    touching_faces = []
+    isolated_faces =[]
+
+    if not faces:
+        return touching_faces, isolated_faces
+
+    # 1. Flatten the input list (safely handles both[Face, Face] and [[Face], [Face]])
+    flat_faces =[]
+    for item in faces:
+        flat_faces.extend(item)
+
+    if not flat_faces:
+        return touching_faces, isolated_faces
+
+    # Dictionary to keep track of which flat_faces indices have touched another face
+    touches = {i: False for i in range(len(flat_faces))}
+
+    # Helper function for a safe, fast Bounding Box intersection check
+    def bb_overlap(bb1, bb2, tol):
+        if bb1.XMax < bb2.XMin - tol or bb1.XMin > bb2.XMax + tol: return False
+        if bb1.YMax < bb2.YMin - tol or bb1.YMin > bb2.YMax + tol: return False
+        if bb1.ZMax < bb2.ZMin - tol or bb1.ZMin > bb2.ZMax + tol: return False
+        return True
+
+    # 2. Compare every face against every other face
+    for i in range(len(flat_faces)):
+        face_i = flat_faces[i]
+        bb_i = face_i.BoundBox
+
+        for j in range(i + 1, len(flat_faces)):
+            face_j = flat_faces[j]
+            bb_j = face_j.BoundBox
+
+            # Fast pre-check: Do their bounding boxes overlap?
+            if bb_overlap(bb_i, bb_j, tolerance):
+
+                # Precise check: Are the physical geometries actually touching?
+                dist = face_i.distToShape(face_j)[0]
+
+                if dist <= tolerance:
+                    touches[i] = True
+                    touches[j] = True
+
+    # 3. Separate the results based on our tracking dictionary
+    for i, face in enumerate(flat_faces):
+        if touches[i]:
+            touching_faces.append(face)
+        else:
+            isolated_faces.append(face)
+
+    return touching_faces, isolated_faces

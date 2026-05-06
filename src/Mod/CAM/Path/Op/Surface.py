@@ -1042,16 +1042,7 @@ class ObjectSurface(PathOp.ObjectOp):
         return scan_lines
 
     def _executeSurfacePattern(
-        self,
-        obj,
-        job,
-        stl,
-        safe_stl,
-        cutter,
-        tool_diam,
-        bb_face,
-        cutting_faces=None,
-        avoid_faces=None,
+        self, obj, job, stl, safe_stl, cutter, tool_diam, bb_face, cutting_faces=None, avoid_faces=None
     ):
         """
         Executes the Surface Pattern (projection) strategy.
@@ -1082,15 +1073,12 @@ class ObjectSurface(PathOp.ObjectOp):
         is_whole_model_job = False if cutting_faces else True
 
         # Ensure we have cutting faces (Fallback to whole model if none selected)
-        if not cutting_faces and bb_face:
-            # base_objs = job.Model.Group
-            # if base_objs:
-            #    cutting_faces = Part.Compound([b.Shape for b in base_objs]).Faces
+        if not cutting_faces:
             if bb_face:
                 cutting_faces.append(bb_face)
             else:
                 Path.Log.error("Could not determine source faces for pattern generation.")
-                return []
+                return[]
 
         # Determine the bounding box
         group_bb = bb_face.BoundBox
@@ -1234,7 +1222,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return cmds
 
-    def _executeZLevelHybrid(self, obj, job, bb_face, shape, tool_params):
+    def _executeZLevelHybrid(self, obj, job, shape, bb_face, tool_params):
         """Execute the Z-Level Hybrid strategy (no OCL required).
 
         A high-precision geometric finishing strategy that operates directly on
@@ -1389,12 +1377,6 @@ class ObjectSurface(PathOp.ObjectOp):
         cutter, stl, safe_stl = None, None, None
         cutting_faces, avoid_faces, bb_face, shape = None, None, None, None
 
-        base_objs = (
-            [base for base, subs in obj.Base]
-            if hasattr(obj, "Base") and obj.Base
-            else JOB.Model.Group
-        )
-
         use_cpp = strategy == "SurfacePattern"
         needs_face_selection = strategy == "SurfacePattern"
         needs_safe_stl = getattr(obj, "KeepToolDown", False)
@@ -1402,26 +1384,46 @@ class ObjectSurface(PathOp.ObjectOp):
         needs_ocl_cutter = strategy in ["SurfacePattern", "Waterline"]
         needs_boundary = strategy in ["SurfacePattern", "ZLevelHybrid"]
 
+        # Geometry preperation
+        base_objs = JOB.Model.Group
+        if not base_objs:
+            Path.Log.error("No models found in Job.")
+            return
+
+        valid_shapes = []
+        for b in base_objs:
+            if b.Shape and not b.Shape.isNull():
+                valid_shapes.append(b.Shape)
+
+        if len(valid_shapes) > 1:
+            try:
+                # Melt overlapping models into one clean continuous object
+                model_shape = valid_shapes[0].fuse(valid_shapes[1:])
+                if hasattr(model_shape, "removeSplitter"):
+                    model_shape = model_shape.removeSplitter()
+            except Exception as e:
+                Path.Log.warning(f"Boolean fuse failed, falling back to Compound: {e}")
+                model_shape = Part.Compound(valid_shapes)
+        elif len(valid_shapes) == 1:
+            model_shape = valid_shapes[0]
+        else:
+            Path.Log.error("No valid shapes found to machine.")
+            return
+
         # Create boundary face
         if needs_boundary:
-            for base in base_objs:
-                if base.Shape:
-                    shape = base.Shape
-            if not shape:
-                Path.Log.error("No model found in Job.")
-                return []
             offset = obj.BoundaryAdjustment.Value - tool_radius - 0.01
-            if obj.BoundBox == "Stock":
-                bb_face = surface_common.get_whole_model_boundary(JOB.Stock.Shape.Faces, offset)
-            else:
-                bb_face = surface_common.get_whole_model_boundary(shape.Faces, offset)
 
+            if obj.BoundBox == "Stock":
+                bb_face = surface_common.create_boundary_face(JOB.Stock.Shape.Faces, offset)
+            else:
+                bb_face = surface_common.create_boundary_face(model_shape.Faces, offset)
+
+        # Split selected features
         if needs_face_selection:
-            base_prop = getattr(obj, "Base", [])
+            base_prop = getattr(obj, "Base",[])
             avoid_count = getattr(obj, "AvoidLastX_Faces", 0)
-            cutting_faces, avoid_faces = surface_pattern.split_selected_features(
-                base_prop, avoid_count
-            )
+            cutting_faces, avoid_faces = surface_pattern.split_selected_features(base_prop, avoid_count)
 
         # Create OCL cutter from tool parameters
         if needs_ocl_cutter:
@@ -1453,6 +1455,7 @@ class ObjectSurface(PathOp.ObjectOp):
             stl_start = time.time()
 
             stl, safe_stl = surface_mesh.generate_stl(
+                model_shape=model_shape,
                 base_objs=base_objs,
                 avoid_faces=avoid_faces,
                 tool_radius=tool_diam / 2.0,
@@ -1509,7 +1512,7 @@ class ObjectSurface(PathOp.ObjectOp):
         elif strategy == "Waterline":
             cmds = self._executeWaterline(obj, JOB, stl, cutter, tool_diam, is_adaptive=is_adaptive)
         elif strategy == "ZLevelHybrid":
-            cmds = self._executeZLevelHybrid(obj, JOB, bb_face, shape, tool_params)
+            cmds = self._executeZLevelHybrid(obj, JOB, model_shape, bb_face, tool_params)
         self.commandlist.extend(cmds)
 
         elapsed = time.time() - startTime

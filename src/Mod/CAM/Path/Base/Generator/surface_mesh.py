@@ -457,8 +457,8 @@ def _shape_to_safe_stl(
         )
         from . import surface_common
 
-        boundary_face = surface_common.create_boundary_from_faces(
-            avoid_faces, tool_radius, linear_deflection
+        boundary_face = surface_common.build_optimized_boundary(
+            [avoid_faces], tool_radius, linear_deflection
         )
 
         if not boundary_face:
@@ -492,6 +492,7 @@ def _shape_to_safe_stl(
 
 
 def generate_stl(
+    model_shape,
     base_objs,
     avoid_faces,
     tool_radius,
@@ -511,6 +512,7 @@ def generate_stl(
     delegates the creation of the complex safety STL to the _shape_to_safe_stl helper.
 
     Args:
+        model_shape (Part.Shape): The mathematically fused solid of the entire Job model.
         base_objs (list): The source geometric objects from the Job (can be Part or Mesh).
         selected_faces (list): A list of Part.Face objects to be machined.
         avoid_faces (list): A list of Part.Face objects to be avoided.
@@ -548,9 +550,6 @@ def generate_stl(
         return stl, stl
     else:
         # Generate the primary machining STL
-        model_group = base_objs
-
-        model_shape = Part.Compound([b.Shape for b in base_objs])
         if not model_shape or model_shape.isNull():
             Path.Log.error("Could not create a valid shape for primary STL generation.")
             return None, None
