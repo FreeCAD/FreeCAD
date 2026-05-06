@@ -4724,8 +4724,8 @@ void LinkLabel::updatePropertyLink()
                        "</p></body></html>"
             )
                        .arg(
-                           QLatin1String(sobj.getDocumentName().c_str()),
-                           QLatin1String(sobj.getObjectName().c_str()),
+                           QString::fromUtf8(sobj.getDocumentName().c_str()),
+                           QString::fromUtf8(sobj.getObjectName().c_str()),
                            QString::fromUtf8(sobj.getSubName().c_str()),
                            linkcolor,
                            DlgPropertyLink::formatObject(
