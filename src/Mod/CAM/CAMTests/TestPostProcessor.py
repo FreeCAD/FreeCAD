@@ -35,7 +35,6 @@ import Path.Main.Job as PathJob
 import Path.Preferences
 from Machine.models.machine import Machine
 
-
 PathCommand.LOG_MODULE = Path.Log.thisModule()
 Path.Log.setLevel(Path.Log.Level.INFO, PathCommand.LOG_MODULE)
 
@@ -396,7 +395,7 @@ class TestPostProcessorClassification(unittest.TestCase):
         # Machine posts should not appear in legacy list
         for post in ["generic", "linuxcnc"]:
             self.assertNotIn(post, legacy, f"Machine post '{post}' found in legacy list")
-        
+
         self.skipTest("FIXME: should grbl fail here?")
         self.assertNotIn(post, "grbl", f"Machine post '{post}' found in legacy list")
 
@@ -436,6 +435,7 @@ class TestPostProcessorClassification(unittest.TestCase):
 
     def test080_postprocessor_sanity_checks_hook(self):
         """Test PostProcessor.get_sanity_checks() hook method."""
+
         # Create a test postprocessor instance
         class TestPostProcessor(PostProcessor):
             def __init__(self):
@@ -463,6 +463,7 @@ class TestPostProcessorClassification(unittest.TestCase):
 
     def test081_postprocessor_create_squawk_helper(self):
         """Test PostProcessor._create_squawk() helper method."""
+
         class TestPostProcessor(PostProcessor):
             def __init__(self):
                 pass
@@ -492,6 +493,7 @@ class TestPostProcessorClassification(unittest.TestCase):
 
     def test082_postprocessor_default_sanity_checks(self):
         """Test PostProcessor default get_sanity_checks() returns empty list."""
+
         class TestPostProcessor(PostProcessor):
             def __init__(self):
                 pass
@@ -546,7 +548,7 @@ class TestConfigurationBundle(unittest.TestCase):
         # Mock machine
         pp._machine = Machine.create_3axis_config()
         if machine_props is not None:
-            pp._machine.postprocessor_properties.update( dict(machine_props) )
+            pp._machine.postprocessor_properties.update(dict(machine_props))
 
         # Mock job
         if job_overrides is not None:

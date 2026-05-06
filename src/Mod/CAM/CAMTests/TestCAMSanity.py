@@ -831,9 +831,7 @@ class TestCAMSanity(PathTestBase):
         mock_machine = MagicMock()
         mock_machine.postprocessor_file_name = "generic_plasma"
 
-        with patch(
-            "Machine.models.machine.MachineFactory.get_machine", return_value=mock_machine
-        ):
+        with patch("Machine.models.machine.MachineFactory.get_machine", return_value=mock_machine):
             # Call validate_job - this should load the real GenericPlasma postprocessor
             all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(mock_job)
 

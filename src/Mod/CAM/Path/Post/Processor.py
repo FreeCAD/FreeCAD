@@ -646,7 +646,9 @@ class PostProcessor:
             if hasattr(formatting, "line_numbers"):
                 self.values["OUTPUT_LINE_NUMBERS"] = formatting.line_numbers
             if hasattr(formatting, "line_number_start"):
-                self.values["line_number"] = formatting.line_number_start # some legacy have lowercase
+                self.values["line_number"] = (
+                    formatting.line_number_start
+                )  # some legacy have lowercase
                 self.values["LINE_NUMBER_START"] = formatting.line_number_start
             if hasattr(formatting, "line_increment"):
                 self.values["LINE_INCREMENT"] = formatting.line_increment
@@ -704,8 +706,10 @@ class PostProcessor:
         self.values["SPLIT_ARCS"] = self._machine.processing.split_arcs
         self.values["TRANSLATE_RAPID_MOVES"] = self._machine.processing.translate_rapid_moves
         self.values["TRANSLATE_DRILL_CYCLES"] = self._machine.processing.translate_drill_cycles
-        self.values["TOOL_CHANGE"] = self._machine.processing.tool_change # boolean
-        self.values["XY_BEFORE_Z_AFTER_TOOL_CHANGE"] = self._machine.processing.xy_before_z_after_tool_change
+        self.values["TOOL_CHANGE"] = self._machine.processing.tool_change  # boolean
+        self.values["XY_BEFORE_Z_AFTER_TOOL_CHANGE"] = (
+            self._machine.processing.xy_before_z_after_tool_change
+        )
         self.values["FILTER_INEFFICIENT_MOVES"] = self._machine.processing.filter_inefficient_moves
 
         # Properties
@@ -889,7 +893,7 @@ class PostProcessor:
 
             # Add description if enabled
             if self.values["DESCRIPTION_IN_HEADER"]:
-                description = self.values["COMMENT"] # FIXME: no provenance
+                description = self.values["COMMENT"]  # FIXME: no provenance
                 if description:
                     gcodeheader.add_description(description)
 
@@ -989,7 +993,7 @@ class PostProcessor:
         if not self._machine:
             return
 
-        spindle = self._machine.get_spindle_by_index(0) # FIXME: should be in .values
+        spindle = self._machine.get_spindle_by_index(0)  # FIXME: should be in .values
         if not (spindle and spindle.spindle_wait > 0):
             return
 
@@ -1016,7 +1020,7 @@ class PostProcessor:
         if not self._machine:
             return
 
-        spindle = self._machine.get_spindle_by_index(0) # FIXME: needs to be in .values
+        spindle = self._machine.get_spindle_by_index(0)  # FIXME: needs to be in .values
         if not (spindle and spindle.coolant_delay > 0):
             return
 
