@@ -1150,7 +1150,6 @@ class _Wall(ArchComponent.Component):
                                 (
                                     Part.Line,
                                     Part.Circle,
-                                    Part.ArcOfCircle,
                                     Part.Ellipse,
                                 ),
                             ):
