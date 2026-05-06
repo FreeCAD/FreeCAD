@@ -821,7 +821,7 @@ double Measurement::radius() const
                 .Radius();
         }
     }
-    
+
     Base::Console().error("Measurement::radius - Invalid References3D Provided\n");
     return 0.0;
 }
