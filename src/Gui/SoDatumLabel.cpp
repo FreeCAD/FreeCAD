@@ -1513,8 +1513,9 @@ void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, con
     const float sketchAngle = getSketchRotationAngle(state, vv, flip);
     const float absLabelAngle = std::abs(sketchAngle + angle);
 
-    // Threshold to 180 degrees rotation, 90+15 degree angle, similar to current rotate label logic.
-    constexpr float threshold = Base::toRadians(105.0f);
+    constexpr float quarter = 90.0F;  // <-- feel free to rename this
+    constexpr float hysteresis = 15.0F;
+    constexpr float threshold = Base::toRadians(quarter + hysteresis);
 
     if ((flip && absLabelAngle > threshold) || (!flip && absLabelAngle < threshold)) {
         angle += std::numbers::pi;
