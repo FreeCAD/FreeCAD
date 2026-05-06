@@ -48,10 +48,10 @@ class TestPathHelpers(PathTestBase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestPathUtils")
 
-        c1 = Path.Command("G0 Z10")
-        c2 = Path.Command("G0 X20 Y10")
-        c3 = Path.Command("G1 X20 Y10 Z5")
-        c4 = Path.Command("G1 X20 Y20")
+        c1 = Path.Command("G0 Z10 F1000")
+        c2 = Path.Command("G0 X20 Y10 F1001")
+        c3 = Path.Command("G1 X20 Y10 Z5 F110")
+        c4 = Path.Command("G1 X20 Y20 F111")
 
         self.commandlist = [c1, c2, c3, c4]
 
@@ -76,22 +76,28 @@ class TestPathHelpers(PathTestBase):
         self.assertTrue(resultlist[3].Parameters["F"] == 20)
 
     def test01(self):
-        """Test that Machine State initializes and stores position correctly"""
+        """Test that Machine State initializes and updates position correctly"""
 
         machine = PathMachineState.MachineState()
-        state = machine.getState()
-        self.assertTrue(state["X"] == 0)
-        self.assertTrue(state["Y"] == 0)
-        self.assertTrue(state["Z"] == 0)
+        self.assertTrue(machine.X == 0)
+        self.assertTrue(machine.Y == 0)
+        self.assertTrue(machine.Z == 0)
+        self.assertTrue(machine.F == 0)
+        self.assertTrue(machine.G0F == 0)
+        self.assertTrue(machine.ReturnMode == "Z")
         self.assertTrue(machine.WCS == "G54")
 
         for c in self.commandlist:
             result = machine.addCommand(c)
 
-        state = machine.getState()
-        self.assertTrue(state["X"] == 20)
-        self.assertTrue(state["Y"] == 20)
-        self.assertTrue(state["Z"] == 5)
+        self.assertTrue(machine.X == 20)
+        self.assertTrue(machine.Y == 20)
+        self.assertTrue(machine.Z == 5)
+        # G0F separate from F
+        # The commandlist does G0...G1, so G1 is after G0:
+        # (Does not prove (yet) that G0 does-not affect F, see below)
+        self.assertTrue(machine.F == 111) # G1's
+        self.assertTrue(machine.G0F == 1001)
 
         machine.addCommand(Path.Command("M3 S200"))
         self.assertTrue(machine.S == 200)
@@ -118,20 +124,46 @@ class TestPathHelpers(PathTestBase):
         self.assertTrue(result)
 
         # Test that Drilling moves are handled correctly
-        result = machine.addCommand(Path.Command("G81 X50 Y50 Z0"))
-        state = machine.getState()
-        self.assertTrue(state["X"] == 50)
-        self.assertTrue(state["Y"] == 50)
-        self.assertTrue(state["Z"] == 5)
+        result = machine.addCommands([
+            Path.Command("G98"),
+            Path.Command("G81 X50 Y50 Z0"),
+        ])
+        self.assertTrue(machine.X == 50)
+        self.assertTrue(machine.Y == 50)
+        self.assertTrue(machine.Z == 5)
+        self.assertTrue(machine.ReturnMode == "Z")
+
+        result = machine.addCommands([
+            Path.Command("G99"),
+            Path.Command("G81 X50 Y50 Z0 R10"),
+        ])
+        self.assertTrue(machine.Z == 10)
+        self.assertTrue(machine.ReturnMode == "R")
+
+        # Prove G0 F does not interfere with G1 F
+        # Would only interfere if a G0 was after a G1, so, final G0:
+        machine.addCommand( Path.Command("G0 X510 Y500 Z0 F99"))
+        self.assertTrue(machine.F == 111)
+        self.assertEqual(machine.G0F, 99)
 
         # Test process list of commands
         machine = PathMachineState.MachineState()
         machine.addCommands(self.commandlist[0])
         machine.addCommands(self.commandlist[1:])
-        state = machine.getState()
-        self.assertEqual(state["X"], 20)
-        self.assertEqual(state["Y"], 20)
-        self.assertEqual(state["Z"], 5)
+        self.assertEqual(machine.X, 20)
+        self.assertEqual(machine.Y, 20)
+        self.assertEqual(machine.Z, 5)
+
+        # Test Tracked and .setState
+        # we are relying on MachineState to not validate the tracked parameters
+        expected = { k:"x"+k for k in PathMachineState.MachineState.Tracked }
+        self.assertNotEqual( expected, {}, "Tracked has some keys in it" ) # sanity
+        machine.setState( expected )
+        self.assertEqual( machine.getState(), expected, "Set all w/Tracked" )
+
+        machine.setState( None )
+        expected = { k:None for k in PathMachineState.MachineState.Tracked }
+        self.assertEqual( machine.getState(), expected, "All None" )
 
     def test02(self):
         """Test PathUtils filterarcs"""
