@@ -22,6 +22,7 @@
 
 #include <QApplication>
 #include <QDesktopServices>
+#include <QMessageBox>
 #include <QUrl>
 
 #include "Command.h"
@@ -36,6 +37,22 @@
 
 
 using namespace Gui;
+
+namespace
+{
+void showUnsupportedMacroDebugMessage(QWidget* parent)
+{
+    QMessageBox::information(
+        parent,
+        QCoreApplication::translate("StdCmdMacroStartDebug", "Macro Debugging Unavailable"),
+        QCoreApplication::translate(
+            "StdCmdMacroStartDebug",
+            "The built-in macro debugger is currently unavailable.\n\n"
+            "Use \"Macro > Attach to Remote Debugger\" instead."
+        )
+    );
+}
+}  // namespace
 
 
 //===========================================================================
@@ -192,13 +209,7 @@ StdCmdMacroStartDebug::StdCmdMacroStartDebug()
 void StdCmdMacroStartDebug::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PythonDebugger* dbg = Application::Instance->macroManager()->debugger();
-    if (!dbg->isRunning()) {
-        doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"StartDebug\")");
-    }
-    else {
-        dbg->stepRun();
-    }
+    showUnsupportedMacroDebugMessage(getMainWindow());
 }
 
 bool StdCmdMacroStartDebug::isActive()
@@ -305,7 +316,7 @@ StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
 void StdCmdToggleBreakpoint::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ToggleBreakpoint\")");
+    showUnsupportedMacroDebugMessage(getMainWindow());
 }
 
 bool StdCmdToggleBreakpoint::isActive()
