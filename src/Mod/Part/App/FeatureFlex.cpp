@@ -67,7 +67,7 @@ bool Flex::fetchCurveLink(const App::PropertyLinkSub& curveLink, BRepAdaptor_Cur
     auto linked = curveLink.getValue();
 
     TopoDS_Shape crvEdge;
-    if (!curveLink.getSubValues().empty() && curveLink.getSubValues()[0].length() > 0) {
+    if (!curveLink.getSubValues().empty() && curveLink.getSubValues()[0].empty()) {
         crvEdge = Feature::getTopoShape(
                       linked,
                       ShapeOption::NeedSubElement | ShapeOption::ResolveLink | ShapeOption::Transform,
@@ -111,29 +111,20 @@ Flex::FlexParameters Flex::computeFinalParameters() const
 
 TopoShape Flex::FlexShape(const TopoShape& source, const Flex::FlexParameters& params)
 {
-    // move to Origin and align to Direction
-    gp_Trsf trsf;
-    trsf.SetTransformation(gp_Ax3(gp_Pnt(), gp_Dir(1., 0., 0.), gp_Dir(0., 1., 0.)), params.coord);
-    trsf.SetTranslationPart(params.coord.Location().XYZ());
-    TopoShape toDeform = source.moved(trsf.Inverted());
-
     TopoShape result;
     switch (params.mode) {
         case FlexMode::Bend:
-            result = bend(toDeform, params);
+            result = bend(source, params);
             break;
         case FlexMode::Twist:
-            result = twist(toDeform, params);
+            result = twist(source, params);
             break;
         case FlexMode::Inflate:
-            result = inflate(toDeform, params);
+            result = inflate(source, params);
             break;
         default:
             return source;
     }
-
-    // move back
-    result.move(trsf);
     return result;
 }
 
@@ -158,11 +149,13 @@ TopoShape Flex::bend(const TopoShape& source, const Flex::FlexParameters& params
 
 TopoShape Flex::twist(const TopoShape& source, const Flex::FlexParameters& params)
 {
-    double pitch = params.pitch;
+    const double pitch = params.pitch;
     const TopoDS_Shape& shape = source.getShape();
+    const auto origin = params.coord.Location();
+    const auto axis = params.coord.Direction();
 
-    auto func = [pitch](gp_Pnt pt) {
-        return Deformation::twistAlongX(pt, pitch);
+    auto func = [pitch, origin, axis](gp_Pnt pt) {
+        return Deformation::twist(pt, pitch, axis, origin);
     };
 
     try {

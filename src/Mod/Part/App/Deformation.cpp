@@ -26,17 +26,74 @@
 #include "Canonizer.h"
 
 #include "Base/Console.h"
+#include <gp_Quaternion.hxx>
 
 using namespace Part;
 
-gp_Pnt Deformation::twistAlongX(gp_Pnt from, double pitch)
+gp_Pnt Deformation::twist(gp_Pnt from, double pitch, gp_Vec direction, gp_Pnt origin)
 {
-    auto alpha = 2. * std::numbers::pi / pitch;
-    auto x = from.X();
-    auto y = from.Y() * cos(alpha * from.X()) - from.Z() * sin(alpha * from.X());
-    auto z = from.Y() * sin(alpha * from.X()) + from.Z() * cos(alpha * from.X());
+    if (std::abs(pitch) <= Precision::Confusion()) {
+        return from;
+    }
 
-    return {x, y, z};
+    direction.Normalize();
+    gp_Trsf trsf;
+    trsf.SetRotation(gp_Quaternion(direction, gp_Vec(1., 0., 0.)));
+
+    from.Transform(trsf);
+
+    gp_Pnt result;
+    result = twistAlongX(from, pitch, origin);
+    return result.Transformed(trsf.Inverted());
+}
+
+gp_Pnt Deformation::twistAlongX(gp_Pnt from, double pitch, gp_Pnt origin)
+{
+    if (std::abs(pitch) <= Precision::Confusion()) {
+        return from;
+    }
+
+    const auto alpha = 2. * std::numbers::pi / pitch;
+    const gp_Vec translated(origin, from);
+    const auto x = from.X();
+    const auto y = translated.Y() * cos(alpha * translated.X())
+        - translated.Z() * sin(alpha * translated.X());
+    const auto z = translated.Y() * sin(alpha * translated.X())
+        + translated.Z() * cos(alpha * translated.X());
+
+    return {x, y + origin.Y(), z + origin.Z()};
+}
+
+gp_Pnt Deformation::twistAlongY(gp_Pnt from, double pitch, gp_Pnt origin)
+{
+    if (std::abs(pitch) <= Precision::Confusion()) {
+        return from;
+    }
+    const auto alpha = 2. * std::numbers::pi / pitch;
+    const gp_Vec translated(origin, from);
+    const auto x = translated.X() * cos(alpha * translated.Y())
+        + translated.Z() * sin(alpha * translated.Y());
+    const auto y = from.Y();
+    const auto z = -translated.X() * sin(alpha * translated.Y())
+        + translated.Z() * cos(alpha * translated.Y());
+
+    return {x + origin.X(), y, z + origin.Z()};
+}
+
+gp_Pnt Deformation::twistAlongZ(gp_Pnt from, double pitch, gp_Pnt origin)
+{
+    if (std::abs(pitch) <= Precision::Confusion()) {
+        return from;
+    }
+    const auto alpha = 2. * std::numbers::pi / pitch;
+    const gp_Vec translated(origin, from);
+    const auto x = translated.X() * cos(alpha * translated.Z())
+        - translated.Y() * sin(alpha * translated.Z());
+    const auto y = translated.X() * sin(alpha * translated.Z())
+        + translated.Y() * cos(alpha * translated.Z());
+    const auto z = from.Z();
+
+    return {x + origin.X(), y + origin.Y(), z};
 }
 
 gp_Pnt Deformation::bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, double factor)

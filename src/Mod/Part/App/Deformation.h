@@ -65,8 +65,11 @@ class PartExport Deformation
 public:
     Deformation() = default;
 
+    static gp_Pnt twist(gp_Pnt from, double pitch, gp_Vec direction, gp_Pnt origin);
+    static gp_Pnt twistAlongX(gp_Pnt from, double pitch, gp_Pnt origin);
+    static gp_Pnt twistAlongY(gp_Pnt from, double pitch, gp_Pnt origin);
+    static gp_Pnt twistAlongZ(gp_Pnt from, double pitch, gp_Pnt origin);
 
-    static gp_Pnt twistAlongX(gp_Pnt from, double pitch);
     static gp_Pnt bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, double factor);
 
     static TopoDS_Edge deform(
