@@ -475,7 +475,7 @@ void GridExtensionP::setEnabled(Gui::View3DInventor* view_)
 
 bool GridExtensionP::getEnabled()
 {
-  return view != nullptr;
+    return view != nullptr;
 }
 
 void GridExtensionP::createEditModeInventorNodes()

@@ -100,11 +100,7 @@ SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
     }
 }
 
-SelectionObserver::SelectionObserver(
-    const ViewProviderDocumentObject* vp,
-    bool attach,
-    ResolveMode resolve
-)
+SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool attach, ResolveMode resolve)
     : resolve(resolve)
     , blockedSelection(false)
 {
@@ -541,20 +537,14 @@ bool SelectionSingleton::needPickedList() const
     return _needPickedList;
 }
 
-SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(
-    const _SelObj& sel
-)
+SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(const _SelObj& sel)
 {
     if (!ActiveGate) {
         return {.allowed = true, .reason = ""};
     }
     const char* subelement = nullptr;
-    auto pObject = getObjectOfType(
-        sel,
-        App::DocumentObject::getClassTypeId(),
-        gateResolve,
-        &subelement
-    );
+    auto pObject
+        = getObjectOfType(sel, App::DocumentObject::getClassTypeId(), gateResolve, &subelement);
 
 
     if (!ActiveGate->allow(pObject ? pObject->getDocument() : sel.pDoc, pObject, subelement)) {
@@ -1115,7 +1105,7 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode 
 
 const Gui::SelectionGate* SelectionSingleton::getSelectionGate() const
 {
-  return ActiveGate;
+    return ActiveGate;
 }
 
 // remove the active SelectionGate

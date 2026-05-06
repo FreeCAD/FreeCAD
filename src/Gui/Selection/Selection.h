@@ -864,9 +864,7 @@ protected:
      * Uses SelectionGate (which has a SelectionFilter).
      * @returns SelectionAllowance
      */
-    SelectionAllowance isSelectionAllowed(
-        const _SelObj& sel
-    );
+    SelectionAllowance isSelectionAllowed(const _SelObj& sel);
     // Preselection helpers, it's a mess, needs clarifying -theo-vt
     std::string DocName;
     std::string FeatName;
