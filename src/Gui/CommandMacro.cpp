@@ -22,7 +22,6 @@
 
 #include <QApplication>
 #include <QDesktopServices>
-#include <QMessageBox>
 #include <QUrl>
 
 #include "Command.h"
@@ -37,24 +36,6 @@
 
 
 using namespace Gui;
-
-namespace
-{
-void showUnsupportedMacroDebugMessage(QWidget* parent)
-{
-    QMessageBox::information(
-        parent,
-        QCoreApplication::translate("StdCmdMacroStartDebug", "Macro Debugging Unavailable"),
-        QCoreApplication::translate(
-            "StdCmdMacroStartDebug",
-            "The built-in macro debugger is currently unavailable.\n\n"
-            "Use \"Macro > Attach to Remote Debugger\" instead."
-        )
-    );
-}
-}  // namespace
-
-
 //===========================================================================
 // Std_DlgMacroRecord
 //===========================================================================
@@ -209,12 +190,11 @@ StdCmdMacroStartDebug::StdCmdMacroStartDebug()
 void StdCmdMacroStartDebug::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    showUnsupportedMacroDebugMessage(getMainWindow());
 }
 
 bool StdCmdMacroStartDebug::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("StartDebug");
+    return false;
 }
 
 DEF_STD_CMD_A(StdCmdMacroStopDebug)
@@ -316,12 +296,11 @@ StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
 void StdCmdToggleBreakpoint::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    showUnsupportedMacroDebugMessage(getMainWindow());
 }
 
 bool StdCmdToggleBreakpoint::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("ToggleBreakpoint");
+    return false;
 }
 
 DEF_STD_CMD_A(StdCmdMacrosFolder)
