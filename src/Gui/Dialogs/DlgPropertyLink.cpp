@@ -189,7 +189,11 @@ QString DlgPropertyLink::formatObject(App::Document* ownerDoc, App::DocumentObje
     }
 
     return QStringLiteral("%1 (%2.%3)")
-        .arg(QString::fromUtf8(sobj->Label.getValue()), QString::fromUtf8(objName), QString::fromUtf8(sub));
+        .arg(
+            QString::fromUtf8(sobj->Label.getValue()),
+            QString::fromUtf8(objName),
+            QString::fromUtf8(sub)
+        );
 }
 
 static inline bool isLinkSub(const QList<App::SubObjectT>& links)
