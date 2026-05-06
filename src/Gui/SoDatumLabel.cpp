@@ -1513,8 +1513,8 @@ void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, con
     const float sketchAngle = getSketchRotationAngle(state, vv, flip);
     const float absLabelAngle = std::abs(sketchAngle + angle);
 
-    constexpr float quarter = 90.0F;    // vertical line
-    constexpr float hysteresis = 15.0F; // extra to avoid flipping back and forth when close to vertical
+    constexpr float quarter = 90.0F;  // vertical line
+    constexpr float hysteresis = 15.0F;  // extra to avoid flipping back and forth when close to vertical
     constexpr float threshold = Base::toRadians(quarter + hysteresis);
 
     if ((flip && absLabelAngle > threshold) || (!flip && absLabelAngle < threshold)) {
