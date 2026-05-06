@@ -1042,7 +1042,16 @@ class ObjectSurface(PathOp.ObjectOp):
         return scan_lines
 
     def _executeSurfacePattern(
-        self, obj, job, stl, safe_stl, cutter, tool_diam, bb_face, cutting_faces=None, avoid_faces=None
+        self,
+        obj,
+        job,
+        stl,
+        safe_stl,
+        cutter,
+        tool_diam,
+        bb_face,
+        cutting_faces=None,
+        avoid_faces=None,
     ):
         """
         Executes the Surface Pattern (projection) strategy.
@@ -1074,14 +1083,14 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Ensure we have cutting faces (Fallback to whole model if none selected)
         if not cutting_faces and bb_face:
-            #base_objs = job.Model.Group
-            #if base_objs:
+            # base_objs = job.Model.Group
+            # if base_objs:
             #    cutting_faces = Part.Compound([b.Shape for b in base_objs]).Faces
             if bb_face:
                 cutting_faces.append(bb_face)
             else:
                 Path.Log.error("Could not determine source faces for pattern generation.")
-                return[]
+                return []
 
         # Determine the bounding box
         group_bb = bb_face.BoundBox
@@ -1408,9 +1417,11 @@ class ObjectSurface(PathOp.ObjectOp):
                 bb_face = surface_common.get_whole_model_boundary(shape.Faces, offset)
 
         if needs_face_selection:
-            base_prop = getattr(obj, "Base",[])
+            base_prop = getattr(obj, "Base", [])
             avoid_count = getattr(obj, "AvoidLastX_Faces", 0)
-            cutting_faces, avoid_faces = surface_pattern.split_selected_features(base_prop, avoid_count)
+            cutting_faces, avoid_faces = surface_pattern.split_selected_features(
+                base_prop, avoid_count
+            )
 
         # Create OCL cutter from tool parameters
         if needs_ocl_cutter:

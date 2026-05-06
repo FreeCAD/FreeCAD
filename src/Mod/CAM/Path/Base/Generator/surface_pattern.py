@@ -124,7 +124,9 @@ def get_operation_boundbox(bb_face, model_group, cutting_faces=None):
         return bb
 
     else:
-        Path.Log.debug(f"surface_pattern.get_operation_boundbox: using Boundary Box faces BB: {bb_face}")
+        Path.Log.debug(
+            f"surface_pattern.get_operation_boundbox: using Boundary Box faces BB: {bb_face}"
+        )
         return bb_face.BoundBox
 
     # Fallback: union of all model bounding boxes
@@ -132,7 +134,7 @@ def get_operation_boundbox(bb_face, model_group, cutting_faces=None):
         bb = Part.Compound([m.Shape for m in model_group]).BoundBox
         Path.Log.debug(f"surface_pattern.get_operation_boundbox: using model BB: {bb}")
         return bb
-        
+
     return None
 
 
@@ -153,7 +155,9 @@ def split_selected_features(base_property, avoid_count):
     """
 
     if not base_property:
-        Path.Log.debug("surface_pattern.split_selected_features: no Base geometry, using whole model")
+        Path.Log.debug(
+            "surface_pattern.split_selected_features: no Base geometry, using whole model"
+        )
         return [], []
 
     all_selected = []
@@ -223,7 +227,7 @@ def group_features(faces_to_group, handle_mode):
     else:
         # Default to collective mode for safety and for the "whole model" case
         if len(faces_to_group) > 1:
-             Path.Log.info("Preparing to process all selected features collectively.")
+            Path.Log.info("Preparing to process all selected features collectively.")
         return [faces_to_group]
 
 
