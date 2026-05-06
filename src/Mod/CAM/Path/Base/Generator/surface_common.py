@@ -351,7 +351,7 @@ def build_optimized_boundary(faces, offset, tolerance=0.005):
         f"Boundary Optimization: Processing {len(touching_faces)} touching faces and {len(isolated_faces)} isolated faces."
     )
 
-    generated_boundaries =[]
+    generated_boundaries = []
 
     # 1. Process all touching faces at once
     if touching_faces:
@@ -406,13 +406,13 @@ def _separate_touching_faces(faces, tolerance=0.005):
         tuple: (touching_faces, isolated_faces) as lists of Part.Face objects.
     """
     touching_faces = []
-    isolated_faces =[]
+    isolated_faces = []
 
     if not faces:
         return touching_faces, isolated_faces
 
     # 1. Flatten the input list (safely handles both[Face, Face] and [[Face], [Face]])
-    flat_faces =[]
+    flat_faces = []
     for item in faces:
         flat_faces.extend(item)
 
@@ -424,9 +424,12 @@ def _separate_touching_faces(faces, tolerance=0.005):
 
     # Helper function for a safe, fast Bounding Box intersection check
     def bb_overlap(bb1, bb2, tol):
-        if bb1.XMax < bb2.XMin - tol or bb1.XMin > bb2.XMax + tol: return False
-        if bb1.YMax < bb2.YMin - tol or bb1.YMin > bb2.YMax + tol: return False
-        if bb1.ZMax < bb2.ZMin - tol or bb1.ZMin > bb2.ZMax + tol: return False
+        if bb1.XMax < bb2.XMin - tol or bb1.XMin > bb2.XMax + tol:
+            return False
+        if bb1.YMax < bb2.YMin - tol or bb1.YMin > bb2.YMax + tol:
+            return False
+        if bb1.ZMax < bb2.ZMin - tol or bb1.ZMin > bb2.ZMax + tol:
+            return False
         return True
 
     # 2. Compare every face against every other face
