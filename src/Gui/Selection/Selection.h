@@ -26,6 +26,7 @@
 
 #include <deque>
 #include <list>
+#include <memory>
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -419,24 +420,25 @@ public:
     void setPreselectCoord(float x, float y, float z);
     /// returns the present preselection
     const SelectionChanges& getPreselection() const;
-    /// add a SelectionGate to control what is selectable in a document's scope, by default the
-    /// active document is selected
-    // which is usually the intended behavior
-    void addSelectionGate(
+
+    /// add a SelectionGate to control what is selectable
+    void addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve = ResolveMode::OldStyleElement);
+    /// remove the active temporary SelectionGate
+    void rmvSelectionGate();
+    /// set a SelectionGate that persists after temporary gates are removed
+    void setPersistentSelectionGate(
         Gui::SelectionGate* gate,
-        ResolveMode resolve = ResolveMode::OldStyleElement,
-        const char* pDocName = nullptr
+        ResolveMode resolve = ResolveMode::OldStyleElement
     );
 
     /** @brief get the pointer to the selection gate
      * It will be nullptr when no selection filter active
      */
     const Gui::SelectionGate* getSelectionGate(const App::Document* document) const;
-    /// remove the document's SelectionGate, by default the active document is selected, which is
-    /// usually the intended behavior
-    void rmvSelectionGate(const char* pDocName = nullptr);
-    /// remove the document's SelectionGate (assumes valid pointer)
-    void rmvSelectionGate(App::Document* doc);
+
+    /// clear the persistent SelectionGate
+    void clearPersistentSelectionGate();
+
 
     int disableCommandLog();
     int enableCommandLog(bool silent = false);
@@ -752,6 +754,8 @@ protected:
     static PyObject* sRemSelObserver(PyObject* self, PyObject* args);
     static PyObject* sAddSelectionGate(PyObject* self, PyObject* args);
     static PyObject* sRemoveSelectionGate(PyObject* self, PyObject* args);
+    static PyObject* sSetPersistentSelectionGate(PyObject* self, PyObject* args);
+    static PyObject* sClearPersistentSelectionGate(PyObject* self, PyObject* args);
     static PyObject* sGetPickedList(PyObject* self, PyObject* args);
     static PyObject* sEnablePickedList(PyObject* self, PyObject* args);
     static PyObject* sPreselect(PyObject* self, PyObject* args);
@@ -862,6 +866,7 @@ protected:
     // Returns a selection context or nullptr if the document is not found
     SelectionContext getSelectionContext(const char* pDocName);
     SelectionConstContext getSelectionContext(const char* pDocName) const;
+    void syncGateToAllSelectionContexts();
 
     static SelectionSingleton* _pcSingleton;
 
@@ -890,6 +895,12 @@ protected:
     std::string SubName;
     float hx {0.0f}, hy {0.0f}, hz {0.0f};
     SelectionChanges CurrentPreselection;
+
+    std::weak_ptr<Gui::SelectionGate> ActiveGate;
+    std::shared_ptr<Gui::SelectionGate> TemporaryGate;
+    std::shared_ptr<Gui::SelectionGate> PersistentGate;
+    ResolveMode gateResolve {ResolveMode::OldStyleElement};
+    ResolveMode persistentGateResolve {ResolveMode::OldStyleElement};
 
 
     int logDisabled {0};
