@@ -8,6 +8,8 @@
 #pragma once
 
 #include <map>
+#include <set>
+#include <tuple>
 #include "Curve.h"
 #include "clipper2/clipper.h"
 
@@ -56,6 +58,14 @@ struct ArcFittingMap
     // Map from z-coordinate label to source/center point coordinates
     // z-values > 0 are used as labels (z=0 is clipper default and should not be used here)
     std::map<int64_t, Clipper2Lib::PointD> map;
+
+    // Intersection tracking: maps intersection point z-label to the edge z-labels that intersected
+    // Format: intersection_z -> (e1bot.z, e1top.z, e2bot.z, e2top.z)
+    std::map<int64_t, std::tuple<int64_t, int64_t, int64_t, int64_t>> intersections;
+
+    // Arc connectivity: set of (z1, z2) pairs where z1 < z2, indicating these points are
+    // connected by an arc (both endpoints of the same arc segment)
+    std::set<std::pair<int64_t, int64_t>> arc_pairs;
 
     // Track the maximum z-value used for allocation
     int64_t z_next;
@@ -149,6 +159,18 @@ public:
 
 private:
     ArcFittingMap m_arc_fitting_map;
+
+    // Z-callback for Clipper intersection handling
+    void ZCallback(
+        const Clipper2Lib::Point64& e1bot,
+        const Clipper2Lib::Point64& e1top,
+        const Clipper2Lib::Point64& e2bot,
+        const Clipper2Lib::Point64& e2top,
+        Clipper2Lib::Point64& pt
+    );
+
+    // Helper to create bound Z callback
+    Clipper2Lib::ZCallback64 MakeZCallback();
 };
 
 enum eOverlapType
