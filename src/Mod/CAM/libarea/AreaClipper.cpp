@@ -6,6 +6,7 @@
 
 #include "Area.h"
 #include "clipper2/clipper.h"
+#include <cmath>
 #include <functional>
 
 using namespace heeks;
@@ -39,10 +40,19 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex, ArcFitt
         PointD p(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z);
         arcMap.map[z] = p;
         pts_for_AddVertex.push_back(p);
+        arcMap.z_prev = z;
     }
     else {
         if (vertex.m_p != prev_vertex->m_p) {
             arcMap.map[z] = PointD(vertex.m_c.x * CArea::m_units, vertex.m_c.y * CArea::m_units, z);
+
+            // Record arc connectivity: previous endpoint connected to this arc
+            if (arcMap.z_prev != 0) {
+                int64_t z1 = std::min(arcMap.z_prev, z);
+                int64_t z2 = std::max(arcMap.z_prev, z);
+                arcMap.arc_pairs.insert({z1, z2});
+            }
+            arcMap.z_prev = z;
 
             double phi, dphi, dx, dy;
             int Segments;
@@ -398,26 +408,82 @@ static void MakePolyPoly(const CArea& area, Paths64& pp, bool reverse, ArcFittin
     }
 }
 
-static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed)
+static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed, const ArcFittingMap& arcMap)
 {
     if (CArea::m_clipper_clean_distance >= heeks::Point::tolerance) {
         p = SimplifyPath(p, CArea::m_clipper_clean_distance, is_closed);
     }
 
-    for (unsigned int j = 0; j < p.size(); j++) {
+    // Find starting index to avoid breaking arcs at seam
+    unsigned int j0 = 0;
+    if (is_closed && p.size() > 0) {
+        // Find the largest index with z matching that of index 0
+        int64_t z0 = p[0].z;
+        for (unsigned int j = p.size() - 1; j < p.size(); j--) {
+            if (p[j].z == z0) {
+                j0 = j;
+                break;
+            }
+        }
+    }
+
+    // Loop through points starting at j0
+    int64_t prevZ = -1;
+    PointD prevPt;
+    unsigned int num_j = p.size() + (is_closed ? 1 : 0);
+    for (unsigned int dj = 0; dj < num_j; dj++) {
+        unsigned int jstart = (j0 + dj) % p.size();
+        while (dj + 1 < num_j && p[(j0 + dj + 1) % p.size()].z == p[jstart].z) {
+            dj++;
+        }
+        unsigned int j = (j0 + dj) % p.size();
         const Point64& pt = p[j];
         PointD dp = ToPointD(pt);
-        CVertex vertex(
-            0,
-            heeks::Point(dp.x / CArea::m_units, dp.y / CArea::m_units),
-            heeks::Point(0.0, 0.0)
-        );
+
+        // Construct ordered pair for arc detection
+        std::pair<int64_t, int64_t> zPair(std::min(prevZ, pt.z), std::max(prevZ, pt.z));
+
+        // Check if this segment is an arc
+        bool isLine = (prevZ == -1) || (arcMap.arc_pairs.find(zPair) == arcMap.arc_pairs.end());
+
+        int vertexType = 0;
+        heeks::Point centerPt(0.0, 0.0);
+
+        if (!isLine) {
+            // This is an arc - determine direction based on smaller rotation
+            auto centerIt = arcMap.map.find(pt.z);
+            if (centerIt != arcMap.map.end()) {
+                PointD center = centerIt->second;
+                centerPt = heeks::Point(center.x / CArea::m_units, center.y / CArea::m_units);
+
+                // Calculate angles from center to previous and current points
+                double angle1 = std::atan2(prevPt.y - center.y, prevPt.x - center.x);
+                double angle2 = std::atan2(dp.y - center.y, dp.x - center.x);
+
+                // Calculate angular difference, normalized to [-pi, pi]
+                double angleDiff = angle2 - angle1;
+                if (angleDiff > M_PI) {
+                    angleDiff -= 2.0 * M_PI;
+                }
+                if (angleDiff < -M_PI) {
+                    angleDiff += 2.0 * M_PI;
+                }
+
+                // Positive angleDiff means ccw is shorter, negative means cw is shorter
+                vertexType = (angleDiff > 0) ? 1 : -1;
+            }
+        }
+
+        CVertex vertex(vertexType, heeks::Point(dp.x / CArea::m_units, dp.y / CArea::m_units), centerPt);
         if (reverse) {
             curve.m_vertices.push_front(vertex);
         }
         else {
             curve.m_vertices.push_back(vertex);
         }
+
+        prevZ = pt.z;
+        prevPt = dp;
     }
     if (is_closed) {
         // make a copy of the first point at the end
@@ -446,7 +512,7 @@ static void SetFromResult(CArea& area, Paths64& pp, bool reverse, bool is_closed
 
         area.m_curves.emplace_back();
         CCurve& curve = area.m_curves.back();
-        SetFromResult(curve, p, reverse, is_closed);
+        SetFromResult(curve, p, reverse, is_closed, area.m_arc_fitting_map);
     }
 }
 
