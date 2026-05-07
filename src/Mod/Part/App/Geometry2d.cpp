@@ -28,7 +28,12 @@
 #include <Geom2dAPI_ProjectPointOnCurve.hxx>
 #include <Geom2dConvert.hxx>
 #include <Geom2dConvert_CompCurveToBSplineCurve.hxx>
-#include <Geom2dLProp_CLProps2d.hxx>
+#include <Standard_Version.hxx>
+#if OCC_VERSION_HEX >= 0x080000
+# include <GeomLProp_CLProps.hxx>
+#else
+# include <Geom2dLProp_CLProps2d.hxx>
+#endif
 #include <gce_ErrorType.hxx>
 #include <gp_Ax22d.hxx>
 #include <gp_Circ2d.hxx>
@@ -221,7 +226,11 @@ TopoDS_Shape Geom2dCurve::toShape() const
 bool Geom2dCurve::tangent(double u, gp_Dir2d& dir) const
 {
     Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
+#if OCC_VERSION_HEX >= 0x080000
+    GeomLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#else
     Geom2dLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#endif
     if (prop.IsTangentDefined()) {
         prop.Tangent(dir);
         return true;
@@ -233,7 +242,11 @@ bool Geom2dCurve::tangent(double u, gp_Dir2d& dir) const
 Base::Vector2d Geom2dCurve::pointAtParameter(double u) const
 {
     Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
+#if OCC_VERSION_HEX >= 0x080000
+    GeomLProp_CLProps2d prop(c, u, 0, Precision::Confusion());
+#else
     Geom2dLProp_CLProps2d prop(c, u, 0, Precision::Confusion());
+#endif
 
     const gp_Pnt2d& point = prop.Value();
     return {point.X(), point.Y()};
@@ -242,7 +255,11 @@ Base::Vector2d Geom2dCurve::pointAtParameter(double u) const
 Base::Vector2d Geom2dCurve::firstDerivativeAtParameter(double u) const
 {
     Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
+#if OCC_VERSION_HEX >= 0x080000
+    GeomLProp_CLProps2d prop(c, u, 1, Precision::Confusion());
+#else
     Geom2dLProp_CLProps2d prop(c, u, 1, Precision::Confusion());
+#endif
 
     const gp_Vec2d& vec = prop.D1();
     return {vec.X(), vec.Y()};
@@ -251,7 +268,11 @@ Base::Vector2d Geom2dCurve::firstDerivativeAtParameter(double u) const
 Base::Vector2d Geom2dCurve::secondDerivativeAtParameter(double u) const
 {
     Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
+#if OCC_VERSION_HEX >= 0x080000
+    GeomLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#else
     Geom2dLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#endif
 
     const gp_Vec2d& vec = prop.D2();
     return {vec.X(), vec.Y()};
@@ -260,7 +281,11 @@ Base::Vector2d Geom2dCurve::secondDerivativeAtParameter(double u) const
 bool Geom2dCurve::normal(double u, gp_Dir2d& dir) const
 {
     Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
+#if OCC_VERSION_HEX >= 0x080000
+    GeomLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#else
     Geom2dLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#endif
     if (prop.IsTangentDefined()) {
         prop.Normal(dir);
         return true;

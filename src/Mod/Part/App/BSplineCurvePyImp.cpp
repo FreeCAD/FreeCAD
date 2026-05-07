@@ -36,6 +36,7 @@
 #include <TColStd_Array1OfReal.hxx>
 #include <TColStd_HArray1OfBoolean.hxx>
 #include <TColStd_HArray1OfReal.hxx>
+#include <Standard_Version.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
@@ -1228,7 +1229,11 @@ PyObject* BSplineCurvePy::interpolate(PyObject* args, PyObject* kwds)
     catch (Standard_Failure& e) {
         std::string err = e.GetMessageString();
         if (err.empty()) {
+#if OCC_VERSION_HEX >= 0x080000
+            err = e.ExceptionType();
+#else
             err = e.DynamicType()->Name();
+#endif
         }
         PyErr_SetString(PartExceptionOCCError, err.c_str());
         return nullptr;
@@ -1564,7 +1569,11 @@ PyObject* BSplineCurvePy::makeC1Continuous(PyObject* args)
     catch (Standard_Failure& e) {
         std::string err = e.GetMessageString();
         if (err.empty()) {
+#if OCC_VERSION_HEX >= 0x080000
+            err = e.ExceptionType();
+#else
             err = e.DynamicType()->Name();
+#endif
         }
         PyErr_SetString(PartExceptionOCCError, err.c_str());
         return nullptr;
@@ -1590,7 +1599,11 @@ PyObject* BSplineCurvePy::scaleKnotsToBounds(PyObject* args)
     catch (Standard_Failure& e) {
         std::string err = e.GetMessageString();
         if (err.empty()) {
+#if OCC_VERSION_HEX >= 0x080000
+            err = e.ExceptionType();
+#else
             err = e.DynamicType()->Name();
+#endif
         }
         PyErr_SetString(PartExceptionOCCError, err.c_str());
         return nullptr;
