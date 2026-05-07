@@ -1470,11 +1470,9 @@ class _Wall(ArchComponent.Component):
 
                     else:  # if not self.basewires:
                         FreeCAD.Console.PrintWarning(
-                            obj.Label
-                            + " "
-                            + translate(
+                            translate(
                                 "Arch",
-                                f"has Base object, but it does not contain supported edge type (line, circle, arc, ellipse) ",
+                                f"No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)",
                             )
                             + "\n"
                         )
