@@ -363,6 +363,7 @@ void View3DInventorPy::init_type()
         &View3DInventorPy::cast_to_base,
         "cast_to_base() cast to MDIView class"
     );
+    behaviors().readyType();
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor* vi)

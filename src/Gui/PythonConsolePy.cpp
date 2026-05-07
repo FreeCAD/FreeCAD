@@ -36,6 +36,7 @@ void PythonStdout::init_type()
     add_varargs_method("write", &PythonStdout::write, "write()");
     add_varargs_method("flush", &PythonStdout::flush, "flush()");
     add_noargs_method("isatty", &PythonStdout::isatty, "isatty()");
+    behaviors().readyType();
 }
 
 PythonStdout::PythonStdout(PythonConsole* pc)
@@ -97,6 +98,7 @@ void PythonStderr::init_type()
     add_varargs_method("write", &PythonStderr::write, "write()");
     add_varargs_method("flush", &PythonStderr::flush, "flush()");
     add_noargs_method("isatty", &PythonStderr::isatty, "isatty()");
+    behaviors().readyType();
 }
 
 PythonStderr::PythonStderr(PythonConsole* pc)
@@ -158,6 +160,7 @@ void OutputStdout::init_type()
     add_varargs_method("write", &OutputStdout::write, "write()");
     add_varargs_method("flush", &OutputStdout::flush, "flush()");
     add_noargs_method("isatty", &OutputStdout::isatty, "isatty()");
+    behaviors().readyType();
 }
 
 OutputStdout::OutputStdout() = default;
@@ -217,6 +220,7 @@ void OutputStderr::init_type()
     add_varargs_method("write", &OutputStderr::write, "write()");
     add_varargs_method("flush", &OutputStderr::flush, "flush()");
     add_noargs_method("isatty", &OutputStderr::isatty, "isatty()");
+    behaviors().readyType();
 }
 
 OutputStderr::OutputStderr() = default;
@@ -275,6 +279,7 @@ void PythonStdin::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     add_varargs_method("readline", &PythonStdin::readline, "readline()");
+    behaviors().readyType();
 }
 
 PythonStdin::PythonStdin(PythonConsole* pc)
