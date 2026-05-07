@@ -375,5 +375,128 @@ class TestArcFittingOffsets(PathTestBase):
         self.assert_offset_line_and_arc_count(a2, 2.0, 1, 8, 8)  # 1 curve, 8 lines, 8 arcs
 
 
+class TestArcFittingBooleans(PathTestBase):
+    """Tests for arc fitting with boolean operations."""
+
+    def setUp(self):
+        """Set up test geometry."""
+        super().setUp()
+
+        # Semicircle (D-shape): straight left edge + curved right side
+        semicircle_curve = make_curve(
+            [
+                (0, 0),
+                (0, 10, 1, 0, 5),  # CCW arc from (0,10) to (0,0), center at (0,5), radius 5
+                (0, 0),
+            ]
+        )
+        self.semicircle = make_area(semicircle_curve)
+
+        # Square overlapping the middle of the curved part
+        square_curve = make_curve(
+            [
+                (3, 0),
+                (13, 0),
+                (13, 10),
+                (3, 10),
+                (3, 0),
+            ]
+        )
+        self.square = make_area(square_curve)
+
+    def assert_boolean_line_and_arc_count(
+        self, a1, a2, operation, expected_curves, expected_lines, expected_arcs
+    ):
+        """Helper: Perform boolean operation and assert line and arc counts.
+
+        Args:
+            a1: First area object
+            a2: Second area object
+            operation: Boolean operation name ("Union", "Subtract", "Intersect", "Xor")
+            expected_curves: Expected number of curves after operation
+            expected_lines: Expected total number of line segments across all curves
+            expected_arcs: Expected total number of arc segments across all curves
+        """
+        # Store input curves for debug output
+        input1_summary = []
+        for i, curve in enumerate(a1.getCurves()):
+            vertices = list(curve.getVertices())
+            input1_summary.append(f"  Curve {i}: {len(vertices)} vertices")
+            for v in vertices:
+                input1_summary.append(
+                    f"    type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
+                )
+
+        input2_summary = []
+        for i, curve in enumerate(a2.getCurves()):
+            vertices = list(curve.getVertices())
+            input2_summary.append(f"  Curve {i}: {len(vertices)} vertices")
+            for v in vertices:
+                input2_summary.append(
+                    f"    type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
+                )
+
+        # Perform the boolean operation
+        op_method = getattr(a1, operation)
+        op_method(a2)
+
+        curves = a1.getCurves()
+
+        # Build detailed output for debugging
+        result_summary = []
+        total_lines = 0
+        total_arcs = 0
+
+        for i, curve in enumerate(curves):
+            vertices = list(curve.getVertices())
+            lines = [v for v in vertices[1:] if v.type == 0]
+            arcs = [v for v in vertices[1:] if v.type != 0]
+            total_lines += len(lines)
+            total_arcs += len(arcs)
+
+            result_summary.append(
+                f"  Curve {i}: {len(vertices)} vertices ({len(lines)} lines, {len(arcs)} arcs)"
+            )
+            for v in vertices:
+                result_summary.append(
+                    f"    type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
+                )
+
+        # Check curve count
+        if len(curves) != expected_curves:
+            self.fail(
+                f"Expected {expected_curves} curves after {operation}, got {len(curves)}\n"
+                f"Input area 1:\n" + "\n".join(input1_summary) + "\n"
+                f"Input area 2:\n" + "\n".join(input2_summary) + "\n"
+                f"Result curves:\n" + "\n".join(result_summary)
+            )
+
+        # Check line and arc counts
+        if total_lines != expected_lines or total_arcs != expected_arcs:
+            self.fail(
+                f"Expected {expected_lines} lines and {expected_arcs} arcs after {operation}, "
+                f"got {total_lines} lines and {total_arcs} arcs\n"
+                f"Input area 1:\n" + "\n".join(input1_summary) + "\n"
+                f"Input area 2:\n" + "\n".join(input2_summary) + "\n"
+                f"Result curves:\n" + "\n".join(result_summary)
+            )
+
+    def test_union_square_semicircle(self):
+        """Test union of square overlapping a semicircular shape."""
+        self.assert_boolean_line_and_arc_count(self.semicircle, self.square, "Union", 1, 6, 2)
+
+    def test_intersect_square_semicircle(self):
+        """Test intersection of square overlapping a semicircular shape."""
+        self.assert_boolean_line_and_arc_count(self.semicircle, self.square, "Intersect", 1, 1, 1)
+
+    def test_subtract_square_from_semicircle(self):
+        """Test subtracting square from semicircular shape (semicircle - square)."""
+        self.assert_boolean_line_and_arc_count(self.semicircle, self.square, "Subtract", 1, 2, 2)
+
+    def test_subtract_semicircle_from_square(self):
+        """Test subtracting semicircle from square (square - semicircle)."""
+        self.assert_boolean_line_and_arc_count(self.square, self.semicircle, "Subtract", 1, 5, 1)
+
+
 if __name__ == "__main__":
     unittest.main()
