@@ -388,7 +388,6 @@ SET(PathPythonOp_SRCS
     Path/Op/ThreadMilling.py
     Path/Op/Util.py
     Path/Op/Vcarve.py
-    Path/Op/Waterline.py
 )
 
 SET(PathPythonOpGui_SRCS
@@ -421,7 +420,6 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Tapping.py
     Path/Op/Gui/ThreadMilling.py
     Path/Op/Gui/Vcarve.py
-    Path/Op/Gui/Waterline.py
 )
 
 SET(PathScripts_SRCS
