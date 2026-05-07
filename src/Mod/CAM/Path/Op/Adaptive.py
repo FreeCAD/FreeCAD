@@ -30,6 +30,9 @@
 # shape.Wires list is non-empty bypasses this issue.
 
 import Path
+import Path.Base.FeedRate as PathFeedRate
+import Path.Base.Generator.helix as helix
+import Path.Base.Generator.spiral as spiral
 import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
@@ -38,6 +41,7 @@ import time
 import json
 import math
 import area
+import Constants
 from FreeCAD import BoundBox
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -164,15 +168,13 @@ def GenerateGCode(op, obj, adaptiveResults):
 
     stepDown = max(obj.StepDown.Value, _ADAPTIVE_MIN_STEPDOWN)
 
-    length = 2 * math.pi * helixRadius
+    if obj.HelixMaxRampAngle < 0:
+        obj.HelixMaxRampAngle = 0
+    elif obj.HelixMaxRampAngle > 90:
+        obj.HelixMaxRampAngle = 90
 
-    obj.HelixAngle = min(89.99, max(obj.HelixAngle.Value, 0.01))
-    obj.HelixConeAngle = max(obj.HelixConeAngle, 0)
-
-    helixAngleRad = math.radians(obj.HelixAngle)
-    depthPerOneCircle = length * math.tan(helixAngleRad)
-    if obj.HelixMaxStepdown.Value != 0 and obj.HelixMaxStepdown.Value < depthPerOneCircle:
-        depthPerOneCircle = obj.HelixMaxStepdown.Value
+    if obj.HelixConeAngle < 0:
+        obj.HelixConeAngle = 0
 
     stepUp = max(obj.LiftDistance.Value, 0)
 
@@ -203,294 +205,81 @@ def GenerateGCode(op, obj, adaptiveResults):
         )
 
         for passEndDepth in depthParams.data:
-            pass_start_angle = math.atan2(
-                region["StartPoint"][1] - region["HelixCenterPoint"][1],
-                region["StartPoint"][0] - region["HelixCenterPoint"][0],
-            )
-
-            passDepth = passStartDepth - passEndDepth
-
             p1 = region["HelixCenterPoint"]
             p2 = region["StartPoint"]
             helixRadius = math.dist(p1[:2], p2[:2])
+            dirAngleRad = math.atan2(p2[1] - p1[1], p2[0] - p1[0])
 
             # Helix ramp
             if helixRadius > 0.01:
                 r = helixRadius - 0.01
+                helixHeight = passStartDepth - passEndDepth
+                cone_angle_rad = math.radians(obj.HelixConeAngle.Value)
+                r_bottom = r - helixHeight * math.tan(cone_angle_rad)
+                if r_bottom < r * 0.5:
+                    # put a limit on how small the cone tip can be
+                    r_bottom = r * 0.5
+                    cone_angle_rad = math.atan((r - r_bottom) / helixHeight)
+
                 op.commandlist.append(Path.Command("(Helix to depth: %f)" % passEndDepth))
+                op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
-                if obj.UseHelixArcs is False:
-                    helix_down_angle = passDepth / depthPerOneCircle * 2 * math.pi
+                # Prepend parameters for generator to create helix
+                argsHelix = {
+                    "edge": None,
+                    "outer_radius": r_bottom,
+                    "pitch": obj.HelixMaxPitch.Value or helixHeight,
+                    "retract_height": obj.SafeHeight.Value,
+                    "direction": "CCW",
+                    "startAt": "Inside",
+                    "finish_circle": True,
+                    "cone_angle_rad": cone_angle_rad,
+                    "dir_angle_rad": dirAngleRad,
+                    "ramp_angle_rad": math.radians(obj.HelixMaxRampAngle.Value) or math.pi / 2,
+                }
+                centerTop = FreeCAD.Vector(p1[0], p1[1], passStartDepth)
+                centerBottom = FreeCAD.Vector(p1[0], p1[1], passEndDepth)
+                argsHelix["edge"] = Part.makeLine(centerTop, centerBottom)
 
-                    r_bottom = r - (passStartDepth - passEndDepth) * math.tan(
-                        math.radians(obj.HelixConeAngle.Value)
-                    )
-                    r_bottom = max(
-                        r_bottom, r * 0.5
-                    )  # put a limit on how small the cone tip can be
-                    step_over = obj.StepOver * 0.01 * op.tool.Diameter.Value
-                    spiral_out_angle = (r - r_bottom) / step_over * 2 * math.pi
+                helixCommands = helix.generate(**argsHelix)
+                while helixCommands[-1].Name in Constants.GCODE_MOVE_LINE:
+                    # Remove last retract movements from helix path
+                    del helixCommands[-1]
 
-                    helix_base_angle = pass_start_angle - helix_down_angle - spiral_out_angle
-                    helix_angular_progress = 0
+                op.commandlist.append(helixCommands[1])  # move to helix start point (x,y)
+                op.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
 
-                    helixStart = [
-                        region["HelixCenterPoint"][0] + r * math.cos(helix_base_angle),
-                        region["HelixCenterPoint"][1] + r * math.sin(helix_base_angle),
-                    ]
+                PathFeedRate.setFeedRate(helixCommands, obj.ToolController)
+                op.commandlist.extend(helixCommands[2:])
 
-                    # rapid move to start point
-                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-                    op.commandlist.append(
-                        Path.Command(
-                            "G0",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": obj.ClearanceHeight.Value,
-                            },
-                        )
-                    )
-
-                    # rapid move to safe height
-                    op.commandlist.append(
-                        Path.Command(
-                            "G0",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": obj.SafeHeight.Value,
-                            },
-                        )
-                    )
-
-                    # move to start depth
-                    op.commandlist.append(
-                        Path.Command(
-                            "G1",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": passStartDepth,
-                                "F": op.vertFeed,
-                            },
-                        )
-                    )
-
-                    # helix down
-                    while helix_angular_progress < helix_down_angle:
-                        progress = helix_angular_progress / helix_down_angle
-                        r_current = r * (1 - progress) + r_bottom * progress
-                        x = region["HelixCenterPoint"][0] + r_current * math.cos(
-                            helix_angular_progress + helix_base_angle
-                        )
-                        y = region["HelixCenterPoint"][1] + r_current * math.sin(
-                            helix_angular_progress + helix_base_angle
-                        )
-                        z = passStartDepth - progress * (passStartDepth - passEndDepth)
-                        op.commandlist.append(
-                            Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.vertFeed})
-                        )
-                        helix_angular_progress = min(
-                            helix_angular_progress + math.pi / 16, helix_down_angle
-                        )
-
-                    # spiral out, plus a full extra circle
-                    max_angle = helix_down_angle + spiral_out_angle + 2 * math.pi
-                    while helix_angular_progress < max_angle:
-                        if spiral_out_angle == 0:
-                            progress = 1
-                        else:
-                            progress = min(
-                                1, (helix_angular_progress - helix_down_angle) / spiral_out_angle
-                            )
-                        r_current = r_bottom * (1 - progress) + r * progress
-                        x = region["HelixCenterPoint"][0] + r_current * math.cos(
-                            helix_angular_progress + helix_base_angle
-                        )
-                        y = region["HelixCenterPoint"][1] + r_current * math.sin(
-                            helix_angular_progress + helix_base_angle
-                        )
-                        z = passEndDepth
-                        op.commandlist.append(
-                            Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.horizFeed})
-                        )
-                        helix_angular_progress = min(
-                            helix_angular_progress + math.pi / 16, max_angle
-                        )
-                else:
-                    # Use arcs for helix - no conical shape support
-                    helixStart = [
-                        region["HelixCenterPoint"][0] + r,
-                        region["HelixCenterPoint"][1],
-                    ]
-
-                    # rapid move to start point
-                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-                    op.commandlist.append(
-                        Path.Command(
-                            "G0",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": obj.ClearanceHeight.Value,
-                            },
-                        )
-                    )
-
-                    # rapid move to safe height
-                    op.commandlist.append(
-                        Path.Command(
-                            "G0",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": obj.SafeHeight.Value,
-                            },
-                        )
-                    )
-
-                    # move to start depth
-                    op.commandlist.append(
-                        Path.Command(
-                            "G1",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": passStartDepth,
-                                "F": op.vertFeed,
-                            },
-                        )
-                    )
-
-                    x = region["HelixCenterPoint"][0] + r
-                    y = region["HelixCenterPoint"][1]
-
-                    curDep = passStartDepth
-                    while curDep > (passEndDepth + depthPerOneCircle):
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x - (2 * r),
-                                    "Y": y,
-                                    "Z": curDep - (depthPerOneCircle / 2),
-                                    "I": -r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x,
-                                    "Y": y,
-                                    "Z": curDep - depthPerOneCircle,
-                                    "I": r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        curDep = curDep - depthPerOneCircle
-
-                    lastStep = curDep - passEndDepth
-                    if lastStep > (depthPerOneCircle / 2):
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x - (2 * r),
-                                    "Y": y,
-                                    "Z": curDep - (lastStep / 2),
-                                    "I": -r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x,
-                                    "Y": y,
-                                    "Z": passEndDepth,
-                                    "I": r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                    else:
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x - (2 * r),
-                                    "Y": y,
-                                    "Z": passEndDepth,
-                                    "I": -r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        op.commandlist.append(
-                            Path.Command(
-                                "G1",
-                                {"X": x, "Y": y, "Z": passEndDepth, "F": op.vertFeed},
-                            )
-                        )
-
-                    # one more circle at target depth to make sure center is cleared
-                    op.commandlist.append(
-                        Path.Command(
-                            "G2",
-                            {
-                                "X": x - (2 * r),
-                                "Y": y,
-                                "Z": passEndDepth,
-                                "I": -r,
-                                "F": op.horizFeed,
-                            },
-                        )
-                    )
-                    op.commandlist.append(
-                        Path.Command(
-                            "G2",
-                            {
-                                "X": x,
-                                "Y": y,
-                                "Z": passEndDepth,
-                                "I": r,
-                                "F": op.horizFeed,
-                            },
-                        )
-                    )
+                if cone_angle_rad:
+                    # Add spiral to connect helix and adaptive path
+                    spiralArgs = {
+                        "center": centerBottom,
+                        "outer_radius": r,
+                        "step": op.tool.Diameter.Value * obj.StepOver / 100,
+                        "inner_radius": r_bottom,
+                        "direction": "CCW",
+                        "startAt": "Inside",
+                        "dir_angle_rad": dirAngleRad,
+                    }
+                    spiralCommands = spiral.generate(**spiralArgs)
+                    PathFeedRate.setFeedRate(spiralCommands, obj.ToolController)
+                    # remove first linear movements
+                    while spiralCommands[0].Name in Constants.GCODE_MOVE_LINE:
+                        del spiralCommands[0]
+                    op.commandlist.append(Path.Command("(Spiral to radius: %f)" % r))
+                    op.commandlist.extend(spiralCommands)
 
             else:  # no helix entry
-                # rapid move to clearance height
-                op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-                op.commandlist.append(
-                    Path.Command(
-                        "G0",
-                        {
-                            "X": region["StartPoint"][0],
-                            "Y": region["StartPoint"][1],
-                            "Z": obj.ClearanceHeight.Value,
-                        },
-                    )
-                )
+                # rapid move to start point at clearance height
+                z = obj.ClearanceHeight.Value
+                op.commandlist.append(Path.Command("G0", {"Z": z}))
+                op.commandlist.append(Path.Command("G0", {"X": p2[0], "Y": p2[1], "Z": z}))
+
                 # straight plunge to target depth
-                op.commandlist.append(
-                    Path.Command(
-                        "G1",
-                        {
-                            "X": region["StartPoint"][0],
-                            "Y": region["StartPoint"][1],
-                            "Z": passEndDepth,
-                            "F": op.vertFeed,
-                        },
-                    )
-                )
+                parameters = {"X": p2[0], "Y": p2[1], "Z": passEndDepth, "F": op.vertFeed}
+                op.commandlist.append(Path.Command("G1", parameters))
 
             lz = passEndDepth
             z = obj.ClearanceHeight.Value
@@ -509,9 +298,8 @@ def GenerateGCode(op, obj, adaptiveResults):
                         if z != lz:
                             op.commandlist.append(Path.Command("G1", {"Z": z, "F": op.vertFeed}))
 
-                        op.commandlist.append(
-                            Path.Command("G1", {"X": x, "Y": y, "F": op.horizFeed})
-                        )
+                        parameters = {"X": x, "Y": y, "F": op.horizFeed}
+                        op.commandlist.append(Path.Command("G1", parameters))
 
                     elif motionType == area.AdaptiveMotionType.LinkClear:
                         z = passEndDepth + stepUp
@@ -1853,15 +1641,6 @@ class PathAdaptive(PathOp.ObjectOp):
         )
         obj.setEditorMode("StopProcessing", 2)  # hide this property
         obj.addProperty(
-            "App::PropertyBool",
-            "UseHelixArcs",
-            "Adaptive",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Use Arcs (G2) for helix ramp",
-            ),
-        )
-        obj.addProperty(
             "App::PropertyPythonObject",
             "AdaptiveInputState",
             "Adaptive",
@@ -1883,26 +1662,28 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.setEditorMode("AdaptiveOutputState", 2)  # hide this property
         obj.addProperty(
             "App::PropertyAngle",
-            "HelixAngle",
-            "Adaptive",
+            "HelixMaxRampAngle",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Helix ramp entry angle (degrees)",
+                "The maximum allowable helix ramp entry angle (degrees)"
+                "\nSet to zero to disable limitation by ramp angle",
             ),
         )
         obj.addProperty(
             "App::PropertyLength",
-            "HelixMaxStepdown",
-            "Adaptive",
+            "HelixMaxPitch",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The maximum allowable descent in a single revolution of the helix.",
+                "The maximum allowable descent in a single revolution of the helix"
+                "\nSet to zero to disable limitation by pitch",
             ),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "HelixConeAngle",
-            "Adaptive",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Helix cone angle (degrees)",
@@ -1911,7 +1692,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty(
             "App::PropertyPercent",
             "HelixMaxDiameterPercent",
-            "Adaptive",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter",
@@ -1920,7 +1701,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty(
             "App::PropertyPercent",
             "HelixMinDiameterPercent",
-            "Adaptive",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Minimum acceptable helix entry diameter, as a percentage of the tool diameter",
@@ -1989,7 +1770,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.FinishingProfile = True
         obj.Stopped = False
         obj.StopProcessing = False
-        obj.HelixAngle = 5
+        obj.HelixMaxRampAngle = 5
         obj.HelixConeAngle = 0
         obj.HelixMaxDiameterPercent = 100
         obj.HelixMinDiameterPercent = 10
@@ -1998,7 +1779,6 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.StockToLeave = 0
         obj.ZStockToLeave = 0
         obj.KeepToolDownRatio = 3.0
-        obj.UseHelixArcs = False
         obj.UseOutline = False
         obj.UseRestMachining = False
         obj.OrderCutsByRegion = False
@@ -2032,7 +1812,7 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.addProperty(
                 "App::PropertyAngle",
                 "HelixConeAngle",
-                "Adaptive",
+                "AdaptiveHelixEntry",
                 "Helix cone angle (degrees)",
             )
 
@@ -2100,7 +1880,7 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.addProperty(
                 "App::PropertyPercent",
                 "HelixMaxDiameterPercent",
-                "Adaptive",
+                "AdaptiveHelixEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter",
@@ -2109,7 +1889,7 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.addProperty(
                 "App::PropertyPercent",
                 "HelixMinDiameterPercent",
-                "Adaptive",
+                "AdaptiveHelixEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Minimum acceptable helix entry diameter, as a percentage of the tool diameter",
@@ -2121,16 +1901,32 @@ class PathAdaptive(PathOp.ObjectOp):
                     75 if oldD == 0 else 100 * oldD / obj.ToolController.Tool.Diameter.Value
                 )
 
-        if not hasattr(obj, "HelixMaxStepdown"):
+        if hasattr(obj, "HelixAngle"):
+            obj.renameProperty("HelixAngle", "HelixMaxRampAngle")
+
+        if hasattr(obj, "HelixMaxStepdown"):
+            obj.renameProperty("HelixMaxStepdown", "HelixMaxPitch")
+        if not hasattr(obj, "HelixMaxPitch"):
             obj.addProperty(
                 "App::PropertyLength",
-                "HelixMaxStepdown",
-                "Adaptive",
+                "HelixMaxPitch",
+                "AdaptiveHelixEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The maximum allowable descent in a single revolution of the helix.",
+                    "The maximum allowable descent in a single revolution of the helix"
+                    "Set to zero to disable limitation by pitch",
                 ),
             )
+        helixProps = (
+            "HelixConeAngle",
+            "HelixMaxDiameterPercent",
+            "HelixMinDiameterPercent",
+            "HelixMaxRampAngle",
+            "HelixMaxPitch",
+        )
+        for prop in helixProps:
+            if obj.getGroupOfProperty(prop) != "AdaptiveHelixEntry":
+                obj.setGroupOfProperty(prop, "AdaptiveHelixEntry")
 
         FeatureExtensions.initialize_properties(obj)
 
@@ -2149,10 +1945,9 @@ def SetupProperties():
         "FinishingProfile",
         "Stopped",
         "StopProcessing",
-        "UseHelixArcs",
         "AdaptiveInputState",
         "AdaptiveOutputState",
-        "HelixAngle",
+        "HelixMaxRampAngle",
         "HelixConeAngle",
         "HelixMaxDiameterPercent",
         "HelixMinDiameterPercent",

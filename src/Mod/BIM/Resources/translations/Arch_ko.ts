@@ -6595,7 +6595,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSite.py" line="1057"/>
       <source>Location</source>
-      <translation>위치: </translation>
+      <translation>위치</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1072"/>

@@ -998,7 +998,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Choose an option below. Or define a working plane by selecting 1 to 3 vertices, 1 or more shapes, or a working plane proxy, and then confirm with a click in the 3D view.</source>
-      <translation type="unfinished">Choose an option below. Or define a working plane by selecting 1 to 3 vertices, 1 or more shapes, or a working plane proxy, and then confirm with a click in the 3D view.</translation>
+      <translation>Escolliu una opció a continuació. O definiu un pla de treball seleccionant d'1 a 3 vèrtexs, 1 o més formes, o un proxy de pla de treball i confirmeu amb un clic a la vista 3D.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="214"/>
@@ -2078,16 +2078,16 @@ s'afegeix un fil cru de la forma original</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="190"/>
       <source>Maximum deviation for approximation of complex curves</source>
-      <translation type="unfinished">Maximum deviation for approximation of complex curves</translation>
+      <translation>Desviació màxima per l'aproximació de corbes complexes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="210"/>
       <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
 Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
 Set to zero to disable approximation.</source>
-      <translation type="unfinished">Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
-Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
-Set to zero to disable approximation.</translation>
+      <translation>Desviació màxima per l'aproximació d'el·lipses, hipèrboles, paràboles, i
+Bézier i B-spline corbes als arcs i línies. Pot ser útil pel banc de treball CAM.
+Estableix a zero per deshabilitar l'aproximació.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="256"/>
@@ -4056,7 +4056,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="87"/>
       <source>Only Draft lines, wires, and curves can be highlighted</source>
-      <translation type="unfinished">Only Draft lines, wires, and curves can be highlighted</translation>
+      <translation>Només es poden ressaltar línies, fils i corbes d'esbós</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="119"/>
@@ -8746,7 +8746,7 @@ de blocs no es preserven; la seva geometria passa a formar part de la forma de l
     <message>
       <location filename="../../Init.py" line="35"/>
       <source>Flattened SVG</source>
-      <translation type="unfinished">Flattened SVG</translation>
+      <translation>SVG aplanat</translation>
     </message>
   </context>
 </TS>

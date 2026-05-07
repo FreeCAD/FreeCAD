@@ -874,7 +874,7 @@ protected:
         std::string reason;
     };
 
-    /** @brief Checks if a selection is allowed through the selecetion filter.
+    /** @brief Checks if a selection is allowed through the selection filter.
      * Uses SelectionGate (which has a SelectionFilter).
      * @param context The selection context.
      * @param sel The object to be selected.

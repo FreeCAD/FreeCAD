@@ -111,7 +111,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="513"/>
       <source>Line and arrow color</source>
-      <translation>Couleur des lignes et flèches</translation>
+      <translation>Couleur des lignes et des flèches</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="602"/>
@@ -257,7 +257,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="562"/>
       <source>Unit override</source>
-      <translation>Substitution d’unité</translation>
+      <translation>Unité de remplacement</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="576"/>
@@ -961,7 +961,7 @@ Si aucun point n'est sélectionné, le plan sera déplacé au centre de la vue.<
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="197"/>
       <source>Major lines every</source>
-      <translation>Lignes principales toutes les</translation>
+      <translation>Espacement des lignes principales</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="207"/>
@@ -1273,7 +1273,7 @@ d'annotation. Si l'échelle est de 1:100, le multiplicateur est de 100.</transla
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="563"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
-      <translation>L'unité de remplacement pour les dimensions. Laisser vide pour utiliser l'unité en cours définie dans FreeCAD.</translation>
+      <translation>L'unité de remplacement pour les dimensions. Laisser vide pour utiliser l'unité définie dans FreeCAD.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="570"/>
@@ -1323,7 +1323,7 @@ d'annotation. Si l'échelle est de 1:100, le multiplicateur est de 100.</transla
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
       <source>Line and arrow color</source>
-      <translation>Couleur des lignes et flèches</translation>
+      <translation>Couleur des lignes et des flèches</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
@@ -1388,7 +1388,7 @@ Une valeur positive définit la longueur maximale des lignes d'extension. Utilis
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
       <source>Unit override</source>
-      <translation>Substitution d’unité</translation>
+      <translation>Unité de remplacement</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="653"/>
@@ -1935,12 +1935,12 @@ sur plusieurs lignes (par rapport à la taille de la police)</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="442"/>
       <source>Line and arrow color</source>
-      <translation>Couleur des lignes et flèches</translation>
+      <translation>Couleur des lignes et des flèches</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="449"/>
       <source>The default color for lines and arrows</source>
-      <translation>La couleur par défaut des lignes et des flèches.</translation>
+      <translation>La couleur par défaut des lignes et des flèches</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="472"/>
@@ -1960,14 +1960,13 @@ sur plusieurs lignes (par rapport à la taille de la police)</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="497"/>
       <source>Unit override</source>
-      <translation>Substitution d’unité</translation>
+      <translation>Unité de remplacement</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="510"/>
       <source>The default unit override for dimensions. Enter a unit such as m
 or cm, leave blank to use the current unit defined in FreeCAD.</source>
-      <translation>L'unité de remplacement par défaut pour les dimensions. Entrez une unité telle
-que m ou cm ou laissez vide pour utiliser l'unité définie dans FreeCAD.</translation>
+      <translation>L'unité de remplacement par défaut pour les dimensions. Entrer une unité, m ou cm, ou laisser vide pour utiliser l'unité définie dans FreeCAD.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="538"/>
@@ -2528,7 +2527,7 @@ de la grille. Cette option n'est active que si l'option « Afficher la bordure d
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
       <source>Major lines every</source>
-      <translation>Lignes principales toutes les</translation>
+      <translation>Espacement des lignes principales</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="145"/>
@@ -2551,12 +2550,12 @@ Les lignes principales de la grille sont plus épaisses que les lignes secondair
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="396"/>
       <source>Snap modifier</source>
-      <translation>Touche du modificateur pour l'aimantation</translation>
+      <translation>Touche du modificateur de l'aimantation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="412"/>
       <source>The Snap modifier key</source>
-      <translation>La touche du modificateur pour l'aimantation</translation>
+      <translation>La touche du modificateur de l'aimantation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="430"/>
@@ -2575,7 +2574,7 @@ Les lignes principales de la grille sont plus épaisses que les lignes secondair
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="443"/>
       <source>Constrain modifier</source>
-      <translation>Modificateur des contraintes</translation>
+      <translation>Touche du modificateur des contraintes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="478"/>
@@ -2688,7 +2687,7 @@ vert ou bleu s'ils correspondent à l'axe X, Y ou Z du système de coordonnées 
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="450"/>
       <source>The constrain modifier key</source>
-      <translation>La touche du modificateur de la contrainte</translation>
+      <translation>La touche du modificateur des contraintes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="304"/>

@@ -2087,16 +2087,16 @@ O valor ideal depende do tamanho absoluto da importação. Os valores típicos e
     <message>
       <location filename="../ui/preferences-svg.ui" line="190"/>
       <source>Maximum deviation for approximation of complex curves</source>
-      <translation type="unfinished">Maximum deviation for approximation of complex curves</translation>
+      <translation>Desvio máximo para aproximação das curvas complexas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="210"/>
       <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
 Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
 Set to zero to disable approximation.</source>
-      <translation type="unfinished">Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
-Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
-Set to zero to disable approximation.</translation>
+      <translation>Desvio máximo para a aproximação de elipses, hipérboles, parábolas e curvas de
+Bézier e B-spline para arcos e linhas. Pode ser útil para a bancada de trabalho CAM.
+Selecione zero para desativar a aproximação.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="256"/>
@@ -4054,7 +4054,7 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="87"/>
       <source>Only Draft lines, wires, and curves can be highlighted</source>
-      <translation type="unfinished">Only Draft lines, wires, and curves can be highlighted</translation>
+      <translation>Apenas linhas do rascunho, contornos e curvas podem ser destacadas</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="119"/>

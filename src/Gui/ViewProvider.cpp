@@ -325,7 +325,7 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
     }
 }
 
-SoSeparator* ViewProvider::getAnnotation()
+SoSeparator* ViewProvider::getOrCreateAnnotation()
 {
     if (!pcAnnotation) {
         pcAnnotation = new SoSeparator();

@@ -271,12 +271,12 @@ Flere mapper kan tilføjes ved hjælp af ";;" til at adskille stierne.</translat
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="130"/>
       <source>Created at:</source>
-      <translation type="unfinished">Created at:</translation>
+      <translation>Oprettet:</translation>
     </message>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Modified at:</source>
-      <translation type="unfinished">Modified at:</translation>
+      <translation>Ændret:</translation>
     </message>
   </context>
 </TS>

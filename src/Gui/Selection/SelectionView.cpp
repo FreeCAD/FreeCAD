@@ -1075,7 +1075,12 @@ void SelectionMenu::addWholeObjectSelection(
 
                 if (!subObjName.empty()) {
                     wholeObjKey = std::string(sel.objName) + "." + subObjName + ".";
-                    wholeObjSubName = subObjName + ".";
+                    // use the full sub-object path up to and including the
+                    // last dot, not just the final segment. this preserves
+                    // the correct chain ie. "Cone001.Cone." instead of
+                    // just "Cone.") for objects inside assembly links.
+                    // see github issue: https://github.com/freecad/freecad/issues/29024
+                    wholeObjSubName = subNameStr.substr(0, lastDot + 1);
                 }
             }
         }

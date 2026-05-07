@@ -421,7 +421,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 
     // ========================== Normals ==========================
 
-    // arc normals standerd
+    // arc normals standard
     auto pNormalsSwitch = new SoSwitch();
     pNormalsSwitch->whichChild.connectFrom(&visualMode);
 
