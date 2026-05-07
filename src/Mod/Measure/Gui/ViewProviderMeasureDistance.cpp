@@ -98,8 +98,8 @@ MeasureGui::DimensionLinear::DimensionLinear()
     SO_NODE_ADD_FIELD(text, ("test"));                // dimension text
     SO_NODE_ADD_FIELD(dColor, (1.0, 0.0, 0.0));       // dimension color.
     SO_NODE_ADD_FIELD(backgroundColor, (1.0, 1.0, 1.0));
-    SO_NODE_ADD_FIELD(showArrows, (true));   // display arrowheads at dimension endpoints
-    SO_NODE_ADD_FIELD(fontSize, (12.0));     // size of the dimension font
+    SO_NODE_ADD_FIELD(showArrows, (true));  // display arrowheads at dimension endpoints
+    SO_NODE_ADD_FIELD(fontSize, (12.0));    // size of the dimension font
 }
 
 MeasureGui::DimensionLinear::~DimensionLinear()
@@ -165,9 +165,7 @@ void MeasureGui::DimensionLinear::setupDimension()
     auto* rightTransform = new SoTransform();
     rightTransform->translation.connectFrom(&rightPosCalc->oA);
     // Rotate the +Y cone to point in +X (right endpoint direction).
-    rightTransform->rotation.setValue(
-        SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), SbVec3f(1.0f, 0.0f, 0.0f))
-    );
+    rightTransform->rotation.setValue(SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), SbVec3f(1.0f, 0.0f, 0.0f)));
 
     auto* rightArrowSep = new SoSeparator();
     rightArrowSep->addChild(material);
@@ -185,9 +183,7 @@ void MeasureGui::DimensionLinear::setupDimension()
     auto* leftTransform = new SoTransform();
     leftTransform->translation.connectFrom(&leftPosCalc->oA);
     // Rotate the +Y cone to point in -X (left endpoint direction).
-    leftTransform->rotation.setValue(
-        SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), SbVec3f(-1.0f, 0.0f, 0.0f))
-    );
+    leftTransform->rotation.setValue(SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), SbVec3f(-1.0f, 0.0f, 0.0f)));
 
     auto* leftArrowSep = new SoSeparator();
     leftArrowSep->addChild(material);
@@ -388,7 +384,8 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     pLineSeparator->addChild(pLines);
 
     // Leader line: connects the local annotation origin to the draggable label.
-    // SoConcatenate merges the fixed origin point and the live label translation into a 2-vertex polyline.
+    // SoConcatenate merges the fixed origin point and the live label translation into a 2-vertex
+    // polyline.
     auto* leaderCatEngine = new SoConcatenate(SoMFVec3f::getClassTypeId());
     auto* leaderOriginNode = new SoCoordinate3();
     leaderOriginNode->point.set1Value(0, SbVec3f(0.0f, 0.0f, 0.0f));
@@ -614,9 +611,7 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
         );
     }
     else if (prop == &ShowArrows) {
-        pArrowSwitch->whichChild.setValue(
-            ShowArrows.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE
-        );
+        pArrowSwitch->whichChild.setValue(ShowArrows.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE);
         if (ShowArrows.getValue()) {
             // Invalidate the cached scale so the next render pass recalculates sizes.
             _lastArrowViewScale = -1.0f;
@@ -676,7 +671,7 @@ void ViewProviderMeasureDistance::updateArrowSizesFromCamera()
 
     // 0.1% threshold avoids invalidating the scene graph on every stationary frame.
     if (_lastArrowViewScale > 0.0f
-            && std::fabs(viewScale - _lastArrowViewScale) < _lastArrowViewScale * 0.001f) {
+        && std::fabs(viewScale - _lastArrowViewScale) < _lastArrowViewScale * 0.001f) {
         return;
     }
     _lastArrowViewScale = viewScale;
@@ -695,10 +690,10 @@ void ViewProviderMeasureDistance::updateArrowSizesFromCamera()
 
 void ViewProviderMeasureDistance::updateArrowSizes(
     const Base::Vector3d& point1,
-    const Base::Vector3d& point2)
+    const Base::Vector3d& point2
+)
 {
-    if (!pArrowConeRight || !pArrowConeLeft
-        || !pArrowTransformRight || !pArrowTransformLeft) {
+    if (!pArrowConeRight || !pArrowConeLeft || !pArrowTransformRight || !pArrowTransformLeft) {
         return;
     }
 
@@ -771,7 +766,6 @@ void ViewProviderMeasureDistance::onLabelMoved()
 {
     updateView();  // redraw after the user drags the label to a new position.
 }
-
 
 
 void ViewProviderMeasureDistance::positionAnno(const Measure::MeasureBase* measureObject)

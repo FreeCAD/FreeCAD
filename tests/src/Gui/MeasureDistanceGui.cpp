@@ -33,32 +33,32 @@ namespace
 class MeasureDistanceGui: public ::testing::Test
 {
 protected:
-	static QApplication* qapp;
-	static Gui::Application* guiApp;
+    static QApplication* qapp;
+    static Gui::Application* guiApp;
 
-	static void SetUpTestSuite()
-	{
-		tests::initApplication();
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
 
-		static int argc = 1;
-		static char programName[] = "Gui_tests_run";
-		static char* argv[] = {programName};
-		qapp = new QApplication(argc, argv);
+        static int argc = 1;
+        static char programName[] = "Gui_tests_run";
+        static char* argv[] = {programName};
+        qapp = new QApplication(argc, argv);
 
-		guiApp = new Gui::Application(true);
-		Gui::Application::initOpenInventor();
-		Gui::Application::initApplication();
-		Base::Interpreter().loadModule("MeasureGui");
-	}
+        guiApp = new Gui::Application(true);
+        Gui::Application::initOpenInventor();
+        Gui::Application::initApplication();
+        Base::Interpreter().loadModule("MeasureGui");
+    }
 
-	static void TearDownTestSuite()
-	{
-		delete guiApp;
-		guiApp = nullptr;
+    static void TearDownTestSuite()
+    {
+        delete guiApp;
+        guiApp = nullptr;
 
-		delete qapp;
-		qapp = nullptr;
-	}
+        delete qapp;
+        qapp = nullptr;
+    }
 };
 
 QApplication* MeasureDistanceGui::qapp = nullptr;
@@ -67,49 +67,49 @@ Gui::Application* MeasureDistanceGui::guiApp = nullptr;
 // Walks the scenegraph to count visible cone nodes used as arrowheads
 void countVisibleCones(const SoNode* node, int& coneCount)
 {
-	if (!node) {
-		return;
-	}
+    if (!node) {
+        return;
+    }
 
-	if (const auto* cone = dynamic_cast<const SoCone*>(node)) {
-		if (cone->height.getValue() > 0.0f && cone->bottomRadius.getValue() > 0.0f) {
-			++coneCount;
-		}
-		return;
-	}
+    if (const auto* cone = dynamic_cast<const SoCone*>(node)) {
+        if (cone->height.getValue() > 0.0f && cone->bottomRadius.getValue() > 0.0f) {
+            ++coneCount;
+        }
+        return;
+    }
 
-	if (const auto* group = dynamic_cast<const SoGroup*>(node)) {
-		for (int i = 0; i < group->getNumChildren(); ++i) {
-			countVisibleCones(group->getChild(i), coneCount);
-		}
-	}
+    if (const auto* group = dynamic_cast<const SoGroup*>(node)) {
+        for (int i = 0; i < group->getNumChildren(); ++i) {
+            countVisibleCones(group->getChild(i), coneCount);
+        }
+    }
 }
 
 // Walks the scenegraph to count line segment nodes in the annotation
 void countIndexedLineSets(const SoNode* node, int& lineCount)
 {
-	if (!node) {
-		return;
-	}
+    if (!node) {
+        return;
+    }
 
-	if (dynamic_cast<const SoIndexedLineSet*>(node)) {
-		++lineCount;
-		return;
-	}
+    if (dynamic_cast<const SoIndexedLineSet*>(node)) {
+        ++lineCount;
+        return;
+    }
 
-	if (const auto* group = dynamic_cast<const SoGroup*>(node)) {
-		for (int i = 0; i < group->getNumChildren(); ++i) {
-			countIndexedLineSets(group->getChild(i), lineCount);
-		}
-	}
+    if (const auto* group = dynamic_cast<const SoGroup*>(node)) {
+        for (int i = 0; i < group->getNumChildren(); ++i) {
+            countIndexedLineSets(group->getChild(i), lineCount);
+        }
+    }
 }
 
 // Creates a point feature at the given coordinate for distance measurement
 Part::Feature* makePointFeature(App::Document* doc, const char* name, const gp_Pnt& point)
 {
-	auto* feature = doc->addObject<Part::Feature>(name);
-	feature->Shape.setValue(BRepBuilderAPI_MakeVertex(point).Vertex());
-	return feature;
+    auto* feature = doc->addObject<Part::Feature>(name);
+    feature->Shape.setValue(BRepBuilderAPI_MakeVertex(point).Vertex());
+    return feature;
 }
 
 }  // namespace
@@ -117,54 +117,54 @@ Part::Feature* makePointFeature(App::Document* doc, const char* name, const gp_P
 // Validates that arrowheads and lines are rendered for a two-point distance measurement
 TEST_F(MeasureDistanceGui, arrowsAreInstantiatedForTwoPoints)
 {
-	App::DocumentInitFlags flags;
-	flags.createView = false;
+    App::DocumentInitFlags flags;
+    flags.createView = false;
 
-	App::Document* doc = App::GetApplication().newDocument("MeasureDistanceGui", nullptr, flags);
-	ASSERT_NE(doc, nullptr);
+    App::Document* doc = App::GetApplication().newDocument("MeasureDistanceGui", nullptr, flags);
+    ASSERT_NE(doc, nullptr);
 
-	auto* point1 = makePointFeature(doc, "Point1", gp_Pnt(0.0, 0.0, 0.0));
-	auto* point2 = makePointFeature(doc, "Point2", gp_Pnt(20.0, 0.0, 0.0));
-	ASSERT_NE(point1, nullptr);
-	ASSERT_NE(point2, nullptr);
+    auto* point1 = makePointFeature(doc, "Point1", gp_Pnt(0.0, 0.0, 0.0));
+    auto* point2 = makePointFeature(doc, "Point2", gp_Pnt(20.0, 0.0, 0.0));
+    ASSERT_NE(point1, nullptr);
+    ASSERT_NE(point2, nullptr);
 
-	doc->recompute();
+    doc->recompute();
 
-	App::MeasureSelection selection;
-	selection.push_back({App::SubObjectT {point1, ""}, Base::Vector3d(0.0, 0.0, 0.0)});
-	selection.push_back({App::SubObjectT {point2, ""}, Base::Vector3d(20.0, 0.0, 0.0)});
+    App::MeasureSelection selection;
+    selection.push_back({App::SubObjectT {point1, ""}, Base::Vector3d(0.0, 0.0, 0.0)});
+    selection.push_back({App::SubObjectT {point2, ""}, Base::Vector3d(20.0, 0.0, 0.0)});
 
-	ASSERT_TRUE(Measure::MeasureDistance::isValidSelection(selection));
+    ASSERT_TRUE(Measure::MeasureDistance::isValidSelection(selection));
 
-	auto measureTypes = App::MeasureManager::getValidMeasureTypes(selection, "");
-	ASSERT_FALSE(measureTypes.empty());
-	EXPECT_EQ(measureTypes.front()->measureObject, "Measure::MeasureDistance");
+    auto measureTypes = App::MeasureManager::getValidMeasureTypes(selection, "");
+    ASSERT_FALSE(measureTypes.empty());
+    EXPECT_EQ(measureTypes.front()->measureObject, "Measure::MeasureDistance");
 
-	auto* measure = doc->addObject<Measure::MeasureDistance>("Distance");
-	ASSERT_NE(measure, nullptr);
+    auto* measure = doc->addObject<Measure::MeasureDistance>("Distance");
+    ASSERT_NE(measure, nullptr);
 
-	measure->parseSelection(selection);
-	doc->recompute();
+    measure->parseSelection(selection);
+    doc->recompute();
 
-	Gui::Document* guiDoc = guiApp->getDocument(doc);
-	ASSERT_NE(guiDoc, nullptr);
+    Gui::Document* guiDoc = guiApp->getDocument(doc);
+    ASSERT_NE(guiDoc, nullptr);
 
-	auto* viewProvider = guiApp->getViewProvider<MeasureGui::ViewProviderMeasureDistance>(measure);
-	ASSERT_NE(viewProvider, nullptr);
+    auto* viewProvider = guiApp->getViewProvider<MeasureGui::ViewProviderMeasureDistance>(measure);
+    ASSERT_NE(viewProvider, nullptr);
 
-	viewProvider->redrawAnnotation();
+    viewProvider->redrawAnnotation();
 
-	SoSeparator* root = viewProvider->getRoot();
-	ASSERT_NE(root, nullptr);
+    SoSeparator* root = viewProvider->getRoot();
+    ASSERT_NE(root, nullptr);
 
-	int coneCount = 0;
-	countVisibleCones(root, coneCount);
+    int coneCount = 0;
+    countVisibleCones(root, coneCount);
 
-	int lineCount = 0;
-	countIndexedLineSets(root, lineCount);
+    int lineCount = 0;
+    countIndexedLineSets(root, lineCount);
 
-	EXPECT_EQ(coneCount, 2);
-	EXPECT_GE(lineCount, 2);
+    EXPECT_EQ(coneCount, 2);
+    EXPECT_GE(lineCount, 2);
 
-	App::GetApplication().closeDocument(doc->getName());
+    App::GetApplication().closeDocument(doc->getName());
 }
