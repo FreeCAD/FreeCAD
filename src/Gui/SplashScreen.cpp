@@ -239,6 +239,34 @@ SplashScreen::~SplashScreen()
     delete messages;
 }
 
+// Whenever QSplashScreen gets a QEvent::Show or is about to be finish()ed, it will start
+// waiting for its window to be displayed and puts the main thread to sleep repeatedly as
+// long as it isn't reported as such. (see qtbase@52a4103 src/widgets/widgets/qsplashscreen.cpp:214)
+// Problem is QWidget::show() triggers QWidgetPrivate::setVisible() in turn sending a QEvent::Show,
+// but by that point the underlying QWindow may not have been flagged as visible yet.
+// On Linux with either X11 or Wayland, this disturbs the event loop, and QWindow visibility
+// will never be reported as these protocols require explicit flushing and event pulling from said
+// event loop, thus making the QSplashScreen waitForWidgetMapped() function wait for its default
+// timeout of 1000 ms, delaying the entire app's startup by a whole second or more.
+// Override SplashScreen::event() and QSplashScreen::finish() to bypass this entirely.
+// The window's visibility status is up to the event loops and compositors, it is out of our
+// control, so don't bother.
+
+void SplashScreen::finish(QWidget* w)
+{
+    Q_UNUSED(w);
+    close();
+}
+
+bool SplashScreen::event(QEvent* e)
+{
+    if (e->type() == QEvent::Show) {
+        // Bypass QSplashScreen::event for Show events specifically
+        return QWidget::event(e);  // NOLINT(bugprone-parent-virtual-call)
+    }
+    return QSplashScreen::event(e);
+}
+
 /**
  * Draws the contents of the splash screen using painter \a painter. The default
  * implementation draws the message passed by message().

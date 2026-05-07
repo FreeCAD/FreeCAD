@@ -41,11 +41,14 @@ public:
     explicit SplashScreen(const QPixmap& pixmap = QPixmap(), Qt::WindowFlags f = Qt::WindowFlags());
     ~SplashScreen() override;
 
+    void finish(QWidget* w);
+
     void setShowMessages(bool on);
 
     static QPixmap splashImage();
 
 protected:
+    bool event(QEvent* e) override;
     void drawContents(QPainter* painter) override;
 
 private:
