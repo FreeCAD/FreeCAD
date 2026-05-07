@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QLineEdit>
 #include <QModelIndex>
 #include <QPainter>
 #include <QTimer>
@@ -324,6 +325,13 @@ QWidget* PropertyItemDelegate::createEditor(
         }
     }
     if (editor) {
+        if (auto lineEdit = qobject_cast<QLineEdit*>(editor);
+            lineEdit && dynamic_cast<PropertyStringItem*>(childItem)) {
+            const_cast<PropertyItemDelegate*>(this)->changed = false;
+            QObject::connect(lineEdit, &QLineEdit::textChanged, this, [this]() {
+                const_cast<PropertyItemDelegate*>(this)->changed = true;
+            });
+        }
         // Make sure the editor background is painted so the cell content doesn't show through
         editor->setAutoFillBackground(true);
     }
@@ -403,6 +411,7 @@ void PropertyItemDelegate::setModelData(
         data = childItem->editorData(editor);
     }
     model->setData(index, data, Qt::EditRole);
+    const_cast<PropertyItemDelegate*>(this)->changed = false;
 }
 
 #include "moc_PropertyItemDelegate.cpp"
