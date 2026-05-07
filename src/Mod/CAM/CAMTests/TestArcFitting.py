@@ -87,6 +87,21 @@ def make_regular_polygon(num_sides, radius, subdivisions=1):
     return make_curve(vertices)
 
 
+def make_area(curves):
+    """Helper: Create an Area from a list of curves.
+
+    Args:
+        curves: Single curve or list of curves to add to the area
+    """
+    a = area.Area()
+    if isinstance(curves, list):
+        for c in curves:
+            a.append(c)
+    else:
+        a.append(curves)
+    return a
+
+
 class TestArcFittingRoundTrip(PathTestBase):
     """Tests for FitArcs and UnfitArcs round-trip operations."""
 
@@ -249,7 +264,115 @@ class TestArcFittingRoundTrip(PathTestBase):
 class TestArcFittingOffsets(PathTestBase):
     """Tests for arc fitting with offset operations."""
 
-    pass
+    def assert_offset_line_and_arc_count(
+        self, a, offset_distance, expected_curves, expected_lines, expected_arcs
+    ):
+        """Helper: Assert that offsetting an area produces expected line and arc counts.
+
+        Args:
+            a: Area object to offset
+            offset_distance: Distance to offset (positive = outward for CCW curves)
+            expected_curves: Expected number of curves after offset
+            expected_lines: Expected total number of line segments across all curves
+            expected_arcs: Expected total number of arc segments across all curves
+        """
+        # Store original curves for debug output
+        orig_curves = a.getCurves()
+        orig_summary = []
+        for i, curve in enumerate(orig_curves):
+            vertices = list(curve.getVertices())
+            orig_summary.append(f"  Curve {i}: {len(vertices)} vertices")
+            for v in vertices:
+                orig_summary.append(
+                    f"    type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
+                )
+
+        a.OffsetWithClipper(offset_distance)
+
+        # Get the resulting curves
+        curves = a.getCurves()
+
+        # Build detailed output for debugging
+        result_summary = []
+        total_lines = 0
+        total_arcs = 0
+
+        for i, curve in enumerate(curves):
+            vertices = list(curve.getVertices())
+            lines = [v for v in vertices[1:] if v.type == 0]
+            arcs = [v for v in vertices[1:] if v.type != 0]
+            total_lines += len(lines)
+            total_arcs += len(arcs)
+
+            result_summary.append(
+                f"  Curve {i}: {len(vertices)} vertices ({len(lines)} lines, {len(arcs)} arcs)"
+            )
+            for v in vertices:
+                result_summary.append(
+                    f"    type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
+                )
+
+        # Check curve count
+        if len(curves) != expected_curves:
+            self.fail(
+                f"Expected {expected_curves} curves after offset, got {len(curves)}\n"
+                f"Offset distance: {offset_distance}\n"
+                f"Original curves:\n" + "\n".join(orig_summary) + "\n"
+                f"Result curves:\n" + "\n".join(result_summary)
+            )
+
+        # Check line and arc counts
+        if total_lines != expected_lines or total_arcs != expected_arcs:
+            self.fail(
+                f"Expected {expected_lines} lines and {expected_arcs} arcs, "
+                f"got {total_lines} lines and {total_arcs} arcs\n"
+                f"Offset distance: {offset_distance}\n"
+                f"Original curves:\n" + "\n".join(orig_summary) + "\n"
+                f"Result curves:\n" + "\n".join(result_summary)
+            )
+
+    def test_square_offset_outward(self):
+        """Test that offsetting a square outward produces 4 lines and 4 arcs."""
+        a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]))
+        self.assert_offset_line_and_arc_count(a, 1.0, 1, 4, 4)  # 1 curve, 4 lines, 4 arcs
+
+    def test_square_offset_inward(self):
+        """Test that offsetting a square inward produces 4 lines and no arcs."""
+        a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]))
+        self.assert_offset_line_and_arc_count(a, -1.0, 1, 4, 0)  # 1 curve, 4 lines, 0 arcs
+
+    def test_square_offset_inward_collapse(self):
+        """Test that offsetting a square inward past its half-width produces no curves."""
+        a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]))
+        self.assert_offset_line_and_arc_count(a, -6.0, 0, 0, 0)  # 0 curves
+
+    def test_square_with_semicircle_top_offset_outward(self):
+        """Test offsetting a square with semicircular top outward."""
+        a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10, 1, 5, 10), (0, 0)]))
+        self.assert_offset_line_and_arc_count(a, 1.0, 1, 3, 3)  # 1 curve, 3 lines, 3 arcs
+
+    def test_square_with_semicircle_top_offset_inward(self):
+        """Test offsetting a square with semicircular top inward."""
+        a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10, 1, 5, 10), (0, 0)]))
+        self.assert_offset_line_and_arc_count(a, -1.0, 1, 3, 1)  # 1 curve, 3 lines, 1 arc
+
+    def test_two_shapes_offset_merge(self):
+        """Test offsetting two shapes that merge together."""
+        # Bottom: square with semicircular top (top of arc at y=15)
+        # Top: 10x10 square with 3-unit gap from arc top
+        a = make_area(
+            [
+                make_curve([(0, 0), (10, 0), (10, 10), (0, 10, 1, 5, 10), (0, 0)]),
+                make_curve([(0, 18), (10, 18), (10, 28), (0, 28), (0, 18)]),
+            ]
+        )
+        a2 = make_area(a.getCurves())
+
+        # Offset by 1.0 (not enough to merge)
+        self.assert_offset_line_and_arc_count(a, 1.0, 2, 7, 7)  # 2 curves, 7 lines, 7 arcs
+
+        # Offset by 2.0 (merges --> +1 line, +1 arc)
+        self.assert_offset_line_and_arc_count(a2, 2.0, 1, 8, 8)  # 1 curve, 8 lines, 8 arcs
 
 
 if __name__ == "__main__":
