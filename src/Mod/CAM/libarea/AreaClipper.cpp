@@ -21,28 +21,28 @@ double CArea::m_clipper_scale = 10000.0;
 // Convert between PointD (double) and Point64 (int64) with scaling
 static Point64 ToPoint64(const PointD& p)
 {
-    return Point64((int64_t)(p.x * CArea::m_clipper_scale), (int64_t)(p.y * CArea::m_clipper_scale));
+    return Point64((int64_t)(p.x * CArea::m_clipper_scale), (int64_t)(p.y * CArea::m_clipper_scale), p.z);
 }
 
 static PointD ToPointD(const Point64& p)
 {
-    return PointD((double)p.x / CArea::m_clipper_scale, (double)p.y / CArea::m_clipper_scale);
+    return PointD((double)p.x / CArea::m_clipper_scale, (double)p.y / CArea::m_clipper_scale, p.z);
 }
 
 static std::list<PointD> pts_for_AddVertex;
 
-static void AddPoint(const PointD& p)
+static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex, ArcFittingMap& arcMap)
 {
-    pts_for_AddVertex.push_back(p);
-}
-
-static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
-{
+    const int64_t z = arcMap.z_next++;
     if (vertex.m_type == 0 || prev_vertex == NULL) {
-        AddPoint(PointD(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units));
+        PointD p(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z);
+        arcMap.map[z] = p;
+        pts_for_AddVertex.push_back(p);
     }
     else {
         if (vertex.m_p != prev_vertex->m_p) {
+            arcMap.map[z] = PointD(vertex.m_c.x * CArea::m_units, vertex.m_c.y * CArea::m_units, z);
+
             double phi, dphi, dx, dy;
             int Segments;
             int i;
@@ -110,7 +110,7 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
                 double nx = vertex.m_c.x * CArea::m_units + radius * cos(phi - dphi);
                 double ny = vertex.m_c.y * CArea::m_units + radius * sin(phi - dphi);
 
-                AddPoint(PointD(nx, ny));
+                pts_for_AddVertex.push_back(PointD(nx, ny, z));
 
                 px = nx;
                 py = ny;
@@ -119,7 +119,13 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
     }
 }
 
-static void MakeLoop(const PointD& pt0, const PointD& pt1, const PointD& pt2, double radius)
+static void MakeLoop(
+    const PointD& pt0,
+    const PointD& pt1,
+    const PointD& pt2,
+    double radius,
+    ArcFittingMap& arcMap
+)
 {
     heeks::Point p0(pt0.x, pt0.y);
     heeks::Point p1(pt1.x, pt1.y);
@@ -140,13 +146,13 @@ static void MakeLoop(const PointD& pt0, const PointD& pt1, const PointD& pt2, do
     double save_units = CArea::m_units;
     CArea::m_units = 1.0;
 
-    AddVertex(v1, &v0);
-    AddVertex(v2, &v1);
+    AddVertex(v1, &v0, arcMap);
+    AddVertex(v2, &v1, arcMap);
 
     CArea::m_units = save_units;
 }
 
-static void OffsetWithLoops(const Paths64& pp, Paths64& pp_new, double inwards_value)
+static void OffsetWithLoops(const Paths64& pp, Paths64& pp_new, double inwards_value, ArcFittingMap& arcMap)
 {
     Clipper64 c;
 
@@ -176,16 +182,28 @@ static void OffsetWithLoops(const Paths64& pp, Paths64& pp_new, double inwards_v
         if (p.size() > 2) {
             if (reverse) {
                 for (std::size_t j = p.size() - 1; j > 1; j--) {
-                    MakeLoop(ToPointD(p[j]), ToPointD(p[j - 1]), ToPointD(p[j - 2]), radius);
+                    MakeLoop(ToPointD(p[j]), ToPointD(p[j - 1]), ToPointD(p[j - 2]), radius, arcMap);
                 }
-                MakeLoop(ToPointD(p[1]), ToPointD(p[0]), ToPointD(p[p.size() - 1]), radius);
-                MakeLoop(ToPointD(p[0]), ToPointD(p[p.size() - 1]), ToPointD(p[p.size() - 2]), radius);
+                MakeLoop(ToPointD(p[1]), ToPointD(p[0]), ToPointD(p[p.size() - 1]), radius, arcMap);
+                MakeLoop(
+                    ToPointD(p[0]),
+                    ToPointD(p[p.size() - 1]),
+                    ToPointD(p[p.size() - 2]),
+                    radius,
+                    arcMap
+                );
             }
             else {
-                MakeLoop(ToPointD(p[p.size() - 2]), ToPointD(p[p.size() - 1]), ToPointD(p[0]), radius);
-                MakeLoop(ToPointD(p[p.size() - 1]), ToPointD(p[0]), ToPointD(p[1]), radius);
+                MakeLoop(
+                    ToPointD(p[p.size() - 2]),
+                    ToPointD(p[p.size() - 1]),
+                    ToPointD(p[0]),
+                    radius,
+                    arcMap
+                );
+                MakeLoop(ToPointD(p[p.size() - 1]), ToPointD(p[0]), ToPointD(p[1]), radius, arcMap);
                 for (std::size_t j = 2; j < p.size(); j++) {
-                    MakeLoop(ToPointD(p[j - 2]), ToPointD(p[j - 1]), ToPointD(p[j]), radius);
+                    MakeLoop(ToPointD(p[j - 2]), ToPointD(p[j - 1]), ToPointD(p[j]), radius, arcMap);
                 }
             }
 
@@ -231,7 +249,7 @@ static void OffsetWithLoops(const Paths64& pp, Paths64& pp_new, double inwards_v
     }
 }
 
-static void MakeObround(const heeks::Point& pt0, const CVertex& vt1, double radius)
+static void MakeObround(const heeks::Point& pt0, const CVertex& vt1, double radius, ArcFittingMap& arcMap)
 {
     Span span(pt0, vt1);
     heeks::Point forward0 = span.GetVector(0.0);
@@ -250,16 +268,16 @@ static void MakeObround(const heeks::Point& pt0, const CVertex& vt1, double radi
     double save_units = CArea::m_units;
     CArea::m_units = 1.0;
 
-    AddVertex(v0, NULL);
-    AddVertex(v1, &v0);
-    AddVertex(v2, &v1);
-    AddVertex(v3, &v2);
-    AddVertex(v4, &v3);
+    AddVertex(v0, NULL, arcMap);
+    AddVertex(v1, &v0, arcMap);
+    AddVertex(v2, &v1, arcMap);
+    AddVertex(v3, &v2, arcMap);
+    AddVertex(v4, &v3, arcMap);
 
     CArea::m_units = save_units;
 }
 
-static void OffsetSpansWithObrounds(const CArea& area, Paths64& pp_new, double radius)
+static void OffsetSpansWithObrounds(const CArea& area, Paths64& pp_new, double radius, ArcFittingMap& arcMap)
 {
     Clipper64 c;
     pp_new.clear();
@@ -279,7 +297,7 @@ static void OffsetSpansWithObrounds(const CArea& area, Paths64& pp_new, double r
              It2++) {
             const CVertex& vertex = *It2;
             if (prev_vertex) {
-                MakeObround(prev_vertex->m_p, vertex, radius);
+                MakeObround(prev_vertex->m_p, vertex, radius, arcMap);
 
                 Path64 loopy_polygon;
                 loopy_polygon.reserve(pts_for_AddVertex.size());
@@ -313,7 +331,7 @@ static void OffsetSpansWithObrounds(const CArea& area, Paths64& pp_new, double r
     }
 }
 
-static void MakePoly(const CCurve& curve, Path64& p, bool reverse = false)
+static void MakePoly(const CCurve& curve, Path64& p, bool reverse, ArcFittingMap& arcMap)
 {
     pts_for_AddVertex.clear();
     const CVertex* prev_vertex = NULL;
@@ -322,7 +340,7 @@ static void MakePoly(const CCurve& curve, Path64& p, bool reverse = false)
         return;
     }
     if (!curve.IsClosed()) {
-        AddVertex(curve.m_vertices.front(), NULL);
+        AddVertex(curve.m_vertices.front(), NULL, arcMap);
     }
 
     for (std::list<CVertex>::const_iterator It2 = curve.m_vertices.begin();
@@ -330,7 +348,7 @@ static void MakePoly(const CCurve& curve, Path64& p, bool reverse = false)
          It2++) {
         const CVertex& vertex = *It2;
         if (prev_vertex) {
-            AddVertex(vertex, prev_vertex);
+            AddVertex(vertex, prev_vertex, arcMap);
         }
         prev_vertex = &vertex;
     }
@@ -354,18 +372,18 @@ static void MakePoly(const CCurve& curve, Path64& p, bool reverse = false)
     }
 }
 
-static void MakePolyPoly(const CArea& area, Paths64& pp, bool reverse = true)
+static void MakePolyPoly(const CArea& area, Paths64& pp, bool reverse, ArcFittingMap& arcMap)
 {
     pp.clear();
 
     for (std::list<CCurve>::const_iterator It = area.m_curves.begin(); It != area.m_curves.end();
          It++) {
         pp.push_back(Path64());
-        MakePoly(*It, pp.back(), reverse);
+        MakePoly(*It, pp.back(), reverse, arcMap);
     }
 }
 
-static void SetFromResult(CCurve& curve, Path64& p, bool reverse = true, bool is_closed = true)
+static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed)
 {
     if (CArea::m_clipper_clean_distance >= heeks::Point::tolerance) {
         p = SimplifyPath(p, CArea::m_clipper_clean_distance, is_closed);
@@ -401,13 +419,7 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse = true, bool is
     }
 }
 
-static void SetFromResult(
-    CArea& area,
-    Paths64& pp,
-    bool reverse = true,
-    bool is_closed = true,
-    bool clear = true
-)
+static void SetFromResult(CArea& area, Paths64& pp, bool reverse, bool is_closed, bool clear)
 {
     // delete existing geometry
     if (clear) {
@@ -446,13 +458,13 @@ void CArea::Xor(const CArea& a2)
 void CArea::Offset(double inwards_value)
 {
     Paths64 pp, pp2;
-    MakePolyPoly(*this, pp, false);
-    OffsetWithLoops(pp, pp2, inwards_value * m_units);
-    SetFromResult(*this, pp2, false);
+    MakePolyPoly(*this, pp, false, m_arc_fitting_map);
+    OffsetWithLoops(pp, pp2, inwards_value * m_units, m_arc_fitting_map);
+    SetFromResult(*this, pp2, false, true, true);
     this->Reorder();
 }
 
-void CArea::PopulateClipper(Clipper64& c, bool as_clip) const
+void CArea::PopulateClipper(Clipper64& c, bool as_clip, ArcFittingMap& arcMap) const
 {
     Paths64 closed_paths;
     Paths64 open_paths;
@@ -467,7 +479,7 @@ void CArea::PopulateClipper(Clipper64& c, bool as_clip) const
         }
 
         Path64 p;
-        MakePoly(curve, p, false);
+        MakePoly(curve, p, false, arcMap);
 
         if (is_closed) {
             closed_paths.push_back(p);
@@ -499,8 +511,8 @@ void CArea::PopulateClipper(Clipper64& c, bool as_clip) const
 void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, FillRule clipFillType)
 {
     Clipper64 c;
-    PopulateClipper(c, false);
-    clip_area.PopulateClipper(c, true);
+    PopulateClipper(c, false, m_arc_fitting_map);
+    clip_area.PopulateClipper(c, true, m_arc_fitting_map);
 
     // Execute to get both closed and open paths
     Paths64 closed_paths;
@@ -508,7 +520,7 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
     c.Execute(op, subjFillType, closed_paths, open_paths);
 
     // Set closed paths as result
-    SetFromResult(*this, closed_paths);
+    SetFromResult(*this, closed_paths, true, true, true);
 
     // Append open paths to result
     SetFromResult(*this, open_paths, false, false, false);
@@ -542,7 +554,7 @@ void CArea::OffsetWithClipper(
     ClipperOffset clipper(miterLimit, arcTolerance);
 
     Paths64 pp;
-    MakePolyPoly(*this, pp, false);
+    MakePolyPoly(*this, pp, false, m_arc_fitting_map);
 
     // Collect closed paths to add together (holes must be added with outer boundary)
     Paths64 closedPaths;
@@ -564,19 +576,19 @@ void CArea::OffsetWithClipper(
     Paths64 pp2;
     clipper.Execute(offset, pp2);
 
-    SetFromResult(*this, pp2, false);
+    SetFromResult(*this, pp2, false, true, true);
     this->Reorder();
 }
 
 void CArea::Thicken(double value)
 {
     Paths64 pp;
-    OffsetSpansWithObrounds(*this, pp, value * m_units);
-    SetFromResult(*this, pp, false);
+    OffsetSpansWithObrounds(*this, pp, value * m_units, m_arc_fitting_map);
+    SetFromResult(*this, pp, false, true, true);
     this->Reorder();
 }
 
-void UnFitArcs(CCurve& curve)
+void UnFitArcs(CCurve& curve, ArcFittingMap& arcMap)
 {
     pts_for_AddVertex.clear();
     const CVertex* prev_vertex = NULL;
@@ -584,7 +596,7 @@ void UnFitArcs(CCurve& curve)
          It2 != curve.m_vertices.end();
          It2++) {
         const CVertex& vertex = *It2;
-        AddVertex(vertex, prev_vertex);
+        AddVertex(vertex, prev_vertex, arcMap);
         prev_vertex = &vertex;
     }
 
