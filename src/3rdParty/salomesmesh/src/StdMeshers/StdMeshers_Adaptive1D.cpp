@@ -48,6 +48,7 @@
 #include <Poly_Triangulation.hxx>
 #include <Standard_Version.hxx>
 #include <TColgp_Array1OfPnt.hxx>
+#include <TColStd_Array1OfInteger.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopLoc_Location.hxx>
