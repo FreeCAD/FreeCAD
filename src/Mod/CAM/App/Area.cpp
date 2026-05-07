@@ -381,7 +381,7 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge& edge, double deflection
     //
     GCPnts_UniformDeflection discretizer(curve, deflection, efirst, elast);
     if (!discretizer.IsDone()) {
-        Standard_Failure::Raise("Curve discretization failed");
+        throw Standard_Failure("Curve discretization failed");
     }
     if (discretizer.NbPoints() > 1) {
         int nbPoints = discretizer.NbPoints();
