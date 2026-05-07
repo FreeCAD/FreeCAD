@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <map>
 #include "Curve.h"
 #include "clipper2/clipper.h"
 
@@ -47,6 +48,21 @@ struct CAreaPocketParams
         zig_angle = Zig_angle;
         only_cut_first_offset = false;
     }
+};
+
+// Arc fitting map for tracking arc information through Clipper operations
+struct ArcFittingMap
+{
+    // Map from z-coordinate label to source/center point coordinates
+    // z-values > 0 are used as labels (z=0 is clipper default and should not be used here)
+    std::map<int64_t, Clipper2Lib::PointD> map;
+
+    // Track the maximum z-value used for allocation
+    int64_t z_next;
+
+    ArcFittingMap()
+        : z_next(0)
+    {}
 };
 
 class CArea
@@ -121,7 +137,7 @@ public:
     CAREA_PARAM_DECLARE(short, max_arc_points)
     CAREA_PARAM_DECLARE(double, clipper_scale)
 
-    void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip) const;
+    void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip, ArcFittingMap& arcMap) const;
 
     // Following functions is add to operate on possible open curves
     void Clip(
@@ -130,6 +146,9 @@ public:
         Clipper2Lib::FillRule subjFillType = Clipper2Lib::FillRule::EvenOdd,
         Clipper2Lib::FillRule clipFillType = Clipper2Lib::FillRule::EvenOdd
     );
+
+private:
+    ArcFittingMap m_arc_fitting_map;
 };
 
 enum eOverlapType
