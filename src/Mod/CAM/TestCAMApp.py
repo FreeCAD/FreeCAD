@@ -101,6 +101,9 @@ from CAMTests.TestPathToolBitSerializer import (
     TestFCTBSerializer,
     TestYamlToolBitSerializer,
 )
+from CAMTests.TestFeedsSpeedsResolver import TestFeedsSpeedsResolver
+from CAMTests.TestFeedsSpeedsToolBitPresets import TestFeedsSpeedsToolBitPresets
+from CAMTests.TestFeedsSpeedsToolController import TestFeedsSpeedsToolController
 from CAMTests.TestPathToolLibrary import TestPathToolLibrary
 from CAMTests.TestPathToolLibrarySerializer import (
     TestCamoticsLibrarySerializer,

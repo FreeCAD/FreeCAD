@@ -228,6 +228,21 @@ class ToolBit(Asset, ABC):
                     f" '{toolbit.obj.Label}'. Skipping."
                 )
 
+        # Restore feeds & speeds presets if present. The "presets" key is
+        # additive and optional; absence means "no presets" (lazy property
+        # remains unadded).
+        presets = attrs.get("presets")
+        if presets:
+            from ...FeedsSpeeds.presets import set_presets as _set_presets
+
+            try:
+                _set_presets(toolbit.obj, presets)
+            except Exception as e:
+                Path.Log.warning(
+                    f"ToolBit.from_shape: failed to restore presets for "
+                    f"'{toolbit.obj.Label}': {e}. Presets will be ignored."
+                )
+
         toolbit._update_tool_properties()
         return toolbit
 
@@ -978,6 +993,20 @@ class ToolBit(Asset, ABC):
                     f"Excluding property '{name}' from serialization "
                     f"(type {type(value).__name__}, value {value}): {e}"
                 )
+
+        # Serialize feeds & speeds presets if the property exists. Empty
+        # lists are omitted from the .fctb so unused tools stay byte-identical.
+        from ...FeedsSpeeds.presets import get_presets as _get_presets
+
+        try:
+            presets = _get_presets(self.obj)
+            if presets:
+                attrs["presets"] = presets
+        except Exception as e:
+            Path.Log.warning(
+                f"ToolBit.to_dict: failed to serialize presets for "
+                f"'{self.obj.Label}': {e}. Presets will be omitted."
+            )
 
         Path.Log.debug(f"to_dict output for {self.obj.Label}: {attrs}")
         return attrs
