@@ -1148,7 +1148,10 @@ class _Wall(ArchComponent.Component):
                             if isinstance(
                                 edge,
                                 (
-                                    Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse,
+                                    Part.LineSegment,
+                                    Part.Circle,
+                                    Part.ArcOfCircle,
+                                    Part.Ellipse,
                                 ),
                             ):
                                 baseEdges.append(edge)
