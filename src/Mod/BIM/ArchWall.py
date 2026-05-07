@@ -1146,11 +1146,9 @@ class _Wall(ArchComponent.Component):
                         baseEdges = []
                         for edge in shpEdges:
                             if isinstance(
-                                edge.Curve,
+                                edge,
                                 (
-                                    Part.Line,
-                                    Part.Circle,
-                                    Part.Ellipse,
+                                    Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse,
                                 ),
                             ):
                                 baseEdges.append(edge)
