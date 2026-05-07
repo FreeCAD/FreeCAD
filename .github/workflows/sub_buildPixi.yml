@@ -212,7 +212,7 @@ jobs:
 
     - name: src/Tools tests
       if: "!inputs.skipBuild"
-      run: python3 -m unittest discover -s src/Tools/tests -p "test_*.py"
+      run: pixi run python -m unittest discover -s src/Tools/tests -t . -p "test_*.py"
 
     - name: C++ tests
       timeout-minutes: 10
