@@ -35,9 +35,11 @@ _ocl_available = False
 try:
     try:
         import ocl
+
         _ocl_available = True
     except ImportError:
         import opencamlib as ocl
+
         _ocl_available = True
 except ImportError:
     pass
@@ -79,12 +81,12 @@ class TestSurfacePostprocess(PathTestUtils.PathTestBase):
         full_depth_line = [[(0, 0, 10), (10, 0, 6), (20, 0, 2)]]
         start_depth, final_depth, step_down = 10.0, 2.0, 3.0
 
-        multi_pass_lines = apply_multipass(
-            full_depth_line, start_depth, final_depth, step_down
-        )
+        multi_pass_lines = apply_multipass(full_depth_line, start_depth, final_depth, step_down)
 
         # Expected depths: 10->7, 7->4, 4->2. This should generate 3 sets of paths.
-        self.assertGreaterEqual(len(multi_pass_lines), 3, "Expected at least 3 layers for the given depths")
+        self.assertGreaterEqual(
+            len(multi_pass_lines), 3, "Expected at least 3 layers for the given depths"
+        )
 
         # Verify that each pass respects its minimum Z depth
         pass_depths = [7.0, 4.0, 2.0]
@@ -147,7 +149,9 @@ class TestSurfacePostprocess(PathTestUtils.PathTestBase):
         points = [(0, 0, 0), (10, 10, 0), (20, 0, 0), (30, 10, 0)]
         filtered = filter_cl_points(points, tolerance=0.001)
 
-        self.assertEqual(len(filtered), len(points), "Filter should not remove any points from a zig-zag path")
+        self.assertEqual(
+            len(filtered), len(points), "Filter should not remove any points from a zig-zag path"
+        )
 
     # -- G-code Generation and Transition Tests --
 
@@ -172,9 +176,15 @@ class TestSurfacePostprocess(PathTestUtils.PathTestBase):
 
         cmds = scan_lines_to_gcode(
             [line1, line2],
-            horiz_feed=300, vert_rapid=1000, horiz_rapid=1000,
-            safe_z=safe_z, step_down=5.0, sample_interval=1.0, clearance_z=clearance_z,
-            start_z=15.0, final_z=10.0
+            horiz_feed=300,
+            vert_rapid=1000,
+            horiz_rapid=1000,
+            safe_z=safe_z,
+            step_down=5.0,
+            sample_interval=1.0,
+            clearance_z=clearance_z,
+            start_z=15.0,
+            final_z=10.0,
         )
 
         # Find the command index for the end of line1
@@ -206,28 +216,36 @@ class TestSurfacePostprocess(PathTestUtils.PathTestBase):
         """
         from Path.Base.Generator.surface_postprocess import scan_lines_to_gcode
 
-        line1 = [(10, 10, 10), (90, 10, 10)] # End point: (90, 10, 10)
-        line2 = [(90, 12, 10), (10, 12, 10)] # Start point: (90, 12, 10) -> a 2mm transition
+        line1 = [(10, 10, 10), (90, 10, 10)]  # End point: (90, 10, 10)
+        line2 = [(90, 12, 10), (10, 12, 10)]  # Start point: (90, 12, 10) -> a 2mm transition
         safe_z, clearance_z = 25.0, 30.0
 
         cmds = scan_lines_to_gcode(
             [line1, line2],
-            horiz_feed=300, vert_rapid=1000, horiz_rapid=1000,
-            safe_z=safe_z, step_down=5.0, sample_interval=1.0, clearance_z=clearance_z,
-            start_z=15.0, final_z=10.0,
+            horiz_feed=300,
+            vert_rapid=1000,
+            horiz_rapid=1000,
+            safe_z=safe_z,
+            step_down=5.0,
+            sample_interval=1.0,
+            clearance_z=clearance_z,
+            start_z=15.0,
+            final_z=10.0,
             optimize_transitions=True,
             safe_stl=self.flat_stl,
-            cutter=self.cutter
+            cutter=self.cutter,
         )
 
         # Check for the ABSENCE of a retract to safe_z during the transition
         has_retract = False
-        for cmd in cmds[len(line1):-len(line2)]: # Check commands between the two lines
+        for cmd in cmds[len(line1) : -len(line2)]:  # Check commands between the two lines
             if cmd.Name == "G0" and cmd.Parameters.get("Z") == safe_z:
                 has_retract = True
                 break
 
-        self.assertFalse(has_retract, "Optimized short transition should not retract to safe height")
+        self.assertFalse(
+            has_retract, "Optimized short transition should not retract to safe height"
+        )
 
     def test22_gcode_optimized_long_transition_fallback(self):
         """
@@ -245,22 +263,28 @@ class TestSurfacePostprocess(PathTestUtils.PathTestBase):
         from Path.Base.Generator.surface_postprocess import scan_lines_to_gcode
 
         line1 = [(10, 10, 10), (90, 10, 10)]
-        line2 = [(10, 80, 10), (90, 80, 10)] # 70mm transition
+        line2 = [(10, 80, 10), (90, 80, 10)]  # 70mm transition
         safe_z, clearance_z = 25.0, 30.0
 
         cmds = scan_lines_to_gcode(
             [line1, line2],
-            horiz_feed=300, vert_rapid=1000, horiz_rapid=1000,
-            safe_z=safe_z, step_down=5.0, sample_interval=1.0, clearance_z=clearance_z,
-            start_z=15.0, final_z=10.0,
+            horiz_feed=300,
+            vert_rapid=1000,
+            horiz_rapid=1000,
+            safe_z=safe_z,
+            step_down=5.0,
+            sample_interval=1.0,
+            clearance_z=clearance_z,
+            start_z=15.0,
+            final_z=10.0,
             optimize_transitions=True,
             safe_stl=self.flat_stl,
-            cutter=self.cutter
+            cutter=self.cutter,
         )
 
         # Check for the PRESENCE of a retract, because the distance is too great
         has_retract = False
-        for cmd in cmds[len(line1):-len(line2)]: # Check commands between the two lines
+        for cmd in cmds[len(line1) : -len(line2)]:  # Check commands between the two lines
             if cmd.Name == "G0" and cmd.Parameters.get("Z") == safe_z:
                 has_retract = True
                 break

@@ -35,6 +35,7 @@ Path.Log.trackModule(Path.Log.thisModule())
 # Check for optional C++ dependency
 try:
     from Path.Base.Generator.surface_pattern import _pattern_cpp
+
     _HAS_CPP = True
 except ImportError:
     _HAS_CPP = False
@@ -42,6 +43,7 @@ except ImportError:
 
 class MockFeature:
     """A mock object to simulate a FreeCAD document object for testing Base property."""
+
     def __init__(self, shape, label="Mock"):
         self.Shape = shape
         self.Label = label
@@ -56,22 +58,36 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
     def setUp(self):
         """Create common test geometry."""
         # A simple square face for general pattern testing
-        self.square_face = Part.makeFace(Part.makePolygon([
-            FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(20, 0, 0),
-            FreeCAD.Vector(20, 20, 0), FreeCAD.Vector(0, 20, 0),
-            FreeCAD.Vector(0, 0, 0)
-        ]))
+        self.square_face = Part.makeFace(
+            Part.makePolygon(
+                [
+                    FreeCAD.Vector(0, 0, 0),
+                    FreeCAD.Vector(20, 0, 0),
+                    FreeCAD.Vector(20, 20, 0),
+                    FreeCAD.Vector(0, 20, 0),
+                    FreeCAD.Vector(0, 0, 0),
+                ]
+            )
+        )
         # A more complex face with a hole for offset testing
-        outer = Part.makePolygon([
-            FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(40, 0, 0),
-            FreeCAD.Vector(40, 40, 0), FreeCAD.Vector(0, 40, 0),
-            FreeCAD.Vector(0, 0, 0)
-        ])
-        inner = Part.makePolygon([
-            FreeCAD.Vector(10, 10, 0), FreeCAD.Vector(30, 10, 0),
-            FreeCAD.Vector(30, 30, 0), FreeCAD.Vector(10, 30, 0),
-            FreeCAD.Vector(10, 10, 0)
-        ])
+        outer = Part.makePolygon(
+            [
+                FreeCAD.Vector(0, 0, 0),
+                FreeCAD.Vector(40, 0, 0),
+                FreeCAD.Vector(40, 40, 0),
+                FreeCAD.Vector(0, 40, 0),
+                FreeCAD.Vector(0, 0, 0),
+            ]
+        )
+        inner = Part.makePolygon(
+            [
+                FreeCAD.Vector(10, 10, 0),
+                FreeCAD.Vector(30, 10, 0),
+                FreeCAD.Vector(30, 30, 0),
+                FreeCAD.Vector(10, 30, 0),
+                FreeCAD.Vector(10, 10, 0),
+            ]
+        )
         self.face_with_hole = Part.makeFace([outer, inner])
 
     # -- Feature Selection and Grouping Tests --
@@ -132,7 +148,9 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
         self.assertEqual(len(collective[0]), len(faces))
 
         individual = group_features(faces, "Individually")
-        self.assertEqual(len(individual), len(faces), "Individual mode should produce multiple groups")
+        self.assertEqual(
+            len(individual), len(faces), "Individual mode should produce multiple groups"
+        )
         self.assertEqual(len(individual[0]), 1)
 
     # -- Path Reconstruction Test --
@@ -153,10 +171,13 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
         from Path.Base.Generator.surface_pattern import reconstruct_scan_lines
 
         flat_points = [
-            (0, 0, 10), (1, 0, 10), (2, 0, 10),  # Line 1
-            (100, 50, 10), (101, 50, 10)       # Line 2 (after a big jump)
+            (0, 0, 10),
+            (1, 0, 10),
+            (2, 0, 10),  # Line 1
+            (100, 50, 10),
+            (101, 50, 10),  # Line 2 (after a big jump)
         ]
-        gap_threshold = 10.0 # A gap larger than this starts a new line
+        gap_threshold = 10.0  # A gap larger than this starts a new line
 
         lines = reconstruct_scan_lines(flat_points, gap_threshold)
 
@@ -212,8 +233,9 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
         lines = generate_offset_scan_lines(self.face_with_hole, stepover=5.0, sample_interval=1.0)
         self.assertIsNotNone(lines)
         # Outer: 40x40 -> 2 passes. Inner: 20x20 -> 1 pass. Total 3 wires * 2 passes/wire = 6 lines
-        self.assertGreaterEqual(len(lines), 3, "Expected at least 3 offset rings for a shape with a hole")
-
+        self.assertGreaterEqual(
+            len(lines), 3, "Expected at least 3 offset rings for a shape with a hole"
+        )
 
     @unittest.skipUnless(_HAS_CPP, "C++ surface_generator module not available")
     def test20_fast_generate_linear(self):
@@ -237,14 +259,14 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
         lines = fast_generate_pattern(
             pattern_type="Line",
             bbox=scan_bb,
-            center=(0,0),
+            center=(0, 0),
             stepover=5.0,
             sample_interval=1.0,
             angle=0.0,
             is_zigzag=False,
             reversed_pattern=False,
             climb=False,
-            boundary_face=self.square_face
+            boundary_face=self.square_face,
         )
 
         self.assertEqual(len(lines), 4, "Expected 4 scan lines for a 20mm area with 5mm stepover")
@@ -282,10 +304,12 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
             is_zigzag=False,
             reversed_pattern=False,
             climb=False,
-            boundary_face=self.square_face
+            boundary_face=self.square_face,
         )
 
-        self.assertGreaterEqual(len(lines), 1, "Spiral pattern should produce at least one path segment")
+        self.assertGreaterEqual(
+            len(lines), 1, "Spiral pattern should produce at least one path segment"
+        )
 
         total_points = sum(len(line) for line in lines)
         self.assertGreater(total_points, 50, "Spiral path should be discretized into many points")
@@ -293,4 +317,6 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
         # Verify all points are clipped within the boundary
         for line in lines:
             for x, y, z in line:
-                self.assertTrue(0 <= x <= 20 and 0 <= y <= 20, f"Point ({x},{y}) is outside the boundary")
+                self.assertTrue(
+                    0 <= x <= 20 and 0 <= y <= 20, f"Point ({x},{y}) is outside the boundary"
+                )

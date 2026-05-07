@@ -36,9 +36,11 @@ _ocl_available = False
 try:
     try:
         import ocl
+
         _ocl_available = True
     except ImportError:
         import opencamlib as ocl
+
         _ocl_available = True
 except ImportError:
     pass
@@ -86,10 +88,7 @@ class TestSurfaceDropCutter(PathTestUtils.PathTestBase):
         from Path.Base.Generator.surface_dropcutter import batch_dropcutter
 
         # A simple 2-line grid
-        polylines = [
-            [(10, 10, -5), (90, 10, -5)],
-            [(10, 20, -5), (90, 20, -5)]
-        ]
+        polylines = [[(10, 10, -5), (90, 10, -5)], [(10, 20, -5), (90, 20, -5)]]
         total_input_points = sum(len(line) for line in polylines)
 
         results = batch_dropcutter(self.flat_stl, self.endmill, polylines, min_z=-5.0)
@@ -181,5 +180,5 @@ class TestSurfaceDropCutter(PathTestUtils.PathTestBase):
         self.assertGreater(
             len(adaptive_results),
             len(standard_results),
-            "Adaptive sampling should add points on a curved surface"
+            "Adaptive sampling should add points on a curved surface",
         )

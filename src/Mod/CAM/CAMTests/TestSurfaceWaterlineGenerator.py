@@ -37,9 +37,11 @@ _ocl_available = False
 try:
     try:
         import ocl
+
         _ocl_available = True
     except ImportError:
         import opencamlib as ocl
+
         _ocl_available = True
 except ImportError:
     pass
@@ -92,7 +94,9 @@ class TestSurfaceWaterline(PathTestUtils.PathTestBase):
         self.assertGreater(len(loops), 0, "Waterline should produce at least one loop")
         for loop in loops:
             # A valid path segment must have at least 2 points.
-            self.assertGreaterEqual(len(loop), 2, "A valid contour loop should have at least 2 points")
+            self.assertGreaterEqual(
+                len(loop), 2, "A valid contour loop should have at least 2 points"
+            )
             for pt in loop:
                 self.assertAlmostEqual(pt[2], 10.0, delta=0.01)
 
@@ -161,15 +165,14 @@ class TestSurfaceWaterline(PathTestUtils.PathTestBase):
 
         stl, cutter = _make_hemisphere_stl_and_cutter()
         result = waterline_stack(
-            stl, cutter, sampling=2.0, min_sampling=0.5,
-            min_z=5.0, max_z=20.0, step_down=5.0
+            stl, cutter, sampling=2.0, min_sampling=0.5, min_z=5.0, max_z=20.0, step_down=5.0
         )
 
         self.assertEqual(len(result), 4, "Expected 4 Z-levels in the stack")
         heights = list(result.keys())
         self.assertAlmostEqual(heights[0], 20.0, delta=0.01)
         self.assertAlmostEqual(heights[-1], 5.0, delta=0.01)
-        self.assertTrue(all(heights[i] > heights[i+1] for i in range(len(heights)-1)))
+        self.assertTrue(all(heights[i] > heights[i + 1] for i in range(len(heights) - 1)))
 
     def test21_waterline_stack_with_offset(self):
         """
@@ -189,9 +192,14 @@ class TestSurfaceWaterline(PathTestUtils.PathTestBase):
         stl, cutter = _make_hemisphere_stl_and_cutter()
         offset = -0.2
         result = waterline_stack(
-            stl, cutter, sampling=2.0, min_sampling=0.5,
-            min_z=10.0, max_z=10.0, step_down=1.0,
-            depth_offset=offset
+            stl,
+            cutter,
+            sampling=2.0,
+            min_sampling=0.5,
+            min_z=10.0,
+            max_z=10.0,
+            step_down=1.0,
+            depth_offset=offset,
         )
 
         self.assertEqual(len(result), 1)
@@ -220,13 +228,16 @@ class TestSurfaceWaterline(PathTestUtils.PathTestBase):
 
         stl, cutter = _make_hemisphere_stl_and_cutter()
         wl_data = waterline_stack(
-            stl, cutter, sampling=2.0, min_sampling=0.5,
-            min_z=10.0, max_z=15.0, step_down=5.0
+            stl, cutter, sampling=2.0, min_sampling=0.5, min_z=10.0, max_z=15.0, step_down=5.0
         )
 
         cmds = waterline_to_gcode(
-            wl_data, horiz_feed=300, vert_rapid=1000, horiz_rapid=1000,
-            safe_z=30.0, clearance_z=40.0
+            wl_data,
+            horiz_feed=300,
+            vert_rapid=1000,
+            horiz_rapid=1000,
+            safe_z=30.0,
+            clearance_z=40.0,
         )
 
         self.assertGreater(len(cmds), 0)
@@ -258,8 +269,12 @@ class TestSurfaceWaterline(PathTestUtils.PathTestBase):
         cmds_climb = waterline_to_gcode(wl_data, 300, 1000, 1000, 30, 40, cut_climb=True)
 
         # Extract just the X,Y coordinates from the G1 commands
-        path_conv = [(c.Parameters.get('X'), c.Parameters.get('Y')) for c in cmds_conv if c.Name == 'G1']
-        path_climb = [(c.Parameters.get('X'), c.Parameters.get('Y')) for c in cmds_climb if c.Name == 'G1']
+        path_conv = [
+            (c.Parameters.get("X"), c.Parameters.get("Y")) for c in cmds_conv if c.Name == "G1"
+        ]
+        path_climb = [
+            (c.Parameters.get("X"), c.Parameters.get("Y")) for c in cmds_climb if c.Name == "G1"
+        ]
 
         self.assertEqual(len(path_conv), len(path_climb))
 

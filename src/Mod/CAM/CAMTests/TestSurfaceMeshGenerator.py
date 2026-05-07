@@ -185,7 +185,6 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         self.assertGreater(safe_bb.maxpt.x - safe_bb.minpt.x, model_bb.XLength)
         self.assertGreater(safe_bb.maxpt.y - safe_bb.minpt.y, model_bb.YLength)
 
-
     def test05_generate_stl_orchestrator(self):
         """
         Tests the main `generate_stl` orchestrator function.
@@ -205,7 +204,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
 
         stl, safe_stl = generate_stl(
             model_shape=self.box,
-            base_objs=[self.box], # Simulate base object from Job
+            base_objs=[self.box],  # Simulate base object from Job
             avoid_faces=[],
             tool_radius=3.0,
             needs_safe_stl=True,
@@ -222,4 +221,6 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         self.assertGreater(stl.size(), 0)
         self.assertGreater(safe_stl.size(), 0)
         # With avoid_faces=[], the safe_stl is still larger due to the base plate
-        self.assertGreater(safe_stl.bb.maxpt.x - safe_stl.bb.minpt.x, stl.bb.maxpt.x - stl.bb.minpt.x)
+        self.assertGreater(
+            safe_stl.bb.maxpt.x - safe_stl.bb.minpt.x, stl.bb.maxpt.x - stl.bb.minpt.x
+        )

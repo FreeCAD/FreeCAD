@@ -36,9 +36,11 @@ _ocl_available = False
 try:
     try:
         import ocl
+
         _ocl_available = True
     except ImportError:
         import opencamlib as ocl
+
         _ocl_available = True
 except ImportError:
     pass
@@ -242,9 +244,14 @@ class TestSurfaceCommon(PathTestUtils.PathTestBase):
 
         touching, isolated = _separate_touching_faces(input_list)
 
-        self.assertEqual(len(touching), len(box1.Faces), "Expected all 6 faces from the box to be in the touching list")
-        self.assertEqual(len(isolated), 1, "Expected the single distant face to be in the isolated list")
-
+        self.assertEqual(
+            len(touching),
+            len(box1.Faces),
+            "Expected all 6 faces from the box to be in the touching list",
+        )
+        self.assertEqual(
+            len(isolated), 1, "Expected the single distant face to be in the isolated list"
+        )
 
     def test11_create_boundary(self):
         """
@@ -267,7 +274,10 @@ class TestSurfaceCommon(PathTestUtils.PathTestBase):
 
         self.assertIsNotNone(boundary)
         # The result can be a Face or a Compound, so we check for a valid shape with faces
-        self.assertTrue(hasattr(boundary, "Faces") and len(boundary.Faces) > 0, "Boundary should be a shape with faces")
+        self.assertTrue(
+            hasattr(boundary, "Faces") and len(boundary.Faces) > 0,
+            "Boundary should be a shape with faces",
+        )
         self.assertAlmostEqual(boundary.BoundBox.XLength, 30.0, delta=0.1)
         self.assertAlmostEqual(boundary.BoundBox.YLength, 30.0, delta=0.1)
 
@@ -292,11 +302,17 @@ class TestSurfaceCommon(PathTestUtils.PathTestBase):
         avoid_shape = Part.makeBox(10, 10, 1, FreeCAD.Vector(20, 20, 0))
 
         # Bounding box face is created from the cutting_shape
-        bb_face = Part.Face(Part.makePolygon([
-            FreeCAD.Vector(0,0,0), FreeCAD.Vector(50,0,0),
-            FreeCAD.Vector(50,50,0), FreeCAD.Vector(0,50,0),
-            FreeCAD.Vector(0,0,0)
-        ]))
+        bb_face = Part.Face(
+            Part.makePolygon(
+                [
+                    FreeCAD.Vector(0, 0, 0),
+                    FreeCAD.Vector(50, 0, 0),
+                    FreeCAD.Vector(50, 50, 0),
+                    FreeCAD.Vector(0, 50, 0),
+                    FreeCAD.Vector(0, 0, 0),
+                ]
+            )
+        )
 
         mask = generate_pattern_mask(
             is_whole_model_job=True,
@@ -309,5 +325,9 @@ class TestSurfaceCommon(PathTestUtils.PathTestBase):
         )
 
         self.assertIsNotNone(mask)
-        self.assertEqual(len(mask.Wires), 2, "Mask should have an outer wire and an inner (hole) wire")
-        self.assertLess(mask.Area, cutting_shape.Area, "Mask area should be smaller after cutting the hole")
+        self.assertEqual(
+            len(mask.Wires), 2, "Mask should have an outer wire and an inner (hole) wire"
+        )
+        self.assertLess(
+            mask.Area, cutting_shape.Area, "Mask area should be smaller after cutting the hole"
+        )

@@ -48,17 +48,27 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
         # Expected floors are at Z=20 (top), Z=10 (pocket bottom), and Z=5 (step).
 
         # Standard boundaries for testing
-        self.border_face = Part.Face(Part.makePolygon([
-            FreeCAD.Vector(0,0,0), FreeCAD.Vector(50,0,0),
-            FreeCAD.Vector(50,50,0), FreeCAD.Vector(0,50,0),
-            FreeCAD.Vector(0,0,0)
-        ]))
+        self.border_face = Part.Face(
+            Part.makePolygon(
+                [
+                    FreeCAD.Vector(0, 0, 0),
+                    FreeCAD.Vector(50, 0, 0),
+                    FreeCAD.Vector(50, 50, 0),
+                    FreeCAD.Vector(0, 50, 0),
+                    FreeCAD.Vector(0, 0, 0),
+                ]
+            )
+        )
         # A large outer boundary for trim testing
-        outer_poly = Part.makePolygon([
-            FreeCAD.Vector(-10,-10,0), FreeCAD.Vector(60,-10,0),
-            FreeCAD.Vector(60,60,0), FreeCAD.Vector(-10,60,0),
-            FreeCAD.Vector(-10,-10,0)
-        ])
+        outer_poly = Part.makePolygon(
+            [
+                FreeCAD.Vector(-10, -10, 0),
+                FreeCAD.Vector(60, -10, 0),
+                FreeCAD.Vector(60, 60, 0),
+                FreeCAD.Vector(-10, 60, 0),
+                FreeCAD.Vector(-10, -10, 0),
+            ]
+        )
         self.trim_face = Part.makeFace(outer_poly).cut(self.border_face)
 
         # Standard workplane context
@@ -135,7 +145,7 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
         self.assertEqual(len(plan_3d), 8)
 
         # Test the "snap" logic - add a critical floor height
-        critical_heights = {17.0} # A floor 3mm below current Z of 15
+        critical_heights = {17.0}  # A floor 3mm below current Z of 15
         plan_snap = _generate_sampling_plan(15.0, 5.0, 0.001, critical_heights, 8, tool_3d)
         self.assertGreater(len(plan_snap), 8, "Snap logic should have added an extra sample point")
 
@@ -168,7 +178,7 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
             stock_to_leave=0.0,
             accuracy_val="4",
             z_offset=0.0,
-            wpc=self.wpc
+            wpc=self.wpc,
         )
 
         self.assertGreater(len(stack), 0, "Stack should contain generated layers")
@@ -192,7 +202,7 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
         from Path.Base.Generator.surface_zlevel import (
             categorize_floor_steps,
             zlevel_hybrid_stack,
-            zlevel_hybrid_to_gcode
+            zlevel_hybrid_to_gcode,
         )
 
         steps = categorize_floor_steps(self.test_model, 20.0, 5.0, 15.0)
@@ -202,14 +212,24 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
             self.test_model, steps, self.border_face, self.trim_face, tool, 0.0, "4", 0.0, self.wpc
         )
 
-        feed_params = {'horizFeed': 300, 'vertFeed': 100, 'horizRapid': 1000, 'vertRapid': 1000}
-        height_params = {'safe_hght': 25.0, 'clearance_hght': 30.0}
-        pattern_options = {'cut_climb': True, 'cut_pattern': 'ZigZag', 'pattern_angle': 45.0, 'reverse_pattern': False}
+        feed_params = {"horizFeed": 300, "vertFeed": 100, "horizRapid": 1000, "vertRapid": 1000}
+        height_params = {"safe_hght": 25.0, "clearance_hght": 30.0}
+        pattern_options = {
+            "cut_climb": True,
+            "cut_pattern": "ZigZag",
+            "pattern_angle": 45.0,
+            "reverse_pattern": False,
+        }
 
         cmds = zlevel_hybrid_to_gcode(
-            stack, feed_params, height_params, pattern_options,
-            ignore_outer=False, clear_planar_only=False,
-            step_over=4.0, radius=tool['radius']
+            stack,
+            feed_params,
+            height_params,
+            pattern_options,
+            ignore_outer=False,
+            clear_planar_only=False,
+            step_over=4.0,
+            radius=tool["radius"],
         )
 
         self.assertGreater(len(cmds), 0, "G-code generation produced no commands")
