@@ -49,8 +49,14 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Curve2d.hxx>
 #include <BRep_Tool.hxx>
+#include <Standard_Version.hxx>
+#if OCC_VERSION_HEX >= 0x080000
+#include <Bnd_B2.hxx>
+#include <Bnd_B3.hxx>
+#else
 #include <Bnd_B2d.hxx>
 #include <Bnd_B3d.hxx>
+#endif
 #include <ElCLib.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <Geom2dAdaptor_Curve.hxx>
