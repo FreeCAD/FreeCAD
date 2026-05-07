@@ -31,31 +31,64 @@ import math
 from CAMTests.PathTestUtils import PathTestBase
 
 
-class TestArcFitting(PathTestBase):
-    """Tests for FitArcs and UnfitArcs operations."""
+def make_curve(vertices):
+    """Helper: Create a curve from a list of vertex specs.
 
-    def make_curve(self, vertices):
-        """Helper: Create a curve from a list of vertex specs.
+    Each vertex can be:
+    - (x, y) for a line vertex (type 0)
+    - (x, y, type, cx, cy) for an arc vertex (type 1=CCW, -1=CW)
+    """
+    c = area.Curve()
+    for spec in vertices:
+        if len(spec) == 2:
+            # Line vertex
+            x, y = spec
+            c.append(area.Vertex(area.Point(x, y)))
+        elif len(spec) == 5:
+            # Arc vertex
+            x, y, vtype, cx, cy = spec
+            if vtype not in (1, -1):
+                raise ValueError(f"Arc vertex type must be 1 (CCW) or -1 (CW), got {vtype}")
+            c.append(area.Vertex(vtype, area.Point(x, y), area.Point(cx, cy)))
+        else:
+            raise ValueError(f"Invalid vertex spec: {spec}")
+    return c
 
-        Each vertex can be:
-        - (x, y) for a line vertex (type 0)
-        - (x, y, type, cx, cy) for an arc vertex (type 1=CCW, -1=CW)
-        """
-        c = area.Curve()
-        for spec in vertices:
-            if len(spec) == 2:
-                # Line vertex
-                x, y = spec
-                c.append(area.Vertex(area.Point(x, y)))
-            elif len(spec) == 5:
-                # Arc vertex
-                x, y, vtype, cx, cy = spec
-                if vtype not in (1, -1):
-                    raise ValueError(f"Arc vertex type must be 1 (CCW) or -1 (CW), got {vtype}")
-                c.append(area.Vertex(vtype, area.Point(x, y), area.Point(cx, cy)))
-            else:
-                raise ValueError(f"Invalid vertex spec: {spec}")
-        return c
+
+def make_regular_polygon(num_sides, radius, subdivisions=1):
+    """Create a regular polygon with line segments.
+
+    Args:
+        num_sides: Number of sides
+        radius: Radius of circumscribed circle
+        subdivisions: Number of segments to split each side into (1 = no subdivision)
+    """
+    vertices = []
+    angle_step = 2 * math.pi / num_sides
+
+    # Generate vertices around a circle
+    for i in range(num_sides):
+        angle_start = i * angle_step
+        angle_end = (i + 1) * angle_step
+
+        # Interpolate along this edge
+        for j in range(subdivisions):
+            t = j / subdivisions
+            angle = angle_start + t * (angle_end - angle_start)
+            x = radius * math.cos(angle)
+            y = radius * math.sin(angle)
+            vertices.append((x, y))
+
+    # Close the curve - add first point again
+    start_x = radius * math.cos(0)
+    start_y = radius * math.sin(0)
+    vertices.append((start_x, start_y))
+
+    return make_curve(vertices)
+
+
+class TestArcFittingRoundTrip(PathTestBase):
+    """Tests for FitArcs and UnfitArcs round-trip operations."""
 
     def assert_curve_unchanged_by_roundtrip(self, c):
         """Helper: Assert that UnFitArcs->FitArcs doesn't change the given Curve."""
@@ -116,84 +149,53 @@ class TestArcFitting(PathTestBase):
 
     def test_single_vertex_roundtrip(self):
         """Test that round-trip preserves a single-vertex curve."""
-        c = self.make_curve([(1, 1)])
+        c = make_curve([(1, 1)])
         self.assert_curve_unchanged_by_roundtrip(c)
 
     def test_line_roundtrip(self):
         """Test that round-trip preserves a simple line."""
-        c = self.make_curve([(0, 0), (10, 10)])
+        c = make_curve([(0, 0), (10, 10)])
         self.assert_curve_unchanged_by_roundtrip(c)
 
     def test_small_arc_ccw_roundtrip(self):
         """Test that round-trip preserves a 90-degree CCW arc."""
-        c = self.make_curve([(10, 0), (0, 10, 1, 0, 0)])
+        c = make_curve([(10, 0), (0, 10, 1, 0, 0)])
         self.assert_curve_unchanged_by_roundtrip(c)
 
     def test_small_arc_cw_roundtrip(self):
         """Test that round-trip preserves a 90-degree CW arc."""
-        c = self.make_curve([(10, 0), (0, -10, -1, 0, 0)])
+        c = make_curve([(10, 0), (0, -10, -1, 0, 0)])
         self.assert_curve_unchanged_by_roundtrip(c)
 
     def test_180_arc_ccw_roundtrip(self):
         """Test that round-trip preserves a 180-degree CCW arc."""
-        c = self.make_curve([(10, 0), (-10, 0, 1, 0, 0)])
+        c = make_curve([(10, 0), (-10, 0, 1, 0, 0)])
         self.assert_curve_unchanged_by_roundtrip(c)
 
     def test_180_arc_cw_roundtrip(self):
         """Test that round-trip preserves a 180-degree CW arc."""
-        c = self.make_curve([(-10, 0), (10, 0, -1, 0, 0)])
+        c = make_curve([(-10, 0), (10, 0, -1, 0, 0)])
         self.assert_curve_unchanged_by_roundtrip(c)
 
     def test_closed_line_before_arc_ccw_roundtrip(self):
         """Test closed curve: line then CCW arc back to start."""
-        c = self.make_curve([(0, 0), (10, 0), (0, 0, 1, 5, 0)])
+        c = make_curve([(0, 0), (10, 0), (0, 0, 1, 5, 0)])
         self.assert_curve_unchanged_by_roundtrip(c)
 
     def test_closed_line_before_arc_cw_roundtrip(self):
         """Test closed curve: line then CW arc back to start."""
-        c = self.make_curve([(0, 0), (10, 0), (0, 0, -1, 5, 0)])
+        c = make_curve([(0, 0), (10, 0), (0, 0, -1, 5, 0)])
         self.assert_curve_unchanged_by_roundtrip(c)
 
     def test_closed_line_after_arc_ccw_roundtrip(self):
         """Test closed curve: CCW arc then line back to start."""
-        c = self.make_curve([(0, 0), (10, 0, 1, 5, 0), (0, 0)])
+        c = make_curve([(0, 0), (10, 0, 1, 5, 0), (0, 0)])
         self.assert_curve_unchanged_by_roundtrip(c)
 
     def test_closed_line_after_arc_cw_roundtrip(self):
         """Test closed curve: CW arc then line back to start."""
-        c = self.make_curve([(0, 0), (10, 0, -1, 5, 0), (0, 0)])
+        c = make_curve([(0, 0), (10, 0, -1, 5, 0), (0, 0)])
         self.assert_curve_unchanged_by_roundtrip(c)
-
-    def make_regular_polygon(self, num_sides, radius, subdivisions=1):
-        """Create a regular polygon with line segments.
-
-        Args:
-            num_sides: Number of sides
-            radius: Radius of circumscribed circle
-            subdivisions: Number of segments to split each side into (1 = no subdivision)
-        """
-        vertices = []
-        angle_step = 2 * math.pi / num_sides
-
-        # Generate vertices around a circle
-        for i in range(num_sides):
-            angle_start = i * angle_step
-            angle_end = (i + 1) * angle_step
-
-            # Interpolate along this edge
-            for j in range(subdivisions):
-                t = j / subdivisions
-                angle = angle_start + t * (angle_end - angle_start)
-                x = radius * math.cos(angle)
-                y = radius * math.sin(angle)
-                vertices.append((x, y))
-
-        # Close the curve - add first point again
-        start_x = radius * math.cos(0)
-        start_y = radius * math.sin(0)
-        vertices.append((start_x, start_y))
-
-        return self.make_curve(vertices)
 
     def test_subdivided_polygons_roundtrip(self):
         """Exploratory test: sweep parameters on regular polygon side count and side subdivision count."""
@@ -210,7 +212,7 @@ class TestArcFitting(PathTestBase):
                 test_name = f"{num_sides}-gon, subdiv={subdivisions}"
 
                 try:
-                    c = self.make_regular_polygon(num_sides, radius, subdivisions)
+                    c = make_regular_polygon(num_sides, radius, subdivisions)
                     self.assert_curve_unchanged_by_roundtrip(c)
                     results[(num_sides, subdivisions)] = "PASS"
                 except AssertionError as e:
@@ -242,6 +244,12 @@ class TestArcFitting(PathTestBase):
                 f"Found {len(failures)} failing configurations:\n\n"
                 f"{failure_report}\n\n{summary_table}"
             )
+
+
+class TestArcFittingOffsets(PathTestBase):
+    """Tests for arc fitting with offset operations."""
+
+    pass
 
 
 if __name__ == "__main__":
