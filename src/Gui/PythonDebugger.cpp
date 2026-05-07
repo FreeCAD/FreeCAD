@@ -293,6 +293,13 @@ public:
         , depth(0)
     {}
     ~PythonDebuggerPy() override = default;
+
+    static void init_type()
+    {
+        behaviors().name("PythonDebuggerPy");
+        behaviors().doc("Internal Python debugger state object");
+        behaviors().readyType();
+    };
     PythonDebugger* dbg;
     int depth;
 };
@@ -331,6 +338,7 @@ struct PythonDebuggerP
     explicit PythonDebuggerP(PythonDebugger* that)
     {
         Base::PyGILStateLocker lock;
+        PythonDebuggerPy::init_type();
         out_n = new PythonDebugStdout();
         err_n = new PythonDebugStderr();
         pypde = new PythonDebugExcept();
