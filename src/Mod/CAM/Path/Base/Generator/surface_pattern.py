@@ -115,29 +115,6 @@ class BBox:
 # ---------------------------------------------------------------------------
 
 
-def get_operation_boundbox(bb_face, model_group, cutting_faces=None):
-    """Calculates the definitive bounding box for the operation."""
-    if cutting_faces:
-        # Use Part.Compound to safely get the true union of all face bounding boxes
-        bb = Part.Compound(cutting_faces).BoundBox
-        Path.Log.debug(f"surface_pattern.get_operation_boundbox: using selected faces BB: {bb}")
-        return bb
-
-    else:
-        Path.Log.debug(
-            f"surface_pattern.get_operation_boundbox: using Boundary Box faces BB: {bb_face}"
-        )
-        return bb_face.BoundBox
-
-    # Fallback: union of all model bounding boxes
-    if model_group:
-        bb = Part.Compound([m.Shape for m in model_group]).BoundBox
-        Path.Log.debug(f"surface_pattern.get_operation_boundbox: using model BB: {bb}")
-        return bb
-
-    return None
-
-
 def split_selected_features(base_property, avoid_count):
     """
     Extracts and splits face geometry from an operation's Base property.
