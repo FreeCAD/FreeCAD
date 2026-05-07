@@ -6,6 +6,7 @@
 
 #include "Area.h"
 #include "clipper2/clipper.h"
+#include <functional>
 
 using namespace heeks;
 using namespace Clipper2Lib;
@@ -152,9 +153,16 @@ static void MakeLoop(
     CArea::m_units = save_units;
 }
 
-static void OffsetWithLoops(const Paths64& pp, Paths64& pp_new, double inwards_value, ArcFittingMap& arcMap)
+static void OffsetWithLoops(
+    const Paths64& pp,
+    Paths64& pp_new,
+    double inwards_value,
+    ArcFittingMap& arcMap,
+    const ZCallback64& zcallback
+)
 {
     Clipper64 c;
+    c.SetZCallback(zcallback);
 
     bool inwards = (inwards_value > 0);
     bool reverse = false;
@@ -277,9 +285,16 @@ static void MakeObround(const heeks::Point& pt0, const CVertex& vt1, double radi
     CArea::m_units = save_units;
 }
 
-static void OffsetSpansWithObrounds(const CArea& area, Paths64& pp_new, double radius, ArcFittingMap& arcMap)
+static void OffsetSpansWithObrounds(
+    const CArea& area,
+    Paths64& pp_new,
+    double radius,
+    ArcFittingMap& arcMap,
+    const ZCallback64& zcallback
+)
 {
     Clipper64 c;
+    c.SetZCallback(zcallback);
     pp_new.clear();
 
     for (std::list<CCurve>::const_iterator It = area.m_curves.begin(); It != area.m_curves.end();
@@ -459,7 +474,7 @@ void CArea::Offset(double inwards_value)
 {
     Paths64 pp, pp2;
     MakePolyPoly(*this, pp, false, m_arc_fitting_map);
-    OffsetWithLoops(pp, pp2, inwards_value * m_units, m_arc_fitting_map);
+    OffsetWithLoops(pp, pp2, inwards_value * m_units, m_arc_fitting_map, MakeZCallback());
     SetFromResult(*this, pp2, false, true, true);
     this->Reorder();
 }
@@ -511,6 +526,7 @@ void CArea::PopulateClipper(Clipper64& c, bool as_clip, ArcFittingMap& arcMap) c
 void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, FillRule clipFillType)
 {
     Clipper64 c;
+    c.SetZCallback(MakeZCallback());
     PopulateClipper(c, false, m_arc_fitting_map);
     clip_area.PopulateClipper(c, true, m_arc_fitting_map);
 
@@ -552,6 +568,7 @@ void CArea::OffsetWithClipper(
     }
 
     ClipperOffset clipper(miterLimit, arcTolerance);
+    clipper.SetZCallback(MakeZCallback());
 
     Paths64 pp;
     MakePolyPoly(*this, pp, false, m_arc_fitting_map);
@@ -583,7 +600,7 @@ void CArea::OffsetWithClipper(
 void CArea::Thicken(double value)
 {
     Paths64 pp;
-    OffsetSpansWithObrounds(*this, pp, value * m_units, m_arc_fitting_map);
+    OffsetSpansWithObrounds(*this, pp, value * m_units, m_arc_fitting_map, MakeZCallback());
     SetFromResult(*this, pp, false, true, true);
     this->Reorder();
 }
@@ -612,4 +629,35 @@ void UnFitArcs(CCurve& curve, ArcFittingMap& arcMap)
         );
         curve.m_vertices.push_back(vertex);
     }
+}
+
+void CArea::ZCallback(
+    const Point64& e1bot,
+    const Point64& e1top,
+    const Point64& e2bot,
+    const Point64& e2top,
+    Point64& pt
+)
+{
+    // If z values are present, generate a new one for the new point
+    if (e1bot.z != 0 || e1top.z != 0 || e2bot.z != 0 || e2top.z != 0) {
+        // Allocate a new z-label for this intersection point
+        pt.z = m_arc_fitting_map.z_next++;
+
+        // Record the intersection: which edges intersected to create this point
+        m_arc_fitting_map.intersections[pt.z] = std::make_tuple(e1bot.z, e1top.z, e2bot.z, e2top.z);
+    }
+}
+
+ZCallback64 CArea::MakeZCallback()
+{
+    return std::bind(
+        &CArea::ZCallback,
+        this,
+        std::placeholders::_1,
+        std::placeholders::_2,
+        std::placeholders::_3,
+        std::placeholders::_4,
+        std::placeholders::_5
+    );
 }
