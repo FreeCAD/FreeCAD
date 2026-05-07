@@ -476,7 +476,7 @@ def _generate_sampling_plan(
     # Determine the widest radius of the tool currently in contact with the model
     max_r = _get_r_from_h(dist_submerged) if dist_submerged < c_rad else R
 
-    if num_slices > 1:  # This block handles 3D tools (Ballnose, Bullnose)
+    if is_3d and num_slices > 1:  # This block handles 3D tools (Ballnose, Bullnose)
 
         # Calculate the vertical 'ceiling' of the tool's 3D profile that is in contact
         h_ceiling = min(c_rad, dist_submerged - tol) if is_3d else 0.0

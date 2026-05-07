@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+
 import FreeCAD
 import Part
 import Path
@@ -106,7 +107,7 @@ class TestSurfaceOp(PathTestWithAssets):
 
         EXPECTED OUTPUT:
         - Operation object should be created successfully
-        - Should have a Strategy property with default value "DropCutter"
+        - Should have a Strategy property with default value "SurfacePattern"
         - Confirms the operation is properly registered and initialized
         """
         job = self._createJobWithBox()
@@ -129,7 +130,7 @@ class TestSurfaceOp(PathTestWithAssets):
 
         EXPECTED OUTPUT:
         - Should contain "Strategy" enumeration
-        - Strategy should include: DropCutter, Waterline, AdaptiveWaterline, ZLevelHybrid
+        - Strategy should include: SurfacePattern, Waterline, ZLevelHybrid
         - These are the four supported 3D surfacing strategies
         """
         enums = PathSurface.ObjectSurface.propertyEnumerations()
@@ -137,9 +138,8 @@ class TestSurfaceOp(PathTestWithAssets):
 
         self.assertIn("Strategy", enum_dict)
         strategies = enum_dict["Strategy"]
-        self.assertIn("DropCutter", strategies)
+        self.assertIn("SurfacePattern", strategies)
         self.assertIn("Waterline", strategies)
-        self.assertIn("AdaptiveWaterline", strategies)
         self.assertIn("ZLevelHybrid", strategies)
 
     def test02(self):
@@ -154,7 +154,7 @@ class TestSurfaceOp(PathTestWithAssets):
         EXPECTED OUTPUT:
         - Should contain "CutPattern" enumeration
         - CutPattern should include: Line, ZigZag, Circular, CircularZigZag, Spiral, Offset
-        - These are the scan patterns available for DropCutter strategy
+        - These are the scan patterns available for SurfacePattern strategy
         """
         enums = PathSurface.ObjectSurface.propertyEnumerations()
         enum_dict = {name: values for name, values in enums}
@@ -217,23 +217,23 @@ class TestSurfaceOp(PathTestWithAssets):
         self.assertTrue(features & PathOp.FeatureCoolant)
         self.assertTrue(features & PathOp.FeatureBaseFaces)
 
-    # -- DropCutter execution tests --
+    # -- SurfacePattern execution tests --
 
     @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test10(self):
         """
-        Executes the DropCutter strategy on a simple box and verifies G-code output.
+        Executes the SurfacePattern strategy on a simple box and verifies G-code output.
 
         INPUT:
         - Function: ObjectSurface.opExecute()
-        - Parameters: Strategy=DropCutter, CutPattern=Line on a 100x100x10mm box
+        - Parameters: Strategy=SurfacePattern, CutPattern=Line on a 100x100x10mm box
         - Input data: Simple rectangular solid with 5mm endmill
 
         EXPECTED OUTPUT:
         - Operation should execute without errors
         - Should produce G-code commands (non-empty path)
         - Path should contain both G0 (rapid) and G1 (cut) moves
-        - Verifies the full DropCutter pipeline works end-to-end
+        - Verifies the full SurfacePattern pipeline works end-to-end
         """
         job = self._createJobWithBox()
 
@@ -241,7 +241,7 @@ class TestSurfaceOp(PathTestWithAssets):
         proxy = PathSurface.ObjectSurface(op, "Surface")
         proxy.initOperation(op)
 
-        op.Strategy = "DropCutter"
+        op.Strategy = "SurfacePattern"
         op.CutPattern = "Line"
         op.StepOver = 50.0
         op.SampleInterval = 5.0
@@ -258,7 +258,55 @@ class TestSurfaceOp(PathTestWithAssets):
         # Verify output
         self.assertTrue(
             len(op.Path.Commands) > 0,
-            "DropCutter should produce G-code commands",
+            "SurfacePattern should produce G-code commands",
+        )
+
+        # Check for both rapid and cut moves
+        cmd_names = [c.Name for c in op.Path.Commands]
+        self.assertIn("G0", cmd_names, "Should contain rapid moves")
+        self.assertIn("G1", cmd_names, "Should contain cutting moves")
+
+    def test11(self):
+        """
+        Executes the SurfacePattern (Adaptive) strategy on a simple box and verifies G-code output.
+
+        INPUT:
+        - Function: ObjectSurface.opExecute()
+        - Parameters: Strategy=SurfacePattern, CutPattern=Line on a 100x100x10mm box
+        - Input data: Simple rectangular solid with 5mm endmill
+
+        EXPECTED OUTPUT:
+        - Operation should execute without errors
+        - Should produce G-code commands (non-empty path)
+        - Path should contain both G0 (rapid) and G1 (cut) moves
+        - Verifies the full SurfacePattern pipeline works end-to-end
+        """
+        job = self._createJobWithBox()
+
+        op = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Surface")
+        proxy = PathSurface.ObjectSurface(op, "Surface")
+        proxy.initOperation(op)
+
+        op.Strategy = "SurfacePattern"
+        op.CutPattern = "Line"
+        op.StepOver = 50.0
+        op.AdaptiveSampling = True
+        op.SampleInterval = 5.0
+        op.MinSampleInterval = 3.0
+
+        # Set the Base geometry to the job's model
+        op.Base = job.Model.Group
+
+        job.Operations.addObject(op)
+        self.doc.recompute()
+
+        # Execute the operation
+        op.Proxy.execute(op)
+
+        # Verify output
+        self.assertTrue(
+            len(op.Path.Commands) > 0,
+            "SurfacePattern should produce G-code commands",
         )
 
         # Check for both rapid and cut moves
@@ -267,13 +315,13 @@ class TestSurfaceOp(PathTestWithAssets):
         self.assertIn("G1", cmd_names, "Should contain cutting moves")
 
     @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
-    def test11(self):
+    def test12(self):
         """
-        Executes the DropCutter strategy with ZigZag pattern on a box.
+        Executes the SurfacePattern strategy with ZigZag pattern on a box.
 
         INPUT:
         - Function: ObjectSurface.opExecute()
-        - Parameters: Strategy=DropCutter, CutPattern=ZigZag on a 100x100x10mm box
+        - Parameters: Strategy=SurfacePattern, CutPattern=ZigZag on a 100x100x10mm box
         - Input data: Simple rectangular solid with 5mm endmill
 
         EXPECTED OUTPUT:
@@ -287,7 +335,7 @@ class TestSurfaceOp(PathTestWithAssets):
         proxy = PathSurface.ObjectSurface(op, "Surface")
         proxy.initOperation(op)
 
-        op.Strategy = "DropCutter"
+        op.Strategy = "SurfacePattern"
         op.CutPattern = "ZigZag"
         op.StepOver = 50.0
         op.SampleInterval = 5.0
@@ -302,7 +350,7 @@ class TestSurfaceOp(PathTestWithAssets):
 
         self.assertTrue(
             len(op.Path.Commands) > 0,
-            "DropCutter ZigZag should produce G-code commands",
+            "SurfacePattern ZigZag should produce G-code commands",
         )
 
     # -- Waterline execution tests --
@@ -347,17 +395,17 @@ class TestSurfaceOp(PathTestWithAssets):
     @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test21(self):
         """
-        Executes the AdaptiveWaterline strategy on a box.
+        Executes the Waterline (Adaptive) strategy on a box.
 
         INPUT:
         - Function: ObjectSurface.opExecute()
-        - Parameters: Strategy=AdaptiveWaterline on a 100x100x10mm box
+        - Parameters: Strategy=Waterline on a 100x100x10mm box
         - Input data: Simple rectangular solid with 5mm endmill
 
         EXPECTED OUTPUT:
         - Operation should execute without errors
         - Should produce G-code commands (non-empty path)
-        - AdaptiveWaterline refines sampling where contour changes rapidly
+        - Waterline (Adaptive) refines sampling where contour changes rapidly
         """
         job = self._createJobWithBox()
 
@@ -365,8 +413,10 @@ class TestSurfaceOp(PathTestWithAssets):
         proxy = PathSurface.ObjectSurface(op, "Surface")
         proxy.initOperation(op)
 
-        op.Strategy = "AdaptiveWaterline"
+        op.Strategy = "Waterline"
+        op.AdaptiveSampling = True
         op.SampleInterval = 2.0
+        op.MinSampleInterval = 1.0
 
         # Set the Base geometry to the job's model
         op.Base = job.Model.Group
@@ -422,12 +472,12 @@ class TestSurfaceOp(PathTestWithAssets):
 
     def test40(self):
         """
-        Verifies that DropCutter strategy shows scan pattern properties.
+        Verifies that SurfacePattern strategy shows scan pattern properties.
 
         INPUT:
         - Function: ObjectSurface.setEditorProperties()
-        - Parameters: Strategy=DropCutter
-        - Input data: Surface operation with DropCutter strategy selected
+        - Parameters: Strategy=SurfacePattern
+        - Input data: Surface operation with SurfacePattern strategy selected
 
         EXPECTED OUTPUT:
         - CutPattern should be visible (editor mode 0)
@@ -441,7 +491,7 @@ class TestSurfaceOp(PathTestWithAssets):
         proxy = PathSurface.ObjectSurface(op, "Surface")
         proxy.initOperation(op)
 
-        op.Strategy = "DropCutter"
+        op.Strategy = "SurfacePattern"
         proxy.setEditorProperties(op)
 
         self.assertEqual(op.getEditorMode("CutPattern"), [])  # visible
@@ -630,11 +680,13 @@ class TestSurfaceOp(PathTestWithAssets):
         self.assertEqual(fastest["mesh_simplification"], 7)  # Max reduction
         self.assertEqual(fastest["angular_deflection"], 0.5)  # Coarsest
         self.assertEqual(fastest["linear_deflection"], 0.1)  # Least precise
-        self.assertEqual(fastest["sample_interval"], 3.0)  # Coarsest
+        self.assertEqual(fastest["sample_interval"], 1.5)  # Coarsest
+        self.assertEqual(fastest["min_sample_interval"], 0.3)  # Coarsest
 
         # Level 7 should be highest quality
         ultra = presets[7]
         self.assertEqual(ultra["mesh_simplification"], 1)  # No reduction
         self.assertEqual(ultra["angular_deflection"], 0.05)  # Finest
         self.assertEqual(ultra["linear_deflection"], 0.005)  # Most precise
-        self.assertEqual(ultra["sample_interval"], 0.1)  # Densest
+        self.assertEqual(ultra["sample_interval"], 0.05)  # Densest
+        self.assertEqual(ultra["min_sample_interval"], 0.05)  # Densest

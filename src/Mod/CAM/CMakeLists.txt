@@ -614,12 +614,13 @@ SET(Tests_SRCS
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
     CAMTests/TestToolBitRecomputeState.py
-    CAMTests/TestSurfaceBoundary.py
     CAMTests/TestSurfaceOp.py
+    CAMTests/TestSurfaceGenerator.py
     CAMTests/TestSurfaceCommonGenerator.py
+    CAMTests/TestSurfacePostprocessGenerator.py
+    CAMTests/TestSurfacePatternGenerator.py
     CAMTests/TestSurfaceDropCutterGenerator.py
-    CAMTests/TestSurfaceScanGenerator.py
-    CAMTests/TestSurfaceStl.py
+    CAMTests/TestSurfaceMeshGenerator.py
     CAMTests/TestSurfaceWaterlineGenerator.py
     CAMTests/TestSurfaceZLevelGenerator.py
 )
