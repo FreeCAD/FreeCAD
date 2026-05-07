@@ -57,9 +57,6 @@
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
-#ifdef FC_OS_WIN32
-# include <Base/StackWalker.h>
-#endif
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
@@ -199,35 +196,6 @@ void logIssue29844Diagnostic(const std::string& message)
     }
 }
 
-#ifdef FC_OS_WIN32
-class Issue29844StackWalker: public Base::StackWalker
-{
-public:
-    Issue29844StackWalker()
-        : Base::StackWalker(
-              Base::StackWalker::RetrieveVerbose | Base::StackWalker::SymBuildPath
-              | Base::StackWalker::SymUseSymSrv
-          )
-    {}
-
-    void OnOutput(LPCSTR text) override
-    {
-        Base::Console().log("issue-29844 stack: %s", text);
-    }
-};
-
-void logIssue29844StackTrace()
-{
-    if (!issue29844DiagnosticsEnabled()) {
-        return;
-    }
-
-    Base::Console().log("issue-29844 diagnostics: Windows call stack follows\n");
-    Issue29844StackWalker walker;
-    walker.ShowCallstack();
-}
-#endif
-
 }  // namespace
 
 void requireMainThread(const char* api)
@@ -247,9 +215,6 @@ void requireMainThread(const char* api)
                 fmt::ptr(mainThread)
             )
         );
-#ifdef FC_OS_WIN32
-        logIssue29844StackTrace();
-#endif
     }
 
     Base::Console().error("GUI API '%s' may only be used from the main thread.\n", api);
