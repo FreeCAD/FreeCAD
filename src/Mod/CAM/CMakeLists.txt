@@ -452,6 +452,13 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/rotary_wrap.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/spiral.py
+    Path/Base/Generator/surface_common.py
+    Path/Base/Generator/surface_dropcutter.py
+    Path/Base/Generator/surface_mesh.py
+    Path/Base/Generator/surface_pattern.py
+    Path/Base/Generator/surface_postprocess.py
+    Path/Base/Generator/surface_waterline.py
+    Path/Base/Generator/surface_zlevel.py
     Path/Base/Generator/tapping.py
     Path/Base/Generator/threadmilling.py
     Path/Base/Generator/toolchange.py
@@ -617,6 +624,14 @@ SET(Tests_SRCS
     CAMTests/TestPostMCodes.py
     CAMTests/TestSnapmakerPost.py
     CAMTests/TestPostToolProcessing.py
+    CAMTests/TestSurfaceCommonGenerator.py
+    CAMTests/TestSurfaceDropCutterGenerator.py
+    CAMTests/TestSurfaceGenerator.py
+    CAMTests/TestSurfaceMeshGenerator.py
+    CAMTests/TestSurfacePatternGenerator.py
+    CAMTests/TestSurfacePostprocessGenerator.py
+    CAMTests/TestSurfaceWaterlineGenerator.py
+    CAMTests/TestSurfaceZLevelGenerator.py
     CAMTests/TestSVGPost.py
     CAMTests/TestTSPSolver.py
     CAMTests/TestGcodeProcessingUtils.py
