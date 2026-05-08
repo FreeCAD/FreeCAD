@@ -24,7 +24,6 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
-#include <QLineEdit>
 #include <QModelIndex>
 #include <QPainter>
 #include <QTimer>
@@ -325,13 +324,6 @@ QWidget* PropertyItemDelegate::createEditor(
         }
     }
     if (editor) {
-        if (auto lineEdit = qobject_cast<QLineEdit*>(editor);
-            lineEdit && dynamic_cast<PropertyStringItem*>(childItem)) {
-            const_cast<PropertyItemDelegate*>(this)->changed = false;
-            QObject::connect(lineEdit, &QLineEdit::textChanged, this, [this]() {
-                const_cast<PropertyItemDelegate*>(this)->changed = true;
-            });
-        }
         // Make sure the editor background is painted so the cell content doesn't show through
         editor->setAutoFillBackground(true);
     }
@@ -399,10 +391,14 @@ void PropertyItemDelegate::setModelData(
     const QModelIndex& index
 ) const
 {
-    if (!index.isValid() || !changed || userEditor) {
+    if (!index.isValid() || userEditor) {
         return;
     }
     auto childItem = static_cast<PropertyItem*>(index.internalPointer());
+    const bool commitOnClose = dynamic_cast<PropertyStringItem*>(childItem) != nullptr;
+    if (!changed && !commitOnClose) {
+        return;
+    }
     QVariant data;
     if (expressionEditor == editor) {
         data = childItem->expressionEditorData(editor);
@@ -410,8 +406,10 @@ void PropertyItemDelegate::setModelData(
     else {
         data = childItem->editorData(editor);
     }
+    if (commitOnClose && !changed && data == index.data(Qt::EditRole)) {
+        return;
+    }
     model->setData(index, data, Qt::EditRole);
-    const_cast<PropertyItemDelegate*>(this)->changed = false;
 }
 
 #include "moc_PropertyItemDelegate.cpp"
