@@ -626,6 +626,7 @@ SET(Tests_SRCS
     CAMTests/TestPostMCodes.py
     CAMTests/TestSnapmakerPost.py
     CAMTests/TestPostToolProcessing.py
+    CAMTests/TestSurface3DOp.py
     CAMTests/TestSurfaceCommonGenerator.py
     CAMTests/TestSurfaceDropCutterGenerator.py
     CAMTests/TestSurfaceGenerator.py

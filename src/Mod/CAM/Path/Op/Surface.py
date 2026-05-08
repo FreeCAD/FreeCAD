@@ -2565,6 +2565,10 @@ def SetupProperties():
 
 def Create(name, obj=None, parentJob=None):
     """Create(name) ... Creates and returns a Surface operation."""
+    FreeCAD.Console.PrintWarning(
+        "CAM_Surface is deprecated and will be removed in a future release. "
+        "Use CAM_Surface3D for new operations.\n"
+    )
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectSurface(obj, name, parentJob)

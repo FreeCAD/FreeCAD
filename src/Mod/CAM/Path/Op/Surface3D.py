@@ -30,6 +30,19 @@ import FreeCAD
 from PySide import QtCore
 
 import Path
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+
+
+def _yield_to_gui():
+    """Pump the Qt event loop so long OCL runs don't trigger an OS
+    'Application Not Responding' warning.  No-op when running headless.
+    """
+    if FreeCAD.GuiUp:
+        FreeCADGui.updateGui()
+
+
 import Path.Op.Base as PathOp
 import Path.Base.Generator.surface_common as surface_common
 import Path.Base.Generator.surface_dropcutter as surface_dropcutter
@@ -641,6 +654,7 @@ class ObjectSurface3D(PathOp.ObjectOp):
         if not raw_scan_lines:
             Path.Log.warning("Surface3D: pattern generator produced no scan lines.")
             return []
+        _yield_to_gui()
 
         # Project: BatchDropCutter for grid-style patterns, PathDropCutter for
         # Line/ZigZag where ordering matters.
@@ -912,6 +926,7 @@ class ObjectSurface3D(PathOp.ObjectOp):
             )
             return
 
+        _yield_to_gui()
         stl, _safe_stl = surface_mesh.generate_stl(
             model_shape,
             models,
@@ -928,6 +943,7 @@ class ObjectSurface3D(PathOp.ObjectOp):
         if stl is None:
             Path.Log.error("Surface3D: STL tessellation failed.")
             return
+        _yield_to_gui()
 
         if strategy == "SurfacePattern":
             cmds = self._executeSurfacePattern(obj, job, stl, cutter, tool_radius)
@@ -936,6 +952,7 @@ class ObjectSurface3D(PathOp.ObjectOp):
         else:
             Path.Log.error("Surface3D: strategy '{}' not implemented.".format(strategy))
             return
+        _yield_to_gui()
 
         if cmds:
             self.commandlist.extend(cmds)

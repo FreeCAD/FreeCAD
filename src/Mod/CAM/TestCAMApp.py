@@ -81,6 +81,7 @@ from CAMTests.TestPathRotarySurface import TestPathRotarySurface
 from CAMTests.TestPathRotaryPostRegression import TestPathRotaryPostRegression
 from CAMTests.TestPathRotaryWrap import TestRotaryWrapStrategy
 from CAMTests.TestPathRotationGenerator import TestPathRotationGenerator
+from CAMTests.TestSurface3DOp import TestSurface3DOp
 from CAMTests.TestSurfaceCommonGenerator import TestSurfaceCommon
 from CAMTests.TestSurfaceDropCutterGenerator import TestSurfaceDropCutter
 from CAMTests.TestSurfaceGenerator import TestSurfaceGenerator
