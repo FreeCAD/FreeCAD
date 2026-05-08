@@ -73,8 +73,9 @@ protected:
     virtual void validateInput();
     void resizeWidget();
 
-    bool handleKeyEvent(const QString&);
+    bool handleKeyEvent(QKeyEvent* event);
     virtual void openFormulaDialog();
+    virtual void removeExpression();
 
     void drawControl(QStyleOptionSpinBox&);
 
