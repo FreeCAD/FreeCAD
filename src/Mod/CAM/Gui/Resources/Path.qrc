@@ -118,6 +118,7 @@
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSlotEdit.ui</file>
         <file>panels/PageOpRotarySurfaceEdit.ui</file>
+        <file>panels/PageOpSurface3DEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
         <file>panels/PageOpTappingEdit.ui</file>
         <file>panels/PageOpThreadMillingEdit.ui</file>
