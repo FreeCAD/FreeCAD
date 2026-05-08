@@ -824,6 +824,69 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
     }
 }
 
+bool SelectionSingleton::testSelection(
+    App::Document* pDoc,
+    App::DocumentObject* pObject,
+    const char* pSubName
+) const
+{
+    if (!pObject) {
+        return false;
+    }
+
+    if (!pDoc) {
+        pDoc = pObject->getDocument();
+    }
+    if (!pDoc) {
+        return false;
+    }
+
+    auto foundContext = docSelectionContext.find(pDoc);
+    if (foundContext == docSelectionContext.end() || !foundContext->second.gate) {
+        return true;
+    }
+    const auto& info = foundContext->second;
+
+    const char* objectName = pObject->getNameInDocument();
+    if (!objectName) {
+        return false;
+    }
+
+    SelectionDescription temp;
+    int ret = checkSelection(
+        pDoc->getName(),
+        objectName,
+        pSubName,
+        ResolveMode::NoResolve,
+        temp,
+        &info.selList
+    );
+    if (ret < 0) {
+        return false;
+    }
+
+    const char* subelement = nullptr;
+    auto gateObject
+        = getObjectOfType(temp, App::DocumentObject::getClassTypeId(), info.resolveMode, &subelement);
+
+    auto* gate = info.gate;
+    std::string notAllowedReason = gate->notAllowedReason;
+    bool allowed
+        = gate->allow(gateObject ? gateObject->getDocument() : temp.pDoc, gateObject, subelement);
+    gate->notAllowedReason = notAllowedReason;
+    return allowed;
+}
+
+bool SelectionSingleton::hasSelectionGate(App::Document* pDoc) const
+{
+    if (!pDoc) {
+        return false;
+    }
+
+    auto foundContext = docSelectionContext.find(pDoc);
+    return foundContext != docSelectionContext.end() && foundContext->second.gate;
+}
+
 int SelectionSingleton::setPreselect(
     const char* pDocName,
     const char* pObjectName,
@@ -1122,9 +1185,11 @@ void SelectionSingleton::rmvSelectionGate(App::Document* doc)
         foundContext->second.gate = nullptr;
 
         // if a document is about to be closed it has no MDI view any more
-        if (Gui::Document* guiDoc = Gui::Application::Instance->getDocument(doc)) {
-            if (Gui::MDIView* mdi = guiDoc->getActiveView()) {
-                mdi->restoreOverrideCursor();
+        if (Gui::Application::Instance && Gui::getMainWindow()) {
+            if (Gui::Document* guiDoc = Gui::Application::Instance->getDocument(doc)) {
+                if (Gui::MDIView* mdi = guiDoc->getActiveView()) {
+                    mdi->restoreOverrideCursor();
+                }
             }
         }
     }
