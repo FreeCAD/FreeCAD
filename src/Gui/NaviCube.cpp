@@ -23,6 +23,7 @@
 #include <FCConfig.h>
 
 #include <algorithm>
+#include <cmath>
 #include <numbers>
 #include <mutex>
 #include <memory>
@@ -78,6 +79,17 @@ using namespace Gui;
 using PickId = Gui::SoNaviCube::PickId;
 using FaceType = Gui::SoNaviCube::FaceType;
 using Face = Gui::SoNaviCube::Face;
+
+namespace
+{
+
+// Keep FBO sizing and pick-coordinate mapping on the same rounded pixel grid.
+int getPickingFramebufferExtent(qreal physicalCubeWidgetSize)
+{
+    return std::max(1L, std::lround(physicalCubeWidgetSize * 2.0));
+}
+
+}  // namespace
 
 class NaviCubeImplementation
 {
@@ -785,27 +797,36 @@ bool NaviCubeImplementation::isFramebufferValid() const
 
 void NaviCubeImplementation::ensureFramebufferValid()
 {
-    if (!isFramebufferValid()) {
-        if (m_PickingFramebuffer) {
+    int framebufferExtent = getPickingFramebufferExtent(getPhysicalCubeWidgetSize());
+    QSize expectedSize(framebufferExtent, framebufferExtent);
 
-            if (!m_PickingFramebuffer->isValid()) {
-                Base::Console().developerWarning(
-                    "NaviCube",
-                    "The frame buffer has become invalid, a new frame buffer will be created\n"
-                );
-            }
+    bool needsFramebuffer = !m_PickingFramebuffer;
+    if (!needsFramebuffer) {
+        needsFramebuffer = !m_PickingFramebuffer->isValid()
+            || m_PickingFramebuffer->size() != expectedSize;
+    }
 
-            delete m_PickingFramebuffer;
-            m_PickingFramebuffer = nullptr;
+    if (!needsFramebuffer) {
+        return;
+    }
+
+    if (m_PickingFramebuffer) {
+        if (!m_PickingFramebuffer->isValid()) {
+            Base::Console().developerWarning(
+                "NaviCube",
+                "The frame buffer has become invalid, a new frame buffer will be created\n"
+            );
         }
 
-        qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
-        m_PickingFramebuffer = new QOpenGLFramebufferObject(
-            2 * physicalCubeWidgetSize,
-            2 * physicalCubeWidgetSize,
-            QOpenGLFramebufferObject::CombinedDepthStencil
-        );
+        delete m_PickingFramebuffer;
+        m_PickingFramebuffer = nullptr;
     }
+
+    m_PickingFramebuffer = new QOpenGLFramebufferObject(
+        framebufferExtent,
+        framebufferExtent,
+        QOpenGLFramebufferObject::CombinedDepthStencil
+    );
 }
 
 PickId NaviCubeImplementation::pickFace(short x, short y)
@@ -823,7 +844,7 @@ PickId NaviCubeImplementation::pickFace(short x, short y)
         viewportWidget->makeCurrent();
         m_PickingFramebuffer->bind();
 
-        int viewportSize = static_cast<int>(physicalCubeWidgetSize * 2.0);
+        int viewportSize = getPickingFramebufferExtent(physicalCubeWidgetSize);
 
         if (populateRenderParams(1.0F, 0, 0, viewportSize, viewportSize)) {
             m_SoNaviCube->renderGL(true);

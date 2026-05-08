@@ -98,18 +98,18 @@ public:
 
         std::map<std::string, std::string> propMap = initMap();
 
-        DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStrLiteral("Properties").unicodeForm());
-        for (XMLSize_t i = 0; i < nodes->getLength(); i++) {
-            DOMNode* node = nodes->item(i);
-            if (node->getNodeType() == DOMNode::ELEMENT_NODE) {
+        if (auto doc = xmlDocument->getDocumentElement(); doc != nullptr) {
+            auto nodes = doc->getElementsByTagName(XStrLiteral("Properties").unicodeForm());
+            // There should only ever be 1 <Properties> node
+            if (auto node = nodes->item(0); node != nullptr) {
                 auto elem = static_cast<DOMElement*>(node);  // NOLINT
                 DOMNodeList* propList = elem->getElementsByTagName(XStrLiteral("Property").unicodeForm());
-                for (XMLSize_t j = 0; j < propList->getLength(); j++) {
-                    DOMNode* propNode = propList->item(j);
+                DOMNode* propNode = nullptr;
+                XMLSize_t i = 0;
+                while ((propNode = propList->item(i++)) != nullptr) {
                     readProperty(propNode, propMap);
                 }
             }
-            break;
         }
 
         setMetadata(propMap);
@@ -118,19 +118,12 @@ public:
 private:
     void readProgramVersion()
     {
-        if (DOMNodeList* nodes =
-                xmlDocument->getElementsByTagName(XStrLiteral("Document").unicodeForm())) {
-            for (XMLSize_t i = 0; i < nodes->getLength(); i++) {
-                DOMNode* node = nodes->item(i);
-                if (node->getNodeType() == DOMNode::ELEMENT_NODE) {
-                    DOMNode* nameAttr =
-                        node->getAttributes()->getNamedItem(XStrLiteral("ProgramVersion").unicodeForm());
-                    if (nameAttr) {
-                        std::string value = StrX(nameAttr->getNodeValue()).c_str();
-                        metadata.programVersion = value;
-                        break;
-                    }
-                }
+        if (auto doc = xmlDocument->getDocumentElement(); doc != nullptr) {
+            DOMNode* nameAttr =
+                doc->getAttributes()->getNamedItem(XStrLiteral("ProgramVersion").unicodeForm());
+            if (nameAttr) {
+                std::string value = StrX(nameAttr->getNodeValue()).c_str();
+                metadata.programVersion = value;
             }
         }
     }
@@ -488,6 +481,13 @@ bool ProjectFile::containsFile(const std::string& name) const
     return entry != nullptr;
 }
 
+uint32_t ProjectFile::sizeOfFile(const std::string& name) const
+{
+    zipios::ZipFile project(stdFile);
+    auto entry = project.getEntry(name);
+    return entry == nullptr ? 0 : entry->getSize();
+}
+
 std::list<std::string> ProjectFile::getInputFiles(const std::string& name) const
 {
     // <ObjectData Count="1">
@@ -575,7 +575,7 @@ void ProjectFile::readInputFile(const std::string& name, std::ostream& str)
 
 // Read the given input file from the zip directly into the given stream (not using a temporary
 // file)
-void ProjectFile::readInputFileDirect(const std::string& name, std::ostream& str)
+void ProjectFile::readInputFileDirect(const std::string& name, std::ostream& str) const
 {
     zipios::ZipFile project(stdFile);
     std::unique_ptr<std::istream> istr(project.getInputStream(name));

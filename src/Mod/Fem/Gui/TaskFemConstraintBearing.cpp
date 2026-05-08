@@ -167,13 +167,13 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
             if (!Objects.empty()) {
                 QMessageBox::warning(
                     this,
-                    tr("Selection error"),
+                    tr("Selection Error"),
                     tr("Use only a single reference for bearing constraint")
                 );
                 return;
             }
             if (subName.substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+                QMessageBox::warning(this, tr("Selection Error"), tr("Only faces can be picked"));
                 return;
             }
 
@@ -182,7 +182,7 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
             if (surface.GetType() != GeomAbs_Cylinder) {
                 QMessageBox::warning(
                     this,
-                    tr("Selection error"),
+                    tr("Selection Error"),
                     tr("Only cylindrical faces can be picked")
                 );
                 return;
@@ -202,7 +202,7 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
                 if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
                     QMessageBox::warning(
                         this,
-                        tr("Selection error"),
+                        tr("Selection Error"),
                         tr("Only planar faces can be picked")
                     );
                     return;
@@ -212,7 +212,7 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
                 if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
                     QMessageBox::warning(
                         this,
-                        tr("Selection error"),
+                        tr("Selection Error"),
                         tr("Only linear edges can be picked")
                     );
                     return;
@@ -221,7 +221,7 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
             else {
                 QMessageBox::warning(
                     this,
-                    tr("Selection error"),
+                    tr("Selection Error"),
                     tr("Only faces and edges can be picked")
                 );
                 return;
@@ -389,7 +389,7 @@ bool TaskDlgFemConstraintBearing::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 

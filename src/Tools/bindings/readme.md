@@ -112,8 +112,11 @@ class QuantityPy(PyObjectBase):
         ...
 ```
 
-The `@overload` variants are not actually used by the generator, but solely for the purpose of
-providing Python type hinting to be used by type checkers like mypy.
+The `@overload` variants are not used for method code generation and primarily exist to
+provide Python type hinting for type checkers like mypy. Overload-only constructors are the
+exception: when the overload set carries constructor documentation, that documentation is
+folded into the exported class documentation, because constructor bindings are generated
+through `Constructor=True` rather than a normal method stub.
 
 ### Attributes and Read-Only Properties
 

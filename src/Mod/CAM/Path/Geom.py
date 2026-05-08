@@ -688,7 +688,9 @@ def flipEdge(edge):
             Part.Line(edge.valueAt(edge.LastParameter), edge.valueAt(edge.FirstParameter))
         )
     elif isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
-        return Part.Edge(Part.LineSegment(edge.Vertexes[-1].Point, edge.Vertexes[0].Point))
+        return Part.Edge(
+            Part.LineSegment(edge.valueAt(edge.LastParameter), edge.valueAt(edge.FirstParameter))
+        )
     elif isinstance(edge.Curve, Part.Circle):
         # Create an inverted circle
         circle = Part.Circle(edge.Curve.Center, -edge.Curve.Axis, edge.Curve.Radius)

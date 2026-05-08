@@ -87,10 +87,18 @@ public:
     App::PropertyColor TextBackgroundColor;
     App::PropertyColor LineColor;
     App::PropertyInteger FontSize;
+    // Arrow properties
+    App::PropertyFloat ArrowHeight;
+    App::PropertyFloat ArrowRadius;
+
+    App::PropertyVector LabelPosition;
     // NOLINTEND
 
     // Fields
     SoSFFloat fieldFontSize;
+    // Arrow fields
+    SoSFFloat fieldArrowHeight;
+    SoSFFloat fieldArrowRadius;
 
     /**
      * Attaches the document object to this view provider.
@@ -132,14 +140,17 @@ public:
     void connectToSubject(std::vector<App::DocumentObject*> subject);
 
 protected:
+    static void draggerStartCallback(void* data, SoDragger*);
     static void draggerChangedCallback(void* data, SoDragger*);
+    static void draggerFinishCallback(void* data, SoDragger*);
     void onChanged(const App::Property* prop) override;
+    virtual void onLabelMoveStart();
     virtual void onLabelMoved() {};
+    virtual void onLabelMoveFinish();
     void setLabelValue(const Base::Quantity& value);
     void setLabelValue(const QString& value);
     void setLabelTranslation(const SbVec3f& position);
     void updateIcon();
-    void syncDraggerOrientationToView();
 
     SoPickStyle* getSoPickStyle();
     SoDrawStyle* getSoLineStylePrimary();
@@ -159,7 +170,7 @@ protected:
     SoSeparator* pGlobalSeparator;  // Separator in the global coordinate space
     Gui::SoFrameLabel* pLabel;
     SoTranslate2Dragger* pDragger;
-    SoTransform* pDraggerOrientation;
+    SoTransform* pDraggerFrame;
     SoTransform* pLabelTranslation;
     SoBaseColor* pColor;
     SoSeparator* pRootSeparator;

@@ -2167,7 +2167,7 @@ int Sketch::addConstraint(const Constraint* constraint)
             if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
                 && constraint->Third == GeoEnum::GeoUndef) {
                 // simple tangency
-                rtn = addTangentConstraint(constraint->First, constraint->Second);
+                rtn = addTangentConstraint(constraint->First, constraint->Second, constraint->Orientation);
 
                 isSpecialCase = true;
             }
@@ -3028,7 +3028,7 @@ int Sketch::addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2, Po
 }
 
 // simple tangency constraint
-int Sketch::addTangentConstraint(int geoId1, int geoId2)
+int Sketch::addTangentConstraint(int geoId1, int geoId2, ConstraintOrientation orientation)
 {
     // accepts the following combinations:
     // 1) Line1, Line2/Circle2/Arc2
@@ -3059,13 +3059,23 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
         if (Geoms[geoId2].type == Arc) {
             GCS::Arc& a = Arcs[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(l, a, tag);
+            GCSsys.addConstraintTangent(
+                l,
+                a,
+                orientation.testFlag(ConstraintOrientations::CounterClockwise),
+                tag
+            );
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Circle) {
             GCS::Circle& c = Circles[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(l, c, tag);
+            GCSsys.addConstraintTangent(
+                l,
+                c,
+                orientation.testFlag(ConstraintOrientations::CounterClockwise),
+                tag
+            );
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Ellipse) {

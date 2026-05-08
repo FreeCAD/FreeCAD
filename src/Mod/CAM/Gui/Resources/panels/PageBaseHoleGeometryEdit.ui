@@ -129,6 +129,21 @@ Reset deletes all current items from the list and fills the list with all circul
        <string>Diameter</string>
       </property>
      </column>
+     <column>
+      <property name="text">
+       <string>X</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Y</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Blind</string>
+      </property>
+     </column>
     </widget>
    </item>
    <item>

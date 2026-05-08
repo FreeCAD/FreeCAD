@@ -106,9 +106,9 @@ void TaskImage::connectSignals()
     connect(ui->sliderTransparency, qOverload<int>(&QSlider::valueChanged),
         this, &TaskImage::changeTransparency);
 
-    connect(ui->spinBoxWidth, &QuantitySpinBox::editingFinished,
+    connect(ui->spinBoxWidth, qOverload<double>(&QuantitySpinBox::valueChanged),
         this, &TaskImage::changeWidth);
-    connect(ui->spinBoxHeight, &QuantitySpinBox::editingFinished,
+    connect(ui->spinBoxHeight, qOverload<double>(&QuantitySpinBox::valueChanged),
         this, &TaskImage::changeHeight);
     connect(ui->pushButtonScale, &QPushButton::clicked,
         this, &TaskImage::onInteractiveScale);
@@ -471,7 +471,8 @@ InteractiveScale::InteractiveScale(
     , viewProv(vp)
     , midPoint(SbVec3f(0, 0, 0))
 {
-    measureLabel = new EditableDatumLabel(viewer, placement, SbColor(1.0F, 0.149F, 0.0F));  // NOLINT
+    measureLabel = new EditableDatumLabel(viewer, placement);  // NOLINT
+    measureLabel->setActivatedColor();
 }
 
 InteractiveScale::~InteractiveScale()

@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <limits>
+#include <cmath>
 
 #include <Precision.hxx>
 #include <Bnd_Box.hxx>
@@ -78,6 +79,119 @@ enum ConstraintCreationMode
 }
 
 ConstraintCreationMode constraintCreationMode = Driving;
+
+namespace SketcherGui::LinearDatumLabelPlacement
+{
+[[nodiscard]] bool computeLabelPosition(const Sketcher::SketchObject* sketch,
+                                        const Sketcher::Constraint* constraint,
+                                        Base::Vector2d& position)
+{
+    if (constraint->Type != Sketcher::DistanceX && constraint->Type != Sketcher::DistanceY
+        && constraint->Type != Sketcher::Distance) {
+        return false;
+    }
+
+    const auto projectPoint = [](const Base::Vector3d& point) {
+        return Base::Vector2d(point.x, point.y);
+    };
+
+    Base::Vector2d firstPoint;
+    Base::Vector2d secondPoint;
+
+    if (constraint->SecondPos != Sketcher::PointPos::none) {
+        firstPoint = projectPoint(sketch->getPoint(constraint->First, constraint->FirstPos));
+        secondPoint = projectPoint(sketch->getPoint(constraint->Second, constraint->SecondPos));
+    }
+    else if (constraint->FirstPos != Sketcher::PointPos::none
+             && constraint->Second == Sketcher::GeoEnum::GeoUndef) {
+        firstPoint = Base::Vector2d(0.0, 0.0);
+        secondPoint = projectPoint(sketch->getPoint(constraint->First, constraint->FirstPos));
+    }
+    else if (constraint->Type == Sketcher::Distance
+             && constraint->Second == Sketcher::GeoEnum::GeoUndef
+             && constraint->First >= 0
+             && constraint->FirstPos == Sketcher::PointPos::none) {
+        const Part::Geometry* geo = sketch->getGeometry(constraint->First);
+
+        if (!geo || !isLineSegment(*geo)) {
+            return false;
+        }
+
+        const auto* lineSegment = static_cast<const Part::GeomLineSegment*>(geo);
+        firstPoint = projectPoint(lineSegment->getStartPoint());
+        secondPoint = projectPoint(lineSegment->getEndPoint());
+    }
+    else {
+        return false;
+    }
+
+    const double eps = Precision::Confusion();
+    Base::Vector2d labelDirection(0.0, 0.0);
+
+    switch (constraint->Type) {
+        case Sketcher::DistanceX:
+            if (secondPoint.x < firstPoint.x - eps) {
+                std::swap(firstPoint, secondPoint);
+            }
+            labelDirection = Base::Vector2d(0.0, -1.0);
+            break;
+        case Sketcher::DistanceY:
+            if (secondPoint.y < firstPoint.y - eps) {
+                std::swap(firstPoint, secondPoint);
+            }
+            if (secondPoint.x > firstPoint.x + eps) {
+                labelDirection = Base::Vector2d(1.0, 0.0);
+            }
+            else if (secondPoint.x < firstPoint.x - eps) {
+                labelDirection = Base::Vector2d(-1.0, 0.0);
+            }
+            else {
+                labelDirection = Base::Vector2d(1.0, 0.0);
+            }
+            break;
+        case Sketcher::Distance:
+            if (secondPoint.y < firstPoint.y - eps
+                || (std::abs(secondPoint.y - firstPoint.y) <= eps
+                    && secondPoint.x < firstPoint.x - eps)) {
+                std::swap(firstPoint, secondPoint);
+            }
+            {
+                const Base::Vector2d span = secondPoint - firstPoint;
+                const double spanLength = span.Length();
+                if (spanLength <= eps) {
+                    return false;
+                }
+                labelDirection = span.x >= 0.0
+                    ? Base::Vector2d(-span.y / spanLength, span.x / spanLength)
+                    : Base::Vector2d(span.y / spanLength, -span.x / spanLength);
+            }
+            break;
+        default:
+            return false;
+    }
+
+    const Base::Vector2d span = secondPoint - firstPoint;
+    position = (firstPoint + secondPoint) * 0.5
+        + labelDirection * (constraint->LabelDistance
+                            + 0.5 * std::abs(span.x * labelDirection.x
+                                             + span.y * labelDirection.y));
+    return true;
+}
+}  // namespace SketcherGui::LinearDatumLabelPlacement
+
+namespace SketcherGui
+{
+class ViewProviderSketchCommandConstraintsAttorney
+{
+public:
+    static void moveConstraint(ViewProviderSketch& viewProvider,
+                               int constraintIndex,
+                               const Base::Vector2d& position)
+    {
+        viewProvider.moveConstraint(constraintIndex, position);
+    }
+};
+}  // namespace SketcherGui
 
 bool isCreateConstraintActive(Gui::Document* doc)
 {
@@ -144,6 +258,15 @@ void finishDatumConstraint(Gui::Command* cmd,
 
                 if (geo && isCircle(*geo)) {
                     ConStr[i]->LabelPosition = labelPosition;
+                }
+            }
+            else {
+                Base::Vector2d labelPosition;
+
+                if (LinearDatumLabelPlacement::computeLabelPosition(
+                        sketch, ConStr[i], labelPosition)) {
+                    ViewProviderSketchCommandConstraintsAttorney::moveConstraint(
+                        *vp, i, labelPosition);
                 }
             }
         }
@@ -1788,7 +1911,9 @@ public:
     void deactivated() override
     {
         abortCommand();
-        Obj->solve();
+        if (availableConstraint != AvailableConstraint::FIRST) {
+            Obj->solve();
+        }
         sketchgui->draw(false, false); // Redraw
     }
 
