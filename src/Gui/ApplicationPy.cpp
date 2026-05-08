@@ -564,6 +564,17 @@ PyMethodDef ApplicationPy::Methods[] = {
      METH_VARARGS,
      "resumeWaitCursor() -> None\n\n"
      "Resumes the application's wait cursor and event filter."},
+    {"setActiveToolCommand",
+     (PyCFunction)ApplicationPy::sSetActiveToolCommand,
+     METH_VARARGS,
+     "setActiveToolCommand(name) -> None\n\n"
+     "Set the name of the currently active tool command for UI highlighting.\n\n"
+     "name : str\n    The command name to highlight in toolbars."},
+    {"clearActiveToolCommand",
+     (PyCFunction)ApplicationPy::sClearActiveToolCommand,
+     METH_VARARGS,
+     "clearActiveToolCommand() -> None\n\n"
+     "Clear the active tool command, removing toolbar highlighting."},
     {nullptr, nullptr, 0, nullptr} /* Sentinel */
 };
 
@@ -2015,5 +2026,32 @@ PyObject* ApplicationPy::sResumeWaitCursor(PyObject* /*self*/, PyObject* args)
     }
 
     WaitCursor::resume();
+    Py_RETURN_NONE;
+}
+
+PyObject* ApplicationPy::sSetActiveToolCommand(PyObject* /*self*/, PyObject* args)
+{
+    const char* name = "";
+    if (!PyArg_ParseTuple(args, "s", &name)) {
+        return nullptr;
+    }
+
+    if (!Application::Instance) {
+        return nullptr;
+    }
+    Application::Instance->commandManager().setActiveToolCommand(std::string(name));
+    Py_RETURN_NONE;
+}
+
+PyObject* ApplicationPy::sClearActiveToolCommand(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    if (!Application::Instance) {
+        return nullptr;
+    }
+    Application::Instance->commandManager().clearActiveToolCommand();
     Py_RETURN_NONE;
 }

@@ -27,8 +27,10 @@
 #include <QPointer>
 
 #include <App/Document.h>
+#include <App/AutoTransaction.h>
 #include <Gui/Application.h>
 #include <Gui/ComboView.h>
+#include <Gui/Command.h>
 #include <Gui/DockWindowManager.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>
@@ -252,6 +254,8 @@ void ControlSingleton::closeDialog(App::Document* attachedTo)
     if (taskView) {
         taskView->removeDialog(attachedTo);
     }
+    // Clear any active tool highlighting when closing a task dialog
+    Gui::Application::Instance->commandManager().clearActiveToolCommand();
 }
 
 void ControlSingleton::closedDialog(App::Document* /*attachedTo*/)

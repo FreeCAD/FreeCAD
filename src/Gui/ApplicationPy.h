@@ -114,6 +114,9 @@ public:
     static PyObject* sSuspendWaitCursor        (PyObject *self, PyObject *args);
     static PyObject* sResumeWaitCursor         (PyObject *self, PyObject *args);
 
+    static PyObject* sSetActiveToolCommand     (PyObject *self, PyObject *args);
+    static PyObject* sClearActiveToolCommand   (PyObject *self, PyObject *args);
+
     static PyMethodDef    Methods[];
     // clang-format on
 };

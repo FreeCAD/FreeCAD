@@ -29,6 +29,7 @@
 #include <QDir>
 #include <QKeySequence>
 #include <QMessageBox>
+#include <QMetaObject>
 
 #include <boost/algorithm/string/replace.hpp>
 
@@ -47,6 +48,12 @@
 #include "Action.h"
 #include "App/Application.h"
 #include "Application.h"
+
+namespace
+{
+const char* const PropertyCommandName = "CommandName";
+const char* const PropertyActiveToolHighlight = "ActiveToolHighlight";
+}  // namespace
 #include "BitmapFactory.h"
 #include "Control.h"
 #include "Dialogs/DlgUndoRedo.h"
@@ -312,7 +319,9 @@ void Command::addToGroup(ActionGroup* group, bool checkable)
 void Command::addToGroup(ActionGroup* group)
 {
     initAction();
-    group->addAction(_pcAction->findChild<QAction*>());
+    QAction* action = _pcAction->action();
+    action->setProperty(PropertyCommandName, QByteArray(sName));
+    group->addAction(action);
 }
 
 Application* Command::getGuiApplication()
@@ -557,7 +566,7 @@ void Command::testActive()
         Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
         const auto actions = pcAction->actions();
         for (auto action : actions) {
-            auto name = action->property("CommandName").toByteArray();
+            auto name = action->property(PropertyCommandName).toByteArray();
             if (!name.size()) {
                 continue;
             }
@@ -570,6 +579,61 @@ void Command::testActive()
 
     bool bActive = isActive();
     _pcAction->setEnabled(bActive);
+
+    // Update checked state for active tool highlighting
+    // Skip for commands that are already checkable (e.g., toggle buttons) as they
+    // manage their own checked state independently. We identify them by checking
+    // if they do NOT have the "ActiveToolHighlight" property set
+    QAction* action = _pcAction->action();
+    if (!action) {
+        return;
+    }
+    if (action->isCheckable() && !action->property(PropertyActiveToolHighlight).toBool()) {
+        return;
+    }
+
+    if (!Gui::Application::Instance) {
+        return;
+    }
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    std::string activeTool = rcCmdMgr.getActiveToolCommand();
+
+    if (pcAction) {
+        // For action groups, update each child action's checked state
+        const auto actions = pcAction->actions();
+        bool anyChildActive = false;
+        for (auto action : actions) {
+            auto name = action->property(PropertyCommandName).toByteArray();
+            if (name.size()) {
+                bool shouldBeChecked = (activeTool == name.constData());
+                if (shouldBeChecked) {
+                    anyChildActive = true;
+                }
+                if (shouldBeChecked != action->isChecked()) {
+                    action->blockSignals(true);
+                    action->setCheckable(true);
+                    action->setProperty(PropertyActiveToolHighlight, true);
+                    action->setChecked(shouldBeChecked);
+                    action->blockSignals(false);
+                }
+            }
+        }
+        // Also set the main button as checked when a child tool is active
+        pcAction->setCheckable(true);
+        if (pcAction->action()) {
+            pcAction->action()->setProperty(PropertyActiveToolHighlight, true);
+        }
+        pcAction->setBlockedChecked(anyChildActive);
+    }
+    else {
+        // For regular actions, update checked state
+        bool shouldBeChecked = (activeTool == sName);
+        _pcAction->setCheckable(true);
+        if (_pcAction->action()) {
+            _pcAction->action()->setProperty(PropertyActiveToolHighlight, true);
+        }
+        _pcAction->setBlockedChecked(shouldBeChecked);
+    }
 }
 
 void Command::setEnabled(bool on)
@@ -1495,6 +1559,11 @@ void PythonCommand::activated(int iMsg)
     else {
         runCommand(Doc, Activation.c_str());
     }
+    // Track this command as the active tool for UI highlighting
+    // Skip for toggle/checkable commands (e.g., Draft grid toggle) as they manage their own state
+    if (!isCheckable() && sName) {
+        Application::Instance->commandManager().setActiveToolCommand(sName);
+    }
 }
 
 bool PythonCommand::isActive()
@@ -1724,7 +1793,7 @@ void PythonGroupCommand::activated(int iMsg)
         // If the command group doesn't implement the 'Activated' method then invoke the command directly
         else {
             Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-            auto cmd = rcCmdMgr.getCommandByName(act->property("CommandName").toByteArray());
+            auto cmd = rcCmdMgr.getCommandByName(act->property(PropertyCommandName).toByteArray());
             if (cmd) {
                 bool checked = act->isCheckable() && act->isChecked();
                 cmd->invoke(checked ? 1 : 0, TriggerAction);
@@ -1784,20 +1853,21 @@ Action* PythonGroupCommand::createAction()
         Py::Sequence ret(call.apply(args));
         for (auto it = ret.begin(); it != ret.end(); ++it) {
             Py::String str(*it);
-            QAction* cmd = pcAction->addAction(QString());
-            cmd->setProperty("CommandName", QByteArray(static_cast<std::string>(str).c_str()));
+            QAction* qcmd = pcAction->addAction(QString());
+            const std::string commandName = static_cast<std::string>(str);
+            qcmd->setProperty(PropertyCommandName, QByteArray(commandName.c_str()));
 
             PythonCommand* pycmd = dynamic_cast<PythonCommand*>(
-                rcCmdMgr.getCommandByName(cmd->property("CommandName").toByteArray())
+                rcCmdMgr.getCommandByName(QByteArray(commandName.c_str()))
             );
             if (pycmd && pycmd->isCheckable()) {
-                cmd->setCheckable(true);
-                cmd->blockSignals(true);
-                cmd->setChecked(pycmd->isChecked());
-                cmd->blockSignals(false);
+                qcmd->setCheckable(true);
+                qcmd->blockSignals(true);
+                qcmd->setChecked(pycmd->isChecked());
+                qcmd->blockSignals(false);
             }
-            cmd->setShortcut(
-                ShortcutManager::instance()->getShortcut(cmd->property("CommandName").toByteArray())
+            qcmd->setShortcut(
+                ShortcutManager::instance()->getShortcut(QByteArray(commandName.c_str()))
             );
         }
 
@@ -1870,7 +1940,7 @@ void PythonGroupCommand::languageChange()
     if (idx >= 0 && idx < groupActions.size()) {
         QAction* defaultAction = groupActions[idx];
         Gui::Command* cmd = rcCmdMgr.getCommandByName(
-            defaultAction->property("CommandName").toByteArray()
+            defaultAction->property(PropertyCommandName).toByteArray()
         );
         if (cmd) {
             const char* context = cmd->getName();
@@ -1889,7 +1959,7 @@ void PythonGroupCommand::languageChange()
     auto* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> actions = pcAction->actions();
     for (const auto& it : actions) {
-        Gui::Command* cmd = rcCmdMgr.getCommandByName(it->property("CommandName").toByteArray());
+        Gui::Command* cmd = rcCmdMgr.getCommandByName(it->property(PropertyCommandName).toByteArray());
         if (cmd) {
             // Python command use getName as context
             const char* context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName()
@@ -2274,4 +2344,32 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(
     }
 
     return nullptr;
+}
+
+// Sets the currently active tool command for UI highlighting in toolbars
+void CommandManager::setActiveToolCommand(const std::string& name)
+{
+    _activeToolCommand = name;
+}
+
+// Clears the active tool command and triggers immediate UI update
+// Uses Qt::QueuedConnection to defer the update to avoid circular call issues
+void CommandManager::clearActiveToolCommand()
+{
+    _activeToolCommand.clear();
+    QMetaObject::invokeMethod(
+        qApp,
+        []() {
+            if (Gui::Application::Instance) {
+                Gui::Application::Instance->commandManager().testActive();
+            }
+        },
+        Qt::QueuedConnection
+    );
+}
+
+// Returns the name of the currently active tool command
+std::string CommandManager::getActiveToolCommand() const
+{
+    return _activeToolCommand;
 }

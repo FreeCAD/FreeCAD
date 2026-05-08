@@ -1038,6 +1038,13 @@ public:
     /// Signal to Python command on first workbench activation
     fastsignals::signal<void()> signalPyCmdInitialized;
 
+    /** @name Active tool command tracking for UI highlighting */
+    //@{
+    void setActiveToolCommand(const std::string& name);
+    void clearActiveToolCommand();
+    std::string getActiveToolCommand() const;
+    //@}
+
     /**
      * Returns a pointer to a conflicting command, or nullptr if there is no conflict.
      * In the case of multiple conflicts, only the first is returned.
@@ -1060,6 +1067,7 @@ private:
     std::map<std::string, std::list<std::string>> _sCommandModes;
 
     int _revision = 0;
+    std::string _activeToolCommand;
 };
 
 }  // namespace Gui

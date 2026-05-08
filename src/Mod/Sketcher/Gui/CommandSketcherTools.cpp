@@ -1142,6 +1142,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
     if (!listOfGeoIds.empty()) {
         ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerSymmetry>(listOfGeoIds));
+        Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
     }
     getSelection().clearSelection();
 }
@@ -1477,9 +1478,11 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     return;
     }
 */
+
     Gui::Document* guidoc = getActiveGuiDocument();
     ActivateHandler(guidoc,
                     std::make_unique<DrawSketchHandlerCopy>(guidoc->getDocument(), geoIdList, LastGeoId, LastPointPos, geoids, op));
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 
@@ -2082,6 +2085,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
                                                               slad.Cols,
                                                               slad.ConstraintSeparation,
                                                               slad.EqualVerticalHorizontalSpacing));
+        Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
     }
 }
 
@@ -2411,6 +2415,7 @@ void CmdSketcherOffset::activated(int iMsg)
 
     if (listOfGeoIds.size() != 0) {
         ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerOffset>(listOfGeoIds));
+        Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
     }
     else {
         getSelection().clearSelection();
@@ -2450,6 +2455,7 @@ void CmdSketcherRotate::activated(int iMsg)
 
     if (!listOfGeoIds.empty()) {
         ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerRotate>(listOfGeoIds));
+        Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
     }
     getSelection().clearSelection();
 }
@@ -2484,6 +2490,7 @@ void CmdSketcherScale::activated(int iMsg)
 
     if (!listOfGeoIds.empty()) {
         ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerScale>(listOfGeoIds));
+        Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
     }
     getSelection().clearSelection();
 }
@@ -2518,6 +2525,7 @@ void CmdSketcherTranslate::activated(int iMsg)
 
     if (!listOfGeoIds.empty()) {
         ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerTranslate>(listOfGeoIds));
+        Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
     }
     getSelection().clearSelection();
 }

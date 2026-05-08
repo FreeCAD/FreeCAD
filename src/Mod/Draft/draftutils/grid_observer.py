@@ -114,4 +114,8 @@ if FreeCAD.GuiUp:
 
         action = FreeCADGui.Command.get("Draft_ToggleGrid").getAction()[0]
         action.setCheckable(True)
+        # Block signals to prevent triggering the toolbar highlight system
+        # when programmatically setting the checked state
+        action.blockSignals(True)
         action.setChecked(button_check)
+        action.blockSignals(False)

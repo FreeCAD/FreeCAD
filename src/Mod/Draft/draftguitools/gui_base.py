@@ -189,6 +189,7 @@ class GuiCommandBase:
         the plane tracker and the snapper.
         """
         App.activeDraftCommand = None
+        Gui.clearActiveToolCommand()
         if self.planetrack:
             self.planetrack.finalize()
         self.planetrack = None

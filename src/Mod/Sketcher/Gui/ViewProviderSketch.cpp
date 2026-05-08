@@ -746,6 +746,8 @@ void ViewProviderSketch::deactivateHandler()
         sketchHandler = nullptr;
     }
     setSketchMode(STATUS_NONE);
+    // Clear the active tool highlight when handler is deactivated (e.g., right-click or ESC)
+    Gui::Application::Instance->commandManager().clearActiveToolCommand();
 }
 
 /// removes the active handler

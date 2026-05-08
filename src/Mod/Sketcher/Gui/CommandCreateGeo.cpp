@@ -124,6 +124,7 @@ void CmdSketcherCreatePoint::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPoint>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreatePoint::isActive()
@@ -213,6 +214,7 @@ void CmdSketcherCreateLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerLine>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateLine::isActive()
@@ -246,6 +248,7 @@ void CmdSketcherCreatePolyline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerLineSet>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreatePolyline::isActive()
@@ -349,6 +352,7 @@ void CmdSketcherCreateArc::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerArc>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateArc::isActive()
@@ -386,6 +390,7 @@ void CmdSketcherCreate3PointArc::activated(int iMsg)
             ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim
         )
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreate3PointArc::isActive()
@@ -417,6 +422,7 @@ void CmdSketcherCreateArcOfEllipse::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerArcOfEllipse>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateArcOfEllipse::isActive()
@@ -447,6 +453,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateArcOfHyperbola, "Sketcher_CreateHype
 void CmdSketcherCreateArcOfHyperbola::activated(int /*iMsg*/)
 {
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerArcOfHyperbola>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateArcOfHyperbola::isActive()
@@ -477,6 +484,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateArcOfParabola, "Sketcher_CreateParab
 void CmdSketcherCreateArcOfParabola::activated(int /*iMsg*/)
 {
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerArcOfParabola>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateArcOfParabola::isActive()
@@ -577,6 +585,7 @@ void CmdSketcherCreateCircle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerCircle>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateCircle::isActive()
@@ -613,6 +622,7 @@ void CmdSketcherCreate3PointCircle::activated(int iMsg)
             ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim
         )
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreate3PointCircle::isActive()
@@ -648,6 +658,7 @@ void CmdSketcherCreateEllipseByCenter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerEllipse>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateEllipseByCenter::isActive()
@@ -688,6 +699,7 @@ void CmdSketcherCreateEllipseBy3Points::activated(int iMsg)
             ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim
         )
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateEllipseBy3Points::isActive()
@@ -786,6 +798,7 @@ void CmdSketcherCreateRectangle::activated(int iMsg)
             ConstructionMethods::RectangleConstructionMethod::Diagonal
         )
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateRectangle::isActive()
@@ -822,6 +835,7 @@ void CmdSketcherCreateRectangleCenter::activated(int iMsg)
             ConstructionMethods::RectangleConstructionMethod::CenterAndCorner
         )
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateRectangleCenter::isActive()
@@ -860,6 +874,7 @@ void CmdSketcherCreateOblong::activated(int iMsg)
             true
         )
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateOblong::isActive()
@@ -965,6 +980,7 @@ void CmdSketcherCreateTriangle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolygon>(3));
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateTriangle::isActive()
@@ -996,6 +1012,7 @@ void CmdSketcherCreateSquare::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolygon>(4));
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateSquare::isActive()
@@ -1027,6 +1044,7 @@ void CmdSketcherCreatePentagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolygon>(5));
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreatePentagon::isActive()
@@ -1058,6 +1076,7 @@ void CmdSketcherCreateHexagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolygon>(6));
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateHexagon::isActive()
@@ -1089,6 +1108,7 @@ void CmdSketcherCreateHeptagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolygon>(7));
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateHeptagon::isActive()
@@ -1120,6 +1140,7 @@ void CmdSketcherCreateOctagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolygon>(8));
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateOctagon::isActive()
@@ -1155,6 +1176,7 @@ void CmdSketcherCreateRegularPolygon::activated(int iMsg)
     SketcherRegularPolygonDialog srpd;
     if (srpd.exec() == QDialog::Accepted) {
         ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolygon>(srpd.sides));
+        Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
     }
 }
 
@@ -1245,6 +1267,7 @@ void CmdSketcherCreateSlot::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerSlot>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateSlot::isActive()
@@ -1276,6 +1299,7 @@ void CmdSketcherCreateArcSlot::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerArcSlot>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateArcSlot::isActive(void)
@@ -1387,6 +1411,7 @@ void CmdSketcherCreateText::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerText>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateText::isActive()
@@ -1423,6 +1448,7 @@ void CmdSketcherCreateBSpline::activated(int iMsg)
             ConstructionMethods::BSplineConstructionMethod::ControlPoints
         )
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateBSpline::isActive()
@@ -1464,6 +1490,7 @@ void CmdSketcherCreatePeriodicBSpline::activated(int iMsg)
             true
         )
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreatePeriodicBSpline::isActive()
@@ -1500,6 +1527,7 @@ void CmdSketcherCreateBSplineByInterpolation::activated(int iMsg)
         getActiveGuiDocument(),
         std::make_unique<DrawSketchHandlerBSpline>(ConstructionMethods::BSplineConstructionMethod::Knots)
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateBSplineByInterpolation::isActive()
@@ -1544,6 +1572,7 @@ void CmdSketcherCreatePeriodicBSplineByInterpolation::activated(int iMsg)
             true
         )
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreatePeriodicBSplineByInterpolation::isActive()
@@ -1612,6 +1641,7 @@ void CmdSketcherCreateFillet::activated(int iMsg)
         getActiveGuiDocument(),
         std::make_unique<DrawSketchHandlerFillet>(ConstructionMethods::FilletConstructionMethod::Fillet)
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateFillet::isActive()
@@ -1644,6 +1674,7 @@ void CmdSketcherCreateChamfer::activated(int iMsg)
         getActiveGuiDocument(),
         std::make_unique<DrawSketchHandlerFillet>(ConstructionMethods::FilletConstructionMethod::Chamfer)
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCreateChamfer::isActive()
@@ -1709,6 +1740,7 @@ void CmdSketcherTrimming::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerTrimming>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherTrimming::isActive()
@@ -1739,6 +1771,7 @@ void CmdSketcherExtend::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerExtend>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherExtend::isActive()
@@ -1769,6 +1802,7 @@ void CmdSketcherSplit::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerSplitting>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherSplit::isActive()
@@ -1866,6 +1900,7 @@ void CmdSketcherProjection::activated(int iMsg)
         getActiveGuiDocument(),
         std::make_unique<DrawSketchHandlerExternal>(extGeoRef, false)
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherProjection::isActive()
@@ -1903,6 +1938,7 @@ void CmdSketcherIntersection::activated(int iMsg)
         getActiveGuiDocument(),
         std::make_unique<DrawSketchHandlerExternal>(extGeoRef, true)
     );
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherIntersection::isActive()
@@ -1935,6 +1971,7 @@ void CmdSketcherCarbonCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerCarbonCopy>());
+    Gui::Application::Instance->commandManager().setActiveToolCommand(getName());
 }
 
 bool CmdSketcherCarbonCopy::isActive()
@@ -1974,10 +2011,9 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcSlot());
-    rcCmdMgr.addCommand(new CmdSketcherCreateText());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     rcCmdMgr.addCommand(new CmdSketcherCreateChamfer());
-    // rcCmdMgr.addCommand(new CmdSketcherCreateText());
+    rcCmdMgr.addCommand(new CmdSketcherCreateText());
     // rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
     rcCmdMgr.addCommand(new CmdSketcherExtend());
