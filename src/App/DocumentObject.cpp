@@ -306,32 +306,16 @@ const char* DocumentObject::getStatusString() const
 
 std::string DocumentObject::getFullName() const
 {
-    // if (!getDocument() || !isAttachedToDocument()) {
-    //     return "?";
-    // }
-    // std::string name(getDocument()->getName());
-    // name += '#';
-    // name += *pcNameInDocument;
-    // return name;
-
-    return getFullNameLabel();
+    constexpr bool dontShowLabel = false;
+    return getFullNameLabel(dontShowLabel);
 }
 
 std::string DocumentObject::getFullLabel() const
 {
-    // if (!getDocument()) {
-    //     return "?";
-    // }
-
-    // auto name = getDocument()->Label.getStrValue();
-    // name += "#";
-    // name += Label.getStrValue();
-    // return name;
-
     return getFullNameLabel();
 }
 
-std::string DocumentObject::getFullNameLabel() const
+std::string DocumentObject::getFullNameLabel(bool showLabel) const
 {
     if (!getDocument() || !isAttachedToDocument()) {
         return "?";
@@ -343,12 +327,15 @@ std::string DocumentObject::getFullNameLabel() const
     std::string objName = *pcNameInDocument;
     fullName += objName;
 
-    std::string objLabel = Label.getStrValue();
+    if (showLabel) {
+        std::string objLabel = Label.getStrValue();
 
-    if (objLabel != objName) {
-        return fullName + " (" + objLabel + ")";
+        if (objLabel != objName) {
+            return fullName + " (" + objLabel + ")";
+        }
     }
-    return fullName;
+    
+    return fullName;    
 }
 
 const char* DocumentObject::getDagKey() const

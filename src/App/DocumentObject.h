@@ -278,7 +278,7 @@ public:
     /**
      * @brief Get the full label of the object.
      *
-     * The label is of the form `DocName#Label`.
+     * This function is getting replaced with getFullNameLabel()
      *
      * @return The full label of the object.
      */
@@ -288,11 +288,11 @@ public:
      * @brief Returns the object's full name including its label.
      *
      * The returned string has the form `DocName#ObjName (Label)`.
-     * The label part is only appended if it differs from the object's internal name.
+     * The label appears only if it differs from the object's internal name.
      *
      * @return The full name with label (if applicable).
      */
-    std::string getFullNameLabel() const;
+    std::string getFullNameLabel(bool showLabel = true) const;
 
     bool isAttachedToDocument() const override;
     const char* detachFromDocument() override;
