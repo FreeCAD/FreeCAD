@@ -87,7 +87,7 @@ void DlgSettingsNavigation::saveSettings()
     );
     QVariant data
         = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
-    hGrp->SetASCII("NavigationStyle", (const char*)data.toByteArray());
+    hGrp->setString("NavigationStyle", data.toByteArray().toStdString());
 
     int index = ui->comboOrbitStyle->currentIndex();
     hGrp->SetInt("OrbitStyle", index);
@@ -126,7 +126,7 @@ void DlgSettingsNavigation::saveSettings()
     hGrp->SetBool("UseNavigationAnimations", useNavigationAnimations);
 
     QVariant camera = ui->comboNewDocView->itemData(ui->comboNewDocView->currentIndex(), Qt::UserRole);
-    hGrp->SetASCII("NewDocumentCameraOrientation", (const char*)camera.toByteArray());
+    hGrp->setString("NewDocumentCameraOrientation", camera.toByteArray().toStdString());
     if (camera == QByteArray("Custom")) {
         ParameterGrp::handle hCustom = hGrp->GetGroup("Custom");
         hCustom->SetFloat("Q0", q0);
@@ -136,10 +136,10 @@ void DlgSettingsNavigation::saveSettings()
     }
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
     if (ui->naviCubeFontName->currentIndex()) {
-        hGrp->SetASCII("FontString", ui->naviCubeFontName->currentText().toLatin1());
+        hGrp->setString("FontString", ui->naviCubeFontName->currentText().toStdString());
     }
     else {
-        hGrp->RemoveASCII("FontString");
+        hGrp->removeString("FontString");
     }
 }
 
@@ -168,10 +168,8 @@ void DlgSettingsNavigation::loadSettings()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    std::string model = hGrp->GetASCII(
-        "NavigationStyle",
-        std::string {CADNavigationStyle::getClassTypeId().getName()}.c_str()
-    );
+    std::string model
+        = hGrp->getString("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
     int index = ui->comboNavigationStyle->findData(QByteArray(model.c_str()));
     if (index > -1) {
         ui->comboNavigationStyle->setCurrentIndex(index);
@@ -212,7 +210,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->naviCubeFontName->setProperty("doNotSearch", true);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-    int indexFamilyNames = familyNames.indexOf(QString::fromStdString(hGrp->GetASCII("FontString")));
+    int indexFamilyNames = familyNames.indexOf(QString::fromStdString(hGrp->getString("FontString")));
     ui->naviCubeFontName->setCurrentIndex(indexFamilyNames + 1);
 }
 
@@ -232,8 +230,8 @@ void DlgSettingsNavigation::addOrientations()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    std::string camera = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
-    int index = ui->comboNewDocView->findData(QByteArray(camera.c_str()));
+    std::string camera = hGrp->getString("NewDocumentCameraOrientation", "Trimetric");
+    int index = ui->comboNewDocView->findData(QByteArray::fromStdString(camera));
     if (index > -1) {
         ui->comboNewDocView->setCurrentIndex(index);
     }
@@ -272,7 +270,7 @@ void DlgSettingsNavigation::resetSettingsToDefaults()
     ParameterGrp::handle hGrp;
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     // reset "NavigationStyle" parameter
-    hGrp->RemoveASCII("NavigationStyle");
+    hGrp->removeString("NavigationStyle");
     // reset "OrbitStyle" parameter
     hGrp->RemoveInt("OrbitStyle");
     // reset "RotationMode" parameter
@@ -284,7 +282,7 @@ void DlgSettingsNavigation::resetSettingsToDefaults()
     // reset "UseNavigationAnimations" parameter
     hGrp->RemoveBool("UseNavigationAnimations");
     // reset "NewDocumentCameraOrientation" parameter
-    hGrp->RemoveASCII("NewDocumentCameraOrientation");
+    hGrp->removeString("NewDocumentCameraOrientation");
 
     hGrp = hGrp->GetGroup("Custom");
     // reset "Q0" parameter

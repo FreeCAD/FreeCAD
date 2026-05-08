@@ -19,4 +19,12 @@ macro(SetupPython)
     set(PYTHON_VERSION_PATCH ${Python3_VERSION_PATCH})
     set(PYTHONINTERP_FOUND ${Python3_Interpreter_FOUND})
 
+    # Python prior to 3.13 requires PY_SSIZE_T_CLEAN to be defined so the
+    # pointer + length variant of argument parsing (e.g. "s#") can work,
+    # as prior versions used to return an int size instead of Py_ssize_t.
+    # See: https://docs.python.org/3.13/c-api/arg.html#strings-and-buffers
+    if (${Python3_VERSION} VERSION_LESS "3.13")
+         add_definitions(-DPY_SSIZE_T_CLEAN)
+    endif()
+
 endmacro(SetupPython)

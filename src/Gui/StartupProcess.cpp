@@ -159,8 +159,8 @@ void StartupProcess::setImagePaths()
 {
     // set search paths for images
     QStringList imagePaths;
-    imagePaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/images").c_str())
-               << QString::fromUtf8((App::Application::getUserAppDataDir() + "pixmaps").c_str())
+    imagePaths << QString::fromStdString(App::Application::getUserAppDataDir() + "Gui/images")
+               << QString::fromStdString(App::Application::getUserAppDataDir() + "pixmaps")
                << QLatin1String(":/icons");
     QDir::setSearchPaths(QStringLiteral("images"), imagePaths);
 }
@@ -181,16 +181,16 @@ void StartupProcess::setThemePaths()
         "User parameter:BaseApp/Preferences/Bitmaps/Theme"
     );
 
-    std::string searchpath = hTheme->GetASCII("SearchPath");
+    std::string searchpath = hTheme->getString("SearchPath");
     if (!searchpath.empty()) {
         QStringList searchPaths = QIcon::themeSearchPaths();
-        searchPaths.prepend(QString::fromUtf8(searchpath.c_str()));
+        searchPaths.prepend(QString::fromStdString(searchpath));
         QIcon::setThemeSearchPaths(searchPaths);
     }
 
-    std::string name = hTheme->GetASCII("Name");
+    std::string name = hTheme->getString("Name");
     if (!name.empty()) {
-        QIcon::setThemeName(QString::fromLatin1(name.c_str()));
+        QIcon::setThemeName(QString::fromStdString(name));
     }
 }
 
@@ -320,7 +320,7 @@ void StartupPostProcess::setQtStyle()
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("MainWindow");
 
     const auto setStyleFromParameters = [hGrp]() {
-        const auto style = hGrp->GetASCII("QtStyle");
+        const auto style = hGrp->getString("QtStyle");
 
         Application::Instance->setStyle(QString::fromStdString(style));
     };
@@ -479,14 +479,14 @@ void StartupPostProcess::activateWorkbench()
 {
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
-    Base::Console().log("Init: Activating default workbench %s\n", start.c_str());
+    Base::Console().log("Init: Activating default workbench %s\n", start);
     std::string autoload = App::GetApplication()
                                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                               ->GetASCII("AutoloadModule", start.c_str());
+                               ->getString("AutoloadModule", start);
     if ("$LastModule" == autoload) {
         start = App::GetApplication()
                     .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                    ->GetASCII("LastModule", start.c_str());
+                    ->getString("LastModule", start);
     }
     else {
         start = autoload;
@@ -494,17 +494,17 @@ void StartupPostProcess::activateWorkbench()
     // if the auto workbench is not visible then force to use the default workbech
     // and replace the wrong entry in the parameters
     QStringList wb = guiApp.workbenches();
-    if (!wb.contains(QString::fromLatin1(start.c_str()))) {
+    if (!wb.contains(QString::fromStdString(start))) {
         start = App::Application::Config()["StartWorkbench"];
         if ("$LastModule" == autoload) {
             App::GetApplication()
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                ->SetASCII("LastModule", start.c_str());
+                ->setString("LastModule", start);
         }
         else {
             App::GetApplication()
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                ->SetASCII("AutoloadModule", start.c_str());
+                ->setString("AutoloadModule", start);
         }
     }
 
@@ -532,7 +532,7 @@ void StartupPostProcess::setStyleSheet()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow"
     );
-    std::string style = hGrp->GetASCII("StyleSheet");
+    std::string style = hGrp->getString("StyleSheet");
     if (style.empty()) {
         // check the branding settings
         const auto& config = App::Application::Config();
@@ -555,7 +555,7 @@ void StartupPostProcess::autoloadModules(const QStringList& wb)
     // displayed to the user immediately
     std::string autoloadCSV = App::GetApplication()
                                   .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                                  ->GetASCII("BackgroundAutoloadModules", "");
+                                  ->getString("BackgroundAutoloadModules", "");
 
     // Tokenize the comma-separated list and load the requested workbenches if they exist in this
     // installation
@@ -605,7 +605,7 @@ void StartupPostProcess::checkParameters()
             && (newDefaultPath.parent_path().filename() == versionString)) {
             std::filesystem::path oldDefaultPath {newDefaultPath.parent_path().parent_path() / "Macro"};
             std::filesystem::path macroDir
-                = macroPrefs->GetASCII("MacroPath", newDefaultPath.string().c_str());
+                = macroPrefs->getString("MacroPath", newDefaultPath.string());
             if (macroDir.filename().empty()) {
                 macroDir = macroDir.parent_path();
             }
@@ -613,7 +613,7 @@ void StartupPostProcess::checkParameters()
                 Base::Console().warning(
                     "Removing 'MacroPath' parameter in order to default to the new versioned path\n"
                 );
-                macroPrefs->RemoveASCII("MacroPath");
+                macroPrefs->removeString("MacroPath");
             }
         }
         macroPrefs->SetBool("MacroPathCheckedForMigrationTov1-1", true);

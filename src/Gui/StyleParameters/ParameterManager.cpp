@@ -181,7 +181,7 @@ std::list<Parameter> UserParameterSource::all() const
 {
     std::list<Parameter> result;
 
-    for (const auto& [token, value] : hGrp->GetASCIIMap()) {
+    for (const auto& [token, value] : hGrp->getAllStringsMap()) {
         result.push_back({
             .name = token,
             .value = value,
@@ -193,7 +193,7 @@ std::list<Parameter> UserParameterSource::all() const
 
 std::optional<Parameter> UserParameterSource::get(const std::string& name) const
 {
-    if (auto value = hGrp->GetASCII(name.c_str(), ""); !value.empty()) {
+    if (auto value = hGrp->getString(name, ""); !value.empty()) {
         return Parameter {
             .name = name,
             .value = value,
@@ -205,12 +205,12 @@ std::optional<Parameter> UserParameterSource::get(const std::string& name) const
 
 void UserParameterSource::define(const Parameter& parameter)
 {
-    hGrp->SetASCII(parameter.name.c_str(), parameter.value);
+    hGrp->setString(parameter.name, parameter.value);
 }
 
 void UserParameterSource::remove(const std::string& name)
 {
-    hGrp->RemoveASCII(name.c_str());
+    hGrp->removeString(name);
 }
 
 YamlParameterSource::YamlParameterSource(const std::string& filePath, const Metadata& metadata)

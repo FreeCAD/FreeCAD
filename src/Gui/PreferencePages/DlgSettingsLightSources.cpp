@@ -287,7 +287,7 @@ void DlgSettingsLightSources::saveSettings()
     const auto saveAngles = [this](
                                 QuantitySpinBox* horizontalAngleSpinBox,
                                 QuantitySpinBox* verticalAngleSpinBox,
-                                const char* parameter
+                                std::string_view parameter
                             ) {
         try {
             const auto direction = azimuthElevationToDirection(
@@ -295,7 +295,7 @@ void DlgSettingsLightSources::saveSettings()
                 verticalAngleSpinBox->rawValue()
             );
 
-            hGrp->SetASCII(parameter, Base::vectorToString(Base::convertTo<Base::Vector3f>(direction)));
+            hGrp->setString(parameter, Base::vectorToString(Base::convertTo<Base::Vector3f>(direction)));
         }
         catch (...) {
         }
@@ -317,10 +317,10 @@ void DlgSettingsLightSources::loadSettings()
     const auto loadAngles = [this](
                                 QuantitySpinBox* horizontalAngleSpinBox,
                                 QuantitySpinBox* verticalAngleSpinBox,
-                                const char* parameter
+                                std::string_view parameter
                             ) {
         try {
-            const auto direction = Base::stringToVector(hGrp->GetASCII(parameter));
+            const auto direction = Base::stringToVector(hGrp->getString(parameter));
             const auto [azimuth, elevation] = directionToAzimuthElevation(
                 Base::convertTo<Base::Vector3d>(direction)
             );
@@ -341,9 +341,9 @@ void DlgSettingsLightSources::resetSettingsToDefaults()
 {
     PreferencePage::resetSettingsToDefaults();
 
-    hGrp->RemoveASCII("HeadlightDirection");
-    hGrp->RemoveASCII("BacklightDirection");
-    hGrp->RemoveASCII("FillLightDirection");
+    hGrp->removeString("HeadlightDirection");
+    hGrp->removeString("BacklightDirection");
+    hGrp->removeString("FillLightDirection");
 
     loadSettings();
     configureViewer();

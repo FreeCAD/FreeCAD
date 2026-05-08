@@ -76,23 +76,25 @@ void ImportExportSettings::setUnit(Interface::Unit unit)
 
 std::string ImportExportSettings::getCompany() const
 {
-    return pGroup->GetASCII("Company", Part::Interface::writeIgesHeaderCompany());
+    return pGroup->getString("Company", std::string_view {Part::Interface::writeIgesHeaderCompany()});
 }
 
 void ImportExportSettings::setCompany(const char* name)
 {
-    pGroup->SetASCII("Company", name);
+    // TODO: make setCompany take a string_view and remove the conversion
+    pGroup->setString("Company", std::string_view {name});
     Part::Interface::writeIgesHeaderCompany(name);
 }
 
 std::string ImportExportSettings::getAuthor() const
 {
-    return pGroup->GetASCII("Author", Part::Interface::writeIgesHeaderAuthor());
+    return pGroup->getString("Author", std::string_view {Part::Interface::writeIgesHeaderAuthor()});
 }
 
 void ImportExportSettings::setAuthor(const char* name)
 {
-    pGroup->SetASCII("Author", name);
+    // TODO: make setAuthor take a string_view and remove the conversion
+    pGroup->setString("Author", std::string_view {name});
     Part::Interface::writeIgesHeaderAuthor(name);
 }
 

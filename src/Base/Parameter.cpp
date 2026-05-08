@@ -226,10 +226,10 @@ void ParameterGrp::insertTo(const Base::Reference<ParameterGrp>& Grp)
     }
 
     // copy strings
-    std::vector<std::pair<std::string, std::string>> StringMap = GetASCIIMap();
+    std::vector<std::pair<std::string, std::string>> StringMap = getAllStringsMap();
     std::vector<std::pair<std::string, std::string>>::iterator It2;
     for (It2 = StringMap.begin(); It2 != StringMap.end(); ++It2) {
-        Grp->SetASCII(It2->first.c_str(), It2->second.c_str());
+        Grp->setString(It2->first, It2->second);
     }
 
     // copy bool
@@ -318,9 +318,9 @@ void ParameterGrp::revert(const Base::Reference<ParameterGrp>& Grp)
         }
     }
 
-    for (const auto& v : Grp->GetASCIIMap()) {
-        if (GetASCII(v.first.c_str(), v.second.c_str()) == v.second) {
-            RemoveASCII(v.first.c_str());
+    for (const auto& v : Grp->getAllStringsMap()) {
+        if (getString(v.first, v.second) == v.second) {
+            removeString(v.first);
         }
     }
 
@@ -349,16 +349,16 @@ void ParameterGrp::revert(const Base::Reference<ParameterGrp>& Grp)
     }
 }
 
-DOMElement* ParameterGrp::CreateElement(DOMElement* Start, const char* Type, const char* Name)
+DOMElement* ParameterGrp::CreateElement(DOMElement* start, std::string_view type, std::string_view name)
 {
-    if (XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParamGroup").unicodeForm()) != 0
-        && XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
+    if (XMLString::compareString(start->getNodeName(), XStrLiteral("FCParamGroup").unicodeForm()) != 0
+        && XMLString::compareString(start->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
             != 0) {
         Base::Console().warning(
             "CreateElement: %s cannot have the element %s of type %s\n",
-            StrX(Start->getNodeName()).c_str(),
-            Name,
-            Type
+            StrX(start->getNodeName()).c_str(),
+            name,
+            type
         );
         return nullptr;
     }
@@ -368,11 +368,11 @@ DOMElement* ParameterGrp::CreateElement(DOMElement* Start, const char* Type, con
         _Parent->_GetGroup(_cName.c_str());
     }
 
-    DOMDocument* pDocument = Start->getOwnerDocument();
+    DOMDocument* pDocument = start->getOwnerDocument();
 
-    auto pcElem = pDocument->createElement(XStr(Type).unicodeForm());
-    pcElem->setAttribute(XStrLiteral("Name").unicodeForm(), XStr(Name).unicodeForm());
-    Start->appendChild(pcElem);
+    auto pcElem = pDocument->createElement(XStr(type).unicodeForm());
+    pcElem->setAttribute(XStrLiteral("Name").unicodeForm(), XStr(name).unicodeForm());
+    start->appendChild(pcElem);
 
     return pcElem;
 }
@@ -570,7 +570,8 @@ void ParameterGrp::SetAttribute(ParamType Type, const char* Name, const char* Va
         case ParamType::FCFloat:
             return _SetAttribute(Type, Name, Value);
         case ParamType::FCText:
-            return SetASCII(Name, Value);
+            // TODO: make SetAttribute take string_views and remove these conversions
+            return _setString(std::string_view {Name}, std::string_view {Value ? Value : ""});
         case ParamType::FCGroup:
             RenameGrp(Name, Value);
             break;
@@ -589,7 +590,8 @@ void ParameterGrp::RemoveAttribute(ParamType Type, const char* Name)
         case ParamType::FCUInt:
             return RemoveUnsigned(Name);
         case ParamType::FCText:
-            return RemoveASCII(Name);
+            // TODO: make RemoveAttribute take string_views and remove this conversion
+            return removeString(std::string_view {Name});
         case ParamType::FCFloat:
             return RemoveFloat(Name);
         case ParamType::FCGroup:
@@ -621,7 +623,8 @@ const char* ParameterGrp::GetAttribute(
     }
 
     if (Type == ParamType::FCText) {
-        Value = GetASCII(Name, Default);
+        // TODO: make GetAttribute take string_views and remove these conversions
+        Value = _getString(std::string_view {Name}, std::string_view {Default ? Default : ""});
     }
     else if (Type != ParamType::FCGroup) {
         Value = StrX(pcElem->getAttribute(XStrLiteral("Value").unicodeForm())).c_str();
@@ -1018,61 +1021,61 @@ std::vector<std::pair<std::string, double>> ParameterGrp::GetFloatMap(const char
 }
 
 
-void ParameterGrp::SetASCII(const char* Name, const char* sValue)
+void ParameterGrp::_setString(std::string_view name, std::string_view value)
 {
     if (!_pGroupNode) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Setting attribute " << "FCText:" << Name << " in an orphan group " << _cName);
+            FC_WARN("Setting attribute " << "FCText:" << name << " in an orphan group " << _cName);
         }
         return;
     }
     if (_Clearing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Adding attribute " << "FCText:" << Name << " while clearing " << GetPath());
+            FC_WARN("Adding attribute " << "FCText:" << name << " while clearing " << GetPath());
         }
         return;
     }
 
     bool isNew = false;
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCText", Name);
+    DOMElement* pcElem = FindElement(_pGroupNode, "FCText", name);
     if (!pcElem) {
-        pcElem = CreateElement(_pGroupNode, "FCText", Name);
+        pcElem = CreateElement(_pGroupNode, "FCText", name);
         isNew = true;
     }
     if (pcElem) {
+        // TODO: remove when _Notify() & Notify() can take string_views
+        std::string terminatedName {name};
+        std::string terminatedValue {value};
         // and set the value
         DOMNode* pcElem2 = pcElem->getFirstChild();
         if (!pcElem2) {
             DOMDocument* pDocument = _pGroupNode->getOwnerDocument();
-            DOMText* pText = pDocument->createTextNode(XUTF8Str(sValue).unicodeForm());
+            DOMText* pText = pDocument->createTextNode(XUTF8Str(value).unicodeForm());
             pcElem->appendChild(pText);
-            if (isNew || sValue[0] != 0) {
-                _Notify(ParamType::FCText, Name, sValue);
+            if (isNew || (value.size() > 0 && value[0] != 0)) {
+                _Notify(ParamType::FCText, terminatedName.c_str(), terminatedValue.c_str());
             }
         }
-        else if (strcmp(StrXUTF8(pcElem2->getNodeValue()).c_str(), sValue) != 0) {
-            pcElem2->setNodeValue(XUTF8Str(sValue).unicodeForm());
-            _Notify(ParamType::FCText, Name, sValue);
+        else if (StrXUTF8(pcElem2->getNodeValue()).str != value) {
+            pcElem2->setNodeValue(XUTF8Str(value).unicodeForm());
+            _Notify(ParamType::FCText, terminatedName.c_str(), terminatedValue.c_str());
         }
         // trigger observer
-        Notify(Name);
+        Notify(terminatedName.c_str());
     }
 }
 
-std::string ParameterGrp::GetASCII(const char* Name, const char* pPreset) const
+std::string ParameterGrp::_getString(std::string_view name, std::string_view fallback) const
 {
     if (!_pGroupNode) {
-        return pPreset ? pPreset : "";
+        return std::string {fallback};
     }
 
     // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCText", Name);
+    DOMElement* pcElem = FindElement(_pGroupNode, "FCText", name);
     // if not return preset
     if (!pcElem) {
-        if (!pPreset) {
-            return {};
-        }
-        return {pPreset};
+        return std::string {fallback};
     }
     // if yes check the value and return
     DOMNode* pcElem2 = pcElem->getFirstChild();
@@ -1082,7 +1085,7 @@ std::string ParameterGrp::GetASCII(const char* Name, const char* pPreset) const
     return {};
 }
 
-std::vector<std::string> ParameterGrp::GetASCIIs(const char* sFilter) const
+std::vector<std::string> ParameterGrp::_getAllStrings(std::string_view filter) const
 {
     std::vector<std::string> vrValues;
     if (!_pGroupNode) {
@@ -1095,7 +1098,7 @@ std::vector<std::string> ParameterGrp::GetASCIIs(const char* sFilter) const
     while (pcTemp) {
         Name = StrXUTF8(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
+        if (filter.empty() || Name.find(filter) != std::string::npos) {
             // retrieve the text element
             DOMNode* pcElem2 = pcTemp->getFirstChild();
             if (pcElem2) {
@@ -1111,7 +1114,9 @@ std::vector<std::string> ParameterGrp::GetASCIIs(const char* sFilter) const
     return vrValues;
 }
 
-std::vector<std::pair<std::string, std::string>> ParameterGrp::GetASCIIMap(const char* sFilter) const
+std::vector<std::pair<std::string, std::string>> ParameterGrp::_getAllStringsMap(
+    std::string_view filter
+) const
 {
     std::vector<std::pair<std::string, std::string>> vrValues;
     if (!_pGroupNode) {
@@ -1124,7 +1129,7 @@ std::vector<std::pair<std::string, std::string>> ParameterGrp::GetASCIIMap(const
     while (pcTemp) {
         Name = StrXUTF8(pcTemp->getAttribute(XStrLiteral("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (!sFilter || Name.find(sFilter) != std::string::npos) {
+        if (filter.empty() || Name.find(filter) != std::string::npos) {
             // retrieve the text element
             DOMNode* pcElem2 = pcTemp->getFirstChild();
             if (pcElem2) {
@@ -1146,14 +1151,14 @@ std::vector<std::pair<std::string, std::string>> ParameterGrp::GetASCIIMap(const
 //**************************************************************************
 // Access methods
 
-void ParameterGrp::RemoveASCII(const char* Name)
+void ParameterGrp::_removeString(std::string_view name)
 {
     if (!_pGroupNode) {
         return;
     }
 
     // check if Element in group
-    DOMElement* pcElem = FindElement(_pGroupNode, "FCText", Name);
+    DOMElement* pcElem = FindElement(_pGroupNode, "FCText", name);
     // if not return
     if (!pcElem) {
         return;
@@ -1162,9 +1167,11 @@ void ParameterGrp::RemoveASCII(const char* Name)
     DOMNode* node = _pGroupNode->removeChild(pcElem);
     node->release();
 
+    // TODO: remove when _Notify() & Notify() can take string_views
+    std::string terminatedName {name};
     // trigger observer
-    _Notify(ParamType::FCText, Name, nullptr);
-    Notify(Name);
+    _Notify(ParamType::FCText, terminatedName.c_str(), nullptr);
+    Notify(terminatedName.c_str());
 }
 
 void ParameterGrp::RemoveBool(const char* Name)
@@ -1438,29 +1445,29 @@ bool ParameterGrp::ShouldRemove() const
     });
 }
 
-DOMElement* ParameterGrp::FindElement(DOMElement* Start, const char* Type, const char* Name) const
+DOMElement* ParameterGrp::FindElement(DOMElement* start, std::string_view type, std::string_view name) const
 {
-    if (XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParamGroup").unicodeForm()) != 0
-        && XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
+    if (XMLString::compareString(start->getNodeName(), XStrLiteral("FCParamGroup").unicodeForm()) != 0
+        && XMLString::compareString(start->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
             != 0) {
         Base::Console().warning(
             "FindElement: %s cannot have the element %s of type %s\n",
-            StrX(Start->getNodeName()).c_str(),
-            Name,
-            Type
+            StrX(start->getNodeName()).c_str(),
+            name,
+            type
         );
         return nullptr;
     }
-    const XStr xType(Type);
-    const XStr xName(Name);
-    for (DOMNode* clChild = Start->getFirstChild(); clChild != nullptr;
+    const XStr xType(type);
+    const XStr xName(name);
+    for (DOMNode* clChild = start->getFirstChild(); clChild != nullptr;
          clChild = clChild->getNextSibling()) {
         if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
             // the right node Type
             if (!XMLString::compareString(xType.unicodeForm(), clChild->getNodeName())) {
                 auto attrs = clChild->getAttributes();
                 if (attrs->getLength() > 0) {
-                    if (Name) {
+                    if (!name.empty()) {
                         DOMNode* attr = attrs->getNamedItem(XStrLiteral("Name").unicodeForm());
                         if (attr
                             && !XMLString::compareString(xName.unicodeForm(), attr->getNodeValue())) {
@@ -1568,7 +1575,7 @@ void ParameterGrp::NotifyAll()
     }
 
     // get all strings and notify
-    std::vector<std::pair<std::string, std::string>> StringMap = GetASCIIMap();
+    std::vector<std::pair<std::string, std::string>> StringMap = getAllStringsMap();
     for (const auto& it : StringMap) {
         Notify(it.first.c_str());
     }
