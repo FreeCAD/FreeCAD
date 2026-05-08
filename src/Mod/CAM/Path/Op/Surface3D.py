@@ -393,6 +393,33 @@ class ObjectSurface3D(PathOp.ObjectOp):
         # can't drift apart.
         self.apply_accuracy_preset(obj, getattr(obj, "AccuracyLevel", 4))
 
+    def opUpdateDepths(self, obj):
+        """Default FinalDepth to the lowest Z of selected faces (or model).
+
+        The base ``updateDepths`` sets ``OpFinalDepth`` to the *top* of
+        the model when no Base is selected, which would cause
+        ``surface_mesh.generate_stl``'s pre-clip to produce an empty
+        volume.  For a surfacing op the natural floor is the bottom of
+        the geometry being machined, so override accordingly.
+        """
+        zmin = None
+        if hasattr(obj, "Base") and obj.Base:
+            for base, sublist in obj.Base:
+                for sub in sublist:
+                    try:
+                        fbb = base.Shape.getElement(sub).BoundBox
+                    except Exception:
+                        continue
+                    zmin = fbb.ZMin if zmin is None else min(zmin, fbb.ZMin)
+        if zmin is None and getattr(self, "job", None):
+            for m in self.job.Model.Group:
+                if not getattr(m, "Shape", None) or m.Shape.isNull():
+                    continue
+                bb = m.Shape.BoundBox
+                zmin = bb.ZMin if zmin is None else min(zmin, bb.ZMin)
+        if zmin is not None:
+            obj.OpFinalDepth = zmin
+
     # ------------------------------------------------------------------
     # Speed-vs-Accuracy presets
     # ------------------------------------------------------------------
@@ -870,6 +897,22 @@ class ObjectSurface3D(PathOp.ObjectOp):
             Path.Log.error("Surface3D: could not build OCL cutter for tool.")
             return
 
+        # Sanity-check depths before tessellation.  generate_stl pre-clips
+        # the model to FinalDepth and a non-empty result requires
+        # FinalDepth strictly below the model's top.
+        model_zmax = model_shape.BoundBox.ZMax
+        model_zmin = model_shape.BoundBox.ZMin
+        final_depth = float(obj.FinalDepth.Value)
+        if final_depth >= model_zmax - 1e-6:
+            Path.Log.error(
+                "Surface3D: FinalDepth ({:.3f}) is at or above the top of the "
+                "model ({:.3f}). Lower FinalDepth to the floor of the region "
+                "you want to finish (the model bottom is {:.3f}).".format(
+                    final_depth, model_zmax, model_zmin
+                )
+            )
+            return
+
         stl, _safe_stl = surface_mesh.generate_stl(
             model_shape,
             models,
@@ -877,7 +920,7 @@ class ObjectSurface3D(PathOp.ObjectOp):
             tool_radius=tool_radius,
             needs_safe_stl=False,
             start_depth=float(obj.StartDepth.Value),
-            final_depth=float(obj.FinalDepth.Value),
+            final_depth=final_depth,
             linear_deflection=float(obj.LinearDeflection.Value),
             angular_deflection=float(obj.AngularDeflection.Value),
             mesh_simplification=int(obj.MeshSimplification),
