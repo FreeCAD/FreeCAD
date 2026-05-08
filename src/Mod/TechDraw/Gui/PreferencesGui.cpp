@@ -181,7 +181,8 @@ QString PreferencesGui::weldingDirectory()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols/Welding/AWS/";
 
-    std::string symbolDir = Preferences::getPreferenceGroup("Files")->GetASCII("WeldingDir", defaultDir.c_str());
+    std::string symbolDir
+        = Preferences::getPreferenceGroup("Files")->getString("WeldingDir", defaultDir);
     if (symbolDir.empty()) {
         symbolDir = defaultDir;
     }

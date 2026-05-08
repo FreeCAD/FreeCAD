@@ -104,9 +104,9 @@ public:
     {
         const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
         if (strcmp(Reason, "NavigationStyle") == 0) {
-            std::string model = rGrp.GetASCII(
+            std::string model = rGrp.getString(
                 "NavigationStyle",
-                std::string {CADNavigationStyle::getClassTypeId().getName()}.c_str()
+                CADNavigationStyle::getClassTypeId().getName()
             );
             page->setNavigationStyle(model);
         }
@@ -625,9 +625,9 @@ std::string QGVPage::getNavStyleParameter()
 {
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    std::string model = hGrp->GetASCII(
+    std::string model = hGrp->getString(
         "NavigationStyle",
-        std::string {NavigationStyle::getClassTypeId().getName()}.c_str()
+        NavigationStyle::getClassTypeId().getName()
     );
     return model;
 }

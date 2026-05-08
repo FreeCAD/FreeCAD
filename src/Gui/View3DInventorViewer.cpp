@@ -2081,7 +2081,7 @@ void View3DInventorViewer::updateFPSLabel()
     ParameterGrp::handle hGrpOverlayL = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/MainWindow/DockWindows/OverlayLeft"
     );
-    int xOffset = hGrpOverlayL->GetASCII("Widgets", "").empty() ? 10 : fpsCounter->width() + 20;
+    int xOffset = hGrpOverlayL->getString("Widgets").empty() ? 10 : fpsCounter->width() + 20;
     fpsCounter->move(xOffset, height() - fpsCounter->height() - 5);
 }
 
@@ -2440,7 +2440,7 @@ void View3DInventorViewer::savePicture(
     // Otherwise (Default) -- Qt's FBO used for offscreen rendering
     std::string saveMethod = App::GetApplication()
                                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-                                 ->GetASCII("SavePicture");
+                                 ->getString("SavePicture");
 
     bool useFramebufferObject = false;
     bool useGrabFramebuffer = false;
@@ -2910,7 +2910,7 @@ GLenum View3DInventorViewer::getInternalTextureFormat()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    std::string format = hGrp->GetASCII("InternalTextureFormat", "Default");
+    std::string format = hGrp->getString("InternalTextureFormat", "Default");
 
     // NOLINTBEGIN
     if (format == "GL_RGB") {

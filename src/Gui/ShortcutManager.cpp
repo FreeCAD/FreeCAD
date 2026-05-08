@@ -132,7 +132,8 @@ void ShortcutManager::reset(const char* cmd)
 {
     if (!Base::Tools::isNullOrEmpty(cmd)) {
         QKeySequence oldShortcut = getShortcut(cmd);
-        hShortcuts->RemoveASCII(cmd);
+        // TODO: make reset take a string_view and remove the conversion
+        hShortcuts->removeString(std::string_view {cmd});
         if (oldShortcut != getShortcut(cmd)) {
             shortcutChanged(cmd, oldShortcut);
         }
@@ -167,6 +168,7 @@ void ShortcutManager::resetAll()
 
 QString ShortcutManager::getShortcut(const char* cmdName, const char* accel)
 {
+    // TODO: make getShortcut take string_views and remove the conversions
     if (!accel) {
         if (auto cmd = Application::Instance->commandManager().getCommandByName(cmdName)) {
             accel = cmd->getAccel();
@@ -177,7 +179,9 @@ QString ShortcutManager::getShortcut(const char* cmdName, const char* accel)
     }
     QString shortcut;
     if (cmdName) {
-        shortcut = QString::fromLatin1(hShortcuts->GetASCII(cmdName, accel).c_str());
+        shortcut = QString::fromStdString(
+            hShortcuts->getString(std::string_view {cmdName}, std::string_view {accel ? accel : ""})
+        );
     }
     else {
         shortcut = QString::fromLatin1(accel);
@@ -187,6 +191,7 @@ QString ShortcutManager::getShortcut(const char* cmdName, const char* accel)
 
 void ShortcutManager::setShortcut(const char* cmdName, const char* accel)
 {
+    // TODO: make setShortcut take string_views and remove the conversions
     if (!Base::Tools::isNullOrEmpty(cmdName)) {
         setTopPriority(cmdName);
         if (!accel) {
@@ -199,11 +204,11 @@ void ShortcutManager::setShortcut(const char* cmdName, const char* accel)
             }
             if (QKeySequence(QString::fromLatin1(accel))
                 == QKeySequence(QString::fromLatin1(defaultAccel))) {
-                hShortcuts->RemoveASCII(cmdName);
+                hShortcuts->removeString(std::string_view {cmdName});
                 return;
             }
         }
-        hShortcuts->SetASCII(cmdName, accel);
+        hShortcuts->setString(std::string_view {cmdName}, std::string_view {accel ? accel : ""});
     }
 }
 

@@ -592,7 +592,8 @@ std::string DrawGeomHatch::prefGeomHatchFile()
 std::string DrawGeomHatch::prefGeomHatchName()
 {
     std::string defaultNamePattern = "Diamond";
-    std::string result = Preferences::getPreferenceGroup("PAT")->GetASCII("NamePattern", defaultNamePattern.c_str());
+    std::string result
+        = Preferences::getPreferenceGroup("PAT")->getString("NamePattern", defaultNamePattern);
     if (result.empty()) {
         return defaultNamePattern;
     }

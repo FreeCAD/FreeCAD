@@ -211,13 +211,13 @@ public:
         explicit String(const value_type& d)
             : BaseType {d}
         {}
-        void fetch(const ParameterGrp::handle& handle, const char* key)
+        void fetch(const ParameterGrp::handle& handle, std::string_view key)
         {
-            _value = handle->GetASCII(key, std::get<value_type>(_default).c_str());
+            _value = handle->getString(key, std::get<value_type>(_default));
         }
-        void setParameter(const ParameterGrp::handle& handle, const char* key, const Type& value)
+        void setParameter(const ParameterGrp::handle& handle, std::string_view key, const Type& value)
         {
-            handle->SetASCII(key, std::get<value_type>(value).c_str());
+            handle->setString(key, std::get<value_type>(value));
         }
     };
 

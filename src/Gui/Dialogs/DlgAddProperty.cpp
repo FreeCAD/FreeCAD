@@ -224,7 +224,7 @@ void DlgAddProperty::populateGroup(EditFinishedComboBox& comboBox, const App::Pr
     auto paramGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/PropertyView"
     );
-    std::string lastGroup = paramGroup->GetASCII("NewPropertyGroup");
+    std::string lastGroup = paramGroup->getString("NewPropertyGroup");
 
     std::vector<App::Property*> properties;
     container->getPropertyList(properties);
@@ -316,7 +316,7 @@ void DlgAddProperty::initializeTypes()
         "User parameter:BaseApp/Preferences/PropertyView"
     );
     auto lastType = Base::Type::fromName(
-        paramGroup->GetASCII("NewPropertyType", "App::PropertyLength").c_str()
+        paramGroup->getString("NewPropertyType", "App::PropertyLength").c_str()
     );
     if (lastType.isBad()) {
         lastType = App::PropertyLength::getClassTypeId();
@@ -1058,8 +1058,8 @@ void DlgAddProperty::accept()
     auto paramGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/PropertyView"
     );
-    paramGroup->SetASCII("NewPropertyType", type.c_str());
-    paramGroup->SetASCII("NewPropertyGroup", group.c_str());
+    paramGroup->setString("NewPropertyType", type);
+    paramGroup->setString("NewPropertyGroup", group);
 
     clearFields();
     ui->lineEditName->setFocus();
