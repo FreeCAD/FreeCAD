@@ -167,6 +167,11 @@ Q_SIGNALS:
      */
     void parametersChanged();
 
+    /**
+     * @brief Emitted when this direction section is enabled/disabled.
+     */
+    void enabledChanged(bool enabled);
+
 
 private Q_SLOTS:
     // Slots connected to UI elements
