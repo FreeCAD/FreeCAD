@@ -684,6 +684,17 @@ class ObjectSurface3D(PathOp.ObjectOp):
         if obj.OptimizeLinearPaths:
             scan_lines = [surface_postprocess.filter_cl_points(line, 0.005) for line in scan_lines]
 
+        # Multi-pass: replay the full-depth drop-cutter scan at each
+        # StepDown level, with air-cut elimination above the previous
+        # layer.  When StepDown >= (StartDepth - FinalDepth) this
+        # collapses to a single layer.
+        scan_lines = surface_postprocess.apply_multipass(
+            scan_lines,
+            float(obj.StartDepth.Value),
+            float(obj.FinalDepth.Value),
+            float(obj.StepDown.Value),
+        )
+
         return surface_postprocess.scan_lines_to_gcode(
             scan_lines,
             horiz_feed=self.horizFeed,

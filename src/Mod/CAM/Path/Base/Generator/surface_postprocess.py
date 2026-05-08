@@ -87,7 +87,11 @@ def apply_multipass(scan_lines, start_depth, final_depth, step_down):
     all_multipass_lines = []
 
     for i, layDep in enumerate(depthparams):
-        prvDep = start_depth if i == 0 else depthparams[i - 1]
+        # Layer 0 has no prior pass, so nothing is "already cleared" yet.
+        # Push prvDep above any real surface point so the is_above check
+        # below never strips a point that lies exactly at start_depth
+        # (e.g. the top face of a step at the same Z as StartDepth).
+        prvDep = start_depth + step_down if i == 0 else depthparams[i - 1]
 
         for line in scan_lines:
             current_segment = []

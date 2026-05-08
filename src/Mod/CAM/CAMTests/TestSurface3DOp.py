@@ -198,6 +198,42 @@ class TestSurface3DOp(PathTestWithAssets):
         self.assertIn("G1", names, "Should contain cutting moves")
 
     @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
+    def test33_surfacepattern_multipass_emits_intermediate_layers(self):
+        """SurfacePattern with StepDown < depth-range emits multiple Z-layers.
+
+        Regression for the apply_multipass wiring.  Stepped-block: step
+        top at Z=8, base top at Z=5.  With StartDepth=8, FinalDepth=0,
+        StepDown=2 we expect cuts at Z=8 (step roughed at start),
+        Z=6 (step layer + air-roughing over base), and Z=5 (base
+        riding the surface), at minimum.
+        """
+        job = self._createJobWithSteppedBlock()
+        op = PathSurface3D.Create("Surface3D_Multi", parentJob=job)
+        op.Strategy = "SurfacePattern"
+        op.CutPattern = "ZigZag"
+        op.setExpression("StartDepth", None)
+        op.setExpression("FinalDepth", None)
+        op.setExpression("StepDown", None)
+        op.StartDepth = 8.0
+        op.FinalDepth = 0.0
+        op.StepDown = 2.0
+        self.doc.recompute()
+
+        self.assertIsNotNone(op.Path)
+        cut_zs = {
+            round(c.Parameters["Z"], 2)
+            for c in op.Path.Commands
+            if c.Name in ("G1", "G2", "G3") and "Z" in c.Parameters
+        }
+        # The exact set depends on drop-cutter sampling, but multi-pass
+        # MUST produce more than just the surface Zs (5, 8).
+        self.assertGreaterEqual(
+            len(cut_zs),
+            3,
+            "Multi-pass should emit cuts at >=3 distinct Z-levels, got {}".format(cut_zs),
+        )
+
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test31_waterline_emits_g1(self):
         """Waterline strategy produces multi-Z contour cuts.
 
