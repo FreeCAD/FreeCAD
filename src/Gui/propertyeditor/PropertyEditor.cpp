@@ -1219,7 +1219,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             const char* oldName = prop->getName();
             QString res = QInputDialog::getText(
                 Gui::getMainWindow(),
-                tr("Rename property"),
+                tr("Rename Property"),
                 tr("Property name"),
                 QLineEdit::Normal,
                 QString::fromUtf8(oldName)
@@ -1248,7 +1248,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             }
             QString res = QInputDialog::getText(
                 Gui::getMainWindow(),
-                tr("Rename property group"),
+                tr("Rename Property Group"),
                 tr("Group name:"),
                 QLineEdit::Normal,
                 QString::fromUtf8(groupName)

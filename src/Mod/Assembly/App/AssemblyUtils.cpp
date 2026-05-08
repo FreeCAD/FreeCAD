@@ -808,4 +808,29 @@ std::vector<App::DocumentObject*> getAssemblyComponents(const AssemblyObject* as
     return components;
 }
 
+double getJointCurrentValue(App::DocumentObject* joint, bool isAngle)
+{
+    Base::Placement plc1 = App::GeoFeature::getPlacementFromProp(joint, "Placement1");
+    Base::Placement plc2 = App::GeoFeature::getPlacementFromProp(joint, "Placement2");
+
+    auto* ref1 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference1"));
+    auto* ref2 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference2"));
+    if (!ref1 || !ref2) {
+        return 0.0;
+    }
+    Base::Placement obj_global_plc1 = App::GeoFeature::getGlobalPlacement(nullptr, ref1);
+    Base::Placement obj_global_plc2 = App::GeoFeature::getGlobalPlacement(nullptr, ref2);
+
+    plc1 = obj_global_plc1 * plc1;
+    plc2 = obj_global_plc2 * plc2;
+
+    Base::Placement plc3 = plc1.inverse() * plc2;
+
+    if (isAngle) {
+        Base::Vector3d x_axis = plc3.getRotation().multVec(Base::Vector3d(1, 0, 0));
+        return std::atan2(x_axis.y, x_axis.x);
+    }
+    return (plc1.getPosition() - plc2.getPosition()).Length()
+        * (plc3.getPosition().z < 0 ? -1.0 : 1.0);
+}
 }  // namespace Assembly

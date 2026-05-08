@@ -146,7 +146,7 @@ void UnifiedDatumCommand(Gui::Command& cmd, Base::Type type, std::string name)
                 else {
                     QMessageBox::information(
                         Gui::getMainWindow(),
-                        QObject::tr("Invalid selection"),
+                        QObject::tr("Invalid Selection"),
                         QObject::tr("There are no attachment modes that fit selected objects. Select something else.")
                     );
                 }

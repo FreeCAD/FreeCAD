@@ -1813,3 +1813,289 @@ def ensure_link_overrides(obj):
         if source and hasattr(source, "Proxy") and hasattr(source.Proxy, "LinkOverrideProperties"):
             # Force the override injection on the spot
             override_link_properties(obj, source.Proxy.LinkOverrideProperties)
+
+
+def resolve_pd_object(obj):
+    """
+    Normalizes a PartDesign feature selection to its parent Body.
+
+    Selections and links on a PartDesign feature (e.g. a Pad or Pocket) point to the feature, not
+    its Body. Returns the parent Body if ``obj`` belongs to one, otherwise ``obj`` itself.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The selected object to normalize.
+
+    Returns
+    -------
+    App::DocumentObject
+        The parent PartDesign::Body if ``obj`` is a member of one, otherwise ``obj`` unchanged.
+    """
+    body = getattr(obj, "_Body", None)
+    if body is not None:
+        return body
+    return obj
+
+
+def pickMainFaceName(shape, view_vector=None):
+    """
+    Returns the name of the best candidate planar face (e.g. ``"Face1"``) for a given shape.
+
+    Filters the shape's faces down to the largest planar ones (within 5% of the largest face's area)
+    and, if a view direction is supplied, picks the one most opposed to it.
+
+    Parameters
+    ----------
+    shape : Part.Shape or App::DocumentObject
+        The shape to scan. If a document object is passed, its ``Shape`` attribute is used.
+    view_vector : FreeCAD.Vector, optional
+        A camera view direction, as an interactive face selection aid. When given, the returned face
+        is the one whose normal most directly opposes this vector. That is, the one facing the
+        camera.
+
+    Returns
+    -------
+    str or None
+        The face name (e.g. ``"Face1"``), or ``None`` if the shape has no planar faces.
+    """
+    if hasattr(shape, "Shape"):
+        shape = shape.Shape
+
+    if not hasattr(shape, "Faces") or not shape.Faces:
+        return None
+
+    # Gather face data: (name, object, area)
+    faces_data = []
+    for index, face in enumerate(shape.Faces):
+        # Check for planarity
+        if face.findPlane() is None:
+            continue
+        faces_data.append((f"Face{index+1}", face, face.Area))
+
+    # Filter out all faces that are at least 5% smaller than the largest one found on the shape
+    if not faces_data:
+        return None
+
+    faces_data.sort(key=lambda x: x[2], reverse=True)
+    max_area = faces_data[0][2]
+    candidates = [x for x in faces_data if x[2] >= max_area * 0.95]
+
+    if not candidates:
+        return None
+
+    # If the camera view direction is given, return the face looking into it
+    if view_vector:
+        # Sort is ascending, so the most negative (most camera-facing) face ends up first
+        candidates.sort(key=lambda candidate: candidate[1].normalAt(0, 0).dot(view_vector))
+        return candidates[0][0]
+
+    # Default: return the first large face found
+    return candidates[0][0]
+
+
+def resolveFace(face_ref, subname=None):
+    """
+    Resolves a face reference to a planar ``Part.Face``.
+
+    Accepts either a plain document object or a ``(object, [subname])`` tuple as produced by a
+    ``LinkSub`` property. Resolution order: named sub-element, bare face shape, main
+    face of a solid, face built from closed wires.
+
+    Parameters
+    ----------
+    face_ref : App::DocumentObject or tuple
+        The reference to resolve. Either a plain document object or a ``(object, [subname])``
+        ``LinkSub`` tuple. If the tuple's sub-element list contains more than one name, only
+        the first is used; the remainder are ignored with a warning.
+    subname : str, optional
+        Name of the sub-element to extract (e.g. ``"Face3"``). Ignored if ``face_ref`` is a
+        tuple, in which case the subname is taken from the tuple instead.
+
+    Returns
+    -------
+    Part.Face or None
+        The resolved planar face, or ``None`` if no planar face could be determined.
+    """
+    if isinstance(face_ref, tuple):
+        obj, subnames = face_ref
+        if subnames and len(subnames) > 1:
+            FreeCAD.Console.PrintWarning(
+                f"ArchCommands.resolveFace: received {len(subnames)} sub-elements, "
+                f"only '{subnames[0]}' will be used.\n"
+            )
+        subname = subnames[0] if subnames else None
+        face_ref = obj
+
+    face = None
+    if subname:
+        try:
+            candidate = face_ref.getSubObject(subname)
+            if candidate.ShapeType == "Face":
+                face = candidate
+        except Exception as e:
+            FreeCAD.Console.PrintWarning(
+                f"ArchCommands.resolveFace: unable to retrieve '{subname}' from "
+                f"'{getattr(face_ref, 'Label', face_ref)}': {e}\n"
+            )
+
+    if not face and hasattr(face_ref, "Shape"):
+        if not face_ref.Shape or face_ref.Shape.isNull():
+            pass
+        elif face_ref.Shape.ShapeType == "Face":
+            face = face_ref.Shape  # Return face directly
+        elif face_ref.Shape.Solids:
+            best_face_name = pickMainFaceName(face_ref.Shape)
+            if best_face_name:
+                face = face_ref.getSubObject(best_face_name)  # Return the best face from the solid
+        elif face_ref.Shape.Wires:
+            # Attempt return a face created from any available wires
+            try:
+                closed_wires = [wire for wire in face_ref.Shape.Wires if wire.isClosed()]
+                if closed_wires:
+                    face = makeFace(closed_wires)
+                else:
+                    FreeCAD.Console.PrintWarning(translate("Arch", "No closed wires found.") + "\n")
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(
+                    f"ArchCommands.resolveFace: Unable to create face from wires: {e}\n"
+                )
+
+    if face and face.findPlane() is None:
+        FreeCAD.Console.PrintWarning(
+            f"ArchCommands.resolveFace: face on "
+            f"'{getattr(face_ref, 'Label', face_ref)}' is not planar. Non-planar faces "
+            f"are not supported at this time.\n"
+        )
+        return None
+    return face
+
+
+def getFaceFrame(face, reference_direction=None):
+    """
+    Given a planar face, creates a stable frame (U, V, Normal) anchored at the face's center.
+
+    Stable in this context means that one same face always produces the same axes, regardless of how
+    it was constructed. The goal is to avoid unexpected flips or rotations when editing the source
+    geometry.
+
+    Parameters
+    ----------
+    face : Part.Face
+        The face whose local frame is required.
+    reference_direction : FreeCAD.Vector or None
+        A previously stored U direction. When provided, U is aligned with it instead of being
+        derived from the face geometry. Falls back to the longest-edge heuristic if the reference
+        is parallel to the face normal.
+
+    Returns
+    -------
+    tuple[FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector]
+        ``(u_vec, v_vec, normal, center_point)``. The U and V tangents and the face normal are unit
+        vectors, and the face center is a world-space position.
+
+    Notes
+    -----
+    Without a ``reference_direction``, U is derived from the longest edge of the face's outer
+    boundary, so the tiling grid aligns with the substrate geometry rather than world axes (e.g.
+    a rectangular slab gets a grid parallel to its long side).
+
+    When a ``reference_direction`` is supplied (typically from a stored property), it is projected
+    onto the face plane to remove any normal component. This keeps U stable across recomputes even
+    when the base geometry changes length or orientation, avoiding discontinuous 90° jumps.
+
+    If ``face.Orientation == "Reversed"``, the frame is flipped so N points outward.
+    """
+    # Build the normal
+    center_uv = face.Surface.parameter(face.BoundBox.Center)
+    tan_u, tan_v = face.Surface.tangent(*center_uv)
+    normal = tan_u.cross(tan_v).normalize()
+
+    # Build the U direction vector
+    u_vec = _derive_u_from_reference(reference_direction, normal)
+    if u_vec is None:
+        u_vec = _derive_u_from_longest_edge(face, normal)
+
+    # Build the (U, V) basis in the face plane
+    u_vec.normalize()
+    v_vec = normal.cross(u_vec).normalize()
+    u_vec = v_vec.cross(normal).normalize()
+
+    # Ensure the normal points outward from the surface, otherwise reverse the frame
+    if face.Orientation == "Reversed":
+        normal = -normal
+        v_vec = normal.cross(u_vec).normalize()
+        u_vec = v_vec.cross(normal).normalize()
+
+    center_point = face.Surface.value(*center_uv)
+    return u_vec, v_vec, normal, center_point
+
+
+def _derive_u_from_reference(reference_direction, normal):
+    """Projects a stored reference direction onto the face plane.
+
+    Returns a non-normalized U vector, or None if the projection is degenerate (reference nearly
+    parallel to normal, or zero-length input).
+    """
+    if reference_direction is None:
+        return None
+    import Part
+
+    ref = FreeCAD.Vector(reference_direction)
+    if ref.Length < Part.Precision.confusion():
+        return None
+    # Remove the normal component to project onto the face plane.
+    projected = ref - normal * ref.dot(normal)
+    if projected.Length < Part.Precision.confusion():
+        return None
+    return projected
+
+
+def _derive_u_from_longest_edge(face, normal):
+    """Derives U from the longest boundary edge, with a stabilization flip.
+
+    This is the fallback used when no stored reference direction is available.
+    """
+    edges = face.OuterWire.Edges
+    longest = max(edges, key=lambda edge: edge.Length)
+    mid_param = (longest.FirstParameter + longest.LastParameter) / 2
+    u_vec = longest.tangentAt(mid_param)
+
+    # Stabilise U: flip it if its dominant world-axis component is negative.
+    world_axes = [
+        FreeCAD.Vector(1, 0, 0),
+        FreeCAD.Vector(0, 1, 0),
+        FreeCAD.Vector(0, 0, 1),
+    ]
+    dots = [u_vec.dot(ax) for ax in world_axes]
+    abs_dots = [abs(d) for d in dots]
+    max_abs = max(abs_dots)
+    if max_abs > 0.1:
+        dominant_dot = dots[abs_dots.index(max_abs)]
+        if dominant_dot < 0:
+            u_vec.multiply(-1)
+    return u_vec
+
+
+def read_pat_pattern_names(filename):
+    """Iterate over the pattern names declared in a PAT file.
+
+    PAT files declare each pattern with a header line of the form ``*Name, Description``.
+    Missing or unreadable files produce no names.
+    """
+    import os
+
+    if not filename or not os.path.exists(filename):
+        return
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.startswith("*"):
+                    yield line.split(",", 1)[0][1:].strip()
+    except Exception as e:
+        FreeCAD.Console.PrintWarning(f"Arch: could not read pattern file {filename}: {e}\n")
+
+
+def first_pat_pattern_name(filename):
+    """Return the first pattern name in a PAT file, or ``""`` if none is found."""
+    return next(read_pat_pattern_names(filename), "")

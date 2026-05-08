@@ -130,6 +130,7 @@ ViewProviderAssembly::ViewProviderAssembly()
 ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
+    QObject::disconnect(workbenchConnection);
 
     updateTaskPanel(false);
 };
@@ -265,7 +266,7 @@ void ViewProviderAssembly::updateData(const App::Property* prop)
                 return;
             }
 
-            std::vector<App::DocumentObject*> joints = obj->getJoints(false);
+            std::vector<App::DocumentObject*> joints = obj->getJoints();
             for (auto* joint : joints) {
                 Gui::ViewProvider* jointVp = Gui::Application::Instance->getViewProvider(joint);
                 if (jointVp) {
@@ -297,7 +298,8 @@ bool ViewProviderAssembly::setEdit(int mode)
             this->getObject()->getNameInDocument()
         );
 
-        setupActiveAndInEdit();
+        setDragger();
+        attachSelection();
 
         updateTaskPanel(true);
 
@@ -335,7 +337,8 @@ void ViewProviderAssembly::unsetEdit(int mode)
         partMoving = false;
         docsToMove.clear();
 
-        unsetupActiveAndInEdit();
+        unsetDragger();
+        detachSelection();
 
         // Check if the view is still active before trying to deactivate the assembly.
         auto activeView = getDocument()->getActiveView();
@@ -400,10 +403,14 @@ void ViewProviderAssembly::setDragger()
 void ViewProviderAssembly::unsetDragger()
 {
     pcRoot->removeChild(asmDraggerSwitch);
-    asmDragger->unref();
-    asmDragger = nullptr;
-    asmDraggerSwitch->unref();
-    asmDraggerSwitch = nullptr;
+    if (asmDragger) {
+        asmDragger->unref();
+        asmDragger = nullptr;
+    }
+    if (asmDraggerSwitch) {
+        asmDraggerSwitch->unref();
+        asmDraggerSwitch = nullptr;
+    }
 }
 
 void ViewProviderAssembly::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
@@ -419,26 +426,6 @@ bool ViewProviderAssembly::isInEditMode() const
 {
     return asmDragger != nullptr;
 }
-void ViewProviderAssembly::setupActiveAndInEdit()
-{
-    setDragger();
-    attachSelection();
-}
-void ViewProviderAssembly::unsetupActiveAndInEdit()
-{
-    unsetDragger();
-    detachSelection();
-}
-void ViewProviderAssembly::setActive(bool active)
-{
-    if (active) {
-        setupActiveAndInEdit();
-    }
-    else {
-        unsetupActiveAndInEdit();
-    }
-}
-
 
 App::DocumentObject* ViewProviderAssembly::getActivePart() const
 {
@@ -995,8 +982,8 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         if (!ref) {
             return DragMode::Translation;
         }
-        auto* obj = getObjFromJointRef(movingJoint, pName.c_str());
-        Base::Placement global_plc = App::GeoFeature::getGlobalPlacement(nullptr, ref);
+        Base::Placement asmPlc = App::GeoFeature::getGlobalPlacement(getObject<AssemblyObject>());
+        Base::Placement global_plc = asmPlc * App::GeoFeature::getGlobalPlacement(nullptr, ref);
         jcsGlobalPlc = global_plc * jcsPlc;
 
         // Add downstream parts so that they move together
@@ -1809,9 +1796,7 @@ void ViewProviderAssembly::UpdateSolverInformation()
     auto* assembly = getObject<AssemblyObject>();
 
     int dofs = assembly->getLastDoF();
-    bool hasConflicts = assembly->getLastHasConflicts();
     bool hasRedundancies = assembly->getLastHasRedundancies();
-    bool hasPartiallyRedundant = assembly->getLastHasPartialRedundancies();
     bool hasMalformed = assembly->getLastHasMalformedConstraints();
 
     if (assembly->isEmpty()) {

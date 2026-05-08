@@ -124,6 +124,7 @@ private:
     bool m_ctrl;
 
     DragState m_dragState;
+    bool m_inhibitSnapOnPosChange{false};
 
 private:
 };

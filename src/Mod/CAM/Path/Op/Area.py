@@ -365,7 +365,7 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.debug("depths: {}".format(heights))
         for i in range(0, len(heights)):
             for baseShape in edgeList:
-                hWire = Part.Wire(Part.__sortEdges__(baseShape.Edges))
+                hWire = Part.Compound([Part.Wire(se) for se in Part.sortEdges(baseShape.Edges)])
                 hWire.translate(FreeCAD.Vector(0, 0, heights[i] - hWire.BoundBox.ZMin))
 
                 pathParams = {}
@@ -448,6 +448,7 @@ class ObjectOp(PathOp.ObjectOp):
             else:
                 shapes.append(shp)
 
+        # Sorting shapes
         if (
             len(shapes) > 1
             and getattr(obj, "SortingMode", None) != "Manual"
@@ -464,6 +465,30 @@ class ObjectOp(PathOp.ObjectOp):
             locations = PathUtils.sort_locations(locations, ["x", "y"])
 
             shapes = [j["shape"] for j in locations]
+
+        # Combine similar tasks for Collectively HandleMultipleFeatures
+        if (
+            obj.Proxy.__module__ == "Path.Op.Profile"
+            and len(shapes) > 1
+            and getattr(obj, "HandleMultipleFeatures", False) == "Collectively"
+        ):
+            keys = set((iH, desc) for _, iH, desc in shapes)
+            collectively = []
+            for key in keys:
+                combine = []
+                for sh, iH, desc in shapes:
+                    if (iH, desc) == key:
+                        if desc == "OpenEdge":  # is a list of shapes
+                            combine.extend(sh)
+                        else:
+                            combine.append(sh)
+                if desc == "OpenEdge":  # should be a list of shapes
+                    fc = [Part.makeCompound(combine)]
+                else:
+                    fc = Part.makeCompound(combine)
+                collectively.append((fc, key[0], key[1]))
+
+            shapes = collectively
 
         sims = []
         for shape, isHole, sub in shapes:

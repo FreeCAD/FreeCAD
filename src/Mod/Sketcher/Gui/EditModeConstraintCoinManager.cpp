@@ -2035,7 +2035,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 // For a group, we will draw a dashed rectangle.
                 // We need a Material, a DrawStyle, Coordinates, and a LineSet.
 
-                // 1. Material (for color, re-using the one already created)
+                // 1. Material (for color, reusing the one already created)
                 sep->addChild(mat);
 
                 // 2. DrawStyle (to make the line dashed)

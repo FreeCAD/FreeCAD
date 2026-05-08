@@ -299,6 +299,9 @@ void TaskHelixParameters::updateStatus()
     else if (status.compare("NCollection_IndexedDataMap::FindFromKey") == 0) {
         translatedStatus = tr("Error: helix touches itself");
     }
+    else {
+        translatedStatus = QString::fromStdString(status);
+    }
     ui->labelMessage->setText(translatedStatus);
 }
 
