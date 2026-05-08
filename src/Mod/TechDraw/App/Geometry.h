@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <boost/uuid/uuid.hpp>
+#include <BRepAdaptor_Curve.hxx>
 
 #include <Base/Reader.h>
 #include <Base/Vector3D.h>
@@ -318,6 +319,9 @@ class TechDrawExport BSpline: public BaseGeom
         TopoDS_Edge asCircle(bool& isArc);
         bool intersectsArc(Base::Vector3d p1, Base::Vector3d p2);
         std::vector<BezierSegment> segments;
+
+        void setDirection(BRepAdaptor_Curve edgeCurve);
+
 };
 
 class TechDrawExport Generic: public BaseGeom
@@ -472,6 +476,11 @@ class TechDrawExport GeometryUtils
 
         static std::vector<FacePtr> removeNestedHoles(const std::vector<FacePtr>& holes);
         static std::vector<int> findNestedFaceIndices(const std::vector<FacePtr>& holes);
+
+        static bool asCubic(const BRepAdaptor_Curve& curveIn, Handle(Geom_BSplineCurve)& splineOut);
+        static void asLinear(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplineCurve)& splineOut);
+
 };
 
 } //end namespace TechDraw
+
