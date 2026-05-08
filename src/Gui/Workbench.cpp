@@ -300,7 +300,7 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<Par
 
         // get the elements of the subgroups
         std::vector<std::pair<std::string, std::string>> items
-            = hGrp->GetGroup(it->GetGroupName())->GetASCIIMap();
+            = hGrp->GetGroup(it->GetGroupName())->getAllStringsMap();
         for (const auto& item : items) {
             if (item.first.substr(0, separator.size()) == separator) {
                 *bar << "Separator";

@@ -55,7 +55,7 @@ void DlgSettingsImp::saveSettings()
         "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
     );
     QString delimiter = ui->delimiterComboBox->currentText();
-    hGrp->SetASCII("ImportExportDelimiter", delimiter.toStdString().c_str());
+    hGrp->setString("ImportExportDelimiter", delimiter.toStdString());
     ui->quoteCharLineEdit->onSave();
     ui->escapeCharLineEdit->onSave();
     ui->formatString->onSave();
@@ -72,7 +72,7 @@ void DlgSettingsImp::loadSettings()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
     );
-    QString delimiter = QString::fromStdString(hGrp->GetASCII("ImportExportDelimiter", "tab"));
+    QString delimiter = QString::fromStdString(hGrp->getString("ImportExportDelimiter", "tab"));
     int idx = ui->delimiterComboBox->findText(delimiter, Qt::MatchFixedString);
     if (idx != -1) {
         ui->delimiterComboBox->setCurrentIndex(idx);

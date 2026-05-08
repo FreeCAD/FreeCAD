@@ -26,12 +26,16 @@
 
 #pragma once
 
+#include <FCGlobal.h>
+
 #include <memory>
 #include <ostream>
-#include <xercesc/util/TransService.hpp>
-#include <xercesc/framework/MemoryManager.hpp>
+#include <string>
+#include <string_view>
 
-#include <FCGlobal.h>
+#include <xercesc/framework/MemoryManager.hpp>
+#include <xercesc/util/TransService.hpp>
+
 
 namespace XERCES_CPP_NAMESPACE
 {
@@ -45,7 +49,7 @@ class BaseExport XMLTools
 {
 public:
     static std::string toStdString(const XMLCh* const toTranscode);
-    static std::basic_string<XMLCh> toXMLString(const char* const fromTranscode);
+    static std::basic_string<XMLCh> toXMLString(std::string_view fromTranscode);
     static std::string escapeXml(const std::string& input);
     static void initialize();
     static void terminate();
@@ -163,6 +167,8 @@ public:
     ///  Constructors and Destructor
     explicit XStr(const char* const toTranscode);
     explicit XStr(const char* const toTranscode, XERCES_CPP_NAMESPACE::MemoryManager* memMgr);
+    explicit XStr(std::string_view toTranscode);
+    explicit XStr(std::string_view toTranscode, XERCES_CPP_NAMESPACE::MemoryManager* memMgr);
     ~XStr();
 
 
@@ -183,6 +189,17 @@ inline XStr::XStr(const char* const toTranscode)
 
 inline XStr::XStr(const char* const toTranscode, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* memMgr)
     : fUnicodeForm(XERCES_CPP_NAMESPACE::XMLString::transcode(toTranscode, memMgr))
+    , memMgr(memMgr)
+{}
+
+inline XStr::XStr(std::string_view toTranscode)
+    : XStr(toTranscode, XERCES_CPP_NAMESPACE::XMLPlatformUtils::fgMemoryManager)
+{}
+
+inline XStr::XStr(std::string_view toTranscode, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* memMgr)
+    : fUnicodeForm(
+          XERCES_CPP_NAMESPACE::XMLString::transcode(std::string {toTranscode}.c_str(), memMgr)
+      )
     , memMgr(memMgr)
 {}
 
@@ -221,7 +238,7 @@ inline const XMLCh* XStr::unicodeForm() const
 class XUTF8Str
 {
 public:
-    explicit XUTF8Str(const char* const fromTranscode);
+    explicit XUTF8Str(std::string_view fromTranscode);
     ~XUTF8Str();
 
     /// Getter method
@@ -233,7 +250,7 @@ private:
     std::basic_string<XMLCh> str;
 };
 
-inline XUTF8Str::XUTF8Str(const char* const fromTranscode)
+inline XUTF8Str::XUTF8Str(std::string_view fromTranscode)
 {
     str = XMLTools::toXMLString(fromTranscode);
 }

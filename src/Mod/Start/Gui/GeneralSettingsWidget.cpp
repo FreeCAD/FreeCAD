@@ -100,7 +100,7 @@ gsl::owner<QComboBox*> GeneralSettingsWidget::createLanguageComboBox()
         "User parameter:BaseApp/Preferences/General"
     );
     auto langToStr = Gui::Translator::instance()->activeLanguage();
-    QByteArray language = hGrp->GetASCII("Language", langToStr.c_str()).c_str();
+    QByteArray language = hGrp->getString("Language", langToStr).c_str();
     auto comboBox = gsl::owner<QComboBox*>(new QComboBox);
     comboBox->addItem(QStringLiteral("English"), QByteArray("English"));
     Gui::TStringMap list = Gui::Translator::instance()->supportedLocales();
@@ -182,7 +182,7 @@ void GeneralSettingsWidget::onLanguageChanged(int index)
         "User parameter:BaseApp/Preferences/General"
     );
     auto langToStr = Gui::Translator::instance()->activeLanguage();
-    hGrp->SetASCII("Language", langToStr.c_str());
+    hGrp->setString("Language", langToStr);
 }
 
 void GeneralSettingsWidget::onUnitSystemChanged(int index)
@@ -206,7 +206,7 @@ void GeneralSettingsWidget::onNavigationStyleChanged(int index)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    hGrp->SetASCII("NavigationStyle", navStyleName.constData());
+    hGrp->setString("NavigationStyle", navStyleName.toStdString());
 }
 
 bool GeneralSettingsWidget::eventFilter(QObject* object, QEvent* event)
@@ -242,8 +242,10 @@ void GeneralSettingsWidget::retranslateUi()
     ParameterGrp::handle hGrpNav = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    auto navStyleName
-        = hGrpNav->GetASCII("NavigationStyle", Gui::CADNavigationStyle::getClassTypeId().getName());
+    auto navStyleName = hGrpNav->getString(
+        "NavigationStyle",
+        std::string_view {Gui::CADNavigationStyle::getClassTypeId().getName()}
+    );
     std::map<Base::Type, std::string> styles = Gui::UserNavigationStyle::getUserFriendlyNames();
     for (const auto& style : styles) {
         QByteArray data(style.first.getName());

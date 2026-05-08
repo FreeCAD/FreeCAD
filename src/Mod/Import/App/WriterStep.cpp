@@ -60,9 +60,9 @@ void WriterStep::write(Handle(TDocStd_Document) hDoc) const  // NOLINT
     // https://forum.freecad.org/viewtopic.php?f=8&t=52967
     makeHeader.SetAuthorValue(
         1,
-        new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str())
+        new TCollection_HAsciiString(hGrp->getString("Author", "Author").c_str())
     );
-    makeHeader.SetOrganizationValue(1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
+    makeHeader.SetOrganizationValue(1, new TCollection_HAsciiString(hGrp->getString("Company").c_str()));
     makeHeader.SetOriginatingSystem(
         new TCollection_HAsciiString(App::Application::getExecutableName().c_str())
     );

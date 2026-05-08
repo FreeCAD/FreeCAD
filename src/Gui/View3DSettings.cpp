@@ -143,7 +143,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
     }
     else if (strcmp(Reason, "HeadlightDirection") == 0) {
         try {
-            std::string pos = rGrp.GetASCII("HeadlightDirection", defaultHeadLightDirection);
+            std::string pos = rGrp.getString("HeadlightDirection", defaultHeadLightDirection);
             if (!pos.empty()) {
                 Base::Vector3f dir = Base::stringToVector(pos);
                 for (auto _viewer : _viewers) {
@@ -177,7 +177,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
     }
     else if (strcmp(Reason, "BacklightDirection") == 0) {
         try {
-            std::string pos = rGrp.GetASCII("BacklightDirection", defaultBackLightDirection);
+            std::string pos = rGrp.getString("BacklightDirection", defaultBackLightDirection);
             if (!pos.empty()) {
                 Base::Vector3f dir = Base::stringToVector(pos);
                 for (auto _viewer : _viewers) {
@@ -212,7 +212,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
     }
     else if (strcmp(Reason, "FillLightDirection") == 0) {
         try {
-            std::string pos = rGrp.GetASCII("FillLightDirection", defaultFillLightDirection);
+            std::string pos = rGrp.getString("FillLightDirection", defaultFillLightDirection);
             if (!pos.empty()) {
                 Base::Vector3f dir = Base::stringToVector(pos);
                 for (auto _viewer : _viewers) {
@@ -288,8 +288,10 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
     else if (strcmp(Reason, "NavigationStyle") == 0) {
         if (!ignoreNavigationStyle) {
             // check whether the simple or the full mouse model is used
-            std::string model
-                = rGrp.GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
+            std::string model = rGrp.getString(
+                "NavigationStyle",
+                std::string_view {CADNavigationStyle::getClassTypeId().getName()}
+            );
             Base::Type type = Base::Type::fromName(model.c_str());
             for (auto _viewer : _viewers) {
                 _viewer->setNavigationType(type);
@@ -624,7 +626,7 @@ void NaviCubeSettings::parameterChanged(const char* Name)
         nc->setFontZoom(hGrp->GetFloat("FontZoom", 0.3));
     }
     else if (strcmp(Name, "FontString") == 0) {
-        nc->setFont(hGrp->GetASCII("FontString"));
+        nc->setFont(hGrp->getString("FontString"));
     }
     else if (strcmp(Name, "FontWeight") == 0) {
         nc->setFontWeight(hGrp->GetInt("FontWeight", 0));
@@ -664,18 +666,12 @@ void NaviCubeSettings::parameterChanged(const char* Name)
         || strcmp(Name, "TextLeft") == 0 || strcmp(Name, "TextRight") == 0
     ) {
         std::vector<std::string> labels;
-        QByteArray frontByteArray = tr("FRONT").toUtf8();
-        labels.push_back(hGrp->GetASCII("TextFront", frontByteArray.constData()));
-        QByteArray topByteArray = tr("TOP").toUtf8();
-        labels.push_back(hGrp->GetASCII("TextTop", topByteArray.constData()));
-        QByteArray rightByteArray = tr("RIGHT").toUtf8();
-        labels.push_back(hGrp->GetASCII("TextRight", rightByteArray.constData()));
-        QByteArray rearByteArray = tr("REAR").toUtf8();
-        labels.push_back(hGrp->GetASCII("TextRear", rearByteArray.constData()));
-        QByteArray bottomByteArray = tr("BOTTOM").toUtf8();
-        labels.push_back(hGrp->GetASCII("TextBottom", bottomByteArray.constData()));
-        QByteArray leftByteArray = tr("LEFT").toUtf8();
-        labels.push_back(hGrp->GetASCII("TextLeft", leftByteArray.constData()));
+        labels.push_back(hGrp->getString("TextFront", tr("FRONT").toStdString()));
+        labels.push_back(hGrp->getString("TextTop", tr("TOP").toStdString()));
+        labels.push_back(hGrp->getString("TextRight", tr("RIGHT").toStdString()));
+        labels.push_back(hGrp->getString("TextRear", tr("REAR").toStdString()));
+        labels.push_back(hGrp->getString("TextBottom", tr("BOTTOM").toStdString()));
+        labels.push_back(hGrp->getString("TextLeft", tr("LEFT").toStdString()));
         nc->setNaviCubeLabels(labels);
     }
     _viewer->getSoRenderManager()->scheduleRedraw();

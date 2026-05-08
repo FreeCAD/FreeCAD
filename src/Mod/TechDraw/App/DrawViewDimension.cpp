@@ -2075,8 +2075,9 @@ std::string DrawViewDimension::getPrefixForDimType() const
     }
 
     if (Type.isValue("Diameter")) {
-        return std::string(Preferences::getPreferenceGroup("Dimensions")
-                               ->GetASCII("DiameterSymbol", "\xe2\x8c\x80"));  // Diameter symbol
+        return std::string(
+            Preferences::getPreferenceGroup("Dimensions")->getString("DiameterSymbol", "\xe2\x8c\x80")
+        );  // Diameter symbol
     }
 
     return "";

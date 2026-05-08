@@ -104,8 +104,10 @@ public:
     {
         const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
         if (strcmp(Reason, "NavigationStyle") == 0) {
-            std::string model =
-                rGrp.GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
+            std::string model = rGrp.getString(
+                "NavigationStyle",
+                std::string_view {CADNavigationStyle::getClassTypeId().getName()}
+            );
             page->setNavigationStyle(model);
         }
         else if (strcmp(Reason, "InvertZoom") == 0) {
@@ -612,10 +614,13 @@ void QGVPage::makeGrid(int gridWidth, int gridHeight, double gridStep)
 
 std::string QGVPage::getNavStyleParameter()
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    std::string model =
-        hGrp->GetASCII("NavigationStyle", NavigationStyle::getClassTypeId().getName());
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+    std::string model = hGrp->getString(
+        "NavigationStyle",
+        std::string_view {NavigationStyle::getClassTypeId().getName()}
+    );
     return model;
 }
 

@@ -38,7 +38,7 @@ CustomFolderModel::CustomFolderModel(QObject* parent)
         "User parameter:BaseApp/Preferences/Mod/Start"
     );
 
-    _customFolderPathSpec = QString::fromStdString(parameterGroup->GetASCII("CustomFolder", ""));
+    _customFolderPathSpec = QString::fromStdString(parameterGroup->getString("CustomFolder", ""));
 
     _showOnlyFCStd = parameterGroup->GetBool("ShowOnlyFCStd", false);
 }

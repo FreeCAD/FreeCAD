@@ -38,12 +38,12 @@ void ProgramInformation::getStyleInformation(std::stringstream& str)
     );
 
     // Add Stylesheet/Theme/Qtstyle information
-    std::string styleSheet = hGrp->GetASCII("StyleSheet");
-    std::string theme = hGrp->GetASCII("Theme");
+    std::string styleSheet = hGrp->getString("StyleSheet");
+    std::string theme = hGrp->getString("Theme");
 #if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
     std::string style = qApp->style()->name().toStdString();
 #else
-    std::string style = hGrp->GetASCII("QtStyle");
+    std::string style = hGrp->getString("QtStyle");
     if (style.empty()) {
         style = "Qt default";
     }
@@ -64,7 +64,7 @@ void ProgramInformation::getNavigationStyleInformation(std::stringstream& str)
         "User parameter:BaseApp/Preferences/View"
     );
 
-    const std::string navStyle = hGrp->GetASCII("NavigationStyle", "Gui::CADNavigationStyle");
+    const std::string navStyle = hGrp->getString("NavigationStyle", "Gui::CADNavigationStyle");
     constexpr auto orbitStyle = std::to_array<std::string_view>(
         {"Turntable", "Trackball", "Free Turntable", "Trackball Classic", "Rounded Arcball"}
     );

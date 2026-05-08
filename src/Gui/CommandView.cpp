@@ -488,7 +488,7 @@ void StdCmdFreezeViews::onSaveViews()
                 viewPos = lines.join(QStringLiteral(" "));
             }
 
-            str << "    <Camera settings=\"" << viewPos.toLatin1().constData() << "\"/>\n";
+            str << "    <Camera settings=\"" << viewPos.toUtf8().constData() << "\"/>\n";
         }
 
         str << "  </Views>\n";
@@ -553,7 +553,7 @@ void StdCmdFreezeViews::onRestoreViews()
     // evaluate the XML content
     if (!xmlDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
         std::cerr << "Parse error in XML content at line " << errorLine << ", column "
-                  << errorColumn << ": " << (const char*)errorStr.toLatin1() << std::endl;
+                  << errorColumn << ": " << (const char*)errorStr.toUtf8() << std::endl;
         return;
     }
 #endif
@@ -1426,7 +1426,7 @@ void StdCmdViewHome::activated(int iMsg)
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    std::string default_view = hGrp->GetASCII("NewDocumentCameraOrientation", "Top");
+    std::string default_view = hGrp->getString("NewDocumentCameraOrientation", "Top");
     doCommand(
         Command::Gui,
         "Gui.activeDocument().activeView().viewDefaultOrientation('%s',0)",
@@ -2145,13 +2145,13 @@ void StdViewScreenShot::activated(int iMsg)
                                                  .GetGroup("BaseApp")
                                                  ->GetGroup("Preferences")
                                                  ->GetGroup("General");
-        QString ext = QString::fromLatin1(hExt->GetASCII("OffscreenImageFormat").c_str());
+        QString ext = QString::fromStdString(hExt->getString("OffscreenImageFormat"));
         int backtype = hExt->GetInt("OffscreenImageBackground", 0);
 
         Base::Reference<ParameterGrp> methodGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/View"
         );
-        QByteArray method = methodGrp->GetASCII("SavePicture").c_str();
+        auto method = QByteArray::fromStdString(methodGrp->getString("SavePicture"));
 
         QStringList filter;
         QString selFilter;
@@ -2210,10 +2210,10 @@ void StdViewScreenShot::activated(int iMsg)
                 }
             }
 
-            hExt->SetASCII("OffscreenImageFormat", (const char*)format.toLatin1());
+            hExt->setString("OffscreenImageFormat", format.toStdString());
 
             method = opt->method();
-            methodGrp->SetASCII("SavePicture", method.constData());
+            methodGrp->setString("SavePicture", {method.data(), size_t(method.size())});
 
             // which background chosen
             const char* background;
@@ -4325,7 +4325,7 @@ void StdCmdToggleBottomPanels::activated(int iMsg)
         // No visible bottom panels: restore the previously hidden ones. The default covers a fresh
         // install with no saved state.
         const auto savedNames = QString::fromStdString(
-            hGrp->GetASCII("HiddenBottomWidgets", "Python console;;Report view")
+            hGrp->getString("HiddenBottomWidgets", "Python console;;Report view")
         );
         QStringList panelNamesToRestore = savedNames.split(QStringLiteral(";;"));
 
@@ -4351,7 +4351,10 @@ void StdCmdToggleBottomPanels::activated(int iMsg)
             panelNamesToSave.append(panel->objectName());
         }
 
-        hGrp->SetASCII("HiddenBottomWidgets", panelNamesToSave.join(QStringLiteral(";;")).toStdString());
+        hGrp->setString(
+            "HiddenBottomWidgets",
+            panelNamesToSave.join(QStringLiteral(";;")).toStdString()
+        );
     }
 
     // Sync the checked state of the menu action
@@ -4711,11 +4714,11 @@ void CreateViewStdCommands()
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    if (hGrp->GetASCII("GestureRollFwdCommand").empty()) {
-        hGrp->SetASCII("GestureRollFwdCommand", "Std_SelForward");
+    if (hGrp->getString("GestureRollFwdCommand").empty()) {
+        hGrp->setString("GestureRollFwdCommand", "Std_SelForward");
     }
-    if (hGrp->GetASCII("GestureRollBackCommand").empty()) {
-        hGrp->SetASCII("GestureRollBackCommand", "Std_SelBack");
+    if (hGrp->getString("GestureRollBackCommand").empty()) {
+        hGrp->setString("GestureRollBackCommand", "Std_SelBack");
     }
     // NOLINTEND
 }

@@ -382,8 +382,8 @@ void ModelLoader::getModelLibraries()
         for (auto& group : moduleParam->GetGroups()) {
             // auto module = moduleParam->GetGroup(group->GetGroupName());
             auto moduleName = QString::fromStdString(group->GetGroupName());
-            auto modelDir = QString::fromStdString(group->GetASCII("ModuleModelDir", ""));
-            auto modelIcon = QString::fromStdString(group->GetASCII("ModuleIcon", ""));
+            auto modelDir = QString::fromStdString(group->getString("ModuleModelDir", ""));
+            auto modelIcon = QString::fromStdString(group->getString("ModuleIcon", ""));
 
             if (modelDir.length() > 0) {
                 QDir dir(modelDir);
@@ -411,7 +411,7 @@ void ModelLoader::getModelLibraries()
     }
 
     if (useMatFromCustomDir) {
-        QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
+        QString resourceDir = QString::fromStdString(param->getString("CustomMaterialsDir", ""));
         if (!resourceDir.isEmpty()) {
             QDir materialDir(resourceDir);
             if (materialDir.exists()) {

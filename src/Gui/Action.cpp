@@ -898,10 +898,9 @@ RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent)
             return;
         }
 
-        const size_t recentFilesListSize = hGrp->GetASCIIs("MRU").size();
+        const size_t recentFilesListSize = hGrp->getAllStrings("MRU").size();
         for (size_t i = 0; i < recentFilesListSize; i++) {
-            const QByteArray key = QStringLiteral("MRU%1").arg(i).toLocal8Bit();
-            hGrp->SetASCII(key.data(), "");
+            hGrp->setString(QStringLiteral("MRU%1").arg(i).toStdString(), "");
         }
         restore();
         clearRecentFilesListAction.setEnabled(false);
@@ -1054,7 +1053,7 @@ void RecentFilesAction::restore()
     for (int i = 0; i < count; i++) {
         groupAction()->addAction(QLatin1String(""))->setVisible(false);
     }
-    std::vector<std::string> MRU = hGrp->GetASCIIs("MRU");
+    std::vector<std::string> MRU = hGrp->getAllStrings("MRU");
     QStringList files;
     for (const auto& it : MRU) {
         auto filePath = QString::fromUtf8(it.c_str());
@@ -1076,12 +1075,11 @@ void RecentFilesAction::save()
     QList<QAction*> recentFiles = groupAction()->actions();
     int num = std::min<int>(count, recentFiles.count());
     for (int index = 0; index < num; index++) {
-        QString key = QStringLiteral("MRU%1").arg(index);
         QString value = recentFiles[index]->toolTip();
         if (value.isEmpty()) {
             break;
         }
-        hGrp->SetASCII(key.toLatin1(), value.toUtf8());
+        hGrp->setString(QStringLiteral("MRU%1").arg(index).toStdString(), value.toStdString());
     }
 
     Base::StateLocker guard(_pimpl->updating);
@@ -1133,7 +1131,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
                                     .GetGroup("BaseApp")
                                     ->GetGroup("Preferences")
                                     ->GetGroup("RecentMacros");
-    this->shortcut_modifiers = hGrp->GetASCII("ShortcutModifiers", "Ctrl+Shift+");
+    this->shortcut_modifiers = hGrp->getString("ShortcutModifiers", "Ctrl+Shift+");
     this->shortcut_count = std::min<int>(hGrp->GetInt("ShortcutCount", 3), 9);  // max = 9, e.g.
                                                                                 // Ctrl+Shift+9
     this->visibleItems = hGrp->GetInt("RecentMacros", 12);
@@ -1292,10 +1290,10 @@ void RecentMacrosAction::restore()
     }
     resizeList(hGrp->GetInt("RecentMacros"));
 
-    std::vector<std::string> MRU = hGrp->GetASCIIs("MRU");
+    std::vector<std::string> MRU = hGrp->getAllStrings("MRU");
     QStringList files;
     for (auto& filename : MRU) {
-        files.append(QString::fromUtf8(filename.c_str()));
+        files.append(QString::fromStdString(filename));
     }
     setFiles(files);
 }
@@ -1315,17 +1313,16 @@ void RecentMacrosAction::save()
     QList<QAction*> recentFiles = groupAction()->actions();
     int num = std::min<int>(count, recentFiles.count());
     for (int index = 0; index < num; index++) {
-        QString key = QStringLiteral("MRU%1").arg(index);
         QString value = recentFiles[index]->toolTip();
         if (value.isEmpty()) {
             break;
         }
-        hGrp->SetASCII(key.toLatin1(), value.toUtf8());
+        hGrp->setString(QStringLiteral("MRU%1").arg(index).toStdString(), value.toStdString());
     }
 
     hGrp->SetInt("RecentMacros", count);  // restore
     hGrp->SetInt("ShortcutCount", this->shortcut_count);
-    hGrp->SetASCII("ShortcutModifiers", this->shortcut_modifiers.c_str());
+    hGrp->setString("ShortcutModifiers", this->shortcut_modifiers);
 }
 
 // --------------------------------------------------------------------

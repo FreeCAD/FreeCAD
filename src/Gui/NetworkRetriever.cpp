@@ -456,8 +456,8 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
     if (!wget->isDownloading()) {
         ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hGrp = hGrp->GetGroup("Preferences")->GetGroup("OnlineHelp");
-        std::string url = hGrp->GetASCII("DownloadURL", "www.freecad.org/wiki/");
-        std::string prx = hGrp->GetASCII("ProxyText", "");
+        std::string url = hGrp->getString("DownloadURL", "www.freecad.org/wiki/");
+        std::string prx = hGrp->getString("ProxyText", "");
         bool bUseProxy = hGrp->GetBool("UseProxy", false);
         bool bAuthor = hGrp->GetBool("Authorize", false);
 
@@ -477,7 +477,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
                 }
             }
 
-            wget->setProxy(QString::fromLatin1(prx.c_str()), username, password);
+            wget->setProxy(QString::fromStdString(prx), username, password);
         }
 
         int loop = 3;
@@ -489,7 +489,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
         ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/OnlineHelp"
         );
-        path = QString::fromUtf8(hURLGrp->GetASCII("DownloadLocation", path.toLatin1()).c_str());
+        path = QString::fromStdString(hURLGrp->getString("DownloadLocation", path.toStdString()));
 
         while (loop > 0) {
             loop--;
@@ -543,7 +543,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
         }
 
         if (canStart) {
-            bool ok = wget->startDownload(QString::fromLatin1(url.c_str()));
+            bool ok = wget->startDownload(QString::fromStdString(url));
             if (!ok) {
                 Base::Console().error("The tool 'wget' could not be found. Check the installation.");
             }

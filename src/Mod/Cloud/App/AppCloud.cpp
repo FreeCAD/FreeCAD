@@ -1384,7 +1384,7 @@ bool Cloud::Module::cloudSave(const char* BucketName)
     if (saveAuthor) {
         std::string Author = App::GetApplication()
                                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-                                 ->GetASCII("prefAuthor", "");
+                                 ->getString("prefAuthor", "");
         doc->LastModifiedBy.setValue(Author.c_str());
     }
     if (strcmp(BucketName, doc->Label.getValue()) != 0) {

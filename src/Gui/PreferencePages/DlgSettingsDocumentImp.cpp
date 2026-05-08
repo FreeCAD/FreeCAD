@@ -222,7 +222,7 @@ void DlgSettingsDocumentImp::addLicenseTypes()
 
     ui->prefLicenseType->clear();
     for (const auto& licenseItem : App::licenseItems) {
-        add(licenseItem.at(App::posnOfFullName));
+        add(licenseItem.at(App::posnOfFullName).data());
     }
     add("Other");
 }
@@ -234,8 +234,8 @@ void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
 {
     if (index >= 0 && index < App::countOfLicenses) {
         // existing license
-        const char* url {App::licenseItems.at(index).at(App::posnOfUrl)};
-        ui->prefLicenseUrl->setText(QString::fromLatin1(url));
+        const auto url = App::licenseItems.at(index).at(App::posnOfUrl);
+        ui->prefLicenseUrl->setText(QString::fromUtf8(url.data(), url.size()));
         ui->prefLicenseUrl->setReadOnly(true);
     }
     else {

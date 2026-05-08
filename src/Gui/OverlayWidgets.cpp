@@ -480,7 +480,7 @@ void OverlayTabWidget::refreshIcons()
 {
     auto curStyleSheet = App::GetApplication()
                              .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-                             ->GetASCII("StyleSheet", "None");
+                             ->getString("StyleSheet", "None");
 
     QPixmap pxAutoHide;
 
@@ -804,13 +804,15 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
     // If overlay was ever used and disabled by the user it should respect that choice
     if (handle->GetInt("Width", 0) != 0 || handle->GetInt("Height", 0) != 0) {
         // save current value with old default to prevent layout change
-        handle->SetASCII("Widgets", handle->GetASCII("Widgets", ""));
+        handle->setString("Widgets", handle->getString("Widgets", ""));
     }
 
-    std::string widgets
-        = handle->GetASCII("Widgets", getDockArea() == Qt::RightDockWidgetArea ? "Tasks," : "");
+    std::string widgets = handle->getString(
+        "Widgets",
+        std::string_view {getDockArea() == Qt::RightDockWidgetArea ? "Tasks," : ""}
+    );
 
-    for (auto& name : QString::fromUtf8(widgets.c_str()).split(QLatin1Char(','))) {
+    for (auto& name : QString::fromStdString(widgets).split(QLatin1Char(','))) {
         if (name.isEmpty()) {
             continue;
         }
@@ -877,10 +879,10 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
     setTransparent(handle->GetBool("Transparent", getDockArea() == Qt::RightDockWidgetArea));
 
     _sizemap.clear();
-    std::string savedSizes = handle->GetASCII("Sizes", "");
+    std::string savedSizes = handle->getString("Sizes", "");
     QList<int> sizes;
     int idx = 0;
-    for (auto& size : QString::fromUtf8(savedSizes.c_str()).split(QLatin1Char(','))) {
+    for (auto& size : QString::fromStdString(savedSizes).split(QLatin1Char(','))) {
         sizes.append(size.toInt());
         _sizemap[dockWidget(idx++)] = sizes.back();
     }
@@ -922,8 +924,8 @@ void OverlayTabWidget::saveTabs()
         _sizemap[dock] = sizes[i];
     }
     Base::StateLocker lock(_saving);
-    hGrp->SetASCII("Widgets", os.str().c_str());
-    hGrp->SetASCII("Sizes", os2.str().c_str());
+    hGrp->setString("Widgets", os.str());
+    hGrp->setString("Sizes", os2.str());
     FC_LOG("save " << objectName().toUtf8().constData() << " " << os2.str());
 }
 
@@ -970,7 +972,7 @@ void OverlayTabWidget::syncAutoMode()
 {
     auto curStyleSheet = App::GetApplication()
                              .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-                             ->GetASCII("StyleSheet", "None");
+                             ->getString("StyleSheet", "None");
 
     QAction* action = nullptr;
     switch (autoMode) {

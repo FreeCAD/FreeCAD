@@ -1295,9 +1295,9 @@ void MacroCommand::activated(int iMsg)
 
         cMacroPath = App::GetApplication()
                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-                         ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
+                         ->getString("MacroPath", App::Application::getUserMacroDir());
 
-        d = QDir(QString::fromUtf8(cMacroPath.c_str()));
+        d = QDir(QString::fromStdString(cMacroPath));
     }
     else {
         QString dirstr = QString::fromStdString(App::Application::getHomePath())
@@ -1356,15 +1356,16 @@ void MacroCommand::load()
         std::vector<Base::Reference<ParameterGrp>> macros = hGrp->GetGroups();
         for (const auto& it : macros) {
             auto macro = new MacroCommand(it->GetGroupName());
-            macro->setScriptName(it->GetASCII("Script").c_str());
-            macro->setMenuText(it->GetASCII("Menu").c_str());
-            macro->setToolTipText(it->GetASCII("Tooltip").c_str());
-            macro->setWhatsThis(it->GetASCII("WhatsThis").c_str());
-            macro->setStatusTip(it->GetASCII("Statustip").c_str());
-            if (it->GetASCII("Pixmap", "nix") != "nix") {
-                macro->setPixmap(it->GetASCII("Pixmap").c_str());
+            // TODO: make scriptName etc store string_views and remove the conversions
+            macro->setScriptName(it->getString("Script").c_str());
+            macro->setMenuText(it->getString("Menu").c_str());
+            macro->setToolTipText(it->getString("Tooltip").c_str());
+            macro->setWhatsThis(it->getString("WhatsThis").c_str());
+            macro->setStatusTip(it->getString("Statustip").c_str());
+            if (it->getString("Pixmap", "nix") != "nix") {
+                macro->setPixmap(it->getString("Pixmap").c_str());
             }
-            macro->setAccel(it->GetASCII("Accel", nullptr).c_str());
+            macro->setAccel(it->getString("Accel").c_str());
             macro->systemMacro = it->GetBool("System", false);
             Application::Instance->commandManager().addCommand(macro);
         }
@@ -1383,13 +1384,29 @@ void MacroCommand::save()
         for (const auto& it : macros) {
             auto macro = (MacroCommand*)it;
             ParameterGrp::handle hMacro = hGrp->GetGroup(macro->getName());
-            hMacro->SetASCII("Script", macro->getScriptName());
-            hMacro->SetASCII("Menu", macro->getMenuText());
-            hMacro->SetASCII("Tooltip", macro->getToolTipText());
-            hMacro->SetASCII("WhatsThis", macro->getWhatsThis());
-            hMacro->SetASCII("Statustip", macro->getStatusTip());
-            hMacro->SetASCII("Pixmap", macro->getPixmap());
-            hMacro->SetASCII("Accel", macro->getAccel());
+            // TODO: make scriptName etc store string_views and remove the conversions
+            hMacro->setString(
+                "Script",
+                std::string_view {macro->getScriptName() ? macro->getScriptName() : ""}
+            );
+            hMacro->setString(
+                "Menu",
+                std::string_view {macro->getMenuText() ? macro->getMenuText() : ""}
+            );
+            hMacro->setString(
+                "Tooltip",
+                std::string_view {macro->getToolTipText() ? macro->getToolTipText() : ""}
+            );
+            hMacro->setString(
+                "WhatsThis",
+                std::string_view {macro->getWhatsThis() ? macro->getWhatsThis() : ""}
+            );
+            hMacro->setString(
+                "Statustip",
+                std::string_view {macro->getStatusTip() ? macro->getStatusTip() : ""}
+            );
+            hMacro->setString("Pixmap", std::string_view {macro->getPixmap() ? macro->getPixmap() : ""});
+            hMacro->setString("Accel", std::string_view {macro->getAccel() ? macro->getAccel() : ""});
             hMacro->SetBool("System", macro->systemMacro);
         }
     }

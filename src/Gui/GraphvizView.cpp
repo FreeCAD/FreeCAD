@@ -304,7 +304,7 @@ void GraphvizView::updateSvgItem(const App::Document& doc)
     flatArgs << QLatin1String("-c2 -l2");
     auto dot = QStringLiteral("dot");
     auto unflatten = QStringLiteral("unflatten");
-    auto path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
+    auto path = QString::fromStdString(hGrp->getString("Graphviz"));
     bool pathChanged = false;
     QDir dir;
     if (!path.isEmpty()) {
@@ -357,7 +357,7 @@ void GraphvizView::updateSvgItem(const App::Document& doc)
         }
         else {
             if (pathChanged) {
-                hGrp->SetASCII("Graphviz", (const char*)path.toUtf8());
+                hGrp->setString("Graphviz", path.toStdString());
             }
             break;
         }
@@ -426,9 +426,9 @@ QByteArray GraphvizView::exportGraph(const QString& format)
     flatArgs << QLatin1String("-c2 -l2");
 
 #ifdef FC_OS_LINUX
-    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz", "/usr/bin").c_str());
+    QString path = QString::fromStdString(hGrp->getString("Graphviz", "/usr/bin"));
 #else
-    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
+    QString path = QString::fromStdString(hGrp->getString("Graphviz"));
 #endif
 
 #ifdef FC_OS_WIN32

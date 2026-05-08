@@ -132,8 +132,8 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
                 Base::Reference<ParameterGrp> newGroup;
 
                 newGroup = spaceballButtonGroup()->GetGroup(ButtonCode.c_str());
-                newGroup->SetASCII("Command", ButtonCommand.c_str());
-                newGroup->SetASCII("Description", ButtonDescription.c_str());
+                newGroup->setString("Command", ButtonCommand);
+                newGroup->setString("Description", ButtonDescription);
             }
         }
     }
@@ -211,7 +211,7 @@ QVariant ButtonModel::data(const QModelIndex& index, int role) const
                                        // QIcon first
     }
     if (role == Qt::UserRole) {
-        return {QString::fromStdString(groupVector.at(index.row())->GetASCII("Command"))};
+        return {QString::fromStdString(groupVector.at(index.row())->getString("Command"))};
     }
     if (role == Qt::SizeHintRole) {
         return {QSize(32, 32)};
@@ -229,8 +229,8 @@ void ButtonModel::insertButtonRows(int number)
         Base::Reference<ParameterGrp> newGroup = spaceballButtonGroup()->GetGroup(
             groupName.toLatin1()
         );  // builds the group.
-        newGroup->SetASCII("Command", "");
-        newGroup->SetASCII("Description", "");
+        newGroup->setString("Command", "");
+        newGroup->setString("Description", "");
     }
     endInsertRows();
     return;
@@ -239,7 +239,7 @@ void ButtonModel::insertButtonRows(int number)
 void ButtonModel::setCommand(int row, QString command)
 {
     GroupVector groupVector = spaceballButtonGroup()->GetGroups();
-    groupVector.at(row)->SetASCII("Command", command.toLatin1());
+    groupVector.at(row)->setString("Command", command.toStdString());
 }
 
 void ButtonModel::goButtonPress(int number)
@@ -255,8 +255,8 @@ void ButtonModel::goMacroRemoved(const QByteArray& macroName)
 {
     GroupVector groupVector = spaceballButtonGroup()->GetGroups();
     for (auto& it : groupVector) {
-        if (std::string(macroName.data()) == it->GetASCII("Command")) {
-            it->SetASCII("Command", "");
+        if (std::string(macroName.data()) == it->getString("Command")) {
+            it->setString("Command", "");
         }
     }
 }
@@ -287,7 +287,7 @@ QString ButtonModel::getLabel(const int& number) const
         QString numberString;
         numberString.setNum(number);
         QString desc = QString::fromStdString(
-            spaceballButtonGroup()->GetGroup(numberString.toLatin1())->GetASCII("Description", "")
+            spaceballButtonGroup()->GetGroup(numberString.toLatin1())->getString("Description", "")
         );
         if (desc.length()) {
             desc = QStringLiteral(" \"") + desc + QStringLiteral("\"");
@@ -815,7 +815,7 @@ void DlgCustomizeSpaceball::setupLayout()
             .GetUserParameter()
             .GetGroup("BaseApp")
             ->GetGroup("Spaceball")
-            ->GetASCII("Model", "")
+            ->getString("Model", "")
     );
     if (model.length() > 0) {
         devModel->setCurrentIndex(devModel->findText(model));
@@ -863,13 +863,13 @@ void DlgCustomizeSpaceball::goClear()
     commandView->setDisabled(true);
     // buttonModel->goClear();
 
-    QByteArray currentDevice = devModel->currentText().toLocal8Bit();
+    const auto currentDevice = devModel->currentText().toStdString();
     App::GetApplication()
         .GetUserParameter()
         .GetGroup("BaseApp")
         ->GetGroup("Spaceball")
-        ->SetASCII("Model", currentDevice.data());
-    buttonModel->loadConfig(currentDevice.data());
+        ->getString("Model", currentDevice);
+    buttonModel->loadConfig(currentDevice.c_str());
 }
 
 void DlgCustomizeSpaceball::goPrint()

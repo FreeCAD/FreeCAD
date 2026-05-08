@@ -362,12 +362,12 @@ void InputField::pushToHistory(const QString& valueq)
         for (int i = HistorySize - 1; i >= 0; i--) {
             snprintf(hist1, 20, "Hist%i", i + 1);
             snprintf(hist0, 20, "Hist%i", i);
-            std::string tHist = _handle->GetASCII(hist0, "");
+            std::string tHist = _handle->getString(hist0, "");
             if (!tHist.empty()) {
-                _handle->SetASCII(hist1, tHist.c_str());
+                _handle->setString(hist1, tHist);
             }
         }
-        _handle->SetASCII("Hist0", value.c_str());
+        _handle->setString("Hist0", value);
     }
 }
 
@@ -380,9 +380,9 @@ std::vector<QString> InputField::getHistory()
         char hist[21];
         for (int i = 0; i < HistorySize; i++) {
             snprintf(hist, 20, "Hist%i", i);
-            tmp = _handle->GetASCII(hist, "");
+            tmp = _handle->getString(hist, "");
             if (!tmp.empty()) {
-                res.push_back(QString::fromUtf8(tmp.c_str()));
+                res.push_back(QString::fromStdString(tmp));
             }
             else {
                 break;  // end of history reached
@@ -416,12 +416,12 @@ void InputField::pushToSavedValues(const QString& valueq)
         for (int i = SaveSize - 1; i >= 0; i--) {
             snprintf(hist1, 20, "Save%i", i + 1);
             snprintf(hist0, 20, "Save%i", i);
-            std::string tHist = _handle->GetASCII(hist0, "");
+            std::string tHist = _handle->getString(hist0, "");
             if (!tHist.empty()) {
-                _handle->SetASCII(hist1, tHist.c_str());
+                _handle->setString(hist1, tHist);
             }
         }
-        _handle->SetASCII("Save0", value.c_str());
+        _handle->setString("Save0", value);
     }
 }
 
@@ -434,9 +434,9 @@ std::vector<QString> InputField::getSavedValues()
         char hist[21];
         for (int i = 0; i < SaveSize; i++) {
             snprintf(hist, 20, "Save%i", i);
-            tmp = _handle->GetASCII(hist, "");
+            tmp = _handle->getString(hist, "");
             if (!tmp.empty()) {
-                res.push_back(QString::fromUtf8(tmp.c_str()));
+                res.push_back(QString::fromStdString(tmp));
             }
             else {
                 break;  // end of history reached

@@ -2910,7 +2910,8 @@ void Application::initConfig(int argc, char ** argv)
     }
 
     // Change application tmp. directory
-    std::string tmpPath = _pcUserParamMngr->GetGroup("BaseApp/Preferences/General")->GetASCII("TempPath");
+    std::string tmpPath
+        = _pcUserParamMngr->GetGroup("BaseApp/Preferences/General")->getString("TempPath");
     Base::FileInfo di(tmpPath);
     if (di.exists() && di.isDir()) {
         mConfig["AppTempPath"] = tmpPath + PATHSEP;

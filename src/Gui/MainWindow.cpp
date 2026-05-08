@@ -383,7 +383,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
     d->restoreStateTimer.setSingleShot(true);
     connect(&d->restoreStateTimer, &QTimer::timeout, [this]() {
-        d->restoreWindowState(QByteArray::fromBase64(d->hGrp->GetASCII("MainWindowState").c_str()));
+        d->restoreWindowState(QByteArray::fromBase64(d->hGrp->getString("MainWindowState").c_str()));
         ToolBarManager::getInstance()->restoreState();
         OverlayManager::instance()->reload(OverlayManager::ReloadMode::ReloadResume);
     });
@@ -1165,7 +1165,7 @@ bool MainWindow::event(QEvent* e)
         QByteArray groupName(QVariant(buttonEvent->buttonNumber()).toByteArray());
         if (group->HasGroup(groupName.data())) {
             ParameterGrp::handle commandGroup = group->GetGroup(groupName.data());
-            std::string commandName(commandGroup->GetASCII("Command"));
+            std::string commandName = commandGroup->getString("Command");
             if (commandName.empty()) {
                 return true;
             }
@@ -2025,14 +2025,14 @@ void MainWindow::loadWindowSettings()
     config.endGroup();
 
     // Read stored values from user parameters
-    std::istringstream iss(d->hGrp->GetASCII("Geometry"));
+    std::istringstream iss(d->hGrp->getString("Geometry"));
     if (int x, y, w, h; iss >> x >> y >> w >> h) {
         winPos = QPoint(x, y);
         winSize = QSize(w, h);
     }
     max = d->hGrp->GetBool("Maximized", max);
     showStatusBar = d->hGrp->GetBool("StatusBar", showStatusBar);
-    if (auto wstate = d->hGrp->GetASCII("MainWindowState"); !wstate.empty()) {
+    if (auto wstate = d->hGrp->getString("MainWindowState"); !wstate.empty()) {
         windowState = QByteArray::fromBase64(wstate.c_str());
     }
 
@@ -2150,12 +2150,12 @@ void MainWindow::saveWindowSettings(bool canDelay)
     Base::ConnectionBlocker block(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());
     d->hGrp->SetBool("StatusBar", this->statusBar()->isVisible());
-    d->hGrp->SetASCII("MainWindowState", this->saveState().toBase64().constData());
+    d->hGrp->setString("MainWindowState", this->saveState().toBase64().toStdString());
 
     std::ostringstream ss;
     QRect rect(this->pos(), this->size());
     ss << rect.left() << " " << rect.top() << " " << rect.width() << " " << rect.height();
-    d->hGrp->SetASCII("Geometry", ss.str().c_str());
+    d->hGrp->setString("Geometry", ss.str());
 
     DockWindowManager::instance()->saveState();
     OverlayManager::instance()->save();
