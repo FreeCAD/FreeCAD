@@ -365,7 +365,6 @@ def fast_generate_pattern(
     angle,
     is_zigzag,
     reversed_pattern,
-    climb,
     boundary_face,
     tolerance=0.005,
 ):
@@ -386,7 +385,6 @@ def fast_generate_pattern(
         is_zigzag (bool): True if the tool should continuously alternate direction.
         reversed_pattern (bool): True if the toolpath order should be flipped (e.g., Outside-In).
         boundary_face (Part.Face): The 2D mask used to clip the toolpaths.
-        tolerance (float): The mesh accuracy tolerance for polygon extraction.
 
     Returns:
         list: A nested list of successfully clipped and ordered scan lines, where each line

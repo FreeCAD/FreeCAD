@@ -112,7 +112,7 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
 
         self.assertEqual(categorized_z.get(12.5), "Pure")
         self.assertEqual(categorized_z.get(10.0), "Extra")
-        # Note: 12-8=4. The logic rounds this to the nearest floor within tolerance, so 5 becomes Mixed.
+        # Note: 12.5 - 7.5 = 5.0 lands exactly on the physical floor, so 5 becomes Mixed.
         self.assertEqual(categorized_z.get(5.0), "Mixed")
 
     # -- Tool Compensation (Sampling Plan) Test --
@@ -145,7 +145,7 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
         self.assertEqual(len(plan_3d), 8)
 
         # Test the "snap" logic - add a critical floor height
-        critical_heights = {17.0}  # A floor 3mm below current Z of 15
+        critical_heights = {17.0}  # A floor 2mm above current z_target of 15
         plan_snap = _generate_sampling_plan(15.0, 5.0, 0.001, critical_heights, 8, tool_3d)
         self.assertGreater(len(plan_snap), 8, "Snap logic should have added an extra sample point")
 

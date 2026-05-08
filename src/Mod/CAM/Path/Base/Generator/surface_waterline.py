@@ -81,7 +81,11 @@ def waterline(stl, cutter, sampling, z, threads=None, timer=None):
         wl.setThreads(threads)
 
     t0 = time.time()
-    wl.run()
+    try:
+        wl.run()
+    except Exception as e:
+        Path.Log.error("waterline failed at z={:.3f}: {}".format(z, str(e)))
+        raise
     t1 = time.time()
 
     if timer:
@@ -114,8 +118,8 @@ def adaptive_waterline(stl, cutter, sampling, min_sampling, z, threads=None, tim
         stl: ``ocl.STLSurf`` mesh.
         cutter: OCL cutter object.
         sampling: Base fiber spacing (mm).
-        z: Z-height for this waterline slice.
         min_sampling: Minimum sampling interval for adaptive refinement.
+        z: Z-height for this waterline slice.
         threads: Number of OpenMP threads.
         timer: Optional callback.
 
@@ -187,8 +191,8 @@ def waterline_stack(
         max_z: Start depth (highest Z).
         step_down: Step-down increment between layers.
         adaptive: If True, use AdaptiveWaterline.
-        threads: OpenMP thread count.
         depth_offset: Z offset applied to all output points.
+        threads: OpenMP thread count.
         timer: Optional callback.
 
     Returns:
@@ -202,6 +206,9 @@ def waterline_stack(
     epsilon = 0.001
 
     # Compute Z-heights from max_z down to min_z
+    if step_down <= 0:
+        raise ValueError(f"step_down must be positive, got {step_down}")
+
     z_heights = []
     z = max_z
     while z >= min_z - 1e-6:

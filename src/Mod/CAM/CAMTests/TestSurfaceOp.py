@@ -266,6 +266,7 @@ class TestSurfaceOp(PathTestWithAssets):
         self.assertIn("G0", cmd_names, "Should contain rapid moves")
         self.assertIn("G1", cmd_names, "Should contain cutting moves")
 
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test11(self):
         """
         Executes the SurfacePattern (Adaptive) strategy on a simple box and verifies G-code output.

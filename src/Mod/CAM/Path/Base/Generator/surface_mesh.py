@@ -96,6 +96,9 @@ def _apply_mesh_simplification(vertices, facets, simplification_level):
     start_time = time.perf_counter()
     original_triangles = len(facets)
 
+    if original_triangles == 0:
+        return vertices, facets
+
     try:
         # Apply fast quadratic mesh simplification
         simplified_vertices, simplified_facets = fast_simplification.simplify(
@@ -105,7 +108,6 @@ def _apply_mesh_simplification(vertices, facets, simplification_level):
         simplification_time = time.perf_counter() - start_time
         final_triangles = len(simplified_facets)
         actual_reduction = (original_triangles - final_triangles) / original_triangles * 100
-
         Path.Log.info(
             f"surface_mesh: Mesh simplification level {simplification_level}: "
             f"{original_triangles} → {final_triangles} triangles "
@@ -514,7 +516,6 @@ def generate_stl(
     Args:
         model_shape (Part.Shape): The mathematically fused solid of the entire Job model.
         base_objs (list): The source geometric objects from the Job (can be Part or Mesh).
-        selected_faces (list): A list of Part.Face objects to be machined.
         avoid_faces (list): A list of Part.Face objects to be avoided.
         tool_radius (float): The radius of the active tool.
         needs_safe_stl (bool): Flag indicating if the safety model is required.
@@ -557,13 +558,15 @@ def generate_stl(
         # Pre-clip the full model shape to the final depth
         bbox = model_shape.BoundBox
         padding = 1.0
+        clip_z = min(final_depth, bbox.ZMax)
+        clip_height = bbox.ZMax - clip_z + padding
 
         try:
             clipper_box = Part.makeBox(
                 bbox.XLength + padding * 2,
                 bbox.YLength + padding * 2,
-                bbox.ZMax - final_depth + padding,
-                FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth),
+                clip_height,
+                FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, clip_z),
             )
 
             clipped_shape = model_shape.common(clipper_box)

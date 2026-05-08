@@ -141,16 +141,18 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
         """
         from Path.Base.Generator.surface_pattern import group_features
 
-        faces = self.square_face.Faces
+        faces = [
+            Part.makePlane(10, 10, FreeCAD.Vector(0, 0, 0)),
+            Part.makePlane(10, 10, FreeCAD.Vector(15, 0, 0)),
+            Part.makePlane(10, 10, FreeCAD.Vector(30, 0, 0)),
+        ]
 
         collective = group_features(faces, "Collectively")
         self.assertEqual(len(collective), 1, "Collective mode should produce one group")
-        self.assertEqual(len(collective[0]), len(faces))
+        self.assertEqual(len(collective[0]), 3)
 
         individual = group_features(faces, "Individually")
-        self.assertEqual(
-            len(individual), len(faces), "Individual mode should produce multiple groups"
-        )
+        self.assertEqual(len(individual), 3, "Individual mode should produce multiple groups")
         self.assertEqual(len(individual[0]), 1)
 
     # -- Path Reconstruction Test --
@@ -265,7 +267,6 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
             angle=0.0,
             is_zigzag=False,
             reversed_pattern=False,
-            climb=False,
             boundary_face=self.square_face,
         )
 
@@ -303,7 +304,6 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
             angle=0.0,
             is_zigzag=False,
             reversed_pattern=False,
-            climb=False,
             boundary_face=self.square_face,
         )
 

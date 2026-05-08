@@ -248,7 +248,7 @@ def _dropcutter_transition(start, end, safe_pdc, start_z, safe_z, step_down, hor
     safe_pdc.run()
 
     cl_points = safe_pdc.getCLPoints()
-    if not cl_points:
+    if len(cl_points) < 2:
         return None
 
     # Check the Z-climb required for the very first segment of the transition.

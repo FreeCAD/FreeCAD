@@ -236,9 +236,25 @@ class TestSurfacePostprocess(PathTestUtils.PathTestBase):
             cutter=self.cutter,
         )
 
+        # Find the last command of line1 (G1 to its final point)
+        end_of_line1_idx = -1
+        for i, cmd in enumerate(cmds):
+            if cmd.Name == "G1" and cmd.Parameters.get("X") == 90 and cmd.Parameters.get("Y") == 10:
+                end_of_line1_idx = i
+
+        # Find the first command of line2 (G1 to its first point)
+        start_of_line2_idx = -1
+        for i, cmd in enumerate(cmds):
+            if cmd.Name == "G1" and cmd.Parameters.get("X") == 90 and cmd.Parameters.get("Y") == 12:
+                start_of_line2_idx = i
+                break
+
+        self.assertNotEqual(end_of_line1_idx, -1, "End of line1 not found in G-code")
+        self.assertNotEqual(start_of_line2_idx, -1, "Start of line2 not found in G-code")
+
         # Check for the ABSENCE of a retract to safe_z during the transition
         has_retract = False
-        for cmd in cmds[len(line1) : -len(line2)]:  # Check commands between the two lines
+        for cmd in cmds[end_of_line1_idx + 1 : start_of_line2_idx]:
             if cmd.Name == "G0" and cmd.Parameters.get("Z") == safe_z:
                 has_retract = True
                 break
@@ -282,9 +298,25 @@ class TestSurfacePostprocess(PathTestUtils.PathTestBase):
             cutter=self.cutter,
         )
 
+        # Find the last command of line1 (G1 to its final point)
+        end_of_line1_idx = -1
+        for i, cmd in enumerate(cmds):
+            if cmd.Name == "G1" and cmd.Parameters.get("X") == 90 and cmd.Parameters.get("Y") == 10:
+                end_of_line1_idx = i
+
+        # Find the first command of line2 (G1 to its first point)
+        start_of_line2_idx = -1
+        for i, cmd in enumerate(cmds):
+            if cmd.Name == "G1" and cmd.Parameters.get("X") == 10 and cmd.Parameters.get("Y") == 80:
+                start_of_line2_idx = i
+                break
+
+        self.assertNotEqual(end_of_line1_idx, -1, "End of line1 not found in G-code")
+        self.assertNotEqual(start_of_line2_idx, -1, "Start of line2 not found in G-code")
+
         # Check for the PRESENCE of a retract, because the distance is too great
         has_retract = False
-        for cmd in cmds[len(line1) : -len(line2)]:  # Check commands between the two lines
+        for cmd in cmds[end_of_line1_idx + 1 : start_of_line2_idx]:
             if cmd.Name == "G0" and cmd.Parameters.get("Z") == safe_z:
                 has_retract = True
                 break

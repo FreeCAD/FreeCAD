@@ -414,7 +414,10 @@ def _separate_touching_faces(faces, tolerance=0.005):
     # 1. Flatten the input list (safely handles both[Face, Face] and [[Face], [Face]])
     flat_faces = []
     for item in faces:
-        flat_faces.extend(item)
+        if isinstance(item, (list, tuple)):
+            flat_faces.extend(item)
+        else:
+            flat_faces.append(item)
 
     if not flat_faces:
         return touching_faces, isolated_faces

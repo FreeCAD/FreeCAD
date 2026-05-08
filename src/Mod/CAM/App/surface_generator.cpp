@@ -242,7 +242,7 @@ std::vector<PolyBounds> calculate_bounds(const std::vector<std::vector<std::arra
     return bounds;
 }
 
-// Binary Search (Bisection) to find the exact boundary edge with 0.001mm tolerance!
+// Binary Search (Bisection) to find the exact boundary edge with 0.005mm tolerance!
 std::array<double, 3> find_exact_edge(
     std::array<double, 3> p_in,
     std::array<double, 3> p_out,
@@ -255,7 +255,7 @@ std::array<double, 3> find_exact_edge(
 
     // Stop exactly when the gap between the points is 0.005mm or less
     while (max_iters-- > 0 && std::hypot(p_out[0] - p_in[0], p_out[1] - p_in[1]) > 0.005) {
-        p_mid = {(p_in[0] + p_out[0]) / 2.0, (p_in[1] + p_out[1]) / 2.0, 0.0};
+        p_mid = {(p_in[0] + p_out[0]) / 2.0, (p_in[1] + p_out[1]) / 2.0, (p_in[2] + p_out[2]) / 2.0};
 
         if (isInsideFast(p_mid[0], p_mid[1], polygons, bounds)) {
             p_in = p_mid;  // Midpoint is inside, move the inner bound outwards

@@ -43,6 +43,30 @@ else:
 
 from Path.Base.Generator.surface_common import _get_ocl
 
+
+def _build_ocl_path_from_polylines(ocl, polylines, min_z):
+    """Build an ocl.Path from a list of polylines.
+
+    Args:
+        ocl: OCL module reference (already loaded).
+        polylines: List of scan lines, each a list of ``(x, y, z)`` tuples.
+        min_z: Z used for path points; the drop-cutter projects the
+            actual surface Z anyway.
+
+    Returns:
+        ``ocl.Path`` containing one ``ocl.Line`` per polyline segment.
+    """
+    ocl_path = ocl.Path()
+    for line in polylines:
+        if len(line) < 2:
+            continue
+        for i in range(len(line) - 1):
+            p1 = ocl.Point(line[i][0], line[i][1], min_z)
+            p2 = ocl.Point(line[i + 1][0], line[i + 1][1], min_z)
+            ocl_path.append(ocl.Line(p1, p2))
+    return ocl_path
+
+
 # ---------------------------------------------------------------------------
 # BatchDropCutter — grid-based surface scan
 # ---------------------------------------------------------------------------
@@ -65,6 +89,13 @@ def batch_dropcutter(stl, cutter, polylines, min_z, threads=None):
     Returns:
         A list of (x, y, z) tuples with Z-heights set by the drop-cutter
     """
+    if stl is None or cutter is None:
+        raise ValueError("stl and cutter must not be None")
+    if not polylines:
+        raise ValueError("polylines must be a non-empty list")
+    if threads is not None and (not isinstance(threads, int) or threads <= 0):
+        raise ValueError("threads must be a positive integer")
+
     ocl = _get_ocl()
 
     bdc = ocl.BatchDropCutter()
@@ -118,14 +149,7 @@ def path_dropcutter(stl, cutter, polylines, min_z, sampling):
     """
     ocl = _get_ocl()
 
-    ocl_path = ocl.Path()
-    for line in polylines:
-        if len(line) < 2:
-            continue
-        for i in range(len(line) - 1):
-            p1 = ocl.Point(line[i][0], line[i][1], min_z)
-            p2 = ocl.Point(line[i + 1][0], line[i + 1][1], min_z)
-            ocl_path.append(ocl.Line(p1, p2))
+    ocl_path = _build_ocl_path_from_polylines(ocl, polylines, min_z)
 
     pdc = ocl.PathDropCutter()
     pdc.setSTL(stl)
@@ -169,14 +193,7 @@ def adaptive_path_dropcutter(stl, cutter, polylines, min_z, sampling, min_sampli
     """
     ocl = _get_ocl()
 
-    ocl_path = ocl.Path()
-    for line in polylines:
-        if len(line) < 2:
-            continue
-        for i in range(len(line) - 1):
-            p1 = ocl.Point(line[i][0], line[i][1], min_z)
-            p2 = ocl.Point(line[i + 1][0], line[i + 1][1], min_z)
-            ocl_path.append(ocl.Line(p1, p2))
+    ocl_path = _build_ocl_path_from_polylines(ocl, polylines, min_z)
 
     if min_sampling is None:
         min_sampling = sampling / 10.0

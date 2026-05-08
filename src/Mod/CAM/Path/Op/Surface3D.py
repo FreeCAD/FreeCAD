@@ -636,7 +636,6 @@ class ObjectSurface3D(PathOp.ObjectOp):
             float(obj.CutPatternAngle),
             is_zigzag,
             bool(obj.CutPatternReversed),
-            cut_climb,
             boundary_face,
         )
         if not raw_scan_lines:
