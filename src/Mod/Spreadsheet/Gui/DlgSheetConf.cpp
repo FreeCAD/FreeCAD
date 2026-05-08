@@ -286,57 +286,21 @@ void DlgSheetConf::accept()
             //
             // The bind target cell range is:
             //      <dynamic column><from row>:<dynamic column><to row>
-            // where <from row> and <to row> are the fixed strings str(%5$d)
-            // and str(%6$d), populated with range.from().row() + 1 and
-            // range.to().row() + 1, respectively (the + 1 constant is because
-            // row() is 0-based).
+            // where <from row> is fixed to range.from().row() + 1, <to row> is
+            // fixed to range.to().row() + 1, and <dynamic column> is the
+            // configuration table column offset plus the property enumeration
+            // variant index.
             //
-            // <dynamic column> is an alpha string ranging from A to ZZ.
-            // However, we can only use spreadsheet expressions to compute it.
-            // In the approach below, we form the two alpha letters of the
-            // column by converting the dynamic column index into ASCII
-            // characters with Python format strings.
-            // The upper letter is formed with the expression:
-            //      (column < 26) ? "" : "%c" % (65 + floor(column / 26) - 1)
-            // and the lower letter with the expression:
-            //      "%c" % (65 + column % 26)
-            // where column is the 0-based column index into the selected
-            // configuration column.
-            //
-            // In terms of spreadsheet expressions, the column index is:
-            //      %3$d+hiddenref(%4$s)
-            // which is the configuration table column offset plus the property
-            // enumeration variant index. The configuration table column offset
-            // is populated with from.col() + 1 (the + 1 constant is to start
-            // at the first parameter column, while keeping the overall
-            // expression 0-based).
-            //
-            // The final expression (omitting format escapes) for the column is:
-            //      ((%3$d+hiddenref(%4$s)) < 26 ?
-            //          <<>> :
-            //          <<%c>> % (65 +
-            //              sum(0;floor((%3$d+hiddenref(%4$s)) / 26) - 1)))
-            //      + <<%c>> % (65 + (%3$d+hiddenref(%4$s)) % 26)
-            // The sum(0;...) expression is needed to coerce the Base.Quantity
-            // type returned by floor() back into an integer type suitable for
-            // the format string.
-            //
-            // In the future, a new expression function to compute a cell
-            // address from integral row and column indices (e.g.
-            // `celladdress(2,3)` -> D3) could be used to vastly simplify this.
+            // The + 1 constants are needed because the expression function
+            // address() is 1-based, while row() and col() are 0-based.
             Gui::cmdAppObjectArgs(
                 sheet,
-                "setExpression('.cells.Bind.%1$s.%2$s', "
-                "'tuple(.cells; "
-                "((%3$d+hiddenref(%4$s)) < 26 ? <<>> : <<%%c>> %% "
-                "(65+sum(0;floor((%3$d+hiddenref(%4$s))/26)-1))) + <<%%c>> %% "
-                "(65+(%3$d+hiddenref(%4$s))%%26) + str(%5$d); "
-                "((%3$d+hiddenref(%4$s)) < 26 ? <<>> : <<%%c>> %% "
-                "(65+sum(0;floor((%3$d+hiddenref(%4$s))/26)-1))) + <<%%c>> %% "
-                "(65+(%3$d+hiddenref(%4$s))%%26) + str(%6$d))')",
+                "setExpression('.cells.Bind.%1$s.%2$s', 'tuple(.cells; "
+                "address(%5$d; %3$d+hiddenref(%4$s); 4); "
+                "address(%6$d; %3$d+hiddenref(%4$s); 4))')",
                 range.from().toString(CellAddress::Cell::ShowRowColumn),
                 range.to().toString(CellAddress::Cell::ShowRowColumn),
-                from.col() + 1,
+                from.col() + 2,
                 prop->getFullName(),
                 range.from().row() + 1,
                 range.to().row() + 1
@@ -355,27 +319,24 @@ void DlgSheetConf::accept()
             //
             // The bind target cell range is:
             //      <from column><dynamic row>:<to column><dynamic row>
-            // where <from column> and <to column> are the fixed strings
-            // <<%5$s>> and <<%6$s>>, populated with range.from() and
-            // range.to() columns, respectively.
+            // where <from column> is fixed to range.from().col() + 1, <to
+            // column> is fixed to range.to().col() + 1, and <dynamic row> is
+            // the configuration table row offset plus the property enumeration
+            // variant index.
             //
-            // <dynamic row> is computed dynamically with the cell expression:
-            //      str(%3$d+hiddenref(%4$s))
-            // which is the configuration table row offset plus the property
-            // enumeration variant index. The configuration table row offset is
-            // populated with from.row() + 2 (the + 2 constant is because row()
-            // is 0-based and to start at the first parameter row).
+            // The + 1 constants are needed because the expression function
+            // address() is 1-based, while row() and col() are 0-based.
             Gui::cmdAppObjectArgs(
                 sheet,
-                "setExpression('.cells.Bind.%1$s.%2$s', "
-                "'tuple(.cells; <<%5$s>> + str(%3$d+hiddenref(%4$s)); <<%6$s>> + "
-                "str(%3$d+hiddenref(%4$s)))')",
+                "setExpression('.cells.Bind.%1$s.%2$s', 'tuple(.cells; "
+                "address(%3$d+hiddenref(%4$s); %5$d; 4); "
+                "address(%3$d+hiddenref(%4$s); %6$d; 4))')",
                 range.from().toString(CellAddress::Cell::ShowRowColumn),
                 range.to().toString(CellAddress::Cell::ShowRowColumn),
                 from.row() + 2,
                 prop->getFullName(),
-                range.from().toString(CellAddress::Cell::ShowColumn),
-                range.to().toString(CellAddress::Cell::ShowColumn)
+                range.from().col() + 1,
+                range.to().col() + 1
             );
         }
 
