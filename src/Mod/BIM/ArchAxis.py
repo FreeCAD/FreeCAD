@@ -131,44 +131,35 @@ def get_axis_bubble_data(obj, vobj):
         return bubble_shapes, bubble_texts
 
     pos = ["Start"]
+    both_mode = False
     if hasattr(vobj, "BubblePosition"):
         if vobj.BubblePosition in ["Both", "Arrow left", "Arrow right", "Bar left", "Bar right"]:
             pos = ["Start", "End"]
+            both_mode = True
         elif vobj.BubblePosition == "None":
             pos = []
         else:
             pos = [vobj.BubblePosition]
 
-    e = len(obj.Shape.Edges)
+    n = len(obj.Shape.Edges)
     if getattr(obj, "Limit", 0):
-        e //= 2
-    n = len(getattr(obj, "Distances", []))
-    if not n:
-        n = e
-
+        # For each axis there are 2 edges.
+        n //= 2
+    pla_inv = obj.Placement.inverse()
     num = 0
     if hasattr(vobj, "StartNumber") and vobj.StartNumber > 1:
         num = vobj.StartNumber - 1
     alt = False
-    both_mode = hasattr(vobj, "BubblePosition") and vobj.BubblePosition in [
-        "Both",
-        "Arrow left",
-        "Arrow right",
-        "Bar left",
-        "Bar right",
-    ]
 
-    for i in range(min(e, n)):
+    for i in range(n):
         for p in pos:
             if getattr(obj, "Limit", 0):
                 verts = [
-                    obj.Placement.inverse().multVec(obj.Shape.Edges[i * 2].Vertexes[0].Point),
-                    obj.Placement.inverse().multVec(obj.Shape.Edges[i * 2 + 1].Vertexes[0].Point),
+                    pla_inv.multVec(obj.Shape.Edges[i * 2].Vertexes[0].Point),
+                    pla_inv.multVec(obj.Shape.Edges[i * 2 + 1].Vertexes[0].Point),
                 ]
             else:
-                verts = [
-                    obj.Placement.inverse().multVec(v.Point) for v in obj.Shape.Edges[i].Vertexes
-                ]
+                verts = [pla_inv.multVec(v.Point) for v in obj.Shape.Edges[i].Vertexes]
 
             arrow = None
             if p == "Start":
@@ -613,6 +604,8 @@ class _ViewProviderAxis:
 
     def onChanged(self, vobj, prop):
 
+        obj = vobj.Object
+
         if prop == "LineColor":
             if hasattr(vobj, "LineColor"):
                 l = vobj.LineColor
@@ -635,25 +628,21 @@ class _ViewProviderAxis:
                 if self.bubbles:
                     self.bubbleset.removeChild(self.bubbles)
                     self.bubbles = None
-                if vobj.Object.Shape:
-                    if vobj.Object.Shape.Edges:
+                if obj.Shape:
+                    if obj.Shape.Edges:
                         self.bubbles = coin.SoSeparator()
                         self.bubblestyle = coin.SoDrawStyle()
                         self.bubblestyle.linePattern = 0xFFFF
                         self.bubbles.addChild(self.bubblestyle)
                         self.bubbletexts = []
                         self.bubbledata = []
-                        bubbles, texts = get_axis_bubble_data(vobj.Object, vobj)
+                        bubbles, texts = get_axis_bubble_data(obj, vobj)
                         self.bubbledata = bubbles
+                        pla_inv = obj.Placement.inverse()
                         for i, cir in enumerate(bubbles):
-                            local_pts = [
-                                vobj.Object.Placement.inverse().multVec(v.Point)
-                                for v in cir.Vertexes
-                            ]
+                            local_pts = [pla_inv.multVec(v.Point) for v in cir.Vertexes]
                             if hasattr(cir, "Curve") and isinstance(cir.Curve, Part.Circle):
-                                local_center = vobj.Object.Placement.inverse().multVec(
-                                    cir.Curve.Center
-                                )
+                                local_center = pla_inv.multVec(cir.Curve.Center)
                                 local_cir = Part.makeCircle(cir.Curve.Radius, local_center)
                                 buf = local_cir.writeInventor()
                                 try:
@@ -692,7 +681,7 @@ class _ViewProviderAxis:
                             else:
                                 fs = vobj.BubbleSize * 0.75
                             center_world = texts[i][1]
-                            center_local = vobj.Object.Placement.inverse().multVec(center_world)
+                            center_local = pla_inv.multVec(center_world)
                             txpos = FreeCAD.Vector(
                                 center_local.x, center_local.y - fs / 2.5, center_local.z
                             )
@@ -741,54 +730,55 @@ class _ViewProviderAxis:
                                 num -= 1
                     alt = not alt
         elif prop in ["ShowLabel", "LabelOffset"]:
-            if hasattr(self, "labels"):
-                if self.labels:
-                    self.labelset.removeChild(self.labels)
+            if hasattr(self, "labels") and self.labels:
+                self.labelset.removeChild(self.labels)
             self.labels = None
-            if hasattr(vobj, "ShowLabel") and hasattr(vobj.Object, "Labels"):
-                if vobj.ShowLabel:
-                    self.labels = coin.SoSeparator()
-                    if hasattr(vobj.Object, "Limit") and vobj.Object.Limit.Value:
-                        n = len(vobj.Object.Shape.Edges) / 2
-                    else:
-                        n = len(vobj.Object.Shape.Edges)
-                    for i in range(n):
-                        if len(vobj.Object.Labels) > i:
-                            if vobj.Object.Labels[i]:
-                                vert = vobj.Object.Shape.Edges[i].Vertexes[0].Point
-                                if hasattr(vobj, "LabelOffset"):
-                                    pl = FreeCAD.Placement(vobj.LabelOffset)
-                                    pl.Base = vert.add(pl.Base)
-                                st = coin.SoSeparator()
-                                tr = coin.SoTransform()
-                                fo = coin.SoFont()
-                                tx = coin.SoAsciiText()
-                                tx.justification = coin.SoText2.LEFT
-                                t = vobj.Object.Labels[i]
-                                tx.string.setValue(t)
-                                if hasattr(vobj, "FontSize"):
-                                    fs = vobj.FontSize.Value
-                                elif hasattr(vobj.BubbleSize, "Value"):
-                                    fs = vobj.BubbleSize.Value * 0.75
-                                else:
-                                    fs = vobj.BubbleSize * 0.75
-                                tr.translation.setValue(tuple(pl.Base))
-                                tr.rotation.setValue(pl.Rotation.Q)
-                                fn = params.get_param("textfont")
-                                if hasattr(vobj, "FontName"):
-                                    if vobj.FontName:
-                                        try:
-                                            fn = str(vobj.FontName)
-                                        except Exception:
-                                            # Keep the default font if conversion fails.
-                                            pass
-                                fo.name = fn
-                                fo.size = fs
-                                st.addChild(tr)
-                                st.addChild(fo)
-                                st.addChild(tx)
-                                self.labels.addChild(st)
-                    self.labelset.addChild(self.labels)
+            if getattr(vobj, "ShowLabel", False) and getattr(obj, "Labels", []):
+                self.labels = coin.SoSeparator()
+                n = len(obj.Shape.Edges)
+                i_factor = 1
+                if getattr(obj, "Limit", 0):
+                    # For each axis there are 2 edges.
+                    n //= 2
+                    i_factor = 2
+                n = min(n, len(obj.Labels))
+                pla_inv = obj.Placement.inverse()
+                for i in range(n):
+                    if obj.Labels[i]:
+                        vert = pla_inv.multVec(obj.Shape.Edges[i * i_factor].Vertexes[0].Point)
+                        if hasattr(vobj, "LabelOffset"):
+                            pl = FreeCAD.Placement(vobj.LabelOffset)
+                            pl.Base = vert.add(pl.Base)
+                        st = coin.SoSeparator()
+                        tr = coin.SoTransform()
+                        fo = coin.SoFont()
+                        tx = coin.SoAsciiText()
+                        tx.justification = coin.SoText2.LEFT
+                        t = obj.Labels[i]
+                        tx.string.setValue(t)
+                        if hasattr(vobj, "FontSize"):
+                            fs = vobj.FontSize.Value
+                        elif hasattr(vobj.BubbleSize, "Value"):
+                            fs = vobj.BubbleSize.Value * 0.75
+                        else:
+                            fs = vobj.BubbleSize * 0.75
+                        tr.translation.setValue(tuple(pl.Base))
+                        tr.rotation.setValue(pl.Rotation.Q)
+                        fn = params.get_param("textfont")
+                        if hasattr(vobj, "FontName"):
+                            if vobj.FontName:
+                                try:
+                                    fn = str(vobj.FontName)
+                                except Exception:
+                                    # Keep the default font if conversion fails.
+                                    pass
+                        fo.name = fn
+                        fo.size = fs
+                        st.addChild(tr)
+                        st.addChild(fo)
+                        st.addChild(tx)
+                        self.labels.addChild(st)
+                self.labelset.addChild(self.labels)
 
     def getNumber(self, vobj, num):
         return _get_axis_number(vobj, num)
@@ -826,24 +816,12 @@ class _ViewProviderAxis:
         menu.addAction(actionEdit)
 
         # The default Part::FeaturePython context menu contains a `Set colors`
-        # option. This option makes no sense for Axis objects. We therefore
-        # override this menu and have to add our own `Transform` item.
+        # option. This option makes no sense for Axis objects.
         # To override the default menu this function must return `True`.
-        action_transform = QtGui.QAction(
-            FreeCADGui.getIcon("Std_TransformManip.svg"),
-            translate("Command", "Transform"),  # Context `Command` instead of `Arch`.
-            menu,
-        )
-        QtCore.QObject.connect(action_transform, QtCore.SIGNAL("triggered()"), self.transform)
-        menu.addAction(action_transform)
-
         return True
 
     def edit(self):
         FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
-
-    def transform(self):
-        FreeCADGui.ActiveDocument.setEdit(self.Object, 1)
 
     def dumps(self):
 

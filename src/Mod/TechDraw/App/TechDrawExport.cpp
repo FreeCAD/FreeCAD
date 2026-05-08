@@ -30,6 +30,7 @@
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepLProp_CLProps.hxx>
+# include <GCPnts_UniformDeflection.hxx>
 # include <Geom_BezierCurve.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <GeomConvert_BSplineCurveKnotSplitting.hxx>
@@ -341,18 +342,27 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
 {
     try {
         std::stringstream str;
-        Handle(Geom_BSplineCurve) spline;
-        Standard_Real tol3D = 0.001;
-        Standard_Integer maxDegree = 3, maxSegment = 100;
-        Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
-        // approximate the curve using a tolerance
-        Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
-        if (approx.IsDone() && approx.HasResult()) {
-            // have the result
-            spline = approx.Curve();
+        Handle(Geom_BSplineCurve) spline = c.BSpline();
+
+        // Only re-approximate if degree > 3 or rational, since SVG only supports
+        // up to cubic Bezier curves. Using the original curve directly avoids
+        // approximation artifacts for curves that are already SVG-compatible.
+        if (spline->Degree() > 3 || spline->IsRational()) {
+            Standard_Real tol3D = 0.001;
+            Standard_Integer maxDegree = 3, maxSegment = 100;
+            Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
+            // approximate the curve using a tolerance
+            Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
+            if (approx.IsDone() && approx.HasResult()) {
+                // have the result
+                spline = approx.Curve();
+            } else {
+                printGeneric(c, id, out);
+                return;
+            }
         } else {
-            printGeneric(c, id, out);
-            return;
+            // Trim the B-spline copy to the edge's parameter range
+            spline->Segment(c.FirstParameter(), c.LastParameter());
         }
 
         GeomConvert_BSplineCurveToBezierCurve crt(spline);
@@ -430,6 +440,18 @@ void SVGOutput::printGeneric(const BRepAdaptor_Curve& bac, int id, std::ostream&
         c = 'L';
         out << c << " " << e.X() << " " << e.Y()<< " " ;
         out << "\" />" << endl;
+    } else {
+        // Fallback: discretize the curve into a polyline when no polygon
+        // representation is available. This prevents silently dropping edges.
+        GCPnts_UniformDeflection discretizer(bac, 0.1);
+        if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
+            out << "<path id= \"" << id << "\" d=\" ";
+            for (int i = 1; i <= discretizer.NbPoints(); i++) {
+                gp_Pnt p = bac.Value(discretizer.Parameter(i));
+                out << (i == 1 ? "M" : "L") << " " << p.X() << " " << p.Y() << " ";
+            }
+            out << "\" />" << endl;
+        }
     }
 }
 

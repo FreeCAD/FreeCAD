@@ -36,6 +36,8 @@
 #include <QStandardItemModel>
 #include <QVariant>
 
+#include <Gui/FileDialog.h>
+
 #include <Mod/Material/App/Model.h>
 
 #include "ListModel.h"
@@ -93,7 +95,7 @@ private:
     void showPixmap();
     void showSVG();
 
-    QString selectFile(const QStringList& filePatterns);
+    QString selectFile(const Gui::FileDialog::FilterList& filters);
     void onFileSelectImage();
     void onFileSelectSVG();
 };

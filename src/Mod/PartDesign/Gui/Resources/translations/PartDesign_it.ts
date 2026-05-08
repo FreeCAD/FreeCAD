@@ -910,18 +910,18 @@ in modo da evitare l'intersezione automatica.</translation>
       <translation>Converti in operazione di trasformazione multipla</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="255"/>
+      <location filename="../../SketchWorkflow.cpp" line="265"/>
       <source>Sketch on Face</source>
       <translation>Schizzo su faccia</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="316"/>
+      <location filename="../../SketchWorkflow.cpp" line="326"/>
       <source>Make copy</source>
       <translation>Fà una copia</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="518"/>
-      <location filename="../../SketchWorkflow.cpp" line="775"/>
+      <location filename="../../SketchWorkflow.cpp" line="528"/>
+      <location filename="../../SketchWorkflow.cpp" line="804"/>
       <source>New Sketch</source>
       <translation>Nuovo schizzo</translation>
     </message>
@@ -1568,24 +1568,7 @@ Se zero, è uguale a Raggio2</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="109"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>Non vi è alcun modo di associazione che si adatti all'attuale impostazione dei riferimenti. Se si sceglie di continuare, l'operazione rimarrà dove è ora, e non sarà spostata secondo i riferimenti. Proseguire?</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgFeatureParameters</name>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
-      <source>The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation>Impossibile eseguire questa operazione con i parametri specificati.
-La geometria potrebbe non essere valida o i parametri potrebbero essere incompatibili.
-Reimpostare i parametri e riprovare.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="236"/>
-      <source>Input error</source>
-      <translation>Errore di input</translation>
+      <translation>Non vi è alcun tipo di associazione che si adatti all'attuale impostazione dei riferimenti. Se si sceglie di continuare, la feature rimarrà dove è ora, e non sarà spostata secondo i riferimenti. Proseguire?</translation>
     </message>
   </context>
   <context>
@@ -1836,7 +1819,7 @@ Reimpostare i parametri e riprovare.</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="97"/>
       <source>Select Attachment</source>
-      <translation>Seleziona allegato</translation>
+      <translation>Seleziona associazione</translation>
     </message>
   </context>
   <context>
@@ -3155,51 +3138,51 @@ misurata lungo la direzione specificata</translation>
       <translation>Errore</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="812"/>
+      <location filename="../../SketchWorkflow.cpp" line="841"/>
       <source>Several sub-elements selected</source>
       <translation>Diversi sottoelementi selezionati</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="813"/>
+      <location filename="../../SketchWorkflow.cpp" line="842"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>Selezionare una singola faccia come supporto per uno schizzo!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="820"/>
+      <location filename="../../SketchWorkflow.cpp" line="849"/>
       <source>Select a face as support for a sketch!</source>
       <translation>Seleziona una faccia come supporto per uno schizzo!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="827"/>
+      <location filename="../../SketchWorkflow.cpp" line="856"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>È necessaria una faccia planare come supporto per uno schizzo!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="834"/>
+      <location filename="../../SketchWorkflow.cpp" line="863"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Prima creare un piano o selezionare una faccia su cui disegnare lo schizzo</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="819"/>
+      <location filename="../../SketchWorkflow.cpp" line="848"/>
       <source>No support face selected</source>
       <translation>Nessuna faccia di supporto selezionata</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="826"/>
+      <location filename="../../SketchWorkflow.cpp" line="855"/>
       <source>No planar support</source>
       <translation>Nessun supporto planare</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="833"/>
+      <location filename="../../SketchWorkflow.cpp" line="862"/>
       <source>No valid planes in this document</source>
       <translation>In questo documento non c'è nessun piano valido</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="760"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../SketchWorkflow.cpp" line="731"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
@@ -3239,11 +3222,11 @@ misurata lungo la direzione specificata</translation>
       <translation>Nel documento non è disponibile nessuno schizzo</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../SketchWorkflow.cpp" line="732"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <source>Close this dialog?</source>
       <translation>Chiudere questa finestra di dialogo?</translation>
     </message>
@@ -3532,9 +3515,9 @@ Per i documenti legacy con oggetti Part Design privi di corpo, utilizzare la fun
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="94"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
     </message>
@@ -4470,19 +4453,19 @@ over 90: larger hole radius at the bottom</source>
       <translation>Impossibile eseguire l'operazione booleana con una forma di base non valida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeatureLoft.cpp" line="333"/>
       <location filename="../../../App/FeatureLoft.cpp" line="377"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeaturePipe.cpp" line="482"/>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Il risultato ha più solidi: abilita 'Consenti Composta' nel corpo attivo.</translation>
     </message>
@@ -4517,10 +4500,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>L'estrusione fusa risultante è nulla.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="523"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forma risultante non è un solido</translation>
     </message>
@@ -4597,8 +4580,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>Creazione fallita perché la direzione è ortogonale al vettore normale dello schizzo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <source>Creating a face from sketch failed</source>
       <translation>Creazione di una faccia dallo schizzo fallita</translation>
     </message>
@@ -4663,9 +4646,9 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Errore: la faccia deve essere planare</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <location filename="../../../App/FeatureHelix.cpp" line="445"/>
       <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>Errore: il risultato non è un solido</translation>
     </message>
@@ -4939,15 +4922,15 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <location filename="../../../App/FeaturePipe.cpp" line="507"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <source>Unknown operation type</source>
       <translation>Tipo di operazione sconosciuto</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <location filename="../../../App/FeaturePipe.cpp" line="515"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Failed to perform boolean operation</source>
       <translation>Esecuzione dell'operazione booleana non riuscita</translation>
     </message>
@@ -5075,37 +5058,37 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>La fusione con la lavorazione di base è fallita</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="101"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="99"/>
       <source>Transformation feature Linked object is not a Part object</source>
       <translation>La funzione di trasformazione Oggetto collegato non è un oggetto Parte</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="109"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="107"/>
       <source>No features selected to be mirrored.</source>
       <translation>Non sono state selezionate lavorazioni da specchiare.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="110"/>
       <source>No features selected to be patterned.</source>
       <translation>Non sono state selezionate lavorazioni da riprodurre.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="115"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="113"/>
       <source>No features selected to be transformed.</source>
       <translation>Nessuna lavorazione selezionata per essere trasformata.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="356"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="354"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Impossibile trasformare la forma di supporto non valida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="407"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="405"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>La forma ottenuta dalla operazione additiva/sottrattiva è vuota</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="398"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="396"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Possono essere trasformate solo operazioni additive e sottrattive</translation>
     </message>
@@ -5448,6 +5431,18 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <location filename="../../TaskPatternParameters.cpp" line="334"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Selezione non valida. Seleziona un bordo, una faccia planare o una linea di riferimento.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation>Impossibile eseguire questa operazione con i parametri specificati.
+La geometria potrebbe non essere valida o i parametri potrebbero essere incompatibili.
+Reimpostare i parametri e riprovare.</translation>
     </message>
   </context>
 </TS>

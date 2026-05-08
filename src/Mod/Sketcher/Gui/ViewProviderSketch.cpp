@@ -562,6 +562,7 @@ ViewProviderSketch::ViewProviderSketch()
     , sketchHandler(nullptr)
     , viewOrientationFactor(1)
     , blockContextMenu(false)
+    , editingCancelled(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
     PartGui::ViewProviderGridExtension::initExtension(this);
@@ -2681,7 +2682,20 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         resetPreselectPoint();
         preselection.blockedPreselection = false;
         updateToolTip(); // Clear tooltip when no point picked
-
+        // when no point is preselected, the cursor will stay as Qt::ForbiddenCursor
+        // because the code hasn't entered SelectionSingleton::setPreselect
+        // so the cursor has to be restored to normal
+        const Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (!doc)
+        {
+          return false;
+        }
+        Gui::MDIView* mdi = doc->getActiveView();
+        if (!mdi)
+        {
+          return false;
+        }
+        mdi->restoreOverrideCursor();
         return true;
     }
 
@@ -3574,7 +3588,7 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 {
     ViewProvider2DObject::attach(pcFeat);
 
-    getAnnotation()->addChild(pcSketchFacesToggle);
+    getOrCreateAnnotation()->addChild(pcSketchFacesToggle);
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -3589,6 +3603,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     if (ModNum != ViewProviderSketch::Default) {
         return PartGui::ViewProvider2DObject::setEdit(ModNum);
     }
+
+    // Make a backup of the sketch object in case the user cancel editing.
+    sketchBackup.str("");
+    sketchBackup.clear();
+    getObject()->dumpToStream(sketchBackup, 0);
+    sketchBackup.seekg(0);
 
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
@@ -3960,13 +3980,21 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         preselection.reset();
         selection.reset();
 
-        App::AutoTransaction trans(getDocument()->getDocument(), "Sketch recompute");
-        try {
-            // and update the sketch
-            // getSketchObject()->getDocument()->recompute();
-            Gui::Command::updateActive();
+        if (editingCancelled) {
+            App::AutoTransaction trans(getDocument()->getDocument(), "Cancel sketch editing");
+            // Restore the object as it was when edit is set.
+            getObject()->restoreFromStream(sketchBackup);
+            getSketchObject()->purgeTouched();
         }
-        catch (...) {
+        else {
+            App::AutoTransaction trans(getDocument()->getDocument(), "Sketch recompute");
+            try {
+                // and update the sketch
+                // getSketchObject()->getDocument()->recompute();
+                Gui::Command::updateActive();
+            }
+            catch (...) {
+            }
         }
     }
 

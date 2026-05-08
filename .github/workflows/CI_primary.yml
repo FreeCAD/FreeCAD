@@ -21,10 +21,14 @@
 # *                                                                         *
 # ***************************************************************************
 
-# This is the master workflow for CI of FreeCAD.
-# It (only) aims at properly organizing the sub-workflows.
+# This is the primary CI workflow for FreeCAD.
+# It runs the always-required jobs (Prepare, Ubuntu, Lint) on every PR
+# event except label additions. Label-gated jobs (macOS and Windows
+# builds) are in CI_approved.yml with a separate concurrency group so
+# that adding a label does not cancel an in-progress Linux build or
+# lint run.
 
-name: FreeCAD master CI
+name: FreeCAD CI primary
 
 on:
   workflow_dispatch: ~
@@ -33,12 +37,12 @@ on:
       - main
       - releases/**
   pull_request:
-    types: [opened, synchronize, reopened, labeled]
+    types: [opened, synchronize, reopened]
   merge_group: ~
 
 
 concurrency:
-  group: FC-CI-${{ github.head_ref || github.run_id }}
+  group: FC-CI-primary-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -47,15 +51,6 @@ jobs:
     with:
       artifactBasename: Prepare-${{ github.run_id }}
 
-  Pixi:
-    needs: [Prepare]
-    if: >-
-      github.event_name != 'pull_request'
-      || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:')
-    uses: ./.github/workflows/sub_buildPixi.yml
-    with:
-      artifactBasename: Pixi-${{ github.run_id }}
-
   Ubuntu:
     needs: [Prepare]
     if: "!startsWith(github.head_ref, 'refs/heads/backport-')"
@@ -63,22 +58,9 @@ jobs:
     with:
       artifactBasename: Ubuntu-${{ github.run_id }}
 
-  Windows:
-    needs: [Prepare]
-    if: >-
-      !startsWith(github.head_ref, 'refs/heads/backport-')
-      && (github.event_name != 'pull_request'
-          || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
-    uses: ./.github/workflows/sub_buildWindows.yml
-    with:
-      artifactBasename: Windows-${{ github.run_id }}
-
   Lint:
     needs: [Prepare]
-    if: >-
-      !startsWith(github.head_ref, 'refs/heads/backport-')
-      && (github.event_name != 'pull_request'
-          || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
+    if: "!startsWith(github.head_ref, 'refs/heads/backport-')"
     uses: ./.github/workflows/sub_lint.yml
     with:
       artifactBasename: Lint-${{ github.run_id }}
@@ -92,9 +74,7 @@ jobs:
   WrapUp:
     needs: [
         Prepare,
-        Pixi,
         Ubuntu,
-        Windows,
         Lint
       ]
     if: always()

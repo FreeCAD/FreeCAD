@@ -909,18 +909,18 @@ so that self intersection is avoided.</source>
       <translation>マルチ変換フィーチャーに変換</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="255"/>
+      <location filename="../../SketchWorkflow.cpp" line="265"/>
       <source>Sketch on Face</source>
       <translation>面上にスケッチ</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="316"/>
+      <location filename="../../SketchWorkflow.cpp" line="326"/>
       <source>Make copy</source>
       <translation>コピーの作成</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="518"/>
-      <location filename="../../SketchWorkflow.cpp" line="775"/>
+      <location filename="../../SketchWorkflow.cpp" line="528"/>
+      <location filename="../../SketchWorkflow.cpp" line="804"/>
       <source>New Sketch</source>
       <translation>新しいスケッチ</translation>
     </message>
@@ -1569,23 +1569,6 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskDatumParameters.cpp" line="109"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>現在の参照セットに合うアタッチメントモードがありません。続行を選択した場合、フィーチャーは今のまま残り、参照変更による移動は行われません。続行しますか？</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgFeatureParameters</name>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
-      <source>The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation>指定されたパラメーターでフィーチャーを作成できませんでした。
-ジオメトリーが無効であるか、パラメーターがおかしい可能性があります。
-パラメーターを調整し再度実行してください。</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="236"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
     </message>
   </context>
   <context>
@@ -3154,51 +3137,51 @@ measured along the specified direction</source>
       <translation>エラー</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="812"/>
+      <location filename="../../SketchWorkflow.cpp" line="841"/>
       <source>Several sub-elements selected</source>
       <translation>いくつかのサブ要素が選択されています</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="813"/>
+      <location filename="../../SketchWorkflow.cpp" line="842"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>スケッチのサポートとして1つの面を選択してください！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="820"/>
+      <location filename="../../SketchWorkflow.cpp" line="849"/>
       <source>Select a face as support for a sketch!</source>
       <translation>スケッチのサポートとして面を選択してください！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="827"/>
+      <location filename="../../SketchWorkflow.cpp" line="856"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>スケッチのサポートとして平らな面が必要です！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="834"/>
+      <location filename="../../SketchWorkflow.cpp" line="863"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>まず平面を作成するか、またはスケッチを描く面を選択してください。</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="819"/>
+      <location filename="../../SketchWorkflow.cpp" line="848"/>
       <source>No support face selected</source>
       <translation>サポート面が選択されていません</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="826"/>
+      <location filename="../../SketchWorkflow.cpp" line="855"/>
       <source>No planar support</source>
       <translation>平面のサポートがありません</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="833"/>
+      <location filename="../../SketchWorkflow.cpp" line="862"/>
       <source>No valid planes in this document</source>
       <translation>このドキュメントには有効な平面がありません。</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="760"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../SketchWorkflow.cpp" line="731"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <source>A dialog is already open in the task panel</source>
       <translation>タスクパネルで既にダイアログが開かれています</translation>
     </message>
@@ -3238,11 +3221,11 @@ measured along the specified direction</source>
       <translation>ドキュメント内に使用可能なスケッチがありません。</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../SketchWorkflow.cpp" line="732"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <source>Close this dialog?</source>
       <translation>このダイアログを閉じますか？</translation>
     </message>
@@ -3533,9 +3516,9 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="94"/>
       <source>Edit %1</source>
       <translation>%1を編集</translation>
     </message>
@@ -4005,7 +3988,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="88"/>
       <location filename="../../TaskHoleParameters.ui" line="717"/>
       <source>Standard</source>
-      <translation>標準</translation>
+      <translation>ねじ規格</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="673"/>
@@ -4468,19 +4451,19 @@ over 90: larger hole radius at the bottom</source>
       <translation>無効なベースシェイプではブーリアン演算を行うことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeatureLoft.cpp" line="333"/>
       <location filename="../../../App/FeatureLoft.cpp" line="377"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeaturePipe.cpp" line="482"/>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>結果に複数のソリッドがあります: アクティブなボディーで「コンパウンドを許可」を有効にしてください。</translation>
     </message>
@@ -4515,10 +4498,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>結合された押し出し結果が無効です。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="523"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>結果シェイプはソリッドではありません。</translation>
     </message>
@@ -4594,8 +4577,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>方向とスケッチの法線ベクトルが直交しているため作成に失敗しました。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <source>Creating a face from sketch failed</source>
       <translation>スケッチから面を作成できませんでした。</translation>
     </message>
@@ -4660,9 +4643,9 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>エラー: 面は平面でなければなりません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <location filename="../../../App/FeatureHelix.cpp" line="445"/>
       <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>エラー: 結果はソリッドではありません。</translation>
     </message>
@@ -4936,15 +4919,15 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <location filename="../../../App/FeaturePipe.cpp" line="507"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <source>Unknown operation type</source>
       <translation>未知のオペレーション・タイプです。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <location filename="../../../App/FeaturePipe.cpp" line="515"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Failed to perform boolean operation</source>
       <translation>ブール演算の実行に失敗しました。</translation>
     </message>
@@ -5072,37 +5055,37 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>ベースフィーチャーとの結合に失敗しました。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="101"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="99"/>
       <source>Transformation feature Linked object is not a Part object</source>
       <translation>変換フィーチャーのリンク・オブジェクトはパートオブジェクトではありません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="109"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="107"/>
       <source>No features selected to be mirrored.</source>
       <translation>鏡像コピーするフィ―チャーが選択されていません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="110"/>
       <source>No features selected to be patterned.</source>
       <translation>パターン化するフィ―チャーが選択されていません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="115"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="113"/>
       <source>No features selected to be transformed.</source>
       <translation>変換するフィ―チャーが選択されていません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="356"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="354"/>
       <source>Cannot transform invalid support shape</source>
       <translation>無効なサポートシェイプを変換できません</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="407"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="405"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>加算/減算フィーチャーのシェイプが空です。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="398"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="396"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>加算および減算フィーチャーのみ変換できます。</translation>
     </message>
@@ -5445,6 +5428,18 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <location filename="../../TaskPatternParameters.cpp" line="334"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>無効な選択です。エッジ、平面、またはデータム線を選択してください。</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation>指定されたパラメーターでフィーチャーを作成できませんでした。
+ジオメトリーが無効であるか、パラメーターがおかしい可能性があります。
+パラメーターを調整し再度実行してください。</translation>
     </message>
   </context>
 </TS>

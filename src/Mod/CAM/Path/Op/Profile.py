@@ -280,7 +280,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         for the operation's properties."""
         return {
             "Direction": "CW",
-            "HandleMultipleFeatures": "Collectively",
+            "HandleMultipleFeatures": "Individually",
             "JoinType": "Round",
             "MiterLimit": 0.1,
             "OffsetExtra": 0.0,
@@ -333,11 +333,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             0 if obj.HandleMultipleFeatures == "Individually" and not obj.UseStartPoint else 2
         )
         sortingMode = 0 if obj.HandleMultipleFeatures == "Individually" else 2
+        multiPassMode = 0 if obj.NumPasses > 1 else 2
 
+        obj.setEditorMode("Stepover", multiPassMode)
         obj.setEditorMode("JoinType", 2)
         obj.setEditorMode("MiterLimit", 2)  # ml
         obj.setEditorMode("Side", side)
-        obj.setEditorMode("HandleMultipleFeatures", fc)
+        obj.setEditorMode("HandleMultipleFeatures", 0)
         obj.setEditorMode("processCircles", fc)
         obj.setEditorMode("processHoles", fc)
         obj.setEditorMode("processPerimeter", fc)
@@ -549,34 +551,20 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             shapes.append(tup)
 
                 if faces and obj.processPerimeter:
-                    if obj.HandleMultipleFeatures == "Collectively":
+                    for shape in faces:
                         custDepthparams = self.depthparams
-                        cont = True
-                        profileshape = Part.makeCompound(faces)
-
                         try:
-                            shapeEnv = PathUtils.getEnvelope(
-                                profileshape, depthparams=custDepthparams
-                            )
+                            shapeEnv = PathUtils.getEnvelope(shape, depthparams=custDepthparams)
                         except Exception as ee:
                             # PathUtils.getEnvelope() failed to return an object.
                             msg = translate("PathProfile", "Unable to create path for face(s).")
                             Path.Log.error(msg + "\n{}".format(ee))
-                            cont = False
+                            shapeEnv = None
 
-                        if cont:
-                            self._addDebugObject("CollectCutShapeEnv", shapeEnv)
-                            tup = shapeEnv, False, "pathProfile"
-                            shapes.append(tup)
-
-                    elif obj.HandleMultipleFeatures == "Individually":
-                        for shape in faces:
-                            custDepthparams = self.depthparams
-                            self._addDebugObject("Indiv_Shp", shape)
-                            shapeEnv = PathUtils.getEnvelope(shape, depthparams=custDepthparams)
-                            if shapeEnv:
-                                self._addDebugObject("IndivCutShapeEnv", shapeEnv)
-                                tup = shapeEnv, False, "pathProfile"
+                        if shapeEnv:
+                            for shEnv in shapeEnv.Solids:
+                                self._addDebugObject("CutShapeEnv", shEnv)
+                                tup = shEnv, False, "pathProfile"
                                 shapes.append(tup)
 
         else:  # Try to build targets from the job models

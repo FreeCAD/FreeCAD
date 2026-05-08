@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="481"/>
+      <location filename="../../Application.cpp" line="614"/>
       <source>Unnamed</source>
       <translation>이름 없음</translation>
     </message>
@@ -20,7 +20,7 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1218"/>
+      <location filename="../../Document.cpp" line="1255"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -66,7 +66,7 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation type="unfinished">Origin-Point</translation>
+      <translation>원점</translation>
     </message>
   </context>
   <context>
@@ -75,8 +75,7 @@ The user should then click the Refresh button in the main toolbar.
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link
-that links to the same configurable object</translation>
+      <translation>동일한 구성 가능한 객체를 참조하는 모든 연결에 CopyOnChange 설정을 적용할지 사용자의 최종 선택값을 저장</translation>
     </message>
   </context>
 </TS>

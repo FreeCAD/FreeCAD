@@ -76,6 +76,7 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/DogboneII.py
     Path/Dressup/Gui/Dragknife.py
     Path/Dressup/Gui/LeadInOut.py
+    Path/Dressup/Gui/Mirror.py
     Path/Dressup/Gui/Boundary.py
     Path/Dressup/Gui/Preferences.py
     Path/Dressup/Gui/RampEntry.py
@@ -178,6 +179,7 @@ SET(PathPythonMachineUiEditor_SRCS
     Machine/ui/editor/machine_editor.py
     Machine/ui/editor/postprocessor_properties.py
     Machine/ui/editor/__init__.py
+    Machine/ui/editor/output_options_layout.py
 )
 
 SET(PathPythonMachineModels_SRCS
@@ -321,23 +323,29 @@ SET(PathPythonPostGui_SRCS
 SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/__init__.py
     Path/Post/scripts/centroid_legacy_post.py
+    Path/Post/scripts/centroid_post.py
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_legacy_post.py
     Path/Post/scripts/dynapath_4060_legacy_post.py
     Path/Post/scripts/estlcam_legacy_post.py
+    Path/Post/scripts/fablin_legacy_post.py
     Path/Post/scripts/fanuc_legacy_post.py
     Path/Post/scripts/fangling_legacy_post.py
     Path/Post/scripts/gcode_pre.py
     Path/Post/scripts/generic_post.py
     Path/Post/scripts/generic_plasma_post.py
     Path/Post/scripts/grbl_post.py
+    Path/Post/scripts/grbl_legacy_post.py
     Path/Post/scripts/heidenhain_legacy_post.py
     Path/Post/scripts/KineticNCBeamicon2_legacy_post.py
     Path/Post/scripts/linuxcnc_post.py
     Path/Post/scripts/linuxcnc_legacy_post.py
     Path/Post/scripts/jtech_legacy_post.py
     Path/Post/scripts/mach3_mach4_legacy_post.py
+    Path/Post/scripts/mach3_mach4_post.py
+    Path/Post/scripts/masso_g3_post.py
     Path/Post/scripts/marlin_legacy_post.py
+    Path/Post/scripts/marlin_post.py
     Path/Post/scripts/nccad_legacy_post.py
     Path/Post/scripts/opensbp_legacy_post.py
     Path/Post/scripts/opensbp_post.py
@@ -350,6 +358,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/smoothie_post.py
     Path/Post/scripts/snapmaker_legacy_post.py
     Path/Post/scripts/svg_post.py
+    Path/Post/scripts/uccnc_legacy_post.py
     Path/Post/scripts/wedm_legacy_post.py
 )
 
@@ -518,15 +527,19 @@ SET(Tests_SRCS
     CAMTests/test_holes00.fcstd
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidLegacyPost.py
+    CAMTests/TestCentroidPost.py
     CAMTests/TestDxfPost.py
     CAMTests/TestFanucPost.py
     CAMTests/TestGenericPost.py
     CAMTests/TestGenericPlasma.py
+    CAMTests/TestGrblPost.py
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestLinkingGenerator.py
     CAMTests/TestMachine.py
     CAMTests/TestMach3Mach4LegacyPost.py
+    CAMTests/TestMach3Mach4Post.py
     CAMTests/TestMassoG3Post.py
+    CAMTests/TestMarlinPost.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py

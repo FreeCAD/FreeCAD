@@ -1117,6 +1117,9 @@ Py::Object View3DInventorPy::getCameraNode()
 {
     try {
         SoNode* camera = getView3DInventorPtr()->getViewer()->getSoRenderManager()->getCamera();
+        if (!camera) {
+            return Py::None();
+        }
         PyObject* proxy = nullptr;
         std::string type;
         type = "So";  // seems that So prefix is missing in camera node

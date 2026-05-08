@@ -82,6 +82,7 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Inventor/SoDB.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
 
@@ -432,10 +433,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     // the rightmost permanent widget.
     auto* toggleBottomPanelsButton = new QToolButton(statusBar());
     toggleBottomPanelsButton->setObjectName(QStringLiteral("toggleBottomPanelsButton"));
-    int iconSize = App::GetApplication()
-                       .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                       ->GetInt("ToolbarIconSize", 24);
-    toggleBottomPanelsButton->setIconSize(QSize(iconSize, iconSize));
+    //: A context menu action used to show or hide the Toggle Bottom Panels button in the status bar
+    toggleBottomPanelsButton->setWindowTitle(tr("Bottom Panel Toggle"));
+    toggleBottomPanelsButton->setIconSize(QSize(16, 16));
     toggleBottomPanelsButton->setIcon(BitmapFactory().pixmap("Std_ToggleBottomPanels"));
     toggleBottomPanelsButton->setCheckable(true);
     // Starts checked because FreeCAD shows bottom panels by default on first launch. On subsequent
@@ -524,6 +524,12 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
 MainWindow::~MainWindow()
 {
+    // QWidget teardown may still emit subWindowActivated while child MDI
+    // windows are being destroyed. Disconnect first so shutdown cannot re-enter
+    // MainWindow slots after derived destruction has started.
+    if (d->mdiArea) {
+        disconnect(d->mdiArea, &QMdiArea::subWindowActivated, this, &MainWindow::onWindowActivated);
+    }
     delete d->status;
     delete d;
     instance = nullptr;
@@ -1089,6 +1095,25 @@ void MainWindow::showDocumentation(const QString& help)
     }
 }
 
+static View3DInventorViewer* spaceballMotionEventTarget()
+{
+    // check if the active window has a 3d view
+
+    if (auto viewer = getMainWindow()->activeWindow()->findChild<View3DInventorViewer*>()) {
+        return viewer;
+    }
+
+    // check active view for the document
+
+    if (Gui::Document* doc = Application::Instance->activeDocument()) {
+        if (auto view = dynamic_cast<View3DInventor*>(doc->getActiveView())) {
+            return view->getViewer();
+        }
+    }
+
+    return nullptr;
+}
+
 bool MainWindow::event(QEvent* e)
 {
     if (e->type() == QEvent::EnterWhatsThisMode) {
@@ -1163,15 +1188,7 @@ bool MainWindow::event(QEvent* e)
             return true;
         }
         motionEvent->setHandled(true);
-        Gui::Document* doc = Application::Instance->activeDocument();
-        if (!doc) {
-            return true;
-        }
-        auto temp = dynamic_cast<View3DInventor*>(doc->getActiveView());
-        if (!temp) {
-            return true;
-        }
-        View3DInventorViewer* view = temp->getViewer();
+        View3DInventorViewer* view = spaceballMotionEventTarget();
         if (view) {
             Spaceball::MotionEvent anotherEvent(*motionEvent);
             qApp->sendEvent(view, &anotherEvent);
@@ -2055,7 +2072,7 @@ void MainWindow::loadWindowSettings()
         winPos.setY(qMax(qMin(winPos.y(), screen.bottom() - winGeometry.height()), screen.y()));
     }
 
-    // Scale before move reducing, or vice versa, so a dpi change wont make window to be moved
+    // Scale before move reducing, or vice versa, so a dpi change wont force window to be moved
     resize(winSize.boundedTo(size()));
     move(winPos);
     resize(winSize);
@@ -2539,9 +2556,16 @@ void MainWindow::changeEvent(QEvent* e)
         App::GetApplication().retranslateExportTypes();
     }
     else if (e->type() == QEvent::ActivationChange) {
+        static SbTime savedRealTimeInterval = SoDB::getRealTimeInterval();
         if (isActiveWindow()) {
             QMdiSubWindow* mdi = d->mdiArea->currentSubWindow();
             setActiveSubWindow(mdi);
+            SoDB::enableRealTimeSensor(true);
+            SoDB::setRealTimeInterval(savedRealTimeInterval);
+        }
+        else {
+            savedRealTimeInterval = SoDB::getRealTimeInterval();
+            SoDB::enableRealTimeSensor(false);
         }
     }
     else {

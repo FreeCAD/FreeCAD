@@ -237,13 +237,13 @@ bool Tessellation::accept()
     std::list<App::SubObjectT> shapeObjects;
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc) {
-        QMessageBox::critical(this, windowTitle(), tr("No active document"));
+        QMessageBox::critical(this, windowTitle(), tr("No Active Document"));
         return false;
     }
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
     if (!activeGui) {
-        QMessageBox::critical(this, windowTitle(), tr("No active document"));
+        QMessageBox::critical(this, windowTitle(), tr("No Active Document"));
         return false;
     }
 

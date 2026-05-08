@@ -71,6 +71,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
             | PathOp.FeatureHeights
             | PathOp.FeatureStepDown
             | PathOp.FeatureCoolant
+            | PathOp.FeatureLinking
         )
 
     def initOperation(self, obj):
@@ -271,6 +272,23 @@ class ObjectMillFacing(PathOp.ObjectOp):
         Path.Log.debug(f"Tool: {tool.Label if tool else 'None'}")
         tool_diameter = tool.Diameter.Value
         Path.Log.debug(f"Tool diameter: {tool_diameter}")
+
+        # Prepare linking parameters
+        solids = [base.Shape for base in self.job.Model.Group]
+        linkingArgs = {
+            "start_position": None,
+            "target_position": None,
+            "local_clearance": obj.SafeHeight.Value,
+            "global_clearance": obj.ClearanceHeight.Value,
+            "solids": solids,
+            "tool_shape": None,
+            "tool_diameter": None,
+            "safety_margin": obj.LinkingSafetyMargin.Value,
+        }
+        if obj.LinkingMode == "Safest":
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
+        elif obj.LinkingMode == "Compromise":
+            linkingArgs["tool_diameter"] = tool_diameter
 
         # Determine the step-downs
         finish_step = 0.0  # No finish step for facing
@@ -588,13 +606,10 @@ class ObjectMillFacing(PathOp.ObjectOp):
                         first_position = FreeCAD.Vector(target_xy[0], target_xy[1], depth)
 
                         # Generate collision-aware linking moves up to safe/clearance and back down
-                        link_commands = linking.get_linking_moves(
-                            start_position=last_position,
-                            target_position=first_position,
-                            local_clearance=obj.SafeHeight.Value,
-                            global_clearance=obj.ClearanceHeight.Value,
-                            tool_shape=obj.ToolController.Tool.Shape,
-                        )
+                        linkingArgs["start_position"] = last_position
+                        linkingArgs["target_position"] = first_position
+                        link_commands = linking.get_linking_moves(**linkingArgs)
+
                         # Append linking moves, ensuring full XYZ continuity
                         current = last_position
                         for lc in link_commands:
@@ -662,7 +677,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
         # Apply feedrates to the entire commandlist, with debug on failure
         try:
             FeedRate.setFeedRate(self.commandlist, obj.ToolController)
-        except Exception as e:
+        except Exception:
             # Dump last 12 commands for diagnostics
             n = len(self.commandlist)
             start = max(0, n - 12)

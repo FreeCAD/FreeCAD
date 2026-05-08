@@ -716,7 +716,7 @@
     <message>
       <location filename="../../ViewProviderShapeExtension.cpp" line="189"/>
       <source>Edit Shape</source>
-      <translation/>
+      <translation type="unfinished">Edit Shape</translation>
     </message>
   </context>
   <context>
@@ -1747,7 +1747,7 @@ Cholesky தீர்வு மற்றும் பிழை செய்த�
   <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="476"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
       <source>Input error</source>
       <translation>உள்ளீடு பிழை</translation>
     </message>
@@ -1832,7 +1832,7 @@ Cholesky தீர்வு மற்றும் பிழை செய்த�
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="394"/>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
       <source>Input error</source>
       <translation>உள்ளீடு பிழை</translation>
     </message>
@@ -2253,55 +2253,55 @@ Cholesky தீர்வு மற்றும் பிழை செய்த�
   <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="93"/>
       <source>Select geometry of type: </source>
       <translation>வகை வடிவவியலைத் தேர்ந்தெடுக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="93"/>
       <source>Vertex, Edge, Face</source>
       <translation>உச்சி, விளிம்பு, முகம்</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="134"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="184"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="207"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="216"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="185"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
       <source>Selection error</source>
       <translation>தேர்வு பிழை</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="207"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
       <source>Nothing selected!</source>
       <translation>எதுவும் தேர்ந்தெடுக்கப்படவில்லை!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="134"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="216"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
       <source>Selected object is not a part!</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருள் ஒரு பகுதி அல்ல!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
       <source>External object selection is not supported</source>
       <translation>வெளிப்புற பொருள் தேர்வு ஆதரிக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="180"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="181"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>பகுப்பாய்வு அம்சத்திற்கு ஒரு வகை தேர்வு (உச்சி, முகம் அல்லது விளிம்பு) மட்டுமே அனுமதிக்கப்படுகிறது!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="332"/>
       <source>Wrong selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
       <source>Select an edge or a face.</source>
       <translation>ஒரு விளிம்பு அல்லது முகத்தைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
@@ -2663,12 +2663,12 @@ Cholesky தீர்வு மற்றும் பிழை செய்த�
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="678"/>
+      <location filename="../../TaskPostBoxes.cpp" line="687"/>
       <source>Data Along a Line Options</source>
       <translation>ஒரு வரி விருப்பங்களுடன் தரவு</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1086"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1095"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>நீளம்</translation>
@@ -2677,12 +2677,12 @@ Cholesky தீர்வு மற்றும் பிழை செய்த�
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1120"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1129"/>
       <source>Data at Point Options</source>
       <translation>புள்ளி விருப்பங்களில் தரவு</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1461"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1470"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 இல் (%2;%3;%4) உள்ளது:%5 %6</translation>
     </message>
@@ -2690,7 +2690,7 @@ Cholesky தீர்வு மற்றும் பிழை செய்த�
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="526"/>
+      <location filename="../../TaskPostBoxes.cpp" line="535"/>
       <source>Implicit function</source>
       <translation>மறைமுகமான செயல்பாடு</translation>
     </message>
@@ -3536,115 +3536,109 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
       <source>Icon</source>
-      <translation/>
+      <translation>படவுரு</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
-      <source>Drag the refinement, that should be altered, into the Manipulate object in the document tree</source>
-      <translation/>
+      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
+      <translation type="unfinished">Drag the refinement that should be altered into the Manipulate object in the document tree</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="70"/>
       <source>Type:</source>
-      <translation/>
+      <translation type="unfinished">Type:</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="84"/>
       <source>Restrict</source>
-      <translation/>
+      <translation type="unfinished">Restrict</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="89"/>
       <source>Threshold</source>
-      <translation/>
+      <translation type="unfinished">Threshold</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="94"/>
       <location filename="../ui/MeshManipulate.ui" line="609"/>
       <source>Mean</source>
-      <translation/>
+      <translation type="unfinished">Mean</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="99"/>
       <source>Gradient</source>
-      <translation/>
+      <translation type="unfinished">Gradient</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="104"/>
       <source>Curvature</source>
-      <translation/>
+      <translation>வளைமை</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="109"/>
       <source>Laplacian</source>
-      <translation/>
+      <translation type="unfinished">Laplacian</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="138"/>
       <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation/>
+      <translation type="unfinished">Restrict the application of the child refinement to the selected reference elements.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="160"/>
       <location filename="../ui/MeshManipulate.ui" line="173"/>
       <source>Include the boundary of the selected reference elements</source>
-      <translation/>
+      <translation type="unfinished">Include the boundary of the selected reference elements</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="163"/>
       <source>Include boundary</source>
-      <translation/>
+      <translation type="unfinished">Include boundary</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="209"/>
       <source>Apply a threshold to the child refinements value</source>
-      <translation/>
+      <translation type="unfinished">Apply a threshold to the child refinements value</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="236"/>
       <location filename="../ui/MeshAdvanced.ui" line="210"/>
       <location filename="../ui/MeshAdvanced.ui" line="399"/>
       <location filename="../ui/MeshDistance.ui" line="68"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <location filename="../ui/MeshManipulate.ui" line="527"/>
-      <location filename="../ui/MeshManipulate.ui" line="636"/>
-      <location filename="../ui/MeshManipulate.ui" line="708"/>
-      <location filename="../ui/MeshManipulate.ui" line="780"/>
       <location filename="../ui/MeshAdvanced.ui" line="179"/>
       <location filename="../ui/MeshDistance.ui" line="115"/>
       <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation/>
+      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="308"/>
       <source>Output size</source>
-      <translation/>
+      <translation type="unfinished">Output size</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
       <location filename="../ui/MeshAdvanced.ui" line="337"/>
       <location filename="../ui/MeshAdvanced.ui" line="430"/>
       <location filename="../ui/MeshDistance.ui" line="178"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="365"/>
       <source>Input value</source>
-      <translation/>
+      <translation type="unfinished">Input value</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="387"/>
       <location filename="../ui/MeshAdvanced.ui" line="368"/>
       <location filename="../ui/MeshDistance.ui" line="219"/>
       <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation/>
+      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="434"/>
@@ -3654,23 +3648,23 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshDistance.ui" line="266"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
       <source>Diagram</source>
-      <translation/>
+      <translation type="unfinished">Diagram</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="452"/>
       <source>Linear interpolation</source>
-      <translation/>
+      <translation type="unfinished">Linear interpolation</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="462"/>
       <location filename="../ui/MeshDistance.ui" line="326"/>
       <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation/>
+      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="472"/>
       <source>Stop at max input</source>
-      <translation/>
+      <translation type="unfinished">Stop at max input</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="493"/>
@@ -3678,7 +3672,10 @@ with harmonic/oscillating driving current</source>
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </source>
-      <translation/>
+      <translation type="unfinished">Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="508"/>
@@ -3686,7 +3683,15 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="689"/>
       <location filename="../ui/MeshManipulate.ui" line="761"/>
       <source>Delta</source>
-      <translation/>
+      <translation type="unfinished">Delta</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <source>Delta in the aforementioned equation</source>
+      <translation type="unfinished">Delta in the aforementioned equation</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="565"/>
@@ -3694,12 +3699,15 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </source>
-      <translation/>
+      <translation type="unfinished">Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="580"/>
       <source>Kind</source>
-      <translation/>
+      <translation type="unfinished">Kind</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="594"/>
@@ -3843,45 +3851,50 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
       <source>Global refinement preview settings:</source>
-      <translation/>
+      <translation type="unfinished">Global refinement preview settings:</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
       <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
       <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation/>
+      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
       <source>Auto enable on open</source>
-      <translation/>
+      <translation type="unfinished">Auto enable on open</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
       <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation/>
+      <translation type="unfinished">Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
       <source>Preview mesh fineness</source>
-      <translation/>
+      <translation type="unfinished">Preview mesh fineness</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
       <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation/>
+      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
+      <source>Number of nodes on the edge</source>
+      <translation type="unfinished">Number of nodes on the edge</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
       <source>Progression</source>
-      <translation/>
+      <translation type="unfinished">Progression</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
       <source>Invert</source>
-      <translation/>
+      <translation>தலைகீழாக மாற்றவும்</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
@@ -3895,19 +3908,24 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
       <source>Bump</source>
-      <translation/>
+      <translation type="unfinished">Bump</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
       <source>Constant</source>
-      <translation/>
+      <translation>மாறா, மாறிலி</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
       <source>Coefficient</source>
-      <translation/>
+      <translation type="unfinished">Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
+      <source>Coefficient for bump/progression growth rate</source>
+      <translation type="unfinished">Coefficient for bump/progression growth rate</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="34"/>
@@ -3917,17 +3935,17 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
       <source>AttractorAnisoCurve</source>
-      <translation/>
+      <translation type="unfinished">AttractorAnisoCurve</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="53"/>
       <source>MathEval</source>
-      <translation/>
+      <translation type="unfinished">MathEval</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="58"/>
       <source>MathEvalAniso</source>
-      <translation/>
+      <translation type="unfinished">MathEvalAniso</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="63"/>
@@ -3940,45 +3958,45 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <location filename="../ui/MeshAdvanced.ui" line="68"/>
       <location filename="../ui/MeshAdvanced.ui" line="964"/>
       <source>Result</source>
-      <translation/>
+      <translation>முடிவு</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="100"/>
       <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
-      <translation/>
+      <translation type="unfinished">Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="134"/>
       <location filename="../ui/MeshAdvanced.ui" line="695"/>
       <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
-      <translation/>
+      <translation type="unfinished">Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="315"/>
       <source>Size Tangent</source>
-      <translation/>
+      <translation type="unfinished">Size Tangent</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="449"/>
       <source>Size Normal</source>
-      <translation/>
+      <translation type="unfinished">Size Normal</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="460"/>
       <location filename="../ui/MeshAdvanced.ui" line="916"/>
       <source>Sampling</source>
-      <translation/>
+      <translation>மாதிரி எடுத்தல்</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="505"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation/>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="539"/>
       <location filename="../ui/MeshAdvanced.ui" line="659"/>
       <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
-      <translation/>
+      <translation type="unfinished">Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="569"/>
@@ -3988,7 +4006,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation/>
+      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3999,22 +4021,22 @@ Example: "F2 + Sin(z)"</source>
       <location filename="../ui/MeshAdvanced.ui" line="826"/>
       <location filename="../ui/MeshAdvanced.ui" line="847"/>
       <source>Mesh size equation</source>
-      <translation/>
+      <translation type="unfinished">Mesh size equation</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="590"/>
       <source>EQIcon</source>
-      <translation/>
+      <translation type="unfinished">EQIcon</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="625"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation/>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="728"/>
       <source>M12</source>
-      <translation/>
+      <translation type="unfinished">M12</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="735"/>
@@ -4028,95 +4050,104 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation/>
+      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
       <source>M33</source>
-      <translation/>
+      <translation type="unfinished">M33</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="770"/>
       <source>M22</source>
-      <translation/>
+      <translation type="unfinished">M22</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="805"/>
       <source>M11</source>
-      <translation/>
+      <translation type="unfinished">M11</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="812"/>
       <source>M23</source>
-      <translation/>
+      <translation type="unfinished">M23</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="833"/>
       <source>M13</source>
-      <translation/>
+      <translation type="unfinished">M13</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="904"/>
       <source>Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</source>
-      <translation/>
+      <translation type="unfinished">Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
-      <source>Uses a datafield from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
-      <translation/>
+      <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
+      <translation type="unfinished">Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
       <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation/>
+      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5 or 6 sided volumes</source>
-      <translation/>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation type="unfinished">Select any number of 5- or 6-sided volumes</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
       <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation/>
+      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
       <source>Mixed mesh elements</source>
-      <translation/>
+      <translation type="unfinished">Mixed mesh elements</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surface belonging to the selected volumes that do not have a transfinite definitions already become transfinite automatically.
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
 Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
 
 Notes:
 1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works with any number of volumes, either connected or unconnected </source>
-      <translation/>
+      <translation type="unfinished">If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
       <source>Auto apply transfinite surfaces and curves</source>
-      <translation/>
+      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
       <source>Distribution</source>
-      <translation/>
+      <translation type="unfinished">Distribution</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
       <source>Bump Inverted</source>
-      <translation/>
+      <translation type="unfinished">Bump Inverted</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
       <source>Progression Inverted</source>
-      <translation/>
+      <translation type="unfinished">Progression Inverted</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
@@ -4127,40 +4158,40 @@ Notes:
       <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
       <source>Recombine</source>
-      <translation/>
+      <translation type="unfinished">Recombine</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="38"/>
       <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation/>
+      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="54"/>
       <location filename="../ui/MeshShape.ui" line="70"/>
       <source>Mesh size within the shape</source>
-      <translation/>
+      <translation type="unfinished">Mesh size within the shape</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="57"/>
       <source>Size inside</source>
-      <translation/>
+      <translation type="unfinished">Size inside</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="80"/>
       <location filename="../ui/MeshShape.ui" line="96"/>
       <source>Mesh size outside of the shape</source>
-      <translation/>
+      <translation type="unfinished">Mesh size outside of the shape</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="83"/>
       <source>Size outside</source>
-      <translation/>
+      <translation type="unfinished">Size outside</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="106"/>
       <location filename="../ui/MeshShape.ui" line="122"/>
       <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation/>
+      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="145"/>
@@ -4179,117 +4210,117 @@ Notes:
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on distance to chosen reference geometries.</source>
-      <translation/>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation type="unfinished">Define mesh element size based on the distance to the chosen reference geometries.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="140"/>
       <source>Size</source>
-      <translation/>
+      <translation>அளவு</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="284"/>
       <source>Interpolation</source>
-      <translation/>
+      <translation type="unfinished">Interpolation</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="291"/>
       <source>Sampling size</source>
-      <translation/>
+      <translation type="unfinished">Sampling size</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surface it is the sampling size per direction.</source>
-      <translation/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="329"/>
       <source>Linear</source>
-      <translation/>
+      <translation type="unfinished">Linear</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="96"/>
       <location filename="../ui/MeshPreview.ui" line="109"/>
       <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
-      <translation/>
+      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="99"/>
       <source>Min:</source>
-      <translation/>
+      <translation type="unfinished">Min:</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="112"/>
       <source>1.00e+02</source>
-      <translation/>
+      <translation type="unfinished">1.00e+02</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="138"/>
       <location filename="../ui/MeshPreview.ui" line="151"/>
       <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
-      <translation/>
+      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="141"/>
       <source>Max:</source>
-      <translation/>
+      <translation type="unfinished">Max:</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="154"/>
       <source>1.00e+03</source>
-      <translation/>
+      <translation type="unfinished">1.00e+03</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="184"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinements mesh size output: It shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh, therefore details smaller then the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="187"/>
       <source>Visualize</source>
-      <translation/>
+      <translation type="unfinished">Visualize</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="197"/>
       <source>...</source>
-      <translation/>
+      <translation type="unfinished">...</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
-      <source>Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</source>
-      <translation/>
+      <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
+      <translation type="unfinished">Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation/>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation/>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
       <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
-      <translation/>
+      <translation type="unfinished">The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
       <source>Define if the triangles on the surface shall be recombined into quads</source>
-      <translation/>
+      <translation type="unfinished">Define if the triangles on the surface shall be recombined into quads</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
       <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
-      <translation/>
+      <translation type="unfinished">Define how the triangles are oriented within the transfinite mesh (if not recombined)</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
       <source>Triangle Orientation</source>
-      <translation/>
+      <translation type="unfinished">Triangle Orientation</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
@@ -4300,12 +4331,18 @@ Notes:
 1. User defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
 3. Works with most faces, either connected or unconnected </source>
-      <translation/>
+      <translation type="unfinished">If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
+Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+
+Notes:
+1. User defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
+3. Works with most faces, either connected or unconnected </translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
-      <translation/>
+      <translation type="unfinished">Auto apply transfinite curves</translation>
     </message>
   </context>
   <context>
@@ -4410,7 +4447,7 @@ Notes:
     <message>
       <location filename="../../PlaneWidget.ui" line="92"/>
       <source>Normal</source>
-      <translation>இயல்பானது</translation>
+      <translation>இயல்பான</translation>
     </message>
   </context>
   <context>
@@ -4920,7 +4957,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation>பெட்டி</translation>
+      <translation type="unfinished">Box</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -6952,7 +6989,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1503"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>ஃபெம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1504"/>
@@ -7008,7 +7045,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1687"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>ஃபெம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1688"/>
@@ -7026,7 +7063,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="2552"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>ஃபெம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2553"/>
@@ -7118,7 +7155,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1883"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>ஃபெம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1884"/>
@@ -7362,7 +7399,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="473"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>ஃபெம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="474"/>
@@ -7512,7 +7549,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1433"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>ஃபெம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1435"/>
@@ -7533,7 +7570,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>ஃபெம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1380"/>
@@ -7635,7 +7672,7 @@ No matching module was found in the current Python path.</source>
       <location filename="../ui/DlgSettingsNetgen.ui" line="14"/>
       <location filename="../ui/DlgSettingsNetgen.ui" line="20"/>
       <source>Netgen</source>
-      <translation>வலைகள்</translation>
+      <translation>வலையாக்கி</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="26"/>
@@ -8152,7 +8189,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../Command.cpp" line="2589"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>ஃபெம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2590"/>
@@ -8170,7 +8207,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../Command.cpp" line="3031"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>ஃபெம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="3032"/>
@@ -8186,7 +8223,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostFrames</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="554"/>
+      <location filename="../../TaskPostBoxes.cpp" line="563"/>
       <source>Result Frames</source>
       <translation>முடிவு சட்டங்கள்</translation>
     </message>
@@ -8194,7 +8231,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostCalculator</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2248"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2257"/>
       <source>Calculator options</source>
       <translation>கால்குலேட்டர் விருப்பங்கள்</translation>
     </message>
@@ -8659,7 +8696,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="453"/>
+      <location filename="../../TaskPostBoxes.cpp" line="462"/>
       <source>Result Display Options</source>
       <translation>முடிவு காட்சி விருப்பங்கள்</translation>
     </message>
@@ -8667,7 +8704,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostBranch</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="623"/>
+      <location filename="../../TaskPostBoxes.cpp" line="632"/>
       <source>Branch Behaviour</source>
       <translation>கிளை நடத்தை</translation>
     </message>
@@ -8675,7 +8712,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1495"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1504"/>
       <source>Clip Region, Choose Implicit Function</source>
       <translation>கிளிப் பிராந்தியம், மறைமுகமான செயல்பாட்டைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -8683,7 +8720,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1646"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1655"/>
       <source>Contours Filter Options</source>
       <translation>Contours வடிகட்டி விருப்பங்கள்</translation>
     </message>
@@ -8691,7 +8728,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1810"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1819"/>
       <source>Function Cut, Choose Implicit Function</source>
       <translation>செயல்பாடு வெட்டு, மறைமுகமான செயல்பாட்டை தேர்வு செய்யவும்</translation>
     </message>
@@ -8699,7 +8736,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1943"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1952"/>
       <source>Scalar Clip Options</source>
       <translation>ச்கேலர் கிளிப் விருப்பங்கள்</translation>
     </message>
@@ -8707,7 +8744,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2067"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2076"/>
       <source>Warp Options</source>
       <translation>வார்ப் விருப்பங்கள்</translation>
     </message>
@@ -8813,12 +8850,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="701"/>
       <source>2D Boundary Layer</source>
-      <translation/>
+      <translation type="unfinished">2D Boundary Layer</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="705"/>
-      <source>Adds a structured layer of mesh elmenets on 2D model boundaries</source>
-      <translation/>
+      <source>Adds a structured layer of mesh elements on 2D model boundaries</source>
+      <translation type="unfinished">Adds a structured layer of mesh elements on 2D model boundaries</translation>
     </message>
   </context>
   <context>
@@ -8839,12 +8876,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="908"/>
       <source>Distance-Based Refinement</source>
-      <translation/>
+      <translation type="unfinished">Distance-Based Refinement</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="911"/>
       <source>Sets mesh size based on the distance to vertices, edges, and faces</source>
-      <translation/>
+      <translation type="unfinished">Sets mesh size based on the distance to vertices, edges, and faces</translation>
     </message>
   </context>
   <context>
@@ -8852,12 +8889,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="921"/>
       <source>Manipulate Refinement</source>
-      <translation/>
+      <translation type="unfinished">Manipulate Refinement</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="924"/>
       <source>Allows to manipulate the output of a refinement in various ways</source>
-      <translation/>
+      <translation type="unfinished">Allows to manipulate the output of a refinement in various ways</translation>
     </message>
   </context>
   <context>
@@ -8865,12 +8902,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="934"/>
       <source>Advanced Refinement Types</source>
-      <translation/>
+      <translation type="unfinished">Advanced Refinement Types</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="937"/>
       <source>Allows to define the mesh size by various advanced means</source>
-      <translation/>
+      <translation type="unfinished">Allows to define the mesh size by various advanced means</translation>
     </message>
   </context>
   <context>
@@ -8878,7 +8915,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="947"/>
       <source>Shape-Based Refinement</source>
-      <translation/>
+      <translation type="unfinished">Shape-Based Refinement</translation>
     </message>
   </context>
   <context>
@@ -8886,7 +8923,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="951"/>
       <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
-      <translation/>
+      <translation type="unfinished">Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</translation>
     </message>
   </context>
   <context>
@@ -8894,12 +8931,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="963"/>
       <source>Structured Transfinite Curve</source>
-      <translation/>
+      <translation type="unfinished">Structured Transfinite Curve</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="967"/>
-      <source>Creates a fixed amount of nodes on an endge with a structured algorithm</source>
-      <translation/>
+      <source>Creates a fixed number of nodes on an edge with a structured algorithm</source>
+      <translation type="unfinished">Creates a fixed number of nodes on an edge with a structured algorithm</translation>
     </message>
   </context>
   <context>
@@ -8907,12 +8944,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="979"/>
       <source>Structured Transfinite Surface</source>
-      <translation/>
+      <translation type="unfinished">Structured Transfinite Surface</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="982"/>
       <source>Creates a structured mesh on a face</source>
-      <translation/>
+      <translation type="unfinished">Creates a structured mesh on a face</translation>
     </message>
   </context>
   <context>
@@ -8920,12 +8957,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="994"/>
       <source>Structured Transfinite Volume</source>
-      <translation/>
+      <translation type="unfinished">Structured Transfinite Volume</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="998"/>
-      <source>Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces</source>
-      <translation/>
+      <source>Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</source>
+      <translation type="unfinished">Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</translation>
     </message>
   </context>
   <context>

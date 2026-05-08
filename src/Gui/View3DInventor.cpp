@@ -90,7 +90,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent*)
 
 /* TRANSLATOR Gui::View3DInventor */
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor, Gui::MDIView)
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor, Gui::MDIViewWithCamera)
 
 View3DInventor::View3DInventor(
     Gui::Document* pcDocument,
@@ -98,7 +98,7 @@ View3DInventor::View3DInventor(
     const QOpenGLWidget* sharewidget,
     Qt::WindowFlags wflags
 )
-    : MDIView(pcDocument, parent, wflags)
+    : MDIViewWithCamera(pcDocument, parent, wflags)
     , _viewerPy(nullptr)
 {
     stack = new QStackedWidget(this);
@@ -193,7 +193,7 @@ void View3DInventor::deleteSelf()
 {
     _viewer->setSceneGraph(nullptr);
     _viewer->setDocument(nullptr);
-    MDIView::deleteSelf();
+    MDIViewWithCamera::deleteSelf();
 }
 
 View3DInventor* View3DInventor::clone()
@@ -288,7 +288,7 @@ void View3DInventor::printPdf()
         this,
         tr("Export PDF"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")))
+        FileDialog::FilterList {{QStringLiteral("PDF"), {"*.pdf"}}}
     );
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
@@ -432,6 +432,14 @@ bool View3DInventor::onMsg(const char* pMsg)
         _viewer->viewAll();
         return true;
     }
+    else if (strcmp("ViewDimetric", pMsg) == 0) {
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Dimetric));
+        return true;
+    }
+    else if (strcmp("ViewTrimetric", pMsg) == 0) {
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Trimetric));
+        return true;
+    }
     else if (strcmp("OrthographicCamera", pMsg) == 0) {
         _viewer->setCameraType(SoOrthographicCamera::getClassTypeId());
         return true;
@@ -465,13 +473,21 @@ bool View3DInventor::onMsg(const char* pMsg)
         return true;
     }
     else if (strcmp("ZoomIn", pMsg) == 0) {
-        View3DInventorViewer* viewer = getViewer();
-        viewer->navigationStyle()->zoomIn();
+        _viewer->navigationStyle()->zoomIn();
         return true;
     }
     else if (strcmp("ZoomOut", pMsg) == 0) {
-        View3DInventorViewer* viewer = getViewer();
-        viewer->navigationStyle()->zoomOut();
+        _viewer->navigationStyle()->zoomOut();
+        return true;
+    }
+    else if (strcmp("StoreWorkingView", pMsg) == 0) {
+        _viewer->saveHomePosition();
+        return true;
+    }
+    else if (strcmp("RecallWorkingView", pMsg) == 0) {
+        if (_viewer->hasHomePosition()) {
+            _viewer->resetToHomePosition();
+        }
         return true;
     }
 
@@ -558,20 +574,38 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     else if (strcmp("ViewAxo", pMsg) == 0) {
         return true;
     }
+    else if (strcmp("ViewDimetric", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("ViewTrimetric", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("OrthographicCamera", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("PerspectiveCamera", pMsg) == 0) {
+        return true;
+    }
     else if (strncmp("Dump", pMsg, 4) == 0) {
         return true;
     }
     else if (strcmp("AlignToSelection", pMsg) == 0) {
         return true;
     }
-    if (strcmp("ZoomIn", pMsg) == 0) {
+    else if (strcmp("ZoomIn", pMsg) == 0) {
         return true;
     }
-    if (strcmp("ZoomOut", pMsg) == 0) {
+    else if (strcmp("ZoomOut", pMsg) == 0) {
         return true;
     }
-    if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
         return true;
+    }
+    else if (strcmp("StoreWorkingView", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("RecallWorkingView", pMsg) == 0) {
+        return _viewer->hasHomePosition();
     }
 
     return false;
@@ -588,70 +622,7 @@ const std::string& View3DInventor::getCamera() const
 
 bool View3DInventor::setCamera(const char* pCamera)
 {
-    SoCamera* CamViewer = _viewer->getSoRenderManager()->getCamera();
-    if (!CamViewer) {
-        throw Base::RuntimeError("No camera set so far…");
-    }
-
-    SoInput in;
-    in.setBuffer((void*)pCamera, std::strlen(pCamera));
-
-    SoNode* Cam;
-    SoDB::read(&in, Cam);
-
-    if (!Cam || !Cam->isOfType(SoCamera::getClassTypeId())) {
-        throw Base::RuntimeError("Camera settings failed to read");
-    }
-
-    // this is to make sure to reliably delete the node
-    CoinPtr<SoNode> camPtr {Cam};
-
-    // toggle between perspective and orthographic camera
-    if (Cam->getTypeId() != CamViewer->getTypeId()) {
-        _viewer->setCameraType(Cam->getTypeId());
-        CamViewer = _viewer->getSoRenderManager()->getCamera();
-    }
-
-    SoPerspectiveCamera* CamViewerP = nullptr;
-    SoOrthographicCamera* CamViewerO = nullptr;
-
-    if (CamViewer->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        CamViewerP = static_cast<SoPerspectiveCamera*>(CamViewer);  // safe downward cast, knows the type
-    }
-    else if (CamViewer->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        CamViewerO = static_cast<SoOrthographicCamera*>(CamViewer);  // safe downward cast, knows
-                                                                     // the type
-    }
-
-    if (Cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        if (CamViewerP) {
-            CamViewerP->position = static_cast<SoPerspectiveCamera*>(Cam)->position;
-            CamViewerP->orientation = static_cast<SoPerspectiveCamera*>(Cam)->orientation;
-            CamViewerP->nearDistance = static_cast<SoPerspectiveCamera*>(Cam)->nearDistance;
-            CamViewerP->farDistance = static_cast<SoPerspectiveCamera*>(Cam)->farDistance;
-            CamViewerP->focalDistance = static_cast<SoPerspectiveCamera*>(Cam)->focalDistance;
-        }
-        else {
-            throw Base::TypeError("Camera type mismatch");
-        }
-    }
-    else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        if (CamViewerO) {
-            CamViewerO->viewportMapping = static_cast<SoOrthographicCamera*>(Cam)->viewportMapping;
-            CamViewerO->position = static_cast<SoOrthographicCamera*>(Cam)->position;
-            CamViewerO->orientation = static_cast<SoOrthographicCamera*>(Cam)->orientation;
-            CamViewerO->nearDistance = static_cast<SoOrthographicCamera*>(Cam)->nearDistance;
-            CamViewerO->farDistance = static_cast<SoOrthographicCamera*>(Cam)->farDistance;
-            CamViewerO->focalDistance = static_cast<SoOrthographicCamera*>(Cam)->focalDistance;
-            CamViewerO->aspectRatio = static_cast<SoOrthographicCamera*>(Cam)->aspectRatio;
-            CamViewerO->height = static_cast<SoOrthographicCamera*>(Cam)->height;
-        }
-        else {
-            throw Base::TypeError("Camera type mismatch");
-        }
-    }
-
-    return true;
+    return _viewer->setCamera(pCamera);
 }
 
 void View3DInventor::toggleClippingPlane()
@@ -761,7 +732,7 @@ void View3DInventor::dropEvent(QDropEvent* e)
         getMainWindow()->loadUrls(getAppDocument(), data->urls());
     }
     else {
-        MDIView::dropEvent(e);
+        MDIViewWithCamera::dropEvent(e);
     }
 }
 
@@ -797,7 +768,7 @@ void View3DInventor::setCurrentViewMode(ViewMode mode)
         }
     }
 
-    MDIView::setCurrentViewMode(mode);
+    MDIViewWithCamera::setCurrentViewMode(mode);
 
     // This widget becomes the focus proxy of the embedded GL widget if we leave
     // the 'Child' mode. If we reenter 'Child' mode the focus proxy is reset to 0.
@@ -932,7 +903,7 @@ void View3DInventor::focusInEvent(QFocusEvent*)
 
 void View3DInventor::contextMenuEvent(QContextMenuEvent* e)
 {
-    MDIView::contextMenuEvent(e);
+    MDIViewWithCamera::contextMenuEvent(e);
 }
 
 void View3DInventor::customEvent(QEvent* e)

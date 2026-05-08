@@ -649,14 +649,16 @@ Se non selezionato, saranno ordinate per il loro nome.</translation>
       <translation>Seleziona un'immagine</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>File immagine (*.jpg *.jpeg *.png *.bmp);;Tutti i file (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation>File di immagine</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>File immagine (*.svg);;Tutti i file (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>Tutti i file</translation>
     </message>
   </context>
   <context>

@@ -909,18 +909,18 @@ so that self intersection is avoided.</source>
       <translation type="unfinished">Convert to Multi-Transform feature</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="255"/>
+      <location filename="../../SketchWorkflow.cpp" line="265"/>
       <source>Sketch on Face</source>
       <translation type="unfinished">Sketch on Face</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="316"/>
+      <location filename="../../SketchWorkflow.cpp" line="326"/>
       <source>Make copy</source>
       <translation>Egin kopia</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="518"/>
-      <location filename="../../SketchWorkflow.cpp" line="775"/>
+      <location filename="../../SketchWorkflow.cpp" line="528"/>
+      <location filename="../../SketchWorkflow.cpp" line="804"/>
       <source>New Sketch</source>
       <translation type="unfinished">New Sketch</translation>
     </message>
@@ -1568,23 +1568,6 @@ If zero, it is equal to Radius2</translation>
       <location filename="../../TaskDatumParameters.cpp" line="109"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>Ez dago uneko erreferentzia multzoari doitzen zaion eranste modurik. Jarraitzea aukeratzen baduzu, elementuak orain dagoen tokian jarraituko du, eta ez da mugituko erreferentziak aldatzen diren arte. Jarraitu?</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgFeatureParameters</name>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
-      <source>The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation type="unfinished">The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="236"/>
-      <source>Input error</source>
-      <translation>Sarrera-errorea</translation>
     </message>
   </context>
   <context>
@@ -3154,51 +3137,51 @@ zehaztutako norabidean</translation>
       <translation>Errorea</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="812"/>
+      <location filename="../../SketchWorkflow.cpp" line="841"/>
       <source>Several sub-elements selected</source>
       <translation>Azpielementu bat baino gehiago hautatu da</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="813"/>
+      <location filename="../../SketchWorkflow.cpp" line="842"/>
       <source>Select a single face as support for a sketch!</source>
       <translation type="unfinished">Select a single face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="820"/>
+      <location filename="../../SketchWorkflow.cpp" line="849"/>
       <source>Select a face as support for a sketch!</source>
       <translation type="unfinished">Select a face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="827"/>
+      <location filename="../../SketchWorkflow.cpp" line="856"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation type="unfinished">Need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="834"/>
+      <location filename="../../SketchWorkflow.cpp" line="863"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="819"/>
+      <location filename="../../SketchWorkflow.cpp" line="848"/>
       <source>No support face selected</source>
       <translation>Ez da euskarri-aurpegirik hautatu</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="826"/>
+      <location filename="../../SketchWorkflow.cpp" line="855"/>
       <source>No planar support</source>
       <translation>Ez dago euskarri planarrik</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="833"/>
+      <location filename="../../SketchWorkflow.cpp" line="862"/>
       <source>No valid planes in this document</source>
       <translation>Ez dago baliozko planorik dokumentu honetan</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="760"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../SketchWorkflow.cpp" line="731"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Elkarrizketa-koadro bat irekita dago ataza-panelean</translation>
     </message>
@@ -3238,11 +3221,11 @@ zehaztutako norabidean</translation>
       <translation>Ez dago krokisik erabilgarri dokumentuan</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../SketchWorkflow.cpp" line="732"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
     </message>
@@ -3535,9 +3518,9 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="94"/>
       <source>Edit %1</source>
       <translation>Editatu %1</translation>
     </message>
@@ -4474,19 +4457,19 @@ over 90: larger hole radius at the bottom</source>
       <translation>Ezin dira eragiketa boolearrak egin oinarri-forma baliogabearekin</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeatureLoft.cpp" line="333"/>
       <location filename="../../../App/FeatureLoft.cpp" line="377"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeaturePipe.cpp" line="482"/>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4521,10 +4504,10 @@ over 90: larger hole radius at the bottom</source>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="523"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>Emaitza gisa sortutako forma ez da solidoa</translation>
     </message>
@@ -4601,8 +4584,8 @@ over 90: larger hole radius at the bottom</source>
       <translation type="unfinished">Creation failed because direction is orthogonal to sketch's normal vector</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <source>Creating a face from sketch failed</source>
       <translation>Huts egin du aurpegia krokis batetik sortzeak</translation>
     </message>
@@ -4667,9 +4650,9 @@ Ez da onartzen krokis bateko entitateak ebakitzea.</translation>
       <translation>Errorea: Aurpegiak planarra izan behar du</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <location filename="../../../App/FeatureHelix.cpp" line="445"/>
       <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>Errorea: Emaitza ez da solidoa</translation>
     </message>
@@ -4943,15 +4926,15 @@ Ez da onartzen krokis bateko entitateak edo aurpegi anitz ebakitzea.</translatio
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <location filename="../../../App/FeaturePipe.cpp" line="507"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <source>Unknown operation type</source>
       <translation type="unfinished">Unknown operation type</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <location filename="../../../App/FeaturePipe.cpp" line="515"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Failed to perform boolean operation</source>
       <translation type="unfinished">Failed to perform boolean operation</translation>
     </message>
@@ -5079,37 +5062,37 @@ Ez da onartzen krokis bateko entitateak edo aurpegi anitz ebakitzea.</translatio
       <translation>Oinarri-elementuarekin fusionatzeak huts egin du</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="101"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="99"/>
       <source>Transformation feature Linked object is not a Part object</source>
       <translation>Estekatutako objektuaren transformazio-eginbidea ez da pieza-objektua</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="109"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="107"/>
       <source>No features selected to be mirrored.</source>
       <translation type="unfinished">No features selected to be mirrored.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="110"/>
       <source>No features selected to be patterned.</source>
       <translation type="unfinished">No features selected to be patterned.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="115"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="113"/>
       <source>No features selected to be transformed.</source>
       <translation type="unfinished">No features selected to be transformed.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="356"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="354"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Ezin da transformatu euskarri-forma baliogabea</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="407"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="405"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Elementu gehitzailearen/kentzailearen forma hutsik dago</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="398"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="396"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Elementu gehitzaileak eta kentzaileak soilik transformatu daitezke</translation>
     </message>
@@ -5452,6 +5435,18 @@ Ez da onartzen krokis bateko entitateak edo aurpegi anitz ebakitzea.</translatio
       <location filename="../../TaskPatternParameters.cpp" line="334"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation type="unfinished">Invalid selection. Select an edge, planar face, or datum line.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation type="unfinished">The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</translation>
     </message>
   </context>
 </TS>

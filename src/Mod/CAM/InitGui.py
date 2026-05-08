@@ -109,11 +109,11 @@ class CAMWorkbench(Workbench):
         from packaging.version import Version, parse
 
         FreeCADGui.addPreferencePage(
-            PathPreferencesPathJob.JobPreferencesPage,
+            AssetPreferences.AssetPreferencesPage,
             QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
         FreeCADGui.addPreferencePage(
-            AssetPreferences.AssetPreferencesPage,
+            PathPreferencesPathJob.JobPreferencesPage,
             QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
         FreeCADGui.addPreferencePage(
@@ -159,6 +159,7 @@ class CAMWorkbench(Workbench):
             "CAM_DressupDogbone",
             "CAM_DressupDragKnife",
             "CAM_DressupLeadInOut",
+            "CAM_DressupMirror",
             "CAM_DressupRampEntry",
             "CAM_DressupTag",
             "CAM_DressupZCorrect",

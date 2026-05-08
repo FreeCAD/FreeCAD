@@ -468,9 +468,9 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
     <message numerus="yes">
       <location filename="../../TaskFillingEdge.cpp" line="408"/>
       <source>Edge has %n adjacent face(s)</source>
-      <translation type="unfinished">
-        <numerusform>Kant har %n angränsande sidor</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
+      <translation>
+        <numerusform>Kanten har %n angränsande yta</numerusform>
+        <numerusform>Kanten har %n angränsande ytor</numerusform>
       </translation>
     </message>
     <message>
@@ -481,7 +481,7 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="433"/>
       <source>Edge has no adjacent faces</source>
-      <translation>Kant har inga angränsande sidor</translation>
+      <translation>Kanten har inga angränsande ytor</translation>
     </message>
   </context>
   <context>
@@ -490,7 +490,7 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="64"/>
       <source>Edit Filling</source>
-      <translation>Redigera Fyllning</translation>
+      <translation>Redigera fyllning</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="667"/>
@@ -500,7 +500,7 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="59"/>
       <source>Edit Sections</source>
-      <translation>Redigera Sektioner</translation>
+      <translation>Redigera sektioner</translation>
     </message>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
@@ -536,7 +536,7 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="641"/>
       <source>Edge has no adjacent faces</source>
-      <translation>Kant har inga angränsande sidor</translation>
+      <translation>Kanten har inga angränsande ytor</translation>
     </message>
   </context>
   <context>

@@ -45,9 +45,9 @@ Las propiedades dependientes se calculan a continuación.</translation>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, negative shrinks.</source>
-      <translation>El ángulo del cono que forma un casco alrededor de la hélice.
-Los valores distintos de cero convierten la hélice en una espiral cónica.
-Los valores positivos aumentan el radio, los negativos lo disminuyen.</translation>
+      <translation>El ángulo del cono que forma una envoltura alrededor de la hélice.
+Los valores distintos de cero transforman la hélice en una espiral cónica.
+Los valores positivos hacen que el radio aumente, los negativos lo reducen.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="156"/>
@@ -76,8 +76,7 @@ i.e. counter-clockwise when moving along its axis.</source>
       <location filename="../../../App/FeatureHelix.cpp" line="198"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation>Si es falso, la herramienta propondrá un valor inicial para el "en base a paso" en la caja delimitante del perfil,
-para que se evite la auto intersección.</translation>
+      <translation>Si es falso, la herramienta propondrá un valor inicial para el paso basado en el cuadro delimitador del perfil, para evitar la autointersección.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="210"/>
@@ -181,7 +180,7 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../Command.cpp" line="1467"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a path and adds it to the body</translation>
+      <translation>Barre el boceto o perfil seleccionado a lo largo de un camino y lo añade al cuerpo</translation>
     </message>
   </context>
   <context>
@@ -289,7 +288,7 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../Command.cpp" line="2022"/>
       <source>Applies a draft to the selected faces</source>
-      <translation type="unfinished">Applies a draft to the selected faces</translation>
+      <translation>Aplica un borrador a las caras seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -343,7 +342,7 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../Command.cpp" line="1397"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
-      <translation type="unfinished">Revolves the sketch or profile around a line or axis and removes it from the body</translation>
+      <translation>Gira el boceto, croquis o perfil alrededor de una línea o eje y lo elimina del cuerpo</translation>
     </message>
   </context>
   <context>
@@ -397,7 +396,7 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../Command.cpp" line="2277"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
-      <translation type="unfinished">Duplicates the selected features or the active body in a linear pattern</translation>
+      <translation>Duplica las características seleccionadas o el cuerpo activo en un patrón lineal</translation>
     </message>
   </context>
   <context>
@@ -415,7 +414,7 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="394"/>
       <source>Migrates the document to the modern Part Design workflow</source>
-      <translation type="unfinished">Migrates the document to the modern Part Design workflow</translation>
+      <translation>Migra el documento al flujo de trabajo Part Design moderno</translation>
     </message>
   </context>
   <context>
@@ -446,7 +445,7 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="831"/>
       <source>Move Object To…</source>
-      <translation type="unfinished">Move Object To…</translation>
+      <translation>Mover objeto a…</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="832"/>
@@ -464,12 +463,12 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="1028"/>
       <source>Move Feature After…</source>
-      <translation type="unfinished">Move Feature After…</translation>
+      <translation>Mover característica después de…</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1029"/>
       <source>Moves the selected feature after another feature in the same body</source>
-      <translation type="unfinished">Moves the selected feature after another feature in the same body</translation>
+      <translation>Mueve la operación seleccionada después de otra en el mismo cuerpo</translation>
     </message>
   </context>
   <context>
@@ -482,12 +481,12 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="664"/>
       <source>Set Tip</source>
-      <translation type="unfinished">Set Tip</translation>
+      <translation>Ajusta la punta</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="665"/>
       <source>Moves the tip of the body to the selected feature</source>
-      <translation type="unfinished">Moves the tip of the body to the selected feature</translation>
+      <translation>Mueve la punta del cuerpo hacia la característica seleccionada</translation>
     </message>
   </context>
   <context>
@@ -500,12 +499,12 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../Command.cpp" line="2450"/>
       <source>Multi-Transform</source>
-      <translation type="unfinished">Multi-Transform</translation>
+      <translation>Multi-transformación</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2451"/>
       <source>Applies multiple transformations to the selected features or active body</source>
-      <translation type="unfinished">Applies multiple transformations to the selected features or active body</translation>
+      <translation>Aplica múltiples transformaciones a las características seleccionadas o al cuerpo activo</translation>
     </message>
   </context>
   <context>
@@ -662,12 +661,12 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../Command.cpp" line="317"/>
       <source>Shape Binder</source>
-      <translation type="unfinished">Shape Binder</translation>
+      <translation>Carpeta de formas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="318"/>
       <source>Creates a new shape binder</source>
-      <translation type="unfinished">Creates a new shape binder</translation>
+      <translation>Crea una nueva carpeta de formas</translation>
     </message>
   </context>
   <context>
@@ -704,7 +703,7 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../Command.cpp" line="1750"/>
       <source>Sweeps the selected sketch or profile along a helix and removes it from the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a helix and removes it from the body</translation>
+      <translation>Desplaza el boceto o perfil seleccionado a lo largo de una hélice y lo elimina del cuerpo</translation>
     </message>
   </context>
   <context>
@@ -722,7 +721,7 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../Command.cpp" line="1617"/>
       <source>Lofts the selected sketch or profile along a path and removes it from the body</source>
-      <translation type="unfinished">Lofts the selected sketch or profile along a path and removes it from the body</translation>
+      <translation>La función crea una superficie de transición entre el boceto o perfil seleccionado y lo elimina del cuerpo</translation>
     </message>
   </context>
   <context>
@@ -740,7 +739,7 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../Command.cpp" line="1517"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a path and removes it from the body</translation>
+      <translation>Recorre el boceto o perfil seleccionado a lo largo de una trayectoria y lo elimina del cuerpo</translation>
     </message>
   </context>
   <context>
@@ -758,7 +757,7 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../Command.cpp" line="2092"/>
       <source>Applies thickness and removes the selected faces</source>
-      <translation type="unfinished">Applies thickness and removes the selected faces</translation>
+      <translation>Aplica espesor y elimina las caras seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -771,12 +770,12 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../CommandPrimitive.cpp" line="77"/>
       <source>Additive Primitive</source>
-      <translation type="unfinished">Additive Primitive</translation>
+      <translation>Primitiva aditiva</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="78"/>
       <source>Creates an additive primitive</source>
-      <translation type="unfinished">Creates an additive primitive</translation>
+      <translation>Crea una primitiva aditiva</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
@@ -829,12 +828,12 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../CommandPrimitive.cpp" line="285"/>
       <source>Subtractive Primitive</source>
-      <translation type="unfinished">Subtractive Primitive</translation>
+      <translation>Primitiva substractiva</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="286"/>
       <source>Creates a subtractive primitive</source>
-      <translation type="unfinished">Creates a subtractive primitive</translation>
+      <translation>Crea una primitiva substractiva</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="400"/>
@@ -882,17 +881,17 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../Command.cpp" line="338"/>
       <source>Edit Shape Binder</source>
-      <translation type="unfinished">Edit Shape Binder</translation>
+      <translation>Editar carpeta de formas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="349"/>
       <source>Create Shape Binder</source>
-      <translation type="unfinished">Create Shape Binder</translation>
+      <translation>Crear carpeta de formas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
       <source>Create Sub-Shape Binder</source>
-      <translation type="unfinished">Create Sub-Shape Binder</translation>
+      <translation>Crear carpeta de subformas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
@@ -907,21 +906,21 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../Command.cpp" line="2504"/>
       <source>Convert to Multi-Transform feature</source>
-      <translation type="unfinished">Convert to Multi-Transform feature</translation>
+      <translation>Función Convertir a Multitransformación</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="255"/>
+      <location filename="../../SketchWorkflow.cpp" line="265"/>
       <source>Sketch on Face</source>
-      <translation type="unfinished">Sketch on Face</translation>
+      <translation>Boceto en cara</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="316"/>
+      <location filename="../../SketchWorkflow.cpp" line="326"/>
       <source>Make copy</source>
       <translation>Copia</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="518"/>
-      <location filename="../../SketchWorkflow.cpp" line="775"/>
+      <location filename="../../SketchWorkflow.cpp" line="528"/>
+      <location filename="../../SketchWorkflow.cpp" line="804"/>
       <source>New Sketch</source>
       <translation>Nuevo croquis</translation>
     </message>
@@ -939,17 +938,17 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../CommandBody.cpp" line="529"/>
       <source>Migrate legacy Part Design features to bodies</source>
-      <translation type="unfinished">Migrate legacy Part Design features to bodies</translation>
+      <translation>Migrar las características heredadas de diseño de piezas a los cuerpos</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="776"/>
       <source>Duplicate a Part Design object</source>
-      <translation type="unfinished">Duplicate a Part Design object</translation>
+      <translation>Duplicar un objeto de Diseño de Pieza</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1121"/>
       <source>Move a feature inside body</source>
-      <translation type="unfinished">Move a feature inside body</translation>
+      <translation>Mueve una operación dentro de un cuerpo</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="730"/>
@@ -987,7 +986,7 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Face Tools</source>
-      <translation type="unfinished">Face Tools</translation>
+      <translation>Herramientas de cara</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
@@ -997,17 +996,17 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Boolean Tools</source>
-      <translation type="unfinished">Boolean Tools</translation>
+      <translation>Herramientas booleanas</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Helper Tools</source>
-      <translation type="unfinished">Helper Tools</translation>
+      <translation>Herramientas de ayuda</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Modeling Tools</source>
-      <translation type="unfinished">Modeling Tools</translation>
+      <translation>Herramientas de modelado</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
@@ -1020,27 +1019,27 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute Parameter</source>
-      <translation type="unfinished">Involute Parameter</translation>
+      <translation>Parámetro de involuta</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
       <source>Number of teeth</source>
-      <translation type="unfinished">Number of teeth</translation>
+      <translation>Número de dientes</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="40"/>
       <source>Module</source>
-      <translation type="unfinished">Module</translation>
+      <translation>Módulo</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="84"/>
       <source>Pressure angle</source>
-      <translation type="unfinished">Pressure angle</translation>
+      <translation>Ángulo de presión</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="125"/>
       <source>High precision</source>
-      <translation type="unfinished">High precision</translation>
+      <translation>Alta precisión</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="139"/>
@@ -1057,17 +1056,17 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
       <source>External gear</source>
-      <translation type="unfinished">External gear</translation>
+      <translation>Engranaje externo</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="179"/>
       <source>Addendum coefficient</source>
-      <translation type="unfinished">Addendum coefficient</translation>
+      <translation>Coeficiente Addendum</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="199"/>
       <source>Dedendum coefficient</source>
-      <translation type="unfinished">Dedendum coefficient</translation>
+      <translation>Ceoficiente Dedendum</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="219"/>
@@ -1077,7 +1076,7 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile shift coefficient</source>
-      <translation type="unfinished">Profile shift coefficient</translation>
+      <translation>Coeficiente de cambio de perfil</translation>
     </message>
   </context>
   <context>
@@ -1091,8 +1090,8 @@ Realiza un seguimiento de las posiciones relativas, admite varios tipos de geome
       <location filename="../../DlgActiveBody.ui" line="20"/>
       <source>To create a new Part Design object, there must be an active body in the document.
 Select a body from below, or create a new body.</source>
-      <translation type="unfinished">To create a new Part Design object, there must be an active body in the document.
-Select a body from below, or create a new body.</translation>
+      <translation>Para crear un nuevo objeto Part Design debe haber un cuerpo activo en el documento.
+Selecciona un cuerpo de los siguientes o crea un nuevo cuerpo.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="35"/>
@@ -1208,14 +1207,14 @@ Select a body from below, or create a new body.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="843"/>
       <source>Radius 3</source>
-      <translation type="unfinished">Radius 3</translation>
+      <translation>Radio 3</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
       <source>Radius in local Y-direction
 If zero, it is equal to Radius2</source>
-      <translation type="unfinished">Radius in local Y-direction
-If zero, it is equal to Radius2</translation>
+      <translation>Radio en la dirección Y local.
+Si es cero, es igual a Radio2</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
@@ -1563,29 +1562,12 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="107"/>
       <source>Incompatible Reference Set</source>
-      <translation type="unfinished">Incompatible Reference Set</translation>
+      <translation>Conjunto de referencia incompatible</translation>
     </message>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="109"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>No hay ningún modo de fijación que cumpla el conjunto de referencias actual. Si elijes continuar, la operación se mantendrá donde esta ahora, y no se moverá a medida que las referencias cambien. ¿Continuar?</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgFeatureParameters</name>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
-      <source>The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation type="unfinished">The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="236"/>
-      <source>Input error</source>
-      <translation>Error de entrada</translation>
     </message>
   </context>
   <context>
@@ -1836,7 +1818,7 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="97"/>
       <source>Select Attachment</source>
-      <translation type="unfinished">Select Attachment</translation>
+      <translation>Seleccione el archivo adjunto</translation>
     </message>
   </context>
   <context>
@@ -2295,12 +2277,12 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
       <source>Offset the pad from the face at which the pad will end on side 1</source>
-      <translation type="unfinished">Offset the pad from the face at which the pad will end on side 1</translation>
+      <translation>Desplace el relleno desde la cara en la que terminará en el lado 1</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
       <source>Offset the pad from the face at which the pad will end on side 2</source>
-      <translation type="unfinished">Offset the pad from the face at which the pad will end on side 2</translation>
+      <translation>Desplace la almohadilla desde la cara en la que terminará en el lado 2</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="44"/>
@@ -2374,12 +2356,12 @@ Please adjust the parameters and try again.</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="255"/>
       <location filename="../../TaskPadPocketParameters.ui" line="484"/>
       <source>Select Face</source>
-      <translation type="unfinished">Select Face</translation>
+      <translation>Seleccionar cara</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="281"/>
       <source>Side 2</source>
-      <translation type="unfinished">Side 2</translation>
+      <translation>Lado 2</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="512"/>
@@ -2450,7 +2432,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="589"/>
       <source>X-component of direction vector</source>
-      <translation type="unfinished">X-component of direction vector</translation>
+      <translation>Componente X del vector de dirección</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="611"/>
@@ -2460,7 +2442,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="618"/>
       <source>Y-component of direction vector</source>
-      <translation type="unfinished">Y-component of direction vector</translation>
+      <translation>Componente Y del vector de dirección</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="640"/>
@@ -2470,7 +2452,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="647"/>
       <source>Z-component of direction vector</source>
-      <translation type="unfinished">Z-component of direction vector</translation>
+      <translation>Componente Z del vector de dirección</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="118"/>
@@ -2486,7 +2468,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="46"/>
       <source>Side 1</source>
-      <translation type="unfinished">Side 1</translation>
+      <translation>Lado 1</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="121"/>
@@ -2498,13 +2480,13 @@ measured along the specified direction</source>
       <location filename="../../TaskPadPocketParameters.ui" line="174"/>
       <location filename="../../TaskPadPocketParameters.ui" line="403"/>
       <source>Select Shape</source>
-      <translation type="unfinished">Select Shape</translation>
+      <translation>Seleccione forma</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="189"/>
       <location filename="../../TaskPadPocketParameters.ui" line="418"/>
       <source>Selects all faces of the shape</source>
-      <translation type="unfinished">Selects all faces of the shape</translation>
+      <translation>Seleccione todas las caras de la forma</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="678"/>
@@ -2547,7 +2529,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
       <source>Curvilinear equivalence</source>
-      <translation type="unfinished">Curvilinear equivalence</translation>
+      <translation>Equivalencia curvilínea</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
@@ -2592,7 +2574,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="598"/>
       <source>Section Orientation</source>
-      <translation type="unfinished">Section Orientation</translation>
+      <translation>Orientación de la sección</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="626"/>
@@ -2616,22 +2598,22 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
       <source>Corner transition</source>
-      <translation type="unfinished">Corner transition</translation>
+      <translation>Transición de esquina</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right corner</source>
-      <translation type="unfinished">Right corner</translation>
+      <translation>Esquina derecha</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
       <source>Round corner</source>
-      <translation type="unfinished">Round corner</translation>
+      <translation>Esquina redondeada</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to Sweep Along</source>
-      <translation type="unfinished">Path to Sweep Along</translation>
+      <translation>Camino a seguir</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2641,7 +2623,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="138"/>
       <source>Remove edge</source>
-      <translation type="unfinished">Remove edge</translation>
+      <translation>Eliminar borde</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
@@ -2651,7 +2633,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="69"/>
       <source>Pipe Parameters</source>
-      <translation type="unfinished">Pipe Parameters</translation>
+      <translation>Parámetros de tubería</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="80"/>
@@ -2868,7 +2850,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="184"/>
       <source>Two angles</source>
-      <translation type="unfinished">Two angles</translation>
+      <translation>Dos ángulos</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="447"/>
@@ -2909,7 +2891,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="61"/>
       <source>Shape Binder Parameters</source>
-      <translation type="unfinished">Shape Binder Parameters</translation>
+      <translation>Parámetros del aglutinador de forma</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="139"/>
@@ -2967,7 +2949,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="93"/>
       <source>Recto verso</source>
-      <translation type="unfinished">Recto verso</translation>
+      <translation>Anverso</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="101"/>
@@ -2994,7 +2976,7 @@ measured along the specified direction</source>
       <location filename="../../TaskThicknessParameters.cpp" line="269"/>
       <source>Empty thickness created!
 </source>
-      <translation type="unfinished">Empty thickness created!
+      <translation>¡Se ha creado un espesor vacío!
 </translation>
     </message>
   </context>
@@ -3044,17 +3026,17 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="456"/>
       <source>Base XY-plane</source>
-      <translation type="unfinished">Base XY-plane</translation>
+      <translation>Plano base XY</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="457"/>
       <source>Base YZ-plane</source>
-      <translation type="unfinished">Base YZ-plane</translation>
+      <translation>Plano base YZ</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="458"/>
       <source>Base XZ-plane</source>
-      <translation type="unfinished">Base XZ-plane</translation>
+      <translation>Plano base XZ</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="430"/>
@@ -3075,12 +3057,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="78"/>
       <source>Add Feature</source>
-      <translation type="unfinished">Add Feature</translation>
+      <translation>Añade operación</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="88"/>
       <source>Remove Feature</source>
-      <translation type="unfinished">Remove Feature</translation>
+      <translation>Eliminar operación</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="122"/>
@@ -3098,7 +3080,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../CommandBody.cpp" line="917"/>
       <source>Select Body</source>
-      <translation type="unfinished">Select Body</translation>
+      <translation>Selecciona cuerpo</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="918"/>
@@ -3111,7 +3093,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../CommandBody.cpp" line="1106"/>
       <source>Move Feature After…</source>
-      <translation type="unfinished">Move Feature After…</translation>
+      <translation>Mover característica después de…</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1107"/>
@@ -3121,12 +3103,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../CommandBody.cpp" line="1194"/>
       <source>Move Tip</source>
-      <translation type="unfinished">Move Tip</translation>
+      <translation>Consejo para mover</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1200"/>
       <source>Set tip to last feature?</source>
-      <translation type="unfinished">Set tip to last feature?</translation>
+      <translation>¿Establecer la sugerencia para la última función?</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1195"/>
@@ -3154,51 +3136,51 @@ measured along the specified direction</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="812"/>
+      <location filename="../../SketchWorkflow.cpp" line="841"/>
       <source>Several sub-elements selected</source>
       <translation>Varios sub-elementos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="813"/>
+      <location filename="../../SketchWorkflow.cpp" line="842"/>
       <source>Select a single face as support for a sketch!</source>
-      <translation type="unfinished">Select a single face as support for a sketch!</translation>
+      <translation>¡Seleccione una única cara como base para un croquis!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="820"/>
+      <location filename="../../SketchWorkflow.cpp" line="849"/>
       <source>Select a face as support for a sketch!</source>
-      <translation type="unfinished">Select a face as support for a sketch!</translation>
+      <translation>¡Seleccione una cara como base para un croquis!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="827"/>
+      <location filename="../../SketchWorkflow.cpp" line="856"/>
       <source>Need a planar face as support for a sketch!</source>
-      <translation type="unfinished">Need a planar face as support for a sketch!</translation>
+      <translation>¡Es necesaria una cara plana como base de un croquis!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="834"/>
+      <location filename="../../SketchWorkflow.cpp" line="863"/>
       <source>Create a plane first or select a face to sketch on</source>
-      <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
+      <translation>Primero cree un plano o seleccione una cara para dibujar</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="819"/>
+      <location filename="../../SketchWorkflow.cpp" line="848"/>
       <source>No support face selected</source>
       <translation>Ninguna cara de soporte seleccionada</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="826"/>
+      <location filename="../../SketchWorkflow.cpp" line="855"/>
       <source>No planar support</source>
       <translation>No hay soporte plano</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="833"/>
+      <location filename="../../SketchWorkflow.cpp" line="862"/>
       <source>No valid planes in this document</source>
       <translation>No hay planos válidos en este documento</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="760"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../SketchWorkflow.cpp" line="731"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Un diálogo ya está abierto en el panel de tareas</translation>
     </message>
@@ -3225,7 +3207,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../Command.cpp" line="470"/>
       <source>Sub-shape binder</source>
-      <translation type="unfinished">Sub-shape binder</translation>
+      <translation>Carpeta de subformas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1055"/>
@@ -3238,13 +3220,13 @@ measured along the specified direction</source>
       <translation>Ningún croquis disponible en el documento</translation>
     </message>
     <message>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../SketchWorkflow.cpp" line="732"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>¿Cerrar este cuadro de diálogo?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1825"/>
@@ -3261,12 +3243,12 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1833"/>
       <location filename="../../Command.cpp" line="2195"/>
       <source>Selection is not in the active body</source>
-      <translation type="unfinished">Selection is not in the active body</translation>
+      <translation>La selección no es en el cuerpo activo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1861"/>
       <source>Shape of the selected part is empty</source>
-      <translation type="unfinished">Shape of the selected part is empty</translation>
+      <translation>La forma de la parte seleccionada está vacía</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1834"/>
@@ -3276,7 +3258,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../Command.cpp" line="1026"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
-      <translation type="unfinished">Consider using a shape binder or a base feature to reference external geometry in a body</translation>
+      <translation>Considere la posibilidad de utilizar un enlazador de formas o una característica base para hacer referencia a la geometría externa en un cuerpo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1847"/>
@@ -3314,12 +3296,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../CommandBody.cpp" line="128"/>
       <source>A body cannot be based on a Part Design feature.</source>
-      <translation type="unfinished">A body cannot be based on a Part Design feature.</translation>
+      <translation>Un cuerpo no puede basarse en una característica de diseño de piezas.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="136"/>
       <source>%1 already belongs to a body and cannot be used as a base feature for another body.</source>
-      <translation type="unfinished">%1 already belongs to a body and cannot be used as a base feature for another body.</translation>
+      <translation>%1 ya pertenece al cuerpo y no puede ser usado como característica base para otro cuerpo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="152"/>
@@ -3377,17 +3359,17 @@ Esto puede conducir a resultados inesperados.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="697"/>
       <source>Select exactly one Part Design feature or a body.</source>
-      <translation type="unfinished">Select exactly one Part Design feature or a body.</translation>
+      <translation>Seleccione exactamente una característica de diseño de piezas o un cuerpo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="705"/>
       <source>Could not determine a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Could not determine a body for the selected feature '%s'.</translation>
+      <translation>No se pudo determinar un cuerpo para la característica seleccionada '%s'.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="886"/>
       <source>Only features of a single source body can be moved</source>
-      <translation type="unfinished">Only features of a single source body can be moved</translation>
+      <translation>Solo se pueden mover las características de un único cuerpo de origen</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="621"/>
@@ -3397,7 +3379,7 @@ Esto puede conducir a resultados inesperados.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="429"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
-      <translation type="unfinished">No Part Design features without body found Nothing to migrate.</translation>
+      <translation>No se encontraron características de diseño de piezas sin cuerpo. No hay nada que migrar.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="622"/>
@@ -3506,14 +3488,14 @@ Esto puede conducir a resultados inesperados.</translation>
       <source>To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</source>
-      <translation type="unfinished">To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
+      <translation>Para utilizar el Diseño de piezas, es necesario que haya un cuerpo activo en el documento. Active un cuerpo (haga doble clic) o cree uno nuevo.
 
-For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</translation>
+Para documentos heredados con objetos de diseño de piezas que carecen de un cuerpo, utilice la función de migración en Diseño de Piezas para colocarlos en un cuerpo.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="209"/>
       <source>To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</source>
-      <translation type="unfinished">To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</translation>
+      <translation>Para crear un nuevo objeto de Diseño de Pieza, se requiere un cuerpo activo en el documento. Active un cuerpo existente (haga doble clic) o cree uno nuevo.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="275"/>
@@ -3537,16 +3519,16 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="94"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="107"/>
       <source>Set Face Colors</source>
-      <translation type="unfinished">Set Face Colors</translation>
+      <translation>Establecer colores de caras</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="114"/>
@@ -3585,13 +3567,13 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <location filename="../../ViewProviderDressUp.cpp" line="94"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
-      <translation type="unfinished">%1 misses a base feature.
-This feature is broken and cannot be edited.</translation>
+      <translation>%1 carece de una función básica.
+Esta función está defectuosa y no se puede editar.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="222"/>
       <source>Edit Shape Binder</source>
-      <translation type="unfinished">Edit Shape Binder</translation>
+      <translation>Editar carpeta de formas</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="352"/>
@@ -3601,27 +3583,27 @@ This feature is broken and cannot be edited.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="354"/>
       <source>Select Bound Object</source>
-      <translation type="unfinished">Select Bound Object</translation>
+      <translation>Seleccionar objeto vinculado</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="156"/>
       <source>The document "%1" you are editing was designed with an old version of Part Design workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was designed with an old version of Part Design workbench.</translation>
+      <translation>El documento "%1" que está editando fue diseñado en una versión antigua del banco de trabajo Part Design.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="163"/>
       <source>Migrate in order to use modern Part Design features?</source>
-      <translation type="unfinished">Migrate in order to use modern Part Design features?</translation>
+      <translation>¿Migrar para poder utilizar las funciones modernas de Diseño de Piezas?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="168"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy Part Design or have a slightly broken structure.</source>
-      <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy Part Design or have a slightly broken structure.</translation>
+      <translation>El documento "%1" parece estar en medio del proceso de migración desde el sistema de Diseño de Piezas heredado o tener una estructura ligeramente defectuosa.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="175"/>
       <source>Make the migration automatically?</source>
-      <translation type="unfinished">Make the migration automatically?</translation>
+      <translation>¿Realizar la migración automáticamente?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="178"/>
@@ -3635,12 +3617,12 @@ Aunque podrá migrar en cualquier momento después con 'Part Design -&gt; Migrat
     <message>
       <location filename="../../WorkflowManager.cpp" line="191"/>
       <source>Migrate Manually</source>
-      <translation type="unfinished">Migrate Manually</translation>
+      <translation>Migrar manualmente</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="70"/>
       <source>Edit Boolean</source>
-      <translation type="unfinished">Edit Boolean</translation>
+      <translation>Editar booleana</translation>
     </message>
     <message>
       <location filename="../../ViewProviderChamfer.cpp" line="42"/>
@@ -3650,7 +3632,7 @@ Aunque podrá migrar en cualquier momento después con 'Part Design -&gt; Migrat
     <message>
       <location filename="../../ViewProviderDraft.cpp" line="43"/>
       <source>Edit Draft</source>
-      <translation type="unfinished">Edit Draft</translation>
+      <translation>Editar croquis</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="42"/>
@@ -3660,12 +3642,12 @@ Aunque podrá migrar en cualquier momento después con 'Part Design -&gt; Migrat
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="45"/>
       <source>Edit Groove</source>
-      <translation type="unfinished">Edit Groove</translation>
+      <translation>Editar surco</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="50"/>
       <source>Edit Helix</source>
-      <translation type="unfinished">Edit Helix</translation>
+      <translation>Editar hélice</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="129"/>
@@ -3675,12 +3657,12 @@ Aunque podrá migrar en cualquier momento después con 'Part Design -&gt; Migrat
     <message>
       <location filename="../../ViewProviderLinearPattern.cpp" line="40"/>
       <source>Edit Linear Pattern</source>
-      <translation type="unfinished">Edit Linear Pattern</translation>
+      <translation>Editar matriz lineal</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="67"/>
       <source>Edit Loft</source>
-      <translation type="unfinished">Edit Loft</translation>
+      <translation>Editar Desván</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="40"/>
@@ -3690,17 +3672,17 @@ Aunque podrá migrar en cualquier momento después con 'Part Design -&gt; Migrat
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="49"/>
       <source>Edit Multi-Transform</source>
-      <translation type="unfinished">Edit Multi-Transform</translation>
+      <translation>Editar transformación múltiple</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="45"/>
       <source>Edit Pad</source>
-      <translation type="unfinished">Edit Pad</translation>
+      <translation>Editar relleno</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="77"/>
       <source>Edit Pipe</source>
-      <translation type="unfinished">Edit Pipe</translation>
+      <translation>Editar tubería</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="47"/>
@@ -3710,27 +3692,27 @@ Aunque podrá migrar en cualquier momento después con 'Part Design -&gt; Migrat
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="40"/>
       <source>Edit Polar Pattern</source>
-      <translation type="unfinished">Edit Polar Pattern</translation>
+      <translation>Editar matriz polar</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="52"/>
       <source>Edit Primitive</source>
-      <translation type="unfinished">Edit Primitive</translation>
+      <translation>Editar primitiva</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="45"/>
       <source>Edit Revolution</source>
-      <translation type="unfinished">Edit Revolution</translation>
+      <translation>Editar revolución</translation>
     </message>
     <message>
       <location filename="../../ViewProviderScaled.cpp" line="40"/>
       <source>Edit Scale</source>
-      <translation type="unfinished">Edit Scale</translation>
+      <translation>Editar escala</translation>
     </message>
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="42"/>
       <source>Edit Thickness</source>
-      <translation type="unfinished">Edit Thickness</translation>
+      <translation>Editar espesor</translation>
     </message>
   </context>
   <context>
@@ -3738,17 +3720,17 @@ Aunque podrá migrar en cualquier momento después con 'Part Design -&gt; Migrat
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket Parameters</source>
-      <translation type="unfinished">Sprocket Parameters</translation>
+      <translation>Parámetros del piñón</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="26"/>
       <source>Number of teeth</source>
-      <translation type="unfinished">Number of teeth</translation>
+      <translation>Número de dientes</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="52"/>
       <source>Sprocket reference</source>
-      <translation type="unfinished">Sprocket reference</translation>
+      <translation>Referencia del piñón</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="66"/>
@@ -3823,27 +3805,27 @@ Aunque podrá migrar en cualquier momento después con 'Part Design -&gt; Migrat
     <message>
       <location filename="../../../SprocketFeature.ui" line="136"/>
       <source>Bicycle with derailleur</source>
-      <translation type="unfinished">Bicycle with derailleur</translation>
+      <translation>Bicicleta con desviador</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="141"/>
       <source>Bicycle without derailleur</source>
-      <translation type="unfinished">Bicycle without derailleur</translation>
+      <translation>Bicicleta sin desviador</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="219"/>
       <source>Chain pitch</source>
-      <translation type="unfinished">Chain pitch</translation>
+      <translation>Paso de cadena</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="266"/>
       <source>Chain roller diameter</source>
-      <translation type="unfinished">Chain roller diameter</translation>
+      <translation>Diámetro del rodillo de la cadena</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="310"/>
       <source>Tooth width</source>
-      <translation type="unfinished">Tooth width</translation>
+      <translation>Ancho del diente</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="146"/>
@@ -4016,12 +3998,12 @@ Solo disponible para taladros sin rosca</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="673"/>
       <source>Tap drill</source>
-      <translation type="unfinished">Tap drill</translation>
+      <translation>Broca para roscar</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="678"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>Roscado</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="722"/>
@@ -4036,12 +4018,12 @@ Solo disponible para taladros sin rosca</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="805"/>
       <source>Whether the hole gets a modelled thread</source>
-      <translation type="unfinished">Whether the hole gets a modelled thread</translation>
+      <translation>Si el agujero tiene una rosca modelada</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="808"/>
       <source>Model Thread</source>
-      <translation type="unfinished">Model Thread</translation>
+      <translation>Hilo del modelo</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="861"/>
@@ -4235,37 +4217,37 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Additive Features</source>
-      <translation type="unfinished">Additive Features</translation>
+      <translation>Operaciones aditivas</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Subtractive Features</source>
-      <translation type="unfinished">Subtractive Features</translation>
+      <translation>Operaciones sustractivas</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Dress-Up Features</source>
-      <translation type="unfinished">Dress-Up Features</translation>
+      <translation>Características de vestuario</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Transformation Features</source>
-      <translation type="unfinished">Transformation Features</translation>
+      <translation>Operaciones de transformación</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Sprocket…</source>
-      <translation type="unfinished">Sprocket…</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Involute Gear</source>
-      <translation type="unfinished">Involute Gear</translation>
+      <translation>Evolvente del engranaje</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Shaft Design Wizard</source>
-      <translation type="unfinished">Shaft Design Wizard</translation>
+      <translation>Asistente de diseño de ejes</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -4338,7 +4320,7 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="69"/>
       <source>Shaft Wizard</source>
-      <translation type="unfinished">Shaft Wizard</translation>
+      <translation>Asistente de ejes</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="77"/>
@@ -4412,7 +4394,7 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="120"/>
       <source>Missing Module</source>
-      <translation type="unfinished">Missing Module</translation>
+      <translation>Módulo faltante</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="126"/>
@@ -4476,21 +4458,21 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
       <translation>No se puede realizar la operación booleana con forma base inválida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeatureLoft.cpp" line="333"/>
       <location filename="../../../App/FeatureLoft.cpp" line="377"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
       <location filename="../../../App/FeaturePipe.cpp" line="482"/>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
-      <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
+      <translation>El resultado contiene varios sólidos: active la opción 'Permitir compuesto' en el cuerpo activo.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="116"/>
@@ -4505,7 +4487,7 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="353"/>
       <source>Cannot create a pad with a total length of zero.</source>
-      <translation type="unfinished">Cannot create a pad with a total length of zero.</translation>
+      <translation>No se puede crear un relleno con una longitud total de cero.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="358"/>
@@ -4515,18 +4497,18 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="706"/>
       <source>No extrusion geometry was generated.</source>
-      <translation type="unfinished">No extrusion geometry was generated.</translation>
+      <translation>No se generó ninguna geometría de extrusión.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="730"/>
       <source>Resulting fused extrusion is null.</source>
-      <translation type="unfinished">Resulting fused extrusion is null.</translation>
+      <translation>La extrusión fusionada resultante es nula.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="523"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forma resultante no es un sólido</translation>
     </message>
@@ -4549,7 +4531,7 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="211"/>
       <source>Chamfer failed: OCC kernel error in chamfer computation</source>
-      <translation type="unfinished">Chamfer failed: OCC kernel error in chamfer computation</translation>
+      <translation>Fallo en el cálculo del chaflán: error del kernel OCC en el cálculo del chaflán</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="302"/>
@@ -4579,7 +4561,7 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="159"/>
       <source>Fillet operation failed. The selected edges may contain geometry that cannot be filleted together. Try filleting edges individually or with a smaller radius.</source>
-      <translation type="unfinished">Fillet operation failed. The selected edges may contain geometry that cannot be filleted together. Try filleting edges individually or with a smaller radius.</translation>
+      <translation>Redondeo fallido. Las aristas seleccionadas pueden contener geometría que no puede ser redondeada junta. Intente redondear las aristas individualmente o con un radio menor.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1739"/>
@@ -4603,8 +4585,8 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
       <translation>La creación falló porque la dirección es ortogonal al vector normal del croquis</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
       <source>Creating a face from sketch failed</source>
       <translation>Fallo al crear una cara a partir del croquis</translation>
     </message>
@@ -4669,9 +4651,9 @@ No se permiten las entidades de croquis intersectas en un croquis.</translation>
       <translation>Error: La cara debe ser planar</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <location filename="../../../App/FeatureHelix.cpp" line="445"/>
       <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>Error: El resultado no es un sólido</translation>
     </message>
@@ -4710,12 +4692,12 @@ No se permiten las entidades de croquis intersectas en un croquis.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1233"/>
       <source>Thread type is invalid</source>
-      <translation type="unfinished">Thread type is invalid</translation>
+      <translation>El tipo de rosca no es válido</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1752"/>
       <source>Hole error: Diameter too small</source>
-      <translation type="unfinished">Hole error: Diameter too small</translation>
+      <translation>Error de taladro: diámetro demasiado pequeño</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1789"/>
@@ -4775,7 +4757,7 @@ No se permiten las entidades de croquis intersectas en un croquis.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2007"/>
       <source>Hole error: Finding axis failed</source>
-      <translation type="unfinished">Hole error: Finding axis failed</translation>
+      <translation>Error de agujero: Falló la detección del eje</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2073"/>
@@ -4871,7 +4853,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="277"/>
       <source>Pipe: All sections need to be Part features</source>
-      <translation type="unfinished">Pipe: All sections need to be Part features</translation>
+      <translation>Tubería: Todas las secciones deben ser características de la Pieza</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="285"/>
@@ -4945,15 +4927,15 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <location filename="../../../App/FeaturePipe.cpp" line="507"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <source>Unknown operation type</source>
       <translation>Tipo de operación desconocido</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <location filename="../../../App/FeaturePipe.cpp" line="515"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Failed to perform boolean operation</source>
       <translation>Error al realizar la operación booleana</translation>
     </message>
@@ -5068,7 +5050,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../../App/FeatureRevolved.cpp" line="110"/>
       <source>Angles of revolution nullify each other</source>
-      <translation type="unfinished">Angles of revolution nullify each other</translation>
+      <translation>Los ángulos de revolución se anulan entre sí</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolved.cpp" line="126"/>
@@ -5081,37 +5063,37 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
       <translation>Falló la fusión con la función base</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="101"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="99"/>
       <source>Transformation feature Linked object is not a Part object</source>
-      <translation>La característica de transformación vinculada no es un objeto Parte</translation>
+      <translation>La operación de transformación vinculada no es un objeto Parte</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="109"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="107"/>
       <source>No features selected to be mirrored.</source>
-      <translation type="unfinished">No features selected to be mirrored.</translation>
+      <translation>No se ha seleccionado ninguna característica para ser reflejada.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="110"/>
       <source>No features selected to be patterned.</source>
-      <translation type="unfinished">No features selected to be patterned.</translation>
+      <translation>No se ha seleccionado ninguna característica para aplicarle un patrón.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="115"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="113"/>
       <source>No features selected to be transformed.</source>
-      <translation type="unfinished">No features selected to be transformed.</translation>
+      <translation>No se ha seleccionado ninguna característica para ser transformada.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="356"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="354"/>
       <source>Cannot transform invalid support shape</source>
       <translation>No se puede transformar la forma de soporte no válida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="407"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="405"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>La forma de la característica aditiva/sustractiva está vacía</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="398"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="396"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Sólo las características aditivas y sustractivas pueden ser transformadas</translation>
     </message>
@@ -5126,12 +5108,12 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="62"/>
       <source>Involute Gear</source>
-      <translation type="unfinished">Involute Gear</translation>
+      <translation>Evolvente del engranaje</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="66"/>
       <source>Creates or edits the involute gear definition</source>
-      <translation type="unfinished">Creates or edits the involute gear definition</translation>
+      <translation>Crea o edita la definición de la evolvente del engranaje</translation>
     </message>
   </context>
   <context>
@@ -5139,12 +5121,12 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../../SprocketFeature.py" line="65"/>
       <source>Sprocket</source>
-      <translation type="unfinished">Sprocket</translation>
+      <translation>Piñón para cinta transportadora</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.py" line="69"/>
       <source>Creates or edits the sprocket definition.</source>
-      <translation type="unfinished">Creates or edits the sprocket definition.</translation>
+      <translation>Crea o edita la definición del piñón de cadena.</translation>
     </message>
   </context>
   <context>
@@ -5152,12 +5134,12 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../TaskPreviewParameters.ui" line="20"/>
       <source>Show final result</source>
-      <translation type="unfinished">Show final result</translation>
+      <translation>Mostrar resultado final</translation>
     </message>
     <message>
       <location filename="../../TaskPreviewParameters.ui" line="27"/>
       <source>Show preview overlay</source>
-      <translation type="unfinished">Show preview overlay</translation>
+      <translation>Mostrar superposición de vista previa</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="50"/>
@@ -5170,12 +5152,12 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="225"/>
       <source>Shaft Design Wizard</source>
-      <translation type="unfinished">Shaft Design Wizard</translation>
+      <translation>Asistente de diseño de ejes</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="228"/>
       <source>Starts the shaft design wizard</source>
-      <translation type="unfinished">Starts the shaft design wizard</translation>
+      <translation>Inicia el asistente de diseño de ejes</translation>
     </message>
   </context>
   <context>
@@ -5183,12 +5165,12 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../../App/FeatureAddSub.cpp" line="87"/>
       <source>Failure while computing removed volume preview: %1</source>
-      <translation type="unfinished">Failure while computing removed volume preview: %1</translation>
+      <translation>Error al calcular la vista previa del volumen eliminado: %1</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureAddSub.cpp" line="125"/>
       <source>Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</source>
-      <translation type="unfinished">Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</translation>
+      <translation>La forma resultante está vacía. Esto puede indicar que no se eliminará ningún material o que existe un problema con el modelo.</translation>
     </message>
   </context>
   <context>
@@ -5222,42 +5204,42 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../CommandPrimitive.cpp" line="217"/>
       <source>Creates an additive box by its width, height, and length</source>
-      <translation type="unfinished">Creates an additive box by its width, height, and length</translation>
+      <translation>Crea una caja aditiva por su ancho, alto y largo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="226"/>
       <source>Creates an additive cylinder by its radius, height, and angle</source>
-      <translation type="unfinished">Creates an additive cylinder by its radius, height, and angle</translation>
+      <translation>Crea un cilindro aditivo a partir de su radio, altura y ángulo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="235"/>
       <source>Creates an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Creates an additive sphere by its radius and various angles</translation>
+      <translation>Crea una esfera aditiva mediante su radio y diversos ángulos</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
       <source>Creates an additive cone</source>
-      <translation type="unfinished">Creates an additive cone</translation>
+      <translation>Crea un cono aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="250"/>
       <source>Creates an additive ellipsoid</source>
-      <translation type="unfinished">Creates an additive ellipsoid</translation>
+      <translation>Crea un elipsoide aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="256"/>
       <source>Creates an additive torus</source>
-      <translation type="unfinished">Creates an additive torus</translation>
+      <translation>Crea un toroide aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="262"/>
       <source>Creates an additive prism</source>
-      <translation type="unfinished">Creates an additive prism</translation>
+      <translation>Crea un prisma aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="268"/>
       <source>Creates an additive wedge</source>
-      <translation type="unfinished">Creates an additive wedge</translation>
+      <translation>Crea una cuña aditiva</translation>
     </message>
   </context>
   <context>
@@ -5265,42 +5247,42 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../CommandPrimitive.cpp" line="402"/>
       <source>Creates a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Creates a subtractive box by its width, height and length</translation>
+      <translation>Crea una caja sustractiva por su ancho, alto y largo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="411"/>
       <source>Creates a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Creates a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Crea un cilindro sustractivo por su radio, altura y ángulo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="420"/>
       <source>Creates a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Creates a subtractive sphere by its radius and various angles</translation>
+      <translation>Crea una esfera sustractiva mediante su radio y varios ángulos</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="429"/>
       <source>Creates a subtractive cone</source>
-      <translation type="unfinished">Creates a subtractive cone</translation>
+      <translation>Crea un cono sustractivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="435"/>
       <source>Creates a subtractive ellipsoid</source>
-      <translation type="unfinished">Creates a subtractive ellipsoid</translation>
+      <translation>Crea un elipsoide sustractivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="441"/>
       <source>Creates a subtractive torus</source>
-      <translation type="unfinished">Creates a subtractive torus</translation>
+      <translation>Crea un toroide sustractivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="447"/>
       <source>Creates a subtractive prism</source>
-      <translation type="unfinished">Creates a subtractive prism</translation>
+      <translation>Crea un prisma sustractivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="453"/>
       <source>Creates a subtractive wedge</source>
-      <translation type="unfinished">Creates a subtractive wedge</translation>
+      <translation>Crea una cuña sustractiva</translation>
     </message>
   </context>
   <context>
@@ -5316,7 +5298,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="802"/>
       <source>Revolution Parameters</source>
-      <translation type="unfinished">Revolution Parameters</translation>
+      <translation>Parámetros de revolución</translation>
     </message>
   </context>
   <context>
@@ -5324,7 +5306,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="812"/>
       <source>Groove Parameters</source>
-      <translation type="unfinished">Groove Parameters</translation>
+      <translation>Parámetros de ranura</translation>
     </message>
   </context>
   <context>
@@ -5332,7 +5314,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="39"/>
       <source>Transformed Feature Messages</source>
-      <translation type="unfinished">Transformed Feature Messages</translation>
+      <translation>Mensajes de características transformadas</translation>
     </message>
   </context>
   <context>
@@ -5340,7 +5322,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../ViewProviderBody.cpp" line="199"/>
       <source>Active Body</source>
-      <translation type="unfinished">Active Body</translation>
+      <translation>Cuerpo activo</translation>
     </message>
   </context>
   <context>
@@ -5371,7 +5353,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="130"/>
       <source>Local Coordinate System Parameters</source>
-      <translation type="unfinished">Local Coordinate System Parameters</translation>
+      <translation>Parámetros del sistema de coordenadas local</translation>
     </message>
   </context>
   <context>
@@ -5379,7 +5361,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../ViewProviderDraft.h" line="45"/>
       <source>Draft Parameters</source>
-      <translation type="unfinished">Draft Parameters</translation>
+      <translation>Parámetros del borrador</translation>
     </message>
   </context>
   <context>
@@ -5395,7 +5377,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../ViewProviderLinearPattern.h" line="41"/>
       <source>Linear Pattern Parameters</source>
-      <translation type="unfinished">Linear Pattern Parameters</translation>
+      <translation>Parámetros de patrón lineal</translation>
     </message>
   </context>
   <context>
@@ -5403,7 +5385,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../ViewProviderMirrored.h" line="41"/>
       <source>Mirror Parameters</source>
-      <translation type="unfinished">Mirror Parameters</translation>
+      <translation>Parámetros del reflejo</translation>
     </message>
   </context>
   <context>
@@ -5411,7 +5393,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="41"/>
       <source>Multi-Transform Parameters</source>
-      <translation type="unfinished">Multi-Transform Parameters</translation>
+      <translation>Parámetros de transformación múltiple</translation>
     </message>
   </context>
   <context>
@@ -5419,7 +5401,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../ViewProviderPolarPattern.h" line="41"/>
       <source>Polar Pattern Parameters</source>
-      <translation type="unfinished">Polar Pattern Parameters</translation>
+      <translation>Parámetros de matriz polar</translation>
     </message>
   </context>
   <context>
@@ -5427,7 +5409,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../ViewProviderScaled.h" line="41"/>
       <source>Scale Parameters</source>
-      <translation type="unfinished">Scale Parameters</translation>
+      <translation>Parámetros de escala</translation>
     </message>
   </context>
   <context>
@@ -5435,7 +5417,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../ViewProviderThickness.h" line="44"/>
       <source>Thickness Parameters</source>
-      <translation type="unfinished">Thickness Parameters</translation>
+      <translation>Parámetros de espesor</translation>
     </message>
   </context>
   <context>
@@ -5443,7 +5425,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="132"/>
       <source>Direction 2</source>
-      <translation type="unfinished">Direction 2</translation>
+      <translation>Dirección 2</translation>
     </message>
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="248"/>
@@ -5454,6 +5436,20 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
       <location filename="../../TaskPatternParameters.cpp" line="334"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Selección inválida. Seleccione un borde, cara plana, o línea de datos.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation>La operación podría no ser creada con los parámetros dados.
+
+La geometría podría no ser válida o los parámetros incompatibles.
+
+Por favor, ajuste los parámetros e intente de nuevo.</translation>
     </message>
   </context>
 </TS>

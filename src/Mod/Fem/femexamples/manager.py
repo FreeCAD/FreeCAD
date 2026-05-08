@@ -239,7 +239,7 @@ def run_analysis(doc, base_name, analysis=None, filepath="", run_solver=False,  
     doc.save()
 
 
-def run_example(example, solver=None, base_name=None, run_solver=False, blocking=True):
+def run_example(example, solver=None, base_name=None, run_solver=False, blocking=True, doc=None):
 
     from importlib import import_module
 
@@ -249,16 +249,16 @@ def run_example(example, solver=None, base_name=None, run_solver=False, blocking
         return None
 
     if solver is None:
-        doc = getattr(module, "setup")()
+        doc = getattr(module, "setup")(doc=doc)
     else:
-        doc = getattr(module, "setup")(solvertype=solver)
+        doc = getattr(module, "setup")(doc=doc, solvertype=solver)
 
     if base_name is None:
         base_name = example
         if solver is not None:
             base_name += "_" + solver
 
-    # We support rigth now:
+    # As of now, we support:
     # 1. Multiple analysis objects, each having a mesh and solver object
     # 2. Or multiple mesh objects outside of analysis
 

@@ -416,70 +416,65 @@ def drill_translate(
     Currently only cycles in XY are provided (G17).
     XZ (G18) and YZ (G19) are not dealt with.
     In other words only Z drilling can be translated.
+
+    This is a compatibility wrapper around DrillCycleExpander.
     """
-    cmd: str
-    comment: str
-    drill_x: float
-    drill_y: float
-    drill_z: float
-    motion_z: float
-    retract_z: float
-    F_feedrate: str
-    G0_retract_z: str
+    from Path.Post.DrillCycleExpander import DrillCycleExpander
 
     if values["MOTION_MODE"] == "G91":
         # force absolute coordinates during cycles
         gcode.append(f"{linenumber(values)}G90")
 
-    drill_x = Units.Quantity(params["X"], Units.Length)
-    drill_y = Units.Quantity(params["Y"], Units.Length)
-    drill_z = Units.Quantity(params["Z"], Units.Length)
-    retract_z = Units.Quantity(params["R"], Units.Length)
-    if retract_z < drill_z:  # R less than Z is error
+    # TODO: Defaulting to 0.0 when an axis is missing from motion_location
+    # silently degrades G98 safe-height retract (max(initial_z, R) uses 0
+    # instead of the real tool height). Consider requiring a valid initial
+    # position and warning when motion_location is incomplete.
+    initial_position = {
+        "X": motion_location.get("X", 0.0),
+        "Y": motion_location.get("Y", 0.0),
+        "Z": motion_location.get("Z", 0.0),
+    }
+
+    # Per ADR-002, Path Command coordinates are always absolute.
+    # No G91-to-absolute conversion is needed.
+    drill_params = {k: params[k] for k in params if k in ("X", "Y", "Z", "R", "F", "Q", "P")}
+
+    # Validate R >= Z (preserve original error comment)
+    if drill_params.get("R", 0.0) < drill_params.get("Z", 0.0):
         comment = create_comment(values, "Drill cycle error: R less than Z")
         gcode.append(f"{linenumber(values)}{comment}")
         return
-    motion_z = Units.Quantity(motion_location["Z"], Units.Length)
-    if values["MOTION_MODE"] == "G91":  # relative movements
-        drill_x += Units.Quantity(motion_location["X"], Units.Length)
-        drill_y += Units.Quantity(motion_location["Y"], Units.Length)
-        drill_z += motion_z
-        retract_z += motion_z
-    if drill_retract_mode == "G98" and motion_z >= retract_z:
-        retract_z = motion_z
 
-    cmd = format_command_line(values, ["G0", f"Z{format_for_axis(values, retract_z)}"])
-    G0_retract_z = f"{cmd}"
-    cmd = format_for_feed(values, Units.Quantity(params["F"], Units.Velocity))
-    F_feedrate = f'{values["COMMAND_SPACE"]}F{cmd}'
-
-    # preliminary movement(s)
-    if motion_z < retract_z:
-        gcode.append(f"{linenumber(values)}{G0_retract_z}")
-    cmd = format_command_line(
-        values,
-        [
-            "G0",
-            f"X{format_for_axis(values, drill_x)}",
-            f"Y{format_for_axis(values, drill_y)}",
-        ],
+    # Create expander and expand the drill cycle
+    expander = DrillCycleExpander(
+        retract_mode=drill_retract_mode,
+        initial_position=initial_position,
     )
-    gcode.append(f"{linenumber(values)}{cmd}")
-    if motion_z > retract_z:
-        # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to retract_z
-        # Here use G1 since retract height may be below surface !
-        cmd = format_command_line(values, ["G1", f"Z{format_for_axis(values, retract_z)}"])
-        gcode.append(f"{linenumber(values)}{cmd}{F_feedrate}")
+    expanded = expander.expand_command(Path.Command(command, drill_params))
 
-        # drill moves
-    if command in ("G81", "G82"):
-        output_G81_G82_drill_moves(
-            values, gcode, command, params, drill_z, F_feedrate, G0_retract_z
-        )
-    elif command in ("G73", "G83"):
-        output_G73_G83_drill_moves(
-            values, gcode, command, params, drill_z, retract_z, F_feedrate, G0_retract_z
-        )
+    # Format expanded commands into gcode strings
+    for ecmd in expanded:
+        _format_expanded_command(values, gcode, ecmd)
+
+
+def _format_expanded_command(values: Values, gcode: Gcode, cmd) -> None:
+    """Format an expanded Path.Command from DrillCycleExpander into a gcode string."""
+    parts = [cmd.Name]
+    params = cmd.Parameters
+
+    for axis in ("X", "Y", "Z"):
+        if axis in params:
+            parts.append(
+                f"{axis}{format_for_axis(values, Units.Quantity(params[axis], Units.Length))}"
+            )
+
+    if "F" in params:
+        parts.append(f"F{format_for_feed(values, Units.Quantity(params['F'], Units.Velocity))}")
+
+    if "P" in params:
+        parts.append(f"P{params['P']}")
+
+    gcode.append(f"{linenumber(values)}{format_command_line(values, parts)}")
 
 
 def format_command_line(values: Values, command_line: CommandLine) -> str:

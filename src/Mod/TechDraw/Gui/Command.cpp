@@ -178,8 +178,8 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
     QString work_dir = Gui::FileDialog::getWorkingDirectory();
     QString templateDir = Preferences::defaultTemplateDir();
     QString templateFileName = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Select a template file")), templateDir,
-        QStringList(QString::fromUtf8(QT_TR_NOOP("Template (*.svg)"))));
+        Gui::getMainWindow(), QObject::tr("Select a template file"), templateDir,
+        Gui::FileDialog::FilterList{{QObject::tr("Template"), {"*.svg"}}});
     Gui::FileDialog::setWorkingDirectory(work_dir);// Don't overwrite WD with templateDir
 
     if (templateFileName.isEmpty()) {
@@ -349,6 +349,8 @@ void CmdTechDrawView::activated(int iMsg)
                 SpreadName.c_str());
             doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                 FeatName.c_str());
+            doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+                PageName.c_str(), FeatName.c_str(), PageName.c_str());
             updateActive();
             commitCommand();
             viewCreated = true;
@@ -366,6 +368,8 @@ void CmdTechDrawView::activated(int iMsg)
                 SourceName.c_str());
             doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                 FeatName.c_str());
+            doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+                PageName.c_str(), FeatName.c_str(), PageName.c_str());
             updateActive();
             commitCommand();
             viewCreated = true;
@@ -440,9 +444,10 @@ void CmdTechDrawView::activated(int iMsg)
                 }
             }
 
-            QStringList filterList;
-            filterList << QStringLiteral("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp)").arg(QObject::tr("SVG or Image files"));
-            filterList << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
+            const Gui::FileDialog::FilterList filterList {
+                {QObject::tr("SVG or Image files"), {"*.svg", "*.svgz", "*.jpg", "*.jpeg", "*.png", "*.bmp"}},
+                Gui::FileDialog::Filter::AllFiles(),
+            };
             QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
                 QObject::tr("Select a SVG or Image file to open"),
                 Preferences::defaultSymbolDir(),
@@ -589,7 +594,7 @@ void CmdTechDrawBrokenView::activated(int iMsg)
 
     // we need either a base view (dvp) or some shape objects in the selection
     if (!dvp && (shapes.empty() && xShapes.empty())) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty Selection"),
             QObject::tr("Select objects to break or a base view and break definition objects"));
         return;
     }
@@ -1189,14 +1194,14 @@ bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
 {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("Select an object first"));
         return false;
     }
 
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() > maxObjs) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("Too many objects selected"));
         return false;
     }
@@ -1204,7 +1209,7 @@ bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
     std::vector<App::DocumentObject*> pages =
         cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (pages.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("Create a page first"));
         return false;
     }
@@ -1216,7 +1221,7 @@ bool _checkDrawViewPartBalloon(Gui::Command* cmd)
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
     if (!objFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("No view of a part in selection"));
         return false;
     }
@@ -1549,9 +1554,10 @@ void CmdTechDrawSymbol::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // Reading an image
-    QStringList filterList;
-    filterList << QStringLiteral("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable vector graphic"));
-    filterList << QStringLiteral("%1 (*.*)").arg(QObject::tr("All files"));
+    const Gui::FileDialog::FilterList filterList {
+        {QStringLiteral("SVG"), {"*.svg", "*.svgz"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString filename = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"),
         Preferences::defaultSymbolDir(),
@@ -1644,6 +1650,8 @@ void CmdTechDrawDraftView::activated(int iMsg)
                   SourceName.c_str());
         doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                   FeatName.c_str());
+        doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+                  PageName.c_str(), FeatName.c_str(), PageName.c_str());
         doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
                   FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
         updateActive();
@@ -1780,6 +1788,8 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
 
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
               FeatName.c_str());
+    doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+        PageName.c_str(), FeatName.c_str(), PageName.c_str());
     updateActive();
     commitCommand();
 }
@@ -1886,8 +1896,8 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     //WF? allow more than one TD Page per Dxf file??  1 TD page = 1 DXF file = 1 drawing?
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
-        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QStringList(QStringLiteral("DXF (*.dxf)")));
+        Gui::getMainWindow(), QObject::tr("Save DXF file"), defaultDir,
+        Gui::FileDialog::FilterList{{QStringLiteral("DXF"), {"*.dxf"}}});
 
     if (fileName.isEmpty()) {
         return;

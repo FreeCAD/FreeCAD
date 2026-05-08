@@ -1085,10 +1085,10 @@ will be moved to the center of the view.</source>
       <translation>선 두께</translation>
     </message>
     <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
-      <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -1449,9 +1449,9 @@ This setting modifies the Translate property.</source>
       <translation>기본 작업 평면</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-dxf.ui" line="20"/>
       <location filename="../ui/preferences-draft.ui" line="14"/>
       <location filename="../ui/preferences-draft.ui" line="20"/>
-      <location filename="../ui/preferences-dxf.ui" line="20"/>
       <source>General</source>
       <translation>일반</translation>
     </message>
@@ -1893,8 +1893,8 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>기본 선 두께</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="338"/>
       <location filename="../ui/preferences-drafttexts.ui" line="240"/>
+      <location filename="../ui/preferences-draft.ui" line="338"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -2087,42 +2087,56 @@ a raw wire from the original shape is added</source>
 최적값은 가져오기 대상의 절대 크기에 따라 달라집니다. 일반적인 값은 1에서 5 사이입니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation type="unfinished">Maximum deviation for approximation of complex curves</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation type="unfinished">Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>내보내기 스타일</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>스케치를 내보낼 때 쓸 SVG 파일 스타일</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>번역됨(인쇄 및 디스플레이용)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>원본 (CAM)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>흰색 배경에 대한 가독성을 높이기 위해 SVG에서 모든 흰색 선이 검은색으로 표시됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>흰색 선 색상을 검은색으로 변환</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>이산화된 호의 최대 세그먼트 길이</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2136,8 +2150,8 @@ This value is the maximum segment length.</source>
       <translation>OCA</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="26"/>
       <location filename="../ui/preferences-oca.ui" line="26"/>
+      <location filename="../ui/preferences-svg.ui" line="26"/>
       <source>Import Options</source>
       <translation>불러오기 옵션</translation>
     </message>
@@ -2436,8 +2450,8 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</source
       <translation>스케치 생성</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>내보내기 옵션</translation>
     </message>
@@ -3052,9 +3066,9 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="697"/>
-      <location filename="../../draftguitools/gui_scale.py" line="223"/>
       <location filename="../../draftguitools/gui_move.py" line="215"/>
       <location filename="../../draftguitools/gui_rotate.py" line="285"/>
+      <location filename="../../draftguitools/gui_scale.py" line="223"/>
       <source>Copy</source>
       <translation>복사</translation>
     </message>
@@ -3181,7 +3195,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="591"/>
       <source>Length</source>
-      <translation>길이:</translation>
+      <translation>길이</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="592"/>
@@ -3302,7 +3316,7 @@ Uncheck to use working plane coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="666"/>
       <source>Undo</source>
-      <translation>실행취소</translation>
+      <translation>실행 취소</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="700"/>
@@ -3603,19 +3617,19 @@ DWG 파일을 공백과 비영문 문자가 없는 디렉터리 경로로 옮겨
       <location filename="../../draftutils/utils.py" line="1074"/>
       <location filename="../../draftutils/gui_utils.py" line="916"/>
       <location filename="../../draftutils/groups.py" line="101"/>
+      <location filename="../../draftmake/make_array.py" line="85"/>
       <location filename="../../draftmake/make_text.py" line="95"/>
       <location filename="../../draftmake/make_text.py" line="178"/>
-      <location filename="../../draftmake/make_patharray.py" line="179"/>
-      <location filename="../../draftmake/make_patharray.py" line="328"/>
+      <location filename="../../draftmake/make_label.py" line="201"/>
       <location filename="../../draftmake/make_dimension.py" line="266"/>
       <location filename="../../draftmake/make_dimension.py" line="355"/>
       <location filename="../../draftmake/make_dimension.py" line="483"/>
       <location filename="../../draftmake/make_dimension.py" line="604"/>
-      <location filename="../../draftmake/make_array.py" line="85"/>
+      <location filename="../../draftmake/make_patharray.py" line="179"/>
+      <location filename="../../draftmake/make_patharray.py" line="328"/>
       <location filename="../../draftmake/make_layer.py" line="56"/>
       <location filename="../../draftmake/make_layer.py" line="146"/>
       <location filename="../../draftmake/make_pointarray.py" line="92"/>
-      <location filename="../../draftmake/make_label.py" line="201"/>
       <source>No active document. Aborting.</source>
       <translation>활성화된 문서가 없어 중지합니다.</translation>
     </message>
@@ -3759,10 +3773,10 @@ DWG 파일을 공백과 비영문 문자가 없는 디렉터리 경로로 옮겨
       <translation>텍스트 위치 선택</translation>
     </message>
     <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="129"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="71"/>
       <location filename="../../draftguitools/gui_lines.py" line="94"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="76"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="71"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="129"/>
       <source>Pick first point</source>
       <translation>시작점 선택</translation>
     </message>
@@ -3802,8 +3816,6 @@ DWG 파일을 공백과 비영문 문자가 없는 디렉터리 경로로 옮겨
       <translation>꺾은선</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="152"/>
-      <location filename="../../draftguitools/gui_splines.py" line="157"/>
       <location filename="../../draftguitools/gui_lines.py" line="238"/>
       <location filename="../../draftguitools/gui_lines.py" line="248"/>
       <location filename="../../draftguitools/gui_lines.py" line="255"/>
@@ -3811,6 +3823,8 @@ DWG 파일을 공백과 비영문 문자가 없는 디렉터리 경로로 옮겨
       <location filename="../../draftguitools/gui_lines.py" line="274"/>
       <location filename="../../draftguitools/gui_beziers.py" line="160"/>
       <location filename="../../draftguitools/gui_beziers.py" line="163"/>
+      <location filename="../../draftguitools/gui_splines.py" line="152"/>
+      <location filename="../../draftguitools/gui_splines.py" line="157"/>
       <source>Pick next point</source>
       <translation>다음 위치점 선택</translation>
     </message>
@@ -3887,9 +3901,9 @@ DWG 파일을 공백과 비영문 문자가 없는 디렉터리 경로로 옮겨
       <translation>끝점 선택</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="124"/>
       <location filename="../../draftguitools/gui_move.py" line="192"/>
       <location filename="../../draftguitools/gui_rotate.py" line="241"/>
+      <location filename="../../draftguitools/gui_scale.py" line="124"/>
       <source>No valid subelements selected</source>
       <translation>유효한 하위 요소가 선택되지 않았습니다.</translation>
     </message>
@@ -3899,18 +3913,18 @@ DWG 파일을 공백과 비영문 문자가 없는 디렉터리 경로로 옮겨
       <translation>이동</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="91"/>
       <location filename="../../draftguitools/gui_polygons.py" line="87"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="91"/>
       <source>Pick center point</source>
       <translation>중심점 선택</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="268"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="285"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="429"/>
       <location filename="../../draftguitools/gui_polygons.py" line="207"/>
       <location filename="../../draftguitools/gui_polygons.py" line="218"/>
       <location filename="../../draftguitools/gui_polygons.py" line="281"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="268"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="285"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="429"/>
       <source>Pick radius</source>
       <translation>반경 선택</translation>
     </message>
@@ -3972,14 +3986,14 @@ DWG 파일을 공백과 비영문 문자가 없는 디렉터리 경로로 옮겨
       <translation>%1 계속 모드 전환</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="487"/>
       <location filename="../../draftguitools/gui_polygons.py" line="311"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="487"/>
       <source>%1 pick center</source>
       <translation>%1 중심점 선택</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="489"/>
       <location filename="../../draftguitools/gui_polygons.py" line="313"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="489"/>
       <source>%1 pick radius</source>
       <translation>%1 반지름 선택</translation>
     </message>
@@ -4030,10 +4044,10 @@ DWG 파일을 공백과 비영문 문자가 없는 디렉터리 경로로 옮겨
       <translation>생성 호 에서 3 점</translation>
     </message>
     <message>
+      <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
       <location filename="../../draftguitools/gui_arcs.py" line="655"/>
       <location filename="../../draftguitools/gui_lines.py" line="307"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="221"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
       <source>%1 pick first point</source>
       <translation>%1 첫 번째 점 선택</translation>
     </message>
@@ -4049,7 +4063,12 @@ DWG 파일을 공백과 비영문 문자가 없는 디렉터리 경로로 옮겨
       <translation>%1 세 번째 점 선택</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation type="unfinished">Only Draft lines, wires, and curves can be highlighted</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>편집할 대상체를 선택하세요</translation>
     </message>
@@ -4059,22 +4078,22 @@ DWG 파일을 공백과 비영문 문자가 없는 디렉터리 경로로 옮겨
       <translation>편집할 도면 대상체를 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="496"/>
+      <location filename="../../draftguitools/gui_edit.py" line="501"/>
       <source>Edit Node</source>
       <translation>노드 편집</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="809"/>
+      <location filename="../../draftguitools/gui_edit.py" line="814"/>
       <source>Too many objects selected, maximum number set to:</source>
       <translation>너무 많은 객체가 선택되었습니다. 최대 수 설정값:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="550"/>
+      <location filename="../../draftguitools/gui_edit.py" line="555"/>
       <source>No edit point found for selected object</source>
       <translation>선택한 객체에서 편집점을 찾을 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="817"/>
+      <location filename="../../draftguitools/gui_edit.py" line="822"/>
       <source>: this object is not editable</source>
       <translation>: 이 대상체는 편집할 수 없습니다</translation>
     </message>
@@ -4172,8 +4191,8 @@ DWG 파일을 공백과 비영문 문자가 없는 디렉터리 경로로 옮겨
       <translation>점 생성</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_points.py" line="189"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="214"/>
+      <location filename="../../draftguitools/gui_points.py" line="189"/>
       <source>%1 pick point</source>
       <translation>%1 선택 점</translation>
     </message>
@@ -4585,14 +4604,14 @@ The final angle will be the base angle plus this amount.</source>
       <translation>타원 생성</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="210"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="208"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="210"/>
       <source>Pick opposite point</source>
       <translation>선택 반대 점</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="225"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="223"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="225"/>
       <source>%1 pick opposite point</source>
       <translation>%1 선택 반대 점</translation>
     </message>
@@ -4736,8 +4755,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>할 수 없습니다 clone 객체 없이 a 형상, skipping them</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="76"/>
       <location filename="../../draftguitools/gui_downgrade.py" line="76"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="76"/>
       <source>Select an object to upgrade</source>
       <translation>선택 an 객체 까지 upgrade</translation>
     </message>
@@ -4777,10 +4796,10 @@ The final angle will be the base angle plus this amount.</source>
       <translation>다운그레이드</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="235"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="406"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="179"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="322"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="235"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="406"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="194"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="345"/>
       <source>Object:</source>
@@ -4812,8 +4831,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>생성 극 배열</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="377"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="293"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="377"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="316"/>
       <source>Fuse:</source>
       <translation>합집합:</translation>
@@ -4860,8 +4879,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>생성 직교 배열</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="390"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="306"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="390"/>
       <source>Create link array:</source>
       <translation>생성 link array:</translation>
     </message>
@@ -4959,8 +4978,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>원형 배열</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="223"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="171"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="223"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="182"/>
       <source>At least 1 element must be selected</source>
       <translation>요소를 하나 이상 선택해야 합니다</translation>
@@ -4971,8 +4990,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>레이어 수는 2 이상이어야 합니다</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="234"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="178"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="234"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="193"/>
       <source>Selection is not suitable for array</source>
       <translation>선택 항목이 배열에 적합하지 않습니다.</translation>
@@ -5142,11 +5161,11 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="149"/>
+      <location filename="../../draftmake/make_polararray.py" line="111"/>
       <location filename="../../draftmake/make_circulararray.py" line="135"/>
       <location filename="../../draftmake/make_patharray.py" line="184"/>
       <location filename="../../draftmake/make_patharray.py" line="333"/>
       <location filename="../../draftmake/make_pointarray.py" line="97"/>
-      <location filename="../../draftmake/make_polararray.py" line="111"/>
       <source>Wrong input: base_object not in document.</source>
       <translation>잘못된 입력: base_객체 않음 에서 문서.</translation>
     </message>
@@ -5158,21 +5177,20 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="139"/>
+      <location filename="../../draftmake/make_label.py" line="317"/>
+      <location filename="../../draftmake/make_polararray.py" line="123"/>
       <location filename="../../draftmake/make_patharray.py" line="195"/>
       <location filename="../../draftmake/make_patharray.py" line="266"/>
       <location filename="../../draftmake/make_patharray.py" line="273"/>
       <location filename="../../draftmake/make_patharray.py" line="343"/>
       <location filename="../../draftmake/make_layer.py" line="185"/>
-      <location filename="../../draftmake/make_polararray.py" line="123"/>
-      <location filename="../../draftmake/make_label.py" line="317"/>
       <source>Wrong input: must be a number.</source>
       <translation>잘못된 입력: 숫자를 입력해야 합니다.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_label.py" line="209"/>
+      <location filename="../../draftmake/make_polararray.py" line="135"/>
       <location filename="../../draftmake/make_circulararray.py" line="165"/>
-      <location filename="../../draftmake/make_patharray.py" line="202"/>
-      <location filename="../../draftmake/make_patharray.py" line="253"/>
-      <location filename="../../draftmake/make_patharray.py" line="260"/>
       <location filename="../../draftmake/make_dimension.py" line="272"/>
       <location filename="../../draftmake/make_dimension.py" line="278"/>
       <location filename="../../draftmake/make_dimension.py" line="285"/>
@@ -5182,8 +5200,9 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftmake/make_dimension.py" line="610"/>
       <location filename="../../draftmake/make_dimension.py" line="635"/>
       <location filename="../../draftmake/make_dimension.py" line="642"/>
-      <location filename="../../draftmake/make_polararray.py" line="135"/>
-      <location filename="../../draftmake/make_label.py" line="209"/>
+      <location filename="../../draftmake/make_patharray.py" line="202"/>
+      <location filename="../../draftmake/make_patharray.py" line="253"/>
+      <location filename="../../draftmake/make_patharray.py" line="260"/>
       <source>Wrong input: must be a vector.</source>
       <translation>잘못된 입력: 향량을 입력해야 합니다.</translation>
     </message>
@@ -5211,8 +5230,8 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="113"/>
-      <location filename="../../draftmake/make_circulararray.py" line="153"/>
       <location filename="../../draftmake/make_polararray.py" line="117"/>
+      <location filename="../../draftmake/make_circulararray.py" line="153"/>
       <source>Wrong input: must be an integer number.</source>
       <translation>잘못된 입력: 정수여야 합니다.</translation>
     </message>
@@ -5225,8 +5244,8 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftmake/make_text.py" line="113"/>
-      <location filename="../../draftmake/make_pointarray.py" line="119"/>
       <location filename="../../draftmake/make_label.py" line="217"/>
+      <location filename="../../draftmake/make_pointarray.py" line="119"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>잘못된 입력: Placement, 벡터 또는 회전이어야 합니다.</translation>
     </message>
@@ -5421,8 +5440,8 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_clone.py" line="71"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="86"/>
       <location filename="../../draftviewproviders/view_base.py" line="470"/>
+      <location filename="../../draftviewproviders/view_hatch.py" line="86"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
       <source>Edit</source>
       <translation>편집</translation>
@@ -5712,8 +5731,8 @@ of existing objects in all opened documents?</source>
       <translation>변경 Slope</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_patharray.py" line="114"/>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="92"/>
+      <location filename="../../draftguitools/gui_patharray.py" line="114"/>
       <source>Select exactly 2 objects, the base object and the path object, before calling this command</source>
       <translation>이 명령을 실행하기 전에 기준 객체와 경로 객체, 이렇게 객체 2개를 정확히 선택하세요</translation>
     </message>
@@ -5979,15 +5998,15 @@ FreeCAD가 이 라이브러리를 다운로드하도록 허용하려면 예를 �
       <translation>경사</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="127"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="131"/>
       <source>True</source>
       <translation>참</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="131"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="135"/>
       <source>False</source>
       <translation>거짓</translation>
@@ -6063,8 +6082,8 @@ FreeCAD가 이 라이브러리를 다운로드하도록 허용하려면 예를 �
       <translation>켜기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="400"/>
       <location filename="../../draftobjects/label.py" line="317"/>
+      <location filename="../../draftguitools/gui_layers.py" line="400"/>
       <source>Name</source>
       <translation>이름</translation>
     </message>
@@ -6221,12 +6240,12 @@ from menu Tools → Addon Manager</source>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>알 수 없는 SVG export 스타일, switching 까지 Translated</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>내보내기 목록에 유효한 경계 상자를 가진 객체가 없습니다</translation>
     </message>
@@ -6275,7 +6294,7 @@ from menu Tools → Addon Manager</source>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="42"/>
       <source>Hatch</source>
-      <translation>선무늬</translation>
+      <translation>해칭</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="46"/>
@@ -6543,7 +6562,7 @@ Objects added to this layer can share the same visual properties.</source>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="58"/>
       <source>Rectangle</source>
-      <translation>사각형</translation>
+      <translation>직사각형</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="59"/>
@@ -6785,19 +6804,19 @@ give it 같은 값 as First Angle)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="61"/>
-      <location filename="../../draftobjects/ellipse.py" line="64"/>
       <location filename="../../draftobjects/polygon.py" line="67"/>
+      <location filename="../../draftobjects/ellipse.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="61"/>
       <source>Create a face</source>
       <translation>면을 생성합니다</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="64"/>
+      <location filename="../../draftobjects/wire.py" line="89"/>
       <location filename="../../draftobjects/polygon.py" line="70"/>
       <location filename="../../draftobjects/rectangle.py" line="70"/>
-      <location filename="../../draftobjects/bezcurve.py" line="66"/>
       <location filename="../../draftobjects/bspline.py" line="57"/>
-      <location filename="../../draftobjects/wire.py" line="89"/>
+      <location filename="../../draftobjects/bezcurve.py" line="66"/>
       <source>The area of this object</source>
       <translation>이 대상체의 면적</translation>
     </message>
@@ -6822,16 +6841,16 @@ give it 같은 값 as First Angle)</translation>
       <translation>기준 원을 기준으로 다각형을 그리는 방식</translation>
     </message>
     <message>
+      <location filename="../../draftobjects/wire.py" line="77"/>
       <location filename="../../draftobjects/polygon.py" line="61"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
-      <location filename="../../draftobjects/wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
       <translation>모퉁이를 모깎기하는데 사용할 반지름</translation>
     </message>
     <message>
+      <location filename="../../draftobjects/wire.py" line="80"/>
       <location filename="../../draftobjects/polygon.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="58"/>
-      <location filename="../../draftobjects/wire.py" line="80"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>모서리에 적용할 모따기 크기</translation>
     </message>
@@ -6841,8 +6860,8 @@ give it 같은 값 as First Angle)</translation>
       <translation>복제할 기준 객체.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="108"/>
       <location filename="../../draftobjects/patharray.py" line="232"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="108"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
       <translation>복사본이 배치될 기준 객체입니다. 'Edges'를 포함해야 합니다.</translation>
     </message>
@@ -6857,18 +6876,18 @@ give it 같은 값 as First Angle)</translation>
       <translation>비틀린 배열의 회전 계수.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="112"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="150"/>
-      <location filename="../../draftobjects/patharray.py" line="266"/>
       <location filename="../../draftobjects/array.py" line="325"/>
+      <location filename="../../draftobjects/pointarray.py" line="112"/>
+      <location filename="../../draftobjects/patharray.py" line="266"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="150"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation>개별 배열 요소 표시(Link 배열 전용)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="118"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="159"/>
-      <location filename="../../draftobjects/patharray.py" line="273"/>
       <location filename="../../draftobjects/array.py" line="148"/>
+      <location filename="../../draftobjects/pointarray.py" line="118"/>
+      <location filename="../../draftobjects/patharray.py" line="273"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="159"/>
       <source>The placement for each array element</source>
       <translation>각 배열 요소의 배치</translation>
     </message>
@@ -6994,8 +7013,8 @@ When using a 저장된 스타일 some 의 the 뷰 속성 will become 읽기 전�
 they will 만 be editable 에 의해 변경 the 스타일 through the '주석 스타일 editor' tool.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="224"/>
       <location filename="../../draftobjects/array.py" line="101"/>
+      <location filename="../../draftobjects/patharray.py" line="224"/>
       <source>The base object that will be duplicated</source>
       <translation>The base 객체 that will be duplicated</translation>
     </message>
@@ -7110,10 +7129,10 @@ Otherwise the copies will have the 같은 orientation as the original Base 객�
 - Circular: places the copies 에서 동심 원 around the base 객체.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="86"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
-      <location filename="../../draftobjects/patharray.py" line="259"/>
       <location filename="../../draftobjects/array.py" line="129"/>
+      <location filename="../../draftobjects/pointarray.py" line="86"/>
+      <location filename="../../draftobjects/patharray.py" line="259"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
       <translation>Specifies if the copies should be 결합된 together if they touch each 다른 (slower)</translation>
     </message>
@@ -7677,8 +7696,8 @@ the 'First Angle' 및 'Last Angle' 속성.</translation>
       <translation>문자 색</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="61"/>
       <location filename="../../draftviewproviders/view_label.py" line="78"/>
+      <location filename="../../draftviewproviders/view_text.py" line="61"/>
       <source>Line spacing (relative to font size)</source>
       <translation>줄 간격 (글꼴 크기에 상대적)</translation>
     </message>
@@ -7693,8 +7712,8 @@ the 'First Angle' 및 'Last Angle' 속성.</translation>
       <translation>최대 number 의 characters 위에 each 선 의 the 텍스트 상자</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="56"/>
       <location filename="../../draftviewproviders/view_label.py" line="73"/>
+      <location filename="../../draftviewproviders/view_text.py" line="56"/>
       <source>Horizontal alignment</source>
       <translation>수평 정렬</translation>
     </message>
@@ -7716,7 +7735,7 @@ the 'First Angle' 및 'Last Angle' 속성.</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="179"/>
       <source>Line color</source>
-      <translation>선 색</translation>
+      <translation>선 색상</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="113"/>
@@ -7832,18 +7851,18 @@ Leave blank 에 대한 system 기본.
 사용: 'arch' 까지 force US arch notation</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="144"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="159"/>
       <location filename="../../draftviewproviders/view_wire.py" line="67"/>
       <location filename="../../draftviewproviders/view_wire.py" line="80"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="144"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="159"/>
       <source>Arrow size</source>
       <translation>화살표 크기</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="149"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="166"/>
       <location filename="../../draftviewproviders/view_wire.py" line="72"/>
       <location filename="../../draftviewproviders/view_wire.py" line="85"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="149"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="166"/>
       <source>Arrow type</source>
       <translation>화살표 유형</translation>
     </message>
@@ -7895,8 +7914,8 @@ beyond the 치수 선</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
       <location filename="../../draftviewproviders/view_base.py" line="503"/>
+      <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
       <source>Transform</source>
       <translation>변환하기</translation>
     </message>
