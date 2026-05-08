@@ -63,7 +63,7 @@ DlgCustomActionsImp::DlgCustomActionsImp(QWidget* parent)
     // search for all macros
     std::string cMacroPath = App::GetApplication()
                                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-                                 ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
+                                 ->getString("MacroPath", App::Application::getUserMacroDir());
 
     QDir d(QString::fromUtf8(cMacroPath.c_str()), QLatin1String("*.FCMacro *.py"));
     for (unsigned int i = 0; i < d.count(); i++) {
@@ -247,7 +247,7 @@ void DlgCustomActionsImp::onButtonAddActionClicked()
 
     // search for the command in the manager
     CommandManager& rclMan = Application::Instance->commandManager();
-    QByteArray actionName = QString::fromStdString(rclMan.newMacroName()).toLatin1();
+    auto actionName = QByteArray::fromStdString(rclMan.newMacroName());
     auto macro = new MacroCommand(
         actionName,
         ui->actionMacros->itemData(ui->actionMacros->currentIndex()).toBool()
@@ -453,10 +453,10 @@ void IconDialog::onAddIconPath()
     Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Bitmaps"
     );
-    std::vector<std::string> paths = group->GetASCIIs("CustomPath");
+    std::vector<std::string> paths = group->getAllStrings("CustomPath");
     QStringList pathList;
     for (const auto& path : paths) {
-        pathList << QString::fromUtf8(path.c_str());
+        pathList << QString::fromStdString(path);
     }
 
     IconFolders dlg(pathList, this);
@@ -470,7 +470,7 @@ void IconDialog::onAddIconPath()
         for (QStringList::iterator it = paths.begin(); it != paths.end(); ++it, ++index) {
             std::stringstream str;
             str << "CustomPath" << index;
-            group->SetASCII(str.str().c_str(), (const char*)it->toUtf8());
+            group->setString(str.str(), it->toStdString());
         }
 
         QStringList search = BitmapFactory().getPaths();

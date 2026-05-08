@@ -417,7 +417,7 @@ void MaterialTreeWidget::getFavorites()
     auto count = param->GetInt("Favorites", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("FAV%1").arg(i);
-        QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
+        QString uuid = QString::fromStdString(param->getString(key.toStdString(), ""));
         if (_filter.modelIncluded(uuid)) {
             _favorites.push_back(uuid);
         }
@@ -434,7 +434,7 @@ void MaterialTreeWidget::getRecents()
     auto count = param->GetInt("Recent", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("MRU%1").arg(i);
-        QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
+        QString uuid = QString::fromStdString(param->getString(key.toStdString(), ""));
         if (_filter.modelIncluded(uuid)) {
             _recents.push_back(uuid);
         }
@@ -450,7 +450,7 @@ void MaterialTreeWidget::saveRecents()
     int count = param->GetInt("Recent", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("MRU%1").arg(i);
-        param->RemoveASCII(key.toStdString().c_str());
+        param->removeString(key.toStdString());
     }
 
     // Add the current values
@@ -462,7 +462,7 @@ void MaterialTreeWidget::saveRecents()
     int j = 0;
     for (auto& recent : _recents) {
         QString key = QStringLiteral("MRU%1").arg(j);
-        param->SetASCII(key.toStdString().c_str(), recent.toStdString());
+        param->setString(key.toStdString(), recent.toStdString());
 
         j++;
         if (j >= size) {
@@ -769,8 +769,8 @@ void PrefMaterialTreeWidget::restorePreferences()
         return;
     }
 
-    const char* defaultUuid = "7f9fd73b-50c9-41d8-b7b2-575a030c1eeb";
-    QString uuid = QString::fromStdString(getWindowParameter()->GetASCII(entryName(), defaultUuid));
+    constexpr std::string_view defaultUuid = "7f9fd73b-50c9-41d8-b7b2-575a030c1eeb";
+    QString uuid = QString::fromStdString(getWindowParameter()->getString(entryName().toStdString(), defaultUuid));
     setMaterial(uuid);
 }
 
@@ -781,5 +781,5 @@ void PrefMaterialTreeWidget::savePreferences()
         return;
     }
 
-    getWindowParameter()->SetASCII(entryName(), getMaterialUUID().toStdString());
+    getWindowParameter()->setString(entryName().toStdString(), getMaterialUUID().toStdString());
 }

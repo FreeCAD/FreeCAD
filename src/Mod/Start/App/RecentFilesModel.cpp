@@ -40,7 +40,7 @@ void RecentFilesModel::loadRecentFiles()
     beginResetModel();
     clear();
     const auto maxRows {_parameterGroup->GetInt("RecentFiles", 0)};  // really like "MaxRecentFiles"
-    for (const auto& path : _parameterGroup->GetASCIIs("MRU")) {
+    for (const auto& path : _parameterGroup->getAllStrings("MRU")) {
         if (rowCount() >= maxRows) {
             // Really shouldn't ever happen -- something got corrupted
             break;

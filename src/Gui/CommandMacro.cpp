@@ -191,7 +191,7 @@ void StdCmdMacrosFolder::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::string macroDir = App::GetApplication()
                                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-                               ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
+                               ->getString("MacroPath", App::Application::getUserMacroDir());
     std::ranges::replace(macroDir, '/', PATHSEP);
     QString path = QString::fromStdString(macroDir);
     QUrl url = QUrl::fromLocalFile(path);

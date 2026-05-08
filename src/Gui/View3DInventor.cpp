@@ -865,7 +865,7 @@ void View3DInventor::customEvent(QEvent* e)
             "User parameter:BaseApp/Preferences/View"
         );
         if (hGrp->GetBool("SameStyleForAllViews", true)) {
-            hGrp->SetASCII("NavigationStyle", std::string {se->style().getName()}.c_str());
+            hGrp->setString("NavigationStyle", se->style().getName());
         }
         else {
             _viewer->setNavigationType(se->style());

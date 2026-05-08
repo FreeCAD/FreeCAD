@@ -80,7 +80,7 @@ void ExternalManager::getConfiguration()
 {
     // _hGrp = App::GetApplication().GetParameterGroupByPath(
     //     "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
-    auto current = _hGrp->GetASCII("Current", "None");
+    auto current = _hGrp->getString("Current", "None");
     if (current == "None") {
         _moduleName = "";
         _className = "";
@@ -90,8 +90,8 @@ void ExternalManager::getConfiguration()
             "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface/Interfaces/"
             + current;
         auto hGrp = App::GetApplication().GetParameterGroupByPath(groupName.c_str());
-        _moduleName = hGrp->GetASCII("Module", "");
-        _className = hGrp->GetASCII("Class", "");
+        _moduleName = hGrp->getString("Module", "");
+        _className = hGrp->getString("Class", "");
     }
 }
 
