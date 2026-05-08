@@ -403,7 +403,10 @@ def Execute(op, obj):
 
         # put here all properties that influence calculation of adaptive base paths,
 
+        import random
+
         inputStateObject = {
+            "TODO REMOVE": random.random(),
             "tool": float(op.tool.Diameter),
             "tolerance": float(obj.Tolerance),
             "geometry": path2d,
@@ -633,7 +636,10 @@ def ExecuteModelAware(op, obj):
             "orderCutsByRegion": obj.OrderCutsByRegion,
         }
 
+        import random
+
         insideInputStateObject = {
+            "TODO TESTING": random.random(),
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
             "geometry": [
