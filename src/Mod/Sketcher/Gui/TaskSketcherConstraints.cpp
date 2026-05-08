@@ -651,7 +651,7 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
 
     // This does the same as a double-click and thus it should be the first action and with bold
     // text
-    QAction* change = menu.addAction(tr("Change Value"), this, &ConstraintView::modifyCurrentItem);
+    QAction* change = menu.addAction(tr("Edit Value"), this, &ConstraintView::modifyCurrentItem);
     change->setEnabled(isQuantity);
     menu.setDefaultAction(change);
 
@@ -796,14 +796,16 @@ void ConstraintView::swapNamedOfSelectedItems()
     ss << "DummyConstraint" << rand();
     std::string tmpname = ss.str();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Swap constraint names"));
+
+
+    item1->sketch->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Swap constraint names"));
     Gui::cmdAppObjectArgs(
         item1->sketch, "renameConstraint(%d, u'%s')", item1->ConstraintNbr, tmpname.c_str());
     Gui::cmdAppObjectArgs(
         item2->sketch, "renameConstraint(%d, u'%s')", item2->ConstraintNbr, escapedstr1.c_str());
     Gui::cmdAppObjectArgs(
         item1->sketch, "renameConstraint(%d, u'%s')", item1->ConstraintNbr, escapedstr2.c_str());
-    Gui::Command::commitCommand();
+    item1->sketch->getDocument()->commitTransaction();
 }
 
 /* Filter constraints list widget ----------------------*/
@@ -1270,14 +1272,19 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
 
     // if its the right constraint
     if (it->isDimensional()) {
-        EditDatumDialog* editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
-        editDatumDialog->exec(false);
-        delete editDatumDialog;
+        int tid = this->sketchView->getDocument()->openCommand(
+                    QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
+        EditDatumDialog(tid, this->sketchView, it->ConstraintNbr).exec(false);
     }
     else if (it->constraintType() == Sketcher::Text) {
         auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr);
         editDialog->exec();
         delete editDialog;
+    }
+    // For all other constraints (geometric: e.g., Parallel, Perpendicular, Coincident),
+    // double-click triggers the rename functionality.
+    else {
+        ui->listWidgetConstraints->editItem(item);
     }
 }
 
@@ -1311,14 +1318,14 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
             newName = currConstraintName;
         }
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
+        sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(
                 sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, newName.c_str());
-            Gui::Command::commitCommand();
+            sketchView->getDocument()->commitCommand();
         }
         catch (const Base::Exception& e) {
-            Gui::Command::abortCommand();
+            sketchView->getDocument()->abortCommand();
 
             Gui::NotifyUserError(
                 sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e.what());
@@ -1400,6 +1407,7 @@ void TaskSketcherConstraints::updateList()
 void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     assert(sketchView);
+    assert(sketchView->getSketchObject());
 
     std::string temp;
     if (msg.Type == Gui::SelectionChanges::ClrSelection) {
@@ -1594,7 +1602,11 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemSelectionChanged()
     this->blockSelection(block);
 
     // it seems that addSelections gives back the focus to the view, and not immediately.
-    QTimer::singleShot(200, [this]() {
+    QTimer::singleShot(200, this, [this]() {
+        QWidget* fw = QApplication::focusWidget();
+        if (fw && ui->listWidgetConstraints->viewport()->isAncestorOf(fw)) {
+            return; // Do NOT steal focus if the editor is active
+        }
         ui->listWidgetConstraints->setFocus();
     });
 }
@@ -1656,17 +1668,16 @@ bool TaskSketcherConstraints::doSetVirtualSpace(const std::vector<int>& constrId
 
     std::string constrIdList = stream.str();
 
-    Gui::Command::openCommand(
-            QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+    sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
     try {
         Gui::cmdAppObjectArgs(sketch,
             "setVirtualSpace(%s, %s)",
             constrIdList,
             isvirtualspace ? "True" : "False");
-        Gui::Command::commitCommand();
-    }
+            sketchView->getDocument()->commitCommand();
+        }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        sketchView->getDocument()->abortCommand();
 
         Gui::TranslatedUserError(
             sketch, tr("Error"), tr("Impossible to update visibility tracking:") + QLatin1String(" ") + QLatin1String(e.what()));

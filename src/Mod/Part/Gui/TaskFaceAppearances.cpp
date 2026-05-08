@@ -266,8 +266,7 @@ FaceAppearances::FaceAppearances(ViewProviderPartExt* vp, QWidget* parent)
     d->ui->buttonCustomAppearance->setDisabled(true);
     d->ui->widgetMaterial->setEnabled(false);
 
-    FaceSelection* gate = new FaceSelection(d->vp->getObject());
-    Gui::Selection().addSelectionGate(gate);
+    setSelectionGate();
 
     // NOLINTBEGIN
     d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(
@@ -318,21 +317,21 @@ void FaceAppearances::slotUndoDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
         d->doc->resetEdit();
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(d->doc->getDocument());
     }
 }
 
 void FaceAppearances::slotDeleteDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(d->doc->getDocument());
     }
 }
 
 void FaceAppearances::slotDeleteObject(const Gui::ViewProvider& obj)
 {
     if (d->vp == &obj) {
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(d->doc->getDocument());
     }
 }
 
@@ -547,6 +546,11 @@ void FaceAppearances::changeEvent(QEvent* e)
     if (e->type() == QEvent::LanguageChange) {
         d->ui->retranslateUi(this);
     }
+}
+void FaceAppearances::setSelectionGate()
+{
+    FaceSelection* gate = new FaceSelection(d->vp->getObject());
+    Gui::Selection().addSelectionGate(gate);
 }
 
 

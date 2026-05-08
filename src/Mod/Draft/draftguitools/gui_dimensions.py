@@ -33,6 +33,7 @@ and circular arcs.
 And it can also be an angular dimension measuring the angle between
 two straight lines.
 """
+
 ## @package gui_dimensions
 # \ingroup draftguitools
 # \brief Provides GUI tools to create dimension objects.
@@ -332,7 +333,7 @@ class Dimension(gui_base_original.Creator):
             shift = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
             if self.arcmode or self.point2:
                 gui_tool_utils.setMod(arg, gui_tool_utils.get_mod_constrain_key(), False)
-            (self.point, ctrlPoint, self.info) = gui_tool_utils.getPoint(
+            self.point, ctrlPoint, self.info = gui_tool_utils.getPoint(
                 self, arg, noTracker=(len(self.node) > 0)
             )
             if (
@@ -344,6 +345,7 @@ class Dimension(gui_base_original.Creator):
                     self.ui.switchUi(True)
                     if hasattr(Gui, "Snapper"):
                         Gui.Snapper.setSelectMode(True)
+                        self.update_hints()
                 snapped = self.view.getObjectInfo((arg["Position"][0], arg["Position"][1]))
                 if snapped:
                     ob = self.doc.getObject(snapped["Object"])
@@ -384,6 +386,7 @@ class Dimension(gui_base_original.Creator):
                     self.ui.switchUi(False)
                     if hasattr(Gui, "Snapper"):
                         Gui.Snapper.setSelectMode(False)
+                        self.update_hints()
                 if self.node and self.dir and len(self.node) < 2:
                     _p = DraftVecUtils.project(self.point.sub(self.node[0]), self.dir)
                     self.point = self.node[0].add(_p)
@@ -537,6 +540,7 @@ class Dimension(gui_base_original.Creator):
                         self.node.append(self.point)
                         self.createObject()
                         self.finish()
+                    self.update_hints()
 
     def numericInput(self, numx, numy, numz):
         """Validate the entry fields in the user interface.
@@ -553,6 +557,7 @@ class Dimension(gui_base_original.Creator):
             self.createObject()
             if not self.chain:
                 self.finish()
+        self.update_hints()
 
     def set_constraint_node(self):
         """Set constrained nodes for vertical or horizontal dimension
@@ -580,6 +585,59 @@ class Dimension(gui_base_original.Creator):
             elif self.force == 2:
                 self.node[0] = self.proj_point1
                 self.node[1] = self.proj_point1 + self.wp.u * proj_u
+
+    def get_hints(self):
+
+        position_txt = translate("draft", "%1 pick dimension position")
+
+        if hasattr(Gui, "Snapper") and Gui.Snapper.selectMode:
+            # Edge selection mode: update hints for clarity.
+            hints = [Gui.InputHint(translate("draft", "%1 select edge"), Gui.UserInput.MouseLeft)]
+        elif self.center is not None:
+            # 2 straight edges that intersect have been selected: angular dimension.
+            hints = [Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)]
+        elif self.arcmode:
+            # 1 circular edge has been selected.
+            hints = [Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)]
+            hints += gui_tool_utils._get_hint_mod_constrain_dimension_radial()
+        elif self.edges:
+            # 1 straight edge has been selected: linear or angular dimension.
+            hints = [Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)]
+            hints += gui_tool_utils._get_hint_mod_constrain_dimension_linear()
+            hints += gui_tool_utils._get_hint_select_edge()
+        elif self.chain is not None:
+            # 1st linear dimension is defined, chain points can be picked.
+            hints = [
+                Gui.InputHint(
+                    translate("draft", "%1 pick next dimension point"), Gui.UserInput.MouseLeft
+                ),
+                Gui.InputHint(translate("draft", "%1 finish"), Gui.UserInput.KeyEscape),
+            ]
+        elif len(self.node) == 0:
+            # 0 points picked.
+            hints = [
+                Gui.InputHint(
+                    translate("draft", "%1 pick first dimension point"), Gui.UserInput.MouseLeft
+                )
+            ]
+            hints += gui_tool_utils._get_hint_mod_snap()
+            hints += gui_tool_utils._get_hint_select_edge()
+        elif len(self.node) == 1:
+            # 1 point picked.
+            hints = [
+                Gui.InputHint(
+                    translate("draft", "%1 pick second dimension point"), Gui.UserInput.MouseLeft
+                )
+            ]
+            hints += gui_tool_utils._get_hint_xyz_constrain()
+            hints += gui_tool_utils._get_hint_mod_constrain()
+            hints += gui_tool_utils._get_hint_mod_snap()
+        else:
+            # 2 points picked.
+            hints = [Gui.InputHint(position_txt, Gui.UserInput.MouseLeft)]
+            hints += gui_tool_utils._get_hint_mod_constrain_dimension_linear()
+
+        return hints
 
 
 Gui.addCommand("Draft_Dimension", Dimension())

@@ -59,12 +59,12 @@ void DlgProjectUtility::extractButton()
     QString source = ui->extractSource->fileName();
     QString dest = ui->extractDest->fileName();
     if (source.isEmpty()) {
-        QMessageBox::critical(this, tr("Empty source"), tr("No source is defined."));
+        QMessageBox::critical(this, tr("Empty Source"), tr("No source is defined."));
         return;
     }
 
     if (dest.isEmpty()) {
-        QMessageBox::critical(this, tr("Empty destination"), tr("No destination is defined."));
+        QMessageBox::critical(this, tr("Empty Destination"), tr("No destination is defined."));
         return;
     }
 
@@ -76,11 +76,11 @@ void DlgProjectUtility::createButton()
     QString source = ui->createSource->fileName();
     QString dest = ui->createDest->fileName();
     if (source.isEmpty()) {
-        QMessageBox::critical(this, tr("Empty source"), tr("No source is defined."));
+        QMessageBox::critical(this, tr("Empty Source"), tr("No source is defined."));
         return;
     }
     if (dest.isEmpty()) {
-        QMessageBox::critical(this, tr("Empty destination"), tr("No destination is defined."));
+        QMessageBox::critical(this, tr("Empty Destination"), tr("No destination is defined."));
         return;
     }
 
@@ -100,7 +100,7 @@ void DlgProjectUtility::tryExtractArchive(const QString& source, const QString& 
         Gui::Command::runCommand(Gui::Command::App, str.str().c_str());
     }
     catch (const Base::Exception& e) {
-        QMessageBox::critical(this, tr("Failed to extract document"), QString::fromLatin1(e.what()));
+        QMessageBox::critical(this, tr("Failed to Extract Document"), QString::fromLatin1(e.what()));
     }
 }
 
@@ -117,7 +117,7 @@ void DlgProjectUtility::tryCreateArchive(const QString& source, const QString& t
         }
     }
     catch (const Base::Exception& e) {
-        QMessageBox::critical(this, tr("Failed to create document"), QString::fromLatin1(e.what()));
+        QMessageBox::critical(this, tr("Failed to Create Document"), QString::fromLatin1(e.what()));
     }
 }
 

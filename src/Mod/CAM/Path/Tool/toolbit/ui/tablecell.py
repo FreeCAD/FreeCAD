@@ -112,7 +112,7 @@ class TwoLineTableCell(QtGui.QWidget):
         self.label_right.setText(text)
 
         text = self._highlight(self.upper_text)
-        self.label_upper.setText(f"<big><b>{text}</b></big>")
+        self.label_upper.setText(f"<b>{text}</b>")
 
         text = self._highlight(self.lower_text)
         self.label_lower.setText(text)
@@ -146,6 +146,7 @@ class TwoLineTableCell(QtGui.QWidget):
             return
         pixmap = icon.get_qpixmap(self.icon_size)
         if pixmap:
+            pixmap.setDevicePixelRatio(self.devicePixelRatioF())
             self.set_icon(pixmap)
 
     def contains_text(self, text):
@@ -173,8 +174,10 @@ class CompactTwoLineTableCell(TwoLineTableCell):
         ratio = self.devicePixelRatioF()
         self.icon_size = QtCore.QSize(32 * ratio, 32 * ratio)
 
-        # Reduce margins
-        self.label_upper.setStyleSheet("margin: 2px 0px 0px 0px; font-size: .8em;")
-        self.label_lower.setStyleSheet("margin: 0px 0px 2px 0px; font-size: .8em;")
+        # Reduce margins and scale font size based on system default
+        base_pt = QtGui.QApplication.font().pointSizeF()
+        upper_pt = base_pt * 1.2
+        self.label_upper.setStyleSheet(f"margin: 2px 0px 0px -2px; font-size: {upper_pt}pt;")
+        self.label_lower.setStyleSheet("margin: 0px 0px 2px 0px;")
         self.vbox.setSpacing(0)
         self.hbox.setContentsMargins(0, 0, 0, 0)

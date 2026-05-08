@@ -1666,7 +1666,7 @@ void FemMesh::read(const char* FileName)
 #ifdef FC_USE_VTK
     else if (File.hasExtension({"vtk", "vtu", "pvtu"})) {
         // read *.vtk legacy format or *.vtu XML unstructure Mesh
-        FemVTKTools::readVTKMesh(File.filePath().c_str(), this);
+        FemVTKTools::readVTKMesh(File.filePath().c_str(), this, nullptr);
     }
 #endif
     else if (File.hasExtension("z88")) {
@@ -1678,10 +1678,41 @@ void FemMesh::read(const char* FileName)
     }
 }
 
+void FemMesh::readVTKWithGroups(const char* FileName, const char* vtk_group_cell_array)
+{
+#ifdef FC_USE_VTK
+    Base::FileInfo File(FileName);
+    if (File.hasExtension({"vtk", "vtu", "pvtu"})) {
+        // checking on the file
+        if (!File.isReadable()) {
+            throw Base::FileException("File to load not existing or not readable", File);
+        }
+
+        // read *.vtk legacy format or *.vtu XML unstructure Mesh
+        FemVTKTools::readVTKMesh(File.filePath().c_str(), this, vtk_group_cell_array);
+        return;
+    }
+#endif
+
+    return read(FileName);
+}
+
 void FemMesh::writeVTK(const std::string& fileName, bool highest) const
 {
 #ifdef FC_USE_VTK
     FemVTKTools::writeVTKMesh(fileName.c_str(), this, highest);
+#endif
+}
+
+void FemMesh::writeVTKWithGroups(
+    const std::string& FileName,
+    const std::string& vtk_group_cell_array,
+    std::map<std::string, int> name_to_id,
+    bool highest
+)
+{
+#ifdef FC_USE_VTK
+    FemVTKTools::writeVTKMeshWithGroups(FileName, this, vtk_group_cell_array, name_to_id, highest);
 #endif
 }
 

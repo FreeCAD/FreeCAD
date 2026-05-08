@@ -217,8 +217,10 @@ public:
                         EditCurve[1] = EditCurve[0] + EditCurve[1];
                     }
                 }
-                else if (TransitionMode == TRANSITION_MODE_Perpendicular_L
-                         || TransitionMode == TRANSITION_MODE_Perpendicular_R) {
+                else if (
+                    TransitionMode == TRANSITION_MODE_Perpendicular_L
+                    || TransitionMode == TRANSITION_MODE_Perpendicular_R
+                ) {
                     Base::Vector2d Perpendicular(-dirVec.y, dirVec.x);
                     EditCurve[1].ProjectToLine(EditCurve[2] - EditCurve[0], Perpendicular);
                     EditCurve[1] = EditCurve[0] + EditCurve[1];
@@ -457,9 +459,7 @@ public:
                 // issue the geometry
                 try {
                     // open the transaction
-                    Gui::Command::openCommand(
-                        QT_TRANSLATE_NOOP("Command", "Add line to sketch polyline")
-                    );
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Add line to sketch polyline"));
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
@@ -477,7 +477,7 @@ public:
                         QT_TRANSLATE_NOOP("Notifications", "Error"),
                         QT_TRANSLATE_NOOP("Notifications", "Failed to add line")
                     );
-                    Gui::Command::abortCommand();
+                    abortCommand();
                 }
 
                 firstsegment = false;
@@ -489,9 +489,7 @@ public:
                 }
 
                 try {
-                    Gui::Command::openCommand(
-                        QT_TRANSLATE_NOOP("Command", "Add arc to sketch polyline")
-                    );
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Add arc to sketch polyline"));
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "addGeometry(Part.ArcOfCircle"
@@ -512,7 +510,7 @@ public:
                         QT_TRANSLATE_NOOP("Notifications", "Failed to add arc")
                     );
 
-                    Gui::Command::abortCommand();
+                    abortCommand();
                 }
 
                 firstsegment = false;
@@ -535,8 +533,10 @@ public:
                     if (TransitionMode == TRANSITION_MODE_Tangent) {
                         constrType = "Tangent";
                     }
-                    else if (TransitionMode == TRANSITION_MODE_Perpendicular_L
-                             || TransitionMode == TRANSITION_MODE_Perpendicular_R) {
+                    else if (
+                        TransitionMode == TRANSITION_MODE_Perpendicular_L
+                        || TransitionMode == TRANSITION_MODE_Perpendicular_R
+                    ) {
                         constrType = "Perpendicular";
                     }
                 }
@@ -582,7 +582,7 @@ public:
                     );
                     firstsegment = true;
                 }
-                Gui::Command::commitCommand();
+                commitCommand();
 
                 tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
             }
@@ -665,7 +665,7 @@ public:
                 }
             }
             else {
-                Gui::Command::commitCommand();
+                commitCommand();
 
                 // Add auto constraints
                 if (!sugConstr1.empty()) {  // this is relevant only to the very first point

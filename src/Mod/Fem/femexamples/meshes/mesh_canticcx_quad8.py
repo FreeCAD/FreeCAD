@@ -19,19 +19,15 @@ def create_nodes(femmesh):
     femmesh.addNode(4000.0, 500.0000000000001, 500.0, 17)
     femmesh.addNode(2000.0, 500.0000000000001, 500.0, 18)
     femmesh.addNode(4000.0, 500.00000000000017, 750.0, 19)
-    femmesh.addNode(2000.0, 500.00000000000017, 750.0, 20)
-    femmesh.addNode(6000.0, 500.0000000000001, 500.0, 21)
-    femmesh.addNode(6000.0, 500.00000000000017, 750.0, 22)
-    femmesh.addNode(4000.0, 500.00000000000006, 250.0, 23)
-    femmesh.addNode(6000.0, 500.00000000000006, 250.0, 24)
-    femmesh.addNode(2000.0, 500.00000000000006, 250.0, 25)
+    femmesh.addNode(6000.0, 500.0000000000001, 500.0, 20)
+    femmesh.addNode(4000.0, 500.00000000000006, 250.0, 21)
     return True
 
 
 def create_elements(femmesh):
     # elements
-    femmesh.addFace([1, 5, 17, 8, 6, 18, 23, 9], 1)
+    femmesh.addFace([1, 5, 17, 8, 6, 18, 21, 9], 1)
     femmesh.addFace([5, 2, 14, 17, 7, 15, 19, 18], 2)
-    femmesh.addFace([17, 14, 4, 11, 19, 16, 13, 21], 3)
-    femmesh.addFace([8, 17, 11, 3, 23, 21, 12, 10], 4)
+    femmesh.addFace([17, 14, 4, 11, 19, 16, 13, 20], 3)
+    femmesh.addFace([8, 17, 11, 3, 21, 20, 12, 10], 4)
     return True

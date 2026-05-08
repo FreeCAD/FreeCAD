@@ -854,16 +854,20 @@ protected:
                     // endpoint-to-endpoint tangency
                     (*resultCoincident)->Type = Sketcher::Tangent;
                 }
-                else if (resultPointOnObject != AutoConstraints.end()
-                         && isStartOrEnd((*resultPointOnObject)->FirstPos)) {
+                else if (
+                    resultPointOnObject != AutoConstraints.end()
+                    && isStartOrEnd((*resultPointOnObject)->FirstPos)
+                ) {
                     // endpoint-to-edge tangency
                     (*resultPointOnObject)->Type = Sketcher::Tangent;
                 }
-                else if (resultCoincident != AutoConstraints.end()
-                         && (*resultCoincident)->FirstPos == Sketcher::PointPos::mid
-                         && (*resultCoincident)->SecondPos == Sketcher::PointPos::mid && geom1 && geom2
-                         && (geom1->is<Part::GeomCircle>() || geom1->is<Part::GeomArcOfCircle>())
-                         && (geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>())) {
+                else if (
+                    resultCoincident != AutoConstraints.end()
+                    && (*resultCoincident)->FirstPos == Sketcher::PointPos::mid
+                    && (*resultCoincident)->SecondPos == Sketcher::PointPos::mid && geom1 && geom2
+                    && (geom1->is<Part::GeomCircle>() || geom1->is<Part::GeomArcOfCircle>())
+                    && (geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>())
+                ) {
                     // equality
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::Equal;
@@ -915,18 +919,18 @@ protected:
         try {
             // add auto-constraints
             if (owncommand) {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
             }
 
             tryAddAutoConstraints();
 
             if (owncommand) {
-                Gui::Command::commitCommand();
+                commitCommand();
             }
         }
         catch (const Base::PyException&) {
             if (owncommand) {
-                Gui::Command::abortCommand();
+                abortCommand();
             }
         }
     }

@@ -44,6 +44,7 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoFocalDistanceElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/misc/SoState.h>
@@ -129,6 +130,30 @@ void glDrawArrow(const SbVec3f& base, const SbVec3f& dir, float width, float len
     glEnd();
 }
 
+
+float normalizeArcSweepEnd(float startAngle, float endAngle)
+{
+    constexpr float tau = 2.0F * std::numbers::pi_v<float>;
+    const float delta = endAngle - startAngle;
+
+    if (delta >= 0.0F) {
+        return endAngle;
+    }
+
+    return endAngle + tau * std::ceil(-delta / tau);
+}
+
+SbVec3f getArcMidDirection(float startAngle, float endAngle)
+{
+    endAngle = normalizeArcSweepEnd(startAngle, endAngle);
+    const float midAngle = startAngle + 0.5F * (endAngle - startAngle);
+    return SbVec3f(cos(midAngle), sin(midAngle), 0);
+}
+
+SbVec3f getArcTextCenter(const SbVec3f& center, float startAngle, float endAngle, float distanceFromCenter)
+{
+    return center + getArcMidDirection(startAngle, endAngle) * distanceFromCenter;
+}
 }  // namespace
 
 
@@ -246,8 +271,10 @@ public:
             || label->datumtype.getValue() == SoDatumLabel::DISTANCEY) {
             corners = computeDistanceBBox();
         }
-        else if (label->datumtype.getValue() == SoDatumLabel::RADIUS
-                 || label->datumtype.getValue() == SoDatumLabel::DIAMETER) {
+        else if (
+            label->datumtype.getValue() == SoDatumLabel::RADIUS
+            || label->datumtype.getValue() == SoDatumLabel::DIAMETER
+        ) {
             corners = computeRadiusDiameterBBox();
         }
         else if (label->datumtype.getValue() == SoDatumLabel::ANGLE) {
@@ -663,14 +690,9 @@ SbVec3f SoDatumLabel::getLabelTextCenterAngle(const SbVec3f& p0)
     float startangle = param2.getValue();
     float range = param3.getValue();
     float len2 = 2.0F * length;
+    float endangle = startangle + range;
 
-    // Useful Information
-    // v0 - vector for text position
-    // p0 - vector for angle intersect
-    SbVec3f v0(cos(startangle + range / 2), sin(startangle + range / 2), 0);
-
-    SbVec3f textCenter = p0 + v0 * len2;
-    return textCenter;
+    return getArcTextCenter(p0, startangle, endangle, len2);
 }
 
 SbVec3f SoDatumLabel::getLabelTextCenterArcLength(
@@ -679,31 +701,8 @@ SbVec3f SoDatumLabel::getLabelTextCenterArcLength(
     const SbVec3f& p2
 ) const
 {
-    float length = this->param1.getValue();
-
-    // Angles calculations
-    SbVec3f vc1 = (p1 - ctr);
-    SbVec3f vc2 = (p2 - ctr);
-
-    float startangle = atan2f(vc1[1], vc1[0]);
-    float endangle = atan2f(vc2[1], vc2[0]);
-
-    if (endangle < startangle) {
-        endangle += 2.F * std::numbers::pi_v<float>;
-    }
-
-    // Text location
-    SbVec3f vm = (p1 + p2) / 2 - ctr;
-    vm.normalize();
-
-    SbVec3f textCenter;
-    if (endangle - startangle <= std::numbers::pi) {
-        textCenter = ctr + vm * (length + this->imgHeight);
-    }
-    else {
-        textCenter = ctr - vm * (length + 2. * this->imgHeight);
-    }
-    return textCenter;
+    SbVec3f points[3] = {ctr, p1, p2};
+    return calculateArcLengthGeometry(points).textOffset;
 }
 
 
@@ -1189,11 +1188,9 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
     glDisable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
 
-    // Explicitly enable depth testing for constraint lines. This is needed because the
-    // constraint group may have depth testing disabled (to allow icons to render on top),
-    // but we want constraint LINES to render BELOW geometry lines.
-    // Arrowheads are drawn at elevated Z (ZARROW_TEXT_OFFSET) so they render on top.
-    // Text rendering disables depth testing separately.
+    // Enable depth testing so constraint lines use the sketch-local Z carried by their
+    // input points. That keeps them above coplanar model geometry while still rendering
+    // below sketch elements in the normal scene.
     glEnable(GL_DEPTH_TEST);
 
     // Enable Anti-alias
@@ -1287,18 +1284,18 @@ void SoDatumLabel::drawDistance(const SbVec3f* points, float& angle, SbVec3f& te
     // Perp Lines
     glBegin(GL_LINES);
     if (this->param1.getValue() != 0.) {
-        glVertex2f(geom.p1[0], geom.p1[1]);
-        glVertex2f(geom.perp1[0], geom.perp1[1]);
+        glVertex(geom.p1);
+        glVertex(geom.perp1);
 
-        glVertex2f(geom.p2[0], geom.p2[1]);
-        glVertex2f(geom.perp2[0], geom.perp2[1]);
+        glVertex(geom.p2);
+        glVertex(geom.perp2);
     }
 
-    glVertex2f(geom.par1[0], geom.par1[1]);
-    glVertex2f(geom.par2[0], geom.par2[1]);
+    glVertex(geom.par1);
+    glVertex(geom.par2);
 
-    glVertex2f(geom.par3[0], geom.par3[1]);
-    glVertex2f(geom.par4[0], geom.par4[1]);
+    glVertex(geom.par3);
+    glVertex(geom.par4);
     glEnd();
 
     // Draw the arrowheads at elevated Z to render ON TOP of geometry lines
@@ -1347,11 +1344,11 @@ void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbV
 
     // Draw the Lines
     glBegin(GL_LINES);
-    glVertex2f(geom.p1[0], geom.p1[1]);
-    glVertex2f(geom.pnt1[0], geom.pnt1[1]);
+    glVertex(geom.p1);
+    glVertex(geom.pnt1);
 
-    glVertex2f(geom.pnt2[0], geom.pnt2[1]);
-    glVertex2f(geom.p2[0], geom.p2[1]);
+    glVertex(geom.pnt2);
+    glVertex(geom.p2);
     glEnd();
 
     // Draw arrowhead at elevated Z to render ON TOP of geometry lines
@@ -1459,6 +1456,47 @@ void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& t
     glDrawArrow(geom.pnt4, geom.dirEnd, arrowWidth, arrowLength);
 }
 
+namespace
+{
+/*!
+ * \brief Compute sketch rotation angle in screen space.
+ *
+ * Calculates the rotation of the sketch relative to the camera view.
+ * The angle is measured from the camera right vector to the sketch's local X axis.
+ *
+ * \param state Current Coin3D traversal state used to retrieve view and model matrices.
+ * \param viewVolume Active view volume describing the camera projection and orientation.
+ * \param flip If true, the resulting angle is inverted to account for back-facing view direction.
+ *
+ * \return Rotation angle in radians in the range [-pi, pi].
+ *         Positive values correspond to counter-clockwise (CCW) rotation,
+ *         negative values correspond to clockwise (CW) rotation.
+ */
+float getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, bool flip)
+{
+    // Camera basis from view volume (screen space axes
+    SbVec3f camRight = viewVolume.lrf - viewVolume.llf;
+    SbVec3f camUp = viewVolume.ulf - viewVolume.llf;
+
+    camRight.normalize();
+    camUp.normalize();
+
+    // Sketch local X axis in world space
+    const SbMatrix& m = SoModelMatrixElement::get(state);
+    SbVec3f xWorld;
+    m.multDirMatrix(SbVec3f(1, 0, 0), xWorld);
+
+    // Compute angle in screen space
+    float cosA = xWorld.dot(camRight);
+    float sinA = xWorld.dot(camUp);
+
+    float angleRad = std::atan2(sinA, cosA);
+
+    // Optional flip correction (back-facing view)
+    return flip ? angleRad : -angleRad;
+}
+}  // unnamed namespace
+
 // NOLINTNEXTLINE
 void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset)
 {
@@ -1471,6 +1509,17 @@ void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, con
     SbVec3f z = vv.zVector();
 
     bool flip = norm.getValue().dot(z) > std::numeric_limits<float>::epsilon();
+
+    const float sketchAngle = getSketchRotationAngle(state, vv, flip);
+    const float absLabelAngle = std::abs(sketchAngle + angle);
+
+    constexpr float quarter = 90.0F;  // vertical line
+    constexpr float hysteresis = 15.0F;  // extra to avoid flipping back and forth when close to vertical
+    constexpr float threshold = Base::toRadians(quarter + hysteresis);
+
+    if ((flip && absLabelAngle > threshold) || (!flip && absLabelAngle < threshold)) {
+        angle += std::numbers::pi;
+    }
 
     static bool init = false;
     static bool npot = false;
@@ -1789,15 +1838,12 @@ SoDatumLabel::AngleGeometry SoDatumLabel::calculateAngleGeometry(const SbVec3f* 
     // set the text label angle to zero
     geom.angle = 0.F;
 
-    // useful information
-    // v0 - vector for text position
-    // p0 - vector for angle intersect
-    geom.v0 = SbVec3f(cos(geom.startangle + geom.range / 2), sin(geom.startangle + geom.range / 2), 0);
+    geom.v0 = getArcMidDirection(geom.startangle, geom.endangle);
 
     // leave some space for the text
     geom.textMargin = std::min(0.2F * abs(geom.range), this->imgWidth / (2 * geom.r));
 
-    geom.textOffset = geom.p0 + geom.v0 * geom.r;
+    geom.textOffset = getArcTextCenter(geom.p0, geom.startangle, geom.endangle, geom.r);
 
     // direction vectors for start and end lines
     geom.v1 = SbVec3f(cos(geom.startangle), sin(geom.startangle), 0);
@@ -1955,9 +2001,7 @@ SoDatumLabel::ArcLengthGeometry SoDatumLabel::calculateArcLengthGeometry(const S
 
     geom.startangle = atan2f(vc1[1], vc1[0]);
     geom.endangle = atan2f(vc2[1], vc2[0]);
-    if (geom.endangle < geom.startangle) {
-        geom.endangle += 2.0F * (float)pi;
-    }
+    geom.endangle = normalizeArcSweepEnd(geom.startangle, geom.endangle);
 
     geom.range = geom.endangle - geom.startangle;
     geom.radius = vc1.length();
@@ -1974,9 +2018,6 @@ SoDatumLabel::ArcLengthGeometry SoDatumLabel::calculateArcLengthGeometry(const S
         geom.angle += (float)pi;
     }
 
-    // text location
-    geom.textOffset = getLabelTextCenterArcLength(geom.ctr, geom.p1, geom.p2);
-
     // lines direction
     geom.vm = (geom.p1 + geom.p2) / 2 - geom.ctr;
     geom.vm.normalize();
@@ -1989,26 +2030,51 @@ SoDatumLabel::ArcLengthGeometry SoDatumLabel::calculateArcLengthGeometry(const S
     geom.pnt3 = geom.p2;
 
     if (geom.isLargeArc) {
-        geom.pnt2 = geom.p1 + geom.length * geom.vm;
-        geom.pnt4 = geom.p2 + geom.length * geom.vm;
+        const float desiredRadius = std::max(geom.length, geom.radius);
+        const float averageMidDirectionProjection
+            = std::clamp(0.5F * ((vc1.dot(geom.vm) + vc2.dot(geom.vm)) / geom.radius), -1.0F, 1.0F);
+        const float offset = -geom.radius * averageMidDirectionProjection
+            + std::sqrt(
+                std::max(
+                    0.0F,
+                    desiredRadius * desiredRadius
+                        - geom.radius * geom.radius
+                            * (1.0F - averageMidDirectionProjection * averageMidDirectionProjection)
+                )
+            );
 
         // recalculate angles for the outer arc
-        SbVec3f vc1_outer = (geom.pnt2 - geom.ctr);
-        SbVec3f vc2_outer = (geom.pnt4 - geom.ctr);
+        SbVec3f vc1_outer = geom.p1 + offset * geom.vm - geom.ctr;
+        SbVec3f vc2_outer = geom.p2 + offset * geom.vm - geom.ctr;
+        vc1_outer.normalize();
+        vc2_outer.normalize();
+
         geom.arcCenter = geom.ctr;
-        geom.arcRadius = vc1_outer.length();
+        geom.arcRadius = desiredRadius;
+        geom.pnt2 = geom.arcCenter + geom.arcRadius * vc1_outer;
+        geom.pnt4 = geom.arcCenter + geom.arcRadius * vc2_outer;
+
         // update angles for outer arc
         geom.startangle = atan2f(vc1_outer[1], vc1_outer[0]);
-        geom.endangle = atan2f(vc2_outer[1], vc2_outer[0]);
+        geom.endangle = normalizeArcSweepEnd(geom.startangle, atan2f(vc2_outer[1], vc2_outer[0]));
+        geom.range = geom.endangle - geom.startangle;
     }
     else {
-        geom.pnt2 = geom.p1 + (geom.length - geom.radius) * geom.vm;
-        geom.pnt4 = geom.p2 + (geom.length - geom.radius) * geom.vm;
+        const float offset = geom.length - geom.radius;
+        geom.pnt2 = geom.p1 + offset * geom.vm;
+        geom.pnt4 = geom.p2 + offset * geom.vm;
 
         // arc center and radius for inner arc
-        geom.arcCenter = geom.ctr + (geom.length - geom.radius) * geom.vm;
+        geom.arcCenter = geom.ctr + offset * geom.vm;
         geom.arcRadius = geom.radius;
     }
+
+    geom.textOffset = getArcTextCenter(
+        geom.arcCenter,
+        geom.startangle,
+        geom.endangle,
+        geom.arcRadius + this->imgHeight
+    );
 
     // normals for the arrowheads at arc start and end
     geom.dirStart = SbVec3f(sin(geom.startangle), -cos(geom.startangle), 0);

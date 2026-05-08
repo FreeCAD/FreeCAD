@@ -169,7 +169,6 @@ private:
         const std::vector<PickData>& selections
     );
 
-    App::DocumentObject* getSubObject(const PickData& sel);
     std::string extractElementType(const PickData& sel);
     std::string createObjectKey(const PickData& sel);
     QIcon getOrCreateIcon(App::DocumentObject* sobj, std::map<App::DocumentObject*, QIcon>& icons);

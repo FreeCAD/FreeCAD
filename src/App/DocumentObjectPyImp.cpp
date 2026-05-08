@@ -26,7 +26,9 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
+#include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Base/ServiceProvider.h>
 
 #include "DocumentObject.h"
 #include "Document.h"
@@ -34,6 +36,8 @@
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include "GroupExtension.h"
+#include "MainThreadSignal.h"
+#include "Services.h"
 
 
 // inclusion of the generated files (generated out of DocumentObjectPy.xml)
@@ -274,6 +278,16 @@ Py::Object DocumentObjectPy::getViewObject() const
             // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its
             // document methods)
             return Py::None();
+        }
+        if (!App::MainThreadSignalConfig::isMainThread()) {
+            Base::Console().error(
+                "GUI API 'App::DocumentObjectPy::getViewObject' may only be used from the main "
+                "thread.\n"
+            );
+            throw Py::RuntimeError(
+                "GUI API 'App::DocumentObjectPy::getViewObject' may only be used from the main "
+                "thread"
+            );
         }
         if (!getDocumentObjectPtr()->getDocument()) {
             throw Py::RuntimeError("Object has no document");
@@ -889,11 +903,23 @@ PyObject* DocumentObjectPy::getElementMapVersion(PyObject* args) const
         Py::String(getDocumentObjectPtr()->getElementMapVersion(prop, Base::asBoolean(restored))));
 }
 
-PyObject* DocumentObjectPy::getCustomAttributes(const char*) const
+PyObject* DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
+    // Must call PropertyContainerPy here, not ExtensionContainerPy
+    if (PyObject* py = PropertyContainerPy::getCustomAttributes(attr)) {  // NOLINT
+        return py;
+    }
+
+    if (auto customProvider = Base::provideService<App::CustomAttributeProvider>()) {
+        auto opt = customProvider->getAttribute(getDocumentObjectPtr(), attr);
+        if (opt.has_value()) {
+            return opt.value();
+        }
+    }
+
     return nullptr;
 }
-// remove
+
 int DocumentObjectPy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;

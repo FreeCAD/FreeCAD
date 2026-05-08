@@ -32,25 +32,34 @@ from typing import List, Optional
 EXPANDABLE_DRILL_CYCLES = {"G81", "G82", "G83", "G73"}
 
 
+debug = True
+if debug:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
 class DrillCycleExpander:
     """Expands canned drill cycles (Path.Command) into basic G-code movements."""
+
+    EXPANDABLE_CYCLES = EXPANDABLE_DRILL_CYCLES
 
     def __init__(
         self,
         retract_mode: str = "G98",
-        motion_mode: str = "G90",
         initial_position: Optional[dict] = None,
     ):
         """
         Initialize the expander.
 
+        Per ADR-002, Path Command coordinates are always absolute.
+
         Args:
             retract_mode: "G98" (return to initial Z) or "G99" (return to R plane)
-            motion_mode: "G90" (absolute) or "G91" (incremental)
             initial_position: Initial position dict with X, Y, Z keys
         """
         self.retract_mode = retract_mode
-        self.motion_mode = motion_mode
         self.current_position = (
             initial_position if initial_position else {"X": 0.0, "Y": 0.0, "Z": 0.0}
         )
@@ -75,30 +84,28 @@ class DrillCycleExpander:
         elif cmd_name == "G99":
             self.retract_mode = "G99"
             return []  # Filter out after processing
-        elif cmd_name == "G90":
-            self.motion_mode = "G90"
-            return []  # Filter out after processing
-        elif cmd_name == "G91":
-            self.motion_mode = "G91"
-            return []  # Filter out after processing
+        elif cmd_name in ("G90", "G91"):
+            # Per ADR-002, coordinates are always absolute.
+            # Filter these non-conforming commands out.
+            return []
         elif cmd_name == "G80":
             # Cancel drill cycle - filter out since cycles are already expanded
             return []
 
         # Handle drill cycles
         if cmd_name in ("G81", "G82", "G73", "G83"):
-            return self._expand_drill_cycle(command)
+            result = self._expand_drill_cycle(command)
+            Path.Log.debug(f"Expanded drill cycle: {command} -> {result}")
+            return result
 
-        # Update position for non-drill commands
+        # Update position for non-drill commands (always absolute per ADR-002)
         if cmd_name in ("G0", "G00", "G1", "G01"):
             for axis in ("X", "Y", "Z"):
                 if axis in params:
-                    if self.motion_mode == "G90":
-                        self.current_position[axis] = params[axis]
-                    else:  # G91
-                        self.current_position[axis] += params[axis]
+                    self.current_position[axis] = params[axis]
 
         # Pass through other commands unchanged
+        Path.Log.debug(f"Passing through command: {command}")
         return [command]
 
     def _expand_drill_cycle(self, command: Path.Command) -> List[Path.Command]:
@@ -235,7 +242,7 @@ class DrillCycleExpander:
 
         peck_depth = params.get("Q", abs(drill_z - retract_z))
         current_depth = retract_z
-        clearance = peck_depth * 0.05  # Small clearance amount
+        clearance_amount = peck_depth * 0.05  # Small clearance above previous cut
 
         while current_depth > drill_z:
             # Calculate next peck depth
@@ -243,17 +250,18 @@ class DrillCycleExpander:
 
             # If not first peck, rapid to clearance above previous depth
             if current_depth != retract_z and cmd_name == "G83":
-                clearance_depth = current_depth + clearance
+                approach_height = current_depth + clearance_amount
                 expanded.append(
                     Path.Command(
                         "G0",
                         {
                             "X": self.current_position["X"],
                             "Y": self.current_position["Y"],
-                            "Z": clearance_depth,
+                            "Z": approach_height,
                         },
                     )
                 )
+                self.current_position["Z"] = approach_height
 
             # Feed to next depth
             move_params = {
@@ -280,19 +288,21 @@ class DrillCycleExpander:
                             },
                         )
                     )
+                    self.current_position["Z"] = retract_z
                 else:
                     # Chip breaking - small retract
-                    chip_break_height = next_depth + clearance
+                    approach_height = next_depth + clearance_amount
                     expanded.append(
                         Path.Command(
                             "G0",
                             {
                                 "X": self.current_position["X"],
                                 "Y": self.current_position["Y"],
-                                "Z": chip_break_height,
+                                "Z": approach_height,
                             },
                         )
                     )
+                    self.current_position["Z"] = approach_height
             elif cmd_name == "G83":
                 # Full retract to R plane
                 expanded.append(
@@ -305,6 +315,7 @@ class DrillCycleExpander:
                         },
                     )
                 )
+                self.current_position["Z"] = retract_z
 
             current_depth = next_depth
 

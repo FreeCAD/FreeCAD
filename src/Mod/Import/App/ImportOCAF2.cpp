@@ -583,6 +583,8 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         ret = feature;
         ret->recomputeFeature(true);
     }
+
+    seq.stop();
     sequencer = nullptr;
     return ret;
 }

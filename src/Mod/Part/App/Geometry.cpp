@@ -1711,6 +1711,18 @@ bool GeomBSplineCurve::join(const Handle(Geom_BoundedCurve) & other)
     return true;
 }
 
+std::tuple<GeomBSplineCurvePtr, GeomBSplineCurvePtr> GeomBSplineCurve::split(double u, double tol) const
+{
+    Handle(Geom_BSplineCurve)
+        curveL = GeomConvert::SplitBSplineCurve(myCurve, myCurve->FirstParameter(), u, tol, true);
+    Handle(Geom_BSplineCurve)
+        curveR = GeomConvert::SplitBSplineCurve(myCurve, u, myCurve->LastParameter(), tol, true);
+    return std::make_tuple(
+        std::make_shared<GeomBSplineCurve>(curveL),
+        std::make_shared<GeomBSplineCurve>(curveR)
+    );
+}
+
 void GeomBSplineCurve::interpolate(const std::vector<gp_Pnt>& p, Standard_Boolean periodic)
 {
     if (p.size() < 2) {
@@ -2830,8 +2842,8 @@ GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
     knots(2) = std::numbers::pi;
     knots(3) = 2 * std::numbers::pi;
 
-    Handle(Geom_BSplineCurve) spline
-        = new Geom_BSplineCurve(poles, weights, knots, mults, 3, Standard_False, Standard_True);
+    Handle(Geom_BSplineCurve)
+        spline = new Geom_BSplineCurve(poles, weights, knots, mults, 3, Standard_False, Standard_True);
     return new GeomBSplineCurve(spline);
 }
 
@@ -3279,8 +3291,8 @@ GeomBSplineCurve* GeomEllipse::toNurbs(double first, double last) const
     knots(2) = 1;
     knots(3) = 2;
 
-    Handle(Geom_BSplineCurve) spline
-        = new Geom_BSplineCurve(poles, weights, knots, mults, 3, Standard_False, Standard_True);
+    Handle(Geom_BSplineCurve)
+        spline = new Geom_BSplineCurve(poles, weights, knots, mults, 3, Standard_False, Standard_True);
     return new GeomBSplineCurve(spline);
 }
 
@@ -4209,10 +4221,10 @@ void GeomArcOfHyperbola::Restore(Base::XMLReader& reader)
         }
 
         Handle(Geom_TrimmedCurve) tmpcurve = ma.Value();
-        Handle(Geom_Hyperbola) tmphyperbola = Handle(Geom_Hyperbola)::DownCast(tmpcurve->BasisCurve());
-        Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
-            this->myCurve->BasisCurve()
-        );
+        Handle(Geom_Hyperbola)
+            tmphyperbola = Handle(Geom_Hyperbola)::DownCast(tmpcurve->BasisCurve());
+        Handle(Geom_Hyperbola)
+            hyperbola = Handle(Geom_Hyperbola)::DownCast(this->myCurve->BasisCurve());
 
         hyperbola->SetHypr(tmphyperbola->Hypr());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
@@ -6978,9 +6990,8 @@ std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface) & s, boo
         geoSurf = std::make_unique<GeomPlateSurface>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
-        Handle(Geom_RectangularTrimmedSurface) hSurf = Handle(
-            Geom_RectangularTrimmedSurface
-        )::DownCast(s);
+        Handle(Geom_RectangularTrimmedSurface)
+            hSurf = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
         geoSurf = std::make_unique<GeomTrimmedSurface>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfRevolution))) {
@@ -6988,9 +6999,8 @@ std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface) & s, boo
         geoSurf = std::make_unique<GeomSurfaceOfRevolution>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfLinearExtrusion))) {
-        Handle(Geom_SurfaceOfLinearExtrusion) hSurf = Handle(
-            Geom_SurfaceOfLinearExtrusion
-        )::DownCast(s);
+        Handle(Geom_SurfaceOfLinearExtrusion)
+            hSurf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(s);
         geoSurf = std::make_unique<GeomSurfaceOfExtrusion>(hSurf);
     }
     else {
@@ -7015,33 +7025,29 @@ std::unique_ptr<GeomSurface> makeFromSurfaceAdaptor(const BRepAdaptor_Surface& a
         }
         case GeomAbs_Cylinder: {
             geoSurf.reset(new GeomCylinder());
-            Handle(Geom_CylindricalSurface) this_surf = Handle(Geom_CylindricalSurface)::DownCast(
-                geoSurf->handle()
-            );
+            Handle(Geom_CylindricalSurface)
+                this_surf = Handle(Geom_CylindricalSurface)::DownCast(geoSurf->handle());
             this_surf->SetCylinder(adapt.Cylinder());
             break;
         }
         case GeomAbs_Cone: {
             geoSurf.reset(new GeomCone());
-            Handle(Geom_ConicalSurface) this_surf = Handle(Geom_ConicalSurface)::DownCast(
-                geoSurf->handle()
-            );
+            Handle(Geom_ConicalSurface)
+                this_surf = Handle(Geom_ConicalSurface)::DownCast(geoSurf->handle());
             this_surf->SetCone(adapt.Cone());
             break;
         }
         case GeomAbs_Sphere: {
             geoSurf.reset(new GeomSphere());
-            Handle(Geom_SphericalSurface) this_surf = Handle(Geom_SphericalSurface)::DownCast(
-                geoSurf->handle()
-            );
+            Handle(Geom_SphericalSurface)
+                this_surf = Handle(Geom_SphericalSurface)::DownCast(geoSurf->handle());
             this_surf->SetSphere(adapt.Sphere());
             break;
         }
         case GeomAbs_Torus: {
             geoSurf.reset(new GeomToroid());
-            Handle(Geom_ToroidalSurface) this_surf = Handle(Geom_ToroidalSurface)::DownCast(
-                geoSurf->handle()
-            );
+            Handle(Geom_ToroidalSurface)
+                this_surf = Handle(Geom_ToroidalSurface)::DownCast(geoSurf->handle());
             this_surf->SetTorus(adapt.Torus());
             break;
         }
@@ -7057,9 +7063,8 @@ std::unique_ptr<GeomSurface> makeFromSurfaceAdaptor(const BRepAdaptor_Surface& a
             Handle(Geom_Surface) s = BRep_Tool::Surface(adapt.Face());
             Handle(Geom_SurfaceOfRevolution) rev = Handle(Geom_SurfaceOfRevolution)::DownCast(s);
             if (rev.IsNull()) {
-                Handle(Geom_RectangularTrimmedSurface) rect = Handle(
-                    Geom_RectangularTrimmedSurface
-                )::DownCast(s);
+                Handle(Geom_RectangularTrimmedSurface)
+                    rect = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
                 rev = Handle(Geom_SurfaceOfRevolution)::DownCast(rect->BasisSurface());
             }
             if (!rev.IsNull()) {
@@ -7069,13 +7074,11 @@ std::unique_ptr<GeomSurface> makeFromSurfaceAdaptor(const BRepAdaptor_Surface& a
         }
         case GeomAbs_SurfaceOfExtrusion: {
             Handle(Geom_Surface) s = BRep_Tool::Surface(adapt.Face());
-            Handle(Geom_SurfaceOfLinearExtrusion) ext = Handle(
-                Geom_SurfaceOfLinearExtrusion
-            )::DownCast(s);
+            Handle(Geom_SurfaceOfLinearExtrusion)
+                ext = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(s);
             if (ext.IsNull()) {
-                Handle(Geom_RectangularTrimmedSurface) rect = Handle(
-                    Geom_RectangularTrimmedSurface
-                )::DownCast(s);
+                Handle(Geom_RectangularTrimmedSurface)
+                    rect = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
                 ext = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(rect->BasisSurface());
             }
             if (!ext.IsNull()) {
@@ -7087,9 +7090,8 @@ std::unique_ptr<GeomSurface> makeFromSurfaceAdaptor(const BRepAdaptor_Surface& a
             Handle(Geom_Surface) s = BRep_Tool::Surface(adapt.Face());
             Handle(Geom_OffsetSurface) off = Handle(Geom_OffsetSurface)::DownCast(s);
             if (off.IsNull()) {
-                Handle(Geom_RectangularTrimmedSurface) rect = Handle(
-                    Geom_RectangularTrimmedSurface
-                )::DownCast(s);
+                Handle(Geom_RectangularTrimmedSurface)
+                    rect = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
                 off = Handle(Geom_OffsetSurface)::DownCast(rect->BasisSurface());
             }
             if (!off.IsNull()) {
@@ -7567,8 +7569,8 @@ void transformAndConvertToGeometry(
                 }
 
                 if (curve->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
-                    Handle(Geom_TrimmedCurve) tcurve
-                        = new Geom_TrimmedCurve(curve, first, last, true, false);
+                    Handle(Geom_TrimmedCurve)
+                        tcurve = new Geom_TrimmedCurve(curve, first, last, true, false);
                     Part::GeomTrimmedCurve geomcurve(tcurve);
                     newGeo.reset(geomcurve.toBSpline(first, last));
                 }

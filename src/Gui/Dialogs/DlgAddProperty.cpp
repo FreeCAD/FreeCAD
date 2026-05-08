@@ -177,7 +177,7 @@ int DlgAddProperty::findLabelRow(const char* labelName, QFormLayout* layout)
 {
     for (int row = 0; row < layout->rowCount(); ++row) {
         QLayoutItem* labelItem = layout->itemAt(row, QFormLayout::LabelRole);
-        if (labelItem == nullptr) {
+        if (!labelItem) {
             continue;
         }
 
@@ -204,7 +204,7 @@ void DlgAddProperty::removeExistingWidget(QFormLayout* formLayout, int labelRow)
 void DlgAddProperty::setWidgetForLabel(const char* labelName, QWidget* widget, QLayout* layout)
 {
     auto formLayout = qobject_cast<QFormLayout*>(layout);
-    if (formLayout == nullptr) {
+    if (!formLayout) {
         FC_ERR("Form layout not found");
         return;
     }
@@ -403,7 +403,7 @@ void DlgAddProperty::addEditor(PropertyItem* propertyItem)
     else {
         addNormalEditor(propertyItem);
     }
-    if (editor == nullptr) {
+    if (!editor) {
         return;
     }
 
@@ -451,12 +451,12 @@ bool DlgAddProperty::isExcluded(const Base::Type& type) const
 
 bool DlgAddProperty::isTypeWithEditor(PropertyItem* propertyItem) const
 {
-    if (propertyItem == nullptr) {
+    if (!propertyItem) {
         return false;
     }
 
     App::Property* prop = propertyItem->getFirstProperty();
-    if (prop == nullptr) {
+    if (!prop) {
         return false;
     }
 
@@ -689,7 +689,7 @@ void DlgAddProperty::showStatusMessage()
 
 void DlgAddProperty::removeEditor()
 {
-    if (editor == nullptr) {
+    if (!editor) {
         return;
     }
 
@@ -713,7 +713,7 @@ QVariant DlgAddProperty::getEditorData() const
 {
     if (isEnumPropertyItem()) {
         PropertyItem* child = propertyItem->child(0);
-        if (child == nullptr) {
+        if (!child) {
             return {};
         }
         return child->editorData(editor.get());
@@ -726,7 +726,7 @@ void DlgAddProperty::setEditorData(const QVariant& data)
 {
     if (isEnumPropertyItem()) {
         PropertyItem* child = propertyItem->child(0);
-        if (child == nullptr) {
+        if (!child) {
             return;
         }
         child->setEditorData(editor.get(), data);
@@ -741,7 +741,7 @@ void DlgAddProperty::setEditor(bool valueNeedsReset)
     if (editor && !valueNeedsReset) {
         QVariant data = getEditorData();
         addEditor(propertyItem.get());
-        if (editor == nullptr) {
+        if (!editor) {
             return;
         }
         setEditorData(data);
@@ -762,15 +762,15 @@ void DlgAddProperty::setEditor(bool valueNeedsReset)
 
 void DlgAddProperty::setPropertyItem(App::Property* prop, bool supportsExpressions)
 {
-    if (prop == nullptr) {
+    if (!prop) {
         return;
     }
 
-    if (propertyItem == nullptr) {
+    if (!propertyItem) {
         propertyItem.reset(createPropertyItem(prop));
     }
 
-    if (propertyItem == nullptr) {
+    if (!propertyItem) {
         return;
     }
 
@@ -816,7 +816,7 @@ bool DlgAddProperty::clearBoundProperty()
 
 bool DlgAddProperty::clear(FieldChange fieldChange)
 {
-    if (propertyItem == nullptr) {
+    if (!propertyItem) {
         return true;
     }
 
@@ -890,7 +890,7 @@ void DlgAddProperty::changeEvent(QEvent* e)
 void DlgAddProperty::valueChangedEnum()
 {
     auto* propEnum = static_cast<App::PropertyEnumeration*>(propertyItem->getFirstProperty());
-    if (propEnum == nullptr || propertyItem->childCount() == 0) {
+    if (!propEnum || propertyItem->childCount() == 0) {
         return;
     }
 
@@ -920,7 +920,9 @@ void DlgAddProperty::valueChanged()
  */
 void DlgAddProperty::openTransaction()
 {
-    transactionID = App::GetApplication().setActiveTransaction("Add property");
+    transactionID = App::GetApplication().setActiveTransaction(
+        App::TransactionName {.name = "Add property", .temporary = false}
+    );
 }
 
 void DlgAddProperty::critical(const QString& title, const QString& text)
@@ -993,7 +995,12 @@ void DlgAddProperty::closeTransaction(TransactionOption option)
         return;
     }
 
-    App::GetApplication().closeActiveTransaction(static_cast<bool>(option), transactionID);
+    if (option == TransactionOption::Abort) {
+        App::GetApplication().abortTransaction(transactionID);
+    }
+    else {
+        App::GetApplication().commitTransaction(transactionID);
+    }
     transactionID = 0;
 }
 
@@ -1019,13 +1026,13 @@ void DlgAddProperty::addDocumentation()
     std::string group = comboBoxGroup.currentText().toStdString();
     std::string doc = ui->lineEditToolTip->text().toStdString();
 
-    if (propertyItem == nullptr) {
+    if (!propertyItem) {
         // If there is no property item, we cannot add documentation.
         return;
     }
 
     App::Property* prop = propertyItem->getFirstProperty();
-    if (prop == nullptr) {
+    if (!prop) {
         return;
     }
 

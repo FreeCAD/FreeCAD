@@ -292,11 +292,22 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             v2 = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value - endoffset)
             edgelist.append(Part.makeLine(v1, v2))
 
-        # build list of solids for collision detection.
-        # Include base objects from job
-        solids = []
-        for base in self.job.Model.Group:
-            solids.append(base.Shape)
+        # Prepare linking parameters
+        solids = [base.Shape for base in self.job.Model.Group]
+        linkingArgs = {
+            "start_position": None,
+            "target_position": None,
+            "local_clearance": safe_height,
+            "global_clearance": obj.ClearanceHeight.Value,
+            "solids": solids,
+            "tool_shape": None,
+            "tool_diameter": None,
+            "safety_margin": obj.LinkingSafetyMargin.Value,
+        }
+        if obj.LinkingMode == "Safest":
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
+        elif obj.LinkingMode == "Compromise":
+            linkingArgs["tool_diameter"] = obj.ToolController.Tool.Diameter.Value
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
 
@@ -337,27 +348,17 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 # For G99 mode, tool is at StartDepth (R-plane) after previous hole
                 # Check if direct move at retract plane would collide with model
                 current_pos = machinestate.getPosition()
-                target_at_retract_plane = FreeCAD.Vector(startPoint.x, startPoint.y, current_pos.z)
+                target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
+                linkingArgs["start_position"] = current_pos
+                linkingArgs["target_position"] = target_at_safe_height
+                linking_moves = linking.get_linking_moves(**linkingArgs)
 
-                # Check collision at the retract plane (current Z height)
-                collision_detected = linking.check_collision(
-                    start_position=current_pos,
-                    target_position=target_at_retract_plane,
-                    solids=solids,
-                )
-
-                if collision_detected:
+                """if linking_moves contains only 2 commands this means
+                it not contains vertical moves to clearance height
+                and this commands should be skipped"""
+                if len(linking_moves) > 2:
                     # Cannot traverse at retract plane - need to break cycle group
                     # Retract to safe height, traverse, then plunge to safe height for new cycle
-                    target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
-                    linking_moves = linking.get_linking_moves(
-                        start_position=current_pos,
-                        target_position=target_at_safe_height,
-                        local_clearance=safe_height,
-                        global_clearance=obj.ClearanceHeight.Value,
-                        tool_shape=self.tool.Shape,
-                        solids=solids,
-                    )
                     self.commandlist.extend(linking_moves)
                     machinestate.addCommands(linking_moves)
                 # else: no collision - G99 cycle continues, tool stays at retract plane
@@ -575,9 +576,5 @@ def Create(name, obj=None, parentJob=None):
     """Create(name) ... Creates and returns a Drilling operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-
     obj.Proxy = ObjectDrilling(obj, name, parentJob)
-    if obj.Proxy:
-        obj.Proxy.findAllHoles(obj)
-
     return obj

@@ -216,8 +216,9 @@ public:
             EditCurve.resize(2);
             Mode = SelectMode::Second;
         }
-        else if (Mode == SelectMode::Second
-                 && (centerPoint - onSketchPos).Length() > Precision::Confusion()) {
+        else if (
+            Mode == SelectMode::Second && (centerPoint - onSketchPos).Length() > Precision::Confusion()
+        ) {
             EditCurve[1] = onSketchPos;
             axisPoint = onSketchPos;
             EditCurve.resize(33);
@@ -286,7 +287,7 @@ public:
 
             try {
 
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of hyperbola"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of hyperbola"));
 
                 // Add arc of hyperbola, point and constrain point as focus2. We add focus2 for it
                 // to balance the intrinsic focus1, in order to balance out the intrinsic invisible
@@ -317,14 +318,14 @@ public:
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
                     QT_TRANSLATE_NOOP("Notifications", "Cannot create arc of hyperbola")
                 );
-                Gui::Command::abortCommand();
+                abortCommand();
 
                 tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                 return false;
             }
 
-            Gui::Command::commitCommand();
+            commitCommand();
 
             // add auto constraints for the center point
             if (!sugConstr1.empty()) {

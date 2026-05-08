@@ -21,6 +21,8 @@ from model.typedModel import (
 
 SIGNATURE_SEP = re.compile(r"\s+--\s+", re.DOTALL)
 SELF_CLS_ARG = re.compile(r"\(\s*(self|cls)(\s*,\s*)?")
+CTOR_SELF_CLS_ARG = re.compile(r"^__init__\(\$?(?:self|cls)(?:,\s*)?")
+CTOR_NAME = re.compile(r"^__init__\(")
 
 
 class ArgumentKind(Enum):
@@ -180,7 +182,7 @@ class Function:
 
     @property
     def docstring(self) -> str:
-        return "\n".join((f.docstring for f in self.signatures))
+        return "\n\n".join((f.docstring for f in self.signatures if f.docstring))
 
     @property
     def has_keywords(self) -> bool:
@@ -196,6 +198,19 @@ class Function:
             if not sig.is_overload:
                 return sig
         return None
+
+    @property
+    def doc_signatures(self) -> list[FunctionSignature]:
+        if len(self.signatures) == 1:
+            return [self.signatures[0]]
+
+        implemented = [sig for sig in self.signatures if not sig.is_overload]
+        return implemented or [sig for sig in self.signatures if sig.is_overload]
+
+    @property
+    def annotated_signatures(self) -> list[FunctionSignature]:
+        overloads = [sig for sig in self.signatures if sig.is_overload]
+        return overloads or self.doc_signatures
 
     @property
     def static_flag(self) -> bool:
@@ -214,25 +229,56 @@ class Function:
         return any(sig.noargs_flag for sig in self.signatures)
 
     def add_signature_docs(self, doc: Documentation) -> None:
-        if len(self.signatures) == 1:
-            docstring = [self.signatures[0].text]
-            signature = [self.signatures[0].annotated_text]
-        else:
-            docstring = [sig.text for sig in self.signatures if not sig.is_overload]
-            signature = [sig.annotated_text for sig in self.signatures if sig.is_overload]
+        _compose_signature_docs(
+            doc,
+            [sig.text for sig in self.doc_signatures],
+            [sig.annotated_text for sig in self.annotated_signatures],
+        )
 
-        if not docstring:
-            return
 
-        user_doc = doc.UserDocu or ""
-        marker = SIGNATURE_SEP.search(user_doc)
-        if marker:
-            user_doc = user_doc[marker.end() :].strip()
+def _compose_signature_docs(doc: Documentation, docstring: list[str], signature: list[str]) -> None:
+    if not docstring:
+        return
 
-        docstring.append("--\n")  # mark __text_signature__
-        docstring.extend(signature)  # Include real annotated signature in user docstring
+    user_doc = doc.UserDocu or ""
+    marker = SIGNATURE_SEP.search(user_doc)
+    if marker:
+        user_doc = user_doc[marker.end() :].strip()
+
+    docstring.append("--\n")  # mark __text_signature__
+    docstring.extend(signature)  # Include real annotated signature in user docstring
+    if user_doc:
         docstring.append(f"\n{user_doc}")  # Rest of the docstring
-        doc.UserDocu = "\n".join(docstring)
+    doc.UserDocu = "\n".join(docstring)
+
+
+def _format_constructor_signature(signature: str, class_name: str) -> str:
+    signature = CTOR_SELF_CLS_ARG.sub(f"{class_name}(", signature)
+    return CTOR_NAME.sub(f"{class_name}(", signature)
+
+
+def _constructor_user_doc(func: Function, class_name: str) -> str:
+    doc = _parse_docstring_for_documentation(func.docstring)
+    _compose_signature_docs(
+        doc,
+        [_format_constructor_signature(sig.text, class_name) for sig in func.doc_signatures],
+        [
+            _format_constructor_signature(sig.annotated_text, class_name)
+            for sig in func.annotated_signatures
+        ],
+    )
+    return (doc.UserDocu or "").strip()
+
+
+def _append_user_doc(doc: Documentation, extra_user_doc: str) -> None:
+    extra_user_doc = extra_user_doc.strip()
+    if not extra_user_doc:
+        return
+
+    if doc.UserDocu:
+        doc.UserDocu = f"{doc.UserDocu.rstrip()}\n\n{extra_user_doc}"
+    else:
+        doc.UserDocu = extra_user_doc
 
 
 def _extract_decorator_kwargs(decorator: ast.expr) -> dict:
@@ -430,32 +476,35 @@ def _parse_class_attributes(class_node: ast.ClassDef, source_code: str) -> List[
     return attributes
 
 
-def _parse_methods(class_node: ast.ClassDef) -> List[Methode]:
+def _collect_function_defs(nodes) -> list[ast.FunctionDef]:
+    funcs = []
+    for node in nodes:
+        if isinstance(node, ast.FunctionDef):
+            funcs.append(node)
+        elif isinstance(node, ast.If):
+            funcs.extend(_collect_function_defs(node.body))
+            funcs.extend(_collect_function_defs(node.orelse))
+    return funcs
+
+
+def _collect_functions(class_node: ast.ClassDef) -> dict[str, Function]:
+    functions: dict[str, Function] = {}
+    for func_node in _collect_function_defs(class_node.body):
+        if func := functions.get(func_node.name):
+            func.update(func_node)
+        else:
+            functions[func_node.name] = Function(func_node)
+    return functions
+
+
+def _parse_methods(functions: dict[str, Function]) -> List[Methode]:
     """
-    Parse methods from the class AST node, extracting:
+    Parse methods from collected class functions, extracting:
       - Method name
       - Parameters (from the function signature / annotations)
       - Docstring
     """
     methods = []
-
-    def collect_function_defs(nodes) -> list[ast.FunctionDef]:
-        funcs = []
-        for node in nodes:
-            if isinstance(node, ast.FunctionDef):
-                funcs.append(node)
-            elif isinstance(node, ast.If):
-                funcs.extend(collect_function_defs(node.body))
-                funcs.extend(collect_function_defs(node.orelse))
-        return funcs
-
-    # Collect including overloads
-    functions: dict[str, Function] = {}
-    for func_node in collect_function_defs(class_node.body):
-        if func := functions.get(func_node.name):
-            func.update(func_node)
-        else:
-            functions[func_node.name] = Function(func_node)
 
     for func in functions.values():
         doc_obj = _parse_docstring_for_documentation(func.docstring)
@@ -667,10 +716,14 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
     imported_from_module = imports_mapping[base_class_name]
     parent_module_name = _extract_module_name(imported_from_module, module_name)
 
+    functions = _collect_functions(class_node)
     class_docstring = ast.get_docstring(class_node) or ""
     doc_obj = _parse_docstring_for_documentation(class_docstring)
+    if constructor := functions.get("__init__"):
+        if constructor.signature is None and constructor.docstring.strip():
+            _append_user_doc(doc_obj, _constructor_user_doc(constructor, class_node.name))
     class_attributes = _parse_class_attributes(class_node, source_code)
-    class_methods = _parse_methods(class_node)
+    class_methods = _parse_methods(functions)
 
     native_class_name = _get_native_class_name(class_node.name)
     native_python_class_name = _get_native_python_class_name(class_node.name)

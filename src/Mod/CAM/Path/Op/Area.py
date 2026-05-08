@@ -25,6 +25,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import Path.Op.Base as PathOp
+import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
 
 from Path.Geom import isRoughly
@@ -210,7 +211,7 @@ class ObjectOp(PathOp.ObjectOp):
 
     def opSetDefaultSide(self, obj):
         """setDefaltSide(obj) ...  offer side while creating new operation"""
-        (base, subNames) = obj.Base[0]
+        base, subNames = obj.Base[0]
 
         # find parent boundbox
         if isinstance(base.Shape, Part.Compound):
@@ -285,34 +286,11 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.debug("sections = %s" % sections)
 
         # Rest machining
-        self.sectionShapes = self.sectionShapes + [section.toTopoShape() for section in sections]
         if hasattr(obj, "UseRestMachining") and obj.UseRestMachining:
             restSections = []
             for section in sections:
                 bbox = section.getShape().BoundBox
-                z = bbox.ZMin
-                sectionClearedAreas = []
-                for op in self.job.Operations.Group:
-                    if self in [x.Proxy for x in [op] + op.OutListRecursive if hasattr(x, "Proxy")]:
-                        break
-                    if hasattr(op, "Active") and op.Active and op.Path:
-                        tool = (
-                            op.Proxy.tool
-                            if hasattr(op.Proxy, "tool")
-                            else op.ToolController.Proxy.getTool(op.ToolController)
-                        )
-                        diameter = tool.Diameter.getValueAs("mm")
-                        dz = (
-                            0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
-                        )  # for drills, dz translates to the full width part of the tool
-                        sectionClearedAreas.append(
-                            section.getClearedArea(
-                                op.Path,
-                                diameter,
-                                z + dz + self.job.GeometryTolerance.getValueAs("mm"),
-                                bbox,
-                            )
-                        )
+                sectionClearedAreas = PathOpUtil.getClearedAreas(obj, bbox)
                 restSection = section.getRestArea(
                     sectionClearedAreas, self.tool.Diameter.getValueAs("mm")
                 )
@@ -343,8 +321,8 @@ class ObjectOp(PathOp.ObjectOp):
         ):
             pathParams["sort_mode"] = 0
 
-        if not self.areaOpRetractTool(obj):
-            pathParams["threshold"] = 2.001 * self.radius
+        if hasattr(obj, "RetractThreshold"):
+            pathParams["threshold"] = obj.RetractThreshold.Value
 
         if (
             not obj.UseStartPoint
@@ -361,7 +339,7 @@ class ObjectOp(PathOp.ObjectOp):
         obj.PathParams = str({key: value for key, value in pathParams.items() if key != "shapes"})
         Path.Log.debug("Path with params: {}".format(obj.PathParams))
 
-        (pp, end_vector) = Path.fromShapes(**pathParams)
+        pp, end_vector = Path.fromShapes(**pathParams)
         Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
 
         # Keep track of this segment's end only if it has movement (otherwise end_vector is 0,0,0 and the next segment will unnecessarily start there)
@@ -387,7 +365,7 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.debug("depths: {}".format(heights))
         for i in range(0, len(heights)):
             for baseShape in edgeList:
-                hWire = Part.Wire(Part.__sortEdges__(baseShape.Edges))
+                hWire = Part.Compound([Part.Wire(se) for se in Part.sortEdges(baseShape.Edges)])
                 hWire.translate(FreeCAD.Vector(0, 0, heights[i] - hWire.BoundBox.ZMin))
 
                 pathParams = {}
@@ -426,7 +404,7 @@ class ObjectOp(PathOp.ObjectOp):
                 )
                 Path.Log.debug("Path with params: {}".format(obj.PathParams))
 
-                (pp, end_vector) = Path.fromShapes(**pathParams)
+                pp, end_vector = Path.fromShapes(**pathParams)
                 paths.extend(pp.Commands)
                 Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
 
@@ -463,14 +441,19 @@ class ObjectOp(PathOp.ObjectOp):
         shapes = []
         for shp in self.areaOpShapes(obj):
             if len(shp) == 2:
-                (fc, iH) = shp
+                fc, iH = shp
                 #     fc, iH,  sub or description
                 tup = fc, iH, "otherOp"
                 shapes.append(tup)
             else:
                 shapes.append(shp)
 
-        if len(shapes) > 1:
+        # Sorting shapes
+        if (
+            len(shapes) > 1
+            and getattr(obj, "SortingMode", None) != "Manual"
+            and getattr(obj, "HandleMultipleFeatures", False) != "Collectively"
+        ):
             locations = []
             for s in shapes:
                 if s[2] == "OpenEdge":
@@ -483,8 +466,31 @@ class ObjectOp(PathOp.ObjectOp):
 
             shapes = [j["shape"] for j in locations]
 
+        # Combine similar tasks for Collectively HandleMultipleFeatures
+        if (
+            obj.Proxy.__module__ == "Path.Op.Profile"
+            and len(shapes) > 1
+            and getattr(obj, "HandleMultipleFeatures", False) == "Collectively"
+        ):
+            keys = set((iH, desc) for _, iH, desc in shapes)
+            collectively = []
+            for key in keys:
+                combine = []
+                for sh, iH, desc in shapes:
+                    if (iH, desc) == key:
+                        if desc == "OpenEdge":  # is a list of shapes
+                            combine.extend(sh)
+                        else:
+                            combine.append(sh)
+                if desc == "OpenEdge":  # should be a list of shapes
+                    fc = [Part.makeCompound(combine)]
+                else:
+                    fc = Part.makeCompound(combine)
+                collectively.append((fc, key[0], key[1]))
+
+            shapes = collectively
+
         sims = []
-        self.sectionShapes = []
         for shape, isHole, sub in shapes:
             profileEdgesIsOpen = False
 
@@ -498,9 +504,9 @@ class ObjectOp(PathOp.ObjectOp):
 
             try:
                 if profileEdgesIsOpen:
-                    (pp, sim) = self._buildProfileOpenEdges(obj, shape, isHole, start, getsim)
+                    pp, sim = self._buildProfileOpenEdges(obj, shape, isHole, start, getsim)
                 else:
-                    (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
+                    pp, sim = self._buildPathArea(obj, shape, isHole, start, getsim)
             except Exception as e:
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError(
@@ -513,11 +519,7 @@ class ObjectOp(PathOp.ObjectOp):
                 self.commandlist.extend(ppCmds)
                 sims.append(sim)
 
-            if (
-                self.areaOpRetractTool(obj)
-                and self.endVector is not None
-                and len(self.commandlist) > 1
-            ):
+            if self.endVector is not None and len(self.commandlist) > 1:
                 self.endVector[2] = obj.ClearanceHeight.Value
                 self.commandlist.append(
                     Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
@@ -525,10 +527,6 @@ class ObjectOp(PathOp.ObjectOp):
 
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")
         return sims
-
-    def areaOpRetractTool(self, obj):
-        """areaOpRetractTool(obj) ... return False to keep the tool at current level between shapes. Default is True."""
-        return True
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return operation specific area parameters in a dictionary.

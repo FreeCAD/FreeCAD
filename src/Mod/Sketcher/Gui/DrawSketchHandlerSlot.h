@@ -176,13 +176,13 @@ private:
         firstCurve = getHighestCurveIndex() + 1;
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
 
             createShape(false);
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -191,7 +191,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add slot")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(

@@ -134,6 +134,8 @@ void Part::FaceMaker::Build()
     this->NotDone();
     this->myShapesToReturn = this->myInputFaces;
     this->myGenerated.Clear();
+    this->myPreSplitHistory.Nullify();
+    this->myPreSplitCompound = TopoDS_Compound();
 
     this->Build_Essence();  // adds stuff to myShapesToReturn
 
@@ -210,6 +212,29 @@ void Part::FaceMaker::postBuild()
     this->myTopoShape.setShape(this->myShape);
     this->myTopoShape.Hasher = this->MyHasher;
     this->myTopoShape.mapSubElement(this->mySourceShapes);
+
+    // Some makers modify edges before the splitter runs (e.g. splitting
+    // self-intersecting B-splines).  If myPreSplitHistory is set, build an
+    // intermediate mapping so the splitter's output traces back through both
+    // stages to the original source geometry.
+    std::vector<TopoShape> preSplitSources;
+    if (!myPreSplitHistory.IsNull()) {
+        MapperHistory mapper(myPreSplitHistory);
+        TopoShape preSplitShape(myTopoShape.Tag);
+        preSplitShape.makeShapeWithElementMap(myPreSplitCompound, mapper, mySourceShapes);
+        preSplitSources.push_back(std::move(preSplitShape));
+    }
+    const auto& splitterSources = preSplitSources.empty() ? mySourceShapes : preSplitSources;
+
+    // Some makers (FaceMakerBuildFace) modify the source shapes by splitting edges apart,
+    // so we need to run makeShapeWithElementMap for proper history tracking. If we don't,
+    // the face mapper loop below will make unstable names.
+    if (mySplitter.IsDone()) {
+        MapperMaker mapper(mySplitter);
+        TopoShape splitInputShape(myTopoShape.Tag);
+        splitInputShape.makeShapeWithElementMap(mySplitter.Shape(), mapper, splitterSources);
+        myTopoShape.mapSubElement(splitInputShape);
+    }
     int index = 0;
     const char* op = this->MyOp;
     if (!op) {
