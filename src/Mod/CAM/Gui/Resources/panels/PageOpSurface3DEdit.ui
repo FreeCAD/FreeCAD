@@ -168,36 +168,138 @@
     </widget>
    </item>
    <item>
+    <widget class="QFrame" name="waterlineOptions">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+     <layout class="QGridLayout" name="gridLayout_waterline">
+      <item row="0" column="0">
+       <widget class="QLabel" name="minSampleInterval_label">
+        <property name="text"><string>Min Sample Interval</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="minSampleInterval">
+        <property name="toolTip"><string>Minimum fiber spacing for adaptive Waterline refinement (mm). Smaller = finer detail in curvy regions.</string></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="zlevelOptions">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+     <layout class="QGridLayout" name="gridLayout_zlevel">
+      <item row="0" column="0">
+       <widget class="QLabel" name="cutPatternZLevel_label">
+        <property name="text"><string>ZLevel Floor Pattern</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cutPatternZLevel">
+        <property name="toolTip"><string>Floor-clearing pattern after each ZLevel contour pass. None: only emit contour. Line: parallel passes. Spiral: continuous spiral.</string></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="stockToLeave_label">
+        <property name="text"><string>Stock To Leave</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="stockToLeave">
+        <property name="toolTip"><string>Horizontal (XY) finishing allowance left on the model surface (mm).</string></property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="samplingAccuracy_label">
+        <property name="text"><string>Sampling Accuracy</string></property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="samplingAccuracy">
+        <property name="toolTip"><string>Number of sub-slices per Z layer (1=coarse..7=fine). Higher captures more curvature on tilted faces.</string></property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="clearPlanarOnly_label">
+        <property name="text"><string>Clear Planar Floors Only</string></property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="clearPlanarOnly">
+        <property name="toolTip"><string>Only clear floor regions detected as Mixed/Extra (planar pockets) instead of every layer.</string></property>
+        <property name="text"><string/></property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="ignoreOuter_label">
+        <property name="text"><string>Ignore Outer</string></property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QCheckBox" name="ignoreOuter">
+        <property name="toolTip"><string>Skip the outermost stock-edge contour. Useful when an external profile has already cleaned up the perimeter.</string></property>
+        <property name="text"><string/></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QFrame" name="meshOptions">
      <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
      <property name="frameShadow"><enum>QFrame::Raised</enum></property>
      <layout class="QGridLayout" name="gridLayout_mesh">
       <item row="0" column="0">
+       <widget class="QLabel" name="accuracyLevel_label">
+        <property name="text"><string>Speed vs. Accuracy</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="accuracyLevel">
+        <property name="toolTip"><string>Speed-vs-Accuracy preset (1=Fastest, 7=Ultra). Adjusting writes deflection / sample-interval / mesh-simplification together.</string></property>
+        <property name="minimum"><number>1</number></property>
+        <property name="maximum"><number>7</number></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="meshSimplification_label">
+        <property name="text"><string>Mesh Simplification</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="meshSimplification">
+        <property name="toolTip"><string>Mesh decimation level (1=no reduction, 7=maximum). Driven by the Speed-vs-Accuracy preset.</string></property>
+        <property name="minimum"><number>1</number></property>
+        <property name="maximum"><number>7</number></property>
+       </widget>
+      </item>
+      <item row="2" column="0">
        <widget class="QLabel" name="linearDeflection_label">
         <property name="text"><string>Linear Deflection</string></property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="2" column="1">
        <widget class="Gui::QuantitySpinBox" name="linearDeflection">
         <property name="toolTip"><string>Tessellation linear deflection. Smaller = finer mesh, slower OCL.</string></property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="angularDeflection_label">
         <property name="text"><string>Angular Deflection</string></property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="3" column="1">
        <widget class="Gui::QuantitySpinBox" name="angularDeflection">
         <property name="toolTip"><string>Tessellation angular deflection. Smaller = finer mesh on curved surfaces.</string></property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="optimizeLinearPaths_label">
         <property name="text"><string>Optimize Linear Paths</string></property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="4" column="1">
        <widget class="QCheckBox" name="optimizeLinearPaths">
         <property name="toolTip"><string>Drop collinear sample points before emitting G-code. Reduces output size on flat regions.</string></property>
         <property name="text"><string/></property>

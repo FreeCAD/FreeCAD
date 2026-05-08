@@ -36,6 +36,8 @@ import Path.Base.Generator.surface_dropcutter as surface_dropcutter
 import Path.Base.Generator.surface_mesh as surface_mesh
 import Path.Base.Generator.surface_pattern as surface_pattern
 import Path.Base.Generator.surface_postprocess as surface_postprocess
+import Path.Base.Generator.surface_waterline as surface_waterline
+import Path.Base.Generator.surface_zlevel as surface_zlevel
 import PathScripts.PathUtils as PathUtils
 
 # OCL is loaded lazily so the module can be imported when OCL is missing.
@@ -85,6 +87,7 @@ class ObjectSurface3D(PathOp.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         self.initOpProperties(obj, warn=True)
+        self.setEditorProperties(obj)
 
     def initOpProperties(self, obj, warn=False):
         Path.Log.track()
@@ -168,7 +171,65 @@ class ObjectSurface3D(PathOp.ObjectOp):
                 "Pattern",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Distance between sampled points along a scan line (mm).",
+                    "Distance between sampled points along a scan line (mm). "
+                    "For Waterline this is the fiber spacing.",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "MinSampleInterval",
+                "Waterline",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Minimum fiber spacing for adaptive refinement in the " "Waterline strategy.",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "StockToLeave",
+                "ZLevel",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Horizontal (XY) finishing allowance left on the model "
+                    "surface for the ZLevelHybrid strategy.",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "SamplingAccuracy",
+                "ZLevel",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Number of sub-slices per Z layer for ZLevelHybrid (1=coarse, "
+                    "7=fine). Higher values capture more curvature detail.",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "ClearPlanarOnly",
+                "ZLevel",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "ZLevelHybrid only: clear floor regions detected as Mixed/Extra "
+                    "(planar pockets) instead of every layer.",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "IgnoreOuter",
+                "ZLevel",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "ZLevelHybrid only: skip the outermost stock-edge contour.",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "CutPatternZLevel",
+                "ZLevel",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Floor-clearing pattern used after each ZLevel contour pass.",
                 ),
             ),
             (
@@ -211,6 +272,26 @@ class ObjectSurface3D(PathOp.ObjectOp):
                 ),
             ),
             (
+                "App::PropertyInteger",
+                "AccuracyLevel",
+                "Mesh",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Speed-vs-Accuracy preset (1=Fastest..7=Ultra). Sets "
+                    "LinearDeflection, AngularDeflection, SampleInterval, "
+                    "MinSampleInterval, and MeshSimplification together.",
+                ),
+            ),
+            (
+                "App::PropertyInteger",
+                "MeshSimplification",
+                "Mesh",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Mesh decimation level (1=no reduction, 7=maximum).",
+                ),
+            ),
+            (
                 "App::PropertyDistance",
                 "LinearDeflection",
                 "Mesh",
@@ -233,16 +314,21 @@ class ObjectSurface3D(PathOp.ObjectOp):
     @classmethod
     def propertyEnumerations(cls, dataType="data"):
         Path.Log.track()
-        # Only SurfacePattern is wired in this slice; later slices add the
-        # Waterline and ZLevelHybrid values.
         enums = {
             "Strategy": [
                 (translate("CAM_Surface3D", "Surface Pattern"), "SurfacePattern"),
+                (translate("CAM_Surface3D", "Waterline"), "Waterline"),
+                (translate("CAM_Surface3D", "Z-Level Hybrid"), "ZLevelHybrid"),
             ],
             "CutPattern": [
                 (translate("CAM_Surface3D", "Line"), "Line"),
                 (translate("CAM_Surface3D", "ZigZag"), "ZigZag"),
                 (translate("CAM_Surface3D", "Circular"), "Circular"),
+                (translate("CAM_Surface3D", "Spiral"), "Spiral"),
+            ],
+            "CutPatternZLevel": [
+                (translate("CAM_Surface3D", "None"), "None"),
+                (translate("CAM_Surface3D", "Line"), "Line"),
                 (translate("CAM_Surface3D", "Spiral"), "Spiral"),
             ],
             "CutMode": [
@@ -252,6 +338,15 @@ class ObjectSurface3D(PathOp.ObjectOp):
             "HandleMultipleFeatures": [
                 (translate("CAM_Surface3D", "Collectively"), "Collectively"),
                 (translate("CAM_Surface3D", "Individually"), "Individually"),
+            ],
+            "SamplingAccuracy": [
+                ("1", "1"),
+                ("2", "2"),
+                ("3", "3"),
+                ("4", "4"),
+                ("5", "5"),
+                ("6", "6"),
+                ("7", "7"),
             ],
         }
         if dataType == "raw":
@@ -266,17 +361,25 @@ class ObjectSurface3D(PathOp.ObjectOp):
         return {
             "Strategy": "SurfacePattern",
             "CutPattern": "ZigZag",
+            "CutPatternZLevel": "None",
             "CutPatternAngle": 0.0,
             "CutPatternReversed": False,
             "CutMode": "Climb",
             "StepOver": 1.0,
             "SampleInterval": 0.4,
+            "MinSampleInterval": 0.05,
+            "StockToLeave": 0.0,
+            "SamplingAccuracy": "4",
+            "ClearPlanarOnly": True,
+            "IgnoreOuter": False,
             "DepthOffset": 0.0,
             "BoundaryAdjustment": 0.0,
             "HandleMultipleFeatures": "Collectively",
             "OptimizeLinearPaths": True,
-            "LinearDeflection": 0.1,
-            "AngularDeflection": 0.524,
+            "AccuracyLevel": 4,
+            "MeshSimplification": 4,
+            "LinearDeflection": 0.025,
+            "AngularDeflection": 0.2,
         }
 
     def opSetDefaultValues(self, obj, job):
@@ -285,6 +388,119 @@ class ObjectSurface3D(PathOp.ObjectOp):
         for name, value in defaults.items():
             if hasattr(obj, name):
                 setattr(obj, name, value)
+        # Drive deflection / sampling / decimation from the AccuracyLevel
+        # preset so the table in opPropertyDefaults and ACCURACY_PRESETS
+        # can't drift apart.
+        self.apply_accuracy_preset(obj, getattr(obj, "AccuracyLevel", 4))
+
+    # ------------------------------------------------------------------
+    # Speed-vs-Accuracy presets
+    # ------------------------------------------------------------------
+
+    ACCURACY_PRESETS = {
+        1: {
+            "linear_deflection": 0.1,
+            "angular_deflection": 0.5,
+            "sample_interval": 1.5,
+            "min_sample_interval": 0.3,
+            "mesh_simplification": 7,
+        },
+        2: {
+            "linear_deflection": 0.075,
+            "angular_deflection": 0.4,
+            "sample_interval": 1.0,
+            "min_sample_interval": 0.20,
+            "mesh_simplification": 6,
+        },
+        3: {
+            "linear_deflection": 0.05,
+            "angular_deflection": 0.3,
+            "sample_interval": 0.5,
+            "min_sample_interval": 0.10,
+            "mesh_simplification": 5,
+        },
+        4: {
+            "linear_deflection": 0.025,
+            "angular_deflection": 0.2,
+            "sample_interval": 0.25,
+            "min_sample_interval": 0.05,
+            "mesh_simplification": 4,
+        },
+        5: {
+            "linear_deflection": 0.015,
+            "angular_deflection": 0.15,
+            "sample_interval": 0.1,
+            "min_sample_interval": 0.05,
+            "mesh_simplification": 3,
+        },
+        6: {
+            "linear_deflection": 0.01,
+            "angular_deflection": 0.1,
+            "sample_interval": 0.075,
+            "min_sample_interval": 0.025,
+            "mesh_simplification": 2,
+        },
+        7: {
+            "linear_deflection": 0.005,
+            "angular_deflection": 0.05,
+            "sample_interval": 0.05,
+            "min_sample_interval": 0.01,
+            "mesh_simplification": 1,
+        },
+    }
+
+    def apply_accuracy_preset(self, obj, level):
+        """Push ACCURACY_PRESETS values onto obj for the given level (1-7)."""
+        level = max(1, min(7, int(level)))
+        preset = self.ACCURACY_PRESETS[level]
+        if hasattr(obj, "LinearDeflection"):
+            obj.LinearDeflection = preset["linear_deflection"]
+        if hasattr(obj, "AngularDeflection"):
+            obj.AngularDeflection = preset["angular_deflection"]
+        if hasattr(obj, "SampleInterval"):
+            obj.SampleInterval = preset["sample_interval"]
+        if hasattr(obj, "MinSampleInterval"):
+            obj.MinSampleInterval = preset["min_sample_interval"]
+        if hasattr(obj, "MeshSimplification"):
+            obj.MeshSimplification = preset["mesh_simplification"]
+
+    def opOnChanged(self, obj, prop):
+        if prop == "AccuracyLevel" and getattr(self, "propertiesReady", False):
+            self.apply_accuracy_preset(obj, obj.AccuracyLevel)
+        if prop == "Strategy" and getattr(self, "propertiesReady", False):
+            self.setEditorProperties(obj)
+
+    def setEditorProperties(self, obj):
+        """Hide strategy-irrelevant properties from the property editor.
+
+        Only properties tied to a specific strategy are toggled.  Common
+        properties (Strategy, depths, mesh, tool) stay visible always.
+        """
+        if not getattr(self, "propertiesReady", False):
+            return
+        strategy = getattr(obj, "Strategy", "SurfacePattern")
+
+        # Map: property -> strategies that USE it ({"All"} means always show)
+        usage = {
+            "CutPattern": {"SurfacePattern"},
+            "CutPatternAngle": {"SurfacePattern", "ZLevelHybrid"},
+            "CutPatternReversed": {"SurfacePattern", "ZLevelHybrid"},
+            "BoundaryAdjustment": {"SurfacePattern"},
+            "HandleMultipleFeatures": {"SurfacePattern"},
+            "OptimizeLinearPaths": {"SurfacePattern"},
+            "MinSampleInterval": {"Waterline"},
+            "StockToLeave": {"ZLevelHybrid"},
+            "SamplingAccuracy": {"ZLevelHybrid"},
+            "ClearPlanarOnly": {"ZLevelHybrid"},
+            "IgnoreOuter": {"ZLevelHybrid"},
+            "CutPatternZLevel": {"ZLevelHybrid"},
+            "MeshSimplification": {"SurfacePattern", "Waterline"},
+        }
+        for prop, strategies in usage.items():
+            if not hasattr(obj, prop):
+                continue
+            mode = 0 if strategy in strategies else 2  # 2 = hidden
+            obj.setEditorMode(prop, mode)
 
     # ------------------------------------------------------------------
     # Tool extraction
@@ -443,15 +659,153 @@ class ObjectSurface3D(PathOp.ObjectOp):
         )
 
     # ------------------------------------------------------------------
+    # Waterline strategy (W1.1 redirect — always uses AdaptiveWaterline)
+    # ------------------------------------------------------------------
+
+    def _executeWaterline(self, obj, job, stl, cutter):
+        """Run the Waterline strategy via AdaptiveWaterline.
+
+        Per the v1 W1.1 redirect, this always goes through OCL's
+        ``AdaptiveWaterline`` (SmartWeave) — never ``ocl.Waterline``
+        (SimpleWeave) which has a hard-assert segfault on certain
+        geometry.  Setting ``min_sampling = sampling`` disables adaptive
+        refinement for the equivalent of fixed sampling.
+        """
+        sampling = float(obj.SampleInterval.Value)
+        min_sampling = float(obj.MinSampleInterval.Value) or sampling
+        cut_climb = obj.CutMode == "Climb"
+        if obj.CutPatternReversed:
+            cut_climb = not cut_climb
+
+        wl_data = surface_waterline.waterline_stack(
+            stl,
+            cutter,
+            sampling=sampling,
+            min_sampling=min_sampling,
+            min_z=float(obj.FinalDepth.Value),
+            max_z=float(obj.StartDepth.Value),
+            step_down=float(obj.StepDown.Value),
+            adaptive=True,
+            depth_offset=float(obj.DepthOffset.Value),
+        )
+
+        return surface_waterline.waterline_to_gcode(
+            wl_data,
+            horiz_feed=self.horizFeed,
+            vert_rapid=self.vertRapid,
+            horiz_rapid=self.horizRapid,
+            safe_z=float(obj.SafeHeight.Value),
+            clearance_z=float(obj.ClearanceHeight.Value),
+            cut_climb=cut_climb,
+        )
+
+    # ------------------------------------------------------------------
+    # ZLevelHybrid strategy (no-OCL via Path.Area Clipper)
+    # ------------------------------------------------------------------
+
+    def _executeZLevelHybrid(self, obj, job, model_shape, tool_params):
+        """Run the ZLevelHybrid pipeline (no OCL required).
+
+        Geometric constant-Z contouring via FreeCAD's slicer + Path.Area
+        Clipper.  Robust on geometry that triggers OCL waterline edge
+        cases.
+        """
+        import Part
+
+        diameter = tool_params["diameter"]
+        radius = diameter / 2.0
+        shape_type = (tool_params["tool_type"] or "").lower()
+        corner_radius = tool_params["corner_radius"]
+        is_3d = shape_type in ("ballend", "bullnose")
+        if diameter <= 0 or (not is_3d and "endmill" not in shape_type):
+            Path.Log.error(
+                "Surface3D ZLevelHybrid: tool shape '{}' is not supported "
+                "(use endmill, ball-end, or bull-nose).".format(shape_type)
+            )
+            return []
+
+        # Workplane circle used by surface_zlevel as the 2D calculation plane.
+        wpc = Part.makeCircle(2.0, FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1))
+
+        zlevel_tool_params = {
+            "radius": radius,
+            "c_rad": corner_radius,
+            "profile": shape_type,
+            "is_threeD": is_3d,
+        }
+
+        # Boundary preparation — extend the stock bbox outward, then trim
+        # using the user's Base selection (or the stock face if no Base).
+        buffer = radius * 10.0
+        border_poly = surface_zlevel.extendedBoundBox(job.Stock.Shape.BoundBox, buffer, 0.0)
+        border_face = Part.makeFace(border_poly)
+
+        # Build the boundary-mask face (Base selection or stock projection).
+        cutting_faces, avoid_faces = surface_pattern.split_selected_features(
+            getattr(obj, "Base", None), 0
+        )
+        bb_face, _bbox = self._buildBoundary(obj, job, radius, cutting_faces, avoid_faces)
+        if bb_face is None:
+            bb_face = border_face
+
+        trim_face = surface_zlevel.getTrimFace(border_face, bb_face, wpc)
+
+        cat_steps = surface_zlevel.categorize_floor_steps(
+            model_shape,
+            float(obj.StartDepth.Value),
+            float(obj.FinalDepth.Value),
+            float(obj.StepDown.Value),
+        )
+
+        accuracy_val = getattr(obj, "SamplingAccuracy", "4")
+
+        wl_data = surface_zlevel.zlevel_hybrid_stack(
+            model_shape,
+            cat_steps,
+            border_face,
+            trim_face,
+            zlevel_tool_params,
+            float(obj.StockToLeave.Value),
+            accuracy_val,
+            float(obj.DepthOffset.Value),
+            wpc,
+        )
+
+        pattern_options = {
+            "cut_climb": obj.CutMode == "Climb",
+            "cut_pattern": getattr(obj, "CutPatternZLevel", "None"),
+            "pattern_angle": float(obj.CutPatternAngle),
+            "reverse_pattern": bool(obj.CutPatternReversed),
+        }
+        height_params = {
+            "safe_hght": float(obj.SafeHeight.Value),
+            "clearance_hght": float(obj.ClearanceHeight.Value),
+        }
+        feed_params = {
+            "horizFeed": self.horizFeed,
+            "vertFeed": self.vertFeed,
+            "horizRapid": self.horizRapid,
+            "vertRapid": self.vertRapid,
+        }
+        step_over = float(obj.StepOver.Value)
+
+        return surface_zlevel.zlevel_hybrid_to_gcode(
+            wl_data,
+            feed_params,
+            height_params,
+            pattern_options,
+            bool(obj.IgnoreOuter),
+            bool(obj.ClearPlanarOnly),
+            step_over,
+            radius,
+        )
+
+    # ------------------------------------------------------------------
     # Execute
     # ------------------------------------------------------------------
 
     def opExecute(self, obj):
         Path.Log.track()
-        if ocl is None:
-            Path.Log.error("Surface3D requires OpenCamLib (OCL); not available.")
-            return
-
         job = PathUtils.findParentJob(obj)
         if job is None:
             Path.Log.error("Surface3D: no parent Job.")
@@ -463,19 +817,6 @@ class ObjectSurface3D(PathOp.ObjectOp):
             Path.Log.error("Surface3D: tool diameter must be > 0.")
             return
         tool_radius = diameter / 2.0
-
-        cutter = surface_common.make_ocl_cutter(
-            tool_params["tool_type"],
-            diameter,
-            corner_radius=tool_params["corner_radius"],
-            flat_radius=tool_params["flat_radius"],
-            edge_height=tool_params["edge_height"],
-            edge_angle=tool_params["edge_angle"],
-            length_offset=tool_params["length_offset"],
-        )
-        if cutter is None:
-            Path.Log.error("Surface3D: could not build OCL cutter for tool.")
-            return
 
         # Build the model shape (fuse multiple models if the Job has them).
         models = job.Model.Group if hasattr(job.Model, "Group") else []
@@ -499,6 +840,36 @@ class ObjectSurface3D(PathOp.ObjectOp):
         else:
             model_shape = valid_shapes[0]
 
+        strategy = obj.Strategy
+
+        # ZLevelHybrid is no-OCL — skip cutter/STL setup.
+        if strategy == "ZLevelHybrid":
+            cmds = self._executeZLevelHybrid(obj, job, model_shape, tool_params)
+            if cmds:
+                self.commandlist.extend(cmds)
+            return
+
+        # SurfacePattern and Waterline both need OCL + STL + cutter.
+        if ocl is None:
+            Path.Log.error(
+                "Surface3D '{}' strategy requires OpenCamLib (OCL); not "
+                "available.  Use ZLevelHybrid for a no-OCL alternative.".format(strategy)
+            )
+            return
+
+        cutter = surface_common.make_ocl_cutter(
+            tool_params["tool_type"],
+            diameter,
+            corner_radius=tool_params["corner_radius"],
+            flat_radius=tool_params["flat_radius"],
+            edge_height=tool_params["edge_height"],
+            edge_angle=tool_params["edge_angle"],
+            length_offset=tool_params["length_offset"],
+        )
+        if cutter is None:
+            Path.Log.error("Surface3D: could not build OCL cutter for tool.")
+            return
+
         stl, _safe_stl = surface_mesh.generate_stl(
             model_shape,
             models,
@@ -509,18 +880,19 @@ class ObjectSurface3D(PathOp.ObjectOp):
             final_depth=float(obj.FinalDepth.Value),
             linear_deflection=float(obj.LinearDeflection.Value),
             angular_deflection=float(obj.AngularDeflection.Value),
-            mesh_simplification=1,
+            mesh_simplification=int(obj.MeshSimplification),
             use_cpp=True,
         )
         if stl is None:
             Path.Log.error("Surface3D: STL tessellation failed.")
             return
 
-        strategy = obj.Strategy
         if strategy == "SurfacePattern":
             cmds = self._executeSurfacePattern(obj, job, stl, cutter, tool_radius)
+        elif strategy == "Waterline":
+            cmds = self._executeWaterline(obj, job, stl, cutter)
         else:
-            Path.Log.error("Surface3D: strategy '{}' not implemented yet.".format(strategy))
+            Path.Log.error("Surface3D: strategy '{}' not implemented.".format(strategy))
             return
 
         if cmds:

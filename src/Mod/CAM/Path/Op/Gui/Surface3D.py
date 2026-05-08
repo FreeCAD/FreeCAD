@@ -50,6 +50,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.sampleIntervalSpinBox = PathGuiUtil.QuantitySpinBox(
             self.form.sampleInterval, obj, "SampleInterval"
         )
+        self.minSampleIntervalSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.minSampleInterval, obj, "MinSampleInterval"
+        )
+        self.stockToLeaveSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.stockToLeave, obj, "StockToLeave"
+        )
         self.depthOffsetSpinBox = PathGuiUtil.QuantitySpinBox(
             self.form.depthOffset, obj, "DepthOffset"
         )
@@ -70,6 +76,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return (
             self.stepOverSpinBox,
             self.sampleIntervalSpinBox,
+            self.minSampleIntervalSpinBox,
+            self.stockToLeaveSpinBox,
             self.depthOffsetSpinBox,
             self.boundaryAdjustmentSpinBox,
             self.cutPatternAngleSpinBox,
@@ -82,12 +90,24 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         comboToPropertyMap = [
             ("strategy", "Strategy"),
             ("cutPattern", "CutPattern"),
+            ("cutPatternZLevel", "CutPatternZLevel"),
             ("cutMode", "CutMode"),
             ("handleMultiple", "HandleMultipleFeatures"),
+            ("samplingAccuracy", "SamplingAccuracy"),
         ]
         enumTups = PathSurface3D.ObjectSurface3D.propertyEnumerations(dataType="raw")
         PathGuiUtil.populateCombobox(form, enumTups, comboToPropertyMap)
         return form
+
+    def _applyVisibility(self, obj):
+        """Hide/show strategy-specific widget groups based on current Strategy."""
+        strategy = str(self.form.strategy.currentData()) or obj.Strategy
+        self.form.waterlineOptions.setVisible(strategy == "Waterline")
+        self.form.zlevelOptions.setVisible(strategy == "ZLevelHybrid")
+        is_pattern = strategy == "SurfacePattern"
+        self.form.patternOptions.setVisible(is_pattern or strategy == "ZLevelHybrid")
+        self.form.cutPattern_label.setVisible(is_pattern)
+        self.form.cutPattern.setVisible(is_pattern)
 
     def getFields(self, obj):
         self.updateToolController(obj, self.form.toolController)
@@ -97,29 +117,51 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.Strategy = str(self.form.strategy.currentData())
         if obj.CutPattern != str(self.form.cutPattern.currentData()):
             obj.CutPattern = str(self.form.cutPattern.currentData())
+        if obj.CutPatternZLevel != str(self.form.cutPatternZLevel.currentData()):
+            obj.CutPatternZLevel = str(self.form.cutPatternZLevel.currentData())
         if obj.CutMode != str(self.form.cutMode.currentData()):
             obj.CutMode = str(self.form.cutMode.currentData())
         if obj.HandleMultipleFeatures != str(self.form.handleMultiple.currentData()):
             obj.HandleMultipleFeatures = str(self.form.handleMultiple.currentData())
+        if obj.SamplingAccuracy != str(self.form.samplingAccuracy.currentData()):
+            obj.SamplingAccuracy = str(self.form.samplingAccuracy.currentData())
 
         if obj.CutPatternReversed != self.form.cutPatternReversed.isChecked():
             obj.CutPatternReversed = self.form.cutPatternReversed.isChecked()
         if obj.OptimizeLinearPaths != self.form.optimizeLinearPaths.isChecked():
             obj.OptimizeLinearPaths = self.form.optimizeLinearPaths.isChecked()
+        if obj.ClearPlanarOnly != self.form.clearPlanarOnly.isChecked():
+            obj.ClearPlanarOnly = self.form.clearPlanarOnly.isChecked()
+        if obj.IgnoreOuter != self.form.ignoreOuter.isChecked():
+            obj.IgnoreOuter = self.form.ignoreOuter.isChecked()
+
+        if obj.AccuracyLevel != self.form.accuracyLevel.value():
+            obj.AccuracyLevel = self.form.accuracyLevel.value()
+        if obj.MeshSimplification != self.form.meshSimplification.value():
+            obj.MeshSimplification = self.form.meshSimplification.value()
 
         for sb in self._allSpinBoxes():
             sb.updateProperty()
+
+        self._applyVisibility(obj)
 
     def setFields(self, obj):
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.selectInComboBox(obj.Strategy, self.form.strategy)
         self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
+        self.selectInComboBox(obj.CutPatternZLevel, self.form.cutPatternZLevel)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.HandleMultipleFeatures, self.form.handleMultiple)
+        self.selectInComboBox(obj.SamplingAccuracy, self.form.samplingAccuracy)
         self.form.cutPatternReversed.setChecked(bool(obj.CutPatternReversed))
         self.form.optimizeLinearPaths.setChecked(bool(obj.OptimizeLinearPaths))
+        self.form.clearPlanarOnly.setChecked(bool(obj.ClearPlanarOnly))
+        self.form.ignoreOuter.setChecked(bool(obj.IgnoreOuter))
+        self.form.accuracyLevel.setValue(int(obj.AccuracyLevel))
+        self.form.meshSimplification.setValue(int(obj.MeshSimplification))
         self.updateQuantitySpinBoxes()
+        self._applyVisibility(obj)
 
     def updateQuantitySpinBoxes(self, index=None):
         for sb in self._allSpinBoxes():
@@ -131,22 +173,36 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.coolantController.currentIndexChanged,
             self.form.strategy.currentIndexChanged,
             self.form.cutPattern.currentIndexChanged,
+            self.form.cutPatternZLevel.currentIndexChanged,
             self.form.cutMode.currentIndexChanged,
             self.form.handleMultiple.currentIndexChanged,
+            self.form.samplingAccuracy.currentIndexChanged,
             self.form.stepOver.editingFinished,
             self.form.sampleInterval.editingFinished,
+            self.form.minSampleInterval.editingFinished,
+            self.form.stockToLeave.editingFinished,
             self.form.depthOffset.editingFinished,
             self.form.boundaryAdjustment.editingFinished,
             self.form.cutPatternAngle.editingFinished,
             self.form.linearDeflection.editingFinished,
             self.form.angularDeflection.editingFinished,
+            self.form.accuracyLevel.valueChanged,
+            self.form.meshSimplification.valueChanged,
         ]
-        for cb in (self.form.cutPatternReversed, self.form.optimizeLinearPaths):
+        for cb in (
+            self.form.cutPatternReversed,
+            self.form.optimizeLinearPaths,
+            self.form.clearPlanarOnly,
+            self.form.ignoreOuter,
+        ):
             if hasattr(cb, "checkStateChanged"):
                 signals.append(cb.checkStateChanged)
             else:
                 signals.append(cb.stateChanged)
         return signals
+
+    def registerSignalHandlers(self, obj):
+        self.form.strategy.currentIndexChanged.connect(lambda *_: self._applyVisibility(obj))
 
 
 Command = PathOpGui.SetupOperation(
