@@ -2552,7 +2552,7 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
 {
     std::stringstream out;
     out << App::Application::getUserCachePath() << App::Application::getExecutableName() << "_"
-        << App::Application::applicationPid() << ".lock";
+        << App::Application::uniqueInstanceId() << ".lock";
 
     // open a lock file with the PID
     Base::FileInfo fi(out.str());
