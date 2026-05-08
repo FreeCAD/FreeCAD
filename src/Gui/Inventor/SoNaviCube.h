@@ -155,7 +155,7 @@ private:
     void rebuildGeometry() const;
     void addCubeFace(const SbVec3f& x, const SbVec3f& z, FaceType type, PickId pickId, float rotZ) const;
     void rebuildButtonFaces() const;
-    void addButtonFace(PickId pickId, const SbVec3f& direction = SbVec3f(0, 0, 0)) const;
+    void addButtonFace(PickId pickId, const SbVec3f& direction) const;
 
 private:
     float m_Chamfer {0.12F};

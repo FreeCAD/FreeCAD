@@ -558,7 +558,7 @@ void SoNaviCube::rebuildButtonFaces() const
     addButtonFace(PickId::ArrowLeft, SbVec3f(0, 0, 1));
     addButtonFace(PickId::ArrowRight, SbVec3f(0, 0, -1));
     addButtonFace(PickId::DotBackside, SbVec3f(0, 1, 0));
-    addButtonFace(PickId::ViewMenu);
+    addButtonFace(PickId::ViewMenu, SbVec3f(0, 0, 0));
 }
 
 void SoNaviCube::addButtonFace(PickId pickId, const SbVec3f& direction) const
@@ -625,5 +625,6 @@ void SoNaviCube::addButtonFace(PickId pickId, const SbVec3f& direction) const
         }
     }
     face.type = FaceType::Button;
-    face.rotation = SbRotation(direction, 1).inverse();
+    face.rotation = direction.sqrLength() > 0.0F ? SbRotation(direction, 1.0F).inverse()
+                                                 : SbRotation();
 }
