@@ -288,7 +288,7 @@ void ExpressionSpinBox::openFormulaDialog()
             setExpression(box->getExpression());
         }
         else if (box->discardedFormula()) {
-            setExpression(std::shared_ptr<Expression>());
+            removeExpression();
         }
 
         updateExpression();
@@ -301,11 +301,24 @@ void ExpressionSpinBox::openFormulaDialog()
     Gui::adjustDialogPosition(box);
 }
 
-bool ExpressionSpinBox::handleKeyEvent(const QString& text)
+void ExpressionSpinBox::removeExpression()
 {
-    if (text == QLatin1String("=") && isBound()) {
-        openFormulaDialog();
-        return true;
+    setExpression(std::shared_ptr<Expression>());
+}
+
+bool ExpressionSpinBox::handleKeyEvent(QKeyEvent* event)
+{
+    if (isBound()) {
+        if (event->text() == QLatin1String("=")) {
+            openFormulaDialog();
+            return true;
+        }
+        else if (event->matches(QKeySequence::Backspace) || event->matches(QKeySequence::Delete)) {
+            if (hasExpression()) {
+                removeExpression();
+                return true;
+            }
+        }
     }
 
     return false;
@@ -562,7 +575,7 @@ void UIntSpinBox::resizeEvent(QResizeEvent* event)
 
 void UIntSpinBox::keyPressEvent(QKeyEvent* event)
 {
-    if (!handleKeyEvent(event->text())) {
+    if (!handleKeyEvent(event)) {
         QAbstractSpinBox::keyPressEvent(event);
     }
 }
@@ -607,7 +620,7 @@ void IntSpinBox::resizeEvent(QResizeEvent* event)
 
 void IntSpinBox::keyPressEvent(QKeyEvent* event)
 {
-    if (!handleKeyEvent(event->text())) {
+    if (!handleKeyEvent(event)) {
         QAbstractSpinBox::keyPressEvent(event);
     }
 }
@@ -651,7 +664,7 @@ void DoubleSpinBox::resizeEvent(QResizeEvent* event)
 
 void DoubleSpinBox::keyPressEvent(QKeyEvent* event)
 {
-    if (!handleKeyEvent(event->text())) {
+    if (!handleKeyEvent(event)) {
         QDoubleSpinBox::keyPressEvent(event);
     }
 }
