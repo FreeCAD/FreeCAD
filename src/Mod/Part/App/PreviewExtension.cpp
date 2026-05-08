@@ -24,9 +24,36 @@
 #include "PreviewExtension.h"
 
 #include <App/DocumentObject.h>
+#include <App/ExtensionPython.h>
+#include <Base/PyObjectBase.h>
 
 EXTENSION_PROPERTY_SOURCE(Part::PreviewExtension, App::DocumentObjectExtension)
+
+namespace Part
+{
+
+template<typename ExtensionT>
+App::DocumentObjectExecReturn* PreviewExtensionPythonT<ExtensionT>::recomputePreview()
+{
+    EXTENSION_PROXY_NOARG(recomputePreview)
+
+    if (!result.isNone() && result.isString()) {
+        return new App::DocumentObjectExecReturn(static_cast<std::string>(Py::String(result)));
+    }
+
+    if (!result.isNone()) {
+        return App::DocumentObject::StdReturn;
+    }
+
+    return ExtensionT::recomputePreview();
+}
+
+template class PartExport PreviewExtensionPythonT<PreviewExtension>;
+
+}  // namespace Part
+
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(Part::PreviewExtensionPython, Part::PreviewExtension)
+template class PartExport App::ExtensionPythonT<Part::PreviewExtensionPythonT<Part::PreviewExtension>>;
 
 Part::PreviewExtension::PreviewExtension()
 {
@@ -59,7 +86,11 @@ void Part::PreviewExtension::extensionOnChanged(const App::Property* prop)
 {
     DocumentObjectExtension::extensionOnChanged(prop);
 
-    if (mustRecomputePreview()) {
+    // Invalidate the preview on any input property change. The PreviewShape itself is the
+    // output of recomputePreview, so changing it does not require another recompute.
+    const bool isInputProp = prop != &PreviewShape && !prop->testStatus(App::Property::Output);
+
+    if (isInputProp || mustRecomputePreview()) {
         _isPreviewFresh = false;
     }
 }

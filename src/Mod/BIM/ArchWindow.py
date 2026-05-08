@@ -292,6 +292,9 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("HorizontalArea", 2)
         obj.setEditorMode("PerimeterLength", 2)
 
+        if not obj.hasExtension("Part::PreviewExtensionPython"):
+            obj.addExtension("Part::PreviewExtensionPython")
+
     def onDocumentRestored(self, obj):
 
         ArchComponent.Component.onDocumentRestored(self, obj)
@@ -648,6 +651,16 @@ class _Window(ArchComponent.Component):
                 self.vshapes.extend(vsymbols)
         return shapes
 
+    def recomputePreview(self, ext):
+        """Build the preview shape from the window solids."""
+
+        import Part
+
+        obj = ext.ExtendedObject
+        has_shape = hasattr(obj, "Shape") and obj.Shape and not obj.Shape.isNull()
+
+        obj.PreviewShape = obj.Shape if has_shape else Part.Shape()
+
     def execute(self, obj):
 
         if self.clone(obj):
@@ -691,7 +704,7 @@ class _Window(ArchComponent.Component):
             if not base.isNull():
                 b = []
                 if self.sshapes:
-                    if hasattr(obj, "SymbolPlan"):
+                    if hasattr(obj, "SymbolPlan"):  # ensure that object gets updated
                         if obj.SymbolPlan:
                             b.extend(self.sshapes)
                     else:
@@ -886,6 +899,12 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
 
+    def attach(self, vobj):
+
+        ArchComponent.ViewProviderComponent.attach(self, vobj)
+        if not vobj.hasExtension("PartGui::ViewProviderPreviewExtensionPython"):
+            vobj.addExtension("PartGui::ViewProviderPreviewExtensionPython")
+
     def getIcon(self):
 
         import Arch_rc
@@ -1060,6 +1079,9 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if mode != 0:
             return None
 
+        self.Object.Document.openTransaction(
+            translate("Arch", "Edit %1").replace("%1", self.Object.Label)
+        )
         taskd = _ArchWindowTaskPanel()
         taskd.obj = self.Object
         self.sets = [vobj.DisplayMode, vobj.Transparency]
@@ -1067,6 +1089,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         vobj.Transparency = 80
         if self.Object.Base:
             self.Object.Base.ViewObject.show()
+        if hasattr(vobj, "showPreview"):
+            vobj.showPreview(True)
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
         return True
@@ -1080,6 +1104,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         vobj.DiffuseColor = vobj.DiffuseColor  # reset face colors
         if self.Object.Base:
             self.Object.Base.ViewObject.hide()
+        if hasattr(vobj, "showPreview"):
+            vobj.showPreview(False)
         FreeCADGui.Control.closeDialog()
         return True
 
@@ -1182,6 +1208,7 @@ class _ArchWindowTaskPanel:
     def __init__(self):
 
         self.obj = None
+        self._suppressLiveUpdate = False
 
         # Window options task box
         self.optionsform = QtGui.QWidget()
@@ -1352,6 +1379,10 @@ class _ArchWindowTaskPanel:
         QtCore.QObject.connect(self.field6, QtCore.SIGNAL("clicked()"), self.addEdge)
         self.update()
 
+        self.widthWidget.valueChanged.connect(self.updateAndRecompute)
+        self.heightWidget.valueChanged.connect(self.updateAndRecompute)
+        self.openingWidget.valueChanged.connect(self.updateAndRecompute)
+
         FreeCADGui.Selection.clearSelection()
 
     def isAllowedAlterSelection(self):
@@ -1442,22 +1473,25 @@ class _ArchWindowTaskPanel:
         self.wiretree.clear()
         self.comptree.clear()
         if self.obj:
+            self._suppressLiveUpdate = True
+            try:
+                FreeCADGui.ExpressionBinding(self.widthWidget).bind(self.obj, "Width")
+                self.widthWidget.setProperty("value", self.obj.Width)
 
-            FreeCADGui.ExpressionBinding(self.widthWidget).bind(self.obj, "Width")
-            self.widthWidget.setProperty("value", self.obj.Width)
+                FreeCADGui.ExpressionBinding(self.heightWidget).bind(self.obj, "Height")
+                self.heightWidget.setProperty("value", self.obj.Height)
 
-            FreeCADGui.ExpressionBinding(self.heightWidget).bind(self.obj, "Height")
-            self.heightWidget.setProperty("value", self.obj.Height)
-
-            FreeCADGui.ExpressionBinding(self.openingWidget).bind(self.obj, "Opening")
-            # Opening is a scalar property, as opposed to a quantity property. It appears to have
-            # no "preferred unit" metadata. We cannot set the suffix manually either, but at least
-            # we can set some safe limits. These limits are hardcoded: the Property Editor clamps
-            # the property to these, so it must be reading them from metadata, but they might not
-            # be queryable via Python.
-            self.openingWidget.setProperty("minimum", 0)
-            self.openingWidget.setProperty("maximum", 100)
-            self.openingWidget.setProperty("value", self.obj.Opening)
+                FreeCADGui.ExpressionBinding(self.openingWidget).bind(self.obj, "Opening")
+                # Opening is a scalar property, as opposed to a quantity property. It appears to
+                # have no "preferred unit" metadata. We cannot set the suffix manually either, but
+                # at least we can set some safe limits. These limits are hardcoded: the Property
+                # Editor clamps the property to these, so it must be reading them from metadata,
+                # but they might not be queryable via Python.
+                self.openingWidget.setProperty("minimum", 0)
+                self.openingWidget.setProperty("maximum", 100)
+                self.openingWidget.setProperty("value", self.obj.Opening)
+            finally:
+                self._suppressLiveUpdate = False
 
             if self.obj.Base:
                 item = QtGui.QTreeWidgetItem(self.tree)
@@ -1686,6 +1720,10 @@ class _ArchWindowTaskPanel:
 
     def reject(self):
 
+        if self.obj:
+            self.obj.Document.abortTransaction()
+        else:
+            FreeCAD.ActiveDocument.abortTransaction()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
@@ -1754,11 +1792,32 @@ class _ArchWindowTaskPanel:
                 i, QtGui.QApplication.translate("Arch", WindowOpeningModes[i], None)
             )
 
+    def updateAndRecompute(self):
+        self.updateObjectData()
+        self.obj.Document.recompute()
+
+    def updateObjectData(self):
+        if not self.obj or self._suppressLiveUpdate:
+            return
+
+        width = self.widthWidget.property("value")
+        if self.obj.Width != width:
+            self.obj.Width = width
+
+        height = self.heightWidget.property("value")
+        if self.obj.Height != height:
+            self.obj.Height = height
+
+        opening = self.openingWidget.property("value")
+        if self.obj.Opening != opening:
+            self.obj.Opening = opening
+
     def accept(self):
         if self.obj:
-            self.obj.Width = self.widthWidget.property("value")
-            self.obj.Height = self.heightWidget.property("value")
-            self.obj.Opening = self.openingWidget.property("value")
+            self._suppressLiveUpdate = False  # ensure that object gets updated
+            self.updateObjectData()
+            self.obj.Document.commitTransaction()
+
         self.basepanel.obj = self.obj
         return self.basepanel.accept()
 
