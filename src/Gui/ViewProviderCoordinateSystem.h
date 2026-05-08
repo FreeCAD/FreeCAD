@@ -94,7 +94,8 @@ public:
         return false;
     }
 
-    bool canDropObjects() const override {
+    bool canDropObjects() const override
+    {
         return false;
     }
 
