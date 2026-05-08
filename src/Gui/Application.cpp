@@ -479,6 +479,7 @@ void Application::initStyleParameterManager()
             bool tiledBG = hGrp->GetBool("TiledBackground", false);
 
             setStyleSheet(QString::fromStdString(sheet), tiledBG);
+            OverlayManager::instance()->refresh(nullptr, true);
         }
     );
 
