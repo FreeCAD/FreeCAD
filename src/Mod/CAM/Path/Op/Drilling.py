@@ -577,6 +577,8 @@ def SetupProperties():
     setup.append("AddTipLength")
     setup.append("ExtraOffset")
     setup.append("KeepToolDown")
+    setup.append("CollisionAvoidanceStrategy")
+    setup.append("CollisionClearance")
     return setup
 
 

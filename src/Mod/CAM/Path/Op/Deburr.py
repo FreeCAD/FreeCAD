@@ -115,6 +115,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             | PathOp.FeatureBaseFaces
             | PathOp.FeatureCoolant
             | PathOp.FeatureBaseGeometry
+            | PathOp.FeatureLinking
         )
 
     def initOperation(self, obj):
@@ -429,6 +430,8 @@ def SetupProperties():
     setup = []
     setup.append("Width")
     setup.append("ExtraDepth")
+    setup.append("CollisionAvoidanceStrategy")
+    setup.append("CollisionClearance")
     return setup
 
 
