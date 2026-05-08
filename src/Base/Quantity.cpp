@@ -297,13 +297,14 @@ std::string Quantity::getSafeUserString() const
 {
     auto userStr = getUserString();
     if (myValue != 0.0) {
+        bool useFallback {false};
         try {
-            if (parse(userStr).getValue() == 0) {
-                auto unitStr = getUnit().getString();
-                userStr = fmt::format("{}{}{}", myValue, unitStr.empty() ? "" : " ", unitStr);
-            }
+            useFallback = (parse(userStr).getValue() == 0);
         }
         catch (const Base::ParserError&) {
+            useFallback = true;
+        }
+        if (useFallback) {
             auto unitStr = getUnit().getString();
             userStr = fmt::format("{}{}{}", myValue, unitStr.empty() ? "" : " ", unitStr);
         }
