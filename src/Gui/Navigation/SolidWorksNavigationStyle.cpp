@@ -50,7 +50,7 @@ const char* SolidWorksNavigationStyle::mouseButtons(ViewerMode mode)
         case NavigationStyle::PANNING:
             return QT_TR_NOOP("Press Ctrl and middle mouse button");
         case NavigationStyle::DRAGGING:
-            return QT_TR_NOOP("Press middle mouse button");
+            return QT_TR_NOOP("Press middle mouse button to orbit or Alt+MMB to roll");
         case NavigationStyle::ZOOMING:
             return QT_TR_NOOP("Scroll mouse wheel");
         default:
@@ -188,6 +188,9 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
                     }
                 }
                 this->button3down = press;
+                if (!press) {
+                    this->rollingWithAlt = false;
+                }
                 break;
             default:
                 break;
@@ -198,6 +201,7 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
         const auto* const event = (const SoLocation2Event*)ev;
+
         if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
@@ -214,9 +218,22 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::DRAGGING) {
-            this->addToLog(event->getPosition(), event->getTime());
-            this->spin(posn);
-            moveCursorPosition();
+            if (this->rollingWithAlt) {
+                const SbVec2f center(0.5f, 0.5f);
+                SbVec2f mid = 0.5f * (posn + prevnormalized);
+                SbVec2f r = mid - center;
+                SbVec2f d = posn - prevnormalized;
+
+                float cross = r[0] * d[1] - r[1] * d[0];
+                float angle = 10.0f * cross;
+
+                doRotate(viewer->getSoRenderManager()->getCamera(), angle, center);
+            }
+            else {
+                this->addToLog(event->getPosition(), event->getTime());
+                this->spin(posn);
+                moveCursorPosition();
+            }
             processed = true;
         }
     }
@@ -236,11 +253,13 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
         BUTTON3DOWN = 1 << 1,
         CTRLDOWN = 1 << 2,
         SHIFTDOWN = 1 << 3,
-        BUTTON2DOWN = 1 << 4
+        BUTTON2DOWN = 1 << 4,
+        ALTDOWN = 1 << 5
     };
     unsigned int combo = (this->button1down ? BUTTON1DOWN : 0)
         | (this->button2down ? BUTTON2DOWN : 0) | (this->button3down ? BUTTON3DOWN : 0)
-        | (this->ctrldown ? CTRLDOWN : 0) | (this->shiftdown ? SHIFTDOWN : 0);
+        | (this->ctrldown ? CTRLDOWN : 0) | (this->shiftdown ? SHIFTDOWN : 0)
+        | (this->altdown ? ALTDOWN : 0);
 
     switch (combo) {
         case 0:
@@ -270,11 +289,29 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent* const ev)
         case SHIFTDOWN | BUTTON3DOWN:
             newmode = NavigationStyle::ZOOMING;
             break;
+        case ALTDOWN | BUTTON3DOWN:
+            if (newmode != NavigationStyle::DRAGGING) {
+                saveCursorPosition(ev);
+            }
+            this->rollingWithAlt = true;
+            newmode = NavigationStyle::DRAGGING;
+            break;
         case BUTTON3DOWN:
+            if (this->rollingWithAlt) {
+                this->rollingWithAlt = false;
+                newmode = NavigationStyle::IDLE;
+                processed = true;
+                break;
+            }
             if (newmode != NavigationStyle::DRAGGING) {
                 saveCursorPosition(ev);
             }
             newmode = NavigationStyle::DRAGGING;
+            break;
+        case ALTDOWN:
+            this->rollingWithAlt = false;
+            newmode = NavigationStyle::IDLE;
+            processed = true;
             break;
         case CTRLDOWN | BUTTON3DOWN:
             newmode = NavigationStyle::PANNING;

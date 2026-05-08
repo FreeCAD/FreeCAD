@@ -95,6 +95,7 @@ def retranslateUi():
     text08 = translate("NavigationIndicator", "Rotation focus")
     text09 = translate("NavigationIndicator", "Middle mouse button or H key.")
     text10 = translate("NavigationIndicator", "Middle mouse button.")
+    text11 = translate("NavigationIndicator", "Roll")
 
     global t0
     t0 = translate("NavigationIndicator", "Navigation style not recognized.")
@@ -537,6 +538,9 @@ def retranslateUi():
         + text03
         + """</small></th>
       <th><small>"""
+        + text11
+        + """</small></th>
+      <th><small>"""
         + text04
         + """</small></th>
      </tr>
@@ -545,6 +549,7 @@ def retranslateUi():
       <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
       <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
       <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltMiddle.svg'></td>
       <td align='center'><img src=':/icons/Navigation_Mouse_CtrlMiddle.svg'></td>
      </tr>
     </table>

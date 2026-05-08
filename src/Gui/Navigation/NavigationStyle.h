@@ -456,6 +456,7 @@ protected:
 
 private:
     SbBool lockButton1 {false};
+    SbBool rollingWithAlt {false};
 };
 
 class GuiExport MayaGestureNavigationStyle: public UserNavigationStyle
