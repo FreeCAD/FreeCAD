@@ -33,6 +33,7 @@ class GuiExport ViewParams: public Base::ParameterObserver
 public:
     ViewParams();
     static ViewParams* instance();
+    using Base::ParameterObserver::getHandle;
 
     bool getUseNewSelection() const;
     void setUseNewSelection(bool v);

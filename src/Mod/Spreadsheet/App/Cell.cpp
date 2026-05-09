@@ -703,7 +703,7 @@ void Cell::setComputedUnit(const Base::Unit& unit)
 void Cell::_setComputedUnit(const Base::Unit& unit)
 {
     computedUnit = unit;
-    setUsed(COMPUTED_UNIT_SET, !computedUnit.isEmpty());
+    setUsed(COMPUTED_UNIT_SET, computedUnit != Base::Unit());
     setDirty();
 }
 

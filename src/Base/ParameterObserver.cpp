@@ -135,24 +135,3 @@ std::string ParameterObserver::getDefaultString(const char* key) const
 {
     return getDefault<std::string>(key);
 }
-
-std::size_t ParameterObserver::Hasher::operator()(const char* s) const
-{
-    if (!s) {
-        return 0;
-    }
-
-    std::string_view view(s);
-    return boost::hash_range(view.begin(), view.end());
-}
-
-bool ParameterObserver::Hasher::operator()(const char* a, const char* b) const
-{
-    if (!a) {
-        return !b;
-    }
-    if (!b) {
-        return false;
-    }
-    return std::strcmp(a, b) == 0;
-}
