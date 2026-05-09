@@ -366,7 +366,14 @@ def get_trimex_unsupported_reason(obj, subobjects=None):
         `None` if the object is supported by Trimex, otherwise
         a translated error message explaining why it is rejected.
     """
-    import DraftGeomUtils
+    import Part
+
+    def edge_geom_type(edge):
+        if isinstance(edge.Curve, (Part.LineSegment, Part.Line)):
+            return "Line"
+        if isinstance(edge.Curve, Part.Circle):
+            return "Circle"
+        return "Unknown"
 
     if not hasattr(obj, "Shape"):
         return translate("draft", "This object is not supported")
@@ -397,7 +404,7 @@ def get_trimex_unsupported_reason(obj, subobjects=None):
         edges = shape.Edges
 
     for edge in edges:
-        if DraftGeomUtils.geomType(edge) not in {"Line", "Circle"}:
+        if edge_geom_type(edge) not in {"Line", "Circle"}:
             return translate("draft", "Trimex does not support this object type")
 
     obj_type = get_type(obj)
