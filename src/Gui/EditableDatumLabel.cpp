@@ -27,6 +27,11 @@
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/SoPath.h>
 
 #include <QEvent>
 #include <QFontMetrics>
@@ -59,7 +64,6 @@ struct NodeData
 EditableDatumLabel::EditableDatumLabel(
     View3DInventorViewer* view,
     const Base::Placement& plc,
-    SbColor color,
     bool autoDistance,
     bool avoidMouseCursor
 )
@@ -73,10 +77,13 @@ EditableDatumLabel::EditableDatumLabel(
     , spinBox(nullptr)
     , lockIconLabel(nullptr)
     , cameraSensor(nullptr)
+    , pickStyle(nullptr)
     , function(Function::Positioning)
     , editStartValue(0.0)
 {
     // NOLINTBEGIN
+    initColors();
+
     root = new SoSwitch;
     root->ref();
 
@@ -89,10 +96,19 @@ EditableDatumLabel::EditableDatumLabel(
     transform->ref();
     annotation->addChild(transform);
 
+    eventCallback = new SoEventCallback;
+    eventCallback->ref();
+    eventCallback->addEventCallback(SoMouseButtonEvent::getClassTypeId(), eventCallbackF, this);
+    annotation->addChild(eventCallback);
+    pickStyle = new SoPickStyle;
+    pickStyle->ref();
+    pickStyle->style = SoPickStyle::UNPICKABLE;
+    annotation->addChild(pickStyle);
+
     label = new SoDatumLabel();
     label->ref();
     label->string = " ";
-    label->textColor = color;
+    setDeactivatedColor();
     label->size.setValue(17);
     label->lineWidth = 2.0;
     label->useAntialiasing = false;
@@ -109,6 +125,27 @@ EditableDatumLabel::EditableDatumLabel(
     // NOLINTEND
 
     static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root);  // NOLINT
+
+    if (view) {
+        connect(view, &View3DInventorViewer::cameraChanged, this, [this]() {
+            if (this->label) {
+                // 1. Re-attach the sensor to the NEW camera object
+                if (this->cameraSensor && this->viewer && this->viewer->getCamera()) {
+                    this->cameraSensor->detach();
+                    this->cameraSensor->attach(this->viewer->getCamera());
+                }
+
+                if (this->autoDistance) {
+                    this->setLabelRecommendedDistance();
+                }
+                this->label->touch();
+
+                if (this->isInEdit()) {
+                    this->positionSpinbox();
+                }
+            }
+        });
+    }
 }
 
 EditableDatumLabel::~EditableDatumLabel()
@@ -116,6 +153,8 @@ EditableDatumLabel::~EditableDatumLabel()
     deactivate();
     transform->unref();
     annotation->unref();
+    eventCallback->unref();
+    pickStyle->unref();
     root->unref();
     label->unref();
 }
@@ -210,6 +249,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->show();
     if (auto* edit = spinBox->findChild<QLineEdit*>()) {
         updateGeometry(edit);
+        positionSpinbox();
     }
     setFocusToSpinbox();
     QTimer::singleShot(0, this, [this]() {
@@ -316,21 +356,29 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
             return false;
         }
     }
+    else if (event->type() == QEvent::FocusOut) {
+        if (watched == spinBox) {
+            Q_EMIT focusLost();
+            return true;
+        }
+    }
 
     return QObject::eventFilter(watched, event);
 }
 
-void EditableDatumLabel::stopEdit()
+void EditableDatumLabel::stopEdit(bool writeChanges)
 {
     if (spinBox) {
-        // write the spinbox value in the label.
-        Base::Quantity quantity = spinBox->value();
-
-        double factor {};
-        std::string unitStr;
-        std::string valueStr;
-        valueStr = quantity.getUserString(factor, unitStr);
-        label->string = SbString(valueStr.c_str());
+        if (writeChanges) {
+            // write the spinbox value in the label.
+            Base::Quantity quantity = spinBox->value();
+            std::string valueStr = quantity.getUserString();
+            label->string = SbString(valueStr.c_str());
+        }
+        else {
+            Base::Quantity quantity(editStartValue, spinBox->unit());
+            label->string = quantity.getUserString().c_str();
+        }
 
         spinBox->deleteLater();
         spinBox = nullptr;
@@ -514,6 +562,74 @@ void EditableDatumLabel::updateGeometry(QLineEdit* edit)
 void EditableDatumLabel::setColor(SbColor color)
 {
     label->textColor = color;
+}
+
+void EditableDatumLabel::setActivatedColor()
+{
+    label->textColor = dimConstrColor;
+}
+
+void EditableDatumLabel::setDeactivatedColor()
+{
+    label->textColor = dimConstrDeactivatedColor;
+}
+
+void EditableDatumLabel::initColors()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+
+    dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
+    dimConstrDeactivatedColor = SbColor(0.5f, 0.5f, 0.5f);  // NOLINT
+
+    float transparency = 0.f;
+    unsigned long color = (unsigned long)(dimConstrColor.getPackedValue());
+    color = hGrp->GetUnsigned("ConstrainedDimColor", color);
+    dimConstrColor.setPackedValue((uint32_t)color, transparency);
+
+    color = (unsigned long)(dimConstrDeactivatedColor.getPackedValue());
+    color = hGrp->GetUnsigned("DeactivatedConstrDimColor", color);
+    dimConstrDeactivatedColor.setPackedValue((uint32_t)color, transparency);
+}
+
+void EditableDatumLabel::eventCallbackF(void* userData, SoEventCallback* cb)
+{
+    auto* self = static_cast<EditableDatumLabel*>(userData);
+    self->handleEvent(cb);
+}
+
+void EditableDatumLabel::handleEvent(SoEventCallback* cb)
+{
+    const auto* event = cb->getEvent();
+    if (!event->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        return;
+    }
+
+    const auto* mouseEvent = static_cast<const SoMouseButtonEvent*>(event);
+
+    const SoPickedPoint* pickedPoint = cb->getPickedPoint();
+    if (!pickedPoint || !pickedPoint->getPath()->containsNode(this->annotation)) {
+        return;
+    }
+
+    if (mouseEvent->getButton() == SoMouseButtonEvent::BUTTON1) {
+        if (mouseEvent->getState() == SoMouseButtonEvent::UP) {
+            cb->setHandled();
+            Q_EMIT clicked(this);
+        }
+    }
+    else if (mouseEvent->getButton() == SoMouseButtonEvent::BUTTON2) {
+        cb->setHandled();
+        if (mouseEvent->getState() == SoMouseButtonEvent::UP) {
+            Q_EMIT rightClicked(this, QCursor::pos());
+        }
+    }
+}
+
+void EditableDatumLabel::setPickable(bool val)
+{
+    pickStyle->style = val ? SoPickStyle::SHAPE_ON_TOP : SoPickStyle::UNPICKABLE;
 }
 
 void EditableDatumLabel::setFocus()

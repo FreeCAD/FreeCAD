@@ -680,8 +680,8 @@ class PathData:
             self.edges = self.wire.Edges
         else:
             self.edges = []
-        self.baseWire = self.findBottomWire(self.edges)
-        self.obj.Proxy.amountClosedWires = len(self.baseWire)
+        self.baseWires = self.findBottomWire(self.edges)
+        self.obj.Proxy.amountClosedWires = len(self.baseWires)
 
     def findBottomWire(self, edges):
         minZ, maxZ = self.findZLimits(edges)
@@ -702,7 +702,7 @@ class PathData:
         return wires
 
     def supportsTagGeneration(self):
-        return self.baseWire is not None
+        return self.baseWires is not None
 
     def findZLimits(self, edges):
         # not considering arcs and spheres in Z direction, find the highest and lowest Z values
@@ -724,7 +724,7 @@ class PathData:
 
     def generateTags(self, obj, count, width=None, height=None, angle=None, radius=None):
         tags = []
-        for wire in self.baseWire:
+        for wire in self.baseWires:
             Path.Log.track(count, width, height, angle)
 
             # copy edge list into python array for (much) faster random access
@@ -804,11 +804,7 @@ class PathData:
 
         return tags
 
-    def copyTags(self, obj, fromObj, width, height, angle, radius, production=True):
-        print(
-            "copyTags(%s, %s, %.2f, %.2f, %.2f, %.2f"
-            % (obj.Label, fromObj.Label, width, height, angle, radius)
-        )
+    def copyTags(self, obj, fromObj, width, height, angle, radius):
         W = width if width else self.defaultTagWidth()
         H = height if height else self.defaultTagHeight()
         A = angle if angle else self.defaultTagAngle()
@@ -817,26 +813,15 @@ class PathData:
         tags = []
         j = 0
         for i, pos in enumerate(fromObj.Positions):
-            print("tag[%d]" % i)
-            if i not in fromObj.Disabled:
-                dist = self.baseWire.distToShape(
-                    Part.Vertex(FreeCAD.Vector(pos.x, pos.y, self.minZ))
-                )
-                if production or dist[0] < W:
-                    # russ4262:: `production` variable was a `True` declaration, forcing True branch to be processed always
-                    #   The application of the `production` argument/variable is to appease LGTM
-                    print("tag[%d/%d]: (%.2f, %.2f, %.2f)" % (i, j, pos.x, pos.y, self.minZ))
-                    at = dist[1][0][0]
-                    tags.append(Tag(j, at.x, at.y, W, H, A, R, True))
-                    j += 1
-                else:
-                    Path.Log.warning(
-                        "Tag[%d] (%.2f, %.2f, %.2f) is too far away to copy: %.2f (%.2f)"
-                        % (i, pos.x, pos.y, self.minZ, dist[0], W)
-                    )
-            else:
-                Path.Log.info("tag[%d]: not enabled, skipping" % i)
-        print("copied %d tags" % len(tags))
+            if i in fromObj.Disabled:
+                continue
+            p = Part.Vertex(FreeCAD.Vector(pos.x, pos.y, self.minZ))
+            dists = [w.distToShape(p) for w in self.baseWires]
+            dist = sorted(dists, key=lambda d: d[0])[0]
+            at = dist[1][0][0]
+            tags.append(Tag(j, at.x, at.y, W, H, A, R, True))
+            j += 1
+
         return tags
 
     def processEdge(
@@ -876,7 +861,7 @@ class PathData:
 
     def defaultTagWidth(self):
         maxWidth = 0
-        for wire in self.baseWire:
+        for wire in self.baseWires:
             width = self.shortestAndLongestPathEdge(wire)[1].Length / 10
             maxWidth = width if width > maxWidth else maxWidth
         return HoldingTagPreferences.defaultWidth(maxWidth)

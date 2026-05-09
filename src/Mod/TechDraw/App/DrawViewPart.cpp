@@ -218,7 +218,9 @@ void DrawViewPart::addPoints()
             //need to offset the point to match the big projection
             Base::Vector3d projected = projectPoint(vp * getScale());
             TechDraw::VertexPtr v1(std::make_shared<TechDraw::Vertex>(projected));
-            geometryObject->addVertex(v1);
+            if (geometryObject) {
+                geometryObject->addVertex(v1);
+            }
         }
     }
 }
@@ -305,7 +307,7 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
 }
 
 //! prepare the shape for HLR processing by centering, scaling and rotating it
-GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
+GeometryObjectPtr DrawViewPart::makeGeometryForShape(const TopoDS_Shape& shape)
 {
     // if we use the passed reference directly, the centering doesn't work.  Maybe the underlying OCC TShape
     // isn't modified?  using a copy works and the referenced shape (from getSourceShape in execute())
@@ -341,7 +343,7 @@ TopoDS_Shape DrawViewPart::centerScaleRotate(const DrawViewPart *dvp, TopoDS_Sha
 }
 
 //! create a geometry object and trigger the HLR process in another thread
-TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
+TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(const TopoDS_Shape& shape,
                                                               const gp_Ax2& viewAxis)
 {
     TechDraw::GeometryObjectPtr go(
@@ -542,7 +544,10 @@ void DrawViewPart::findFacesNew(const std::vector<BaseGeomPtr> &goEdges)
     catch (Base::Exception& e) {
         throw Base::RuntimeError(e.what());
     }
-    geometryObject->clearFaceGeom();
+
+    if (geometryObject) {
+        geometryObject->clearFaceGeom();
+    }
 
     std::vector<TopoDS_Wire> closedWires;
     for (auto& edge : closedEdges) {
@@ -674,7 +679,9 @@ void DrawViewPart::findFacesOld(const std::vector<BaseGeomPtr> &goEdges)
 
     newEdges = DrawProjectSplit::removeDuplicateEdges(newEdges);
 
-    geometryObject->clearFaceGeom();
+    if (geometryObject) {
+        geometryObject->clearFaceGeom();
+    }
 
     //find all the wires in the pile of faceEdges
     std::vector<TopoDS_Wire> sortedWires;
@@ -1210,6 +1217,9 @@ std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs() const
 
 const BaseGeomPtrVector DrawViewPart::getVisibleFaceEdges() const
 {
+    if (!geometryObject) {
+        return {};
+    }
     return geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(), SeamVisible.getValue());
 }
 

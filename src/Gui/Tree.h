@@ -71,7 +71,7 @@ public:
     void selectLinkedObject(App::DocumentObject* linked);
     void selectAllLinks(App::DocumentObject* obj);
     void expandSelectedItems(TreeItemMode mode);
-    static int iconSize();
+    static int getIconSize();
 
     int iconHeight() const;
     void setIconHeight(int height);

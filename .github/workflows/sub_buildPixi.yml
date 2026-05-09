@@ -208,7 +208,7 @@ jobs:
         path: /tmp/FreeCADTesting/CoinNodeSnapshots
 
     - name: src/Tools tests
-      if: always()
+      if: "!inputs.skipBuild"
       run: python3 -m unittest discover -s src/Tools/tests -p "test_*.py"
 
     - name: C++ tests

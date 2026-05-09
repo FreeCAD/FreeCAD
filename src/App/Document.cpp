@@ -1111,7 +1111,7 @@ std::string Document::getTransientDirectoryName(const std::string& uuid,
 #endif
     out << Application::getUserCachePath() << Application::getExecutableName() << "_Doc_"
         << uuid << "_" << hash.result().toHex().left(6).constData() << "_"
-        << Application::applicationPid();
+        << Application::uniqueInstanceId();
     return out.str();
 }
 

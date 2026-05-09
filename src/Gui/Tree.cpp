@@ -487,8 +487,10 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem* option, const
     QSize size = option->icon.actualSize(QSize(0xffff, 0xffff));
 
     if (size.height() > 0) {
-        option->decorationSize
-            = QSize(size.width() * TreeWidget::iconSize() / size.height(), TreeWidget::iconSize());
+        option->decorationSize = QSize(
+            size.width() * TreeWidget::getIconSize() / size.height(),
+            TreeWidget::getIconSize()
+        );
     }
 
     if (isOnlyNameColumnDisplayed()) {
@@ -1639,7 +1641,7 @@ static int& treeIconSize()
     static int _treeIconSize = -1;
 
     if (_treeIconSize < 0) {
-        _treeIconSize = TreeParams::getIconSize();
+        _treeIconSize = static_cast<int>(TreeParams::getIconSize());
     }
     return _treeIconSize;
 }
@@ -1651,28 +1653,28 @@ int TreeWidget::iconHeight() const
 
 void TreeWidget::setIconHeight(int height)
 {
-    if (treeIconSize() == height) {
-        return;
-    }
-
     treeIconSize() = height;
     if (treeIconSize() <= 0) {
-        treeIconSize() = std::max(10, iconSize());
+        treeIconSize() = std::max(10, getIconSize());
     }
 
+    QSize newSize(treeIconSize(), treeIconSize());
     for (auto tree : Instances) {
-        tree->setIconSize(QSize(treeIconSize(), treeIconSize()));
+        if (tree->iconSize().width() != newSize.width()) {
+            tree->setIconSize(newSize);
+        }
     }
 }
 
-int TreeWidget::iconSize()
+int TreeWidget::getIconSize()
 {
     static int defaultSize;
     if (defaultSize == 0) {
         auto tree = instance();
         if (tree) {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-            defaultSize = tree->viewOptions().decorationSize.width();
+            QStyleOptionViewItem opt = tree->viewOptions();
+            defaultSize = opt.decorationSize.width();
 #else
             QStyleOptionViewItem opt;
             tree->initViewItemOption(&opt);
@@ -2005,7 +2007,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
             iconRect.adjust(margin, 0, 0, 0);
 
             // We are interested in the first icon (visibility icon)
-            iconRect.setWidth(iconSize());
+            iconRect.setWidth(getIconSize());
 
             // If the visibility icon was clicked, toggle the DocumentObject visibility
             if (iconRect.contains(mousePos)) {
@@ -6301,7 +6303,8 @@ void DocumentObjectItem::generateIcon(int currentStatus, QIcon::Mode mode, QIcon
     QIcon icon_org = object()->getIcon();
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    int w = getTree()->viewOptions().decorationSize.width();
+    QStyleOptionViewItem opt = getTree()->viewOptions();
+    int w = opt.decorationSize.width();
 #else
     QStyleOptionViewItem opt;
     getTree()->initViewItemOption(&opt);

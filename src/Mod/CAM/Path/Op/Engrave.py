@@ -151,7 +151,9 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             Path.Log.track(self.model)
             for base in self.model:
                 Path.Log.track(base.Label)
-                if base.isDerivedFrom("Part::Feature") and base.Shape.Volume == 0:
+                if base.isDerivedFrom("Part::Feature") and Path.Geom.isRoughly(
+                    base.Shape.Volume, 0
+                ):
                     jobshapes.append(base.Shape)
 
         if jobshapes:
