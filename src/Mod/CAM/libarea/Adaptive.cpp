@@ -3630,7 +3630,7 @@ void Adaptive2d::ProcessPolyNode(
                      << " for (" << std::get<IntPoint>(ep).X << ", " << std::get<IntPoint>(ep).Y
                      << ")";
                 if (prevPos) {
-                    fout << " from (" << prev->first << ", " << prev->second << ")";
+                    fout << " from (" << prevPos->X << ", " << prevPos->Y << ")";
                 }
                 fout << endl;
 
