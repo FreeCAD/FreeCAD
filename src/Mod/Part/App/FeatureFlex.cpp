@@ -29,17 +29,68 @@
 
 using namespace Part;
 
+
+DeformExpr::DeformExpr(const std::string& xFunc, const std::string& yFunc, const std::string& zFunc)
+{
+    symTable.add_constant("pi", std::numbers::pi);
+    symTable.add_constant("e", std::numbers::e);
+
+    symTable.add_variable("x", valX);
+    symTable.add_variable("y", valY);
+    symTable.add_variable("z", valZ);
+
+    xexpr.register_symbol_table(symTable);
+    yexpr.register_symbol_table(symTable);
+    zexpr.register_symbol_table(symTable);
+
+    parser_t parser;
+    if (!parser.compile(xFunc, xexpr)) {
+        throw Base::ValueError("Unable to parse the X function");
+    }
+    if (!parser.compile(yFunc, yexpr)) {
+        throw Base::ValueError("Unable to parse the Y function");
+    }
+    if (!parser.compile(zFunc, zexpr)) {
+        throw Base::ValueError("Unable to parse the Z function");
+    }
+}
+
+void DeformExpr::setValues(const double vx, const double vy, const double vz)
+{
+    symTable.get_variable("x")->ref() = vx;
+    symTable.get_variable("y")->ref() = vy;
+    symTable.get_variable("z")->ref() = vz;
+}
+
+double DeformExpr::x(const double vx, const double vy, const double vz)
+{
+    setValues(vx, vy, vz);
+    return xexpr.value();
+}
+
+double DeformExpr::y(const double vx, const double vy, const double vz)
+{
+    setValues(vx, vy, vz);
+    return yexpr.value();
+}
+
+double DeformExpr::z(const double vx, const double vy, const double vz)
+{
+    setValues(vx, vy, vz);
+    return zexpr.value();
+}
+
 PROPERTY_SOURCE(Part::Flex, Part::Feature)
 
 App::PropertyIntegerConstraint::Constraints Flex::sampleRange = {10, 100, 1};
-const char* Flex::ModeEnums[] = {"Bend", "Twist", "Inflate", nullptr};
+const char* Flex::ModeEnums[] = {"Bend", "Twist", "UserDefined", nullptr};
 
 Flex::Flex()
 {
     ADD_PROPERTY_TYPE(Base, (nullptr), "Flex", App::Prop_None, "Shape to deform");
     ADD_PROPERTY_TYPE(Samples, (10), "Flex", App::Prop_None, "Samples count for geometry approximation");
     Samples.setConstraints(&sampleRange);
-    ADD_PROPERTY_TYPE(Mode, (FlexMode::Twist), "Flex", App::Prop_None, "Mode");
+    ADD_PROPERTY_TYPE(Mode, (1), "Flex", App::Prop_None, "Mode");
     ADD_PROPERTY_TYPE(Origin, (Base::Vector3d(0., 0., 0.)), "Flex", App::Prop_None, "Mode");
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1., 0., 0.)), "Flex", App::Prop_None, "Mode");
 
@@ -47,6 +98,10 @@ Flex::Flex()
     ADD_PROPERTY_TYPE(Curve, (nullptr), "Flex", App::Prop_None, "Cruve for the bend deformation");
     ADD_PROPERTY_TYPE(Factor, (1.0), "Flex", App::Prop_None, "Factor for the inflate deformation");
     Mode.setEnums(ModeEnums);
+
+    ADD_PROPERTY_TYPE(xFunc, ("x"), "Flex", App::Prop_None, "Deform function for x result component");
+    ADD_PROPERTY_TYPE(yFunc, ("y"), "Flex", App::Prop_None, "Deform function for y result component");
+    ADD_PROPERTY_TYPE(zFunc, ("z"), "Flex", App::Prop_None, "Deform function for z result component");
 }
 
 
@@ -94,36 +149,43 @@ Flex::FlexParameters Flex::computeFinalParameters() const
 {
     Flex::FlexParameters result;
     result.samples = Samples.getValue();
-    result.mode = Mode.getValue();
+    auto strMode = Mode.getValueAsString();
+    if (strcmp(strMode, "Bend") == 0) {
+        result.mode = FlexMode::Bend;
+        result.factor = Factor.getValue();
+        fetchCurveLink(Curve, result.curve);
+    }
+    else if (strcmp(strMode, "Twist") == 0) {
+        result.mode = FlexMode::Twist;
+        result.pitch = Pitch.getValue();
+    }
+    else {
+        result.mode = FlexMode::UserDefined;
+        result.funcExpr = DeformExpr(xFunc.getStrValue(), yFunc.getStrValue(), zFunc.getStrValue());
+    }
 
     auto orig = Origin.getValue();
     auto dir = Direction.getValue();
     result.coord = gp_Ax3(gp_Pnt(orig.x, orig.y, orig.z), gp_Dir(dir.x, dir.y, dir.z));
 
-    result.pitch = Pitch.getValue();
-    result.factor = Factor.getValue();
-    if (result.mode == FlexMode::Bend) {
-        fetchCurveLink(Curve, result.curve);
-    }
-
     return result;
 }
 
-TopoShape Flex::FlexShape(const TopoShape& source, const Flex::FlexParameters& params)
+TopoShape Flex::FlexShape(const TopoShape& source, Flex::FlexParameters& params)
 {
-    TopoShape result;
+    TopoShape result(source);
     switch (params.mode) {
         case FlexMode::Bend:
-            result = bend(source, params);
+            result.setShape(bend(source, params));
             break;
         case FlexMode::Twist:
-            result = twist(source, params);
+            result.setShape(twist(source, params));
             break;
-        case FlexMode::Inflate:
-            result = inflate(source, params);
+        case FlexMode::UserDefined:
+            result.setShape(userDeform(source, params));
             break;
         default:
-            return source;
+            break;
     }
     return result;
 }
@@ -167,20 +229,26 @@ TopoShape Flex::twist(const TopoShape& source, const Flex::FlexParameters& param
     }
 }
 
-TopoShape Flex::inflate(const TopoShape& source, const Flex::FlexParameters& params)
+TopoShape Flex::userDeform(const TopoShape& source, Flex::FlexParameters& params)
 {
     const TopoDS_Shape& shape = source.getShape();
 
-    auto identity = [](gp_Pnt pt) {
-        return pt;
+    auto* expr = &params.funcExpr;
+
+    auto func = [&expr](gp_Pnt pt) {
+        gp_Pnt result;
+        result.SetX(expr->x(pt.X(), pt.Y(), pt.Z()));
+        result.SetY(expr->y(pt.X(), pt.Y(), pt.Z()));
+        result.SetZ(expr->z(pt.X(), pt.Y(), pt.Z()));
+        return result;
     };
 
     try {
-        return {Deformation::deform(shape, identity, params.samples)};
+        auto result = Deformation::deform(shape, func, params.samples);
+        return result;
     }
-    catch (...) {
-        Base::Console().warning("FeatureFlex failed on identity\n");
-        return {};
+    catch (Base::Exception e) {
+        throw Base::RuntimeError("FeatureFlex failed on userDeform\n" + e.getMessage());
     }
 }
 

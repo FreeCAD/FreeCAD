@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include "Deformation.h"
+#include "Base/Exception.h"
 #include "Canonizer.h"
 
 #include "Base/Console.h"
@@ -197,7 +198,13 @@ TopoDS_Face Deformation::deform(
     // get the surface
     BRepBuilderAPI_NurbsConvert nurbs_convert;
     nurbs_convert.Perform(face);
-    TopoDS_Shape face_shape = nurbs_convert.Shape();
+    TopoDS_Shape face_shape;
+    if (nurbs_convert.IsDone()) {
+        face_shape = nurbs_convert.Shape();
+    }
+    else {
+        face_shape = face;
+    }
     auto surf = BRep_Tool::Surface(TopoDS::Face(face_shape));
 
     // deform the surface
@@ -322,11 +329,10 @@ TopoDS_Shell Deformation::deform(
     fixer.Perform();
     resultShell = fixer.Shell();
 
-    if (!resultShell.IsNull()) {
-        return resultShell;
+    if (resultShell.IsNull()) {
+        throw Base::ValueError("deform: null shell");
     }
-    Base::Console().warning("deform: null shell");
-    return {};
+    return resultShell;
 }
 
 TopoDS_Solid Deformation::deform(
@@ -348,7 +354,12 @@ TopoDS_Solid Deformation::deform(
     ShapeFix_Solid fixer(resultSolid);
     fixer.SolidFromShell(resultShell);
     fixer.Perform();
-    return TopoDS::Solid(fixer.Solid());
+
+    const auto result = fixer.Solid();
+    if (result.IsNull()) {
+        throw Base::ValueError("deform: null solid");
+    }
+    return TopoDS::Solid(result);
 }
 
 TopoDS_Compound Deformation::deform(
@@ -367,8 +378,9 @@ TopoDS_Compound Deformation::deform(
 
         topoBuilder.Add(result, resultSolid);
     }
-    ShapeFix_ShapeTolerance tolFixer;
-    tolFixer.SetTolerance(result, Precision::Approximation(), TopAbs_SHAPE);
+    if (result.IsNull()) {
+        throw Base::ValueError("deform: null compound");
+    }
     return result;
 }
 
@@ -378,20 +390,31 @@ TopoDS_Shape Deformation::deform(
     int samples
 )
 {
+    TopoDS_Shape result;
     switch (shape.ShapeType()) {
         case TopAbs_EDGE:
-            return deform(TopoDS::Edge(shape), deformFunction, samples);
+            result = deform(TopoDS::Edge(shape), deformFunction, samples);
+            break;
         case TopAbs_WIRE:
-            return deform(TopoDS::Wire(shape), deformFunction, samples);
+            result = deform(TopoDS::Wire(shape), deformFunction, samples);
+            break;
         case TopAbs_FACE:
-            return deform(TopoDS::Face(shape), deformFunction, samples);
+            result = deform(TopoDS::Face(shape), deformFunction, samples);
+            break;
         case TopAbs_SHELL:
-            return deform(TopoDS::Shell(shape), deformFunction, samples);
+            result = deform(TopoDS::Shell(shape), deformFunction, samples);
+            break;
         case TopAbs_SOLID:
-            return deform(TopoDS::Solid(shape), deformFunction, samples);
+            result = deform(TopoDS::Solid(shape), deformFunction, samples);
+            break;
         case TopAbs_COMPOUND:
-            return deform(TopoDS::Compound(shape), deformFunction, samples);
+            result = deform(TopoDS::Compound(shape), deformFunction, samples);
+            break;
         default:
             return {};
     }
+
+    ShapeFix_ShapeTolerance tolFixer;
+    tolFixer.SetTolerance(result, Precision::Approximation(), TopAbs_SHAPE);
+    return result;
 }

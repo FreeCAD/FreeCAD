@@ -30,17 +30,44 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <Mod/Part/PartGlobal.h>
 
+#include <exprtk.hpp>
+
 #include "PartFeature.h"
 
 
 namespace Part
 {
 
-enum FlexMode
+enum class FlexMode
 {
     Bend,
     Twist,
-    Inflate,
+    UserDefined,
+};
+
+class DeformExpr
+{
+    using symbol_table_t = exprtk::symbol_table<double>;
+    using expression_t = exprtk::expression<double>;
+    using parser_t = exprtk::parser<double>;
+
+public:
+    DeformExpr(const std::string& xFunc, const std::string& yFunc, const std::string& zFunc);
+    double x(double vx, double vy, double vz);
+    double y(double vx, double vy, double vz);
+    double z(double vx, double vy, double vz);
+
+private:
+    void setValues(double vx, double vy, double vz);
+    double valX = 0.;
+    double valY = 0.;
+    double valZ = 0.;
+
+    symbol_table_t symTable;
+
+    expression_t xexpr;
+    expression_t yexpr;
+    expression_t zexpr;
 };
 
 class PartExport Flex: public Part::Feature
@@ -58,6 +85,9 @@ public:
     App::PropertyFloat Pitch;
     App::PropertyLinkSub Curve;
     App::PropertyFloat Factor;
+    App::PropertyString xFunc;
+    App::PropertyString yFunc;
+    App::PropertyString zFunc;
 
 
     /**
@@ -67,11 +97,12 @@ public:
     struct FlexParameters
     {
         int samples {10};
-        int mode {FlexMode::Bend};
+        FlexMode mode {FlexMode::Bend};
         double pitch {10.0};
         BRepAdaptor_Curve curve;
         double factor {1.};
         gp_Ax3 coord;
+        DeformExpr funcExpr {"x", "y", "z"};
     };
 
     /** @name methods override feature */
@@ -95,11 +126,11 @@ public:
      * @param params: deformation parameters
      * @return result of deformation
      */
-    static TopoShape FlexShape(const TopoShape& source, const FlexParameters& params);
+    static TopoShape FlexShape(const TopoShape& source, FlexParameters& params);
 
     static TopoShape bend(const TopoShape& source, const Flex::FlexParameters& params);
     static TopoShape twist(const TopoShape& source, const Flex::FlexParameters& params);
-    static TopoShape inflate(const TopoShape& source, const Flex::FlexParameters& params);
+    static TopoShape userDeform(const TopoShape& source, Flex::FlexParameters& params);
 
 private:
     static App::PropertyIntegerConstraint::Constraints sampleRange;
