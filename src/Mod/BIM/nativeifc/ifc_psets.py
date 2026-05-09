@@ -294,9 +294,10 @@ def load_psets(obj):
     """Recursively loads psets of child objects"""
 
     show_psets(obj)
-    if isinstance(obj, FreeCAD.DocumentObject):
+    group = []
+    if isinstance(obj, FreeCAD.DocumentObject) and hasattr(obj, "Group"):
         group = obj.Group
-    else:
+    elif isinstance(obj, FreeCAD.Document):
         group = obj.Objects
     for child in group:
         load_psets(child)
