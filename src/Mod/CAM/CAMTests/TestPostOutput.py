@@ -1597,7 +1597,7 @@ class TestExport2Integration(unittest.TestCase):
                 Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
             ]
         ):
-            machine = self._create_machine(commands=False, parameters=True)
+            machine = self._create_machine(commands=False, parameters=True, duplicates=False)
             results = self._run_export2(machine)
             gcode = self._get_all_gcode(results)
             lines = [
@@ -1615,7 +1615,9 @@ class TestExport2Integration(unittest.TestCase):
                 f"Should have only 1 G1 command when duplicates suppressed, found {g1_count}",
             )
             self.assertEqual(
-                suppressed_count, 3, f"Should have 3 suppressed G1 moves, found {suppressed_count}"
+                suppressed_count,
+                3,
+                f"Should have 3 suppressed G1 moves, found {suppressed_count}, in\n{gcode}",
             )
 
     def test128b_bare_command_suppressed_when_all_params_duplicate(self):
@@ -1696,7 +1698,7 @@ class TestExport2Integration(unittest.TestCase):
             # Find the second M3 line (after second M6)
             m3_lines = [l for l in lines if l.startswith("M3")]
             self.assertGreaterEqual(
-                len(m3_lines), 2, f"Should have at least 2 M3 lines, got: {m3_lines}"
+                len(m3_lines), 2, f"Should have at least 2 M3 lines, got: {m3_lines}, in\n{gcode}"
             )
             self.assertIn(
                 "S", m3_lines[1], f"Second M3 must include S parameter, got: '{m3_lines[1]}'"

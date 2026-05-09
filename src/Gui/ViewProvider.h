@@ -751,6 +751,10 @@ public:
     //@}
 
     virtual void setRenderCacheMode(int);
+    /** Called by Std_ToggleVisibility. Override to redirect the toggle to a different target
+     *  (e.g. a container that owns this feature). The default implementation toggles self.
+     */
+    virtual void toggleVisibility();
 
 protected:
     /** Helper method to check that the node is valid, i.e. it must not cause

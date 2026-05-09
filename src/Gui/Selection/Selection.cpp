@@ -34,6 +34,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
+#include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -1908,31 +1909,42 @@ void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
         auto vp = Application::Instance->getViewProvider(obj);
 
         if (vp) {
-            bool visObject;
-            if (visible >= 0) {
-                visObject = visible ? true : false;
-            }
-            else {
-                visObject = !vp->isShow();
-            }
-
-            if (visObject) {
-                vp->show();
+            if (visible < 0) {
+                // Toggle link instead of the original object
+                ViewProvider* toggleVp = vp;
+                if (parent
+                    && parent->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId(), true)) {
+                    if (auto* parentVp = Application::Instance->getViewProvider(parent)) {
+                        toggleVp = parentVp;
+                    }
+                }
+                toggleVp->toggleVisibility();
                 updateSelection(
-                    visObject,
+                    toggleVp->isShow(),
                     sel.DocName.c_str(),
                     sel.FeatName.c_str(),
                     sel.SubName.c_str()
                 );
             }
             else {
-                updateSelection(
-                    visObject,
-                    sel.DocName.c_str(),
-                    sel.FeatName.c_str(),
-                    sel.SubName.c_str()
-                );
-                vp->hide();
+                if (visible) {
+                    vp->show();
+                    updateSelection(
+                        visible,
+                        sel.DocName.c_str(),
+                        sel.FeatName.c_str(),
+                        sel.SubName.c_str()
+                    );
+                }
+                else {
+                    updateSelection(
+                        visible,
+                        sel.DocName.c_str(),
+                        sel.FeatName.c_str(),
+                        sel.SubName.c_str()
+                    );
+                    vp->hide();
+                }
             }
         }
     }

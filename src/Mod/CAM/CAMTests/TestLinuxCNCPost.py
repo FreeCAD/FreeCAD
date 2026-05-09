@@ -106,6 +106,15 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         """
         pass
 
+    def _gcode_and_preamble(self):
+        """convenience to get the preamble stuff"""
+        gcode = self.post.export2()[0][1]
+        lines = gcode.splitlines()
+        # Preamble stuff, up to next piece, which should be unit-command (`_collect_unit_command`)
+        idx = lines.index("G21")  # throws IndexError if unexpectedly missing
+        preamble = "\n".join(lines[:idx])
+        return gcode, preamble
+
     def test_blend_mode_exact_path(self):
         """Test EXACT_PATH blend mode outputs G61."""
         self.profile_op.Path = Path.Path([])
@@ -185,19 +194,10 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         self.post._machine.postprocessor_properties["blend_tolerance"] = 0.1
         self.post._machine.output.comments.enabled = False
         self.post._machine.output.output_header = False
-        gcode = self.post.export2()[0][1]
-        lines = gcode.splitlines()
 
-        # Find G64 P line
-        g64_line_idx = None
-        for i, line in enumerate(lines):
-            if "G64 P" in line:
-                g64_line_idx = i
-                break
+        gcode, preamble = self._gcode_and_preamble()
 
-        self.assertIsNotNone(g64_line_idx, "G64 P command not found")
-        # Should be early in output (within first few lines of preamble)
-        self.assertLess(g64_line_idx, 5, "G64 command should be in preamble")
+        self.assertIn("G64 P", preamble, "G64 P command not found preamble: full gcode\n{gcode}")
 
     def test_blend_tolerance_zero_equals_no_tolerance(self):
         """Test that blend tolerance of 0 outputs G64 without P parameter."""
@@ -221,18 +221,10 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         self.post._machine.postprocessor_properties["blend_mode"] = "BLEND"
         self.post._machine.output.comments.enabled = False
         self.post._machine.output.output_header = False
-        gcode = self.post.export2()[0][1]
-        lines = gcode.splitlines()
-        # G64 should appear early in the output
-        self.assertIn("G64", gcode)
-        # Find G64 line
-        g64_idx = None
-        for i, line in enumerate(lines):
-            if "G64" in line:
-                g64_idx = i
-                break
-        self.assertIsNotNone(g64_idx)
-        self.assertLess(g64_idx, 5, "G64 should be in preamble")
+
+        gcode, preamble = self._gcode_and_preamble()
+
+        self.assertIn("G64", preamble, "G64 command not found preamble: full gcode\n{gcode}")
 
     def test_rigid_tapping_g84_basic(self):
         """

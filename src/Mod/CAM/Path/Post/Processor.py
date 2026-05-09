@@ -1470,7 +1470,7 @@ class PostProcessor:
                     gcode_lines.append(gcode)
 
             except (ValueError, AttributeError) as e:
-                Path.Log.debug(f"Skipping command {cmd.Name}: {e}")
+                Path.Log.error(f"Failed to deal with a command {cmd.Name}: {e}")
 
         if in_rotary_group:
             gcode_lines.extend(self._get_property_lines("post_rotary_move"))
