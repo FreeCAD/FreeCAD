@@ -26,7 +26,8 @@ def _get_view_provider_modules(module_name):
     try:
         yield importlib.import_module(module_name + "Gui")
     except ImportError:
-        pass
+        # Some BIM modules define the view provider next to the data proxy.
+        return
 
 
 def _get_view_provider_constructor(obj):
