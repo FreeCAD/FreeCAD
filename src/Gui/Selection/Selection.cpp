@@ -1927,11 +1927,10 @@ void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
                 );
             }
             else {
-                bool visObject = visible ? true : false;
-                if (visObject) {
+                if (visible) {
                     vp->show();
                     updateSelection(
-                        visObject,
+                        visible,
                         sel.DocName.c_str(),
                         sel.FeatName.c_str(),
                         sel.SubName.c_str()
@@ -1939,7 +1938,7 @@ void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
                 }
                 else {
                     updateSelection(
-                        visObject,
+                        visible,
                         sel.DocName.c_str(),
                         sel.FeatName.c_str(),
                         sel.SubName.c_str()
