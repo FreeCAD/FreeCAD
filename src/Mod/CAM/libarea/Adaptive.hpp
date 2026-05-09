@@ -27,7 +27,6 @@
 #include <list>
 #include <optional>
 #include <time.h>
-#include <fstream>
 
 #pragma once
 
@@ -209,8 +208,6 @@ private:
     );
     void AddPathToProgress(TPaths& progressPaths, const Path pth, MotionType mt = MotionType::mtCutting);
     void ApplyStockToLeave(Paths& inputPaths);
-
-    std::ofstream* fout;
 
 private:
     // Derivation for MIN_STEP_CLIPPPER (MSC for short in this derivation):
