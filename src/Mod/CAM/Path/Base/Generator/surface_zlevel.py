@@ -275,6 +275,7 @@ def zlevel_hybrid_stack(
         accuracy_val: Integer or string representing the number of sub-slices.
         z_offset: Vertical (Axial) distance to shift the final paths (mm).
         wpc: The Part.Circle workplane defining the 2D calculation plane.
+        start_z: The Start Depth of the operation.
 
     Returns:
         A list of tuples: (z_target, cutAreaShape, status).
@@ -318,6 +319,11 @@ def zlevel_hybrid_stack(
 
     # 4. Main layer loop
     for z_target, status, floor_geo in categorizedSteps:
+        if z_target > (model_top - tol):
+            Path.Log.warning(
+                f"Skipping step at Z={z_target:.3f}mm as it is above the model top (max Z: {model_top:.3f}mm)."
+            )
+            continue
 
         # The depth at which the tool has submerged from the model_top
         dist_submerged = max(0, model_top - z_target)
