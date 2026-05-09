@@ -272,8 +272,9 @@ def generate(
         x_start = xs_pass[0]
         wx, wy, _ = _world_xyz(rotary_axis, x_start, last_r + 5.0)
         # Lift off the previous pass's last radius before the rapid.
-        _emit("G1", z=last_r + 5.0, feed=vert_feed)
-        _emit("G0", z=clearance_height, feed=vert_rapid)
+        if p > 0:
+            _emit("G1", z=last_r + 5.0, feed=vert_feed)
+            _emit("G0", z=clearance_height, feed=vert_rapid)
         _emit("G0", x=wx, y=wy, feed=horiz_rapid)
         _emit("G0", a=a_deg, feed=horiz_rapid)
 

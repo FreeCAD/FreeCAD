@@ -216,7 +216,7 @@ class TestPathRotaryParallel(PathTestBase):
         a_climb = [c.Parameters["A"] for c in climb if c.Name == "G1" and "A" in c.Parameters]
         a_conv = [c.Parameters["A"] for c in conv if c.Name == "G1" and "A" in c.Parameters]
         self.assertGreater(max(a_climb), min(a_climb))
-        self.assertLess(min(a_conv), max(a_conv) - 0.0)
+        self.assertGreater(max(a_conv), min(a_conv))
         # Climb increases (positive direction); Conventional decreases.
         self.assertGreater(a_climb[-1], a_climb[0])
         self.assertLess(a_conv[-1], a_conv[0])

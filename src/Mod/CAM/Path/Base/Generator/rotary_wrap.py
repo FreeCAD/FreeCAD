@@ -71,7 +71,7 @@ def _strategy_value(strategy):
 
 
 def apply_wrap_strategy(commands, axis_letter, strategy):
-    """Rewrite rotary axis values in-place according to a wrap strategy.
+    """Rewrite rotary axis values according to a wrap strategy.
 
     Parameters
     ----------

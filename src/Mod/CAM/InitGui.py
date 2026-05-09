@@ -245,9 +245,13 @@ class CAMWorkbench(Workbench):
                     import opencamlib as ocl
                 from Path.Op.Gui import Surface
                 from Path.Op.Gui import Waterline
-                from Path.Op.Gui import RotarySurface  # noqa: F401
 
-                threedopcmdlist.extend(["CAM_Surface", "CAM_Waterline", "CAM_RotarySurface"])
+                threedopcmdlist.extend(["CAM_Surface", "CAM_Waterline"])
+
+                if Path.Preferences.experimentalFeaturesEnabled():
+                    from Path.Op.Gui import RotarySurface  # noqa: F401
+
+                    threedopcmdlist.append("CAM_RotarySurface")
                 threedcmdgroup = ["CAM_3dTools"]
                 FreeCADGui.addCommand(
                     "CAM_3dTools",

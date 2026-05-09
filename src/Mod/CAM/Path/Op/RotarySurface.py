@@ -511,10 +511,9 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 c = local_c
             if axis_label == "X":
                 offset = math.hypot(c.y, c.z)
-            elif axis_label == "Y":
-                offset = math.hypot(c.x, c.z)
             else:
-                offset = math.hypot(c.x, c.y)
+                # axis_label == "Y"
+                offset = math.hypot(c.x, c.z)
             tol = float(obj.LinearDeflection.Value)
             if offset > tol:
                 Path.Log.warning(

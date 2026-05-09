@@ -76,7 +76,7 @@ class TestRotaryWrapStrategy(PathTestBase):
             if a is None:
                 continue
             self.assertGreaterEqual(a, 0.0)
-            self.assertLess(a, 360.0 + 1e-6)
+            self.assertLess(a, 360.0)
 
     def test04_rezero_emits_no_g92_commands(self):
         """ADR-002 forbids G92 in the internal command list."""

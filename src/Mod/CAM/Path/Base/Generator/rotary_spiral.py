@@ -256,6 +256,8 @@ def generate(
     -------
     list of Path.Command
     """
+    if rotary_letter not in ("A", "B", "C"):
+        raise ValueError("rotary_letter must be 'A', 'B' or 'C'; got %r" % rotary_letter)
     if rotary_axis not in ("X", "Y"):
         raise ValueError("rotary_axis must be 'X' or 'Y'; got %r" % rotary_axis)
     if axial_stepover <= 0.0:

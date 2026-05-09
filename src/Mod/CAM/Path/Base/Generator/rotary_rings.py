@@ -130,6 +130,12 @@ def generate(
         Per-layer radial-depth target. The emitted cutter Z is clamped
         to ``max(surface_r + radial_stock_to_leave, cutter_z_floor)``.
         None disables the clamp (single-pass / surface-follow).
+    feed_mode : str, default 'AxialOnly'
+        Controls how cutting feed is computed. 'AxialOnly' uses only the
+        axial (X) component for feed calculation; 'Combined' includes the
+        angular/rotary component so effective feed accounts for both axial
+        and circumferential motion. Affects how horiz_feed/vert_feed and
+        max_feed are applied.
 
     Returns
     -------

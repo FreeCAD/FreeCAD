@@ -193,6 +193,14 @@ class TestPathRotaryRings(PathTestBase):
                 "A delta {} indicates a 0/360 wrap rather than unwound output".format(d),
             )
 
+        # A must be non-decreasing (monotonic) for Climb mode.
+        for i in range(1, len(a_vals)):
+            self.assertGreaterEqual(
+                a_vals[i],
+                a_vals[i - 1],
+                "A regressed from {} to {} at step {}".format(a_vals[i - 1], a_vals[i], i),
+            )
+
         # With multiple rings the total unwound sweep should exceed one
         # revolution.
         self.assertGreater(max(a_vals) - min(a_vals), 360.0)

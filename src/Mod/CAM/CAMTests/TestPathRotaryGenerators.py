@@ -185,6 +185,11 @@ class TestPathRotaryGenerators(PathTestUtils.PathTestBase):
 
     def assertRadiiClose(self, expected, actual, tol):
         """Assert two radii grids are close, with NaN-aware comparison."""
+        self.assertEqual(
+            expected.shape,
+            actual.shape,
+            msg="Shape mismatch: expected {}, got {}".format(expected.shape, actual.shape),
+        )
         # NaN-aware comparison; expected may have NaN where actual must too
         for i in range(actual.shape[0]):
             for j in range(actual.shape[1]):

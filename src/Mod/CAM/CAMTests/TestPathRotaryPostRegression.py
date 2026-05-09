@@ -142,8 +142,8 @@ def _setup_cyl_stock(job, radius, length):
     if job.Stock and job.Stock is not new_stock:
         try:
             FreeCAD.ActiveDocument.removeObject(job.Stock.Name)
-        except Exception:
-            """Ignore removal errors"""
+        except (AttributeError, RuntimeError):
+            # Stock may already be removed; ignore cleanup errors
             pass
     job.Stock = new_stock
     return new_stock
