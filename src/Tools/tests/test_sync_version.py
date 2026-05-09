@@ -17,6 +17,7 @@ from sync_version import (
     sync_recipe_yaml,
     sync_declarations_nsh,
     sync_fedora_spec,
+    sync_startup_wm_class,
     run,
 )
 
@@ -127,6 +128,44 @@ class TestReplaceInTomlSection(unittest.TestCase):
         self.assertIn('version = "2.0"', result.split("[section_b]")[1])
 
 
+class TestSyncStartupWmClass(unittest.TestCase):
+    def test_updates_startup_wm_class(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            filepath = write_temp_file(
+                Path(tmp),
+                "org.freecad.FreeCAD.desktop",
+                DESKTOP_FILE,
+            )
+
+            version = make_version()
+
+            result, changed = sync_startup_wm_class(filepath, version)
+
+            self.assertTrue(changed)
+
+            self.assertIn(
+                "StartupWMClass=FreeCAD-1.2",
+                result,
+            )
+
+    def test_already_synced(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            filepath = write_temp_file(
+                Path(tmp),
+                "org.freecad.FreeCAD.desktop",
+                """\
+[Desktop Entry]
+StartupWMClass=FreeCAD-1.2
+""",
+            )
+
+            version = make_version()
+
+            result, changed = sync_startup_wm_class(filepath, version)
+
+            self.assertFalse(changed)
+
+
 def write_temp_file(directory: Path, name: str, content: str) -> Path:
     filepath = directory / name
     filepath.parent.mkdir(parents=True, exist_ok=True)
@@ -187,6 +226,13 @@ Version:        1.1.0~dev
 Release:        1%{?dist}
 
 Summary:        A general purpose 3D CAD modeler
+"""
+
+DESKTOP_FILE = """\
+[Desktop Entry]
+Name=FreeCAD
+StartupWMClass=FreeCAD
+Type=Application
 """
 
 
@@ -375,6 +421,7 @@ class TestRun(unittest.TestCase):
             DECLARATIONS_NSH,
         )
         write_temp_file(root, "package/fedora/freecad.spec", FEDORA_SPEC)
+        write_temp_file(root, "src/XDGData/org.freecad.FreeCAD.desktop", DESKTOP_FILE)
         return root
 
     def test_check_detects_out_of_sync(self, _stdout):

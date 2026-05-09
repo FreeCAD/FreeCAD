@@ -190,6 +190,19 @@ def sync_fedora_spec(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
 
     return updated, updated != content
 
+def sync_startup_wm_class(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
+    """Sync the desktop file StartupWMClass field.
+
+    Updates:
+      - StartupWMClass=FreeCAD-1.2
+    """
+    content = filepath.read_text(encoding="utf-8")
+    updated = content
+
+    # Version:           1.2.0
+    updated = re.sub(r"(StartupWMClass=)\S+", rf"\g<1>FreeCAD-{version.major}.{version.minor}", updated,)
+
+    return updated, updated != content
 
 # Each entry is (relative_path, sync_function).
 SYNC_TARGETS = [
@@ -198,6 +211,7 @@ SYNC_TARGETS = [
     ("package/rattler-build/recipe.yaml", sync_recipe_yaml),
     ("package/WindowsInstaller/include/declarations.nsh", sync_declarations_nsh),
     ("package/fedora/freecad.spec", sync_fedora_spec),
+    ("src/XDGData/org.freecad.FreeCAD.desktop", sync_startup_wm_class),
 ]
 
 
