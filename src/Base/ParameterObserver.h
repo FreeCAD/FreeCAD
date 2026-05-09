@@ -26,9 +26,11 @@
 
 #include <Base/Parameter.h>
 #include <FCGlobal.h>
+#include <cstring>
 #include <variant>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <sstream>
 #include <unordered_map>
 
@@ -222,8 +224,20 @@ public:
 private:
     struct Hasher
     {
-        std::size_t operator()(const char* s) const;
-        bool operator()(const char* a, const char* b) const;
+        std::size_t operator()(const char* s) const
+        {
+            return s ? std::hash<std::string_view> {}(s) : 0;
+        }
+        bool operator()(const char* a, const char* b) const
+        {
+            if (!a) {
+                return !b;
+            }
+            if (!b) {
+                return false;
+            }
+            return std::strcmp(a, b) == 0;
+        }
     };
     std::unordered_map<const char*, Object, Hasher, Hasher> parameters;
     ParameterGrp::handle handle;
@@ -232,6 +246,10 @@ protected:
     ParameterObserver();
 
     void attachToParameter(ParameterGrp::handle parameter);
+    ParameterGrp::handle getHandle() const
+    {
+        return handle;
+    }
     void initParameters();
     void OnChange(Base::Subject<const char*>& subject, const char* sReason) override;
     void addParameter(const char* key, const Object& value);
