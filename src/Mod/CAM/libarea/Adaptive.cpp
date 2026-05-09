@@ -3013,6 +3013,13 @@ void Adaptive2d::ProcessPolyNode(
     CleanPolygons(boundPaths);
     SimplifyPolygons(boundPaths);
 
+    Paths tbpMinus;  // toolBoundPaths shrunk by some buffer room
+    clipof.Clear();
+    clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
+    clipof.Execute(tbpMinus, -2);
+    CleanPolygons(tbpMinus);
+    SimplifyPolygons(tbpMinus);
+
     AddPathsToProgress(progressPaths, toolBoundPaths, MotionType::mtLinkClear);
 
     IntPoint toolPos;
@@ -3497,7 +3504,10 @@ void Adaptive2d::ProcessPolyNode(
                 }
             }
 
-            Paths openPaths = PathIntersectArea(clip, rotated, toolBoundPaths, fout);
+            // clip with tbpMinus instead of toolBoundPaths to ensure that all
+            // resulting points are inside toolBoundPaths, and not rounded to an
+            // integer coordinate outside of it
+            Paths openPaths = PathIntersectArea(clip, rotated, tbpMinus, fout);
 
             for (Path& open : openPaths) {
                 fout << "Start path (" << open[0].X << ", " << open[0].Y << ")" << endl;
@@ -3505,11 +3515,11 @@ void Adaptive2d::ProcessPolyNode(
                 double dToGo = 0;  // first step is 0 -- start point
                 size_t seg = 0;
                 double segD = 0;
-                DoublePoint segDir = {1, 0};
                 while (!added && seg < open.size() - 1) {
                     // step to next point
                     IntPoint p;
-                    while (dToGo > 0 && seg < open.size() - 1) {
+                    DoublePoint segDir;
+                    do {
                         IntPoint p1 = open[seg];
                         IntPoint p2 = open[seg + 1];
                         double segLen = sqrt(DistanceSqrd(p1, p2));
@@ -3530,7 +3540,7 @@ void Adaptive2d::ProcessPolyNode(
                             seg++;
                             p = p2;  // ensures that we try the endpoint too
                         }
-                    }
+                    } while (dToGo > 0 && seg < open.size() - 1);
 
                     // Attempt to add the point
                     const auto toolDir = initToolDir(p, segDir);
