@@ -320,14 +320,17 @@ class BuildingPart(ArchIFC.IfcProduct):
 
     def onDocumentRestored(self, obj):
 
-        self.setProperties(obj)
+        super().onDocumentRestored(obj)
 
         vobj = getattr(obj, "ViewObject", None)
         if vobj is None:
             return
-        if hasattr(vobj, "ChildrenShapeColor"):
+        import ArchRestore
+
+        proxy = ArchRestore.get_view_provider_proxy(vobj)
+        if hasattr(vobj, "ChildrenShapeColor") and proxy is not None:
             # add the ChildrenShapeAppearance property:
-            vobj.Proxy.setProperties(vobj)
+            proxy.setProperties(vobj)
             if vobj.getTypeIdOfProperty("ChildrenShapeColor") == "App::PropertyColor":
                 # <= v0.21
                 material = FreeCAD.Material()
@@ -937,7 +940,7 @@ class ViewProviderBuildingPart:
         # print(vobj.Object.Label," - ",prop)
 
         if prop == "ShapeAppearance":
-            if hasattr(vobj, "ShapeAppearance"):
+            if hasattr(vobj, "ShapeAppearance") and hasattr(self, "mat"):
                 color = vobj.ShapeAppearance[0].DiffuseColor[:-1]  # remove alpha value
                 self.mat.diffuseColor.setValue(*color)
         elif prop == "LineWidth":

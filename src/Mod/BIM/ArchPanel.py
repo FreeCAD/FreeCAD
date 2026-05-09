@@ -39,6 +39,7 @@ import math
 import FreeCAD
 import ArchCommands
 import ArchComponent
+import ArchRestore
 import Draft
 import DraftVecUtils
 import Part
@@ -756,6 +757,7 @@ class PanelCut(Draft.DraftObject):
     def onDocumentRestored(self, obj):
 
         self.setProperties(obj)
+        ArchRestore.restore_view_object(obj)
 
     def execute(self, obj):
 
@@ -1149,6 +1151,7 @@ class PanelSheet(Draft.DraftObject):
     def onDocumentRestored(self, obj):
 
         self.setProperties(obj)
+        ArchRestore.restore_view_object(obj)
 
     def execute(self, obj):
 

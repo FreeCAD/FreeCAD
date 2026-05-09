@@ -2,9 +2,10 @@
 #
 # Copyright (c) 2025 The FreeCAD Project
 
-import FreeCAD
 import os
 import json
+
+import FreeCAD
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtWidgets, QtGui
@@ -446,9 +447,12 @@ class _ArchReport:
     def onDocumentRestored(self, obj):
         """Called after the object properties are restored from a file."""
         # Rebuild the live list of objects from the newly loaded persistent data
+        import ArchRestore
+
         self.obj = obj
         self.hydrate_live_statements(obj)
         self.setProperties(obj)  # This will ensure observer is re-attached
+        ArchRestore.restore_view_object(obj)
 
     def hydrate_live_statements(self, obj):
         """(Re)builds the live list of objects from the stored list of dicts."""

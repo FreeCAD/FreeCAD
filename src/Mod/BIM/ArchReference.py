@@ -101,11 +101,15 @@ class ArchReference:
 
     def onDocumentRestored(self, obj):
 
+        import ArchRestore
+
         ArchReference.setProperties(self, obj)
+        ArchRestore.restore_view_object(obj)
+        proxy = ArchRestore.get_view_provider_proxy(getattr(obj, "ViewObject", None))
         if obj.ReferenceMode == "Lightweight":
             self.reload = False
-            if obj.ViewObject and obj.ViewObject.Proxy:
-                obj.ViewObject.Proxy.loadInventor(obj)
+            if proxy is not None:
+                proxy.loadInventor(obj)
         else:
             self.reload = True
             self.execute(obj)  # sets self.reload to False again
@@ -120,18 +124,21 @@ class ArchReference:
 
     def onChanged(self, obj, prop):
 
+        import ArchRestore
+
         if prop in ["File", "Part"]:
             self.reload = True
         elif prop == "ReferenceMode":
+            proxy = ArchRestore.get_view_provider_proxy(getattr(obj, "ViewObject", None))
             if obj.ReferenceMode == "Normal":
-                if obj.ViewObject and obj.ViewObject.Proxy:
-                    obj.ViewObject.Proxy.unloadInventor(obj)
+                if proxy is not None:
+                    proxy.unloadInventor(obj)
                 if (not obj.Shape) or obj.Shape.isNull():
                     self.reload = True
                     obj.touch()
             elif obj.ReferenceMode == "Transient":
-                if obj.ViewObject and obj.ViewObject.Proxy:
-                    obj.ViewObject.Proxy.unloadInventor(obj)
+                if proxy is not None:
+                    proxy.unloadInventor(obj)
                 self.reload = False
             elif obj.ReferenceMode == "Lightweight":
                 self.reload = False
@@ -140,8 +147,8 @@ class ArchReference:
                 pl = obj.Placement
                 obj.Shape = Part.Shape()
                 obj.Placement = pl
-                if obj.ViewObject and obj.ViewObject.Proxy:
-                    obj.ViewObject.Proxy.loadInventor(obj)
+                if proxy is not None:
+                    proxy.loadInventor(obj)
 
     def execute(self, obj):
 

@@ -118,6 +118,25 @@ class TestArchSiteGui(TestArchBaseGui.TestArchBaseGui):
             except Exception:
                 pass
 
+    def test_site_restores_view_provider_when_guidocument_is_missing(self):
+        site = Arch.makeSite(name="HeadlessRestoreSite")
+        FreeCAD.ActiveDocument.recompute()
+
+        archive = None
+        try:
+            archive, _, restored = self.reopen_without_gui_document(site)
+            self.assertIsNotNone(restored)
+            self.assertIsNotNone(restored.ViewObject)
+            self.assertIsNotNone(restored.ViewObject.Proxy)
+            self.assertEqual(type(restored.ViewObject.Proxy).__name__, "_ViewProviderSite")
+            self.assertTrue(restored.ViewObject.Visibility)
+            self.assertIn("ShowSunPosition", restored.ViewObject.PropertiesList)
+            self.assertIn("SunDateMonth", restored.ViewObject.PropertiesList)
+            self.assertIn("SolarDiagramScale", restored.ViewObject.PropertiesList)
+        finally:
+            if archive is not None:
+                os.unlink(archive)
+
     def test_legacy_site_migration(self):
         """Legacy migration test (<=1.0.0 -> newer)
 

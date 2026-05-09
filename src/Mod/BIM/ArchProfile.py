@@ -113,6 +113,12 @@ class _Profile(Draft._DraftObject):
     def onDocumentRestored(self, obj):
         """Rename property OutDiameter to OutsideDiameter and rename property group Draft to Profile"""
 
+        super().onDocumentRestored(obj)
+
+        import ArchRestore
+
+        ArchRestore.restore_view_object(obj)
+
         if hasattr(obj, "OutDiameter"):
             # 1v1 to 1v2 changes.
             obj.setPropertyStatus("OutDiameter", "-LockDynamic")

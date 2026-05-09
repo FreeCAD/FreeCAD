@@ -86,7 +86,8 @@ class _Project(ArchIFC.IfcContext):
 
     def onDocumentRestored(self, obj):
         """Method run when the document is restored. Re-add the properties."""
-        self.setProperties(obj)
+
+        super().onDocumentRestored(obj)
 
     def dumps(self):
 
