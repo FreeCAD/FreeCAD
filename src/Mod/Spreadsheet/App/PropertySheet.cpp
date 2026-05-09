@@ -1395,7 +1395,7 @@ void PropertySheet::addDependencies(CellAddress key)
                 // a not yet processed cell. This leads to a failing resolution of the property of
                 // the object identifier because the property hasn't been added to the object yet
                 // and results into a failed processing of the cell.
-                App::CellAddress addr(propName);
+                App::CellAddress addr = stringToAddress(propName.c_str(), true);
                 if (addr.isValid()) {
                     propName = addr.toString(App::CellAddress::Cell::ShowRowColumn);
                 }
