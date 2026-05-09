@@ -274,7 +274,7 @@ def _dropcutter_transition(start, end, safe_pdc, start_z, safe_z, step_down, hor
 
     # Generate G1 moves that follow the probed surface
     for pt in cl_points[1:-1]:  # Skip first and last point to avoid duplicating moves
-        z = max(pt.z, z_floor) + 0.1  # Plus a small buffer to avoid touching previous on Multi-pass
+        z = max(pt.z, z_floor)  # Plus a small buffer to avoid touching previous on Multi-pass
         commands.append(Path.Command("G1", {"X": pt.x, "Y": pt.y, "Z": z, "F": horiz_feed}))
 
     # Ensure a perfect final connection to the start of the next cutting pass
