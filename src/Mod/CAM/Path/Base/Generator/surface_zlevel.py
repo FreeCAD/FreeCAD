@@ -253,6 +253,7 @@ def zlevel_hybrid_stack(
     accuracy_val,
     z_offset,
     wpc,
+    start_z,
 ):
     """Calculates a stack of 2D clearing areas using geometric slicing and Clipper Booleans.
 
@@ -278,7 +279,7 @@ def zlevel_hybrid_stack(
     Returns:
         A list of tuples: (z_target, cutAreaShape, status).
     """
-    Path.Log.debug("Z-Level Hybrid: Starting geometric stack generation.")
+    Path.Log.debug("surface_zlevel.zlevel_hybrid_stack: Starting geometric stack generation.")
 
     # 1. Initialization
     stack = []
@@ -306,20 +307,20 @@ def zlevel_hybrid_stack(
     params["SectionTolerance"] = 0.0001
 
     # 3. Identify critical snapping depths (Top and floors)
-    modelBottom, modelTop = proc_shape.BoundBox.ZMin, proc_shape.BoundBox.ZMax
+    model_bottom, model_top = proc_shape.BoundBox.ZMin, proc_shape.BoundBox.ZMax
     critical_heights = {
         round(h, 6) for h, status, _ in categorizedSteps if status in ["Mixed", "Extra"]
     }
-    critical_heights.add(round(modelTop, 6))
+
+    critical_heights.add(round(model_top, 6))
+    if abs(start_z - model_top) > tol:
+        critical_heights.add(start_z - tol)
 
     # 4. Main layer loop
     for z_target, status, floor_geo in categorizedSteps:
 
-        if z_target > (modelTop - tol):
-            continue
-
-        # The depth at which the tool has submerged from the modelTop
-        dist_submerged = max(0, modelTop - z_target)
+        # The depth at which the tool has submerged from the model_top
+        dist_submerged = max(0, model_top - z_target)
         # Nudge slice height based on whether we are clearing a floor or a wall
         # Standard layers nudge up (+); Floors nudge down (-) to stay inside material
         slice_bias = 0.0002 if status in ["Mixed", "Extra"] else -0.0002
@@ -337,7 +338,7 @@ def zlevel_hybrid_stack(
             r_comp = r_theo + stock_to_leave
 
             # Synchronized Slicing
-            slice_z = max(modelBottom + 1e-5, min(z_target + h + slice_bias, modelTop - 1e-5))
+            slice_z = max(model_bottom + 1e-5, min(z_target + h + slice_bias, model_top - 1e-5))
 
             # Trigger C++ Slicing with dynamic offset
             params["Offset"] = r_comp
@@ -442,6 +443,7 @@ def _generate_sampling_plan(
     # A Ball Endmill is mathematically equivalent to a Bullnose tool where the corner radius
     # is equal to the tool radius. Normalizing c_rad here allows us to use
     # the same 'bullnose' formulas for both tool types, simplifying the math.
+
     if "ballend" in profile:
         c_rad = R
 
@@ -450,46 +452,37 @@ def _generate_sampling_plan(
 
     def _get_h_from_r(r_target):
         """Inverse Math: For a given horizontal radius (r_target), find the vertical height (h) on the tool's corner."""
-        if not is_3d:
+        flat_radius = R - c_rad
+        # If the target radius is on the flat bottom part of the tool, the height is 0
+        if r_target <= flat_radius + 1e-7:
             return 0.0
-
-        if "bull" in profile or "ball" in profile:
-            flat_radius = R - c_rad
-            # If the target radius is on the flat bottom part of the tool, the height is 0
-            if r_target <= flat_radius + 1e-7:
-                return 0.0
-            # Otherwise, calculate height on the curve using the equation for a circle
-            return c_rad - math.sqrt(max(0, c_rad**2 - (r_target - flat_radius) ** 2))
-
-        return 0.0
+        # Otherwise, calculate height on the curve using the equation for a circle
+        return c_rad - math.sqrt(max(0, c_rad**2 - (r_target - flat_radius) ** 2))
 
     def _get_r_from_h(h_target):
         """Forward Math: For a given vertical height (h_target), find the horizontal radius (r) on the tool's corner."""
         if not is_3d:
             return R
 
-        if "bullnose" in profile or "ballend" in profile:
+        # If the height is within the curved portion, calculate the radius
+        if h_target < c_rad:
             flat_radius = R - c_rad
-            # If the height is within the curved portion, calculate the radius
-            if h_target < c_rad:
-                return flat_radius + math.sqrt(max(0, c_rad**2 - (c_rad - h_target) ** 2))
-            # If the height is above the corner radius, the tool is at its maximum radius
-            return R
+            return flat_radius + math.sqrt(max(0, c_rad**2 - (c_rad - h_target) ** 2))
+        # If the height is above the corner radius, the tool is at its maximum radius
         return R
 
     # 3. Generate the Sampling plan
     plan = []
 
-    # Determine the widest radius of the tool currently in contact with the model
-    max_r = _get_r_from_h(dist_submerged) if dist_submerged < c_rad else R
-
-    if is_3d and num_slices > 1:  # This block handles 3D tools (Ballnose, Bullnose)
+    if is_3d:  # This block handles 3D tools (Ballnose, Bullnose)
+        # Determine the widest radius of the tool currently in contact with the model
+        max_r = _get_r_from_h(dist_submerged) if dist_submerged < c_rad else R
 
         # Calculate the vertical 'ceiling' of the tool's 3D profile that is in contact
-        h_ceiling = min(c_rad, dist_submerged - tol) if is_3d else 0.0
+        h_ceiling = min(c_rad, dist_submerged - tol)
 
         # A) Squeeze Logic: Generate evenly spaced samples along the tool's contact radius
-        min_r = R - c_rad if "bullnose" in profile or "ballend" in profile else 0.0
+        min_r = R - c_rad if "bullnose" in profile else 0.0
         squeeze_range = max_r - min_r
 
         for i in range(num_slices):
@@ -501,18 +494,18 @@ def _generate_sampling_plan(
         for ch in critical_heights:
             rel_h = ch - z_target
             # Only snap if the floor is within the tool's active 3D contact zone for this layer
-            if 0.0001 < rel_h < (h_ceiling - 0.0001):
+            if 0.001 < rel_h < (h_ceiling - 0.001):
                 plan.append((rel_h, _get_r_from_h(rel_h)))
+
+        # D) Finalize
+        # Convert the plan to a set to automatically remove any duplicate sample points
+        # that may have been generated by the squeeze and snap logic. Rounding prevents
+        # minor floating-point noise from creating unnecessary extra samples.
+        unique_steps = {(round(h, 6), round(r, 6)) for h, r in plan}
 
     else:  # This block handles simple 2D tools (Flat Endmills)
         # A flat endmill only needs one sample point at its maximum contact radius
-        plan.append((0.0, max_r))
-
-    # 4. Finalize and return
-    # Convert the plan to a set to automatically remove any duplicate sample points
-    # that may have been generated by the squeeze and snap logic. Rounding prevents
-    # minor floating-point noise from creating unnecessary extra samples.
-    unique_steps = {(round(h, 6), round(r, 6)) for h, r in plan}
+        plan.append((0.0, R))
 
     return unique_steps
 
@@ -600,7 +593,7 @@ def zlevel_hybrid_to_gcode(
     Returns:
         A list of Path.Command objects (G-code).
     """
-    Path.Log.debug("Z-Level Hybrid: Starting G-code generation.")
+    Path.Log.debug("surface_zlevel.zlevel_hybrid_to_gcode: Starting G-code generation.")
 
     # 1. Initialization
     commands = []
@@ -728,7 +721,7 @@ def _generatePattern(
     Returns:
         A list of Path.Command objects representing the clearing G-code.
     """
-    Path.Log.debug(f"Z-Level Hybrid: Generating {cut_pattern} pattern at Z={z_target}")
+    Path.Log.debug(f"surface_zlevel._generatePattern: Generating {cut_pattern} pattern at Z={z_target}")
     commands = []
     should_reverse = True
 
