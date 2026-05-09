@@ -505,7 +505,7 @@ def _generate_sampling_plan(
 
     else:  # This block handles simple 2D tools (Flat Endmills)
         # A flat endmill only needs one sample point at its maximum contact radius
-        plan.append((0.0, R))
+        unique_steps = {(0.0, R)}
 
     return unique_steps
 
