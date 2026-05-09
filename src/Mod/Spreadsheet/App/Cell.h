@@ -188,13 +188,13 @@ private:
     static const unsigned int BACKGROUND_COLOR_SET;
     static const unsigned int FOREGROUND_COLOR_SET;
     static const unsigned int DISPLAY_UNIT_SET;
-    static const int unsigned COMPUTED_UNIT_SET;
-    static const int unsigned ALIAS_SET;
-    static const int unsigned SPANS_SET;
-    static const int unsigned MARK_SET;
-    static const int unsigned EXCEPTION_SET;
-    static const int unsigned PARSE_EXCEPTION_SET;
-    static const int unsigned RESOLVE_EXCEPTION_SET;
+    static const unsigned int COMPUTED_UNIT_SET;
+    static const unsigned int ALIAS_SET;
+    static const unsigned int SPANS_SET;
+    static const unsigned int MARK_SET;
+    static const unsigned int EXCEPTION_SET;
+    static const unsigned int PARSE_EXCEPTION_SET;
+    static const unsigned int RESOLVE_EXCEPTION_SET;
 
     App::CellAddress address;
     PropertySheet* owner;
