@@ -29,6 +29,10 @@ namespace Part
 
 Handle(Geom_Curve) Canonizer::getSimplestCurve(const TopoDS_Edge& shape, float tol)
 {
+    if (shape.IsNull()) {
+        return {};
+    }
+
     ShapeAnalysis_CanonicalRecognition canonRecon(shape);
 
     gp_Lin line;
@@ -49,6 +53,10 @@ Handle(Geom_Curve) Canonizer::getSimplestCurve(const TopoDS_Edge& shape, float t
 
 Handle(Geom_Surface) Canonizer::getSimplestSurface(const TopoDS_Face& shape, float tol)
 {
+    if (shape.IsNull()) {
+        return {};
+    }
+
     ShapeAnalysis_CanonicalRecognition canonRecon(shape);
 
     gp_Pln plane;
@@ -78,6 +86,9 @@ Handle(Geom_Surface) Canonizer::getSimplestSurface(const TopoDS_Face& shape, flo
  */
 TopoDS_Edge Canonizer::canonize(const TopoDS_Edge& edge, float tol)
 {
+    if (edge.IsNull()) {
+        return edge;
+    }
 
     BRepAdaptor_Curve initialCurve(edge);
     auto simplestCurve = getSimplestCurve(edge, tol);
@@ -104,6 +115,10 @@ TopoDS_Edge Canonizer::canonize(const TopoDS_Edge& edge, float tol)
  */
 TopoDS_Wire Canonizer::canonize(const TopoDS_Wire& wire, float tol)
 {
+    if (wire.IsNull()) {
+        return wire;
+    }
+
     TopoDS_Wire result(wire);
 
     BRepBuilderAPI_MakeWire wireBuilder;
@@ -131,6 +146,10 @@ TopoDS_Wire Canonizer::canonize(const TopoDS_Wire& wire, float tol)
  */
 TopoDS_Face Canonizer::canonize(const TopoDS_Face& face, float tol)
 {
+    if (face.IsNull()) {
+        return face;
+    }
+
     auto simplestSurf = getSimplestSurface(face, tol);
 
     auto outerWire = BRepTools::OuterWire(face);
