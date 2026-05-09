@@ -198,12 +198,12 @@ def isAContainer(obj, links_too=False):
             return True
     if obj.isDerivedFrom("App::Link") and links_too:
         return True
-    
+
     container_extensions = ["App::GroupExtension"]
     for extension in container_extensions:
         if obj.hasExtension(extension):
             return True
-    
+
     if obj.hasChildElement():
         return True
 
