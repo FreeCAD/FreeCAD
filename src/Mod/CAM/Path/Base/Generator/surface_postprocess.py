@@ -254,15 +254,10 @@ def _dropcutter_transition(start, end, safe_pdc, start_z, safe_z, step_down, hor
     # Check the Z-climb required for the very first segment of the transition.
     first_transition_pt = cl_points[1]
     initial_climb = abs(first_transition_pt.z - start[2])
-    step_over_transition = (
-        abs(start[2] - end[2]) < 1e-3
-    )  # Possibly a step-over transition (stay down)
     above_start_z = False if start_z > start[2] else True
 
     # If the initial climb is more than half a step-down, it's faster to retract.
-    if (
-        step_down > 0 and initial_climb > (step_down / 2.0) and not step_over_transition
-    ) or above_start_z:
+    if (step_down > 0 and initial_climb > (step_down / 2.0)) or above_start_z:
         Path.Log.debug(
             f"Keep-down move aborted: initial climb ({initial_climb:.2f}mm) exceeds half step-down ({step_down/2.0:.2f}mm)."
         )
