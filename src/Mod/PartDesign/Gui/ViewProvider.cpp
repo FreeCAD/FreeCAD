@@ -210,25 +210,6 @@ void ViewProvider::unsetEdit(int ModNum)
     }
 }
 
-void ViewProvider::updateData(const App::Property* prop)
-{
-    if (strcmp(prop->getName(), "PreviewShape") == 0) {
-        updatePreview();
-    }
-    else if (auto* previewExtension = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
-        if (isPreviewEnabled() && !previewExtension->isPreviewFresh() && isEditing()) {
-            // Properties can be updated in batches, where some properties trigger other updates.
-            // We don't need to compute the preview for intermediate steps. Instead of updating
-            // the preview immediately (and potentially doing it multiple times in a row), we
-            // schedule the update to happen at a more convenient time.
-            if (auto* scheduler = Base::provideService<Part::PreviewUpdateScheduler>()) {
-                scheduler->schedulePreviewRecompute(getObject());
-            }
-        }
-    }
-    inherited::updateData(prop);
-}
-
 void ViewProvider::attachPreview()
 {
     ViewProviderPreviewExtension::attachPreview();
@@ -375,17 +356,6 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
     makeChildrenVisible();
 
     return true;
-}
-
-Part::TopoShape ViewProvider::getPreviewShape() const
-{
-    if (auto feature = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
-        // Feature is responsible for generating proper shape and this ViewProvider
-        // is using it instead of more normal `Shape` property.
-        return feature->PreviewShape.getShape();
-    }
-
-    return {};
 }
 
 void ViewProvider::showPreviousFeature(bool enable)

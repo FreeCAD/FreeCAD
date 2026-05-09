@@ -30,8 +30,10 @@
 
 #include "ViewProviderPreviewExtension.h"
 #include "ViewProviderExt.h"
+#include "ViewProviderPreviewExtensionPy.h"
 
 #include <App/Document.h>
+#include <Base/ServiceProvider.h>
 #include <Gui/Utilities.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 #include <Mod/Part/App/PreviewExtension.h>
@@ -160,6 +162,14 @@ void ViewProviderPreviewExtension::extensionBeforeDelete()
     showPreview(false);
 }
 
+PyObject* ViewProviderPreviewExtension::getExtensionPyObject()
+{
+    if (ExtensionPythonObject.is(Py::_None())) {
+        ExtensionPythonObject = Py::Object(new ViewProviderPreviewExtensionPy(this), true);
+    }
+    return Py::new_reference_to(ExtensionPythonObject);
+}
+
 void ViewProviderPreviewExtension::showPreview(bool enable)
 {
     auto feature = getExtendedViewProvider()->getObject<Part::Feature>();
@@ -194,6 +204,50 @@ void ViewProviderPreviewExtension::extensionOnChanged(const App::Property* prop)
     }
 
     ViewProviderExtension::extensionOnChanged(prop);
+}
+
+void ViewProviderPreviewExtension::extensionUpdateData(const App::Property* prop)
+{
+    Gui::ViewProviderDocumentObject* viewProvider = getExtendedViewProvider();
+    App::DocumentObject* object = viewProvider ? viewProvider->getObject() : nullptr;
+
+    if (!object) {
+        ViewProviderExtension::extensionUpdateData(prop);
+        return;
+    }
+
+    if (auto* previewExtension = object->getExtensionByType<Part::PreviewExtension>(true)) {
+        if (prop == &previewExtension->PreviewShape) {
+            updatePreview();
+        }
+        else if (isPreviewEnabled()) {
+            // Properties can be updated in batches, where some properties trigger other updates.
+            // We don't need to compute the preview for intermediate steps. Instead of updating
+            // the preview immediately (and potentially doing it multiple times in a row), we
+            // schedule the update to happen at a more convenient time.
+            if (auto* scheduler = Base::provideService<Part::PreviewUpdateScheduler>()) {
+                scheduler->schedulePreviewRecompute(object);
+            }
+        }
+    }
+
+    ViewProviderExtension::extensionUpdateData(prop);
+}
+
+Part::TopoShape ViewProviderPreviewExtension::getPreviewShape() const
+{
+    const Gui::ViewProviderDocumentObject* viewProvider = getExtendedViewProvider();
+    const App::DocumentObject* object = viewProvider ? viewProvider->getObject() : nullptr;
+
+    if (!object) {
+        return {};
+    }
+
+    if (auto* previewExtension = object->getExtensionByType<Part::PreviewExtension>(true)) {
+        return previewExtension->PreviewShape.getShape();
+    }
+
+    return {};
 }
 
 void ViewProviderPreviewExtension::attachPreview()
