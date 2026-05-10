@@ -44,7 +44,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Crops the captured image to this height</string>
+         <string>Crops the captured image to this pixel height</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
@@ -60,14 +60,14 @@
       <item row="0" column="0">
        <widget class="QLabel" name="lWidth">
         <property name="text">
-         <string>Crop to width</string>
+         <string>Crop to width (px)</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="lHeight">
         <property name="text">
-         <string>Crop to height</string>
+         <string>Crop to height (px)</string>
         </property>
        </widget>
       </item>
@@ -86,7 +86,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Crops the captured image to this width</string>
+         <string>Crops the captured image to this pixel width</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>

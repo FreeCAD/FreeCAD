@@ -32,7 +32,6 @@
 #include "QGIViewImage.h"
 #include "QGCustomClip.h"
 #include "QGCustomImage.h"
-#include "Rez.h"
 #include "ViewProviderImage.h"
 
 
@@ -107,7 +106,7 @@ void QGIViewImage::draw()
 
     drawImage();
     if (crop) {
-        QRectF cropRect(0.0, 0.0, Rez::guiX(viewImage->Width.getValue()), Rez::guiX(viewImage->Height.getValue()));
+        QRectF cropRect(0.0, 0.0, viewImage->Width.getValue(), viewImage->Height.getValue());
         m_cliparea->setRect(cropRect);
     } else {
         QRectF cropRect(0.0, 0.0, m_imageItem->imageSize().width(), m_imageItem->imageSize().height());

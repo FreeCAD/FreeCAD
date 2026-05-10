@@ -43,7 +43,6 @@
 #include "ui_TaskActiveView.h"
 #include "Grabber3d.h"
 #include "ViewProviderImage.h"
-#include "Rez.h"
 
 
 using namespace Gui;
@@ -65,9 +64,6 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
     , m_tid(0)
 {
     ui->setupUi(this);
-
-    ui->qsbWidth->setUnit(Base::Unit::Length);
-    ui->qsbHeight->setUnit(Base::Unit::Length);
 
     setUiPrimary();
 
@@ -176,8 +172,8 @@ void TaskActiveView::updatePreview()
     int imageWidth{SXGAWidth};
     int imageHeight{SXGAHeight};
     if (ui->gbFraming->isChecked()) {
-        imageWidth = Rez::guiX(ui->qsbWidth->rawValue());
-        imageHeight = Rez::guiX(ui->qsbHeight->rawValue());
+        imageWidth = static_cast<int>(ui->qsbWidth->rawValue());
+        imageHeight = static_cast<int>(ui->qsbHeight->rawValue());
     }
 
     QImage image(imageWidth, imageHeight, QImage::Format_ARGB32_Premultiplied);
@@ -234,8 +230,8 @@ void TaskActiveView::setUiPrimary()
     ui->cbBg->setCurrentIndex(static_cast<int>(BackgroundType::Transparent));
     onBgTypeChanged(static_cast<int>(BackgroundType::Transparent)); 
 
-    ui->qsbWidth->setValue(Rez::appX(SXGAWidth));
-    ui->qsbHeight->setValue(Rez::appX(SXGAHeight));
+    ui->qsbWidth->setValue(SXGAWidth);
+    ui->qsbHeight->setValue(SXGAHeight);
 }
 
 void TaskActiveView::onBgTypeChanged(int index)

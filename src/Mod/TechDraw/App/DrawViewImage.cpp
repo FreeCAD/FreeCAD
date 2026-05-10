@@ -30,9 +30,22 @@
 
 #include "DrawUtil.h"
 #include "DrawViewImage.h"
+#include "Preferences.h"
 
 
 using namespace TechDraw;
+
+namespace
+{
+double pixelsToPageUnits(double pixels)
+{
+    const double rezFactor = Preferences::getPreferenceGroup("Rez")->GetFloat("Resolution", 10.0);
+    if (rezFactor <= 0.0) {
+        return pixels;
+    }
+    return pixels / rezFactor;
+}
+}
 
 //===========================================================================
 // DrawViewImage
@@ -48,8 +61,10 @@ DrawViewImage::DrawViewImage()
     ADD_PROPERTY_TYPE(ImageFile, (""), vgroup, App::Prop_None, "The file containing this bitmap");
     ADD_PROPERTY_TYPE(ImageIncluded, (""), vgroup, App::Prop_None,
                       "Embedded image file. System use only.");// n/a to end users
-    ADD_PROPERTY_TYPE(Width, (100), vgroup, App::Prop_None, "The width of cropped image");
-    ADD_PROPERTY_TYPE(Height, (100), vgroup, App::Prop_None, "The height of cropped image");
+    ADD_PROPERTY_TYPE(Width, (100), vgroup, App::Prop_None,
+                      "The width of the cropped image in pixels");
+    ADD_PROPERTY_TYPE(Height, (100), vgroup, App::Prop_None,
+                      "The height of the cropped image in pixels");
     ADD_PROPERTY_TYPE(Owner, (nullptr), vgroup, (App::PropertyType)(App::Prop_None),
                       "Feature to which this symbol is attached");
 
@@ -82,7 +97,13 @@ App::DocumentObjectExecReturn* DrawViewImage::execute()
     return DrawView::execute();
 }
 
-QRectF DrawViewImage::getRect() const { return {0.0, 0.0, Width.getValue(), Height.getValue()}; }
+QRectF DrawViewImage::getRect() const
+{
+    return {0.0,
+            0.0,
+            pixelsToPageUnits(Width.getValue()),
+            pixelsToPageUnits(Height.getValue())};
+}
 
 void DrawViewImage::replaceImageIncluded(std::string newImageFile)
 {
