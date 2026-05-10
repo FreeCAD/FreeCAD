@@ -1879,3 +1879,21 @@ std::vector<int> GeometryUtils::findNestedFaceIndices(const std::vector<FacePtr>
     return nestedFaceIndices;
 }
 
+//! get a description for a GeomType.  Do not add a default case, as we want to
+//! ensure that we are always in sync with the GeomType enum.
+std::string GeometryUtils::getGeomTypeName(GeomType typeEnumValue)
+{
+    switch (typeEnumValue) {
+        case GeomType::NOTDEF: return "Not Defined";
+        case GeomType::CIRCLE: return "Circle";
+        case GeomType::ARCOFCIRCLE: return "Arc of Circle";
+        case GeomType::ELLIPSE: return "Ellipse";
+        case GeomType::ARCOFELLIPSE: return "Arc of Ellipse";
+        case GeomType::BEZIER: return "Bezier Curve";
+        case GeomType::BSPLINE: return "B-spline Curve";
+        case GeomType::GENERIC: return "Line";
+    }
+}
+
+
+

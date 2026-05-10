@@ -89,6 +89,7 @@ void getSelectedShapes(Gui::Command* cmd,
 
 std::pair<App::DocumentObject*, std::string> faceFromSelection();
 std::pair<Base::Vector3d, Base::Vector3d> viewDirection();
+Base::Vector3d checkDirectionVsBasis(Base::Vector3d dir);
 
 class Vertex;
 using namespace TechDrawGui;
@@ -520,10 +521,11 @@ void CmdTechDrawView::activated(int iMsg)
     dvp->XSource.setValues(xShapes);
 
     getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-    auto dirs = viewDirection();
+    std::pair<Base::Vector3d, Base::Vector3d> dirs = viewDirection();
+    Base::Vector3d checkedDir = checkDirectionVsBasis(dirs.first);
     doCommand(Doc,
               "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-              FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+              FeatName.c_str(), checkedDir.x, checkedDir.y, checkedDir.z);
     doCommand(Doc,
               "App.activeDocument().%s.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
               FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
@@ -673,7 +675,7 @@ void CmdTechDrawBrokenView::activated(int iMsg)
         dirs = DrawGuiUtil::get3DDirAndRot();
     }
 
-    Base::Vector3d projDir = dirs.first;
+    Base::Vector3d projDir = checkDirectionVsBasis(dirs.first);
     doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.6f,%.6f,%.6f)",
               FeatName.c_str(), projDir.x, projDir.y, projDir.z);
     doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.6f,%.6f,%.6f)",
@@ -1158,10 +1160,11 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
         DrawGuiUtil::getProjDirFromFace(partObj, faceName)
         : DrawGuiUtil::get3DDirAndRot();
 
+    Base::Vector3d checkedDir = checkDirectionVsBasis(dirs.first);
     getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
     doCommand(Doc,
         "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-        multiViewName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+        multiViewName.c_str(), checkedDir.x, checkedDir.y, checkedDir.z);
     doCommand(Doc,
         "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
         multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
@@ -1633,6 +1636,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
+    Base::Vector3d checkedDir = checkDirectionVsBasis(dirs.first);
     for (auto* obj : objects) {
          if (obj->isDerivedFrom<TechDraw::DrawPage>() ||
              obj->isDerivedFrom<TechDraw::DrawView>()) {
@@ -1653,7 +1657,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
         doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
                   PageName.c_str(), FeatName.c_str(), PageName.c_str());
         doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+                  FeatName.c_str(), checkedDir.x, checkedDir.y, checkedDir.z);
         updateActive();
         commitCommand();
     }
@@ -2073,3 +2077,34 @@ std::pair<App::DocumentObject*, std::string> faceFromSelection()
 
     return { nullptr, "" };
 }
+
+//! checks for directions that are almost +/- x,y,z.
+Base::Vector3d checkDirectionVsBasis(Base::Vector3d dir)
+{
+    Base::Vector3d closest = DrawUtil::closestBasisOriented(dir);
+    if (dir.IsEqual(closest, Precision::Confusion())) {
+        return closest;
+    }
+
+    double angleDeg = Base::toDegrees(dir.GetAngle(closest));
+    constexpr double MaxAngleDeg{1.0};  // absolutely a WAG.
+    if (std::fabs(angleDeg) < MaxAngleDeg) {
+        // close to a basis, but not quite equal
+        auto msgText = QObject::tr("Selected Direction is within %1 degrees of a standard direction. "
+                    "Replace selected Direction with %2?")
+                    .arg(QString::number(angleDeg))
+                    .arg(QString::fromStdString(DU::formatVector(closest)));
+        QMessageBox::StandardButton rc = QMessageBox::question(
+            Gui::getMainWindow(), QObject::tr("Direction is close to standard"),
+            msgText,
+            QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No));
+        if (rc == QMessageBox::Yes) {
+            return closest;
+        }
+    }
+
+    // not close to a basis vector.
+    return dir;
+
+}
+

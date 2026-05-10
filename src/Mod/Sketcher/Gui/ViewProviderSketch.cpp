@@ -552,6 +552,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewPr
 ViewProviderSketch::ViewProviderSketch()
     : SelectionObserver(false)
     , toolManager(this)
+    , editingCancelled(false)
     , Mode(STATUS_NONE)
     , pcSketchFaces(new SoSketchFaces)
     , pcSketchFacesToggle(new SoToggleSwitch)
@@ -562,7 +563,6 @@ ViewProviderSketch::ViewProviderSketch()
     , sketchHandler(nullptr)
     , viewOrientationFactor(1)
     , blockContextMenu(false)
-    , editingCancelled(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
     PartGui::ViewProviderGridExtension::initExtension(this);

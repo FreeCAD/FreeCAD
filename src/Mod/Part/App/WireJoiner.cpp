@@ -2008,6 +2008,7 @@ public:
     )
     {
         if (!BRep_Tool::IsClosed(wire)) {
+            // proceed=false path can assemble a non-closing edge sequence; bail out gracefully
             FC_WARN("failed to close some wire in iteration " << iteration);
             showShape(wire, "_FailedToClose", iteration);
             showShape(beginInfo.shape(beginVertex.start), "failed", iteration);
@@ -2016,8 +2017,6 @@ public:
                 auto& info = *vertex.it;
                 showShape(info.shape(vertex.start), vertex.start ? "failed" : "failed_r", iteration);
             }
-
-            ENSURE(false);
             return false;
         }
         return true;
@@ -2096,7 +2095,8 @@ public:
             }
             TopoDS_Wire wire = makeCleanWire();
             if (!_findClosedWiresIsClosed(beginVertex, wire, beginInfo)) {
-                continue;
+                // stack was mutated by _findClosedWiresBeginEdge; bail so caller can clean up
+                return {};
             }
             return wire;
         }
