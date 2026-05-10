@@ -420,7 +420,7 @@ by negative value of 'Overtolerance'.</string>
         <item row="3" column="0">
          <widget class="QPushButton" name="pbExtUseDefault">
           <property name="toolTip">
-           <string>Set extension line angle to default (orthographic)</string>
+           <string>Resets the extension line angle to the default orthographic value</string>
           </property>
           <property name="text">
            <string>Use Default</string>
