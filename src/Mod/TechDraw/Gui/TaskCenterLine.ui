@@ -217,7 +217,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Rotate line +CCW or -CW</string>
+           <string>Rotates the line counterclockwise (+) or clockwise (-)</string>
           </property>
           <property name="minimum" stdset="0">
            <double>-360.000000000000000</double>
