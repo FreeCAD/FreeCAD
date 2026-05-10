@@ -21,6 +21,7 @@ if (BUILD_ASSEMBLY AND NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
         git submodule update --init" )
     endif()
     add_subdirectory(OndselSolver)
+    SET_BIN_DIR(OndselSolver)
 endif()
 
 if (BUILD_TRACY_FRAME_PROFILER)

@@ -232,8 +232,10 @@ jobs:
             export MACOS_DEPLOYMENT_TARGET="${{ matrix.deploy_target }}"
           fi
           python3 package/scripts/write_version_info.py ../freecad_version.txt
-          cd package/rattler-build
-          pixi install --frozen
+          case "${RUNNER_OS}" in
+            Windows) pixi run --frozen "cmd.exe /c package\\\\rattler-build\\\\build.bat" ;;
+            *)       pixi run --frozen "bash package/rattler-build/build.sh" ;;
+          esac
 
       - name: Azure login for Windows build code signing
         id: azure_login
@@ -279,8 +281,13 @@ jobs:
               ;;
           esac
 
-          cd package/rattler-build
-          pixi run -e package create_bundle
+          cd package/bundle
+          case "${RUNNER_OS}" in
+            Windows) export OSFOLDER=windows ;;
+            macOS)   export OSFOLDER=osx ;;
+            Linux)   export OSFOLDER=linux ;;
+          esac
+          pixi run --frozen bash -c "cd $OSFOLDER && bash create_bundle.sh"
 
       ## Needed if running on a self-hosted runner:
       # - name: Clean up keychain and provisioning profile
