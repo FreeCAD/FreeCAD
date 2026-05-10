@@ -367,7 +367,7 @@ by negative value of 'Overtolerance'.</string>
         <item row="1" column="1">
          <widget class="QPushButton" name="pbDimUseSelection">
           <property name="toolTip">
-           <string>Set dimension line angle to match selected edge or vertices</string>
+           <string>Sets the dimension line angle to match the selected edge or vertices</string>
           </property>
           <property name="text">
            <string>Use Selection</string>
