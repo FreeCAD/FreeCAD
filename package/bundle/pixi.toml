@@ -14,7 +14,7 @@ repository = "https://github.com/FreeCAD/FreeCAD"
 description = "FreeCAD"
 
 [package.build]
-backend = { name = "pixi-build-rattler-build", version = "*" }
+backend = { name = "pixi-build-rattler-build", path = "../rattler-build", version = "*" }
 
 [feature.freecad.dependencies]
 freecad = { path = "." }
