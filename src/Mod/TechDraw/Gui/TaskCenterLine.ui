@@ -187,7 +187,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Move line -left or +right</string>
+           <string>Shifts the line left (-) or right (+)</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
