@@ -4,7 +4,7 @@ import re
 import sys
 
 if len(sys.argv) < 1 or "-h" in sys.argv:
-    print("""Usage: python fix_macos_paths.py <scan_path> [-r] [-s]
+    print("""Usage: python fix_macos_lib_paths.py <scan_path> [-r] [-s]
 
           Options:
             -r      scan the directory recursively
