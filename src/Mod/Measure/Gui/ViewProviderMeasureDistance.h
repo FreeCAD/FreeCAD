@@ -44,9 +44,8 @@
 
 class SoAction;
 class SoCoordinate3;
-class SoCone;
 class SoIndexedLineSet;
-class SoTransform;
+class SoState;
 
 namespace MeasureGui
 {
@@ -102,6 +101,7 @@ public:
     void redrawAnnotation() override;
     void positionAnno(const Measure::MeasureBase* measureObject) override;
     void onLabelMoved() override;
+    void finishRestoring() override;
 
 protected:
     Base::Vector3d getTextDirection(
@@ -118,32 +118,22 @@ private:
     SoCoordinate3* pCoords;
     SoIndexedLineSet* pLines;
     SoSwitch* pDeltaDimensionSwitch;
-    // Scene graph nodes for the screen-constant arrowheads.
     SoSwitch* pArrowSwitch {nullptr};
-    SoTransform* pArrowTransformRight {nullptr};
-    SoTransform* pArrowTransformLeft {nullptr};
-    SoCone* pArrowConeRight {nullptr};
-    SoCone* pArrowConeLeft {nullptr};
+    SoSwitch* pDeltaLabelSwitch {nullptr};
+
+    SoTranslate2Dragger* pDeltaDragger[3] {};
+    SoTransform*         pDeltaLabelTranslation[3] {};
+    Gui::SoFrameLabel*   pDeltaLabel[3] {};
+    SoCoordinate3*       pDeltaLeaderCoords[3] {};
 
     SoSFVec3f fieldPosition1;
     SoSFVec3f fieldPosition2;
-
     SoSFFloat fieldDistance;
 
-    // Called every render frame via SoCallback; re-reads viewScale and triggers updateArrowSizes.
-    void updateArrowSizesFromCamera();
+    void initDeltaLabelPositions();
+
+    void drawArrowheads(SoState* state);
     static void arrowSizeCallback(void* data, SoAction* action);
-
-    // Recomputes arrowhead sizes and world-space transforms from the measurement endpoints.
-    void updateArrowSizes(const Base::Vector3d& point1, const Base::Vector3d& point2);
-
-    // Returns the world-space arrowhead height for the current zoom and ArrowSize property.
-    float getArrowHeight();
-
-    // Zeros out cone dimensions so no geometry is visible (used when ShowArrows is false).
-    void clearArrows();
-
-    float _lastArrowViewScale = -1.0f;
 
     SbMatrix getMatrix();
 };

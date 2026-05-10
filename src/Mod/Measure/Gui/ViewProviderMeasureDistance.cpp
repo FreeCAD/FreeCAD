@@ -46,10 +46,16 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoCone.h>
+#include <Inventor/elements/SoFocalDistanceElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoResetTransform.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/nodes/SoCallback.h>
 
 
@@ -64,6 +70,8 @@
 #include <Gui/Command.h>
 #include "Gui/Document.h"
 #include "Gui/ViewParams.h"
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 
 using namespace Gui;
@@ -366,10 +374,6 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
         "Scale factor applied to arrowhead dimensions; 1.0 is the default size"
     );
 
-    auto* lineColor = new SoBaseColor();
-    lineColor->rgb.setValue(0.0f, 1.0f, 0.0f);
-    pLineSeparator->addChild(lineColor);
-
     pCoords = new SoCoordinate3();
     pCoords->ref();
     pCoords->point.setNum(2);
@@ -383,9 +387,7 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     pLineSeparator->addChild(pCoords);
     pLineSeparator->addChild(pLines);
 
-    // Leader line: connects the local annotation origin to the draggable label.
-    // SoConcatenate merges the fixed origin point and the live label translation into a 2-vertex
-    // polyline.
+    // SoConcatenate keeps the leader line endpoints live as the label moves.
     auto* leaderCatEngine = new SoConcatenate(SoMFVec3f::getClassTypeId());
     auto* leaderOriginNode = new SoCoordinate3();
     leaderOriginNode->point.set1Value(0, SbVec3f(0.0f, 0.0f, 0.0f));
@@ -400,7 +402,6 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     leaderLine->vertexProperty = leaderVerts;
     leaderLine->coordIndex.setValues(0, 3, leaderIdx);
 
-    // Thin leader line keeps it visually secondary to the main measurement line.
     auto* leaderDrawStyle = new SoDrawStyle();
     leaderDrawStyle->lineWidth.setValue(1.0f);
 
@@ -411,49 +412,17 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     pLineSeparator->addChild(leaderSep);
 
 
-    // SoAnnotation draws after all opaque geometry, keeping arrowheads visible
-    // even when they overlap the measured solid.
+    // SoAnnotation draws after all opaque geometry.
     auto* arrowAnnotation = new SoAnnotation();
 
     auto* arrowPickStyle = new SoPickStyle();
     arrowPickStyle->style = SoPickStyle::UNPICKABLE;
     arrowAnnotation->addChild(arrowPickStyle);
 
-    auto* arrowColor = new SoBaseColor();
-    arrowColor->rgb.setValue(0.0f, 1.0f, 0.0f);
-    arrowAnnotation->addChild(arrowColor);
+    auto* arrowCb = new SoCallback();
+    arrowCb->setCallback(arrowSizeCallback, this);
+    arrowAnnotation->addChild(arrowCb);
 
-    // SoCallback fires on every GL render pass so arrowheads maintain a
-    // constant screen size as the user zooms the viewport.
-    auto* arrowSizeNode = new SoCallback();
-    arrowSizeNode->setCallback(arrowSizeCallback, this);
-    arrowAnnotation->addChild(arrowSizeNode);
-
-    pArrowTransformRight = new SoTransform();
-    pArrowTransformRight->ref();
-    pArrowConeRight = new SoCone();
-    pArrowConeRight->ref();
-    // Start at zero so no geometry appears before the first camera callback fires.
-    pArrowConeRight->height.setValue(0.0f);
-    pArrowConeRight->bottomRadius.setValue(0.0f);
-    auto rightArrowSep = new SoSeparator();
-    rightArrowSep->addChild(pArrowTransformRight);
-    rightArrowSep->addChild(pArrowConeRight);
-    arrowAnnotation->addChild(rightArrowSep);
-
-    pArrowTransformLeft = new SoTransform();
-    pArrowTransformLeft->ref();
-    pArrowConeLeft = new SoCone();
-    pArrowConeLeft->ref();
-    pArrowConeLeft->height.setValue(0.0f);
-    pArrowConeLeft->bottomRadius.setValue(0.0f);
-    auto leftArrowSep = new SoSeparator();
-    leftArrowSep->addChild(pArrowTransformLeft);
-    leftArrowSep->addChild(pArrowConeLeft);
-    arrowAnnotation->addChild(leftArrowSep);
-
-    // Top-level switch for the arrow annotation; toggling ShowArrows changes whichChild
-    // without rebuilding the scene graph subtree.
     pArrowSwitch = new SoSwitch();
     pArrowSwitch->ref();
     pArrowSwitch->whichChild.setValue(SO_SWITCH_ALL);
@@ -467,7 +436,6 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     auto decomposedPosition2 = new SoDecomposeVec3f();
     decomposedPosition2->vector.connectFrom(&fieldPosition2);
 
-    // Create intermediate points
     auto composeVecDelta1 = new SoComposeVec3f();
     composeVecDelta1->x.connectFrom(&decomposedPosition2->x);
     composeVecDelta1->y.connectFrom(&decomposedPosition1->y);
@@ -478,35 +446,33 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     composeVecDelta2->y.connectFrom(&decomposedPosition2->y);
     composeVecDelta2->z.connectFrom(&decomposedPosition1->z);
 
-    // Set axis colors
-    SbColor colorX;
-    SbColor colorY;
-    SbColor colorZ;
-
-    float t = 0.0f;
-    colorX.setPackedValue(ViewParams::instance()->getAxisXColor(), t);
-    colorY.setPackedValue(ViewParams::instance()->getAxisYColor(), t);
-    colorZ.setPackedValue(ViewParams::instance()->getAxisZColor(), t);
+    SbColor deltaAxisColors[3];
+    {
+        float t = 0.0f;
+        deltaAxisColors[0].setPackedValue(ViewParams::instance()->getAxisXColor(), t);
+        deltaAxisColors[1].setPackedValue(ViewParams::instance()->getAxisYColor(), t);
+        deltaAxisColors[2].setPackedValue(ViewParams::instance()->getAxisZColor(), t);
+    }
 
     auto dimDeltaX = new MeasureGui::DimensionLinear();
     dimDeltaX->point1.connectFrom(&fieldPosition1);
     dimDeltaX->point2.connectFrom(&composeVecDelta1->vector);
     dimDeltaX->setupDimension();
-    dimDeltaX->dColor.setValue(colorX);
+    dimDeltaX->dColor.setValue(deltaAxisColors[0]);
     dimDeltaX->fontSize.connectFrom(&fieldFontSize);
 
     auto dimDeltaY = new MeasureGui::DimensionLinear();
     dimDeltaY->point1.connectFrom(&composeVecDelta1->vector);
     dimDeltaY->point2.connectFrom(&composeVecDelta2->vector);
     dimDeltaY->setupDimension();
-    dimDeltaY->dColor.setValue(colorY);
+    dimDeltaY->dColor.setValue(deltaAxisColors[1]);
     dimDeltaY->fontSize.connectFrom(&fieldFontSize);
 
     auto dimDeltaZ = new MeasureGui::DimensionLinear();
-    dimDeltaZ->point2.connectFrom(&composeVecDelta2->vector);
     dimDeltaZ->point1.connectFrom(&fieldPosition2);
+    dimDeltaZ->point2.connectFrom(&composeVecDelta2->vector);
     dimDeltaZ->setupDimension();
-    dimDeltaZ->dColor.setValue(colorZ);
+    dimDeltaZ->dColor.setValue(deltaAxisColors[2]);
     dimDeltaZ->fontSize.connectFrom(&fieldFontSize);
 
     pDeltaDimensionSwitch = new SoSwitch();
@@ -517,8 +483,105 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     pDeltaDimensionSwitch->addChild(dimDeltaY);
     pDeltaDimensionSwitch->addChild(dimDeltaZ);
 
-    // This should already be touched in ViewProviderMeasureBase
-    FontSize.touch();
+    // setPart("textSep", nullptr) removes the label node; text="" still draws an empty box.
+    dimDeltaX->setPart("textSep", nullptr);
+    dimDeltaY->setPart("textSep", nullptr);
+    dimDeltaZ->setPart("textSep", nullptr);
+
+    pDeltaLabelSwitch = new SoSwitch();
+    pDeltaLabelSwitch->ref();
+    pDeltaLabelSwitch->whichChild.setValue(SO_SWITCH_NONE);
+
+    static const int32_t leaderLineIdx[] = {0, 1, -1};
+
+    for (int i = 0; i < 3; ++i) {
+        pDeltaLabelTranslation[i] = new SoTransform();
+        pDeltaLabelTranslation[i]->ref();
+
+        pDeltaDragger[i] = new SoTranslate2Dragger();
+        pDeltaDragger[i]->ref();
+        pDeltaLabelTranslation[i]->translation.connectFrom(&pDeltaDragger[i]->translation);
+
+        // point[0] is the anchor, updated in redrawAnnotation(); point[1] tracks the label.
+        pDeltaLeaderCoords[i] = new SoCoordinate3();
+        pDeltaLeaderCoords[i]->ref();
+        pDeltaLeaderCoords[i]->point.setNum(1);
+        pDeltaLeaderCoords[i]->point.set1Value(0, SbVec3f(0.0f, 0.0f, 0.0f));
+
+        auto* leaderCat = new SoConcatenate(SoMFVec3f::getClassTypeId());
+        leaderCat->input[0]->connectFrom(&pDeltaLeaderCoords[i]->point);
+        leaderCat->input[1]->connectFrom(&pDeltaLabelTranslation[i]->translation);
+
+        auto* leaderVerts = new SoVertexProperty();
+        leaderVerts->vertex.connectFrom(leaderCat->output);
+
+        auto* leaderLine = new SoIndexedLineSet();
+        leaderLine->vertexProperty = leaderVerts;
+        leaderLine->coordIndex.setValues(0, 3, leaderLineIdx);
+
+        auto* leaderStyle = new SoDrawStyle();
+        leaderStyle->lineWidth.setValue(1.0f);
+
+        auto* leaderColor = new SoBaseColor();
+        leaderColor->rgb.setValue(deltaAxisColors[i]);
+
+        auto* leaderSep = new SoSeparator();
+        leaderSep->addChild(leaderColor);
+        leaderSep->addChild(leaderStyle);
+        leaderSep->addChild(pDeltaLeaderCoords[i]);
+        leaderSep->addChild(leaderLine);
+
+        pDeltaLabel[i] = new Gui::SoFrameLabel();
+        pDeltaLabel[i]->ref();
+        pDeltaLabel[i]->justification = SoText2::CENTER;
+        pDeltaLabel[i]->textColor.setValue(deltaAxisColors[i]);
+        pDeltaLabel[i]->size.connectFrom(&fieldFontSize);
+        pDeltaLabel[i]->backgroundColor.setValue(1.0f, 1.0f, 1.0f);  // matches DimensionLinear default
+
+        auto* dragSep = new SoSeparator();
+        dragSep->addChild(pDeltaDragger[i]);
+
+        auto* labelPickStyle = new SoPickStyle();
+        labelPickStyle->style = SoPickStyle::SHAPE_ON_TOP;
+
+        auto* labelSep = new SoSeparator();
+        labelSep->addChild(labelPickStyle);
+        labelSep->addChild(dragSep);
+        labelSep->addChild(pDeltaLabelTranslation[i]);
+        labelSep->addChild(pDeltaLabel[i]);
+
+        auto* combinedSep = new SoSeparator();
+        combinedSep->addChild(leaderSep);
+        combinedSep->addChild(labelSep);
+
+        pDeltaLabelSwitch->addChild(combinedSep);
+    }
+
+    pRootSeparator->addChild(pDeltaLabelSwitch);
+
+    pDeltaLabelSwitch->whichChild.connectFrom(&pDeltaDimensionSwitch->whichChild);
+
+    // Make each label the drag handle via setPartAsPath("translator", ...).
+    for (int i = 0; i < 3; ++i) {
+        SoSearchAction sa;
+        sa.setInterest(SoSearchAction::FIRST);
+        sa.setSearchingAll(true);
+        sa.setNode(pDeltaLabel[i]);
+        sa.apply(pcRoot);
+        SoPath* path = sa.getPath();
+        if (path) {
+            pDeltaDragger[i]->setPartAsPath("translator", path);
+            pDeltaDragger[i]->setPart("translatorActive", nullptr);
+            pDeltaDragger[i]->setPart("xAxisFeedback", nullptr);
+            pDeltaDragger[i]->setPart("yAxisFeedback", nullptr);
+        }
+        else {
+            Base::Console().warning(
+                "ViewProviderMeasureDistance: delta label %d not found in scene graph; label will not be draggable.\n", i
+            );
+        }
+    }
+
 }
 
 ViewProviderMeasureDistance::~ViewProviderMeasureDistance()
@@ -526,11 +589,14 @@ ViewProviderMeasureDistance::~ViewProviderMeasureDistance()
     pCoords->unref();
     pLines->unref();
     pDeltaDimensionSwitch->unref();
-    pArrowTransformRight->unref();
-    pArrowTransformLeft->unref();
-    pArrowConeRight->unref();
-    pArrowConeLeft->unref();
     pArrowSwitch->unref();
+    for (int i = 0; i < 3; ++i) {
+        pDeltaDragger[i]->unref();
+        pDeltaLabelTranslation[i]->unref();
+        pDeltaLabel[i]->unref();
+        pDeltaLeaderCoords[i]->unref();
+    }
+    pDeltaLabelSwitch->unref();
 }
 
 
@@ -559,44 +625,65 @@ void ViewProviderMeasureDistance::redrawAnnotation()
     fieldPosition1.setValue(SbVec3f(vec1.x, vec1.y, vec1.z));
     fieldPosition2.setValue(SbVec3f(vec2.x, vec2.y, vec2.z));
 
-    // Set the distance
     fieldDistance = (vec2 - vec1).Length();
     const float distance = fieldDistance.getValue();
     const float ta = distance / 2.0f;
 
-    // Endpoints at ±half-distance along the local X axis (the measurement axis).
+    // Endpoints in local frame: ±half-distance along X axis.
     pCoords->point.set1Value(0, ta, 0.0f, 0.0f);
     pCoords->point.set1Value(1, -ta, 0.0f, 0.0f);
 
-    // Force an immediate geometry update; the per-frame callback only reacts to
-    // zoom changes, not to changes in the measured endpoint positions.
-    updateArrowSizes(vec1, vec2);
+    auto* propDistance = dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
+    if (propDistance) {
+        setLabelValue(QString::fromStdString(propDistance->getQuantityValue().getUserString()));
+    }
 
-    auto propDistance = dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
-    setLabelValue(propDistance->getQuantityValue().getUserString());
-
-    // Set delta distance
-    auto propDistanceX = static_cast<App::PropertyDistance*>(
+    auto* propDistanceX = dynamic_cast<App::PropertyDistance*>(
         getMeasureObject()->getPropertyByName("DistanceX")
     );
-    static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))
-        ->text.setValue(("Δx: " + propDistanceX->getQuantityValue().getUserString()).c_str());
+    if (propDistanceX) {
+        pDeltaLabel[0]->string.setValue(
+            ("Δx: " + propDistanceX->getQuantityValue().getUserString()).c_str()
+        );
+    }
 
-    auto propDistanceY = static_cast<App::PropertyDistance*>(
+    auto* propDistanceY = dynamic_cast<App::PropertyDistance*>(
         getMeasureObject()->getPropertyByName("DistanceY")
     );
-    static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))
-        ->text.setValue(("Δy: " + propDistanceY->getQuantityValue().getUserString()).c_str());
+    if (propDistanceY) {
+        pDeltaLabel[1]->string.setValue(
+            ("Δy: " + propDistanceY->getQuantityValue().getUserString()).c_str()
+        );
+    }
 
-    auto propDistanceZ = static_cast<App::PropertyDistance*>(
+    auto* propDistanceZ = dynamic_cast<App::PropertyDistance*>(
         getMeasureObject()->getPropertyByName("DistanceZ")
     );
-    static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
-        ->text.setValue(("Δz: " + propDistanceZ->getQuantityValue().getUserString()).c_str());
+    if (propDistanceZ) {
+        pDeltaLabel[2]->string.setValue(
+            ("Δz: " + propDistanceZ->getQuantityValue().getUserString()).c_str()
+        );
+    }
 
-    // Set matrix
     SbMatrix matrix = getMatrix();
     pcTransform->setMatrix(matrix);
+
+    // Anchor each leader at the midpoint of its delta segment, in local frame.
+    {
+        SbMatrix invMatrix = matrix.inverse();
+        SbVec3f p1 = fieldPosition1.getValue();
+        SbVec3f p2 = fieldPosition2.getValue();
+        SbVec3f worldMids[3] = {
+            SbVec3f((p1[0] + p2[0]) * 0.5f, p1[1], p1[2]),
+            SbVec3f(p2[0], (p1[1] + p2[1]) * 0.5f, p1[2]),
+            SbVec3f(p2[0], p2[1], (p1[2] + p2[2]) * 0.5f),
+        };
+        for (int i = 0; i < 3; ++i) {
+            SbVec3f localMid;
+            invMatrix.multVecMatrix(worldMids[i], localMid);
+            pDeltaLeaderCoords[i]->point.set1Value(0, localMid);
+        }
+    }
 
     ViewProviderMeasureBase::redrawAnnotation();
     updateView();
@@ -609,33 +696,20 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
         pDeltaDimensionSwitch->whichChild.setValue(
             ShowDelta.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE
         );
+        // pDeltaLabelSwitch follows via field connection.
     }
     else if (prop == &ShowArrows) {
-        pArrowSwitch->whichChild.setValue(ShowArrows.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE);
-        if (ShowArrows.getValue()) {
-            // Invalidate the cached scale so the next render pass recalculates sizes.
-            _lastArrowViewScale = -1.0f;
-        }
-        else {
-            clearArrows();
-        }
+        pArrowSwitch->whichChild.setValue(
+            ShowArrows.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE
+        );
     }
     else if (prop == &ArrowSize) {
-        // Clamp to [0.1, 10.0]; bail early to avoid a recursive onChanged call.
         const double clamped = std::clamp(ArrowSize.getValue(), 0.1, 10.0);
         if (clamped != ArrowSize.getValue()) {
             ArrowSize.setValue(clamped);
             return;
         }
-        SbVec3f p1v = fieldPosition1.getValue();
-        SbVec3f p2v = fieldPosition2.getValue();
-        if ((p2v - p1v).length() >= 1e-10f) {
-            updateArrowSizes(
-                Base::Vector3d(p1v[0], p1v[1], p1v[2]),
-                Base::Vector3d(p2v[0], p2v[1], p2v[2])
-            );
-            updateView();
-        }
+        updateView();
     }
     else if (prop == &TextBackgroundColor) {
         auto bColor = TextBackgroundColor.getValue();
@@ -645,6 +719,9 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
             ->backgroundColor.setValue(bColor.r, bColor.g, bColor.b);
         static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
             ->backgroundColor.setValue(bColor.r, bColor.g, bColor.b);
+        for (int i = 0; i < 3; ++i) {
+            pDeltaLabel[i]->backgroundColor.setValue(bColor.r, bColor.g, bColor.b);
+        }
     }
 
     ViewProviderMeasureBase::onChanged(prop);
@@ -653,119 +730,86 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
 
 void ViewProviderMeasureDistance::arrowSizeCallback(void* data, SoAction* action)
 {
-    // Only GL render actions provide a valid camera context for computing view scale;
-    // pick actions, bounding-box queries, etc. do not and must be ignored.
     if (!action->isOfType(SoGLRenderAction::getClassTypeId())) {
         return;
     }
-    static_cast<ViewProviderMeasureDistance*>(data)->updateArrowSizesFromCamera();
+    auto* vp = static_cast<ViewProviderMeasureDistance*>(data);
+    vp->drawArrowheads(action->getState());
 }
 
-void ViewProviderMeasureDistance::updateArrowSizesFromCamera()
+void ViewProviderMeasureDistance::drawArrowheads(SoState* state)
 {
     if (!pcObject) {
         return;
     }
-
-    float viewScale = getViewScale();
-
-    // 0.1% threshold avoids invalidating the scene graph on every stationary frame.
-    if (_lastArrowViewScale > 0.0f
-        && std::fabs(viewScale - _lastArrowViewScale) < _lastArrowViewScale * 0.001f) {
-        return;
-    }
-    _lastArrowViewScale = viewScale;
-
     SbVec3f p1v = fieldPosition1.getValue();
     SbVec3f p2v = fieldPosition2.getValue();
-    if ((p2v - p1v).length() < 1e-10f) {
+    SbVec3f diff = p2v - p1v;
+    if (diff.length() < 1e-10f) {
         return;
     }
 
-    Base::Vector3d p1(p1v[0], p1v[1], p1v[2]);
-    Base::Vector3d p2(p2v[0], p2v[1], p2v[2]);
-    updateArrowSizes(p1, p2);
-}
+    // world units per pixel at focal distance, same as SoDatumLabel
+    const SbViewVolume& vv  = SoViewVolumeElement::get(state);
+    const SbViewportRegion& vpr = SoViewportRegionElement::get(state);
+    SbVec2s vpSize = vpr.getViewportSizePixels();
+    float focal    = SoFocalDistanceElement::get(state);
+    SbVec3f focal_pt = vv.getSightPoint(focal);
+    float scalePx  = vv.getWorldToScreenScale(focal_pt, 1.0F) / float(vpSize[0]);
 
+    const float arrowH = scalePx * 14.0f * static_cast<float>(ArrowSize.getValue());
+    const float halfW  = arrowH * 0.4f;
 
-void ViewProviderMeasureDistance::updateArrowSizes(
-    const Base::Vector3d& point1,
-    const Base::Vector3d& point2
-)
-{
-    if (!pArrowConeRight || !pArrowConeLeft || !pArrowTransformRight || !pArrowTransformLeft) {
-        return;
+    SbVec3f dir = diff;
+    dir.normalize();
+
+    SbVec3f projDir  = vv.getProjectionDirection();
+    SbVec3f camUp    = vv.getViewUp();
+    SbVec3f camRight = projDir.cross(camUp);
+    camRight.normalize();
+    camUp.normalize();
+
+    float sdx = dir.dot(camRight);
+    float sdy = dir.dot(camUp);
+    SbVec3f perp = camRight * (-sdy) + camUp * sdx;
+    if (perp.length() < 1e-6f) {
+        perp = camRight;
     }
+    perp.normalize();
 
-    const float arrowH = getArrowHeight();
-    const float arrowR = arrowH * 0.35f;
+    glPushAttrib(GL_ENABLE_BIT | GL_CURRENT_BIT);
+    glDisable(GL_LIGHTING);
+    glColor3f(1.0f, 1.0f, 1.0f);
 
-    Base::Vector3d dir = point2 - point1;
-    // Guard against zero-length direction before normalizing.
-    if (dir.Length() > 1e-10) {
-        dir.Normalize();
-    }
-
-    const SbVec3f fromY(0.0f, 1.0f, 0.0f);
-    // SbRotation(from, to) is undefined when vectors are antiparallel;
-    // fall back to an explicit 180° rotation around X to handle the -Y direction.
-    auto makeRot = [&](float dx, float dy, float dz) -> SbRotation {
-        SbVec3f to(dx, dy, dz);
-        return (to.dot(fromY) < -0.9999f)
-            ? SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), static_cast<float>(M_PI))
-            : SbRotation(fromY, to);
+    auto drawArrow = [&](const SbVec3f& tip, const SbVec3f& awayDir) {
+        SbVec3f base  = tip + awayDir * arrowH;
+        SbVec3f left  = base - perp * halfW;
+        SbVec3f right = base + perp * halfW;
+        glBegin(GL_TRIANGLES);
+        glVertex3f(tip[0],   tip[1],   tip[2]);
+        glVertex3f(left[0],  left[1],  left[2]);
+        glVertex3f(right[0], right[1], right[2]);
+        glEnd();
     };
 
-    // Translate each cone by halfH so its tip aligns exactly with the measured endpoint.
-    const float halfH = arrowH * 0.5f;
+    drawArrow(p2v, -dir);
+    drawArrow(p1v,  dir);
 
-    pArrowConeRight->height.setValue(arrowH);
-    pArrowConeRight->bottomRadius.setValue(arrowR);
-    pArrowTransformRight->rotation.setValue(makeRot(dir.x, dir.y, dir.z));
-    pArrowTransformRight->translation.setValue(
-        static_cast<float>(point2.x) - dir.x * halfH,
-        static_cast<float>(point2.y) - dir.y * halfH,
-        static_cast<float>(point2.z) - dir.z * halfH
-    );
-
-    pArrowConeLeft->height.setValue(arrowH);
-    pArrowConeLeft->bottomRadius.setValue(arrowR);
-    pArrowTransformLeft->rotation.setValue(makeRot(-dir.x, -dir.y, -dir.z));
-    pArrowTransformLeft->translation.setValue(
-        static_cast<float>(point1.x) + dir.x * halfH,
-        static_cast<float>(point1.y) + dir.y * halfH,
-        static_cast<float>(point1.z) + dir.z * halfH
-    );
-}
-
-
-float ViewProviderMeasureDistance::getArrowHeight()
-{
-    // 3% of the viewport world-unit extent, scaled by ArrowSize.
-    return getViewScale() * 0.03f * static_cast<float>(ArrowSize.getValue());
-}
-
-
-void ViewProviderMeasureDistance::clearArrows()
-{
-    // Zero out cone dimensions so no residual geometry lingers while arrows are hidden.
-    if (!pArrowConeRight || !pArrowConeLeft || !pArrowTransformRight || !pArrowTransformLeft) {
-        return;
-    }
-    pArrowConeRight->height.setValue(0.0f);
-    pArrowConeRight->bottomRadius.setValue(0.0f);
-    pArrowConeLeft->height.setValue(0.0f);
-    pArrowConeLeft->bottomRadius.setValue(0.0f);
-    pArrowTransformRight->translation.setValue(0.0f, 0.0f, 0.0f);
-    pArrowTransformLeft->translation.setValue(0.0f, 0.0f, 0.0f);
-    _lastArrowViewScale = -1.0f;  // force recalculation when arrows are re-enabled.
+    glPopAttrib();
 }
 
 
 void ViewProviderMeasureDistance::onLabelMoved()
+{}
+
+
+
+void ViewProviderMeasureDistance::finishRestoring()
 {
-    updateView();  // redraw after the user drags the label to a new position.
+    ViewProviderMeasureBase::finishRestoring();
+    initDeltaLabelPositions();
 }
+
 
 
 void ViewProviderMeasureDistance::positionAnno(const Measure::MeasureBase* measureObject)
@@ -786,7 +830,6 @@ void ViewProviderMeasureDistance::positionAnno(const Measure::MeasureBase* measu
     auto vec2 = prop2->getValue();
     Base::Vector3d diff = vec2 - vec1;
 
-    // Coincident points produce a zero-length diff; skip to avoid undefined direction vectors.
     if (diff.Length() < 1e-10) {
         return;
     }
@@ -798,10 +841,56 @@ void ViewProviderMeasureDistance::positionAnno(const Measure::MeasureBase* measu
     float bboxExtent = static_cast<float>(
         std::max({std::abs(diff.x), std::abs(diff.y), std::abs(diff.z)})
     );
-    // Offset perpendicular to the measurement axis by 70% of the longest component,
-    // with a viewport-scale floor to keep the label readable at any zoom level.
     float offset = std::max(bboxExtent * 0.7f, 0.15f * getViewScale());
     Base::Vector3d textPos = midpoint + localYAxis * offset;
     setLabelTranslation(SbVec3f(textPos.x, textPos.y, textPos.z));
+    initDeltaLabelPositions();
     updateView();
+}
+
+
+void ViewProviderMeasureDistance::initDeltaLabelPositions()
+{
+    if (!pcObject) {
+        return;
+    }
+
+    auto prop1 = freecad_cast<App::PropertyVector*>(pcObject->getPropertyByName("Position1"));
+    auto prop2 = freecad_cast<App::PropertyVector*>(pcObject->getPropertyByName("Position2"));
+    if (!prop1 || !prop2) {
+        return;
+    }
+
+    auto vec1 = prop1->getValue();
+    auto vec2 = prop2->getValue();
+    if ((vec2 - vec1).Length() < 1e-10) {
+        return;
+    }
+
+    SbMatrix invMatrix = getMatrix().inverse();
+    float x1 = static_cast<float>(vec1.x);
+    float y1 = static_cast<float>(vec1.y);
+    float z1 = static_cast<float>(vec1.z);
+    float x2 = static_cast<float>(vec2.x);
+    float y2 = static_cast<float>(vec2.y);
+    float z2 = static_cast<float>(vec2.z);
+
+    SbVec3f worldMids[3] = {
+        SbVec3f((x1 + x2) * 0.5f, y1, z1),
+        SbVec3f(x2, (y1 + y2) * 0.5f, z1),
+        SbVec3f(x2, y2, (z1 + z2) * 0.5f),
+    };
+
+    Base::Vector3d diff = vec2 - vec1;
+    float bboxExtent = static_cast<float>(
+        std::max({std::abs(diff.x), std::abs(diff.y), std::abs(diff.z)})
+    );
+    float offset = std::max(bboxExtent * 0.5f, 0.1f * getViewScale());
+
+    for (int i = 0; i < 3; ++i) {
+        SbVec3f localMid;
+        invMatrix.multVecMatrix(worldMids[i], localMid);
+        localMid[1] += offset;  // perpendicular offset in local Y
+        pDeltaDragger[i]->translation.setValue(localMid);
+    }
 }
