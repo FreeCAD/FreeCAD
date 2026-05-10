@@ -243,7 +243,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Make the line a little longer.</string>
+           <string>Extends the line by the specified amount beyond its natural endpoints</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
