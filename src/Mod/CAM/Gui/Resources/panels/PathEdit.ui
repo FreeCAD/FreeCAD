@@ -347,12 +347,15 @@
            <item row="1" column="0" colspan="2">
             <widget class="QPushButton" name="pickTargetToggle">
              <property name="text">
-              <string>Picking: Stock</string>
+              <string>Picking: Model</string>
              </property>
              <property name="toolTip">
-              <string>Toggle whether origin/axis picks target the Stock (default) or the Model. Useful when Stock and Model overlap and the desired vertex is hidden.</string>
+              <string>Toggle whether origin/axis picks target the Model (default) or the Stock. Useful when Stock and Model overlap and the desired vertex is hidden.</string>
              </property>
              <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
               <bool>true</bool>
              </property>
             </widget>

@@ -1757,6 +1757,7 @@ class TaskPanel:
         self.form.setOrigin.clicked.connect(self.alignSetOrigin)
         self.form.moveToOrigin.clicked.connect(self.alignMoveToOrigin)
         self.form.pickTargetToggle.toggled.connect(self.togglePickTarget)
+        self.togglePickTarget(self.form.pickTargetToggle.isChecked())
 
         self.form.modelMoveLeftUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 1, 0)))
         self.form.modelMoveLeft.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 0, 0)))
