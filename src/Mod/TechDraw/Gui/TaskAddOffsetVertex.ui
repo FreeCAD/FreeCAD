@@ -56,7 +56,7 @@
         <item row="0" column="1">
          <widget class="QDoubleSpinBox" name="dSpinBoxX">
           <property name="toolTip">
-           <string>Enter X offset value</string>
+           <string>The X offset distance from the source vertex</string>
           </property>
           <property name="minimum">
            <double>-900.000000000000000</double>
