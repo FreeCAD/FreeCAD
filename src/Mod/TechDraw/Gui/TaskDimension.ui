@@ -377,7 +377,7 @@ by negative value of 'Overtolerance'.</string>
         <item row="1" column="0">
          <widget class="QPushButton" name="pbDimUseDefault">
           <property name="toolTip">
-           <string>Set dimension line angle to default (orthographic view)</string>
+           <string>Resets the dimension line angle to the default orthographic value</string>
           </property>
           <property name="text">
            <string>Use Default</string>
