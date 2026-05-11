@@ -273,6 +273,7 @@ public:
      *
      * @return The full name of the object.
      */
+    [[deprecated("getFullNameLabel() is deprecated use getFullNameLabel() instead.")]]
     std::string getFullName() const override;
 
     /**
@@ -282,6 +283,7 @@ public:
      *
      * @return The full label of the object.
      */
+    [[deprecated("getFullLabel() is deprecated use getFullNameLabel() instead.")]]
     std::string getFullLabel() const;
 
     /**
