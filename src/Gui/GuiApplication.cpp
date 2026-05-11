@@ -40,6 +40,7 @@
 #include <QFileOpenEvent>
 #include <QSessionManager>
 #include <QTimer>
+#include <QUrl>
 
 
 #include <QLocalServer>
@@ -57,6 +58,23 @@
 
 
 using namespace Gui;
+
+namespace
+{
+QString toOpenFileMessage(QFileOpenEvent* event)
+{
+    QString file = event->file();
+    if (file.isEmpty()) {
+        file = event->url().toLocalFile();
+    }
+
+    if (file.isEmpty()) {
+        return {};
+    }
+
+    return QStringLiteral("OpenFile:") + file;
+}
+}  // namespace
 
 GUIApplication::GUIApplication(int& argc, char** argv)
     : GUIApplicationNativeEventAware(argc, argv)
@@ -274,6 +292,13 @@ public:
     QString serverName;
     QList<QString> messages;
     bool running {false};
+
+    void queueMessage(const QString& message, int delay = 1000)
+    {
+        timer->stop();
+        messages.push_back(message);
+        timer->start(delay);
+    }
 };
 
 GUISingleApplication::GUISingleApplication(int& argc, char** argv)
@@ -327,6 +352,19 @@ bool GUISingleApplication::sendMessage(const QString& message, int timeout)
     return socket.waitForBytesWritten(timeout);
 }
 
+bool GUISingleApplication::event(QEvent* ev)
+{
+    if (ev->type() == QEvent::FileOpen) {
+        QString message = toOpenFileMessage(static_cast<QFileOpenEvent*>(ev));
+        if (!message.isEmpty()) {
+            d_ptr->queueMessage(message);
+            return true;
+        }
+    }
+
+    return GUIApplication::event(ev);
+}
+
 void GUISingleApplication::readFromSocket()
 {
     auto socket = qobject_cast<QLocalSocket*>(sender());
@@ -338,11 +376,9 @@ void GUISingleApplication::readFromSocket()
         in.setEncoding(QStringConverter::Utf8);
 #endif
         while (socket->canReadLine()) {
-            d_ptr->timer->stop();
             QString message = in.readLine();
             Base::Console().log("Received message: %s\n", message.toStdString());
-            d_ptr->messages.push_back(message);
-            d_ptr->timer->start(1000);
+            d_ptr->queueMessage(message);
         }
     }
 }
@@ -360,6 +396,15 @@ void GUISingleApplication::receiveConnection()
 
 void GUISingleApplication::processMessages()
 {
+    if (d_ptr->messages.empty()) {
+        return;
+    }
+
+    if (!Gui::getMainWindow() || !Gui::getMainWindow()->property("eventLoop").toBool()) {
+        d_ptr->timer->start(100);
+        return;
+    }
+
     QList<QString> msg = d_ptr->messages;
     d_ptr->messages.clear();
     Q_EMIT messageReceived(msg);

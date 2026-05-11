@@ -70,6 +70,9 @@ public:
     bool isRunning() const;
     bool sendMessage(const QString& message, int timeout = 5000);
 
+protected:
+    bool event(QEvent* event) override;
+
 private Q_SLOTS:
     void receiveConnection();
     void processMessages();
