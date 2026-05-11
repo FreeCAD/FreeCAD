@@ -199,7 +199,7 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
 
         auto faces = shape.findAncestorsShapes(subshape, TopAbs_FACE);
         if (faces.size() != 2) {
-            FC_WARN(getFullName() << ": skip edge " << ref_name << " with less two attaching faces");
+            FC_WARN(getFullName() << ": skip edge " << refName << " with less two attaching faces");
             return;
         }
         const TopoDS_Shape& face1 = faces.front();
@@ -207,7 +207,7 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
         GeomAbs_Shape cont
             = BRep_Tool::Continuity(TopoDS::Edge(subshape), TopoDS::Face(face1), TopoDS::Face(face2));
         if (cont != GeomAbs_C0) {
-            FC_WARN(getFullName() << ": skip edge " << ref_name << " that is not C0 continuous");
+            FC_WARN(getFullName() << ": skip edge " << refName << " that is not C0 continuous");
             return;
         }
         ret.push_back(subshape);
