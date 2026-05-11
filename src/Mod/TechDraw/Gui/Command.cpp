@@ -96,6 +96,25 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 using DU = DrawUtil;
 
+namespace
+{
+
+void stackViewOnTop(Gui::Command* cmd, const std::string& viewName)
+{
+    auto* guiDoc = Gui::Application::Instance->getDocument(cmd->getDocument());
+    if (!guiDoc) {
+        return;
+    }
+
+    auto* viewProvider = dynamic_cast<ViewProviderDrawingView*>(
+        guiDoc->getViewProviderByName(viewName.c_str()));
+    if (viewProvider) {
+        viewProvider->stackTop();
+    }
+}
+
+}  // namespace
+
 //===========================================================================
 // TechDraw_PageDefault
 //===========================================================================
@@ -455,9 +474,11 @@ void CmdTechDrawView::activated(int iMsg)
                 filterList);
 
             if (!filename.isEmpty()) {
+                std::string svgSymbolName;
                 if (filename.endsWith(QStringLiteral(".svg"), Qt::CaseInsensitive)
                     || filename.endsWith(QStringLiteral(".svgz"), Qt::CaseInsensitive)) {
                     std::string FeatName = getUniqueObjectName("Symbol");
+                    svgSymbolName = FeatName;
                     auto filespec = DU::cleanFilespecBackslash(
                         Base::Tools::escapeEncodeFilename(filename.toStdString()));
                     openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
@@ -496,6 +517,9 @@ void CmdTechDrawView::activated(int iMsg)
                 }
 
                 updateActive();
+                if (!svgSymbolName.empty()) {
+                    stackViewOnTop(this, svgSymbolName);
+                }
                 commitCommand();
             }
         }
@@ -1592,6 +1616,9 @@ void CmdTechDrawSymbol::activated(int iMsg)
                   FeatName.c_str());
 
         updateActive();
+        if (!baseView) {
+            stackViewOnTop(this, FeatName);
+        }
         commitCommand();
     }
 }
@@ -2107,4 +2134,3 @@ Base::Vector3d checkDirectionVsBasis(Base::Vector3d dir)
     return dir;
 
 }
-
