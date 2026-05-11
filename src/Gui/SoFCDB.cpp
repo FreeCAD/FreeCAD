@@ -21,17 +21,24 @@
  ***************************************************************************/
 
 
+#include <cmath>
+#include <cstdint>
+#include <list>
 #include <Inventor/SbSphere.h>
 #include <Inventor/SbString.h>
+#include <Inventor/SoFullPath.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/fields/SoMFNode.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/nodes/SoGroup.h>
+#include <Inventor/VRMLnodes/SoVRMLAppearance.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
+#include <Inventor/VRMLnodes/SoVRMLMaterial.h>
 #include <Inventor/VRMLnodes/SoVRMLNormal.h>
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
 #include <Inventor/VRMLnodes/SoVRMLShape.h>
@@ -39,6 +46,8 @@
 #include <QProcess>
 #include <QTemporaryFile>
 #include <sstream>
+#include <utility>
+#include <vector>
 
 
 #include <Base/FileInfo.h>
@@ -300,6 +309,294 @@ const std::string& Gui::SoFCDB::writeNodesToString(SoNode* root)
     return cReturnString;
 }
 
+struct IndexRange
+{
+    int start;
+    int end;
+};
+
+struct FaceSubset
+{
+    float transparency;
+    std::vector<int> faces;
+};
+
+struct ShapeReplacement
+{
+    SoVRMLParent* parent;
+    SoVRMLShape* shape;
+    SoVRMLGroup* group;
+};
+
+bool isSameTransparency(float lhs, float rhs)
+{
+    return std::abs(lhs - rhs) <= 1e-6F;
+}
+
+std::vector<IndexRange> getIndexFaceRanges(const SoMFInt32& index)
+{
+    std::vector<IndexRange> ranges;
+    int start = 0;
+    int count = index.getNum();
+
+    for (int i = 0; i < count; i++) {
+        if (index[i] < 0) {
+            if (i > start) {
+                ranges.push_back({start, i});
+            }
+            start = i + 1;
+        }
+    }
+    if (start < count) {
+        ranges.push_back({start, count});
+    }
+
+    return ranges;
+}
+
+void setInt32Values(SoMFInt32& field, const std::vector<int32_t>& values)
+{
+    field.setNum(static_cast<int>(values.size()));
+    if (!values.empty()) {
+        field.setValues(0, static_cast<int>(values.size()), values.data());
+    }
+}
+
+void copyPerVertexIndexField(
+    const SoMFInt32& source,
+    SoMFInt32& target,
+    const std::vector<int>& faces
+)
+{
+    const auto ranges = getIndexFaceRanges(source);
+    if (ranges.empty()) {
+        target.setNum(0);
+        return;
+    }
+
+    std::vector<int32_t> values;
+    for (int face : faces) {
+        if (face < 0 || face >= static_cast<int>(ranges.size())) {
+            continue;
+        }
+        const auto& range = ranges[face];
+        for (int i = range.start; i < range.end; i++) {
+            values.push_back(source[i]);
+        }
+        values.push_back(-1);
+    }
+
+    setInt32Values(target, values);
+}
+
+void copyPerFaceIndexField(
+    const SoMFInt32& source,
+    SoMFInt32& target,
+    const std::vector<int>& faces
+)
+{
+    std::vector<int32_t> values;
+    values.reserve(faces.size());
+    for (int face : faces) {
+        if (face >= 0 && face < source.getNum()) {
+            values.push_back(source[face]);
+        }
+    }
+
+    setInt32Values(target, values);
+}
+
+void setImplicitPerFaceIndexField(SoMFInt32& target, const std::vector<int>& faces)
+{
+    std::vector<int32_t> values;
+    values.reserve(faces.size());
+    for (int face : faces) {
+        values.push_back(face);
+    }
+
+    setInt32Values(target, values);
+}
+
+void copyIndexedFaceSetSubset(
+    const SoVRMLIndexedFaceSet* source,
+    SoVRMLIndexedFaceSet* target,
+    const std::vector<int>& faces
+)
+{
+    copyPerVertexIndexField(source->coordIndex, target->coordIndex, faces);
+
+    if (source->colorIndex.getNum() > 0) {
+        if (source->colorPerVertex.getValue()) {
+            copyPerVertexIndexField(source->colorIndex, target->colorIndex, faces);
+        }
+        else {
+            copyPerFaceIndexField(source->colorIndex, target->colorIndex, faces);
+        }
+    }
+    else if (!source->colorPerVertex.getValue() && source->color.getValue()) {
+        setImplicitPerFaceIndexField(target->colorIndex, faces);
+    }
+    else {
+        target->colorIndex.setNum(0);
+    }
+
+    if (source->normalIndex.getNum() > 0) {
+        if (source->normalPerVertex.getValue()) {
+            copyPerVertexIndexField(source->normalIndex, target->normalIndex, faces);
+        }
+        else {
+            copyPerFaceIndexField(source->normalIndex, target->normalIndex, faces);
+        }
+    }
+    else if (!source->normalPerVertex.getValue() && source->normal.getValue()) {
+        setImplicitPerFaceIndexField(target->normalIndex, faces);
+    }
+    else {
+        target->normalIndex.setNum(0);
+    }
+
+    if (source->texCoordIndex.getNum() > 0) {
+        copyPerVertexIndexField(source->texCoordIndex, target->texCoordIndex, faces);
+    }
+    else {
+        target->texCoordIndex.setNum(0);
+    }
+}
+
+SoVRMLAppearance* copyAppearanceWithTransparency(SoNode* sourceAppearance, float transparency)
+{
+    SoVRMLAppearance* appearance = nullptr;
+    if (sourceAppearance
+        && sourceAppearance->getTypeId().isDerivedFrom(SoVRMLAppearance::getClassTypeId())) {
+        appearance = static_cast<SoVRMLAppearance*>(sourceAppearance->copy(FALSE));
+    }
+    else {
+        appearance = new SoVRMLAppearance;
+    }
+
+    SoNode* sourceMaterial = appearance->material.getValue();
+    SoVRMLMaterial* material = nullptr;
+    if (sourceMaterial
+        && sourceMaterial->getTypeId().isDerivedFrom(SoVRMLMaterial::getClassTypeId())) {
+        material = static_cast<SoVRMLMaterial*>(sourceMaterial->copy(FALSE));
+    }
+    else {
+        material = new SoVRMLMaterial;
+    }
+
+    material->transparency = transparency;
+    appearance->material.setValue(material);
+    return appearance;
+}
+
+std::vector<FaceSubset> buildTransparencySubsets(const std::vector<float>& transparencies)
+{
+    std::vector<FaceSubset> subsets;
+    for (int face = 0; face < static_cast<int>(transparencies.size()); face++) {
+        float transparency = transparencies[face];
+        if (subsets.empty() || !isSameTransparency(subsets.back().transparency, transparency)) {
+            subsets.push_back({transparency, {}});
+        }
+        subsets.back().faces.push_back(face);
+    }
+
+    return subsets;
+}
+
+SoVRMLShape* copyShapeSubset(
+    const SoVRMLShape* sourceShape,
+    const SoVRMLIndexedFaceSet* sourceGeometry,
+    const FaceSubset& subset
+)
+{
+    auto shape = new SoVRMLShape;
+    shape->copyFieldValues(sourceShape);
+    shape->appearance.setValue(
+        copyAppearanceWithTransparency(sourceShape->appearance.getValue(), subset.transparency)
+    );
+
+    auto geometry = static_cast<SoVRMLIndexedFaceSet*>(sourceGeometry->copy(FALSE));
+    copyIndexedFaceSetSubset(sourceGeometry, geometry, subset.faces);
+    shape->geometry.setValue(geometry);
+    return shape;
+}
+
+SoVRMLGroup* splitShapeByTransparency(
+    const SoVRMLShape* shape,
+    const SoVRMLIndexedFaceSet* geometry,
+    const std::vector<float>& transparencies
+)
+{
+    const auto subsets = buildTransparencySubsets(transparencies);
+    if (subsets.size() < 2) {
+        return nullptr;
+    }
+
+    auto group = new SoVRMLGroup;
+    for (const auto& subset : subsets) {
+        group->addChild(copyShapeSubset(shape, geometry, subset));
+    }
+
+    return group;
+}
+
+void applyFaceTransparencyToVRML(
+    SoVRMLGroup* vrmlRoot,
+    const std::list<std::vector<float>>& transparencySets
+)
+{
+    if (transparencySets.empty()) {
+        return;
+    }
+
+    SoSearchAction sa;
+    sa.setType(SoVRMLShape::getClassTypeId());
+    sa.setInterest(SoSearchAction::ALL);
+    sa.setSearchingAll(true);
+    sa.apply(vrmlRoot);
+
+    auto transparencySet = transparencySets.begin();
+    std::vector<ShapeReplacement> replacements;
+    SoPathList& paths = sa.getPaths();
+    for (int i = 0; i < paths.getLength() && transparencySet != transparencySets.end(); i++) {
+        auto path = static_cast<SoFullPath*>(paths[i]);
+        if (path->getLength() < 2) {
+            continue;
+        }
+
+        auto shape = static_cast<SoVRMLShape*>(path->getTail());
+        SoNode* geometryNode = shape->geometry.getValue();
+        if (!geometryNode
+            || !geometryNode->getTypeId().isDerivedFrom(SoVRMLIndexedFaceSet::getClassTypeId())) {
+            continue;
+        }
+
+        auto geometry = static_cast<SoVRMLIndexedFaceSet*>(geometryNode);
+        int faceCount = static_cast<int>(getIndexFaceRanges(geometry->coordIndex).size());
+        if (faceCount != static_cast<int>(transparencySet->size())) {
+            continue;
+        }
+
+        SoNode* parentNode = path->getNodeFromTail(1);
+        if (!parentNode
+            || !parentNode->getTypeId().isDerivedFrom(SoVRMLParent::getClassTypeId())) {
+            ++transparencySet;
+            continue;
+        }
+
+        SoVRMLGroup* group = splitShapeByTransparency(shape, geometry, *transparencySet);
+        if (group) {
+            replacements.push_back({static_cast<SoVRMLParent*>(parentNode), shape, group});
+        }
+        ++transparencySet;
+    }
+    sa.reset();
+
+    for (const auto& replacement : replacements) {
+        replacement.parent->replaceChild(replacement.shape, replacement.group);
+    }
+}
+
 SoNode* replaceSwitches(SoNodeList* children, SoGroup* parent)
 {
     if (!children) {
@@ -369,6 +666,7 @@ void Gui::SoFCDB::writeToVRML(SoNode* node, std::string& buffer)
     tovrml2.apply(noSwitches);
     SoVRMLGroup* vrmlRoot = tovrml2.getVRML2SceneGraph();
 
+    applyFaceTransparencyToVRML(vrmlRoot, vrml2.getFaceTransparencySets());
     vrmlRoot->setInstancePrefix(SbString("o"));
     vrmlRoot->ref();
     buffer = SoFCDB::writeNodesToString(vrmlRoot);

@@ -4,8 +4,11 @@
 # test to check color per face when after restore
 
 import FreeCAD as App
+import FreeCADGui as Gui
+import io
 import Part
 import os
+import re
 import tempfile
 import unittest
 from BOPTools import BOPFeatures
@@ -129,6 +132,25 @@ class ColorPerFaceTest(unittest.TestCase):
 
         mat = paths.get(1).getTail()
         self.assertEqual(mat.diffuseColor.getNum(), 6)
+
+    def testVRMLExportKeepsPerFaceTransparency(self):
+        box = self.doc.addObject("Part::Box", "Box")
+        self.doc.recompute()
+
+        box.ViewObject.DiffuseColor = [
+            (1.0, 0.0, 0.0, 1.0),
+            (0.0, 1.0, 0.0, 0.5),
+            (0.0, 0.0, 1.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+            (1.0, 0.0, 1.0, 1.0),
+            (0.0, 1.0, 1.0, 1.0),
+        ]
+
+        buffer = io.StringIO()
+        Gui.exportSubgraph(box.ViewObject.RootNode, buffer, "VRML")
+        vrml = buffer.getvalue()
+
+        self.assertRegex(vrml, re.compile(r"transparency\s+0\.5(?:0+)?(?:\D|$)"))
 
     def testMultiFuse(self):
         """

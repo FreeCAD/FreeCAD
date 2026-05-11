@@ -31,8 +31,10 @@
 #endif
 
 #include <algorithm>
+#include <cmath>
 #include <limits>
 #include <map>
+#include <utility>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -348,6 +350,35 @@ void SoBrepFaceSet::doAction(SoAction* action)
             int numParts = partIndex.getNum();
             if (mat) {
                 numColor = mat->getNumDiffuse();
+                const float* transparencies = mat->getTransparencyPointer();
+                int numTransparencies = mat->getNumTransparencies();
+                if (numParts > 1 && transparencies && numTransparencies > 0) {
+                    const int32_t* indices = this->partIndex.getValues(0);
+                    std::vector<float> faceTransparencies;
+                    int numFaces = 0;
+                    for (int i = 0; i < numParts; i++) {
+                        numFaces += indices[i];
+                    }
+                    faceTransparencies.reserve(numFaces);
+
+                    bool hasDifferentTransparency = false;
+                    float firstTransparency = transparencies[0];
+                    for (int i = 0; i < numParts; i++) {
+                        float transparency =
+                            i < numTransparencies ? transparencies[i] : firstTransparency;
+                        hasDifferentTransparency = hasDifferentTransparency
+                            || std::abs(transparency - firstTransparency) > 1e-6F;
+                        for (int j = 0; j < indices[i]; j++) {
+                            faceTransparencies.push_back(transparency);
+                        }
+                    }
+
+                    if (hasDifferentTransparency) {
+                        static_cast<Gui::SoVRMLAction*>(action)->addFaceTransparencySet(
+                            std::move(faceTransparencies)
+                        );
+                    }
+                }
                 if (numColor == numParts) {
                     int count = 0;
                     const int32_t* indices = this->partIndex.getValues(0);

@@ -23,6 +23,8 @@
 
 #include <FCConfig.h>
 
+#include <utility>
+
 #include <Inventor/SoFullPath.h>
 #include <Inventor/SoPickedPoint.h>
 
@@ -1279,6 +1281,16 @@ void SoVRMLAction::setOverrideMode(SbBool on)
 SbBool SoVRMLAction::isOverrideMode() const
 {
     return overrideMode;
+}
+
+void SoVRMLAction::addFaceTransparencySet(std::vector<float> transparency)
+{
+    faceTransparencySets.emplace_back(std::move(transparency));
+}
+
+const std::list<std::vector<float>>& SoVRMLAction::getFaceTransparencySets() const
+{
+    return faceTransparencySets;
 }
 
 void SoVRMLAction::callDoAction(SoAction* action, SoNode* node)

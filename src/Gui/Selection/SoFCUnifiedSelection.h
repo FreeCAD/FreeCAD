@@ -575,12 +575,15 @@ public:
     ~SoVRMLAction() override;
     void setOverrideMode(SbBool);
     SbBool isOverrideMode() const;
+    void addFaceTransparencySet(std::vector<float> transparency);
+    const std::list<std::vector<float>>& getFaceTransparencySets() const;
 
     static void initClass();
 
 private:
     SbBool overrideMode {true};
     std::list<int> bindList;
+    std::list<std::vector<float>> faceTransparencySets;
     static void callDoAction(SoAction* action, SoNode* node);
 };
 
