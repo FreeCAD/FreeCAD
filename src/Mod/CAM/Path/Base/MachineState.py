@@ -38,15 +38,23 @@ else:
 
 class MachineState:
     Tracked = [
-        "X", "Y", "Z", "A", "B", "C", "F", "S", "T",
-        "Coolant", # true/false for on/off
-        "WCS", # work-coordinate system Gcode
-        "Spindle", # rpms
-        "ReturnMode", # Z(G98) or R(G99) for drills
-        "G0F", # F for G0's, distinct from all other move F. all G0's should have an F now.
+        "X",
+        "Y",
+        "Z",
+        "A",
+        "B",
+        "C",
+        "F",
+        "S",
+        "T",
+        "Coolant",  # true/false for on/off
+        "WCS",  # work-coordinate system Gcode
+        "Spindle",  # rpms
+        "ReturnMode",  # Z(G98) or R(G99) for drills
+        "G0F",  # F for G0's, distinct from all other move F. all G0's should have an F now.
     ]
 
-    def __init__(self, initial : None|dict = None):
+    def __init__(self, initial: None | dict = None):
         """an initial state is optional, and doesn't have to set all Tracked properties"""
         self.WCSLIST = [
             "G53",
@@ -78,10 +86,10 @@ class MachineState:
         self.WCS = "G54"  #: str = field(default="G54")
         self.Spindle = "off"  #: str = field(default="off")
         self.ReturnMode = "Z"  #: str = Z|R for G98/G99, for drill cycles
-        self.G0F = 0.0 #: float = field(default=None)
+        self.G0F = 0.0  #: float = field(default=None)
         self.S = 0  #: int = field(default=0)
         self.T = None  #: int = field(default=None)
-        if missing:=[ k for k in self.Tracked if k not in dir(self) ]:
+        if missing := [k for k in self.Tracked if k not in dir(self)]:
             raise Exception(f"Internal: didn't initialize a Tracked Parameter {missing}")
 
         if initial:
@@ -101,7 +109,7 @@ class MachineState:
             return not oldstate == self.getState()
 
         if command.Name in ["G98", "G99"]:
-            self.ReturnMode = "R" if command.Name=="G99" else "Z"
+            self.ReturnMode = "R" if command.Name == "G99" else "Z"
             return not oldstate == self.getState()
 
         if command.Name in ["M2", "M5"]:
@@ -126,7 +134,7 @@ class MachineState:
 
             if self.ReturnMode == "R":
                 self.Z = command.Parameters["R"]
-            else: # Z/G98 mode
+            else:  # Z/G98 mode
                 oldZ = self.Z
                 r = command.Parameters.get("R", None)
                 if oldZ is None or r is None:
@@ -135,7 +143,7 @@ class MachineState:
                     # Which shouldn't happen unless testing
                     self.Z = oldZ
                 else:
-                    self.Z = max( oldZ, r )
+                    self.Z = max(oldZ, r)
 
             return not oldstate == self.getState()
 
@@ -145,7 +153,7 @@ class MachineState:
                 continue
 
             # G0's F is distinct
-            if command.Name in ["G0","G00"] and p == "F":
+            if command.Name in ["G0", "G00"] and p == "F":
                 self.G0F = command.Parameters[p]
             else:
                 self.__setattr__(p, command.Parameters[p])
@@ -163,11 +171,11 @@ class MachineState:
         return False
 
     def copy(self):
-        return MachineState( self.getState() )
+        return MachineState(self.getState())
 
-    def setState(self, state : dict|None):
+    def setState(self, state: dict | None):
         """Set the state from a dict
-            Convenience mode: None causes all parameters=None
+        Convenience mode: None causes all parameters=None
         """
         for s in self.Tracked:
             if state is None:
@@ -179,7 +187,7 @@ class MachineState:
         """
         Returns a dictionary of the current machine state
         """
-        return { k: getattr(self,k) for k in self.Tracked }
+        return {k: getattr(self, k) for k in self.Tracked}
 
     def getPosition(self):
         """
