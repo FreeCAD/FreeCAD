@@ -5891,13 +5891,13 @@ void PropertyXLinkContainer::_onBreakLink(DocumentObject* obj)
     }
     catch (Base::Exception& e) {
         e.reportException();
-        FC_ERR("Exception on breaking link property " << getFullNameLabel());
+        FC_ERR("Exception on breaking link property " << getFullName());
     }
     catch (std::exception& e) {
-        FC_ERR("Exception on breaking link property " << getFullNameLabel() << ": " << e.what());
+        FC_ERR("Exception on breaking link property " << getFullName() << ": " << e.what());
     }
     catch (...) {
-        FC_ERR("Exception on breaking link property " << getFullNameLabel());
+        FC_ERR("Exception on breaking link property " << getFullName());
     }
 }
 

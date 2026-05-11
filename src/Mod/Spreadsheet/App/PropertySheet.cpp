@@ -2283,7 +2283,7 @@ void PropertySheet::setPathValue(const ObjectIdentifier& path, const boost::any&
         }
     }
 
-    FC_THROWM(Base::TypeError, "Invalid path value '" << "' for " << getFullNameLabel());
+    FC_THROWM(Base::TypeError, "Invalid path value '" << "' for " << getFullName());
 }
 
 const boost::any PropertySheet::getPathValue(const App::ObjectIdentifier& path) const

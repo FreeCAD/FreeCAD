@@ -2741,7 +2741,7 @@ Document::getDependencyList(const std::vector<DocumentObject*>& objs, int option
                 FC_THROWM(Base::BadGraphError, e.what());
             }
         }
-        FC_ERR(objs.front()->getFullNameLabelLabel() << ": " << e.what());
+        FC_ERR(objs.front()->getFullNameLabel() << ": " << e.what());
         ret = DocumentP::partialTopologicalSort(objs);
         std::reverse(ret.begin(), ret.end());
         return ret;

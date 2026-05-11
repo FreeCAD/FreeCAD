@@ -1241,13 +1241,13 @@ void SketchObject::onExpressionEngineChanged()
         try {
             auto res = ExpressionEngine.execute();
             if (res) {
-                FC_ERR("Failed to recompute " << ExpressionEngine.getFullNameLabel() << ": "
+                FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": "
                        << res->Why);  // NOLINT
                 delete res;
             }
         } catch (Base::Exception &e) {
             e.reportException();
-            FC_ERR("Failed to recompute " << ExpressionEngine.getFullNameLabel() << ": "
+            FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": "
                    << e.what());  // NOLINT
         }
         solve();
@@ -1819,14 +1819,14 @@ void SketchObject::setExpression(const App::ObjectIdentifier& path,
         try {
             auto res = ExpressionEngine.execute();
             if (res) {
-                FC_ERR("Failed to recompute " << ExpressionEngine.getFullNameLabel() << ": "
+                FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": "
                                               << res->Why);
                 delete res;
             }
         }
         catch (Base::Exception& e) {
             e.reportException();
-            FC_ERR("Failed to recompute " << ExpressionEngine.getFullNameLabel() << ": " << e.what());
+            FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": " << e.what());
         }
         solve();
     }

@@ -820,7 +820,7 @@ bool LinkBaseExtension::setupCopyOnChange(
             else {
                 const char* otherGroupName = p->getGroup();
                 if (!otherGroupName || !boost::starts_with(otherGroupName, _GroupPrefix)) {
-                    FC_WARN(p->getFullNameLabel()
+                    FC_WARN(p->getFullName()
                             << " shadows another CopyOnChange property " << prop->getFullName());
                     continue;
                 }

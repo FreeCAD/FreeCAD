@@ -376,10 +376,10 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
             }
             catch (Base::Exception& e) {
                 e.reportException();
-                FC_ERR("exception while restoring " << prop->getFullNameLabel() << ": " << e.what());
+                FC_ERR("exception while restoring " << prop->getFullName() << ": " << e.what());
             }
             catch (std::exception& e) {
-                FC_ERR("exception while restoring " << prop->getFullNameLabel() << ": " << e.what());
+                FC_ERR("exception while restoring " << prop->getFullName() << ": " << e.what());
             }
             catch (...) {
             }

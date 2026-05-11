@@ -1141,7 +1141,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
 
     // a property of an object has changed
     if (!Prop.testStatus(App::Property::NoModify) && !isModified()) {
-        FC_LOG(Prop.getFullNameLabel() << " modified");
+        FC_LOG(Prop.getFullName() << " modified");
         setModified(true);
     }
 
@@ -3164,7 +3164,7 @@ void Document::toggleInSceneGraph(ViewProvider* vp)
 void Document::slotChangePropertyEditor(const App::Document& doc, const App::Property& Prop)
 {
     if (getDocument() == &doc) {
-        FC_LOG(Prop.getFullNameLabel() << " editor changed");
+        FC_LOG(Prop.getFullName() << " editor changed");
         setModified(true);
         getMainWindow()->setUserSchema(doc.UnitSystem.getValue());
     }
