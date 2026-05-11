@@ -135,6 +135,8 @@ class ArchReference:
                 self.reload = False
             elif obj.ReferenceMode == "Lightweight":
                 self.reload = False
+                if obj.ViewObject and obj.ViewObject.Proxy:
+                    obj.ViewObject.Proxy.storeInventor(obj)
                 import Part
 
                 pl = obj.Placement
@@ -749,6 +751,32 @@ class ViewProviderArchReference:
             if self.Object.File:
                 FreeCAD.openDocument(self.Object.File)
 
+    def storeInventor(self, obj):
+        "stores the current openinventor nodes"
+
+        if (
+            hasattr(self, "orig_flatlines")
+            and self.orig_flatlines
+            and hasattr(self, "orig_shaded")
+            and self.orig_shaded
+            and hasattr(self, "orig_wireframe")
+            and self.orig_wireframe
+        ):
+            return True
+        from draftutils import gui_utils
+        from pivy import coin
+
+        switch = gui_utils.find_coin_node(obj.ViewObject.RootNode, coin.SoSwitch)
+        if switch is None or switch.getNumChildren() != 4:
+            FreeCAD.Console.PrintError(
+                translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
+            )
+            return False
+        self.orig_flatlines = switch.getChild(0).copy()
+        self.orig_shaded = switch.getChild(1).copy()
+        self.orig_wireframe = switch.getChild(2).copy()
+        return True
+
     def loadInventor(self, obj):
         "loads an openinventor file and replace the root node of this object"
 
@@ -784,7 +812,6 @@ class ViewProviderArchReference:
         wireframe = lwnode.getChild(1)
 
         # check node contents
-        rootnode = obj.ViewObject.RootNode
         # display mode switch
         switch = gui_utils.find_coin_node(obj.ViewObject.RootNode, coin.SoSwitch)
         if switch is None or switch.getNumChildren() != 4:
@@ -794,9 +821,8 @@ class ViewProviderArchReference:
             return
 
         # keep a copy of the original nodes
-        self.orig_flatlines = switch.getChild(0).copy()
-        self.orig_shaded = switch.getChild(1).copy()
-        self.orig_wireframe = switch.getChild(2).copy()
+        if not self.storeInventor(obj):
+            return
 
         # replace root node of object
         switch.replaceChild(0, flatlines)
