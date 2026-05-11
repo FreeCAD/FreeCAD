@@ -100,7 +100,8 @@ void StdCmdPart::activated(int iMsg)
         "if activePart:\n"
         "    activePart.addObject(App.activeDocument().Tip)\n"
         "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
-        PARTKEY, PARTKEY,
+        PARTKEY,
+        PARTKEY,
         PartName.c_str()
     );
 
