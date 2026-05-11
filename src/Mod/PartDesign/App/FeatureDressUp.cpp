@@ -199,7 +199,9 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
 
         auto faces = shape.findAncestorsShapes(subshape, TopAbs_FACE);
         if (faces.size() != 2) {
-            FC_WARN(getFullNameLabel() << ": skip edge " << refName << " with less two attaching faces");
+            FC_WARN(
+                getFullNameLabel() << ": skip edge " << refName << " with less two attaching faces"
+            );
             return;
         }
         const TopoDS_Shape& face1 = faces.front();

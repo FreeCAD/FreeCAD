@@ -287,7 +287,8 @@ App::DocumentObjectExecReturn* Mirroring::execute()
                     BRepAdaptor_Curve curve(edge);
                     if (!(curve.GetType() == GeomAbs_Circle)) {
                         throw Base::TypeError(
-                            std::string(this->getFullNameLabel()) + ": Only circle edge types are supported"
+                            std::string(this->getFullNameLabel())
+                            + ": Only circle edge types are supported"
                         );
                     }
                     gp_Circ circle = curve.Circle();

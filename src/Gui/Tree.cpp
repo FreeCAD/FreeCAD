@@ -2959,7 +2959,10 @@ bool TreeWidget::dropInObject(
             }
 
             if (inList.contains(obj)) {
-                FC_THROWM(Base::RuntimeError, "Dependency loop detected for " << obj->getFullNameLabel());
+                FC_THROWM(
+                    Base::RuntimeError,
+                    "Dependency loop detected for " << obj->getFullNameLabel()
+                );
             }
 
 

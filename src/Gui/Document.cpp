@@ -983,7 +983,9 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
                 return;
             }
             else if (cName != Obj.getViewProviderName() && !pcProvider->allowOverride(Obj)) {
-                FC_WARN("View provider type '" << cName << "' does not support " << Obj.getFullNameLabel());
+                FC_WARN(
+                    "View provider type '" << cName << "' does not support " << Obj.getFullNameLabel()
+                );
                 delete pcProvider;
                 pcProvider = nullptr;
                 cName = Obj.getViewProviderName();

@@ -555,7 +555,10 @@ static void linkConvert(bool unlink)
 
             // do the replacement operation
             if (parentVp->replaceObject(obj, replaceObj) <= 0) {
-                FC_THROWM(Base::RuntimeError, "Failed to change link for " << parent->getFullNameLabel());
+                FC_THROWM(
+                    Base::RuntimeError,
+                    "Failed to change link for " << parent->getFullNameLabel()
+                );
             }
         }
 

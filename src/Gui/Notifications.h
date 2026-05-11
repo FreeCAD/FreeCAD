@@ -274,7 +274,10 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             if constexpr (
                 std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
             ) {
-                Base::Console().send<type, recipient, content>(notifier->getFullNameLabel(), msg.toUtf8());
+                Base::Console().send<type, recipient, content>(
+                    notifier->getFullNameLabel(),
+                    msg.toUtf8()
+                );
             }
             else if constexpr (
                 std::is_base_of_v<
@@ -314,7 +317,10 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             if constexpr (
                 std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
             ) {
-                Base::Console().send<type, recipient, content>(notifier->getFullNameLabel(), msg.c_str());
+                Base::Console().send<type, recipient, content>(
+                    notifier->getFullNameLabel(),
+                    msg.c_str()
+                );
             }
             else if constexpr (
                 std::is_base_of_v<
