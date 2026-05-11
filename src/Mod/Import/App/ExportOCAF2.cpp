@@ -457,7 +457,16 @@ TDF_Label ExportOCAF2::exportObject(
             auto baseShape = aShapeTool->GetShape(it->second);
             shape.setShape(baseShape.Located(shape.getShape().Location()));
             if (!parent.IsNull()) {
-                label = aShapeTool->AddComponent(parent, shape.getShape(), Standard_False);
+                if (aShapeTool->IsAssembly(it->second)) {
+                    label = aShapeTool->AddComponent(
+                        parent,
+                        it->second,
+                        shape.getShape().Location()
+                    );
+                }
+                else {
+                    label = aShapeTool->AddComponent(parent, shape.getShape(), Standard_False);
+                }
             }
             else {
                 label = aShapeTool->AddShape(shape.getShape(), Standard_False, Standard_False);

@@ -91,3 +91,55 @@ class ExportImportTest(unittest.TestCase):
 
         mat = paths.get(1).getTail()
         self.assertEqual(mat.diffuseColor.getNum(), 6)
+
+    def testSaveLoadNestedCollapsedLinkArrayStepFile(self):
+        """
+        Export a nested collapsed Draft Link Array without losing instances.
+        """
+        import Draft
+        from FreeCAD import Vector
+
+        box = self.doc.addObject("Part::Box", "Box")
+        box.Length = 100
+        box.Width = 100
+        box.Height = 100
+        self.doc.recompute()
+
+        inner = Draft.make_ortho_array(
+            box,
+            v_x=Vector(200, 0, 0),
+            v_y=Vector(0, 200, 0),
+            v_z=Vector(0, 0, 0),
+            n_x=2,
+            n_y=2,
+            n_z=1,
+            use_link=True,
+        )
+        outer = Draft.make_ortho_array(
+            inner,
+            v_x=Vector(500, 0, 0),
+            v_y=Vector(0, 0, 0),
+            v_z=Vector(0, 0, 0),
+            n_x=3,
+            n_y=1,
+            n_z=1,
+            use_link=True,
+        )
+        self.doc.recompute()
+
+        ImportGui.export([outer], self.fileName)
+
+        self.doc.clearDocument()
+        ImportGui.insert(
+            name=self.fileName,
+            docName=self.doc.Name,
+            merge=False,
+            useLinkGroup=True,
+        )
+
+        solid_count = 0
+        for obj in self.doc.Objects:
+            if obj.isDerivedFrom("Part::Feature") and hasattr(obj, "Shape"):
+                solid_count += len(obj.Shape.Solids)
+
+        self.assertEqual(solid_count, 12)
