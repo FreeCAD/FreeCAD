@@ -1829,7 +1829,7 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 else {
                     Base::Console().warning(
                         "AttachEngine3D::calculateAttachedPlacement: %s: "
-                        "Cannot align X-axis path curve second derivative is below 1e-14.\n",
+                        "Cannot align x-axis. Path curve second derivative is below 1e-14.\n",
                         objs[0]->getFullNameLabel()
                     );
                     N = gp_Vec(0., 0., 0.);
