@@ -60,11 +60,12 @@ MDIView::MDIView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wfl
     , pythonObject(nullptr)
     , currentMode(Child)
     , wstate(Qt::WindowNoState)
+    , ActiveObjects(nullptr)
 {
     setAttribute(Qt::WA_DeleteOnClose);
 
     if (pcDocument) {
-        ActiveObjects = new ActiveObjectList(pcDocument);
+        ActiveObjects = std::make_unique<ActiveObjectList>(pcDocument);
 
         // NOLINTBEGIN
         connectDelObject = pcDocument->signalDeletedObject.connect(
