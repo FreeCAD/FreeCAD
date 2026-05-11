@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="649"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>Attach Sketch</source>
       <translation>Προσάρτηση Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Attaches a sketch to the selected geometry element</source>
       <translation>Προσαρτά ένα σχέδιο στο επιλεγμένο γεωμετρικό στοιχείο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="741"/>
+      <location filename="../../Command.cpp" line="743"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>Ορισμένα από τα επιλεγμένα αντικείμενα εξαρτώνται από το σχέδιο που θα αντιστοιχιστεί. Δεν επιτρέπονται κυκλικές εξαρτήσεις.</translation>
     </message>
@@ -177,47 +177,75 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="1073"/>
+      <location filename="../../Command.cpp" line="1160"/>
+      <source>Skipping external geometry #%1
+</source>
+      <translation type="unfinished">Skipping external geometry #%1
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1203"/>
+      <source>External geometry '%1' is out of scope:
+</source>
+      <translation type="unfinished">External geometry '%1' is out of scope:
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1254"/>
       <source>Merge Sketches</source>
       <translation>Συγχώνευση Σχεδίων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1074"/>
+      <location filename="../../Command.cpp" line="1255"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
       <translation>Ενώνει 2 ή περισσότερα σχέδια σε ένα νέο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1089"/>
+      <location filename="../../Command.cpp" line="1270"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1090"/>
+      <location filename="../../Command.cpp" line="1271"/>
       <source>Select at least 2 sketches</source>
       <translation>Επιλέξτε τουλάχιστον 2 σχέδια</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1360"/>
+      <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
+</source>
+      <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1376"/>
+      <source>Skipping constraint #%1 of '%2': references unmerged geometry.
+</source>
+      <translation type="unfinished">Skipping constraint #%1 of '%2': references unmerged geometry.
+</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="945"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>Mirror Sketch</source>
       <translation>Κατοπτρισμός Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="946"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
       <translation>Δημιουργεί ένα νέο συμμετρικό αντίγραφο για κάθε επιλεγμένο σχέδιο, χρησιμοποιώντας τους άξονες X ή Y, ή το κέντρο των αξόνων, ως σημείο αναφοράς του "καθρέφτη"</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="965"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="964"/>
+      <location filename="../../Command.cpp" line="966"/>
       <source>Select at least 1 sketch</source>
       <translation>Επιλέξτε τουλάχιστον 1 σχέδιο</translation>
     </message>
@@ -264,24 +292,24 @@ as mirroring reference</source>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../Command.cpp" line="907"/>
       <source>Validate Sketch</source>
       <translation>Επικύρωση Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="906"/>
+      <location filename="../../Command.cpp" line="908"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
       <translation>Ελέγχει και διορθώνει το σχέδιο αναζητώντας ασύνδετα σημεία, 
 λανθασμένους περιορισμούς και προβληματικές γραμμές που εμποδίζουν τη δημιουργία του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="922"/>
+      <location filename="../../Command.cpp" line="924"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="923"/>
+      <location filename="../../Command.cpp" line="925"/>
       <source>Select only 1 sketch.</source>
       <translation>Επιλέξτε μόνο ένα σχέδιο.</translation>
     </message>
@@ -651,37 +679,37 @@ invalid constraints, and degenerate geometry</source>
       <translation>Εναλλαγή Περιορισμών απο Κύρια σε Βοηθητική και αντίστροφα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Create a new sketch on a face</source>
       <translation>Δημιουργία νέου Σχεδίου πάνω σε μια επιφάνεια</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Create a new sketch</source>
       <translation>Δημιουργία νέου σκίτσου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="622"/>
+      <location filename="../../Command.cpp" line="624"/>
       <source>Reorient sketch</source>
       <translation>Επαναπροσανατολισμό σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="831"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Attach sketch</source>
       <translation>Επισύναψη σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="840"/>
+      <location filename="../../Command.cpp" line="842"/>
       <source>Detach sketch</source>
       <translation>Αποκοπή σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="979"/>
+      <location filename="../../Command.cpp" line="981"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>Δημιουργήστε ένα είδωλο (κατοπτρικού) σχεδίου για κάθε επιλεγμένο σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1099"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Merge sketches</source>
       <translation>Συγχώνευση σχεδίων</translation>
     </message>
@@ -1093,54 +1121,54 @@ invalid constraints, and degenerate geometry</source>
       <translation>Σχεδιασμός</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>There are no modes that accept the selected set of subelements</source>
       <translation>Δεν υπάρχουν λειτουργίες που να δέχονται το επιλεγμένο σύνολο δευτερευόντων στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Broken link to support subelements</source>
       <translation>Σπασμένος σύνδεσμος για την υποστήριξη δευτερευόντων στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="142"/>
       <source>Unexpected error</source>
       <translation>Απρόσμενο σφάλμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="136"/>
       <source>Face is non-planar</source>
       <translation>Η επιφάνεια δεν είναι επίπεδη</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="136"/>
+      <location filename="../../Command.cpp" line="138"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
       <translation>Τα επιλεγμένα σχήματα έχουν λάθος μορφή (π.χ., καμπύλη ακμή ενώ χρειάζεται ευθύγραμμη)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
-      <source>Invalid selection</source>
-      <translation>Μη έγκυρη επιλογή</translation>
+      <location filename="../../Command.cpp" line="178"/>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="179"/>
       <source>Too many objects selected</source>
       <translation>Επιλέχθηκαν πάρα πολλά αντικείμενα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Sketch mapping</source>
       <translation>Αποτύπωση σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Cannot map the sketch to the selected object. %1.</source>
       <translation>Αδυναμία αντιστοίχισης του σχεδίου στο επιλεγμένο αντικείμενο. %1.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
-      <location filename="../../Command.cpp" line="770"/>
+      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="772"/>
       <source>Do not attach</source>
       <translation>Χωρίς προσάρτηση</translation>
     </message>
@@ -4193,74 +4221,74 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="695"/>
+      <location filename="../../Command.cpp" line="697"/>
       <source>No sketch found</source>
       <translation>Δε βρέθηκε σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>Cannot attach sketch to itself!</source>
       <translation>Το σχέδιο δεν μπορεί να χρησιμοποιήσει τον εαυτό του ως σημείο στήριξης!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="698"/>
+      <location filename="../../Command.cpp" line="700"/>
       <source>The document does not contain a sketch</source>
       <translation>Το έγγραφο δεν περιέχει κανένα σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="716"/>
       <source>Select Sketch</source>
       <translation>Επιλογή Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
       <translation>Επιλέξτε ένα σχέδιο (ορισμένα σχέδια αποκρύπτονται για να αποφευχθεί ο φαύλος κύκλος εξαρτήσεων)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="720"/>
       <source>Select a sketch from the list</source>
       <translation>Επιλέξτε ένα σχέδιο από τη λίστα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="783"/>
+      <location filename="../../Command.cpp" line="785"/>
       <source> (incompatible with selection)</source>
       <translation> (μη συμβατή με την επιλογή)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="784"/>
+      <location filename="../../Command.cpp" line="786"/>
       <source> (current)</source>
       <translation> (τρέχουσα)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="792"/>
+      <location filename="../../Command.cpp" line="794"/>
       <source> (suggested)</source>
       <translation> (προτεινόμενη)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Sketch Attachment</source>
       <translation>Προσάρτηση Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Η τρέχουσα λειτουργία επισύναψης δεν είναι συμβατή με τη νέα επιλογή.
 Επιλέξτε τη μέθοδο επισύναψης αυτού του σχεδίου σε επιλεγμένα αντικείμενα.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Επιλέξτε τη μέθοδο επισύναψης αυτού του σχεδίου στα επιλεγμένα αντικείμενα.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="851"/>
+      <location filename="../../Command.cpp" line="853"/>
       <source>Map sketch</source>
       <translation>Αποτύπωση σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="852"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Αδύνατη η αποτύπωση σχεδίου στο στοιχείο υποστήριξης:
@@ -4279,12 +4307,12 @@ Select the method to attach this sketch to selected objects.</source>
   <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Sketch Attachment</source>
       <translation>Προσάρτηση Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Επιλέξτε τη μέθοδο επισύναψης αυτού του σχεδίου στο επιλεγμένο αντικείμενο</translation>
     </message>
@@ -4292,12 +4320,12 @@ Select the method to attach this sketch to selected objects.</source>
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="529"/>
       <source>Sketch Has Support</source>
       <translation>Το Σχέδιο είναι Στερεωμένο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="530"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
       <translation>Ένα σχέδιο που στηρίζεται σε μια επιφάνεια δεν μπορεί να αλλάξει προσανατολισμό.
@@ -5840,12 +5868,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="157"/>
+      <location filename="../../Command.cpp" line="159"/>
       <source>New Sketch</source>
       <translation>Νέο Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="158"/>
+      <location filename="../../Command.cpp" line="160"/>
       <source>Creates a new sketch</source>
       <translation>Δημιουργία νέου σχεδίου</translation>
     </message>
@@ -5853,12 +5881,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Edit Sketch</source>
       <translation>Επεξεργασία Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Opens the selected sketch for editing</source>
       <translation>Σάς μεταφέρει πίσω στο σχέδιο που έχετε ήδη δημιουργήσει για επεξεργασία. Εκεί μπορείτε να αλλάξετε τις γραμμές, τους κύκλους ή τις διαστάσεις και το τελικό 3D αντικείμενο θα αλλάξει αυτόματα μόλις τελειώσετε</translation>
     </message>
@@ -5866,12 +5894,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="369"/>
       <source>Leave Sketch</source>
       <translation>Έξοδος από το Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="368"/>
+      <location filename="../../Command.cpp" line="370"/>
       <source>Finish editing the active sketch. You can also press Escape to exit.</source>
       <translation type="unfinished">Finish editing the active sketch. You can also press Escape to exit.</translation>
     </message>
@@ -5879,12 +5907,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="475"/>
+      <location filename="../../Command.cpp" line="477"/>
       <source>Stop Operation</source>
       <translation>Διακοπή Λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="478"/>
       <source>Stops the active operation while in edit mode</source>
       <translation>Αυτή η εντολή σταματά αμέσως το εργαλείο που χρησιμοποιείτε εκείνη τη στιγμή χωρίς να κλείσει το σχέδιο. Είναι ο τρόπος να πείτε στο πρόγραμμα «σταμάτα αυτό που κάνω τώρα για να επιλέξω ένα άλλο εργαλείο»</translation>
     </message>
@@ -5892,12 +5920,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Reorient Sketch</source>
       <translation>Επαναπροσανατολισμός Σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
       <translation>Αυτή η εντολή σάς επιτρέπει να αλλάξετε το επίπεδο πάνω στο οποίο «πατάει» το σχέδιό σας. (π. χ. από το επίπεδο Xy 'Κάτοψη' στο επίπεδο Xz 'Πρόσοψη'). 
@@ -5907,12 +5935,12 @@ This will clear the AttachmentSupport property.</source>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="873"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Align View to Sketch</source>
       <translation>Ευθυγράμμιση Προβολής με το Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
+      <location filename="../../Command.cpp" line="876"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
       <translation>Αυτή η εντολή «φέρνει» την οθόνη ακριβώς μπροστά από το σχέδιό σας. Αν έχετε στρίψει την κάμερα και βλέπετε το σχέδιο υπό γωνία ή από πλάγια, πατώντας αυτό το κουμπί η προβολή διορθώνεται ώστε να βλέπετε το σχέδιο εντελώς επίπεδα</translation>
     </message>
@@ -5920,12 +5948,12 @@ This will clear the AttachmentSupport property.</source>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1175"/>
+      <location filename="../../Command.cpp" line="1421"/>
       <source>Toggle Section View</source>
       <translation>Εναλλαγή ΠροβολήςΤομής</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1176"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Toggles between section view and full view</source>
       <translation>Αυτή η λειτουργία σας επιτρέπει να «κρύβετε» προσωρινά τα κομμάτια του αντικειμένου που βρίσκονται μπροστά από το σχέδιό σας. Έτσι, μπορείτε να βλέπετε μόνο την επιφάνεια που σχεδιάζετε χωρίς να σας εμποδίζει ο υπόλοιπος όγκος, και να επιστρέφετε στην πλήρη εμφάνιση όποτε θέλετε</translation>
     </message>
@@ -5933,42 +5961,42 @@ This will clear the AttachmentSupport property.</source>
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1250"/>
+      <location filename="../../Command.cpp" line="1496"/>
       <source>Display grid</source>
       <translation>Εμφάνιση Πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1251"/>
+      <location filename="../../Command.cpp" line="1497"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
       <translation>Αυτή η λειτουργία σάς επιτρέπει να εμφανίζετε/εξαφανίζετε το βοηθητικό πλέγμα στην οθόνη σας. Είναι χρήσιμο για να καθαρίζετε την εικόνα όταν το σχέδιο γίνεται περίπλοκο ή για να το επαναφέρετε όταν χρειάζεστε οπτική βοήθεια στις αποστάσεις</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1254"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Grid auto-spacing</source>
       <translation>Αυτόματο μέγεθος πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1255"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation>Αυτή η λειτουργία αλλάζει αυτόματα το πόσο μεγάλα ή μικρά φαίνονται τα τετραγωνάκια στο υπόβαθρο καθώς πλησιάζετε ή απομακρύνεστε από το σχέδιο (ζουμ). Έτσι, το πλέγμα παραμένει πάντα χρήσιμο ως οδηγός, χωρίς να πυκνώνει υπερβολικά όταν βλέπετε το σχέδιο από μακριά</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1258"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Spacing</source>
       <translation>Μέγεθος Τετραγώνων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1259"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Εδώ ορίζετε την ακριβή απόσταση ανάμεσα στις γραμμές του πλέγματος (π. χ. ανά 10 χιλιοστά). Είναι το μέγεθος που έχουν τα «τετράγωνα» στο υπόβαθρο, ώστε να μπορείτε να σχεδιάζετε με βάση μια σταθερή κλίμακα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1261"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>Snap to grid</source>
       <translation>Προσκόλληση στο πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1263"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Τα νέα σημεία θα προσκολλώνται στην πλησιέστερη γραμμή του πλέγματος.
@@ -5978,12 +6006,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1388"/>
+      <location filename="../../Command.cpp" line="1634"/>
       <source>Toggle Grid</source>
       <translation>Εναλλαγή Πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1390"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Toggles the grid display in the active sketch</source>
       <translation>Σας επιτρέπει να εμφανίζετε ή να κρύβετε τις βοηθητικές γραμμές (το πλέγμα) στην οθόνη σας ανά πάσα στιγμή, για να βλέπετε καλύτερα το σχέδιό σας</translation>
     </message>
@@ -5991,23 +6019,23 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1741"/>
       <source>Snap to objects</source>
       <translation>Προσκόλληση σε αντικείμενα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1742"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Αυτή η λειτουργία κάνει τα νέα σημεία να προσκολλώνται πάνω σε σχήματα που έχετε ήδη σχεδιάσει. 
 Το πολύ χρήσιμο είναι ότι σας βοηθά να βρείτε αυτόματα το ακριβές κέντρο μιας γραμμής ή ενός τόξου, ώστε να μπορείτε να ξεκινήσετε μια νέα γραμμή ακριβώς από τη μέση τους χωρίς να χρειάζεται να μετρήσετε.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>Snap angle</source>
       <translation>Προσκόλληση Γωνίας</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1748"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>Αυτή η λειτουργία κάνει τη γραμμή σας να «κουμπώνει» αυτόματα σε συγκεκριμένες μοίρες (π. χ. ανά 15° ή 45°) καθώς την περιστρέφετε. Σας βοηθάει να σχεδιάζετε γρήγορα γραμμές με ακριβή κλίση χωρίς να χρειάζεται να πληκτρολογείτε τη γωνία κάθε φορά. Αν κρατάτε πατημένο το Ctrl, η γραμμή θα κινείται με σταθερά βήματα ξεκινώντας από την οριζόντια θέση (άξονας Χ), βοηθώντας σας να πετύχετε εύκολα γωνίες όπως 45° ή 90°.</translation>
     </message>
@@ -6015,12 +6043,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1588"/>
+      <location filename="../../Command.cpp" line="1834"/>
       <source>Toggle Snap</source>
       <translation>Εναλλαγή Προσκόλλησης</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1590"/>
+      <location filename="../../Command.cpp" line="1836"/>
       <source>Toggles snapping</source>
       <translation>Με ένα κλικ ενεργοποιείτε ή απενεργοποιείτε όλες τις λειτουργίες "Προσκόλλησης" σε πλέγμα, γωνίες ή αντικείμενα ταυτόχρονα, επιτρέποντάς σας να επιλέξετε αν θέλετε το ποντίκι να κινείται ελεύθερα ή να "προσκολλάται" με ακρίβεια στα σημεία που έχετε ορίσει</translation>
     </message>
@@ -6028,27 +6056,27 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1697"/>
+      <location filename="../../Command.cpp" line="1943"/>
       <source>Normal geometry</source>
       <translation>Κανονική Γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1699"/>
+      <location filename="../../Command.cpp" line="1945"/>
       <source>Construction geometry</source>
       <translation>Κατασκευαστική γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1947"/>
       <source>External geometry</source>
       <translation>Εξωτερική γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>Unknown geometry</source>
       <translation>Άγνωστη γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1745"/>
+      <location filename="../../Command.cpp" line="1991"/>
       <source>Rendering order</source>
       <translation>Σειρά απόδοσης (Rendering)</translation>
     </message>
@@ -6056,12 +6084,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="2076"/>
       <source>Rendering Order</source>
       <translation>Σειρά Απόδοσης</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="2077"/>
       <source>Reorders items in the rendering order</source>
       <translation>Αυτή η λειτουργία σάς επιτρέπει να αλλάξετε τη σειρά με την οποία εμφανίζονται τα διάφορα στοιχεία (γραμμές, σημεία, σύμβολα) στην οθόνη. Με αυτόν τον τρόπο, μπορείτε να ορίσετε ποια στοιχεία θα φαίνονται "μπροστά" και ποια "πίσω", ώστε να μη κρύβονται οι σημαντικές πληροφορίες του σχεδίου σας</translation>
     </message>
@@ -8289,12 +8317,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Cancel Editing</source>
       <translation type="unfinished">Cancel Editing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>Leave 'edit' mode and revert any changes</source>
       <translation type="unfinished">Leave 'edit' mode and revert any changes</translation>
     </message>
@@ -8302,12 +8330,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherLeaveGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Leave</source>
       <translation type="unfinished">Leave</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Leave the sketch editing mode.</source>
       <translation type="unfinished">Leave the sketch editing mode.</translation>
     </message>

@@ -48,7 +48,7 @@
       <translation>Złożenie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="147"/>
       <source>Active object</source>
       <translation>Aktywny obiekt</translation>
     </message>
@@ -132,7 +132,7 @@ Dzięki temu będzie on teraz zakotwiony.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1852"/>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Distance</source>
       <translation>Odległość</translation>
     </message>
@@ -177,22 +177,22 @@ Dzięki temu będzie on teraz zakotwiony.</translation>
       <translation>Uszkodzone łącze w: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1671"/>
+      <location filename="../../../JointObject.py" line="1695"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Wybierz dwa elementy z dwóch oddzielnych części</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1854"/>
+      <location filename="../../../JointObject.py" line="1878"/>
       <source>Radius 1</source>
       <translation>Promień 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1856"/>
+      <location filename="../../../JointObject.py" line="1880"/>
       <source>Thread pitch</source>
       <translation>Skok gwintu</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1858"/>
+      <location filename="../../../JointObject.py" line="1882"/>
       <source>Pitch radius</source>
       <translation>Promień nachylenia</translation>
     </message>
@@ -961,52 +961,52 @@ Pliki noszą nazwy „runPreDrag.asmt” oraz „dragging.log” i są zapisywan
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Obiekt jest powiązany z jednym lub większą liczbą połączeń.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="217"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Czy chcesz przenieść obiekt i usunąć powiązane połączenia?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1103"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1090"/>
       <source>Move part</source>
       <translation>Przesuń część</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1816"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1803"/>
       <source>Empty Assembly</source>
       <translation>Poste złożenie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1828"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
       <source>Over-constrained:</source>
       <translation>Wiązania nadmierne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1836"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1823"/>
       <source>Malformed joints:</source>
       <translation>Nieprawidłowe połączenia:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1801"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1788"/>
       <source>and %1 more</source>
       <translation>i %1 więcej</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1860"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1847"/>
       <source>Solver failed to converge</source>
       <translation>Solver nie osiągnął zbieżności</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1868"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1855"/>
       <source>Under-constrained:</source>
       <translation>Niedostatecznie związane:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1870"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n stopień swobody</numerusform>
@@ -1016,7 +1016,7 @@ Pliki noszą nazwy „runPreDrag.asmt” oraz „dragging.log” i są zapisywan
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1874"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>Fully constrained</source>
       <translation>W pełni związany</translation>
     </message>
@@ -1349,8 +1349,8 @@ Limit jednego głównego złożenia na plik.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
-      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;1 – Jeśli złożenie jest aktywne: Tworzy przegub trwale blokujący dwa elementy razem, uniemożliwiając jakikolwiek ruch lub obrót.&lt;/p&gt;&lt;p&gt;2 – Jeśli część jest aktywna: Pozycjonuje części podrzędne poprzez dopasowanie wybranych układów współrzędnych. Druga wybrana część zostanie przesunięta.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

@@ -48,7 +48,7 @@
       <translation>Montaža</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="147"/>
       <source>Active object</source>
       <translation>Aktivni objekt</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1852"/>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Distance</source>
       <translation>Udaljenost</translation>
     </message>
@@ -175,22 +175,22 @@
       <translation>Neispravna veza u </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1671"/>
+      <location filename="../../../JointObject.py" line="1695"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Odaberite 2 elementa iz 2 odvojena dijela</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1854"/>
+      <location filename="../../../JointObject.py" line="1878"/>
       <source>Radius 1</source>
       <translation>Polumjer 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1856"/>
+      <location filename="../../../JointObject.py" line="1880"/>
       <source>Thread pitch</source>
       <translation>Korak navoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1858"/>
+      <location filename="../../../JointObject.py" line="1882"/>
       <source>Pitch radius</source>
       <translation>Polumjer otklona</translation>
     </message>
@@ -939,52 +939,52 @@ Datoteke se nazivaju "runPreDrag.asmt" i "dragging.log" i nalaze se u zadanom di
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Predmet je povezan s jednom ili više spojnica.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="217"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Želite li premjestiti objekt i izbrisati povezane spojeve?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1103"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1090"/>
       <source>Move part</source>
       <translation>Premjesti dio</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1816"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1803"/>
       <source>Empty Assembly</source>
       <translation>Prazan sklop</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1828"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
       <source>Over-constrained:</source>
       <translation>Pretjerano ograničeno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1836"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1823"/>
       <source>Malformed joints:</source>
       <translation>Deformirani spojevi:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1801"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1788"/>
       <source>and %1 more</source>
       <translation>i %1 još</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1860"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1847"/>
       <source>Solver failed to converge</source>
       <translation>Solver nije uspio konvergirati</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1868"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1855"/>
       <source>Under-constrained:</source>
       <translation>Premalo ograničen:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1870"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Stupanj slobode</numerusform>
@@ -993,7 +993,7 @@ Datoteke se nazivaju "runPreDrag.asmt" i "dragging.log" i nalaze se u zadanom di
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1874"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>Fully constrained</source>
       <translation>Potpuno ograničen</translation>
     </message>
@@ -1322,8 +1322,8 @@ Datoteke se nazivaju "runPreDrag.asmt" i "dragging.log" i nalaze se u zadanom di
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
-      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;1 - Ako je sklapanje aktivan: Stvara spoj koji trajno zaključava dva dijela zajedno, sprječavajući bilo kakvo pomicanje ili rotaciju&lt;/p&gt;&lt;p&gt;2 - Ako je dio aktivan: Pozicionira poddijelove usklađivanjem odabranih koordinatnih sustava. Drugi odabrani dio će se pomaknuti.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

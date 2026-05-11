@@ -430,7 +430,7 @@
     <message>
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Отвязать ячейку</translation>
     </message>
   </context>
   <context>

@@ -1088,19 +1088,25 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
-      <source>Duplicated faces</source>
-      <translation>Caras duplicadas</translation>
+      <source>Duplicated Faces</source>
+      <translation type="unfinished">Duplicated Faces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
+      <source>Duplicated Points</source>
+      <translation type="unfinished">Duplicated Points</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
+      <source>Mesh Repair</source>
+      <translation type="unfinished">Mesh Repair</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
       <source>No duplicated points</source>
       <translation>No hay puntos duplicados</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
-      <source>Duplicated points</source>
-      <translation>Puntos duplicados</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1040"/>
@@ -1126,12 +1132,6 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1161"/>
       <source>Folds</source>
       <translation>Pliegues</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
-      <source>Mesh repair</source>
-      <translation>Reparación de malla</translation>
     </message>
   </context>
   <context>
@@ -1289,8 +1289,8 @@
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
-      <source>No active document</source>
-      <translation>Ningún documento activo</translation>
+      <source>No Active Document</source>
+      <translation>Documento no activo</translation>
     </message>
   </context>
   <context>

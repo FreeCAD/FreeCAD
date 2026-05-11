@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="649"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>Attach Sketch</source>
       <translation>Fäst skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Attaches a sketch to the selected geometry element</source>
       <translation>Fäster en skiss på det valda geometrielementet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="741"/>
+      <location filename="../../Command.cpp" line="743"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>Vissa av de valda objekten är beroende av den skiss som ska kartläggas. Cirkulära beroenden är inte tillåtna.</translation>
     </message>
@@ -177,35 +177,63 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="1073"/>
+      <location filename="../../Command.cpp" line="1160"/>
+      <source>Skipping external geometry #%1
+</source>
+      <translation type="unfinished">Skipping external geometry #%1
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1203"/>
+      <source>External geometry '%1' is out of scope:
+</source>
+      <translation type="unfinished">External geometry '%1' is out of scope:
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1254"/>
       <source>Merge Sketches</source>
       <translation>Sammanfoga skisser</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1074"/>
+      <location filename="../../Command.cpp" line="1255"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
       <translation>Skapar en ny skiss genom att sammanfoga minst 2 valda skisser</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1089"/>
+      <location filename="../../Command.cpp" line="1270"/>
       <source>Wrong selection</source>
       <translation>Fel val</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1090"/>
+      <location filename="../../Command.cpp" line="1271"/>
       <source>Select at least 2 sketches</source>
       <translation>Välj minst 2 skisser</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1360"/>
+      <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
+</source>
+      <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1376"/>
+      <source>Skipping constraint #%1 of '%2': references unmerged geometry.
+</source>
+      <translation type="unfinished">Skipping constraint #%1 of '%2': references unmerged geometry.
+</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="945"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>Mirror Sketch</source>
       <translation>Spegla skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="946"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
@@ -214,12 +242,12 @@ med hjälp av X- eller Y-axlarna, eller ursprungspunkten,
 som referens för speglingen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="965"/>
       <source>Wrong selection</source>
       <translation>Felaktigt val</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="964"/>
+      <location filename="../../Command.cpp" line="966"/>
       <source>Select at least 1 sketch</source>
       <translation>Välj minst 1 skiss</translation>
     </message>
@@ -266,24 +294,24 @@ som referens för speglingen</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../Command.cpp" line="907"/>
       <source>Validate Sketch</source>
       <translation>Validera skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="906"/>
+      <location filename="../../Command.cpp" line="908"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
       <translation>Validerar en skiss genom att kontrollera om det saknas sammanfallande punkter,
 ogiltiga begränsningar och degenererad geometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="922"/>
+      <location filename="../../Command.cpp" line="924"/>
       <source>Wrong selection</source>
       <translation>Felaktigt val</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="923"/>
+      <location filename="../../Command.cpp" line="925"/>
       <source>Select only 1 sketch.</source>
       <translation>Välj endast 1 skiss.</translation>
     </message>
@@ -653,37 +681,37 @@ ogiltiga begränsningar och degenererad geometri</translation>
       <translation>Växla begränsning mellan drivande/referens</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Create a new sketch on a face</source>
       <translation>Skapa en ny skiss på en yta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Create a new sketch</source>
       <translation>Skapa en ny skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="622"/>
+      <location filename="../../Command.cpp" line="624"/>
       <source>Reorient sketch</source>
       <translation>Omorientera skissen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="831"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Attach sketch</source>
       <translation>Fäst skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="840"/>
+      <location filename="../../Command.cpp" line="842"/>
       <source>Detach sketch</source>
       <translation>Avlägsna skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="979"/>
+      <location filename="../../Command.cpp" line="981"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>Skapa en speglad skiss för varje markerad skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1099"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Merge sketches</source>
       <translation>Sammanfoga skisser</translation>
     </message>
@@ -1095,54 +1123,54 @@ ogiltiga begränsningar och degenererad geometri</translation>
       <translation>Sketcher</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>There are no modes that accept the selected set of subelements</source>
       <translation>Det finns inga lägen som accepterar den valda uppsättningen av underelement</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Broken link to support subelements</source>
       <translation>Bruten länk till underelement för stöd</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="142"/>
       <source>Unexpected error</source>
       <translation>Oväntat fel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="136"/>
       <source>Face is non-planar</source>
       <translation>Ytan är ickeplanär</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="136"/>
+      <location filename="../../Command.cpp" line="138"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
       <translation>Valda former har fel form (t.ex. en böjd kant där det behövs en rak)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
-      <source>Invalid selection</source>
-      <translation>Ogiltigt val</translation>
+      <location filename="../../Command.cpp" line="178"/>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="179"/>
       <source>Too many objects selected</source>
       <translation>För många objekt valda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Sketch mapping</source>
       <translation>Kartläggning i skissform</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Cannot map the sketch to the selected object. %1.</source>
       <translation>Det går inte att mappa skissen till det valda objektet. %1.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
-      <location filename="../../Command.cpp" line="770"/>
+      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="772"/>
       <source>Do not attach</source>
       <translation>Fäst inte</translation>
     </message>
@@ -4196,74 +4224,74 @@ Detta görs genom att skissens geometrier och begränsningar analyseras.</transl
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="695"/>
+      <location filename="../../Command.cpp" line="697"/>
       <source>No sketch found</source>
       <translation>Ingen skiss hittades</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>Cannot attach sketch to itself!</source>
       <translation>Kan inte fästa skissen på sig själv!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="698"/>
+      <location filename="../../Command.cpp" line="700"/>
       <source>The document does not contain a sketch</source>
       <translation>Dokumentet innehåller inte någon skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="716"/>
       <source>Select Sketch</source>
       <translation>Välj skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
       <translation>Välj en skiss (vissa skisser visas inte för att förhindra ett cirkulärt beroende)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="720"/>
       <source>Select a sketch from the list</source>
       <translation>Välj en skiss från listan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="783"/>
+      <location filename="../../Command.cpp" line="785"/>
       <source> (incompatible with selection)</source>
       <translation> (inkompatibel med markering)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="784"/>
+      <location filename="../../Command.cpp" line="786"/>
       <source> (current)</source>
       <translation> (nuvarande)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="792"/>
+      <location filename="../../Command.cpp" line="794"/>
       <source> (suggested)</source>
       <translation> (föreslagen)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Sketch Attachment</source>
       <translation>Skissbilaga</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Det aktuella fästläget är inte kompatibelt med den nya markeringen.
 Välj metod för att fästa denna skiss på markerade objekt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Välj metod för att fästa denna skiss på valda objekt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="851"/>
+      <location filename="../../Command.cpp" line="853"/>
       <source>Map sketch</source>
       <translation>Kartskiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="852"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Kan inte mappa en skiss till support:
@@ -4282,12 +4310,12 @@ Välj metod för att fästa denna skiss på markerade objekt.</translation>
   <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Sketch Attachment</source>
       <translation>Skissbilaga</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Välj metod för att fästa denna skiss på valt objekt</translation>
     </message>
@@ -4295,12 +4323,12 @@ Välj metod för att fästa denna skiss på markerade objekt.</translation>
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="529"/>
       <source>Sketch Has Support</source>
       <translation>Skiss har stöd</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="530"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
       <translation>Skiss med en stödyta kan inte omorienteras.
@@ -5843,12 +5871,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="157"/>
+      <location filename="../../Command.cpp" line="159"/>
       <source>New Sketch</source>
       <translation>Ny skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="158"/>
+      <location filename="../../Command.cpp" line="160"/>
       <source>Creates a new sketch</source>
       <translation>Skapar en ny skiss</translation>
     </message>
@@ -5856,12 +5884,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Edit Sketch</source>
       <translation>Redigera skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Opens the selected sketch for editing</source>
       <translation>Öppnar den markerade skissen för redigering</translation>
     </message>
@@ -5869,12 +5897,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="369"/>
       <source>Leave Sketch</source>
       <translation>Lämna Sketch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="368"/>
+      <location filename="../../Command.cpp" line="370"/>
       <source>Finish editing the active sketch. You can also press Escape to exit.</source>
       <translation type="unfinished">Finish editing the active sketch. You can also press Escape to exit.</translation>
     </message>
@@ -5882,12 +5910,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="475"/>
+      <location filename="../../Command.cpp" line="477"/>
       <source>Stop Operation</source>
       <translation>Stoppa driften</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="478"/>
       <source>Stops the active operation while in edit mode</source>
       <translation>Stoppar den aktiva operationen i redigeringsläget</translation>
     </message>
@@ -5895,12 +5923,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Reorient Sketch</source>
       <translation>Omorientera skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
       <translation>Placerar den markerade skissen på ett av de globala koordinatplanen.
@@ -5910,12 +5938,12 @@ Detta kommer att rensa egenskapen AttachmentSupport.</translation>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="873"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Align View to Sketch</source>
       <translation>Justera vy till skiss</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
+      <location filename="../../Command.cpp" line="876"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
       <translation>Justerar kamerans orientering vinkelrätt mot det aktiva skissplanet</translation>
     </message>
@@ -5923,12 +5951,12 @@ Detta kommer att rensa egenskapen AttachmentSupport.</translation>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1175"/>
+      <location filename="../../Command.cpp" line="1421"/>
       <source>Toggle Section View</source>
       <translation>Växla till sektionsvy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1176"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Toggles between section view and full view</source>
       <translation>Växlar mellan sektionsvy och helvy</translation>
     </message>
@@ -5936,42 +5964,42 @@ Detta kommer att rensa egenskapen AttachmentSupport.</translation>
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1250"/>
+      <location filename="../../Command.cpp" line="1496"/>
       <source>Display grid</source>
       <translation>Visa rutnät</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1251"/>
+      <location filename="../../Command.cpp" line="1497"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
       <translation>Växlar synligheten för rutnätet i den aktiva skissen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1254"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Grid auto-spacing</source>
       <translation>Autoavstånd i rutnätet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1255"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation>Justerar automatiskt rutnätsavståndet baserat på zoomnivån</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1258"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Spacing</source>
       <translation>Avstånd</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1259"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Avstånd mellan två efterföljande rutnätslinjer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1261"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>Snap to grid</source>
       <translation>Fäst i rutnätet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1263"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Nya punkter snäpper till närmaste rutnätslinje.
@@ -5981,12 +6009,12 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1388"/>
+      <location filename="../../Command.cpp" line="1634"/>
       <source>Toggle Grid</source>
       <translation>Växla rutnät</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1390"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Toggles the grid display in the active sketch</source>
       <translation>Växlar rutnätsvisning i den aktiva skissen</translation>
     </message>
@@ -5994,22 +6022,22 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1741"/>
       <source>Snap to objects</source>
       <translation>Fäst vid objekt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1742"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Nya punkter snäpper till det förvalda objektet. Den kommer också att snäppa till mitten av linjer och bågar.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>Snap angle</source>
       <translation>Snäppvinkel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1748"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>Vinkelsteg för verktyg som använder "Snap at angle". Håll ned Ctrl för att aktivera "Snap at angle". Vinkeln startar från skissens positiva X-axel.</translation>
     </message>
@@ -6017,12 +6045,12 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1588"/>
+      <location filename="../../Command.cpp" line="1834"/>
       <source>Toggle Snap</source>
       <translation>Växla snäppning</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1590"/>
+      <location filename="../../Command.cpp" line="1836"/>
       <source>Toggles snapping</source>
       <translation>Växlar snäppning</translation>
     </message>
@@ -6030,27 +6058,27 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1697"/>
+      <location filename="../../Command.cpp" line="1943"/>
       <source>Normal geometry</source>
       <translation>Normal geometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1699"/>
+      <location filename="../../Command.cpp" line="1945"/>
       <source>Construction geometry</source>
       <translation>Konstruktionsgeometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1947"/>
       <source>External geometry</source>
       <translation>Extern geometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>Unknown geometry</source>
       <translation>Okänd geometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1745"/>
+      <location filename="../../Command.cpp" line="1991"/>
       <source>Rendering order</source>
       <translation>Renderingsorder</translation>
     </message>
@@ -6058,12 +6086,12 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="2076"/>
       <source>Rendering Order</source>
       <translation>Renderingsorder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="2077"/>
       <source>Reorders items in the rendering order</source>
       <translation>Ordnar om objekt i renderingsordningen</translation>
     </message>
@@ -8288,12 +8316,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Cancel Editing</source>
       <translation type="unfinished">Cancel Editing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>Leave 'edit' mode and revert any changes</source>
       <translation type="unfinished">Leave 'edit' mode and revert any changes</translation>
     </message>
@@ -8301,12 +8329,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherLeaveGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Leave</source>
       <translation type="unfinished">Leave</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Leave the sketch editing mode.</source>
       <translation type="unfinished">Leave the sketch editing mode.</translation>
     </message>

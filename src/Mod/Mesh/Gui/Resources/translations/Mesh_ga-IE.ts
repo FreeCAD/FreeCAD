@@ -1088,19 +1088,25 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
-      <source>Duplicated faces</source>
-      <translation>Aghaidheanna dúblaithe</translation>
+      <source>Duplicated Faces</source>
+      <translation>Aghaidheanna Dúblaithe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
+      <source>Duplicated Points</source>
+      <translation>Pointí Dúblaithe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
+      <source>Mesh Repair</source>
+      <translation>Deisiú Mogaill</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
       <source>No duplicated points</source>
       <translation>Gan aon phointí dúblacha</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
-      <source>Duplicated points</source>
-      <translation>Pointí dúblaithe</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1040"/>
@@ -1126,12 +1132,6 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1161"/>
       <source>Folds</source>
       <translation>Fillteáin</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
-      <source>Mesh repair</source>
-      <translation>Deisiú mogalra</translation>
     </message>
   </context>
   <context>
@@ -1289,8 +1289,8 @@
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
-      <source>No active document</source>
-      <translation>Gan aon doiciméad gníomhach</translation>
+      <source>No Active Document</source>
+      <translation>Gan Doiciméad Gníomhach</translation>
     </message>
   </context>
   <context>

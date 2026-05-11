@@ -1440,36 +1440,46 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskBoxPrimitives</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="52"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="53"/>
       <source>Primitive Parameters</source>
       <translation>Paramètres de la primitive</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="944"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="952"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="947"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="955"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="963"/>
       <source>Invalid wedge parameters</source>
       <translation>Paramètres non valides de la pyramide tronquée</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="945"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="948"/>
       <source>X min must not be equal to X max!</source>
       <translation>X min ne doit pas être égal à X max !</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="953"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="956"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y min ne doit pas être égal à Y max !</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="961"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="964"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z min ne doit pas être égal à Z max !</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1003"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1006"/>
       <source>Create primitive</source>
       <translation>Créer une primitive</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1051"/>
+      <source>%1 fine dragging</source>
+      <translation type="unfinished">%1 fine dragging</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1054"/>
+      <source>%1 coarse dragging</source>
+      <translation type="unfinished">%1 coarse dragging</translation>
     </message>
   </context>
   <context>
@@ -1547,13 +1557,13 @@ If zero, it is equal to Radius2</source>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>Empty body list</source>
-      <translation>Liste de corps vide</translation>
+      <source>The body list cannot be empty</source>
+      <translation>La liste de corps ne peut pas être vide.</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>The body list cannot be empty</source>
-      <translation>La liste de corps ne peut pas être vide.</translation>
+      <source>Empty Body List</source>
+      <translation>La liste des corps est vide.</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="407"/>
@@ -1572,14 +1582,6 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskDatumParameters.cpp" line="109"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>Il n'y a pas de mode d'ancrage qui corresponde à l'ensemble des références actuelles. Si vous continuez, la fonction restera là où elle est et ne bougera pas si les références changent. Continuer ?</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input error</source>
-      <translation>Erreur de saisie</translation>
     </message>
   </context>
   <context>
@@ -2009,7 +2011,7 @@ If zero, it is equal to Radius2</source>
       <translation>Erreur : l'hélice se touche elle-même</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="349"/>
+      <location filename="../../TaskHelixParameters.cpp" line="352"/>
       <source>Error: unsupported mode</source>
       <translation>Erreur : mode non pris en charge</translation>
     </message>
@@ -2650,7 +2652,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="463"/>
       <location filename="../../TaskPipeParameters.cpp" line="584"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>Erreur de saisie</translation>
     </message>
     <message>
@@ -3120,11 +3122,6 @@ measured along the specified direction</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid selection</source>
-      <translation>Sélection non valide</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>Il n’y a aucun mode d'ancrage qui convienne aux objets sélectionnés. Sélectionner autre chose.</translation>
@@ -3255,6 +3252,11 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1834"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>Sélectionnez une arête, une face ou un corps d'un corps actif.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Invalid Selection</source>
+      <translation>La sélection est non valide.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1026"/>
@@ -3513,7 +3515,7 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <translation>Afin d'utiliser cette fonction, elle doit appartenir à un objet pièce dans le document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
@@ -4460,6 +4462,9 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Le résultat comporte plusieurs solides : activer « Autoriser les composés » dans le corps actif.</translation>
@@ -4641,8 +4646,8 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>Erreur : la face doit être plane</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="454"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>Erreur : le résultat n'est pas un solide.</translation>
@@ -4653,29 +4658,22 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>Erreur : il n'y a rien à soustraire</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="421"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="451"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="492"/>
-      <source>Error: Result has multiple solids</source>
-      <translation>Erreur : le résultat a plusieurs solides</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="436"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="437"/>
       <source>Error: Adding the helix failed</source>
       <translation>Erreur : l'ajout de l'hélice a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="468"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="472"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>Erreur : l'intersection de l'hélice a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="477"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="481"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>Erreur : la soustraction de l'hélice a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="508"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="515"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Erreur : impossible de créer une face à partir de l'esquisse</translation>
     </message>
@@ -5132,7 +5130,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Afficher l'aperçu en superposition</translation>
     </message>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="50"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="52"/>
       <source>Preview</source>
       <translation>Aperçu</translation>
     </message>
@@ -5278,7 +5276,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>PartDesignGui::TaskDlgPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1082"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1103"/>
       <source>Attachment</source>
       <translation>Ancrage</translation>
     </message>
@@ -5286,7 +5284,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="802"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="803"/>
       <source>Revolution Parameters</source>
       <translation>Paramètres de la révolution</translation>
     </message>
@@ -5294,7 +5292,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="812"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="813"/>
       <source>Groove Parameters</source>
       <translation>Paramètres de la rainure</translation>
     </message>
@@ -5413,25 +5411,46 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="132"/>
+      <location filename="../../TaskPatternParameters.cpp" line="148"/>
       <source>Direction 2</source>
       <translation>Direction 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="248"/>
+      <location filename="../../TaskPatternParameters.cpp" line="267"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Sélectionner une référence de direction (arête, face, ligne de référence)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="334"/>
+      <location filename="../../TaskPatternParameters.cpp" line="355"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>La sélection est non valide. Sélectionner une arête, une face planaire ou une ligne de référence.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Erreur de saisie</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="138"/>
+      <source>%1 fine dragging</source>
+      <translation type="unfinished">%1 fine dragging</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="141"/>
+      <source>%1 coarse dragging</source>
+      <translation type="unfinished">%1 coarse dragging</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="264"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>

@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Creates a new empty trajectory</source>
-      <translation>새로운 빈 경로를 생성합니다</translation>
+      <translation>새 빈 궤적을 생성합니다</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="380"/>
       <source>Edge to Trajectory</source>
-      <translation>에지를 경로로</translation>
+      <translation>모서리를 궤적으로</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="381"/>
       <source>Generates a trajectory from the selected edges</source>
-      <translation>선택한 에지에서 경로를 생성합니다</translation>
+      <translation>선택한 모서리에서 궤적을 생성합니다</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../CommandExport.cpp" line="47"/>
       <source>Kuka Compact Subroutine</source>
-      <translation>Kuka 컴팩트 서브루틴</translation>
+      <translation>Kuka 간략 서브루틴</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
       <source>Exports the trajectory as a compact KRL subroutine</source>
-      <translation>경로를 컴팩트 KRL 서브루틴으로 내보냅니다</translation>
+      <translation>궤적을 간략 KRL 서브루틴으로 내보냅니다</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="130"/>
       <source>Exports the trajectory as a full KRL subroutine</source>
-      <translation>경로를 전체 KRL 서브루틴으로 내보냅니다</translation>
+      <translation>궤적을 전체 KRL 서브루틴으로 내보냅니다</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="92"/>
       <source>Insert in Trajectory</source>
-      <translation>경로에 삽입</translation>
+      <translation>궤적에 삽입</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="93"/>
       <source>Inserts the robot tool location into the trajectory</source>
-      <translation>로봇 도구 위치를 경로에 삽입합니다</translation>
+      <translation>로봇 도구 위치를 궤적에 삽입합니다</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="165"/>
       <source>Insert in Trajectory</source>
-      <translation>경로에 삽입</translation>
+      <translation>궤적에 삽입</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="166"/>
       <source>Inserts the preselection position into the trajectory (W)</source>
-      <translation>사전선택 위치를 경로에 삽입합니다 (W)</translation>
+      <translation>미리 선택한 위치를 궤적에 삽입합니다 (W)</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="147"/>
       <source>Move to Home</source>
-      <translation>홈으로 이동</translation>
+      <translation>원점으로 이동</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="148"/>
       <source>Moves to the home position</source>
-      <translation>홈 위치로 이동합니다</translation>
+      <translation>원점 위치로 이동합니다</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="252"/>
       <source>Sets the default orientation for subsequent commands for waypoint creation</source>
-      <translation>이후 웨이포인트 생성 명령에 사용할 기본 방향을 설정합니다</translation>
+      <translation>이후 웨이포인트 생성 명령의 기본 방향을 설정합니다</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="292"/>
       <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
-      <translation>이후 웨이포인트 생성 명령에 사용할 속도, 가속도, 연속성의 기본값을 설정합니다</translation>
+      <translation>이후 웨이포인트 생성 명령의 속도, 가속도, 연속성 기본값을 설정합니다</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Set Home Position</source>
-      <translation>홈 위치 설정</translation>
+      <translation>원점 위치 설정</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Sets the home position</source>
-      <translation>홈 위치를 설정합니다</translation>
+      <translation>원점 위치를 설정합니다</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Simulate Trajectory</source>
-      <translation>경로 시뮬레이션</translation>
+      <translation>궤적 시뮬레이션</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Simulates robot movement along a selected trajectory</source>
-      <translation>선택한 경로를 따라 로봇 움직임을 시뮬레이션합니다</translation>
+      <translation>선택한 궤적을 따라 로봇 이동을 시뮬레이션합니다</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="507"/>
       <source>Trajectory Compound</source>
-      <translation>경로 결합</translation>
+      <translation>궤적 복합체</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="508"/>
       <source>Groups and connects multiple trajectories into one</source>
-      <translation>여러 경로를 하나로 묶어 연결합니다</translation>
+      <translation>여러 궤적을 하나로 그룹화하고 연결합니다</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="443"/>
       <source>Dress-Up Trajectory</source>
-      <translation>경로 꾸미기</translation>
+      <translation>궤적 드레스업</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="444"/>
       <source>Creates a dress-up object that overrides aspects of a trajectory</source>
-      <translation>경로의 일부 속성을 재정의하는 꾸미기 객체를 생성합니다</translation>
+      <translation>궤적의 속성을 재정의하는 드레스업 객체를 생성합니다</translation>
     </message>
   </context>
   <context>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Trajectory Tools</source>
-      <translation>경로 도구</translation>
+      <translation>궤적 도구</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -308,7 +308,7 @@
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Select VRML file for Robot</source>
-      <translation>로봇용 VRML 파일 선택</translation>
+      <translation>로봇의 VRML 파일 선택</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="56"/>
@@ -318,7 +318,7 @@
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>Select Kinematic CSV file for Robot</source>
-      <translation>로봇용 기구학 CSV 파일 선택</translation>
+      <translation>로봇의 운동학 CSV 파일 선택</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
@@ -328,12 +328,12 @@
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Select one Robot to set home position</source>
-      <translation>홈 위치를 설정할 로봇 하나를 선택하십시오.</translation>
+      <translation>원점 위치를 설정할 로봇 하나를 선택하십시오</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="168"/>
       <source>Select one Robot</source>
-      <translation>로봇 하나를 선택하십시오.</translation>
+      <translation>로봇 하나를 선택하십시오</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="110"/>
@@ -341,17 +341,17 @@
       <location filename="../../CommandExport.cpp" line="146"/>
       <location filename="../../Command.cpp" line="270"/>
       <source>Select one Robot and one Trajectory object.</source>
-      <translation>로봇 하나와 경로 객체 하나를 선택하십시오.</translation>
+      <translation>로봇 하나와 궤적 객체 하나를 선택하십시오.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>Trajectory not valid</source>
-      <translation>경로가 유효하지 않습니다</translation>
+      <translation>유효하지 않은 궤적</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation>경로를 시뮬레이션하려면 웨이포인트가 최소 두 개 필요합니다.</translation>
+      <translation>시뮬레이션하려면 궤적에 최소 두 개의 웨이포인트가 필요합니다.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="91"/>
@@ -374,17 +374,17 @@
       <location filename="../../CommandTrajectory.cpp" line="181"/>
       <location filename="../../CommandTrajectory.cpp" line="202"/>
       <source>Select one Trajectory object.</source>
-      <translation>경로 객체 하나를 선택하십시오.</translation>
+      <translation>궤적 객체 하나를 선택하십시오.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="211"/>
       <source>No preselection</source>
-      <translation>사전 선택 없음</translation>
+      <translation>미리 선택 없음</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="212"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation>이 명령을 사용하려면 형상 위에 마우스 커서를 올려야 합니다(사전 선택). 자세한 내용은 문서를 참조하십시오.</translation>
+      <translation>이 명령을 사용하려면 마우스로 기하요소 위에 미리 선택 상태로 올려놓아야 합니다. 자세한 내용은 설명서를 참조하십시오.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="308"/>
@@ -404,7 +404,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="325"/>
       <source>continuous ?</source>
-      <translation>연속입니까?</translation>
+      <translation>연속 ?</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="340"/>
@@ -419,7 +419,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="487"/>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation>꾸미려는 경로를 선택하십시오.</translation>
+      <translation>드레스업할 궤적을 선택하십시오.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTrajectory.cpp" line="145"/>
@@ -515,7 +515,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="103"/>
       <source>Use orientation of edge</source>
-      <translation>에지 방향 사용</translation>
+      <translation>모서리 방향 사용</translation>
     </message>
   </context>
   <context>
@@ -801,7 +801,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
       <source>Speed &amp; acceleration</source>
-      <translation>속도 및 가속도</translation>
+      <translation>속도 &amp; 가속도</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
@@ -816,7 +816,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>
       <source>Do not change continuous mode</source>
-      <translation>연속 모드를 변경하지 않음</translation>
+      <translation>연속 모드 변경 안 함</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="108"/>
@@ -836,7 +836,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
       <source>Do not change position &amp; orientation</source>
-      <translation>위치 및 방향을 변경하지 않음</translation>
+      <translation>위치 &amp; 방향 변경 안 함</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
@@ -869,7 +869,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Export Trajectory</source>
-      <translation>경로 내보내기</translation>
+      <translation>궤적 내보내기</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>

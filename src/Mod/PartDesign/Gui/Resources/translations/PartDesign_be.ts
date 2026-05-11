@@ -1548,13 +1548,13 @@ If zero, it is equal to Radius2</source>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>Empty body list</source>
-      <translation>Пусты спіс цел</translation>
+      <source>The body list cannot be empty</source>
+      <translation>Спіс цел не можа быць пустым</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>The body list cannot be empty</source>
-      <translation>Спіс цел не можа быць пустым</translation>
+      <source>Empty Body List</source>
+      <translation>Пусты спіс цел</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="407"/>
@@ -1575,14 +1575,6 @@ If zero, it is equal to Radius2</source>
       <translation>Не існуе рэжыму ўкладання, які адпавядае бягучаму набору спасылак.
 Калі вырашыце працягнуць, характарыстыка застанецца там, дзе ён ёсць зараз, і не будзе зрушаны пры змене спасылак.
 Ці працягнуць?</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -2656,7 +2648,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="463"/>
       <location filename="../../TaskPipeParameters.cpp" line="584"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>Памылка ўводу</translation>
     </message>
     <message>
@@ -3127,11 +3119,6 @@ measured along the specified direction</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid selection</source>
-      <translation>Хібны выбар</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>Адсутнічаюць рэжымы мацавання, якія б адпавядалі абраным аб'ектам. Абярыце што-небудзь іншае.</translation>
@@ -3263,6 +3250,11 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1834"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>Абраць рабро, грань ці цела з бягучага цела.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Invalid Selection</source>
+      <translation>Хібны выбар</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1026"/>
@@ -5452,6 +5444,14 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Хібны выбар.
 Абярыце рабро, плоскую грань ці апорную лінію.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Памылка ўводу</translation>
     </message>
   </context>
   <context>

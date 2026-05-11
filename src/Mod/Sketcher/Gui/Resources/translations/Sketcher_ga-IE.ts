@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="649"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>Attach Sketch</source>
       <translation>Ceangail Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Attaches a sketch to the selected geometry element</source>
       <translation>Ceanglaíonn sé sceitse leis an eilimint gheoiméadrach roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="741"/>
+      <location filename="../../Command.cpp" line="743"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>Braitheann cuid de na rudaí roghnaithe ar an sceitse atá le mapáil. Ní cheadaítear spleáchais chiorclacha.</translation>
     </message>
@@ -177,35 +177,63 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="1073"/>
+      <location filename="../../Command.cpp" line="1160"/>
+      <source>Skipping external geometry #%1
+</source>
+      <translation type="unfinished">Skipping external geometry #%1
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1203"/>
+      <source>External geometry '%1' is out of scope:
+</source>
+      <translation type="unfinished">External geometry '%1' is out of scope:
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1254"/>
       <source>Merge Sketches</source>
       <translation>Cumaisc Sceitsí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1074"/>
+      <location filename="../../Command.cpp" line="1255"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
       <translation>Cruthaíonn sé sceitse nua trí dhá sceitse roghnaithe ar a laghad a chumasc</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1089"/>
+      <location filename="../../Command.cpp" line="1270"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1090"/>
+      <location filename="../../Command.cpp" line="1271"/>
       <source>Select at least 2 sketches</source>
       <translation>Roghnaigh 2 sceitse ar a laghad</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1360"/>
+      <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
+</source>
+      <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1376"/>
+      <source>Skipping constraint #%1 of '%2': references unmerged geometry.
+</source>
+      <translation type="unfinished">Skipping constraint #%1 of '%2': references unmerged geometry.
+</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="945"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>Mirror Sketch</source>
       <translation>Sceitse Scátháin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="946"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
@@ -214,12 +242,12 @@ trí úsáid a bhaint as na haiseanna X nó Y, nó an pointe tionscnaimh,
 mar thagairt scáthánaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="965"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="964"/>
+      <location filename="../../Command.cpp" line="966"/>
       <source>Select at least 1 sketch</source>
       <translation>Roghnaigh sceitse amháin ar a laghad</translation>
     </message>
@@ -266,24 +294,24 @@ mar thagairt scáthánaithe</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../Command.cpp" line="907"/>
       <source>Validate Sketch</source>
       <translation>Bailíochtú Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="906"/>
+      <location filename="../../Command.cpp" line="908"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
       <translation>Déanann sé sceitse a bhailíochtú trí sheiceáil le haghaidh comhtharlaíochtaí atá ar iarraidh,
 srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="922"/>
+      <location filename="../../Command.cpp" line="924"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="923"/>
+      <location filename="../../Command.cpp" line="925"/>
       <source>Select only 1 sketch.</source>
       <translation>Roghnaigh sceitse amháin.</translation>
     </message>
@@ -653,37 +681,37 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Srianadh a scoránaigh chuig tiomáint/tagairt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Create a new sketch on a face</source>
       <translation>Cruthaigh sceitse nua ar aghaidh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Create a new sketch</source>
       <translation>Cruthaigh sceitse nua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="622"/>
+      <location filename="../../Command.cpp" line="624"/>
       <source>Reorient sketch</source>
       <translation>Aththreoraigh an sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="831"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Attach sketch</source>
       <translation>Ceangail sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="840"/>
+      <location filename="../../Command.cpp" line="842"/>
       <source>Detach sketch</source>
       <translation>Scar sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="979"/>
+      <location filename="../../Command.cpp" line="981"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>Cruthaigh sceitse scáthánaithe do gach sceitse roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1099"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Merge sketches</source>
       <translation>Cumaisc sceitsí</translation>
     </message>
@@ -1095,54 +1123,54 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Sceitseálaí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>There are no modes that accept the selected set of subelements</source>
       <translation>Níl aon mhodhanna ann a ghlacann leis an tacar fo-eilimintí roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Broken link to support subelements</source>
       <translation>Nasc briste chuig fo-eilimintí tacaíochta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="142"/>
       <source>Unexpected error</source>
       <translation>Earráid gan choinne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="136"/>
       <source>Face is non-planar</source>
       <translation>Tá an aghaidh neamhphlánach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="136"/>
+      <location filename="../../Command.cpp" line="138"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
       <translation>Tá cruth mícheart ar na cruthanna roghnaithe (m.sh., imeall cuartha áit a bhfuil ceann díreach ag teastáil)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
-      <source>Invalid selection</source>
-      <translation>Rogha neamhbhailí</translation>
+      <location filename="../../Command.cpp" line="178"/>
+      <source>Invalid Selection</source>
+      <translation>Rogha Neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="179"/>
       <source>Too many objects selected</source>
       <translation>An iomarca rudaí roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Sketch mapping</source>
       <translation>Léarscáiliú sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Cannot map the sketch to the selected object. %1.</source>
       <translation>Ní féidir an sceitse a mhapáil leis an réad roghnaithe. %1.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
-      <location filename="../../Command.cpp" line="770"/>
+      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="772"/>
       <source>Do not attach</source>
       <translation>Ná ceangail</translation>
     </message>
@@ -4199,74 +4227,74 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="695"/>
+      <location filename="../../Command.cpp" line="697"/>
       <source>No sketch found</source>
       <translation>Níor aimsíodh aon sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>Cannot attach sketch to itself!</source>
       <translation>Ní féidir sceitse a cheangal leis féin!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="698"/>
+      <location filename="../../Command.cpp" line="700"/>
       <source>The document does not contain a sketch</source>
       <translation>Níl sceitse sa cháipéis</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="716"/>
       <source>Select Sketch</source>
       <translation>Roghnaigh Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
       <translation>Roghnaigh sceitse (ní thaispeántar roinnt sceitsí chun spleáchas ciorclach a chosc)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="720"/>
       <source>Select a sketch from the list</source>
       <translation>Roghnaigh sceitse ón liosta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="783"/>
+      <location filename="../../Command.cpp" line="785"/>
       <source> (incompatible with selection)</source>
       <translation> (neamh-chomhoiriúnach leis an roghnú)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="784"/>
+      <location filename="../../Command.cpp" line="786"/>
       <source> (current)</source>
       <translation> (reatha)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="792"/>
+      <location filename="../../Command.cpp" line="794"/>
       <source> (suggested)</source>
       <translation> (molta)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Sketch Attachment</source>
       <translation>Ceangaltán Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Tá an modh ceangail reatha neamh-chomhoiriúnach leis an roghnú nua.
 Roghnaigh an modh chun an sceitse seo a cheangal leis na réada roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Roghnaigh an modh chun an sceitse seo a cheangal le réada roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="851"/>
+      <location filename="../../Command.cpp" line="853"/>
       <source>Map sketch</source>
       <translation>Sceitse léarscáile</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="852"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Ní féidir sceitse a mhapáil chun tacú le:
@@ -4285,12 +4313,12 @@ Roghnaigh an modh chun an sceitse seo a cheangal leis na réada roghnaithe.</tra
   <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Sketch Attachment</source>
       <translation>Ceangaltán Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Roghnaigh an modh chun an sceitse seo a cheangal leis an réad roghnaithe</translation>
     </message>
@@ -4298,12 +4326,12 @@ Roghnaigh an modh chun an sceitse seo a cheangal leis na réada roghnaithe.</tra
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="529"/>
       <source>Sketch Has Support</source>
       <translation>Tá tacaíocht ag Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="530"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
       <translation>Ní féidir sceitse le haghaidh tacaíochta a ath-threoshuíomh.
@@ -5846,12 +5874,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="157"/>
+      <location filename="../../Command.cpp" line="159"/>
       <source>New Sketch</source>
       <translation>Sceitse Nua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="158"/>
+      <location filename="../../Command.cpp" line="160"/>
       <source>Creates a new sketch</source>
       <translation>Cruthaíonn sceitse nua</translation>
     </message>
@@ -5859,12 +5887,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Edit Sketch</source>
       <translation>Cuir Sceitse in Eagar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Opens the selected sketch for editing</source>
       <translation>Osclaíonn an sceitse roghnaithe le haghaidh eagarthóireachta</translation>
     </message>
@@ -5872,12 +5900,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="369"/>
       <source>Leave Sketch</source>
       <translation>Fág Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="368"/>
+      <location filename="../../Command.cpp" line="370"/>
       <source>Finish editing the active sketch. You can also press Escape to exit.</source>
       <translation>Críochnaigh ag eagarthóireacht an sceitse ghníomhach. Is féidir leat brúigh ar Escape freisin chun imeacht.</translation>
     </message>
@@ -5885,12 +5913,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="475"/>
+      <location filename="../../Command.cpp" line="477"/>
       <source>Stop Operation</source>
       <translation>Stop Oibríocht</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="478"/>
       <source>Stops the active operation while in edit mode</source>
       <translation>Stopann sé an oibríocht ghníomhach agus í i mód eagarthóireachta</translation>
     </message>
@@ -5898,12 +5926,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Reorient Sketch</source>
       <translation>Aththreorú Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
       <translation>Cuireann sé an sceitse roghnaithe ar cheann de na pláin chomhordanáidí domhanda.
@@ -5913,12 +5941,12 @@ Glanfaidh sé seo an mhaoin AttachmentSupport.</translation>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="873"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Align View to Sketch</source>
       <translation>Ailínigh an Radharc leis an Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
+      <location filename="../../Command.cpp" line="876"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
       <translation>Ailíníonn sé treoshuíomh an cheamara go hingearach leis an eitleán sceitse gníomhach</translation>
     </message>
@@ -5926,12 +5954,12 @@ Glanfaidh sé seo an mhaoin AttachmentSupport.</translation>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1175"/>
+      <location filename="../../Command.cpp" line="1421"/>
       <source>Toggle Section View</source>
       <translation>Amharc Rannóige a Athraigh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1176"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Toggles between section view and full view</source>
       <translation>Athraíonn idir radharc rannóige agus radharc iomlán</translation>
     </message>
@@ -5939,42 +5967,42 @@ Glanfaidh sé seo an mhaoin AttachmentSupport.</translation>
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1250"/>
+      <location filename="../../Command.cpp" line="1496"/>
       <source>Display grid</source>
       <translation>Eangach taispeána</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1251"/>
+      <location filename="../../Command.cpp" line="1497"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
       <translation>Athraíonn sé infheictheacht an ghreille sa sceitse gníomhach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1254"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Grid auto-spacing</source>
       <translation>Spásáil uathoibríoch ghreille</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1255"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation>Coigeartaíonn sé an spásáil eangaí go huathoibríoch bunaithe ar an leibhéal súmála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1258"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Spacing</source>
       <translation>Spásáil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1259"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Fad idir dhá líne ghreille ina dhiaidh sin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1261"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>Snap to grid</source>
       <translation>Snapáil chuig an ngreille</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1263"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Snapálfaidh pointí nua go dtí an líne eangaí is gaire.
@@ -5984,12 +6012,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1388"/>
+      <location filename="../../Command.cpp" line="1634"/>
       <source>Toggle Grid</source>
       <translation>Eangach a Athrú</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1390"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Toggles the grid display in the active sketch</source>
       <translation>Athraíonn an taispeáint eangaí sa sceitse gníomhach</translation>
     </message>
@@ -5997,22 +6025,22 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1741"/>
       <source>Snap to objects</source>
       <translation>Snapáil chuig réada</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1742"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Snapálfaidh pointí nua chuig an réad atá réamhroghnaithe faoi láthair. Snapálfaidh sé freisin chuig lár línte agus áirsí.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>Snap angle</source>
       <translation>Uillinn snap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1748"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>Céim uilleach le haghaidh uirlisí a úsáideann 'Snap ag uillinn'. Coinnigh Ctrl chun 'Snap ag uillinn' a chumasú. Tosaíonn an uillinn ón ais X dhearfach den sceitse.</translation>
     </message>
@@ -6020,12 +6048,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1588"/>
+      <location filename="../../Command.cpp" line="1834"/>
       <source>Toggle Snap</source>
       <translation>Scoránaigh Snap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1590"/>
+      <location filename="../../Command.cpp" line="1836"/>
       <source>Toggles snapping</source>
       <translation>Scoránaigh sé snapáil</translation>
     </message>
@@ -6033,27 +6061,27 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1697"/>
+      <location filename="../../Command.cpp" line="1943"/>
       <source>Normal geometry</source>
       <translation>Geoiméadracht gnáth</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1699"/>
+      <location filename="../../Command.cpp" line="1945"/>
       <source>Construction geometry</source>
       <translation>Geoiméadracht tógála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1947"/>
       <source>External geometry</source>
       <translation>Geoiméadracht sheachtrach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>Unknown geometry</source>
       <translation>Geoiméadracht anaithnid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1745"/>
+      <location filename="../../Command.cpp" line="1991"/>
       <source>Rendering order</source>
       <translation>Ord rindreála</translation>
     </message>
@@ -6061,12 +6089,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="2076"/>
       <source>Rendering Order</source>
       <translation>Ordú Rindreála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="2077"/>
       <source>Reorders items in the rendering order</source>
       <translation>Athordaíonn sé míreanna san ord rindreála</translation>
     </message>
@@ -8291,12 +8319,12 @@ Nóta: Cé go bhfuil an srian Téacs gníomhach, déanfar neamhaird d'aon sriant
   <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Cancel Editing</source>
       <translation>Cealaigh an Eagarthóireacht</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>Leave 'edit' mode and revert any changes</source>
       <translation>Fág an mód 'eagarthóireachta' agus cuir aon athruithe ar ais</translation>
     </message>
@@ -8304,12 +8332,12 @@ Nóta: Cé go bhfuil an srian Téacs gníomhach, déanfar neamhaird d'aon sriant
   <context>
     <name>CmdSketcherLeaveGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Leave</source>
       <translation>Fág</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Leave the sketch editing mode.</source>
       <translation>Fág an modh eagarthóireachta sceitse.</translation>
     </message>

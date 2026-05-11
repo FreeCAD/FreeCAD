@@ -269,12 +269,12 @@ Is féidir fillteáin iolracha a chur leis ag baint úsáide as ";;" chun cosái
   <context>
     <name>Start::DisplayedFilesModel</name>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="130"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Created at:</source>
       <translation>Cruthaithe ag:</translation>
     </message>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
       <source>Modified at:</source>
       <translation>Athraithe ag:</translation>
     </message>

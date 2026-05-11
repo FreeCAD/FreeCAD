@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="649"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>Attach Sketch</source>
       <translation>Pridruži skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Attaches a sketch to the selected geometry element</source>
       <translation>Pridruži skicu izabranom geometrijskom elementu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="741"/>
+      <location filename="../../Command.cpp" line="743"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>Neki od izabranih objekata zavise od skice koju treba mapirati. Kružne zavisnosti nisu dozvoljene.</translation>
     </message>
@@ -177,35 +177,63 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="1073"/>
+      <location filename="../../Command.cpp" line="1160"/>
+      <source>Skipping external geometry #%1
+</source>
+      <translation type="unfinished">Skipping external geometry #%1
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1203"/>
+      <source>External geometry '%1' is out of scope:
+</source>
+      <translation type="unfinished">External geometry '%1' is out of scope:
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1254"/>
       <source>Merge Sketches</source>
       <translation>Objedini skice</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1074"/>
+      <location filename="../../Command.cpp" line="1255"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
       <translation>Napravi novu skicu objedinjavanjem najmanje 2 izabrane skice</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1089"/>
+      <location filename="../../Command.cpp" line="1270"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1090"/>
+      <location filename="../../Command.cpp" line="1271"/>
       <source>Select at least 2 sketches</source>
       <translation>Izaberi najmanje 2 skice</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1360"/>
+      <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
+</source>
+      <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1376"/>
+      <source>Skipping constraint #%1 of '%2': references unmerged geometry.
+</source>
+      <translation type="unfinished">Skipping constraint #%1 of '%2': references unmerged geometry.
+</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="945"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>Mirror Sketch</source>
       <translation>Simetrično preslikaj skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="946"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
@@ -214,12 +242,12 @@ koristeći X i Y ose ili koordinatni početak
 kao referencu za preslikavanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="965"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="964"/>
+      <location filename="../../Command.cpp" line="966"/>
       <source>Select at least 1 sketch</source>
       <translation>Izaberi najmanje jednu skicu</translation>
     </message>
@@ -266,24 +294,24 @@ kao referencu za preslikavanje</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../Command.cpp" line="907"/>
       <source>Validate Sketch</source>
       <translation>Popravi skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="906"/>
+      <location filename="../../Command.cpp" line="908"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
       <translation>Popravi skicu proveravajući podudarnosti koje nedostaju,
 nevažeća ograničenja, degenerisanu geometriju, itd</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="922"/>
+      <location filename="../../Command.cpp" line="924"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="923"/>
+      <location filename="../../Command.cpp" line="925"/>
       <source>Select only 1 sketch.</source>
       <translation>Izaberi samo jednu skicu.</translation>
     </message>
@@ -653,37 +681,37 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Prebaci između referentnog i ograničavajućeg režima kota</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Create a new sketch on a face</source>
       <translation>Napravi novu skicu na stranici</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Create a new sketch</source>
       <translation>Napravi novu skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="622"/>
+      <location filename="../../Command.cpp" line="624"/>
       <source>Reorient sketch</source>
       <translation>Preorjentiši skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="831"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Attach sketch</source>
       <translation>Pridruži skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="840"/>
+      <location filename="../../Command.cpp" line="842"/>
       <source>Detach sketch</source>
       <translation>Odvoji skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="979"/>
+      <location filename="../../Command.cpp" line="981"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>Napravi simetričnu skicu za svaku izabranu skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1099"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Merge sketches</source>
       <translation>Objedini skice</translation>
     </message>
@@ -1095,54 +1123,54 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Skice</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>There are no modes that accept the selected set of subelements</source>
       <translation>Ne postoje režimi koji prihvataju izabrani skup podelemenata</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Broken link to support subelements</source>
       <translation type="unfinished">Broken link to support subelements</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="142"/>
       <source>Unexpected error</source>
       <translation>Neočekivana greška</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="136"/>
       <source>Face is non-planar</source>
       <translation>Stranica nije planarna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="136"/>
+      <location filename="../../Command.cpp" line="138"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
       <translation>Izabrani oblici su pogrešnog oblika (npr. zakrivljena ivica gde je potrebna prava)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
-      <source>Invalid selection</source>
-      <translation>Neispravan izbor</translation>
+      <location filename="../../Command.cpp" line="178"/>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="179"/>
       <source>Too many objects selected</source>
       <translation>Previše objekata je izabrano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Sketch mapping</source>
       <translation>Mapiranje skice</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Cannot map the sketch to the selected object. %1.</source>
       <translation>Ne mogu mapirati skicu na izabrani objekat. %1.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
-      <location filename="../../Command.cpp" line="770"/>
+      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="772"/>
       <source>Do not attach</source>
       <translation>Nemoj prikačiti</translation>
     </message>
@@ -4199,74 +4227,74 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="695"/>
+      <location filename="../../Command.cpp" line="697"/>
       <source>No sketch found</source>
       <translation>Nije pronađena skica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>Cannot attach sketch to itself!</source>
       <translation>Nije moguće pridružiti skicu samoj sebi!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="698"/>
+      <location filename="../../Command.cpp" line="700"/>
       <source>The document does not contain a sketch</source>
       <translation>Dokument nema skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="716"/>
       <source>Select Sketch</source>
       <translation>Izaberi skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
       <translation>Izaberi skicu (da bi se izbegla kružna zavisnost neke skice nisu prikazane)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="720"/>
       <source>Select a sketch from the list</source>
       <translation>Izaberi skicu iz liste</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="783"/>
+      <location filename="../../Command.cpp" line="785"/>
       <source> (incompatible with selection)</source>
       <translation> (nekompatibilno sa izborom)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="784"/>
+      <location filename="../../Command.cpp" line="786"/>
       <source> (current)</source>
       <translation> (trenutni)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="792"/>
+      <location filename="../../Command.cpp" line="794"/>
       <source> (suggested)</source>
       <translation> (predloženi)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Sketch Attachment</source>
       <translation>Prilog skici</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Trenutni režim pridruživanja nije kompatibilan sa novim izborom.
 Izaberi metod za pridruživanje ove skice na izabrane objekte.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Izaberi metod za vezivanje ove skice na izabrane objekte.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="851"/>
+      <location filename="../../Command.cpp" line="853"/>
       <source>Map sketch</source>
       <translation>Mapiraj skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="852"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Ne mogu mapirati skicu na osnovu:
@@ -4285,12 +4313,12 @@ Izaberi metod za pridruživanje ove skice na izabrane objekte.</translation>
   <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Sketch Attachment</source>
       <translation>Prilog skici</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Izaberi metod za vezivanje ove skice na izabrane objekat</translation>
     </message>
@@ -4298,12 +4326,12 @@ Izaberi metod za pridruživanje ove skice na izabrane objekte.</translation>
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="529"/>
       <source>Sketch Has Support</source>
       <translation>Skica ima osnovu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="530"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
       <translation>Skici sa osnovom se ne može promeniti orijentacija.
@@ -5846,12 +5874,12 @@ Umesto toga, između originalnih objekata i njihovih kopija se primenjuju ograni
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="157"/>
+      <location filename="../../Command.cpp" line="159"/>
       <source>New Sketch</source>
       <translation>Nova skica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="158"/>
+      <location filename="../../Command.cpp" line="160"/>
       <source>Creates a new sketch</source>
       <translation>Napravi novu skicu</translation>
     </message>
@@ -5859,12 +5887,12 @@ Umesto toga, između originalnih objekata i njihovih kopija se primenjuju ograni
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Edit Sketch</source>
       <translation>Uredi skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Opens the selected sketch for editing</source>
       <translation>Otvori izabranu skicu radi uređivanja</translation>
     </message>
@@ -5872,12 +5900,12 @@ Umesto toga, između originalnih objekata i njihovih kopija se primenjuju ograni
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="369"/>
       <source>Leave Sketch</source>
       <translation>Napusti skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="368"/>
+      <location filename="../../Command.cpp" line="370"/>
       <source>Finish editing the active sketch. You can also press Escape to exit.</source>
       <translation type="unfinished">Finish editing the active sketch. You can also press Escape to exit.</translation>
     </message>
@@ -5885,12 +5913,12 @@ Umesto toga, između originalnih objekata i njihovih kopija se primenjuju ograni
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="475"/>
+      <location filename="../../Command.cpp" line="477"/>
       <source>Stop Operation</source>
       <translation>Zaustavi operaciju</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="478"/>
       <source>Stops the active operation while in edit mode</source>
       <translation>Tokom uređivanja zaustavi aktivne operacije</translation>
     </message>
@@ -5898,12 +5926,12 @@ Umesto toga, između originalnih objekata i njihovih kopija se primenjuju ograni
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Reorient Sketch</source>
       <translation>Preorjentiši skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
       <translation>Postavi izabranu skicu na jednu od glavnih koordinatnih ravni.
@@ -5913,12 +5941,12 @@ Ovo će obrisati osobinu Osnova ('AttachmentSupport'), ako postoji.</translation
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="873"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Align View to Sketch</source>
       <translation>Poravnaj pogled sa skicom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
+      <location filename="../../Command.cpp" line="876"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
       <translation>Poravnaj orijentaciju kamere upravno na ravan aktivne skice</translation>
     </message>
@@ -5926,12 +5954,12 @@ Ovo će obrisati osobinu Osnova ('AttachmentSupport'), ako postoji.</translation
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1175"/>
+      <location filename="../../Command.cpp" line="1421"/>
       <source>Toggle Section View</source>
       <translation>Prikaži zaklonjenu skicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1176"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Toggles between section view and full view</source>
       <translation>Prikaži/sakrij detalje 3D modela koji se nalaze ispred skice koju uređuješ</translation>
     </message>
@@ -5939,42 +5967,42 @@ Ovo će obrisati osobinu Osnova ('AttachmentSupport'), ako postoji.</translation
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1250"/>
+      <location filename="../../Command.cpp" line="1496"/>
       <source>Display grid</source>
       <translation>Prikaži koordinatnu mrežu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1251"/>
+      <location filename="../../Command.cpp" line="1497"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
       <translation>Prikaži/Sakrij koordinatnu mrežu na aktivnoj skici</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1254"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Grid auto-spacing</source>
       <translation>Automatski razmak koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1255"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation>Automatski prilagodi razmak mreže u zavisnosti od dimenzija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1258"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Spacing</source>
       <translation>Razmak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1259"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Rastojanje između dve sledeće linije koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1261"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>Snap to grid</source>
       <translation>Uhvati koordinatnu mrežu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1263"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Nove tačke će se uhvatiti za najbližu liniju koordinatne mreže.
@@ -5984,12 +6012,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1388"/>
+      <location filename="../../Command.cpp" line="1634"/>
       <source>Toggle Grid</source>
       <translation>Sakrij/Prikaži koordinatnu mrežu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1390"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Toggles the grid display in the active sketch</source>
       <translation>Prikaži sakrij koordinatnu mrežu na aktivnoj skici</translation>
     </message>
@@ -5997,22 +6025,22 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1741"/>
       <source>Snap to objects</source>
       <translation>Uhvati objekat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1742"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Nove tačke će se uhvatiti za trenutno izabrani objekat. Takođe će se uhvatiti za sredinu linija i lukova.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>Snap angle</source>
       <translation>Uhvati ugao</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1748"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>Ugaoni korak za alatke koje koriste 'Uhvati pod uglom'. Drži Ctrl da bi omogućio 'Uhvati pod uglom'. Ugao počinje od pozitivnog dela X ose skice.</translation>
     </message>
@@ -6020,12 +6048,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1588"/>
+      <location filename="../../Command.cpp" line="1834"/>
       <source>Toggle Snap</source>
       <translation>Uključi/Isključi hvatanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1590"/>
+      <location filename="../../Command.cpp" line="1836"/>
       <source>Toggles snapping</source>
       <translation>Uključi/Isključi hvatanje</translation>
     </message>
@@ -6033,27 +6061,27 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1697"/>
+      <location filename="../../Command.cpp" line="1943"/>
       <source>Normal geometry</source>
       <translation>Regularna geometrija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1699"/>
+      <location filename="../../Command.cpp" line="1945"/>
       <source>Construction geometry</source>
       <translation>Pomoćna geometrija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1947"/>
       <source>External geometry</source>
       <translation>Spoljna geometrija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>Unknown geometry</source>
       <translation>Nepoznata geometrija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1745"/>
+      <location filename="../../Command.cpp" line="1991"/>
       <source>Rendering order</source>
       <translation>Redosled iscrtavanja</translation>
     </message>
@@ -6061,12 +6089,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="2076"/>
       <source>Rendering Order</source>
       <translation>Redosled iscrtavanja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="2077"/>
       <source>Reorders items in the rendering order</source>
       <translation>Promeni redosled stavki redosleda iscrtavanja</translation>
     </message>
@@ -8291,12 +8319,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Cancel Editing</source>
       <translation type="unfinished">Cancel Editing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>Leave 'edit' mode and revert any changes</source>
       <translation type="unfinished">Leave 'edit' mode and revert any changes</translation>
     </message>
@@ -8304,12 +8332,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherLeaveGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Leave</source>
       <translation type="unfinished">Leave</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Leave the sketch editing mode.</source>
       <translation type="unfinished">Leave the sketch editing mode.</translation>
     </message>

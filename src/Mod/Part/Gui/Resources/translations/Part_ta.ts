@@ -4892,8 +4892,8 @@ the sketch plane's normal vector will be used</source>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
-      <source>Too few elements</source>
-      <translation>மிகக் குறைவான கூறுகள்</translation>
+      <source>Too Few Elements</source>
+      <translation type="unfinished">Too Few Elements</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
@@ -5005,7 +5005,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskOffset.cpp" line="228"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>உள்ளீடு பிழை</translation>
     </message>
   </context>
   <context>
@@ -5171,19 +5171,19 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="233"/>
       <location filename="../../TaskShapeBuilder.cpp" line="252"/>
+      <source>Select two vertices</source>
+      <translation>இரண்டு முனைகளைத் தேர்ந்தெடுக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.cpp" line="233"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="252"/>
       <location filename="../../TaskShapeBuilder.cpp" line="281"/>
       <location filename="../../TaskShapeBuilder.cpp" line="323"/>
       <location filename="../../TaskShapeBuilder.cpp" line="378"/>
       <location filename="../../TaskShapeBuilder.cpp" line="432"/>
       <location filename="../../TaskShapeBuilder.cpp" line="498"/>
-      <source>Wrong selection</source>
+      <source>Wrong Selection</source>
       <translation>தவறான தேர்வு</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="233"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="252"/>
-      <source>Select two vertices</source>
-      <translation>இரண்டு முனைகளைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="281"/>
@@ -5251,18 +5251,8 @@ only created cuts will be visible</source>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="376"/>
-      <source>Too few elements</source>
-      <translation>மிகக் குறைவான கூறுகள்</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
       <source>At least one edge or wire is required.</source>
       <translation>குறைந்தபட்சம் ஒரு விளிம்பு அல்லது கம்பி தேவை.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
-      <source>Invalid selection</source>
-      <translation>தவறான தேர்வு</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="383"/>
@@ -5270,8 +5260,18 @@ only created cuts will be visible</source>
       <translation>ஒரு பொருளிலிருந்து குறைந்தபட்சம் 1 விளிம்பைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
+      <location filename="../../TaskSweep.cpp" line="376"/>
+      <source>Too Few Elements</source>
+      <translation type="unfinished">Too Few Elements</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="382"/>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
+    </message>
+    <message>
       <location filename="../../TaskSweep.cpp" line="393"/>
-      <source>Wrong selection</source>
+      <source>Wrong Selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
     <message>
@@ -5282,7 +5282,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="437"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>உள்ளீடு பிழை</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="478"/>
@@ -5297,14 +5297,14 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="505"/>
       <location filename="../../TaskSweep.cpp" line="513"/>
-      <source>Sweep path</source>
-      <translation>ச்வீப் பாதை</translation>
+      <source>The selected sweep path is invalid.</source>
+      <translation>தேர்ந்தெடுக்கப்பட்ட ச்வீப் பாதை தவறானது.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="505"/>
       <location filename="../../TaskSweep.cpp" line="513"/>
-      <source>The selected sweep path is invalid.</source>
-      <translation>தேர்ந்தெடுக்கப்பட்ட ச்வீப் பாதை தவறானது.</translation>
+      <source>Sweep Path</source>
+      <translation>ச்வீப் பாதை</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="525"/>
@@ -6058,7 +6058,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../TaskThickness.cpp" line="297"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>உள்ளீடு பிழை</translation>
     </message>
   </context>
   <context>
@@ -6090,16 +6090,6 @@ in the 3D view for the sweep path.</source>
       <translation>இறக்குமதி-ஏற்றுமதி</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="333"/>
-      <location filename="../../Command.cpp" line="410"/>
-      <location filename="../../Command.cpp" line="510"/>
-      <location filename="../../Command.cpp" line="952"/>
-      <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="2277"/>
-      <source>Wrong selection</source>
-      <translation>தவறான தேர்வு</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="350"/>
       <location filename="../../Command.cpp" line="427"/>
       <location filename="../../Command.cpp" line="527"/>
@@ -6111,6 +6101,16 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="1016"/>
       <source>Select 2 shapes</source>
       <translation>2 வடிவங்களைத் தேர்ந்தெடுக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="333"/>
+      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="952"/>
+      <location filename="../../Command.cpp" line="1015"/>
+      <location filename="../../Command.cpp" line="2277"/>
+      <source>Wrong Selection</source>
+      <translation>தவறான தேர்வு</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="351"/>
@@ -7698,32 +7698,37 @@ Overlapping volumes of the shapes will be removed.</source>
       <translation>நிகழ்வுகள்</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="69"/>
+      <location filename="../../PatternParametersWidget.cpp" line="78"/>
       <source>Axis</source>
       <translation>அச்சு</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="70"/>
-      <location filename="../../PatternParametersWidget.cpp" line="72"/>
+      <location filename="../../PatternParametersWidget.cpp" line="79"/>
+      <location filename="../../PatternParametersWidget.cpp" line="81"/>
       <source>Total Angle</source>
       <translation type="unfinished">Total Angle</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="71"/>
-      <location filename="../../PatternParametersWidget.cpp" line="73"/>
+      <location filename="../../PatternParametersWidget.cpp" line="80"/>
+      <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Angular Spacing</source>
       <translation type="unfinished">Angular Spacing</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="412"/>
-      <location filename="../../PatternParametersWidget.cpp" line="508"/>
+      <location filename="../../PatternParametersWidget.cpp" line="423"/>
+      <location filename="../../PatternParametersWidget.cpp" line="519"/>
       <source>Spacing %1</source>
       <translation>இடைவெளி% 1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="428"/>
+      <location filename="../../PatternParametersWidget.cpp" line="439"/>
       <source>Remove this spacing definition.</source>
       <translation>இந்த இடைவெளி வரையறையை நீக்கவும்.</translation>
+    </message>
+    <message>
+      <location filename="../../PatternParametersWidget.cpp" line="940"/>
+      <source>Reset spacing</source>
+      <translation type="unfinished">Reset spacing</translation>
     </message>
   </context>
   <context>

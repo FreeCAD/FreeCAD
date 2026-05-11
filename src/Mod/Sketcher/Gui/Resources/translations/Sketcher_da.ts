@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="649"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>Attach Sketch</source>
       <translation>Fastgør skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Attaches a sketch to the selected geometry element</source>
       <translation>Fastgør en skitse til det valgte geometriske element</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="741"/>
+      <location filename="../../Command.cpp" line="743"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>Nogle af de valgte objekter afhænger af den skitse der ønskes fastgjort. Cirkulære afhængigheder er ikke tilladt.</translation>
     </message>
@@ -177,35 +177,63 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="1073"/>
+      <location filename="../../Command.cpp" line="1160"/>
+      <source>Skipping external geometry #%1
+</source>
+      <translation type="unfinished">Skipping external geometry #%1
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1203"/>
+      <source>External geometry '%1' is out of scope:
+</source>
+      <translation type="unfinished">External geometry '%1' is out of scope:
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1254"/>
       <source>Merge Sketches</source>
       <translation>Flet skitser</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1074"/>
+      <location filename="../../Command.cpp" line="1255"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
       <translation>Opretter en ny skitse ved at flette mindst 2 valgte skitser</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1089"/>
+      <location filename="../../Command.cpp" line="1270"/>
       <source>Wrong selection</source>
       <translation>Forkert valg</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1090"/>
+      <location filename="../../Command.cpp" line="1271"/>
       <source>Select at least 2 sketches</source>
       <translation>Vælg mindst 2 skitser</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1360"/>
+      <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
+</source>
+      <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1376"/>
+      <source>Skipping constraint #%1 of '%2': references unmerged geometry.
+</source>
+      <translation type="unfinished">Skipping constraint #%1 of '%2': references unmerged geometry.
+</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="945"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>Mirror Sketch</source>
       <translation>Spejl skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="946"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
@@ -214,12 +242,12 @@ ved brug af X-aksen, Y-aksen, eller origo
 som spejlingsreference</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="965"/>
       <source>Wrong selection</source>
       <translation>Forkert valg</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="964"/>
+      <location filename="../../Command.cpp" line="966"/>
       <source>Select at least 1 sketch</source>
       <translation>Vælg mindst 1 skitse</translation>
     </message>
@@ -266,24 +294,24 @@ som spejlingsreference</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../Command.cpp" line="907"/>
       <source>Validate Sketch</source>
       <translation>Validér Skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="906"/>
+      <location filename="../../Command.cpp" line="908"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
       <translation>Validerer en skitse ved at kontrollere for manglende sammenfald,
 ugyldige relationer og fejlbehæftet geometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="922"/>
+      <location filename="../../Command.cpp" line="924"/>
       <source>Wrong selection</source>
       <translation>Forkert valg</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="923"/>
+      <location filename="../../Command.cpp" line="925"/>
       <source>Select only 1 sketch.</source>
       <translation>Vælg kun 1 skitse.</translation>
     </message>
@@ -298,7 +326,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3956"/>
       <source>Add relative 'Lock' constraint</source>
-      <translation>Tilføj låst-i-forhold-til relation</translation>
+      <translation>Tilføj en 'låst i forhold til' relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4022"/>
@@ -308,7 +336,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4241"/>
       <source>Add block constraint</source>
-      <translation>Tilføj låst relation</translation>
+      <translation>Tilføj 'blokeret' relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4581"/>
@@ -320,13 +348,13 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="5000"/>
       <location filename="../../CommandConstraints.cpp" line="5323"/>
       <source>Add distance from horizontal axis constraint</source>
-      <translation>Tilføj afstand-til-vandret-akse relation</translation>
+      <translation>Tilføj 'afstand til vandret akse' relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5012"/>
       <location filename="../../CommandConstraints.cpp" line="5337"/>
       <source>Add distance from vertical axis constraint</source>
-      <translation>Tilføj afstand-til-lodret-akse realtion</translation>
+      <translation>Tilføj 'afstand til lodret akse' realtion</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5024"/>
@@ -431,7 +459,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="2518"/>
       <location filename="../../CommandConstraints.cpp" line="4193"/>
       <source>Add Block constraint</source>
-      <translation>Tilføj låst relation</translation>
+      <translation>Tilføj 'blokeret' relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2533"/>
@@ -444,12 +472,12 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="2676"/>
       <location filename="../../CommandConstraints.cpp" line="2714"/>
       <source>Add Equality constraint</source>
-      <translation>Tilføj ens-med relation</translation>
+      <translation>Tilføj 'ens med' relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2554"/>
       <source>Add Equality constraints</source>
-      <translation>Tilføj ens-med relationer</translation>
+      <translation>Tilføj 'ens med' relationer</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10668"/>
@@ -498,12 +526,12 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="5067"/>
       <location filename="../../CommandConstraints.cpp" line="5444"/>
       <source>Add point to line distance constraint</source>
-      <translation>Tilføj punkt-til-linje afstandsrelation</translation>
+      <translation>Tilføj 'punkt til linje' afstandsrelation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5097"/>
       <source>Add point to circle distance constraint</source>
-      <translation>Tilføj punkt-til-cirkel afstandsrelation</translation>
+      <translation>Tilføj 'punkt til cirkel' afstandsrelation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5685"/>
@@ -520,12 +548,12 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="5985"/>
       <location filename="../../CommandConstraints.cpp" line="6107"/>
       <source>Add point to point vertical distance constraint</source>
-      <translation>Tilføj lodret-afstand-mellem-punkter relation</translation>
+      <translation>Tilføj 'lodret afstand mellem punkter' relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6023"/>
       <source>Add fixed y-coordinate constraint</source>
-      <translation>Tilføj fastlåst-y-koordinat relation</translation>
+      <translation>Tilføj 'fastlåst y-koordinat' relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6255"/>
@@ -630,7 +658,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="9840"/>
       <location filename="../../CommandConstraints.cpp" line="9895"/>
       <source>Add equality constraint</source>
-      <translation>Tilføj ens-med relation</translation>
+      <translation>Tilføj 'ens med' relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10064"/>
@@ -653,37 +681,37 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <translation>Skift relation mellem definerende og reference</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Create a new sketch on a face</source>
       <translation>Opret en ny skitse på en flade</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Create a new sketch</source>
       <translation>Opret en ny skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="622"/>
+      <location filename="../../Command.cpp" line="624"/>
       <source>Reorient sketch</source>
       <translation>Skift placering af skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="831"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Attach sketch</source>
       <translation>Fastgør skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="840"/>
+      <location filename="../../Command.cpp" line="842"/>
       <source>Detach sketch</source>
       <translation>Frigør skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="979"/>
+      <location filename="../../Command.cpp" line="981"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>Opret en spejlet skitse for hver valgt skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1099"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Merge sketches</source>
       <translation>Flet skitser</translation>
     </message>
@@ -1095,54 +1123,54 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <translation>Sketcher</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>There are no modes that accept the selected set of subelements</source>
       <translation>Der er ingen tilstande, der accepterer det valgte sæt af delelementer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Broken link to support subelements</source>
       <translation>Brudt link for at understøtte underelementer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="142"/>
       <source>Unexpected error</source>
       <translation>Ubeskrevet fejl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="136"/>
       <source>Face is non-planar</source>
       <translation>Fladen er ikke plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="136"/>
+      <location filename="../../Command.cpp" line="138"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
       <translation>Valgte geometrier er af forkert type (f.eks. en krum linje, hvor en ret linje er nødvendig)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
-      <source>Invalid selection</source>
-      <translation>Ugyldigt valg</translation>
+      <location filename="../../Command.cpp" line="178"/>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="179"/>
       <source>Too many objects selected</source>
       <translation>For mange objekter valgt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Sketch mapping</source>
       <translation>Skitseplacering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Cannot map the sketch to the selected object. %1.</source>
       <translation>Kan ikke placere skitsen på det valgte objekt. %1.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
-      <location filename="../../Command.cpp" line="770"/>
+      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="772"/>
       <source>Do not attach</source>
       <translation>Fastgør ikke</translation>
     </message>
@@ -1423,7 +1451,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7647"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
-      <translation>Kun tangent-til-punkt understøttes med en spline.</translation>
+      <translation>Kun 'tangent til punkt' understøttes med en spline.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8149"/>
@@ -1438,31 +1466,31 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="10167"/>
       <location filename="../../CommandConstraints.cpp" line="10278"/>
       <source>Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</source>
-      <translation type="unfinished">Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</translation>
+      <translation>Vælg to punkter og en symmetrilinje, to punkter og et symmetripunkt eller en linje og et symmetripunkt fra skitsen.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10034"/>
       <location filename="../../CommandConstraints.cpp" line="10213"/>
       <location filename="../../CommandConstraints.cpp" line="10353"/>
       <source>Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</source>
-      <translation type="unfinished">Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</translation>
+      <translation>Kan ikke tilføje en symmetrirelation, da det første valgte element er uden endepunkter. Vælg en linje eller en åben kurve i stedet.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10045"/>
       <location filename="../../CommandConstraints.cpp" line="10363"/>
       <source>Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</source>
-      <translation type="unfinished">Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</translation>
+      <translation>Kan ikke tilføje en symmetrirelation, da andet valgte element ikke er en linje. Vælg en linje eller en akse i stedet.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10058"/>
       <location filename="../../CommandConstraints.cpp" line="10198"/>
       <source>Cannot add a symmetry constraint between an element and its end points!</source>
-      <translation type="unfinished">Cannot add a symmetry constraint between an element and its end points!</translation>
+      <translation>Kan ikke tilføje en symmetrirelation mellem et element og dets endepunkter!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10343"/>
       <source>Cannot add a symmetry constraint between an element and itself.</source>
-      <translation type="unfinished">Cannot add a symmetry constraint between an element and itself.</translation>
+      <translation>Kan ikke tilføje en symmetrirelation mellem et element og elementet selv.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10423"/>
@@ -1655,7 +1683,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
       <location filename="../../CommandConstraints.cpp" line="6542"/>
       <location filename="../../CommandConstraints.cpp" line="6583"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
-      <translation>Kan ikke tilføje en 'vinkelret-på' relation til et fritliggende punkt!</translation>
+      <translation>Kan ikke tilføje en 'vinkelret på' relation til et fritliggende punkt!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6624"/>
@@ -1671,7 +1699,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../CommandConstraints.cpp" line="7202"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
-      <translation>En 'endepunkt-til-inje' relation blev tilføjet. Relationen 'punkt-på-objekt' blev slettet.</translation>
+      <translation>En 'endepunkt til inje' relation blev tilføjet. Relationen 'punkt-på-objekt' blev slettet.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7233"/>
@@ -1705,7 +1733,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../CommandConstraints.cpp" line="353"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
-      <translation>Et eller to punkt-på-objekt relationer blev slettet, da den seneste relation der er tilføjet internt, også medfører en punkt-på-objekt relation.</translation>
+      <translation>Et eller to 'punkt på objekt' relationer blev slettet, da den seneste relation der er tilføjet internt, også medfører en punkt på objekt relation.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="867"/>
@@ -1863,7 +1891,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../CommandConstraints.cpp" line="10640"/>
       <source>No geometries selected</source>
-      <translation type="unfinished">No geometries selected</translation>
+      <translation>Ingen geometrier valgt</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10876"/>
@@ -2314,7 +2342,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="132"/>
       <source>PointOnObject</source>
-      <translation type="unfinished">PointOnObject</translation>
+      <translation>Punkt på objekt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="135"/>
@@ -2334,7 +2362,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="144"/>
       <source>Equal</source>
-      <translation type="unfinished">Equal</translation>
+      <translation>Ens med</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="147"/>
@@ -2344,7 +2372,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="150"/>
       <source>Lock</source>
-      <translation type="unfinished">Lock</translation>
+      <translation>Lås</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="153"/>
@@ -2354,12 +2382,12 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="156"/>
       <source>DistanceX</source>
-      <translation type="unfinished">DistanceX</translation>
+      <translation>AfstandX</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="159"/>
       <source>DistanceY</source>
-      <translation type="unfinished">DistanceY</translation>
+      <translation>AfstandY</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="162"/>
@@ -2384,7 +2412,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="174"/>
       <source>Snell</source>
-      <translation type="unfinished">Snell</translation>
+      <translation>Snell</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="177"/>
@@ -2394,7 +2422,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="186"/>
       <source>Constraint</source>
-      <translation type="unfinished">Constraint</translation>
+      <translation>Relation</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="654"/>
@@ -2607,7 +2635,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="86"/>
       <source>Block Constraint</source>
-      <translation>Låst</translation>
+      <translation>Blokeret</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="82"/>
@@ -2702,7 +2730,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="755"/>
       <source>Convert to geometries</source>
-      <translation type="unfinished">Convert to geometries</translation>
+      <translation>Konvertér til geometri</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="880"/>
@@ -4196,74 +4224,74 @@ Dette gøres ved at analysere skitsegeometrierne og relationerne.</translation>
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="695"/>
+      <location filename="../../Command.cpp" line="697"/>
       <source>No sketch found</source>
       <translation>Ingen skitse fundet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>Cannot attach sketch to itself!</source>
       <translation>Kan ikke fastgøre en skitse til sig selv!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="698"/>
+      <location filename="../../Command.cpp" line="700"/>
       <source>The document does not contain a sketch</source>
       <translation>Dokumentet indeholder ikke en skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="716"/>
       <source>Select Sketch</source>
       <translation>Vælg skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
       <translation>Vælg en skitse (visse skitser vises ikke, for at forhindre en cirkulær afhængighed)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="720"/>
       <source>Select a sketch from the list</source>
       <translation>Vælg en skitse fra listen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="783"/>
+      <location filename="../../Command.cpp" line="785"/>
       <source> (incompatible with selection)</source>
       <translation> (ikke kompatibelt med valg)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="784"/>
+      <location filename="../../Command.cpp" line="786"/>
       <source> (current)</source>
       <translation> (nuværende)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="792"/>
+      <location filename="../../Command.cpp" line="794"/>
       <source> (suggested)</source>
       <translation> (foreslåede)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Sketch Attachment</source>
       <translation>Fastgørelse af skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Den nuværende fastgørelsesmetode er inkompatibel med det nye valg.
 Vælg metoden for fastgørelse af denne skitse til de valgte objekter.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Vælg metoden til at fastgøre denne skitse til de valgte objekter.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="851"/>
+      <location filename="../../Command.cpp" line="853"/>
       <source>Map sketch</source>
       <translation>Placer skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="852"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Kan ikke placere en skitse til hjælp:
@@ -4282,12 +4310,12 @@ Vælg metoden for fastgørelse af denne skitse til de valgte objekter.</translat
   <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Sketch Attachment</source>
       <translation>Fastgørelse af skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Vælg metoden til at fastgøre denne skitse til de valgte objekter</translation>
     </message>
@@ -4295,12 +4323,12 @@ Vælg metoden for fastgørelse af denne skitse til de valgte objekter.</translat
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="529"/>
       <source>Sketch Has Support</source>
       <translation>Skitsen har support-flade</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="530"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
       <translation>Skitser med en support-flade kan ikke omplaceres.
@@ -5831,7 +5859,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="533"/>
       <source>Apply equal constraints</source>
-      <translation>Anvend ens-med relationer</translation>
+      <translation>Anvend 'ens med' relationer</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="537"/>
@@ -5844,12 +5872,12 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="157"/>
+      <location filename="../../Command.cpp" line="159"/>
       <source>New Sketch</source>
       <translation>Ny skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="158"/>
+      <location filename="../../Command.cpp" line="160"/>
       <source>Creates a new sketch</source>
       <translation>Opretter en ny skitse</translation>
     </message>
@@ -5857,12 +5885,12 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Edit Sketch</source>
       <translation>Rediger skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Opens the selected sketch for editing</source>
       <translation>Åbner den markerede skitse til redigering</translation>
     </message>
@@ -5870,12 +5898,12 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="369"/>
       <source>Leave Sketch</source>
       <translation>Forlad skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="368"/>
+      <location filename="../../Command.cpp" line="370"/>
       <source>Finish editing the active sketch. You can also press Escape to exit.</source>
       <translation type="unfinished">Finish editing the active sketch. You can also press Escape to exit.</translation>
     </message>
@@ -5883,12 +5911,12 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="475"/>
+      <location filename="../../Command.cpp" line="477"/>
       <source>Stop Operation</source>
       <translation>Stop handling</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="478"/>
       <source>Stops the active operation while in edit mode</source>
       <translation>Stopper den aktive handling under redigeringstilstand</translation>
     </message>
@@ -5896,12 +5924,12 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Reorient Sketch</source>
       <translation>Skift placering af skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
       <translation>Placer den valgte skitse på et af de globale koordinatplaner.
@@ -5911,12 +5939,12 @@ Dette vil rydde 'AttachmentSupport' egenskaben.</translation>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="873"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Align View to Sketch</source>
       <translation>Ret skitsen ind</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
+      <location filename="../../Command.cpp" line="876"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
       <translation>Justerer kameraets orientering, så det er vinkelret på det aktive skitseplan</translation>
     </message>
@@ -5924,12 +5952,12 @@ Dette vil rydde 'AttachmentSupport' egenskaben.</translation>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1175"/>
+      <location filename="../../Command.cpp" line="1421"/>
       <source>Toggle Section View</source>
       <translation>Slå snitvisning til/fra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1176"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Toggles between section view and full view</source>
       <translation>Skifter mellem snitvisning og fuld visning</translation>
     </message>
@@ -5937,42 +5965,42 @@ Dette vil rydde 'AttachmentSupport' egenskaben.</translation>
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1250"/>
+      <location filename="../../Command.cpp" line="1496"/>
       <source>Display grid</source>
       <translation>Vis gitter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1251"/>
+      <location filename="../../Command.cpp" line="1497"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
       <translation>Slår visning af gitterlinjer til/fra i den aktive skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1254"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Grid auto-spacing</source>
       <translation>Automatisk gitterafstand</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1255"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation>Justerer automatisk gitterafstanden baseret på zoomniveauet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1258"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Spacing</source>
       <translation>Afstand</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1259"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Afstand mellem efterfølgende gitterlinjer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1261"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>Snap to grid</source>
       <translation>Fastgør til gitter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1263"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Nye punkter vil blive placeret på den nærmeste gitterlinje.
@@ -5982,12 +6010,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1388"/>
+      <location filename="../../Command.cpp" line="1634"/>
       <source>Toggle Grid</source>
       <translation>Slå gitterlinjer til/fra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1390"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Toggles the grid display in the active sketch</source>
       <translation>Slår visning af gitterlinjer til/fra i den aktive skitse</translation>
     </message>
@@ -5995,22 +6023,22 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1741"/>
       <source>Snap to objects</source>
       <translation>Fastgør til objekt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1742"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Nye punkter vil blive placeret på det aktuelt valgte objekt. Eller de vil blive fastgjort på midten af linjer og cirkelbuer.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>Snap angle</source>
       <translation>Fastgør til vinkel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1748"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>Vinkeltrin for værktøjer, der bruger 'fastgør til vinkel'. Hold Ctrl for at aktivere 'fastgør til vinkel'. Vinklen måles fra skitsens positive X-akse.</translation>
     </message>
@@ -6018,12 +6046,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1588"/>
+      <location filename="../../Command.cpp" line="1834"/>
       <source>Toggle Snap</source>
       <translation>Slå fastgørelse til/fra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1590"/>
+      <location filename="../../Command.cpp" line="1836"/>
       <source>Toggles snapping</source>
       <translation>Slår fastgørelse til gitterlinjer, objekter og vinkler, til/fra</translation>
     </message>
@@ -6031,27 +6059,27 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1697"/>
+      <location filename="../../Command.cpp" line="1943"/>
       <source>Normal geometry</source>
       <translation>Normal geometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1699"/>
+      <location filename="../../Command.cpp" line="1945"/>
       <source>Construction geometry</source>
       <translation>Konstruktionslinjer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1947"/>
       <source>External geometry</source>
       <translation>Ekstern geometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>Unknown geometry</source>
       <translation>Ukendt geometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1745"/>
+      <location filename="../../Command.cpp" line="1991"/>
       <source>Rendering order</source>
       <translation>Renderingsrækkefølge</translation>
     </message>
@@ -6059,12 +6087,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="2076"/>
       <source>Rendering Order</source>
       <translation>Renderingsrækkefølge</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="2077"/>
       <source>Reorders items in the rendering order</source>
       <translation>Sorterer komponenter i renderingsrækkefølge</translation>
     </message>
@@ -6165,12 +6193,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandConstraints.cpp" line="4102"/>
       <source>Block Constraint</source>
-      <translation>Låst</translation>
+      <translation>Blokeret</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4103"/>
       <source>Constrains the selected edges as fixed</source>
-      <translation>Låser de markerede linjer fast</translation>
+      <translation>Holder de markerede linjer fast</translation>
     </message>
   </context>
   <context>
@@ -8195,12 +8223,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../EditTextDialog.ui" line="22"/>
       <source>Text:</source>
-      <translation type="unfinished">Text:</translation>
+      <translation>Tekst:</translation>
     </message>
     <message>
       <location filename="../../EditTextDialog.ui" line="32"/>
       <source>Font:</source>
-      <translation type="unfinished">Font:</translation>
+      <translation>Skrifttype:</translation>
     </message>
     <message>
       <location filename="../../EditTextDialog.ui" line="44"/>
@@ -8239,12 +8267,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
     <message>
       <location filename="../../EditTextDialog.cpp" line="72"/>
       <source>Font not found</source>
-      <translation type="unfinished">Font not found</translation>
+      <translation>Skrifttype ikke fundet</translation>
     </message>
     <message>
       <location filename="../../EditTextDialog.cpp" line="73"/>
       <source>The original font '%1' is not found on your system. A default font has been selected.</source>
-      <translation type="unfinished">The original font '%1' is not found on your system. A default font has been selected.</translation>
+      <translation>Den oprindelige skrifttype '%1' findes ikke på dit system. En standard skrifttype er blevet valgt.</translation>
     </message>
   </context>
   <context>
@@ -8283,18 +8311,18 @@ Note: While the Text constraint is active, any constraints applied directly to t
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="375"/>
       <source>Font</source>
-      <translation type="unfinished">Font</translation>
+      <translation>Skrifttype</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Cancel Editing</source>
       <translation type="unfinished">Cancel Editing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>Leave 'edit' mode and revert any changes</source>
       <translation type="unfinished">Leave 'edit' mode and revert any changes</translation>
     </message>
@@ -8302,14 +8330,14 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherLeaveGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Leave</source>
-      <translation type="unfinished">Leave</translation>
+      <translation>Forlad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Leave the sketch editing mode.</source>
-      <translation type="unfinished">Leave the sketch editing mode.</translation>
+      <translation>Forlad skitseredigeringstilstand.</translation>
     </message>
   </context>
 </TS>

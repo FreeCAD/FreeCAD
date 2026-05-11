@@ -1088,19 +1088,25 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
-      <source>Duplicated faces</source>
-      <translation>複製之面</translation>
+      <source>Duplicated Faces</source>
+      <translation type="unfinished">Duplicated Faces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
+      <source>Duplicated Points</source>
+      <translation type="unfinished">Duplicated Points</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
+      <source>Mesh Repair</source>
+      <translation type="unfinished">Mesh Repair</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
       <source>No duplicated points</source>
       <translation>無重複點</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
-      <source>Duplicated points</source>
-      <translation>被複製的點</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1040"/>
@@ -1126,12 +1132,6 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1161"/>
       <source>Folds</source>
       <translation>折疊</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
-      <source>Mesh repair</source>
-      <translation>修復網格</translation>
     </message>
   </context>
   <context>
@@ -1289,8 +1289,8 @@
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
-      <source>No active document</source>
-      <translation>無可用文件</translation>
+      <source>No Active Document</source>
+      <translation type="unfinished">No Active Document</translation>
     </message>
   </context>
   <context>

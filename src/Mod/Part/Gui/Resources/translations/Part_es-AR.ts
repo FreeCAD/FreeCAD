@@ -4889,8 +4889,8 @@ se utilizará el vector normal del plano de croquis</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
-      <source>Too few elements</source>
-      <translation>Muy pocos elementos</translation>
+      <source>Too Few Elements</source>
+      <translation type="unfinished">Too Few Elements</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
@@ -5168,19 +5168,19 @@ solo los cortes creados serán visibles</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="233"/>
       <location filename="../../TaskShapeBuilder.cpp" line="252"/>
+      <source>Select two vertices</source>
+      <translation>Seleccionar dos vértices</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.cpp" line="233"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="252"/>
       <location filename="../../TaskShapeBuilder.cpp" line="281"/>
       <location filename="../../TaskShapeBuilder.cpp" line="323"/>
       <location filename="../../TaskShapeBuilder.cpp" line="378"/>
       <location filename="../../TaskShapeBuilder.cpp" line="432"/>
       <location filename="../../TaskShapeBuilder.cpp" line="498"/>
-      <source>Wrong selection</source>
+      <source>Wrong Selection</source>
       <translation>Selección Incorrecta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="233"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="252"/>
-      <source>Select two vertices</source>
-      <translation>Seleccionar dos vértices</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="281"/>
@@ -5248,18 +5248,8 @@ solo los cortes creados serán visibles</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="376"/>
-      <source>Too few elements</source>
-      <translation>Muy pocos elementos</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
       <source>At least one edge or wire is required.</source>
       <translation>Se requiere al menos una arista o alambre.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
-      <source>Invalid selection</source>
-      <translation>Selección inválida</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="383"/>
@@ -5267,8 +5257,18 @@ solo los cortes creados serán visibles</translation>
       <translation>Seleccione al menos 1 arista de un solo objeto.</translation>
     </message>
     <message>
+      <location filename="../../TaskSweep.cpp" line="376"/>
+      <source>Too Few Elements</source>
+      <translation type="unfinished">Too Few Elements</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="382"/>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
+    </message>
+    <message>
       <location filename="../../TaskSweep.cpp" line="393"/>
-      <source>Wrong selection</source>
+      <source>Wrong Selection</source>
       <translation>Selección Incorrecta</translation>
     </message>
     <message>
@@ -5294,14 +5294,14 @@ solo los cortes creados serán visibles</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="505"/>
       <location filename="../../TaskSweep.cpp" line="513"/>
-      <source>Sweep path</source>
-      <translation>Trayectoria de barrido</translation>
+      <source>The selected sweep path is invalid.</source>
+      <translation>La trayectoria de barrido seleccionada es inválida.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="505"/>
       <location filename="../../TaskSweep.cpp" line="513"/>
-      <source>The selected sweep path is invalid.</source>
-      <translation>La trayectoria de barrido seleccionada es inválida.</translation>
+      <source>Sweep Path</source>
+      <translation>Trayectoria del Barrido</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="525"/>
@@ -6081,16 +6081,6 @@ in the 3D view for the sweep path.</source>
       <translation>Importar-Exportar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="333"/>
-      <location filename="../../Command.cpp" line="410"/>
-      <location filename="../../Command.cpp" line="510"/>
-      <location filename="../../Command.cpp" line="952"/>
-      <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="2277"/>
-      <source>Wrong selection</source>
-      <translation>Selección Incorrecta</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="350"/>
       <location filename="../../Command.cpp" line="427"/>
       <location filename="../../Command.cpp" line="527"/>
@@ -6102,6 +6092,16 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="1016"/>
       <source>Select 2 shapes</source>
       <translation>Selecciones 2 formas</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="333"/>
+      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="952"/>
+      <location filename="../../Command.cpp" line="1015"/>
+      <location filename="../../Command.cpp" line="2277"/>
+      <source>Wrong Selection</source>
+      <translation>Selección Incorrecta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="351"/>
@@ -7688,32 +7688,37 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
       <translation>Apariciones</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="69"/>
+      <location filename="../../PatternParametersWidget.cpp" line="78"/>
       <source>Axis</source>
       <translation>Eje</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="70"/>
-      <location filename="../../PatternParametersWidget.cpp" line="72"/>
+      <location filename="../../PatternParametersWidget.cpp" line="79"/>
+      <location filename="../../PatternParametersWidget.cpp" line="81"/>
       <source>Total Angle</source>
       <translation>Ángulo total</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="71"/>
-      <location filename="../../PatternParametersWidget.cpp" line="73"/>
+      <location filename="../../PatternParametersWidget.cpp" line="80"/>
+      <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Angular Spacing</source>
       <translation>Espaciado angular</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="412"/>
-      <location filename="../../PatternParametersWidget.cpp" line="508"/>
+      <location filename="../../PatternParametersWidget.cpp" line="423"/>
+      <location filename="../../PatternParametersWidget.cpp" line="519"/>
       <source>Spacing %1</source>
       <translation>Espaciado</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="428"/>
+      <location filename="../../PatternParametersWidget.cpp" line="439"/>
       <source>Remove this spacing definition.</source>
       <translation>Elimine esta definición de espaciado.</translation>
+    </message>
+    <message>
+      <location filename="../../PatternParametersWidget.cpp" line="940"/>
+      <source>Reset spacing</source>
+      <translation type="unfinished">Reset spacing</translation>
     </message>
   </context>
   <context>

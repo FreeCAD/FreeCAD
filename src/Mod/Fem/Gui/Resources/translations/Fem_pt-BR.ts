@@ -1661,8 +1661,8 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
-      <source>Succesive over-relaxation (SOR)</source>
-      <translation type="unfinished">Succesive over-relaxation (SOR)</translation>
+      <source>Successive over-relaxation (SOR)</source>
+      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
@@ -1701,117 +1701,13 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="237"/>
       <location filename="../../TaskFemConstraint.cpp" line="259"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>Erro de entrada</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="238"/>
       <source>You must specify at least one reference</source>
       <translation>Você deve especificar pelo menos uma referência</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
-    <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintContact</name>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintForce</name>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintPressure</name>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintPulley</name>
-    <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintSpring</name>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTransform</name>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
     </message>
   </context>
   <context>
@@ -1825,14 +1721,6 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="102"/>
       <source>Meshing failure</source>
       <translation>Falha de engrenagem</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgPost</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="403"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
     </message>
   </context>
   <context>
@@ -1870,8 +1758,8 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintBearing.cpp" line="205"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="215"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="224"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="171"/>
@@ -1932,8 +1820,8 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="131"/>
@@ -2027,19 +1915,19 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
+      <source>Nothing selected!</source>
+      <translation>Nada selecionado!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="255"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="299"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="332"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
-      <source>Nothing selected!</source>
-      <translation>Nada selecionado!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
@@ -2072,19 +1960,19 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
+      <source>Nothing selected!</source>
+      <translation>Nada selecionado!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="130"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="171"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="203"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
-      <source>Nothing selected!</source>
-      <translation>Nada selecionado!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
@@ -2173,8 +2061,8 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
-      <source>Empty selection</source>
-      <translation>Limpar seleção</translation>
+      <source>Empty Selection</source>
+      <translation type="unfinished">Empty Selection</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
@@ -2183,17 +2071,17 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
+      <source>Selected object is not a part object!</source>
+      <translation>O objeto selecionado não é um objeto do tipo parte!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="675"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="693"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="703"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="712"/>
-      <source>Wrong selection</source>
+      <source>Wrong Selection</source>
       <translation>Seleção errada</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
-      <source>Selected object is not a part object!</source>
-      <translation>O objeto selecionado não é um objeto do tipo parte!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="676"/>
@@ -2217,19 +2105,19 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
+      <source>Nothing selected!</source>
+      <translation>Nada selecionado!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="867"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="909"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
-      <source>Nothing selected!</source>
-      <translation>Nada selecionado!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
@@ -2262,19 +2150,19 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
+      <source>Nothing selected!</source>
+      <translation>Nada selecionado!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="185"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
-      <source>Nothing selected!</source>
-      <translation>Nada selecionado!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
@@ -2295,7 +2183,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="332"/>
-      <source>Wrong selection</source>
+      <source>Wrong Selection</source>
       <translation>Seleção errada</translation>
     </message>
     <message>
@@ -2310,8 +2198,8 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintGear.cpp" line="155"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="174"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="156"/>
@@ -2343,20 +2231,20 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="359"/>
+      <source>Nothing selected!</source>
+      <translation>Nada selecionado!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="291"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="299"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="311"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="359"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="369"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="380"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="359"/>
-      <source>Nothing selected!</source>
-      <translation>Nada selecionado!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="291"/>
@@ -2398,8 +2286,8 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="209"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="237"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="131"/>
@@ -2449,19 +2337,19 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
+      <source>Nothing selected!</source>
+      <translation>Nada selecionado!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="157"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
-      <source>Nothing selected!</source>
-      <translation>Nada selecionado!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
@@ -2507,19 +2395,19 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
+      <source>Nothing selected!</source>
+      <translation>Nada selecionado!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="150"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="160"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="204"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
-      <source>Nothing selected!</source>
-      <translation>Nada selecionado!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
@@ -2552,18 +2440,18 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
+      <source>Nothing selected!</source>
+      <translation>Nada selecionado!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="207"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="215"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="265"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
-      <source>Nothing selected!</source>
-      <translation>Nada selecionado!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="207"/>
@@ -2583,21 +2471,6 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="211"/>
       <source>Analysis feature update error</source>
       <translation>Erro de atualização de análise do recurso</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="316"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="326"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="349"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="359"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="379"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="423"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
@@ -2646,6 +2519,21 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="212"/>
       <source>The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</source>
       <translation type="unfinished">The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="316"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="326"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="349"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="359"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="379"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="423"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
@@ -4001,12 +3889,12 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <location filename="../ui/MeshAdvanced.ui" line="583"/>
       <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
       <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</translation>
     </message>
@@ -4045,12 +3933,12 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshAdvanced.ui" line="840"/>
       <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
       <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</translation>
     </message>
@@ -7425,19 +7313,19 @@ No matching module was found in the current Python path.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
+      <source>Nothing selected!</source>
+      <translation>Nada selecionado!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="319"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="361"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="394"/>
-      <source>Selection error</source>
-      <translation>Erro de seleção</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
-      <source>Nothing selected!</source>
-      <translation>Nada selecionado!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
@@ -7454,14 +7342,6 @@ No matching module was found in the current Python path.</translation>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
       <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
       <translation>Apenas um tipo de seleção (vértice, face ou aresta) por restrição permitida!</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
-    <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
-      <source>Input error</source>
-      <translation>Erro de entrada</translation>
     </message>
   </context>
   <context>
@@ -9097,6 +8977,78 @@ Leave blank to use default Python executable</translation>
     </message>
   </context>
   <context>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
+    <message>
+      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintForce</name>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgPost</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <message>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
     <name>FemGui::DlgSettingsFemInOutVtkImp</name>
     <message>
       <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
@@ -9107,6 +9059,54 @@ Leave blank to use default Python executable</translation>
       <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
       <source>Highest</source>
       <translation>Maior</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPressure</name>
+    <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintSpring</name>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPulley</name>
+    <message>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
+      <source>Input Error</source>
+      <translation>Erro de entrada</translation>
     </message>
   </context>
 </TS>

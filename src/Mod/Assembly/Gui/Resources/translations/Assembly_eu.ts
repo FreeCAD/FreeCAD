@@ -48,7 +48,7 @@
       <translation>Muntaketa</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="147"/>
       <source>Active object</source>
       <translation>Objektu aktiboa</translation>
     </message>
@@ -940,52 +940,52 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
       <source>The object is associated to one or more joints.</source>
       <translation type="unfinished">The object is associated to one or more joints.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="217"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation type="unfinished">Do you want to move the object and delete associated joints?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1103"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1090"/>
       <source>Move part</source>
       <translation type="unfinished">Move part</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1816"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1803"/>
       <source>Empty Assembly</source>
       <translation type="unfinished">Empty Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1828"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
       <source>Over-constrained:</source>
       <translation type="unfinished">Over-constrained:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1836"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1823"/>
       <source>Malformed joints:</source>
       <translation type="unfinished">Malformed joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1801"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1788"/>
       <source>and %1 more</source>
       <translation>eta %1 gehiago</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1860"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1847"/>
       <source>Solver failed to converge</source>
       <translation>Ebazleak ezin izan du konbergitu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1868"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1855"/>
       <source>Under-constrained:</source>
       <translation type="unfinished">Under-constrained:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1870"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -993,7 +993,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1874"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>Fully constrained</source>
       <translation>Osorik murritua</translation>
     </message>

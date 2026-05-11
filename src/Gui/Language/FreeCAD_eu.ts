@@ -1094,13 +1094,13 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="183"/>
-      <source>Export configuration</source>
-      <translation type="unfinished">Export configuration</translation>
+      <source>Export Configuration</source>
+      <translation type="unfinished">Export Configuration</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="194"/>
-      <source>Pack already exists</source>
-      <translation>Paketea badago lehendik</translation>
+      <source>Pack Already Exists</source>
+      <translation type="unfinished">Pack Already Exists</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="195"/>
@@ -1190,18 +1190,29 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="212"/>
-      <source>Macro not found</source>
-      <translation>Ez da makroa aurkitu</translation>
+      <source>Macro Not Found</source>
+      <translation type="unfinished">Macro Not Found</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="239"/>
+      <source>Empty Macro</source>
+      <translation type="unfinished">Empty Macro</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="244"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="314"/>
+      <source>Empty Text</source>
+      <translation type="unfinished">Empty Text</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
+      <source>No Item Selected</source>
+      <translation type="unfinished">No Item Selected</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="213"/>
       <source>Could not find macro file '%1'</source>
       <translation type="unfinished">Could not find macro file '%1'</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="239"/>
-      <source>Empty macro</source>
-      <translation>Makro hutsa</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="239"/>
@@ -1211,19 +1222,8 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="244"/>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="314"/>
-      <source>Empty text</source>
-      <translation>Testu hutsa</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="244"/>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="314"/>
       <source>Specify the menu text first</source>
       <translation type="unfinished">Specify the menu text first</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
-      <source>No item selected</source>
-      <translation>Ez da elementurik hautatu</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
@@ -1918,8 +1918,8 @@ Fitxategi-baimenen arazo bat ote da?</translation>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="104"/>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="114"/>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="144"/>
-      <source>Macro recorder</source>
-      <translation>Makro-grabatzailea</translation>
+      <source>Macro Recorder</source>
+      <translation type="unfinished">Macro Recorder</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="105"/>
@@ -1932,6 +1932,11 @@ Fitxategi-baimenen arazo bat ote da?</translation>
       <translation type="unfinished">The macro directory does not exist. Choose another one.</translation>
     </message>
     <message>
+      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="130"/>
+      <source>Existing Macro</source>
+      <translation type="unfinished">Existing Macro</translation>
+    </message>
+    <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="131"/>
       <source>The macro '%1' already exists. Overwrite it?</source>
       <translation type="unfinished">The macro '%1' already exists. Overwrite it?</translation>
@@ -1942,14 +1947,9 @@ Fitxategi-baimenen arazo bat ote da?</translation>
       <translation type="unfinished">You have no write permission for the directory. Choose another one.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="130"/>
-      <source>Existing macro</source>
-      <translation>Lehendik dagoen makroa</translation>
-    </message>
-    <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="191"/>
-      <source>Choose macro directory</source>
-      <translation>Aukeratu makro-direktorioa</translation>
+      <source>Choose Macro Directory</source>
+      <translation type="unfinished">Choose Macro Directory</translation>
     </message>
   </context>
   <context>
@@ -2081,8 +2081,8 @@ Fitxategi-baimenen arazo bat ote da?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="103"/>
-      <source>Access denied</source>
-      <translation>Sarbidea ukatuta</translation>
+      <source>Access Denied</source>
+      <translation type="unfinished">Access Denied</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="104"/>
@@ -2364,6 +2364,11 @@ Specify another directory.</translation>
       <translation type="unfinished">All settings will be cleared.</translation>
     </message>
     <message>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="922"/>
+      <source>Wrong Parameter</source>
+      <translation type="unfinished">Wrong Parameter</translation>
+    </message>
+    <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="965"/>
       <source>Restart Required</source>
       <translation type="unfinished">Restart Required</translation>
@@ -2392,11 +2397,6 @@ Specify another directory.</translation>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="803"/>
       <source>Resets the user settings entirely</source>
       <translation>Erabiltzaile-ezarpen guztiak berrezartzen ditu</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="922"/>
-      <source>Wrong parameter</source>
-      <translation>Parametro okerra</translation>
     </message>
   </context>
   <context>
@@ -2543,8 +2543,24 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="79"/>
-      <source>Empty source</source>
-      <translation>Iturburua hutsik</translation>
+      <source>Empty Source</source>
+      <translation type="unfinished">Empty Source</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
+      <source>Empty Destination</source>
+      <translation type="unfinished">Empty Destination</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="103"/>
+      <source>Failed to Extract Document</source>
+      <translation type="unfinished">Failed to Extract Document</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="120"/>
+      <source>Failed to Create Document</source>
+      <translation type="unfinished">Failed to Create Document</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
@@ -2555,24 +2571,8 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
-      <source>Empty destination</source>
-      <translation>Helburua hutsik</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
       <source>No destination is defined.</source>
       <translation>Ez da helbururik definitu.</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="103"/>
-      <source>Failed to extract document</source>
-      <translation>Dokumentuaren erauzketak huts egin du</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="120"/>
-      <source>Failed to create document</source>
-      <translation>Dokumentua sortzeak huts egin du</translation>
     </message>
   </context>
   <context>
@@ -5088,8 +5088,8 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="600"/>
-      <source>Add icon folder</source>
-      <translation>Gehitu ikono-karpeta</translation>
+      <source>Add Icon Folder</source>
+      <translation type="unfinished">Add Icon Folder</translation>
     </message>
   </context>
   <context>
@@ -5101,8 +5101,8 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="628"/>
-      <source>Remove folder</source>
-      <translation>Kendu karpeta</translation>
+      <source>Remove Folder</source>
+      <translation type="unfinished">Remove Folder</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="629"/>
@@ -5564,8 +5564,8 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="167"/>
-      <source>No 3D view</source>
-      <translation type="unfinished">No 3D view</translation>
+      <source>No 3D View</source>
+      <translation type="unfinished">No 3D View</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="167"/>
@@ -6231,10 +6231,16 @@ Save all changes?</translation>
   <context>
     <name>Gui::MainWindow</name>
     <message>
-      <location filename="../MainWindow.cpp" line="197"/>
+      <location filename="../MainWindow.cpp" line="198"/>
       <location filename="../MainWindow.cpp" line="2541"/>
       <source>Dimension</source>
       <translation>Kota</translation>
+    </message>
+    <message>
+      <location filename="../MainWindow.cpp" line="437"/>
+      <source>Bottom Panel Toggle</source>
+      <extracomment>A context menu action used to show or hide the Toggle Bottom Panels button in the status bar</extracomment>
+      <translation type="unfinished">Bottom Panel Toggle</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="446"/>
@@ -6318,7 +6324,7 @@ Save the document now?</source>
 Save the document now?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2752"/>
+      <location filename="../MainWindow.cpp" line="2759"/>
       <source>Safe Mode</source>
       <translation>Modu segurua</translation>
     </message>
@@ -6651,6 +6657,7 @@ Nola jarraitu nahi duzu?</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="986"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1251"/>
       <source>Rename Property Group</source>
       <translation type="unfinished">Rename Property Group</translation>
     </message>
@@ -6661,6 +6668,7 @@ Nola jarraitu nahi duzu?</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1006"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1222"/>
       <source>Rename Property</source>
       <translation type="unfinished">Rename Property</translation>
     </message>
@@ -6681,11 +6689,6 @@ Nola jarraitu nahi duzu?</translation>
       <translation>Argibidea</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1222"/>
-      <source>Rename property</source>
-      <translation type="unfinished">Rename property</translation>
-    </message>
-    <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1034"/>
       <source>Show Hidden</source>
       <translation type="unfinished">Show Hidden</translation>
@@ -6699,11 +6702,6 @@ Nola jarraitu nahi duzu?</translation>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1223"/>
       <source>Property name</source>
       <translation type="unfinished">Property name</translation>
-    </message>
-    <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1251"/>
-      <source>Rename property group</source>
-      <translation>Aldatu propietate-taldearen izena</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1252"/>
@@ -6869,13 +6867,19 @@ Exit without saving all data?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="881"/>
+      <location filename="../Action.cpp" line="882"/>
+      <location filename="../Action.cpp" line="891"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
       <translation type="unfinished">Clear Recent Files</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="965"/>
+      <location filename="../Action.cpp" line="892"/>
+      <source>Clear the list of recent files?</source>
+      <translation type="unfinished">Clear the list of recent files?</translation>
+    </message>
+    <message>
+      <location filename="../Action.cpp" line="979"/>
       <source>Open file %1</source>
       <translation>Ireki %1 fitxategia</translation>
     </message>
@@ -6883,12 +6887,12 @@ Exit without saving all data?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1139"/>
+      <location filename="../Action.cpp" line="1153"/>
       <source>none</source>
       <translation>bat ere ez</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1157"/>
+      <location filename="../Action.cpp" line="1171"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Exekutatu %1 makroa (Shift+klik editatzeko), teklatu-lasterbidea: %2</translation>
     </message>
@@ -7134,8 +7138,8 @@ Specify another directory?</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskSelectLinkProperty.cpp" line="41"/>
-      <source>edit selection</source>
-      <translation>editatu hautapena</translation>
+      <source>Edit Selection</source>
+      <translation type="unfinished">Edit Selection</translation>
     </message>
   </context>
   <context>
@@ -7738,12 +7742,12 @@ Specify another directory?</translation>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="737"/>
+      <location filename="../Action.cpp" line="738"/>
       <source>Selects the '%1' workbench</source>
       <translation type="unfinished">Selects the '%1' workbench</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="765"/>
+      <location filename="../Action.cpp" line="766"/>
       <source>Select the '%1' workbench</source>
       <translation>Hautatu '%1' lan-mahaia</translation>
     </message>
@@ -8044,12 +8048,12 @@ Check the report view for more details.</translation>
       <translation type="unfinished">Recompute error</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2036"/>
+      <location filename="../Application.cpp" line="2035"/>
       <source>Workbench failure</source>
       <translation>Lan-mahaiaren hutsegitea</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2037"/>
+      <location filename="../Application.cpp" line="2036"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8074,11 +8078,6 @@ Check the report view for more details.</translation>
       <translation type="unfinished">Restarting</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="512"/>
-      <source>Migration failed</source>
-      <translation type="unfinished">Migration failed</translation>
-    </message>
-    <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="425"/>
       <source>Estimated size of data to copy: %1</source>
       <translation type="unfinished">Estimated size of data to copy: %1</translation>
@@ -8090,8 +8089,8 @@ Check the report view for more details.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="488"/>
-      <source>Migration completed with warnings</source>
-      <translation type="unfinished">Migration completed with warnings</translation>
+      <source>Migration Completed With Warnings</source>
+      <translation type="unfinished">Migration Completed With Warnings</translation>
     </message>
     <message numerus="yes">
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="495"/>
@@ -8100,6 +8099,11 @@ Check the report view for more details.</translation>
         <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
         <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
       </translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="512"/>
+      <source>Migration Failed</source>
+      <translation type="unfinished">Migration Failed</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="513"/>
@@ -8236,9 +8240,13 @@ Check the report view for more details.</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="107"/>
-      <location filename="../CommandStd.cpp" line="112"/>
       <source>Cannot load workbench</source>
       <translation>Ezin da lan-mahaia kargatu</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="112"/>
+      <source>Cannot Load Workbench</source>
+      <translation type="unfinished">Cannot Load Workbench</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="113"/>
@@ -14703,7 +14711,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1176"/>
+      <location filename="../Selection/SelectionView.cpp" line="1177"/>
       <source>Whole Object</source>
       <translation type="unfinished">Whole Object</translation>
     </message>

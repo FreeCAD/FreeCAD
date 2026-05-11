@@ -3023,8 +3023,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="256"/>
-      <source>Document source</source>
-      <translation>Dokumentu-iturburua</translation>
+      <source>Document Source</source>
+      <translation type="unfinished">Document Source</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="353"/>
@@ -3101,11 +3101,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="597"/>
-      <source>Empty selection</source>
-      <translation>Hautapen hutsa</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="429"/>
       <source>To insert a view from existing objects, select them before invoking this tool. Without a selection, a file browser will open to insert an SVG or image file.</source>
       <translation type="unfinished">To insert a view from existing objects, select them before invoking this tool. Without a selection, a file browser will open to insert an SVG or image file.</translation>
@@ -3136,6 +3131,11 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Txantiloia</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="597"/>
+      <source>Empty Selection</source>
+      <translation type="unfinished">Empty Selection</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="993"/>
       <source>No profile object found in selection</source>
       <translation>Ez da profil-objekturik aurkitu hautapenean</translation>
@@ -3159,29 +3159,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1899"/>
       <source>Save DXF file</source>
       <translation type="unfinished">Save DXF file</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="2001"/>
-      <location filename="../../CommandCreateDims.cpp" line="2017"/>
-      <location filename="../../CommandCreateDims.cpp" line="2139"/>
-      <location filename="../../CommandCreateDims.cpp" line="2191"/>
-      <location filename="../../CommandCreateDims.cpp" line="2206"/>
-      <location filename="../../CommandCreateDims.cpp" line="2364"/>
-      <location filename="../../CommandCreateDims.cpp" line="2372"/>
-      <location filename="../../CommandCreateDims.cpp" line="2381"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1865"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1989"/>
-      <location filename="../../CommandDecorate.cpp" line="418"/>
-      <location filename="../../CommandDecorate.cpp" line="425"/>
-      <location filename="../../CommandDecorate.cpp" line="432"/>
-      <location filename="../../Command.cpp" line="1197"/>
-      <location filename="../../Command.cpp" line="1204"/>
-      <location filename="../../Command.cpp" line="1212"/>
-      <location filename="../../Command.cpp" line="1224"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
-      <source>Incorrect selection</source>
-      <translation>Hautapen okerra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="598"/>
@@ -3452,14 +3429,33 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Hautatu SVG fitxategi bat irekitzeko</translation>
     </message>
     <message>
+      <location filename="../../CommandCreateDims.cpp" line="2001"/>
+      <location filename="../../CommandCreateDims.cpp" line="2017"/>
       <location filename="../../CommandCreateDims.cpp" line="2043"/>
       <location filename="../../CommandCreateDims.cpp" line="2059"/>
+      <location filename="../../CommandCreateDims.cpp" line="2139"/>
+      <location filename="../../CommandCreateDims.cpp" line="2191"/>
+      <location filename="../../CommandCreateDims.cpp" line="2206"/>
       <location filename="../../CommandCreateDims.cpp" line="2213"/>
       <location filename="../../CommandCreateDims.cpp" line="2228"/>
+      <location filename="../../CommandCreateDims.cpp" line="2364"/>
+      <location filename="../../CommandCreateDims.cpp" line="2372"/>
+      <location filename="../../CommandCreateDims.cpp" line="2381"/>
       <location filename="../../TaskDimension.cpp" line="551"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1865"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1989"/>
+      <location filename="../../CommandDecorate.cpp" line="418"/>
+      <location filename="../../CommandDecorate.cpp" line="425"/>
+      <location filename="../../CommandDecorate.cpp" line="432"/>
       <location filename="../../CommandDecorate.cpp" line="439"/>
       <location filename="../../CommandDecorate.cpp" line="445"/>
       <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../Command.cpp" line="1197"/>
+      <location filename="../../Command.cpp" line="1204"/>
+      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1224"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <source>Incorrect Selection</source>
       <translation>Hautapen okerra</translation>
     </message>
@@ -3819,11 +3815,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../TaskCosVertex.cpp" line="105"/>
       <source>New Cosmetic Vertex</source>
       <translation>Erpin kosmetiko berria</translation>
-    </message>
-    <message>
-      <location filename="../../SymbolChooser.cpp" line="59"/>
-      <source>Select a symbol</source>
-      <translation>Hautatu ikur bat</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="230"/>
@@ -4255,6 +4246,11 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../TemplateTextField.cpp" line="54"/>
       <source>Click to update text</source>
       <translation type="unfinished">Click to update text</translation>
+    </message>
+    <message>
+      <location filename="../../SymbolChooser.cpp" line="59"/>
+      <source>Select a Symbol</source>
+      <translation type="unfinished">Select a Symbol</translation>
     </message>
     <message>
       <location filename="../../QGIRichAnno.cpp" line="400"/>

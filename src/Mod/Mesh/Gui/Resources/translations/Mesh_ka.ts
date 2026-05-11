@@ -1088,19 +1088,25 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
-      <source>Duplicated faces</source>
-      <translation>განმეორებადი ზედაპირები</translation>
+      <source>Duplicated Faces</source>
+      <translation type="unfinished">Duplicated Faces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
+      <source>Duplicated Points</source>
+      <translation type="unfinished">Duplicated Points</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
+      <source>Mesh Repair</source>
+      <translation type="unfinished">Mesh Repair</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
       <source>No duplicated points</source>
       <translation>განმეორებადი წერტილები ნაპოვნი არაა</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
-      <source>Duplicated points</source>
-      <translation>განმეორებადი წერტილები</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1040"/>
@@ -1126,12 +1132,6 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1161"/>
       <source>Folds</source>
       <translation>ნაოჭები</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
-      <source>Mesh repair</source>
-      <translation>მრავალკუთხა ბადის აღდგენა</translation>
     </message>
   </context>
   <context>
@@ -1289,7 +1289,7 @@
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>აქტიური დოკუმენტის გარეშე</translation>
     </message>
   </context>

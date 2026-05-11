@@ -48,7 +48,7 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="147"/>
       <source>Active object</source>
       <translation>Ενεργό αντικείμενο</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1852"/>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Distance</source>
       <translation>Απόσταση</translation>
     </message>
@@ -175,22 +175,22 @@
       <translation>Σπασμένος σύνδεσμος στο: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1671"/>
+      <location filename="../../../JointObject.py" line="1695"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Επιλέξτε 2 στοιχεία από 2 ξεχωριστά μέρη</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1854"/>
+      <location filename="../../../JointObject.py" line="1878"/>
       <source>Radius 1</source>
       <translation>Ακτίνα 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1856"/>
+      <location filename="../../../JointObject.py" line="1880"/>
       <source>Thread pitch</source>
       <translation>Βήμα Σπειρώματος</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1858"/>
+      <location filename="../../../JointObject.py" line="1882"/>
       <source>Pitch radius</source>
       <translation>Ακτίνα βήματος</translation>
     </message>
@@ -939,52 +939,52 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Το αντικείμενο συνδέεται με μία ή περισσότερες αρθρώσεις.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="217"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Θέλετε να μετακινήσετε το αντικείμενο και να διαγράψετε τις σχετικές συνδέσεις?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1103"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1090"/>
       <source>Move part</source>
       <translation>Μετακίνηση εξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1816"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1803"/>
       <source>Empty Assembly</source>
       <translation>Κενή Συναρμολόγηση</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1828"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
       <source>Over-constrained:</source>
       <translation>Υπερ-περιορισμένη:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1836"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1823"/>
       <source>Malformed joints:</source>
       <translation>Ελαττωματικές Συνδέσεις:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1801"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1788"/>
       <source>and %1 more</source>
       <translation>και %1 ακόμη</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1860"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1847"/>
       <source>Solver failed to converge</source>
       <translation>Ο επιλύτης (solver) δεν μπόρεσε να βρει λύση</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1868"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1855"/>
       <source>Under-constrained:</source>
       <translation>Μη πλήρως περιορισμένη:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1870"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n ελεύθερη κίνηση</numerusform>
@@ -992,7 +992,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1874"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>Fully constrained</source>
       <translation>Πλήρως περιορισμένη</translation>
     </message>
@@ -1322,8 +1322,8 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
-      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;1 - Εάν μια συναρμολόγηση είναι ενεργή: Δημιουργεί μια σύνδεση που κλειδώνει μόνιμα δύο εξαρτήματα μεταξύ τους, εμποδίζοντας οποιαδήποτε κίνηση ή περιστροφή.&lt;/p&gt;&lt;p&gt;2 - Εάν ένα εξάρτημα είναι ενεργό: Τοποθετεί υπο-εξαρτήματα ταιριάζοντας τα επιλεγμένα συστήματα συντεταγμένων. Το δεύτερο επιλεγμένο εξάρτημα θα μετακινηθεί.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

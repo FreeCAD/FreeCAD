@@ -987,62 +987,9 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
       <translation>La quantitat que l'eina es desplaça lateralment en cada cicle del patró, especificada en percentatge del diàmetre de l'eina. Un pas per sobre del 100% dona com a resultat cap superposició entre dos cicles diferents.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="168"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="333"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="362"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="158"/>
-      <source>%</source>
-      <translation>%</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="256"/>
-      <source>&lt;b&gt;Helix Parameters&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Helix Parameters&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="263"/>
-      <source>Max stepdown</source>
-      <translation type="unfinished">Max stepdown</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="270"/>
-      <source>The maximum allowable descent in a single revolution of the helix.</source>
-      <translation type="unfinished">The maximum allowable descent in a single revolution of the helix.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="280"/>
-      <source>Ramp angle</source>
-      <translation type="unfinished">Ramp angle</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="287"/>
-      <source>Angle of the helix ramp entry</source>
-      <translation>Angle d'entrada de la rampa helicoïdal</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="297"/>
-      <source>Cone angle</source>
-      <translation>Angle del con</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="304"/>
       <source>Angle of the helix entry cone</source>
       <translation>Angle del con d'entrada helicoïdal</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="321"/>
-      <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</source>
-      <translation type="unfinished">Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="343"/>
-      <source>Min diameter</source>
-      <translation type="unfinished">Min diameter</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="350"/>
-      <source>Minimum acceptable entry diameter, as a percentage of the tool diameter.</source>
-      <translation type="unfinished">Minimum acceptable entry diameter, as a percentage of the tool diameter.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
@@ -1102,6 +1049,44 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="146"/>
       <source>XY stock to leave</source>
       <translation>Material a deixar en XY</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="168"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="333"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="362"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="158"/>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="256"/>
+      <source>&lt;b&gt;Helix Parameters&lt;/b&gt;</source>
+      <translation type="unfinished">&lt;b&gt;Helix Parameters&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="287"/>
+      <source>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</source>
+      <translation type="unfinished">The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="297"/>
+      <source>Cone angle</source>
+      <translation>Angle del con</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="321"/>
+      <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</source>
+      <translation type="unfinished">Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="343"/>
+      <source>Min diameter</source>
+      <translation type="unfinished">Min diameter</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="350"/>
+      <source>Minimum acceptable entry diameter, as a percentage of the tool diameter.</source>
+      <translation type="unfinished">Minimum acceptable entry diameter, as a percentage of the tool diameter.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="182"/>
@@ -1348,16 +1333,19 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="263"/>
       <source>Max pitch</source>
       <translation type="unfinished">Max pitch</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="131"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="270"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</source>
       <translation type="unfinished">The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="138"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="280"/>
       <source>Max ramp angle</source>
       <translation type="unfinished">Max ramp angle</translation>
     </message>
@@ -1881,6 +1869,21 @@ Aquesta darrera opció es pot utilitzar per aplanar tota l'àrea del brut per ga
       <translation>Amplia l'inici del camí</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpSlotEdit.ui" line="359"/>
+      <source>Set the cut pattern for the operation</source>
+      <translation type="unfinished">Set the cut pattern for the operation</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSlotEdit.ui" line="363"/>
+      <source>Directional</source>
+      <translation type="unfinished">Directional</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSlotEdit.ui" line="368"/>
+      <source>Bidirectional</source>
+      <translation type="unfinished">Bidirectional</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="105"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="352"/>
@@ -1888,17 +1891,17 @@ Aquesta darrera opció es pot utilitzar per aplanar tota l'àrea del brut per ga
       <translation>Mode de capes</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="376"/>
       <source>Path orientation</source>
       <translation>Orientació del camí</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="388"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="383"/>
       <source>Choose the path orientation with regard to the features selected</source>
       <translation>Trieu l'orientació del camí respecte de les característiques seleccionades</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="392"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="387"/>
       <source>Start to end</source>
       <translation>D'inici a final</translation>
     </message>
@@ -1920,32 +1923,21 @@ Aquesta darrera opció es pot utilitzar per aplanar tota l'àrea del brut per ga
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="364"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth</source>
       <translation>Completa l'operació en una sola passada a profunditat, o en múltiples passades fins a la profunditat final</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="368"/>
-      <source>Single-pass</source>
-      <translation>Passada única</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="373"/>
-      <source>Multi-pass</source>
-      <translation>Multi passada</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="397"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="392"/>
       <source>Perpendicular</source>
       <translation>Perpendicular</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="405"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="400"/>
       <source>Enable to reverse the cut direction of the slot path</source>
       <translation>Habilita-ho per invertir la direcció de tall del camí de la ranura</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="408"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="403"/>
       <source>Reverse cut direction</source>
       <translation>Inverteix la direcció de tall</translation>
     </message>
@@ -4296,17 +4288,17 @@ Per defecte: 3 mm</translation>
       <translation>isHorizontal(%s) no és compatible</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="736"/>
+      <location filename="../../../Path/Geom.py" line="738"/>
       <source>%s not supported for flipping</source>
       <translation>%s no admet el capgirament</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="793"/>
+      <location filename="../../../Path/Geom.py" line="795"/>
       <source>Zero working area to process. Check your selection and settings.</source>
       <translation>No hi ha àrea de treball per processar. Comproveu la selecció i la configuració.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="863"/>
+      <location filename="../../../Path/Geom.py" line="865"/>
       <source>Can not restore order of faces.</source>
       <translation type="unfinished">Can not restore order of faces.</translation>
     </message>
@@ -4378,7 +4370,7 @@ Per defecte: 3 mm</translation>
       <translation>Expressió utilitzada per al pas per sota de les operacions noves.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="913"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="927"/>
       <location filename="../../../Path/Dressup/Boundary.py" line="62"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="57"/>
       <source>The base path to modify</source>
@@ -4456,38 +4448,38 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
 Pot ser útil per a operacions multiperfil, p. ex. Buidatge amb patró de desplaçament ziga-zaga</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="919"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="933"/>
       <source>Width of tags.</source>
       <translation>Amplada de les etiquetes.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="925"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="939"/>
       <source>Height of tags.</source>
       <translation>Alçada de les etiquetes.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="931"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="945"/>
       <source>Angle of tag plunge and ascent.</source>
       <translation>Angle del descens i l'ascens de l'etiqueta.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="937"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="951"/>
       <source>Radius of the fillet for the tag.</source>
       <translation>Radi de l'arrodoniment de l'etiqueta.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="943"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="957"/>
       <source>Locations of inserted holding tags</source>
       <translation>Ubicacions de les etiquetes de retenció inserides</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="949"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="963"/>
       <source>IDs of disabled holding tags</source>
       <translation>ID de les etiquetes de retenció desactivades</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="958"/>
-      <location filename="../../../Path/Dressup/Tags.py" line="998"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="972"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1013"/>
       <source>Split B-Spline by arcs and ignore not vertical arcs axis (experimental).</source>
       <translation type="unfinished">Split B-Spline by arcs and ignore not vertical arcs axis (experimental).</translation>
     </message>
@@ -4763,8 +4755,8 @@ Only for styles: Arc, Line, Perpendicular and Tangent</translation>
       <translation>Col·lecció de tots els controladors d'eina de la tasca</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="195"/>
-      <location filename="../../../Path/Op/Base.py" line="458"/>
+      <location filename="../../../Path/Op/Base.py" line="216"/>
+      <location filename="../../../Path/Op/Base.py" line="487"/>
       <location filename="../../../Path/Main/Job.py" line="537"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Estimació del temps de cicle de les operacions</translation>
@@ -4845,41 +4837,41 @@ Only for styles: Arc, Line, Perpendicular and Tangent</translation>
       <translation>Nombre de desplaçaments de la fixació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="169"/>
+      <location filename="../../../Path/Op/Base.py" line="190"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="57"/>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="64"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Marqueu «fals», per a evitar l'operació de generació de codi</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1755"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1543"/>
       <source>Side of selected faces that tool should cut</source>
       <translation>Costat de les cares seleccionades que l'eina ha de tallar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1764"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1552"/>
       <source>Type of adaptive operation</source>
       <translation>Tipus d'operació adaptativa</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="159"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1782"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1570"/>
       <location filename="../../../Path/Op/Helix.py" line="164"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Avanç en percentatge del diàmetre de l'eina de tall en cada passada</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1791"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1579"/>
       <source>Lift distance for rapid moves</source>
       <translation>Distància d'elevació per a moviments ràpids</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1800"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1588"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
       <translation>Longitud màxima de la trajectòria de manteniment de l'eina en comparació amb la distància directa entre punts</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1773"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1561"/>
       <source>Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
@@ -4888,98 +4880,103 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 Els valors més grans (més a la dreta) es calcularan més ràpid; els valors més petits (més a l'esquerra) produiran trajectòries d'eina més precises.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1809"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1597"/>
       <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
       <translation>Quant material deixar al pla XY (p. ex., per a una operació d'acabat)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1918"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="2107"/>
-      <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
-      <translation type="unfinished">Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1927"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="2116"/>
-      <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
-      <translation type="unfinished">Minimum acceptable helix entry diameter, as a percentage of the tool diameter</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1954"/>
-      <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation>Ordena els talls per regió, en contres per la profunditat. Aquesta propietat només s'utilitza si ModelAwareExperiment està habilitat.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1969"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="2088"/>
-      <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
-      <translation>Habilita la característica de reconeixement del model experimental per respectar la geometria 3D i evitar talls sota els voladissos</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="2077"/>
-      <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
-      <translation>Quant material deixar al llarg de l'eix Z (p. ex., per a una operació d'acabat)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1827"/>
-      <source>Force plunging into material inside and clearing towards the edges</source>
-      <translation>Forçar l'entrada en l'interior del material i netejar en direcció a les vores</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1818"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1606"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>Quant de brut cal deixar al llarg de l'eix Z (per exemple, per a l'operació d'acabat). Aquesta propietat només s'utilitza si ModelAwareExperiment està habilitat.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1836"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1671"/>
+      <source>The maximum allowable helix ramp entry angle (degrees)
+Set to zero to disable limitation by ramp angle</source>
+      <translation type="unfinished">The maximum allowable helix ramp entry angle (degrees)
+Set to zero to disable limitation by ramp angle</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1681"/>
+      <location filename="../../../Path/Op/Helix.py" line="288"/>
+      <location filename="../../../Path/Op/Helix.py" line="507"/>
+      <source>The maximum allowable descent in a single revolution of the helix
+Set to zero to disable limitation by pitch</source>
+      <translation type="unfinished">The maximum allowable descent in a single revolution of the helix
+Set to zero to disable limitation by pitch</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1699"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1887"/>
+      <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
+      <translation type="unfinished">Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1708"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1896"/>
+      <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
+      <translation type="unfinished">Minimum acceptable helix entry diameter, as a percentage of the tool diameter</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1735"/>
+      <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
+      <translation>Ordena els talls per regió, en contres per la profunditat. Aquesta propietat només s'utilitza si ModelAwareExperiment està habilitat.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1750"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1868"/>
+      <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
+      <translation>Habilita la característica de reconeixement del model experimental per respectar la geometria 3D i evitar talls sota els voladissos</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1857"/>
+      <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
+      <translation>Quant material deixar al llarg de l'eix Z (p. ex., per a una operació d'acabat)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1918"/>
+      <source>The maximum allowable descent in a single revolution of the helixSet to zero to disable limitation by pitch</source>
+      <translation type="unfinished">The maximum allowable descent in a single revolution of the helixSet to zero to disable limitation by pitch</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1615"/>
+      <source>Force plunging into material inside and clearing towards the edges</source>
+      <translation>Forçar l'entrada en l'interior del material i netejar en direcció a les vores</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1624"/>
       <source>To take a finishing profile path at the end</source>
       <translation>Per prendre un camí de perfil d'acabat al final</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1842"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1852"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1630"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1640"/>
       <source>Stop processing</source>
       <translation>Atura processament</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1862"/>
-      <source>Use Arcs (G2) for helix ramp</source>
-      <translation>Utilitza arcs (G2) per a la rampa helicoidal</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1871"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1650"/>
       <source>Internal input state</source>
       <translation>Estat d'entrada intern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1880"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1659"/>
       <source>Internal output state</source>
       <translation>Estat d'entrada extern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1891"/>
-      <source>Helix ramp entry angle (degrees)</source>
-      <translation>Angle d'entrada de la rampa hèlix (graus)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1900"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="2132"/>
-      <source>The maximum allowable descent in a single revolution of the helix.</source>
-      <translation type="unfinished">The maximum allowable descent in a single revolution of the helix.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1909"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1690"/>
       <source>Helix cone angle (degrees)</source>
       <translation>Angle del con de l'hèlix (graus)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketShape.py" line="168"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1936"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1717"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>Utilitza el contorn de la geometria de base.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="2066"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1846"/>
       <source>Orders cuts by region instead of depth.</source>
       <translation>Ordena talls per regió en comptes de per profunditat.</translation>
     </message>
@@ -4990,160 +4987,178 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
       <translation>Dividir els arcs en segments discrets</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="116"/>
+      <location filename="../../../Path/Op/Base.py" line="117"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="142"/>
       <source>The base geometry for this operation</source>
       <translation>La geometria base per a aquesta operació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="125"/>
+      <location filename="../../../Path/Op/Base.py" line="126"/>
       <source>Holds the calculated value for the StartDepth</source>
       <translation>Conté el valor calculat per a la StartDepth</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="133"/>
+      <location filename="../../../Path/Op/Base.py" line="134"/>
       <source>Holds the calculated value for the FinalDepth</source>
       <translation>Conté el valor calculat per a la FinalDepth</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="141"/>
+      <location filename="../../../Path/Op/Base.py" line="142"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="100"/>
       <source>Holds the diameter of the tool</source>
       <translation>Conté el diàmetre de l'eina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="149"/>
+      <location filename="../../../Path/Op/Base.py" line="150"/>
       <source>Holds the max Z value of Stock</source>
       <translation>Conté el valor màxim de Z de material</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="156"/>
+      <location filename="../../../Path/Op/Base.py" line="157"/>
       <source>Holds the min Z value of Stock</source>
       <translation>Conté el valor mínim de Z de material</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="177"/>
-      <location filename="../../../Path/Op/Base.py" line="467"/>
+      <location filename="../../../Path/Op/Base.py" line="172"/>
+      <source>Method collision detection to create optimal path between areas
+
+Compromise: uses tool diameter (middle long time computation)
+Fastest: not related from tool size (fast computation)
+Safest: uses cross section of tool shape (most long time computation)</source>
+      <translation type="unfinished">Method collision detection to create optimal path between areas
+
+Compromise: uses tool diameter (middle long time computation)
+Fastest: not related from tool size (fast computation)
+Safest: uses cross section of tool shape (most long time computation)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="178"/>
+      <source>Distance for collision detection</source>
+      <translation type="unfinished">Distance for collision detection</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="198"/>
+      <location filename="../../../Path/Op/Base.py" line="496"/>
       <source>Enable post processor to add block delete commands</source>
       <translation type="unfinished">Enable post processor to add block delete commands</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="183"/>
+      <location filename="../../../Path/Op/Base.py" line="204"/>
       <source>An optional comment for this Operation</source>
       <translation>Un comentari opcional per a aquesta operació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="189"/>
+      <location filename="../../../Path/Op/Base.py" line="210"/>
       <source>User Assigned Label</source>
       <translation>Etiqueta assignada de l'usuari</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="215"/>
+      <location filename="../../../Path/Op/Base.py" line="236"/>
       <source>Base locations for this operation</source>
       <translation>Ubicacions base per a aquesta operació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="226"/>
+      <location filename="../../../Path/Op/Base.py" line="247"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="94"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>El controlador d'eina que s'utilitza per a calcular el camí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="235"/>
+      <location filename="../../../Path/Op/Base.py" line="256"/>
       <source>Coolant mode for this operation</source>
       <translation>Mode de refrigeració per a aquesta operació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="243"/>
+      <location filename="../../../Path/Op/Base.py" line="264"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
       <translation>Profunditat inicial de l'eina: profunditat en Z del primer tall</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="249"/>
+      <location filename="../../../Path/Op/Base.py" line="270"/>
       <source>Final Depth of Tool- lowest value in Z</source>
       <translation>Profunditat final de l'eina: valor més baix en Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="263"/>
+      <location filename="../../../Path/Op/Base.py" line="284"/>
       <source>Starting Depth internal use only for derived values</source>
       <translation>Profunditat inicial d'ús intern, únicament per als valors derivats</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="274"/>
-      <location filename="../../../Path/Op/Base.py" line="475"/>
+      <location filename="../../../Path/Op/Base.py" line="295"/>
+      <location filename="../../../Path/Op/Base.py" line="504"/>
       <source>Incremental Step Down of Tool</source>
       <translation>Pas incremental cap avall de l'eina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="282"/>
+      <location filename="../../../Path/Op/Base.py" line="303"/>
       <source>Maximum material removed on final pass.</source>
       <translation>Màxim de material eliminat en la passada final.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="293"/>
+      <location filename="../../../Path/Op/Base.py" line="314"/>
       <source>The height needed to clear clamps and obstructions</source>
       <translation>La alçària necessària per a llevar subjeccions i obstruccions</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="299"/>
+      <location filename="../../../Path/Op/Base.py" line="320"/>
       <source>Rapid Safety Height between locations.</source>
       <translation>Alçària Ràpida de seguretat entre ubicacions.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="307"/>
+      <location filename="../../../Path/Op/Base.py" line="328"/>
       <source>The start point of this path</source>
       <translation>El punt d'inici d'aquesta ruta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="313"/>
-      <location filename="../../../Path/Op/Slot.py" line="235"/>
+      <location filename="../../../Path/Op/Base.py" line="334"/>
+      <location filename="../../../Path/Op/Slot.py" line="226"/>
       <location filename="../../../Path/Op/Waterline.py" line="463"/>
       <location filename="../../../Path/Op/Surface.py" line="418"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>Marqueu «cert», si s'especifica un punt inicial</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="321"/>
+      <location filename="../../../Path/Op/Base.py" line="342"/>
       <source>Lower limit of the turning diameter</source>
       <translation>Límit inferior del diàmetre de gir</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="327"/>
+      <location filename="../../../Path/Op/Base.py" line="348"/>
       <source>Upper limit of the turning diameter.</source>
       <translation>Límit superior del diàmetre de gir.</translation>
     </message>
     <message>
-      <location filename="../../../CAMTests/TestTestPost.py" line="669"/>
-      <location filename="../../../Path/Op/Base.py" line="438"/>
+      <location filename="../../../CAMTests/TestTestPost.py" line="657"/>
+      <location filename="../../../Path/Op/Base.py" line="467"/>
       <source>Coolant option for this operation</source>
       <translation>Opció de refrigeració per a aquesta operació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="83"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="84"/>
       <source>List of disabled features</source>
       <translation>Llista de característiques desactivades</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="90"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="297"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="91"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="298"/>
       <source>Manual or Automatic mode sorting of holes</source>
       <translation type="unfinished">Manual or Automatic mode sorting of holes</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="101"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="311"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="102"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="312"/>
       <source>Start point for automatic sorting (x,y used, z ignored)</source>
       <translation type="unfinished">Start point for automatic sorting (x,y used, z ignored)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="108"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="320"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="109"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="321"/>
       <source>Enable to use end point for automatic sorting</source>
       <translation type="unfinished">Enable to use end point for automatic sorting</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="117"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="332"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="118"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="333"/>
       <source>End point for automatic sorting (x,y used, z ignored)</source>
       <translation type="unfinished">End point for automatic sorting (x,y used, z ignored)</translation>
     </message>
@@ -5249,6 +5264,18 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
       <location filename="../../../Path/Op/Engrave.py" line="80"/>
       <source>The vertex index to start the toolpath from</source>
       <translation>L'índex del vèrtex en què comença la trajectòria de l'eina</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="87"/>
+      <location filename="../../../Path/Op/Engrave.py" line="108"/>
+      <source>Reverse milling direction</source>
+      <translation type="unfinished">Reverse milling direction</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="93"/>
+      <location filename="../../../Path/Op/Engrave.py" line="115"/>
+      <source>Set the cut pattern for the operation</source>
+      <translation type="unfinished">Set the cut pattern for the operation</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/FeatureExtension.py" line="478"/>
@@ -5363,14 +5390,6 @@ Angle 0 means start and end points located along axis X
 Set -1 to calculate optimal angle automatically</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="288"/>
-      <location filename="../../../Path/Op/Helix.py" line="507"/>
-      <source>The maximum allowable descent in a single revolution of the helix
-Set to zero to disable limitation by pitch</source>
-      <translation type="unfinished">The maximum allowable descent in a single revolution of the helix
-Set to zero to disable limitation by pitch</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Helix.py" line="298"/>
       <location filename="../../../Path/Op/Helix.py" line="525"/>
       <source>The maximum allowable ramp entry angle
@@ -5475,8 +5494,8 @@ Manual: uses order of shapes selection</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="271"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1945"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="2055"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1726"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1835"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
       <translation>Omet les regions de mecanitzat que ja han estat netejades per operacions anteriors.</translation>
     </message>
@@ -5570,14 +5589,12 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <translation>Mostra els objectes de construcció de trajectòries temporals quan el mòdul està en mode DEBUG.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="148"/>
       <location filename="../../../Path/Op/Waterline.py" line="329"/>
       <location filename="../../../Path/Op/Surface.py" line="284"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
       <translation>Configura el patró de neteja geomètric que utilitzarà aquesta operació.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="175"/>
       <location filename="../../../Path/Op/Waterline.py" line="370"/>
       <location filename="../../../Path/Op/Surface.py" line="319"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
@@ -5599,6 +5616,11 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <translation>Introduïu el punt final personalitzat per a la trajectòria d'eina de ranura.</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Slot.py" line="148"/>
+      <source>Set the cut pattern for the operation.</source>
+      <translation type="unfinished">Set the cut pattern for the operation.</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Slot.py" line="157"/>
       <source>Positive extends the beginning of the toolpath, negative shortens.</source>
       <translation>Un valor positiu estén el començament de la trajectòria dʻeina, un valor negatiu lʻescurça.</translation>
@@ -5609,32 +5631,32 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <translation>Un valor positiu estén el final de la trajectòria d'eina, un valor negatiu l'escurça.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="184"/>
+      <location filename="../../../Path/Op/Slot.py" line="175"/>
       <source>Choose the toolpath orientation with regard to the feature(s) selected.</source>
       <translation>Trieu l'orientació del camí atenent a les característiques triades.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="193"/>
+      <location filename="../../../Path/Op/Slot.py" line="184"/>
       <source>Choose what point to use on the first selected feature.</source>
       <translation>Trieu quin punt utilitzar a la primera característica seleccionada.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="202"/>
+      <location filename="../../../Path/Op/Slot.py" line="193"/>
       <source>Choose what point to use on the second selected feature.</source>
       <translation>Trieu quin punt utilitzar a la segona característica seleccionada.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="211"/>
+      <location filename="../../../Path/Op/Slot.py" line="202"/>
       <source>For arcs/circular edges, offset the radius for the toolpath.</source>
       <translation>Per a arcs/vores circulars, desfasar el radi de la trajectòria.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="220"/>
+      <location filename="../../../Path/Op/Slot.py" line="211"/>
       <source>Enable to reverse the cut direction of the slot toolpath.</source>
       <translation>Activeu per invertir la direcció de tall de la trajectòria d'eina de ranura.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="229"/>
+      <location filename="../../../Path/Op/Slot.py" line="220"/>
       <source>The custom start point for the toolpath of this operation</source>
       <translation>El punt d'inici personalitzat per a la trajectòria d'eina d'aquesta operació</translation>
     </message>
@@ -5933,24 +5955,48 @@ Per defecte = 10,0.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="49"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="54"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="75"/>
       <source>Pattern method</source>
       <translation>Mètode del patró</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="108"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="67"/>
+      <source>The tool controller that will be used to calculate the toolpath
+Should be identical for all base operations</source>
+      <translation type="unfinished">The tool controller that will be used to calculate the toolpath
+Should be identical for all base operations</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="83"/>
+      <source>The number of copies in Linear1D and Polar pattern</source>
+      <translation type="unfinished">The number of copies in Linear1D and Polar pattern</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="129"/>
       <source>Make copies in X direction before Y in Linear 2D pattern</source>
       <translation>Fer còpies en direcció X abans de Y en un patró lineal 2D</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="143"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="226"/>
+      <source>Use randomly offset</source>
+      <translation type="unfinished">Use randomly offset</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="155"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="219"/>
+      <source>Max angle of rotation for jitter randomness</source>
+      <translation type="unfinished">Max angle of rotation for jitter randomness</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Dressup/Array.py" line="66"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="71"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="100"/>
       <source>The number of copies in X-direction in linear pattern</source>
       <translation>Nombre de còpies en direcció X en un patró lineal</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="74"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="79"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="108"/>
       <source>The number of copies in Y-direction in linear pattern</source>
       <translation>Nombre de còpies en direcció Y en un patró lineal</translation>
     </message>
@@ -5961,61 +6007,57 @@ Per defecte = 10,0.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="109"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="114"/>
       <source>Percent of copies to randomly offset</source>
       <translation>Percentatge de còpies per desplaçar-se aleatòriament</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="115"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="120"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="137"/>
       <source>Maximum random offset of copies</source>
       <translation>Desplaçament aleatori màxim de còpies</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="121"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="126"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="212"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="149"/>
       <source>Seed value for jitter randomness</source>
       <translation>Valor inicial per a l'aleatorietat de variació de retardament</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="48"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="52"/>
       <source>The toolpaths to array</source>
       <translation>Els recorreguts de l'eina cap a matriu</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="58"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="63"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="92"/>
       <source>The spacing between the array copies in linear pattern</source>
       <translation>L'espaiat entre les còpies de la matriu en un patró lineal</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="80"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="85"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="114"/>
       <source>Total angle in polar pattern</source>
       <translation>Angle total en el patró polar</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="88"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="93"/>
       <source>The number of copies in linear 1D and polar pattern</source>
       <translation>El nombre de còpies en 1D lineal i patró polar</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="94"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="99"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="120"/>
       <source>The centre of rotation in polar pattern</source>
       <translation>El centre de rotació en el patró polar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="135"/>
       <location filename="../../../Path/Op/Gui/Copy.py" line="51"/>
       <source>The tool controller that will be used to calculate the toolpath</source>
       <translation>El controlador d'eina que s'utilitza per a calcular la trajectòria</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="147"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="221"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="58"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="243"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="78"/>
       <source>Operations cycle time estimation</source>
       <translation>Estimació del temps de cicle de les operacions</translation>
@@ -6198,42 +6240,42 @@ Per defecte = 10,0.</translation>
       <translation type="unfinished">Define the reference edge or plane for mirroring</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="130"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="131"/>
       <source>Set the cut mode for the operation.</source>
       <translation type="unfinished">Set the cut mode for the operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="139"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="140"/>
       <source>Set the clearing pattern for the operation.</source>
       <translation type="unfinished">Set the clearing pattern for the operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="148"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="149"/>
       <source>Set the angle for the operation.</source>
       <translation type="unfinished">Set the angle for the operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="157"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="158"/>
       <source>Set the stepover percentage of tool diameter.</source>
       <translation type="unfinished">Set the stepover percentage of tool diameter.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="166"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="167"/>
       <source>Set the stock to leave for the operation.</source>
       <translation type="unfinished">Set the stock to leave for the operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="175"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="176"/>
       <source>Distance to extend cuts beyond polygon boundary for tool disengagement.</source>
       <translation type="unfinished">Distance to extend cuts beyond polygon boundary for tool disengagement.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="184"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="185"/>
       <source>Extends the boundary in both direction.</source>
       <translation type="unfinished">Extends the boundary in both direction.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="193"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="194"/>
       <source>Reverse the cutting direction for the selected pattern.</source>
       <translation type="unfinished">Reverse the cutting direction for the selected pattern.</translation>
     </message>
@@ -6372,7 +6414,7 @@ Per defecte = 10,0.</translation>
       <translation>Les arestes seleccionades són inaccessibles. Si en són múltiples, pot funcionar reordenar la selecció.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="566"/>
+      <location filename="../../../Path/Op/Profile.py" line="561"/>
       <source>Unable to create path for face(s).</source>
       <translation>No es pot crear la ruta per a les cares.</translation>
     </message>
@@ -6736,8 +6778,7 @@ Per defecte = 10,0.</translation>
   <context>
     <name>PathOp</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="141"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="203"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="46"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Marqueu «fals», per a evitar l'operació de generació de codi</translation>
     </message>
@@ -6839,12 +6880,12 @@ S'està avortant la creació de l'operació</translation>
       <translation>La base està buida o és un objecte no vàlid.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="280"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="307"/>
       <source>Arrays of toolpaths having different tool controllers or tool controller not selected.</source>
       <translation>Matrius de recorreguts d'eina que tenen controladors d'eina diferents o el controlador d'eina no està seleccionat.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="289"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="316"/>
       <source>Arrays not compatible with coolant modes.</source>
       <translation>Matrius no compatibles amb els modes de refrigeració.</translation>
     </message>
@@ -7115,17 +7156,17 @@ or tangent edges.</translation>
   <context>
     <name>CAM_DressupTag</name>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1273"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1290"/>
       <source>Cannot insert holding tags for this path - select a profile path</source>
       <translation>No es poden inserir etiquetes de subjecció per a aquest recorregut; seleccioneu un recorregut de perfil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1322"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1339"/>
       <source>The selected object is not a path</source>
       <translation>L'objecte seleccionat no és un recorregut</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1326"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1343"/>
       <source>Select a profile object</source>
       <translation>Seleccioneu un objecte de perfil</translation>
     </message>
@@ -7135,12 +7176,12 @@ or tangent edges.</translation>
       <translation>Etiquetes de subjecció</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="557"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="555"/>
       <source>Tag</source>
       <translation>Etiqueta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="560"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="558"/>
       <source>Creates a tag dress-up object from a selected toolpath</source>
       <translation>Crea un objecte d'acabat d'etiquetes a partir d'un recorregut d'eina seleccionat</translation>
     </message>
@@ -7287,10 +7328,8 @@ or tangent edges.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="140"/>
-      <source>Incorrect lines in file: %s
-%s</source>
-      <translation type="unfinished">Incorrect lines in file: %s
-%s</translation>
+      <source>Skipped non-data lines in file: %s (lines %s)</source>
+      <translation type="unfinished">Skipped non-data lines in file: %s (lines %s)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="147"/>
@@ -7968,22 +8007,22 @@ or tangent edges.</translation>
   <context>
     <name>CAM_Simulator</name>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="349"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="344"/>
       <source>CAM Simulator</source>
       <translation>Simulador CAM</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="306"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="301"/>
       <source>High</source>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="308"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="303"/>
       <source>Low</source>
       <translation>Baix</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="310"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="305"/>
       <source>Medium</source>
       <translation>Mitjà</translation>
     </message>
@@ -7993,7 +8032,7 @@ or tangent edges.</translation>
       <translation>Simulador CAM clàssic</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="351"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="346"/>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="625"/>
       <source>Simulates G-code on stock</source>
       <translation>Simula el G-code sobre el material en brut</translation>
@@ -8002,22 +8041,22 @@ or tangent edges.</translation>
   <context>
     <name>CAM_Adaptive</name>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1722"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1510"/>
       <source>Outside</source>
       <translation>Fora</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1723"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1511"/>
       <source>Inside</source>
       <translation>Interior</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1726"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1514"/>
       <source>Clearing</source>
       <translation>Neteja</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1727"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1515"/>
       <source>Profiling</source>
       <translation>Perfilat</translation>
     </message>
@@ -8035,19 +8074,34 @@ or tangent edges.</translation>
   <context>
     <name>CAM_Operation</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="376"/>
+      <location filename="../../../Path/Op/Base.py" line="400"/>
       <source>None</source>
       <translation>Cap</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="377"/>
+      <location filename="../../../Path/Op/Base.py" line="401"/>
       <source>Flood</source>
       <translation>Inundació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="378"/>
+      <location filename="../../../Path/Op/Base.py" line="402"/>
       <source>Mist</source>
       <translation>Nebulització</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="405"/>
+      <source>Fastest</source>
+      <translation type="unfinished">Fastest</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="406"/>
+      <source>Compromise</source>
+      <translation type="unfinished">Compromise</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="407"/>
+      <source>Safest</source>
+      <translation type="unfinished">Safest</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="648"/>
@@ -8068,72 +8122,72 @@ or tangent edges.</translation>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="646"/>
+      <location filename="../../../Path/Op/Base.py" line="687"/>
       <source>No parent job found for operation.</source>
       <translation>No s'ha trobat cap tasca pare per a l'operació.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="651"/>
+      <location filename="../../../Path/Op/Base.py" line="692"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>La tasca pare %s no té un objecte base</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="793"/>
+      <location filename="../../../Path/Op/Base.py" line="834"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>No s'ha seleccionat cap controlador d'eina. Necessitem una eina per a construir un recorregut.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="807"/>
+      <location filename="../../../Path/Op/Base.py" line="848"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>No s'ha trobat cap eina o el diàmetre és zero. Necessitem una eina per a construir un recorregut.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1133"/>
+      <location filename="../../../Path/Op/Base.py" line="1174"/>
       <source>No Tool Controller selected.</source>
       <translation>No s'ha seleccionat cap controlador d'eina.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1136"/>
+      <location filename="../../../Path/Op/Base.py" line="1177"/>
       <source>Tool Error</source>
       <translation>Error de l'eina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1148"/>
+      <location filename="../../../Path/Op/Base.py" line="1189"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>Es requereixen les velocitats d'avançament del controlador d'eina per a calcular el temps de cicle.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1151"/>
+      <location filename="../../../Path/Op/Base.py" line="1192"/>
       <source>Tool Feedrate Error</source>
       <translation>Error de velocitat d'avançament de l'eina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1157"/>
+      <location filename="../../../Path/Op/Base.py" line="1198"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>Afegiu velocitats ràpides del controlador d'eina a la fulla de configuració per a temps de cicle més precisos.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1166"/>
+      <location filename="../../../Path/Op/Base.py" line="1207"/>
       <source>Cycletime Error</source>
       <translation>Error de temps de cicle</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="895"/>
+      <location filename="../../../Path/Op/Base.py" line="936"/>
       <source>Base object %s.%s already in the list</source>
       <translation>L'objecte base %s.%s ja és a la llista</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="905"/>
+      <location filename="../../../Path/Op/Base.py" line="946"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>L'objecte base %s.%s ha estat rebutjat per l'operació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="162"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="163"/>
       <source>Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</source>
       <translation>El diàmetre del forat pot ser imprecís a causa de la tessel·lació a la cara. Considereu seleccionar la vora del forat.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="197"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="198"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
       <translation>La característica %s.%s no es pot processar com un forat circular; si us plau, elimineu-la de la llista de geometria base.</translation>
     </message>
@@ -8800,7 +8854,7 @@ Això no suprimirà les broques que conté.</translation>
       <translation type="unfinished">Exceeded length in cutTravelBegin</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="585"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="373"/>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>L'operació adaptativa no ha pogut determinar el fil delimitant. Heu seleccionat la geometria base?</translation>
     </message>
@@ -8833,17 +8887,17 @@ Això no suprimirà les broques que conté.</translation>
       <translation>Punta de la broca 2x</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="414"/>
+      <location filename="../../../Path/Op/Drilling.py" line="421"/>
       <source>Tapping strategy requires a Tap tool with Pitch</source>
       <translation type="unfinished">Tapping strategy requires a Tap tool with Pitch</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="487"/>
+      <location filename="../../../Path/Op/Drilling.py" line="494"/>
       <source>Tapping strategy requires a Tap tool with non-zero Pitch</source>
       <translation type="unfinished">Tapping strategy requires a Tap tool with non-zero Pitch</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="497"/>
+      <location filename="../../../Path/Op/Drilling.py" line="504"/>
       <source>Tapping strategy requires a ToolController with non-zero SpindleSpeed</source>
       <translation type="unfinished">Tapping strategy requires a ToolController with non-zero SpindleSpeed</translation>
     </message>
@@ -9028,170 +9082,160 @@ Això no suprimirà les broques que conté.</translation>
       <translation>Comproveu valor(s) per defecte.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="253"/>
-      <source>Line</source>
-      <translation>Línia</translation>
+      <location filename="../../../Path/Op/Slot.py" line="244"/>
+      <source>Directional</source>
+      <translation type="unfinished">Directional</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="254"/>
-      <source>ZigZag</source>
-      <translation>Ziga-zaga</translation>
+      <location filename="../../../Path/Op/Slot.py" line="245"/>
+      <source>Bidirectional</source>
+      <translation type="unfinished">Bidirectional</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="257"/>
-      <source>Single-pass</source>
-      <translation>Passada única</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Slot.py" line="258"/>
-      <source>Multi-pass</source>
-      <translation>Multi passada</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Slot.py" line="261"/>
+      <location filename="../../../Path/Op/Slot.py" line="248"/>
       <source>Start to End</source>
       <translation>De l'inici al final</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="262"/>
+      <location filename="../../../Path/Op/Slot.py" line="249"/>
       <source>Perpendicular</source>
       <translation>Perpendicular</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="265"/>
-      <location filename="../../../Path/Op/Slot.py" line="277"/>
+      <location filename="../../../Path/Op/Slot.py" line="252"/>
+      <location filename="../../../Path/Op/Slot.py" line="264"/>
       <source>Center of Mass</source>
       <translation>Centre de massa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="267"/>
-      <location filename="../../../Path/Op/Slot.py" line="279"/>
+      <location filename="../../../Path/Op/Slot.py" line="254"/>
+      <location filename="../../../Path/Op/Slot.py" line="266"/>
       <source>Center of Bounding Box</source>
       <translation>Centre de la caixa delimitadora</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="270"/>
-      <location filename="../../../Path/Op/Slot.py" line="282"/>
+      <location filename="../../../Path/Op/Slot.py" line="257"/>
+      <location filename="../../../Path/Op/Slot.py" line="269"/>
       <source>Lowest Point</source>
       <translation>Punt més baix</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="271"/>
-      <location filename="../../../Path/Op/Slot.py" line="283"/>
+      <location filename="../../../Path/Op/Slot.py" line="258"/>
+      <location filename="../../../Path/Op/Slot.py" line="270"/>
       <source>Highest Point</source>
       <translation>Punt més alt</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="272"/>
+      <location filename="../../../Path/Op/Slot.py" line="259"/>
       <source>Long Edge</source>
       <translation>Vora llarga</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="273"/>
+      <location filename="../../../Path/Op/Slot.py" line="260"/>
       <source>Short Edge</source>
       <translation>Vora curta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="274"/>
-      <location filename="../../../Path/Op/Slot.py" line="284"/>
+      <location filename="../../../Path/Op/Slot.py" line="261"/>
+      <location filename="../../../Path/Op/Slot.py" line="271"/>
       <source>Vertex</source>
       <translation>Vèrtex</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="596"/>
+      <location filename="../../../Path/Op/Slot.py" line="593"/>
       <source>No Base Geometry object in the operation.</source>
       <translation>No hi ha cap objecte de geometria base a l'operació.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="607"/>
+      <location filename="../../../Path/Op/Slot.py" line="604"/>
       <source>Custom points are identical. No slot path will be generated</source>
       <translation>Els punts personalitzats són idèntics. No es generarà cap recorregut de ranura</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="616"/>
+      <location filename="../../../Path/Op/Slot.py" line="613"/>
       <source>Custom points not at same Z height. No slot path will be generated</source>
       <translation>Els punts personalitzats no estan a la mateixa alçada Z. No es generarà cap recorregut de ranura</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="670"/>
+      <location filename="../../../Path/Op/Slot.py" line="667"/>
       <source>Current Extend Radius value produces negative arc radius.</source>
       <translation>El valor actual del radi d'extensió produeix un radi d'arc negatiu.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="686"/>
+      <location filename="../../../Path/Op/Slot.py" line="683"/>
       <source>No path extensions available for full circles.</source>
       <translation>No hi ha extensions de recorregut disponibles per a cercles complets.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="714"/>
-      <location filename="../../../Path/Op/Slot.py" line="847"/>
+      <location filename="../../../Path/Op/Slot.py" line="711"/>
+      <location filename="../../../Path/Op/Slot.py" line="837"/>
       <source>operation collides with model.</source>
       <translation>l'operació col·lideix amb el model.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="812"/>
-      <location filename="../../../Path/Op/Slot.py" line="1099"/>
+      <location filename="../../../Path/Op/Slot.py" line="802"/>
+      <location filename="../../../Path/Op/Slot.py" line="1083"/>
       <source>Verify slot path start and end points.</source>
       <translation>Verifiqueu els punts d'inici i final del recorregut de la ranura.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="925"/>
+      <location filename="../../../Path/Op/Slot.py" line="909"/>
       <source>The selected face is inaccessible.</source>
       <translation>La cara seleccionada és inaccessible.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="944"/>
+      <location filename="../../../Path/Op/Slot.py" line="928"/>
       <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
       <translation>Només s'ha seleccionat un vèrtex. Afegiu una altra característica a la geometria base.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="968"/>
+      <location filename="../../../Path/Op/Slot.py" line="952"/>
       <source>A single selected face must have four edges.</source>
       <translation type="unfinished">A single selected face must have four edges.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1030"/>
+      <location filename="../../../Path/Op/Slot.py" line="1014"/>
       <source>No parallel edges identified.</source>
       <translation>No s'han identificat vores paral·leles.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1052"/>
+      <location filename="../../../Path/Op/Slot.py" line="1036"/>
       <source>value error.</source>
       <translation>error de valor.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1113"/>
+      <location filename="../../../Path/Op/Slot.py" line="1097"/>
       <source>Current tool larger than arc diameter.</source>
       <translation>L'eina actual és més gran que el diàmetre de l'arc.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1186"/>
+      <location filename="../../../Path/Op/Slot.py" line="1170"/>
       <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
       <translation>Ha fallat, la ranura des de la vora només accepta línies, arcs i cercles.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1204"/>
+      <location filename="../../../Path/Op/Slot.py" line="1188"/>
       <source>Failed to determine point 1 from</source>
       <translation>No s'ha pogut determinar el punt 1 de</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1214"/>
+      <location filename="../../../Path/Op/Slot.py" line="1198"/>
       <source>Failed to determine point 2 from</source>
       <translation>No s'ha pogut determinar el punt 2 de</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1227"/>
+      <location filename="../../../Path/Op/Slot.py" line="1211"/>
       <source>Selected geometry not parallel.</source>
       <translation>La geometria seleccionada no és paral·lela.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1301"/>
+      <location filename="../../../Path/Op/Slot.py" line="1285"/>
       <source>The selected face is not oriented vertically:</source>
       <translation>La cara seleccionada no està orientada verticalment:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1746"/>
-      <location filename="../../../Path/Op/Slot.py" line="1754"/>
+      <location filename="../../../Path/Op/Slot.py" line="1730"/>
+      <location filename="../../../Path/Op/Slot.py" line="1738"/>
       <source>Current offset value produces negative radius.</source>
       <translation>El valor de desplaçament actual produeix un radi negatiu.</translation>
     </message>
@@ -9469,17 +9513,17 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Array</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="480"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="536"/>
       <source>Array</source>
       <translation>Matriu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="481"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="537"/>
       <source>Creates an array from selected toolpaths</source>
       <translation>Crea una matriu a partir dels recorreguts d'eina seleccionats</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="514"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="570"/>
       <source>Arrays can be created only from toolpath operations.</source>
       <translation>Les matrius només es poden crear a partir d'operacions de recorregut d'eina.</translation>
     </message>
@@ -9547,6 +9591,18 @@ Allowed selection only from one model:
       <location filename="../../../Path/Op/Gui/Engrave.py" line="174"/>
       <source>Creates an Engraving toolpath around a Draft ShapeString</source>
       <translation>Crea un recorregut d'eina de gravat al voltant d'un ShapeString a l'Esbós</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="96"/>
+      <location filename="../../../Path/Op/Engrave.py" line="118"/>
+      <source>Directional</source>
+      <translation type="unfinished">Directional</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="97"/>
+      <location filename="../../../Path/Op/Engrave.py" line="119"/>
+      <source>Bidirectional</source>
+      <translation type="unfinished">Bidirectional</translation>
     </message>
   </context>
   <context>
@@ -11266,7 +11322,7 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_MIllFacing</name>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="101"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="102"/>
       <source>New property added to</source>
       <translation>Propietat nova afegida a</translation>
     </message>
@@ -11274,37 +11330,37 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_MillFacing</name>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="103"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="104"/>
       <source>Check default value(s).</source>
       <translation>Comproveu valor(s) per defecte.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="211"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="212"/>
       <source>Climb</source>
       <translation>Ascendir</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="212"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="213"/>
       <source>Conventional</source>
       <translation>Convencional</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="215"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
       <source>ZigZag</source>
       <translation>Ziga-zaga</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="217"/>
       <source>Bidirectional</source>
       <translation type="unfinished">Bidirectional</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="217"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="218"/>
       <source>Directional</source>
       <translation type="unfinished">Directional</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="218"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="219"/>
       <source>Spiral</source>
       <translation>Espiral</translation>
     </message>
@@ -11328,16 +11384,19 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
   </context>
   <context>
+    <name>PathHelix</name>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="702"/>
+      <source>Skipped hole at position %s</source>
+      <translation type="unfinished">Skipped hole at position %s</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgPostProcess</name>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="14"/>
       <source>Post Processing</source>
       <translation>Postprocessament</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="26"/>
-      <source>font-weight: bold; font-size: 13px;</source>
-      <translation type="unfinished">font-weight: bold; font-size: 13px;</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="29"/>
@@ -11427,11 +11486,6 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation type="unfinished">Post Processor Parameters</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="183"/>
-      <source>color: gray;</source>
-      <translation type="unfinished">color: gray;</translation>
-    </message>
-    <message>
       <location filename="../panels/DlgPostProcess.ui" line="186"/>
       <source>(No additional parameters for this post processor)</source>
       <translation type="unfinished">(No additional parameters for this post processor)</translation>
@@ -11470,12 +11524,6 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../panels/DlgPostProcess.ui" line="259"/>
       <source>Workplan</source>
       <translation>Pla de treball</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="306"/>
-      <location filename="../panels/DlgPostProcess.ui" line="417"/>
-      <source>color: gray; font-style: italic;</source>
-      <translation type="unfinished">color: gray; font-style: italic;</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="309"/>
@@ -11556,11 +11604,6 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../panels/DlgPostProcess.ui" line="487"/>
       <source>Warnings</source>
       <translation>Avisos</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="493"/>
-      <source>color: green; font-weight: bold;</source>
-      <translation type="unfinished">color: green; font-weight: bold;</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="496"/>
