@@ -254,7 +254,7 @@ class ViewProvider:
         self.deleteOnReject = False
 
     def resetTaskPanel(self):
-        self.showOriginAxis(False)
+        self.showOriginAxis(self.vobj.Visibility)
         self.taskPanel = None
 
     def unsetEdit(self, arg1, arg2):
@@ -911,6 +911,13 @@ class TaskPanel:
     def preCleanup(self):
         Path.Log.track()
         FreeCADGui.Selection.removeObserver(self)
+        # Restore natural selectability: model selectable, stock non-selectable
+        stock = self.obj.Stock
+        if stock and stock.ViewObject:
+            stock.ViewObject.Selectable = False
+        for base in self.obj.Model.Group:
+            if base and base.ViewObject:
+                base.ViewObject.Selectable = True
         self.vproxy.resetEditVisibility(self.obj)
         self.vproxy.resetTaskPanel()
 
@@ -1460,15 +1467,17 @@ class TaskPanel:
 
     def togglePickTarget(self, checked):
         """Toggle whether origin/axis picks target the Stock or the Model.
-        When checked, Stock is non-selectable so picks fall through to the Model."""
+        When checked (Picking: Model): model selectable, stock non-selectable.
+        When unchecked (Picking: Stock): stock selectable, model non-selectable."""
         stock = self.obj.Stock
-        if not stock or not stock.ViewObject:
-            return
+        if stock and stock.ViewObject:
+            stock.ViewObject.Selectable = not checked
+        for base in self.obj.Model.Group:
+            if base and base.ViewObject:
+                base.ViewObject.Selectable = checked
         if checked:
-            stock.ViewObject.Selectable = False
             self.form.pickTargetToggle.setText(translate("CAM_Job", "Picking: Model"))
         else:
-            stock.ViewObject.Selectable = True
             self.form.pickTargetToggle.setText(translate("CAM_Job", "Picking: Stock"))
 
     def alignSetOrigin(self):
@@ -1484,6 +1493,7 @@ class TaskPanel:
         placement = FreeCADGui.ActiveDocument.ActiveView.viewPosition()
         placement.Base = placement.Base + by
         FreeCADGui.ActiveDocument.ActiveView.viewPosition(placement, 0)
+        FreeCADGui.Selection.clearSelection()
 
     def alignMoveToOrigin(self):
         selObject = None
@@ -1703,6 +1713,7 @@ class TaskPanel:
             Path.Log.error(str(ee))
         self.updateStockEditor(-1, False)
         self.setFields()
+        FreeCADGui.Selection.clearSelection()
 
         # Info
         self.form.jobLabel.editingFinished.connect(self.getFields)
