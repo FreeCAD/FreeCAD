@@ -235,7 +235,7 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer& pc,
         }
         _name = getUniquePropertyName(pc, name);
         if (_name != name) {
-            FC_WARN(pc.getFullName()
+            FC_WARN(pc.getFullNameLabel()
                     << " rename dynamic property from '" << name << "' to '" << _name << "'");
         }
         name = _name.c_str();

@@ -1511,7 +1511,7 @@ void ViewProviderPartExt::updateVisual()
         );
     }
     catch (...) {
-        FC_ERR("Cannot compute Inventor representation for the shape of " << pcObject->getFullName());
+        FC_ERR("Cannot compute Inventor representation for the shape of " << pcObject->getFullNameLabel());
     }
 
     // The material has to be checked again

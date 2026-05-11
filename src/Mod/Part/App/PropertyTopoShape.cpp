@@ -520,7 +520,7 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
         // aren't bringing in: if(App::DocumentParams::getWarnRecomputeOnRestore()) { However, this
         // warning appeared on all files without element maps, and is now superseded by a user
         // dialog after loading that is triggered by any call to addRecomputeObject()
-        // FC_WARN("Pending recompute for generating element map: " << owner->getFullName());
+        // FC_WARN("Pending recompute for generating element map: " << owner->getFullNameLabel());
         owner->getDocument()->addRecomputeObject(owner);
     }
 
@@ -1122,7 +1122,7 @@ PropertyShapeCache* PropertyShapeCache::get(const App::DocumentObject* obj, bool
         App::Prop_NoPersist | App::Prop_Output | App::Prop_Hidden
     ));
     if (!prop) {
-        FC_ERR("Failed to add shape cache for " << obj->getFullName());
+        FC_ERR("Failed to add shape cache for " << obj->getFullNameLabel());
     }
     else {
         prop->connChanged = const_cast<App::DocumentObject*>(obj)->signalEarlyChanged.connect(
@@ -1190,7 +1190,7 @@ void PropertyShapeCache::slotChanged(const App::DocumentObject&, const App::Prop
     }
     if (strcmp(propName, "Group") == 0 || strcmp(propName, "Shape") == 0
         || strstr(propName, "Touched") != 0) {
-        FC_LOG("clear shape cache on changed " << prop.getFullName());
+        FC_LOG("clear shape cache on changed " << prop.getFullNameLabel());
         cache.clear();
     }
 }

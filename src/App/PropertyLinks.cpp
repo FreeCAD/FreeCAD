@@ -388,7 +388,7 @@ void PropertyLinkBase::restoreLabelReference(const DocumentObject* obj,
             StringGuard guard(dot - 1);
             sobj = obj->getSubObject(subname.c_str());
             if (!sobj) {
-                FC_ERR("Failed to restore label reference " << obj->getFullName() << '.'
+                FC_ERR("Failed to restore label reference " << obj->getFullNameLabel() << '.'
                                                             << ss.str());
                 return;
             }
@@ -519,7 +519,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
         shadow.oldName.swap(elementName.oldName);
     }
     else {
-        FC_TRACE(propertyName(this) << " element reference shadow update " << ret->getFullName()
+        FC_TRACE(propertyName(this) << " element reference shadow update " << ret->getFullNameLabel()
                                     << " " << shadow.newName << " -> " << elementName.newName);
         shadow.swap(elementName);
         if (shadow.newName.size() && Data::hasMappedElementName(sub.c_str())) {
@@ -1763,7 +1763,7 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject* obj,
         StringGuard guard(dot);
         auto sobj = obj->getSubObject(subname.c_str());
         if (!sobj) {
-            FC_ERR("Failed to restore label reference " << obj->getFullName() << '.' << subname);
+            FC_ERR("Failed to restore label reference " << obj->getFullNameLabel() << '.' << subname);
             return {};
         }
         dot[0] = 0;
@@ -5891,13 +5891,13 @@ void PropertyXLinkContainer::_onBreakLink(DocumentObject* obj)
     }
     catch (Base::Exception& e) {
         e.reportException();
-        FC_ERR("Exception on breaking link property " << getFullName());
+        FC_ERR("Exception on breaking link property " << getFullNameLabel());
     }
     catch (std::exception& e) {
-        FC_ERR("Exception on breaking link property " << getFullName() << ": " << e.what());
+        FC_ERR("Exception on breaking link property " << getFullNameLabel() << ": " << e.what());
     }
     catch (...) {
-        FC_ERR("Exception on breaking link property " << getFullName());
+        FC_ERR("Exception on breaking link property " << getFullNameLabel());
     }
 }
 

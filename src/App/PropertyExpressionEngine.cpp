@@ -367,7 +367,7 @@ void PropertyExpressionEngine::updateHiddenReference(const std::string& key)
         }
         catch (Base::Exception& e) {
             e.reportException();
-            FC_ERR("Failed to evaluate property binding " << myProp->getFullName()
+            FC_ERR("Failed to evaluate property binding " << myProp->getFullNameLabel()
                                                           << " on change of " << key);
         }
         catch (std::bad_cast&) {
@@ -376,7 +376,7 @@ void PropertyExpressionEngine::updateHiddenReference(const std::string& key)
         }
         catch (std::exception& e) {
             FC_ERR(e.what());
-            FC_ERR("Failed to evaluate property binding " << myProp->getFullName()
+            FC_ERR("Failed to evaluate property binding " << myProp->getFullNameLabel()
                                                           << " on change of " << key);
         }
     }
@@ -538,7 +538,7 @@ void PropertyExpressionEngine::tryRestoreExpression(DocumentObject* docObj,
         }
     }
     catch (const Base::Exception& e) {
-        FC_ERR("Failed to restore " << docObj->getFullName()
+        FC_ERR("Failed to restore " << docObj->getFullNameLabel()
                                     << '.'
                                     << getName()
                                     << ": "

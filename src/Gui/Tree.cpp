@@ -1811,7 +1811,7 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
         if (parent) {
             parentVp = parent->object();
             if (!parentVp->getObject()->isAttachedToDocument()) {
-                FC_WARN("skip '" << obj->getFullName() << "' with invalid parent");
+                FC_WARN("skip '" << obj->getFullNameLabel() << "' with invalid parent");
                 continue;
             }
         }
@@ -2959,7 +2959,7 @@ bool TreeWidget::dropInObject(
             }
 
             if (inList.contains(obj)) {
-                FC_THROWM(Base::RuntimeError, "Dependency loop detected for " << obj->getFullName());
+                FC_THROWM(Base::RuntimeError, "Dependency loop detected for " << obj->getFullNameLabel());
             }
 
 
@@ -5655,7 +5655,7 @@ App::DocumentObject* DocumentItem::getTopParent(App::DocumentObject* obj, std::s
     items.begin()->second->getSubName(ss, topParent);
     if (!topParent) {
         // this shouldn't happen
-        FC_WARN("No top parent for " << obj->getFullName() << '.' << subname);
+        FC_WARN("No top parent for " << obj->getFullNameLabel() << '.' << subname);
         return obj;
     }
     ss << obj->getNameInDocument() << '.' << subname;
@@ -6792,7 +6792,7 @@ App::DocumentObject* DocumentObjectItem::getRelativeParent(
             auto substr = subname.substr(0, dot - subname.c_str() + 1);
             auto ret = top->getSubObject(substr.c_str());
             if (!top) {
-                FC_ERR("invalid subname " << top->getFullName() << '.' << substr);
+                FC_ERR("invalid subname " << top->getFullNameLabel() << '.' << substr);
                 str.str("");
                 return nullptr;
             }

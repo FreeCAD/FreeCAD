@@ -194,7 +194,7 @@ static inline bool getProp(
     }
     prop = static_cast<T*>(owner->addDynamicProperty(type.getName(), name, "Attachment", doc));
     if (!prop) {
-        FC_THROWM(Base::RuntimeError, "Failed to add property " << owner->getFullName() << name);
+        FC_THROWM(Base::RuntimeError, "Failed to add property " << owner->getFullNameLabel() << name);
     }
     prop->setStatus(App::Property::Status::LockDynamic, true);
     prop->setStatus(App::Property::Status::Hidden, true);

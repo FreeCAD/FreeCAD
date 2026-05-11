@@ -207,7 +207,7 @@ void OriginGroupExtension::extensionOnChanged(const Property* p)
                                                                                document,
                                                                                false);
                     Origin.setValue(getLocalizedOrigin(document));
-                    FC_WARN("Reset origin in " << owner->getFullName());
+                    FC_WARN("Reset origin in " << owner->getFullNameLabel());
                     return;
                 }
             }

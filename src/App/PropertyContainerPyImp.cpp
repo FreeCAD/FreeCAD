@@ -666,7 +666,7 @@ int PropertyContainerPy::setCustomAttributes(const char* attr, PyObject* obj)
             throw Py::AttributeError(s.str());
         }
 
-        FC_TRACE("Set property " << prop->getFullName());
+        FC_TRACE("Set property " << prop->getFullNameLabel());
         prop->setPyObject(obj);
         return 1;
     }

@@ -1111,7 +1111,7 @@ int SketchObject::attachExternal(
 
     for(auto &key : externalGeoRef) {
         if (*itObj == Obj  &&  *itSub == SubName){
-            FC_ERR("Duplicate external element reference in " << getFullName() << ": " << key);
+            FC_ERR("Duplicate external element reference in " << getFullNameLabel() << ": " << key);
             return -1;
         }
         // detach old reference
@@ -2620,7 +2620,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
         }
 
         if(!refSet.emplace(key).second) {
-            FC_WARN("Duplicated external reference in " << getFullName() << ": " << key);
+            FC_WARN("Duplicated external reference in " << getFullNameLabel() << ": " << key);
             continue;
         }
 
@@ -2688,7 +2688,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
         if(egf->getRef().empty())
             continue;
         if(!refSet.count(egf->getRef())) {
-            FC_ERR( "External geometry " << getFullName() << ".e" << egf->getId()
+            FC_ERR( "External geometry " << getFullNameLabel() << ".e" << egf->getId()
                     << " missing reference: " << egf->getRef());
             hasError = true;
             egf->setFlag(ExternalGeometryExtension::Missing,true);
@@ -2843,7 +2843,7 @@ void SketchObject::updateGeometryRefs()
                     geo = geo->clone();
                     auto egf = ExternalGeometryFacade::getFacade(geo);
                     // NOLINTNEXTLINE
-                    FC_LOG(getFullName() << " ref change on ExternalEdge" << iter->second - 1 << ' '
+                    FC_LOG(getFullNameLabel() << " ref change on ExternalEdge" << iter->second - 1 << ' '
                            << egf->getRef() << " -> " << v.second);
                     egf->setRef(v.second);
                     touched = true;
@@ -2873,7 +2873,7 @@ void SketchObject::updateGeometryRefs()
 
         if (egf->getId() < 0 && !egf->getRef().empty()) {
             // NOLINTNEXTLINE
-            FC_ERR("External geometry reference corrupted in " << getFullName()
+            FC_ERR("External geometry reference corrupted in " << getFullNameLabel()
                    << " Please check.");
             // This could happen if someone saved the sketch containing
             // external geometries using some rogue releases during the

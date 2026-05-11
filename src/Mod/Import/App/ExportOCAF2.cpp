@@ -399,7 +399,7 @@ TDF_Label ExportOCAF2::exportObject(
     );
     if (!obj || shape.isNull()) {
         if (obj) {
-            FC_WARN(obj->getFullName() << " has null shape");
+            FC_WARN(obj->getFullNameLabel() << " has null shape");
         }
         return {};
     }
@@ -541,7 +541,7 @@ TDF_Label ExportOCAF2::exportObject(
         std::string childName;
         auto sobj = obj->resolve(subobj.c_str(), &parentGrp, &childName);
         if (!sobj) {
-            FC_WARN("Cannot find object " << obj->getFullName() << '.' << subobj);
+            FC_WARN("Cannot find object " << obj->getFullNameLabel() << '.' << subobj);
             continue;
         }
         int vis = -1;

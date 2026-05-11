@@ -2042,7 +2042,7 @@ void FilletBase::onUpdateElementReference(const App::Property* prop)
     const auto& subs = EdgeLinks.getSubValues();
     for (size_t i = 0; i < values.size(); ++i) {
         if (i >= subs.size()) {
-            FC_WARN("fillet edge count mismatch in object " << getFullName());
+            FC_WARN("fillet edge count mismatch in object " << getFullNameLabel());
             break;
         }
         int idx = Data::indexOfElement(subs[i], "Edge");
@@ -2050,7 +2050,7 @@ void FilletBase::onUpdateElementReference(const App::Property* prop)
             values[i].edgeid = idx;
         }
         else {
-            FC_WARN("invalid fillet edge link '" << subs[i] << "' in object " << getFullName());
+            FC_WARN("invalid fillet edge link '" << subs[i] << "' in object " << getFullNameLabel());
         }
     }
     Edges.setStatus(App::Property::User3, true);

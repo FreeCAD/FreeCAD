@@ -1241,13 +1241,13 @@ void SketchObject::onExpressionEngineChanged()
         try {
             auto res = ExpressionEngine.execute();
             if (res) {
-                FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": "
+                FC_ERR("Failed to recompute " << ExpressionEngine.getFullNameLabel() << ": "
                        << res->Why);  // NOLINT
                 delete res;
             }
         } catch (Base::Exception &e) {
             e.reportException();
-            FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": "
+            FC_ERR("Failed to recompute " << ExpressionEngine.getFullNameLabel() << ": "
                    << e.what());  // NOLINT
         }
         solve();
@@ -1360,7 +1360,7 @@ void SketchObject::onSketchRestore()
             }
             rebuildExternalGeometry();
             if(ExternalGeometry.getSize()+2!=ExternalGeo.getSize())
-                FC_WARN("Failed to restore some external geometry in " << getFullName());
+                FC_WARN("Failed to restore some external geometry in " << getFullNameLabel());
         }else
             acceptGeometry();
 
@@ -1395,7 +1395,7 @@ void SketchObject::onSketchRestore()
         }
     } catch (Base::Exception &e) {
         e.reportException();
-        FC_ERR("Error while restoring " << getFullName());
+        FC_ERR("Error while restoring " << getFullNameLabel());
     } catch (...) {
     }
 }
@@ -1819,14 +1819,14 @@ void SketchObject::setExpression(const App::ObjectIdentifier& path,
         try {
             auto res = ExpressionEngine.execute();
             if (res) {
-                FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": "
+                FC_ERR("Failed to recompute " << ExpressionEngine.getFullNameLabel() << ": "
                                               << res->Why);
                 delete res;
             }
         }
         catch (Base::Exception& e) {
             e.reportException();
-            FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": " << e.what());
+            FC_ERR("Failed to recompute " << ExpressionEngine.getFullNameLabel() << ": " << e.what());
         }
         solve();
     }

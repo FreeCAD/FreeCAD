@@ -850,7 +850,7 @@ void DocumentObject::onEarlyChange(const Property* prop)
         static App::Document* warnedDoc;
         if (warnedDoc != getDocument()) {
             warnedDoc = getDocument();
-            FC_WARN("Changes to partial loaded document will not be saved: " << getFullName() << '.'
+            FC_WARN("Changes to partial loaded document will not be saved: " << getFullNameLabel() << '.'
                                                                              << prop->getName());
         }
     }
@@ -879,7 +879,7 @@ void DocumentObject::onChanged(const Property* prop)
         static App::Document* warnedDoc;
         if (warnedDoc != getDocument()) {
             warnedDoc = getDocument();
-            FC_WARN("Changes to partial loaded document will not be saved: " << getFullName() << '.'
+            FC_WARN("Changes to partial loaded document will not be saved: " << getFullNameLabel() << '.'
                                                                              << prop->getName());
         }
     }
@@ -897,7 +897,7 @@ void DocumentObject::onChanged(const Property* prop)
     if (!testStatus(ObjectStatus::NoTouch) && !(prop->getType() & Prop_Output)
         && !prop->testStatus(Property::Output)) {
         if (!StatusBits.test(ObjectStatus::Touch)) {
-            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+            FC_TRACE("touch '" << getFullNameLabel() << "' on change of '" << prop->getName() << "'");
             StatusBits.set(ObjectStatus::Touch);
         }
         // must execute on document recompute
