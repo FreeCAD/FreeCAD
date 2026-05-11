@@ -273,7 +273,7 @@ public:
      *
      * @return The full name of the object.
      */
-    [[deprecated("getFullNameLabel() is deprecated use getFullNameLabel() instead.")]]
+    [[deprecated("getFullName() is deprecated use getFullNameLabel() instead.")]]
     std::string getFullName() const override;
 
     /**
@@ -289,7 +289,7 @@ public:
     /**
      * @brief Returns the object's full name including its label.
      *
-     * The returned string has the form `DocName#ObjName (Label)`.
+     * The returned string has the form `DocName#ObjName[ (Label)]`.
      * The label appears only if it differs from the object's internal name.
      *
      * @return The full name with label (if applicable).
