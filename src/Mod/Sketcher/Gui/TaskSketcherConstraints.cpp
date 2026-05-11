@@ -1227,7 +1227,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsEmitShowSelection3DVisibili
 void TaskSketcherConstraints::onDeleteAllConstraints()
 {
     const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
-    sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete all constraint"));
+    sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete all constraints"));
     try {
         Gui::cmdAppObjectArgs(sketch, "deleteAllConstraints()");
         sketchView->getDocument()->commitCommand();
@@ -1239,12 +1239,26 @@ void TaskSketcherConstraints::onDeleteAllConstraints()
 
 void TaskSketcherConstraints::onDeleteConstraints(const QList<int>& ids)
 {
-    Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+    if (ids.isEmpty()) {
+        return;
+    }
+
+    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+
+    std::stringstream stream;
+    stream << '[';
+    for (int i = 0; i < ids.size(); ++i) {
+        if (i > 0) {
+            stream << ", ";
+        }
+        stream << ids[i];
+    }
+    stream << ']';
+
     sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete constraints"));
     try {
-        std::vector<int> cids;
-        cids.insert(cids.begin(), ids.begin(), ids.end());
-        sketch->delConstraints(cids);
+        const std::string idList = stream.str();  // Make sure it's not a temporary
+        Gui::cmdAppObjectArgs(sketch, "delConstraints(%s)", idList.c_str());
         sketchView->getDocument()->commitCommand();
     }
     catch (const Base::Exception&) {
