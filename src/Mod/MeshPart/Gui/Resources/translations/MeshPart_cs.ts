@@ -490,8 +490,8 @@ Hodnota v rozmezí 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
-      <translation>Žádný aktivní dokument</translation>
+      <source>No Active Document</source>
+      <translation type="unfinished">No Active Document</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>

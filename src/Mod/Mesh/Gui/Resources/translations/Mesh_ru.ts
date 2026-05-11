@@ -1088,19 +1088,25 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
-      <source>Duplicated faces</source>
-      <translation>Повторяющиеся грани</translation>
+      <source>Duplicated Faces</source>
+      <translation type="unfinished">Duplicated Faces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
+      <source>Duplicated Points</source>
+      <translation type="unfinished">Duplicated Points</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
+      <source>Mesh Repair</source>
+      <translation type="unfinished">Mesh Repair</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
       <source>No duplicated points</source>
       <translation>Нет повторяющихся точек</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
-      <source>Duplicated points</source>
-      <translation>Повторяющиеся точки</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1040"/>
@@ -1126,12 +1132,6 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1161"/>
       <source>Folds</source>
       <translation>Складки</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
-      <source>Mesh repair</source>
-      <translation>Восстановление сетки</translation>
     </message>
   </context>
   <context>
@@ -1289,7 +1289,7 @@
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Нет активного документа</translation>
     </message>
   </context>
@@ -2378,7 +2378,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../../Init.py" line="19"/>
       <source>STL Mesh</source>
-      <translation type="unfinished">STL Mesh</translation>
+      <translation>STL полигональная сетка</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="20"/>

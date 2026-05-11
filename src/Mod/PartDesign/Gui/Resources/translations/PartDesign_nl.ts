@@ -1434,36 +1434,46 @@ If zero, it is equal to Radius2</translation>
   <context>
     <name>PartDesignGui::TaskBoxPrimitives</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="52"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="53"/>
       <source>Primitive Parameters</source>
       <translation type="unfinished">Primitive Parameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="944"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="952"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="947"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="955"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="963"/>
       <source>Invalid wedge parameters</source>
       <translation>Ongeldige wig parameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="945"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="948"/>
       <source>X min must not be equal to X max!</source>
       <translation>X min mag niet gelijk zijn aan X max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="953"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="956"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y min mag niet gelijk zijn aan Y max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="961"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="964"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z min mag niet gelijk zijn aan Z max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1003"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1006"/>
       <source>Create primitive</source>
       <translation>Basisvorm maken</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1051"/>
+      <source>%1 fine dragging</source>
+      <translation type="unfinished">%1 fine dragging</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1054"/>
+      <source>%1 coarse dragging</source>
+      <translation type="unfinished">%1 coarse dragging</translation>
     </message>
   </context>
   <context>
@@ -1542,13 +1552,13 @@ If zero, it is equal to Radius2</translation>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>Empty body list</source>
-      <translation>Leeg lichaam lijst</translation>
+      <source>The body list cannot be empty</source>
+      <translation>Deze lichaam lijst mag niet leeg zijn</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>The body list cannot be empty</source>
-      <translation>Deze lichaam lijst mag niet leeg zijn</translation>
+      <source>Empty Body List</source>
+      <translation type="unfinished">Empty Body List</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="407"/>
@@ -1567,14 +1577,6 @@ If zero, it is equal to Radius2</translation>
       <location filename="../../TaskDatumParameters.cpp" line="109"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>Er is geen bijlage-modus die past bij de huidige referentie-set. Als u doorgaat, de functie blijft waar het nu is, en zal niet worden verplaatst als de referenties gewijzigen. Doorgaan?</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input error</source>
-      <translation>Invoerfout</translation>
     </message>
   </context>
   <context>
@@ -2005,7 +2007,7 @@ If zero, it is equal to Radius2</translation>
       <translation type="unfinished">Error: helix touches itself</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="349"/>
+      <location filename="../../TaskHelixParameters.cpp" line="352"/>
       <source>Error: unsupported mode</source>
       <translation>Fout: niet-ondersteunde modus</translation>
     </message>
@@ -2648,7 +2650,7 @@ gemeten in de opgegeven richting</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="463"/>
       <location filename="../../TaskPipeParameters.cpp" line="584"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>Invoerfout</translation>
     </message>
     <message>
@@ -3119,11 +3121,6 @@ gemeten in de opgegeven richting</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid selection</source>
-      <translation>Foute selectie</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>Er zijn geen koppel modi die de geselecteerde objecten passen. Selecteer iets anders.</translation>
@@ -3254,6 +3251,11 @@ gemeten in de opgegeven richting</translation>
       <location filename="../../Command.cpp" line="1834"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation type="unfinished">Select an edge, face, or body from an active body.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1026"/>
@@ -3518,7 +3520,7 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Om deze functie te gebruiken moet deze tot een onderdeel object behoren in het document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
@@ -4468,6 +4470,9 @@ boven de 90: groter gat straal aan de onderkant</translation>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
@@ -4649,8 +4654,8 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <translation type="unfinished">Error: Face must be planar</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="454"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation type="unfinished">Error: Result is not a solid</translation>
@@ -4661,29 +4666,22 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <translation type="unfinished">Error: There is nothing to subtract</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="421"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="451"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="492"/>
-      <source>Error: Result has multiple solids</source>
-      <translation type="unfinished">Error: Result has multiple solids</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="436"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="437"/>
       <source>Error: Adding the helix failed</source>
       <translation type="unfinished">Error: Adding the helix failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="468"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="472"/>
       <source>Error: Intersecting the helix failed</source>
       <translation type="unfinished">Error: Intersecting the helix failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="477"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="481"/>
       <source>Error: Subtracting the helix failed</source>
       <translation type="unfinished">Error: Subtracting the helix failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="508"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="515"/>
       <source>Error: Could not create face from sketch</source>
       <translation type="unfinished">Error: Could not create face from sketch</translation>
     </message>
@@ -5140,7 +5138,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation type="unfinished">Show preview overlay</translation>
     </message>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="50"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="52"/>
       <source>Preview</source>
       <translation>Voorbeeldweergave</translation>
     </message>
@@ -5286,7 +5284,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
   <context>
     <name>PartDesignGui::TaskDlgPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1082"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1103"/>
       <source>Attachment</source>
       <translation>Bijlage</translation>
     </message>
@@ -5294,7 +5292,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="802"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="803"/>
       <source>Revolution Parameters</source>
       <translation type="unfinished">Revolution Parameters</translation>
     </message>
@@ -5302,7 +5300,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="812"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="813"/>
       <source>Groove Parameters</source>
       <translation type="unfinished">Groove Parameters</translation>
     </message>
@@ -5421,25 +5419,46 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="132"/>
+      <location filename="../../TaskPatternParameters.cpp" line="148"/>
       <source>Direction 2</source>
       <translation type="unfinished">Direction 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="248"/>
+      <location filename="../../TaskPatternParameters.cpp" line="267"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation type="unfinished">Select a direction reference (edge, face, datum line)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="334"/>
+      <location filename="../../TaskPatternParameters.cpp" line="355"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation type="unfinished">Invalid selection. Select an edge, planar face, or datum line.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Invoerfout</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="138"/>
+      <source>%1 fine dragging</source>
+      <translation type="unfinished">%1 fine dragging</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="141"/>
+      <source>%1 coarse dragging</source>
+      <translation type="unfinished">%1 coarse dragging</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="264"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>

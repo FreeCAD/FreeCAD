@@ -267,12 +267,12 @@
       <translation>%1 測定に追加</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="810"/>
+      <location filename="../../TaskMeasure.cpp" line="811"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation>%1 新しい測定、 %2 自動保存の切り替え</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="815"/>
+      <location filename="../../TaskMeasure.cpp" line="816"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation>%1 測定に追加、 %2 自動保存の切り替え</translation>
     </message>
@@ -476,18 +476,18 @@
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
-      <source>Jx</source>
-      <translation>Jx</translation>
+      <source>J1</source>
+      <translation type="unfinished">J1</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="677"/>
-      <source>Jy</source>
-      <translation>Jy</translation>
+      <source>J2</source>
+      <translation type="unfinished">J2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="704"/>
-      <source>Jz</source>
-      <translation>Jz</translation>
+      <source>J3</source>
+      <translation type="unfinished">J3</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
@@ -503,47 +503,47 @@
   <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="279"/>
+      <location filename="../../TaskMassProperties.cpp" line="280"/>
       <source>Parameters</source>
       <translation>パラメーター</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="282"/>
+      <location filename="../../TaskMassProperties.cpp" line="283"/>
       <source>Physical Properties</source>
       <translation>物理的プロパティ</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="285"/>
+      <location filename="../../TaskMassProperties.cpp" line="286"/>
       <source>Center of Gravity</source>
       <translation>重心</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="286"/>
+      <location filename="../../TaskMassProperties.cpp" line="287"/>
       <source>Center of Volume</source>
       <translation>体積中心</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="287"/>
+      <location filename="../../TaskMassProperties.cpp" line="288"/>
       <source>Inertia</source>
       <translation>慣性</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="359"/>
+      <location filename="../../TaskMassProperties.cpp" line="360"/>
       <source>Close</source>
       <translation>閉じる</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="362"/>
+      <location filename="../../TaskMassProperties.cpp" line="363"/>
       <source>Save</source>
       <translation>保存</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="366"/>
+      <location filename="../../TaskMassProperties.cpp" line="367"/>
       <source>Reset</source>
       <translation>リセット</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1126"/>
+      <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
       <translation> (平均)</translation>
     </message>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="51"/>
       <source>Default Property Values</source>
-      <translation type="unfinished">Default Property Values</translation>
+      <translation>Ominaisuuden oletusarvot</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="142"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="59"/>
       <source>Text size</source>
-      <translation type="unfinished">Text size</translation>
+      <translation>Tekstin koko</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="66"/>
@@ -38,17 +38,17 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="112"/>
       <source>Background color</source>
-      <translation type="unfinished">Background color</translation>
+      <translation>Taustaväri</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="166"/>
       <source>Arrow Radius</source>
-      <translation type="unfinished">Arrow Radius</translation>
+      <translation>Nuolen Säde</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="198"/>
       <source>Arrow Height</source>
-      <translation type="unfinished">Arrow Height</translation>
+      <translation>Nuolen korkeus</translation>
     </message>
   </context>
   <context>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../../MeasureCOM.py" line="61"/>
       <source>Element to measure</source>
-      <translation type="unfinished">Element to measure</translation>
+      <translation>Mitattava elementti</translation>
     </message>
   </context>
   <context>
@@ -64,7 +64,7 @@
     <message>
       <location filename="../../../MeasureCOM.py" line="68"/>
       <source>The result location</source>
-      <translation type="unfinished">The result location</translation>
+      <translation>Tuloksen sijainti</translation>
     </message>
   </context>
   <context>
@@ -72,43 +72,43 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="212"/>
       <source>Total area: %1</source>
-      <translation type="unfinished">Total area: %1</translation>
+      <translation>Kokonaisalue: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
       <location filename="../../QuickMeasure.cpp" line="262"/>
       <source>Nominal distance: %1</source>
-      <translation type="unfinished">Nominal distance: %1</translation>
+      <translation>Nimellisetäisyys</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Area: %1</source>
-      <translation type="unfinished">Area: %1</translation>
+      <translation>Alue: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="232"/>
       <source>Area: %1, Radius: %2</source>
-      <translation type="unfinished">Area: %1, Radius: %2</translation>
+      <translation>Alue: %1, Säde: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="236"/>
       <source>Area: %1, Diameter: %2</source>
-      <translation type="unfinished">Area: %1, Diameter: %2</translation>
+      <translation>Alue: %1, Halkaisija: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="245"/>
       <source>Total area: %1, Axis distance: %2</source>
-      <translation type="unfinished">Total area: %1, Axis distance: %2</translation>
+      <translation>Kokonaisalue: %1, lävistäjän etäisyys %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="250"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
-      <translation type="unfinished">Total area: %1, Axis distance: %2, Axis angle: %3</translation>
+      <translation>Kokonaisalue: %1, lävistäjän etäisyys: %2, lävistäjän kulma: %3</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="259"/>
       <source>Total length: %1</source>
-      <translation type="unfinished">Total length: %1</translation>
+      <translation>Kokonaispituus: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="265"/>
@@ -118,17 +118,17 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="269"/>
       <source>Length: %1</source>
-      <translation type="unfinished">Length: %1</translation>
+      <translation>Pituus: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="272"/>
       <source>Radius: %1</source>
-      <translation type="unfinished">Radius: %1</translation>
+      <translation>Säde: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="275"/>
       <source>Diameter: %1</source>
-      <translation type="unfinished">Diameter: %1</translation>
+      <translation>Halkaisija: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="278"/>
@@ -138,23 +138,23 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="281"/>
       <source>Minimum distance: %1</source>
-      <translation type="unfinished">Minimum distance: %1</translation>
+      <translation>Minimi etäisyys: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="285"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
-      <translation type="unfinished">Minimum distance: %1, Axis distance: %2</translation>
+      <translation>Minimi etäisyys: %1, Lävistäjän etäisyys %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="291"/>
       <source>Minimum distance: %1, Center distance: %2</source>
-      <translation type="unfinished">Minimum distance: %1, Center distance: %2</translation>
+      <translation>Minimi etäisyys: %1, Keskuksen etäisyys: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="298"/>
       <location filename="../../QuickMeasure.cpp" line="315"/>
       <source>Total length: %1, Center distance: %2</source>
-      <translation type="unfinished">Total length: %1, Center distance: %2</translation>
+      <translation>Kokonaispituus: %1, Keskuksen etäisyys: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="305"/>
@@ -190,7 +190,7 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>&amp;Mittaa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="103"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Mittaus</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="119"/>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="125"/>
       <source>Auto Save</source>
-      <translation type="unfinished">Auto Save</translation>
+      <translation>Automaattitallennus</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="129"/>
@@ -267,12 +267,12 @@
       <translation type="unfinished">%1 add to measurement</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="810"/>
+      <location filename="../../TaskMeasure.cpp" line="811"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation type="unfinished">%1 new measurement, %2 toggle auto-save</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="815"/>
+      <location filename="../../TaskMeasure.cpp" line="816"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation type="unfinished">%1 add to measurement, %2 toggle auto-save</translation>
     </message>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="38"/>
       <source>Objects to measure</source>
-      <translation type="unfinished">Objects to measure</translation>
+      <translation>Mitattavat kohteet</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="58"/>
@@ -358,7 +358,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="83"/>
       <source>Center of gravity</source>
-      <translation type="unfinished">Center of gravity</translation>
+      <translation>Painovoiman keskipiste</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="110"/>
@@ -368,7 +368,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="124"/>
       <source>Select…</source>
-      <translation type="unfinished">Select…</translation>
+      <translation>Valitse...</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="137"/>
@@ -476,18 +476,18 @@
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
-      <source>Jx</source>
-      <translation type="unfinished">Jx</translation>
+      <source>J1</source>
+      <translation type="unfinished">J1</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="677"/>
-      <source>Jy</source>
-      <translation type="unfinished">Jy</translation>
+      <source>J2</source>
+      <translation type="unfinished">J2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="704"/>
-      <source>Jz</source>
-      <translation type="unfinished">Jz</translation>
+      <source>J3</source>
+      <translation type="unfinished">J3</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
@@ -503,47 +503,47 @@
   <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="279"/>
+      <location filename="../../TaskMassProperties.cpp" line="280"/>
       <source>Parameters</source>
       <translation>Muuttujat</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="282"/>
+      <location filename="../../TaskMassProperties.cpp" line="283"/>
       <source>Physical Properties</source>
       <translation type="unfinished">Physical Properties</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="285"/>
+      <location filename="../../TaskMassProperties.cpp" line="286"/>
       <source>Center of Gravity</source>
       <translation type="unfinished">Center of Gravity</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="286"/>
+      <location filename="../../TaskMassProperties.cpp" line="287"/>
       <source>Center of Volume</source>
       <translation type="unfinished">Center of Volume</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="287"/>
+      <location filename="../../TaskMassProperties.cpp" line="288"/>
       <source>Inertia</source>
       <translation type="unfinished">Inertia</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="359"/>
+      <location filename="../../TaskMassProperties.cpp" line="360"/>
       <source>Close</source>
       <translation>Sulje</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="362"/>
+      <location filename="../../TaskMassProperties.cpp" line="363"/>
       <source>Save</source>
       <translation>Tallenna</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="366"/>
+      <location filename="../../TaskMassProperties.cpp" line="367"/>
       <source>Reset</source>
       <translation>Palauta</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1126"/>
+      <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
       <translation type="unfinished"> (Average)</translation>
     </message>

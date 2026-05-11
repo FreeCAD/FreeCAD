@@ -272,6 +272,7 @@ protected:
 private:
     void spinInternal(const SbVec2f& pointerpos, const SbVec2f& lastpos);
     void spinSimplifiedInternal(const SbVec2f curpos, const SbVec2f prevpos);
+    bool getObjectBoundingBoxCenter(SbVec3f& center) const;
 
 protected:
     void clearLog();

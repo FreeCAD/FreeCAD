@@ -269,12 +269,12 @@
       <translation>%1 дадаць да вымярэння</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="810"/>
+      <location filename="../../TaskMeasure.cpp" line="811"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation>%1 новае вымярэнне, %2 пераключыць аўтаматычнае захаванне</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="815"/>
+      <location filename="../../TaskMeasure.cpp" line="816"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation>%1 дадаць да вымярэння, %2 пераключыць аўтаматычнае захаванне</translation>
     </message>

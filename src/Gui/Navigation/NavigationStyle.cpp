@@ -1242,6 +1242,24 @@ void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
     }
 }
 
+bool NavigationStyle::getObjectBoundingBoxCenter(SbVec3f& center) const
+{
+    if (!viewer->objectGroup) {
+        return false;
+    }
+
+    // Get the bounding box center of the physical object group
+    SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
+    action.apply(viewer->objectGroup);
+    const SbBox3f boundingBox = action.getBoundingBox();
+    if (boundingBox.isEmpty()) {
+        return false;
+    }
+
+    center = boundingBox.getCenter();
+    return true;
+}
+
 SbBool NavigationStyle::doSpin()
 {
     if (this->log.historysize >= 3) {
@@ -1334,11 +1352,11 @@ void NavigationStyle::saveCursorPosition(const SoEvent* const ev)
             return;
         }
 
-        // Get the bounding box center of the physical object group
-        SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
-        action.apply(viewer->objectGroup);
-        SbBox3f boundingBox = action.getBoundingBox();
-        SbVec3f boundingBoxCenter = boundingBox.getCenter();
+        SbVec3f boundingBoxCenter;
+        if (!getObjectBoundingBoxCenter(boundingBoxCenter)) {
+            return;
+        }
+
         setRotationCenter(boundingBoxCenter);
 
         // To drag around the center point of the bbox we have to determine
@@ -1921,10 +1939,35 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
         dir[2] = 0.0;  // don't move the cam for z translation.
     }
 
+    // Use the active navigation rotation center mode for SpaceMouse rotations
+    SbVec3f motionRotationCenter;
+    bool useMotionRotationCenter = false;
+    if (this->rotationCenterMode & NavigationStyle::RotationCenterMode::BoundingBoxCenter) {
+        useMotionRotationCenter = getObjectBoundingBoxCenter(motionRotationCenter);
+    }
+    else if (this->rotationCenterMode && this->rotationCenterFound) {
+        motionRotationCenter = this->rotationCenter;
+        useMotionRotationCenter = true;
+    }
+
     SbRotation newRotation(ev->getRotation() * camera->orientation.getValue());
     SbVec3f newPosition, newDirection;
-    newRotation.multVec(SbVec3f(0.0, 0.0, -1.0), newDirection);
-    newPosition = center - (newDirection * camera->focalDistance.getValue());
+    if (useMotionRotationCenter) {
+        // Reposition the camera so the rotation center stays in the same place
+        SbVec3f rotationCenterDistanceCam;
+        camera->orientation.getValue().inverse().multVec(
+            camera->position.getValue() - motionRotationCenter,
+            rotationCenterDistanceCam
+        );
+
+        SbVec3f newRotationCenterDistance;
+        newRotation.multVec(rotationCenterDistanceCam, newRotationCenterDistance);
+        newPosition = motionRotationCenter + newRotationCenterDistance;
+    }
+    else {
+        newRotation.multVec(SbVec3f(0.0, 0.0, -1.0), newDirection);
+        newPosition = center - (newDirection * camera->focalDistance.getValue());
+    }
 
     newRotation.multVec(dir, dir);
     SbVec3f finalPosition = newPosition + (dir * translationFactor);

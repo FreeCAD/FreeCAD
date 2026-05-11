@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="1545"/>
       <source>Regular Solid</source>
-      <translation>Sólido regular</translation>
+      <translation>Sólido Regular</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1546"/>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="483"/>
       <source>Mesh From Geometry</source>
-      <translation>Malha a partir de Geometria</translation>
+      <translation>Malha da Geometria</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Creates a mesh from the selected geometry</source>
-      <translation>Cria uma malha a partir de uma geometria selecionada</translation>
+      <translation>Cria uma malha a partir da geometria selecionada</translation>
     </message>
   </context>
   <context>
@@ -1088,19 +1088,25 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
-      <source>Duplicated faces</source>
-      <translation>Faces duplicadas</translation>
+      <source>Duplicated Faces</source>
+      <translation>Faces Duplicadas</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
+      <source>Duplicated Points</source>
+      <translation>Pontos Duplicados</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
+      <source>Mesh Repair</source>
+      <translation>Reparar Malha</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
       <source>No duplicated points</source>
       <translation>Nenhum ponto duplicado</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
-      <source>Duplicated points</source>
-      <translation>Pontos duplicados</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1040"/>
@@ -1126,12 +1132,6 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1161"/>
       <source>Folds</source>
       <translation>Dobras</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
-      <source>Mesh repair</source>
-      <translation>Conserto de malha</translation>
     </message>
   </context>
   <context>
@@ -1167,7 +1167,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="14"/>
       <source>Regular Solid</source>
-      <translation>Sólido regular</translation>
+      <translation>Sólido Regular</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
@@ -1289,8 +1289,8 @@
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
-      <source>No active document</source>
-      <translation>Nenhum documento ativo</translation>
+      <source>No Active Document</source>
+      <translation>Documento Não Ativo</translation>
     </message>
   </context>
   <context>
@@ -2373,7 +2373,7 @@ Visite https://openscad.org para instalá-lo.</translation>
     <message>
       <location filename="../../../Init.py" line="19"/>
       <source>STL Mesh</source>
-      <translation type="unfinished">STL Mesh</translation>
+      <translation>Malha STL</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="20"/>
@@ -2390,7 +2390,7 @@ Visite https://openscad.org para instalá-lo.</translation>
       <location filename="../../../Init.py" line="27"/>
       <source>Object File Format Mesh</source>
       <extracomment>Translation note: "Object File Format" is the official name and should not be translated</extracomment>
-      <translation type="unfinished">Object File Format Mesh</translation>
+      <translation>Malha de Formato de Arquivo de Objeto</translation>
     </message>
   </context>
 </TS>

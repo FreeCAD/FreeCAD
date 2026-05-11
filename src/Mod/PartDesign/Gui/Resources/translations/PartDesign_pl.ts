@@ -1438,36 +1438,46 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
   <context>
     <name>PartDesignGui::TaskBoxPrimitives</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="52"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="53"/>
       <source>Primitive Parameters</source>
       <translation>Parametry bryły pierwotnej</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="944"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="952"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="947"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="955"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="963"/>
       <source>Invalid wedge parameters</source>
       <translation>Nieprawidłowe parametry klina</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="945"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="948"/>
       <source>X min must not be equal to X max!</source>
       <translation>Wartość minimalna X nie może być równa wartości maksymalnej X!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="953"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="956"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Wartość minimalna Y nie może być równa wartości maksymalnej Y!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="961"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="964"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Wartość minimalna Z nie może być równa wartości maksymalnej Z!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1003"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1006"/>
       <source>Create primitive</source>
       <translation>Utwórz bryłę pierwotną</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1051"/>
+      <source>%1 fine dragging</source>
+      <translation type="unfinished">%1 fine dragging</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1054"/>
+      <source>%1 coarse dragging</source>
+      <translation type="unfinished">%1 coarse dragging</translation>
     </message>
   </context>
   <context>
@@ -1546,13 +1556,13 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>Empty body list</source>
-      <translation>Lista zawartości jest pusta</translation>
+      <source>The body list cannot be empty</source>
+      <translation>Lista zawartości nie może być pusta</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>The body list cannot be empty</source>
-      <translation>Lista zawartości nie może być pusta</translation>
+      <source>Empty Body List</source>
+      <translation>Lista zawartości jest pusta</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="407"/>
@@ -1571,14 +1581,6 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
       <location filename="../../TaskDatumParameters.cpp" line="109"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>Nie ma trybu dołączania, który pasowałby do obecnego zestawu odniesień. Jeśli zdecydujesz się kontynuować, właściwość pozostanie tam, gdzie jest teraz i nie zostanie przeniesiona, gdy referencje się zmienią. Kontynuować?</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input error</source>
-      <translation>Błąd danych wejściowych</translation>
     </message>
   </context>
   <context>
@@ -2009,7 +2011,7 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
       <translation>Błąd: helisa dotyka sama siebie</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="349"/>
+      <location filename="../../TaskHelixParameters.cpp" line="352"/>
       <source>Error: unsupported mode</source>
       <translation>Błąd: nieobsługiwany tryb</translation>
     </message>
@@ -2652,9 +2654,8 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="463"/>
       <location filename="../../TaskPipeParameters.cpp" line="584"/>
-      <source>Input error</source>
-      <translation>Błąd danych wejściowych
-</translation>
+      <source>Input Error</source>
+      <translation>Błąd danych wejściowych</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="463"/>
@@ -3124,11 +3125,6 @@ mierzona wzdłuż podanego kierunku</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid selection</source>
-      <translation>Nieprawidłowy wybór</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>Nie ma trybów dołączania, które pasują do wybranych obiektów. Wybierz coś innego.</translation>
@@ -3259,6 +3255,11 @@ mierzona wzdłuż podanego kierunku</translation>
       <location filename="../../Command.cpp" line="1834"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>Wybierz krawędź, ścianę lub zawartość z aktywnej zawartości.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Invalid Selection</source>
+      <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1026"/>
@@ -3525,7 +3526,7 @@ Aktywuj istniejącą zawartość (podwójne kliknięcie) lub utwórz nową.</tra
       <translation>Ta cecha musi przynależeć do obiektu części w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
@@ -4478,6 +4479,9 @@ Zainstaluj ją, aby włączyć tę funkcję.</translation>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Wynik zawiera wiele brył: włącz opcję "Zezwalaj na złożenia" w aktywnej zawartości.</translation>
@@ -4661,8 +4665,8 @@ Przecinające się obiekty w szkicu są niedozwolone.</translation>
       <translation>Błąd: ściana musi być płaska</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="454"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>Błąd: wynik nie jest bryłą</translation>
@@ -4673,29 +4677,22 @@ Przecinające się obiekty w szkicu są niedozwolone.</translation>
       <translation>Błąd: nie ma nic do odjęcia</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="421"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="451"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="492"/>
-      <source>Error: Result has multiple solids</source>
-      <translation>Błąd: otrzymano wynik z wieloma bryłami</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="436"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="437"/>
       <source>Error: Adding the helix failed</source>
       <translation>Błąd: dodanie helisy nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="468"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="472"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>Błąd: samo przecięcie helisy nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="477"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="481"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>Błąd: odjęcie helisy nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="508"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="515"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Błąd: Nie można utworzyć ściany ze szkicu</translation>
     </message>
@@ -5152,7 +5149,7 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone.<
       <translation>Pokaż podgląd nakładki</translation>
     </message>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="50"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="52"/>
       <source>Preview</source>
       <translation>Podgląd</translation>
     </message>
@@ -5299,7 +5296,7 @@ Może to oznaczać, że nie zostanie usunięty żaden materiał lub wystąpił p
   <context>
     <name>PartDesignGui::TaskDlgPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1082"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1103"/>
       <source>Attachment</source>
       <translation>Dołączenie</translation>
     </message>
@@ -5307,7 +5304,7 @@ Może to oznaczać, że nie zostanie usunięty żaden materiał lub wystąpił p
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="802"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="803"/>
       <source>Revolution Parameters</source>
       <translation>Parametry wyciągnięcia przez obrót</translation>
     </message>
@@ -5315,7 +5312,7 @@ Może to oznaczać, że nie zostanie usunięty żaden materiał lub wystąpił p
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="812"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="813"/>
       <source>Groove Parameters</source>
       <translation>Parametry rowkowania</translation>
     </message>
@@ -5434,26 +5431,47 @@ Może to oznaczać, że nie zostanie usunięty żaden materiał lub wystąpił p
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="132"/>
+      <location filename="../../TaskPatternParameters.cpp" line="148"/>
       <source>Direction 2</source>
       <translation>Kierunek 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="248"/>
+      <location filename="../../TaskPatternParameters.cpp" line="267"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Wybierz odniesienie kierunku (krawędź, ścianę, linię odniesienia).</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="334"/>
+      <location filename="../../TaskPatternParameters.cpp" line="355"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Nieprawidłowy wybór. 
 Wybierz krawędź, płaszczyznę lub linię odniesienia.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Błąd danych wejściowych</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="138"/>
+      <source>%1 fine dragging</source>
+      <translation type="unfinished">%1 fine dragging</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="141"/>
+      <source>%1 coarse dragging</source>
+      <translation type="unfinished">%1 coarse dragging</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="264"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>

@@ -488,8 +488,8 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
-      <translation>Κανένα ενεργό έγγραφο</translation>
+      <source>No Active Document</source>
+      <translation type="unfinished">No Active Document</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>
