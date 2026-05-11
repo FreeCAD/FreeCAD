@@ -334,7 +334,6 @@ std::string DocumentObject::getFullNameLabel(bool showLabel) const
             return fullName + " (" + objLabel + ")";
         }
     }
-    
     return fullName;    
 }
 
