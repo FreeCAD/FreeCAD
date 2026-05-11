@@ -703,17 +703,17 @@ void TaskMassProperties::tryUpdate()
     auto coordLabel = [](App::DocumentObject* obj) {
         if (auto* datum = freecad_cast<App::DatumElement*>(obj)) {
             if (auto* lcs = datum->getLCS()) {
-                return lcs->getFullLabel();
+                return lcs->getFullNameLabel();
             }
         }
         if (auto* lcs = freecad_cast<App::LocalCoordinateSystem*>(obj)) {
-            return lcs->getFullLabel();
+            return lcs->getFullNameLabel();
         }
         if (auto* origin = freecad_cast<App::Origin*>(obj)) {
-            return origin->getFullLabel();
+            return origin->getFullNameLabel();
         }
 
-        return obj->getFullLabel();
+        return obj->getFullNameLabel();
     };
 
 
@@ -1020,7 +1020,7 @@ void TaskMassProperties::tryUpdate()
         collectBodies(collectBodies, leaf, parentPlacement);
 
         if (shouldAddToList && objectsToMeasure.size() > objectsBefore) {
-            auto* item = new QListWidgetItem(QString::fromStdString(displayObject->getFullLabel()));
+            auto* item = new QListWidgetItem(QString::fromStdString(displayObject->getFullNameLabel()));
             QString docName;
             if (auto* doc = selObj.pObject->getDocument()) {
                 docName = QString::fromUtf8(doc->getName());

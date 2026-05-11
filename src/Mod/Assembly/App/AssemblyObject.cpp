@@ -470,7 +470,7 @@ bool AssemblyObject::validateNewPlacements()
                 if (!oldPlc.isSame(newPlacement, Precision::Confusion())) {
                     Base::Console().warning(
                         "Assembly : Ignoring bad solve, a grounded object (%s) moved.\n",
-                        obj->getFullLabel()
+                        obj->getFullNameLabel()
                     );
                     return false;
                 }
@@ -1859,7 +1859,7 @@ bool AssemblyObject::isMbDJointValid(App::DocumentObject* joint)
         Base::Console().warning(
             "Assembly: Ignoring joint (%s) because its parts are connected by a fixed "
             "joint bundle. This joint is a conflicting or redundant constraint.\n",
-            joint->getFullLabel()
+            joint->getFullNameLabel()
         );
         return false;
     }

@@ -181,7 +181,7 @@ App::DocumentObjectExecReturn* Mirroring::execute()
         else if (refObject->isDerivedFrom<Part::Feature>() || refObject->isDerivedFrom<App::Link>()) {
             if (subStrings.size() > 1) {
                 throw Base::ValueError(
-                    std::string(this->getFullLabel()) + ": Only 1 subobject is supported for Mirror Plane reference, either a plane face or a circle edge."
+                    std::string(this->getFullNameLabel()) + ": Only 1 subobject is supported for Mirror Plane reference, either a plane face or a circle edge."
                 );
             }
             auto linked = MirrorPlane.getValue();
@@ -252,19 +252,19 @@ App::DocumentObjectExecReturn* Mirroring::execute()
 
             if (isFace && face.IsNull()) {  // ensure we have a good face to work with
                 throw Base::ValueError(
-                    std::string(this->getFullLabel())
+                    std::string(this->getFullNameLabel())
                     + ": Failed to extract mirror plane because face is null"
                 );
             }
             if (isEdge && edge.IsNull()) {  // ensure we have a good edge to work with
                 throw Base::ValueError(
-                    std::string(this->getFullLabel())
+                    std::string(this->getFullNameLabel())
                     + ": Failed to extract mirror plane because edge is null"
                 );
             }
             if (!isFace && !isEdge) {
                 throw Base::ValueError(
-                    std::string(this->getFullLabel()) + ": Failed to extract mirror plane, unable to determine which face or edge to use."
+                    std::string(this->getFullNameLabel()) + ": Failed to extract mirror plane, unable to determine which face or edge to use."
                 );
             }
 
@@ -272,7 +272,7 @@ App::DocumentObjectExecReturn* Mirroring::execute()
                 BRepAdaptor_Surface adapt(face);
                 if (adapt.GetType() != GeomAbs_Plane) {
                     throw Base::TypeError(
-                        std::string(this->getFullLabel()) + ": Mirror plane face must be planar"
+                        std::string(this->getFullNameLabel()) + ": Mirror plane face must be planar"
                     );
                 }
                 TopExp_Explorer exp;
@@ -287,7 +287,7 @@ App::DocumentObjectExecReturn* Mirroring::execute()
                     BRepAdaptor_Curve curve(edge);
                     if (!(curve.GetType() == GeomAbs_Circle)) {
                         throw Base::TypeError(
-                            std::string(this->getFullLabel()) + ": Only circle edge types are supported"
+                            std::string(this->getFullNameLabel()) + ": Only circle edge types are supported"
                         );
                     }
                     gp_Circ circle = curve.Circle();
@@ -298,7 +298,7 @@ App::DocumentObjectExecReturn* Mirroring::execute()
         }
         else {
             throw Base::ValueError(
-                std::string(this->getFullLabel()) + ": Mirror plane reference must be a face of a feature or a plane object or a circle"
+                std::string(this->getFullNameLabel()) + ": Mirror plane reference must be a face of a feature or a plane object or a circle"
             );
         }
         Base.setValue(axbase.X(), axbase.Y(), axbase.Z());

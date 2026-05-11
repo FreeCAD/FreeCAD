@@ -1054,7 +1054,7 @@ void SketchObject::onGeometryChanged()
     }
     else {
         Base::Console().error(
-            this->getFullLabel() + " SketchObject::onChanged ",
+            this->getFullNameLabel() + " SketchObject::onChanged ",
             QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
                               "Property results in invalid constraint indices") "\n");
     }
@@ -1098,7 +1098,7 @@ void SketchObject::onConstraintsChanged()
     }
     else {
         Base::Console().error(
-            this->getFullLabel() + " SketchObject::onChanged ",
+            this->getFullNameLabel() + " SketchObject::onChanged ",
             QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
                               "Property results in invalid constraint indices") "\n");
     }
