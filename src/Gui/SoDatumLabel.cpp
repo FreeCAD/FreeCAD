@@ -233,10 +233,10 @@ void SoDatumLabel::drawImage()
     front.setRgbF(t[0], t[1], t[2]);
 
     QImage image(w * sampling.getValue(), h * sampling.getValue(), QImage::Format_ARGB32_Premultiplied);
-    image.setDevicePixelRatio(sampling.getValue());
     image.fill(0x00000000);
 
     QPainter painter(&image);
+    painter.scale(sampling.getValue(), sampling.getValue());
     if (useAntialiasing) {
         painter.setRenderHint(QPainter::Antialiasing);
     }
