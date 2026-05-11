@@ -278,7 +278,7 @@ public:
     /**
      * @brief Get the full label of the object.
      *
-     * This function is getting replaced with getFullNameLabel()
+     * The label is of the form `DocName#Label`.
      *
      * @return The full label of the object.
      */
