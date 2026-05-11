@@ -14,7 +14,7 @@ Installation:
     "$ sudo cp freecad-icon-48.png /usr/share/icons/hicolor/48x48/apps/org.freecad.FreeCAD.png"
 
 - The application/x-extension-fcstd MIME type should be registered
-    Check that a corresponding /usr/share/mime/packages/freecad.xml file exists
+    Check that a corresponding /usr/share/mime/packages/org.freecad.FreeCAD.xml file exists
     Make sure the MIME database is up to date
     "$ sudo update-mime-database /usr/share/mime"
 
@@ -40,7 +40,7 @@ import getopt
 opt, par = getopt.getopt(sys.argv[1:], "-s:")
 input_file = par[0]
 output_file = par[1]
-default_icon = "@CMAKE_INSTALL_DATAROOTDIR@/icons/hicolor/48x48/apps/org.freecad.FreeCAD.png"
+default_icon = "@CMAKE_INSTALL_FULL_DATAROOTDIR@/icons/hicolor/48x48/apps/org.freecad.FreeCAD.png"
 
 try:
     # Read compressed file
