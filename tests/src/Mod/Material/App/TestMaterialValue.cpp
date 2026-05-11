@@ -242,6 +242,15 @@ TEST_F(TestMaterialValue, TestArray3DType)
     EXPECT_EQ(mat2.rows(1), 1);
     EXPECT_EQ(mat2.rows(2), 2);
 
+    mat2.setCurrentDepth(3);
+    EXPECT_EQ(mat2.currentDepth(), 2);
+
+    mat2.setCurrentDepth(-1);
+    EXPECT_EQ(mat2.currentDepth(), 0);
+
+    mat2.setCurrentDepth(2);
+    EXPECT_EQ(mat2.currentDepth(), 2);
+
     quantity = Base::Quantity::parse("32 C");
     mat2.setDepthValue(quantity);
     EXPECT_FALSE(mat2.getDepthValue(0).isValid());

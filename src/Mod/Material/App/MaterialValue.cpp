@@ -942,13 +942,11 @@ int Array3D::currentDepth() const
 
 void Array3D::setCurrentDepth(int depth)
 {
-    validateDepth(depth);
-
     if (depth < 0 || _rowMap.empty()) {
         _currentDepth = 0;
     }
     else if (depth >= static_cast<int>(_rowMap.size())) {
-        _currentDepth = _rowMap.size() - 1;
+        _currentDepth = static_cast<int>(_rowMap.size()) - 1;
     }
     else {
         _currentDepth = depth;
