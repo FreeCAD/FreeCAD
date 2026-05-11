@@ -1038,8 +1038,8 @@ TopoShape AttachEngine::extractSubShape(App::DocumentObject* obj, const std::str
                     // This is a genuine error.
                     FC_THROWM(
                         AttachEngineException,
-                        "AttachEngine3D: " << obj->getFullNameLabel() << " subshape" << subname
-                                           << "not found\n"
+                        "AttachEngine3D: " << obj->getFullNameLabel() << " subshape " << subname
+                                           << " not found\n"
                     );
                 }
             }
