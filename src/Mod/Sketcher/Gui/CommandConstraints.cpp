@@ -10653,7 +10653,8 @@ void CmdSketcherConstrainGroup::activated(int iMsg)
                                     return elem.GeoId == geoId;
                                 });
 
-        if (geoId < 0 || alreadyAdded || Obj->getGeometryFacade(geoId)->isInternalAligned()) {
+        if (geoId < 0 || alreadyAdded || Obj->getGeometryFacade(geoId)->isInternalAligned()
+            || Obj->isInGroup(geoId, true)) {
             continue;
         }
 
