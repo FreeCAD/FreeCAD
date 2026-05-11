@@ -383,7 +383,7 @@
            <string>Origin &amp;&amp; Orientation</string>
           </property>
           <property name="toolTip">
-           <string>Position the Model so a picked edge defines an axis and a picked vertex zeroes the model on that axis. The G54-G59 Fixture is set on the Output tab.</string>
+           <string>Positions the model so a picked edge defines an axis and a picked vertex zeros the model on that axis. The G54-G59 fixture is set on the output tab.</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
            <item row="0" column="0">
@@ -392,7 +392,7 @@
               <string>X-Axis</string>
              </property>
              <property name="toolTip">
-              <string>Rotate the Model so a picked edge becomes the X axis.</string>
+              <string>Rotates the model so a picked edge becomes the X-axis</string>
              </property>
             </widget>
            </item>
@@ -402,7 +402,7 @@
               <string>Y-Axis</string>
              </property>
              <property name="toolTip">
-              <string>Rotate the Model so a picked edge becomes the Y axis.</string>
+              <string>Rotates the model so a picked edge becomes the Y-axis</string>
              </property>
             </widget>
            </item>
@@ -412,7 +412,7 @@
               <string>Z-Axis</string>
              </property>
              <property name="toolTip">
-              <string>Rotate the Model so a picked edge becomes the Z axis.</string>
+              <string>Rotates the model so a picked edge becomes the Z-axis</string>
              </property>
             </widget>
            </item>
@@ -422,7 +422,7 @@
               <string>X=0</string>
              </property>
              <property name="toolTip">
-              <string>Translate the Model so the picked vertex has X = 0.</string>
+              <string>Translates the model so the picked vertex has X = 0</string>
              </property>
             </widget>
            </item>
@@ -432,7 +432,7 @@
               <string>Y=0</string>
              </property>
              <property name="toolTip">
-              <string>Translate the Model so the picked vertex has Y = 0.</string>
+              <string>Translates the model so the picked vertex has Y = 0</string>
              </property>
             </widget>
            </item>
@@ -442,7 +442,7 @@
               <string>Z=0</string>
              </property>
              <property name="toolTip">
-              <string>Translate the Model so the picked vertex has Z = 0.</string>
+              <string>Translates the model so the picked vertex has Z = 0</string>
              </property>
             </widget>
            </item>
@@ -452,7 +452,7 @@
               <string>Link stock and model</string>
              </property>
              <property name="toolTip">
-              <string>When checked, Stock follows Model translations and rotations performed in this dialog. Disable to position Stock independently of the Model.</string>
+              <string>When checked, stock follows model translations and rotations performed in this dialog. When unchecked, stock can be positioned independently of the model.</string>
              </property>
             </widget>
            </item>
@@ -623,7 +623,7 @@
            <string>Rotate around Z</string>
           </property>
           <property name="toolTip">
-           <string>Rotate the Model about the Z axis. Use the Compound checkbox to apply rotations cumulatively.</string>
+           <string>Rotates the model about the Z-axis. When the compound checkbox is enabled, rotations stack cumulatively.</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_6">
            <item row="0" column="0">
@@ -1021,7 +1021,7 @@ Default: &quot;5mm&quot;</string>
               </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>Machine for this Job. Pick from machines available in the asset path. Use the New Machine button to create one if your machine isn't listed.</string>
+              <string>Machine configuration for this job, drawn from machines available in the asset path. New machines can be added with the New Machine button.</string>
              </property>
             </widget>
            </item>
