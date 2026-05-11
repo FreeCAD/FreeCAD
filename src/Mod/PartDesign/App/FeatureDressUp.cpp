@@ -195,7 +195,7 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
             return;
         }
 
-        const std::string ref_name = ref.empty() ? "NOT_FOUND" : ref;
+        const std::string refName = ref.empty() ? "NOT_FOUND" : ref;
 
         auto faces = shape.findAncestorsShapes(subshape, TopAbs_FACE);
         if (faces.size() != 2) {
