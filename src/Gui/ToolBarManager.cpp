@@ -1162,9 +1162,23 @@ bool ToolBarManager::eventFilter(QObject* source, QEvent* ev)
             }
         }
         // fall through
-        case QEvent::MouseMove:
-            res = addToolBarToArea(source, static_cast<QMouseEvent*>(ev));
+        case QEvent::MouseMove: {
+            auto mev = static_cast<QMouseEvent*>(ev);
+            // Workaround for a stale dock-drag state on Wayland: when a click
+            // on the toolbar's movable handle is followed by a release that
+            // the compositor delivers to a different surface, Qt's
+            // QMainWindowLayout treats every subsequent MouseMove (even with
+            // no button held) as a drag continuation and re-arranges the
+            // toolbar. A MouseMove on a toolbar with no buttons pressed has
+            // no legitimate purpose for the layout's drag handler, so drop
+            // it. Tooltips and hover effects use the separate HoverMove path
+            // and are unaffected.
+            if (qobject_cast<QToolBar*>(source) && mev->buttons() == Qt::NoButton) {
+                return true;
+            }
+            res = addToolBarToArea(source, mev);
             break;
+        }
         case QEvent::ParentChange:
             if (auto toolbar = qobject_cast<QToolBar*>(source)) {
                 resizingToolbars[toolbar] = toolbar;
