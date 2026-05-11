@@ -33,7 +33,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
 
       - name: Create backport pull requests
-        uses: korthout/backport-action@bf97bcfb53d5250af8b9a15fab0f56158a63b224 # v4.5.1
+        uses: korthout/backport-action@66065406958f46e82238fd59546f5a99e69e22aa # v4.5.2
         with:
           # Inputs documented here: https://github.com/korthout/backport-action?tab=readme-ov-file#inputs
           github_token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
