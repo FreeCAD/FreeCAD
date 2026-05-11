@@ -213,8 +213,12 @@ class TestPathLogNew(unittest.TestCase):
         self.assertTrue(debug_message.startswith(f"{module}.DEBUG: ("))
         self.assertTrue(debug_message.endswith(") - something x=1\n"))
         self.assertEqual(self.logger.info("something x={}", 2), f"{module}.INFO: something x=2\n")
-        self.assertEqual(self.logger.notice("something x={}", 3), f"{module}.NOTICE: something x=3\n")
-        self.assertEqual(self.logger.warning("something x={}", 4), f"{module}.WARNING: something x=4\n")
+        self.assertEqual(
+            self.logger.notice("something x={}", 3), f"{module}.NOTICE: something x=3\n"
+        )
+        self.assertEqual(
+            self.logger.warning("something x={}", 4), f"{module}.WARNING: something x=4\n"
+        )
         self.assertEqual(self.logger.error("something x={}", 5), f"{module}.ERROR: something x=5\n")
 
     def testzz(self):
