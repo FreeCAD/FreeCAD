@@ -40,7 +40,6 @@ from draftutils import gui_utils
 from draftutils import utils
 from draftutils.translate import translate
 
-
 _recompute_observer = None
 
 
@@ -265,9 +264,9 @@ class Shape2DView(DraftObject):
         return [shape.copy()]
 
     def execute(self, obj):
-        auto_update_blocked = (
-            not getattr(obj, "AutoUpdate", True) and not _manual_recompute_requested(obj)
-        )
+        auto_update_blocked = not getattr(
+            obj, "AutoUpdate", True
+        ) and not _manual_recompute_requested(obj)
         if self.props_changed_placement_only(obj) or auto_update_blocked:
             obj.positionBySupport()
             self.props_changed_clear()
