@@ -219,7 +219,7 @@ private:
     ViewMode currentMode;
     Qt::WindowStates wstate;
     // list of active objects of this view
-    ActiveObjectList* ActiveObjects;
+    std::unique_ptr<ActiveObjectList> ActiveObjects;
     using Connection = fastsignals::connection;
     Connection connectDelObject;  // remove active object upon delete.
 
