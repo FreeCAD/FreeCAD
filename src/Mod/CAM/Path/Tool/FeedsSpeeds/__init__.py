@@ -22,6 +22,7 @@
 from .resolver import resolve, default_providers
 from .types import (
     FeedSpeedResult,
+    MachineContext,
     MaterialContext,
     OpContext,
     PartialResult,
@@ -38,6 +39,7 @@ from .presets import (
 
 __all__ = (
     "FeedSpeedResult",
+    "MachineContext",
     "MaterialContext",
     "OpContext",
     "OP_TYPES",

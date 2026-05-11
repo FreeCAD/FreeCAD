@@ -42,6 +42,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
 from Path.Tool.FeedsSpeeds import (
     FeedSpeedResult,
+    MachineContext,
     MaterialContext,
     OP_TYPES,
     OpContext,
@@ -103,7 +104,7 @@ def adapt_toolbit(tc) -> ToolContext:
     flutes: Optional[int] = None
     presets: Tuple[dict, ...] = ()
     shape_id = ""
-    material_enum: Optional[str] = None
+    tool_material: Optional[str] = None
     chipload_default: Optional[float] = None
 
     if tb is not None:
@@ -122,7 +123,7 @@ def adapt_toolbit(tc) -> ToolContext:
             flutes = None
         presets = tuple(get_presets(tb))
         shape_id = getattr(tb, "ShapeID", "") or ""
-        material_enum = getattr(tb, "Material", None)
+        tool_material = getattr(tb, "Material", None) or None
         try:
             chipload_q = getattr(tb, "Chipload", None)
             if chipload_q is not None:
@@ -136,9 +137,20 @@ def adapt_toolbit(tc) -> ToolContext:
         flutes=flutes,
         presets=presets,
         shape_id=shape_id,
-        material_enum=material_enum,
+        tool_material=tool_material,
         chipload_default=chipload_default,
     )
+
+
+def _surface_speed_m_per_min(props, key: str) -> Optional[float]:
+    """Read a velocity property and return it in m/min, or None."""
+    raw = props.get(key)
+    if not raw:
+        return None
+    try:
+        return float(FreeCAD.Units.Quantity(raw).getValueAs("m/min"))
+    except (TypeError, ValueError, AttributeError):
+        return None
 
 
 def adapt_material_from_job(job) -> MaterialContext:
@@ -147,7 +159,10 @@ def adapt_material_from_job(job) -> MaterialContext:
 
     Returns an empty MaterialContext (uuid=None, name=None) when the job has
     no stock material assigned, which is treated as "any material" by the
-    resolver.
+    resolver. When the material carries the Machinability model, its
+    ``SurfaceSpeedHSS`` and ``SurfaceSpeedCarbide`` properties are
+    extracted (in m/min) and attached so ``MachinabilityProvider`` can
+    pick a branch by tool material without re-reading the material.
     """
     if job is None:
         return MaterialContext()
@@ -159,7 +174,37 @@ def adapt_material_from_job(job) -> MaterialContext:
         return MaterialContext()
     uuid = getattr(shape_material, "UUID", None) or None
     name = getattr(shape_material, "Name", None) or None
-    return MaterialContext(uuid=uuid, name=name)
+    props = getattr(shape_material, "PhysicalProperties", {}) or {}
+    return MaterialContext(
+        uuid=uuid,
+        name=name,
+        surface_speed_hss=_surface_speed_m_per_min(props, "SurfaceSpeedHSS"),
+        surface_speed_carbide=_surface_speed_m_per_min(props, "SurfaceSpeedCarbide"),
+    )
+
+
+def adapt_machine_from_job(job) -> Optional[MachineContext]:
+    """
+    Build a MachineContext from the Job's Machine definition's first
+    spindle. Returns None when the job has no Machine configured or the
+    machine has no spindles. The resolver treats None as "no clamping."
+    """
+    if job is None or not hasattr(job, "Proxy"):
+        return None
+    try:
+        machine = job.Proxy.getMachine()
+    except (AttributeError, TypeError):
+        return None
+    if machine is None:
+        return None
+    spindles = getattr(machine, "spindles", None) or []
+    if not spindles:
+        return None
+    s = spindles[0]
+    return MachineContext(
+        min_rpm=float(getattr(s, "min_rpm", 0.0) or 0.0),
+        max_rpm=float(getattr(s, "max_rpm", 0.0) or 0.0),
+    )
 
 
 def find_job_for_tc(tc):
@@ -231,6 +276,7 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         self.toolbit = _toolbit_from_tc(tc)
         self.job = find_job_for_tc(tc)
         self.material_ctx = adapt_material_from_job(self.job)
+        self.machine_ctx = adapt_machine_from_job(self.job)
         self.tool_ctx = adapt_toolbit(tc)
         self._result: Optional[FeedSpeedResult] = None
 
@@ -411,7 +457,7 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
             result = built if built is not None else FeedSpeedResult()
         else:
             op_ctx = self._current_op_ctx()
-            result = resolve(self.tool_ctx, self.material_ctx, op_ctx)
+            result = resolve(self.tool_ctx, self.material_ctx, op_ctx, machine=self.machine_ctx)
         self._result = result
 
         cur_spindle = self._current_spindle()

@@ -22,10 +22,20 @@
 """
 Provider implementations for the FeedsSpeeds resolver chain.
 
-Phase 1 PoC ships ``ToolPresetProvider`` and ``ToolDefaultsProvider``.
-Additional providers (``RuleRegistryProvider``,
-``MaterialMachinabilityProvider``, ``FormulaProvider``) will be added in
-Phase 2.
+Three providers ship today, walked in this order:
+
+1. ``ToolPresetProvider`` — best-matching curated preset on the toolbit.
+   High confidence; produces a full set (surface_speed, chipload, derived
+   spindle/feed).
+2. ``MachinabilityProvider`` — reads the stock material's Machinability
+   model, picks the HSS or Carbide branch by the toolbit's ``Material``,
+   contributes ``surface_speed`` only. Moderate confidence.
+3. ``ToolDefaultsProvider`` — the single ``ToolBit.Chipload`` property,
+   contributing ``chipload`` only. Low confidence, last-resort fallback.
+
+Because the resolver's merge step fills None fields from later providers,
+a Machinability surface speed + a default-chipload chipload combine into
+a full feed/spindle derivation when no preset matches.
 """
 
 import math
@@ -191,13 +201,60 @@ class ToolPresetProvider:
         )
 
 
+class MachinabilityProvider:
+    """
+    Reads the stock material's Machinability model (surface speed for HSS
+    vs Carbide) and contributes a surface_speed only. Picks the branch by
+    the toolbit's ``Material`` property (HSS or Carbide).
+
+    Abstains when:
+      - the toolbit has no ``Material`` set (``tool.tool_material is None``)
+      - the toolbit's ``Material`` is neither ``"HSS"`` nor ``"Carbide"``
+      - the picked branch's surface speed is not present on the material
+        (e.g., HSS tool but material carries only ``SurfaceSpeedCarbide``)
+
+    Confidence is fixed at 0.35: well above ``ToolDefaultsProvider`` (0.10),
+    well below a curated preset (>=~0.55).
+
+    Spindle and feed are *not* derived here. The resolver's merge step
+    combines this provider's ``surface_speed`` with chipload from a later
+    provider (``ToolDefaultsProvider``); the dialog/apply path is
+    responsible for re-running derivation once chipload is in hand.
+    """
+
+    name = "machinability"
+
+    def suggest(
+        self,
+        tool: ToolContext,
+        material: MaterialContext,
+        op: OpContext,
+    ) -> Optional[PartialResult]:
+        tm = tool.tool_material
+        if tm == "HSS":
+            ss = material.surface_speed_hss
+        elif tm == "Carbide":
+            ss = material.surface_speed_carbide
+        else:
+            return None
+        if ss is None or ss <= 0:
+            return None
+
+        m_part = material.uuid or normalize_material_name(material.name) or "any"
+        return PartialResult(
+            surface_speed=ss,
+            source=f"machinability:{m_part}/{tm.lower()}",
+            confidence=0.35,
+            warnings=(),
+        )
+
+
 class ToolDefaultsProvider:
     """
-    Reads the legacy single-value ``ToolBit.Chipload`` property as a
-    low-confidence fallback. Contributes only to ``chipload``; surface
-    speed and feed/spindle derivation come from higher-priority providers
-    (or, in Phase 2, from ``MaterialMachinabilityProvider`` looking up the
-    workpiece's SurfaceSpeed by tool-material enum).
+    Reads the single ``ToolBit.Chipload`` property as a low-confidence
+    fallback. Contributes only ``chipload``; surface speed comes from
+    higher-priority providers (``ToolPresetProvider`` or
+    ``MachinabilityProvider``).
 
     Confidence is fixed and low (0.10) so any matching preset always wins.
     Returns ``None`` if no chipload default is set on the tool.

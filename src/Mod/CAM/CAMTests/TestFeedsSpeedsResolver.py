@@ -28,6 +28,7 @@ import math
 import unittest
 
 from Path.Tool.FeedsSpeeds import (
+    MachineContext,
     MaterialContext,
     OpContext,
     ToolContext,
@@ -36,6 +37,7 @@ from Path.Tool.FeedsSpeeds import (
     resolve,
 )
 from Path.Tool.FeedsSpeeds.providers import (
+    MachinabilityProvider,
     ToolDefaultsProvider,
     ToolPresetProvider,
     _score_preset,
@@ -72,7 +74,7 @@ class TestFeedsSpeedsResolver(unittest.TestCase):
             flutes=2,
             presets=(_alu_profile_preset(),),
             shape_id="endmill",
-            material_enum="Carbide",
+            tool_material="Carbide",
         )
         self.alu = MaterialContext(uuid=ALU_UUID, name="Aluminum 6061")
         self.steel = MaterialContext(uuid=STEEL_UUID, name="Mild Steel")
@@ -273,3 +275,147 @@ class TestFeedsSpeedsResolver(unittest.TestCase):
         tool = ToolContext(diameter=6.35, flutes=2, presets=(), shape_id="endmill")
         r = resolve(tool, self.alu, self.profile)
         self.assertEqual(r.source, "")
+
+    # --- MachinabilityProvider (stock-material surface-speed lookup) -------
+
+    def _tool_no_presets(self, tool_material=None, chipload_default=None):
+        return ToolContext(
+            diameter=6.35,
+            flutes=2,
+            presets=(),
+            shape_id="endmill",
+            tool_material=tool_material,
+            chipload_default=chipload_default,
+        )
+
+    def _alu_machinability(self, hss=30.0, carbide=400.0):
+        return MaterialContext(
+            uuid=ALU_UUID,
+            name="Aluminum 6061",
+            surface_speed_hss=hss,
+            surface_speed_carbide=carbide,
+        )
+
+    def test_machinability_carbide_branch(self):
+        tool = self._tool_no_presets(tool_material="Carbide")
+        r = resolve(tool, self._alu_machinability(), self.profile)
+        self.assertEqual(r.surface_speed, 400.0)
+        self.assertTrue(r.source.startswith("machinability:"))
+        self.assertIn("/carbide", r.source)
+
+    def test_machinability_hss_branch(self):
+        tool = self._tool_no_presets(tool_material="HSS")
+        r = resolve(tool, self._alu_machinability(), self.profile)
+        self.assertEqual(r.surface_speed, 30.0)
+        self.assertIn("/hss", r.source)
+
+    def test_machinability_abstains_when_tool_material_missing(self):
+        tool = self._tool_no_presets(tool_material=None)
+        r = resolve(tool, self._alu_machinability(), self.profile)
+        self.assertEqual(r.source, "")
+
+    def test_machinability_abstains_on_unknown_tool_material(self):
+        tool = self._tool_no_presets(tool_material="Diamond")
+        r = resolve(tool, self._alu_machinability(), self.profile)
+        self.assertEqual(r.source, "")
+
+    def test_machinability_abstains_when_branch_value_missing(self):
+        # HSS tool, but material only has Carbide surface speed.
+        tool = self._tool_no_presets(tool_material="HSS")
+        material = MaterialContext(
+            uuid=ALU_UUID,
+            name="Aluminum 6061",
+            surface_speed_hss=None,
+            surface_speed_carbide=400.0,
+        )
+        r = resolve(tool, material, self.profile)
+        self.assertEqual(r.source, "")
+
+    def test_machinability_plus_defaults_derives_full_result(self):
+        # Stock material gives surface_speed, tool's default Chipload gives
+        # chipload; resolver finalization derives spindle and feed.
+        tool = self._tool_no_presets(tool_material="Carbide", chipload_default=0.05)
+        r = resolve(tool, self._alu_machinability(), self.profile)
+        self.assertEqual(r.surface_speed, 400.0)
+        self.assertEqual(r.chipload, 0.05)
+        expected_rpm = (400.0 * 1000.0) / (math.pi * 6.35)
+        self.assertAlmostEqual(r.spindle_speed, expected_rpm, places=2)
+        self.assertAlmostEqual(r.horiz_feed, expected_rpm * 2 * 0.05, places=2)
+        # Default vert_feed_ratio in finalization is 0.33.
+        self.assertAlmostEqual(r.vert_feed, expected_rpm * 2 * 0.05 * 0.33, places=2)
+
+    def test_preset_match_outscores_machinability(self):
+        # Curated preset and machinability both available — preset wins.
+        tool = ToolContext(
+            diameter=6.35,
+            flutes=2,
+            presets=(_alu_profile_preset(),),
+            shape_id="endmill",
+            tool_material="Carbide",
+        )
+        # Material's carbide speed is intentionally different from preset's.
+        material = self._alu_machinability(carbide=999.0)
+        r = resolve(tool, material, self.profile)
+        self.assertEqual(r.surface_speed, 400.0)  # preset's value
+        self.assertTrue(r.source.startswith("preset:"))
+
+    def test_machinability_confidence_between_preset_and_defaults(self):
+        tool = self._tool_no_presets(tool_material="Carbide")
+        r = resolve(tool, self._alu_machinability(), self.profile)
+        self.assertGreater(r.confidence, 0.10)
+        self.assertLess(r.confidence, 0.55)
+
+    # --- Machine clamping (spindle min/max from Machine definition) -------
+
+    def test_machine_no_clamp_when_within_limits(self):
+        # Preset yields ~20053 rpm at d=6.35; machine max 30000 well above.
+        machine = MachineContext(min_rpm=0, max_rpm=30000)
+        r = resolve(self.tool, self.alu, self.profile, machine=machine)
+        expected_rpm = (400.0 * 1000.0) / (math.pi * 6.35)
+        self.assertAlmostEqual(r.spindle_speed, expected_rpm, places=2)
+        self.assertFalse(any("clamped" in w.lower() for w in r.warnings))
+
+    def test_machine_clamps_above_max(self):
+        # Preset yields ~20053 rpm; cap at 10000.
+        machine = MachineContext(min_rpm=0, max_rpm=10000)
+        r = resolve(self.tool, self.alu, self.profile, machine=machine)
+        original_rpm = (400.0 * 1000.0) / (math.pi * 6.35)
+        self.assertEqual(r.spindle_speed, 10000)
+        # Feeds scaled by ratio (chipload preserved).
+        ratio = 10000 / original_rpm
+        original_horiz = original_rpm * 2 * 0.05
+        self.assertAlmostEqual(r.horiz_feed, original_horiz * ratio, places=2)
+        self.assertEqual(r.chipload, 0.05)
+        # Recommended surface_speed unchanged (intent, not achieved).
+        self.assertEqual(r.surface_speed, 400.0)
+        self.assertTrue(any("max" in w.lower() and "clamped" in w.lower() for w in r.warnings))
+
+    def test_machine_clamps_below_min(self):
+        # Preset yields ~20053 rpm; force min at 25000 so it has to climb.
+        machine = MachineContext(min_rpm=25000, max_rpm=40000)
+        r = resolve(self.tool, self.alu, self.profile, machine=machine)
+        self.assertEqual(r.spindle_speed, 25000)
+        self.assertTrue(any("min" in w.lower() and "clamped" in w.lower() for w in r.warnings))
+
+    def test_machine_zero_max_means_no_limit(self):
+        # max_rpm=0 (Machine model's default) disables the upper clamp.
+        machine = MachineContext(min_rpm=0, max_rpm=0)
+        r = resolve(self.tool, self.alu, self.profile, machine=machine)
+        expected_rpm = (400.0 * 1000.0) / (math.pi * 6.35)
+        self.assertAlmostEqual(r.spindle_speed, expected_rpm, places=2)
+        self.assertFalse(any("clamped" in w.lower() for w in r.warnings))
+
+    def test_machine_none_no_clamping(self):
+        # No machine context = no clamping path runs.
+        r = resolve(self.tool, self.alu, self.profile, machine=None)
+        expected_rpm = (400.0 * 1000.0) / (math.pi * 6.35)
+        self.assertAlmostEqual(r.spindle_speed, expected_rpm, places=2)
+
+    def test_machine_clamps_machinability_derived_spindle(self):
+        # Machinability + defaults path also runs through finalization
+        # and so is subject to the same clamp.
+        tool = self._tool_no_presets(tool_material="Carbide", chipload_default=0.05)
+        machine = MachineContext(min_rpm=0, max_rpm=10000)
+        r = resolve(tool, self._alu_machinability(), self.profile, machine=machine)
+        self.assertEqual(r.spindle_speed, 10000)
+        self.assertTrue(any("clamped" in w.lower() for w in r.warnings))
