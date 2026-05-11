@@ -4569,7 +4569,7 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         return;
     }
 
-    TREE_LOG("delete object " << obj->getFullName());
+    TREE_LOG("delete object " << obj->getFullNameLabel());
 
     // Block all selection signals during deletion to prevent cascading selection change events
     // during item creation or deletion
@@ -4682,7 +4682,7 @@ bool DocumentItem::populateObject(App::DocumentObject* obj)
             return true;
         }
     }
-    TREE_LOG("force populate object " << obj->getFullName());
+    TREE_LOG("force populate object " << obj->getFullNameLabel());
     auto item = *items.begin();
     item->populated = true;
     populateItem(item, true);
@@ -6101,13 +6101,13 @@ DocumentObjectItem::DocumentObjectItem(DocumentItem* ownerDocItem, DocumentObjec
 
     myData->insertItem(this);
     ++countItems;
-    TREE_LOG("Create item: " << countItems << ", " << object()->getObject()->getFullName());
+    TREE_LOG("Create item: " << countItems << ", " << object()->getObject()->getFullNameLabel());
 }
 
 DocumentObjectItem::~DocumentObjectItem()
 {
     --countItems;
-    TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getFullName());
+    TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getFullNameLabel());
     myData->removeItem(this);
 
     if (myData->rootItem == this) {
