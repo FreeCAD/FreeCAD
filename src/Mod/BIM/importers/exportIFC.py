@@ -573,6 +573,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 group = obj.Links
             else:
                 group = [FreeCAD.ActiveDocument.getObject(n[:-1]) for n in obj.getSubObjects()]
+            group = Arch.pruneIncluded(group, strict=True)
             for subobj in group:
                 if subobj.Name in products:
                     subproduct = products[subobj.Name]
