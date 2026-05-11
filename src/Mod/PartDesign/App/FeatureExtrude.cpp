@@ -745,8 +745,13 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             try {
                 const char* maker;
                 switch (getAddSubType()) {
-                    case Subtractive:
-                        maker = Part::OpCodes::Cut;
+                    case Type::Subtractive:
+                        if (Outside.getValue()) {
+                            maker = Part::OpCodes::Common;
+                        }
+                        else {
+                            maker = Part::OpCodes::Cut;
+                        }
                         break;
                     default:
                         maker = Part::OpCodes::Fuse;
@@ -887,7 +892,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
 
         try {
             TopoShape _base;
-            if (addSubType != FeatureAddSub::Subtractive) {
+            if (addSubType != FeatureAddSub::Type::Subtractive) {
                 _base = base;  // avoid issue #16690
             }
             prism.makeElementPrismUntil(

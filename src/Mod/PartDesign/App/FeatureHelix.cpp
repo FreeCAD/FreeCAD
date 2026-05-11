@@ -70,7 +70,7 @@ const App::PropertyAngle::Constraints Helix::floatAngle = {-89.0, 89.0, 1.0};
 
 Helix::Helix()
 {
-    addSubType = FeatureAddSub::Additive;
+    defineAdditive();
     auto initialMode = HelixMode::pitch_height_angle;
 
     const char* group = "Helix";
@@ -178,16 +178,6 @@ Helix::Helix()
         QT_TRANSLATE_NOOP(
             "App::Property",
             "Determines whether the helix points in the opposite direction of the axis."
-        )
-    );
-    ADD_PROPERTY_TYPE(
-        Outside,
-        (false),
-        group,
-        App::Prop_None,
-        QT_TRANSLATE_NOOP(
-            "App::Property",
-            "If set, the result will be the intersection of the profile and the preexisting body."
         )
     );
     ADD_PROPERTY_TYPE(
@@ -410,7 +400,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         if (base.isNull()) {
 
-            if (getAddSubType() == FeatureAddSub::Subtractive) {
+            if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Error: There is nothing to subtract")
                 );
@@ -429,7 +419,7 @@ App::DocumentObjectExecReturn* Helix::execute()
             return App::DocumentObject::StdReturn;
         }
 
-        if (getAddSubType() == FeatureAddSub::Additive) {
+        if (getAddSubType() == FeatureAddSub::Type::Additive) {
 
             FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
             if (!mkFuse.IsDone()) {
@@ -460,7 +450,7 @@ App::DocumentObjectExecReturn* Helix::execute()
             boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
-        else if (getAddSubType() == FeatureAddSub::Subtractive) {
+        else if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
 
             TopoShape boolOp;
 
@@ -853,13 +843,11 @@ void Helix::setReadWriteStatusForMode(HelixMode inputMode)
 PROPERTY_SOURCE(PartDesign::AdditiveHelix, PartDesign::Helix)
 AdditiveHelix::AdditiveHelix()
 {
-    addSubType = Additive;
-    Outside.setStatus(App::Property::Hidden, true);
+    defineAdditive();
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractiveHelix, PartDesign::Helix)
 SubtractiveHelix::SubtractiveHelix()
 {
-    addSubType = Subtractive;
-    Outside.setStatus(App::Property::Hidden, false);
+    defineSubtractive();
 }

@@ -39,7 +39,7 @@ class PartDesignExport FeatureAddSub: public PartDesign::FeatureRefine
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureAddSub);
 
 public:
-    enum Type
+    enum class Type
     {
         Additive = 0,
         Subtractive
@@ -57,10 +57,12 @@ public:
     void updatePreviewShape() override;
 
     Part::PropertyPartShape AddSubShape;
-
+    App::PropertyBool Outside;
 
 protected:
-    Type addSubType {Additive};
+    Type addSubType {Type::Additive};
+    void defineAdditive();
+    void defineSubtractive();
 };
 
 using FeatureAddSubPython = App::FeaturePythonT<FeatureAddSub>;

@@ -344,16 +344,16 @@ App::DocumentObjectExecReturn* Loft::execute()
 
         const char* maker;
         switch (getAddSubType()) {
-            case Additive:
-                maker = Part::OpCodes::Fuse;
-                break;
-            case Subtractive:
-                maker = Part::OpCodes::Cut;
+            case Type::Subtractive:
+                if (Outside.getValue()) {
+                    maker = Part::OpCodes::Common;
+                }
+                else {
+                    maker = Part::OpCodes::Cut;
+                }
                 break;
             default:
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Unknown operation type")
-                );
+                maker = Part::OpCodes::Fuse;
         }
         try {
             boolOp.makeElementBoolean(maker, {base, result});
@@ -399,13 +399,13 @@ App::DocumentObjectExecReturn* Loft::execute()
 PROPERTY_SOURCE(PartDesign::AdditiveLoft, PartDesign::Loft)
 AdditiveLoft::AdditiveLoft()
 {
-    addSubType = Additive;
+    defineAdditive();
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractiveLoft, PartDesign::Loft)
 SubtractiveLoft::SubtractiveLoft()
 {
-    addSubType = Subtractive;
+    defineSubtractive();
 }
 
 void Loft::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)

@@ -23,6 +23,7 @@
  ******************************************************************************/
 
 #include "FeatureGroove.h"
+#include "Mod/Part/App/TopoShapeOpCode.h"
 
 using namespace PartDesign;
 
@@ -38,7 +39,7 @@ PROPERTY_SOURCE(PartDesign::Groove, PartDesign::Revolved)
 
 Groove::Groove()
 {
-    addSubType = FeatureAddSub::Subtractive;
+    defineSubtractive();
     const double fullAngle = 360.0;
     const double emptyAngle = 0.0;
 
@@ -71,7 +72,15 @@ App::DocumentObjectExecReturn* Groove::execute()
 
 TopoShape Groove::makeShape(const TopoShape& base, const TopoShape& revolve) const
 {
-    return base.makeElementCut(revolve);
+    TopoShape result;
+    const char* maker;
+    if (Outside.getValue()) {
+        maker = Part::OpCodes::Common;
+    }
+    else {
+        maker = Part::OpCodes::Cut;
+    }
+    return result.makeElementBoolean(maker, {base, revolve});
 }
 
 bool Groove::suggestReversedAngle(double angle) const

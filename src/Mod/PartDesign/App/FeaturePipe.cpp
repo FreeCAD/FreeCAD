@@ -472,7 +472,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
 
         if (base.isNull()) {
-            if (getAddSubType() == FeatureAddSub::Subtractive) {
+            if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from")
                 );
@@ -496,16 +496,16 @@ App::DocumentObjectExecReturn* Pipe::execute()
         TopoShape boolOp(0, getDocument()->getStringHasher());
         const char* maker;
         switch (getAddSubType()) {
-            case Additive:
-                maker = Part::OpCodes::Fuse;
-                break;
-            case Subtractive:
-                maker = Part::OpCodes::Cut;
+            case Type::Subtractive:
+                if (Outside.getValue()) {
+                    maker = Part::OpCodes::Common;
+                }
+                else {
+                    maker = Part::OpCodes::Cut;
+                }
                 break;
             default:
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Unknown operation type")
-                );
+                maker = Part::OpCodes::Fuse;
         }
         try {
             boolOp.makeElementBoolean(maker, {base, result});
@@ -715,13 +715,13 @@ void Pipe::buildPipePath(
 PROPERTY_SOURCE(PartDesign::AdditivePipe, PartDesign::Pipe)
 AdditivePipe::AdditivePipe()
 {
-    addSubType = Additive;
+    defineAdditive();
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractivePipe, PartDesign::Pipe)
 SubtractivePipe::SubtractivePipe()
 {
-    addSubType = Subtractive;
+    defineSubtractive();
 }
 
 void Pipe::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)

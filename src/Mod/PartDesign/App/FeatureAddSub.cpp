@@ -50,6 +50,19 @@ PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::FeatureRefine)
 FeatureAddSub::FeatureAddSub()
 {
     ADD_PROPERTY(AddSubShape, (TopoDS_Shape()));
+    ADD_PROPERTY(Outside, (false));
+}
+
+void FeatureAddSub::defineAdditive()
+{
+    addSubType = Type::Additive;
+    Outside.setStatus(App::Property::Status::Hidden, true);
+}
+
+void FeatureAddSub::defineSubtractive()
+{
+    addSubType = Type::Subtractive;
+    Outside.setStatus(App::Property::Status::Hidden, false);
 }
 
 void FeatureAddSub::onChanged(const App::Property* property)
@@ -72,10 +85,10 @@ short FeatureAddSub::mustExecute() const
 
 void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape)
 {
-    if (addSubType == Additive) {
+    if (addSubType == Type::Additive) {
         addShape = AddSubShape.getShape();
     }
-    else if (addSubType == Subtractive) {
+    else if (addSubType == Type::Subtractive) {
         subShape = AddSubShape.getShape();
     }
 }
@@ -89,7 +102,7 @@ void FeatureAddSub::updatePreviewShape()
     };
 
     // for subtractive shapes we want to also showcase removed volume, not only the tool
-    if (addSubType == Subtractive) {
+    if (addSubType == Type::Subtractive) {
         TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
         const TopoShape& tool = AddSubShape.getShape();
 
@@ -177,7 +190,7 @@ PROPERTY_SOURCE(PartDesign::FeatureAdditivePython, PartDesign::FeatureAddSubPyth
 
 FeatureAdditivePython::FeatureAdditivePython()
 {
-    addSubType = Additive;
+    defineAdditive();
 }
 
 FeatureAdditivePython::~FeatureAdditivePython() = default;
@@ -187,7 +200,7 @@ PROPERTY_SOURCE(PartDesign::FeatureSubtractivePython, PartDesign::FeatureAddSubP
 
 FeatureSubtractivePython::FeatureSubtractivePython()
 {
-    addSubType = Subtractive;
+    defineSubtractive();
 }
 
 FeatureSubtractivePython::~FeatureSubtractivePython() = default;
