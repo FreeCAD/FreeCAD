@@ -554,8 +554,8 @@ public:
      * // getting standard parameter
      * Base::Reference<ParameterGrp> group = App::GetApplication()
      *     .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Raytracing");
-     * std::string projectPath = group->GetASCII("ProjectPath", "");
-     * std::string cameraName = group->GetASCII("CameraName", "TempCamera.inc");
+     * std::string projectPath = group->getString("ProjectPath", "");
+     * std::string cameraName = group->getString("CameraName", "TempCamera.inc");
      * @endcode
      *
      * @param[in] sName The fully qualified path of the parameter group.

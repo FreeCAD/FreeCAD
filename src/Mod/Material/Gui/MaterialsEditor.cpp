@@ -180,7 +180,7 @@ void MaterialsEditor::getFavorites()
     int count = param->GetInt("Favorites", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("FAV%1").arg(i);
-        QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
+        QString uuid = QString::fromStdString(param->getString(key.toStdString(), ""));
         if (_filter.modelIncluded(uuid)) {
             _favorites.push_back(uuid);
         }
@@ -196,7 +196,7 @@ void MaterialsEditor::saveFavorites()
     int count = param->GetInt("Favorites", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("FAV%1").arg(i);
-        param->RemoveASCII(key.toStdString().c_str());
+        param->removeString(key.toStdString());
     }
 
     // Add the current values
@@ -204,7 +204,7 @@ void MaterialsEditor::saveFavorites()
     int j = 0;
     for (auto& favorite : _favorites) {
         QString key = QStringLiteral("FAV%1").arg(j);
-        param->SetASCII(key.toStdString().c_str(), favorite.toStdString());
+        param->setString(key.toStdString(), favorite.toStdString());
 
         j++;
     }
@@ -258,7 +258,7 @@ void MaterialsEditor::getRecents()
     int count = param->GetInt("Recent", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("MRU%1").arg(i);
-        QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
+        QString uuid = QString::fromStdString(param->getString(key.toStdString(), ""));
         if (_filter.modelIncluded(uuid)) {
             _recents.push_back(uuid);
         }
@@ -274,7 +274,7 @@ void MaterialsEditor::saveRecents()
     int count = param->GetInt("Recent", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("MRU%1").arg(i);
-        param->RemoveASCII(key.toStdString().c_str());
+        param->removeString(key.toStdString());
     }
 
     // Add the current values
@@ -286,7 +286,7 @@ void MaterialsEditor::saveRecents()
     int j = 0;
     for (auto& recent : _recents) {
         QString key = QStringLiteral("MRU%1").arg(j);
-        param->SetASCII(key.toStdString().c_str(), recent.toStdString());
+        param->setString(key.toStdString(), recent.toStdString());
 
         j++;
         if (j >= size) {
@@ -484,17 +484,17 @@ void MaterialsEditor::setMaterialDefaults()
     _material->setName(tr("Unnamed"));
     std::string Author = App::GetApplication()
                              .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-                             ->GetASCII("prefAuthor", "");
+                             ->getString("prefAuthor", "");
     _material->setAuthor(QString::fromStdString(Author));
 
     // license stuff
     auto paramGrp {App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Document")};
     auto index = static_cast<int>(paramGrp->GetInt("prefLicenseType", 0));
-    const char* name = App::licenseItems.at(index).at(App::posnOfFullName);
+    const auto name = App::licenseItems.at(index).at(App::posnOfFullName);
     // const char* url = App::licenseItems.at(index).at(App::posnOfUrl);
-    // std::string licenseUrl = (paramGrp->GetASCII("prefLicenseUrl", url));
-    _material->setLicense(QLatin1String(name));
+    // std::string licenseUrl = (paramGrp->getString("prefLicenseUrl", url));
+    _material->setLicense(QString::fromUtf8(name.data(), name.size()));
 
     // Empty materials will have no parent
     Materials::MaterialManager::getManager().dereference(_material);

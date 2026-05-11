@@ -901,12 +901,12 @@ QString FileDialog::restoreLocation()
                                               .GetGroup("BaseApp")
                                               ->GetGroup("Preferences")
                                               ->GetGroup("General");
-    std::string dir = hPath->GetASCII("FileOpenSavePath", path.c_str());
-    QFileInfo fi(QString::fromUtf8(dir.c_str()));
+    std::string dir = hPath->getString("FileOpenSavePath", path);
+    QFileInfo fi(QString::fromStdString(dir));
     if (!fi.exists()) {
         dir = path;
     }
-    return QString::fromUtf8(dir.c_str());
+    return QString::fromStdString(dir);
 }
 
 /*!
@@ -920,7 +920,7 @@ void FileDialog::saveLocation(const QString& dirName)
                                               .GetGroup("BaseApp")
                                               ->GetGroup("Preferences")
                                               ->GetGroup("General");
-    hPath->SetASCII("FileOpenSavePath", dirName.toUtf8());
+    hPath->setString("FileOpenSavePath", dirName.toStdString());
 }
 
 // ======================================================================

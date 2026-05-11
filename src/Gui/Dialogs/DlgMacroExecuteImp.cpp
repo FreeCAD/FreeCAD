@@ -111,11 +111,9 @@ DlgMacroExecuteImp::DlgMacroExecuteImp(QWidget* parent, Qt::WindowFlags fl)
     // retrieve the macro path from parameter or use the user data as default
     {
         QSignalBlocker blocker(ui->fileChooser);
-        std::string path = getWindowParameter()->GetASCII(
-            "MacroPath",
-            App::Application::getUserMacroDir().c_str()
-        );
-        this->macroPath = QString::fromUtf8(path.c_str());
+        std::string path
+            = getWindowParameter()->getString("MacroPath", App::Application::getUserMacroDir());
+        this->macroPath = QString::fromStdString(path);
         ui->fileChooser->setFileName(this->macroPath);
     }
 
@@ -434,12 +432,12 @@ void DlgMacroExecuteImp::onFileChooserFileNameChanged(const QString& fn)
         }
         if (chosenPath != userMacroDir) {
             // Save the path in the parameters, but only if it is NOT the default value
-            getWindowParameter()->SetASCII("MacroPath", fn.toUtf8());
+            getWindowParameter()->setString("MacroPath", fn.toStdString());
         }
         else {
             // If the user specifically chose the default path, actually remove the setting (this
             // could happen if the user was trying to "undo" setting a custom path).
-            getWindowParameter()->RemoveASCII("MacroPath");
+            getWindowParameter()->removeString("MacroPath");
         }
         // fill the list box
         fillUpList();

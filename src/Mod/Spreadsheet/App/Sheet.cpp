@@ -163,9 +163,9 @@ bool Sheet::getCharsFromPrefs(char& delim, char& quote, char& escape, std::strin
     ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
     );
-    QString delimiter = QString::fromStdString(group->GetASCII("ImportExportDelimiter", "tab"));
-    QString quoteChar = QString::fromStdString(group->GetASCII("ImportExportQuoteCharacter", "\""));
-    QString escapeChar = QString::fromStdString(group->GetASCII("ImportExportEscapeCharacter", "\\"));
+    QString delimiter = QString::fromStdString(group->getString("ImportExportDelimiter", "tab"));
+    QString quoteChar = QString::fromStdString(group->getString("ImportExportQuoteCharacter", "\""));
+    QString escapeChar = QString::fromStdString(group->getString("ImportExportEscapeCharacter", "\\"));
 
     delim = delimiter.size() == 1 ? delimiter[0].toLatin1() : '\0';
     if (delimiter.compare(QLatin1String("tab"), Qt::CaseInsensitive) == 0

@@ -65,11 +65,11 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
         "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
     );
     aliasBgColor = QColor(
-        QString::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "#feff9e"))
+        QString::fromStdString(hGrp->getString("AliasedCellBackgroundColor", "#feff9e"))
     );
-    textFgColor = QColor(QString::fromStdString(hGrp->GetASCII("TextColor", "#000000")));
-    positiveFgColor = QColor(QString::fromStdString(hGrp->GetASCII("PositiveNumberColor", "#000000")));
-    negativeFgColor = QColor(QString::fromStdString(hGrp->GetASCII("NegativeNumberColor", "#000000")));
+    textFgColor = QColor(QString::fromStdString(hGrp->getString("TextColor", "#000000")));
+    positiveFgColor = QColor(QString::fromStdString(hGrp->getString("PositiveNumberColor", "#000000")));
+    negativeFgColor = QColor(QString::fromStdString(hGrp->getString("NegativeNumberColor", "#000000")));
 }
 
 SheetModel::~SheetModel()
@@ -180,7 +180,7 @@ QVariant formatCellDisplay(QString value, const Cell* cell)
     );
     if (cell->getAlias(alias) && hGrpSpreadsheet->GetBool("showAliasName", false)) {
         QString formatStr = QString::fromStdString(
-            hGrpSpreadsheet->GetASCII("DisplayAliasFormatString", "%V = %A")
+            hGrpSpreadsheet->getString("DisplayAliasFormatString", "%V = %A")
         );
         if (formatStr.contains(QLatin1String("%V")) || formatStr.contains(QLatin1String("%A"))) {
             formatStr.replace(QLatin1String("%A"), QString::fromStdString(alias));

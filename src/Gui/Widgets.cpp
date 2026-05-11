@@ -1002,7 +1002,7 @@ void StatefulLabel::setState(QString state)
             }
 
             // If not, try to see if there's an entire style string set as ASCII:
-            auto availableStringPrefs = _parameterGroup->GetASCIIMap();
+            auto availableStringPrefs = _parameterGroup->getAllStringsMap();
             for (const auto& stringEntry : availableStringPrefs) {
                 if (stringEntry.first == entry->second.preferenceString) {
                     QString css = QStringLiteral("Gui--StatefulLabel{ %1 }")

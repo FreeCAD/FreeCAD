@@ -583,35 +583,44 @@ Py::Object ParameterGrpPy::getFloats(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::setString(const Py::Tuple& args)
 {
-    char* pstr = nullptr;
-    char* str = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "ss", &pstr, &str)) {
+    const char* name = nullptr;
+    Py_ssize_t nameLength = 0;
+    const char* value = nullptr;
+    Py_ssize_t valueLength = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "s#s#", &name, &nameLength, &value, &valueLength)) {
         throw Py::Exception();
     }
 
-    _cParamGrp->SetASCII(pstr, str);
+    _cParamGrp->setString({name, size_t(nameLength)}, {value, size_t(valueLength)});
     return Py::None();
 }
 
 Py::Object ParameterGrpPy::getString(const Py::Tuple& args)
 {
-    char* pstr = nullptr;
-    const char* str = "";
-    if (!PyArg_ParseTuple(args.ptr(), "s|s", &pstr, &str)) {
+    const char* name = nullptr;
+    Py_ssize_t nameLength = 0;
+    const char* fallback = nullptr;
+    Py_ssize_t fallbackLength = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "s#|s#", &name, &nameLength, &fallback, &fallbackLength)) {
         throw Py::Exception();
     }
 
-    return Py::String(_cParamGrp->GetASCII(pstr, str));  // NOLINT
+    return Py::String(
+        _cParamGrp->getString({name, size_t(nameLength)}, {fallback, size_t(fallbackLength)})
+    );  // NOLINT
 }
 
 Py::Object ParameterGrpPy::getStrings(const Py::Tuple& args)
 {
-    char* filter = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "|s", &filter)) {
+    const char* filter = nullptr;
+    Py_ssize_t filterLength = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "|s#", &filter, &filterLength)) {
         throw Py::Exception();
     }
 
-    std::vector<std::pair<std::string, std::string>> map = _cParamGrp->GetASCIIMap(filter);
+    std::vector<std::pair<std::string, std::string>> map = _cParamGrp->getAllStringsMap(
+        {filter, size_t(filterLength)}
+    );
     Py::List list;
     for (const auto& it : map) {
         list.append(Py::String(it.first));
@@ -677,12 +686,13 @@ Py::Object ParameterGrpPy::remFloat(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::remString(const Py::Tuple& args)
 {
-    char* pstr = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "s", &pstr)) {
+    const char* name = nullptr;
+    Py_ssize_t nameLength = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "s#", &name, &nameLength)) {
         throw Py::Exception();
     }
 
-    _cParamGrp->RemoveASCII(pstr);
+    _cParamGrp->removeString({name, size_t(nameLength)});
     return Py::None();
 }
 
@@ -893,7 +903,7 @@ Py::Object ParameterGrpPy::getContents(const Py::Tuple& args)
 
     Py::List list;
     // filling up Text nodes
-    std::vector<std::pair<std::string, std::string>> mcTextMap = _cParamGrp->GetASCIIMap();
+    std::vector<std::pair<std::string, std::string>> mcTextMap = _cParamGrp->getAllStringsMap();
     for (const auto& it : mcTextMap) {
         Py::Tuple t2(3);
         t2.setItem(0, Py::String("String"));

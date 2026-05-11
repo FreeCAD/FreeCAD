@@ -155,7 +155,7 @@ public:
         : catchObject(
               App::GetApplication()
                   .GetParameterGroupByPath("User parameter:BaseApp/Preferences/WireJoiner")
-                  ->GetASCII("ObjectName")
+                  ->getString("ObjectName")
           )
         , catchIteration(
               static_cast<int>(

@@ -82,12 +82,13 @@ bool ImportExportSettings::getWriteSurfaceCurveMode() const
 
 std::string ImportExportSettings::getScheme() const
 {
-    return pGroup->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
+    return pGroup->getString("Scheme", std::string_view {Interface_Static::CVal("write.step.schema")});
 }
 
 void ImportExportSettings::setScheme(const char* scheme)
 {
-    pGroup->SetASCII("Scheme", scheme);
+    // TODO: make setScheme take a string_view and remove the conversion
+    pGroup->setString("Scheme", std::string_view {scheme});
     Interface_Static::SetCVal("write.step.schema", scheme);
 }
 
@@ -104,22 +105,24 @@ void ImportExportSettings::setUnit(Interface::Unit unit)
 
 std::string ImportExportSettings::getCompany() const
 {
-    return pGroup->GetASCII("Company");
+    return pGroup->getString("Company");
 }
 
 void ImportExportSettings::setCompany(const char* name)
 {
-    pGroup->SetASCII("Company", name);
+    // TODO: make setCompany take a string_view and remove the conversion
+    pGroup->setString("Company", std::string_view {name});
 }
 
 std::string ImportExportSettings::getAuthor() const
 {
-    return pGroup->GetASCII("Author");
+    return pGroup->getString("Author");
 }
 
 void ImportExportSettings::setAuthor(const char* name)
 {
-    pGroup->SetASCII("Author", name);
+    // TODO: make setAuthor take a string_view and remove the conversion
+    pGroup->setString("Author", std::string_view {name});
 }
 
 std::string ImportExportSettings::getProductName() const

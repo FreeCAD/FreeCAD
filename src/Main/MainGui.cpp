@@ -249,8 +249,8 @@ int main(int argc, char** argv)
                 "User parameter:BaseApp/Preferences/View"
             );
             // if not already defined do it now (for the very first start)
-            std::string style = hGrp->GetASCII("NavigationStyle", it->second.c_str());
-            hGrp->SetASCII("NavigationStyle", style.c_str());
+            std::string style = hGrp->getString("NavigationStyle", it->second);
+            hGrp->setString("NavigationStyle", style);
         }
 
         Gui::Application::initApplication();

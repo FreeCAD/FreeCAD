@@ -324,7 +324,7 @@ std::string Fem::Tools::checkIfBinaryExists(
     else {
         auto binaryPathString = prefBinaryName + "BinaryPath";
         // use binary path from settings, fall back to system path if not defined
-        auto binaryPath = hGrp->GetASCII(binaryPathString.c_str(), binaryName.c_str());
+        auto binaryPath = hGrp->getString(binaryPathString, binaryName);
         QString executablePath = QStandardPaths::findExecutable(
             QString::fromLatin1(binaryPath.c_str())
         );

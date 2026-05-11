@@ -95,7 +95,7 @@ void DlgSettingsFemZ88Imp::populateSolverType()
 
     // set default index
     auto hGrp = ui->cmb_solver->getWindowParameter();
-    std::string current = hGrp->GetASCII(ui->cmb_solver->entryName(), "sorcg");
+    std::string current = hGrp->getString(ui->cmb_solver->entryName().toStdString(), "sorcg");
     int index = ui->cmb_solver->findData(QByteArray::fromStdString(current));
     ui->cmb_solver->setCurrentIndex(index);
 }

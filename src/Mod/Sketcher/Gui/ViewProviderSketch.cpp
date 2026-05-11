@@ -187,7 +187,7 @@ void ViewProviderSketch::ParameterObserver::updateGridSize(const std::string& st
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
 
     Client.GridSize.setValue(
-        Base::Quantity::parse(hGrp->GetGroup("GridSize")->GetASCII("GridSize", "10.0"))
+        Base::Quantity::parse(hGrp->GetGroup("GridSize")->getString("GridSize", "10.0"))
             .getValue());
 }
 

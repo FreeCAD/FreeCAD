@@ -483,7 +483,7 @@ void TextEditor::OnChange(Base::Subject<const char*>& rCaller, const char* sReas
         int fontSize = hPrefGrp->GetInt("FontSize", 10);
 #endif
         QFont font;
-        auto fontName = hPrefGrp->GetASCII("Font");
+        auto fontName = hPrefGrp->getString("Font");
         if (fontName.empty()) {
             font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
             font.setPointSize(fontSize);

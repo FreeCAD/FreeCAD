@@ -1395,11 +1395,11 @@ void PythonConsole::onClearConsole()
 
 void PythonConsole::onSaveHistoryAs()
 {
-    QString cMacroPath = QString::fromUtf8(
-        getDefaultParameter()
-            ->GetGroup("Macro")
-            ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str())
-            .c_str()
+    QString cMacroPath = QString::fromStdString(
+        getDefaultParameter()->GetGroup("Macro")->getString(
+            "MacroPath",
+            App::Application::getUserMacroDir()
+        )
     );
     QString fn = FileDialog::getSaveFileName(
         this,

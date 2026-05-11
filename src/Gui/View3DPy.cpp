@@ -709,7 +709,7 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/View"
             );
-            newDocView = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
+            newDocView = hGrp->getString("NewDocumentCameraOrientation", "Trimetric");
         }
 
         if (newDocView == "Top") {

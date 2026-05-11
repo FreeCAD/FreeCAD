@@ -86,7 +86,7 @@ void StdCmdWorkbench::activated(int i)
     try {
         Workbench* w = WorkbenchManager::instance()->active();
         QList<QAction*> items = static_cast<WorkbenchGroup*>(_pcAction)->actions();
-        std::string switch_to = (const char*)items[i]->objectName().toLatin1();
+        std::string switch_to = items[i]->objectName().toStdString();
         if (w) {
             std::string current_w = w->name();
             if (switch_to == current_w) {
@@ -581,8 +581,8 @@ void StdCmdOnlineHelpWebsite::activated(int iMsg)
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Websites"
     );
-    std::string url = hURLGrp->GetASCII("OnlineHelp", defaulturl.c_str());
-    hURLGrp->SetASCII("OnlineHelp", url.c_str());
+    std::string url = hURLGrp->getString("OnlineHelp", defaulturl);
+    hURLGrp->setString("OnlineHelp", url);
     OpenURLInBrowser(url.c_str());
 }
 
@@ -610,8 +610,8 @@ void StdCmdFreeCADDonation::activated(int iMsg)
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Websites"
     );
-    std::string url = hURLGrp->GetASCII("DonatePage", "https://www.freecad.org/sponsor");
-    hURLGrp->SetASCII("DonatePage", url.c_str());
+    std::string url = hURLGrp->getString("DonatePage", "https://www.freecad.org/sponsor");
+    hURLGrp->setString("DonatePage", url);
     OpenURLInBrowser(url.c_str());
 }
 
@@ -644,9 +644,10 @@ void StdCmdDevHandbook::activated(int iMsg)
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Websites"
     );
-    std::string url = hURLGrp->GetASCII("DevHandbook", "https://freecad.github.io/DevelopersHandbook/");
+    std::string url
+        = hURLGrp->getString("DevHandbook", "https://freecad.github.io/DevelopersHandbook/");
 
-    hURLGrp->SetASCII("DevHandbook", url.c_str());
+    hURLGrp->setString("DevHandbook", url);
     OpenURLInBrowser(url.c_str());
 }
 
@@ -676,8 +677,8 @@ void StdCmdFreeCADWebsite::activated(int iMsg)
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Websites"
     );
-    std::string url = hURLGrp->GetASCII("WebPage", defaulturl.c_str());
-    hURLGrp->SetASCII("WebPage", url.c_str());
+    std::string url = hURLGrp->getString("WebPage", defaulturl);
+    hURLGrp->setString("WebPage", url);
     OpenURLInBrowser(url.c_str());
 }
 
@@ -708,8 +709,8 @@ void StdCmdFreeCADUserHub::activated(int iMsg)
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Websites"
     );
-    std::string url = hURLGrp->GetASCII("Documentation", defaulturl.c_str());
-    hURLGrp->SetASCII("Documentation", url.c_str());
+    std::string url = hURLGrp->getString("Documentation", defaulturl);
+    hURLGrp->setString("Documentation", url);
     OpenURLInBrowser(url.c_str());
 }
 
@@ -739,8 +740,8 @@ void StdCmdFreeCADForum::activated(int iMsg)
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Websites"
     );
-    std::string url = hURLGrp->GetASCII("UserForum", defaulturl.c_str());
-    hURLGrp->SetASCII("UserForum", url.c_str());
+    std::string url = hURLGrp->getString("UserForum", defaulturl);
+    hURLGrp->setString("UserForum", url);
     OpenURLInBrowser(url.c_str());
 }
 
@@ -768,8 +769,8 @@ void StdCmdReportBug::activated(int iMsg)
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Websites"
     );
-    std::string url = hURLGrp->GetASCII("IssuesPage", "https://github.com/FreeCAD/FreeCAD/issues");
-    hURLGrp->SetASCII("IssuesPage", url.c_str());
+    std::string url = hURLGrp->getString("IssuesPage", "https://github.com/FreeCAD/FreeCAD/issues");
+    hURLGrp->setString("IssuesPage", url);
     OpenURLInBrowser(url.c_str());
 }
 

@@ -80,7 +80,7 @@ StartView::StartView(QWidget* parent)
     auto showExamples = hGrp->GetBool("ShowExamples", true);
 
     // Verify that the folder specified in preferences is available before showing it
-    std::string customFolder(hGrp->GetASCII("CustomFolder", ""));
+    std::string customFolder(hGrp->getString("CustomFolder", ""));
     bool showCustomFolder = false;
     if (!customFolder.empty()) {
         showCustomFolder = true;
@@ -379,11 +379,11 @@ void StartView::postStart(PostStartBehavior behavior)
     );
 
     if (behavior == PostStartBehavior::switchWorkbench) {
-        auto wb = hGrp->GetASCII("AutoloadModule", "");
+        auto wb = hGrp->getString("AutoloadModule", "");
         if (wb == "$LastModule") {
             wb = App::GetApplication()
                      .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                     ->GetASCII("LastModule", "");
+                     ->getString("LastModule", "");
         }
         if (!wb.empty()) {
             Gui::Application::Instance->activateWorkbench(wb.c_str());
@@ -526,7 +526,7 @@ void StartView::retranslateUi()
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start"
     );
-    std::string customFolder(hGrp->GetASCII("CustomFolder", ""));
+    std::string customFolder(hGrp->getString("CustomFolder", ""));
     if (!customFolder.empty() && _customFolderLabel) {
         if (hGrp->GetBool("ShortCustomFolder", true)) {
             _customFolderLabel->setToolTip(QString::fromUtf8(customFolder.c_str()));

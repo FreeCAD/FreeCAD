@@ -1090,7 +1090,7 @@ void GestureNavigationStyle::onRollGesture(int direction)
         }
         cmd = App::GetApplication()
                   .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-                  ->GetASCII("GestureRollFwdCommand");
+                  ->getString("GestureRollFwdCommand");
     }
     else if (direction == -1) {
         if (logging) {
@@ -1098,7 +1098,7 @@ void GestureNavigationStyle::onRollGesture(int direction)
         }
         cmd = App::GetApplication()
                   .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-                  ->GetASCII("GestureRollBackCommand");
+                  ->getString("GestureRollBackCommand");
     }
     if (cmd.empty()) {
         return;

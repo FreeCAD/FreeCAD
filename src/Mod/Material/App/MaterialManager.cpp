@@ -212,7 +212,7 @@ QString MaterialManager::defaultMaterialUUID()
     // Make this a preference
     auto param = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material");
-    auto uuid = param->GetASCII("DefaultMaterial", "7f9fd73b-50c9-41d8-b7b2-575a030c1eeb");
+    auto uuid = param->getString("DefaultMaterial", "7f9fd73b-50c9-41d8-b7b2-575a030c1eeb");
     return QString::fromStdString(uuid);
 }
 

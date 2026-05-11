@@ -42,7 +42,7 @@ void RecentFilesModel::loadRecentFiles()
     auto numRows {_parameterGroup->GetInt("RecentFiles", 0)};
     for (int i = 0; i < numRows; ++i) {
         auto entry = fmt::format("MRU{}", i);
-        auto path = _parameterGroup->GetASCII(entry.c_str(), "");
+        auto path = _parameterGroup->getString(entry, "");
         addFile(QString::fromStdString(path));
     }
     endResetModel();

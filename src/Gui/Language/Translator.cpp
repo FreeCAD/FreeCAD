@@ -257,7 +257,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Irish")] = "ga-IE";
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
-    auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");
+    auto entries = hGrp->getString("AdditionalLanguageDomainEntries", "");
     // The format of the entries is "Language Name 1"="code1";"Language Name 2"="code2";...
     // Example: <FCText Name="AdditionalLanguageDomainEntries">"Romanian"="ro";"Polish"="pl";</FCText>
     QRegularExpression matchingRE(QStringLiteral("\"(.*[^\\s]+.*)\"\\s*=\\s*\"([^\\s]+)\";?"));
@@ -322,12 +322,12 @@ TStringMap Translator::supportedLocales() const
     return d->mapSupportedLocales;
 }
 
-void Translator::activateLanguage(const char* lang)
+void Translator::activateLanguage(std::string lang)
 {
     removeTranslators();  // remove the currently installed translators
-    d->activatedLanguage = lang;
+    d->activatedLanguage = std::move(lang);
     const TLanguageList languages = supportedLanguages();
-    if (std::ranges::find(languages, lang) != languages.end()) {
+    if (std::ranges::find(languages, d->activatedLanguage) != languages.end()) {
         refresh();
     }
 }
@@ -360,7 +360,7 @@ void Translator::applyLocaleFormattingPreference() const
             break;
         case LocaleFormattingPreference::SelectedLanguage:
             // Language must be activated before locale changes can follow it.
-            setLocale(hGrp->GetASCII("Language", activeLanguage().c_str()));
+            setLocale(hGrp->getString("Language", activeLanguage()));
             break;
         case LocaleFormattingPreference::CLocale:
             setLocale("C");
@@ -423,13 +423,13 @@ QStringList Translator::directories() const
     QStringList list;
     auto dir = App::GetApplication()
                    .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                   ->GetASCII("AdditionalTranslationsDirectory", "");
+                   ->getString("AdditionalTranslationsDirectory", "");
     if (!dir.empty()) {
         list.push_back(QString::fromStdString(dir));
     }
-    QDir home(QString::fromUtf8(App::Application::getUserAppDataDir().c_str()));
+    QDir home(QString::fromStdString(App::Application::getUserAppDataDir()));
     list.push_back(home.absoluteFilePath(QLatin1String("translations")));
-    QDir resc(QString::fromUtf8(App::Application::getResourceDir().c_str()));
+    QDir resc(QString::fromStdString(App::Application::getResourceDir()));
     list.push_back(resc.absoluteFilePath(QLatin1String("translations")));
     list.push_back(QLatin1String(":/translations"));
 

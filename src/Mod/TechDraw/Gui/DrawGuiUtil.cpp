@@ -90,8 +90,8 @@ void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
     auto mwGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow");
 
-    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
-    auto curTheme = mwGrp->GetASCII("Theme", "None");
+    auto curStyleSheet = mwGrp->getString("StyleSheet", "None");
+    auto curTheme = mwGrp->getString("Theme", "None");
 
     int i = 0;
     for (; i < ArrowPropEnum::ArrowCount; i++) {
@@ -116,8 +116,8 @@ void DrawGuiUtil::loadBalloonShapeBox(QComboBox* qballooncb)
     auto mwGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow");
 
-    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
-    auto curTheme = mwGrp->GetASCII("Theme", "None");
+    auto curStyleSheet = mwGrp->getString("StyleSheet", "None");
+    auto curTheme = mwGrp->getString("Theme", "None");
 
     int i = 0;
     for (; i < BalloonPropEnum::BalloonCount; i++) {
@@ -142,8 +142,8 @@ void DrawGuiUtil::loadMattingStyleBox(QComboBox* qmattingcb)
     auto mwGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow");
 
-    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
-    auto curTheme = mwGrp->GetASCII("Theme", "None");
+    auto curStyleSheet = mwGrp->getString("StyleSheet", "None");
+    auto curTheme = mwGrp->getString("Theme", "None");
 
     int i = 0;
     for (; i < MattingPropEnum::MattingCount; i++) {
@@ -236,8 +236,8 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
     auto mwGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow");
 
-    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
-    auto curTheme = mwGrp->GetASCII("Theme", "None");
+    auto curStyleSheet = mwGrp->getString("StyleSheet", "None");
+    auto curTheme = mwGrp->getString("Theme", "None");
 
     QColor textColor{Qt::black};
     if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {

@@ -592,7 +592,10 @@ private:
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                     "User parameter:BaseApp/Preferences/Mod/Part/STEP"
                 );
-                std::string scheme = hGrp->GetASCII("Scheme", Part::Interface::writeStepScheme());
+                std::string scheme = hGrp->getString(
+                    "Scheme",
+                    std::string_view {Part::Interface::writeStepScheme()}
+                );
                 std::list<std::string> supported = Part::supportedSTEPSchemes();
                 if (std::ranges::find(supported, scheme) != supported.end()) {
                     Part::Interface::writeStepScheme(scheme.c_str());

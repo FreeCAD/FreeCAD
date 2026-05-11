@@ -972,11 +972,10 @@ Document::Document(const char* documentName)
     std::string CreationDateString = Base::Tools::currentDateTimeString();
     std::string Author = GetApplication()
                              .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-                             ->GetASCII("prefAuthor", "");
-    std::string AuthorComp =
-        GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-            ->GetASCII("prefCompany", "");
+                             ->getString("prefAuthor", "");
+    std::string AuthorComp = GetApplication()
+                                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                                 ->getString("prefCompany", "");
     ADD_PROPERTY_TYPE(Label, ("Unnamed"), 0, Prop_ReadOnly, "The name of the document");
     ADD_PROPERTY_TYPE(FileName,
                       (""),
@@ -1016,12 +1015,12 @@ Document::Document(const char* documentName)
     auto paramGrp {GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Document")};
     auto index = static_cast<int>(paramGrp->GetInt("prefLicenseType", 0));
-    auto name = "";
+    std::string name;
     std::string licenseUrl = "";
     if (index >= 0 && index < countOfLicenses) {
         name = licenseItems.at(index).at(posnOfFullName);
         auto url = licenseItems.at(index).at(posnOfUrl);
-        licenseUrl = (paramGrp->GetASCII("prefLicenseUrl", url));
+        licenseUrl = (paramGrp->getString("prefLicenseUrl", url));
     }
     ADD_PROPERTY_TYPE(License, (name), 0, Prop_None, "License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL,
@@ -1941,10 +1940,11 @@ bool Document::save()
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
                 ->GetBool("prefSetAuthorOnSave", false);
         if (saveAuthor) {
-            const std::string Author =
-                GetApplication()
-                    .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-                    ->GetASCII("prefAuthor", "");
+            const std::string Author = GetApplication()
+                                           .GetParameterGroupByPath(
+                                               "User parameter:BaseApp/Preferences/Document"
+                                           )
+                                           ->getString("prefAuthor", "");
             LastModifiedBy.setValue(Author.c_str());
         }
 
@@ -2078,10 +2078,11 @@ bool Document::saveToFile(const char* filename) const
             GetApplication()
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
                 ->GetBool("UseFCBakExtension", true);
-        std::string saveBackupDateFormat =
-            GetApplication()
-                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-                ->GetASCII("SaveBackupDateFormat", "%Y%m%d-%H%M%S");
+        std::string saveBackupDateFormat = GetApplication()
+                                               .GetParameterGroupByPath(
+                                                   "User parameter:BaseApp/Preferences/Document"
+                                               )
+                                               ->getString("SaveBackupDateFormat", "%Y%m%d-%H%M%S");
 
         BackupPolicy backupPolicy;
         if (useFCBakExtension) {

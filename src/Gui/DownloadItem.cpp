@@ -294,7 +294,7 @@ QString DownloadItem::getDownloadDirectory() const
                                               .GetGroup("BaseApp")
                                               ->GetGroup("Preferences")
                                               ->GetGroup("General");
-    std::string dir = hPath->GetASCII("DownloadPath", "");
+    std::string dir = hPath->getString("DownloadPath", "");
     if (!dir.empty()) {
         dirPath = QString::fromUtf8(dir.c_str());
     }
