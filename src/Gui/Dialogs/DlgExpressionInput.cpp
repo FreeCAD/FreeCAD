@@ -602,6 +602,7 @@ void DlgExpressionInput::createBindingVarSet(App::Property* propVarSet, App::Doc
     binding.apply();
 
     varSet->renameObjectIdentifiers(idsFromObjToVarSet);
+    varSet->ExpressionEngine.execute();
 }
 
 void DlgExpressionInput::acceptWithVarSet()
