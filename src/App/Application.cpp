@@ -220,6 +220,26 @@ bool requestTargetsDocument(const RecomputeRequest& request, const std::string& 
     return request.documentName == documentName;
 }
 
+template<typename Map>
+auto findDocumentByName(Map& documents, const char* name)
+{
+    if (Base::Tools::isNullOrEmpty(name)) {
+        return documents.end();
+    }
+
+    auto pos = documents.find(name);
+    if (pos != documents.end()) {
+        return pos;
+    }
+
+    const std::string identifier = Base::Tools::getIdentifier(name);
+    if (identifier.empty() || identifier == name) {
+        return documents.end();
+    }
+
+    return documents.find(identifier);
+}
+
 bool documentCanRecomputeOnWorker(const Document& document)
 {
     try {
@@ -678,13 +698,12 @@ bool Application::closeDocument(const Document* doc)
 
 bool Application::closeDocument(const char* name)
 {
-    const std::string documentName(name);
-
-    cancelRecomputeRequestsForDocument(documentName);
-
-    const auto pos = DocMap.find( name );
+    const auto pos = findDocumentByName(DocMap, name);
     if (pos == DocMap.end()) // no such document
         return false;
+
+    const std::string documentName(pos->first);
+    cancelRecomputeRequestsForDocument(documentName);
 
     Base::ConsoleRefreshDisabler disabler;
 
@@ -718,8 +737,7 @@ void Application::closeAllDocuments()
 
 Document* Application::getDocument(const char *Name) const
 {
-
-    const auto pos = DocMap.find(Name);
+    const auto pos = findDocumentByName(DocMap, Name);
 
     if (pos == DocMap.end())
         return nullptr;

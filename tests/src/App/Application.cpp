@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 #define FC_OS_MACOSX 1
+#include "App/Application.h"
+#include "App/Document.h"
 #include "App/ProgramOptionsUtilities.h"
 
 #include <src/App/InitApplication.h>
@@ -57,3 +59,16 @@ TEST_F(ApplicationTest, fCustomSyntaxEmptyIn)
     Spr exp {"", ""};
     EXPECT_EQ(res, exp);
 };
+
+TEST_F(ApplicationTest, getDocumentAcceptsNormalizedProposedName)
+{
+    App::Application& app = App::GetApplication();
+
+    App::Document* doc = app.newDocument("application-test-dashed-name");
+    ASSERT_NE(nullptr, doc);
+    EXPECT_STREQ("application_test_dashed_name", doc->getName());
+
+    EXPECT_EQ(doc, app.getDocument("application-test-dashed-name"));
+    EXPECT_TRUE(app.closeDocument("application-test-dashed-name"));
+    EXPECT_EQ(nullptr, app.getDocument("application_test_dashed_name"));
+}
