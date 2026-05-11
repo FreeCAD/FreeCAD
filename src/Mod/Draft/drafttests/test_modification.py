@@ -417,6 +417,29 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj = Draft.make_shape2dview(prism, direction)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
+    def test_shape_2d_view_manual_recompute_without_auto_update(self):
+        """Manually recompute a Shape2DView when AutoUpdate is disabled."""
+        operation = "Draft Shape2DView manual recompute"
+        _msg("  Test '{}'".format(operation))
+        box = self.doc.addObject("Part::Box")
+        box.Length = 1
+        box.Width = 1
+        box.Height = 1
+        obj = Draft.make_shape2dview(box, Vector(0, 0, 1))
+        self.doc.recompute()
+        self.assertAlmostEqual(obj.Shape.BoundBox.XLength, 1)
+
+        obj.AutoUpdate = False
+        self.doc.recompute()
+        box.Length = 2
+        self.doc.recompute()
+        self.assertAlmostEqual(obj.Shape.BoundBox.XLength, 1)
+
+        for doc_obj in self.doc.Objects:
+            doc_obj.enforceRecompute()
+        self.doc.recompute()
+        self.assertAlmostEqual(obj.Shape.BoundBox.XLength, 2)
+
     def test_draft_to_sketch(self):
         """Convert a Draft object to a Sketch and back."""
         operation = "Draft Draft2Sketch"

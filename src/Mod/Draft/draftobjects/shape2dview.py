@@ -41,15 +41,65 @@ from draftutils import utils
 from draftutils.translate import translate
 
 
+_recompute_observer = None
+
+
+def _object_key(obj):
+    doc = getattr(obj, "Document", None)
+    return (getattr(doc, "Name", None), getattr(obj, "Name", None))
+
+
+def _is_shape2dview(obj):
+    return getattr(getattr(obj, "Proxy", None), "Type", None) == "Shape2DView"
+
+
+class _Shape2DViewRecomputeObserver:
+    """Track Shape2DViews that were already marked before recompute starts."""
+
+    def __init__(self):
+        self.touched_at_recompute_start = set()
+
+    def slotBeforeRecomputeDocument(self, doc):
+        self.touched_at_recompute_start = {
+            _object_key(obj)
+            for obj in getattr(doc, "Objects", [])
+            if _is_shape2dview(obj) and "Touched" in getattr(obj, "State", [])
+        }
+
+    def slotRecomputedDocument(self, doc):
+        doc_name = getattr(doc, "Name", None)
+        self.touched_at_recompute_start = {
+            key for key in self.touched_at_recompute_start if key[0] != doc_name
+        }
+
+    def was_touched_at_recompute_start(self, obj):
+        return _object_key(obj) in self.touched_at_recompute_start
+
+
+def _ensure_recompute_observer():
+    global _recompute_observer
+    if _recompute_observer is None:
+        _recompute_observer = _Shape2DViewRecomputeObserver()
+        App.addDocumentObserver(_recompute_observer)
+
+
+def _manual_recompute_requested(obj):
+    if _recompute_observer is None:
+        return False
+    return _recompute_observer.was_touched_at_recompute_start(obj)
+
+
 class Shape2DView(DraftObject):
     """The Shape2DView object"""
 
     def __init__(self, obj):
 
+        _ensure_recompute_observer()
         self.setProperties(obj)
         super().__init__(obj, "Shape2DView")
 
     def onDocumentRestored(self, obj):
+        _ensure_recompute_observer()
         self.setProperties(obj)
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(
@@ -215,7 +265,10 @@ class Shape2DView(DraftObject):
         return [shape.copy()]
 
     def execute(self, obj):
-        if self.props_changed_placement_only(obj) or not getattr(obj, "AutoUpdate", True):
+        auto_update_blocked = (
+            not getattr(obj, "AutoUpdate", True) and not _manual_recompute_requested(obj)
+        )
+        if self.props_changed_placement_only(obj) or auto_update_blocked:
             obj.positionBySupport()
             self.props_changed_clear()
             return
@@ -438,6 +491,10 @@ class Shape2DView(DraftObject):
 
     def onChanged(self, obj, prop):
         self.props_changed_store(prop)
+        if prop == "AutoUpdate" and getattr(App, "GuiUp", False):
+            view_object = getattr(obj, "ViewObject", None)
+            if view_object:
+                view_object.signalChangeIcon()
 
 
 # Alias for compatibility with v0.18 and earlier
