@@ -35,96 +35,57 @@ static std::list<PointD> pts_for_AddVertex;
 
 static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex, ArcFittingMap& arcMap)
 {
-    const int64_t z = arcMap.z_next++;
     if (vertex.m_type == 0 || prev_vertex == NULL) {
+        const int64_t z = arcMap.z_next++;
         PointD p(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z);
-        arcMap.map[z] = p;
+        arcMap.point_map[z] = vertex.m_p;
         pts_for_AddVertex.push_back(p);
         arcMap.z_prev = z;
     }
     else {
         if (vertex.m_p != prev_vertex->m_p) {
-            arcMap.map[z] = PointD(vertex.m_c.x * CArea::m_units, vertex.m_c.y * CArea::m_units, z);
+            const double phi0
+                = atan2(prev_vertex->m_p.y - vertex.m_c.y, prev_vertex->m_p.x - vertex.m_c.x);
+            double phi1 = atan2(vertex.m_p.y - vertex.m_c.y, vertex.m_p.x - vertex.m_c.x);
 
-            // Record arc connectivity: previous endpoint connected to this arc
-            if (arcMap.z_prev != 0) {
-                int64_t z1 = std::min(arcMap.z_prev, z);
-                int64_t z2 = std::max(arcMap.z_prev, z);
-                arcMap.arc_pairs.insert({z1, z2});
+            if (vertex.m_type == -1 && phi1 > phi0) {
+                // fix to make it clockwise
+                phi1 -= 2 * PI;
             }
-            arcMap.z_prev = z;
-
-            double phi, dphi, dx, dy;
-            int Segments;
-            int i;
-            double ang1, ang2, phit;
-
-            dx = (prev_vertex->m_p.x - vertex.m_c.x) * CArea::m_units;
-            dy = (prev_vertex->m_p.y - vertex.m_c.y) * CArea::m_units;
-
-            ang1 = atan2(dy, dx);
-            if (ang1 < 0) {
-                ang1 += 2.0 * PI;
-            }
-            dx = (vertex.m_p.x - vertex.m_c.x) * CArea::m_units;
-            dy = (vertex.m_p.y - vertex.m_c.y) * CArea::m_units;
-            ang2 = atan2(dy, dx);
-            if (ang2 < 0) {
-                ang2 += 2.0 * PI;
-            }
-
-            if (vertex.m_type == -1) {  // clockwise
-                if (ang2 > ang1) {
-                    phit = 2.0 * PI - ang2 + ang1;
-                }
-                else {
-                    phit = ang1 - ang2;
-                }
-            }
-            else {  // counter_clockwise
-                if (ang1 > ang2) {
-                    phit = -(2.0 * PI - ang1 + ang2);
-                }
-                else {
-                    phit = -(ang2 - ang1);
-                }
+            else if (vertex.m_type == 1 && phi1 < phi0) {
+                // fix to make it counterclockwise
+                phi1 += 2 * PI;
             }
 
             // what is the delta phi to get an accuracy of aber
-            double radius = sqrt(dx * dx + dy * dy);
-            dphi = 2 * acos((radius - CArea::m_accuracy) / radius);
+            const double dx = prev_vertex->m_p.x - vertex.m_c.x;
+            const double dy = prev_vertex->m_p.y - vertex.m_c.y;
+            const double radius = sqrt(dx * dx + dy * dy);
+            const double max_dphi = 2 * acos((radius - CArea::m_accuracy / CArea::m_units) / radius);
 
-            // set the number of segments
-            if (phit > 0) {
-                Segments = (int)ceil(phit / dphi);
-            }
-            else {
-                Segments = (int)ceil(-phit / dphi);
-            }
+            // determine the number of segments
+            const int num_segments
+                = max(CArea::m_min_arc_points, (int)ceil(abs(phi1 - phi0) / max_dphi));
+            const double dphi = (phi1 - phi0) / num_segments;
 
-            if (Segments < CArea::m_min_arc_points) {
-                Segments = CArea::m_min_arc_points;
-            }
-            // if (Segments > CArea::m_max_arc_points)
-            //     Segments=CArea::m_max_arc_points;
+            for (int i = 1; i <= num_segments; i++) {
+                // Create a unique z-value for each interpolated point along the arc
+                const int64_t z = arcMap.z_next++;
 
-            dphi = phit / (Segments);
+                if (i == num_segments) {
+                    pts_for_AddVertex.push_back(
+                        PointD(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z)
+                    );
+                    arcMap.point_map[z] = vertex.m_p;
+                }
+                else {
+                    const double nx = (vertex.m_c.x + radius * cos(phi0 + dphi * i)) * CArea::m_units;
+                    const double ny = (vertex.m_c.y + radius * sin(phi0 + dphi * i)) * CArea::m_units;
+                    pts_for_AddVertex.push_back(PointD(nx, ny, z));
+                }
 
-            double px = prev_vertex->m_p.x * CArea::m_units;
-            double py = prev_vertex->m_p.y * CArea::m_units;
-
-            for (i = 1; i <= Segments; i++) {
-                dx = px - vertex.m_c.x * CArea::m_units;
-                dy = py - vertex.m_c.y * CArea::m_units;
-                phi = atan2(dy, dx);
-
-                double nx = vertex.m_c.x * CArea::m_units + radius * cos(phi - dphi);
-                double ny = vertex.m_c.y * CArea::m_units + radius * sin(phi - dphi);
-
-                pts_for_AddVertex.push_back(PointD(nx, ny, z));
-
-                px = nx;
-                py = ny;
+                arcMap.arc_centers[{arcMap.z_prev, z}] = vertex.m_c;
+                arcMap.z_prev = z;
             }
         }
     }

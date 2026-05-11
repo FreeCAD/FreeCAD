@@ -55,13 +55,13 @@ struct CAreaPocketParams
 // Arc fitting map for tracking arc information through Clipper operations
 struct ArcFittingMap
 {
-    // Map from z-coordinate label to source/center point coordinates
+    // Map from z-coordinate label to source point coordinates
     // z-values > 0 are used as labels (z=0 is clipper default and should not be used here)
-    std::map<int64_t, Clipper2Lib::PointD> map;
+    std::map<int64_t, Point> point_map;
 
-    // Arc connectivity: set of (z1, z2) pairs where z1 < z2, indicating these points are
-    // connected by an arc (both endpoints of the same arc segment)
-    std::set<std::pair<int64_t, int64_t>> arc_pairs;
+    // Arc centers: maps pairs of z-values (z1, z2) where z1 < z2 to the center point of the arc
+    // between them If a pair exists in this map, the segment is an arc; otherwise it's a line
+    std::map<std::pair<int64_t, int64_t>, Point> arc_centers;
 
     // Intersection tracking: maps the new value of a point created in an
     // intersection to the z values of points used to compute that intersection
@@ -84,6 +84,7 @@ class CArea
 {
 public:
     std::list<CCurve> m_curves;
+    ArcFittingMap m_arc_fitting_map;
     static double m_accuracy;
     static double m_units;  // 1.0 for mm, 25.4 for inches. All points are multiplied by this before
                             // going to the engine
@@ -162,9 +163,10 @@ public:
         Clipper2Lib::FillRule clipFillType = Clipper2Lib::FillRule::EvenOdd
     );
 
-private:
-    ArcFittingMap m_arc_fitting_map;
+    // Process arc fitting intersections to determine arc metadata for intersection points
+    void ProcessArcFittingIntersections(const Clipper2Lib::Paths64& paths, bool is_closed);
 
+private:
     // Z-callback for Clipper intersection handling
     void ZCallback(
         const Clipper2Lib::Point64& e1bot,
