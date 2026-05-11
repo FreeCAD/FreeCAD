@@ -48,7 +48,11 @@ class ToolContext:
     flutes: Optional[int]
     presets: Tuple[dict, ...]
     shape_id: str
-    material_enum: Optional[str] = None
+    # The ToolBit's ``Material`` enumeration value, typically "HSS" or
+    # "Carbide". Used by ``MachinabilityProvider`` to pick the correct
+    # surface-speed branch from the stock material's Machinability model.
+    # None when the toolbit has no Material property set.
+    tool_material: Optional[str] = None
     # The single "default chipload" value stored directly on the ToolBit
     # (App::PropertyLength "Chipload"). Read as a low-confidence fallback
     # by ToolDefaultsProvider when no preset matches. mm/tooth, or None
@@ -60,11 +64,29 @@ class ToolContext:
 class MaterialContext:
     uuid: Optional[str] = None
     name: Optional[str] = None
+    # Machinability surface speeds (m/min) pre-extracted from the stock
+    # material's PhysicalProperties by the adapter. Either may be None if
+    # the material does not carry that branch of the Machinability model.
+    surface_speed_hss: Optional[float] = None
+    surface_speed_carbide: Optional[float] = None
 
 
 @dataclass(frozen=True)
 class OpContext:
     op_type: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class MachineContext:
+    """
+    Machine limits used by the resolver's finalization to clamp the
+    suggested spindle. ``0.0`` for either bound means "no limit known"
+    (matches the Machine model's default) and disables that side of the
+    clamp.
+    """
+
+    min_rpm: float = 0.0
+    max_rpm: float = 0.0
 
 
 @dataclass(frozen=True)
