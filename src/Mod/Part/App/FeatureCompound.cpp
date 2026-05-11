@@ -39,9 +39,11 @@ using namespace Part;
 namespace
 {
 
-App::DocumentObject* collectCompoundShape(App::DocumentObject* obj,
-                                          std::set<App::DocumentObject*>& visited,
-                                          std::vector<TopoShape>& shapes)
+App::DocumentObject* collectCompoundShape(
+    App::DocumentObject* obj,
+    std::set<App::DocumentObject*>& visited,
+    std::vector<TopoShape>& shapes
+)
 {
     if (!obj || !visited.insert(obj).second) {
         return nullptr;
