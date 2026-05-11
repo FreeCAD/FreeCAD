@@ -438,6 +438,23 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             self.assertEqual(compound.ElementMapSize, 52)
             self.assertEqual(new_toposhape.ElementMapSize, 52)
 
+    def testPartCompoundExpandsGroupLinks(self):
+        # Arrange
+        group = self.doc.addObject("App::DocumentObjectGroup", "CompoundSourceGroup")
+        group.addObject(self.doc.Box1)
+        group.addObject(self.doc.Box2)
+        self.doc.addObject("Part::Compound", "CompoundFromGroup")
+        self.doc.CompoundFromGroup.Links = [
+            group,
+            self.doc.Box2,
+        ]
+        # Act
+        self.doc.recompute()
+        compound = self.doc.CompoundFromGroup.Shape
+        # Assert
+        self.assertEqual(len(compound.Solids), 2)
+        self.assertBounds(compound, App.BoundBox(0, 0, 0, 2, 2, 2))
+
     def testTopoShapeCopy(self):
         # Arrange
         self.doc.addObject("Part::Compound", "Compound")

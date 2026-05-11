@@ -28,11 +28,51 @@
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 
+#include <App/GeoFeatureGroupExtension.h>
+#include <App/GroupExtension.h>
 
 #include "FeatureCompound.h"
 
 
 using namespace Part;
+
+namespace
+{
+
+App::DocumentObject* collectCompoundShape(App::DocumentObject* obj,
+                                          std::set<App::DocumentObject*>& visited,
+                                          std::vector<TopoShape>& shapes)
+{
+    if (!obj || !visited.insert(obj).second) {
+        return nullptr;
+    }
+
+    if (App::GeoFeatureGroupExtension::isNonGeoGroup(obj)) {
+        auto group = obj->getExtensionByType<App::GroupExtension>(true);
+        if (group) {
+            App::DocumentObject* firstShapeObject = nullptr;
+            for (auto child : group->getObjects()) {
+                auto shapeObject = collectCompoundShape(child, visited, shapes);
+                if (!firstShapeObject) {
+                    firstShapeObject = shapeObject;
+                }
+            }
+            if (firstShapeObject) {
+                return firstShapeObject;
+            }
+        }
+    }
+
+    auto shape = Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+    if (shape.isNull()) {
+        return nullptr;
+    }
+
+    shapes.push_back(shape);
+    return obj;
+}
+
+}  // namespace
 
 PROPERTY_SOURCE(Part::Compound, Part::Feature)
 
@@ -57,22 +97,19 @@ App::DocumentObjectExecReturn* Compound::execute()
     try {
         // avoid duplicates without changing the order
         // See also ViewProviderCompound::updateData
-        std::set<DocumentObject*> tempLinks;
+        std::set<App::DocumentObject*> tempLinks;
 
         std::vector<TopoShape> shapes;
+        App::DocumentObject* materialLink = nullptr;
         for (auto obj : Links.getValues()) {
-            if (!tempLinks.insert(obj).second) {
-                continue;
-            }
-            auto sh = Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
-            if (!sh.isNull()) {
-                shapes.push_back(sh);
+            auto shapeObject = collectCompoundShape(obj, tempLinks, shapes);
+            if (!materialLink) {
+                materialLink = shapeObject;
             }
         }
         this->Shape.setValue(TopoShape().makeElementCompound(shapes));
-        if (Links.getSize() > 0) {
-            App::DocumentObject* link = Links.getValues()[0];
-            copyMaterial(link);
+        if (materialLink) {
+            copyMaterial(materialLink);
         }
         return Part::Feature::execute();
     }
