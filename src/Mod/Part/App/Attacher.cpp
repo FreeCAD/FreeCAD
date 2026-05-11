@@ -1517,14 +1517,12 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 // clang-format on
             }
             if (pr.HasSymmetryAxis()) {
-                // clang-format off
                 Base::Console().warning(
                     "AttachEngine3D::calculateAttachedPlacement:InertialCS: %s: "
                     "Inertia tensor has axis of symmetry. "
                     "Second and third axes of inertia are undefined.\n",
                     objs[0]->getFullNameLabel()
                 );
-                // clang-format on
 
                 // find defined axis, and use it as Z axis
                 // situation: we have two moments that are almost equal, and one
@@ -1853,13 +1851,11 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 catch (Standard_Failure& e) {
                     // ignore. This is probably due to insufficient continuity.
                     dd = gp_Vec(0., 0., 0.);
-                    // clang-format off
                     Base::Console().warning(
                         "AttachEngine3D::calculateAttachedPlacement: %s: "
                         "Can't calculate second derivative of curve. OCC error: %s\n",
                         objs[0]->getFullNameLabel(), e.GetMessageString()
                     );
-                    // clang-format on
                 }
 
                 gp_Vec T, N, B;  // Frenet?Serret axes: tangent, normal, binormal
@@ -1871,13 +1867,11 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                     B = T.Crossed(N);
                 }
                 else {
-                    // clang-format off
                     Base::Console().warning(
                         "AttachEngine3D::calculateAttachedPlacement: %s: "
                         "Cannot align X-axis path curve second derivative is below 1e-14.\n",
                         objs[0]->getFullNameLabel()
                     );
-                    // clang-format on
                     N = gp_Vec(0., 0., 0.);
                     B = gp_Vec(0., 0., 0.);  // redundant, just for consistency
                 }
@@ -2982,13 +2976,11 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                     // clang-format on
                 }
                 if (distancer.NbSolution() > 1) {
-                    // clang-format off
                     Base::Console().warning(
                         "AttachEngineLine::calculateAttachedPlacement: %s: "
                         "Proximity calculation gave %i solutions, ambiguous.\n",
                         objs[0]->getFullNameLabel(), int(distancer.NbSolution())
                     );
-                    // clang-format on
                 }
                 gp_Pnt p1 = distancer.PointOnShape1(1);
                 gp_Pnt p2 = distancer.PointOnShape2(1);
@@ -3342,13 +3334,11 @@ gp_Pnt AttachEnginePoint::getProximityPoint(
             }
 
             if (points.size() > 1) {
-                // clang-format off
                 Base::Console().warning(
                     "AttachEnginePoint::calculateAttachedPlacement: %s: "
                     "Proximity calculation gave %d solutions, ambiguous.\n",
                     objs[0]->getFullNameLabel(), int(points.size())
                 );
-                // clang-format on
             }
 
             // if an intersection is found return the first hit
@@ -3373,13 +3363,11 @@ gp_Pnt AttachEnginePoint::getProximityPoint(
         // clang-format on
     }
     if (distancer.NbSolution() > 1) {
-        // clang-format off
         Base::Console().warning(
             "AttachEnginePoint::calculateAttachedPlacement: %s "
             "Proximity calculation gave %i solutions, ambiguous.\n",
             objs[0]->getFullNameLabel(), int(distancer.NbSolution())
         );
-        // clang-format on
     }
 
     gp_Pnt p1 = distancer.PointOnShape1(1);
