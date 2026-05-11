@@ -260,7 +260,10 @@ def create_boundary_face(model_faces, offset, tolerance=0.005):
     )
 
     if not offset_shape or not hasattr(offset_shape, "Edges") or len(offset_shape.Edges) == 0:
-        Path.Log.warning("Offsetting the Model faces resulted in an empty shape.")
+        Path.Log.warning(
+            "Offsetting the Model faces resulted in an empty shape. "
+            "Extend the boundary if the selected faces are too small."
+        )
         return None
 
     if offset_shape.BoundBox.ZMin != 0.0:

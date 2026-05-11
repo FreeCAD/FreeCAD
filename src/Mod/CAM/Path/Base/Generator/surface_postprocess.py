@@ -94,24 +94,21 @@ def apply_multipass(scan_lines, start_depth, final_depth, step_down):
             last_pt_above = None
 
             for pt in line:
-                x, y, z = pt
-
-                # The true Z is maintained so we don't gouge the final model geometry
-                clamped_z = layDep if z < layDep else z
-                clamped_pt = (x, y, clamped_z)
+                x, y, z_original = pt
 
                 # A point is "above" if it was fully machined in a previous pass
                 # (- 1e-4 ensures flat floors cut on the previous pass are successfully skipped here)
-                is_above = z >= prvDep - 1e-4
+                is_above = z_original >= prvDep - 1e-4
 
                 if is_above:
                     if current_segment:
-                        # We just climbed out of the cutting zone.
-                        # Add this point to close the segment seamlessly against the wall
-                        current_segment.append(clamped_pt)
+                        # We were cutting, and now the tool is moving out of the cutting zone.
+                        # We append the original, unclamped 3D point to the segment.
+                        current_segment.append((x, y, z_original))
                         all_multipass_lines.append(current_segment)
                         current_segment = []  # Reset segment safely
-                    last_pt_above = clamped_pt
+                    last_pt_above = (x, y, z_original)
+
                 else:
                     # We are IN the cutting zone (z < prvDep - 1e-4)
                     if not current_segment and last_pt_above:
@@ -119,7 +116,8 @@ def apply_multipass(scan_lines, start_depth, final_depth, step_down):
                         # Start with the last point above to ramp in seamlessly
                         current_segment.append(last_pt_above)
 
-                    current_segment.append(clamped_pt)
+                    clamped_z = max(z_original, layDep)
+                    current_segment.append((x, y, clamped_z))
 
             # End of the line - if we have an active cutting segment, save it
             if current_segment:
@@ -189,6 +187,7 @@ def _optimize_travel(
     vert_rapid,
     safe_pdc=None,
     cutter=None,
+    force_keep_down=False,
 ):
     """Find the shortest safe path between two scan line endpoints.
 
@@ -211,6 +210,7 @@ def _optimize_travel(
         safe_pdc: Pre-built ``ocl.PathDropCutter`` (from
                   :func:`_make_safe_pdc`).  Reused across transitions.
         cutter: OCL cutter (needed for diameter threshold).
+        force_keep_down: Force KeepToolDown for ZigZag cut patterns
 
     Returns:
         List of ``Path.Command``.
@@ -223,7 +223,14 @@ def _optimize_travel(
 
         if xy_dist_sqrd <= (cutter_diam * 2.0) ** 2:
             transition_cmds = _dropcutter_transition(
-                last_point, next_point, safe_pdc, start_z, safe_z, step_down, horiz_feed
+                last_point,
+                next_point,
+                safe_pdc,
+                start_z,
+                safe_z,
+                step_down,
+                horiz_feed,
+                force_keep_down,
             )
             if transition_cmds:
                 return transition_cmds
@@ -235,7 +242,9 @@ def _optimize_travel(
     ]
 
 
-def _dropcutter_transition(start, end, safe_pdc, start_z, safe_z, step_down, horiz_feed):
+def _dropcutter_transition(
+    start, end, safe_pdc, start_z, safe_z, step_down, horiz_feed, force_keep_down=False
+):
     """Probes a transition path and returns surface-following G1 commands."""
     ocl = _get_ocl()
     path = ocl.Path()
@@ -251,17 +260,21 @@ def _dropcutter_transition(start, end, safe_pdc, start_z, safe_z, step_down, hor
     if len(cl_points) < 2:
         return None
 
-    # Check the Z-climb required for the very first segment of the transition.
-    first_transition_pt = cl_points[1]
-    initial_climb = abs(first_transition_pt.z - start[2])
-    above_start_z = False if start_z > start[2] else True
+    # We only perform the aggressive climb check if we are NOT being forced to stay down.
+    if not force_keep_down:
+        first_transition_pt = cl_points[1]
+        initial_climb = abs(first_transition_pt.z - start[2])
+        step_over_transition = abs(start[2] - end[2]) < 1e-3
+        above_start_z = start[2] > start_z
 
-    # If the initial climb is more than half a step-down, it's faster to retract.
-    if (step_down > 0 and initial_climb > (step_down / 2.0)) or above_start_z:
-        Path.Log.debug(
-            f"Keep-down move aborted: initial climb ({initial_climb:.2f}mm) exceeds half step-down ({step_down/2.0:.2f}mm)."
-        )
-        return None  # Abort the transition
+        # If the initial climb is more than half a step-down, it's faster to retract.
+        if (
+            step_down > 0 and initial_climb > (step_down / 2.0) and not step_over_transition
+        ) or above_start_z:
+            Path.Log.debug(
+                f"Keep-down move aborted: initial climb ({initial_climb:.2f}mm) exceeds safety check."
+            )
+            return None  # Abort the transition
 
     # Use a math-based "z-floor" to prevent the tool from diving into holes or off edges
     z_floor = min(start[2], end[2])
@@ -308,6 +321,7 @@ def scan_lines_to_gcode(
     optimize_transitions=False,
     safe_stl=None,
     cutter=None,
+    force_keep_down=False,
 ):
     """Convert multiple scan lines of CL-points to G-code with transitions.
 
@@ -371,6 +385,7 @@ def scan_lines_to_gcode(
                     vert_rapid,
                     safe_pdc,
                     cutter,
+                    force_keep_down=False,
                 )
             else:
                 travel_cmds = [

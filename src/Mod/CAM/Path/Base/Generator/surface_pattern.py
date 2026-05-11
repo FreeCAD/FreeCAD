@@ -261,7 +261,7 @@ def reconstruct_scan_lines(flat_points, gap_threshold):
 
 
 def generate_offset_scan_lines(
-    boundary_face, stepover, sample_interval, reversed_pattern=False, climb=False
+    boundary_face, stepover, tool_diam, sample_interval, reversed_pattern=False, climb=False
 ):
     """
     Generates concentric toolpath rings that progressively shrink inwards from a boundary.
@@ -273,6 +273,7 @@ def generate_offset_scan_lines(
     Args:
         boundary_face (Part.Face): The outermost boundary mask to shrink.
         stepover (float): The radial distance to shrink the geometry for each subsequent pass.
+        tool_diam (float): The diameter of the tool.
         sample_interval (float): The distance between points along the resulting rings.
         reversed_pattern (bool): If True, cuts from the inside out (reverses the ring order).
 
@@ -287,6 +288,7 @@ def generate_offset_scan_lines(
 
     offset_lines = []
     current_offset = 0.0
+    min_path_length = math.pi * tool_diam
 
     while True:
         # Using a negative offset mathematically shrinks the geometry inwards
@@ -300,6 +302,10 @@ def generate_offset_scan_lines(
 
         layer_lines = []
         for wire in offset_shape.Wires:
+            # Discard tiny fragments that are too small to be meaningful toolpaths.
+            if wire.Length < min_path_length:
+                continue
+
             # Discretize the wire into a smooth array of coordinates
             pts = wire.discretize(Distance=sample_interval)
             if len(pts) < 2:
