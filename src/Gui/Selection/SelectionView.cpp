@@ -283,9 +283,9 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
 
 void SelectionView::search(const QString& text)
 {
+    searchList.clear();
+    App::Document* doc = App::GetApplication().getActiveDocument();
     if (!text.isEmpty()) {
-        searchList.clear();
-        App::Document* doc = App::GetApplication().getActiveDocument();
         std::vector<App::DocumentObject*> objects;
         if (doc) {
             objects = doc->getObjects();
@@ -313,6 +313,13 @@ void SelectionView::search(const QString& text)
             }
             countLabel->setText(QString::number(selectionView->count()));
         }
+    }
+    else if (doc) {
+        onSelectionChanged(SelectionChanges(SelectionChanges::SetSelection, doc->getName()));
+    }
+    else {
+        selectionView->clear();
+        countLabel->setText(QString::number(selectionView->count()));
     }
 }
 
