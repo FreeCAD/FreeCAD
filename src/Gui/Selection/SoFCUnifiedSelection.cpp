@@ -23,6 +23,8 @@
 
 #include <FCConfig.h>
 
+#include <cmath>
+
 #include <Inventor/SoFullPath.h>
 #include <Inventor/SoPickedPoint.h>
 
@@ -114,32 +116,61 @@ void printPreselectionInfo(
 
 SoFullPath* Gui::SoFCUnifiedSelection::currentHighlightPath = nullptr;
 
+namespace
+{
+
+float getCursorDistanceSquared(const SoPickedPoint* pickedPoint, const SbVec2f& cursorPosition)
+{
+    if (!pickedPoint) {
+        return std::numeric_limits<float>::infinity();
+    }
+
+    const SoNode* imageSpaceNode = nullptr;
+    if (const auto* path = pickedPoint->getPath()) {
+        imageSpaceNode = path->getHead();
+    }
+
+    SbVec3f imagePoint = pickedPoint->getObjectPoint(imageSpaceNode);
+    pickedPoint->getObjectToImage(imageSpaceNode).multVecMatrix(imagePoint, imagePoint);
+    imagePoint[0] = 0.5F * imagePoint[0] + 0.5F;
+    imagePoint[1] = 0.5F * imagePoint[1] + 0.5F;
+
+    const auto dx = imagePoint[0] - cursorPosition[0];
+    const auto dy = imagePoint[1] - cursorPosition[1];
+    return dx * dx + dy * dy;
+}
+
+}  // namespace
+
 namespace Gui::SelectionPickPolicy
 {
 
-bool canFinalizeSinglePick(const std::vector<Candidate>& picked)
+namespace
 {
-    return !shouldExpandPickRadius(picked);
+
+constexpr float fallbackDistanceSquaredEpsilon = 1.0e-6F;
+
+bool chooseHigherPriorityPick(const Candidate& candidate, const Candidate& current)
+{
+    if (candidate.priority != current.priority) {
+        return candidate.priority > current.priority;
+    }
+    if (candidate.isAnnotation != current.isAnnotation) {
+        return candidate.isAnnotation && !current.isAnnotation;
+    }
+    return false;
 }
 
-bool shouldExpandPickRadius(const std::vector<Candidate>& picked)
+bool areFallbackDistancesEquivalent(float lhs, float rhs)
 {
-    bool foundSelectionGate = false;
-    for (const auto& info : picked) {
-        if (info.passesGate) {
-            return false;
-        }
-        if (!info.hasGate) {
-            continue;
-        }
-
-        foundSelectionGate = true;
+    if (std::isinf(lhs) || std::isinf(rhs)) {
+        return lhs == rhs;
     }
 
-    return foundSelectionGate;
+    return std::fabs(lhs - rhs) <= fallbackDistanceSquaredEpsilon;
 }
 
-std::size_t choosePreferredPick(const std::vector<Candidate>& picked)
+std::size_t choosePrimaryPreferredPick(const std::vector<Candidate>& picked)
 {
     if (picked.empty()) {
         return 0;
@@ -171,12 +202,76 @@ std::size_t choosePreferredPick(const std::vector<Candidate>& picked)
         }
     }
 
+    return preferred;
+}
+
+}  // namespace
+
+bool canFinalizeSinglePick(const std::vector<Candidate>& picked)
+{
+    return !shouldExpandPickRadius(picked);
+}
+
+bool shouldExpandPickRadius(const std::vector<Candidate>& picked)
+{
+    bool foundSelectionGate = false;
+    for (const auto& info : picked) {
+        if (info.passesGate) {
+            return false;
+        }
+        if (!info.hasGate) {
+            continue;
+        }
+
+        foundSelectionGate = true;
+    }
+
+    return foundSelectionGate;
+}
+
+std::optional<std::size_t> chooseAllowedFallbackPick(const std::vector<Candidate>& picked)
+{
+    std::optional<std::size_t> preferred;
+    for (std::size_t i = 0; i < picked.size(); ++i) {
+        const auto& info = picked[i];
+        if (!info.passesGate) {
+            continue;
+        }
+
+        if (!preferred.has_value()) {
+            preferred = i;
+            continue;
+        }
+
+        const auto& current = picked[*preferred];
+        if (info.cursorDistanceSquared + fallbackDistanceSquaredEpsilon
+            < current.cursorDistanceSquared) {
+            preferred = i;
+            continue;
+        }
+        if (current.cursorDistanceSquared + fallbackDistanceSquaredEpsilon
+            < info.cursorDistanceSquared) {
+            continue;
+        }
+        if (areFallbackDistancesEquivalent(info.cursorDistanceSquared, current.cursorDistanceSquared)
+            && chooseHigherPriorityPick(info, current)) {
+            preferred = i;
+        }
+    }
+
+    return preferred;
+}
+
+std::size_t choosePreferredPick(const std::vector<Candidate>& picked)
+{
+    if (picked.empty()) {
+        return 0;
+    }
+
+    auto preferred = choosePrimaryPreferredPick(picked);
     if (!picked[preferred].passesGate) {
-        for (std::size_t i = 0; i < picked.size(); ++i) {
-            if (picked[i].passesGate) {
-                preferred = i;
-                break;
-            }
+        if (auto fallback = chooseAllowedFallbackPick(picked)) {
+            preferred = *fallback;
         }
     }
 
@@ -405,7 +500,8 @@ bool SoFCUnifiedSelection::hasSelectionGate(const PickedInfo& info)
 SelectionPickPolicy::Candidate SoFCUnifiedSelection::getPickCandidate(
     const PickedInfo& info,
     const Document* doc,
-    const PickedInfo* firstPicked
+    const PickedInfo* firstPicked,
+    const SbVec2f* cursorPosition
 )
 {
     SelectionPickPolicy::Candidate candidate;
@@ -418,20 +514,24 @@ SelectionPickPolicy::Candidate SoFCUnifiedSelection::getPickCandidate(
     if (firstPicked && info.pp && firstPicked->pp) {
         candidate.closeToFirst = info.pp->getPoint().equals(firstPicked->pp->getPoint(), 0.2F);
     }
+    if (cursorPosition) {
+        candidate.cursorDistanceSquared = getCursorDistanceSquared(info.pp, *cursorPosition);
+    }
 
     return candidate;
 }
 
 std::vector<SelectionPickPolicy::Candidate> SoFCUnifiedSelection::getPickCandidates(
     const std::vector<PickedInfo>& picked,
-    const Document* doc
+    const Document* doc,
+    const SbVec2f* cursorPosition
 )
 {
     std::vector<SelectionPickPolicy::Candidate> candidates;
     candidates.reserve(picked.size());
     const PickedInfo* firstPicked = picked.empty() ? nullptr : &picked.front();
     for (const auto& info : picked) {
-        candidates.push_back(getPickCandidate(info, doc, firstPicked));
+        candidates.push_back(getPickCandidate(info, doc, firstPicked, cursorPosition));
     }
 
     return candidates;
@@ -539,7 +639,8 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getExpandedP
         return {};
     }
 
-    auto candidates = getPickCandidates(expanded, this->pcDocument);
+    const auto cursorPosition = action->getEvent()->getNormalizedPosition(action->getViewportRegion());
+    auto candidates = getPickCandidates(expanded, this->pcDocument, &cursorPosition);
     if (SelectionPickPolicy::shouldExpandPickRadius(candidates)) {
         return {};
     }
@@ -567,10 +668,18 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedLis
     }
 
     // To identify the picking of lines in a concave area we have to get all intersection points.
-    // If the preferred point is rejected by the active selection gate, choose the first allowed
+    // If the preferred point is rejected by the active selection gate, choose the nearest allowed
     // candidate still inside the viewer pick radius.
+    const SbVec2f* cursorPosition = nullptr;
+    SbVec2f normalizedCursorPosition;
+    if (action && action->getEvent()) {
+        normalizedCursorPosition = action->getEvent()->getNormalizedPosition(
+            action->getViewportRegion()
+        );
+        cursorPosition = &normalizedCursorPosition;
+    }
     auto pickedIndex = SelectionPickPolicy::choosePreferredPick(
-        getPickCandidates(ret, this->pcDocument)
+        getPickCandidates(ret, this->pcDocument, cursorPosition)
     );
     auto itPicked = ret.begin() + pickedIndex;
 

@@ -25,7 +25,9 @@
 
 #include <cstddef>
 #include <list>
+#include <limits>
 #include <memory>
+#include <optional>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -43,6 +45,7 @@
 class SoFullPath;
 class SoPickedPoint;
 class SoDetail;
+class SbVec2f;
 
 
 namespace Gui
@@ -59,16 +62,20 @@ struct Candidate
     bool isAnnotation {false};
     bool hasGate {false};
     bool passesGate {false};
+    // Used only when resolving a blocked-pick fallback.
+    float cursorDistanceSquared {std::numeric_limits<float>::infinity()};
 };
 
 GuiExport bool canFinalizeSinglePick(const std::vector<Candidate>& picked);
 GuiExport bool shouldExpandPickRadius(const std::vector<Candidate>& picked);
+GuiExport std::optional<std::size_t> chooseAllowedFallbackPick(const std::vector<Candidate>& picked);
 GuiExport std::size_t choosePreferredPick(const std::vector<Candidate>& picked);
 
 }  // namespace SelectionPickPolicy
 
 class Document;
 class ViewProviderDocumentObject;
+class SoFCUnifiedSelectionTestAccess;
 
 class AutoPreselection
 {
@@ -145,6 +152,7 @@ public:
     static bool hasHighlight();
 
     friend class View3DInventorViewer;
+    friend class SoFCUnifiedSelectionTestAccess;
 
 protected:
     ~SoFCUnifiedSelection() override;
@@ -165,11 +173,13 @@ private:
     static SelectionPickPolicy::Candidate getPickCandidate(
         const PickedInfo&,
         const Document*,
-        const PickedInfo* firstPicked = nullptr
+        const PickedInfo* firstPicked = nullptr,
+        const SbVec2f* cursorPosition = nullptr
     );
     static std::vector<SelectionPickPolicy::Candidate> getPickCandidates(
         const std::vector<PickedInfo>&,
-        const Document*
+        const Document*,
+        const SbVec2f* cursorPosition = nullptr
     );
     static bool canFinalizeSinglePick(const std::vector<PickedInfo>&);
     static bool shouldExpandPickRadius(const std::vector<PickedInfo>&);

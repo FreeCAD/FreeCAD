@@ -2,8 +2,20 @@
 
 #include <gtest/gtest.h>
 
+#include <memory>
+#include <limits>
 #include <string>
 #include <vector>
+
+#include <Inventor/SoDB.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/SbViewportRegion.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTranslation.h>
 
 #include <src/App/InitApplication.h>
 
@@ -42,6 +54,7 @@ protected:
     static void SetUpTestSuite()
     {
         tests::initApplication();
+        SoDB::init();
     }
 
     void SetUp() override
@@ -76,7 +89,8 @@ Gui::SelectionPickPolicy::Candidate pickCandidate(
     int priority,
     bool closeToFirst,
     bool hasGate,
-    bool passesGate
+    bool passesGate,
+    float cursorDistanceSquared = std::numeric_limits<float>::infinity()
 )
 {
     Gui::SelectionPickPolicy::Candidate candidate;
@@ -85,10 +99,78 @@ Gui::SelectionPickPolicy::Candidate pickCandidate(
     candidate.closeToFirst = closeToFirst;
     candidate.hasGate = hasGate;
     candidate.passesGate = passesGate;
+    candidate.cursorDistanceSquared = cursorDistanceSquared;
     return candidate;
 }
 
+SbVec2f normalizedPosition(const SbVec2s& cursorPosition, const SbViewportRegion& viewportRegion)
+{
+    SoLocation2Event event;
+    event.setPosition(cursorPosition);
+    return event.getNormalizedPosition(viewportRegion);
+}
+
+std::shared_ptr<const SoPickedPoint> pickCubePoint(
+    float xTranslation,
+    const SbVec2s& pickPosition,
+    const SbViewportRegion& viewportRegion
+)
+{
+    auto root = new SoSeparator;
+    root->ref();
+
+    auto camera = new SoOrthographicCamera;
+    camera->position.setValue(0.0F, 0.0F, 5.0F);
+    camera->nearDistance = 1.0F;
+    camera->farDistance = 10.0F;
+    camera->height = 2.0F;
+    root->addChild(camera);
+
+    auto transform = new SoTranslation;
+    transform->translation.setValue(xTranslation, 0.0F, 0.0F);
+    root->addChild(transform);
+
+    auto cube = new SoCube;
+    cube->width = 0.2F;
+    cube->height = 0.2F;
+    cube->depth = 0.2F;
+    root->addChild(cube);
+
+    SoRayPickAction pickAction(viewportRegion);
+    pickAction.setPoint(pickPosition);
+    pickAction.setRadius(1.0F);
+    pickAction.apply(root);
+
+    std::shared_ptr<const SoPickedPoint> pickedPoint;
+    if (auto* point = pickAction.getPickedPoint()) {
+        pickedPoint = std::shared_ptr<const SoPickedPoint>(new SoPickedPoint(*point));
+    }
+
+    root->unref();
+    return pickedPoint;
+}
+
 }  // namespace
+
+namespace Gui
+{
+
+class SoFCUnifiedSelectionTestAccess
+{
+public:
+    static SelectionPickPolicy::Candidate getPickCandidate(
+        const std::shared_ptr<const SoPickedPoint>& pickedPoint,
+        const SbVec2f& cursorPosition
+    )
+    {
+        SoFCUnifiedSelection::PickedInfo info;
+        info.ownedPoint = pickedPoint;
+        info.pp = info.ownedPoint.get();
+        return SoFCUnifiedSelection::getPickCandidate(info, nullptr, nullptr, &cursorPosition);
+    }
+};
+
+}  // namespace Gui
 
 TEST_F(SelectionTest, testSelectionAllowsObjectsWhenNoGateIsInstalled)
 {
@@ -184,6 +266,88 @@ TEST(SelectionPickPolicyTest, choosesAllowedCandidateWhenPreferredPickIsRejected
     };
 
     EXPECT_EQ(Gui::SelectionPickPolicy::choosePreferredPick(candidates), 1U);
+}
+
+TEST(SelectionPickPolicyTest, choosesNearestAllowedCandidateWhenPreferredPickIsRejected)
+{
+    int blockedOwner {};
+    int fartherOwner {};
+    int nearerOwner {};
+    std::vector<Gui::SelectionPickPolicy::Candidate> candidates {
+        pickCandidate(&blockedOwner, 1, true, true, false, 0.0F),
+        pickCandidate(&fartherOwner, 0, true, true, true, 0.09F),
+        pickCandidate(&nearerOwner, 0, true, true, true, 0.01F),
+    };
+
+    EXPECT_EQ(Gui::SelectionPickPolicy::choosePreferredPick(candidates), 2U);
+}
+
+TEST(SelectionPickPolicyTest, choosesHigherPriorityFallbackWhenDistancesAreEquivalent)
+{
+    int lowerPriorityOwner {};
+    int higherPriorityOwner {};
+    std::vector<Gui::SelectionPickPolicy::Candidate> candidates {
+        pickCandidate(&lowerPriorityOwner, 1, true, true, true, 0.0100000F),
+        pickCandidate(&higherPriorityOwner, 2, true, true, true, 0.0100005F),
+    };
+
+    auto fallback = Gui::SelectionPickPolicy::chooseAllowedFallbackPick(candidates);
+    ASSERT_TRUE(fallback.has_value());
+    EXPECT_EQ(*fallback, 1U);
+}
+
+TEST(SelectionPickPolicyTest, choosesAnnotationFallbackWhenPriorityAndDistanceAreEquivalent)
+{
+    int regularOwner {};
+    int annotationOwner {};
+    auto regular = pickCandidate(&regularOwner, 1, true, true, true, 0.0200000F);
+    auto annotation = pickCandidate(&annotationOwner, 1, true, true, true, 0.0200005F);
+    annotation.isAnnotation = true;
+
+    std::vector<Gui::SelectionPickPolicy::Candidate> candidates {regular, annotation};
+
+    auto fallback = Gui::SelectionPickPolicy::chooseAllowedFallbackPick(candidates);
+    ASSERT_TRUE(fallback.has_value());
+    EXPECT_EQ(*fallback, 1U);
+}
+
+TEST(SelectionPickPolicyTest, choosesAllowedFallbackCandidateUsingRealPickedPointDistances)
+{
+    const SbViewportRegion viewportRegion {SbVec2s {100, 100}};
+    const SbVec2s cursorPosition {50, 50};
+
+    auto nearerPoint = pickCubePoint(0.0F, cursorPosition, viewportRegion);
+    auto fartherPoint = pickCubePoint(0.4F, SbVec2s {70, 50}, viewportRegion);
+
+    ASSERT_NE(nearerPoint, nullptr);
+    ASSERT_NE(fartherPoint, nullptr);
+
+    const auto normalizedCursorPosition = normalizedPosition(cursorPosition, viewportRegion);
+    auto nearerCandidate = Gui::SoFCUnifiedSelectionTestAccess::getPickCandidate(
+        nearerPoint,
+        normalizedCursorPosition
+    );
+    auto fartherCandidate = Gui::SoFCUnifiedSelectionTestAccess::getPickCandidate(
+        fartherPoint,
+        normalizedCursorPosition
+    );
+
+    nearerCandidate.hasGate = true;
+    nearerCandidate.passesGate = true;
+    fartherCandidate.hasGate = true;
+    fartherCandidate.passesGate = true;
+
+    int blockedOwner {};
+    std::vector<Gui::SelectionPickPolicy::Candidate> candidates {
+        pickCandidate(&blockedOwner, 1, true, true, false, 0.0F),
+        fartherCandidate,
+        nearerCandidate,
+    };
+
+    auto fallback = Gui::SelectionPickPolicy::chooseAllowedFallbackPick(candidates);
+    ASSERT_TRUE(fallback.has_value());
+    EXPECT_LT(nearerCandidate.cursorDistanceSquared, fartherCandidate.cursorDistanceSquared);
+    EXPECT_EQ(*fallback, 2U);
 }
 
 TEST(SelectionPickPolicyTest, preservesPriorityChoiceWithinFirstOwner)
