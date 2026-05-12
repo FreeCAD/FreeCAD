@@ -41,6 +41,8 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex, ArcFitt
         arcMap.point_map[z] = vertex.m_p;
         pts_for_AddVertex.push_back(p);
         arcMap.z_prev = z;
+        std::cerr << "AddVertex: Line/First z=" << z << " at (" << vertex.m_p.x << ", "
+                  << vertex.m_p.y << ")" << std::endl;
     }
     else {
         if (vertex.m_p != prev_vertex->m_p) {
@@ -68,6 +70,12 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex, ArcFitt
                 = max(CArea::m_min_arc_points, (int)ceil(abs(phi1 - phi0) / max_dphi));
             const double dphi = (phi1 - phi0) / num_segments;
 
+            const int64_t z_start = arcMap.z_next;
+            std::cerr << "AddVertex: Arc z=" << z_start << ".." << (z_start + num_segments - 1)
+                      << " (" << num_segments << " segments), endpoint=(" << vertex.m_p.x << ", "
+                      << vertex.m_p.y << "), center=(" << vertex.m_c.x << ", " << vertex.m_c.y
+                      << ")" << std::endl;
+
             for (int i = 1; i <= num_segments; i++) {
                 // Create a unique z-value for each interpolated point along the arc
                 const int64_t z = arcMap.z_next++;
@@ -79,9 +87,11 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex, ArcFitt
                     arcMap.point_map[z] = vertex.m_p;
                 }
                 else {
-                    const double nx = (vertex.m_c.x + radius * cos(phi0 + dphi * i)) * CArea::m_units;
-                    const double ny = (vertex.m_c.y + radius * sin(phi0 + dphi * i)) * CArea::m_units;
-                    pts_for_AddVertex.push_back(PointD(nx, ny, z));
+                    const double px = vertex.m_c.x + radius * cos(phi0 + dphi * i);
+                    const double py = vertex.m_c.y + radius * sin(phi0 + dphi * i);
+                    pts_for_AddVertex.push_back(PointD(px * CArea::m_units, py * CArea::m_units, z));
+                    // Store arc center in point_map for intermediate points
+                    arcMap.point_map[z] = vertex.m_c;
                 }
 
                 arcMap.arc_centers[{arcMap.z_prev, z}] = vertex.m_c;
@@ -338,6 +348,7 @@ static void MakePoly(const CCurve& curve, Path64& p, bool reverse, ArcFittingMap
         }
         prev_vertex = &vertex;
     }
+    std::cerr << std::endl;
 
     p.resize(pts_for_AddVertex.size());
     if (reverse) {
@@ -371,6 +382,8 @@ static void MakePolyPoly(const CArea& area, Paths64& pp, bool reverse, ArcFittin
 
 static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed, const ArcFittingMap& arcMap)
 {
+    std::cerr << "\n=== SetFromResult: Path with " << p.size() << " points ===" << std::endl;
+
     if (CArea::m_clipper_clean_distance >= heeks::Point::tolerance) {
         p = SimplifyPath(p, CArea::m_clipper_clean_distance, is_closed);
     }
@@ -384,12 +397,26 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
     // Yeah, do that. But only for open paths. Also write a test for it.
     int j0 = 0;
     if (is_closed && p.size() > 0) {
+        // Find index with minimum z-value
         for (int j = 0; j < p.size(); j++) {
             if (p[j].z < p[j0].z) {
                 j0 = j;
             }
         }
+
+        // Find the first instance in the contiguous run of min-z
+        int64_t min_z = p[j0].z;
+        int start_search = j0;
+        do {
+            int prev_idx = (j0 - 1 + p.size()) % p.size();
+            if (p[prev_idx].z != min_z) {
+                break;  // Found the start of the run
+            }
+            j0 = prev_idx;
+        } while (j0 != start_search);  // Stop if we've wrapped all the way around
     }
+
+    std::cerr << "Starting at j0=" << j0 << std::endl;
 
     // Loop through points starting at j0
     int64_t prevZ = -1;
@@ -411,12 +438,30 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
             || ((prevZ != pt.z) && (centerIt == arcMap.arc_centers.end()));
 
         if (isLine) {
+            std::cerr << std::endl;  // Extra newline before adding new vertex
+            std::cerr << "  [" << dj << "] j=" << j << " (" << p.x << ", " << p.y << ", " << pt.z
+                      << ") ";
+            std::cerr << "Edge (" << prevZ << ", " << pt.z << "): LINE" << std::endl;
             curve.m_vertices.emplace_back(0, p, heeks::Point {0, 0});
             phi_total = 0.0;
         }
         else {
-            const heeks::Point center = (prevZ == pt.z) ? arcMap.point_map.at(pt.z)
-                                                        : centerIt->second;
+            heeks::Point center;
+            if (prevZ == pt.z) {
+                auto point_it = arcMap.point_map.find(pt.z);
+                if (point_it != arcMap.point_map.end()) {
+                    center = point_it->second;
+                }
+                else {
+                    std::cerr << std::endl
+                              << "ERROR: prevZ == pt.z (" << pt.z << ") but not in point_map."
+                              << std::endl;
+                    throw std::runtime_error("prevZ == pt.z but z not in point_map");
+                }
+            }
+            else {
+                center = centerIt->second;
+            }
 
             const double phi0 = atan2(prevP.y - center.y, prevP.x - center.x);
             const double phi1 = atan2(p.y - center.y, p.x - center.x);
@@ -426,20 +471,43 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
                 dphi -= 2 * M_PI;
             }
             else if (dphi < -M_PI) {
-                dphi += M_PI;
+                dphi += 2 * M_PI;
             }
 
             // Positive dphi means ccw arc, negative means cw arc
             int type = (dphi > 0) ? 1 : -1;
 
             if (curve.m_vertices.size() > 0 && curve.m_vertices.back().m_type == type
-                && curve.m_vertices.back().m_c == center && phi_total + abs(dphi) <= M_PI) {
+                && curve.m_vertices.back().m_c == center && phi_total + abs(dphi) <= 2 * M_PI) {
                 // Extend the previous CVertex arc
+                std::cerr << "  [" << dj << "] j=" << j << " (" << p.x << ", " << p.y << ", "
+                          << pt.z << ") ";
+                std::cerr << "Edge (" << prevZ << ", " << pt.z << "): ARC";
+                if (prevZ == pt.z) {
+                    std::cerr << " (prevZ==pt.z), center from point_map=(" << center.x << ", "
+                              << center.y << ")";
+                }
+                else {
+                    std::cerr << ", center from arc_centers=(" << center.x << ", " << center.y << ")";
+                }
+                std::cerr << " -> EXTEND" << std::endl;
                 curve.m_vertices.back().m_p = p;
                 phi_total += abs(dphi);
             }
             else {
                 // Add a new CVertex for the arc
+                std::cerr << std::endl;  // Extra newline before adding new vertex
+                std::cerr << "  [" << dj << "] j=" << j << " (" << p.x << ", " << p.y << ", "
+                          << pt.z << ") ";
+                std::cerr << "Edge (" << prevZ << ", " << pt.z << "): ARC";
+                if (prevZ == pt.z) {
+                    std::cerr << " (prevZ==pt.z), center from point_map=(" << center.x << ", "
+                              << center.y << ")";
+                }
+                else {
+                    std::cerr << ", center from arc_centers=(" << center.x << ", " << center.y << ")";
+                }
+                std::cerr << " -> NEW" << std::endl;
                 curve.m_vertices.emplace_back(type, p, center);
                 phi_total = abs(dphi);
             }

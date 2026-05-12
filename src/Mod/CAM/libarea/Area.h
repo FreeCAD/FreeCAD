@@ -75,7 +75,7 @@ struct ArcFittingMap
     int64_t z_prev;
 
     ArcFittingMap()
-        : z_next(0)
+        : z_next(1)
         , z_prev(0)
     {}
 };
