@@ -66,9 +66,9 @@ FitBSplineCurveWidget::~FitBSplineCurveWidget()
 
 void FitBSplineCurveWidget::setParametrizationTypes()
 {
-    d->ui.paramType->setItemData(0, QString::fromLatin1("ChordLength"));
-    d->ui.paramType->setItemData(1, QString::fromLatin1("Centripetal"));
-    d->ui.paramType->setItemData(2, QString::fromLatin1("Uniform"));
+    d->ui.paramType->setItemData(0, QStringLiteral("ChordLength"));
+    d->ui.paramType->setItemData(1, QStringLiteral("Centripetal"));
+    d->ui.paramType->setItemData(2, QStringLiteral("Uniform"));
 }
 
 QString FitBSplineCurveWidget::getCurrentParametrizationType() const
