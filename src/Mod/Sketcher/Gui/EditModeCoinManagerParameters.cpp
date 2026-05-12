@@ -28,6 +28,7 @@
 
 #include <Base/Color.h>
 #include <Gui/ViewParams.h>
+#include <memory>
 
 #include "EditModeCoinManagerParameters.h"
 
