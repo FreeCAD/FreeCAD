@@ -404,7 +404,7 @@ void MaterialProperty::setQuantity(const Base::Quantity& value)
         //
         // This needs to be parsed rather than just setting units. Otherwise we get mm->m conversion
         // errors, etc
-        quantity = Base::Quantity::parse(quantity.getUserString() + getUnits().toStdString());
+        quantity = Base::Quantity::parse(quantity.getSafeUserString() + getUnits().toStdString());
     }
     else {
         auto propertyUnit = Base::Quantity::parse(getUnits().toStdString()).getUnit();

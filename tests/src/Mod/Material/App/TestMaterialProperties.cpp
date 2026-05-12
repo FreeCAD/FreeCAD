@@ -153,6 +153,20 @@ TEST_F(TestMaterialProperties, TestSingle)
     EXPECT_EQ(variant.toString().size(), 0);
 }
 
+TEST_F(TestMaterialProperties, TestSmallDimensionlessQuantityUsesDefaultUnits)
+{
+    Materials::MaterialProperty prop(modelProp2, QStringLiteral("sampleUUID"));
+
+    prop.setQuantity(Base::Quantity::parse("0.0001"));
+
+    auto expected = Base::Quantity::parse("0.0001kg/m^3");
+    expected.setFormat(Materials::MaterialValue::getQuantityFormat());
+    auto quantity = prop.getValue().value<Base::Quantity>();
+    EXPECT_DOUBLE_EQ(quantity.getValue(), expected.getValue());
+    EXPECT_EQ(quantity.getUnit(), expected.getUnit());
+    EXPECT_EQ(prop.getString(), QString::fromStdString(expected.getUserString()));
+}
+
 void check2DArray(Materials::MaterialProperty& prop)
 {
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Array2D);
