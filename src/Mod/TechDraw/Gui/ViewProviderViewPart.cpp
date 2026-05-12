@@ -370,12 +370,9 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string>& subNames)
     // pressing Del in safe mode deleted the whole view instead of the
     // selected cosmetic element.
     if (!subNames.empty()) {
-        TechDraw::DrawViewPart* dvp = getViewObject();
-        if (dvp) {
+        if (TechDraw::DrawViewPart* dvp = getViewObject()) {
             dvp->deleteCosmeticElements(subNames);
-            dvp->refreshCEGeoms();
-            dvp->refreshCLGeoms();
-            dvp->refreshCVGeoms();
+            dvp->refreshAllCosmetic();
             dvp->requestPaint();
             return false;  // veto deletion of the object itself
         }

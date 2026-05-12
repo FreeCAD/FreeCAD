@@ -129,12 +129,9 @@ bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string>& subName
 {
     // If cosmetic sub-elements are selected, delete only those and veto object deletion.
     if (!subNames.empty()) {
-        TechDraw::DrawViewPart* dvp = getViewObject();
-        if (dvp) {
+        if (TechDraw::DrawViewPart* dvp = getViewObject()) {
             dvp->deleteCosmeticElements(subNames);
-            dvp->refreshCEGeoms();
-            dvp->refreshCLGeoms();
-            dvp->refreshCVGeoms();
+            dvp->refreshAllCosmetic();
             dvp->requestPaint();
             return false;
         }

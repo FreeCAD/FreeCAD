@@ -90,6 +90,13 @@ void CosmeticExtension::deleteCosmeticElements(std::vector<std::string> removabl
     }
 }
 
+void CosmeticExtension::refreshAllCosmetic()
+{
+    refreshCEGeoms();
+    refreshCLGeoms();
+    refreshCVGeoms();
+}
+
 //==============================================================================
 //CosmeticVertex x, y are stored as unscaled, but mirrored (inverted Y) values.
 //if you are creating a CV based on calculations of scaled geometry, you need to
