@@ -447,9 +447,7 @@ def drill_translate(
         return
 
     # Create expander and expand the drill cycle
-    expander = DrillCycleExpander(
-        MachineState( initial_position )
-    )
+    expander = DrillCycleExpander(MachineState(initial_position))
     expander.machine_state.addCommand(Path.Command(drill_retract_mode))
 
     expanded = expander.expand_command(Path.Command(command, drill_params))
