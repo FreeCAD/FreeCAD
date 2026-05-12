@@ -22,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include <Base/Console.h>
 #include <Base/Interpreter.h>
 
 
@@ -39,10 +37,8 @@ public:
             "readDXF",
             &Module::readDXF,
             "readDXF(filename,[document,ignore_errors]): "
-            "Imports a DXF file into the given document. "
-            "ignore_errors is True by default. "
-            "NOTE: DraftUtils.readDXF is removed. "
-            "Use Import.readDxf instead."
+            "Deprecated compatibility entry point. "
+            "Use Import.readDXF instead."
         );
         initialize(
             "The DraftUtils module contains utility functions for the Draft module."
@@ -54,10 +50,14 @@ public:
 private:
     Py::Object readDXF(const Py::Tuple& /*args*/)
     {
-        Base::Console().warning(
-            "DraftUtils.readDXF is removed. "
-            "Use Import.readDxf instead.\n"
-        );
+        if (!Base::warnDeprecatedPythonApi(
+                "Method",
+                "DraftUtils.readDXF",
+                "This compatibility entry point no longer imports files. Use Import.readDXF "
+                "instead."
+            )) {
+            throw Py::Exception();
+        }
         return Py::None();
     }
 };

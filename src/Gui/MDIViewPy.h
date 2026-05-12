@@ -61,6 +61,7 @@ public:
     Py::Object redoActions(const Py::Tuple&);
     //@}
 
+    Py::Object message(const Py::Tuple&);
     Py::Object sendMessage(const Py::Tuple&);
     Py::Object supportMessage(const Py::Tuple&);
     Py::Object fitAll(const Py::Tuple&);

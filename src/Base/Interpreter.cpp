@@ -23,6 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cassert>
 #include <sstream>
 #include <boost/regex.hpp>
 
@@ -41,6 +42,28 @@ char format2[1024];  // Warning! Can't go over 512 characters!!!
 unsigned int format2_len = 1024;
 
 using namespace Base;
+
+bool Base::warnDeprecatedPythonApi(const char* apiKind, const char* qualifiedName, const char* message)
+{
+    PyGILStateLocker locker;
+    assert(apiKind && *apiKind);
+    assert(qualifiedName && *qualifiedName);
+    const char* reasonSeparator = (message && *message) ? ": " : "";
+    int warningResult = PyErr_WarnFormat(
+        PyExc_DeprecationWarning,
+        1,
+        "%s '%s' is deprecated%s%s",
+        apiKind,
+        qualifiedName,
+        reasonSeparator,
+        message ? message : ""
+    );
+    if (warningResult < 0) {
+        return false;
+    }
+
+    return true;
+}
 
 PyException::PyException(const Py::Object& obj)
 {
