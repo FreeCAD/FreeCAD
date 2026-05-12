@@ -22,6 +22,9 @@
 
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
 #include <Base/Vector3D.h>
@@ -101,7 +104,10 @@ public:
     PyObject* getExtensionPyObject() override;
 
 private:
-
+    // Removed cosmetic objects can still be referenced by Python wrappers after remove* returns.
+    std::vector<std::shared_ptr<CosmeticVertex>> retiredCosmeticVertexes;
+    std::vector<std::shared_ptr<CosmeticEdge>> retiredCosmeticEdges;
+    std::vector<std::shared_ptr<CenterLine>> retiredCenterLines;
 };
 
 using CosmeticExtensionPython = App::ExtensionPythonT<CosmeticExtension>;

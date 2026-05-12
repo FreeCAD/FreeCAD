@@ -37,6 +37,17 @@ using DU = DrawUtil;
 
 EXTENSION_PROPERTY_SOURCE(TechDraw::CosmeticExtension, App::DocumentObjectExtension)
 
+namespace
+{
+template <typename T>
+void retirePointers(std::vector<std::shared_ptr<T>>& retired, const std::vector<T*>& values)
+{
+    for (auto* value : values) {
+        retired.emplace_back(value);
+    }
+}
+}
+
 CosmeticExtension::CosmeticExtension()
 {
     static const char *cgroup = "Cosmetics";
@@ -51,8 +62,7 @@ CosmeticExtension::CosmeticExtension()
 
 CosmeticExtension::~CosmeticExtension()
 {
-    // do not free memory here as the destruction of the properties will
-    // delete any entries.
+    // Removed cosmetics are owned by the retired lists until the extension is destroyed.
 }
 
 /// get a pointer to the parent view
@@ -102,9 +112,7 @@ void CosmeticExtension::deleteCosmeticElements(std::vector<std::string> removabl
 void CosmeticExtension::clearCosmeticVertexes()
 {
     std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
-    for (auto& vert : cVerts) {
-        delete vert;
-    }
+    retirePointers(retiredCosmeticVertexes, cVerts);
     std::vector<CosmeticVertex*> noVerts;
     CosmeticVertexes.setValues(noVerts);
 }
@@ -250,7 +258,9 @@ void CosmeticExtension::removeCosmeticVertex(const std::string& delTag)
     std::vector<CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
     std::vector<CosmeticVertex*> newVerts;
     for (auto& cv: cVerts) {
-        if (cv->getTagAsString() != delTag)  {
+        if (cv->getTagAsString() == delTag)  {
+            retiredCosmeticVertexes.emplace_back(cv);
+        } else {
             newVerts.push_back(cv);
         }
     }
@@ -272,9 +282,7 @@ void CosmeticExtension::removeCosmeticVertex(const std::vector<std::string>& del
 void CosmeticExtension::clearCosmeticEdges()
 {
     std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
-    for (auto& edge : cEdges) {
-        delete edge;
-    }
+    retirePointers(retiredCosmeticEdges, cEdges);
     std::vector<CosmeticEdge*> noEdges;
     CosmeticEdges.setValues(noEdges);
 }
@@ -394,11 +402,11 @@ void CosmeticExtension::removeCosmeticEdge(const std::string& delTag)
     std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     std::vector<CosmeticEdge*> newEdges;
     for (auto& ce: cEdges) {
-        if (ce->getTagAsString() != delTag)  {
+        if (ce->getTagAsString() == delTag)  {
+            retiredCosmeticEdges.emplace_back(ce);
+        } else {
             newEdges.push_back(ce);
         }
-        // delete ce; here leads to a crash.  https://github.com/FreeCAD/FreeCAD/issues/24196
-        // Something(?) is still accessing the edge.  Also applies to CosmeticVertex and CenterLine.
     }
     CosmeticEdges.setValues(newEdges);
 }
@@ -407,7 +415,6 @@ void CosmeticExtension::removeCosmeticEdge(const std::string& delTag)
 /// remove the cosmetic edges with the given tags from the list property
 void CosmeticExtension::removeCosmeticEdge(const std::vector<std::string>& delTags)
 {
-    std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     for (auto& t: delTags) {
         removeCosmeticEdge(t);
     }
@@ -419,9 +426,7 @@ void CosmeticExtension::removeCosmeticEdge(const std::vector<std::string>& delTa
 void CosmeticExtension::clearCenterLines()
 {
     std::vector<TechDraw::CenterLine*> cLines = CenterLines.getValues();
-    for (auto& line : cLines) {
-        delete line;
-    }
+    retirePointers(retiredCenterLines, cLines);
     std::vector<CenterLine*> noLines;
     CenterLines.setValues(noLines);
 }
@@ -540,7 +545,9 @@ void CosmeticExtension::removeCenterLine(const std::string& delTag)
     std::vector<CenterLine*> cLines = CenterLines.getValues();
     std::vector<CenterLine*> newLines;
     for (auto& cl: cLines) {
-        if (cl->getTagAsString() != delTag)  {
+        if (cl->getTagAsString() == delTag)  {
+            retiredCenterLines.emplace_back(cl);
+        } else {
             newLines.push_back(cl);
         }
     }
@@ -648,5 +655,3 @@ namespace App {
 // explicit template instantiation
   template class TechDrawExport ExtensionPythonT<TechDraw::CosmeticExtension>;
 }
-
-
