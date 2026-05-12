@@ -89,12 +89,15 @@ private:
 
     QAction _deleteAction;
 
+    void selectMaterialLibrary();
+    void selectCurrentMaterial();
     QString getPath(const QStandardItem* item) const;
     std::shared_ptr<Materials::MaterialLibrary> currentLibrary();
     void createFolder(const QString& path);
     void renameFolder(const QString& oldPath, const QString& newPath);
     void deleteRecursive(const QString& path);
     QString pathFromIndex(const QModelIndex& index) const;
+    QStandardItem* findMaterialItem(QStandardItem* item, const QString& uuid) const;
     int confirmDelete(QWidget* parent);
     bool selectedHasChildren();
     void deleteSelected();

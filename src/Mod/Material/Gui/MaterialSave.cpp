@@ -54,6 +54,7 @@ MaterialSave::MaterialSave(const std::shared_ptr<Materials::Material>& material,
     ui->setupUi(this);
 
     setLibraries();
+    selectMaterialLibrary();
     createModelTree();
     showSelectedTree();
 
@@ -376,6 +377,7 @@ void MaterialSave::showSelectedTree()
 
         auto modelTree = Materials::MaterialManager::getManager().getMaterialTree(*library);
         addMaterials(*lib, modelTree, folderIcon, icon);
+        selectCurrentMaterial();
     }
     else {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -395,6 +397,79 @@ QString MaterialSave::getPath(const QStandardItem* item) const
     }
 
     return path;
+}
+
+void MaterialSave::selectMaterialLibrary()
+{
+    auto materialLibrary = _material->getLibrary();
+    if (!materialLibrary) {
+        return;
+    }
+
+    for (int i = 0; i < ui->comboLibrary->count(); i++) {
+        auto variant = ui->comboLibrary->itemData(i);
+        auto library = variant.value<std::shared_ptr<Materials::MaterialLibrary>>();
+        if (library && library->getName() == materialLibrary->getName()) {
+            ui->comboLibrary->setCurrentIndex(i);
+            return;
+        }
+    }
+}
+
+QStandardItem* MaterialSave::findMaterialItem(QStandardItem* item, const QString& uuid) const
+{
+    if (!item) {
+        return nullptr;
+    }
+
+    auto itemUuid = item->data(Qt::UserRole);
+    if (itemUuid.isValid() && itemUuid.toString() == uuid) {
+        return item;
+    }
+
+    for (int i = 0; i < item->rowCount(); i++) {
+        auto match = findMaterialItem(item->child(i), uuid);
+        if (match) {
+            return match;
+        }
+    }
+
+    return nullptr;
+}
+
+void MaterialSave::selectCurrentMaterial()
+{
+    auto uuid = _material->getUUID();
+    if (uuid.isEmpty()) {
+        return;
+    }
+
+    auto tree = ui->treeMaterials;
+    auto model = static_cast<QStandardItemModel*>(tree->model());
+    QStandardItem* item = nullptr;
+    for (int i = 0; i < model->rowCount(); i++) {
+        item = findMaterialItem(model->item(i), uuid);
+        if (item) {
+            break;
+        }
+    }
+    if (!item) {
+        return;
+    }
+
+    for (auto parent = item->parent(); parent != nullptr; parent = parent->parent()) {
+        tree->setExpanded(parent->index(), true);
+    }
+
+    auto selectionModel = tree->selectionModel();
+    selectionModel->select(item->index(),
+                           QItemSelectionModel::ClearAndSelect
+                               | QItemSelectionModel::Current);
+    tree->setCurrentIndex(item->index());
+
+    _selectedPath = getPath(item->parent());
+    _selectedFull = getPath(item);
+    _selectedUUID = uuid;
 }
 
 void MaterialSave::onSelectModel(const QItemSelection& selected, const QItemSelection& deselected)
