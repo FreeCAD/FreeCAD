@@ -3211,6 +3211,10 @@ void TreeWidget::sortDroppedObjects(
         }
 
         objList = propGroup->getValue();
+        if (std::ranges::find(objList, underMouseObj) == objList.end()) {
+            // Claimed children such as origins can appear in the tree without being part of Group.
+            return;
+        }
         sortIntoList(objList);  // Move dropped objects to correct position
         propGroup->setValue(sortedObjList);
     }
