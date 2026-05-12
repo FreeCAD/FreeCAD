@@ -70,7 +70,26 @@ class DraftBaseWidget(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+    def _activates_point_button(self, widget, event):
+        if widget.objectName() != "addButton":
+            return False
+        return event.key() in (
+            QtCore.Qt.Key_Space,
+            QtCore.Qt.Key_Return,
+            QtCore.Qt.Key_Enter,
+        )
+
     def eventFilter(self, widget, event):
+        if event.type() == QtCore.QEvent.ShortcutOverride and self._activates_point_button(
+            widget, event
+        ):
+            event.accept()
+            return True
+        if event.type() == QtCore.QEvent.KeyPress and self._activates_point_button(widget, event):
+            if widget.isEnabled():
+                widget.click()
+            event.accept()
+            return True
         if event.type() == QtCore.QEvent.KeyPress and event.text().upper() in _get_incmd_shortcut(
             "CycleSnap"
         ):
@@ -365,6 +384,7 @@ class DraftToolBar:
         )  # Required to detect snap cycling in case of Z constraining.
         self.zValue.setText(FreeCAD.Units.Quantity(0, FreeCAD.Units.Length).UserString)
         self.pointButton = self._pushbutton("addButton", bl, icon="Draft_AddPoint")
+        self.pointButton.installEventFilter(self.baseWidget)
 
         # text
 
