@@ -30,6 +30,25 @@ from . import has_ifcopenshell
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 
+def is_transient_view_object(obj):
+    """Check if an object is only a temporary GUI preview."""
+
+    if not FreeCAD.GuiUp:
+        return False
+    if "StepId" in obj.PropertiesList:
+        return False
+    try:
+        vobj = obj.ViewObject
+    except (AttributeError, ReferenceError):
+        return False
+    if not vobj:
+        return False
+    try:
+        return obj.isDerivedFrom("Part::Feature") and not vobj.ShowInTree
+    except ReferenceError:
+        return False
+
+
 def add_observer():
     """Adds this observer to the running FreeCAD instance"""
 
@@ -220,6 +239,8 @@ class ifc_observer:
             return
         del self.docname
         del self.objname
+        if is_transient_view_object(obj):
+            return
         if (
             obj.isDerivedFrom("Part::Feature")
             or "IfcType" in obj.PropertiesList
@@ -229,6 +250,7 @@ class ifc_observer:
             from . import ifc_geometry  # lazy loading
             from . import ifc_tools  # lazy loading
 
+            obj.recompute()
             newobj = ifc_tools.aggregate(obj, doc)
             ifc_geometry.add_geom_properties(newobj)
             doc.recompute()

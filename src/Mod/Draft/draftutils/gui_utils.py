@@ -150,6 +150,7 @@ def autogroup(obj):
             from nativeifc import ifc_tools
 
             parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
+            obj.recompute()
             ifc_tools.aggregate(obj, parent)
         except:
             pass
