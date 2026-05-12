@@ -1141,81 +1141,6 @@ const View3DInventorViewer* ViewProvider::getActiveViewer() const
     return view->getViewer();
 }
 
-static int BBoxCacheId;
-struct BBoxKey
-{
-    std::string subname;
-    Base::Matrix4D mat;
-    bool transform;
-
-    BBoxKey(const char* str, const Base::Matrix4D* matrix, bool trans)
-        : subname(str ? str : "")
-        , transform(trans)
-    {
-        if (matrix) {
-            mat = *matrix;
-        }
-
-        // Normalize -0.0 to 0.0 to ensure consistent hashing
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                if (mat[i][j] == 0.0) {
-                    mat[i][j] = 0.0;
-                }
-            }
-        }
-    }
-
-    bool operator==(const BBoxKey& other) const
-    {
-        if (transform != other.transform || subname != other.subname) {
-            return false;
-        }
-
-        // Exact element-wise comparison to avoid fuzzy Base::Matrix4D::operator==
-        // This satisfies std::unordered_map's strict equivalence relation requirement.
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                if (mat[i][j] != other.mat[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-};
-static std::hash<std::string> StringHasher;
-static std::hash<bool> BoolHasher;
-static std::hash<double> DoubleHasher;
-
-struct BBoxKeyHasher
-{
-    std::size_t operator()(const BBoxKey& key) const
-    {
-        std::size_t seed = StringHasher(key.subname);
-        Base::hash_combine(seed, BoolHasher(key.transform));
-
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                Base::hash_combine(seed, DoubleHasher(key.mat[i][j]));
-            }
-        }
-        return seed;
-    }
-};
-
-struct ViewProvider::BoundingBoxCache
-{
-    int cacheId = 0;
-    bool busy = false;
-    std::unordered_map<BBoxKey, Base::BoundBox3d, BBoxKeyHasher> cache;
-};
-
-void ViewProvider::clearBoundingBoxCache()
-{
-    ++BBoxCacheId;
-}
-
 Base::BoundBox3d ViewProvider::getBoundingBox(
     const char* subname,
     const Base::Matrix4D* mat,
@@ -1224,40 +1149,7 @@ Base::BoundBox3d ViewProvider::getBoundingBox(
     int depth
 ) const
 {
-    if (testStatus(Gui::isRestoring)) {
-        if (bboxCache) {
-            auto it = bboxCache->cache.find(BBoxKey(subname, mat, transform));
-            if (it != bboxCache->cache.end()) {
-                return it->second;
-            }
-        }
-        return Base::BoundBox3d();
-    }
-
-    if (!bboxCache) {
-        bboxCache.reset(new BoundingBoxCache);
-    }
-
-    if (bboxCache->busy) {
-        return ViewProvider::_getBoundingBox(subname, mat, transform, viewer, depth);
-    }
-
-    if (!ViewParams::instance()->getUseBoundingBoxCache()) {
-        Base::FlagToggler<> guard(bboxCache->busy);
-        return _getBoundingBox(subname, mat, transform, viewer, depth);
-    }
-
-    if (bboxCache->cacheId != BBoxCacheId) {
-        bboxCache->cache.clear();
-        bboxCache->cacheId = BBoxCacheId;
-    }
-
-    auto& bbox = bboxCache->cache[BBoxKey(subname, mat, transform)];
-    if (!bbox.IsValid()) {
-        Base::FlagToggler<> guard(bboxCache->busy);
-        bbox = _getBoundingBox(subname, mat, transform, viewer, depth);
-    }
-    return bbox;
+    return _getBoundingBox(subname, mat, transform, viewer, depth);
 }
 
 Base::BoundBox3d ViewProvider::_getBoundingBox(
