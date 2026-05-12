@@ -552,6 +552,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewPr
 ViewProviderSketch::ViewProviderSketch()
     : SelectionObserver(false)
     , toolManager(this)
+    , editingCancelled(false)
     , Mode(STATUS_NONE)
     , pcSketchFaces(new SoSketchFaces)
     , pcSketchFacesToggle(new SoToggleSwitch)
@@ -758,7 +759,7 @@ void ViewProviderSketch::purgeHandler()
         return editdoc->getEditViewProvider() == this;
     });
     Gui::View3DInventor* view = nullptr;
-    if (!editDoc) {
+    if (editDoc) {
         view = dynamic_cast<Gui::View3DInventor*>(editDoc->getActiveView());
     }
 
@@ -1176,14 +1177,21 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             moveConstraint(constr, id, snappedPos);
                             constraints[id] = constr;
                         }
-
                         Sketcher::SketchObject* obj = getSketchObject();
-                        obj->Constraints.setValues(std::move(constraints));
+                        {
+                            // Disable Constraints notifications for this change
+                            // so that it does not trigger a solve
+                            bool enableNotify = obj->Constraints.enableNotify(false);
+                            obj->Constraints.setValues(std::move(constraints));
+                            obj->Constraints.enableNotify(enableNotify);
+                        }
 
                         preselection.PreselectConstraintSet = drag.DragConstraintSet;
                         drag.DragConstraintSet.clear();
                         getDocument()->commitCommand();
-                        tryAutoRecomputeIfNotSolve(getSketchObject());
+                        // We didn't actually solve because this is only a cosmetic change
+                        // but we still need to redraw
+                        slotSolverUpdate();
                     }
                     setSketchMode(STATUS_NONE);
                     return true;
@@ -2002,47 +2010,20 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
     if (!isInEditMode())
         return;
 
-#ifdef FC_DEBUG
     Sketcher::SketchObject* obj = getSketchObject();
-    int intGeoCount = obj->getHighestCurveIndex() + 1;
-    int extGeoCount = obj->getExternalGeometryCount();
-#endif
-
-    // with memory allocation
-    const std::vector<Part::Geometry*> geomlist = getSolvedSketch().extractGeometry(true, true);
-
-    // lambda to finalize the move
-    auto cleanAndDraw = [this, geomlist](){
-        // delete the cloned objects
-        for (Part::Geometry* geomPtr : geomlist) {
-            if (geomPtr) {
-                delete geomPtr;
-            }
-        }
-
-        draw(true, false);
-    };
-
-#ifdef FC_DEBUG
-    assert(int(geomlist.size()) == extGeoCount + intGeoCount);
-    assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
-           || Constr->First != GeoEnum::GeoUndef);
-    boost::ignore_unused(intGeoCount);
-    boost::ignore_unused(extGeoCount);
-#endif
 
     if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY
         || Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
 
         Base::Vector3d p1(0., 0., 0.), p2(0., 0., 0.);
         if (Constr->SecondPos != Sketcher::PointPos::none) {// point to point distance
-            p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-            p2 = getSolvedSketch().getPoint(Constr->Second, Constr->SecondPos);
+            p1 = obj->getPoint(Constr->First, Constr->FirstPos);
+            p2 = obj->getPoint(Constr->Second, Constr->SecondPos);
         }
         else if (Constr->Second != GeoEnum::GeoUndef) {
-            p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-            const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->First);
-            const Part::Geometry *geo2 = GeoList::getGeometryFromGeoId (geomlist, Constr->Second);
+            p1 = obj->getPoint(Constr->First, Constr->FirstPos);
+            const Part::Geometry *geo1 = obj->getGeometry(Constr->First);
+            const Part::Geometry *geo2 = obj->getGeometry(Constr->Second);
 
             if (isLineSegment(*geo2)) {
                 if (isCircleOrArc(*geo1) && Constr->FirstPos == Sketcher::PointPos::none){
@@ -2086,10 +2067,10 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
             }
         }
         else if (Constr->FirstPos != Sketcher::PointPos::none) {
-            p2 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
+            p2 = obj->getPoint(Constr->First, Constr->FirstPos);
         }
         else if (Constr->First != GeoEnum::GeoUndef) {
-            const Part::Geometry* geo = GeoList::getGeometryFromGeoId(geomlist, Constr->First);
+            const Part::Geometry* geo = obj->getGeometry(Constr->First);
             if (geo->is<Part::GeomLineSegment>()) {
                 const Part::GeomLineSegment* lineSeg =
                     static_cast<const Part::GeomLineSegment*>(geo);
@@ -2108,7 +2089,8 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                     Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
                     Constr->LabelDistance = centerToToPos * arcDirection;
 
-                    cleanAndDraw();
+
+                    draw(true, false);
                     return;
                 }
                 else {
@@ -2214,7 +2196,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
         moveAngleConstraint(Constr, constNum, toPos);
     }
 
-    cleanAndDraw();
+    draw(true, false);
 }
 
 void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int constNum, const Base::Vector2d& toPos)
@@ -2700,7 +2682,20 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         resetPreselectPoint();
         preselection.blockedPreselection = false;
         updateToolTip(); // Clear tooltip when no point picked
-
+        // when no point is preselected, the cursor will stay as Qt::ForbiddenCursor
+        // because the code hasn't entered SelectionSingleton::setPreselect
+        // so the cursor has to be restored to normal
+        const Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (!doc)
+        {
+          return false;
+        }
+        Gui::MDIView* mdi = doc->getActiveView();
+        if (!mdi)
+        {
+          return false;
+        }
+        mdi->restoreOverrideCursor();
         return true;
     }
 
@@ -3593,7 +3588,7 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 {
     ViewProvider2DObject::attach(pcFeat);
 
-    getAnnotation()->addChild(pcSketchFacesToggle);
+    getOrCreateAnnotation()->addChild(pcSketchFacesToggle);
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -3608,6 +3603,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     if (ModNum != ViewProviderSketch::Default) {
         return PartGui::ViewProvider2DObject::setEdit(ModNum);
     }
+
+    // Make a backup of the sketch object in case the user cancel editing.
+    sketchBackup.str("");
+    sketchBackup.clear();
+    getObject()->dumpToStream(sketchBackup, 0);
+    sketchBackup.seekg(0);
 
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
@@ -3979,13 +3980,21 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         preselection.reset();
         selection.reset();
 
-        App::AutoTransaction trans(getDocument()->getDocument(), "Sketch recompute");
-        try {
-            // and update the sketch
-            // getSketchObject()->getDocument()->recompute();
-            Gui::Command::updateActive();
+        if (editingCancelled) {
+            App::AutoTransaction trans(getDocument()->getDocument(), "Cancel sketch editing");
+            // Restore the object as it was when edit is set.
+            getObject()->restoreFromStream(sketchBackup);
+            getSketchObject()->purgeTouched();
         }
-        catch (...) {
+        else {
+            App::AutoTransaction trans(getDocument()->getDocument(), "Sketch recompute");
+            try {
+                // and update the sketch
+                // getSketchObject()->getDocument()->recompute();
+                Gui::Command::updateActive();
+            }
+            catch (...) {
+            }
         }
     }
 
@@ -4348,7 +4357,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
 
         for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); ++rit) {
             try {
-                Gui::cmdAppObjectArgs(getObject(), "delConstraint(%d)", *rit);
+                Gui::cmdAppObjectArgs(getObject(), "delConstraint(%d, True)", *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
@@ -4400,7 +4409,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
             stream << *endit;
 
             try {
-                Gui::cmdAppObjectArgs(getObject(), "delGeometries([%s])", stream.str().c_str());
+                Gui::cmdAppObjectArgs(getObject(), "delGeometries([%s], True)", stream.str().c_str());
             }
             catch (const Base::Exception& e) {
                 Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());

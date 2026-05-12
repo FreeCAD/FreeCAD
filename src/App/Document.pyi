@@ -102,6 +102,16 @@ class Document(PropertyContainer):
         """
         ...
 
+    def canWriteRecoverySnapshot(self) -> bool:
+        """
+        Return whether the document is in an App-side state that allows writing
+        a recovery snapshot.
+
+        This does not account for GUI-only constraints such as an active Gui
+        transaction.
+        """
+        ...
+
     def load(self, path: str, /) -> None:
         """
         Load the document from the given path.
@@ -453,6 +463,6 @@ class Document(PropertyContainer):
         getBookedTransactionID() -> int
 
         Returns the currently booked transaction id, which is the id of the current transaction OR the id
-        the next transaction will stick to if no change has occured yet
+        the next transaction will stick to if no change has occurred yet
         """
         ...

@@ -129,8 +129,8 @@ using namespace Gui::DockWnd;
  * protected:
  *   void activated(int)
  *   {
- *     QString filter ... // make a filter of all supported file formats
- *     QStringList FileList = QFileDialog::getOpenFileNames( filter,QString(), getMainWindow() );
+ *     QStringList filters ... // make a filter list of all supported file formats
+ *     QStringList FileList = QFileDialog::getOpenFileNames( filters, QString(), getMainWindow() );
  *     for ( QStringList::Iterator it = FileList.begin(); it != FileList.end(); ++it ) {
  *       getGuiApplication()->open((*it).latin1());
  *     }
@@ -495,8 +495,8 @@ void Command::_invoke(int id, bool disablelog)
 
             getMainWindow()->updateActions();
         }
-        // here we assume that the overriden activated() function
-        // commited, aborted or gave the transaction id to a dialog
+        // here we assume that the overridden activated() function
+        // committed, aborted or gave the transaction id to a dialog
         currentTransactionID = App::NullTransaction;  // Get ready for next invoke
     }
     catch (const Base::SystemExitException&) {
@@ -1105,7 +1105,9 @@ void Command::updateAction(int)
 
 GroupCommand::GroupCommand(const char* name)
     : Command(name)
-{}
+{
+    eType = 0;
+}
 
 bool GroupCommand::isCheckable() const
 {

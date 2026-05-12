@@ -948,7 +948,7 @@ void ManualAlignment::closeViewer()
     myViewer = nullptr;
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QTimer::singleShot(0, [this]() {
+    QTimer::singleShot(0, this, [this]() {
         auto* activeDoc = Gui::Application::Instance->activeDocument();
         if (!activeDoc) {
             return;

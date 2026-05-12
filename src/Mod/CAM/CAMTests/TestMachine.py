@@ -516,7 +516,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             self.assertEqual(len(MachineFactory._addon_machine_dirs), before + 1)
             MachineFactory.register_addon_machine_dir(p)  # second call — no duplicate
             self.assertEqual(len(MachineFactory._addon_machine_dirs), before + 1)
-            MachineFactory._addon_machine_dirs.remove(p)
+            MachineFactory._addon_machine_dirs[:] = [
+                (ns, d) for ns, d in MachineFactory._addon_machine_dirs if d != p
+            ]
 
     def test_list_addon_templates(self):
         """list_addon_templates() returns machines from registered addon dirs.
@@ -535,7 +537,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             templates = MachineFactory.list_addon_templates()
             names = [dn for _ns, dn, _path in templates]
             self.assertIn("Addon Machine", names)
-            MachineFactory._addon_machine_dirs.remove(p)
+            MachineFactory._addon_machine_dirs[:] = [
+                (ns, d) for ns, d in MachineFactory._addon_machine_dirs if d != p
+            ]
 
     def test_get_machine_from_addon(self):
         """get_machine() can load a machine from a registered addon directory.
@@ -555,7 +559,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             loaded = MachineFactory.get_machine("Addon Test Machine")
             self.assertIsInstance(loaded, Machine)
             self.assertEqual(loaded.name, "Addon Test Machine")
-            MachineFactory._addon_machine_dirs.remove(p)
+            MachineFactory._addon_machine_dirs[:] = [
+                (ns, d) for ns, d in MachineFactory._addon_machine_dirs if d != p
+            ]
 
     def test_list_configurations_includes_addon(self):
         """list_configurations() includes addon machine names.
@@ -573,4 +579,6 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             MachineFactory.register_addon_machine_dir(p)
             configs = MachineFactory.list_configurations()
             self.assertIn("Community Mill", configs)
-            MachineFactory._addon_machine_dirs.remove(p)
+            MachineFactory._addon_machine_dirs[:] = [
+                (ns, d) for ns, d in MachineFactory._addon_machine_dirs if d != p
+            ]

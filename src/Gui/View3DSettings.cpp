@@ -288,8 +288,10 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
     else if (strcmp(Reason, "NavigationStyle") == 0) {
         if (!ignoreNavigationStyle) {
             // check whether the simple or the full mouse model is used
-            std::string model
-                = rGrp.GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
+            std::string model = rGrp.GetASCII(
+                "NavigationStyle",
+                std::string {CADNavigationStyle::getClassTypeId().getName()}.c_str()
+            );
             Base::Type type = Base::Type::fromName(model.c_str());
             for (auto _viewer : _viewers) {
                 _viewer->setNavigationType(type);
@@ -426,8 +428,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
     }
     else if (strcmp(Reason, "UseVBO") == 0) {
         if (!ignoreVBO) {
+            // Assume no value means "on" as Coin only disables
+            // VBOs for some (very old) drivers and hardware.
+            const auto useVbo = rGrp.GetBool("UseVBO", true);
             for (auto _viewer : _viewers) {
-                _viewer->setEnabledVBO(rGrp.GetBool("UseVBO", false));
+                _viewer->setEnabledVBO(useVbo);
             }
         }
     }

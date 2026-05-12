@@ -706,6 +706,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             toolbar->setObjectName(name);
 
             getMainWindow()->addToolBar(toolbar);
+            setToolBarIconSize(toolbar);
 
             if (nameAsToolTip) {
                 auto tooltip = QChar::fromLatin1('[')
@@ -843,21 +844,8 @@ void ToolBarManager::onTimer()
 void ToolBarManager::saveState() const
 {
     auto ignoreSave = [](QAction* action) {
-        // If the toggle action is invisible then it's controlled by the application.
-        // In this case the current state is not saved.
-        if (!action->isVisible()) {
-            return true;
-        }
-
-        QVariant property = action->property("DefaultVisibility");
-        if (property.isNull()) {
-            return false;
-        }
-
-        // If DefaultVisibility is Unavailable then never save the state because it's
-        // always controlled by the client code.
-        auto value = static_cast<ToolBarItem::DefaultVisibility>(property.toInt());
-        return value == ToolBarItem::DefaultVisibility::Unavailable;
+        // Only save state for toolbars whose toggle action is user-visible.
+        return !action->isVisible();
     };
 
     QList<ToolBar*> toolbars = toolBars();

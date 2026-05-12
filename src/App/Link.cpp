@@ -2282,7 +2282,7 @@ void LinkBaseExtension::_handleChangedPropertyName(Base::XMLReader& reader,
                                                    const char* PropName)
 {
     if (strcmp(PropName, "SubElements") == 0
-        && strcmp(TypeName, PropertyStringList::getClassTypeId().getName()) == 0) {
+        && TypeName == PropertyStringList::getClassTypeId().getName()) {
         PropertyStringList prop;
         prop.setContainer(getContainer());
         prop.Restore(reader);

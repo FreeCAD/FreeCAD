@@ -109,7 +109,7 @@ void StdCmdWorkbench::activated(int i)
     catch (...) {
         QMessageBox::critical(
             getMainWindow(),
-            QObject::tr("Cannot load workbench"),
+            QObject::tr("Cannot Load Workbench"),
             QObject::tr("A general error occurred while loading the workbench")
         );
     }
@@ -173,6 +173,7 @@ Action* StdCmdRecentFiles::createAction()
     auto pcAction = new RecentFilesAction(this, getMainWindow());
     pcAction->setObjectName(QLatin1String("recentFiles"));
     pcAction->setDropDownMenu(true);
+    pcAction->setRememberLast(false);
     applyCommandData(this->className(), pcAction);
     return pcAction;
 }
@@ -216,6 +217,7 @@ Action* StdCmdRecentMacros::createAction()
     auto pcAction = new RecentMacrosAction(this, getMainWindow());
     pcAction->setObjectName(QLatin1String("recentMacros"));
     pcAction->setDropDownMenu(true);
+    pcAction->setRememberLast(false);
     applyCommandData(this->className(), pcAction);
     return pcAction;
 }

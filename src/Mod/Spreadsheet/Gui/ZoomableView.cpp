@@ -204,7 +204,11 @@ void ZoomableView::updateView(void)
 
 void ZoomableView::focusOutEvent(QFocusEvent* event)
 {
-    Q_UNUSED(event);
+    if (event->reason() == Qt::FocusReason::PopupFocusReason) {
+        return;
+    }
+
+    QGraphicsView::focusOutEvent(event);
 }
 
 void ZoomableView::keyPressEvent(QKeyEvent* event)

@@ -1106,7 +1106,9 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
         bg = QColor(colname);
     }
 
-    getView3DInventorPtr()->getViewer()->saveGraphic(ps, bg, vo.get());
+    getView3DInventorPtr()
+        ->getViewer()
+        ->saveGraphic(ps, bg, vo.get(), View3DInventorViewer::RenderIntent::VectorExport);
     out->closeFile();
     return Py::None();
 }
@@ -1115,6 +1117,9 @@ Py::Object View3DInventorPy::getCameraNode()
 {
     try {
         SoNode* camera = getView3DInventorPtr()->getViewer()->getSoRenderManager()->getCamera();
+        if (!camera) {
+            return Py::None();
+        }
         PyObject* proxy = nullptr;
         std::string type;
         type = "So";  // seems that So prefix is missing in camera node
@@ -1145,7 +1150,7 @@ Py::Object View3DInventorPy::getCamera()
         else {
             buffer[0] = '\0';
         }
-        return Py::String(buffer);
+        return Py::String(std::string_view {buffer});
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -1852,7 +1857,7 @@ Py::Object View3DInventorPy::listNavigationTypes()
 
 Py::Object View3DInventorPy::getNavigationType()
 {
-    std::string name = getView3DInventorPtr()->getViewer()->navigationStyle()->getTypeId().getName();
+    const auto name = getView3DInventorPtr()->getViewer()->navigationStyle()->getTypeId().getName();
     return Py::String(name);
 }
 
@@ -2217,16 +2222,6 @@ void View3DInventorPy::eventCallback(void* ud, SoEventCallback* n)
         method.apply(args);
     }
     catch (const Py::Exception& e) {
-        Py::Object o = Py::type(e);
-        if (o.isString()) {
-            Py::String s(o);
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        else {
-            Py::String s(o.repr());
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        // Prints message to console window if we are in interactive mode
         PyErr_Print();
     }
 }
@@ -2387,16 +2382,6 @@ void View3DInventorPy::eventCallbackPivy(void* ud, SoEventCallback* n)
         return;
     }
     catch (const Py::Exception& e) {
-        Py::Object o = Py::type(e);
-        if (o.isString()) {
-            Py::String s(o);
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        else {
-            Py::String s(o.repr());
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        // Prints message to console window if we are in interactive mode
         PyErr_Print();
     }
 }
@@ -2421,16 +2406,6 @@ void View3DInventorPy::eventCallbackPivyEx(void* ud, SoEventCallback* n)
         return;
     }
     catch (const Py::Exception& e) {
-        Py::Object o = Py::type(e);
-        if (o.isString()) {
-            Py::String s(o);
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        else {
-            Py::String s(o.repr());
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        // Prints message to console window if we are in interactive mode
         PyErr_Print();
     }
 }
@@ -2559,16 +2534,6 @@ void View3DInventorPy::draggerCallback(void* ud, SoDragger* n)
         throw Py::RuntimeError(e.what());
     }
     catch (const Py::Exception& e) {
-        Py::Object o = Py::type(e);
-        if (o.isString()) {
-            Py::String s(o);
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        else {
-            Py::String s(o.repr());
-            Base::Console().warning("%s\n", s.as_std_string("utf-8").c_str());
-        }
-        // Prints message to console window if we are in interactive mode
         PyErr_Print();
     }
 }

@@ -1849,21 +1849,20 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
             }
             break;
         // case QEvent::NativeGesture:
-        case QEvent::Wheel:
-            if (!OverlayParams::getDockOverlayWheelPassThrough()) {
-                return false;
-            }
-            // fall through
         case QEvent::ContextMenu: {
             auto cev = static_cast<QContextMenuEvent*>(ev);
             if (cev->reason() != QContextMenuEvent::Mouse) {
                 return false;
             }
         }  // fall through
+        case QEvent::Wheel:
         case QEvent::MouseButtonDblClick:
         case QEvent::MouseButtonRelease:
         case QEvent::MouseButtonPress:
         case QEvent::MouseMove: {
+            if (ev->type() == QEvent::Wheel && !OverlayParams::getDockOverlayWheelPassThrough()) {
+                return false;
+            }
             if (OverlayTabWidget::_Dragging && OverlayTabWidget::_Dragging != o) {
                 if (auto titleBar = qobject_cast<OverlayTitleBar*>(OverlayTabWidget::_Dragging)) {
                     titleBar->endDrag();

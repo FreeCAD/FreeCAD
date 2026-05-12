@@ -1821,7 +1821,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             }
 
             // 8) finishingPass = offset(currentTBP, finishingThickness), filtered for paths with Z=1
-            // ...again, clipper 1 doesn't perserve Z for offsets, so do this per-curve
+            // ...again, clipper 1 doesn't preserve Z for offsets, so do this per-curve
             Paths finishingPass;
             for (const Path& path : currentTBP) {
                 bool orientation = Orientation(path);

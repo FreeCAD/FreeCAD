@@ -201,6 +201,7 @@ public:
     void startSelection(SelectionMode = Lasso);
     void abortSelection();
     void stopSelection();
+    void resetButtonState();
     SbBool isSelecting() const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role = nullptr) const;
 
@@ -210,6 +211,7 @@ public:
     {
         return ClarifySelectionMode::Default;
     }
+
 
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
@@ -270,6 +272,7 @@ protected:
 private:
     void spinInternal(const SbVec2f& pointerpos, const SbVec2f& lastpos);
     void spinSimplifiedInternal(const SbVec2f curpos, const SbVec2f prevpos);
+    bool getObjectBoundingBoxCenter(SbVec3f& center) const;
 
 protected:
     void clearLog();

@@ -87,18 +87,18 @@ using DU = DrawUtil;
 void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 {
     qcb->clear();
+    auto mwGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
 
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
+    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
+    auto curTheme = mwGrp->GetASCII("Theme", "None");
 
     int i = 0;
     for (; i < ArrowPropEnum::ArrowCount; i++) {
         qcb->addItem(
             QCoreApplication::translate("ArrowPropEnum", ArrowPropEnum::ArrowTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(ArrowPropEnum::ArrowTypeIcons[i].c_str()));
-        if (isStyleSheetDark(curStyleSheet)) {
+        if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
             QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
@@ -113,18 +113,18 @@ void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 void DrawGuiUtil::loadBalloonShapeBox(QComboBox* qballooncb)
 {
     qballooncb->clear();
+    auto mwGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
 
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
+    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
+    auto curTheme = mwGrp->GetASCII("Theme", "None");
 
     int i = 0;
     for (; i < BalloonPropEnum::BalloonCount; i++) {
         qballooncb->addItem(
             QCoreApplication::translate("BalloonPropEnum", BalloonPropEnum::BalloonTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(BalloonPropEnum::BalloonTypeIcons[i].c_str()));
-        if (isStyleSheetDark(curStyleSheet)) {
+        if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
             QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
@@ -139,17 +139,18 @@ void DrawGuiUtil::loadBalloonShapeBox(QComboBox* qballooncb)
 void DrawGuiUtil::loadMattingStyleBox(QComboBox* qmattingcb)
 {
     qmattingcb->clear();
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
+    auto mwGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
+
+    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
+    auto curTheme = mwGrp->GetASCII("Theme", "None");
 
     int i = 0;
     for (; i < MattingPropEnum::MattingCount; i++) {
         qmattingcb->addItem(
             QCoreApplication::translate("MattingPropEnum", MattingPropEnum::MattingTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(MattingPropEnum::MattingTypeIcons[i].c_str()));
-        if (isStyleSheetDark(curStyleSheet)) {
+        if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
             QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
@@ -232,13 +233,14 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
     linePen.setColor(Qt::color1);
 
     QSize lineIconSize(iconSize, iconSize);
+    auto mwGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
 
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
+    auto curStyleSheet = mwGrp->GetASCII("StyleSheet", "None");
+    auto curTheme = mwGrp->GetASCII("Theme", "None");
+
     QColor textColor{Qt::black};
-    if (isStyleSheetDark(curStyleSheet)) {
+    if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
         textColor = Preferences::lightTextColor().asValue<QColor>();
     }
 
@@ -247,7 +249,7 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
         linePen.setWidthF(iconLineWeight * lineCount);
         painter.setPen(linePen);
         painter.drawLine(borderSize, iconSize / 2, iconSize - borderSize, iconSize / 2);
-        if (isStyleSheetDark(curStyleSheet)) {
+        if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
             QIcon lineItemIcon(bitmap);
             return QIcon(maskBlackPixels(lineItemIcon, lineIconSize, textColor));
         }
@@ -267,7 +269,7 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
         painter.drawLine(borderSize, yHeight, maxLineLength, yHeight);
         yHeight += iconLineWeight;
     }
-    if (isStyleSheetDark(curStyleSheet)) {
+    if (isStyleSheetDark(curStyleSheet) || isStyleSheetDark(curTheme)) {
         QIcon lineItemIcon(bitmap);
         return QIcon(maskBlackPixels(lineItemIcon, lineIconSize, textColor));
     }
@@ -602,28 +604,12 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::get3DDirAndRot()
         return std::make_pair(viewDir, viewRight);
     }
 
-    // Coin is giving us a values like 0.000000134439 instead of 0.000000000000.
-    // This small difference caused circles to be projected as ellipses among other
-    // problems.
-    // Since SbVec3f is single precision floating point, it is only good to 6-9
-    // significant decimal digits, and the rest of TechDraw works with doubles
-    // that are good to 15-18 significant decimal digits.
-    // But. When a float is promoted to double the value is supposed to be unchanged!
-    // So where do the garbage digits come from???
-    // In any case, if we restrict directions to 6 digits, we avoid the problem.
-    int digits(6);
     SbVec3f dvec = viewer->getViewDirection();
-    double dvecX = roundToDigits(dvec[0], digits);
-    double dvecY = roundToDigits(dvec[1], digits);
-    double dvecZ = roundToDigits(dvec[2], digits);
-    viewDir = Base::Vector3d(dvecX, dvecY, dvecZ);
+    viewDir = Base::Vector3d(dvec[0], dvec[1], dvec[2]);
     viewDir = viewDir * (-1.0);  // Inventor dir is opposite TD projection dir
 
     SbVec3f upvec = viewer->getUpDirection();
-    double upvecX = roundToDigits(upvec[0], digits);
-    double upvecY = roundToDigits(upvec[1], digits);
-    double upvecZ = roundToDigits(upvec[2], digits);
-    viewUp = Base::Vector3d(upvecX, upvecY, upvecZ);
+    viewUp = Base::Vector3d(upvec[0], upvec[1], upvec[2]);
 
     Base::Vector3d right = viewUp.Cross(viewDir);
 

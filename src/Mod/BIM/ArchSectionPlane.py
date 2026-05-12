@@ -494,9 +494,10 @@ def getSVG(
                     "stroke-width": "SVGLINEWIDTH",
                     "stroke-dasharray": "SVGHIDDENPATTERN",
                 }
+                svgcache += '<g transform="scale(-1,1)">\n'
                 svgcache += TechDraw.projectToSVG(
                     hshapes,
-                    direction,
+                    -direction,
                     hStyle=style,
                     h0Style=style,
                     h1Style=style,
@@ -504,6 +505,7 @@ def getSVG(
                     v0Style=style,
                     v1Style=style,
                 )
+                svgcache += "</g>\n"
             if sshapes:
                 if showFill:
                     # svgcache += fillpattern
@@ -1514,7 +1516,7 @@ class _ViewProviderSectionPlane:
         menu.addAction(actionEdit)
 
         actionToggleCutview = QtGui.QAction(
-            QtGui.QIcon(":/icons/Draft_Edit.svg"), translate("Arch", "Toggle Cutview"), menu
+            QtGui.QIcon(":/icons/Arch_CutPlane.svg"), translate("Arch", "Toggle Cut View"), menu
         )
         actionToggleCutview.triggered.connect(lambda: self.toggleCutview(vobj))
         menu.addAction(actionToggleCutview)

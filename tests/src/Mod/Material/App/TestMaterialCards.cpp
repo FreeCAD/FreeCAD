@@ -29,6 +29,7 @@
 #include <Base/Quantity.h>
 #include <Gui/MetaTypes.h>
 #include <src/App/InitApplication.h>
+#include <src/TempDirectory.h>
 
 #include <Mod/Material/App/MaterialLibrary.h>
 #include <Mod/Material/App/MaterialManager.h>
@@ -48,11 +49,7 @@ protected:
     }
 
     void SetUp() override {
-        // Create a temporary library
-        QString libPath = QDir::tempPath() + QStringLiteral("/TestMaterialCards");
-        QDir libDir(libPath);
-        libDir.removeRecursively(); // Clear old run data
-        libDir.mkdir(libPath);
+        QString libPath = QString::fromStdString(_tempDir.string());
         _library = std::make_shared<Materials::MaterialLibraryLocal>(QStringLiteral("Testing"),
                         libPath,
                         QStringLiteral(":/icons/preferences-general.svg"),
@@ -63,7 +60,7 @@ protected:
         _testMaterialUUID = QStringLiteral("c6c64159-19c1-40b5-859c-10561f20f979");
     }
 
-    // void TearDown() override {}
+    tests::TempDirectory _tempDir {"TestMaterialCards"};
     Materials::ModelManager* _modelManager;
     Materials::MaterialManager* _materialManager;
     std::shared_ptr<Materials::MaterialLibraryLocal> _library;

@@ -66,6 +66,7 @@ class ObjectOp(PathOp.ObjectOp):
             | PathOp.FeatureBaseFaces
             | self.circularHoleFeatures(obj)
             | PathOp.FeatureCoolant
+            | PathOp.FeatureLinking
         )
 
     def circularHoleFeatures(self, obj):
@@ -185,7 +186,7 @@ class ObjectOp(PathOp.ObjectOp):
                     center = shape.Edges[0].Curve.Center
                     if all(Path.Geom.pointsCoincide(center, e.Curve.Center) for e in shape.Edges):
                         return FreeCAD.Vector(center.x, center.y, 0)
-
+            return FreeCAD.Vector(shape.CenterOfMass.x, shape.CenterOfMass.y, 0)
         except Part.OCCError as e:
             Path.Log.error(e)
 
@@ -208,11 +209,6 @@ class ObjectOp(PathOp.ObjectOp):
         them in a list of positions and radii which is then passed to circularHoleExecute(obj, holes).
         Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
         Path.Log.track()
-
-        def haveLocations(self, obj):
-            if PathOp.FeatureLocations & self.opFeatures(obj):
-                return len(obj.Locations) != 0
-            return False
 
         holes = []
         for base, subs in obj.Base:
@@ -244,9 +240,8 @@ class ObjectOp(PathOp.ObjectOp):
                 else:  # is not a repeat, add unique position
                     holes.append({"x": pos.x, "y": pos.y, "d": diam, "sub": sub})
 
-        if haveLocations(self, obj):
-            for location in obj.Locations:
-                holes.append({"x": location.x, "y": location.y, "d": 0})
+        for pos in getattr(obj, "Locations", []):
+            holes.append({"x": pos.x, "y": pos.y, "d": 0})
 
         if len(holes) > 0:
             if obj.SortingMode == "Automatic":

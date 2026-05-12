@@ -115,12 +115,12 @@
       <item row="4" column="0">
         <widget class="QLabel" name="label_5">
           <property name="text">
-            <string>Helix pitch</string>
+            <string>Max pitch</string>
           </property>
         </widget>
       </item>
       <item row="4" column="1">
-        <widget class="Gui::QuantitySpinBox" name="helixPitch">
+        <widget class="Gui::QuantitySpinBox" name="helixMaxPitch">
           <property name="enabled">
             <bool>true</bool>
           </property>
@@ -128,18 +128,38 @@
             <number>0</number>
           </property>
           <property name="toolTip">
-            <string>Limit height of one complete helix turn</string>
+            <string>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</string>
           </property>
         </widget>
       </item>
       <item row="5" column="0">
+        <widget class="QLabel" name="label_5">
+          <property name="text">
+            <string>Max ramp angle</string>
+          </property>
+        </widget>
+      </item>
+      <item row="5" column="1">
+        <widget class="Gui::QuantitySpinBox" name="helixMaxRampAngle">
+          <property name="enabled">
+            <bool>true</bool>
+          </property>
+          <property name="minimum">
+            <number>0</number>
+          </property>
+          <property name="toolTip">
+            <string>The maximum allowable ramp entry angle. Set to zero to disable limitation by ramp angle.</string>
+          </property>
+        </widget>
+      </item>
+      <item row="6" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
          <string>Step over percent</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="6" column="1">
        <widget class="QSpinBox" name="stepOverPercent">
         <property name="toolTip">
          <string>Specify the percent of the tool diameter each helix will be offset to the previous one. A step over of 100% means no overlap of the individual cuts.</string>
@@ -158,14 +178,14 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="7" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Stock to leave (outer radial)</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="7" column="1">
        <widget class="Gui::QuantitySpinBox" name="radialStockToLeaveOuter">
         <property name="enabled">
           <bool>true</bool>

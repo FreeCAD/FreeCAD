@@ -26,6 +26,7 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
+#include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/ServiceProvider.h>
 
@@ -35,6 +36,7 @@
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include "GroupExtension.h"
+#include "MainThreadSignal.h"
 #include "Services.h"
 
 
@@ -276,6 +278,16 @@ Py::Object DocumentObjectPy::getViewObject() const
             // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its
             // document methods)
             return Py::None();
+        }
+        if (!App::MainThreadSignalConfig::isMainThread()) {
+            Base::Console().error(
+                "GUI API 'App::DocumentObjectPy::getViewObject' may only be used from the main "
+                "thread.\n"
+            );
+            throw Py::RuntimeError(
+                "GUI API 'App::DocumentObjectPy::getViewObject' may only be used from the main "
+                "thread"
+            );
         }
         if (!getDocumentObjectPtr()->getDocument()) {
             throw Py::RuntimeError("Object has no document");

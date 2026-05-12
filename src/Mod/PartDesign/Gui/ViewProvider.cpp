@@ -485,6 +485,26 @@ ViewProviderBody* ViewProvider::getBodyViewProvider()
     return nullptr;
 }
 
+void ViewProvider::toggleVisibility()
+{
+    if (!PartDesign::Body::isSolidFeature(getObject())) {
+        Gui::ViewProvider::toggleVisibility();
+        return;
+    }
+    if (auto* bodyVp = getBodyViewProvider()) {
+        if (bodyVp->isActiveBody()) {
+            // Inside the active body, toggle the feature itself.
+            Gui::ViewProvider::toggleVisibility();
+        }
+        else {
+            // Outside the active body, toggle the whole body.
+            bodyVp->toggleVisibility();
+        }
+        return;
+    }
+    Gui::ViewProvider::toggleVisibility();
+}
+
 namespace Gui
 {
 /// @cond DOXERR
