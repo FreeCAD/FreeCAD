@@ -375,10 +375,10 @@ void FaceAppearances::onDefaultButtonClicked()
 void FaceAppearances::onMaterialSelected(const std::shared_ptr<Materials::Material>& material)
 {
     if (!d->index.isEmpty()) {
-        std::string uuid = material->getUUID().toStdString();
+        App::Material appearance = material->getMaterialAppearance();
+        appearance.uuid = material->getUUID().toStdString();
         for (int it : d->index) {
-            d->perface[it] = material->getMaterialAppearance();
-            d->perface[it].uuid = uuid;
+           d->perface[it] = appearance;
         }
         d->vp->ShapeAppearance.setValues(d->perface);
         // new color has been applied, unselect so that users can see this
