@@ -163,8 +163,15 @@ public:
         Clipper2Lib::FillRule clipFillType = Clipper2Lib::FillRule::EvenOdd
     );
 
-    // Process arc fitting intersections to determine arc metadata for intersection points
-    void ProcessArcFittingIntersections(const Clipper2Lib::Paths64& paths, bool is_closed);
+    // Process intersection points to determine if their edges come from arcs.
+    //
+    // m_arc_fitting_map stores a record of which edges in Clipper are
+    // approximations of arcs, but if a Clipper operation splits any of these
+    // edges, that map will need to be updated to show that the resulting
+    // partial edge came from the same arc. This function does that update.
+    //
+    // This must be run after Clipper operations, before converting back to arcs.
+    void ProcessIntersectionPoints(const Clipper2Lib::Paths64& paths, bool is_closed);
 
 private:
     // Z-callback for Clipper intersection handling
