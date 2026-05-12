@@ -2439,7 +2439,8 @@ void ViewProviderLink::updateElementList(App::LinkBaseExtension* ext)
         OverrideMaterialList.setSize(0);
         MaterialList.setSize(0);
     }
-    linkView->setChildren(elements, ext->getVisibilityListValue());
+    auto childType = isGroup(ext, true) ? LinkView::SnapshotChild : LinkView::SnapshotVisible;
+    linkView->setChildren(elements, ext->getVisibilityListValue(), childType);
     applyColors();
 }
 

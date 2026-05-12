@@ -77,3 +77,31 @@ class TestArchBuildingPartGui(TestArchBaseGui):
         FreeCADGui.runCommand("Std_ToggleVisibility", 0)
         App.ActiveDocument.recompute()
         assert wall.Visibility
+
+        # BuildingPart links must also respect the visibility of nested source objects.
+        # Regression test for https://github.com/FreeCAD/FreeCAD/issues/24370
+        link = App.ActiveDocument.addObject("App::Link", "BuildingPartLink")
+        link.LinkedObject = bp
+        App.ActiveDocument.recompute()
+        FreeCADGui.updateGui()
+        self.pump_gui_events()
+
+        import pivy.coin as coin
+
+        def hidden_switch_count(node):
+            count = 0
+            if isinstance(node, coin.SoSwitch) and node.whichChild.getValue() < 0:
+                count += 1
+            if hasattr(node, "getNumChildren"):
+                for i in range(node.getNumChildren()):
+                    count += hidden_switch_count(node.getChild(i))
+            return count
+
+        visible_count = hidden_switch_count(link.ViewObject.LinkView.RootNode)
+        wall.ViewObject.Visibility = False
+        App.ActiveDocument.recompute()
+        FreeCADGui.updateGui()
+        self.pump_gui_events()
+        hidden_count = hidden_switch_count(link.ViewObject.LinkView.RootNode)
+        self.assertGreater(hidden_count, visible_count)
+        wall.ViewObject.Visibility = True
