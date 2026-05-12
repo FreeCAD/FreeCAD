@@ -27,7 +27,6 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
-#include <cstdint>
 #include <cstring>
 #include <limits>
 
@@ -526,8 +525,21 @@ void LazyExternalGeometryLayer::rebuildFromSourceObjects(
     }
 
     for (const auto& source : sources) {
+        std::vector<std::unique_ptr<Part::Geometry>> visibleGeometry;
+        if (!showHiddenEdges) {
+            visibleGeometry = sketch->buildVisibleExternalGeometryOnSketchPlane(source.object);
+        }
+        const auto* visibleGeometryPtr = visibleGeometry.empty() ? nullptr : &visibleGeometry;
+
         for (int i = 1; i <= source.edgeCount; ++i) {
-            addSourceReference(sketch, source.object, "Edge" + std::to_string(i), false, false);
+            addSourceReference(
+                sketch,
+                source.object,
+                "Edge" + std::to_string(i),
+                false,
+                false,
+                visibleGeometryPtr
+            );
         }
         for (int i = 1; i <= source.vertexCount; ++i) {
             addSourceReference(sketch, source.object, "Vertex" + std::to_string(i), false, false);
@@ -550,7 +562,8 @@ int LazyExternalGeometryLayer::addSourceReference(
     App::DocumentObject* sourceObject,
     const std::string& subName,
     bool intersection,
-    bool buildPreview
+    bool buildPreview,
+    const std::vector<std::unique_ptr<Part::Geometry>>* visibleGeometry
 )
 {
     if (!sketch || !sourceObject || Base::Tools::isNullOrEmpty(sourceObject->getNameInDocument())) {
@@ -568,16 +581,23 @@ int LazyExternalGeometryLayer::addSourceReference(
         return -1;
     }
 
-    if (const Element* existing = findElementBySource(sourceObject, subName, intersection)) {
-        return existing->id;
-    }
-
     std::vector<std::unique_ptr<Part::Geometry>> preview;
-    if (buildPreview) {
+    const bool needsVisibilityCheck = !showHiddenEdges && isEdge && visibleGeometry;
+    const bool needsPreview = buildPreview || needsVisibilityCheck;
+    if (needsPreview) {
         preview = sketch->buildProjectedExternalGeometry(sourceObject, subName.c_str(), intersection);
         if (preview.empty()) {
             return -1;
         }
+    }
+
+    if (needsVisibilityCheck
+        && !sketch->isProjectedExternalGeometryVisibleOnSketchPlane(preview, *visibleGeometry)) {
+        return -1;
+    }
+
+    if (const Element* existing = findElementBySource(sourceObject, subName, intersection)) {
+        return existing->id;
     }
 
     Element element;
@@ -695,6 +715,11 @@ void LazyExternalGeometryLayer::setEnabled(bool on)
 bool LazyExternalGeometryLayer::isEnabled() const
 {
     return enabled;
+}
+
+void LazyExternalGeometryLayer::setShowHiddenEdges(bool showHidden)
+{
+    showHiddenEdges = showHidden;
 }
 
 bool LazyExternalGeometryLayer::ensurePreview(Sketcher::SketchObject* sketch, Element& element)

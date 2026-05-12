@@ -242,6 +242,16 @@ void ViewProviderSketch::ParameterObserver::updateLazyExternalGeometryEnabled(
     Client.setLazyExternalGeometryPreferenceEnabled(hGrp->GetBool(string.c_str(), true));
 }
 
+void ViewProviderSketch::ParameterObserver::updateShowHiddenLazyExternalGeometry(
+    const std::string& string, App::Property* property)
+{
+    (void)property;
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    Client.setShowHiddenLazyExternalGeometryPreference(hGrp->GetBool(string.c_str(), true));
+}
+
 void ViewProviderSketch::ParameterObserver::subscribeToParameters()
 {
     try {
@@ -352,6 +362,11 @@ void ViewProviderSketch::ParameterObserver::initParameters()
         {"EnableLazyExternalGeometry",
          {[this](const std::string& string, App::Property* property) {
               updateLazyExternalGeometryEnabled(string, property);
+          },
+          nullptr}},
+        {"ShowHiddenLazyExternalGeometry",
+         {[this](const std::string& string, App::Property* property) {
+              updateShowHiddenLazyExternalGeometry(string, property);
           },
           nullptr}},
         {"GridSizePixelThreshold",
@@ -4413,6 +4428,8 @@ bool ViewProviderSketch::ensureLazyExternalGeometryLayer()
 
     if (!lazyExternalGeometryLayer) {
         lazyExternalGeometryLayer = std::make_unique<LazyExternalGeometryLayer>();
+        lazyExternalGeometryLayer->setShowHiddenEdges(
+            viewProviderParameters.showHiddenLazyExternalGeometry);
         lazyExternalGeometryLayer->rebuildSources(getSketchObject());
         lazyExternalGeometryLayer->setEnabled(lazyExternalGeometryLayerSuspendCount == 0);
         editCoinManager->drawLazyExternalGeometryLayer(*lazyExternalGeometryLayer);
@@ -4442,6 +4459,25 @@ void ViewProviderSketch::setLazyExternalGeometryPreferenceEnabled(bool enabled)
     }
 
     ensureLazyExternalGeometryLayer();
+}
+
+void ViewProviderSketch::setShowHiddenLazyExternalGeometryPreference(bool showHidden)
+{
+    if (viewProviderParameters.showHiddenLazyExternalGeometry == showHidden) {
+        return;
+    }
+
+    viewProviderParameters.showHiddenLazyExternalGeometry = showHidden;
+
+    if (!lazyExternalGeometryLayer) {
+        return;
+    }
+
+    preselection.PreselectLazyExternalId = Preselection::InvalidLazyExternal;
+    preselection.PreselectLazyExternalVertex = false;
+    lazyExternalGeometryLayer->setShowHiddenEdges(showHidden);
+    lazyExternalGeometryLayer->rebuildSources(getSketchObject());
+    redrawLazyExternalGeometryLayer();
 }
 
 void ViewProviderSketch::suspendLazyExternalGeometryLayer()

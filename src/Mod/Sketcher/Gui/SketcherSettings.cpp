@@ -139,6 +139,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxLineGroup->onSave();
     ui->checkBoxAddExtGeo->onSave();
     ui->checkBoxLazyExternalGeometry->onSave();
+    ui->checkBoxShowHiddenLazyExternalGeometry->onSave();
     ui->checkBoxMakeInternals->onSave();
 
     enum
@@ -221,6 +222,7 @@ void SketcherSettings::loadSettings()
     ui->checkBoxLineGroup->onRestore();
     ui->checkBoxAddExtGeo->onRestore();
     ui->checkBoxLazyExternalGeometry->onRestore();
+    ui->checkBoxShowHiddenLazyExternalGeometry->onRestore();
     ui->checkBoxMakeInternals->onRestore();
 
     // Dimensioning constraints mode

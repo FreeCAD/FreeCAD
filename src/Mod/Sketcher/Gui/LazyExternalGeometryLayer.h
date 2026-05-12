@@ -147,6 +147,7 @@ public:
 
     void setEnabled(bool enabled);
     bool isEnabled() const;
+    void setShowHiddenEdges(bool showHidden);
     HitResult findClosestElement(
         Sketcher::SketchObject* sketch,
         const Base::Vector2d& point,
@@ -168,7 +169,8 @@ private:
         App::DocumentObject* sourceObject,
         const std::string& subName,
         bool intersection,
-        bool buildPreview = true
+        bool buildPreview = true,
+        const std::vector<std::unique_ptr<Part::Geometry>>* visibleGeometry = nullptr
     );
 
     Element* getElement(int id);
@@ -213,6 +215,7 @@ private:
     int preselectedElementId = -1;
     std::set<int> selectedElementIds;
     bool enabled = true;
+    bool showHiddenEdges = true;
     int nextId = 1;
 };
 

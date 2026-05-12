@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <limits>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -2118,7 +2119,9 @@ void processEdge(const TopoDS_Edge& edge,
     }
 }
 
-std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3& viewAxis)
+std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape,
+                                        const gp_Ax3& viewAxis,
+                                        bool includeHidden = true)
 {
     std::vector<TopoDS_Shape> res;
     Handle(HLRBRep_Algo) brep_hlr;
@@ -2162,6 +2165,10 @@ std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3
             res.push_back(hlrToShape.IsoLineVCompound());
         }
 
+        if (!includeHidden) {
+            return res;
+        }
+
         if (!hlrToShape.HCompound().IsNull()) {
             res.push_back(hlrToShape.HCompound());
         }
@@ -2188,6 +2195,171 @@ std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3
     }
 
     return res;
+}
+
+double distance2d(const Base::Vector3d& a, const Base::Vector3d& b)
+{
+    const double dx = a.x - b.x;
+    const double dy = a.y - b.y;
+    return std::sqrt(dx * dx + dy * dy);
+}
+
+double distancePointToSegment2d(const Base::Vector3d& point,
+                                const Base::Vector3d& first,
+                                const Base::Vector3d& last)
+{
+    const Base::Vector3d segment = last - first;
+    const Base::Vector3d relative = point - first;
+    const double segmentLength2 = segment.x * segment.x + segment.y * segment.y;
+
+    if (segmentLength2 <= std::numeric_limits<double>::epsilon()) {
+        return distance2d(point, first);
+    }
+
+    const double t = std::clamp((relative.x * segment.x + relative.y * segment.y)
+                                  / segmentLength2,
+                                0.0,
+                                1.0);
+    return distance2d(point, first + segment * t);
+}
+
+bool getCurveRange(const Part::GeomCurve& curve, double& first, double& last)
+{
+    first = curve.getFirstParameter();
+    last = curve.getLastParameter();
+    if (last < first) {
+        std::swap(first, last);
+    }
+
+    return std::isfinite(first) && std::isfinite(last)
+        && std::abs(last - first) > std::numeric_limits<double>::epsilon();
+}
+
+std::vector<Base::Vector3d> sampleGeometry2d(const Part::Geometry* geometry)
+{
+    constexpr int SampleCount = 16;
+
+    std::vector<Base::Vector3d> samples;
+    if (!geometry) {
+        return samples;
+    }
+
+    if (auto point = freecad_cast<const Part::GeomPoint*>(geometry)) {
+        samples.push_back(point->getPoint());
+        return samples;
+    }
+
+    if (auto line = freecad_cast<const Part::GeomLineSegment*>(geometry)) {
+        const Base::Vector3d first = line->getStartPoint();
+        const Base::Vector3d last = line->getEndPoint();
+        samples.reserve(SampleCount + 1);
+        for (int i = 0; i <= SampleCount; ++i) {
+            const double u = static_cast<double>(i) / SampleCount;
+            samples.push_back(first + (last - first) * u);
+        }
+        return samples;
+    }
+
+    if (auto curve = freecad_cast<const Part::GeomCurve*>(geometry)) {
+        double first = 0.0;
+        double last = 0.0;
+        if (!getCurveRange(*curve, first, last)) {
+            return samples;
+        }
+
+        samples.reserve(SampleCount + 1);
+        for (int i = 0; i <= SampleCount; ++i) {
+            const double u = static_cast<double>(i) / SampleCount;
+            samples.push_back(curve->value(first + (last - first) * u));
+        }
+    }
+
+    return samples;
+}
+
+double distanceToGeometry2d(const Part::Geometry* geometry, const Base::Vector3d& point)
+{
+    if (!geometry) {
+        return std::numeric_limits<double>::max();
+    }
+
+    if (auto geomPoint = freecad_cast<const Part::GeomPoint*>(geometry)) {
+        return distance2d(point, geomPoint->getPoint());
+    }
+
+    if (auto line = freecad_cast<const Part::GeomLineSegment*>(geometry)) {
+        return distancePointToSegment2d(point, line->getStartPoint(), line->getEndPoint());
+    }
+
+    if (auto curve = freecad_cast<const Part::GeomCurve*>(geometry)) {
+        double first = 0.0;
+        double last = 0.0;
+        if (!getCurveRange(*curve, first, last)) {
+            return std::numeric_limits<double>::max();
+        }
+
+        constexpr int SegmentCount = 24;
+        const double step = (last - first) / SegmentCount;
+        Base::Vector3d previous = curve->value(first);
+        double best = std::numeric_limits<double>::max();
+        for (int i = 1; i <= SegmentCount; ++i) {
+            const double parameter = i == SegmentCount ? last : first + i * step;
+            const Base::Vector3d current = curve->value(parameter);
+            best = std::min(best, distancePointToSegment2d(point, previous, current));
+            previous = current;
+        }
+        return best;
+    }
+
+    return std::numeric_limits<double>::max();
+}
+
+bool geometryOverlapsVisibleProjection(
+    const std::vector<std::unique_ptr<Part::Geometry>>& projectedGeometry,
+    const std::vector<std::unique_ptr<Part::Geometry>>& visibleGeometry)
+{
+    constexpr double VisibilityTolerance = 1.0e-5;
+    constexpr double MinimumVisibleSampleRatio = 0.75;
+
+    for (const auto& projected : projectedGeometry) {
+        const auto samples = sampleGeometry2d(projected.get());
+        if (samples.empty()) {
+            continue;
+        }
+
+        int visibleSamples = 0;
+        for (const auto& sample : samples) {
+            const auto isCloseToSample = [&sample](const auto& visible) {
+                return distanceToGeometry2d(visible.get(), sample) <= VisibilityTolerance;
+            };
+            if (std::any_of(visibleGeometry.begin(), visibleGeometry.end(), isCloseToSample)) {
+                ++visibleSamples;
+            }
+        }
+
+        if (static_cast<double>(visibleSamples) / samples.size() >= MinimumVisibleSampleRatio) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+std::vector<std::unique_ptr<Part::Geometry>> buildVisibleProjectionGeometry(
+    const TopoDS_Shape& sourceShape,
+    const gp_Ax3& sketchAx3)
+{
+    std::vector<std::unique_ptr<Part::Geometry>> geos;
+    for (auto& projectedShape : projectShape(sourceShape, sketchAx3, false)) {
+        TopExp_Explorer explorer(projectedShape, TopAbs_EDGE);
+        while (explorer.More()) {
+            TopoDS_Edge projectedEdge = TopoDS::Edge(explorer.Current());
+            processEdge2(projectedEdge, geos);
+            explorer.Next();
+        }
+    }
+
+    return geos;
 }
 
 void processFace (const Rotation& invRot,
@@ -2620,6 +2792,63 @@ std::vector<std::unique_ptr<Part::Geometry>> SketchObject::buildProjectedExterna
     }
 
     return geos;
+}
+
+std::vector<std::unique_ptr<Part::Geometry>> SketchObject::buildVisibleExternalGeometryOnSketchPlane(
+    App::DocumentObject* Obj
+) const
+{
+    std::vector<std::unique_ptr<Part::Geometry>> geos;
+    auto* refObj = freecad_cast<const Part::Feature*>(Obj);
+    if (!refObj) {
+        return geos;
+    }
+
+    try {
+        const TopoDS_Shape sourceShape = refObj->Shape.getShape().getShape();
+        if (sourceShape.IsNull()) {
+            return geos;
+        }
+
+        Base::Placement Plm = Placement.getValue();
+        Base::Vector3d Pos = Plm.getPosition();
+        Base::Rotation Rot = Plm.getRotation();
+        Base::Vector3d dN(0, 0, 1);
+        Rot.multVec(dN, dN);
+        Base::Vector3d dX(1, 0, 0);
+        Rot.multVec(dX, dX);
+
+        gp_Ax3 sketchAx3(
+            gp_Pnt(Pos.x, Pos.y, Pos.z), gp_Dir(dN.x, dN.y, dN.z), gp_Dir(dX.x, dX.y, dX.z));
+
+        geos = buildVisibleProjectionGeometry(sourceShape, sketchAx3);
+    }
+    catch (const Base::Exception&) {
+        geos.clear();
+    }
+    catch (const Standard_Failure&) {
+        geos.clear();
+    }
+    catch (const std::exception&) {
+        geos.clear();
+    }
+    catch (...) {
+        geos.clear();
+    }
+
+    return geos;
+}
+
+bool SketchObject::isProjectedExternalGeometryVisibleOnSketchPlane(
+    const std::vector<std::unique_ptr<Part::Geometry>>& projectedGeometry,
+    const std::vector<std::unique_ptr<Part::Geometry>>& visibleGeometry
+) const
+{
+    if (projectedGeometry.empty() || visibleGeometry.empty()) {
+        return true;
+    }
+
+    return geometryOverlapsVisibleProjection(projectedGeometry, visibleGeometry);
 }
 
 void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd)

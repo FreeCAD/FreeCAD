@@ -254,6 +254,25 @@ Requires to re-enter edit mode to take effect.</string>
        </widget>
       </item>
       <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowHiddenLazyExternalGeometry">
+        <property name="toolTip">
+         <string>Includes model edges hidden in the sketch projection as on-demand external geometry candidates.</string>
+        </property>
+        <property name="text">
+         <string>Show hidden edges for on-demand external geometry selection</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowHiddenLazyExternalGeometry</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxMakeInternals">
         <property name="toolTip">
          <string>Closed loops will automatically generate internal faces which are selectable to be used with other tools</string>

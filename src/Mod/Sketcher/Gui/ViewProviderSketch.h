@@ -238,6 +238,7 @@ private:
         );
 
         void updateLazyExternalGeometryEnabled(const std::string& string, App::Property* property);
+        void updateShowHiddenLazyExternalGeometry(const std::string& string, App::Property* property);
 
     private:
         ViewProviderSketch& Client;
@@ -506,6 +507,7 @@ private:
         bool autoRecompute = false;
         bool recalculateInitialSolutionWhileDragging = false;
         bool lazyExternalGeometryEnabled = true;
+        bool showHiddenLazyExternalGeometry = true;
 
         bool isShownVirtualSpace = false;  // indicates whether the present virtual space view is the
                                            // Real Space or the Virtual Space (virtual space 1 or 2)
@@ -797,6 +799,7 @@ public:
     void redrawLazyExternalGeometryLayer();
     bool isLazyExternalGeometryEnabled() const;
     void setLazyExternalGeometryPreferenceEnabled(bool enabled);
+    void setShowHiddenLazyExternalGeometryPreference(bool showHidden);
     //@}
 
 protected:

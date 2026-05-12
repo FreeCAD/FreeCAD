@@ -254,6 +254,13 @@ public:
         const char* SubName,
         bool intersection = false
     ) const;
+    std::vector<std::unique_ptr<Part::Geometry>> buildVisibleExternalGeometryOnSketchPlane(
+        App::DocumentObject* Obj
+    ) const;
+    bool isProjectedExternalGeometryVisibleOnSketchPlane(
+        const std::vector<std::unique_ptr<Part::Geometry>>& projectedGeometry,
+        const std::vector<std::unique_ptr<Part::Geometry>>& visibleGeometry
+    ) const;
     /** delete external
      *  ExtGeoId >= 0 with 0 corresponding to the first user defined
      *  external geometry
