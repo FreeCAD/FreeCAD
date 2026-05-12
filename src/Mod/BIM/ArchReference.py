@@ -37,6 +37,7 @@ __url__ = "https://www.freecad.org"
 import os
 import re
 import struct
+import xml.etree.ElementTree as ET
 import zipfile
 
 import FreeCAD
@@ -172,8 +173,8 @@ class ArchReference:
                         else:
                             for part in self.parts.values():
                                 if part[3]:
-                                    # Do not include BuildingParts as their
-                                    # shape is just a copy of their group:
+                                    # Do not include objects already represented
+                                    # by another imported shape.
                                     continue
                                 f = zdoc.open(part[1])
                                 shapedata = f.read()
@@ -382,56 +383,142 @@ class ArchReference:
         """returns a list of Part-based objects in a FCStd file"""
 
         parts = {}
-        materials = {}
-        zdoc = zipfile.ZipFile(filename)
-        with zdoc.open("Document.xml") as docf:
-            name = None
-            label = None
-            part = None
-            materials = {}
-            is_buildingpart = False
-            writemode = False
-            for line in docf:
-                line = line.decode("utf8")
-                if "<Object name=" in line:
-                    n = re.findall(r"name=\"(.*?)\"", line)
-                    if n:
-                        name = n[0]
-                elif 'class="BuildingPart"' in line:
-                    is_buildingpart = True
-                elif '<Property name="Label"' in line:
-                    writemode = True
-                elif writemode and "<String value=" in line:
-                    n = re.findall(r"value=\"(.*?)\"", line)
-                    if n:
-                        label = n[0]
-                        writemode = False
-                elif '<Property name="Shape" type="Part::PropertyPartShape"' in line:
-                    writemode = True
-                elif writemode and "<Part" in line and "file=" in line:
-                    n = re.findall(r"file=\"(.*?)\"", line)
-                    if n:
-                        part = n[0]
-                        writemode = False
-                elif '<Property name="MaterialsTable" type="App::PropertyMap"' in line:
-                    writemode = True
-                elif writemode and "<Item key=" in line:
-                    n = re.findall(r"key=\"(.*?)\"", line)
-                    v = re.findall(r"value=\"(.*?)\"", line)
-                    if n and v:
-                        materials[n[0]] = v[0]
-                elif writemode and "</Map>" in line:
-                    writemode = False
-                elif "</Object>" in line:
-                    if name and label and part:
-                        parts[name] = [label, part, materials, is_buildingpart]
-                    name = None
-                    label = None
-                    part = None
-                    materials = {}
-                    is_buildingpart = False
-                    writemode = False
+        with zipfile.ZipFile(filename) as zdoc:
+            with zdoc.open("Document.xml") as docf:
+                root = ET.parse(docf).getroot()
+
+        object_types = {}
+        objects_node = root.find("Objects")
+        if objects_node is not None:
+            for object_node in objects_node.findall("Object"):
+                name = object_node.attrib.get("name")
+                if name:
+                    object_types[name] = object_node.attrib.get("type", "")
+
+        object_infos = {}
+        object_links = {}
+        object_data_node = root.find("ObjectData")
+        if object_data_node is None:
+            return parts
+
+        for object_node in object_data_node.findall("Object"):
+            name = object_node.attrib.get("name")
+            if not name:
+                continue
+            links = self._getObjectLinks(object_node, "Group")
+            object_links[name] = links
+            object_infos[name] = {
+                "label": self._getObjectLabel(object_node),
+                "part": self._getObjectShapeFile(object_node),
+                "materials": self._getObjectMaterialsTable(object_node),
+                "is_buildingpart": self._isBuildingPartObject(object_node),
+                "links": links,
+                "type": object_types.get(name, ""),
+                "node": object_node,
+            }
+
+        skipped_objects = set()
+        for name, info in object_infos.items():
+            if self._isShapeInheritingContainer(info):
+                skipped_objects.update(self._getLinkedDescendants(name, object_links))
+
+        for name, info in object_infos.items():
+            if info["label"] and info["part"]:
+                skip_in_whole_object = info["is_buildingpart"] or name in skipped_objects
+                parts[name] = [
+                    info["label"],
+                    info["part"],
+                    info["materials"],
+                    skip_in_whole_object,
+                ]
         return parts
+
+    def _getObjectProperty(self, object_node, name):
+        properties_node = object_node.find("Properties")
+        if properties_node is None:
+            return None
+        for property_node in properties_node.findall("Property"):
+            if property_node.attrib.get("name") == name:
+                return property_node
+        return None
+
+    def _getObjectLabel(self, object_node):
+        property_node = self._getObjectProperty(object_node, "Label")
+        if property_node is None:
+            return None
+        string_node = property_node.find("String")
+        if string_node is None:
+            return None
+        return string_node.attrib.get("value")
+
+    def _getObjectShapeFile(self, object_node):
+        property_node = self._getObjectProperty(object_node, "Shape")
+        if property_node is None:
+            return None
+        if property_node.attrib.get("type") != "Part::PropertyPartShape":
+            return None
+        part_node = property_node.find("Part")
+        if part_node is None:
+            return None
+        return part_node.attrib.get("file")
+
+    def _getObjectMaterialsTable(self, object_node):
+        materials = {}
+        property_node = self._getObjectProperty(object_node, "MaterialsTable")
+        if property_node is None:
+            return materials
+        for item_node in property_node.iter("Item"):
+            key = item_node.attrib.get("key")
+            value = item_node.attrib.get("value")
+            if key and value:
+                materials[key] = value
+        return materials
+
+    def _getObjectLinks(self, object_node, property_name):
+        property_node = self._getObjectProperty(object_node, property_name)
+        if property_node is None:
+            return []
+        return [
+            link_node.attrib["value"]
+            for link_node in property_node.iter("Link")
+            if link_node.attrib.get("value")
+        ]
+
+    def _isBuildingPartObject(self, object_node):
+        return any(node.attrib.get("class") == "BuildingPart" for node in object_node.iter())
+
+    def _isShapeInheritingContainer(self, object_info):
+        if object_info["is_buildingpart"]:
+            return False
+        if not object_info["part"] or not object_info["links"]:
+            return False
+        if object_info["type"] in [
+            "App::Part",
+            "PartDesign::Body",
+            "Assembly::AssemblyObject",
+        ]:
+            return True
+        return self._hasObjectExtension(object_info["node"], "App::OriginGroupExtension")
+
+    def _hasObjectExtension(self, object_node, extension_type):
+        extensions_node = object_node.find("Extensions")
+        if extensions_node is None:
+            return False
+        for extension_node in extensions_node.findall("Extension"):
+            if extension_node.attrib.get("type") == extension_type:
+                return True
+        return False
+
+    def _getLinkedDescendants(self, name, object_links):
+        descendants = set()
+        children = list(object_links.get(name, []))
+        while children:
+            child = children.pop()
+            if child == name or child in descendants:
+                continue
+            descendants.add(child)
+            children.extend(object_links.get(child, []))
+        return descendants
 
     def getIfcFile(self, filename):
         """Gets an IfcOpenShell object"""
@@ -463,7 +550,7 @@ class ArchReference:
         if obj.Part:
             parts = [obj.Part]
         else:
-            # Do not include BuildingParts as their shape is just a copy of their group:
+            # Keep colors aligned with the shapes imported in execute().
             parts = [key for key, val in self.parts.items() if not val[3]]
         lenparts = len(parts)
         for i, part in enumerate(parts):
