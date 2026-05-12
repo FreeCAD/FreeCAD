@@ -232,6 +232,33 @@ class TestPartMirroringRegression(unittest.TestCase):
         self.assertAlmostEqual(mirror_bbox.ZMin, link_bbox.ZMin, delta=1.0)
         self.assertAlmostEqual(mirror_bbox.ZMax, link_bbox.ZMax, delta=1.0)
 
+    def testMirroringNestedPartContainer(self):
+        """Test that Part::Mirroring includes children of nested App::Part containers."""
+        outer = self.doc.addObject("App::Part", "Outer")
+        inner = self.doc.addObject("App::Part", "Inner")
+        box = self.doc.addObject("Part::Box", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+        box.Placement = App.Placement(App.Vector(20, 0, 0), App.Rotation())
+
+        inner.addObject(box)
+        outer.addObject(inner)
+        inner.Visibility = False
+        self.doc.recompute()
+
+        mirror = self.doc.addObject("Part::Mirroring", "Mirror")
+        mirror.Source = outer
+        mirror.Base = App.Vector(0, 0, 0)
+        mirror.Normal = App.Vector(1, 0, 0)
+        self.doc.recompute()
+
+        mirror_bbox = mirror.Shape.BoundBox
+        self.assertAlmostEqual(mirror_bbox.XMin, -30.0, delta=1.0)
+        self.assertAlmostEqual(mirror_bbox.XMax, -20.0, delta=1.0)
+        self.assertAlmostEqual(mirror_bbox.YMin, 0.0, delta=1.0)
+        self.assertAlmostEqual(mirror_bbox.YMax, 10.0, delta=1.0)
+
 
 # for standalone execution
 if __name__ == "__main__":

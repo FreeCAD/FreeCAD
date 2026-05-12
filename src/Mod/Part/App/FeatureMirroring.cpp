@@ -22,13 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <BRepBuilderAPI_Transform.hxx>
 #include <BRep_Tool.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
-#include <gp_Trsf.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <gp_Pln.hxx>
@@ -309,22 +307,7 @@ App::DocumentObjectExecReturn* Mirroring::execute()
     Base::Vector3d norm = Normal.getValue();
 
     try {
-        // get shape without transform
-        auto shape = Feature::getTopoShape(link, ShapeOption::ResolveLink);
-
-        // check for placement property no matter the type hierarchy
-        // App::Link does not get its placement via GeoFeature inheritance
-        if (auto propPlacement = link->getPropertyByName<App::PropertyPlacement>("Placement")) {
-            Base::Placement placement = propPlacement->getValue();
-
-            if (!placement.isIdentity()) {
-                gp_Trsf trsf;
-                TopoShape::convertTogpTrsf(placement.toMatrix(), trsf);
-
-                BRepBuilderAPI_Transform mkTrf(shape.getShape(), trsf, Standard_True);
-                shape = TopoShape(mkTrf.Shape());
-            }
-        }
+        auto shape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
 
         gp_Ax2 ax2(gp_Pnt(base.x, base.y, base.z), gp_Dir(norm.x, norm.y, norm.z));
 

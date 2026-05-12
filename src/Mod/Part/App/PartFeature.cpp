@@ -1243,7 +1243,11 @@ static TopoShape _getTopoShape(
                 if (shape.isNull()) {
                     continue;
                 }
-                if (visible < 0 && subObj && !subObj->Visibility.getValue()) {
+                // Hidden geo-feature groups can still contain visible child shapes.
+                const bool isGeoFeatureGroup =
+                    subObj
+                    && subObj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId());
+                if (visible < 0 && subObj && !subObj->Visibility.getValue() && !isGeoFeatureGroup) {
                     continue;
                 }
             }
