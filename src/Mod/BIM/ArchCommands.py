@@ -716,7 +716,7 @@ def removeCurves(shape, dae=False, tolerance=5):
 
 
 def removeShape(objs, mark=True):
-    """removeShape(objs,mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
+    """removeShape(objs, mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
     the inner shape, keeping its length, width and height as parameters. If mark is True, objects that cannot
     be processed by this function will become red."""
     import DraftGeomUtils
@@ -727,27 +727,29 @@ def removeShape(objs, mark=True):
         if DraftGeomUtils.isCubic(obj.Shape):
             dims = DraftGeomUtils.getCubicDimensions(obj.Shape)
             if dims:
+                place, length, width, height = dims
                 name = obj.Name
                 tp = Draft.getType(obj)
                 if tp == "Structure":
-                    import ArchStructure
+                    import Arch
 
-                    stru = ArchStructure.makeStructure(
-                        length=dims[1], width=dims[2], height=dims[3], name=name
+                    stru = Arch.makeStructure(
+                        length=length, width=width, height=height, name=name
                     )
-                    stru.Placement = dims[0]
+                    if height <= length:
+                        # Beam
+                        place.move(place.Rotation.multVec(Vector(-length / 2, 0, height / 2)))
+                    stru.Placement = place
                     Draft.format_object(stru, obj)
                     FreeCAD.ActiveDocument.removeObject(name)
                 elif tp == "Wall":
                     import Arch
 
-                    place = dims[0]
-                    length = dims[1]
                     place.move(place.Rotation.multVec(Vector(-length / 2, 0, 0)))
                     line = Draft.makeLine(Vector(0, 0, 0), Vector(length, 0, 0))
                     line.Placement = place
                     wall = Arch.makeWall(
-                        line, width=dims[2], height=dims[3], align="Center", name=name
+                        line, width=width, height=height, align="Center", name=name
                     )
                     Draft.format_object(wall, obj)
                     FreeCAD.ActiveDocument.removeObject(name)
