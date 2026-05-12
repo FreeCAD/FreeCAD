@@ -806,6 +806,7 @@ class ObjectSurface3D(PathOp.ObjectOp):
             float(obj.StartDepth.Value),
             float(obj.FinalDepth.Value),
             float(obj.StepDown.Value),
+            bool(obj.ClearPlanarOnly),
         )
 
         accuracy_val = getattr(obj, "SamplingAccuracy", "4")
@@ -820,6 +821,7 @@ class ObjectSurface3D(PathOp.ObjectOp):
             accuracy_val,
             float(obj.DepthOffset.Value),
             wpc,
+            start_z=float(obj.StartDepth.Value),
         )
 
         pattern_options = {

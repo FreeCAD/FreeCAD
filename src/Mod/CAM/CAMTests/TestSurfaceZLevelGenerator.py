@@ -102,7 +102,13 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
         """
         from Path.Base.Generator.surface_zlevel import categorize_floor_steps
 
-        steps = categorize_floor_steps(self.test_model, start_z=20.0, final_z=0.0, step_down=7.5)
+        steps = categorize_floor_steps(
+            self.test_model,
+            start_z=20.0,
+            final_z=0.0,
+            step_down=7.5,
+            clear_planar_only=False,
+        )
 
         # Expected Z-levels: 20 -> 12.5 (Pure) -> 10 (Extra) -> 5 (Mixed, as 12.5-7.5=5 lands near 5) -> 0
         self.assertGreaterEqual(len(steps), 4)
@@ -166,7 +172,7 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
         """
         from Path.Base.Generator.surface_zlevel import categorize_floor_steps, zlevel_hybrid_stack
 
-        steps = categorize_floor_steps(self.test_model, 20.0, 0.0, 10.0)
+        steps = categorize_floor_steps(self.test_model, 20.0, 0.0, 10.0, False)
         tool = self._get_mock_tool_params()
 
         stack = zlevel_hybrid_stack(
@@ -179,6 +185,7 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
             accuracy_val="4",
             z_offset=0.0,
             wpc=self.wpc,
+            start_z=20.0,
         )
 
         self.assertGreater(len(stack), 0, "Stack should contain generated layers")
@@ -205,11 +212,20 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
             zlevel_hybrid_to_gcode,
         )
 
-        steps = categorize_floor_steps(self.test_model, 20.0, 5.0, 15.0)
+        steps = categorize_floor_steps(self.test_model, 20.0, 5.0, 15.0, False)
         tool = self._get_mock_tool_params()
 
         stack = zlevel_hybrid_stack(
-            self.test_model, steps, self.border_face, self.trim_face, tool, 0.0, "4", 0.0, self.wpc
+            self.test_model,
+            steps,
+            self.border_face,
+            self.trim_face,
+            tool,
+            0.0,
+            "4",
+            0.0,
+            self.wpc,
+            start_z=20.0,
         )
 
         feed_params = {"horizFeed": 300, "vertFeed": 100, "horizRapid": 1000, "vertRapid": 1000}
