@@ -36,3 +36,27 @@ class TestArchSchedule(TestArchBase.TestArchBase):
         obj = Arch.makeSchedule()
         self.assertIsNotNone(obj, "makeSchedule failed to create an object")
         self.assertEqual(obj.Label, "Schedule", "Incorrect default label for Schedule")
+
+    def test_wall_schedule_includes_added_wall_components(self):
+        """Schedules should count walls merged through Additions."""
+        operation = "Testing Schedule wall Additions..."
+        self.printTestMessage(operation)
+
+        base_wall = Arch.makeWall(length=4000, name="Base Wall")
+        added_wall = Arch.makeWall(length=2000, name="Added Wall")
+        base_wall.IfcType = "Wall"
+        added_wall.IfcType = "Wall"
+        Arch.addComponents(added_wall, host=base_wall)
+        self.document.recompute()
+
+        schedule = Arch.makeSchedule()
+        schedule.Operation = ["Wall length"]
+        schedule.Value = ["Length"]
+        schedule.Unit = [""]
+        schedule.Objects = [""]
+        schedule.Filter = ["Type:Wall"]
+
+        schedule.Proxy.execute(schedule)
+
+        self.assertIn("B2", schedule.Proxy.data)
+        self.assertAlmostEqual(float(schedule.Proxy.data["B2"]), 6000.0)

@@ -350,6 +350,7 @@ class _ArchSchedule:
                 # Remove included objects (e.g. walls that are part of another wall,
                 # base geometry, etc)
                 objs = Arch.pruneIncluded(objs, strict=True, silent=True)
+                objs = self.includeSameTypeAdditions(objs, Draft)
                 # Remove all schedules and spreadsheets:
                 objs = [
                     o for o in objs if Draft.get_type(o) not in ["Schedule", "Spreadsheet::Sheet"]
@@ -407,6 +408,36 @@ class _ArchSchedule:
             if ok:
                 nobjs.append(o)
         return nobjs
+
+    def includeSameTypeAdditions(self, objs, draft_module):
+        """Include Arch additions that are separate objects of the host type."""
+
+        result = list(objs)
+        known_names = {o.Name for o in result}
+        queue = list(objs)
+
+        while queue:
+            host = queue.pop(0)
+            host_type = draft_module.get_type(host)
+            additions = getattr(host, "Additions", None) or []
+
+            for addition in additions:
+                actual_addition = addition
+                if hasattr(addition, "getLinkedObject"):
+                    linked = addition.getLinkedObject()
+                    if linked:
+                        actual_addition = linked
+
+                if not actual_addition or actual_addition.Name in known_names:
+                    continue
+                if draft_module.get_type(actual_addition) != host_type:
+                    continue
+
+                result.append(actual_addition)
+                queue.append(actual_addition)
+                known_names.add(actual_addition.Name)
+
+        return result
 
     def get_ifc_elements(self, ifcfile, filters):
         """Retrieves IFC elements corresponding to the given filters"""
