@@ -1246,6 +1246,23 @@ def save(obj, filepath=None):
     obj.Modified = False
 
 
+def _get_aggregate_children(obj):
+    """Returns children that should be aggregated under an IFC assembly."""
+
+    children = []
+    for attr in ("Group", "Links"):
+        for child in getattr(obj, attr, []):
+            if child and child not in children:
+                children.append(child)
+    if not children and hasattr(obj, "getSubObjects"):
+        for subname in obj.getSubObjects():
+            name = subname[:-1] if subname.endswith(".") else subname
+            child = obj.Document.getObject(name)
+            if child and child not in children:
+                children.append(child)
+    return children
+
+
 def aggregate(obj, parent, mode=None):
     """Takes any FreeCAD object and aggregates it to an existing IFC object.
     Mode can be 'opening' to force-create a subtraction"""
@@ -1260,6 +1277,7 @@ def aggregate(obj, parent, mode=None):
     product = None
     objecttype = None
     new = False
+    aggregate_children = _get_aggregate_children(obj)
     stepid = getattr(obj, "StepId", None)
     if stepid:
         # obj might be dragging at this point and has no project anymore
@@ -1285,7 +1303,10 @@ def aggregate(obj, parent, mode=None):
             obj.Proxy.create_ifc(obj, ifcfile)
             newobj = obj
         else:
-            product = ifc_export.create_product(obj, parent, ifcfile, ifcclass)
+            skipshape = (
+                bool(aggregate_children) and (ifcclass or get_ifctype(obj)) == "IfcElementAssembly"
+            )
+            product = ifc_export.create_product(obj, parent, ifcfile, ifcclass, skipshape=skipshape)
     if product:
         exobj = get_object(product, obj.Document)
         if exobj is None:
@@ -1317,6 +1338,9 @@ def aggregate(obj, parent, mode=None):
             aggregate(child, newobj)
     for child in getattr(obj, "Group", []):
         if newobj.IfcClass == "IfcGroup" and child in obj.Group:
+            aggregate(child, newobj)
+    if newobj.IfcClass == "IfcElementAssembly":
+        for child in aggregate_children:
             aggregate(child, newobj)
     delete = not (PARAMS.GetBool("KeepAggregated", False))
     if new and delete and base:

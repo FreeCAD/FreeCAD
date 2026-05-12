@@ -323,6 +323,38 @@ class NativeIFCTest(unittest.TestCase):
         print(ifco, "IFC objects created")
         self.assertTrue(fco == 8 - SDU and ifco == 12, "CreateDocument failed")
 
+    def test09b_CreateCompoundAssembly(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 09b: Creating compound assembly...")
+        doc = FreeCAD.ActiveDocument
+        proj = ifc_tools.create_document(doc, silent=True)
+        site = ifc_tools.aggregate(Arch.makeSite(), proj)
+        bldg = ifc_tools.aggregate(Arch.makeBuilding(), site)
+        storey = ifc_tools.aggregate(Arch.makeFloor(), bldg)
+        seat = doc.addObject("Part::Box", "ChairSeat")
+        seat.Length = 200
+        seat.Width = 200
+        seat.Height = 20
+        back = doc.addObject("Part::Box", "ChairBack")
+        back.Length = 200
+        back.Width = 20
+        back.Height = 200
+        back.Placement.Base = FreeCAD.Vector(0, 180, 0)
+        compound = doc.addObject("Part::Compound", "Chair")
+        compound.Links = [seat, back]
+        doc.recompute()
+        assembly = ifc_tools.aggregate(compound, storey)
+        doc.recompute()
+
+        assembly_element = ifc_tools.get_ifc_element(assembly)
+        children = element.get_decomposition(assembly_element)
+        child_representations = [
+            child for child in children if getattr(child, "Representation", None)
+        ]
+        self.assertTrue(assembly_element.is_a("IfcElementAssembly"), "Compound is not an assembly")
+        self.assertFalse(assembly_element.Representation, "Assembly should use child geometry")
+        self.assertEqual(len(child_representations), 2, "Compound children lost their geometry")
+        self.assertEqual(len(assembly.Group), 2, "Compound children were not grouped")
+
     def test10_ChangePlacement(self):
         FreeCAD.Console.PrintMessage("NativeIFC 10: Changing Placement...")
         clearObjects()
