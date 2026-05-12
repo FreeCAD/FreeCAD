@@ -1741,12 +1741,7 @@ bool SketchObject::deriveConstraintsForPieces(
                 && newIds.size() > 1) {
                 if (conId != GeoEnum::GeoUndef) {
                     Constraint* trans = con->copy();
-                    trans->substituteIndexAndPos(
-                        oldId,
-                        PointPos::none,
-                        newIds.front(),
-                        PointPos::none
-                    );
+                    trans->substituteIndexAndPos(oldId, PointPos::none, newIds.front(), PointPos::none);
                     newConstraints.push_back(trans);
                 }
                 else {
@@ -1770,12 +1765,7 @@ bool SketchObject::deriveConstraintsForPieces(
 
             if (idx.has_value()) {
                 Constraint* trans = con->copy();
-                trans->substituteIndexAndPos(
-                    oldId,
-                    PointPos::none,
-                    newIds[idx.value()],
-                    PointPos::none
-                );
+                trans->substituteIndexAndPos(oldId, PointPos::none, newIds[idx.value()], PointPos::none);
                 newConstraints.push_back(trans);
                 return true;
             }

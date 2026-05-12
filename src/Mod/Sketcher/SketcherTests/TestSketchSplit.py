@@ -28,7 +28,6 @@ import FreeCAD
 import Part
 import Sketcher
 
-
 App = FreeCAD
 
 
@@ -75,9 +74,7 @@ class TestSketchSplit(unittest.TestCase):
 
     def makeParallelLinesSketch(self, reversed_distance=False):
         sketch = self.Doc.addObject("Sketcher::SketchObject", "ParallelLines")
-        first_line = sketch.addGeometry(
-            Part.LineSegment(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
-        )
+        first_line = sketch.addGeometry(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(10, 0, 0)))
         second_line = sketch.addGeometry(
             Part.LineSegment(App.Vector(0, 5, 0), App.Vector(10, 5, 0))
         )
@@ -107,9 +104,7 @@ class TestSketchSplit(unittest.TestCase):
 
     def testSplitPreservesPointOnObjectOnSecondPiece(self):
         sketch = self.Doc.addObject("Sketcher::SketchObject", "PointOnObjectSplit")
-        split_line = sketch.addGeometry(
-            Part.LineSegment(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
-        )
+        split_line = sketch.addGeometry(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(10, 0, 0)))
         crossing_line = sketch.addGeometry(
             Part.LineSegment(App.Vector(7, 0, 0), App.Vector(7, 4, 0))
         )
