@@ -378,7 +378,7 @@ void FaceAppearances::onMaterialSelected(const std::shared_ptr<Materials::Materi
         App::Material appearance = material->getMaterialAppearance();
         appearance.uuid = material->getUUID().toStdString();
         for (int it : d->index) {
-           d->perface[it] = appearance;
+            d->perface[it] = appearance;
         }
         d->vp->ShapeAppearance.setValues(d->perface);
         // new color has been applied, unselect so that users can see this
