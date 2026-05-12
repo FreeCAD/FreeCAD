@@ -650,19 +650,15 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="207"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
-      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp)</translation>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation type="unfinished">Image files</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="208"/>
-      <location filename="../../ImageEdit.cpp" line="223"/>
-      <source>All files (*)</source>
-      <translation type="unfinished">All files (*)</translation>
-    </message>
-    <message>
-      <location filename="../../ImageEdit.cpp" line="222"/>
-      <source>Image files (*.svg)</source>
-      <translation type="unfinished">Image files (*.svg)</translation>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>すべてのファイル</translation>
     </message>
   </context>
   <context>

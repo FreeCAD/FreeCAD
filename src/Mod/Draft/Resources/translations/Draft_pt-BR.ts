@@ -2085,42 +2085,56 @@ um arame bruto da forma original é adicionado</translation>
 O valor ideal depende do tamanho absoluto da importação. Os valores típicos estão entre 1 e 5.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation>Desvio máximo para aproximação das curvas complexas</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation>Desvio máximo para a aproximação de elipses, hipérboles, parábolas e curvas de
+Bézier e B-spline para arcos e linhas. Pode ser útil para a bancada de trabalho CAM.
+Selecione zero para desativar a aproximação.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>Estilo de exportação</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>Estilo de arquivo SVG a ser escrito ao exportar um desenho</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>Traduzido (para impressão e visualização)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>Estado bruto (para CAM)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>Todas as linhas brancas aparecerão em preto no SVG para uma melhor visibilidade contra fundos brancos</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>Converter linha de cor branca para preto</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>Comprimento máximo do segmento para arcos suavizados</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2427,7 +2441,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</source
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>Opções de Exportação</translation>
     </message>
@@ -3737,15 +3751,30 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="195"/>
-      <location filename="../../draftguitools/gui_labels.py" line="222"/>
+      <location filename="../../draftguitools/gui_labels.py" line="223"/>
       <source>Pick endpoint of leader line</source>
       <translation>Escolha a extremidade da linha do líder</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="205"/>
-      <location filename="../../draftguitools/gui_labels.py" line="232"/>
+      <location filename="../../draftguitools/gui_labels.py" line="233"/>
       <source>Pick text position</source>
       <translation>Selecionar posição do texto</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="243"/>
+      <source>%1 pick arrow point</source>
+      <translation>%1 escolher o ponto de seta</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="247"/>
+      <source>%1 pick corner point</source>
+      <translation>%1 escolher ponto de canto</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="251"/>
+      <source>%1 pick text point</source>
+      <translation>%1 escolher o ponto de texto</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="129"/>
@@ -3756,9 +3785,39 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
       <translation>Escolha o primeiro ponto</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="504"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="506"/>
       <source>Edges do not intersect!</source>
       <translation>Bordas não se cruzam!</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="593"/>
+      <source>%1 pick dimension position</source>
+      <translation>%1 escolher a posição da cota</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="595"/>
+      <source>%1 select edge</source>
+      <translation>%1 selecionar aresta</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="612"/>
+      <source>%1 pick next dimension point</source>
+      <translation>%1 escolher o próximo ponto da cota</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="614"/>
+      <source>%1 finish</source>
+      <translation>%1 finalizar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="620"/>
+      <source>%1 pick first dimension point</source>
+      <translation>%1 escolher o primeiro ponto da cota</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="629"/>
+      <source>%1 pick second dimension point</source>
+      <translation>%1 escolher o segundo ponto da cota</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="182"/>
@@ -3932,33 +3991,53 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="76"/>
-      <source>%1 constrain</source>
-      <translation>1% restrição</translation>
+      <source>Hold %1 constrain</source>
+      <translation>Segurar %1 para restringir</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="83"/>
-      <source>%1 snap</source>
-      <translation>1% snap</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="81"/>
+      <source>Hold %1 horizontal/vertical dimension</source>
+      <translation>Segurar %1 para cota horizontal/vertical</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="100"/>
-      <source>%1/%2/%3 switch constraint</source>
-      <translation>1% 2% 3% alternador de restrições</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="86"/>
+      <source>Hold %1 radial dimension</source>
+      <translation>Segurar %1 para cota radial</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="93"/>
+      <source>Hold %1 snap</source>
+      <translation>Segurar 1% para ajuste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="110"/>
+      <source>%1 / %2 / %3 switch constraint</source>
+      <translation>%1 / %2 / %3 para alternar a restrição</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="120"/>
       <source>%1 toggle relative</source>
       <translation> 1% Liga/Desliga relativo</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="119"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="129"/>
       <source>%1 toggle global</source>
       <translation>1% alternador global</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="128"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="138"/>
       <source>%1 toggle continue</source>
       <translation>1% alternador de continuidade </translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="149"/>
+      <source>%1 / hold %2 select edge</source>
+      <translation>%1 / segurar %2 para selecionar aresta</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="151"/>
+      <source>Hold %1 select edge</source>
+      <translation>Segurar %1 para selecionar aresta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="311"/>
@@ -4038,32 +4117,37 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
       <translation>1% escolher terceiro ponto</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation>Apenas linhas do rascunho, contornos e curvas podem ser destacadas</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>Selecione um objeto para editar</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="295"/>
+      <location filename="../../draftguitools/gui_edit.py" line="298"/>
       <source>Select a Draft object to edit</source>
       <translation>Selecione o esboço de objeto para editar</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="501"/>
+      <location filename="../../draftguitools/gui_edit.py" line="503"/>
       <source>Edit Node</source>
       <translation>Editar nó</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="814"/>
+      <location filename="../../draftguitools/gui_edit.py" line="816"/>
       <source>Too many objects selected, maximum number set to:</source>
       <translation>Muitos objetos selecionados, número máximo definido como:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="555"/>
+      <location filename="../../draftguitools/gui_edit.py" line="557"/>
       <source>No edit point found for selected object</source>
       <translation>Nenhum ponto de edição foi encontrado para o objeto selecionado</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="822"/>
+      <location filename="../../draftguitools/gui_edit.py" line="824"/>
       <source>: this object is not editable</source>
       <translation>: este objeto não é editável</translation>
     </message>
@@ -4161,8 +4245,9 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
       <translation>Criar um ponto</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="214"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <location filename="../../draftguitools/gui_points.py" line="189"/>
+      <location filename="../../draftguitools/gui_texts.py" line="180"/>
       <source>%1 pick point</source>
       <translation>1% ponto de escolha</translation>
     </message>
@@ -4633,7 +4718,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Criar dimensão</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="490"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="492"/>
       <source>Edge too short!</source>
       <translation>Aresta curta demais!</translation>
     </message>
@@ -4750,7 +4835,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Indique o ponto de localização do ShapeString</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="242"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="245"/>
       <source>Create ShapeString</source>
       <translation>Criar uma ShapeString</translation>
     </message>
@@ -5417,7 +5502,7 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="475"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="193"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="199"/>
       <source>Flatten</source>
       <translation>Nivelar</translation>
     </message>
@@ -5813,7 +5898,7 @@ dos objetos existentes em todos os documentos abertos?</translation>
       <translation>Mesclar camadas duplicadas</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="183"/>
+      <location filename="../../importDXF.py" line="189"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -6176,7 +6261,7 @@ Para permitir que o FreeCAD baixe estas bibliotecas, responda Sim.</translation>
       <translation>Objeto de Ponto não possui um ponto discreto, ele não pode ser usado para uma matriz</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="159"/>
+      <location filename="../../importDXF.py" line="165"/>
       <source>Download of DXF libraries failed.
 Please install the DXF Library addon manually
 from menu Tools → Addon Manager</source>
@@ -6209,12 +6294,12 @@ no menu de ferramentas → Gerenciador de Extensões</translation>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Estilo de exportação SVG desconhecido, mudando para Traduzido</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>A lista de exportação não contém nenhum objeto com uma caixa delimitadora válida</translation>
     </message>
@@ -7874,15 +7959,6 @@ além da linha de cota</translation>
       <location filename="../../draftviewproviders/view_rectangle.py" line="46"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
       <translation>Define uma imagem de textura (Substitui os padrões de hachura)</translation>
-    </message>
-  </context>
-  <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../draftviewproviders/view_base.py" line="503"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
-      <source>Transform</source>
-      <translation>Transformar</translation>
     </message>
   </context>
   <context>

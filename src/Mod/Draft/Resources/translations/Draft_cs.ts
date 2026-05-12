@@ -2096,42 +2096,56 @@ a raw wire from the original shape is added</translation>
 	The optimal value depends on the absolute size of the import. Typical values are between 1 and 5.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation type="unfinished">Maximum deviation for approximation of complex curves</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation type="unfinished">Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>Styl exportu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>Styl souboru SVG pro zápis při exportu skici</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>Přeloženo (pro tisk a zobrazení)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>Surový (pro CAM)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>Všechny bílé čáry se v SVG zobrazí černě pro lepší čitelnost na bílém pozadí</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation type="unfinished">Convert white line color to black</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation type="unfinished">Maximum segment length for discretized arcs</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2458,7 +2472,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</transl
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation type="unfinished">Export Options</translation>
     </message>
@@ -3771,15 +3785,30 @@ nebo zkuste uložit do nižší verze DWG.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="195"/>
-      <location filename="../../draftguitools/gui_labels.py" line="222"/>
+      <location filename="../../draftguitools/gui_labels.py" line="223"/>
       <source>Pick endpoint of leader line</source>
       <translation>Vyberte koncový bod odkazové čáry</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="205"/>
-      <location filename="../../draftguitools/gui_labels.py" line="232"/>
+      <location filename="../../draftguitools/gui_labels.py" line="233"/>
       <source>Pick text position</source>
       <translation>Vyberte polohu textu</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="243"/>
+      <source>%1 pick arrow point</source>
+      <translation type="unfinished">%1 pick arrow point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="247"/>
+      <source>%1 pick corner point</source>
+      <translation type="unfinished">%1 pick corner point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="251"/>
+      <source>%1 pick text point</source>
+      <translation type="unfinished">%1 pick text point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="129"/>
@@ -3790,9 +3819,39 @@ nebo zkuste uložit do nižší verze DWG.</translation>
       <translation>Vyberte první bod</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="504"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="506"/>
       <source>Edges do not intersect!</source>
       <translation type="unfinished">Edges do not intersect!</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="593"/>
+      <source>%1 pick dimension position</source>
+      <translation type="unfinished">%1 pick dimension position</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="595"/>
+      <source>%1 select edge</source>
+      <translation type="unfinished">%1 select edge</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="612"/>
+      <source>%1 pick next dimension point</source>
+      <translation type="unfinished">%1 pick next dimension point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="614"/>
+      <source>%1 finish</source>
+      <translation type="unfinished">%1 finish</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="620"/>
+      <source>%1 pick first dimension point</source>
+      <translation type="unfinished">%1 pick first dimension point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="629"/>
+      <source>%1 pick second dimension point</source>
+      <translation type="unfinished">%1 pick second dimension point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="182"/>
@@ -3966,33 +4025,53 @@ nebo zkuste uložit do nižší verze DWG.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="76"/>
-      <source>%1 constrain</source>
-      <translation type="unfinished">%1 constrain</translation>
+      <source>Hold %1 constrain</source>
+      <translation type="unfinished">Hold %1 constrain</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="83"/>
-      <source>%1 snap</source>
-      <translation type="unfinished">%1 snap</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="81"/>
+      <source>Hold %1 horizontal/vertical dimension</source>
+      <translation type="unfinished">Hold %1 horizontal/vertical dimension</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="100"/>
-      <source>%1/%2/%3 switch constraint</source>
-      <translation type="unfinished">%1/%2/%3 switch constraint</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="86"/>
+      <source>Hold %1 radial dimension</source>
+      <translation type="unfinished">Hold %1 radial dimension</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="93"/>
+      <source>Hold %1 snap</source>
+      <translation type="unfinished">Hold %1 snap</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="110"/>
+      <source>%1 / %2 / %3 switch constraint</source>
+      <translation type="unfinished">%1 / %2 / %3 switch constraint</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="120"/>
       <source>%1 toggle relative</source>
       <translation type="unfinished">%1 toggle relative</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="119"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="129"/>
       <source>%1 toggle global</source>
       <translation type="unfinished">%1 toggle global</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="128"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="138"/>
       <source>%1 toggle continue</source>
       <translation type="unfinished">%1 toggle continue</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="149"/>
+      <source>%1 / hold %2 select edge</source>
+      <translation type="unfinished">%1 / hold %2 select edge</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="151"/>
+      <source>Hold %1 select edge</source>
+      <translation type="unfinished">Hold %1 select edge</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="311"/>
@@ -4072,32 +4151,37 @@ nebo zkuste uložit do nižší verze DWG.</translation>
       <translation type="unfinished">%1 pick third point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation type="unfinished">Only Draft lines, wires, and curves can be highlighted</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>Vyberte objekt, který chcete upravit</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="295"/>
+      <location filename="../../draftguitools/gui_edit.py" line="298"/>
       <source>Select a Draft object to edit</source>
       <translation>Vyberte objekt konceptu, který chcete upravit</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="501"/>
+      <location filename="../../draftguitools/gui_edit.py" line="503"/>
       <source>Edit Node</source>
       <translation type="unfinished">Edit Node</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="814"/>
+      <location filename="../../draftguitools/gui_edit.py" line="816"/>
       <source>Too many objects selected, maximum number set to:</source>
       <translation type="unfinished">Too many objects selected, maximum number set to:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="555"/>
+      <location filename="../../draftguitools/gui_edit.py" line="557"/>
       <source>No edit point found for selected object</source>
       <translation>Pro vybraný objekt nebyl nalezen žádný editační bod</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="822"/>
+      <location filename="../../draftguitools/gui_edit.py" line="824"/>
       <source>: this object is not editable</source>
       <translation>: Tento objekt nelze upravovat</translation>
     </message>
@@ -4195,8 +4279,9 @@ nebo zkuste uložit do nižší verze DWG.</translation>
       <translation>Vytvořit bod</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="214"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <location filename="../../draftguitools/gui_points.py" line="189"/>
+      <location filename="../../draftguitools/gui_texts.py" line="180"/>
       <source>%1 pick point</source>
       <translation type="unfinished">%1 pick point</translation>
     </message>
@@ -4668,7 +4753,7 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Vytvořit kótu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="490"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="492"/>
       <source>Edge too short!</source>
       <translation>Hrana je příliš krátká!</translation>
     </message>
@@ -4785,7 +4870,7 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Vyberte bod umístění Tvaru písma</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="242"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="245"/>
       <source>Create ShapeString</source>
       <translation>Vytvořit Tvar písma</translation>
     </message>
@@ -5452,7 +5537,7 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="475"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="193"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="199"/>
       <source>Flatten</source>
       <translation>Zploštit</translation>
     </message>
@@ -5848,7 +5933,7 @@ existujících objektů ve všech otevřených dokumentech?</translation>
       <translation type="unfinished">Merge Layer Duplicates</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="183"/>
+      <location filename="../../importDXF.py" line="189"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -6214,7 +6299,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Point object does not have a discrete point, it cannot be used for an array</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="159"/>
+      <location filename="../../importDXF.py" line="165"/>
       <source>Download of DXF libraries failed.
 Please install the DXF Library addon manually
 from menu Tools → Addon Manager</source>
@@ -6247,12 +6332,12 @@ from menu Tools → Addon Manager</translation>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Neznámý styl exportu SVG, přepnutí na Přeloženo</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>Exportovaný seznam neobsahuje žádný objekt s platným ohraničovacím rámečkem</translation>
     </message>
@@ -7918,15 +8003,6 @@ za kótovací čárou</translation>
       <location filename="../../draftviewproviders/view_rectangle.py" line="46"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
       <translation type="unfinished">Defines a texture image (overrides hatch patterns)</translation>
-    </message>
-  </context>
-  <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../draftviewproviders/view_base.py" line="503"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
-      <source>Transform</source>
-      <translation>Transformace</translation>
     </message>
   </context>
   <context>

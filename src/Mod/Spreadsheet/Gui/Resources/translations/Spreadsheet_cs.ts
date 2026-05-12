@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="955"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="957"/>
+      <location filename="../../Command.cpp" line="956"/>
       <source>&amp;New Spreadsheet</source>
       <translation type="unfinished">&amp;New Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="957"/>
       <source>Creates a new spreadsheet</source>
       <translation type="unfinished">Creates a new spreadsheet</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Align &amp;Bottom</source>
       <translation type="unfinished">Align &amp;Bottom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Aligns cell contents to the bottom</source>
       <translation type="unfinished">Aligns cell contents to the bottom</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="343"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="345"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Align Horizontal &amp;Center</source>
       <translation type="unfinished">Align Horizontal &amp;Center</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="345"/>
       <source>Aligns cell contents to the horizontal center</source>
       <translation type="unfinished">Aligns cell contents to the horizontal center</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="286"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Align &amp;Left</source>
       <translation type="unfinished">Align &amp;Left</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="289"/>
+      <location filename="../../Command.cpp" line="288"/>
       <source>Aligns cell contents to the left</source>
       <translation type="unfinished">Aligns cell contents to the left</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="400"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Align &amp;Right</source>
       <translation type="unfinished">Align &amp;Right</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="403"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Aligns cell contents to the right</source>
       <translation type="unfinished">Aligns cell contents to the right</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="457"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
+      <location filename="../../Command.cpp" line="458"/>
       <source>Align &amp;Top</source>
       <translation type="unfinished">Align &amp;Top</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="460"/>
+      <location filename="../../Command.cpp" line="459"/>
       <source>Aligns cell contents to the top</source>
       <translation type="unfinished">Aligns cell contents to the top</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="571"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="573"/>
+      <location filename="../../Command.cpp" line="572"/>
       <source>Align &amp;Vertical Center</source>
       <translation type="unfinished">Align &amp;Vertical Center</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="574"/>
+      <location filename="../../Command.cpp" line="573"/>
       <source>Aligns cell contents to the vertical center</source>
       <translation type="unfinished">Aligns cell contents to the vertical center</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>&amp;Export Spreadsheet</source>
       <translation type="unfinished">&amp;Export Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Exports the spreadsheet to a CSV file</source>
       <translation type="unfinished">Exports the spreadsheet to a CSV file</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="883"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Set Alias</source>
       <translation type="unfinished">Set Alias</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Sets an alias for the selected cell</source>
       <translation type="unfinished">Sets an alias for the selected cell</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="628"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="630"/>
+      <location filename="../../Command.cpp" line="629"/>
       <source>&amp;Bold Text</source>
       <translation type="unfinished">&amp;Bold Text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="631"/>
+      <location filename="../../Command.cpp" line="630"/>
       <source>Sets the text in the selected cells bold</source>
       <translation type="unfinished">Sets the text in the selected cells bold</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="713"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="715"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source>&amp;Italic Text</source>
       <translation type="unfinished">&amp;Italic Text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="715"/>
       <source>Sets the text in the selected cells italic</source>
       <translation type="unfinished">Sets the text in the selected cells italic</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="798"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="800"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>&amp;Underline Text</source>
       <translation type="unfinished">&amp;Underline Text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>Underlines the text in the selected cells</source>
       <translation type="unfinished">Underlines the text in the selected cells</translation>
     </message>
@@ -274,7 +274,17 @@
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="920"/>
+      <location filename="../../qtcolorpicker.cpp" line="554"/>
+      <source>Reset</source>
+      <translation>Reset</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="558"/>
+      <source>Custom Colors</source>
+      <translation type="unfinished">Custom Colors</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="653"/>
       <source>Custom Color</source>
       <translation>Vlastní barva</translation>
     </message>
@@ -292,57 +302,57 @@
       <translation type="unfinished">Sp&amp;lit cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Left-align cell</source>
       <translation>Zarovnat buňku vlevo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="365"/>
       <source>Center cell</source>
       <translation>Zarovnat buňku na střed</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="423"/>
+      <location filename="../../Command.cpp" line="422"/>
       <source>Right-align cell</source>
       <translation>Zarovnat buňku vpravo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="479"/>
       <source>Top-align cell</source>
       <translation>Zarovnat buňku nahoru</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="537"/>
+      <location filename="../../Command.cpp" line="536"/>
       <source>Bottom-align cell</source>
       <translation>Zarovnat buňku dolů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="594"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Vertically center cells</source>
       <translation>Svisle na střed buněk</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="669"/>
+      <location filename="../../Command.cpp" line="668"/>
       <source>Set bold text</source>
       <translation>Tučně</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="754"/>
+      <location filename="../../Command.cpp" line="753"/>
       <source>Set italic text</source>
       <translation>Kurzíva</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="839"/>
+      <location filename="../../Command.cpp" line="838"/>
       <source>Set underline text</source>
       <translation>Podtrženo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="969"/>
+      <location filename="../../Command.cpp" line="968"/>
       <source>Create Spreadsheet</source>
       <translation>Vytvořit tebulku</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="269"/>
+      <location filename="../../PropertiesDialog.cpp" line="315"/>
       <source>Set cell properties</source>
       <translation>Nastavení buněk</translation>
     </message>
@@ -352,14 +362,24 @@
       <translation>Editovat</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="148"/>
+      <location filename="../../Workbench.cpp" line="166"/>
       <source>Set text color</source>
       <translation type="unfinished">Set text color</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="184"/>
+      <location filename="../../Workbench.cpp" line="206"/>
+      <source>Clear text color</source>
+      <translation type="unfinished">Clear text color</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="243"/>
       <source>Set background color</source>
       <translation>Barva pozadí</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="283"/>
+      <source>Clear background color</source>
+      <translation type="unfinished">Clear background color</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="224"/>
@@ -387,7 +407,7 @@
       <translation type="unfinished">Insert Columns</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="193"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <location filename="../../SheetTableView.cpp" line="581"/>
       <source>Clear Cells</source>
       <translation type="unfinished">Clear Cells</translation>
@@ -712,12 +732,12 @@ změnit konfiguraci návrhu. Pokud vlastnost neexistuje, bude vytvořena.</trans
       <translation>Importovat soubor</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="477"/>
       <source>Alias contains invalid characters!</source>
       <translation>Alias obsahuje neplatné znaky!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="497"/>
+      <location filename="../../SpreadsheetView.cpp" line="483"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Odkaz na buňku aliasem, například
@@ -729,46 +749,34 @@ Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
       <translation>Tabulka</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="108"/>
-      <location filename="../../Command.cpp" line="199"/>
-      <source>CSV (*.csv *.CSV)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV)</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
-      <location filename="../../Command.cpp" line="200"/>
-      <source>All (*)</source>
-      <translation type="unfinished">All (*)</translation>
-    </message>
-    <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="112"/>
       <source>Export File</source>
       <translation type="unfinished">Export File</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="138"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show Spreadsheet</source>
       <translation type="unfinished">Show Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="99"/>
+      <location filename="../../Workbench.cpp" line="104"/>
       <source>Sets the text color of cells</source>
       <translation type="unfinished">Sets the text color of cells</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="100"/>
-      <location filename="../../Workbench.cpp" line="101"/>
+      <location filename="../../Workbench.cpp" line="105"/>
+      <location filename="../../Workbench.cpp" line="106"/>
       <source>Sets the text color of spreadsheet cells</source>
       <translation type="unfinished">Sets the text color of spreadsheet cells</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="122"/>
-      <location filename="../../Workbench.cpp" line="124"/>
+      <location filename="../../Workbench.cpp" line="132"/>
+      <location filename="../../Workbench.cpp" line="134"/>
       <source>Sets the background color of cells</source>
       <translation type="unfinished">Sets the background color of cells</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="123"/>
+      <location filename="../../Workbench.cpp" line="133"/>
       <source>Sets the spreadsheet cells background color</source>
       <translation type="unfinished">Sets the spreadsheet cells background color</translation>
     </message>
@@ -781,110 +789,98 @@ Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
   <context>
     <name>QtColorPicker</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="285"/>
-      <location filename="../../qtcolorpicker.cpp" line="411"/>
-      <location filename="../../qtcolorpicker.cpp" line="521"/>
+      <location filename="../../qtcolorpicker.cpp" line="294"/>
+      <location filename="../../qtcolorpicker.cpp" line="463"/>
+      <source>Default</source>
+      <translation>Výchozí</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
       <source>Black</source>
       <translation>Černá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="412"/>
-      <location filename="../../qtcolorpicker.cpp" line="522"/>
+      <location filename="../../qtcolorpicker.cpp" line="427"/>
       <source>White</source>
       <translation>Bílá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="428"/>
       <source>Red</source>
       <translation>Červená</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="429"/>
       <source>Dark red</source>
       <translation>Tmavě červená</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="430"/>
       <source>Green</source>
       <translation>Zelená</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="431"/>
       <source>Dark green</source>
       <translation>Tmavě zelená</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="417"/>
-      <location filename="../../qtcolorpicker.cpp" line="527"/>
+      <location filename="../../qtcolorpicker.cpp" line="432"/>
       <source>Blue</source>
       <translation>Modrá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="418"/>
-      <location filename="../../qtcolorpicker.cpp" line="528"/>
+      <location filename="../../qtcolorpicker.cpp" line="433"/>
       <source>Dark blue</source>
       <translation>Tmavě modrá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="419"/>
-      <location filename="../../qtcolorpicker.cpp" line="529"/>
+      <location filename="../../qtcolorpicker.cpp" line="434"/>
       <source>Cyan</source>
       <translation>Azurová</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="420"/>
-      <location filename="../../qtcolorpicker.cpp" line="530"/>
+      <location filename="../../qtcolorpicker.cpp" line="435"/>
       <source>Dark cyan</source>
       <translation>Tmavě azurová</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="421"/>
-      <location filename="../../qtcolorpicker.cpp" line="531"/>
+      <location filename="../../qtcolorpicker.cpp" line="436"/>
       <source>Magenta</source>
       <translation>Fialová</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="422"/>
-      <location filename="../../qtcolorpicker.cpp" line="532"/>
+      <location filename="../../qtcolorpicker.cpp" line="437"/>
       <source>Dark magenta</source>
       <translation>Tmavě fialová</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="423"/>
-      <location filename="../../qtcolorpicker.cpp" line="533"/>
+      <location filename="../../qtcolorpicker.cpp" line="438"/>
       <source>Yellow</source>
       <translation>Žlutá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="424"/>
-      <location filename="../../qtcolorpicker.cpp" line="534"/>
+      <location filename="../../qtcolorpicker.cpp" line="439"/>
       <source>Dark yellow</source>
       <translation>Tmavě žlutá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="425"/>
-      <location filename="../../qtcolorpicker.cpp" line="535"/>
+      <location filename="../../qtcolorpicker.cpp" line="440"/>
       <source>Gray</source>
       <translation>Šedá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <location filename="../../qtcolorpicker.cpp" line="441"/>
       <source>Dark gray</source>
       <translation>Tmavě šedá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="427"/>
-      <location filename="../../qtcolorpicker.cpp" line="537"/>
+      <location filename="../../qtcolorpicker.cpp" line="442"/>
       <source>Light gray</source>
       <translation>Světle šedá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="449"/>
+      <location filename="../../qtcolorpicker.cpp" line="494"/>
       <source>Custom Color</source>
       <translation>Vlastní barva</translation>
     </message>
@@ -1193,14 +1189,9 @@ Výchozí hodnota: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="298"/>
+      <location filename="../../SpreadsheetView.cpp" line="284"/>
       <source>Export PDF</source>
       <translation>Export PDF</translation>
-    </message>
-    <message>
-      <location filename="../../SpreadsheetView.cpp" line="300"/>
-      <source>PDF file</source>
-      <translation>PDF soubor</translation>
     </message>
   </context>
   <context>

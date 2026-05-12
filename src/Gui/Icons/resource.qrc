@@ -142,6 +142,7 @@
         <file>LinkImport.svg</file>
         <file>LinkImportAll.svg</file>
         <file>LinkOverlay.svg</file>
+        <file>LinkOverlayReadOnly.svg</file>
         <file>LinkReplace.svg</file>
         <file>LinkSelect.svg</file>
         <file>LinkSelectAll.svg</file>

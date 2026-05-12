@@ -154,7 +154,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation>Licznik</translation>
+      <translation>Ilość</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>
@@ -490,7 +490,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>

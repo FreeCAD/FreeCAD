@@ -57,6 +57,7 @@ FeatureStartPoint = 0x0008  # StartPoint
 FeatureFinishDepth = 0x0010  # FinishDepth
 FeatureStepDown = 0x0020  # StepDown
 FeatureNoFinalDepth = 0x0040  # edit or not edit FinalDepth
+FeatureLinking = 0x0080  # Linking
 FeatureBaseVertexes = 0x0100  # Base
 FeatureBaseEdges = 0x0200  # Base
 FeatureBaseFaces = 0x0400  # Base
@@ -156,6 +157,26 @@ class ObjectOp(object):
                 QT_TRANSLATE_NOOP("App::Property", "Holds the min Z value of Stock"),
             )
             obj.setEditorMode("OpStockZMin", 1)  # read-only
+
+    def addLinking(self, obj):
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "LinkingMode",
+            "Linking",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Method collision detection to create optimal path between areas"
+                "\n\nCompromise: uses tool diameter (middle long time computation)"
+                "\nFastest: not related from tool size (fast computation)"
+                "\nSafest: uses cross section of tool shape (most long time computation)",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "LinkingSafetyMargin",
+            "Linking",
+            QT_TRANSLATE_NOOP("App::Property", "Distance for collision detection"),
+        )
 
     def __init__(self, obj, name, parentJob=None):
         Path.Log.track()
@@ -327,6 +348,9 @@ class ObjectOp(object):
                 QT_TRANSLATE_NOOP("App::Property", "Upper limit of the turning diameter."),
             )
 
+        if FeatureLinking & features:
+            self.addLinking(obj)
+
         # members being set later
         self.commandlist = None
         self.horizFeed = None
@@ -376,6 +400,11 @@ class ObjectOp(object):
                 (translate("CAM_Operation", "None"), "None"),
                 (translate("CAM_Operation", "Flood"), "Flood"),
                 (translate("CAM_Operation", "Mist"), "Mist"),
+            ],
+            "LinkingMode": [
+                (translate("CAM_Operation", "Fastest"), "Fastest"),
+                (translate("CAM_Operation", "Compromise"), "Compromise"),
+                (translate("CAM_Operation", "Safest"), "Safest"),
             ],
         }
 
@@ -475,6 +504,14 @@ class ObjectOp(object):
                 QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"),
             )
             obj.StepDown = 0
+
+        if FeatureLinking & features and not hasattr(obj, "LinkingMode"):
+            self.addLinking(obj)
+            for n in self.opPropertyEnumerations():
+                if hasattr(obj, n[0]):
+                    setattr(obj, n[0], n[1])
+            obj.LinkingMode = "Fastest"
+            self.applyExpression(obj, "LinkingSafetyMargin", "OpToolDiameter")
 
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
@@ -634,6 +671,10 @@ class ObjectOp(object):
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
+
+        if FeatureLinking & features:
+            obj.LinkingMode = "Fastest"
+            self.applyExpression(obj, "LinkingSafetyMargin", "OpToolDiameter")
 
         self.opSetDefaultValues(obj, job)
         return job

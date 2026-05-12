@@ -94,17 +94,17 @@
   <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="127"/>
+      <location filename="../../CommandExport.cpp" line="128"/>
       <source>Robot</source>
       <translation>Robô</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="128"/>
+      <location filename="../../CommandExport.cpp" line="129"/>
       <source>Kuka Full Subroutine</source>
       <translation type="unfinished">Kuka Full Subroutine</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="129"/>
+      <location filename="../../CommandExport.cpp" line="130"/>
       <source>Exports the trajectory as a full KRL subroutine</source>
       <translation type="unfinished">Exports the trajectory as a full KRL subroutine</translation>
     </message>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="291"/>
       <source>Set Default Values</source>
-      <translation type="unfinished">Set Default Values</translation>
+      <translation>Definir Valores Padrão</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="292"/>
       <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Define os valores padrão de velocidade, aceleração e continuidade para os comandos subsequentes de criação de pontos de referência</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Set Home Position</source>
-      <translation type="unfinished">Set Home Position</translation>
+      <translation>Definir Posição Inicial</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Sets the home position</source>
-      <translation type="unfinished">Sets the home position</translation>
+      <translation>Define a posição inicial</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Simulate Trajectory</source>
-      <translation type="unfinished">Simulate Trajectory</translation>
+      <translation>Simular Trajetória</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="246"/>
@@ -297,7 +297,7 @@
       <location filename="../../CommandTrajectory.cpp" line="201"/>
       <location filename="../../CommandTrajectory.cpp" line="486"/>
       <location filename="../../CommandExport.cpp" line="63"/>
-      <location filename="../../CommandExport.cpp" line="144"/>
+      <location filename="../../CommandExport.cpp" line="145"/>
       <location filename="../../CommandInsertRobot.cpp" line="70"/>
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="167"/>
@@ -338,7 +338,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="110"/>
       <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="145"/>
+      <location filename="../../CommandExport.cpp" line="146"/>
       <location filename="../../Command.cpp" line="270"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Selecione um robô e uma trajetória.</translation>
@@ -355,19 +355,13 @@
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="91"/>
-      <location filename="../../CommandExport.cpp" line="172"/>
+      <location filename="../../CommandExport.cpp" line="173"/>
       <source>KRL file</source>
       <translation>Arquivo KRL</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="92"/>
-      <location filename="../../CommandExport.cpp" line="173"/>
-      <source>All Files</source>
-      <translation>Todos os Arquivos</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExport.cpp" line="95"/>
-      <location filename="../../CommandExport.cpp" line="176"/>
+      <location filename="../../CommandExport.cpp" line="96"/>
+      <location filename="../../CommandExport.cpp" line="178"/>
       <source>Export program</source>
       <translation>Exportar programa</translation>
     </message>
@@ -842,7 +836,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
       <source>Do not change position &amp; orientation</source>
-      <translation type="unfinished">Do not change position &amp; orientation</translation>
+      <translation>Não altere a posição e a orientação</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
@@ -852,12 +846,12 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="170"/>
       <source>Add position</source>
-      <translation type="unfinished">Add position</translation>
+      <translation>Adicionar posição</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="175"/>
       <source>Add orientation</source>
-      <translation type="unfinished">Add orientation</translation>
+      <translation>Adicionar orientação</translation>
     </message>
   </context>
   <context>
@@ -875,7 +869,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Export Trajectory</source>
-      <translation type="unfinished">Export Trajectory</translation>
+      <translation>Exportar Trajetória</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>

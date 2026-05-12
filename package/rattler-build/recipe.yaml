@@ -1,5 +1,5 @@
 context:
-  version: "1.2.0-dev"
+  version: "1.2.0dev"
 
 package:
   name: freecad

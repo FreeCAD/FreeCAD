@@ -30,6 +30,8 @@
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="76"/>
+      <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="176"/>
+      <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="208"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -37,6 +39,16 @@
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="112"/>
       <source>Background color</source>
       <translation>Color de fondo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="166"/>
+      <source>Arrow Radius</source>
+      <translation type="unfinished">Arrow Radius</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="198"/>
+      <source>Arrow Height</source>
+      <translation type="unfinished">Arrow Height</translation>
     </message>
   </context>
   <context>
@@ -168,7 +180,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeasureGui.cpp" line="115"/>
+      <location filename="../../AppMeasureGui.cpp" line="117"/>
       <source>Measure</source>
       <translation>Medida</translation>
     </message>
@@ -242,12 +254,12 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="577"/>
       <source>%1 auto-save</source>
-      <translation type="unfinished">%1 auto-save</translation>
+      <translation>%1 auto guardado</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="581"/>
       <source>%1 start new measurement</source>
-      <translation type="unfinished">%1 start new measurement</translation>
+      <translation>%1 empieza una nueva medida</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="581"/>
@@ -255,12 +267,12 @@
       <translation type="unfinished">%1 add to measurement</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="810"/>
+      <location filename="../../TaskMeasure.cpp" line="811"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation type="unfinished">%1 new measurement, %2 toggle auto-save</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="815"/>
+      <location filename="../../TaskMeasure.cpp" line="816"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation type="unfinished">%1 add to measurement, %2 toggle auto-save</translation>
     </message>
@@ -336,7 +348,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="38"/>
       <source>Objects to measure</source>
-      <translation type="unfinished">Objects to measure</translation>
+      <translation>Objetos a medir</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="58"/>
@@ -346,7 +358,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="83"/>
       <source>Center of gravity</source>
-      <translation type="unfinished">Center of gravity</translation>
+      <translation>Centro de gravedad</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="110"/>
@@ -464,18 +476,18 @@
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
-      <source>Jx</source>
-      <translation>Jx</translation>
+      <source>J1</source>
+      <translation type="unfinished">J1</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="677"/>
-      <source>Jy</source>
-      <translation>Jy</translation>
+      <source>J2</source>
+      <translation type="unfinished">J2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="704"/>
-      <source>Jz</source>
-      <translation>Jz</translation>
+      <source>J3</source>
+      <translation type="unfinished">J3</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
@@ -491,47 +503,47 @@
   <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="279"/>
+      <location filename="../../TaskMassProperties.cpp" line="280"/>
       <source>Parameters</source>
       <translation>Parámetros</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="282"/>
+      <location filename="../../TaskMassProperties.cpp" line="283"/>
       <source>Physical Properties</source>
       <translation>Propiedades físicas</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="285"/>
+      <location filename="../../TaskMassProperties.cpp" line="286"/>
       <source>Center of Gravity</source>
       <translation>Centro de gravedad</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="286"/>
+      <location filename="../../TaskMassProperties.cpp" line="287"/>
       <source>Center of Volume</source>
       <translation>Centro del volumen</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="287"/>
+      <location filename="../../TaskMassProperties.cpp" line="288"/>
       <source>Inertia</source>
       <translation>Inercia</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="359"/>
+      <location filename="../../TaskMassProperties.cpp" line="360"/>
       <source>Close</source>
       <translation>Cerrar</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="362"/>
+      <location filename="../../TaskMassProperties.cpp" line="363"/>
       <source>Save</source>
       <translation>Guardar</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="366"/>
+      <location filename="../../TaskMassProperties.cpp" line="367"/>
       <source>Reset</source>
       <translation>Reiniciar</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1126"/>
+      <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
       <translation> (Promedio)</translation>
     </message>

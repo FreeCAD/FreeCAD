@@ -2096,42 +2096,56 @@ a raw wire from the original shape is added</source>
 Тыповыя значэння знаходзяцца ў дыяпазоне ад 1 да 5.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation>Найбольшае адхіленне для набліжэння складаных крывых</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation>Найбольшае адхіленне для набліжэння эліпсаў, гіпербал, парабал, крывых Без'е і B-сплайнаў у дугі і прамыя.
+Можа быць карысна для варштату CAM.
+Задаць значэнне "нуль", каб адключыць набліжэнне.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>Экспартаваць стыль</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>Стыль файла SVG для запісу пры экспартаванні эскізу</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>Перанесці (для друку і адлюстравання)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>Сырыя дадзеныя (для аўтаматызаваных сістэм)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>Усе белыя лініі будуць адлюстраваныя чорным колерам у SVG для лепшай чытальнасці на белым фоне</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>Пераўтварыць белы колер лініі ў чорны</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>Найбольшая даўжыня адрэзкаў дыскрэтызацыі дуг</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2456,7 +2470,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</source
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>Налады экспартавання</translation>
     </message>
@@ -3752,7 +3766,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftutils/utils.py" line="891"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s мае агульную аснову з %d іншымі аб'ектамі.
-Праверце, ці жадаеце вы гэтае змяніць.</translation>
+Праверце, ці неабходна гэтае змяніць.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1037"/>
@@ -3771,15 +3785,30 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="195"/>
-      <location filename="../../draftguitools/gui_labels.py" line="222"/>
+      <location filename="../../draftguitools/gui_labels.py" line="223"/>
       <source>Pick endpoint of leader line</source>
-      <translation>Выберыце канчатковую кропку лініі зноскі</translation>
+      <translation>Выберыце канцавую кропку лініі зноскі</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="205"/>
-      <location filename="../../draftguitools/gui_labels.py" line="232"/>
+      <location filename="../../draftguitools/gui_labels.py" line="233"/>
       <source>Pick text position</source>
       <translation>Выберыце становішча тэксту</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="243"/>
+      <source>%1 pick arrow point</source>
+      <translation>Выбраць кропку стрэлкі %1</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="247"/>
+      <source>%1 pick corner point</source>
+      <translation>Выбраць кропку кута %1</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="251"/>
+      <source>%1 pick text point</source>
+      <translation>Выбраць кропку тэкста %1</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="129"/>
@@ -3790,9 +3819,39 @@ or try saving to a lower DWG version.</source>
       <translation>Выберыце першую кропку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="504"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="506"/>
       <source>Edges do not intersect!</source>
       <translation>Рэбры не перасякаюцца!</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="593"/>
+      <source>%1 pick dimension position</source>
+      <translation>Выбраць становішча памеру %1</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="595"/>
+      <source>%1 select edge</source>
+      <translation>Абраць рабро %1</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="612"/>
+      <source>%1 pick next dimension point</source>
+      <translation>Выбраць наступную кропку вымярэння %1</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="614"/>
+      <source>%1 finish</source>
+      <translation>Скончыць %1</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="620"/>
+      <source>%1 pick first dimension point</source>
+      <translation>Выбраць першую кропку вымярэння %1</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="629"/>
+      <source>%1 pick second dimension point</source>
+      <translation>Выбраць другую кропку вымярэння %1</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="182"/>
@@ -3966,33 +4025,53 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="76"/>
-      <source>%1 constrain</source>
-      <translation>%1 абмежаванне</translation>
+      <source>Hold %1 constrain</source>
+      <translation>Трымаць %1 абмежаванне</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="83"/>
-      <source>%1 snap</source>
-      <translation>%1 прывязаць</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="81"/>
+      <source>Hold %1 horizontal/vertical dimension</source>
+      <translation>Трымаць %1 гарызантальнае/вертыкальнае вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="100"/>
-      <source>%1/%2/%3 switch constraint</source>
-      <translation>%1/%2/%3 пераключыць абмежаванне</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="86"/>
+      <source>Hold %1 radial dimension</source>
+      <translation>Трымаць %1 радыяльнае вымярэнне</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="93"/>
+      <source>Hold %1 snap</source>
+      <translation>Трымаць %1 прывязку</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="110"/>
+      <source>%1 / %2 / %3 switch constraint</source>
+      <translation>Пераключыць абмежаванне %1 / %2 / %3</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="120"/>
       <source>%1 toggle relative</source>
       <translation>%1 пераключыць адносна</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="119"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="129"/>
       <source>%1 toggle global</source>
       <translation>%1 пераключыць глабальна</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="128"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="138"/>
       <source>%1 toggle continue</source>
       <translation>%1 пераключыць бесперапыннасць</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="149"/>
+      <source>%1 / hold %2 select edge</source>
+      <translation>%1 / трымаць %2 абранае рабро</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="151"/>
+      <source>Hold %1 select edge</source>
+      <translation>Трымаць %1 абранае рабро</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="311"/>
@@ -4072,32 +4151,37 @@ or try saving to a lower DWG version.</source>
       <translation>%1 выбраць трэццю кропку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation>Можна вылучыць толькі лініі, ломаныя лініі і крывыя чарнавіка</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>Абярыце аб'ект для змены</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="295"/>
+      <location filename="../../draftguitools/gui_edit.py" line="298"/>
       <source>Select a Draft object to edit</source>
       <translation>Абярыце аб'ект Чарнавіка для змены</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="501"/>
+      <location filename="../../draftguitools/gui_edit.py" line="503"/>
       <source>Edit Node</source>
       <translation>Змяніць вузлы</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="814"/>
+      <location filename="../../draftguitools/gui_edit.py" line="816"/>
       <source>Too many objects selected, maximum number set to:</source>
       <translation>Абрана зашмат аб'ектаў, зададзена найбольшая колькасць:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="555"/>
+      <location filename="../../draftguitools/gui_edit.py" line="557"/>
       <source>No edit point found for selected object</source>
       <translation>Кропка змены для абранага аб'екта не знойдзена</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="822"/>
+      <location filename="../../draftguitools/gui_edit.py" line="824"/>
       <source>: this object is not editable</source>
       <translation>: аб'ект недаступны да змены</translation>
     </message>
@@ -4198,6 +4282,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="214"/>
       <location filename="../../draftguitools/gui_points.py" line="189"/>
+      <location filename="../../draftguitools/gui_texts.py" line="180"/>
       <source>%1 pick point</source>
       <translation>Выбраць кропку %1</translation>
     </message>
@@ -4559,7 +4644,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="843"/>
       <source>Endpoint of Bézier curve cannot be smoothed</source>
-      <translation>Канчатковая кропка крывой Без'е не можа быць згладжаная</translation>
+      <translation>Канцавая кропка крывой Без'е не можа быць згладжаная</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="911"/>
@@ -4670,7 +4755,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Стварыць вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="490"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="492"/>
       <source>Edge too short!</source>
       <translation>Рабро занадта кароткае!</translation>
     </message>
@@ -4702,7 +4787,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="253"/>
       <source>Pick end point of displacement</source>
-      <translation>Выберыце канчатковую кропку зрушэння</translation>
+      <translation>Выберыце канцавую кропку зрушэння</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="525"/>
@@ -4743,7 +4828,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftguitools/gui_mirror.py" line="168"/>
       <location filename="../../draftguitools/gui_mirror.py" line="195"/>
       <source>Pick end point of mirror line</source>
-      <translation>Абярыце канчатковую кропку лініі сіметрыі</translation>
+      <translation>Абярыце канцавую кропку лініі сіметрыі</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="86"/>
@@ -4787,7 +4872,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Выберыце кропку месцазнаходжання контуру радка</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="242"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="243"/>
       <source>Create ShapeString</source>
       <translation>Стварыць контур радка</translation>
     </message>
@@ -5081,7 +5166,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftobjects/patharray.py" line="640"/>
       <source>End Offset too large for path length minus Start Offset. Using 0 instead.</source>
-      <translation>Канчатковае зрушэнне занадта вялікае для даўжыні траекторыі за мінусам пачатковага зрушэння.
+      <translation>Канцавое зрушэнне занадта вялікае для даўжыні траекторыі за мінусам пачатковага зрушэння.
 Замест гэтага ўжываецца нуль.</translation>
     </message>
     <message>
@@ -5459,7 +5544,7 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="475"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="193"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="199"/>
       <source>Flatten</source>
       <translation>Звядзенне</translation>
     </message>
@@ -5684,7 +5769,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftutils/params.py" line="225"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
-      <translation>Ці жадаеце вы абнавіць налады шаблону SVG існуючых аб'ектаў ва ўсіх адчыненых дакументах?</translation>
+      <translation>Ці абнавіць налады шаблону SVG існуючых аб'ектаў ва ўсіх адчыненых дакументах?</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="73"/>
@@ -5854,7 +5939,7 @@ of existing objects in all opened documents?</source>
       <translation>Аб'яднаць паўторныя пласты</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="183"/>
+      <location filename="../../importDXF.py" line="189"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -6219,7 +6304,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Кропкавы аб'ект не мае дыскрэтнай кропкі, ён не можа быць ужыты для масіваў</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="159"/>
+      <location filename="../../importDXF.py" line="165"/>
       <source>Download of DXF libraries failed.
 Please install the DXF Library addon manually
 from menu Tools → Addon Manager</source>
@@ -6251,12 +6336,12 @@ from menu Tools → Addon Manager</source>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Невядомы стыль экспартавання SVG, пераключэнне на перакладзены</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>Спіс экспартавання не ўтрымлівае аб'екта з дапушчальнымі габарытамі</translation>
     </message>
@@ -6804,7 +6889,7 @@ set True for fusion or False for compound</source>
       <location filename="../../draftobjects/circle.py" line="55"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation>Канчатковы вугал дугі (для поўнай акружнасці задайце яму тое ж значэнне, што і першаму вуглу)</translation>
+      <translation>Канцавы вугал дугі (для поўнай акружнасці задайце яму тое ж значэнне, што і першаму вуглу)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="58"/>
@@ -7388,7 +7473,7 @@ This property is read-only, as the number depends on the points in 'Point Object
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation>Канчатковы кут эліптычнай дугі 
+      <translation>Канцавы вугал эліптычнай дугі
 
                 (для поўнай акружнасці задайце яму тое ж значэнне, што і першаму вуглу)</translation>
     </message>
@@ -7415,7 +7500,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/fillet.py" line="58"/>
       <source>The end point of this line.</source>
-      <translation>Канчатковая кропка лініі.</translation>
+      <translation>Канцавая кропка лініі.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="63"/>
@@ -7486,7 +7571,7 @@ If it is a diameter dimension it will be a point that lies on the arc.</source>
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation>Канчатковая кропка лініі вымярэння.
+      <translation>Канцавая кропка лініі вымярэння.
 
 Для вымярэння радыусу ці дыяметру гэта кропка, якая ляжыць на дузе.</translation>
     </message>
@@ -7529,7 +7614,7 @@ The arc is drawn counter-clockwise.</source>
       <location filename="../../draftobjects/dimension.py" line="529"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation>Канчатковы вугал лініі вымярэння (дугі акружнасці).
+      <translation>Канцавы вугал лініі вымярэння (дугі акружнасці).
 Дуга чэрціцца супраць гадзінніка.</translation>
     </message>
     <message>
@@ -7635,7 +7720,7 @@ the 'First Angle' and 'Last Angle' properties.</source>
     <message>
       <location filename="../../draftobjects/wire.py" line="71"/>
       <source>The end point of this line</source>
-      <translation>Канчатковая кропка лініі</translation>
+      <translation>Канцавая кропка лініі</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="74"/>
@@ -8452,12 +8537,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="180"/>
       <source>Snap Endpoint</source>
-      <translation>Прывязаць у канчатковай кропцы</translation>
+      <translation>Прывязаць у канцавой кропцы</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="181"/>
       <source>Snaps to the endpoints of edges</source>
-      <translation>Прывязвае ў канчатковай кропцы рэбраў</translation>
+      <translation>Прывязвае ў канцавой кропцы рэбраў</translation>
     </message>
   </context>
   <context>
@@ -8496,7 +8581,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="238"/>
       <source>Snaps to an imaginary line that extends beyond the endpoints of straight edges</source>
-      <translation>Прывязвае да ўяўнай лініі, якая выходзіць за межы канчатковых кропак прамых рэбраў</translation>
+      <translation>Прывязвае да ўяўнай лініі, якая выходзіць за межы канцавых кропак прамых рэбраў</translation>
     </message>
   </context>
   <context>

@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Trim with plane</source>
-      <translation>Trimma med hyvel</translation>
+      <translation>Trimma med plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation>Styrande flygplan</translation>
+      <translation>Styrande plan</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -490,7 +490,7 @@ Ett värde i intervallet 0,2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Inget aktivt dokument</translation>
     </message>
     <message>

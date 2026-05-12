@@ -910,18 +910,18 @@ so that self intersection is avoided.</source>
       <translation>Μετατροπή σε λειτουργία Πολλαπλού Μετασχηματισμού</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="255"/>
+      <location filename="../../SketchWorkflow.cpp" line="265"/>
       <source>Sketch on Face</source>
       <translation>Προσχέδιο σε Επιφάνεια</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="316"/>
+      <location filename="../../SketchWorkflow.cpp" line="326"/>
       <source>Make copy</source>
       <translation>Δημιουργία αντιγράφου</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="518"/>
-      <location filename="../../SketchWorkflow.cpp" line="775"/>
+      <location filename="../../SketchWorkflow.cpp" line="528"/>
+      <location filename="../../SketchWorkflow.cpp" line="804"/>
       <source>New Sketch</source>
       <translation>Νέο Σχέδιο</translation>
     </message>
@@ -1436,36 +1436,46 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskBoxPrimitives</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="52"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="53"/>
       <source>Primitive Parameters</source>
       <translation>Παράμετροι Βασικών Σχημάτων</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="944"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="952"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="947"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="955"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="963"/>
       <source>Invalid wedge parameters</source>
       <translation>Μη έγκυρες παράμετροι σφήνας</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="945"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="948"/>
       <source>X min must not be equal to X max!</source>
       <translation>Το (X min) δεν πρέπει να είναι ίσο με το (X max)!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="953"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="956"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Το (Y min) δεν πρέπει να είναι ίσο με το (Y max)!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="961"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="964"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Το (Ζ min) δεν πρέπει να είναι ίσο με το (Ζ max)!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1003"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1006"/>
       <source>Create primitive</source>
       <translation>Δημιουργήστε θεμελιακό στοιχείο</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1051"/>
+      <source>%1 fine dragging</source>
+      <translation type="unfinished">%1 fine dragging</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1054"/>
+      <source>%1 coarse dragging</source>
+      <translation type="unfinished">%1 coarse dragging</translation>
     </message>
   </context>
   <context>
@@ -1544,13 +1554,13 @@ If zero, it is equal to Radius2</source>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>Empty body list</source>
-      <translation>Κενή λίστα σωμάτων</translation>
+      <source>The body list cannot be empty</source>
+      <translation>Η λίστα σωμάτων δεν δύναται να είναι κενή</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>The body list cannot be empty</source>
-      <translation>Η λίστα σωμάτων δεν δύναται να είναι κενή</translation>
+      <source>Empty Body List</source>
+      <translation type="unfinished">Empty Body List</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="407"/>
@@ -1569,14 +1579,6 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskDatumParameters.cpp" line="109"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>Δεν υπάρχει λειτουργία συνημμένων που να ταιριάζει με το τρέχον σύνολο σημείων αναφοράς. Αν επιλέξετε να συνεχίσετε, το χαρακτηριστικό θα παραμείνει εκεί που είναι τώρα και δεν θα μετακινηθεί καθώς αλλάζουν τα σημεία αναφοράς. Θέλετε να συνεχίσετε;</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input error</source>
-      <translation>Σφάλμα εισαγωγής</translation>
     </message>
   </context>
   <context>
@@ -2007,7 +2009,7 @@ If zero, it is equal to Radius2</source>
       <translation>Σφάλμα: η σπείρα μπαίνει μέσα στην προηγούμενη</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="349"/>
+      <location filename="../../TaskHelixParameters.cpp" line="352"/>
       <source>Error: unsupported mode</source>
       <translation>Σφάλμα: μη υποστηριζόμενη λειτουργία</translation>
     </message>
@@ -2651,8 +2653,8 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="463"/>
       <location filename="../../TaskPipeParameters.cpp" line="584"/>
-      <source>Input error</source>
-      <translation>Σφάλμα εισαγωγής</translation>
+      <source>Input Error</source>
+      <translation>Σφάλμα Εισαγωγής</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="463"/>
@@ -3122,11 +3124,6 @@ measured along the specified direction</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid selection</source>
-      <translation>Μη έγκυρη επιλογή</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>Δεν υπάρχουν λειτουργίες συνημμένων που να ταιριάζουν στα επιλεγμένα αντικείμενα. Επιλέξτε κάτι άλλο.</translation>
@@ -3139,47 +3136,47 @@ measured along the specified direction</source>
       <translation>Σφάλμα</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="812"/>
+      <location filename="../../SketchWorkflow.cpp" line="841"/>
       <source>Several sub-elements selected</source>
       <translation>Επιλέχθηκαν διάφορα επιμέρους στοιχεία</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="813"/>
+      <location filename="../../SketchWorkflow.cpp" line="842"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>Επιλέξτε μια επίπεδη επιφάνεια για να ξεκινήσετε το σκαρίφημα!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="820"/>
+      <location filename="../../SketchWorkflow.cpp" line="849"/>
       <source>Select a face as support for a sketch!</source>
       <translation>Επιλέξτε μια επιφάνεια ως βάση για το σκαρίφημα!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="827"/>
+      <location filename="../../SketchWorkflow.cpp" line="856"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>Χρειάζεται μια επίπεδη επιφάνεια ως βάση για το σκαρίφημα!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="834"/>
+      <location filename="../../SketchWorkflow.cpp" line="863"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Δημιουργήστε πρώτα ένα επίπεδο ή επιλέξτε μια επιφάνεια για να σχεδιάσετε</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="819"/>
+      <location filename="../../SketchWorkflow.cpp" line="848"/>
       <source>No support face selected</source>
       <translation>Δεν επιλέχθηκε όψη υποστήριξης</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="826"/>
+      <location filename="../../SketchWorkflow.cpp" line="855"/>
       <source>No planar support</source>
       <translation>Χωρίς επίπεδη υποστήριξη</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="833"/>
+      <location filename="../../SketchWorkflow.cpp" line="862"/>
       <source>No valid planes in this document</source>
       <translation>Δεν υπάρχουν έγκυρα επίπεδα σε αυτό το έγγραφο</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="731"/>
+      <location filename="../../SketchWorkflow.cpp" line="760"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
@@ -3223,7 +3220,7 @@ measured along the specified direction</source>
       <translation>Δεν υπάρχει διαθέσιμο σκαρίφημα στο έγγραφο</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="732"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
@@ -3257,6 +3254,11 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1834"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>Επιλέξτε μια ακμή, μια επιφάνεια ή ένα σώμα από ένα ενεργό σώμα.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1026"/>
@@ -3521,7 +3523,7 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Προκειμένου να χρησιμοποιήσετε αυτό το χαρακτηριστικό θα πρέπει να ανήκει σε κάποιο εξάρτημα που βρίσκεται στο έγγραφο.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
@@ -4472,6 +4474,9 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="531"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Το αποτέλεσμα έχει πολλαπλά στερεά: ενεργοποιήστε την επιλογή 'Να επιτρέπονται τα Σύνθετα' (Allow Compound) στο ενεργό Σώμα.</translation>
@@ -4652,8 +4657,8 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Σφάλμα: Η επιφάνεια πρέπει να είναι επίπεδη</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="454"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>Σφάλμα: Το αποτέλεσμα δεν είναι σταθερό (δεν έχει όγκο)</translation>
@@ -4664,29 +4669,22 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Σφάλμα: Δεν υπάρχει τίποτα για αφαίρεση</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="421"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="451"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="492"/>
-      <source>Error: Result has multiple solids</source>
-      <translation>Σφάλμα: Δημιουργήθηκαν ξεχωριστά κομμάτια (το αντικείμενο δεν είναι ενιαίο)</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="436"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="437"/>
       <source>Error: Adding the helix failed</source>
       <translation>Σφάλμα: Αποτυχία δημιουργίας της σπείρας</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="468"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="472"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>Σφάλμα: Αδυναμία δημιουργίας της σπείρας (τα μέρη της μπερδεύονται)</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="477"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="481"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>Σφάλμα: Δεν είναι δυνατή η αφαίρεση της σπείρας από το αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="508"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="515"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Σφάλμα: Το σχέδιο δεν είναι "κλειστό" ή έχει λάθη και δεν μπορεί να γίνει στερεό</translation>
     </message>
@@ -5065,37 +5063,37 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Η Συγχώνευση με το βασικό αντικείμενο απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="101"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="99"/>
       <source>Transformation feature Linked object is not a Part object</source>
       <translation>Το αντικείμενο που πάτε να αλλάξετε δεν είναι στερεό αντικείμενο (σώμα/εξάρτημα)</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="109"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="107"/>
       <source>No features selected to be mirrored.</source>
       <translation type="unfinished">No features selected to be mirrored.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="110"/>
       <source>No features selected to be patterned.</source>
       <translation type="unfinished">No features selected to be patterned.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="115"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="113"/>
       <source>No features selected to be transformed.</source>
       <translation type="unfinished">No features selected to be transformed.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="356"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="354"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Αδυναμία μετασχηματισμού μη έγκυρου σχήματος υποστήριξης</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="407"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="405"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Το σχήμα του πρόσθετου/αφαιρετικού χαρακτηριστικού είναι κενό</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="398"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="396"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Μόνο πρόσθετα και αφαιρετικά χαρακτηριστικά μπορούν να μετασχηματιστούν</translation>
     </message>
@@ -5144,7 +5142,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Εμφάνιση προεπισκόπησης επικάλυψης</translation>
     </message>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="50"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="52"/>
       <source>Preview</source>
       <translation>Προεπισκόπηση</translation>
     </message>
@@ -5292,7 +5290,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1082"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1103"/>
       <source>Attachment</source>
       <translation>Συνημμένο</translation>
     </message>
@@ -5300,7 +5298,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="802"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="803"/>
       <source>Revolution Parameters</source>
       <translation>Παράμετροι Περιστροφής</translation>
     </message>
@@ -5308,7 +5306,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="812"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="813"/>
       <source>Groove Parameters</source>
       <translation>Παράμετροι Αυλάκωσης</translation>
     </message>
@@ -5427,25 +5425,46 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="132"/>
+      <location filename="../../TaskPatternParameters.cpp" line="148"/>
       <source>Direction 2</source>
       <translation>Κατεύθυνση 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="248"/>
+      <location filename="../../TaskPatternParameters.cpp" line="267"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Επιλέξτε μια αναφορά κατεύθυνσης (ακμή, επιφάνεια, γραμμή αναφοράς)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="334"/>
+      <location filename="../../TaskPatternParameters.cpp" line="355"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Μη έγκυρη επιλογή. Επιλέξτε μια ακμή, μια επίπεδη επιφάνεια ή μια γραμμή αναφοράς.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Σφάλμα Εισαγωγής</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="138"/>
+      <source>%1 fine dragging</source>
+      <translation type="unfinished">%1 fine dragging</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="141"/>
+      <source>%1 coarse dragging</source>
+      <translation type="unfinished">%1 coarse dragging</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="264"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>

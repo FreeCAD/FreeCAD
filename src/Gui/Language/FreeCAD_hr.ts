@@ -53,22 +53,22 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../ViewProviderDocumentObject.cpp" line="322"/>
+      <location filename="../ViewProviderDocumentObject.cpp" line="335"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="842"/>
+      <location filename="../Application.cpp" line="907"/>
       <source>Import</source>
       <translation>Uvoz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1490"/>
+      <location filename="../CommandDoc.cpp" line="1505"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2209"/>
+      <location filename="../CommandDoc.cpp" line="2290"/>
       <source>Paste expressions</source>
       <translation>Umetni izraz</translation>
     </message>
@@ -135,13 +135,13 @@
     <message>
       <location filename="../ViewProviderAnnotation.cpp" line="423"/>
       <location filename="../Transform.cpp" line="108"/>
-      <location filename="../TaskTransform.cpp" line="128"/>
-      <location filename="../TaskTransform.cpp" line="806"/>
+      <location filename="../TaskTransform.cpp" line="129"/>
+      <location filename="../TaskTransform.cpp" line="807"/>
       <source>Transform</source>
       <translation>Transformiraj</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3190"/>
+      <location filename="../ViewProviderLink.cpp" line="3194"/>
       <source>Toggle array elements</source>
       <translation>Prebaci matricu elemenata</translation>
     </message>
@@ -167,17 +167,17 @@
       <translation>Preskoči recomputes</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="990"/>
+      <location filename="../CommandView.cpp" line="983"/>
       <source>Toggle Visibility</source>
       <translation>Promijeni vidljivost</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1025"/>
+      <location filename="../CommandView.cpp" line="1018"/>
       <source>Toggle Transparency</source>
       <translation>Uključi/isključi prozirnost</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1144"/>
+      <location filename="../CommandView.cpp" line="1137"/>
       <source>Toggle Selectability</source>
       <translation>Uklj/isklj mogućnost odabira</translation>
     </message>
@@ -389,42 +389,42 @@ Svojstvo ovog objekta odnosit će se na svojstvo skupa varijabli.</translation>
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="299"/>
+      <location filename="../Application.h" line="301"/>
       <source>&amp;Default</source>
       <translation>&amp;Zadano</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="300"/>
+      <location filename="../Application.h" line="302"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>Objekt će se uređivati pomoću definiranog unutarnjeg načina rada kako bi bio najprimjereniji za vrstu objekta</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="308"/>
+      <location filename="../Application.h" line="310"/>
       <source>Trans&amp;form</source>
       <translation>Pretvori</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="317"/>
+      <location filename="../Application.h" line="319"/>
       <source>Cu&amp;tting</source>
       <translation>Rezanje</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="326"/>
+      <location filename="../Application.h" line="328"/>
       <source>&amp;Color</source>
       <translation>&amp;Boja</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="327"/>
+      <location filename="../Application.h" line="329"/>
       <source>The object will have the color of its individual faces editable with the Appearance per Face command</source>
       <translation>Objekt će imati boju svojih pojedinačnih površina uređivu pomoću naredbe Boja po licu</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="309"/>
+      <location filename="../Application.h" line="311"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>Objekt će imati svoju poziciju uređivu pomoću naredbe Std TransformManip</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="318"/>
+      <location filename="../Application.h" line="320"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>Ovaj način uređivanja implementiran je kao dostupan, ali trenutno se ne čini da ga koristi niti jedan objekt</translation>
     </message>
@@ -543,13 +543,13 @@ Svojstvo ovog objekta odnosit će se na svojstvo skupa varijabli.</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="51"/>
-      <source>Press middle mouse button</source>
-      <translation>Pritisnite srednju tipku miša</translation>
+      <source>Press middle or ctrl+right mouse button</source>
+      <translation type="unfinished">Press middle or ctrl+right mouse button</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
-      <source>Press middle+left or middle+right mouse button</source>
-      <translation>Pritisnite srednju + lijevu ili srednju + desnu tipku miša</translation>
+      <source>Press middle+left, middle+right or shift+right mouse button</source>
+      <translation type="unfinished">Press middle+left, middle+right or shift+right mouse button</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
@@ -840,7 +840,7 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CommandModel</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="507"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="508"/>
       <source>Commands</source>
       <translation>Naredbe</translation>
     </message>
@@ -1093,13 +1093,13 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="183"/>
-      <source>Export configuration</source>
-      <translation>Izvezi konfiguraciju</translation>
+      <source>Export Configuration</source>
+      <translation type="unfinished">Export Configuration</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="194"/>
-      <source>Pack already exists</source>
-      <translation>Paket već postoji.</translation>
+      <source>Pack Already Exists</source>
+      <translation type="unfinished">Pack Already Exists</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="195"/>
@@ -1189,18 +1189,29 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="212"/>
-      <source>Macro not found</source>
-      <translation>Makro nije pronađen</translation>
+      <source>Macro Not Found</source>
+      <translation type="unfinished">Macro Not Found</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="239"/>
+      <source>Empty Macro</source>
+      <translation type="unfinished">Empty Macro</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="244"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="314"/>
+      <source>Empty Text</source>
+      <translation type="unfinished">Empty Text</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
+      <source>No Item Selected</source>
+      <translation type="unfinished">No Item Selected</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="213"/>
       <source>Could not find macro file '%1'</source>
       <translation>Nije moguće pronaći makro datoteku '%1'</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="239"/>
-      <source>Empty macro</source>
-      <translation>Prazan makro</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="239"/>
@@ -1210,19 +1221,8 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="244"/>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="314"/>
-      <source>Empty text</source>
-      <translation>Prazan tekst</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="244"/>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="314"/>
       <source>Specify the menu text first</source>
       <translation>Prvo odredite tekst izbornika</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
-      <source>No item selected</source>
-      <translation>Nije odabrana stavka</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
@@ -1550,27 +1550,27 @@ isto vrijeme, pokrenut će se onaj s najvećim prioritetom.</translation>
   <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="743"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="744"/>
       <source>Spaceball Buttons</source>
       <translation>Spaceball Tipke</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="749"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="750"/>
       <source>No Spaceball present</source>
       <translation>Nema Spaceballa</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="805"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="806"/>
       <source>Buttons</source>
       <translation>Tipke</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="806"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="807"/>
       <source>Reset</source>
       <translation>Odbaci</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="842"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="843"/>
       <source>Print Reference</source>
       <translation>Ispis Reference</translation>
     </message>
@@ -1918,8 +1918,8 @@ možda je greška u dopuštenjima datoteke?</translation>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="104"/>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="114"/>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="144"/>
-      <source>Macro recorder</source>
-      <translation>Makro snimanje</translation>
+      <source>Macro Recorder</source>
+      <translation type="unfinished">Macro Recorder</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="105"/>
@@ -1932,6 +1932,11 @@ možda je greška u dopuštenjima datoteke?</translation>
       <translation>Direktorij makroa ne postoji. Odaberite drugi.</translation>
     </message>
     <message>
+      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="130"/>
+      <source>Existing Macro</source>
+      <translation type="unfinished">Existing Macro</translation>
+    </message>
+    <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="131"/>
       <source>The macro '%1' already exists. Overwrite it?</source>
       <translation>Makro '%1' već postoji. Želite li ga prebrisati?</translation>
@@ -1942,14 +1947,9 @@ možda je greška u dopuštenjima datoteke?</translation>
       <translation>Nemate dozvolu za pisanje u direktorij. Odaberite drugi direktorij.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="130"/>
-      <source>Existing macro</source>
-      <translation>Postojeći makro</translation>
-    </message>
-    <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="191"/>
-      <source>Choose macro directory</source>
-      <translation>Odaberite makro direktorij</translation>
+      <source>Choose Macro Directory</source>
+      <translation type="unfinished">Choose Macro Directory</translation>
     </message>
   </context>
   <context>
@@ -2081,8 +2081,8 @@ možda je greška u dopuštenjima datoteke?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="103"/>
-      <source>Access denied</source>
-      <translation>Pristup odbijen</translation>
+      <source>Access Denied</source>
+      <translation type="unfinished">Access Denied</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="104"/>
@@ -2364,6 +2364,11 @@ Navedite drugi direktorij.</translation>
       <translation>Sve postavke će biti izbrisane.</translation>
     </message>
     <message>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="922"/>
+      <source>Wrong Parameter</source>
+      <translation type="unfinished">Wrong Parameter</translation>
+    </message>
+    <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="965"/>
       <source>Restart Required</source>
       <translation>Potrebno je ponovo pokretanje</translation>
@@ -2392,11 +2397,6 @@ Navedite drugi direktorij.</translation>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="803"/>
       <source>Resets the user settings entirely</source>
       <translation>Resetira korisnička podešavanja u potpunosti</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="922"/>
-      <source>Wrong parameter</source>
-      <translation>Pogrešan parametar</translation>
     </message>
   </context>
   <context>
@@ -2543,8 +2543,24 @@ Navedite drugi direktorij.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="79"/>
-      <source>Empty source</source>
-      <translation>Prazan izvor</translation>
+      <source>Empty Source</source>
+      <translation type="unfinished">Empty Source</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
+      <source>Empty Destination</source>
+      <translation type="unfinished">Empty Destination</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="103"/>
+      <source>Failed to Extract Document</source>
+      <translation type="unfinished">Failed to Extract Document</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgProjectUtility.cpp" line="120"/>
+      <source>Failed to Create Document</source>
+      <translation type="unfinished">Failed to Create Document</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
@@ -2555,24 +2571,8 @@ Navedite drugi direktorij.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
-      <source>Empty destination</source>
-      <translation>Prazno odredište</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
       <source>No destination is defined.</source>
       <translation>Odredište nije definirano.</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="103"/>
-      <source>Failed to extract document</source>
-      <translation>Nije uspjelo izdvajanje dokumenta</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgProjectUtility.cpp" line="120"/>
-      <source>Failed to create document</source>
-      <translation>Nije uspjelo stvaranje dokumenta</translation>
     </message>
   </context>
   <context>
@@ -2776,27 +2776,22 @@ prikazat će se u donjem lijevom kutu otvorenih datoteka
       <translation>koristi program OpenGL</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="315"/>
-      <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation>Koristi OpenGL VBO (Vertex Buffer Object)</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="330"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="329"/>
       <source>Render cache</source>
       <translation>Privremena memorija iscrtavanja</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="363"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="362"/>
       <source>Auto</source>
       <translation>Automatski</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="368"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="367"/>
       <source>Distributed</source>
       <translation>Raspodijeljeno</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="373"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="372"/>
       <source>Centralized</source>
       <translation>Centralizirano</translation>
     </message>
@@ -2831,27 +2826,27 @@ prikazat će se u donjem lijevom kutu otvorenih datoteka
       <translation>MSAA 8 x</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="443"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="442"/>
       <source>Render types of transparent objects</source>
       <translation>Vrste iscrtavanja za prozirne objekte</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="453"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="452"/>
       <source>One pass</source>
       <translation>Jedan prolaz</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="458"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="457"/>
       <source>Backface pass</source>
       <translation>Dodatni prolaz crtanja pozadine</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="492"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="491"/>
       <source>Size of vertices in the Sketcher, TechDraw and other workbenches</source>
       <translation>Veličina vrhova u Crtaču, TehnCrtanje i drugim radnim površinama.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="337"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="336"/>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Udaljenost od oka do oka za stereo mode</translation>
     </message>
@@ -2880,50 +2875,27 @@ Changing this option requires a restart of the application.</source>
 Za promjenu ove opcije potrebno je ponovno pokretanje aplikacije.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="303"/>
-      <source>If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by the GPU.
-
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support.</source>
-      <translation>Ako je odabrano, koristit će se Vertex Buffer objekti (VBO).
-VBO je OpenGL značajka koja pruža metode za prijenos
-Podataka o vrhovima (položaj, normalni vektor, boja itd.) na grafičkoj kartici.
-VBO-ovi nude znatan porast performansi jer se podaci nalaze
-u grafičkoj memoriji a ne u sistemskoj memoriji i tako to
-može biti izravno iscrtano sa GPU.
-
-Napomena: Ponekad ova značajka može dovesti do mnoštva različitih
-problema u rasponu od grafičkih anomalija do grešaka pada GPU-a. Zapamtite
-prijavite ovu postavku ako ste je omogućili kada tražite podršku na FreeCAD forumima.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="387"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="386"/>
       <source>Method of multisample anti-aliasing</source>
       <translation>Metoda višestrukog izglađivanja</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="479"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="478"/>
       <source>Marker size</source>
       <translation>Veličina Oznake</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="394"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="393"/>
       <source>Anti-aliasing</source>
       <translation>Izglađivanje</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="469"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="468"/>
       <source>Transparent objects</source>
       <translation>Prozirni objekti</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="350"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="349"/>
       <source>'Render caching' is another way to say 'Rendering acceleration'.
 There are 3 options available to achieve this:
 1) 'Auto' (default), let Coin3D decide where to cache.
@@ -2940,7 +2912,33 @@ predmemorija se sprema samo na korijenskom čvoru grafa scene. Ovo nudi najbržu
 ali sporiji odgovor na bilo kakve promjene scene.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="407"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="303"/>
+      <source>A VBO is an OpenGL feature that enables uploading geometry data
+to the graphics card, and is how efficient 3D rendering is done
+on modern hardware.
+This feature might not be used by default if you are running old
+hardware or drivers. By selecting this option its usage will be
+forcibly enabled.
+
+Note: Turning this on is typically not required. If you do,
+remember to report this setting as enabled when seeking support.</source>
+      <translation type="unfinished">A VBO is an OpenGL feature that enables uploading geometry data
+to the graphics card, and is how efficient 3D rendering is done
+on modern hardware.
+This feature might not be used by default if you are running old
+hardware or drivers. By selecting this option its usage will be
+forcibly enabled.
+
+Note: Turning this on is typically not required. If you do,
+remember to report this setting as enabled when seeking support.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="314"/>
+      <source>Force use of OpenGL VBO (Vertex Buffer Object)</source>
+      <translation type="unfinished">Force use of OpenGL VBO (Vertex Buffer Object)</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="406"/>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
@@ -2949,42 +2947,42 @@ Navedena vrijednost je faktor koji će se pomnožiti s
 veličinom graničnog okvira 3D objekta koji se trenutno prikazuje.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="502"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="501"/>
       <source>Datum size</source>
       <translation>Veličina pomoćne linije</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="515"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="514"/>
       <source>Size of core datum objects</source>
       <translation>Veličina osnovnih podataka objekata</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="518"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="517"/>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="551"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="550"/>
       <source>Camera Type</source>
       <translation>Tip kamere</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="588"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="587"/>
       <source>Objects will be in orthographic projection</source>
       <translation>Objekti će biti u ortografskoj projekciji</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="572"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="571"/>
       <source>Objects will appear in a perspective projection</source>
       <translation>Objekti će se pojaviti u perspektivnoj projekciji</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="575"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="574"/>
       <source>Perspective renderin&amp;g</source>
       <translation>Perspektivna iscrtavanja</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="591"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="590"/>
       <source>Or&amp;thographic rendering</source>
       <translation>Or&amp;tografsko iscrtavanje</translation>
     </message>
@@ -3349,47 +3347,47 @@ osim trake boja</translation>
       <translation>Dopustite prekid preračunavanja</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="217"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="236"/>
       <source>Storage</source>
       <translation>Skladištenje</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="435"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="454"/>
       <source>Saving transactions (Auto-save)</source>
       <translation>Spremanje transakcije (Auto-save)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="244"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="263"/>
       <source>Discard saved transaction after saving document</source>
       <translation>Odbaci spremljene transakcije nakon spremanja dokumenta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="416"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="435"/>
       <source>Run AutoRecovery at startup</source>
       <translation>Pokreni samo oporavak tijekom pokretanja</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="469"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="488"/>
       <source>How often a recovery file is written</source>
       <translation>Učestalost zapisa datoteke za oporavak</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="278"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="297"/>
       <source>A thumbnail will be stored when document is saved</source>
       <translation>Kad se dokument spremi, bit će spremljena i sličica</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="313"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="332"/>
       <source>Size</source>
       <translation>Veličina</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="362"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="381"/>
       <source>How many backup files will be kept when saving document</source>
       <translation>Koliko datoteka sigurnosnih kopija će se zadržati prilikom spremanja dokumenta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="228"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="247"/>
       <source>Show format documentation</source>
       <translation>Prikaži dokumentaciju formata</translation>
     </message>
@@ -3416,78 +3414,98 @@ This feature may slightly increase recomputation time.</source>
 Ova značajka može malo produljiti vrijeme preračunavanja.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="281"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="214"/>
+      <source>This experimental feature allows more responsive GUI while recomputing features.</source>
+      <translation type="unfinished">This experimental feature allows more responsive GUI while recomputing features.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="220"/>
+      <source>Enables async document recomputation</source>
+      <translation type="unfinished">Enables async document recomputation</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="300"/>
       <source>Add thumbnail to project file when saving</source>
       <translation>Dodaj sličicu u datoteku projekta prilikom spremanja</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="320"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="339"/>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512.</source>
       <translation>Postavlja veličinu sličice koja se pohranjuje u dokumentu.
 Uobičajene veličine su 128, 256 i 512.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="365"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="384"/>
       <source>Maximum number of backup files to keep when resaving document</source>
       <translation>Maksimalan broj sigurnosnih kopija koji se čuva kad ponovno spremite dokument</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="412"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="431"/>
       <source>If there is a recovery file available, the application will
 automatically run a file recovery when it is started</source>
       <translation>Ako je na raspolaganju, datoteka za oporavak aplikacija će
 automatski pokrenuti oporavak datoteke kad je pokrenuta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="448"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="467"/>
       <source>The program icon will be added to the thumbnail</source>
       <translation>Ikona programa bit će dodana minijaturi</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="451"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="470"/>
       <source>Add program icon to the generated thumbnail</source>
       <translation>Dodaj programsku ikonu generiranoj sličici</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="472"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="491"/>
       <source>Save auto-recovery information every</source>
       <translation>Spremiti informacije samo oporavka svakih</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="529"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="548"/>
       <source>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</source>
       <translation>Datoteke sigurnosnih kopija dobivat će ekstenziju '.FCbak' i nazive datoteka
 dobiti dodatak (sufiks) datuma prema navedenom formatu</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="533"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="552"/>
       <source>Use date and FCBak extension</source>
       <translation>Koristite datum i FCBak ekstenziju</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="549"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="568"/>
       <source>Date format</source>
       <translation>Format datuma</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="574"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="590"/>
+      <source>Suppresses the version mismatch warning when saving files created with an older FreeCAD version</source>
+      <translation type="unfinished">Suppresses the version mismatch warning when saving files created with an older FreeCAD version</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="593"/>
+      <source>Suppress older version warning on save</source>
+      <translation type="unfinished">Suppress older version warning on save</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="612"/>
       <source>Document Objects</source>
       <translation>Objekti dokumenta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="580"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="618"/>
       <source>Allow objects to have same label</source>
       <translation>Dopusti da objekti imaju istu oznaku </translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="583"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="621"/>
       <source>Allow duplicate object labels in one document</source>
       <translation>Dopusti dvostruke nazive objekata u jednom dokumentu</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="596"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="634"/>
       <source>Disable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
@@ -3500,22 +3518,22 @@ A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="603"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="641"/>
       <source>Disable partial loading of external linked objects</source>
       <translation>Onemogući djelomično učitavanje vanjskih povezanih objekata</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="619"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="657"/>
       <source>Authoring and License</source>
       <translation>Stvaranje i licence</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="625"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="663"/>
       <source>Author name</source>
       <translation>Ime autora</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="632"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="670"/>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -3525,33 +3543,33 @@ Možete koristiti i obrazac: John Doe &lt;john@doe.com&gt;
 </translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="647"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="685"/>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
       <translation>Polje "Zadnja izmjena od" postavit će se navedenom autoru prilikom spremanja datoteke
 </translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="650"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="688"/>
       <source>Set on save</source>
       <translation>Postavi na spremanju</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="663"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="701"/>
       <source>Company</source>
       <translation>Tvrtka</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="670"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="708"/>
       <source>Default company name to use for new files</source>
       <translation>Zadano ime tvrtke za nove datoteke</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="683"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="721"/>
       <source>Default license</source>
       <translation>Dodijeljena licenca</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="693"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="731"/>
       <source>Default license for new documents</source>
       <translation>Zadana licenca za nove datoteke</translation>
     </message>
@@ -3621,12 +3639,12 @@ Možete koristiti i obrazac: John Doe &lt;john@doe.com&gt;
       <translation>Drugo</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="709"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="747"/>
       <source>License URL</source>
       <translation>URL licence</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="716"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="754"/>
       <source>URL describing more about the license</source>
       <translation>URL koji opisuje više o licenci</translation>
     </message>
@@ -5086,8 +5104,8 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="600"/>
-      <source>Add icon folder</source>
-      <translation>Dodavanje mape ikona</translation>
+      <source>Add Icon Folder</source>
+      <translation type="unfinished">Add Icon Folder</translation>
     </message>
   </context>
   <context>
@@ -5099,8 +5117,8 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="628"/>
-      <source>Remove folder</source>
-      <translation>Ukloni mapu</translation>
+      <source>Remove Folder</source>
+      <translation type="unfinished">Remove Folder</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="629"/>
@@ -5454,12 +5472,12 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::Dialog::PrintModel</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="721"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="722"/>
       <source>Button</source>
       <translation>Gumb</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="724"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="725"/>
       <source>Command</source>
       <translation>Naredba</translation>
     </message>
@@ -5562,8 +5580,8 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="167"/>
-      <source>No 3D view</source>
-      <translation>Nema 3D Pogleda</translation>
+      <source>No 3D View</source>
+      <translation type="unfinished">No 3D View</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="167"/>
@@ -5918,11 +5936,6 @@ Spremiti sve promjene?</translation>
       <translation>Izvoz PDF</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="511"/>
-      <source>PDF file</source>
-      <translation>PDF Datoteka</translation>
-    </message>
-    <message>
       <location filename="../EditorView.cpp" line="548"/>
       <source>untitled[*]</source>
       <translation>Bez imena[*]</translation>
@@ -5951,13 +5964,13 @@ Spremiti sve promjene?</translation>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="628"/>
+      <location filename="../FileDialog.cpp" line="557"/>
       <source>Save As</source>
       <translation>Spremi kao</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="762"/>
-      <location filename="../FileDialog.cpp" line="862"/>
+      <location filename="../FileDialog.cpp" line="692"/>
+      <location filename="../FileDialog.cpp" line="787"/>
       <source>Open</source>
       <translation>Otvori</translation>
     </message>
@@ -5965,12 +5978,12 @@ Spremiti sve promjene?</translation>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1002"/>
+      <location filename="../FileDialog.cpp" line="935"/>
       <source>Extended</source>
       <translation>Produženo</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1039"/>
+      <location filename="../FileDialog.cpp" line="972"/>
       <source>All files (*.*)</source>
       <translation>Sve datoteke (*.*)</translation>
     </message>
@@ -6029,98 +6042,66 @@ Spremiti sve promjene?</translation>
   <context>
     <name>Gui::GraphvizView</name>
     <message>
-      <location filename="../GraphvizView.cpp" line="322"/>
+      <location filename="../GraphvizView.cpp" line="325"/>
       <source>Graphviz not found</source>
       <translation>Graphviz nije pronađen</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="329"/>
+      <location filename="../GraphvizView.cpp" line="332"/>
       <source>Graphviz couldn't be found on your system.</source>
       <translation>Graphviz nije pronađen u sustavu.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="330"/>
+      <location filename="../GraphvizView.cpp" line="333"/>
       <source>Read more about it here.</source>
       <translation>Više o tome pročitajte ovdje.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="331"/>
+      <location filename="../GraphvizView.cpp" line="334"/>
       <source>Do you want to specify its installation path if it's already installed?</source>
       <translation>Želite li navesti svoj instalacijski put ako je već instaliran?</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="342"/>
+      <location filename="../GraphvizView.cpp" line="345"/>
       <source>Graphviz installation path</source>
       <translation>Grpahviz instalacijska putanja</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="382"/>
+      <location filename="../GraphvizView.cpp" line="385"/>
       <source>Graphviz failed</source>
       <translation>Graphviz nije uspio</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="383"/>
+      <location filename="../GraphvizView.cpp" line="386"/>
       <source>Graphviz failed to create an image file</source>
       <translation>Graphviz nije uspio pronaći datoteku slike</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="483"/>
-      <source>PNG format</source>
-      <translation>PNG format</translation>
-    </message>
-    <message>
-      <location filename="../GraphvizView.cpp" line="485"/>
-      <source>Bitmap format</source>
-      <translation>Bitmap format</translation>
-    </message>
-    <message>
       <location filename="../GraphvizView.cpp" line="489"/>
-      <source>GIF format</source>
-      <translation>GIF format</translation>
+      <source>Bitmap</source>
+      <translation>Bitmapa</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="491"/>
-      <source>JPG format</source>
-      <translation>JPG format</translation>
-    </message>
-    <message>
-      <location filename="../GraphvizView.cpp" line="493"/>
-      <source>SVG format</source>
-      <translation>SVG format</translation>
-    </message>
-    <message>
-      <location filename="../GraphvizView.cpp" line="495"/>
-      <location filename="../GraphvizView.cpp" line="602"/>
-      <source>PDF format</source>
-      <translation>PDF format</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="692"/>
-      <location filename="../GraphvizView.cpp" line="479"/>
-      <source>Graphviz format</source>
-      <translation>Graphviz format</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="695"/>
-      <location filename="../GraphvizView.cpp" line="505"/>
-      <source>Export Graph</source>
-      <translation type="unfinished">Export Graph</translation>
-    </message>
-    <message>
-      <location filename="../GraphvizView.cpp" line="606"/>
+      <location filename="../GraphvizView.cpp" line="607"/>
       <source>Export graph</source>
       <translation type="unfinished">Export graph</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="710"/>
+      <location filename="../GraphvizView.cpp" line="515"/>
+      <source>Export Graph</source>
+      <translation type="unfinished">Export Graph</translation>
     </message>
   </context>
   <context>
     <name>Gui::InputField</name>
     <message>
-      <location filename="../InputField.cpp" line="208"/>
+      <location filename="../InputField.cpp" line="218"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../InputField.cpp" line="228"/>
+      <location filename="../InputField.cpp" line="238"/>
       <source>Save Value</source>
       <translation>Spremi vrijednost</translation>
     </message>
@@ -6267,94 +6248,100 @@ Spremiti sve promjene?</translation>
   <context>
     <name>Gui::MainWindow</name>
     <message>
-      <location filename="../MainWindow.cpp" line="196"/>
-      <location filename="../MainWindow.cpp" line="2523"/>
+      <location filename="../MainWindow.cpp" line="198"/>
+      <location filename="../MainWindow.cpp" line="2541"/>
       <source>Dimension</source>
       <translation>Dimenzija</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="445"/>
+      <location filename="../MainWindow.cpp" line="437"/>
+      <source>Bottom Panel Toggle</source>
+      <extracomment>A context menu action used to show or hide the Toggle Bottom Panels button in the status bar</extracomment>
+      <translation type="unfinished">Bottom Panel Toggle</translation>
+    </message>
+    <message>
+      <location filename="../MainWindow.cpp" line="446"/>
       <source>Toggles the bottom dock panels</source>
       <extracomment>Tooltip for the status bar button that toggles bottom dock panels</extracomment>
       <translation type="unfinished">Toggles the bottom dock panels</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="456"/>
+      <location filename="../MainWindow.cpp" line="457"/>
       <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
       <translation type="unfinished">Input Hints</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="466"/>
+      <location filename="../MainWindow.cpp" line="467"/>
       <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
       <translation type="unfinished">Quick Measure</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="478"/>
+      <location filename="../MainWindow.cpp" line="479"/>
       <source>Notification Area</source>
       <extracomment>A context menu action used to show or hide the 'notificationArea' toolbar widget</extracomment>
       <translation>Područje obavijesti</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="521"/>
+      <location filename="../MainWindow.cpp" line="522"/>
       <source>Ready</source>
       <translation>Spreman</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1299"/>
+      <location filename="../MainWindow.cpp" line="1317"/>
       <source>Close All</source>
       <translation>Zatvori sve</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1566"/>
-      <location filename="../MainWindow.cpp" line="1567"/>
-      <location filename="../MainWindow.cpp" line="1568"/>
+      <location filename="../MainWindow.cpp" line="1584"/>
+      <location filename="../MainWindow.cpp" line="1585"/>
+      <location filename="../MainWindow.cpp" line="1586"/>
       <source>Toggles this toolbar</source>
       <translation>Uključuje ove alatne trake</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1587"/>
-      <location filename="../MainWindow.cpp" line="1588"/>
-      <location filename="../MainWindow.cpp" line="1589"/>
+      <location filename="../MainWindow.cpp" line="1605"/>
+      <location filename="../MainWindow.cpp" line="1606"/>
+      <location filename="../MainWindow.cpp" line="1607"/>
       <source>Toggles this dockable window</source>
       <translation>Uključi/isključi ovaj usidrivi prozor</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1792"/>
+      <location filename="../MainWindow.cpp" line="1810"/>
       <source>Safe mode enabled</source>
       <translation>Siguran način rada omogućen</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1793"/>
+      <location filename="../MainWindow.cpp" line="1811"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD sada radi u sigurnom načinu rada.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1797"/>
+      <location filename="../MainWindow.cpp" line="1815"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>Siguran način rada privremeno onemogućuje vaše konfiguracije i dodatke. Ponovno pokrenite aplikaciju za izlaz iz sigurnog načina rada.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2245"/>
-      <location filename="../MainWindow.cpp" line="2399"/>
+      <location filename="../MainWindow.cpp" line="2263"/>
+      <location filename="../MainWindow.cpp" line="2417"/>
       <source>Unsaved document</source>
       <translation>Nespremljeni dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2246"/>
+      <location filename="../MainWindow.cpp" line="2264"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>Izvezeni objekt sadrži vanjsku poveznicu. Prije izvoza spremite dokument barem jednom.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2400"/>
+      <location filename="../MainWindow.cpp" line="2418"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>Za povezivanje s vanjskim objektima dokument se mora barem jednom spremiti.
 Spremiti dokument sad?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2734"/>
+      <location filename="../MainWindow.cpp" line="2759"/>
       <source>Safe Mode</source>
       <translation>Siguran način rada</translation>
     </message>
@@ -6584,17 +6571,17 @@ Kako želite nastaviti?</translation>
   <context>
     <name>Gui::ProgressBar</name>
     <message>
-      <location filename="../ProgressBar.cpp" line="319"/>
+      <location filename="../ProgressBar.cpp" line="324"/>
       <source>Remaining: %1</source>
       <translation>Preostalo: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="521"/>
+      <location filename="../ProgressBar.cpp" line="526"/>
       <source>Aborting</source>
       <translation>Odustani</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="522"/>
+      <location filename="../ProgressBar.cpp" line="527"/>
       <source>Abort the operation?</source>
       <translation>Prekinuti operaciju?</translation>
     </message>
@@ -6689,6 +6676,7 @@ Kako želite nastaviti?</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="986"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1251"/>
       <source>Rename Property Group</source>
       <translation>Preimenuj grupu svojstava</translation>
     </message>
@@ -6699,6 +6687,7 @@ Kako želite nastaviti?</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1006"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1222"/>
       <source>Rename Property</source>
       <translation>Preimenuj svojstvo</translation>
     </message>
@@ -6719,11 +6708,6 @@ Kako želite nastaviti?</translation>
       <translation>Naziv alata</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1222"/>
-      <source>Rename property</source>
-      <translation>Preimenuj svojstvo</translation>
-    </message>
-    <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1034"/>
       <source>Show Hidden</source>
       <translation>Prikaži skriveno</translation>
@@ -6737,11 +6721,6 @@ Kako želite nastaviti?</translation>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1223"/>
       <source>Property name</source>
       <translation>Ime svojstva</translation>
-    </message>
-    <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1251"/>
-      <source>Rename property group</source>
-      <translation>Preimenuj grupu svojstava</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1252"/>
@@ -6885,11 +6864,6 @@ Izlaz bez spremanja svih podataka?</translation>
       <source>Insert file name</source>
       <translation>Umetni ime datoteke</translation>
     </message>
-    <message>
-      <location filename="../PythonConsole.cpp" line="1432"/>
-      <source>All Files</source>
-      <translation>Sve datoteke</translation>
-    </message>
   </context>
   <context>
     <name>Gui::PythonEditor</name>
@@ -6912,13 +6886,19 @@ Izlaz bez spremanja svih podataka?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="881"/>
+      <location filename="../Action.cpp" line="882"/>
+      <location filename="../Action.cpp" line="891"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
       <translation>Izbriši nedavno korištene datoteke</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="965"/>
+      <location filename="../Action.cpp" line="892"/>
+      <source>Clear the list of recent files?</source>
+      <translation type="unfinished">Clear the list of recent files?</translation>
+    </message>
+    <message>
+      <location filename="../Action.cpp" line="979"/>
       <source>Open file %1</source>
       <translation>Otvoriti datoteku %1</translation>
     </message>
@@ -6926,12 +6906,12 @@ Izlaz bez spremanja svih podataka?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1139"/>
+      <location filename="../Action.cpp" line="1153"/>
       <source>none</source>
       <translation>nijedan</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1157"/>
+      <location filename="../Action.cpp" line="1171"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Pokreni makro %1 (Shift+klik za uređivanje) tipkovnički prečac: %2</translation>
     </message>
@@ -6985,12 +6965,12 @@ Izlaz bez spremanja svih podataka?</translation>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1418"/>
+      <location filename="../FileDialog.cpp" line="1351"/>
       <source>Select Module</source>
       <translation>Odaberi modul</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1420"/>
+      <location filename="../FileDialog.cpp" line="1353"/>
       <source>Open %1 as</source>
       <translation>Otvori %1 kao</translation>
     </message>
@@ -7177,8 +7157,8 @@ Specify another directory?</source>
     </message>
     <message>
       <location filename="../TaskView/TaskSelectLinkProperty.cpp" line="41"/>
-      <source>edit selection</source>
-      <translation>uredi odabir</translation>
+      <source>Edit Selection</source>
+      <translation type="unfinished">Edit Selection</translation>
     </message>
   </context>
   <context>
@@ -7239,242 +7219,242 @@ Specify another directory?</source>
   <context>
     <name>Gui::Translator</name>
     <message>
-      <location filename="Translator.cpp" line="212"/>
+      <location filename="Translator.cpp" line="211"/>
       <source>Afrikaans</source>
       <translation>Afrički</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="213"/>
+      <location filename="Translator.cpp" line="212"/>
       <source>Arabic</source>
       <translation>Arapski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="214"/>
+      <location filename="Translator.cpp" line="213"/>
       <source>Basque</source>
       <translation>Baskijski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="215"/>
+      <location filename="Translator.cpp" line="214"/>
       <source>Belarusian</source>
       <translation>Bjeloruski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="216"/>
+      <location filename="Translator.cpp" line="215"/>
       <source>Bulgarian</source>
       <translation>Bugarski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="217"/>
+      <location filename="Translator.cpp" line="216"/>
       <source>Catalan</source>
       <translation>Katalonski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="218"/>
+      <location filename="Translator.cpp" line="217"/>
       <source>Chinese (Simplified)</source>
       <oldsource>Chinese Simplified</oldsource>
       <translation>Kineski (pojednostavljen)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="219"/>
+      <location filename="Translator.cpp" line="218"/>
       <source>Chinese (Traditional)</source>
       <oldsource>Chinese Traditional</oldsource>
       <translation>Kineski (tradicionalni)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="220"/>
+      <location filename="Translator.cpp" line="219"/>
       <source>Croatian</source>
       <translation>Hrvatski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="221"/>
+      <location filename="Translator.cpp" line="220"/>
       <source>Czech</source>
       <translation>Češki</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="223"/>
+      <location filename="Translator.cpp" line="222"/>
       <source>Dutch</source>
       <translation>Nizozemski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="224"/>
+      <location filename="Translator.cpp" line="223"/>
       <source>English</source>
       <translation>Engleski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="225"/>
+      <location filename="Translator.cpp" line="224"/>
       <source>Filipino</source>
       <translation>Filipinski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="226"/>
+      <location filename="Translator.cpp" line="225"/>
       <source>Finnish</source>
       <translation>Finski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="227"/>
+      <location filename="Translator.cpp" line="226"/>
       <source>French</source>
       <translation>Francuski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="228"/>
+      <location filename="Translator.cpp" line="227"/>
       <source>Galician</source>
       <translation>Galicijski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="230"/>
+      <location filename="Translator.cpp" line="229"/>
       <source>German</source>
       <translation>Njemački</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="231"/>
+      <location filename="Translator.cpp" line="230"/>
       <source>Greek</source>
       <translation>Grčki</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="232"/>
+      <location filename="Translator.cpp" line="231"/>
       <source>Hungarian</source>
       <translation>Mađarski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="233"/>
+      <location filename="Translator.cpp" line="232"/>
       <source>Indonesian</source>
       <translation>Indonezijski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="234"/>
+      <location filename="Translator.cpp" line="233"/>
       <source>Italian</source>
       <translation>Talijanski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="235"/>
+      <location filename="Translator.cpp" line="234"/>
       <source>Japanese</source>
       <translation>Japanski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="236"/>
+      <location filename="Translator.cpp" line="235"/>
       <source>Kabyle</source>
       <translation>Kabilski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="237"/>
+      <location filename="Translator.cpp" line="236"/>
       <source>Korean</source>
       <translation>Korejski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="238"/>
+      <location filename="Translator.cpp" line="237"/>
       <source>Lithuanian</source>
       <translation>Litvanski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="239"/>
+      <location filename="Translator.cpp" line="238"/>
       <source>Norwegian</source>
       <translation>Norveški</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="240"/>
+      <location filename="Translator.cpp" line="239"/>
       <source>Polish</source>
       <translation>Poljski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="241"/>
+      <location filename="Translator.cpp" line="240"/>
       <source>Portuguese (Brazilian)</source>
       <oldsource>Portuguese, Brazilian</oldsource>
       <translation>Portugalski (Brazil)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="242"/>
+      <location filename="Translator.cpp" line="241"/>
       <source>Portuguese</source>
       <translation>Portugalski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="243"/>
+      <location filename="Translator.cpp" line="242"/>
       <source>Romanian</source>
       <translation>Rumunjski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="244"/>
+      <location filename="Translator.cpp" line="243"/>
       <source>Russian</source>
       <translation>Ruski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="245"/>
+      <location filename="Translator.cpp" line="244"/>
       <source>Serbian</source>
       <translation>Srpski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="246"/>
+      <location filename="Translator.cpp" line="245"/>
       <source>Serbian (Latin)</source>
       <oldsource>Serbian, Latin</oldsource>
       <translation>Srpski (latinica)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="247"/>
+      <location filename="Translator.cpp" line="246"/>
       <source>Slovak</source>
       <translation>Slovački</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="248"/>
+      <location filename="Translator.cpp" line="247"/>
       <source>Slovenian</source>
       <translation>Slovenski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="249"/>
+      <location filename="Translator.cpp" line="248"/>
       <source>Spanish</source>
       <translation>Španjolski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="250"/>
+      <location filename="Translator.cpp" line="249"/>
       <source>Spanish (Argentina)</source>
       <oldsource>Spanish, Argentina</oldsource>
       <translation>Španjolski (Argentina)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="251"/>
+      <location filename="Translator.cpp" line="250"/>
       <source>Swedish</source>
       <translation>Švedski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="252"/>
+      <location filename="Translator.cpp" line="251"/>
       <source>Turkish</source>
       <translation>Turski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="253"/>
+      <location filename="Translator.cpp" line="252"/>
       <source>Ukrainian</source>
       <translation>Ukrajinski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="254"/>
+      <location filename="Translator.cpp" line="253"/>
       <source>Valencian</source>
       <translation>Valencijski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="255"/>
+      <location filename="Translator.cpp" line="254"/>
       <source>Vietnamese</source>
       <translation>Vijetnamski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="256"/>
+      <location filename="Translator.cpp" line="255"/>
       <source>Malay</source>
       <translation>Malajski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="257"/>
+      <location filename="Translator.cpp" line="256"/>
       <source>Tamil</source>
       <translation type="unfinished">Tamil</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="258"/>
+      <location filename="Translator.cpp" line="257"/>
       <source>Irish</source>
       <translation type="unfinished">Irish</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="222"/>
+      <location filename="Translator.cpp" line="221"/>
       <source>Danish</source>
       <translation>danski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="229"/>
+      <location filename="Translator.cpp" line="228"/>
       <source>Georgian</source>
       <translation>gruzijski</translation>
     </message>
@@ -7497,7 +7477,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4167"/>
+      <location filename="../Tree.cpp" line="4176"/>
       <source>Search</source>
       <translation>Pretraživanje</translation>
     </message>
@@ -7505,236 +7485,236 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="1309"/>
+      <location filename="../Tree.cpp" line="1312"/>
       <source>Activate Document</source>
       <translation>Aktiviraj dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1316"/>
+      <location filename="../Tree.cpp" line="1319"/>
       <source>Activates document %1</source>
       <translation>Aktiviraj dokument %1</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1331"/>
+      <location filename="../Tree.cpp" line="1334"/>
       <source>Tree Settings</source>
       <translation>Postavke stabla</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1335"/>
+      <location filename="../Tree.cpp" line="1338"/>
       <source>Show Description</source>
       <translation>Prikaz opisa</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1336"/>
+      <location filename="../Tree.cpp" line="1339"/>
       <source>Show Internal Name</source>
       <translation>Prikaži interni naziv</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1357"/>
+      <location filename="../Tree.cpp" line="1360"/>
       <source>Shows an internal name column for items.</source>
       <translation>Prikazuje interni stupac naziva za stavke.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1405"/>
+      <location filename="../Tree.cpp" line="1408"/>
       <source>Group</source>
       <translation>Grupa</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3317"/>
-      <location filename="../Tree.cpp" line="3338"/>
+      <location filename="../Tree.cpp" line="3326"/>
+      <location filename="../Tree.cpp" line="3347"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3317"/>
+      <location filename="../Tree.cpp" line="3326"/>
       <source>File does not exist.</source>
       <translation>Datoteka ne postoji.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3338"/>
+      <location filename="../Tree.cpp" line="3347"/>
       <source>Failed to open directory.</source>
       <translation>Nije uspjelo otvaranje direktorija.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3817"/>
+      <location filename="../Tree.cpp" line="3826"/>
       <source>Labels &amp; Attributes</source>
       <translation>Etikete i atributi</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3818"/>
+      <location filename="../Tree.cpp" line="3827"/>
       <source>Description</source>
       <translation>Opis</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3819"/>
+      <location filename="../Tree.cpp" line="3828"/>
       <source>Internal name</source>
       <translation>Interni naziv</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3821"/>
+      <location filename="../Tree.cpp" line="3830"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>Prikaži stavke skrivene u prikazu stabla</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3823"/>
+      <location filename="../Tree.cpp" line="3832"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>Prikazuje stavke koji su označene kao 'skriven' u prikazu stabla</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3826"/>
+      <location filename="../Tree.cpp" line="3835"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>Prebacuj vidljivost u prikazu stabla</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3831"/>
+      <location filename="../Tree.cpp" line="3840"/>
       <source>Create Group</source>
       <translation>Napravi grupu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3832"/>
+      <location filename="../Tree.cpp" line="3841"/>
       <source>Creates a group</source>
       <translation>Stvara grupu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3835"/>
+      <location filename="../Tree.cpp" line="3844"/>
       <source>Renames object</source>
       <translation>Preimenuj objekt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3837"/>
+      <location filename="../Tree.cpp" line="3846"/>
       <source>Finish Editing</source>
       <translation>Završi uređivanje</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3838"/>
+      <location filename="../Tree.cpp" line="3847"/>
       <source>Finishes editing object</source>
       <translation>Završava uređivanje objekta</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3840"/>
+      <location filename="../Tree.cpp" line="3849"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>Dodajte ovisne objekte odabiru</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3843"/>
+      <location filename="../Tree.cpp" line="3852"/>
       <source>Close Document</source>
       <translation>Zatvori dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3844"/>
+      <location filename="../Tree.cpp" line="3853"/>
       <source>Closes the document</source>
       <translation>Zatvara dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3848"/>
+      <location filename="../Tree.cpp" line="3857"/>
       <source>Reveals the current file location in Finder</source>
       <translation>Otkriva trenutnu lokaciju datoteke u Finderu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3851"/>
+      <location filename="../Tree.cpp" line="3860"/>
       <source>Opens the current file location</source>
       <translation>Otvara trenutnu lokaciju datoteke</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3854"/>
+      <location filename="../Tree.cpp" line="3863"/>
       <source>Reload Document</source>
       <translation>Dokument ponovo učitati</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3855"/>
+      <location filename="../Tree.cpp" line="3864"/>
       <source>Reloads a partially loaded document</source>
       <translation>Učitajte ponovo djelomično učitan dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3857"/>
+      <location filename="../Tree.cpp" line="3866"/>
       <source>Skip Recomputes</source>
       <translation>Preskočiti rekomputacije</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3858"/>
+      <location filename="../Tree.cpp" line="3867"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>Omogućuje ili onemogućuje rekomputaciju dokumenta</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3860"/>
+      <location filename="../Tree.cpp" line="3869"/>
       <source>Allow Partial Recomputes</source>
       <translation>Djelomično omogući preračunavanje</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3861"/>
+      <location filename="../Tree.cpp" line="3870"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Omogućite ili onemogućite ponovno računanje objekta uređivanja kada je omogućeno 'preskoči ponovno računanje'</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3865"/>
+      <location filename="../Tree.cpp" line="3874"/>
       <source>Mark to Recompute</source>
       <translation>Označi za preračunaj</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3866"/>
+      <location filename="../Tree.cpp" line="3875"/>
       <source>Marks this object to be recomputed</source>
       <translation>Označi ovaj objekt da se preračuna</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3869"/>
+      <location filename="../Tree.cpp" line="3878"/>
       <source>Recompute Object</source>
       <translation>Ponovno računanje objekta</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3870"/>
+      <location filename="../Tree.cpp" line="3879"/>
       <source>Recomputes the selected object</source>
       <translation>Ponovno računanje odabranog objekta</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3828"/>
+      <location filename="../Tree.cpp" line="3837"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Prebaci vidljivost označenih stavki u prikazu stabla</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="654"/>
+      <location filename="../Tree.cpp" line="657"/>
       <source>Search Objects</source>
       <translation>Potraga za objektima</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="655"/>
+      <location filename="../Tree.cpp" line="658"/>
       <source>Searches for objects in the tree</source>
       <translation>Traži objekte u stablu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1338"/>
+      <location filename="../Tree.cpp" line="1341"/>
       <source>Shows a description column for items. An item's description can be set by editing the 'label2' property.</source>
       <translation>Prikazuje stupac s opisom za stavke. Opis stavke može se postaviti uređivanjem svojstva 'label2'.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3834"/>
-      <location filename="../Tree.cpp" line="6422"/>
+      <location filename="../Tree.cpp" line="3843"/>
+      <location filename="../Tree.cpp" line="6508"/>
       <source>Rename</source>
       <translation>Preimenuj</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3841"/>
+      <location filename="../Tree.cpp" line="3850"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Dodaje sve ovisne objekte odabiru</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3847"/>
+      <location filename="../Tree.cpp" line="3856"/>
       <source>Reveal in Finder</source>
       <translation>Prikaži u Finderu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3850"/>
+      <location filename="../Tree.cpp" line="3859"/>
       <source>Open File Location</source>
       <translation>Otvori lokaciju datoteke</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6390"/>
+      <location filename="../Tree.cpp" line="6476"/>
       <source> (but must be executed)</source>
       <translation>(ali mora biti izvršen)
 
 </translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6393"/>
+      <location filename="../Tree.cpp" line="6479"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Interni naziv: %2</translation>
     </message>
@@ -7770,11 +7750,6 @@ Specify another directory?</source>
       <translation>Izvoz PDF</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="291"/>
-      <source>PDF file</source>
-      <translation>PDF Datoteka</translation>
-    </message>
-    <message>
       <location filename="../View3DInventor.cpp" line="333"/>
       <source>Opening file failed</source>
       <translation>Otvaranje dokumenta nije uspjelo</translation>
@@ -7788,12 +7763,12 @@ Specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="737"/>
+      <location filename="../Action.cpp" line="738"/>
       <source>Selects the '%1' workbench</source>
       <translation>Odaberite '%1' radnu površinu</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="765"/>
+      <location filename="../Action.cpp" line="766"/>
       <source>Select the '%1' workbench</source>
       <translation>Odaberite '%1' radnu površinu</translation>
     </message>
@@ -7960,47 +7935,47 @@ Specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="617"/>
+      <location filename="../MainWindow.cpp" line="624"/>
       <source>Tasks</source>
       <translation>Zadaci</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="634"/>
+      <location filename="../MainWindow.cpp" line="641"/>
       <source>Selection View</source>
       <translation>Pogled odabira</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="652"/>
+      <location filename="../MainWindow.cpp" line="659"/>
       <source>Report View</source>
       <translation>Pregled izvješća</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="672"/>
+      <location filename="../MainWindow.cpp" line="679"/>
       <source>Python Console</source>
       <translation>Python konzola</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="699"/>
+      <location filename="../MainWindow.cpp" line="706"/>
       <source>Tree View</source>
       <translation>Prikaz stabla</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="729"/>
+      <location filename="../MainWindow.cpp" line="736"/>
       <source>Property View</source>
       <translation>Prikaz svojstava</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="758"/>
+      <location filename="../MainWindow.cpp" line="765"/>
       <source>Task List</source>
       <translation>Popis zadataka</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="787"/>
+      <location filename="../MainWindow.cpp" line="794"/>
       <source>Model</source>
       <translation>Model</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="817"/>
+      <location filename="../MainWindow.cpp" line="824"/>
       <source>DAG View</source>
       <translation>DAG pogled</translation>
     </message>
@@ -8045,35 +8020,35 @@ Specify another directory?</source>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="801"/>
-      <location filename="../Application.cpp" line="908"/>
-      <location filename="../Application.cpp" line="995"/>
+      <location filename="../Application.cpp" line="866"/>
+      <location filename="../Application.cpp" line="973"/>
+      <location filename="../Application.cpp" line="1060"/>
       <source>Unknown filetype</source>
       <translation>Nepoznata vrsta datoteke</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="802"/>
-      <location filename="../Application.cpp" line="909"/>
+      <location filename="../Application.cpp" line="867"/>
+      <location filename="../Application.cpp" line="974"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Ne mogu otvoriti nepoznatu vrstu datoteke: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="985"/>
+      <location filename="../Application.cpp" line="1050"/>
       <source>Export failed</source>
       <translation>Izvoz neuspješan</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="996"/>
+      <location filename="../Application.cpp" line="1061"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Ne mogu spremiti nepoznatu vrstu datoteke: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1194"/>
+      <location filename="../Application.cpp" line="1259"/>
       <source>Recomputation required</source>
       <translation>Potrebno ponovo računanje</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1195"/>
+      <location filename="../Application.cpp" line="1260"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -8082,34 +8057,34 @@ Recompute now?</source>
 Želite li sada ponovno izračunati?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1221"/>
+      <location filename="../Application.cpp" line="1286"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>Neuspješno ponovno izračunavanje nekih dokumenata.
 Provjerite prikaz izvješća za više pojedinosti.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1220"/>
+      <location filename="../Application.cpp" line="1285"/>
       <source>Recompute error</source>
       <translation>Pogreška ponovnog izračuna</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1968"/>
+      <location filename="../Application.cpp" line="2035"/>
       <source>Workbench failure</source>
       <translation>Greška kod promjena radne površine </translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1969"/>
+      <location filename="../Application.cpp" line="2036"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="372"/>
+      <location filename="../StartupProcess.cpp" line="370"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Ovaj sustav radi OpenGL %1.%2. FreeCAD zahtijeva OpenGL 2.0 ili noviji. Nadogradite grafički upravljački program i/ili karticu.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="383"/>
+      <location filename="../StartupProcess.cpp" line="381"/>
       <source>Invalid OpenGL Version</source>
       <translation>Pogrešna OpenGL Verzija</translation>
     </message>
@@ -8124,11 +8099,6 @@ Provjerite prikaz izvješća za više pojedinosti.</translation>
       <translation>Ponovno pokretanje</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="512"/>
-      <source>Migration failed</source>
-      <translation>Neuspješna seoba</translation>
-    </message>
-    <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="425"/>
       <source>Estimated size of data to copy: %1</source>
       <translation>Procijenjena veličina podataka za kopiranje: %1</translation>
@@ -8140,8 +8110,8 @@ Provjerite prikaz izvješća za više pojedinosti.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="488"/>
-      <source>Migration completed with warnings</source>
-      <translation type="unfinished">Migration completed with warnings</translation>
+      <source>Migration Completed With Warnings</source>
+      <translation type="unfinished">Migration Completed With Warnings</translation>
     </message>
     <message numerus="yes">
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="495"/>
@@ -8151,6 +8121,11 @@ Provjerite prikaz izvješća za više pojedinosti.</translation>
         <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
         <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
       </translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="512"/>
+      <source>Migration Failed</source>
+      <translation type="unfinished">Migration Failed</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="513"/>
@@ -8168,116 +8143,132 @@ Provjerite prikaz izvješća za više pojedinosti.</translation>
       <translation>Iznimka</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1234"/>
-      <location filename="../Application.cpp" line="1249"/>
+      <location filename="../Application.cpp" line="1299"/>
+      <location filename="../Application.cpp" line="1314"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1235"/>
+      <location filename="../Application.cpp" line="1300"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Pojavile su se pogreške tijekom učitavanja datoteke. Neki podaci su možda promijenjeni ili nisu oporavljeni potuno. Pogledajte prikaz izvješća za više podataka o objektima koji su uključeni.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1250"/>
+      <location filename="../Application.cpp" line="1315"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Došlo je do ozbiljnih pogrešaka prilikom učitavanja datoteke. Neki su podaci možda izmijenjeni ili uopće nisu vraćeni. Spremanje projekta najvjerojatnije će rezultirati gubitkom podataka.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="102"/>
-      <location filename="../CommandDoc.cpp" line="228"/>
+      <location filename="../CommandDoc.cpp" line="104"/>
+      <location filename="../CommandDoc.cpp" line="230"/>
       <source>Supported formats</source>
       <translation>Podržani formati</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="132"/>
-      <location filename="../CommandDoc.cpp" line="246"/>
-      <source>All files</source>
-      <translation>Sve datoteke</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="137"/>
+      <location filename="../CommandDoc.cpp" line="138"/>
       <source>Open Document</source>
       <translation type="unfinished">Open Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="256"/>
+      <location filename="../CommandDoc.cpp" line="264"/>
       <source>Import File</source>
       <translation type="unfinished">Import File</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="537"/>
+      <location filename="../CommandDoc.cpp" line="551"/>
       <source>Export File</source>
       <translation>Izvezi datoteku</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1002"/>
+      <location filename="../CommandDoc.cpp" line="619"/>
+      <location filename="../CommandDoc.cpp" line="631"/>
+      <source>Merge Document</source>
+      <translation type="unfinished">Merge Document</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="621"/>
+      <location filename="../Document.cpp" line="1715"/>
+      <location filename="../Document.cpp" line="1845"/>
+      <source>%1 document</source>
+      <translation type="unfinished">%1 document</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="632"/>
+      <source>Cannot merge document with itself.</source>
+      <translation>Ne mogu spojiti dokument sam sa sobom</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="1017"/>
       <source>Printing…</source>
       <translation>Ispisivanje…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1065"/>
+      <location filename="../CommandDoc.cpp" line="1080"/>
       <source>Exporting PDF…</source>
       <translation>Izvoz PDF…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1355"/>
+      <location filename="../CommandDoc.cpp" line="1370"/>
       <source>The exported object contains an external link. Save the document.at least once before exporting.</source>
       <translation>Izvezeni objekt sadrži vanjsku poveznicu. Prije izvoza spremite dokument barem jednom.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1632"/>
-      <location filename="../CommandDoc.cpp" line="1642"/>
+      <location filename="../CommandDoc.cpp" line="1650"/>
+      <location filename="../CommandDoc.cpp" line="1660"/>
       <source>Delete Failed</source>
       <translation type="unfinished">Delete Failed</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1703"/>
-      <source>Dependency Error</source>
-      <translation type="unfinished">Dependency Error</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="2077"/>
+      <location filename="../CommandDoc.cpp" line="2158"/>
       <source>Copy Selected</source>
       <translation>Kopira odabrano</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2078"/>
+      <location filename="../CommandDoc.cpp" line="2159"/>
       <source>Copy Active Document</source>
       <translation>Kopira aktivni dokument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2079"/>
+      <location filename="../CommandDoc.cpp" line="2160"/>
       <source>Copy All Documents</source>
       <translation>Kopira sve dokumente</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2197"/>
+      <location filename="../CommandDoc.cpp" line="2278"/>
       <source>Expression Error</source>
       <translation type="unfinished">Expression Error</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2198"/>
+      <location filename="../CommandDoc.cpp" line="2279"/>
       <source>Failed to parse some of the expressions.
 Check the report view for more details.</source>
       <translation>Analiza nekih izraza nije uspjela.
 Provjerite Pregled izvještaja za više pojedinosti.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2080"/>
+      <location filename="../CommandDoc.cpp" line="1714"/>
+      <source>Dependency error</source>
+      <translation type="unfinished">Dependency error</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="2161"/>
       <source>Paste</source>
       <translation>Umetni</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2232"/>
+      <location filename="../CommandDoc.cpp" line="2313"/>
       <source>Failed to paste expressions</source>
       <translation>Umetanje izraza nije uspjelo</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="107"/>
-      <location filename="../CommandStd.cpp" line="112"/>
       <source>Cannot load workbench</source>
       <translation>Ne mogu učitati radnu površinu</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="112"/>
+      <source>Cannot Load Workbench</source>
+      <translation type="unfinished">Cannot Load Workbench</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="113"/>
@@ -8300,84 +8291,79 @@ Provjerite Pregled izvještaja za više pojedinosti.</translation>
       <translation>Siguran način rada privremeno onemogućuje vašu konfiguraciju i dodatke.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="353"/>
-      <location filename="../CommandView.cpp" line="631"/>
+      <location filename="../CommandView.cpp" line="346"/>
+      <location filename="../CommandView.cpp" line="624"/>
       <source>&amp;Save Views…</source>
       <translation>&amp;Spremi poglede…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="355"/>
-      <location filename="../CommandView.cpp" line="632"/>
+      <location filename="../CommandView.cpp" line="348"/>
+      <location filename="../CommandView.cpp" line="625"/>
       <source>&amp;Load Views…</source>
       <translation>&amp;Učitaj poglede…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="358"/>
-      <location filename="../CommandView.cpp" line="633"/>
+      <location filename="../CommandView.cpp" line="351"/>
+      <location filename="../CommandView.cpp" line="626"/>
       <source>F&amp;reeze View</source>
       <translation>Z&amp;amrzni pogled</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="361"/>
-      <location filename="../CommandView.cpp" line="634"/>
+      <location filename="../CommandView.cpp" line="354"/>
+      <location filename="../CommandView.cpp" line="627"/>
       <source>&amp;Clear Views</source>
       <translation>&amp;Izbriši poglede</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="468"/>
-      <location filename="../CommandView.cpp" line="530"/>
+      <location filename="../CommandView.cpp" line="459"/>
+      <source>Save Frozen Views</source>
+      <translation type="unfinished">Save Frozen Views</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="505"/>
+      <location filename="../CommandView.cpp" line="532"/>
+      <source>Restore Views</source>
+      <translation type="unfinished">Restore Views</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="461"/>
+      <location filename="../CommandView.cpp" line="523"/>
       <source>Frozen views</source>
       <translation>Smrznuti pogled</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="513"/>
+      <location filename="../CommandView.cpp" line="506"/>
       <source>Importing the restored views would clear the already stored views.
 Continue?</source>
       <translation>Uvoz obnovljenih pogleda očistio bi već pohranjene poglede.
 Nastaviti?</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2133"/>
-      <source>Save Image</source>
-      <translation>Spremi sliku</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2309"/>
-      <source>Choose an Image File to Open</source>
-      <translation>Odaberite datoteku slike za otvaranje</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="540"/>
-      <source>Cannot open file '%1'.</source>
-      <translation>Ne mogu otvoriti datoteku '%1'.</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="417"/>
-      <location filename="../CommandView.cpp" line="606"/>
-      <location filename="../CommandView.cpp" line="638"/>
-      <source>Restore View &amp;%1</source>
-      <translation>Vrati poglede &amp;%1</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="466"/>
-      <source>Save Frozen Views</source>
-      <translation type="unfinished">Save Frozen Views</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="512"/>
-      <location filename="../CommandView.cpp" line="539"/>
-      <source>Restore Views</source>
-      <translation type="unfinished">Restore Views</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="528"/>
+      <location filename="../CommandView.cpp" line="521"/>
       <source>Restore Frozen Views</source>
       <translation type="unfinished">Restore Frozen Views</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2124"/>
-      <source>files</source>
-      <translation>datoteke</translation>
+      <location filename="../CommandView.cpp" line="2168"/>
+      <source>Save Image</source>
+      <translation>Spremi sliku</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="2344"/>
+      <source>Choose an Image File to Open</source>
+      <translation>Odaberite datoteku slike za otvaranje</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="533"/>
+      <source>Cannot open file '%1'.</source>
+      <translation>Ne mogu otvoriti datoteku '%1'.</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="407"/>
+      <location filename="../CommandView.cpp" line="599"/>
+      <location filename="../CommandView.cpp" line="631"/>
+      <source>Restore View &amp;%1</source>
+      <translation>Vrati poglede &amp;%1</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="577"/>
@@ -8523,7 +8509,7 @@ Nastaviti?</translation>
       <translation>Previše otvorenih nenametljivih obavijesti. Obavijesti se izostavljaju!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1456"/>
+      <location filename="../Document.cpp" line="1419"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8532,46 +8518,46 @@ Nastaviti?</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1457"/>
+      <location filename="../Document.cpp" line="1420"/>
       <source>Are you sure you want to continue?</source>
       <translation>Jeste li sigurni da želite nastaviti?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1483"/>
+      <location filename="../Document.cpp" line="1446"/>
       <source>Check report view for more…</source>
       <translation>Provjerite pregled izvješća za više…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1487"/>
+      <location filename="../Document.cpp" line="1450"/>
       <source>Physical path:</source>
       <translation>Fizički put:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1488"/>
-      <location filename="../Document.cpp" line="1495"/>
+      <location filename="../Document.cpp" line="1451"/>
+      <location filename="../Document.cpp" line="1458"/>
       <source>Document:</source>
       <translation>Dokument:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1489"/>
-      <location filename="../Document.cpp" line="1496"/>
+      <location filename="../Document.cpp" line="1452"/>
+      <location filename="../Document.cpp" line="1459"/>
       <source>Path:</source>
       <translation>Put:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1507"/>
+      <location filename="../Document.cpp" line="1470"/>
       <source>Identical physical path</source>
       <translation>Identičan fizički put
 
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1519"/>
+      <location filename="../Document.cpp" line="1482"/>
       <source>Could not save document</source>
       <translation>Ne mogu spremiti dokument</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1520"/>
+      <location filename="../Document.cpp" line="1483"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8584,108 +8570,143 @@ Would you like to save the file with a different name?</source>
 Želite li datoteku spremiti pod drugim imenom?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1534"/>
-      <location filename="../Document.cpp" line="1698"/>
-      <location filename="../Document.cpp" line="1807"/>
+      <location filename="../Document.cpp" line="1497"/>
+      <location filename="../Document.cpp" line="1754"/>
+      <location filename="../Document.cpp" line="1863"/>
       <source>Saving aborted</source>
       <translation>Spremanje prekinuto</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1580"/>
+      <location filename="../Document.cpp" line="1548"/>
+      <source>File Created with Older FreeCAD Version</source>
+      <translation type="unfinished">File Created with Older FreeCAD Version</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="1551"/>
+      <source>This file was created with %1, but you are using v%2.%3.
+
+Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
+
+Use 'Save As…' to preserve the original file.
+</source>
+      <translation type="unfinished">This file was created with %1, but you are using v%2.%3.
+
+Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
+
+Use 'Save As…' to preserve the original file.
+</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="1560"/>
+      <source>an unknown older version of FreeCAD</source>
+      <translation type="unfinished">an unknown older version of FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="1561"/>
+      <source>FreeCAD version %1</source>
+      <translation type="unfinished">FreeCAD version %1</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="1566"/>
+      <source>Save</source>
+      <translation>Spremi</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="1567"/>
+      <source>Save As…</source>
+      <translation>Spremi kao…</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="1571"/>
+      <source>Do not show this warning again</source>
+      <translation type="unfinished">Do not show this warning again</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="1636"/>
       <source>Save dependent files</source>
       <translation>Spremite ovisne datoteke</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1581"/>
+      <location filename="../Document.cpp" line="1637"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Datoteka sadrži vanjske ovisnosti. Želite li spremiti i ovisne datoteke?
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1627"/>
-      <location filename="../Document.cpp" line="1691"/>
+      <location filename="../Document.cpp" line="1683"/>
+      <location filename="../Document.cpp" line="1747"/>
       <source>Saving document failed</source>
       <translation>Spremanje dokumenta nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1642"/>
+      <location filename="../Document.cpp" line="1698"/>
       <source>Save document under new filename…</source>
       <translation>Sačuvajte dokument pod novim naslovom datoteke…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1775"/>
+      <location filename="../Document.cpp" line="1831"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Spremanje kopije dokumenta pod novi naziv datoteke…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1657"/>
-      <location filename="../Document.cpp" line="1787"/>
+      <location filename="../Document.cpp" line="1713"/>
+      <location filename="../Document.cpp" line="1843"/>
       <source>Save %1 Document</source>
       <translation>Spremi %1 dokument</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1659"/>
-      <source>Document</source>
-      <translation>Dokument</translation>
-    </message>
-    <message>
-      <location filename="../Document.cpp" line="1713"/>
-      <location filename="../Document.cpp" line="1763"/>
+      <location filename="../Document.cpp" line="1769"/>
+      <location filename="../Document.cpp" line="1819"/>
       <source>Failed to save document</source>
       <translation>Spremanje dokumenta nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1714"/>
+      <location filename="../Document.cpp" line="1770"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Dokumenti sadrže cikličke ovisnosti. Želite li ih još spremiti?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1789"/>
-      <source>%1 document (*.FCStd)</source>
-      <translation>%1 dokument (*.FCStd)</translation>
-    </message>
-    <message>
-      <location filename="../Document.cpp" line="2457"/>
+      <location filename="../Document.cpp" line="2508"/>
       <source>Document not closable</source>
       <translation>Dokument nije moguće zatvoriti</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2458"/>
+      <location filename="../Document.cpp" line="2509"/>
       <source>The document is not closable for the moment.</source>
       <translation>Dokument trenutno nije moguće zatvoriti.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2498"/>
+      <location filename="../Document.cpp" line="2549"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>Nije uspio spasiti dokument '%1'. Želite li otkazati zatvaranje?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2500"/>
+      <location filename="../Document.cpp" line="2551"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>Spašavanje dokumenata nije uspjelo. Želite li otkazati zatvaranje?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2505"/>
+      <location filename="../Document.cpp" line="2556"/>
       <source>Unable to save document</source>
       <translation>Spremanje dokumenta nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2861"/>
+      <location filename="../Document.cpp" line="2926"/>
       <source>Undo</source>
       <translation>Poništi zadnju promjenu</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2861"/>
+      <location filename="../Document.cpp" line="2926"/>
       <source>Redo</source>
       <translation>Vrati</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2864"/>
+      <location filename="../Document.cpp" line="2929"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>U sljedećim dokumentima su grupirane transakcije s ostalim prethodnim transakcijama</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2869"/>
+      <location filename="../Document.cpp" line="2934"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8754,12 +8775,12 @@ Odaberite "Prekini" za prekid
       <translation>Ne mogu otvoriti vaš preglednik sustava.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2681"/>
+      <location filename="../View3DInventorViewer.cpp" line="2687"/>
       <source>Out of memory</source>
       <translation>Bez memorije</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2682"/>
+      <location filename="../View3DInventorViewer.cpp" line="2688"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Nema dovoljno dostupne memorije za prikaz podataka.</translation>
     </message>
@@ -8775,38 +8796,38 @@ Odaberite "Prekini" za prekid
       <translation>Ne mogu pronaći datoteku %1 niti u %2 niti u %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2069"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2118"/>
       <source>Clarify Selection</source>
       <translation>Pojasnite odabir</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1354"/>
-      <location filename="../MainWindow.cpp" line="882"/>
+      <location filename="../CommandDoc.cpp" line="1369"/>
+      <location filename="../MainWindow.cpp" line="889"/>
       <source>Unsaved Document</source>
       <translation>Nespremljeni dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="886"/>
+      <location filename="../MainWindow.cpp" line="893"/>
       <source>Save all changes to document '%1' before closing?</source>
       <translation>Sačuvajte sve promjene na dokumentu '%1' prije zatvaranja?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="887"/>
+      <location filename="../MainWindow.cpp" line="894"/>
       <source>Save all changes to document before closing?</source>
       <translation>Spasite sve promjene u dokumentu prije zatvaranja?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="891"/>
+      <location filename="../MainWindow.cpp" line="898"/>
       <source>Otherwise, all changes will be lost.</source>
       <translation>U suprotnom, sve promjene će biti izgubljene.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1017"/>
+      <location filename="../MainWindow.cpp" line="1024"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 dokument(a) nije spremljeno</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1018"/>
+      <location filename="../MainWindow.cpp" line="1025"/>
       <source>Some documents could not be saved. Cancel closing?</source>
       <translation>Neke dokumente nije bilo moguće spremiti. Otkazati zatvaranje?</translation>
     </message>
@@ -8899,59 +8920,59 @@ Odaberite "Prekini" za prekid
       <translation>Nije moguće dodati svojstvo u '%1':%2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2693"/>
-      <location filename="../Tree.cpp" line="3090"/>
+      <location filename="../Tree.cpp" line="2702"/>
+      <location filename="../Tree.cpp" line="3099"/>
       <source>Drag &amp; drop failed</source>
       <translation>Povlačenje i ispuštanje nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3022"/>
-      <location filename="../MainWindow.cpp" line="896"/>
+      <location filename="../ViewProviderLink.cpp" line="3026"/>
+      <location filename="../MainWindow.cpp" line="903"/>
       <source>Apply to all</source>
       <translation>Primijeni na sve</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2996"/>
+      <location filename="../ViewProviderLink.cpp" line="3000"/>
       <source>Setup Configurable Object</source>
       <translation>Postavljanje konfigurabilnog objekta</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2998"/>
+      <location filename="../ViewProviderLink.cpp" line="3002"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>Odabire koji objekt želite kopirati ili isključiti kada se promijeni konfiguracija. Svi vanjski povezani objekti isključeni su prema zadanim postavkama.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3020"/>
+      <location filename="../ViewProviderLink.cpp" line="3024"/>
       <source>Select which objects to copy when the configuration is changed</source>
       <translation>Odaberite koje objekte želite kopirati kada se konfiguracija promijeni</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3023"/>
+      <location filename="../ViewProviderLink.cpp" line="3027"/>
       <source>Applies the setting to all links</source>
       <translation>Primjenjuje postavku na sve poveznice</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3084"/>
+      <location filename="../ViewProviderLink.cpp" line="3088"/>
       <source>Copy on Change</source>
       <translation>Kopirajte kod promjene</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3085"/>
+      <location filename="../ViewProviderLink.cpp" line="3089"/>
       <source>Enable</source>
       <translation>Omogući</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3087"/>
+      <location filename="../ViewProviderLink.cpp" line="3091"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>Omogući automatsko kopiranje povezanog objekta kada se promijeni njegova konfiguracija</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3103"/>
+      <location filename="../ViewProviderLink.cpp" line="3107"/>
       <source>Tracking</source>
       <translation>Praćenje</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3105"/>
+      <location filename="../ViewProviderLink.cpp" line="3109"/>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -8960,17 +8981,17 @@ Također automatski ponovi kopiju ako se promijeni izvorni povezani objekt.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3125"/>
+      <location filename="../ViewProviderLink.cpp" line="3129"/>
       <source>Disable Copy on Change</source>
       <translation>Onemogući kopiranje pri promjeni</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3143"/>
+      <location filename="../ViewProviderLink.cpp" line="3147"/>
       <source>Refresh Configurable Object</source>
       <translation>Osvježi konfigurabilni objekt</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3145"/>
+      <location filename="../ViewProviderLink.cpp" line="3149"/>
       <source>Synchronizes the original configurable source object by
 creating a new deep copy. Any changes made to
 the current copy will be lost.
@@ -8981,23 +9002,23 @@ trenutnu kopiju će biti izgubljene.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3187"/>
+      <location filename="../ViewProviderLink.cpp" line="3191"/>
       <source>Toggle Array Elements</source>
       <translation>Prebaci matricu elemenata</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3200"/>
+      <location filename="../ViewProviderLink.cpp" line="3204"/>
       <source>Changes whether to show each link array element as individual objects</source>
       <translation>Promijeni da li prikazati svaki element niza poveznica kao pojedinačne objekte</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3209"/>
-      <location filename="../ViewProviderLink.cpp" line="3215"/>
+      <location filename="../ViewProviderLink.cpp" line="3213"/>
+      <location filename="../ViewProviderLink.cpp" line="3219"/>
       <source>Override Colors</source>
       <translation>Nadjačava boje</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDocumentObject.cpp" line="277"/>
+      <location filename="../ViewProviderDocumentObject.cpp" line="290"/>
       <source>Edit %1</source>
       <translation>Uređivanje %1</translation>
     </message>
@@ -9017,7 +9038,7 @@ trenutnu kopiju će biti izgubljene.
       <translation>Uključite/isključite prekrivanje</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2562"/>
+      <location filename="../OverlayWidgets.cpp" line="2571"/>
       <location filename="../OverlayManager.cpp" line="1080"/>
       <source>Toggle floating window</source>
       <translation>Uključite/isključite slobodan prozor</translation>
@@ -9203,16 +9224,21 @@ trenutnu kopiju će biti izgubljene.
       <source>Edit Image Plane</source>
       <translation type="unfinished">Edit Image Plane</translation>
     </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="281"/>
+      <source>All Files</source>
+      <translation>Sve datoteke</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="858"/>
+      <location filename="../Selection/Selection.cpp" line="951"/>
       <source>Not allowed:</source>
       <translation>Nije dopušteno:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1235"/>
+      <location filename="../Selection/Selection.cpp" line="1334"/>
       <source>Selection not allowed by filter</source>
       <translation>Izbor nije dozvoljen kod ovog filtera</translation>
     </message>
@@ -9311,12 +9337,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1236"/>
+      <location filename="../CommandDoc.cpp" line="1251"/>
       <source>&amp;Copy</source>
       <translation>&amp;Kopiraj</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1237"/>
+      <location filename="../CommandDoc.cpp" line="1252"/>
       <source>Copies the selection to the clipboard</source>
       <translation>Kopira rezultat u međuspremnik</translation>
     </message>
@@ -9324,12 +9350,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdCut</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1208"/>
+      <location filename="../CommandDoc.cpp" line="1223"/>
       <source>Cu&amp;t</source>
       <translation>Izr&amp;eži</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1209"/>
+      <location filename="../CommandDoc.cpp" line="1224"/>
       <source>Removes the selection and copies it to the clipboard</source>
       <translation>Uklanja odabir i kopira ga u međuspremnik</translation>
     </message>
@@ -9337,12 +9363,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1471"/>
+      <location filename="../CommandDoc.cpp" line="1486"/>
       <source>&amp;Delete</source>
       <translation>&amp;Izbriši</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1472"/>
+      <location filename="../CommandDoc.cpp" line="1487"/>
       <source>Deletes the selected objects</source>
       <translation>Briše odabrane objekte</translation>
     </message>
@@ -9386,12 +9412,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1945"/>
+      <location filename="../CommandDoc.cpp" line="2026"/>
       <source>Toggle &amp;Edit Mode</source>
       <translation>Uklj/isklj Način ur&amp;eđivanja</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1946"/>
+      <location filename="../CommandDoc.cpp" line="2027"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>Uključuje ili isključuje mod rada na odabranom objektu</translation>
     </message>
@@ -9399,22 +9425,22 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdExport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="305"/>
+      <location filename="../CommandDoc.cpp" line="315"/>
       <source>&amp;Export…</source>
       <translation>&amp;Izvoz…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="306"/>
+      <location filename="../CommandDoc.cpp" line="316"/>
       <source>Exports an object in the active document</source>
       <translation>Izvozi jedan objekt u aktivnom dokumentu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="454"/>
+      <location filename="../CommandDoc.cpp" line="464"/>
       <source>No Selection</source>
       <translation>Nema odabira</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="455"/>
+      <location filename="../CommandDoc.cpp" line="465"/>
       <source>Select objects to export before using the Export command.</source>
       <translation>Prije korištenja naredbe Izvoz odaberite objekte za izvoz.</translation>
     </message>
@@ -9422,12 +9448,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2027"/>
+      <location filename="../CommandDoc.cpp" line="2108"/>
       <source>Expression Actions</source>
       <translation>Radnje izraza</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2028"/>
+      <location filename="../CommandDoc.cpp" line="2109"/>
       <source>Actions that apply to expressions</source>
       <translation>Radnje koje se primjenjuju na izraze</translation>
     </message>
@@ -9461,12 +9487,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <location filename="../CommandView.cpp" line="338"/>
+      <location filename="../CommandView.cpp" line="331"/>
       <source>F&amp;reeze Display</source>
       <translation>Zam&amp;rzni prikaz</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="339"/>
+      <location filename="../CommandView.cpp" line="332"/>
       <source>Freezes the current view position</source>
       <translation>Zamrzni trenutni položaj Pogleda</translation>
     </message>
@@ -9474,12 +9500,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdImport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="213"/>
+      <location filename="../CommandDoc.cpp" line="215"/>
       <source>&amp;Import…</source>
       <translation>&amp;Uvoz…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="214"/>
+      <location filename="../CommandDoc.cpp" line="216"/>
       <source>Imports a file into the active document</source>
       <translation>Uvozi datoteku u aktivni dokument</translation>
     </message>
@@ -9513,47 +9539,31 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="587"/>
+      <location filename="../CommandDoc.cpp" line="603"/>
       <source>&amp;Merge Document</source>
       <translation>&amp;Spoji dokument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="589"/>
+      <location filename="../CommandDoc.cpp" line="605"/>
       <source>Merges another FreeCAD document into the active one</source>
       <translation>Spaja drugi FreeCAD dokument u aktivni</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="603"/>
-      <location filename="../CommandDoc.cpp" line="615"/>
-      <source>Merge Document</source>
-      <translation type="unfinished">Merge Document</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="605"/>
-      <source>%1 document (*.FCStd)</source>
-      <translation>%1 dokument (*.FCStd)</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="616"/>
-      <source>Cannot merge document with itself.</source>
-      <translation>Ne mogu spojiti dokument sam sa sobom</translation>
     </message>
   </context>
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2516"/>
+      <location filename="../MainWindow.cpp" line="2534"/>
       <location filename="../DocumentRecovery.cpp" line="412"/>
       <source>Unnamed</source>
       <translation>Neimenovano</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="726"/>
+      <location filename="../CommandDoc.cpp" line="741"/>
       <source>&amp;New Document</source>
       <translation>&amp;Novi dokument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="727"/>
+      <location filename="../CommandDoc.cpp" line="742"/>
       <source>Creates a new empty document</source>
       <translation>Stvara novi prazan dokument</translation>
     </message>
@@ -9574,22 +9584,22 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdOpen</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="86"/>
+      <location filename="../CommandDoc.cpp" line="88"/>
       <source>&amp;Open…</source>
       <translation>&amp;Otvori…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="87"/>
+      <location filename="../CommandDoc.cpp" line="89"/>
       <source>Opens a document or imports files</source>
       <translation>Otvara dokumente ili uvozi datoteke</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="180"/>
+      <location filename="../CommandDoc.cpp" line="182"/>
       <source>Cannot Open File</source>
       <translation type="unfinished">Cannot Open File</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="181"/>
+      <location filename="../CommandDoc.cpp" line="183"/>
       <source>Loading the file %1 is not supported</source>
       <translation>Učitavanje datoteke %1 nije podržano</translation>
     </message>
@@ -9597,12 +9607,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdPaste</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1272"/>
+      <location filename="../CommandDoc.cpp" line="1287"/>
       <source>&amp;Paste</source>
       <translation>&amp;Zalijepi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1273"/>
+      <location filename="../CommandDoc.cpp" line="1288"/>
       <source>Pastes the contents of the clipboard</source>
       <translation>Umeće sadržaj međuspremnika</translation>
     </message>
@@ -9610,12 +9620,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdQuit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1085"/>
+      <location filename="../CommandDoc.cpp" line="1100"/>
       <source>E&amp;xit</source>
       <translation>Iz&amp;laz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1086"/>
+      <location filename="../CommandDoc.cpp" line="1101"/>
       <source>Quits the application</source>
       <translation>Zatvara aplikaciju</translation>
     </message>
@@ -9636,12 +9646,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdRedo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1164"/>
+      <location filename="../CommandDoc.cpp" line="1179"/>
       <source>&amp;Redo</source>
       <translation>&amp;Ponovi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1165"/>
+      <location filename="../CommandDoc.cpp" line="1180"/>
       <source>Redoes a previously undone action</source>
       <translation>Vraća prethodno poništenu radnju</translation>
     </message>
@@ -9649,12 +9659,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdRevert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="886"/>
+      <location filename="../CommandDoc.cpp" line="901"/>
       <source>Rever&amp;t</source>
       <translation>V&amp;rati se</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="887"/>
+      <location filename="../CommandDoc.cpp" line="902"/>
       <source>Reverts to the saved version of this file</source>
       <translation>Vraća se u spremljenu verziju ove datoteke</translation>
     </message>
@@ -9662,12 +9672,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdSave</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="760"/>
+      <location filename="../CommandDoc.cpp" line="775"/>
       <source>&amp;Save</source>
       <translation>&amp;Spremi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="761"/>
+      <location filename="../CommandDoc.cpp" line="776"/>
       <source>Saves the active document</source>
       <translation>Sprema aktivni dokument</translation>
     </message>
@@ -9675,12 +9685,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdSaveAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="858"/>
+      <location filename="../CommandDoc.cpp" line="873"/>
       <source>Sa&amp;ve All</source>
       <translation>S&amp;premi sve</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="859"/>
+      <location filename="../CommandDoc.cpp" line="874"/>
       <source>Saves all open documents</source>
       <translation>Sprema sve otvorene dokumente</translation>
     </message>
@@ -9688,12 +9698,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1417"/>
+      <location filename="../CommandDoc.cpp" line="1432"/>
       <source>Select &amp;All</source>
       <translation>Ozn&amp;ači sve</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1418"/>
+      <location filename="../CommandDoc.cpp" line="1433"/>
       <source>Selects all objects in the active document</source>
       <translation>Odabire sve objekte u aktivnom dokumentu</translation>
     </message>
@@ -9753,12 +9763,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1119"/>
+      <location filename="../CommandDoc.cpp" line="1134"/>
       <source>&amp;Undo</source>
       <translation>&amp;Poništi zadnju promjenu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1120"/>
+      <location filename="../CommandDoc.cpp" line="1135"/>
       <source>Undoes the previous action</source>
       <translation>Poništava prethodnu akciju</translation>
     </message>
@@ -9766,12 +9776,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="1454"/>
+      <location filename="../CommandView.cpp" line="1447"/>
       <source>Bottom</source>
       <translation>Ispod</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1455"/>
+      <location filename="../CommandView.cpp" line="1448"/>
       <source>Sets the camera to the bottom view</source>
       <translation>Pomjeri kameru na prikaz od dolje</translation>
     </message>
@@ -9779,12 +9789,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1623"/>
+      <location filename="../CommandView.cpp" line="1651"/>
       <source>&amp;Dimetric</source>
       <translation>&amp;Diametrijski</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1624"/>
+      <location filename="../CommandView.cpp" line="1652"/>
       <source>Sets the camera to the dimetric view</source>
       <translation>Pomjeri kameru na dijametrijski prikaz</translation>
     </message>
@@ -9792,12 +9802,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <location filename="../CommandView.cpp" line="2462"/>
+      <location filename="../CommandView.cpp" line="2497"/>
       <source>Inventor Example #1</source>
       <translation>Inventor Primjer #1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2463"/>
+      <location filename="../CommandView.cpp" line="2498"/>
       <source>Shows a 3D texture with manipulator</source>
       <translation>Pokazuje 3D teksturu sa manipulatorom</translation>
     </message>
@@ -9805,12 +9815,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <location filename="../CommandView.cpp" line="2490"/>
+      <location filename="../CommandView.cpp" line="2525"/>
       <source>Inventor Example #2</source>
       <translation>Inventor Primjer #2</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2491"/>
+      <location filename="../CommandView.cpp" line="2526"/>
       <source>Shows spheres and drag-lights</source>
       <translation>Pokazuje sferu i pomicanje svjetla</translation>
     </message>
@@ -9818,12 +9828,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <location filename="../CommandView.cpp" line="1478"/>
+      <location filename="../CommandView.cpp" line="1476"/>
       <source>Front</source>
       <translation>Ispred</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1479"/>
+      <location filename="../CommandView.cpp" line="1477"/>
       <source>Sets the camera to the front view</source>
       <translation>Pomjeri kameru na prikaz od naprijed</translation>
     </message>
@@ -9831,12 +9841,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <location filename="../CommandView.cpp" line="1420"/>
+      <location filename="../CommandView.cpp" line="1413"/>
       <source>&amp;Home</source>
       <translation>&amp;Početna</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1421"/>
+      <location filename="../CommandView.cpp" line="1414"/>
       <source>Sets the camera to the default home view</source>
       <translation>Pomjeri kameru na zadano Home prikaz</translation>
     </message>
@@ -9844,12 +9854,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1599"/>
+      <location filename="../CommandView.cpp" line="1622"/>
       <source>&amp;Isometric</source>
       <translation>&amp;Izometrički</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1600"/>
+      <location filename="../CommandView.cpp" line="1623"/>
       <source>Sets the camera to the isometric view</source>
       <translation>Pomjeri kameru na izometrijski prikaz</translation>
     </message>
@@ -9857,12 +9867,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
-      <location filename="../CommandView.cpp" line="2660"/>
+      <location filename="../CommandView.cpp" line="2695"/>
       <source>Stereo Interleaved &amp;Columns</source>
       <translation>Stereo pomjereni &amp;Stupci</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2661"/>
+      <location filename="../CommandView.cpp" line="2696"/>
       <source>Switches stereo viewing to interleaved columns</source>
       <translation>Prebacuje stereo gledanje na isprepletene stupove</translation>
     </message>
@@ -9870,12 +9880,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
-      <location filename="../CommandView.cpp" line="2632"/>
+      <location filename="../CommandView.cpp" line="2667"/>
       <source>Stereo Interleaved &amp;Rows</source>
       <translation>Stereo pomjereni &amp;Redci</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2633"/>
+      <location filename="../CommandView.cpp" line="2668"/>
       <source>Switches stereo viewing to interleaved rows</source>
       <translation>Prebacuje stereo gledanje na isprepletene redke</translation>
     </message>
@@ -9883,12 +9893,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2547"/>
+      <location filename="../CommandView.cpp" line="2582"/>
       <source>Stereo &amp;Off</source>
       <translation>Stereo &amp;Off</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2548"/>
+      <location filename="../CommandView.cpp" line="2583"/>
       <source>Switches stereo viewing off</source>
       <translation>Prebacuje stereo gledanje na isključi</translation>
     </message>
@@ -9896,12 +9906,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1502"/>
+      <location filename="../CommandView.cpp" line="1505"/>
       <source>Left</source>
       <translation>Lijevo</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1503"/>
+      <location filename="../CommandView.cpp" line="1506"/>
       <source>Sets the camera to the left view</source>
       <translation>Pomjeri kameru na prikaz od lijevo</translation>
     </message>
@@ -9909,12 +9919,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <location filename="../CommandView.cpp" line="1526"/>
+      <location filename="../CommandView.cpp" line="1534"/>
       <source>Rear</source>
       <translation>Iza</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1527"/>
+      <location filename="../CommandView.cpp" line="1535"/>
       <source>Sets the camera to the rear view</source>
       <translation>Pomjeri kameru na prikaz od nazad</translation>
     </message>
@@ -9922,12 +9932,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1550"/>
+      <location filename="../CommandView.cpp" line="1563"/>
       <source>Right</source>
       <translation>Desno</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1551"/>
+      <location filename="../CommandView.cpp" line="1564"/>
       <source>Sets the camera to the right view</source>
       <translation>Postavlja kameru na prikaz od desno</translation>
     </message>
@@ -9935,12 +9945,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1669"/>
+      <location filename="../CommandView.cpp" line="1707"/>
       <source>Rotate &amp;Left</source>
       <translation>Rotirajte &amp;Lijevo</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1670"/>
+      <location filename="../CommandView.cpp" line="1708"/>
       <source>Rotates the view by 90° counter-clockwise</source>
       <translation>Zaokreče pogled za 90 ° u smjeru suprotnom od kazaljke na satu</translation>
     </message>
@@ -9948,12 +9958,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="1574"/>
+      <location filename="../CommandView.cpp" line="1592"/>
       <source>Top</source>
       <translation>Gore</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1575"/>
+      <location filename="../CommandView.cpp" line="1593"/>
       <source>Sets the camera to the top view</source>
       <translation>Postavlja kameru na prikaz od gore</translation>
     </message>
@@ -9961,12 +9971,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1646"/>
+      <location filename="../CommandView.cpp" line="1679"/>
       <source>&amp;Trimetric</source>
       <translation>&amp;Trimetrički</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1647"/>
+      <location filename="../CommandView.cpp" line="1680"/>
       <source>Sets the camera to the trimetric view</source>
       <translation>Postavlja kameru na trimetrički prikaz</translation>
     </message>
@@ -10013,12 +10023,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1881"/>
+      <location filename="../CommandView.cpp" line="1917"/>
       <source>Fullscreen</source>
       <translation>Preko cijelog ekrana</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1882"/>
+      <location filename="../CommandView.cpp" line="1918"/>
       <source>Displays the main window in fullscreen mode</source>
       <translation>Prikazuje glavni prozor na cijelom ekranu</translation>
     </message>
@@ -10026,12 +10036,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="141"/>
+      <location filename="../CommandView.cpp" line="145"/>
       <source>Orthographic View</source>
       <translation>Ortografski pogled</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="142"/>
+      <location filename="../CommandView.cpp" line="146"/>
       <source>Switches to orthographic view mode</source>
       <translation>Postavlja ortografski način pregleda</translation>
     </message>
@@ -10039,12 +10049,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="193"/>
+      <location filename="../CommandView.cpp" line="192"/>
       <source>Perspective View</source>
       <translation>Perspektivni pogled</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="194"/>
+      <location filename="../CommandView.cpp" line="193"/>
       <source>Switches to perspective view mode</source>
       <translation>Prebacuje u perspektivan način pregleda</translation>
     </message>
@@ -10052,12 +10062,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3667"/>
+      <location filename="../CommandView.cpp" line="3753"/>
       <source>Collapse/E&amp;xpand</source>
       <translation>Sažmi/P&amp;roširi</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3668"/>
+      <location filename="../CommandView.cpp" line="3754"/>
       <source>Expands the active document and collapses all others</source>
       <translation>Proširuje aktivni dokument a sve druge sažima</translation>
     </message>
@@ -10065,12 +10075,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3769"/>
+      <location filename="../CommandView.cpp" line="3855"/>
       <source>Preselection</source>
       <translation type="unfinished">Preselection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3770"/>
+      <location filename="../CommandView.cpp" line="3856"/>
       <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
       <translation>Pred odabire objekt u 3D prikazu prilikom lebdenja na kursoru preko stavke stabla</translation>
     </message>
@@ -10078,12 +10088,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdViewDock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1819"/>
+      <location filename="../CommandView.cpp" line="1855"/>
       <source>&amp;Docked</source>
       <translation>&amp;Usidren</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1820"/>
+      <location filename="../CommandView.cpp" line="1856"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>Prikazan je aktivan prikaz na cijelom zaslonu, neusidernom ili usidrenom načinu rada</translation>
     </message>
@@ -10091,12 +10101,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdViewFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1916"/>
+      <location filename="../CommandView.cpp" line="1952"/>
       <source>&amp;Fullscreen</source>
       <translation>&amp;Cijeli ekran</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1917"/>
+      <location filename="../CommandView.cpp" line="1953"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>Prikazan je aktivan prikaz na cijelom zaslonu, neusidernom ili usidrenom načinu rada</translation>
     </message>
@@ -10104,12 +10114,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <location filename="../CommandView.cpp" line="2087"/>
+      <location filename="../CommandView.cpp" line="2123"/>
       <source>Save &amp;Image…</source>
       <translation>Spremi &amp;sliku…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2088"/>
+      <location filename="../CommandView.cpp" line="2124"/>
       <source>Creates a screenshot of the active view</source>
       <translation>Stvara sliku aktivnog pogleda</translation>
     </message>
@@ -10117,12 +10127,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdViewUndock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1850"/>
+      <location filename="../CommandView.cpp" line="1886"/>
       <source>&amp;Undocked</source>
       <translation>&amp;Neusidren</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1851"/>
+      <location filename="../CommandView.cpp" line="1887"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>Prikazan je aktivan prikaz na cijelom zaslonu, neusidernom ili usidrenom načinu rada</translation>
     </message>
@@ -10130,12 +10140,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2746"/>
+      <location filename="../CommandView.cpp" line="2782"/>
       <source>Zoom &amp;In</source>
       <translation>Zum&amp;iraj u</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2747"/>
+      <location filename="../CommandView.cpp" line="2783"/>
       <source>Increases the zoom factor by a fixed amount</source>
       <translation>Povećava faktor zumiranja za fiksni iznos</translation>
     </message>
@@ -10143,12 +10153,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2775"/>
+      <location filename="../CommandView.cpp" line="2811"/>
       <source>Zoom &amp;Out</source>
       <translation>U&amp;manji</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2776"/>
+      <location filename="../CommandView.cpp" line="2812"/>
       <source>Decreases the zoom factor by a fixed amount</source>
       <translation>Smanjuje faktor zumiranja za fiksni iznos</translation>
     </message>
@@ -10156,7 +10166,7 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1574"/>
+      <location filename="../CommandDoc.cpp" line="1590"/>
       <source>The following referencing objects might break.
 
 Continue?
@@ -10167,7 +10177,7 @@ Nastavi?
 </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1588"/>
+      <location filename="../CommandDoc.cpp" line="1604"/>
       <source>Object Dependencies</source>
       <translation type="unfinished">Object Dependencies</translation>
     </message>
@@ -10175,72 +10185,72 @@ Nastavi?
   <context>
     <name>Std_DrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="849"/>
+      <location filename="../CommandView.cpp" line="842"/>
       <source>Normal mode</source>
       <translation>Normalni mod</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="848"/>
+      <location filename="../CommandView.cpp" line="841"/>
       <source>As Is</source>
       <translation type="unfinished">As Is</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="851"/>
+      <location filename="../CommandView.cpp" line="844"/>
       <source>Points</source>
       <translation>Točke</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="852"/>
+      <location filename="../CommandView.cpp" line="845"/>
       <source>Points mode</source>
       <translation>Način Točaka</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="854"/>
+      <location filename="../CommandView.cpp" line="847"/>
       <source>Wireframe</source>
       <translation>Žičana mreža</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="855"/>
+      <location filename="../CommandView.cpp" line="848"/>
       <source>Wireframe mode</source>
       <translation>Žičana mreža mod</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="857"/>
+      <location filename="../CommandView.cpp" line="850"/>
       <source>Hidden Line</source>
       <translation type="unfinished">Hidden Line</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="858"/>
+      <location filename="../CommandView.cpp" line="851"/>
       <source>Hidden line mode</source>
       <translation>Skrivena linija, način</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="860"/>
+      <location filename="../CommandView.cpp" line="853"/>
       <source>No Shading</source>
       <translation type="unfinished">No Shading</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="861"/>
+      <location filename="../CommandView.cpp" line="854"/>
       <source>No shading mode</source>
       <translation>Način bez sjenčanja</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="863"/>
+      <location filename="../CommandView.cpp" line="856"/>
       <source>Shaded</source>
       <translation>Osijenčeno</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="864"/>
+      <location filename="../CommandView.cpp" line="857"/>
       <source>Shaded mode</source>
       <translation>Način sjenčanja</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="866"/>
+      <location filename="../CommandView.cpp" line="859"/>
       <source>Flat Lines</source>
       <translation>Ravne linije</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="867"/>
+      <location filename="../CommandView.cpp" line="860"/>
       <source>Flat lines mode</source>
       <translation>Način Ravne linije</translation>
     </message>
@@ -10248,12 +10258,12 @@ Nastavi?
   <context>
     <name>Std_DuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1376"/>
+      <location filename="../CommandDoc.cpp" line="1391"/>
       <source>Object Dependencies</source>
       <translation type="unfinished">Object Dependencies</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1377"/>
+      <location filename="../CommandDoc.cpp" line="1392"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>Za povezivanje s vanjskim objektima dokument se mora barem jednom spremiti.
@@ -10440,11 +10450,6 @@ Spremiti dokument sad?</translation>
       <location filename="../MDIView.cpp" line="285"/>
       <source>Export PDF</source>
       <translation>Izvoz PDF</translation>
-    </message>
-    <message>
-      <location filename="../MDIView.cpp" line="287"/>
-      <source>PDF file</source>
-      <translation>PDF Datoteka</translation>
     </message>
   </context>
   <context>
@@ -10971,12 +10976,12 @@ nakon pokretanja FreeCAD-a</translation>
   <context>
     <name>StdViewLoadImage</name>
     <message>
-      <location filename="../CommandView.cpp" line="2288"/>
+      <location filename="../CommandView.cpp" line="2323"/>
       <source>&amp;Load Image…</source>
       <translation>&amp;Učitaj sliku…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2289"/>
+      <location filename="../CommandView.cpp" line="2324"/>
       <source>Loads an image</source>
       <translation>Učitava jednu sliku</translation>
     </message>
@@ -10997,32 +11002,32 @@ nakon pokretanja FreeCAD-a</translation>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="664"/>
+      <location filename="../View3DSettings.cpp" line="667"/>
       <source>FRONT</source>
       <translation>PREDNJE</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="666"/>
+      <location filename="../View3DSettings.cpp" line="669"/>
       <source>TOP</source>
       <translation>GORNJE</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="668"/>
+      <location filename="../View3DSettings.cpp" line="671"/>
       <source>RIGHT</source>
       <translation>DESNO</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="670"/>
+      <location filename="../View3DSettings.cpp" line="673"/>
       <source>REAR</source>
       <translation>ZADNJE</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="672"/>
+      <location filename="../View3DSettings.cpp" line="675"/>
       <source>BOTTOM</source>
       <translation>DONJE</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="674"/>
+      <location filename="../View3DSettings.cpp" line="677"/>
       <source>LEFT</source>
       <translation>LIJEVO</translation>
     </message>
@@ -11030,8 +11035,8 @@ nakon pokretanja FreeCAD-a</translation>
   <context>
     <name>Gui::ExpLineEdit</name>
     <message>
-      <location filename="../Widgets.cpp" line="1618"/>
-      <location filename="../Widgets.cpp" line="1692"/>
+      <location filename="../Widgets.cpp" line="1622"/>
+      <location filename="../Widgets.cpp" line="1696"/>
       <source>An error occurred -- see Report View for information</source>
       <translation>Nastala je greška - pogledaj Pregled izvješća za više informacija</translation>
     </message>
@@ -12023,12 +12028,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdProperties</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1987"/>
+      <location filename="../CommandDoc.cpp" line="2068"/>
       <source>Propert&amp;ies</source>
       <translation>Svojst&amp;va</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1988"/>
+      <location filename="../CommandDoc.cpp" line="2069"/>
       <source>Shows the property view, which displays the properties of the selected object.</source>
       <translation>Prikazuje panel svojstava koji prikazuje svojstva odabranog objekta.</translation>
     </message>
@@ -12399,12 +12404,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1824"/>
+      <location filename="../CommandDoc.cpp" line="1905"/>
       <source>Trans&amp;form</source>
       <translation>Pretvori</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1825"/>
+      <location filename="../CommandDoc.cpp" line="1906"/>
       <source>Transforms the selected object in the 3D view</source>
       <translation>Transformira odabrani objekt u 3D pogledu</translation>
     </message>
@@ -12618,48 +12623,48 @@ svi pikseli područja nisu neprozirni.</translation>
       <translation>Transformiraj</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="172"/>
+      <location filename="../TaskTransform.cpp" line="173"/>
       <source>Object origin</source>
       <translation>Ishodište objekta</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="178"/>
+      <location filename="../TaskTransform.cpp" line="179"/>
       <source>Center of mass / centroid</source>
       <translation>Centar mase / centroid</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="184"/>
+      <location filename="../TaskTransform.cpp" line="185"/>
       <source>Custom</source>
       <translation>Prilagođeno</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="191"/>
+      <location filename="../TaskTransform.cpp" line="192"/>
       <source>Local</source>
       <translation>Lokalno</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="192"/>
+      <location filename="../TaskTransform.cpp" line="193"/>
       <source>Global</source>
       <translation>Globalna</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="405"/>
+      <location filename="../TaskTransform.cpp" line="406"/>
       <source>Pick Reference</source>
       <translation>Odaberite Referencu</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="406"/>
+      <location filename="../TaskTransform.cpp" line="407"/>
       <source>Move to Other Object</source>
       <translation>Pomjeri u drugi objekt</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="413"/>
+      <location filename="../TaskTransform.cpp" line="414"/>
       <source>Select face, edge, or vertex…</source>
       <translation>Odaberite lice, rub ili tjemenu točku…</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="414"/>
-      <location filename="../TaskTransform.cpp" line="420"/>
+      <location filename="../TaskTransform.cpp" line="415"/>
+      <location filename="../TaskTransform.cpp" line="421"/>
       <source>Cancel</source>
       <translation>Otkazati</translation>
     </message>
@@ -12967,22 +12972,22 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="434"/>
+      <location filename="../Application.cpp" line="492"/>
       <source>Built-in Parameters</source>
       <translation>Ugrađeni parametri</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="409"/>
+      <location filename="../Application.cpp" line="467"/>
       <source>Theme Parameters</source>
       <translation>Parametri teme</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="443"/>
+      <location filename="../Application.cpp" line="501"/>
       <source>Theme Parameters - Fallback</source>
       <translation>Parametri teme - Rezervni</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="455"/>
+      <location filename="../Application.cpp" line="513"/>
       <source>User Parameters</source>
       <translation>Parametri korisnika</translation>
     </message>
@@ -12990,7 +12995,7 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>Gui::AutoSaver</name>
     <message>
-      <location filename="../AutoSaver.cpp" line="179"/>
+      <location filename="../AutoSaver.cpp" line="188"/>
       <source>Wait until the auto-recovery file has been saved…</source>
       <translation>Pričekajte dok su spremljene datoteke automatskog povratka podataka…</translation>
     </message>
@@ -12998,12 +13003,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="647"/>
+      <location filename="../CommandDoc.cpp" line="663"/>
       <source>Dependency Gra&amp;ph</source>
       <translation>&amp;Grafikon ovisnosti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="649"/>
+      <location filename="../CommandDoc.cpp" line="665"/>
       <source>Shows the dependency graph of the objects in the active document</source>
       <translation>Prikazuje grafikon ovisnosti o objektima u aktivnom dokumentu</translation>
     </message>
@@ -13011,7 +13016,7 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>Std_DependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="661"/>
+      <location filename="../CommandDoc.cpp" line="677"/>
       <source>Dependency Graph</source>
       <translation>Grafikon ovisnosti</translation>
     </message>
@@ -13019,12 +13024,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdExportDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="680"/>
+      <location filename="../CommandDoc.cpp" line="696"/>
       <source>Export Dependency &amp;Graph…</source>
       <translation type="unfinished">Export Dependency &amp;Graph…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="681"/>
+      <location filename="../CommandDoc.cpp" line="697"/>
       <source>Exports the dependency graph as a Graphviz (.gv) file</source>
       <translation>Izvozni grafikon ovisnosti kao Graphviz (.gv) datoteka</translation>
     </message>
@@ -13032,12 +13037,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="798"/>
+      <location filename="../CommandDoc.cpp" line="813"/>
       <source>Save &amp;As…</source>
       <translation>Spremi &amp;kao…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="799"/>
+      <location filename="../CommandDoc.cpp" line="814"/>
       <source>Saves the active document under a new file name</source>
       <translation>Sprema kopiju aktivnog dokumenta pod novim nazivom</translation>
     </message>
@@ -13045,12 +13050,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdSaveCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="828"/>
+      <location filename="../CommandDoc.cpp" line="843"/>
       <source>Save a Cop&amp;y…</source>
       <translation type="unfinished">Save a Cop&amp;y…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="830"/>
+      <location filename="../CommandDoc.cpp" line="845"/>
       <source>Saves a copy of the active document under a new file name</source>
       <translation>Sprema kopiju aktivnog dokumenta pod novim nazivom</translation>
     </message>
@@ -13058,17 +13063,17 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>Std_Revert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="899"/>
+      <location filename="../CommandDoc.cpp" line="914"/>
       <source>Revert Document</source>
       <translation>Vratiti dokument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="901"/>
+      <location filename="../CommandDoc.cpp" line="916"/>
       <source>This will discard all the changes since the last file save.</source>
       <translation>Ovo će odbaciti sve promjene nakon posljednjeg spremanja datoteke.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="903"/>
+      <location filename="../CommandDoc.cpp" line="918"/>
       <source>Continue?</source>
       <translation>Nastavi?</translation>
     </message>
@@ -13076,12 +13081,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="928"/>
+      <location filename="../CommandDoc.cpp" line="943"/>
       <source>Doc&amp;ument Information</source>
       <translation>Informac&amp;ije o Dokumentu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="930"/>
+      <location filename="../CommandDoc.cpp" line="945"/>
       <source>Shows information about the active document</source>
       <translation>Prikazuje informacije o aktivnom dokumentu</translation>
     </message>
@@ -13089,12 +13094,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="960"/>
+      <location filename="../CommandDoc.cpp" line="975"/>
       <source>Do&amp;cument Utility</source>
       <translation>Usl&amp;užni program dokumenta</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="962"/>
+      <location filename="../CommandDoc.cpp" line="977"/>
       <source>Extracts or creates document files</source>
       <translation>Izvadci ili stvaraj dokumente datoteke</translation>
     </message>
@@ -13102,12 +13107,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdPrint</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="988"/>
+      <location filename="../CommandDoc.cpp" line="1003"/>
       <source>&amp;Print</source>
       <translation>&amp;Ispis</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="990"/>
+      <location filename="../CommandDoc.cpp" line="1005"/>
       <source>Prints the active document</source>
       <translation>Ispisuje aktivni dokument</translation>
     </message>
@@ -13115,12 +13120,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdPrintPreview</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1021"/>
+      <location filename="../CommandDoc.cpp" line="1036"/>
       <source>Print Previe&amp;w</source>
       <translation>Ispis i pred&amp;pregled</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1023"/>
+      <location filename="../CommandDoc.cpp" line="1038"/>
       <source>Previews the active document before printing</source>
       <translation>Pregledava aktivan dokument prije tiskanja</translation>
     </message>
@@ -13128,12 +13133,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1052"/>
+      <location filename="../CommandDoc.cpp" line="1067"/>
       <source>Export P&amp;DF</source>
       <translation>Izvoz P&amp;DF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1054"/>
+      <location filename="../CommandDoc.cpp" line="1069"/>
       <source>Exports the active document as a PDF file</source>
       <translation>Izvozi aktivni dokument kao PDF datoteku</translation>
     </message>
@@ -13141,12 +13146,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1314"/>
+      <location filename="../CommandDoc.cpp" line="1329"/>
       <source>Duplicate Selecti&amp;on</source>
       <translation>Dupliciraj &amp;odabir</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1315"/>
+      <location filename="../CommandDoc.cpp" line="1330"/>
       <source>Duplicates the selected objects to the active document</source>
       <translation>Duplicira odabrane objekte u aktivnom dokumentu</translation>
     </message>
@@ -13154,12 +13159,12 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1668"/>
+      <location filename="../CommandDoc.cpp" line="1686"/>
       <source>Recompute</source>
       <translation>Preračunaj</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1669"/>
+      <location filename="../CommandDoc.cpp" line="1687"/>
       <source>Recomputes the active document</source>
       <translation>Preračunava aktivni dokument</translation>
     </message>
@@ -13167,7 +13172,7 @@ svi pikseli područja nisu neprozirni.</translation>
   <context>
     <name>Std_Refresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1704"/>
+      <location filename="../CommandDoc.cpp" line="1715"/>
       <source>The document contains dependency cycles.
 Check the report view for more details.
 
@@ -13181,12 +13186,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdTransform</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1734"/>
+      <location filename="../CommandDoc.cpp" line="1815"/>
       <source>Transform</source>
       <translation>Transformiraj</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1736"/>
+      <location filename="../CommandDoc.cpp" line="1817"/>
       <source>Transforms the selected object</source>
       <translation>Transformira odabrani objekt</translation>
     </message>
@@ -13194,12 +13199,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1761"/>
+      <location filename="../CommandDoc.cpp" line="1842"/>
       <source>P&amp;lacement</source>
       <translation>P&amp;ozicioniranje</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1763"/>
+      <location filename="../CommandDoc.cpp" line="1844"/>
       <source>Opens the placement editor to adjust the placement of the selected object</source>
       <translation>Otvara uređivača položaja kako bi prilagodilo pozicioniranje odabranog objekta</translation>
     </message>
@@ -13207,12 +13212,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1872"/>
+      <location filename="../CommandDoc.cpp" line="1953"/>
       <source>Ali&amp;gn To…</source>
       <translation>Poravnaj sa…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1874"/>
+      <location filename="../CommandDoc.cpp" line="1955"/>
       <source>Aligns the selected objects</source>
       <translation>Poravnava odabrane objekte</translation>
     </message>
@@ -13662,12 +13667,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="255"/>
+      <location filename="../CommandView.cpp" line="248"/>
       <source>Save Current Camera</source>
       <translation>Spremi trenutnu kameru</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="256"/>
+      <location filename="../CommandView.cpp" line="249"/>
       <source>Saves the current camera settings</source>
       <translation>Spremi trenutne postavke kamere</translation>
     </message>
@@ -13675,12 +13680,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="281"/>
+      <location filename="../CommandView.cpp" line="274"/>
       <source>Restore Saved Camera</source>
       <translation>Vrati spremljenu kameru</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="282"/>
+      <location filename="../CommandView.cpp" line="275"/>
       <source>Restores the saved camera settings</source>
       <translation>Vrača spremljene postavke kamere</translation>
     </message>
@@ -13688,12 +13693,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
-      <location filename="../CommandView.cpp" line="682"/>
+      <location filename="../CommandView.cpp" line="675"/>
       <source>Clippin&amp;g View</source>
       <translation>Ravnina presjeka pogled</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="683"/>
+      <location filename="../CommandView.cpp" line="676"/>
       <source>Toggles clipping of the active view</source>
       <translation>Uključi/Isključi isječak aktivnog pogleda</translation>
     </message>
@@ -13701,12 +13706,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="768"/>
+      <location filename="../CommandView.cpp" line="761"/>
       <source>&amp;Draw Style</source>
       <translation>&amp;Stil iscrtavanja</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="769"/>
+      <location filename="../CommandView.cpp" line="762"/>
       <source>Changes the draw style of the objects</source>
       <translation>Mijenja stil iscrtavanja objekata</translation>
     </message>
@@ -13714,12 +13719,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
-      <location filename="../CommandView.cpp" line="975"/>
+      <location filename="../CommandView.cpp" line="968"/>
       <source>Toggle &amp;Visibility</source>
       <translation>Promijeni &amp;vidljivost</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="976"/>
+      <location filename="../CommandView.cpp" line="969"/>
       <source>Toggles the visibility of the selection</source>
       <translation>Uključuje/isključuje vidljivost odabira</translation>
     </message>
@@ -13727,12 +13732,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdToggleTransparency</name>
     <message>
-      <location filename="../CommandView.cpp" line="1009"/>
+      <location filename="../CommandView.cpp" line="1002"/>
       <source>Toggle Transparenc&amp;y</source>
       <translation>Uključi/isključi prozirnost</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1011"/>
+      <location filename="../CommandView.cpp" line="1004"/>
       <source>Toggles the transparency of the selected objects. Transparency can be fine-tuned in the appearance task dialog</source>
       <translation>Prebacuje transparentnost odabranih objekata. Transparentnost može biti fino podešena u dijalogu za izgled</translation>
     </message>
@@ -13740,12 +13745,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <location filename="../CommandView.cpp" line="1122"/>
+      <location filename="../CommandView.cpp" line="1115"/>
       <source>Toggle Se&amp;lectability</source>
       <translation>Uk&amp;lj/isklj mogućnost odabira</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1123"/>
+      <location filename="../CommandView.cpp" line="1116"/>
       <source>Toggles the property of the objects to get selected in the 3D view</source>
       <translation>Uključuje/isključuje mogućnost odabira objekta u 3D prikazu svojstava</translation>
     </message>
@@ -13753,12 +13758,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdShowSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1184"/>
+      <location filename="../CommandView.cpp" line="1177"/>
       <source>Sho&amp;w Selection</source>
       <translation>Prikaži odabir</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1185"/>
+      <location filename="../CommandView.cpp" line="1178"/>
       <source>Shows all selected objects</source>
       <translation>Prikazuje sve odabrane objekte</translation>
     </message>
@@ -13766,12 +13771,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1212"/>
+      <location filename="../CommandView.cpp" line="1205"/>
       <source>&amp;Hide Selection</source>
       <translation>Sakrij odabir</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1213"/>
+      <location filename="../CommandView.cpp" line="1206"/>
       <source>Hides all selected objects</source>
       <translation>Skriva sve odabrane objekte</translation>
     </message>
@@ -13779,12 +13784,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1240"/>
+      <location filename="../CommandView.cpp" line="1233"/>
       <source>&amp;Select Visible Objects</source>
       <translation>Odaberi vidljive objekte</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1241"/>
+      <location filename="../CommandView.cpp" line="1234"/>
       <source>Selects all visible objects in the active document</source>
       <translation>Odabire sve vidljive objekte u aktivnom dokumentu</translation>
     </message>
@@ -13792,12 +13797,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1284"/>
+      <location filename="../CommandView.cpp" line="1277"/>
       <source>To&amp;ggle All Objects</source>
       <translation>Prikaži/Sakrij sve objekte</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1285"/>
+      <location filename="../CommandView.cpp" line="1278"/>
       <source>Toggles the visibility of all objects in the active document</source>
       <translation>Prikazuje/Skriva vidljivost svih objekata u aktivnom dokumentu</translation>
     </message>
@@ -13805,12 +13810,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1336"/>
+      <location filename="../CommandView.cpp" line="1329"/>
       <source>Show &amp;All Objects</source>
       <translation>Prik&amp;aži sve objekte</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1337"/>
+      <location filename="../CommandView.cpp" line="1330"/>
       <source>Shows all objects in the document</source>
       <translation>Prikazuje sve objekte u aktivnom dokumentu</translation>
     </message>
@@ -13818,12 +13823,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1378"/>
+      <location filename="../CommandView.cpp" line="1371"/>
       <source>Hide All &amp;Objects</source>
       <translation>Sakrij sve &amp;objekte</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1379"/>
+      <location filename="../CommandView.cpp" line="1372"/>
       <source>Hides all objects in the document</source>
       <translation>Skriva sve objekte u aktivnom dokumentu</translation>
     </message>
@@ -13831,12 +13836,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1694"/>
+      <location filename="../CommandView.cpp" line="1732"/>
       <source>Rotates &amp;Right</source>
       <translation>&amp;Rotiraj udesno</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1695"/>
+      <location filename="../CommandView.cpp" line="1733"/>
       <source>Rotates the view by 90° clockwise</source>
       <translation>Zakreće pogled za 90 ° u smjeru od kazaljke na satu</translation>
     </message>
@@ -13844,12 +13849,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="1719"/>
+      <location filename="../CommandView.cpp" line="1757"/>
       <source>&amp;Fit All</source>
       <translation>Ispuni sve</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1720"/>
+      <location filename="../CommandView.cpp" line="1758"/>
       <source>Fits all content into the 3D view</source>
       <translation>Ispuni sav sadržaj u 3D prikazu</translation>
     </message>
@@ -13857,12 +13862,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1750"/>
+      <location filename="../CommandView.cpp" line="1786"/>
       <source>Fit &amp;Selection</source>
       <translation>Ispuni sve odabrano</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1751"/>
+      <location filename="../CommandView.cpp" line="1787"/>
       <source>Fits the selected content into the 3D view</source>
       <translation>Ispuni sav odabrani sadržaj u 3D prikazu</translation>
     </message>
@@ -13870,12 +13875,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewGroup</name>
     <message>
-      <location filename="../CommandView.cpp" line="1780"/>
+      <location filename="../CommandView.cpp" line="1816"/>
       <source>Standard &amp;Views</source>
       <translation>Standardni &amp;Prikazi</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1781"/>
+      <location filename="../CommandView.cpp" line="1817"/>
       <source>Changes to a standard view</source>
       <translation>Mijenja na standardni pogled</translation>
     </message>
@@ -13883,12 +13888,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1948"/>
+      <location filename="../CommandView.cpp" line="1984"/>
       <source>D&amp;ocument Window</source>
       <translation>Prozor d&amp;okumenta</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1949"/>
+      <location filename="../CommandView.cpp" line="1985"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>Prikazan je aktivan prikaz na cijelom zaslonu, neusidernom ili usidrenom načinu rada</translation>
     </message>
@@ -13896,12 +13901,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <location filename="../CommandView.cpp" line="2059"/>
+      <location filename="../CommandView.cpp" line="2095"/>
       <source>FreeCAD VR</source>
       <translation>FreeCAD VR</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2060"/>
+      <location filename="../CommandView.cpp" line="2096"/>
       <source>Extends the FreeCAD 3D Window to a VR device</source>
       <translation>Proširuje FreeCAD 3D prozor na VR uređaj</translation>
     </message>
@@ -13909,12 +13914,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <location filename="../CommandView.cpp" line="2335"/>
+      <location filename="../CommandView.cpp" line="2370"/>
       <source>New 3D View</source>
       <translation>Novi 3D pogled</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2336"/>
+      <location filename="../CommandView.cpp" line="2371"/>
       <source>Opens a new 3D view window for the active document</source>
       <translation>Otvara novi 3D prozor prikaza za aktivni dokument</translation>
     </message>
@@ -13922,12 +13927,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <location filename="../CommandView.cpp" line="2364"/>
+      <location filename="../CommandView.cpp" line="2399"/>
       <source>Toggle Navigation/&amp;Edit Mode</source>
       <translation>Navigacija/Uredi način rada</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2365"/>
+      <location filename="../CommandView.cpp" line="2400"/>
       <source>Toggles between navigation and edit mode</source>
       <translation>Prebacuje između navigacije i načina uređivanja</translation>
     </message>
@@ -13935,12 +13940,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <location filename="../CommandView.cpp" line="2412"/>
+      <location filename="../CommandView.cpp" line="2447"/>
       <source>Toggle A&amp;xis Cross</source>
       <translation>Prikaži/sakrij križ osi</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2413"/>
+      <location filename="../CommandView.cpp" line="2448"/>
       <source>Toggles the axis cross at the origin</source>
       <translation>Uključuje/isključuje križ osi na ishodištu</translation>
     </message>
@@ -13948,12 +13953,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <location filename="../CommandView.cpp" line="2518"/>
+      <location filename="../CommandView.cpp" line="2553"/>
       <source>Inventor Example #3</source>
       <translation>Inventor Primjer #3</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2519"/>
+      <location filename="../CommandView.cpp" line="2554"/>
       <source>Shows an animated texture</source>
       <translation>Pokazuje jednu animiranu teksturu</translation>
     </message>
@@ -13961,12 +13966,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="2576"/>
+      <location filename="../CommandView.cpp" line="2611"/>
       <source>Stereo Re&amp;d/Cyan</source>
       <translation>Stereo crveno/cijan</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2577"/>
+      <location filename="../CommandView.cpp" line="2612"/>
       <source>Switches stereo viewing to red/cyan</source>
       <translation>Stereo gledanja prebacuje na crveno/cijan</translation>
     </message>
@@ -13974,12 +13979,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2604"/>
+      <location filename="../CommandView.cpp" line="2639"/>
       <source>Stereo &amp;Quad Buffer</source>
       <translation>Stereo &amp;Quad Buffer</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2605"/>
+      <location filename="../CommandView.cpp" line="2640"/>
       <source>Switches stereo viewing to quad buffer</source>
       <translation>Stereo gledanja prebacuje na quad buffer</translation>
     </message>
@@ -13987,12 +13992,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2689"/>
+      <location filename="../CommandView.cpp" line="2724"/>
       <source>Issue Camera &amp;Position</source>
       <translation>Zapiši &amp;položaj kamere</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2690"/>
+      <location filename="../CommandView.cpp" line="2725"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
       <translation>Izdaje položaj kamere na konzolu i makronaredbi, kako bi se lako prisjetio ovog položaja</translation>
     </message>
@@ -14000,12 +14005,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2941"/>
+      <location filename="../CommandView.cpp" line="2977"/>
       <source>&amp;Box Zoom</source>
       <translation>&amp;Okvir povećanja</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2942"/>
+      <location filename="../CommandView.cpp" line="2978"/>
       <source>Activates the box zoom tool</source>
       <translation>Aktivira okvir povećanja alat</translation>
     </message>
@@ -14013,12 +14018,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2975"/>
+      <location filename="../CommandView.cpp" line="3011"/>
       <source>&amp;Box Selection</source>
       <translation>&amp;Okvir odabira</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2976"/>
+      <location filename="../CommandView.cpp" line="3012"/>
       <source>Activates the box selection tool</source>
       <translation>Aktivira alat za okvir odabira</translation>
     </message>
@@ -14026,12 +14031,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3250"/>
+      <location filename="../CommandView.cpp" line="3336"/>
       <source>Bo&amp;x Element Selection</source>
       <translation>Okvir odabira elemenata</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3251"/>
+      <location filename="../CommandView.cpp" line="3337"/>
       <source>Activates box element selection</source>
       <translation>Aktivirajte odabir elemenata okvirom</translation>
     </message>
@@ -14039,12 +14044,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3306"/>
+      <location filename="../CommandView.cpp" line="3392"/>
       <source>&amp;Go to Selection</source>
       <translation>&amp;Idi na odabir</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3307"/>
+      <location filename="../CommandView.cpp" line="3393"/>
       <source>Scrolls to the first selected item</source>
       <translation>Skrolaj do prvog odabranog predmeta</translation>
     </message>
@@ -14052,12 +14057,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3331"/>
+      <location filename="../CommandView.cpp" line="3417"/>
       <source>Collapse Selected Items</source>
       <translation>Sakri odabrane elemente</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3332"/>
+      <location filename="../CommandView.cpp" line="3418"/>
       <source>Collapses the currently selected tree items</source>
       <translation>Sakri trenutno odabrane stavke stabla</translation>
     </message>
@@ -14065,12 +14070,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3357"/>
+      <location filename="../CommandView.cpp" line="3443"/>
       <source>Expand Selected Items</source>
       <translation>Prikaži odabrane stavke</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3358"/>
+      <location filename="../CommandView.cpp" line="3444"/>
       <source>Expands the currently selected tree items</source>
       <translation>Prikazuje trenutno odabrane stavke stabla</translation>
     </message>
@@ -14078,12 +14083,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3383"/>
+      <location filename="../CommandView.cpp" line="3469"/>
       <source>Select All Instances</source>
       <translation>Odaberite sve instance</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3384"/>
+      <location filename="../CommandView.cpp" line="3470"/>
       <source>Selects all instances of the currently selected object</source>
       <translation>Odaberite sve instance trenutno odabranog objekta</translation>
     </message>
@@ -14091,12 +14096,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3451"/>
+      <location filename="../CommandView.cpp" line="3537"/>
       <source>Scene I&amp;nspector</source>
       <translation>Inspektor scene</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3452"/>
+      <location filename="../CommandView.cpp" line="3538"/>
       <source>Opens the scene inspector</source>
       <translation>Otvara inspektor scene</translation>
     </message>
@@ -14104,12 +14109,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3485"/>
+      <location filename="../CommandView.cpp" line="3571"/>
       <source>Text&amp;ure Mapping</source>
       <translation>Mapiranje teksture</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3486"/>
+      <location filename="../CommandView.cpp" line="3572"/>
       <source>Maps textures to shapes</source>
       <translation>Preslikava teksture u oblike</translation>
     </message>
@@ -14117,12 +14122,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3511"/>
+      <location filename="../CommandView.cpp" line="3597"/>
       <source>View &amp;Turntable</source>
       <translation>Prikaži okretnu ploču</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3512"/>
+      <location filename="../CommandView.cpp" line="3598"/>
       <source>Opens a turntable view</source>
       <translation>Otvara kružni prikaz</translation>
     </message>
@@ -14130,12 +14135,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3541"/>
+      <location filename="../CommandView.cpp" line="3627"/>
       <source>Selection &amp;Back</source>
       <translation>Odabir natrag</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3543"/>
+      <location filename="../CommandView.cpp" line="3629"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>Obnovite prethodan odabir prikaza stabla. Radi samo ako je uključen način Stablo RecordSelection.</translation>
     </message>
@@ -14143,12 +14148,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3575"/>
+      <location filename="../CommandView.cpp" line="3661"/>
       <source>Selection &amp;Forward</source>
       <translation>Odabir naprijed</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3577"/>
+      <location filename="../CommandView.cpp" line="3663"/>
       <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>Obnovite slijedni odabir prikaza stabla. Radi samo ako je uključen način Tree RecordSelection.</translation>
     </message>
@@ -14156,12 +14161,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3633"/>
+      <location filename="../CommandView.cpp" line="3719"/>
       <source>&amp;Single Document</source>
       <translation>&amp;Pojedinačan dokument</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3634"/>
+      <location filename="../CommandView.cpp" line="3720"/>
       <source>Displays only the active document in the tree view</source>
       <translation>Prikazuje samo aktivni dokument u prikazu stabla</translation>
     </message>
@@ -14169,12 +14174,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3650"/>
+      <location filename="../CommandView.cpp" line="3736"/>
       <source>&amp;Multi Document</source>
       <translation>&amp;Višestruki dokument</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3651"/>
+      <location filename="../CommandView.cpp" line="3737"/>
       <source>Displays all documents in the tree view</source>
       <translation>Prikazuje sve dokumente u prikazu stabla</translation>
     </message>
@@ -14182,12 +14187,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3710"/>
+      <location filename="../CommandView.cpp" line="3796"/>
       <source>Sync View</source>
       <translation type="unfinished">Sync View</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3711"/>
+      <location filename="../CommandView.cpp" line="3797"/>
       <source>Switches to the 3D view containing the selected item from the tree view</source>
       <translation>Prebacuje se na 3D prikaz koji sadrži odabranu stavku iz prikaza stabla</translation>
     </message>
@@ -14195,12 +14200,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3730"/>
+      <location filename="../CommandView.cpp" line="3816"/>
       <source>Sync Selection</source>
       <translation type="unfinished">Sync Selection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3731"/>
+      <location filename="../CommandView.cpp" line="3817"/>
       <source>Expands the tree item when the corresponding object is selected in the 3D view</source>
       <translation>Proširi stavku stabla kad je u 3D prikazu odabran odgovarajući objekt</translation>
     </message>
@@ -14208,12 +14213,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3750"/>
+      <location filename="../CommandView.cpp" line="3836"/>
       <source>Sync Placement</source>
       <translation type="unfinished">Sync Placement</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3752"/>
+      <location filename="../CommandView.cpp" line="3838"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
       <translation>Prilagođava položaj objekata pri povlačenju i ispuštanju u različitim koordinatnim sustavima (npr. u spremnicima dijelova)</translation>
     </message>
@@ -14221,12 +14226,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3789"/>
+      <location filename="../CommandView.cpp" line="3875"/>
       <source>Record Selection</source>
       <translation type="unfinished">Record Selection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3791"/>
+      <location filename="../CommandView.cpp" line="3877"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
       <translation>Snima odabir u prikazu stabla kako biste se kretali nazad/naprijed pomoću navigacijskog gumba</translation>
     </message>
@@ -14234,12 +14239,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3808"/>
+      <location filename="../CommandView.cpp" line="3894"/>
       <source>Initiate &amp;Dragging</source>
       <translation>Pokrenite povlačenje</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3809"/>
+      <location filename="../CommandView.cpp" line="3895"/>
       <source>Initiates dragging of the currently selected tree items</source>
       <translation>Pokreče povlačenjem odabrane stavke stabla</translation>
     </message>
@@ -14247,12 +14252,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3841"/>
+      <location filename="../CommandView.cpp" line="3927"/>
       <source>Tree View Actions</source>
       <translation>Akcije prikaza stabla</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3842"/>
+      <location filename="../CommandView.cpp" line="3928"/>
       <source>Tree view behavior options and actions</source>
       <translation>Opcije ponašanja i radnje prikaza stabla</translation>
     </message>
@@ -14260,12 +14265,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3886"/>
+      <location filename="../CommandView.cpp" line="3972"/>
       <source>&amp;Bounding Box</source>
       <translation>&amp;Granični okvir</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3887"/>
+      <location filename="../CommandView.cpp" line="3973"/>
       <source>Shows selection bounding box</source>
       <translation>Prikazuje odabir graničnog okvira</translation>
     </message>
@@ -14273,12 +14278,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdDockOverlayAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3933"/>
+      <location filename="../CommandView.cpp" line="4019"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
       <translation>Prebaci preklapanje za sve panele</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3934"/>
+      <location filename="../CommandView.cpp" line="4020"/>
       <source>Toggled overlay mode for all docked panels</source>
       <translation>Uključi/isključi mod preklapanja za sve usidrene izbornike</translation>
     </message>
@@ -14286,12 +14291,12 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3956"/>
+      <location filename="../CommandView.cpp" line="4042"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
       <translation>Uključivanje / isključivanje transparentnosti panela</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3957"/>
+      <location filename="../CommandView.cpp" line="4043"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
       <translation>Uključi/isključi prozirni mod za sve usidrene preklopljene prozore.
@@ -14301,12 +14306,12 @@ Ovo omogućuje da prekriveni paneli ostaju prozirni čitavo vrijeme.</translatio
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3982"/>
+      <location filename="../CommandView.cpp" line="4068"/>
       <source>Toggle &amp;Overlay</source>
       <translation>&amp;Uključite/isključite preklapanje</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3983"/>
+      <location filename="../CommandView.cpp" line="4069"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
       <translation>Uključuje/isključuje mod preklapanja za usidreni prozor ispod pokazivača</translation>
     </message>
@@ -14314,12 +14319,12 @@ Ovo omogućuje da prekriveni paneli ostaju prozirni čitavo vrijeme.</translatio
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="4005"/>
+      <location filename="../CommandView.cpp" line="4091"/>
       <source>Toggle Tran&amp;sparent Mode</source>
       <translation>Uključivanje / isključivanje načina tran&amp;sparentnosti</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4006"/>
+      <location filename="../CommandView.cpp" line="4092"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
       <translation>Uključuje/isključuje mod prozirnosti za sve prozore usidrenih izbornika ispod pokazivača.
@@ -14329,12 +14334,12 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="4031"/>
+      <location filename="../CommandView.cpp" line="4117"/>
       <source>Toggle &amp;Left</source>
       <translation>Prebaci &amp;Lijevo</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4032"/>
+      <location filename="../CommandView.cpp" line="4118"/>
       <source>Toggles the visibility of the left overlay panel</source>
       <translation>Prebacuje vidljivost lijevog panela preklapanja</translation>
     </message>
@@ -14342,12 +14347,12 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="4056"/>
+      <location filename="../CommandView.cpp" line="4142"/>
       <source>Toggle &amp;Right</source>
       <translation>Prebaci &amp;Desno</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4057"/>
+      <location filename="../CommandView.cpp" line="4143"/>
       <source>Toggles the visibility of the right overlay panel</source>
       <translation>Prebacuje vidljivost desnog preklapajućeg panela</translation>
     </message>
@@ -14355,12 +14360,12 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="4081"/>
+      <location filename="../CommandView.cpp" line="4167"/>
       <source>Toggle &amp;Top</source>
       <translation>Prebaci &amp;Gore</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4082"/>
+      <location filename="../CommandView.cpp" line="4168"/>
       <source>Toggles the visibility of the top overlay panel</source>
       <translation>Prebacuje vidljivost gornjeg preklapajućeg panela</translation>
     </message>
@@ -14368,12 +14373,12 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="4106"/>
+      <location filename="../CommandView.cpp" line="4192"/>
       <source>Toggle &amp;Bottom</source>
       <translation>Prebaci &amp;Dolje</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4107"/>
+      <location filename="../CommandView.cpp" line="4193"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
       <translation>Prebacuje vidljivost donjeg preklapajućeg panela</translation>
     </message>
@@ -14381,12 +14386,12 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="4131"/>
+      <location filename="../CommandView.cpp" line="4217"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
       <translation>Zaobilazni &amp; Mouse Događaji u preklapajućim panelima</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4132"/>
+      <location filename="../CommandView.cpp" line="4218"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
       <translation>Preskače sve događaje miša u usidrenim preklopljenim prozorima</translation>
     </message>
@@ -14394,12 +14399,12 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="4177"/>
+      <location filename="../CommandView.cpp" line="4263"/>
       <source>Overlay Docked Panel</source>
       <translation>Usidreni preklapajući paneli</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4178"/>
+      <location filename="../CommandView.cpp" line="4264"/>
       <source>Sets the docked panel in overlay mode</source>
       <translation>Postavlja priključene panele u način preklapanja</translation>
     </message>
@@ -14407,12 +14412,12 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4311"/>
+      <location filename="../CommandView.cpp" line="4397"/>
       <source>St&amp;ore Working View</source>
       <translation>Spremite radni pogled</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4312"/>
+      <location filename="../CommandView.cpp" line="4398"/>
       <source>Stores a temporary working view for the current document</source>
       <translation>Pohranjuje privremeni radni prikaz za trenutni dokument</translation>
     </message>
@@ -14420,12 +14425,12 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4341"/>
+      <location filename="../CommandView.cpp" line="4425"/>
       <source>R&amp;ecall Working View</source>
       <translation>Opozovite radni pogled</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4342"/>
+      <location filename="../CommandView.cpp" line="4426"/>
       <source>Recalls a previously stored temporary working view</source>
       <translation>Opoziva prethodno pohranjeni privremeni radni pogled</translation>
     </message>
@@ -14433,12 +14438,12 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>StdCmdAlignToSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4374"/>
+      <location filename="../CommandView.cpp" line="4453"/>
       <source>&amp;Align to Selection</source>
       <translation>&amp;Poravnaj prema odabiru</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4375"/>
+      <location filename="../CommandView.cpp" line="4454"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
       <translation>Poravnava pogled kamere s odabranim elementima u 3D prikazu</translation>
     </message>
@@ -14501,13 +14506,13 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1305"/>
-      <location filename="../FileDialog.cpp" line="1315"/>
+      <location filename="../FileDialog.cpp" line="1238"/>
+      <location filename="../FileDialog.cpp" line="1248"/>
       <source>Select a File</source>
       <translation>Odaberi datoteku</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1325"/>
+      <location filename="../FileDialog.cpp" line="1258"/>
       <source>Select a Directory</source>
       <translation>Izaberi direktorij</translation>
     </message>
@@ -14523,7 +14528,7 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>Gui::OverlayTitleBar</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2202"/>
+      <location filename="../OverlayWidgets.cpp" line="2211"/>
       <source>Mouse pass through, Esc to stop</source>
       <translation>Miš za prolaz, ESC za prekid</translation>
     </message>
@@ -14539,7 +14544,7 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4239"/>
+      <location filename="../Tree.cpp" line="4248"/>
       <source>Tree View</source>
       <translation>Prikaz stabla</translation>
     </message>
@@ -14731,12 +14736,12 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>StdCmdClarifySelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4402"/>
+      <location filename="../CommandView.cpp" line="4481"/>
       <source>Clarify Selection</source>
       <translation>Pojasnite odabir</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4403"/>
+      <location filename="../CommandView.cpp" line="4482"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
       <translation>Prikazuje kontekstni izbornik na kursoru miša za odabir preklapajuće ili zaklonjene geometrije u 3D prikazu.
@@ -14746,7 +14751,7 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1176"/>
+      <location filename="../Selection/SelectionView.cpp" line="1182"/>
       <source>Whole Object</source>
       <translation>Cijeli objekt</translation>
     </message>
@@ -14870,12 +14875,12 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../CommandView.cpp" line="4213"/>
+      <location filename="../CommandView.cpp" line="4299"/>
       <source>Toggle Bottom Panels</source>
       <translation type="unfinished">Toggle Bottom Panels</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4214"/>
+      <location filename="../CommandView.cpp" line="4300"/>
       <source>Toggles the bottom dock panels</source>
       <translation type="unfinished">Toggles the bottom dock panels</translation>
     </message>

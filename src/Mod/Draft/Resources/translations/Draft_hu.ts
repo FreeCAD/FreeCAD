@@ -2097,42 +2097,56 @@ az eredeti alakzatból egy nyers drótot adunk hozzá</translation>
 	Az optimális érték az import abszolút méretétől függ. A tipikus értékek 1 és 5 között vannak.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation>Összetett görbék közelítésének maximális eltérése</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation>Maximális eltérés az ellipszisek, hiperbólák, parabolák, valamint a Bézier- és B-spline-görbék ívekkel és egyenesekkel közelítése esetén. Ez
+hasznos lehet a CAM műhelyben.
+A nullára állítással kikapcsolható a közelítés.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>Export stílus</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>Vázlat exportálásakor írható SVG-fájl stílusa</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>Átalakítva (nyomtatáshoz &amp; képernyőre)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>Nyers (CAM-hoz)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>Minden fehér vonal fekete színben jelenik meg az SVG-ben a fehér háttérrel szembeni jobb olvashatóság érdekében</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>Fehér vonal színének fekete színűvé alakítása</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>Maximális szegmenshossz mérlegelt ívek esetén</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2454,7 +2468,7 @@ Ez felülírja az "Importálás mint" beállítást</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>Exportálás beállításai</translation>
     </message>
@@ -3767,15 +3781,30 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="195"/>
-      <location filename="../../draftguitools/gui_labels.py" line="222"/>
+      <location filename="../../draftguitools/gui_labels.py" line="223"/>
       <source>Pick endpoint of leader line</source>
       <translation>Vezérvonal végpontjának kiválasztása</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="205"/>
-      <location filename="../../draftguitools/gui_labels.py" line="232"/>
+      <location filename="../../draftguitools/gui_labels.py" line="233"/>
       <source>Pick text position</source>
       <translation>Szöveg helyzet kiválasztása</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="243"/>
+      <source>%1 pick arrow point</source>
+      <translation type="unfinished">%1 pick arrow point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="247"/>
+      <source>%1 pick corner point</source>
+      <translation type="unfinished">%1 pick corner point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="251"/>
+      <source>%1 pick text point</source>
+      <translation type="unfinished">%1 pick text point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="129"/>
@@ -3786,9 +3815,39 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <translation>Első pont kiválasztása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="504"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="506"/>
       <source>Edges do not intersect!</source>
       <translation>Élek nem metszők!</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="593"/>
+      <source>%1 pick dimension position</source>
+      <translation type="unfinished">%1 pick dimension position</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="595"/>
+      <source>%1 select edge</source>
+      <translation type="unfinished">%1 select edge</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="612"/>
+      <source>%1 pick next dimension point</source>
+      <translation type="unfinished">%1 pick next dimension point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="614"/>
+      <source>%1 finish</source>
+      <translation>%1 burkolat</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="620"/>
+      <source>%1 pick first dimension point</source>
+      <translation type="unfinished">%1 pick first dimension point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="629"/>
+      <source>%1 pick second dimension point</source>
+      <translation type="unfinished">%1 pick second dimension point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="182"/>
@@ -3962,33 +4021,53 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="76"/>
-      <source>%1 constrain</source>
-      <translation>%1 kényszer</translation>
+      <source>Hold %1 constrain</source>
+      <translation type="unfinished">Hold %1 constrain</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="83"/>
-      <source>%1 snap</source>
-      <translation>%1 illeszt</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="81"/>
+      <source>Hold %1 horizontal/vertical dimension</source>
+      <translation type="unfinished">Hold %1 horizontal/vertical dimension</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="100"/>
-      <source>%1/%2/%3 switch constraint</source>
-      <translation>%1/%2/%3 kényszer váltása</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="86"/>
+      <source>Hold %1 radial dimension</source>
+      <translation type="unfinished">Hold %1 radial dimension</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="93"/>
+      <source>Hold %1 snap</source>
+      <translation type="unfinished">Hold %1 snap</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="110"/>
+      <source>%1 / %2 / %3 switch constraint</source>
+      <translation type="unfinished">%1 / %2 / %3 switch constraint</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="120"/>
       <source>%1 toggle relative</source>
       <translation>%1 relatív kapcsolója</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="119"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="129"/>
       <source>%1 toggle global</source>
       <translation>%1 globális kapcsolója</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="128"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="138"/>
       <source>%1 toggle continue</source>
       <translation>%1 folyamatos kapcsolója</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="149"/>
+      <source>%1 / hold %2 select edge</source>
+      <translation type="unfinished">%1 / hold %2 select edge</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="151"/>
+      <source>Hold %1 select edge</source>
+      <translation type="unfinished">Hold %1 select edge</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="311"/>
@@ -4068,32 +4147,37 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <translation>%1 harmadik pont választó</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation>Csak vonal-, drótváz- és görbevázlatokat lehet kiemelni</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>Jelöljön ki egy objektumot a szerkesztéshez</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="295"/>
+      <location filename="../../draftguitools/gui_edit.py" line="298"/>
       <source>Select a Draft object to edit</source>
       <translation>Válassz szerkesztéshez egy tervrajz objektumot</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="501"/>
+      <location filename="../../draftguitools/gui_edit.py" line="503"/>
       <source>Edit Node</source>
       <translation>Csomópont szerkesztés</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="814"/>
+      <location filename="../../draftguitools/gui_edit.py" line="816"/>
       <source>Too many objects selected, maximum number set to:</source>
       <translation>Túl sok objektum kiválasztott, a beállított maximális szám:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="555"/>
+      <location filename="../../draftguitools/gui_edit.py" line="557"/>
       <source>No edit point found for selected object</source>
       <translation>Kijelölt objektumhoz nem található szerkesztési pont</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="822"/>
+      <location filename="../../draftguitools/gui_edit.py" line="824"/>
       <source>: this object is not editable</source>
       <translation>: ez az objektum nem szerkeszthető</translation>
     </message>
@@ -4191,8 +4275,9 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <translation>Pont létrehozása</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="214"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <location filename="../../draftguitools/gui_points.py" line="189"/>
+      <location filename="../../draftguitools/gui_texts.py" line="180"/>
       <source>%1 pick point</source>
       <translation>%1 pont kiválasztása</translation>
     </message>
@@ -4664,7 +4749,7 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Méretek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="490"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="492"/>
       <source>Edge too short!</source>
       <translation>Él túl rövid!</translation>
     </message>
@@ -4781,7 +4866,7 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Szövegalakzat pozíciópont kijelölése</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="242"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="245"/>
       <source>Create ShapeString</source>
       <translation>Szövegalakzat létrehozása</translation>
     </message>
@@ -5448,7 +5533,7 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="475"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="193"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="199"/>
       <source>Flatten</source>
       <translation>Laposítás</translation>
     </message>
@@ -5843,7 +5928,7 @@ of existing objects in all opened documents?</source>
       <translation>Ismétlődő rétegek egyesítése</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="183"/>
+      <location filename="../../importDXF.py" line="189"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -6209,7 +6294,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>A pont objektumnak nincs szakasz pontja, így elrendezéshez nem használható</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="159"/>
+      <location filename="../../importDXF.py" line="165"/>
       <source>Download of DXF libraries failed.
 Please install the DXF Library addon manually
 from menu Tools → Addon Manager</source>
@@ -6242,12 +6327,12 @@ kézzel az Eszközök → Kiegészítő kezelő menüből</translation>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Ismeretlen SVG exportálási stílus, lefordítottra vált</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>Az exportálási lista nem tartalmaz érvényes határolókerettel rendelkező objektumot</translation>
     </message>
@@ -7907,15 +7992,6 @@ a méretvonalon túl</translation>
       <location filename="../../draftviewproviders/view_rectangle.py" line="46"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
       <translation>Meghatároz egy textúrafájlt (felülbírálja a kitöltési mintákat)</translation>
-    </message>
-  </context>
-  <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../draftviewproviders/view_base.py" line="503"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
-      <source>Transform</source>
-      <translation>Átalakítás</translation>
     </message>
   </context>
   <context>

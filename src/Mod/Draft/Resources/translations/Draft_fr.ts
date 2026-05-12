@@ -111,7 +111,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="513"/>
       <source>Line and arrow color</source>
-      <translation>Couleur des lignes et flèches</translation>
+      <translation>Couleur des lignes et des flèches</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="602"/>
@@ -257,7 +257,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="562"/>
       <source>Unit override</source>
-      <translation>Substitution d’unité</translation>
+      <translation>Unité de remplacement</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="576"/>
@@ -961,7 +961,7 @@ Si aucun point n'est sélectionné, le plan sera déplacé au centre de la vue.<
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="197"/>
       <source>Major lines every</source>
-      <translation>Lignes principales toutes les</translation>
+      <translation>Espacement des lignes principales</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="207"/>
@@ -1273,7 +1273,7 @@ d'annotation. Si l'échelle est de 1:100, le multiplicateur est de 100.</transla
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="563"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
-      <translation>L'unité de remplacement pour les dimensions. Laisser vide pour utiliser l'unité en cours définie dans FreeCAD.</translation>
+      <translation>L'unité de remplacement pour les dimensions. Laisser vide pour utiliser l'unité définie dans FreeCAD.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="570"/>
@@ -1323,7 +1323,7 @@ d'annotation. Si l'échelle est de 1:100, le multiplicateur est de 100.</transla
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
       <source>Line and arrow color</source>
-      <translation>Couleur des lignes et flèches</translation>
+      <translation>Couleur des lignes et des flèches</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
@@ -1388,7 +1388,7 @@ Une valeur positive définit la longueur maximale des lignes d'extension. Utilis
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
       <source>Unit override</source>
-      <translation>Substitution d’unité</translation>
+      <translation>Unité de remplacement</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="653"/>
@@ -1935,12 +1935,12 @@ sur plusieurs lignes (par rapport à la taille de la police)</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="442"/>
       <source>Line and arrow color</source>
-      <translation>Couleur des lignes et flèches</translation>
+      <translation>Couleur des lignes et des flèches</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="449"/>
       <source>The default color for lines and arrows</source>
-      <translation>La couleur par défaut des lignes et des flèches.</translation>
+      <translation>La couleur par défaut des lignes et des flèches</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="472"/>
@@ -1960,14 +1960,13 @@ sur plusieurs lignes (par rapport à la taille de la police)</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="497"/>
       <source>Unit override</source>
-      <translation>Substitution d’unité</translation>
+      <translation>Unité de remplacement</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="510"/>
       <source>The default unit override for dimensions. Enter a unit such as m
 or cm, leave blank to use the current unit defined in FreeCAD.</source>
-      <translation>L'unité de remplacement par défaut pour les dimensions. Entrez une unité telle
-que m ou cm ou laissez vide pour utiliser l'unité définie dans FreeCAD.</translation>
+      <translation>L'unité de remplacement par défaut pour les dimensions. Entrer une unité, m ou cm, ou laisser vide pour utiliser l'unité définie dans FreeCAD.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="538"/>
@@ -2092,42 +2091,56 @@ forme originale est ajoutée.</translation>
 La valeur optimale dépend de la taille absolue de l'importation. Les valeurs typiques se situent entre 1 et 5.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation>Déviation maximale pour l'approximation des courbes complexes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation>Écart maximal pour l'approximation des ellipses, hyperboles, paraboles et courbes de Bézier et B-spline par des arcs et des lignes. Cela peut
+s'avérer utile pour l'atelier CAM.
+Mettre à zéro pour désactiver l'approximation.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>Style d'exportation</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>Style du fichier SVG à écrire lors de l’exportation d’une esquisse</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>Transposé (pour impression et affichage)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>Brut (pour FAO)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>Toutes les lignes blanches apparaîtront en noir dans le fichier SVG pour une meilleure lisibilité avec les arrière-plans blancs.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>Convertir les lignes blanches en noir</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>Longueur maximale des segments pour les arcs discrétisés</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2450,7 +2463,7 @@ paramètre « Importer en tant que ».</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>Options d'exportation</translation>
     </message>
@@ -2514,7 +2527,7 @@ de la grille. Cette option n'est active que si l'option « Afficher la bordure d
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
       <source>Major lines every</source>
-      <translation>Lignes principales toutes les</translation>
+      <translation>Espacement des lignes principales</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="145"/>
@@ -2537,12 +2550,12 @@ Les lignes principales de la grille sont plus épaisses que les lignes secondair
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="396"/>
       <source>Snap modifier</source>
-      <translation>Touche du modificateur pour l'aimantation</translation>
+      <translation>Touche du modificateur de l'aimantation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="412"/>
       <source>The Snap modifier key</source>
-      <translation>La touche du modificateur pour l'aimantation</translation>
+      <translation>La touche du modificateur de l'aimantation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="430"/>
@@ -2561,7 +2574,7 @@ Les lignes principales de la grille sont plus épaisses que les lignes secondair
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="443"/>
       <source>Constrain modifier</source>
-      <translation>Modificateur des contraintes</translation>
+      <translation>Touche du modificateur des contraintes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="478"/>
@@ -2674,7 +2687,7 @@ vert ou bleu s'ils correspondent à l'axe X, Y ou Z du système de coordonnées 
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="450"/>
       <source>The constrain modifier key</source>
-      <translation>La touche du modificateur de la contrainte</translation>
+      <translation>La touche du modificateur des contraintes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="304"/>
@@ -3770,15 +3783,30 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="195"/>
-      <location filename="../../draftguitools/gui_labels.py" line="222"/>
+      <location filename="../../draftguitools/gui_labels.py" line="223"/>
       <source>Pick endpoint of leader line</source>
       <translation>Sélectionner l'extrémité de la ligne de référence</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="205"/>
-      <location filename="../../draftguitools/gui_labels.py" line="232"/>
+      <location filename="../../draftguitools/gui_labels.py" line="233"/>
       <source>Pick text position</source>
       <translation>Choisir la position du texte</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="243"/>
+      <source>%1 pick arrow point</source>
+      <translation>%1 sélectionner la pointe de la flèche</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="247"/>
+      <source>%1 pick corner point</source>
+      <translation>%1 sélectionner le point d'inflexion</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="251"/>
+      <source>%1 pick text point</source>
+      <translation>%1 sélectionner le point du texte</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="129"/>
@@ -3789,9 +3817,39 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
       <translation>Choisir le premier point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="504"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="506"/>
       <source>Edges do not intersect!</source>
       <translation>Des arêtes ne se croisent pas !</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="593"/>
+      <source>%1 pick dimension position</source>
+      <translation>%1 sélectionner la position de la dimension</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="595"/>
+      <source>%1 select edge</source>
+      <translation>%1 sélectionner une arête</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="612"/>
+      <source>%1 pick next dimension point</source>
+      <translation>%1 sélectionner le point suivant de la dimension</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="614"/>
+      <source>%1 finish</source>
+      <translation>%1 Terminer</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="620"/>
+      <source>%1 pick first dimension point</source>
+      <translation>%1 sélectionner le premier point de la dimension</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="629"/>
+      <source>%1 pick second dimension point</source>
+      <translation>%1 sélectionner le deuxième point de la dimension</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="182"/>
@@ -3965,33 +4023,53 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="76"/>
-      <source>%1 constrain</source>
-      <translation>%1 Contraindre</translation>
+      <source>Hold %1 constrain</source>
+      <translation>Maintenir %1 pour contraindre</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="83"/>
-      <source>%1 snap</source>
-      <translation>%1 Aimanter</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="81"/>
+      <source>Hold %1 horizontal/vertical dimension</source>
+      <translation>Maintenir %1 pour créer une dimension horizontale/verticale</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="100"/>
-      <source>%1/%2/%3 switch constraint</source>
-      <translation>%1/%2/%3 Basculer une contrainte</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="86"/>
+      <source>Hold %1 radial dimension</source>
+      <translation>Maintenir %1 pour créer une dimension radiale</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="93"/>
+      <source>Hold %1 snap</source>
+      <translation>Maintenir %1 pour aimanter</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="110"/>
+      <source>%1 / %2 / %3 switch constraint</source>
+      <translation>%1 / %2 / %3 contrainte de commutation</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="120"/>
       <source>%1 toggle relative</source>
       <translation>%1 Activer/désactiver vers le mode relatif</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="119"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="129"/>
       <source>%1 toggle global</source>
       <translation>%1 Activer/désactiver vers le mode global</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="128"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="138"/>
       <source>%1 toggle continue</source>
       <translation>%1 Activer/désactiver vers le mode continu</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="149"/>
+      <source>%1 / hold %2 select edge</source>
+      <translation>%1 / maintenir %2 sur l'arête sélectionnée</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="151"/>
+      <source>Hold %1 select edge</source>
+      <translation>Maintenir %1 sur l'arête sélectionnée</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="311"/>
@@ -4071,32 +4149,37 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
       <translation>%1 choisir le troisième point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation>Seules les lignes, les polylignes et les courbes de Draft peuvent être mises en surbrillance.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>Sélectionner un objet à modifier</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="295"/>
+      <location filename="../../draftguitools/gui_edit.py" line="298"/>
       <source>Select a Draft object to edit</source>
       <translation>Sélectionner un objet Draft à modifier</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="501"/>
+      <location filename="../../draftguitools/gui_edit.py" line="503"/>
       <source>Edit Node</source>
       <translation>Modifier un nœud</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="814"/>
+      <location filename="../../draftguitools/gui_edit.py" line="816"/>
       <source>Too many objects selected, maximum number set to:</source>
       <translation>Le nombre d'objets sélectionnés est trop élevé, le nombre maximal est fixé à :</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="555"/>
+      <location filename="../../draftguitools/gui_edit.py" line="557"/>
       <source>No edit point found for selected object</source>
       <translation>Aucun point à modifier trouvé pour l'objet sélectionné</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="822"/>
+      <location filename="../../draftguitools/gui_edit.py" line="824"/>
       <source>: this object is not editable</source>
       <translation>: cet objet n'est pas modifiable</translation>
     </message>
@@ -4194,8 +4277,9 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
       <translation>Créer un point</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="214"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <location filename="../../draftguitools/gui_points.py" line="189"/>
+      <location filename="../../draftguitools/gui_texts.py" line="180"/>
       <source>%1 pick point</source>
       <translation>%1 Sélectionner un point</translation>
     </message>
@@ -4667,7 +4751,7 @@ groupes.</translation>
       <translation>Créer une dimension</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="490"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="492"/>
       <source>Edge too short!</source>
       <translation>Arête trop courte !</translation>
     </message>
@@ -4784,7 +4868,7 @@ groupes.</translation>
       <translation>Choisir le point de l'emplacement de la forme à partir de texte</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="242"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="245"/>
       <source>Create ShapeString</source>
       <translation>Créer une forme à partir de texte</translation>
     </message>
@@ -5452,7 +5536,7 @@ Utiliser 0 à la place.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="475"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="193"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="199"/>
       <source>Flatten</source>
       <translation>Aplatir</translation>
     </message>
@@ -5848,7 +5932,7 @@ des objets existants dans tous les documents ouverts ?</translation>
       <translation>Fusionner les doublons de calques</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="183"/>
+      <location filename="../../importDXF.py" line="189"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -6214,7 +6298,7 @@ indiquer une direction.</translation>
       <translation>L'objet Point n'a pas de point discret, il ne peut pas être utilisé pour un réseau.</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="159"/>
+      <location filename="../../importDXF.py" line="165"/>
       <source>Download of DXF libraries failed.
 Please install the DXF Library addon manually
 from menu Tools → Addon Manager</source>
@@ -6246,12 +6330,12 @@ from menu Tools → Addon Manager</source>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Style d'exportation SVG inconnu, changer de méthode</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>La liste d'exportation ne contient aucun objet avec une boite englobante valide.</translation>
     </message>
@@ -7901,15 +7985,6 @@ beyond the dimension line</source>
       <location filename="../../draftviewproviders/view_rectangle.py" line="46"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
       <translation>Définir une image de texture (écrase les motifs des hachures)</translation>
-    </message>
-  </context>
-  <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../draftviewproviders/view_base.py" line="503"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
-      <source>Transform</source>
-      <translation>Transformer</translation>
     </message>
   </context>
   <context>
