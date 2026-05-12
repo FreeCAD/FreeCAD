@@ -672,6 +672,30 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
                     res.push_back(shape);
                 }
             }
+            if (res.empty() && shapeType == TopAbs_FACE && checkGeometry && isPlane) {
+                int matchingIndex = 0;
+                TopoShape matchingShape;
+                int idx = 0;
+                for (auto& shape : getSubTopoShapes(TopAbs_FACE)) {
+                    ++idx;
+                    if (!subshape.isCoplanar(shape, tol)) {
+                        continue;
+                    }
+                    if (matchingIndex != 0) {
+                        matchingIndex = 0;
+                        matchingShape = TopoShape();
+                        break;
+                    }
+                    matchingIndex = idx;
+                    matchingShape = shape;
+                }
+                if (matchingIndex != 0) {
+                    if (names) {
+                        names->push_back(shapeName(shapeType) + std::to_string(matchingIndex));
+                    }
+                    res.push_back(matchingShape);
+                }
+            }
             break;
         }
         default:

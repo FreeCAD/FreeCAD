@@ -30,6 +30,7 @@ import tempfile
 
 import FreeCAD as App
 import Part
+import PartDesign
 import Sketcher
 import TestSketcherApp
 
@@ -3083,6 +3084,28 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         :H976:9,E;:L#8;PSM;:H976:9,F;:H-977,F.Face11 is only temporary and can be ignored."""
         self.assertTrue(self.Sketch002.AttachmentSupport[0][1][0] == "Face11")
         self.assertGreaterEqual(self.Body.Shape.Volume, 20126)
+
+    def testMirroredFaceAttachmentRemapsAfterParameterChange(self):
+        """A sketch attached to a generated Mirrored face must not become ?FaceN."""
+
+        App.closeDocument(self.Doc.Name)
+        fixture = os.path.join(
+            os.path.dirname(__file__),
+            "Fixtures",
+            "MirroredFaceRemap.FCStd",
+        )
+        self.Doc = App.openDocument(fixture)
+
+        sketch = self.Doc.getObject("Sketch004")
+        pocket = self.Doc.getObject("Pocket001")
+        self.assertEqual(sketch.AttachmentSupport[0][1][0], "Face13")
+
+        self.Doc.getObject("Spreadsheet").set("OD", "36")
+        self.Doc.recompute()
+
+        self.assertFalse(sketch.AttachmentSupport[0][1][0].startswith("?"))
+        self.assertNotIn("Invalid", sketch.State)
+        self.assertNotIn("Touched", pocket.State)
 
     def tearDown(self):
         """Clean up our test, optionally preserving the test document"""
