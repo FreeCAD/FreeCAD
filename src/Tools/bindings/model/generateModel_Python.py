@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from enum import Enum
 import ast
 import re
+import textwrap
 from typing import List
 from model.typedModel import (
     GenerateModel,
@@ -24,6 +25,36 @@ SIGNATURE_SEP = re.compile(r"\s+--\s+", re.DOTALL)
 SELF_CLS_ARG = re.compile(r"\(\s*(self|cls)(\s*,\s*)?")
 CTOR_SELF_CLS_ARG = re.compile(r"^__init__\(\$?(?:self|cls)(?:,\s*)?")
 CTOR_NAME = re.compile(r"^__init__\(")
+DEPRECATION_LINE = re.compile(r"(?i)\bdeprecated\b\s*(?:(?::|--|-)\s*)?(.*)")
+
+
+def _extract_deprecated_message_from_decorator(decorator: ast.expr) -> str | None:
+    if _decorator_name(decorator) != "deprecated":
+        return None
+
+    if isinstance(decorator, ast.Call):
+        for arg in decorator.args:
+            if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
+                return arg.value.strip()
+        return ""
+
+    return ""
+
+
+def _extract_deprecated_message_from_text(docstring: str | None) -> str | None:
+    if not docstring:
+        return None
+
+    dedented_docstring = textwrap.dedent(docstring).strip()
+    for raw_line in dedented_docstring.split("\n"):
+        line = raw_line.strip()
+        if not line:
+            continue
+        match = DEPRECATION_LINE.search(line)
+        if match:
+            return match.group(1).lstrip(" ,:-").strip()
+
+    return None
 
 
 class ArgumentKind(Enum):
@@ -57,6 +88,7 @@ class FunctionSignature:
     class_flag: bool = False
     noargs_flag: bool = False
     is_overload: bool = False
+    deprecated_message: str | None = None
 
     def __init__(self, func: ast.FunctionDef):
         self.args = []
@@ -150,13 +182,9 @@ class FunctionSignature:
     def update_flags(self, func: ast.FunctionDef) -> None:
         self.typing_only_flag = False
         for deco in func.decorator_list:
-            match deco:
-                case ast.Name(id, _):
-                    name = id
-                case ast.Attribute(_, attr, _):
-                    name = attr
-                case _:
-                    continue
+            name = _decorator_name(deco)
+            if name is None:
+                continue
 
             match name:
                 case "constmethod":
@@ -171,6 +199,8 @@ class FunctionSignature:
                     self.is_overload = True
                 case "typing_only":
                     self.typing_only_flag = True
+                case "deprecated":
+                    self.deprecated_message = _extract_deprecated_message_from_decorator(deco)
 
 
 class Function:
@@ -241,6 +271,13 @@ class Function:
     @property
     def typing_only_flag(self) -> bool:
         return bool(self.signatures) and not self.public_signatures
+
+    @property
+    def deprecated_message(self) -> str | None:
+        signature = self.signature
+        if signature is None:
+            return None
+        return signature.deprecated_message
 
     def add_signature_docs(self, doc: Documentation) -> None:
         _compose_signature_docs(
@@ -348,8 +385,6 @@ def _parse_docstring_for_documentation(docstring: str) -> Documentation:
 
     if not docstring:
         return Documentation()
-
-    import textwrap
 
     # Remove common indentation
     dedented_docstring = textwrap.dedent(docstring).strip()
@@ -501,12 +536,15 @@ def _parse_class_attributes(class_node: ast.ClassDef, source_code: str) -> List[
                     # Parse the docstring to build a Documentation object.
                     attr_doc = _parse_docstring_for_documentation(docstring)
 
+            deprecated_message = _extract_deprecated_message_from_text(attr_doc.UserDocu)
+
             param = Parameter(Name=name, Type=param_type)
             attr = Attribute(
                 Documentation=attr_doc,
                 Parameter=param,
                 Name=name,
                 ReadOnly=readonly,
+                Deprecated=deprecated_message,
             )
             attributes.append(attr)
 
@@ -555,13 +593,16 @@ def _parse_methods(
             raise ValueError(
                 f"Module-level function '{func.name}' cannot use bound-method decorators"
             )
-        doc_obj = _parse_docstring_for_documentation(func.docstring)
-        func.add_signature_docs(doc_obj)
-        method_params = []
-
         signature = func.signature
         if signature is None:
             continue
+
+        doc_obj = _parse_docstring_for_documentation(func.docstring)
+        deprecated_message = func.deprecated_message
+        if deprecated_message in (None, ""):
+            deprecated_message = _extract_deprecated_message_from_text(signature.docstring)
+        func.add_signature_docs(doc_obj)
+        method_params = []
 
         # Process positional parameters (skipping self/cls)
         for arg_i, arg in enumerate(signature.args):
@@ -580,6 +621,7 @@ def _parse_methods(
             Class=func.class_flag if allow_bound_decorators else False,
             Keyword=func.has_keywords,
             NoArgs=func.noargs_flag,
+            Deprecated=deprecated_message,
         )
 
         methods.append(method)
@@ -721,6 +763,24 @@ def _extract_base_class_name(base: ast.expr) -> str:
     return base_str
 
 
+def _apply_deprecated_attributes(
+    class_attributes: list[Attribute], deprecated_attributes: dict[str, str], class_name: str
+) -> None:
+    if not deprecated_attributes:
+        return
+
+    attributes_by_name = {attribute.Name: attribute for attribute in class_attributes}
+    unknown_attributes = sorted(
+        name for name in deprecated_attributes.keys() if name not in attributes_by_name
+    )
+    if unknown_attributes:
+        joined = ", ".join(unknown_attributes)
+        raise Exception(f"Unknown deprecated attribute metadata for class '{class_name}': {joined}")
+
+    for name, message in deprecated_attributes.items():
+        attributes_by_name[name].Deprecated = message
+
+
 def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict) -> PythonExport:
     base_class_name = None
     for base in class_node.bases:
@@ -734,6 +794,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
     forward_declarations_text = ""
     class_declarations_text = ""
     sequence_protocol_kwargs = None
+    deprecated_attributes_kwargs = {}
 
     for decorator in class_node.decorator_list:
         match decorator:
@@ -755,6 +816,8 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
                             class_declarations_text = val
             case ast.Call(func=ast.Name(id="sequence_protocol"), keywords=_, args=_):
                 sequence_protocol_kwargs = _extract_decorator_kwargs(decorator)
+            case ast.Call(func=ast.Name(id="deprecated_attributes"), keywords=_, args=_):
+                deprecated_attributes_kwargs = _extract_decorator_kwargs(decorator)
             case _:
                 pass
 
@@ -771,6 +834,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
         if constructor.signature is None and constructor.docstring.strip():
             _append_user_doc(doc_obj, _constructor_user_doc(constructor, class_node.name))
     class_attributes = _parse_class_attributes(class_node, source_code)
+    _apply_deprecated_attributes(class_attributes, deprecated_attributes_kwargs, class_node.name)
     class_methods = _parse_methods(
         functions,
         skip_bound_argument=True,

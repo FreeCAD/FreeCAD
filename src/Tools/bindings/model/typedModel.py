@@ -121,6 +121,7 @@ class Method:
     NoArgs: bool = False
     Class: bool = False
     Static: bool = False
+    Deprecated: Optional[str] = None
 
 
 Methode = Method
@@ -140,6 +141,7 @@ class Attribute:
     # Attributes
     Name: str
     ReadOnly: bool
+    Deprecated: Optional[str] = None
 
 
 @dataclass
