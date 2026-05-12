@@ -733,9 +733,7 @@ def removeShape(objs, mark=True):
                 if tp == "Structure":
                     import Arch
 
-                    stru = Arch.makeStructure(
-                        length=length, width=width, height=height, name=name
-                    )
+                    stru = Arch.makeStructure(length=length, width=width, height=height, name=name)
                     if height <= length:
                         # Beam
                         place.move(place.Rotation.multVec(Vector(-length / 2, 0, height / 2)))
