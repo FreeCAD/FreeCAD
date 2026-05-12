@@ -28,6 +28,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <QApplication>
 #include <QMessageBox>
 
 
@@ -41,7 +42,9 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
+#include <Mod/Part/App/AttachExtension.h>
 #include <Mod/Part/App/Attacher.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Sketcher/Gui/ViewProviderSketch.h>
 
@@ -208,6 +211,13 @@ public:
     bool matches()
     {
         return faceFilter.match() || planeFilter.match() || sketchFilter.match();
+    }
+
+    // True only when a single planar face or datum plane is selected (not a sketch).
+    // Used for the fast-path that skips the attachment dialog.
+    bool isSingleFaceOrPlane()
+    {
+        return (faceFilter.match() || planeFilter.match()) && !sketchFilter.match();
     }
 
     std::string getSupport() const
@@ -533,17 +543,7 @@ private:
     {
         createBodyOrThrow();
 
-        bool useAttachment = App::GetApplication()
-                                 .GetParameterGroupByPath(
-                                     "User parameter:BaseApp/Preferences/Mod/PartDesign"
-                                 )
-                                 ->GetBool("NewSketchUseAttachmentDialog", false);
-        if (useAttachment) {
-            createSketchAndShowAttachment();
-        }
-        else {
-            findAndSelectPlane();
-        }
+        createSketchAndShowAttachment();
     }
 
     void createBodyOrThrow()
@@ -584,11 +584,40 @@ private:
     {
         setOriginTemporaryVisibility();
 
+        // Capture selection before clearing it to pre-populate the attachment dialog.
+        // This mirrors UnifiedDatumCommand: use attacher to find the best fit mode.
+        App::PropertyLinkSubList support;
+        Gui::Selection().getAsPropertyLinkSubList(support);
+        support.removeValue(activeBody);
+
+        // Don't pre-populate when the selection contains sketches. A sketch selected
+        // from prior work should not automatically become the attachment reference —
+        // the user can choose a face or plane in the dialog.
+        bool hasSketch = std::ranges::any_of(support.getValues(), [](App::DocumentObject* obj) {
+            return obj && obj->isDerivedFrom<Part::Part2DObject>();
+        });
+
         // Create sketch
         App::Document* doc = activeBody->getDocument();
         std::string FeatName = doc->getUniqueObjectName("Sketch");
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto sketch = doc->getObject(FeatName.c_str());
+
+        if (!hasSketch && support.getSize() > 0) {
+            if (auto* pcAttach = sketch->getExtensionByType<Part::AttachExtension>()) {
+                pcAttach->attacher().setReferences(support);
+                Attacher::SuggestResult sugr;
+                pcAttach->attacher().suggestMapModes(sugr);
+                if (sugr.message == Attacher::SuggestResult::srOK) {
+                    FCMD_OBJ_CMD(sketch, "AttachmentSupport = " << support.getPyReprString());
+                    FCMD_OBJ_CMD(
+                        sketch,
+                        "MapMode = '" << Attacher::AttachEngine::getModeName(sugr.bestFitMode) << "'"
+                    );
+                    Gui::Command::updateActive();
+                }
+            }
+        }
 
         PartDesign::Body* partDesignBody = activeBody;
         auto onAccept = [partDesignBody, sketch]() {
@@ -845,18 +874,41 @@ void SketchWorkflow::tryCreateSketch()
         return;
     }
 
+    bool useAttachment = App::GetApplication()
+                             .GetParameterGroupByPath(
+                                 "User parameter:BaseApp/Preferences/Mod/PartDesign"
+                             )
+                             ->GetBool("NewSketchUseAttachmentDialog", false);
+
+    bool shiftHeld = QApplication::queryKeyboardModifiers() & Qt::ShiftModifier;
+
     auto filters = getFilters();
     SketchPreselection sketchOnFace {guidocument, activeBody, filters};
 
-    if (sketchOnFace.matches()) {
-        // create Sketch on Face or Plane
-        sketchOnFace.createSupport();
-        sketchOnFace.createSketchOnSupport(sketchOnFace.getSupport());
+    // Fast path: single face or datum plane, preference off, Shift not held.
+    // If the face turns out to be non-planar or otherwise invalid, fall through
+    // to the attachment dialog instead of showing an error.
+    // A selected sketch, multiple references, no selection, Shift, or preference on
+    // all go through the attachment dialog.
+    if (!useAttachment && !shiftHeld && sketchOnFace.isSingleFaceOrPlane()) {
+        try {
+            sketchOnFace.createSupport();
+            sketchOnFace.createSketchOnSupport(sketchOnFace.getSupport());
+            return;
+        }
+        catch (const WrongSupportException&) {
+            // Fall through to attachment dialog
+        }
+        catch (const WrongSelectionException&) {
+            // Fall through to attachment dialog
+        }
+        catch (const SupportNotPlanarException&) {
+            // Fall through to attachment dialog
+        }
     }
-    else {
-        SketchRequestSelection requestSelection {guidocument, activeBody};
-        requestSelection.findSupport();
-    }
+
+    SketchRequestSelection requestSelection {guidocument, activeBody};
+    requestSelection.findSupport();
 }
 
 std::tuple<bool, PartDesign::Body*> SketchWorkflow::shouldCreateBody()

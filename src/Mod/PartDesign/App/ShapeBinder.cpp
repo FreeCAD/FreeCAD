@@ -924,7 +924,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
             result = result.makeElementWires();
             if (MakeFace.getValue()) {
                 try {
-                    result = result.makeElementFace(nullptr);
+                    result = result.makeElementFace(nullptr, "Part::FaceMakerBuildFace");
                 }
                 catch (...) {
                 }

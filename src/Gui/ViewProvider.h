@@ -233,8 +233,13 @@ public:
     {
         return pcTransform;
     }
-    // returns the root for the Annotations.
-    SoSeparator* getAnnotation();
+    // returns the annotation root, or nullptr if it doesn't exist
+    SoSeparator* getAnnotation() const
+    {
+        return pcAnnotation;
+    }
+    // returns the annotation root, creating it if it doesn't exist
+    SoSeparator* getOrCreateAnnotation();
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getFrontRoot() const;
     // returns the root node where the children gets collected(3D)
@@ -474,6 +479,12 @@ public:
     virtual std::string getDropPrefix() const
     {
         return {};
+    }
+
+    /// Override to remap the drop cursor icon shown when dragging over this view provider.
+    virtual Qt::DropAction getDropActionForTarget(Qt::DropAction action) const
+    {
+        return action;
     }
 
     /** Add an object with full qualified name to the view provider by drag and drop
@@ -740,6 +751,10 @@ public:
     //@}
 
     virtual void setRenderCacheMode(int);
+    /** Called by Std_ToggleVisibility. Override to redirect the toggle to a different target
+     *  (e.g. a container that owns this feature). The default implementation toggles self.
+     */
+    virtual void toggleVisibility();
 
 protected:
     /** Helper method to check that the node is valid, i.e. it must not cause

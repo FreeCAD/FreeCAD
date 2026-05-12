@@ -168,7 +168,7 @@ protected:
     static void getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace);
 
     /// Create a shape with shapes and faces from a given LinkSubList
-    /// return 0 if almost one full shape is selected else the face count
+    /// return the face count or 2 if a unique full shape is selected
     static int getUpToShapeFromLinkSubList(
         TopoShape& upToShape,
         const App::PropertyLinkSubList& refShape
@@ -181,6 +181,15 @@ protected:
         const TopoShape& sketchshape,
         const std::string& method,
         gp_Dir& dir
+    );
+
+    /// Find a valid face to revolve up to
+    static void getUpToFace(
+        TopoShape& upToFace,
+        const TopoShape& support,
+        const TopoShape& sketchshape,
+        const std::string& method,
+        const gp_Ax1& axis
     );
 
     /// Add an offset to the face

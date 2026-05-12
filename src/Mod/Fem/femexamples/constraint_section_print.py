@@ -22,20 +22,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-import math
-
 import FreeCAD
-from FreeCAD import Rotation
 from FreeCAD import Vector
 
-import Part
-import Sketcher
-from BOPTools.SplitFeatures import makeBooleanFragments
-from BOPTools.SplitFeatures import makeSlice
-from CompoundTools.CompoundFilter import makeCompoundFilter
-
-import Fem
 import ObjectsFem
+import Materials
+import Part
 
 from . import manager
 from .manager import get_meshname
@@ -74,7 +66,7 @@ constraint section print with volume elements
     )
 
 
-def setup(doc=None, solvertype="ccxtools"):
+def setup(doc=None, solvertype="ccxtools", test_mode=False):
 
     # init FreeCAD document
     if doc is None:
@@ -84,135 +76,41 @@ def setup(doc=None, solvertype="ccxtools"):
     # just keep the following line and change text string in get_explanation method
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
-    # geometric objects
-    # the part sketch
-    arc_sketch = doc.addObject("Sketcher::SketchObject", "Arc_Sketch")
-    arc_sketch.Placement = FreeCAD.Placement(Vector(0, 0, 0), Rotation(0, 0, 0, 1))
-    arc_sketch.MapMode = "Deactivated"
-    # not the exact geometry which makes a closed wire
-    # exact geometry will be made by the constraints
-    # the order is important for the constraints definition
-    geoList = [
-        Part.ArcOfCircle(Part.Circle(Vector(0, 0, 0), Vector(0, 0, 1), 47), 0, math.pi),
-        Part.ArcOfCircle(
-            Part.Circle(Vector(-19, -22, 0), Vector(0, 0, 1), 89),
-            math.pi / 12,
-            math.pi / 1.1,
-        ),
-        Part.LineSegment(Vector(-105, 0, 0), Vector(-47, 0, 0)),
-        Part.LineSegment(Vector(47, 0, 0), Vector(67, 0, 0)),
+    # geometric objects. Create curves by points
+    p1 = Vector(-105, 0, 0);
+    p2 = Vector(47, 0, 0);
+    p3 = Vector(67, 0, 0);
+    p4 = Vector(-19, 65, 0);
+    p5 = Vector(0, 47, 0);
+    base_curves = [
+        Part.ArcOfCircle(p1, p4, p3),
+        Part.ArcOfCircle(-p2, p5, p2),
+        Part.LineSegment(p1, -p2),
+        Part.LineSegment(p2, p3)
     ]
-    arc_sketch.addGeometry(geoList, False)
-    # https://wiki.freecad.org/Sketcher_ConstrainCoincident
-    # but the best way is to add a constraint is watching
-    # FreeCAD python console while create this one by the Gui
-    conList = [
-        Sketcher.Constraint("Coincident", 0, 3, -1, 1),
-        Sketcher.Constraint("PointOnObject", 0, 2, -1),
-        Sketcher.Constraint("PointOnObject", 0, 1, -1),
-        Sketcher.Constraint("PointOnObject", 1, 2, -1),
-        Sketcher.Constraint("PointOnObject", 1, 1, -1),
-        Sketcher.Constraint("Coincident", 2, 1, 0, 2),
-        Sketcher.Constraint("Coincident", 2, 2, 1, 2),
-        Sketcher.Constraint("Coincident", 3, 1, 1, 1),
-        Sketcher.Constraint("Coincident", 3, 2, 0, 1),
-        Sketcher.Constraint("DistanceX", 2, 2, 2, 1, 58),
-        Sketcher.Constraint("DistanceX", 3, 2, 3, 1, 20),
-        Sketcher.Constraint("Radius", 0, 47),
-        Sketcher.Constraint("Radius", 1, 89),
-    ]
-    arc_sketch.addConstraint(conList)
+    sorted_edges, = Part.sortEdges(tuple(map(Part.Edge, base_curves)))
+    base_wire = Part.Wire(sorted_edges)
+    face = Part.makeFace(base_wire)
+    # split face with edge and retrieve faces
+    tool = Part.LineSegment(Vector(-6.691961, -16.840161, 0), Vector(75.156087, 79.421394, 0))
+    split = face.generalFuse(tool)[0]
+    base_shape = Part.makeShell(split.Faces)
+    shell = doc.addObject("Part::Feature", "BaseShell")
+    shell.Shape = base_shape
 
     # the part extrusion
-    extrude_part = doc.addObject("Part::Extrusion", "ArcExtrude")
-    extrude_part.Base = arc_sketch
-    extrude_part.DirMode = "Custom"
-    extrude_part.Dir = Vector(0.00, 0.00, 1.00)
-    extrude_part.DirLink = None
-    extrude_part.LengthFwd = 30.00
-    extrude_part.LengthRev = 0.00
-    extrude_part.Solid = True
-    extrude_part.Reversed = False
-    extrude_part.Symmetric = True
-    extrude_part.TaperAngle = 0.00
-    extrude_part.TaperAngleRev = 0.00
-
-    # section plane sketch
-    section_sketch = doc.addObject("Sketcher::SketchObject", "Section_Sketch")
-    section_sketch.Placement = FreeCAD.Placement(
-        Vector(0.000000, 0.000000, 0.000000),
-        Rotation(0.000000, 0.000000, 0.000000, 1.000000),
-    )
-    section_sketch.MapMode = "Deactivated"
-    section_sketch.addGeometry(
-        Part.LineSegment(Vector(-6.691961, -16.840161, 0), Vector(75.156087, 79.421394, 0)),
-        False,
-    )
-    # section_sketch.ExternalGeometry = extrude_part
-
-    # section plane extrusion
-    extrude_section_plane = doc.addObject("Part::Extrusion", "SectionPlaneExtrude")
-    extrude_section_plane.Base = section_sketch
-    extrude_section_plane.DirMode = "Custom"
-    extrude_section_plane.Dir = Vector(0.00, 0.00, -1.00)
-    extrude_section_plane.DirLink = None
-    extrude_section_plane.LengthFwd = 40.00
-    extrude_section_plane.LengthRev = 0.00
-    extrude_section_plane.Solid = False
-    extrude_section_plane.Reversed = False
-    extrude_section_plane.Symmetric = True
-    extrude_section_plane.TaperAngle = 0.00
-    extrude_section_plane.TaperAngleRev = 0.00
-
-    # TODO the extrusions could be done with much less code, see BOLTS
-
-    if FreeCAD.GuiUp:
-        arc_sketch.ViewObject.hide()
-        section_sketch.ViewObject.hide()
-        extrude_part.ViewObject.hide()
-        extrude_section_plane.ViewObject.hide()
-
-    Slice = makeSlice(name="Slice")
-    Slice.Base = extrude_part
-    Slice.Tools = extrude_section_plane
-    Slice.Mode = "Split"
-    # Slice.Proxy.execute(Slice)
-    Slice.purgeTouched()
-
-    # compound filter to get the solids of the slice
-    solid_one = makeCompoundFilter(name="SolidOne")
-    solid_one.Base = Slice
-    solid_one.FilterType = "specific items"
-    solid_one.items = "0"
-    # solid_one.Proxy.execute(solid_one)
-    solid_one.purgeTouched()
-    if FreeCAD.GuiUp:
-        solid_one.Base.ViewObject.hide()
-
-    solid_two = makeCompoundFilter(name="SolidTwo")
-    solid_two.Base = Slice
-    solid_two.FilterType = "specific items"
-    solid_two.items = "1"
-    # solid_two.Proxy.execute(solid_two)
-    solid_two.purgeTouched()
-    if FreeCAD.GuiUp:
-        solid_two.Base.ViewObject.hide()
-
-    # CompSolid out of the two solids
-    geom_obj = makeBooleanFragments(name="BooleanFragments")
-    geom_obj.Objects = [solid_one, solid_two]
-    geom_obj.Mode = "CompSolid"
-    # geom_obj.Proxy.execute(geom_obj)
-    geom_obj.purgeTouched()
-    if FreeCAD.GuiUp:
-        solid_one.ViewObject.hide()
-        solid_two.ViewObject.hide()
-    doc.recompute()
-
-    if FreeCAD.GuiUp:
-        geom_obj.ViewObject.Transparency = 50
-        geom_obj.ViewObject.Document.activeView().viewAxonometric()
-        geom_obj.ViewObject.Document.activeView().fitAll()
+    geom_obj = doc.addObject("Part::Extrusion", "ArcExtrude")
+    geom_obj.Base = shell
+    geom_obj.DirMode = "Custom"
+    geom_obj.Dir = Vector(0.00, 0.00, 1.00)
+    geom_obj.DirLink = None
+    geom_obj.LengthFwd = 30.00
+    geom_obj.LengthRev = 0.00
+    geom_obj.Solid = True
+    geom_obj.Reversed = False
+    geom_obj.Symmetric = True
+    geom_obj.TaperAngle = 0.00
+    geom_obj.TaperAngleRev = 0.00
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -236,39 +134,56 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(solver_obj)
 
     # material
-    material_obj = ObjectsFem.makeMaterialSolid(doc, "Material")
-    mat = material_obj.Material
-    mat["Name"] = "CalculiX-Steel"
-    mat["YoungsModulus"] = "210000 MPa"
-    mat["PoissonRatio"] = "0.30"
-    material_obj.Material = mat
-    analysis.addObject(material_obj)
+    mat_manager = Materials.MaterialManager()
+
+    steel = mat_manager.getMaterial("92589471-a6cb-4bbc-b748-d425a17dea7d")
+    steel_obj = ObjectsFem.makeMaterialSolid(doc, "Material")
+    steel_obj.UUID = steel.UUID
+    steel_obj.Material = steel.Properties
+    analysis.addObject(steel_obj)
 
     # constraint fixed
     con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    con_fixed.References = [(geom_obj, "Face9")]
+    con_fixed.References = [(geom_obj, "Face8")]
     analysis.addObject(con_fixed)
 
     # constraint pressure
     con_pressure = ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
-    con_pressure.References = [(geom_obj, "Face1")]
+    con_pressure.References = [(geom_obj, "Face4")]
     con_pressure.Pressure = "100.0 MPa"
     con_pressure.Reversed = False
     analysis.addObject(con_pressure)
 
     # constraint section print
     con_sectionpr = ObjectsFem.makeConstraintSectionPrint(doc, "ConstraintSectionPrint")
-    con_sectionpr.References = [(geom_obj, "Face6")]
+    con_sectionpr.References = [(geom_obj, "Face2")]
     analysis.addObject(con_sectionpr)
 
     # mesh
-    from .meshes.mesh_section_print_tetra10 import create_nodes, create_elements
-
-    fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Shape = geom_obj
+    femmesh_obj.CharacteristicLengthMax = "10 mm"
+    femmesh_obj.ElementOrder = "2nd"
     femmesh_obj.SecondOrderLinear = False
+
+    doc.recompute()
+    # generate the mesh
+    success = False
+    if not test_mode:
+        success = generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
+    if not success:
+        # try to create from existing mesh
+        from .meshes.mesh_section_print_tetra10 import create_nodes, create_elements
+
+        fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
+        femmesh_obj.FemMesh = fem_mesh
+
+    if FreeCAD.GuiUp:
+        geom_obj.ViewObject.Transparency = 50
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().fitAll()
+        femmesh_obj.ViewObject.Visibility = False
+        shell.ViewObject.Visibility = False
 
     doc.recompute()
     return doc

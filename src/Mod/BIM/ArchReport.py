@@ -696,6 +696,8 @@ class _ArchReport:
 
     def execute(self, obj):
         """Executes all statements and writes the results to the target spreadsheet."""
+        if not getattr(obj, "AutoUpdate", True):
+            return
         if not self.live_statements:
             return
 
@@ -705,15 +707,15 @@ class _ArchReport:
                 f"Report '{getattr(obj, 'Label', '')}': No target spreadsheet found.\n"
             )
             return
-        # clear all the content of the spreadsheet
+        # Save column widths before clearing so user adjustments survive recomputes.
         used_range = sp.getUsedRange()
+        saved_widths = {}
         if used_range:
+            first_col = ord(used_range[0].rstrip("0123456789"))
+            last_col = ord(used_range[1].rstrip("0123456789"))
+            for col in range(first_col, last_col + 1):
+                saved_widths[chr(col)] = sp.getColumnWidth(chr(col))
             sp.clear(f"{used_range[0]}:{used_range[1]}")
-        else:
-            FreeCAD.Console.PrintError(
-                f"Report '{getattr(obj, 'Label', '')}': Invalid cell address found, clearing spreadsheet.\n"
-            )
-            sp.clearAll()
 
         # Reset the row counter for a new report build.
         self.spreadsheet_current_row = 1
@@ -735,6 +737,8 @@ class _ArchReport:
                 print_results_in_bold=statement.print_results_in_bold,
             )
 
+        for col, width in saved_widths.items():
+            sp.setColumnWidth(col, width)
         sp.recompute()
         sp.purgeTouched()
 

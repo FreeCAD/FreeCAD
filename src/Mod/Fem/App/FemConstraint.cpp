@@ -59,6 +59,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include <App/Datums.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/Tools.h>
 
 #include "FemConstraint.h"
@@ -213,7 +214,7 @@ void Constraint::slotChangedObject(const App::DocumentObject& Obj, const App::Pr
         for (const auto ref : References.getValues()) {
             auto v = ref->getInListEx(true);
             if ((&Obj == ref) || (std::ranges::find(v, &Obj) != v.end())) {
-                this->touch();
+                References.touch();
                 return;
             }
         }
@@ -524,19 +525,13 @@ Base::Vector3d Constraint::getBasePoint(
 
 const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub& direction)
 {
-    App::DocumentObject* obj = direction.getValue();
+    const auto obj = Base::freecad_cast<App::GeoFeature*>(direction.getValue());
     if (!obj) {
         return Base::Vector3d(0, 0, 0);
     }
-
-    if (obj->isDerivedFrom<App::Line>()) {
-        Base::Vector3d vec = static_cast<App::Line*>(obj)->getDirection();
-        return vec;
-    }
-
-    if (obj->isDerivedFrom<App::Plane>()) {
-        Base::Vector3d vec = static_cast<App::Plane*>(obj)->getDirection();
-        return vec;
+    Base::Rotation rot = obj->globalPlacement().getRotation();
+    if (obj->isDerivedFrom<App::DatumElement>() || obj->isDerivedFrom<Part::Datum>()) {
+        return rot.multVec(Base::Vector3d(0, 0, 1));
     }
 
     if (!obj->isDerivedFrom<Part::Feature>()) {
@@ -551,18 +546,9 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub& direct
     }
     std::string subName = names.front();
     Part::Feature* feat = static_cast<Part::Feature*>(obj);
-    const Part::TopoShape& shape = feat->Shape.getShape();
-    if (shape.isNull()) {
+    TopoDS_Shape sh = Tools::getFeatureSubShape(feat, subName.c_str(), !this->isRecomputing());
+    if (sh.IsNull()) {
         return Base::Vector3d(0, 0, 0);
-    }
-    TopoDS_Shape sh;
-    try {
-        sh = shape.getSubShape(subName.c_str());
-    }
-    catch (Standard_Failure&) {
-        std::stringstream str;
-        str << "No such sub-element '" << subName << "'";
-        throw Base::AttributeError(str.str());
     }
 
     return Fem::Tools::getDirectionFromShape(sh);

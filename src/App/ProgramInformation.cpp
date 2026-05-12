@@ -22,6 +22,8 @@
  **************************************************************************/
 
 #include <filesystem>
+#include <algorithm>
+#include <vector>
 #include <boost/version.hpp>
 #include <boost/tokenizer.hpp>
 #include <QDir>
@@ -108,16 +110,18 @@ std::string ProgramInformation::prettyProductInfoWrapper()
     return productName.toStdString();
 }
 
-void ProgramInformation::addModuleInfo(std::stringstream& str, const std::string& path)
+static std::string getModuleInfoString(const std::string& path)
 {
     QString modPath = QString::fromStdString(path);
     QFileInfo mod(modPath);
     if (mod.isHidden()) {  // Ignore hidden directories
-        return;
+        return {};
     }
+
     std::string addonName = mod.isDir() ? QDir(modPath).dirName().toStdString()
                                         : mod.fileName().toStdString();
     std::string versionString;
+    std::stringstream str;
     try {
         auto metadataFile = std::filesystem::path(mod.absoluteFilePath().toStdString())
             / "package.xml";
@@ -145,6 +149,7 @@ void ProgramInformation::addModuleInfo(std::stringstream& str, const std::string
     }
 
     str << "\n";
+    return str.str();
 }
 
 std::string ProgramInformation::getValueOrEmpty(
@@ -335,14 +340,17 @@ void ProgramInformation::getVerboseAddOnsInfo(
 {
     // Add installed module information:
     const auto modDir = fs::path(Application::getUserAppDataDir()) / "Mod";
-    std::stringstream tmp;
+    std::vector<std::string> addons;
     if (fs::exists(modDir) && fs::is_directory(modDir)) {
         for (const auto& mod : fs::directory_iterator(modDir)) {
             if (!fs::is_directory(mod)) {
                 continue;  // Ignore files, only show directories
             }
             auto dirName = mod.path().string();
-            addModuleInfo(tmp, dirName);
+            auto moduleInfo = getModuleInfoString(dirName);
+            if (!moduleInfo.empty()) {
+                addons.push_back(std::move(moduleInfo));
+            }
         }
     }
     const auto additionalModules = getValueOrEmpty(mConfig, "AdditionalModulePaths");
@@ -351,13 +359,18 @@ void ProgramInformation::getVerboseAddOnsInfo(
         boost::char_separator<char> sep(";");
         boost::tokenizer<boost::char_separator<char>> mods(additionalModules, sep);
         for (const auto& mod : mods) {
-            addModuleInfo(tmp, mod);
+            auto moduleInfo = getModuleInfoString(mod);
+            if (!moduleInfo.empty()) {
+                addons.push_back(std::move(moduleInfo));
+            }
         }
     }
 
-    std::string addons = tmp.str();
+    std::sort(addons.begin(), addons.end());
     if (!addons.empty()) {
         str << "Installed mods:\n";
-        str << addons;
+        for (const auto& addon : addons) {
+            str << addon;
+        }
     }
 }

@@ -74,15 +74,50 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
     def initOperation(self, obj):
         """initOperation(obj) ... create engraving specific properties."""
         obj.addProperty(
-            "App::PropertyInteger",
+            "App::PropertyIntegerConstraint",
             "StartVertex",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the toolpath from"),
         )
+        obj.StartVertex = (0, 0, 999999, 1)
+        obj.addProperty(
+            "App::PropertyBool",
+            "Reverse",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Reverse milling direction"),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "CutPattern",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Set the cut pattern for the operation"),
+        )
+        obj.CutPattern = [
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
+        ]
+        obj.CutPattern = "Bidirectional"
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
-        # upgrade ...
+        if not hasattr(obj, "Reverse"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Reverse",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Reverse milling direction"),
+            )
+        if not hasattr(obj, "CutPattern"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "CutPattern",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Set the cut pattern for the operation"),
+            )
+            obj.CutPattern = [
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
+            ]
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
@@ -116,7 +151,9 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             Path.Log.track(self.model)
             for base in self.model:
                 Path.Log.track(base.Label)
-                if base.isDerivedFrom("Part::Feature") and base.Shape.Volume == 0:
+                if base.isDerivedFrom("Part::Feature") and Path.Geom.isRoughly(
+                    base.Shape.Volume, 0
+                ):
                     jobshapes.append(base.Shape)
 
         if jobshapes:
@@ -128,16 +165,16 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 else:
                     shapeWires = shape.Wires
                 Path.Log.debug("jobshape has {} edges".format(len(shape.Edges)))
-                self.commandlist.append(
-                    Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
+                self.buildpathocc(
+                    obj,
+                    shapeWires,
+                    self.getZValues(obj),
+                    forward=not obj.Reverse,
+                    start_idx=obj.StartVertex,
                 )
-                self.buildpathocc(obj, shapeWires, self.getZValues(obj))
                 wires.extend(shapeWires)
             self.wires = wires
             Path.Log.debug("processing {} jobshapes -> {} wires".format(len(jobshapes), len(wires)))
-        # the last command is a move to clearance, which is automatically added by PathOp
-        if self.commandlist:
-            self.commandlist.pop()
 
     def opUpdateDepths(self, obj):
         """updateDepths(obj) ... engraving is always done at the top most z-value"""

@@ -59,7 +59,6 @@ import re
 import time
 import FreeCAD
 import Part
-import Mesh
 import DraftVecUtils
 import DraftGeomUtils
 import WorkingPlane
@@ -87,6 +86,13 @@ from draftutils import params
 from draftutils import utils
 from draftutils.utils import pyopen
 from PySide import QtCore, QtGui
+
+try:
+    import Mesh
+
+    mesh_available = True
+except ImportError:
+    mesh_available = False
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -1210,6 +1216,9 @@ def drawMesh(mesh, forceShape=False):
     --------
     drawBlock
     """
+    if not mesh_available:
+        FCC.PrintWarning("Could not import mesh object as the Mesh module is not installed.\n")
+        return None
     md = []
     if mesh.flags == 16:
         pts = mesh.points

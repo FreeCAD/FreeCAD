@@ -202,7 +202,7 @@ protected:
     void dumpRect(const char* text, QRectF rect);
     bool m_isHovered;
 
-    void updateFrameVisibility();
+    virtual void updateFrameVisibility();
     bool shouldShowFromViewProvider() const;
     bool shouldShowFrame() const;
 

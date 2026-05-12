@@ -85,7 +85,7 @@ runs:
         id: measure
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
         with:
-          testCommand: ${{ inputs.builddir }}/tests/Material_tests_run --gtest_output=json:${{ inputs.reportdir }}measure_gtest_results.json
+          testCommand: ${{ inputs.builddir }}/tests/Measure_tests_run --gtest_output=json:${{ inputs.reportdir }}measure_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}measure_gtest_test_log.txt
           testName: Measure
       - name: C++ Mesh tests
@@ -99,7 +99,7 @@ runs:
         id: meshpart
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
         with:
-          testCommand: ${{ inputs.builddir }}/tests/Mesh_tests_run --gtest_output=json:${{ inputs.reportdir }}meshpart_gtest_results.json
+          testCommand: ${{ inputs.builddir }}/tests/MeshPart_tests_run --gtest_output=json:${{ inputs.reportdir }}meshpart_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}meshpart_gtest_test_log.txt
           testName: MeshPart
       - name: C++ Misc tests
@@ -141,7 +141,7 @@ runs:
         id: spreadsheet
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
         with:
-          testCommand: ${{ inputs.builddir }}/tests/Sketcher_tests_run --gtest_output=json:${{ inputs.reportdir }}spreadsheet_gtest_results.json
+          testCommand: ${{ inputs.builddir }}/tests/Spreadsheet_tests_run --gtest_output=json:${{ inputs.reportdir }}spreadsheet_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}spreadsheet_gtest_test_log.txt
           testName: Spreadsheet
       - name: C++ Start tests

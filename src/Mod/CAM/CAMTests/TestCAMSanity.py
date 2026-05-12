@@ -22,19 +22,10 @@
 # ***************************************************************************
 
 import FreeCAD
-import Path
-from Path.Main.Sanity import ReportGenerator, Sanity
-from Path.Main.Sanity.ImageBuilder import (
-    DummyImageBuilder,
-    ImageBuilderFactory,
-    ImageBuilder,
-)
+from Path.Main.Sanity import Sanity
+from Path.Main.Sanity.ImageBuilder import DummyImageBuilder
 import os
-import Path.Post.Command as PathPost
-from Path.Post.Processor import PostProcessor
-import unittest
 from unittest.mock import patch, MagicMock
-import urllib
 import tempfile
 from CAMTests.PathTestUtils import PathTestBase
 
@@ -742,11 +733,9 @@ class TestCAMSanity(PathTestBase):
         mock_machine = MagicMock()
         mock_machine.postprocessor_file_name = "test_post"
 
-        import unittest.mock
-
-        with unittest.mock.patch(
+        with patch(
             "Machine.models.machine.MachineFactory.get_machine", return_value=mock_machine
-        ), unittest.mock.patch(
+        ), patch(
             "Path.Post.Processor.PostProcessorFactory.get_post_processor",
             return_value=MockPostprocessor(),
         ):
@@ -783,11 +772,9 @@ class TestCAMSanity(PathTestBase):
         mock_machine = MagicMock()
         mock_machine.postprocessor_file_name = "error_post"
 
-        import unittest.mock
-
-        with unittest.mock.patch(
+        with patch(
             "Machine.models.machine.MachineFactory.get_machine", return_value=mock_machine
-        ), unittest.mock.patch(
+        ), patch(
             "Path.Post.Processor.PostProcessorFactory.get_post_processor",
             return_value=ErrorPostprocessor(),
         ):
@@ -844,11 +831,7 @@ class TestCAMSanity(PathTestBase):
         mock_machine = MagicMock()
         mock_machine.postprocessor_file_name = "generic_plasma"
 
-        import unittest.mock
-
-        with unittest.mock.patch(
-            "Machine.models.machine.MachineFactory.get_machine", return_value=mock_machine
-        ):
+        with patch("Machine.models.machine.MachineFactory.get_machine", return_value=mock_machine):
             # Call validate_job - this should load the real GenericPlasma postprocessor
             all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(mock_job)
 

@@ -37,6 +37,8 @@ class NavlibInterface;
 
 namespace Gui
 {
+GuiExport void requireMainThread(const char* api);
+
 class ApplicationPy;
 class BaseView;
 class CommandManager;

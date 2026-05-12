@@ -760,11 +760,23 @@ void SelectionMenu::processSelections(
     for (int i = 0; i < (int)selections.size(); ++i) {
         const auto& sel = selections[i];
 
-        App::DocumentObject* sobj = getSubObject(sel);
+        App::DocumentObject* sobj = sel.obj;
+        bool usedFallback = false;
+        if (!sel.subName.empty()) {
+            App::DocumentObject* resolved = sel.obj->getSubObject(sel.subName.c_str());
+            if (resolved) {
+                sobj = resolved;
+            }
+            else {
+                usedFallback = true;
+            }
+        }
         std::string elementType = extractElementType(sel);
-        std::string objKey = createObjectKey(sel);
+        // When sub-path resolution failed, all picks share the same container object.
+        // Collapse them to a single menu entry so the container does not appear as duplicates.
+        std::string objKey = usedFallback ? std::string(sel.objName) : createObjectKey(sel);
         std::string itemId = elementType + "|" + std::string(sobj->Label.getValue()) + "|"
-            + sel.subName;
+            + (usedFallback ? sel.objName : sel.subName);
 
         if (processedItems.find(itemId) != processedItems.end()) {
             continue;
@@ -902,17 +914,6 @@ void SelectionMenu::leaveEvent(QEvent* e)
     QMenu::leaveEvent(e);
 }
 
-App::DocumentObject* SelectionMenu::getSubObject(const PickData& sel)
-{
-    App::DocumentObject* sobj = sel.obj;
-    if (!sel.subName.empty()) {
-        sobj = sel.obj->getSubObject(sel.subName.c_str());
-        if (!sobj) {
-            sobj = sel.obj;
-        }
-    }
-    return sobj;
-}
 
 std::string SelectionMenu::extractElementType(const PickData& sel)
 {
@@ -1074,7 +1075,12 @@ void SelectionMenu::addWholeObjectSelection(
 
                 if (!subObjName.empty()) {
                     wholeObjKey = std::string(sel.objName) + "." + subObjName + ".";
-                    wholeObjSubName = subObjName + ".";
+                    // use the full sub-object path up to and including the
+                    // last dot, not just the final segment. this preserves
+                    // the correct chain ie. "Cone001.Cone." instead of
+                    // just "Cone.") for objects inside assembly links.
+                    // see github issue: https://github.com/freecad/freecad/issues/29024
+                    wholeObjSubName = subNameStr.substr(0, lastDot + 1);
                 }
             }
         }
