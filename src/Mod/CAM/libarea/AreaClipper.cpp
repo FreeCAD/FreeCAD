@@ -415,7 +415,8 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
             phi_total = 0.0;
         }
         else {
-            heeks::Point center = (prevZ == pt.z) ? arcMap.point_map[pt.z] : centerIt->second;
+            const heeks::Point center = (prevZ == pt.z) ? arcMap.point_map.at(pt.z)
+                                                        : centerIt->second;
 
             const double phi0 = atan2(prevP.y - center.y, prevP.x - center.x);
             const double phi1 = atan2(p.y - center.y, p.x - center.x);
@@ -455,6 +456,9 @@ static void SetFromResult(CArea& area, Paths64& pp, bool reverse, bool is_closed
     if (clear) {
         area.m_curves.clear();
     }
+
+    // Process intersection points before reconstructing curves
+    area.ProcessIntersectionPoints(pp, is_closed);
 
     for (unsigned int i = 0; i < pp.size(); i++) {
         Path64& p = pp[i];
@@ -661,6 +665,10 @@ void CArea::ZCallback(
 
         // Record the intersection: which edges intersected to create this point
         m_arc_fitting_map.intersections[pt.z] = std::make_tuple(e1bot.z, e1top.z, e2bot.z, e2top.z);
+
+        // Add the new point to the point map
+        PointD dp = ToPointD(pt);
+        m_arc_fitting_map.point_map[pt.z] = heeks::Point(dp.x / m_units, dp.y / m_units);
     }
 }
 
@@ -675,4 +683,95 @@ ZCallback64 CArea::MakeZCallback()
         std::placeholders::_4,
         std::placeholders::_5
     );
+}
+
+void CArea::ProcessIntersectionPoints(const Paths64& paths, bool is_closed)
+{
+    // Process each path
+    for (const Path64& path : paths) {
+        if (path.empty()) {
+            continue;
+        }
+
+        // Loop over edges, including wraparound edge if closed
+        size_t num_edges = is_closed ? path.size() : path.size() - 1;
+        for (size_t i = 0; i < num_edges; i++) {
+            size_t idx1 = i;
+            size_t idx2 = (i + 1) % path.size();
+
+            const Point64& p1 = path[idx1];
+            const Point64& p2 = path[idx2];
+
+            // Check if either endpoint is from an intersection
+            auto it1 = m_arc_fitting_map.intersections.find(p1.z);
+            auto it2 = m_arc_fitting_map.intersections.find(p2.z);
+            bool p1_is_new = it1 != m_arc_fitting_map.intersections.end();
+            bool p2_is_new = it2 != m_arc_fitting_map.intersections.end();
+
+            if (p1_is_new && p2_is_new) {
+                // Both points are intersections - check if they share a parent edge
+                const auto& [p1_e1bot, p1_e1top, p1_e2bot, p1_e2top] = it1->second;
+                const auto& [p2_e1bot, p2_e1top, p2_e2bot, p2_e2top] = it2->second;
+
+                // Sort each edge by increasing z for easy comparison
+                std::pair<int64_t, int64_t> p1_edge1
+                    = {std::min(p1_e1bot, p1_e1top), std::max(p1_e1bot, p1_e1top)};
+                std::pair<int64_t, int64_t> p1_edge2
+                    = {std::min(p1_e2bot, p1_e2top), std::max(p1_e2bot, p1_e2top)};
+                std::pair<int64_t, int64_t> p2_edge1
+                    = {std::min(p2_e1bot, p2_e1top), std::max(p2_e1bot, p2_e1top)};
+                std::pair<int64_t, int64_t> p2_edge2
+                    = {std::min(p2_e2bot, p2_e2top), std::max(p2_e2bot, p2_e2top)};
+
+                std::pair<int64_t, int64_t> new_edge = {std::min(p1.z, p2.z), std::max(p1.z, p2.z)};
+
+                // Check if p1_edge1 matches either p2 edge
+                if (p1_edge1 == p2_edge1 || p1_edge1 == p2_edge2) {
+                    auto arc_it = m_arc_fitting_map.arc_centers.find(p1_edge1);
+                    if (arc_it != m_arc_fitting_map.arc_centers.end()) {
+                        m_arc_fitting_map.arc_centers[new_edge] = arc_it->second;
+                    }
+                }
+
+                // Check if p1_edge2 matches either p2 edge
+                if (p1_edge2 == p2_edge1 || p1_edge2 == p2_edge2) {
+                    auto arc_it = m_arc_fitting_map.arc_centers.find(p1_edge2);
+                    if (arc_it != m_arc_fitting_map.arc_centers.end()) {
+                        m_arc_fitting_map.arc_centers[new_edge] = arc_it->second;
+                    }
+                }
+            }
+            else if (p1_is_new || p2_is_new) {
+                // One point is new, one is old
+                const Point64& p_new = p1_is_new ? p1 : p2;
+                const Point64& p_old = p1_is_new ? p2 : p1;
+                auto it_new = p1_is_new ? it1 : it2;
+
+                const auto& [p_new_e1bot, p_new_e1top, p_new_e2bot, p_new_e2top] = it_new->second;
+
+                std::pair<int64_t, int64_t> new_edge
+                    = {std::min(p_new.z, p_old.z), std::max(p_new.z, p_old.z)};
+
+                // Check if p_old.z is an endpoint of edge1
+                if (p_old.z == p_new_e1bot || p_old.z == p_new_e1top) {
+                    std::pair<int64_t, int64_t> parent_edge
+                        = {std::min(p_new_e1bot, p_new_e1top), std::max(p_new_e1bot, p_new_e1top)};
+                    auto arc_it = m_arc_fitting_map.arc_centers.find(parent_edge);
+                    if (arc_it != m_arc_fitting_map.arc_centers.end()) {
+                        m_arc_fitting_map.arc_centers[new_edge] = arc_it->second;
+                    }
+                }
+
+                // Check if p_old.z is an endpoint of edge2
+                if (p_old.z == p_new_e2bot || p_old.z == p_new_e2top) {
+                    std::pair<int64_t, int64_t> parent_edge
+                        = {std::min(p_new_e2bot, p_new_e2top), std::max(p_new_e2bot, p_new_e2top)};
+                    auto arc_it = m_arc_fitting_map.arc_centers.find(parent_edge);
+                    if (arc_it != m_arc_fitting_map.arc_centers.end()) {
+                        m_arc_fitting_map.arc_centers[new_edge] = arc_it->second;
+                    }
+                }
+            }
+        }
+    }
 }
