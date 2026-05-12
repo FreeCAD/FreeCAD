@@ -669,6 +669,24 @@ class MaterialEditor:
             self.chooseMaterial(index)
         self.directory = os.path.dirname(self.card_path)
 
+    def isResourceMaterial(self, path):
+        try:
+            resource_dir = os.path.abspath(FreeCAD.getResourceDir())
+            material_path = os.path.abspath(path)
+            return os.path.commonpath([resource_dir, material_path]) == resource_dir
+        except ValueError:
+            return False
+
+    def getDefaultSavePath(self, name):
+        if (
+            self.card_path
+            and os.path.isfile(self.card_path)
+            and not self.isResourceMaterial(self.card_path)
+        ):
+            return self.card_path
+
+        return os.path.join(self.save_directory, name + ".FCMat")
+
     def savefile(self):
         "Saves a FCMat file."
 
@@ -683,7 +701,7 @@ class MaterialEditor:
         filetuple = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
             "Save FreeCAD material file",
-            self.save_directory + "/" + name + ".FCMat",
+            self.getDefaultSavePath(name),
             "*.FCMat"
         )
         # a tuple of two empty strings returns True, so use the filename directly
