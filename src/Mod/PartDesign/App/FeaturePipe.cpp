@@ -30,6 +30,7 @@
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
+#include <BRepCheck_Analyzer.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 #include <gp_Ax2.hxx>
 #include <Law_Function.hxx>
@@ -447,28 +448,39 @@ App::DocumentObjectExecReturn* Pipe::execute()
             );
         }
 
-        auto shapes = result.getSubTopoShapes(TopAbs_SHELL);
-        for (auto& s : shapes) {
-            // build the solid
-            s = s.makeElementSolid();
-            BRepClass3d_SolidClassifier SC(s.getShape());
-            SC.PerformInfinitePoint(Precision::Confusion());
-            if (SC.State() == TopAbs_IN) {
-                s.setShape(s.getShape().Reversed(), false);
-            }
-        }
-
-        AddSubShape.setValue(result.makeElementCompound(
-            shapes,
-            nullptr,
-            Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape
-        ));
-
-        if (shapes.size() > 1) {
-            result.makeElementFuse(shapes);
+        const bool keepClosedSolid = frontwires.empty() && backwires.empty()
+            && result.countSubShapes(TopAbs_SOLID)
+            && BRepCheck_Analyzer(result.getShape()).IsValid();
+        if (keepClosedSolid) {
+            // Closed sweeps can form one solid with inner shells; keep that topology so
+            // profile islands remain hollow instead of being fused into the outer shell.
+            result.fixSolidOrientation();
+            AddSubShape.setValue(result);
         }
         else {
-            result = shapes.front();
+            auto shapes = result.getSubTopoShapes(TopAbs_SHELL);
+            for (auto& s : shapes) {
+                // build the solid
+                s = s.makeElementSolid();
+                BRepClass3d_SolidClassifier SC(s.getShape());
+                SC.PerformInfinitePoint(Precision::Confusion());
+                if (SC.State() == TopAbs_IN) {
+                    s.setShape(s.getShape().Reversed(), false);
+                }
+            }
+
+            AddSubShape.setValue(result.makeElementCompound(
+                shapes,
+                nullptr,
+                Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+            ));
+
+            if (shapes.size() > 1) {
+                result.makeElementFuse(shapes);
+            }
+            else {
+                result = shapes.front();
+            }
         }
 
         if (base.isNull()) {

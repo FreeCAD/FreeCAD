@@ -94,6 +94,38 @@ class TestPipe(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.SubtractivePipe.Shape.Volume, 100 - 3.14159265)
 
+    def testClosedAdditivePipePreservesProfileIsland(self):
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.ProfileSketch = self.Doc.addObject("Sketcher::SketchObject", "ProfileSketch")
+        self.Body.addObject(self.ProfileSketch)
+        self.ProfileSketch.addGeometry(
+            [
+                Part.Circle(App.Vector(0.0, 0.0, 0.0), App.Vector(0.0, 0.0, 1.0), 1.0),
+                Part.Circle(App.Vector(0.0, 0.0, 0.0), App.Vector(0.0, 0.0, 1.0), 0.5),
+            ],
+            False,
+        )
+        self.Doc.recompute()
+
+        self.SpineSketch = self.Doc.addObject("Sketcher::SketchObject", "SpineSketch")
+        self.Body.addObject(self.SpineSketch)
+        self.SpineSketch.MapMode = "FlatFace"
+        self.SpineSketch.AttachmentSupport = (self.Doc.XZ_Plane, [""])
+        self.SpineSketch.addGeometry(
+            Part.Circle(App.Vector(5.0, 0.0, 0.0), App.Vector(0.0, 0.0, 1.0), 5.0),
+            False,
+        )
+        self.Doc.recompute()
+
+        self.AdditivePipe = self.Doc.addObject("PartDesign::AdditivePipe", "AdditivePipe")
+        self.Body.addObject(self.AdditivePipe)
+        self.AdditivePipe.Profile = self.ProfileSketch
+        self.AdditivePipe.Spine = self.SpineSketch
+        self.Doc.recompute()
+
+        self.assertEqual(len(self.AdditivePipe.Shape.Solids), 1)
+        self.assertEqual(len(self.AdditivePipe.Shape.Shells), 2)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("PartDesignTestPipe")
