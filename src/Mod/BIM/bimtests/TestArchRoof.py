@@ -152,3 +152,25 @@ class TestArchRoof(TestArchBase.TestArchBase):
         roof = Arch.makeRoof(name="TestRoof")
         self.assertIsNotNone(roof, "makeRoof failed to create a roof object.")
         self.assertEqual(roof.Label, "TestRoof", "Roof label is incorrect.")
+
+    def test_roof_subtraction(self):
+        """Test the ArchRoof getSubVolume function."""
+        operation = "Arch Roof subtraction (roof brep has small inaccuracies)"
+        self.printTestMessage(operation)
+
+        brep_file = os.path.join(os.path.dirname(__file__), "test_roof_subtraction.brep")
+        shp = Part.Shape()
+        shp.importBrep(brep_file)
+        obj = Part.show(shp)
+        roof = Arch.makeRoof(obj)
+
+        points = [App.Vector(-5000, 5000, 0), App.Vector(15000, 5000, 0)]
+        line = Draft.make_wire(points)
+        wall = Arch.makeWall(line, height=3000)
+
+        App.ActiveDocument.recompute()
+        vol = wall.Shape.Volume
+        wall.Subtractions = [roof]
+        App.ActiveDocument.recompute()
+        vol_new = wall.Shape.Volume
+        self.assertNotEqual(vol, vol_new, "Roof sub volume is incorrect")

@@ -41,7 +41,6 @@
 # include <boost/scope_exit.hpp>
 # include <chrono>
 # include <optional>
-# include <random>
 # include <memory>
 # include <utility>
 # include <set>
@@ -1342,19 +1341,18 @@ Application::TransactionSignaller::~TransactionSignaller() {
     }
 }
 
-int64_t Application::applicationPid()
+int64_t Application::uniqueInstanceId()
 {
-    static int64_t randomNumber = []() {
+    static int64_t uniqueId = []() {
         const auto tp = std::chrono::high_resolution_clock::now();
         const auto dur = tp.time_since_epoch();
-        const auto seed = dur.count();
-        std::mt19937 generator(static_cast<unsigned>(seed));
-        constexpr int64_t minValue {1};
-        constexpr int64_t maxValue {1000000};
-        std::uniform_int_distribution<int64_t> distribution(minValue, maxValue);
-        return distribution(generator);
+        // Mix up the bits. Smallest implementation of a xorshift64 there is.
+        auto hash = static_cast<int64_t>(dur.count());
+        hash ^= hash << 7;
+        hash ^= hash >> 9;
+        return hash & 0x7FFFFFFFFFFFFFFFULL;
     }();
-    return randomNumber;
+    return uniqueId;
 }
 
 std::string Application::getHomePath()

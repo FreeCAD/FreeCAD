@@ -568,6 +568,9 @@ public:
     bool getSceneBoundBox(SbBox3f& box) const;
     bool getSceneBoundBox(Base::BoundBox3d& box) const;
 
+Q_SIGNALS:
+    void cameraChanged();
+
 protected:
     static GLenum getInternalTextureFormat();
     void renderScene();

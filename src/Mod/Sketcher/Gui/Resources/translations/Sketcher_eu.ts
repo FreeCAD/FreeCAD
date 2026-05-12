@@ -1122,8 +1122,8 @@ invalid constraints, and degenerate geometry</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="176"/>
-      <source>Invalid selection</source>
-      <translation>Baliogabeko hautapena</translation>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>

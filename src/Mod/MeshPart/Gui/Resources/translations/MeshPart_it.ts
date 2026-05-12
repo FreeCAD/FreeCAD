@@ -489,7 +489,7 @@ Un valore nell'intervallo tra 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Nessun documento attivo</translation>
     </message>
     <message>

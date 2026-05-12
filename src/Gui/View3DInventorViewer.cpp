@@ -3504,6 +3504,8 @@ void View3DInventorViewer::setCameraType(SoType type)
     }
 
     lightRotation->rotation.connectFrom(&cam->orientation);
+
+    Q_EMIT cameraChanged();
 }
 
 bool View3DInventorViewer::setCamera(const char* pCamera)

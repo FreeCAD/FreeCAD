@@ -1119,7 +1119,7 @@ invalid constraints, and degenerate geometry</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="176"/>
-      <source>Invalid selection</source>
+      <source>Invalid Selection</source>
       <translation>Хібны выбар</translation>
     </message>
     <message>

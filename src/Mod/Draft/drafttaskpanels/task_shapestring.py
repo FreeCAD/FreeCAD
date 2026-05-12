@@ -192,6 +192,8 @@ class ShapeStringTaskPanel:
             self.point = point
         else:
             self.point = self.wp.get_global_coords(point)
+        self.pointPicked = True
+        self.update_hints()
 
     def set_point_x(self, val):
         self.set_point_coord("x", val)

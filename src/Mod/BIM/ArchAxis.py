@@ -680,12 +680,28 @@ class _ViewProviderAxis:
                                 fs = vobj.BubbleSize.Value * 0.75
                             else:
                                 fs = vobj.BubbleSize * 0.75
+                            rot = obj.Placement.Rotation
+                            z_vec = FreeCAD.Vector(0, 0, 1)
+                            normal = rot.multVec(z_vec)  # Normal of the axis plane.
+                            if z_vec.getAngle(normal) < math.pi / 4:
+                                # The axis plane is more or less aligned with the global XY-plane.
+                                # Use the global Y-axis as the up_vec.
+                                up_vec = FreeCAD.Vector(0, 1, 0)
+                            else:
+                                # Use the global Z-axis as the up_vec.
+                                up_vec = z_vec
+                            rot_local = FreeCAD.Rotation(
+                                FreeCAD.Vector(1, 0, 0),
+                                rot.inverted().multVec(up_vec),
+                                z_vec,
+                                "ZYX",
+                            )
                             center_world = texts[i][1]
                             center_local = pla_inv.multVec(center_world)
-                            txpos = FreeCAD.Vector(
-                                center_local.x, center_local.y - fs / 2.5, center_local.z
-                            )
-                            tr.translation.setValue(tuple(txpos))
+                            offset_world = FreeCAD.Vector(0, -fs / 2.5, 0)
+                            offset_local = rot_local.multVec(offset_world)
+                            tr.translation.setValue(tuple(center_local + offset_local))
+                            tr.rotation.setValue(rot_local.Q)
                             fo = coin.SoFont()
                             fn = params.get_param("textfont")
                             if hasattr(vobj, "FontName") and vobj.FontName:

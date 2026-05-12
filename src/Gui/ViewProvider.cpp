@@ -1123,6 +1123,16 @@ void ViewProvider::setRenderCacheMode(int mode)
                                       : (mode == 1 ? SoSeparator::ON : SoSeparator::OFF);
 }
 
+void ViewProvider::toggleVisibility()
+{
+    if (isShow()) {
+        hide();
+    }
+    else {
+        show();
+    }
+}
+
 const View3DInventorViewer* ViewProvider::getActiveViewer() const
 {
     auto view = dynamic_cast<View3DInventor*>(Application::Instance->activeView());
