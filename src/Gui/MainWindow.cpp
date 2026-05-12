@@ -31,6 +31,7 @@
 #include <QDesktopServices>
 #include <QDockWidget>
 #include <QFontMetrics>
+#include <QGuiApplication>
 #include <QKeySequence>
 #include <QLabel>
 #include <QMdiSubWindow>
@@ -190,6 +191,7 @@ class DimensionWidget: public QPushButton, WindowParameter
 {
     Q_OBJECT
     int fixedWidthValue = 0;
+    QMenu* unitMenu = nullptr;
 
 public:
     explicit DimensionWidget(QWidget* parent)
@@ -199,7 +201,7 @@ public:
         setFlat(true);
         setStyleSheet("QPushButton { text-align: left; padding-left: 6px; padding-right: 6px; }");
         // create the action buttons
-        auto* unitMenu = new QMenu(this);
+        unitMenu = new QMenu(this);
         auto* actionGrp = new QActionGroup(unitMenu);
 
         auto setAction = [&, index {0}](const std::string&) mutable {
@@ -222,6 +224,34 @@ public:
                 view->setShowAll(show);
             }
         });
+
+        QObject::connect(unitMenu, &QMenu::aboutToShow, this, [this]() {
+            QTimer::singleShot(0, this, [this]() {
+                if (!unitMenu) {
+                    return;
+                }
+                const QSize menuSize = unitMenu->sizeHint();
+                QPoint menuPos = mapToGlobal(rect().topLeft());
+                menuPos.setY(menuPos.y() - menuSize.height());
+
+                QScreen* screen = QGuiApplication::screenAt(mapToGlobal(rect().center()));
+                if (!screen) {
+                    screen = QGuiApplication::primaryScreen();
+                }
+                if (screen) {
+                    const QRect available = screen->availableGeometry();
+                    const int minX = available.left();
+                    const int maxX = available.right() - menuSize.width() + 1;
+                    menuPos.setX(std::clamp(menuPos.x(), minX, maxX));
+                    if (menuPos.y() < available.top()) {
+                        menuPos.setY(mapToGlobal(rect().bottomLeft()).y());
+                    }
+                }
+
+                unitMenu->move(menuPos);
+            });
+        });
+
         setMenu(unitMenu);
         retranslateUi();
         unitChanged();
@@ -329,7 +359,11 @@ private:
 
     void unitChanged()
     {
-        auto actions = menu()->actions();
+        if (!unitMenu) {
+            return;
+        }
+
+        auto actions = unitMenu->actions();
         if (actions.empty()) {
             return;
         }
@@ -349,28 +383,34 @@ private:
 
         actions[userSchema]->setChecked(true);
         QAction* act = actions[userSchema];
-        if (!act || act->text().isEmpty()) {
+        QString abbreviation = act ? act->property("abbreviation").toString() : QString();
+        if (!act || abbreviation.isEmpty()) {
             setText("Units");
             setToolTip(QString());
             return;
         }
 
-        setText(act->text());
+        setText(abbreviation);
         setToolTip(act->toolTip());
     }
 
     void retranslateUi()
     {
-        auto actions = menu()->actions();
+        if (!unitMenu) {
+            return;
+        }
+
+        auto actions = unitMenu->actions();
         auto abbreviations = Base::UnitsApi::getAbbreviations();
         auto descriptions = Base::UnitsApi::getDescriptions();
 
         assert(actions.size() <= static_cast<qsizetype>(abbreviations.size()));
         assert(actions.size() <= static_cast<qsizetype>(descriptions.size()));
         for (qsizetype i = 0; i < actions.size(); ++i) {
-            actions[i]->setText(QString::fromStdString(abbreviations[i]));
+            actions[i]->setText(QString::fromStdString(descriptions[i]));
             actions[i]->setToolTip(QString::fromStdString(descriptions[i]));
             actions[i]->setStatusTip(QString::fromStdString(descriptions[i]));
+            actions[i]->setProperty("abbreviation", QString::fromStdString(abbreviations[i]));
         }
         updateFixedWidth();
     }
