@@ -759,15 +759,15 @@ def getCoinSVG(cutplane, objs, cameradata=None, linewidth=0.2, singleface=False,
     boundbox = FreeCAD.BoundBox()
     for obj in objs:
         if hasattr(obj.ViewObject, "RootNode") and obj.ViewObject.RootNode:
-            old_visibility = obj.ViewObject.isVisible()
-            # ignore visibility as only visible objects are passed here
-            obj.ViewObject.show()
-            node_copy = obj.ViewObject.RootNode.copy()
+            old_visibility = obj.ViewObject.Visibility
+            # Temporarily show the object so Coin can copy its node, then
+            # restore the document-visible state without side effects.
+            try:
+                obj.ViewObject.Visibility = True
+                node_copy = obj.ViewObject.RootNode.copy()
+            finally:
+                obj.ViewObject.Visibility = old_visibility
             root_node.addChild(node_copy)
-            if old_visibility:
-                obj.ViewObject.show()
-            else:
-                obj.ViewObject.hide()
 
         if hasattr(obj, "Shape") and hasattr(obj.Shape, "BoundBox"):
             boundbox.add(obj.Shape.BoundBox)
