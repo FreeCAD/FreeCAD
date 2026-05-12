@@ -394,6 +394,7 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
     // Loop through points starting at j0
     int64_t prevZ = -1;
     heeks::Point prevP;
+    double phi_total = 0.0;
     int num_j = p.size() + (is_closed ? 1 : 0);
     for (int dj = 0; dj < num_j; dj++) {
         const int j = (j0 + (reverse ? -1 : 1) * dj + 2 * p.size()) % p.size();
@@ -406,13 +407,15 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
 
         // Check if this segment is an arc (presence in arc_centers means it's an arc)
         auto centerIt = arcMap.arc_centers.find(zPair);
-        bool isLine = (prevZ == -1) || (centerIt == arcMap.arc_centers.end()) || !CArea::m_fit_arcs;
+        bool isLine = !CArea::m_fit_arcs || (prevZ == -1)
+            || ((prevZ != pt.z) && (centerIt == arcMap.arc_centers.end()));
 
         if (isLine) {
             curve.m_vertices.emplace_back(0, p, heeks::Point {0, 0});
+            phi_total = 0.0;
         }
         else {
-            heeks::Point center = centerIt->second;
+            heeks::Point center = (prevZ == pt.z) ? arcMap.point_map[pt.z] : centerIt->second;
 
             const double phi0 = atan2(prevP.y - center.y, prevP.x - center.x);
             const double phi1 = atan2(p.y - center.y, p.x - center.x);
@@ -429,13 +432,15 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
             int type = (dphi > 0) ? 1 : -1;
 
             if (curve.m_vertices.size() > 0 && curve.m_vertices.back().m_type == type
-                && curve.m_vertices.back().m_c == center) {
+                && curve.m_vertices.back().m_c == center && phi_total + abs(dphi) <= M_PI) {
                 // Extend the previous CVertex arc
                 curve.m_vertices.back().m_p = p;
+                phi_total += abs(dphi);
             }
             else {
                 // Add a new CVertex for the arc
                 curve.m_vertices.emplace_back(type, p, center);
+                phi_total = abs(dphi);
             }
         }
 
