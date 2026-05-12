@@ -8,6 +8,7 @@
 #include "clipper2/clipper.h"
 #include <cmath>
 #include <functional>
+#include <optional>
 
 using namespace heeks;
 using namespace Clipper2Lib;
@@ -33,16 +34,37 @@ static PointD ToPointD(const Point64& p)
 
 static std::list<PointD> pts_for_AddVertex;
 
-static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex, ArcFittingMap& arcMap)
+/**
+ * AddVertex: Accumulate points into pts_for_AddVertex. Interpolate arcs and assign z-values as
+ * needed for later reconstruction of the arcs.
+ *
+ * @param vertex The CVertex representing the next movement
+ * @param prev_vertex The previous CVertex, or NULL if none. Used only to determine the movement
+ * start point
+ * @param arcMap The map to populate with arc metadata, for arc reconstruction
+ * @param zLoop On closed curves, when looping back to the start, use this parameter to provide the
+ * start z index. Connectivity information will be added to arcMap, but no new point will be
+ * allocated for the start/end location
+ */
+static void AddVertex(
+    const CVertex& vertex,
+    const CVertex* prev_vertex,
+    ArcFittingMap& arcMap,
+    std::optional<int> zLoop = {}
+)
 {
     if (vertex.m_type == 0 || prev_vertex == NULL) {
-        const int64_t z = arcMap.z_next++;
-        PointD p(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z);
-        arcMap.point_map[z] = vertex.m_p;
-        pts_for_AddVertex.push_back(p);
-        arcMap.z_prev = z;
-        std::cerr << "AddVertex: Line/First z=" << z << " at (" << vertex.m_p.x << ", "
-                  << vertex.m_p.y << ")" << std::endl;
+        if (!zLoop.has_value()) {
+            const int64_t z = arcMap.z_next++;
+            PointD p(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z);
+            arcMap.point_map[z] = vertex.m_p;
+            std::cerr << "point_map[" << z << "] = (" << vertex.m_p.x << ", " << vertex.m_p.y << ")"
+                      << std::endl;
+            pts_for_AddVertex.push_back(p);
+            arcMap.z_prev = z;
+            std::cerr << "AddVertex: Line/First z=" << z << " at (" << vertex.m_p.x << ", "
+                      << vertex.m_p.y << ")" << std::endl;
+        }
     }
     else {
         if (vertex.m_p != prev_vertex->m_p) {
@@ -77,25 +99,38 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex, ArcFitt
                       << ")" << std::endl;
 
             for (int i = 1; i <= num_segments; i++) {
-                // Create a unique z-value for each interpolated point along the arc
-                const int64_t z = arcMap.z_next++;
-
                 if (i == num_segments) {
-                    pts_for_AddVertex.push_back(
-                        PointD(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z)
-                    );
-                    arcMap.point_map[z] = vertex.m_p;
+                    if (zLoop.has_value()) {
+                        // since zLoop represents the curve start, its z value will be smaller
+                        arcMap.arc_centers[{*zLoop, arcMap.z_prev}] = vertex.m_c;
+                        std::cerr << "arc_centers[(" << *zLoop << ", " << arcMap.z_prev << ")] = ("
+                                  << vertex.m_c.x << ", " << vertex.m_c.y
+                                  << ") [closing arc back to start]" << std::endl;
+                    }
+                    else {
+                        const int64_t z = arcMap.z_next++;
+                        pts_for_AddVertex.push_back(
+                            PointD(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z)
+                        );
+                        arcMap.point_map[z] = vertex.m_p;
+                        std::cerr << "point_map[" << z << "] = (" << vertex.m_p.x << ", "
+                                  << vertex.m_p.y << ") [arc endpoint]" << std::endl;
+                        arcMap.arc_centers[{arcMap.z_prev, z}] = vertex.m_c;
+                        arcMap.z_prev = z;
+                    }
                 }
                 else {
+                    const int64_t z = arcMap.z_next++;
                     const double px = vertex.m_c.x + radius * cos(phi0 + dphi * i);
                     const double py = vertex.m_c.y + radius * sin(phi0 + dphi * i);
                     pts_for_AddVertex.push_back(PointD(px * CArea::m_units, py * CArea::m_units, z));
                     // Store arc center in point_map for intermediate points
                     arcMap.point_map[z] = vertex.m_c;
+                    std::cerr << "point_map[" << z << "] = (" << vertex.m_c.x << ", "
+                              << vertex.m_c.y << ") [arc center]" << std::endl;
+                    arcMap.arc_centers[{arcMap.z_prev, z}] = vertex.m_c;
+                    arcMap.z_prev = z;
                 }
-
-                arcMap.arc_centers[{arcMap.z_prev, z}] = vertex.m_c;
-                arcMap.z_prev = z;
             }
         }
     }
@@ -257,11 +292,12 @@ static void MakeObround(const heeks::Point& pt0, const CVertex& vt1, double radi
     double save_units = CArea::m_units;
     CArea::m_units = 1.0;
 
+    const int z0 = arcMap.z_next;
     AddVertex(v0, NULL, arcMap);
     AddVertex(v1, &v0, arcMap);
     AddVertex(v2, &v1, arcMap);
     AddVertex(v3, &v2, arcMap);
-    AddVertex(v4, &v3, arcMap);
+    AddVertex(v4, &v3, arcMap, {z0});
 
     CArea::m_units = save_units;
 }
@@ -335,17 +371,14 @@ static void MakePoly(const CCurve& curve, Path64& p, bool reverse, ArcFittingMap
     if (!curve.m_vertices.size()) {
         return;
     }
-    if (!curve.IsClosed()) {
-        AddVertex(curve.m_vertices.front(), NULL, arcMap);
-    }
 
+    const int z0 = arcMap.z_next;
     for (std::list<CVertex>::const_iterator It2 = curve.m_vertices.begin();
          It2 != curve.m_vertices.end();
          It2++) {
         const CVertex& vertex = *It2;
-        if (prev_vertex) {
-            AddVertex(vertex, prev_vertex, arcMap);
-        }
+        auto zLoop = std::next(It2) == curve.m_vertices.end() ? std::optional<int>(z0) : std::nullopt;
+        AddVertex(vertex, prev_vertex, arcMap, zLoop);
         prev_vertex = &vertex;
     }
     std::cerr << std::endl;
@@ -418,7 +451,24 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
             std::cerr << std::endl;  // Extra newline before adding new vertex
             std::cerr << "  [" << dj << "] j=" << j << " (" << p.x << ", " << p.y << ", " << pt.z
                       << ") ";
-            std::cerr << "Edge (" << prevZ << ", " << pt.z << "): LINE" << std::endl;
+            std::cerr << "Edge (" << prevZ << ", " << pt.z << "): LINE";
+
+            // Check if prevZ and pt.z map to the same point
+            if (prevZ != -1 && prevZ != pt.z) {
+                auto prev_it = arcMap.point_map.find(prevZ);
+                auto curr_it = arcMap.point_map.find(pt.z);
+                if (prev_it != arcMap.point_map.end() && curr_it != arcMap.point_map.end()) {
+                    const heeks::Point& prev_center = prev_it->second;
+                    const heeks::Point& curr_center = curr_it->second;
+                    if (prev_center == curr_center) {
+                        std::cerr << " [WARNING: z=" << prevZ << " and z=" << pt.z
+                                  << " map to same point (" << prev_center.x << ", "
+                                  << prev_center.y << ")]";
+                    }
+                }
+            }
+            std::cerr << std::endl;
+
             curve.m_vertices.emplace_back(0, p, heeks::Point {0, 0});
             phi_total = 0.0;
         }

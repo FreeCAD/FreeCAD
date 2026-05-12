@@ -374,7 +374,7 @@ class TestArcFittingOffsets(PathTestBase):
         """Test offsetting a square with quarter-circular top outward."""
         # The points at the end of the circle generate little ccw arcs centered on them
         a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10, 1, 5, 5), (0, 0)]))
-        self.assert_offset_line_and_arc_count(a, 1.0, 1, 3, 3)  # 1 curve, 3 lines, 3 CCW arcs
+        self.assert_offset_line_and_arc_count(a, 1.0, 1, 3, 5)  # 1 curve, 3 lines, 5 CCW arcs
 
     def test_square_with_quarter_circle_top_offset_inward(self):
         """Test offsetting a square with quarter-circular top inward."""
