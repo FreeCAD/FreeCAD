@@ -19,6 +19,7 @@ SET(Test_SRCS
     testmakeWireString.py
     TestPythonSyntax.py
     TestPerf.py
+    TestOffscreenRenderer.py
     TestTreeSelection.py
     TestCoinNodeSnapshots.py
 )

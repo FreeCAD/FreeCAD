@@ -24,6 +24,7 @@
 #include <Base/Interpreter.h>
 
 #include "SoQtOffscreenRendererPy.h"
+#include <QBuffer>
 
 
 using namespace Gui;
@@ -166,6 +167,33 @@ Py::Object SoQtOffscreenRendererPy::writeToImage(const Py::Tuple& args)
 }
 PYCXX_VARARGS_METHOD_DECL(SoQtOffscreenRendererPy, writeToImage)
 
+Py::Object SoQtOffscreenRendererPy::writeToBuffer(const Py::Tuple& args)
+{
+    const char* format = "PNG";
+    int quality = -1;
+
+    if (!PyArg_ParseTuple(args.ptr(), "|si", &format, &quality)) {
+        throw Py::Exception();
+    }
+
+    QImage img;
+    renderer.writeToImage(img);
+
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+
+
+    if (!img.save(&buffer, format, quality)) {
+        throw Py::RuntimeError("Failed to save image to buffer");
+    }
+
+    buffer.close();
+
+    return Py::Bytes(byteArray.data(), byteArray.size());
+}
+PYCXX_VARARGS_METHOD_DECL(SoQtOffscreenRendererPy, writeToBuffer)
+
 Py::Object SoQtOffscreenRendererPy::getWriteImageFiletypeInfo()
 {
     QStringList list = renderer.getWriteImageFiletypeInfo();
@@ -209,6 +237,7 @@ void SoQtOffscreenRendererPy::init_type()
     );
     PYCXX_ADD_VARARGS_METHOD(render, render, "render(node)");
     PYCXX_ADD_VARARGS_METHOD(writeToImage, writeToImage, "writeToImage(string)");
+    PYCXX_ADD_VARARGS_METHOD(writeToBuffer, writeToBuffer, "writeToBuffer([string, int]) -> bytes");
     PYCXX_ADD_NOARGS_METHOD(
         getWriteImageFiletypeInfo,
         getWriteImageFiletypeInfo,
