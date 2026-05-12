@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QFileInfo>
 #include <QImage>
+#include <QImageReader>
 #include <QMenu>
 #include <QString>
 #include <QSvgRenderer>
@@ -40,6 +41,7 @@
 
 #include <App/Document.h>
 #include <App/ImagePlane.h>
+#include <Base/Console.h>
 #include <Gui/Document.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
@@ -210,6 +212,10 @@ void ViewProviderImagePlane::loadImage()
             impQ = loadRaster(fileName.c_str());
         }
 
+        if (impQ.isNull()) {
+            return;
+        }
+
         QSizeF size = getSizeInMM(impQ);
         setPlaneSize(size, impQ);
         convertToSFImage(impQ);
@@ -234,8 +240,40 @@ void ViewProviderImagePlane::setPlaneSize(const QSizeF& size, const QImage& img)
 
 QImage ViewProviderImagePlane::loadRaster(const char* fileName) const
 {
-    QImage img;
-    img.load(QString::fromUtf8(fileName));
+    const QString path = QString::fromUtf8(fileName);
+    QImageReader reader(path);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    const QSize imageSize = reader.size();
+    const int allocationLimit = QImageReader::allocationLimit();
+    if (imageSize.isValid() && allocationLimit > 0) {
+        constexpr qint64 bytesPerPixel = 4;
+        const qint64 estimatedBytes = static_cast<qint64>(imageSize.width())
+            * static_cast<qint64>(imageSize.height()) * bytesPerPixel;
+        const qint64 limitBytes = static_cast<qint64>(allocationLimit) * 1024 * 1024;
+        if (estimatedBytes > limitBytes) {
+            Base::Console().warning(
+                "Image Plane: image '%s' is too large to load (%dx%d pixels, about %lld MiB; "
+                "Qt image allocation limit is %d MiB). Reduce the image size and try again.\n",
+                qPrintable(path),
+                imageSize.width(),
+                imageSize.height(),
+                static_cast<long long>(estimatedBytes / (1024 * 1024)),
+                allocationLimit
+            );
+            return {};
+        }
+    }
+#endif
+
+    QImage img = reader.read();
+    if (img.isNull()) {
+        Base::Console().warning(
+            "Image Plane: could not load image '%s': %s\n",
+            qPrintable(path),
+            qPrintable(reader.errorString())
+        );
+    }
     return img;
 }
 
