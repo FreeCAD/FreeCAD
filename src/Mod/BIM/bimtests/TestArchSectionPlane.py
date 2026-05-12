@@ -100,3 +100,29 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         view.Y = "15cm"
         App.ActiveDocument.recompute()
         assert True
+
+    def testCoinViewGenerationKeepsObjectVisibility(self):
+        """Tests Coin SVG generation does not change source object visibility."""
+
+        if not App.GuiUp:
+            self.skipTest("Coin SVG generation requires the GUI.")
+
+        import ArchSectionPlane
+
+        box = App.ActiveDocument.addObject("Part::Box", "HiddenBox")
+        level = Arch.makeFloor()
+        level.addObjects([box])
+        App.ActiveDocument.recompute()
+
+        section = Arch.makeSectionPlane(level)
+        App.ActiveDocument.recompute()
+
+        box.ViewObject.Visibility = False
+        object_visibility = getattr(box, "Visibility", None)
+        view_visibility = box.ViewObject.Visibility
+
+        ArchSectionPlane.getSVG(section, allOn=True, renderMode="Coin")
+
+        if object_visibility is not None:
+            self.assertEqual(box.Visibility, object_visibility)
+        self.assertEqual(box.ViewObject.Visibility, view_visibility)
