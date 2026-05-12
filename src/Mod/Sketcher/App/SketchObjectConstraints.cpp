@@ -1739,46 +1739,45 @@ bool SketchObject::deriveConstraintsForPieces(
         case PointOnObject: {
             if (con->FirstPos == PointPos::none && con->SecondPos == PointPos::none
                 && newIds.size() > 1) {
-                Constraint* dist = con->copy();
-                dist->First = newIds.front();
-                dist->FirstPos = PointPos::start;
-                dist->Second = newIds.back();
-                dist->SecondPos = PointPos::end;
-                newConstraints.push_back(dist);
+                if (conId != GeoEnum::GeoUndef) {
+                    Constraint* trans = con->copy();
+                    trans->substituteIndexAndPos(
+                        oldId,
+                        PointPos::none,
+                        newIds.front(),
+                        PointPos::none
+                    );
+                    newConstraints.push_back(trans);
+                }
+                else {
+                    Constraint* dist = con->copy();
+                    dist->First = newIds.front();
+                    dist->FirstPos = PointPos::start;
+                    dist->Second = newIds.back();
+                    dist->SecondPos = PointPos::end;
+                    newConstraints.push_back(dist);
+                }
                 return true;
             }
 
-            if (conId == GeoEnum::GeoUndef || newGeosLikelyNotCreated) {
+            if (conId == GeoEnum::GeoUndef || conPos == PointPos::none || newGeosLikelyNotCreated) {
                 // nothing further to do
                 return false;
             }
 
             Base::Vector3d conPoint(getPoint(conId, conPos));
-            double conParam;
-            auto* geoAsCurve = static_cast<const Part::GeomCurve*>(geo);
-            geoAsCurve->closestParameter(conPoint, conParam);
-            // Choose based on where the closest point lies
-            // If it's not there, just leave this constraint out
-            for (size_t i = 0; i < newIds.size(); ++i) {
-                double newGeoFirstParam
-                    = static_cast<const Part::GeomCurve*>(newGeos[i])->getFirstParameter();
-                double newGeoLastParam
-                    = static_cast<const Part::GeomCurve*>(newGeos[i])->getLastParameter();
-                // For periodic curves the point may need a full revolution
-                if ((newGeoFirstParam - conParam) > Precision::PApproximation()
-                    && isClosedCurve(geo)) {
-                    conParam += (geoAsCurve->getLastParameter() - geoAsCurve->getFirstParameter());
-                }
-                if ((newGeoFirstParam - conParam) <= Precision::PApproximation()
-                    && (conParam - newGeoLastParam) <= Precision::PApproximation()) {
-                    Constraint* trans = con->copy();
-                    trans->First = conId;
-                    trans->FirstPos = conPos;
-                    trans->Second = newIds[i];
-                    trans->SecondPos = PointPos::none;
-                    newConstraints.push_back(trans);
-                    return true;
-                }
+            std::optional<size_t> idx = findPieceContainingPoint(this, geo, conPoint, newIds, newGeos);
+
+            if (idx.has_value()) {
+                Constraint* trans = con->copy();
+                trans->substituteIndexAndPos(
+                    oldId,
+                    PointPos::none,
+                    newIds[idx.value()],
+                    PointPos::none
+                );
+                newConstraints.push_back(trans);
+                return true;
             }
         } break;
         case Radius:

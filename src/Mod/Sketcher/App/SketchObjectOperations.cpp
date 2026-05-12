@@ -983,6 +983,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     bool isOriginalCurvePeriodic = isClosedCurve(geoAsCurve);
     std::vector<int> newIds;
     std::vector<Part::Geometry*> newGeos;
+    std::vector<const Part::Geometry*> newGeosAsConsts;
     std::vector<Constraint*> newConstraints;
 
     double splitParam;
@@ -1018,6 +1019,9 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     }
 
     createArcsFromGeoWithLimits(geoAsCurve, paramsOfNewGeos, newGeos);
+    for (const auto* geo : newGeos) {
+        newGeosAsConsts.push_back(geo);
+    }
 
     std::vector<int> idsOfOldConstraints;
     getConstraintIndices(GeoId, idsOfOldConstraints);
@@ -1030,7 +1034,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
 
     for (const auto& oldConstrId : idsOfOldConstraints) {
         Constraint* con = allConstraints[oldConstrId];
-        deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
+        deriveConstraintsForPieces(GeoId, newIds, newGeosAsConsts, con, newConstraints);
     }
 
     // This also seems to reset SketchObject::Geometry.
