@@ -1054,7 +1054,7 @@ void SketchObject::onGeometryChanged()
     }
     else {
         Base::Console().error(
-            this->getFullLabel() + " SketchObject::onChanged ",
+            this->getFullNameLabel() + " SketchObject::onChanged ",
             QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
                               "Property results in invalid constraint indices") "\n");
     }
@@ -1098,7 +1098,7 @@ void SketchObject::onConstraintsChanged()
     }
     else {
         Base::Console().error(
-            this->getFullLabel() + " SketchObject::onChanged ",
+            this->getFullNameLabel() + " SketchObject::onChanged ",
             QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
                               "Property results in invalid constraint indices") "\n");
     }
@@ -1360,7 +1360,7 @@ void SketchObject::onSketchRestore()
             }
             rebuildExternalGeometry();
             if(ExternalGeometry.getSize()+2!=ExternalGeo.getSize())
-                FC_WARN("Failed to restore some external geometry in " << getFullName());
+                FC_WARN("Failed to restore some external geometry in " << getFullNameLabel());
         }else
             acceptGeometry();
 
@@ -1395,7 +1395,7 @@ void SketchObject::onSketchRestore()
         }
     } catch (Base::Exception &e) {
         e.reportException();
-        FC_ERR("Error while restoring " << getFullName());
+        FC_ERR("Error while restoring " << getFullNameLabel());
     } catch (...) {
     }
 }

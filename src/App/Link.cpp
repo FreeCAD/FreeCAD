@@ -517,7 +517,7 @@ void LinkBaseExtension::setOnChangeCopyObject(App::DocumentObject* obj, OnChange
             e.reportException();
         }
         if (!prop) {
-            FC_ERR("Failed to setup copy on change object " << obj->getFullName());
+            FC_ERR("Failed to setup copy on change object " << obj->getFullNameLabel());
             return;
         }
     }
@@ -1781,7 +1781,7 @@ void LinkBaseExtension::updateGroup()
             auto group = ext->getExtendedObject();
             auto& conn = plainGroupConns[group];
             if (!conn.connected()) {
-                FC_LOG("new group connection " << getExtendedObject()->getFullName() << " -> "
+                FC_LOG("new group connection " << getExtendedObject()->getFullNameLabel() << " -> "
                                                << group->getFullName());
                 // NOLINTBEGIN
                 conn = group->signalChanged.connect(
@@ -1798,7 +1798,7 @@ void LinkBaseExtension::updateGroup()
                 groupSet.insert(child);
                 auto& conn = plainGroupConns[child];
                 if (!conn.connected()) {
-                    FC_LOG("new group connection " << getExtendedObject()->getFullName() << " -> "
+                    FC_LOG("new group connection " << getExtendedObject()->getFullNameLabel() << " -> "
                                                    << child->getFullName());
                     // NOLINTBEGIN
                     conn = child->signalChanged.connect(
@@ -2229,13 +2229,13 @@ void LinkBaseExtension::onExtendedDocumentRestored()
         // stored inside PropertyXLink.
         auto xlink = freecad_cast<PropertyXLink*>(getLinkedObjectProperty());
         if (!xlink) {
-            FC_ERR("Failed to restore SubElements for " << parent->getFullName());
+            FC_ERR("Failed to restore SubElements for " << parent->getFullNameLabel());
         }
         else if (!xlink->getValue()) {
-            FC_ERR("Discard SubElements of " << parent->getFullName() << " due to null link");
+            FC_ERR("Discard SubElements of " << parent->getFullNameLabel() << " due to null link");
         }
         else if (xlink->getSubValues().size() > 1) {
-            FC_ERR("Failed to restore SubElements for " << parent->getFullName()
+            FC_ERR("Failed to restore SubElements for " << parent->getFullNameLabel()
                                                         << " due to conflict subnames");
         }
         else if (xlink->getSubValues().empty()) {

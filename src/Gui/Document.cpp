@@ -292,7 +292,7 @@ struct DocumentP
             _editViewProviderParent = nullptr;
             _editObjs.clear();
             _editingObject = nullptr;
-            FC_LOG("object '" << sobj->getFullName() << "' refuse to edit");
+            FC_LOG("object '" << sobj->getFullNameLabel() << "' refuse to edit");
             return false;
         }
 
@@ -401,7 +401,7 @@ private:
         const char* subname
     )
     {
-        FC_LOG("deduced editing reference " << parentObj->getFullName() << '.' << subname);
+        FC_LOG("deduced editing reference " << parentObj->getFullNameLabel() << '.' << subname);
         auto vp = freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(parentObj)
         );
@@ -967,7 +967,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
         for (;;) {
             if (cName.empty()) {
                 // handle document object with no view provider specified
-                FC_LOG(Obj.getFullName() << " has no view provider specified");
+                FC_LOG(Obj.getFullNameLabel() << " has no view provider specified");
                 return;
             }
             Base::Type type = Base::Type::getTypeIfDerivedFrom(
@@ -979,11 +979,13 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             // createInstance could return a null pointer
             if (!pcProvider) {
                 // type not derived from ViewProviderDocumentObject!!!
-                FC_ERR("Invalid view provider type '" << cName << "' for " << Obj.getFullName());
+                FC_ERR("Invalid view provider type '" << cName << "' for " << Obj.getFullNameLabel());
                 return;
             }
             else if (cName != Obj.getViewProviderName() && !pcProvider->allowOverride(Obj)) {
-                FC_WARN("View provider type '" << cName << "' does not support " << Obj.getFullName());
+                FC_WARN(
+                    "View provider type '" << cName << "' does not support " << Obj.getFullNameLabel()
+                );
                 delete pcProvider;
                 pcProvider = nullptr;
                 cName = Obj.getViewProviderName();
@@ -1006,14 +1008,14 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             pcProvider->setActiveMode();
         }
         catch (const Base::MemoryException& e) {
-            FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
+            FC_ERR("Memory exception in " << Obj.getFullNameLabel() << " thrown: " << e.what());
         }
         catch (Base::Exception& e) {
             e.reportException();
         }
 #ifndef FC_DEBUG
         catch (...) {
-            FC_ERR("Unknown exception in Feature " << Obj.getFullName() << " thrown");
+            FC_ERR("Unknown exception in Feature " << Obj.getFullNameLabel() << " thrown");
         }
 #endif
     }
@@ -1120,16 +1122,16 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
             }
         }
         catch (const Base::MemoryException& e) {
-            FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
+            FC_ERR("Memory exception in " << Obj.getFullNameLabel() << " thrown: " << e.what());
         }
         catch (Base::Exception& e) {
             e.reportException();
         }
         catch (const std::exception& e) {
-            FC_ERR("C++ exception in " << Obj.getFullName() << " thrown " << e.what());
+            FC_ERR("C++ exception in " << Obj.getFullNameLabel() << " thrown " << e.what());
         }
         catch (...) {
-            FC_ERR("Cannot update representation for " << Obj.getFullName());
+            FC_ERR("Cannot update representation for " << Obj.getFullNameLabel());
         }
 
         handleChildren3D(viewProvider);
@@ -1272,7 +1274,7 @@ void Document::slotTouchedObject(const App::DocumentObject& Obj)
 {
     getMainWindow()->updateActions(true);
     if (!isModified()) {
-        FC_LOG(Obj.getFullName() << " touched");
+        FC_LOG(Obj.getFullNameLabel() << " touched");
         setModified(true);
     }
 }

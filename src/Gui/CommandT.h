@@ -447,11 +447,11 @@ void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
         );
     }
     catch (const std::exception& e) {
-        Base::Console().developerError(obj->getFullLabel(), "%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().developerError(obj->getFullNameLabel(), "%s: %s\n", e.what(), cmd.c_str());
     }
     catch (const Base::Exception&) {
         Base::Console().developerError(
-            obj->getFullLabel(),
+            obj->getFullNameLabel(),
             "App.getDocument('%s').getObject('%s').%s\n",
             obj->getDocument()->getName(),
             obj->getNameInDocument(),
@@ -483,11 +483,11 @@ void cmdGuiObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
         );
     }
     catch (const std::exception& e) {
-        Base::Console().developerError(obj->getFullLabel(), "%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().developerError(obj->getFullNameLabel(), "%s: %s\n", e.what(), cmd.c_str());
     }
     catch (const Base::Exception&) {
         Base::Console().developerError(
-            obj->getFullLabel(),
+            obj->getFullNameLabel(),
             "Gui.getDocument('%s').getObject('%s').%s\n",
             obj->getDocument()->getName(),
             obj->getNameInDocument(),

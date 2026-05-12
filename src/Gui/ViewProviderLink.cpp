@@ -226,7 +226,7 @@ public:
         : ref(0)
         , pcLinked(vp)
     {
-        FC_LOG("new link to " << pcLinked->getObject()->getFullName());
+        FC_LOG("new link to " << pcLinked->getObject()->getFullNameLabel());
         // NOLINTBEGIN
         connChangeIcon = vp->signalChangeIcon.connect(std::bind(&LinkInfo::slotChangeIcon, this));
         // NOLINTEND
@@ -730,13 +730,13 @@ public:
 
             auto ssobj = sobj->getSubObject(objname.c_str());
             if (!ssobj) {
-                FC_ERR("invalid sub name " << nextsub << " of object " << sobj->getFullName());
+                FC_ERR("invalid sub name " << nextsub << " of object " << sobj->getFullNameLabel());
                 return false;
             }
             sobj = ssobj;
             auto vp = Application::Instance->getViewProvider(sobj);
             if (!vp) {
-                FC_ERR("cannot find view provider of " << sobj->getFullName());
+                FC_ERR("cannot find view provider of " << sobj->getFullNameLabel());
                 return false;
             }
             if (vp->getChildRoot()) {
@@ -1581,7 +1581,7 @@ void LinkView::updateLink()
     }
 
     if (linkOwner && linkOwner->isLinked() && linkOwner->pcLinked->isRestoring()) {
-        FC_TRACE("restoring '" << linkOwner->pcLinked->getObject()->getFullName() << "'");
+        FC_TRACE("restoring '" << linkOwner->pcLinked->getObject()->getFullNameLabel() << "'");
         return;
     }
 

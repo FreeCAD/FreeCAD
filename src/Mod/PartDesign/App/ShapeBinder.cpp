@@ -1190,7 +1190,7 @@ void SubShapeBinder::setLinks(
             FC_THROWM(Base::ValueError, "Invalid document object");
         }
         if (inSet.find(v.first) != inSet.end()) {
-            FC_THROWM(Base::ValueError, "Cyclic reference to " << v.first->getFullName());
+            FC_THROWM(Base::ValueError, "Cyclic reference to " << v.first->getFullNameLabel());
         }
 
         if (v.second.empty()) {

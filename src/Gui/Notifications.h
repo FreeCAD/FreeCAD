@@ -46,7 +46,7 @@ class ViewProviderDocumentObject;
  * the preference parameter NotificationArea/NonIntrusiveNotificationsEnabled.
  *
  * The notifier field can be a string or an App::DocumentObject * object, then the notifier is taken
- * from the getFullLabel() method of the DocumentObject.
+ * from the getFullNameLabel() method of the DocumentObject.
  *
  * Translations:
  *
@@ -188,7 +188,7 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             ) {
                 Base::Console()
                     .send<type, Base::IntendedRecipient::Developer, Base::ContentType::Untranslated>(
-                        notifier->getFullLabel(),
+                        notifier->getFullNameLabel(),
                         msg.c_str()
                     );
             }
@@ -199,7 +199,7 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             ) {
                 Base::Console()
                     .send<type, Base::IntendedRecipient::Developer, Base::ContentType::Untranslated>(
-                        notifier->getObject()->getFullLabel(),
+                        notifier->getObject()->getFullNameLabel(),
                         msg.c_str()
                     );
             }
@@ -274,7 +274,10 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             if constexpr (
                 std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
             ) {
-                Base::Console().send<type, recipient, content>(notifier->getFullLabel(), msg.toUtf8());
+                Base::Console().send<type, recipient, content>(
+                    notifier->getFullNameLabel(),
+                    msg.toUtf8()
+                );
             }
             else if constexpr (
                 std::is_base_of_v<
@@ -282,7 +285,7 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
                     std::remove_pointer_t<typename std::decay<TNotifier>::type>>
             ) {
                 Base::Console().send<type, recipient, content>(
-                    notifier->getObject()->getFullLabel(),
+                    notifier->getObject()->getFullNameLabel(),
                     msg.toUtf8()
                 );
             }
@@ -314,7 +317,10 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
             if constexpr (
                 std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>>
             ) {
-                Base::Console().send<type, recipient, content>(notifier->getFullLabel(), msg.c_str());
+                Base::Console().send<type, recipient, content>(
+                    notifier->getFullNameLabel(),
+                    msg.c_str()
+                );
             }
             else if constexpr (
                 std::is_base_of_v<
@@ -322,7 +328,7 @@ inline void Gui::Notify(TNotifier&& notifier, TCaption&& caption, TMessage&& mes
                     std::remove_pointer_t<typename std::decay<TNotifier>::type>>
             ) {
                 Base::Console().send<type, recipient, content>(
-                    notifier->getObject()->getFullLabel(),
+                    notifier->getObject()->getFullNameLabel(),
                     msg.c_str()
                 );
             }

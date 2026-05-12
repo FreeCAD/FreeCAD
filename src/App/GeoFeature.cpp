@@ -115,7 +115,7 @@ ElementNamePair GeoFeature::_getElementName(const char* name,
         return ElementNamePair(ss.str().c_str(), result.c_str());
     }
     else if (mapped.name) {
-        //        FC_TRACE("element mapped name " << name << " not found in " << getFullName());
+        //        FC_TRACE("element mapped name " << name << " not found in " << getFullNameLabel());
         const char* dot = strrchr(name, '.');
         if (dot) {
             // deliberately mangle the old style element name to signal a

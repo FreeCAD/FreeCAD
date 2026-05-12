@@ -1462,7 +1462,7 @@ void ElementMap::traceElement(const MappedName& name, long masterTag, TraceCallb
                     if (doc) {
                         auto obj = doc->getObjectByID(masterTag);
                         if (obj) {
-                            FC_LOG("\t" << obj->getFullName() << obj->getFullName() << "." << name);
+                            FC_LOG("\t" << obj->getFullNameLabel() << "." << name);
                         }
                     }
                     for (auto& errname : names) {

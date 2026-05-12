@@ -1349,7 +1349,7 @@ void Document::exportObjects(const std::vector<DocumentObject*>& obj, std::ostre
     if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         for (auto o : obj) {
             if (o && o->isAttachedToDocument()) {
-                FC_LOG("exporting " << o->getFullName());
+                FC_LOG("exporting " << o->getFullNameLabel());
                 if (!o->getPropertyByName("_ObjectUUID")) {
                     auto prop = static_cast<PropertyUUID*>(
                         o->addDynamicProperty("App::PropertyUUID",
@@ -1724,7 +1724,7 @@ std::vector<DocumentObject*> Document::readObjects(Base::XMLReader& reader)
                 PartialObject)) {  // check if this feature has been registered
             pObj->setStatus(ObjectStatus::Restore, true);
             try {
-                FC_TRACE("restoring " << pObj->getFullName());
+                FC_TRACE("restoring " << pObj->getFullNameLabel());
                 pObj->Restore(reader);
             }
             // Try to continue only for certain exception types if not handled
@@ -1797,7 +1797,7 @@ std::vector<DocumentObject*> Document::importObjects(Base::XMLReader& reader)
     for (const auto o : objs) {
         if (o && o->isAttachedToDocument()) {
             o->setStatus(ObjImporting, true);
-            FC_LOG("importing " << o->getFullName());
+            FC_LOG("importing " << o->getFullNameLabel());
             if (const auto propUUID =
                     freecad_cast<PropertyUUID*>(o->getPropertyByName("_ObjectUUID"))) {
                 auto propSource =
@@ -2262,7 +2262,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
                 prop->afterRestore();
             }
             catch (const Base::Exception& e) {
-                FC_ERR("Failed to restore " << obj->getFullName() << '.' << prop->getName() << ": "
+                FC_ERR("Failed to restore " << obj->getFullNameLabel() << '.' << prop->getName() << ": "
                                             << e.what());
             }
         }
@@ -2287,7 +2287,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             auto returnCode =
                 obj->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteOnRestore, &touched);
             if (returnCode != DocumentObject::StdReturn) {
-                FC_ERR("Expression engine failed to restore " << obj->getFullName() << ": "
+                FC_ERR("Expression engine failed to restore " << obj->getFullNameLabel() << ": "
                                                               << returnCode->Why);
                 d->addRecomputeLog(returnCode);
             }
@@ -2298,11 +2298,11 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
         }
         catch (const Base::Exception& e) {
             d->addRecomputeLog(e.what(), obj);
-            FC_ERR("Failed to restore " << obj->getFullName() << ": " << e.what());
+            FC_ERR("Failed to restore " << obj->getFullNameLabel() << ": " << e.what());
         }
         catch (std::exception& e) {
             d->addRecomputeLog(e.what(), obj);
-            FC_ERR("Failed to restore " << obj->getFullName() << ": " << e.what());
+            FC_ERR("Failed to restore " << obj->getFullNameLabel() << ": " << e.what());
         }
         catch (...) {
 
@@ -2316,7 +2316,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             }
 
             d->addRecomputeLog("Unknown exception on restore", obj);
-            FC_ERR("Failed to restore " << obj->getFullName() << ": " << "unknown exception");
+            FC_ERR("Failed to restore " << obj->getFullNameLabel() << ": " << "unknown exception");
         }
         if (obj->isValid()) {
             auto& props = propMap[obj];
@@ -2330,14 +2330,14 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
                 if (link && ((res = link->checkRestore(&errMsg)) != 0)) {
                     d->touchedObjs.insert(obj);
                     if (res == 1 || checkPartial) {
-                        FC_WARN(obj->getFullName() << '.' << prop->getName() << ": " << errMsg);
+                        FC_WARN(obj->getFullNameLabel() << '.' << prop->getName() << ": " << errMsg);
                         setStatus(Document::LinkStampChanged, true);
                         if (checkPartial) {
                             return false;
                         }
                     }
                     else {
-                        FC_ERR(obj->getFullName() << '.' << prop->getName() << ": " << errMsg);
+                        FC_ERR(obj->getFullNameLabel() << '.' << prop->getName() << ": " << errMsg);
                         d->addRecomputeLog(errMsg, obj);
                         setStatus(Document::PartialRestore, true);
                     }
@@ -2671,9 +2671,9 @@ Document::getDependencyList(const std::vector<DocumentObject*>& objs, int option
                 components[c[i]].push_back(i);
             }
 
-            FC_ERR("Dependency cycles: ");
             std::ostringstream ss;
-            ss << '\n';
+            ss << "Dependency cycles:\n";
+            bool hasOutput = false;
             for (auto& [key, vertexes] : components) {
                 if (vertexes.size() == 1) {
                     // For components with only one member, we still need to
@@ -2685,29 +2685,63 @@ Document::getDependencyList(const std::vector<DocumentObject*>& objs, int option
                     // Try search the object in its own out list
                     for (auto obj : it->second->getOutList()) {
                         if (obj == it->second) {
-                            ss << '\n' << it->second->getFullName() << '\n';
+                            ss << "    " << it->second->getFullName() << " -> itself";
+                            hasOutput = true;
                             break;
                         }
                     }
                     continue;
                 }
                 // For components with more than one member, they form a loop together
+                bool printedHeader = false;
+                int edgeIdx = 0;
                 for (size_t i = 0; i < vertexes.size(); ++i) {
                     auto it = vertexMap.find(vertexes[i]);
                     if (it == vertexMap.end()) {
                         continue;
                     }
-                    if (i % 6 == 0) {
-                        ss << '\n';
+                    if (!printedHeader) {
+                        ss << "    ";
+                        printedHeader = true;
+                    } else {
+                        ss << ", ";
                     }
-                    ss << it->second->getFullName() << ", ";
+                    ss << it->second->getFullName();
                 }
-                ss << '\n';
+                if (printedHeader) {
+                    ss << '\n';
+                }
+                for (size_t i = 0; i < vertexes.size(); ++i) {
+                    auto it = vertexMap.find(vertexes[i]);
+                    if (it == vertexMap.end()) {
+                        continue;
+                    }
+                    for (auto objB : it->second->getOutList()) {
+                        for (size_t j = 0; j < vertexes.size(); ++j) {
+                            auto itB = vertexMap.find(vertexes[j]);
+                            if (itB == vertexMap.end()) {
+                                continue;
+                            }
+                            if (objB == itB->second) {
+                                if (edgeIdx > 0) {
+                                    ss << '\n';
+                                }
+                                ss << "    " << ++edgeIdx << ". "
+                                   << it->second->getFullName()
+                                   << " -> "
+                                   << itB->second->getFullName();
+                                hasOutput = true;
+                            }
+                        }
+                    }
+                }
             }
-            FC_ERR(ss.str());
-            FC_THROWM(Base::BadGraphError, e.what());
+            if (hasOutput) {
+                FC_ERR(ss.str());
+                FC_THROWM(Base::BadGraphError, e.what());
+            }
         }
-        FC_ERR(e.what());
+        FC_ERR(objs.front()->getFullNameLabel() << ": " << e.what());
         ret = DocumentP::partialTopologicalSort(objs);
         std::reverse(ret.begin(), ret.end());
         return ret;
@@ -2956,10 +2990,10 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                 obj->setStatus(ObjectStatus::Recompute2, false);
                 if (!filter.contains(obj) && obj->isTouched()) {
                     if (passes > 0) {
-                        FC_ERR(obj->getFullName() << " still touched after recompute");
+                        FC_ERR(obj->getFullNameLabel() << " still touched after recompute");
                     }
                     else {
-                        FC_LOG(obj->getFullName() << " still touched after recompute");
+                        FC_LOG(obj->getFullNameLabel() << " still touched after recompute");
                         if (idx >= topoSortedObjects.size()) {
                             // let's start the next pass on the first touched object
                             idx = i;
@@ -3214,7 +3248,7 @@ const char* Document::getErrorDescription(const DocumentObject* Obj) const
 // call the recompute of the Feature and handle the exceptions and errors.
 int Document::_recomputeFeature(DocumentObject* Feat) // NOLINT
 {
-    FC_LOG("Recomputing " << Feat->getFullName());
+    FC_LOG("Recomputing " << Feat->getFullNameLabel());
 
     DocumentObjectExecReturn* returnCode = nullptr;
     try {
@@ -3229,29 +3263,29 @@ int Document::_recomputeFeature(DocumentObject* Feat) // NOLINT
     }
     catch (Base::AbortException& e) {
         e.reportException();
-        FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
+        FC_LOG("Failed to recompute " << Feat->getFullNameLabel() << ": " << e.what());
         d->addRecomputeLog("User abort", Feat);
         return -1;
     }
     catch (const Base::MemoryException& e) {
-        FC_ERR("Memory exception in " << Feat->getFullName() << " thrown: " << e.what());
+        FC_ERR("Memory exception in " << Feat->getFullNameLabel() << " thrown: " << e.what());
         d->addRecomputeLog("Out of memory exception", Feat);
         return 1;
     }
     catch (Base::Exception& e) {
         e.reportException();
-        FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
+        FC_LOG("Failed to recompute " << Feat->getFullNameLabel() << ": " << e.what());
         d->addRecomputeLog(e.what(), Feat);
         return 1;
     }
     catch (std::exception& e) {
-        FC_ERR("Exception in " << Feat->getFullName() << " thrown: " << e.what());
+        FC_ERR("Exception in " << Feat->getFullNameLabel() << " thrown: " << e.what());
         d->addRecomputeLog(e.what(), Feat);
         return 1;
     }
 #ifndef FC_DEBUG
     catch (...) {
-        FC_ERR("Unknown exception in " << Feat->getFullName() << " thrown");
+        FC_ERR("Unknown exception in " << Feat->getFullNameLabel() << " thrown");
         d->addRecomputeLog("Unknown exception!", Feat);
         return 1;
     }
@@ -3263,7 +3297,7 @@ int Document::_recomputeFeature(DocumentObject* Feat) // NOLINT
     else {
         returnCode->Which = Feat;
         d->addRecomputeLog(returnCode);
-        FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << returnCode->Why);
+        FC_LOG("Failed to recompute " << Feat->getFullNameLabel() << ": " << returnCode->Why);
         return 1;
     }
     return 0;
@@ -3484,7 +3518,7 @@ void Document::removeObject(const char* sName)
 void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions options)
 {
     if (!options.testFlag(RemoveObjectOption::MayRemoveWhileRecomputing) && testStatus(Document::Recomputing)) {
-        FC_ERR("Cannot delete " << pcObject->getFullName() << " while recomputing");
+        FC_ERR("Cannot delete " << pcObject->getFullNameLabel() << " while recomputing");
         return;
     }
 
@@ -3494,7 +3528,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
 
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
     if (pos == d->objectMap.end()) {
-        FC_ERR("Internal error, could not find " << pcObject->getFullName() << " to remove");
+        FC_ERR("Internal error, could not find " << pcObject->getFullNameLabel() << " to remove");
     }
 
     if (options.testFlag(RemoveObjectOption::PreserveChildrenVisibility)

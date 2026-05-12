@@ -694,7 +694,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
                 elements.insert(e[i]);
                 continue;
             }
-            FC_WARN("missing element reference: " << base->getFullName() << "." << ref);
+            FC_WARN("missing element reference: " << base->getFullNameLabel() << "." << ref);
 
             for (auto& mapped : Part::Feature::getRelatedElements(base, ref.c_str())) {
                 tmp.clear();

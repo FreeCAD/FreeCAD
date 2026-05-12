@@ -687,7 +687,7 @@ bool Cell::getSpans(int& rows, int& columns) const
 void Cell::setException(const std::string& e, bool silent)
 {
     if (!silent && !e.empty() && owner && owner->sheet()) {
-        FC_ERR(owner->sheet()->getFullName() << '.' << address.toString() << ": " << e);
+        FC_ERR(owner->sheet()->getFullNameLabel() << '.' << address.toString() << ": " << e);
     }
     exceptionStr = e;
     setUsed(EXCEPTION_SET);
@@ -696,7 +696,7 @@ void Cell::setException(const std::string& e, bool silent)
 void Cell::setParseException(const std::string& e)
 {
     if (!e.empty() && owner && owner->sheet()) {
-        FC_ERR(owner->sheet()->getFullName() << '.' << address.toString() << ": " << e);
+        FC_ERR(owner->sheet()->getFullNameLabel() << '.' << address.toString() << ": " << e);
     }
     exceptionStr = e;
     setUsed(PARSE_EXCEPTION_SET);
@@ -705,7 +705,7 @@ void Cell::setParseException(const std::string& e)
 void Cell::setResolveException(const std::string& e)
 {
     if (!e.empty() && owner && owner->sheet()) {
-        FC_LOG(owner->sheet()->getFullName() << '.' << address.toString() << ": " << e);
+        FC_LOG(owner->sheet()->getFullNameLabel() << '.' << address.toString() << ": " << e);
     }
     exceptionStr = e;
     setUsed(RESOLVE_EXCEPTION_SET);

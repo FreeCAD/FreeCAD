@@ -195,9 +195,13 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
             return;
         }
 
+        const std::string refName = ref.empty() ? "NOT_FOUND" : ref;
+
         auto faces = shape.findAncestorsShapes(subshape, TopAbs_FACE);
         if (faces.size() != 2) {
-            FC_WARN(getFullName() << ": skip edge " << ref << " with less two attaching faces");
+            FC_WARN(
+                getFullNameLabel() << ": skip edge " << refName << " with less two attaching faces"
+            );
             return;
         }
         const TopoDS_Shape& face1 = faces.front();
@@ -205,7 +209,7 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
         GeomAbs_Shape cont
             = BRep_Tool::Continuity(TopoDS::Edge(subshape), TopoDS::Face(face1), TopoDS::Face(face2));
         if (cont != GeomAbs_C0) {
-            FC_WARN(getFullName() << ": skip edge " << ref << " that is not C0 continuous");
+            FC_WARN(getFullNameLabel() << ": skip edge " << refName << " that is not C0 continuous");
             return;
         }
         ret.push_back(subshape);
@@ -257,7 +261,7 @@ std::vector<TopoShape> DressUp::getFaces(const TopoShape& shape)
         }
 
         if (subshape.isNull()) {
-            FC_ERR(getFullName() << ": invalid face reference '" << ref << "'");
+            FC_ERR(getFullNameLabel() << ": invalid face reference '" << ref << "'");
             throw Part::NullShapeException("Invalid Invalid face link");
         }
 

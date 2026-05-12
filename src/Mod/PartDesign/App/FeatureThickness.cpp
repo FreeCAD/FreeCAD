@@ -112,7 +112,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
         // We found the sub element (face) so let's get its history index in our shape
         int index = TopShape.findAncestor(face, TopAbs_SOLID);
         if (!index) {
-            FC_WARN(getFullName() << ": Ignore non-solid face  " << it);
+            FC_WARN(getFullNameLabel() << ": Ignore non-solid face  " << it);
             continue;
         }
         closeFaces[index].emplace_back(face);

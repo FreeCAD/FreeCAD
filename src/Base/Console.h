@@ -416,7 +416,7 @@ public:
  *  this enables the observer to identify the source. Any string is possible. It is common to use
  *  the DocumentObject::getFullLabel() or the label of the Document, when available.
  *  When using the Notification Framework of the Gui (Gui/Notifications.h) and a DocumentObject is
- *  passed as notifier, getFullLabel() is used. See example below.
+ *  passed as notifier, getFullNameLabel() is used. See example below.
  *
  *  It is important for the different observers to know whether an error/warning message is intended
  *  for a user, for a developer, or for both. This enables observers to provide distinctive

@@ -1813,7 +1813,7 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
         if (parent) {
             parentVp = parent->object();
             if (!parentVp->getObject()->isAttachedToDocument()) {
-                FC_WARN("skip '" << obj->getFullName() << "' with invalid parent");
+                FC_WARN("skip '" << obj->getFullNameLabel() << "' with invalid parent");
                 continue;
             }
         }
@@ -2961,7 +2961,10 @@ bool TreeWidget::dropInObject(
             }
 
             if (inList.contains(obj)) {
-                FC_THROWM(Base::RuntimeError, "Dependency loop detected for " << obj->getFullName());
+                FC_THROWM(
+                    Base::RuntimeError,
+                    "Dependency loop detected for " << obj->getFullNameLabel()
+                );
             }
 
 
@@ -4571,7 +4574,7 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         return;
     }
 
-    TREE_LOG("delete object " << obj->getFullName());
+    TREE_LOG("delete object " << obj->getFullNameLabel());
 
     // Block all selection signals during deletion to prevent cascading selection change events
     // during item creation or deletion
@@ -4684,7 +4687,7 @@ bool DocumentItem::populateObject(App::DocumentObject* obj)
             return true;
         }
     }
-    TREE_LOG("force populate object " << obj->getFullName());
+    TREE_LOG("force populate object " << obj->getFullNameLabel());
     auto item = *items.begin();
     item->populated = true;
     populateItem(item, true);
@@ -5657,7 +5660,7 @@ App::DocumentObject* DocumentItem::getTopParent(App::DocumentObject* obj, std::s
     items.begin()->second->getSubName(ss, topParent);
     if (!topParent) {
         // this shouldn't happen
-        FC_WARN("No top parent for " << obj->getFullName() << '.' << subname);
+        FC_WARN("No top parent for " << obj->getFullNameLabel() << '.' << subname);
         return obj;
     }
     ss << obj->getNameInDocument() << '.' << subname;
@@ -6103,13 +6106,13 @@ DocumentObjectItem::DocumentObjectItem(DocumentItem* ownerDocItem, DocumentObjec
 
     myData->insertItem(this);
     ++countItems;
-    TREE_LOG("Create item: " << countItems << ", " << object()->getObject()->getFullName());
+    TREE_LOG("Create item: " << countItems << ", " << object()->getObject()->getFullNameLabel());
 }
 
 DocumentObjectItem::~DocumentObjectItem()
 {
     --countItems;
-    TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getFullName());
+    TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getFullNameLabel());
     myData->removeItem(this);
 
     if (myData->rootItem == this) {
@@ -6798,7 +6801,7 @@ App::DocumentObject* DocumentObjectItem::getRelativeParent(
             auto substr = subname.substr(0, dot - subname.c_str() + 1);
             auto ret = top->getSubObject(substr.c_str());
             if (!top) {
-                FC_ERR("invalid subname " << top->getFullName() << '.' << substr);
+                FC_ERR("invalid subname " << top->getFullNameLabel() << '.' << substr);
                 str.str("");
                 return nullptr;
             }

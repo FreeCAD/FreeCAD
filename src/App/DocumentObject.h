@@ -273,6 +273,7 @@ public:
      *
      * @return The full name of the object.
      */
+    [[deprecated("getFullName() is deprecated use getFullNameLabel() instead.")]]
     std::string getFullName() const override;
 
     /**
@@ -282,7 +283,18 @@ public:
      *
      * @return The full label of the object.
      */
+    [[deprecated("getFullLabel() is deprecated use getFullNameLabel() instead.")]]
     std::string getFullLabel() const;
+
+    /**
+     * @brief Returns the object's full name including its label.
+     *
+     * The returned string has the form `DocName#ObjName[ (Label)]`.
+     * The label appears only if it differs from the object's internal name.
+     *
+     * @return The full name with label (if applicable).
+     */
+    std::string getFullNameLabel(bool showLabel = true) const;
 
     bool isAttachedToDocument() const override;
     const char* detachFromDocument() override;

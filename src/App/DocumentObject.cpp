@@ -107,22 +107,16 @@ void DocumentObject::printInvalidLinks() const
         std::vector<App::DocumentObject*> invalid_linkobjs;
         std::string objnames, scopenames;
         GeoFeatureGroupExtension::getInvalidLinkObjects(this, invalid_linkobjs);
+        int idx = 1;
         for (auto& obj : invalid_linkobjs) {
-            objnames += obj->getNameInDocument();
-            objnames += " ";
+            objnames += "    ";
+            objnames += std::to_string(idx++);
+            objnames += ". ";
+            objnames += obj->getFullName();
+            objnames += "\n";
             for (auto& scope : obj->getParents()) {
-                if (scopenames.length() > 80) {
-                    scopenames += "... ";
-                    break;
-                }
-
-                scopenames += scope.first->getNameInDocument();
-                scopenames += " ";
-            }
-
-            if (objnames.length() > 80) {
-                objnames += "... ";
-                break;
+                scopenames += scope.first->getFullName();
+                scopenames += "\n";
             }
         }
 
@@ -140,10 +134,9 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().warning("%s: %s links are out of scope. Out of scope links to: %s\n",
-                                getTypeId().getName(),
-                                getNameInDocument(),
-                                objnames.c_str());
+        Base::Console().warning(
+            "%s: %s out of scope links to:\n%s\n",
+            getTypeId().getName(), getFullName(), objnames.c_str());
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -313,25 +306,35 @@ const char* DocumentObject::getStatusString() const
 
 std::string DocumentObject::getFullName() const
 {
-    if (!getDocument() || !isAttachedToDocument()) {
-        return "?";
-    }
-    std::string name(getDocument()->getName());
-    name += '#';
-    name += *pcNameInDocument;
-    return name;
+    constexpr bool dontShowLabel = false;
+    return getFullNameLabel(dontShowLabel);
 }
 
 std::string DocumentObject::getFullLabel() const
 {
-    if (!getDocument()) {
+    return getFullNameLabel();
+}
+
+std::string DocumentObject::getFullNameLabel(bool showLabel) const
+{
+    if (!getDocument() || !isAttachedToDocument()) {
         return "?";
     }
 
-    auto name = getDocument()->Label.getStrValue();
-    name += "#";
-    name += Label.getStrValue();
-    return name;
+    std::string fullName = (getDocument()->getName());
+    fullName += "#";
+
+    std::string objName = *pcNameInDocument;
+    fullName += objName;
+
+    if (showLabel) {
+        std::string objLabel = Label.getStrValue();
+
+        if (objLabel != objName) {
+            return fullName + "[" + objLabel + "]";
+        }
+    }
+    return fullName;    
 }
 
 const char* DocumentObject::getDagKey() const
@@ -849,7 +852,7 @@ void DocumentObject::onEarlyChange(const Property* prop)
         static App::Document* warnedDoc;
         if (warnedDoc != getDocument()) {
             warnedDoc = getDocument();
-            FC_WARN("Changes to partial loaded document will not be saved: " << getFullName() << '.'
+            FC_WARN("Changes to partial loaded document will not be saved: " << getFullNameLabel() << '.'
                                                                              << prop->getName());
         }
     }
@@ -878,7 +881,7 @@ void DocumentObject::onChanged(const Property* prop)
         static App::Document* warnedDoc;
         if (warnedDoc != getDocument()) {
             warnedDoc = getDocument();
-            FC_WARN("Changes to partial loaded document will not be saved: " << getFullName() << '.'
+            FC_WARN("Changes to partial loaded document will not be saved: " << getFullNameLabel() << '.'
                                                                              << prop->getName());
         }
     }
@@ -896,7 +899,7 @@ void DocumentObject::onChanged(const Property* prop)
     if (!testStatus(ObjectStatus::NoTouch) && !(prop->getType() & Prop_Output)
         && !prop->testStatus(Property::Output)) {
         if (!StatusBits.test(ObjectStatus::Touch)) {
-            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+            FC_TRACE("touch '" << getFullNameLabel() << "' on change of '" << prop->getName() << "'");
             StatusBits.set(ObjectStatus::Touch);
         }
         // must execute on document recompute
@@ -1609,5 +1612,4 @@ App::PropertyPlacement* DocumentObject::getPlacementProperty() const
 
     return getPropertyByName<App::PropertyPlacement>("Placement");
 }
-
 

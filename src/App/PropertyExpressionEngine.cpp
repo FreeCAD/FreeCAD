@@ -538,7 +538,7 @@ void PropertyExpressionEngine::tryRestoreExpression(DocumentObject* docObj,
         }
     }
     catch (const Base::Exception& e) {
-        FC_ERR("Failed to restore " << docObj->getFullName()
+        FC_ERR("Failed to restore " << docObj->getFullNameLabel()
                                     << '.'
                                     << getName()
                                     << ": "

@@ -1115,7 +1115,7 @@ DocumentObjectExecReturn* Sheet::execute()
     try {
         boost::topological_sort(graph, std::front_inserter(make_order));
         // Recompute cells
-        FC_LOG("recomputing " << getFullName());
+        FC_LOG("recomputing " << getFullNameLabel());
         for (auto& pos : make_order) {
             const auto& addr = VertexIndexList[pos];
             FC_TRACE(addr.toString());
@@ -1695,7 +1695,7 @@ void Sheet::onDocumentRestored()
 {
     auto ret = execute();
     if (ret != DocumentObject::StdReturn) {
-        FC_ERR("Failed to restore " << getFullName() << ": " << ret->Why);
+        FC_ERR("Failed to restore " << getFullNameLabel() << ": " << ret->Why);
         delete ret;
     }
 }

@@ -522,9 +522,9 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
                 "TaskAttacher",
                 "Unsuitable selection: '%s' cannot be attached to '%s' from within it's group "
                 "'%s'.\n",
-                attachingObj->getFullLabel(),
-                subObj->getFullLabel(),
-                group->getFullLabel()
+                attachingObj->getFullNameLabel(),
+                subObj->getFullNameLabel(),
+                group->getFullNameLabel()
             );
             rootObj = nullptr;
             return;
