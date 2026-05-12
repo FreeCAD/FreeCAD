@@ -480,9 +480,8 @@ void FaceAppearances::syncMaterialWidget()
         }
     }
     // Block signals to prevent triggering onMaterialSelected during widget synchronization
-    d->ui->widgetMaterial->blockSignals(true);
+    QSignalBlocker blocker(d->ui->widgetMaterial);
     d->ui->widgetMaterial->setMaterial(QString::fromStdString(materialUuid));
-    d->ui->widgetMaterial->blockSignals(false);
 }
 
 int FaceAppearances::getFirstIndex() const
