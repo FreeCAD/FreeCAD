@@ -320,7 +320,11 @@ void ModelLoader::loadLibrary(std::shared_ptr<ModelLibraryLocal> library)
         _modelEntryMap = std::make_unique<std::map<QString, std::shared_ptr<ModelEntry>>>();
     }
 
-    QDirIterator it(library->getDirectory(), QDirIterator::Subdirectories);
+    const auto directory = library->getDirectory();
+    if (!QDir(directory).exists()) {
+        return;
+    }
+    QDirIterator it(directory, QDirIterator::Subdirectories);
     while (it.hasNext()) {
         auto pathname = it.next();
         QFileInfo file(pathname);

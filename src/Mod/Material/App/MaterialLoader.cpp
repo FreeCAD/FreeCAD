@@ -546,7 +546,11 @@ void MaterialLoader::loadLibrary(const std::shared_ptr<MaterialLibraryLocal>& li
         _materialEntryMap = std::make_unique<std::map<QString, std::shared_ptr<MaterialEntry>>>();
     }
 
-    QDirIterator it(library->getDirectory(), QDirIterator::Subdirectories);
+    const auto directory = library->getDirectory();
+    if (!QDir(directory).exists()) {
+        return;
+    }
+    QDirIterator it(directory, QDirIterator::Subdirectories);
     while (it.hasNext()) {
         auto pathname = it.next();
         QFileInfo file(pathname);
