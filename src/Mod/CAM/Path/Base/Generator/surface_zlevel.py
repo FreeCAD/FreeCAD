@@ -98,7 +98,17 @@ def getTrimFace(borderFace, bbFace, wpc):
         bb_copy.translate(FreeCAD.Vector(0, 0, -bb_copy.BoundBox.ZMin))
         trim_engine.add(bb_copy, op=1)
 
-    return trim_engine.getShape()
+    trim_face = trim_engine.getShape()
+
+    try:
+        if hasattr(trim_face, "removeSplitter"):
+            trim_face = trim_face.removeSplitter()
+    except Exception as e:
+        Path.Log.debug(
+            f"surface_zlevel.getTrimFace: Removing splitter on trim face failed: {str(e)}"
+        )
+
+    return trim_face
 
 
 # ---------------------------------------------------------------------------
@@ -106,7 +116,7 @@ def getTrimFace(borderFace, bbFace, wpc):
 # ---------------------------------------------------------------------------
 
 
-def categorize_floor_steps(shape, start_z, final_z, step_down):
+def categorize_floor_steps(shape, start_z, final_z, step_down, clear_planar_only):
     """Reconciles physical model floors with calculated step-down heights.
 
     This function generates a top-down list of Z-depths starting from start_z
@@ -147,7 +157,15 @@ def categorize_floor_steps(shape, start_z, final_z, step_down):
                 break
 
         if match_z is not None:
-            final_depth_logic.append((z_std, "Mixed", fused_geometry[match_z]))
+            if clear_planar_only:
+                # We are in "Clear Planar Only" mode. Split the "Mixed" step
+                # into two separate virtual passes for the main loop to process.
+                final_depth_logic.append(
+                    (z_std + 0.0001, "Pure", None)
+                )  # Set higher to be processed first
+                final_depth_logic.append((z_std, "Extra", fused_geometry[match_z]))
+            else:
+                final_depth_logic.append((z_std, "Mixed", fused_geometry[match_z]))
             accounted_floors.add(match_z)
         else:
             final_depth_logic.append((z_std, "Pure", None))
@@ -286,7 +304,7 @@ def zlevel_hybrid_stack(
     stack = []
     sub_face = None
     allPrevComp = None
-    tol = 0.001
+    tol = 0.0001
 
     c_rad = tool_params["c_rad"]
     is_3d = tool_params["is_threeD"]
@@ -319,46 +337,50 @@ def zlevel_hybrid_stack(
 
     # 4. Main layer loop
     for z_target, status, floor_geo in categorizedSteps:
+
+        # Reject steps strictly above the model top
         if z_target > (model_top - tol):
             Path.Log.warning(
                 f"Skipping step at Z={z_target:.3f}mm as it is above the model top (max Z: {model_top:.3f}mm)."
             )
             continue
 
+        # Determine the Slice Height (Model Footprint)
+        z_slice = z_target
+        if z_slice < model_bottom:
+            z_slice = model_bottom
+
         # The depth at which the tool has submerged from the model_top
-        dist_submerged = max(0, model_top - z_target)
+        dist_submerged = max(0, model_top - z_slice)
         # Nudge slice height based on whether we are clearing a floor or a wall
         # Standard layers nudge up (+); Floors nudge down (-) to stay inside material
         slice_bias = 0.0002 if status in ["Mixed", "Extra"] else -0.0002
 
         # A. Generate sampling plan (Height, Radius pairs)
         unique_steps = _generate_sampling_plan(
-            z_target, dist_submerged, tol, critical_heights, num_slices, tool_params
+            z_slice, dist_submerged, tol, critical_heights, num_slices, tool_params
         )
 
-        # B. Geometric Fusion with Lazy Cache Validation
+        # B. Generate all 2D slices for this layer
+        layer_slices = _generate_layer_slices(
+            area_engine,
+            params,
+            unique_steps,
+            z_target,
+            slice_bias,
+            stock_to_leave,
+            model_top,
+            model_bottom,
+        )
+
+        if not layer_slices:
+            continue
+
+        # C. Fuse all generated slices into a single silhouette for this layer
         fusion = Path.Area()
         fusion.setPlane(wpc)
-
-        for h, r_theo in unique_steps:
-            r_comp = r_theo + stock_to_leave
-
-            # Synchronized Slicing
-            slice_z = max(model_bottom + 1e-5, min(z_target + h + slice_bias, model_top - 1e-5))
-
-            # Trigger C++ Slicing with dynamic offset
-            params["Offset"] = r_comp
-            area_engine.setParams(**params)
-
-            sections = area_engine.makeSections(mode=0, project=False, heights=[slice_z])
-            if not sections:
-                continue
-
-            sub_face = sections[0].getShape()
-
-            # Move results to machine plane for dissolved fusion
-            sub_face.translate(FreeCAD.Vector(0, 0, -sub_face.BoundBox.ZMin))
-            fusion.add(sub_face)
+        for s in layer_slices:
+            fusion.add(s)
 
         # C. Boolean resolution
         currentSilhouette = None
@@ -366,41 +388,18 @@ def zlevel_hybrid_stack(
             # currentSilhouette is the union of all 3D contact points at this depth
             currentSilhouette = fusion.getShape()
 
-            if hasattr(currentSilhouette, "removeSplitter"):
-                currentSilhouette = currentSilhouette.removeSplitter()
+            # if hasattr(currentSilhouette, "removeSplitter"):
+            #    currentSilhouette = currentSilhouette.removeSplitter()
         except Exception as e:
             Path.Log.error(f"Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}")
             continue
 
-        # Clearing engine (Clipper Booleans)
-        layer_engine = Path.Area()
-        layer_engine.setPlane(wpc)
+        # D: Calculate the final cutting area using the new helper
+        cutArea = _calculate_cut_area(
+            wpc, status, currentSilhouette, floor_geo, borderFace, trimFace, allPrevComp, z_target
+        )
 
-        if status == "Extra":
-            # Surgical Floor Mode: Only clear the floor geometry, ignore stock boundary
-            if floor_geo:
-                layer_engine.add(floor_geo)
-                layer_engine.add(currentSilhouette, op=1)  # Subtract model
-
-        else:
-            # Standard Mode: Material = (Stock - Model) - TrimMask
-            layer_engine.add(borderFace)
-            layer_engine.add(currentSilhouette, op=1)
-
-            # Rest Machining: subtract material cleared in layers above
-            if allPrevComp:
-                layer_engine.add(allPrevComp, op=1)
-
-        if trimFace:
-            layer_engine.add(trimFace, op=1)
-
-        try:
-            cutArea = layer_engine.getShape()
-        except Exception as e:
-            Path.Log.error(f"Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}")
-            cutArea = None
-
-        # Reconciliation & Translation
+        # E: Finalize and store the result for this layer
         if cutArea:
             total_shift = z_target + z_offset
 
@@ -416,6 +415,127 @@ def zlevel_hybrid_stack(
             )
 
     return stack
+
+
+def _generate_layer_slices(
+    area_engine,
+    params,
+    unique_steps,
+    z_target,
+    slice_bias,
+    stock_to_leave,
+    model_top,
+    model_bottom,
+):
+    """
+    For a single Z-level, generates all the necessary 2D slices based on the tool's 3D profile.
+
+    This function iterates through the provided sampling plan (unique_steps), calculates
+    the precise slice height and tool-compensated offset for each sample, and calls the
+    C++ Area engine to produce the raw 2D geometry.
+
+    Args:
+        area_engine (Path.Area): The pre-configured C++ slicing engine.
+        params (dict): The parameter dictionary for the area_engine.
+        unique_steps (set): A set of (height, radius) tuples from the sampling plan.
+        z_target (float): The base Z-height for the current machining layer.
+        slice_bias (float): A small nudge value for the slice height.
+        stock_to_leave (float): The horizontal stock to leave.
+        model_top (float): The absolute maximum Z of the model.
+        model_bottom (float): The absolute minimum Z of the model.
+
+    Returns:
+        list: A list of normalized Part.Shape objects representing the slices at Z=0.
+    """
+    slices = []
+    for h, r_theo in unique_steps:
+        r_comp = r_theo + stock_to_leave
+
+        # Synchronized Slicing: Calculate the precise Z for this sample
+        slice_z = max(model_bottom + 1e-5, min(z_target + h + slice_bias, model_top - 1e-5))
+
+        # Trigger C++ Slicing with the dynamic offset for this sample
+        params["Offset"] = r_comp
+        area_engine.setParams(**params)
+
+        sections = area_engine.makeSections(mode=0, project=False, heights=[slice_z])
+
+        if not sections:
+            # Note: A fall back strategy can be added here.
+            continue
+
+        sub_face = sections[0].getShape()
+
+        # Move results to the machine plane (Z=0) for consistent fusion
+        sub_face.translate(FreeCAD.Vector(0, 0, -sub_face.BoundBox.ZMin))
+        slices.append(sub_face)
+
+    return slices
+
+
+def _calculate_cut_area(
+    wpc,
+    status,
+    currentSilhouette,
+    floor_geo,
+    borderFace,
+    trimFace,
+    allPrevComp,
+    z_target,
+):
+    """
+    Calculates the final 2D machining area for a single layer by performing
+    a series of boolean (Clipper) operations.
+
+    This function encapsulates the core "what to cut" logic, handling the differences
+    between a standard clearing pass and a surgical "Extra" pass for detected floors.
+
+    Args:
+        wpc (Part.Circle): The workplane for the Path.Area engine.
+        status (str): The status of the layer ("Pure", "Mixed", "Extra").
+        currentSilhouette (Part.Shape): The tool-compensated model silhouette at Z=0.
+        floor_geo (Part.Shape): The detected physical floor geometry at Z=0.
+        borderFace (Part.Shape): The main stock boundary at Z=0.
+        trimFace (Part.Shape): The "outside world" mask to clip the toolpath.
+        allPrevComp (Part.Shape): The cumulative mask of areas already machined in upper layers.
+        z_target (float): The current Z-height, used for logging errors.
+
+    Returns:
+        Part.Shape: The final, calculated cutting area for the layer, or None on failure.
+    """
+    layer_engine = Path.Area()
+    layer_engine.setPlane(wpc)
+
+    if status == "Extra":
+        # Surgical Floor Mode: The area to machine is defined only by the
+        # physical floor geometry minus the current model silhouette.
+        # Stock = Floor; Material = Stock - Model
+        if floor_geo:
+            layer_engine.add(floor_geo)
+            layer_engine.add(currentSilhouette, op=1)  # Subtract model
+
+    else:
+        # Standard Mode: The area to machine is the stock boundary, minus the model,
+        # minus any areas we've already cleared, and clipped by the trim mask.
+        # Stock = Border; Material = (Stock - Model - PreviouslyCleared) - TrimMask
+        layer_engine.add(borderFace)
+        layer_engine.add(currentSilhouette, op=1)
+
+        # Rest Machining: subtract material cleared in layers above
+        if allPrevComp:
+            layer_engine.add(allPrevComp, op=1)
+
+        # Apply the 'outside world' mask only in standard mode
+        if trimFace:
+            layer_engine.add(trimFace, op=1)
+
+    try:
+        cutArea = layer_engine.getShape()
+    except Exception as e:
+        Path.Log.error(f"Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}")
+        cutArea = None
+
+    return cutArea
 
 
 def _generate_sampling_plan(
@@ -727,7 +847,9 @@ def _generatePattern(
     Returns:
         A list of Path.Command objects representing the clearing G-code.
     """
-    Path.Log.debug(f"surface_zlevel._generatePattern: Generating {cut_pattern} pattern at Z={z_target}")
+    Path.Log.debug(
+        f"surface_zlevel._generatePattern: Generating {cut_pattern} pattern at Z={z_target}"
+    )
     commands = []
     should_reverse = True
 
