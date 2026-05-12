@@ -235,14 +235,18 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         for base, subs in self.baseShapes(obj):
             Path.Log.debug(f"Processing base {base.Label} with {len(subs)} subs")
             # Debug: check if this is a proxy and what the shape looks like
-            if hasattr(base, '_real_obj'):
+            if hasattr(base, "_real_obj"):
                 Path.Log.debug(f"  Using proxy wrapper for {base._real_obj.Label}")
-            if hasattr(base, 'Shape') and base.Shape:
-                Path.Log.debug(f"  Base shape has {len(base.Shape.Edges)} edges, {len(base.Shape.Faces)} faces")
+            if hasattr(base, "Shape") and base.Shape:
+                Path.Log.debug(
+                    f"  Base shape has {len(base.Shape.Edges)} edges, {len(base.Shape.Faces)} faces"
+                )
                 # Check shape orientation
-                if hasattr(base.Shape, 'BoundBox'):
+                if hasattr(base.Shape, "BoundBox"):
                     bbox = base.Shape.BoundBox
-                    Path.Log.debug(f"  Shape bbox: ({bbox.XMin:.3f},{bbox.YMin:.3f},{bbox.ZMin:.3f}) to ({bbox.XMax:.3f},{bbox.YMax:.3f},{bbox.ZMax:.3f})")
+                    Path.Log.debug(
+                        f"  Shape bbox: ({bbox.XMin:.3f},{bbox.YMin:.3f},{bbox.ZMin:.3f}) to ({bbox.XMax:.3f},{bbox.YMax:.3f},{bbox.ZMax:.3f})"
+                    )
             edges = []
             basewires = []
             max_h = -99999
@@ -255,20 +259,30 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
                 if type(sub) == Part.Edge:  # Edge
                     # Debug: examine the edge geometry
-                    if hasattr(sub, 'Curve') and sub.Curve:
+                    if hasattr(sub, "Curve") and sub.Curve:
                         Path.Log.debug(f"    Edge type: {type(sub.Curve).__name__}")
-                        if hasattr(sub.Curve, 'Center'):
+                        if hasattr(sub.Curve, "Center"):
                             Path.Log.debug(f"    Edge center: {sub.Curve.Center}")
-                        if hasattr(sub.Curve, 'Radius'):
+                        if hasattr(sub.Curve, "Radius"):
                             Path.Log.debug(f"    Edge radius: {sub.Curve.Radius}")
                         # Check if BSpline came from a circle
-                        if type(sub.Curve).__name__ == 'BSplineCurve':
+                        if type(sub.Curve).__name__ == "BSplineCurve":
                             try:
-                                # Try to approximate as circle
-                                circle = sub.Curve.toArc()
-                                if circle:
-                                    Path.Log.debug(f"    BSpline approximates circle with center {circle.Center} and radius {circle.Radius}")
-                            except:
+                                arcs = sub.Curve.toBiArcs(0.001)
+                                if (
+                                    arcs
+                                    and len(arcs) == 1
+                                    and hasattr(arcs[0], "Center")
+                                    and hasattr(arcs[0], "Radius")
+                                ):
+                                    Path.Log.debug(
+                                        f"    BSpline approximates circle with center {arcs[0].Center} and radius {arcs[0].Radius}"
+                                    )
+                                else:
+                                    Path.Log.debug(
+                                        f"    BSpline toBiArcs returned {len(arcs) if arcs else 0} segment(s)"
+                                    )
+                            except Exception:
                                 Path.Log.debug(f"    BSpline cannot be converted to arc/circle")
                     # Check edge vertices
                     for i, v in enumerate(sub.Vertexes):
@@ -414,11 +428,12 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                 # Debug: examine the wire geometry
                 Path.Log.debug(f"  Wire {i}: {len(w.Edges)} edges")
                 for j, e in enumerate(w.Edges):
-                    if hasattr(e, 'Curve') and e.Curve:
+                    if hasattr(e, "Curve") and e.Curve:
                         Path.Log.debug(f"    Edge {j} type: {type(e.Curve).__name__}")
-                        if hasattr(e.Curve, 'Radius'):
+                        if hasattr(e.Curve, "Radius"):
                             Path.Log.debug(f"    Edge {j} radius: {e.Curve.Radius}")
-                wire = PathOpUtil.offsetWire(w, base.Shape, offset, True, side)
+                tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
+                wire = PathOpUtil.offsetWire(w, base.Shape, offset, True, side, tol)
                 Path.Log.debug(f"  offsetWire returned: {wire is not None}")
                 if wire:
                     wires.append(wire)

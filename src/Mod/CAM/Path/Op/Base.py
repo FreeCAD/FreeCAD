@@ -113,6 +113,40 @@ class _TransformedShapeProxy:
         return hash(object.__getattribute__(self, "_real_obj"))
 
 
+def _transform_shape_with_arc_fix(shape, matrix):
+    """Transform *shape* by *matrix* and recover arcs degraded to BSplines.
+
+    ``transformShape()`` can turn circles/arcs into BSplineCurves.
+    This attempts to convert them back via ``toBiArcs()`` so that
+    downstream operations (e.g. Deburr) still see native arc geometry.
+
+    Returns the (possibly fixed) transformed ``Part.Shape``.
+    """
+    transformed = shape.copy().transformShape(matrix, False, False)
+    fixed_edges = []
+    any_converted = False
+    for edge in transformed.Edges:
+        try:
+            curve = edge.Curve
+        except TypeError:
+            fixed_edges.append(edge)
+            continue
+        if type(curve).__name__ == "BSplineCurve":
+            try:
+                arcs = curve.toBiArcs(0.001)
+                if arcs and len(arcs) == 1:
+                    fixed_edges.append(Part.Edge(arcs[0]))
+                    any_converted = True
+                    continue
+            except Exception:
+                pass
+        fixed_edges.append(edge)
+
+    if any_converted:
+        return Part.makeCompound(fixed_edges)
+    return transformed
+
+
 class ObjectOp(object):
     """
     Base class for proxy objects of all Path operations.
@@ -669,39 +703,7 @@ class ObjectOp(object):
             key = id(base_obj)
             if key not in proxy_cache:
                 if hasattr(base_obj, "Shape") and base_obj.Shape:
-                    transformed = base_obj.Shape.copy().transformShape(matrix, False, False)
-
-                    # Convert BSplines back to circles/arcs when possible
-                    # This preserves geometry types for operations like Deburr
-                    fixed_edges = []
-                    for edge in transformed.Edges:
-                        try:
-                            curve = edge.Curve
-                        except TypeError:
-                            fixed_edges.append(edge)
-                            continue
-                        if type(curve).__name__ == "BSplineCurve":
-                            try:
-                                arc = curve.toArc()
-                                if arc:
-                                    # Create new edge with the converted curve
-                                    new_edge = Part.Edge(arc)
-                                    fixed_edges.append(new_edge)
-                                    continue
-                            except Exception:
-                                pass
-                        fixed_edges.append(edge)
-
-                    # Rebuild shape with fixed edges
-                    if len(fixed_edges) != len(transformed.Edges):
-                        # Create a compound of the fixed edges
-                        shape = Part.makeCompound(fixed_edges)
-                        Path.Log.debug(f"  Created compound with {len(fixed_edges)} fixed edges")
-                    else:
-                        shape = transformed
-                        Path.Log.debug(
-                            f"  Using original transformed shape with {len(transformed.Edges)} edges"
-                        )
+                    shape = _transform_shape_with_arc_fix(base_obj.Shape, matrix)
 
                     # Validate the shape before creating proxy
                     Path.Log.debug(f"  Final shape type: {type(shape).__name__}")
@@ -986,8 +988,11 @@ class ObjectOp(object):
         4. Sets ``self._geom_transform_matrix`` so that ``updateDepths()``
            and ``baseShapes()`` see transformed geometry
 
-        If the workplane is Z-up or no machine with rotary axes is available,
-        this is a no-op.
+        Returns:
+            True if the operation may proceed (workplane is Z-up, or rotation
+            was successfully set up). False if the workplane requires rotation
+            but it cannot be applied — the caller must abort execution rather
+            than running the op against an unrotated, non-Z-up workplane.
         """
         # Clean any stale state from a previous execute()
         for attr in ("_geom_transform_matrix", "_geometry_rotation", "_rotation_commands"):
@@ -995,14 +1000,14 @@ class ObjectOp(object):
                 delattr(self, attr)
 
         if not hasattr(obj, "Workplane"):
-            return
+            return True
 
         wp = obj.Workplane
         z_up = FreeCAD.Vector(0, 0, 1)
 
         # Check if workplane is effectively Z-up (no rotation needed)
         if wp.isEqual(z_up, 1e-6):
-            return
+            return True
 
         # Need rotation — get machine from job
         machine = self.job.Proxy.getMachine() if self.job else None
@@ -1011,7 +1016,7 @@ class ObjectOp(object):
                 f"Operation {obj.Label}: Workplane requires rotation but "
                 f"no machine with rotary axes is configured"
             )
-            return
+            return False
 
         # Solve orientation
         try:
@@ -1025,7 +1030,7 @@ class ObjectOp(object):
                     f"Operation {obj.Label}: Cannot solve workplane "
                     f"orientation: {result.reason}"
                 )
-                return
+                return False
 
             # Build rotation commands (G0 moves for each rotary axis)
             cmd_params = {name: angle for name, angle in result.angles.items()}
@@ -1046,6 +1051,7 @@ class ObjectOp(object):
             Path.Log.info(
                 f"Operation {obj.Label}: 3+2 workplane active, " f"angles={result.angles}"
             )
+            return True
 
         except Exception as e:
             Path.Log.error(f"Operation {obj.Label}: Error setting up workplane " f"transform: {e}")
@@ -1053,6 +1059,7 @@ class ObjectOp(object):
             for attr in ("_geom_transform_matrix", "_geometry_rotation", "_rotation_commands"):
                 if hasattr(self, attr):
                     delattr(self, attr)
+            return False
 
     @waiting_effects
     def execute(self, obj):
@@ -1125,8 +1132,12 @@ class ObjectOp(object):
         # --- 3+2 Setup: compute geometry transformation before depth calculation ---
         # If the workplane is not Z-up, solve the orientation and set up the
         # transform matrix so that updateDepths() sees transformed BoundBoxes
-        # and baseShapes() yields transformed geometry.
-        self._setup_workplane_transform(obj)
+        # and baseShapes() yields transformed geometry. Abort the op cleanly
+        # if rotation is required but unavailable — otherwise downstream
+        # geometry ops would fail with confusing errors against unrotated input.
+        if not self._setup_workplane_transform(obj):
+            obj.Path = Path.Path("(workplane rotation unavailable)")
+            return
 
         self.updateDepths(obj)
         # now that all op values are set make sure the user properties get updated accordingly,
@@ -1152,39 +1163,11 @@ class ObjectOp(object):
         matrix = getattr(self, "_geom_transform_matrix", None)
         if matrix is not None:
 
-            def transform_shape(shape):
-                if not hasattr(shape, "Shape") or not shape.Shape:
-                    return shape
-
-                # Use transformShape() with checkScale=False to preserve geometry types
-                transformed = shape.Shape.copy().transformShape(matrix, False, False)
-
-                # Convert BSplines back to circles/arcs when possible
-                fixed_edges = []
-                for edge in transformed.Edges:
-                    try:
-                        curve = edge.Curve
-                    except TypeError:
-                        fixed_edges.append(edge)
-                        continue
-                    if type(curve).__name__ == "BSplineCurve":
-                        try:
-                            arc = curve.toArc()
-                            if arc:
-                                new_edge = Part.Edge(arc)
-                                fixed_edges.append(new_edge)
-                                continue
-                        except Exception:
-                            pass
-                    fixed_edges.append(edge)
-
-                # Rebuild shape with fixed edges
-                if len(fixed_edges) != len(transformed.Edges):
-                    final_shape = Part.makeCompound(fixed_edges)
-                else:
-                    final_shape = transformed
-
-                return _TransformedShapeProxy(shape, final_shape)
+            def transform_shape(obj):
+                if not hasattr(obj, "Shape") or not obj.Shape:
+                    return obj
+                final_shape = _transform_shape_with_arc_fix(obj.Shape, matrix)
+                return _TransformedShapeProxy(obj, final_shape)
 
             self.model = [transform_shape(m) for m in self.model]
             if self.stock and hasattr(self.stock, "Shape") and self.stock.Shape:
