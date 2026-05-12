@@ -55,6 +55,7 @@ import math
 import FreeCAD
 import ArchCommands
 import ArchComponent
+import ArchSketchObject
 import DraftVecUtils
 
 from draftutils import params
@@ -424,20 +425,12 @@ class CurtainWall(ArchComponent.Component):
             ):  # would be false (none) if SketchArch Add-on is not installed, or base ArchSketch does not have the edges stored / input by user
                 curtainWallEdges = curtainWallBaseShapeEdges.get("curtainWallEdges")
             elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                skGeom = obj.Base.GeometryFacadeList
-                skGeomEdges = []
                 skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
-                for ig, geom in enumerate(skGeom):
-                    if (not obj.OverrideEdges and not geom.Construction) or str(
-                        ig
-                    ) in obj.OverrideEdges:
-                        # support Line, Arc, Circle, Ellipse for Sketch
-                        # as Base at the moment
-                        if isinstance(
-                            geom.Geometry, (Part.LineSegment, Part.Circle, Part.ArcOfCircle)
-                        ):
-                            skGeomEdgesI = geom.Geometry.toShape()
-                            skGeomEdges.append(skGeomEdgesI)
+                skGeomEdges = ArchSketchObject.getSketchDefiningEdges(
+                    obj.Base,
+                    obj.OverrideEdges,
+                    (Part.LineSegment, Part.Circle, Part.ArcOfCircle),
+                )
                 curtainWallEdges = []
                 for edge in skGeomEdges:
                     edge.Placement = edge.Placement.multiply(skPlacement)

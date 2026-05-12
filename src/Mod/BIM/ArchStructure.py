@@ -42,6 +42,7 @@ import FreeCAD
 import ArchComponent
 import ArchCommands
 import ArchProfile
+import ArchSketchObject
 import Draft
 import DraftVecUtils
 
@@ -1115,35 +1116,20 @@ class _Structure(ArchComponent.Component):
                                 baseShapeWires = structureBaseShapeWires.get("slabWires")
                                 faceMaker = structureBaseShapeWires.get("faceMaker")
                         elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                            skGeom = obj.Base.GeometryFacadeList
-                            skGeomEdges = []
                             skPlacement = (
                                 obj.Base.Placement
                             )  # Get Sketch's placement to restore later
-                            # Get ArchSketch edges to construct ArchStructure
-                            # No need to test obj.ArchSketchData ...
-                            for ig, geom in enumerate(skGeom):
-                                # Construction mode edges should be ignored if
-                                # ArchSketchEdges, otherwise, ArchSketchEdges data
-                                # needs to take out those in Construction before
-                                # using as parameters.
-                                if (not obj.ArchSketchEdges and not geom.Construction) or str(
-                                    ig
-                                ) in obj.ArchSketchEdges:
-                                    # support Line, Arc, Circle, Ellipse, BSplineCurve for Sketch
-                                    # as Base at the moment
-                                    if isinstance(
-                                        geom.Geometry,
-                                        (
-                                            Part.LineSegment,
-                                            Part.Circle,
-                                            Part.ArcOfCircle,
-                                            Part.Ellipse,
-                                            Part.BSplineCurve,
-                                        ),
-                                    ):
-                                        skGeomEdgesI = geom.Geometry.toShape()
-                                        skGeomEdges.append(skGeomEdgesI)
+                            skGeomEdges = ArchSketchObject.getSketchDefiningEdges(
+                                obj.Base,
+                                obj.ArchSketchEdges,
+                                (
+                                    Part.LineSegment,
+                                    Part.Circle,
+                                    Part.ArcOfCircle,
+                                    Part.Ellipse,
+                                    Part.BSplineCurve,
+                                ),
+                            )
                             clusterTransformed = []
                             for cluster in Part.getSortedClusters(skGeomEdges):
                                 edgesTransformed = []
