@@ -192,21 +192,16 @@ def isAContainer(obj, links_too=False):
     If links_too, App::Link objects are considered containers, too. Then, container tree
     isn't necessarily a tree."""
 
-    container_bases = ["App::Document", "App::Origin"]
-    for base in container_bases:
-        if obj.isDerivedFrom(base):
-            return True
+    if obj.isDerivedFrom("App::Document"):
+        return True
+    if obj.hasExtension("App::GroupExtension"):
+        return True
+    if obj.isDerivedFrom("App::Origin"):
+        return True
     if obj.isDerivedFrom("App::Link") and links_too:
         return True
-
-    container_extensions = ["App::GroupExtension"]
-    for extension in container_extensions:
-        if obj.hasExtension(extension):
-            return True
-
     if obj.hasChildElement():
-        return True
-
+        return True if links_too else False
     return False
 
 
