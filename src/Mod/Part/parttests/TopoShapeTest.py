@@ -599,6 +599,26 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         if childShapes[0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(childShapes[0].ElementMapSize, 26)
 
+    def testMakeShapeFromMeshSkipsFacetsCollapsedBySewTolerance(self):
+        shape = Part.Shape()
+        topology = (
+            (
+                App.Vector(0, 0, 0),
+                App.Vector(1, 0, 0),
+                App.Vector(1, 0.01, 0),
+                App.Vector(0, 1, 0),
+            ),
+            (
+                (0, 1, 2),
+                (0, 2, 3),
+            ),
+        )
+
+        shape.makeShapeFromMesh(topology, 0.1, True)
+
+        self.assertEqual(len(shape.Faces), 1)
+        self.assertEqual(sum(1 for edge in shape.Edges if len(edge.Vertexes) < 2), 0)
+
     def testTopoShapeMirror(self):
         # Act
         mirror = self.doc.Box1.Shape.mirror(App.Vector(), App.Vector(1, 0, 0))

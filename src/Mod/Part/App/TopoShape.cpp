@@ -25,6 +25,7 @@
 #include <FCConfig.h>
 
 #include <TopoDS_Shape.hxx>
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdlib>
@@ -3680,14 +3681,10 @@ void TopoShape::setFaces(
     double tolerance
 )
 {
-    gp_XYZ p1, p2, p3;
     std::vector<TopoDS_Vertex> Vertexes;
     std::map<std::pair<uint32_t, uint32_t>, TopoDS_Edge> Edges;
     TopoDS_Face newFace;
     TopoDS_Wire newWire;
-    Standard_Real x1, y1, z1;
-    Standard_Real x2, y2, z2;
-    Standard_Real x3, y3, z3;
 
     TopoDS_Compound aComp;
     BRep_Builder BuildTool;
@@ -3696,12 +3693,29 @@ void TopoShape::setFaces(
     uint32_t ctPoints = Points.size();
     Vertexes.resize(ctPoints);
 
+    // Avoid facets that would collapse during sewing before creating their edges.
+    const double minEdgeLength = std::max(tolerance, Precision::Approximation());
+    auto HasUsableFacetEdges = [&Points, ctPoints, minEdgeLength](const Facet& facet) {
+        if (facet.I1 >= ctPoints || facet.I2 >= ctPoints || facet.I3 >= ctPoints) {
+            return false;
+        }
+
+        gp_XYZ p1(Points[facet.I1].x, Points[facet.I1].y, Points[facet.I1].z);
+        gp_XYZ p2(Points[facet.I2].x, Points[facet.I2].y, Points[facet.I2].z);
+        gp_XYZ p3(Points[facet.I3].x, Points[facet.I3].y, Points[facet.I3].z);
+        return !p1.IsEqual(p2, minEdgeLength) && !p1.IsEqual(p3, minEdgeLength)
+            && !p2.IsEqual(p3, minEdgeLength);
+    };
+
     // Create array of vertexes
     auto CreateVertex = [](const Base::Vector3d& v) {
         gp_XYZ p(v.x, v.y, v.z);
         return BRepBuilderAPI_MakeVertex(p);
     };
     for (const auto& it : Topo) {
+        if (!HasUsableFacetEdges(it)) {
+            continue;
+        }
         if (it.I1 < ctPoints) {
             if (Vertexes[it.I1].IsNull()) {
                 Vertexes[it.I1] = CreateVertex(Points[it.I1]);
@@ -3743,46 +3757,31 @@ void TopoShape::setFaces(
         return Edges[key];
     };
     for (const auto& it : Topo) {
+        if (!HasUsableFacetEdges(it)) {
+            continue;
+        }
         CreateEdge(it.I1, it.I2);
         CreateEdge(it.I2, it.I3);
         CreateEdge(it.I3, it.I1);
     }
 
     for (const auto& it : Topo) {
-        if (it.I1 >= ctPoints || it.I2 >= ctPoints || it.I3 >= ctPoints) {
+        if (!HasUsableFacetEdges(it)) {
             continue;
         }
-        x1 = Points[it.I1].x;
-        y1 = Points[it.I1].y;
-        z1 = Points[it.I1].z;
-        x2 = Points[it.I2].x;
-        y2 = Points[it.I2].y;
-        z2 = Points[it.I2].z;
-        x3 = Points[it.I3].x;
-        y3 = Points[it.I3].y;
-        z3 = Points[it.I3].z;
 
-        p1.SetCoord(x1, y1, z1);
-        p2.SetCoord(x2, y2, z2);
-        p3.SetCoord(x3, y3, z3);
+        const TopoDS_Edge& e1 = GetEdge(it.I1, it.I2);
+        const TopoDS_Edge& e2 = GetEdge(it.I2, it.I3);
+        const TopoDS_Edge& e3 = GetEdge(it.I3, it.I1);
+        if (e1.IsNull() || e2.IsNull() || e3.IsNull()) {
+            continue;
+        }
 
-        // Avoid very tiny edges as this may result into broken faces. The tolerance is
-        // Approximation because Confusion might be too tight.
-        if ((!(p1.IsEqual(p2, Precision::Approximation())))
-            && (!(p1.IsEqual(p3, Precision::Approximation())))) {
-            const TopoDS_Edge& e1 = GetEdge(it.I1, it.I2);
-            const TopoDS_Edge& e2 = GetEdge(it.I2, it.I3);
-            const TopoDS_Edge& e3 = GetEdge(it.I3, it.I1);
-            if (e1.IsNull() || e2.IsNull() || e3.IsNull()) {
-                continue;
-            }
-
-            newWire = BRepBuilderAPI_MakeWire(e1, e2, e3);
-            if (!newWire.IsNull()) {
-                newFace = BRepBuilderAPI_MakeFace(newWire);
-                if (!newFace.IsNull()) {
-                    BuildTool.Add(aComp, newFace);
-                }
+        newWire = BRepBuilderAPI_MakeWire(e1, e2, e3);
+        if (!newWire.IsNull()) {
+            newFace = BRepBuilderAPI_MakeFace(newWire);
+            if (!newFace.IsNull()) {
+                BuildTool.Add(aComp, newFace);
             }
         }
     }
