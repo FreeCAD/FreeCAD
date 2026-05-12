@@ -1649,6 +1649,11 @@ bool Document::save()
                 }
             }
 
+            if (docs.size() == 1 && docs.front() == getDocument() && !isModified()
+                && !getDocument()->isTouched() && !dmap[getDocument()]) {
+                return true;
+            }
+
             if (!checkCanonicalPath(dmap)) {
                 return false;
             }
