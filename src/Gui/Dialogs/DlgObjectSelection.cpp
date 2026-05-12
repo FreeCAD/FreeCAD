@@ -97,6 +97,8 @@ void DlgObjectSelection::init(
 
     ui = new Ui_DlgObjectSelection;
     ui->setupUi(this);
+    ui->vsplitter->setStretchFactor(0, 1);
+    ui->vsplitter->setStretchFactor(1, 0);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     ui->checkBoxAutoDeps->setChecked(hGrp->GetBool("ObjectSelectionAutoDeps", true));
