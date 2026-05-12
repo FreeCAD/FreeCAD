@@ -10714,8 +10714,8 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
                        const std::string& text,
                        const std::string& font)
 {
-
     std::vector<int> geoIdsWithInternalGeos;
+    bool skippedGroupedGeometry = false;
     // The lambda defines the condition for REMOVAL.
     // It returns 'true' if an element should be erased.
     auto new_end = std::remove_if(elts.begin(), elts.end(),
@@ -10726,6 +10726,11 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
             // If true, this element should be removed.
             if (geoId < 0 || Obj->getGeometryFacade(geoId)->isInternalAligned()) {
                 return true; // Mark for removal
+            }
+
+            if (constraintType == "Group" && Obj->isInGroup(geoId, true)) {
+                skippedGroupedGeometry = true;
+                return true;
             }
 
             // Condition 2: Check for internal geometries that need cleanup later.
@@ -10744,6 +10749,11 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
     elts.erase(new_end, elts.end());
 
     if (elts.size() < 2) {
+        if (skippedGroupedGeometry) {
+            Base::Console().warning(
+                "Cannot create Group constraint: selected geometries already belong to a group or text "
+                "constraint.\n");
+        }
         Base::Console().warning("Cannot create %s constraint: minimum 2 geometries.\n", constraintType.c_str());
         return false;
     }
