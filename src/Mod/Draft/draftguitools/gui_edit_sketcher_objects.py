@@ -42,28 +42,30 @@ from draftutils.translate import translate
 from draftguitools.gui_edit_base_object import GuiTools
 
 
+def _is_editable(obj):
+    """Check if a sketch has a single unconstrained line."""
+    import Part
+
+    return (
+        obj.ConstraintCount == 0
+        and obj.GeometryCount == 1
+        and type(obj.Geometry[0]) == Part.LineSegment
+    )
+
+
 class SketcherSketchObjectGuiTools(GuiTools):
 
     def __init__(self):
         pass
 
     def get_edit_points(self, obj):
-        """Return the list of edipoints for the given single line sketch.
+        """Return the list of edit points for the given single line sketch.
         (WallTrace)
         0 : startpoint
         1 : endpoint
         """
-        import Part
-
-        editpoints = []
-        if (
-            obj.ConstraintCount == 0
-            and obj.GeometryCount == 1
-            and type(obj.Geometry[0]) == Part.LineSegment
-        ):
-            editpoints.append(obj.getPoint(0, 1))
-            editpoints.append(obj.getPoint(0, 2))
-            return editpoints
+        if _is_editable(obj):
+            return [obj.getPoint(0, 1), obj.getPoint(0, 2)]
         else:
             _wrn = translate(
                 "draft",
@@ -87,7 +89,7 @@ class SketcherSketchObjectGuiTools(GuiTools):
         elif node_idx == 1:
             line.EndPoint = v
         obj.Geometry = [line]
-        obj.recompute()
+        obj.Document.recompute()
 
 
 ## @}
