@@ -364,8 +364,8 @@ void SoBrepFaceSet::doAction(SoAction* action)
                     bool hasDifferentTransparency = false;
                     float firstTransparency = transparencies[0];
                     for (int i = 0; i < numParts; i++) {
-                        float transparency =
-                            i < numTransparencies ? transparencies[i] : firstTransparency;
+                        float transparency = i < numTransparencies ? transparencies[i]
+                                                                   : firstTransparency;
                         hasDifferentTransparency = hasDifferentTransparency
                             || std::abs(transparency - firstTransparency) > 1e-6F;
                         for (int j = 0; j < indices[i]; j++) {

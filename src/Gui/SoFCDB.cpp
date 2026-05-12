@@ -362,11 +362,7 @@ void setInt32Values(SoMFInt32& field, const std::vector<int32_t>& values)
     }
 }
 
-void copyPerVertexIndexField(
-    const SoMFInt32& source,
-    SoMFInt32& target,
-    const std::vector<int>& faces
-)
+void copyPerVertexIndexField(const SoMFInt32& source, SoMFInt32& target, const std::vector<int>& faces)
 {
     const auto ranges = getIndexFaceRanges(source);
     if (ranges.empty()) {
@@ -389,11 +385,7 @@ void copyPerVertexIndexField(
     setInt32Values(target, values);
 }
 
-void copyPerFaceIndexField(
-    const SoMFInt32& source,
-    SoMFInt32& target,
-    const std::vector<int>& faces
-)
+void copyPerFaceIndexField(const SoMFInt32& source, SoMFInt32& target, const std::vector<int>& faces)
 {
     std::vector<int32_t> values;
     values.reserve(faces.size());
@@ -578,8 +570,7 @@ void applyFaceTransparencyToVRML(
         }
 
         SoNode* parentNode = path->getNodeFromTail(1);
-        if (!parentNode
-            || !parentNode->getTypeId().isDerivedFrom(SoVRMLParent::getClassTypeId())) {
+        if (!parentNode || !parentNode->getTypeId().isDerivedFrom(SoVRMLParent::getClassTypeId())) {
             ++transparencySet;
             continue;
         }
