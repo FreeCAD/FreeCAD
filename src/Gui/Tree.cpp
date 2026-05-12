@@ -4034,6 +4034,10 @@ void TreeWidget::onItemSelectionChanged()
         }
     }
 
+    if (selItems.size() == 1 && selItems.front()->type() == ObjectType) {
+        static_cast<DocumentObjectItem*>(selItems.front())->displayStatusInfo();
+    }
+
     this->blockSelection(lock);
 }
 
