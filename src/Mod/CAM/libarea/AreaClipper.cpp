@@ -375,89 +375,72 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
         p = SimplifyPath(p, CArea::m_clipper_clean_distance, is_closed);
     }
 
-    // Find starting index to avoid breaking arcs at seam
-    unsigned int j0 = 0;
+    // Pick a start index
+    // TODO for open paths start at one end and iterate in the direction of
+    // decreasing z (which may be a nuanced notion given newly generated z
+    // values)
+    // Actually this order issue may need to be tagged/documented somehow when
+    // mapping new zs back to the old ones they came from; the new path may *only* have new zs.
+    // Yeah, do that. But only for open paths. Also write a test for it.
+    int j0 = 0;
     if (is_closed && p.size() > 0) {
-        // Find the largest index with z matching that of index 0
-        int64_t z0 = p[0].z;
-        for (unsigned int j = p.size() - 1; j < p.size(); j--) {
-            if (p[j].z == z0) {
+        for (int j = 0; j < p.size(); j++) {
+            if (p[j].z < p[j0].z) {
                 j0 = j;
-                break;
             }
         }
     }
 
     // Loop through points starting at j0
     int64_t prevZ = -1;
-    PointD prevPt;
-    unsigned int num_j = p.size() + (is_closed ? 1 : 0);
-    for (unsigned int dj = 0; dj < num_j; dj++) {
-        unsigned int jstart = (j0 + dj) % p.size();
-        while (dj + 1 < num_j && p[(j0 + dj + 1) % p.size()].z == p[jstart].z) {
-            dj++;
-        }
-        unsigned int j = (j0 + dj) % p.size();
+    heeks::Point prevP;
+    int num_j = p.size() + (is_closed ? 1 : 0);
+    for (int dj = 0; dj < num_j; dj++) {
+        const int j = (j0 + (reverse ? -1 : 1) * dj + 2 * p.size()) % p.size();
         const Point64& pt = p[j];
         PointD dp = ToPointD(pt);
+        heeks::Point p(dp.x / CArea::m_units, dp.y / CArea::m_units);
 
         // Construct ordered pair for arc detection
         std::pair<int64_t, int64_t> zPair(std::min(prevZ, pt.z), std::max(prevZ, pt.z));
 
-        // Check if this segment is an arc
-        bool isLine = (prevZ == -1) || (arcMap.arc_pairs.find(zPair) == arcMap.arc_pairs.end());
+        // Check if this segment is an arc (presence in arc_centers means it's an arc)
+        auto centerIt = arcMap.arc_centers.find(zPair);
+        bool isLine = (prevZ == -1) || (centerIt == arcMap.arc_centers.end()) || !CArea::m_fit_arcs;
 
-        int vertexType = 0;
-        heeks::Point centerPt(0.0, 0.0);
+        if (isLine) {
+            curve.m_vertices.emplace_back(0, p, heeks::Point {0, 0});
+        }
+        else {
+            heeks::Point center = centerIt->second;
 
-        if (!isLine) {
-            // This is an arc - determine direction based on smaller rotation
-            auto centerIt = arcMap.map.find(pt.z);
-            if (centerIt != arcMap.map.end()) {
-                PointD center = centerIt->second;
-                centerPt = heeks::Point(center.x / CArea::m_units, center.y / CArea::m_units);
+            const double phi0 = atan2(prevP.y - center.y, prevP.x - center.x);
+            const double phi1 = atan2(p.y - center.y, p.x - center.x);
 
-                // Calculate angles from center to previous and current points
-                double angle1 = std::atan2(prevPt.y - center.y, prevPt.x - center.x);
-                double angle2 = std::atan2(dp.y - center.y, dp.x - center.x);
+            double dphi = phi1 - phi0;
+            if (dphi > M_PI) {
+                dphi -= 2 * M_PI;
+            }
+            else if (dphi < -M_PI) {
+                dphi += M_PI;
+            }
 
-                // Calculate angular difference, normalized to [-pi, pi]
-                double angleDiff = angle2 - angle1;
-                if (angleDiff > M_PI) {
-                    angleDiff -= 2.0 * M_PI;
-                }
-                if (angleDiff < -M_PI) {
-                    angleDiff += 2.0 * M_PI;
-                }
+            // Positive dphi means ccw arc, negative means cw arc
+            int type = (dphi > 0) ? 1 : -1;
 
-                // Positive angleDiff means ccw is shorter, negative means cw is shorter
-                vertexType = (angleDiff > 0) ? 1 : -1;
+            if (curve.m_vertices.size() > 0 && curve.m_vertices.back().m_type == type
+                && curve.m_vertices.back().m_c == center) {
+                // Extend the previous CVertex arc
+                curve.m_vertices.back().m_p = p;
+            }
+            else {
+                // Add a new CVertex for the arc
+                curve.m_vertices.emplace_back(type, p, center);
             }
         }
 
-        CVertex vertex(vertexType, heeks::Point(dp.x / CArea::m_units, dp.y / CArea::m_units), centerPt);
-        if (reverse) {
-            curve.m_vertices.push_front(vertex);
-        }
-        else {
-            curve.m_vertices.push_back(vertex);
-        }
-
-        prevZ = pt.z;
-        prevPt = dp;
-    }
-    if (is_closed) {
-        // make a copy of the first point at the end
-        if (reverse) {
-            curve.m_vertices.push_front(curve.m_vertices.back());
-        }
-        else {
-            curve.m_vertices.push_back(curve.m_vertices.front());
-        }
-    }
-
-    if (CArea::m_fit_arcs) {
-        curve.FitArcs();
+        prevZ = dp.z;
+        prevP = p;
     }
 }
 
