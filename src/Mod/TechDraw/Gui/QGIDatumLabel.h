@@ -103,6 +103,14 @@ protected:
 
     void snapPosition(QPointF& position);
 
+    // sub-handlers for snapping
+    void snapDistanceType(QPointF& pos, TechDraw::DrawViewDimension* dim,
+                        QGIViewDimension* qgivd, bool& shouldSnap);
+    void snapRadialType(QPointF& pos, TechDraw::DrawViewDimension* dim,
+                        QGIViewDimension* qgivd, bool& shouldSnap);
+    void snapAngleType(QPointF& pos, TechDraw::DrawViewDimension* dim,
+                        QGIViewDimension* qgivd, bool& shouldSnap);
+
     bool getVerticalSep() const { return verticalSep; }
     void setVerticalSep(bool sep) { verticalSep = sep; }
     std::vector<int> getSeps() const { return seps; }
