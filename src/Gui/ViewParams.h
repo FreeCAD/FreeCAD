@@ -84,7 +84,6 @@ public:
     FC_VIEW_PARAM(MaxViewSelections, int, Int, 100) \
     FC_VIEW_PARAM(SelectionColor, unsigned long, Unsigned, 0x1cad1cff) \
     FC_VIEW_PARAM(UseTightBoundingBox, bool, Bool, true) \
-    FC_VIEW_PARAM(UseBoundingBoxCache, bool, Bool, true) \
     FC_VIEW_PARAM(RenderProjectedBBox, bool, Bool, true)
 
 #undef FC_VIEW_PARAM
