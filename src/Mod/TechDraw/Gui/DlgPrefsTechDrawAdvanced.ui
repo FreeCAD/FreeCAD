@@ -428,7 +428,7 @@ Each unit is approximately 0.1mm wide</string>
            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
           <property name="value">
-           <double>10.000000000000000</double>
+           <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>EdgeFuzz</cstring>

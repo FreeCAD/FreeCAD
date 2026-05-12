@@ -169,7 +169,7 @@ double PreferencesGui::dimArrowSize()
 
 double PreferencesGui::edgeFuzz()
 {
-    return Preferences::getPreferenceGroup("General")->GetFloat("EdgeFuzz", 10.0);
+    return Preferences::getPreferenceGroup("General")->GetFloat("EdgeFuzz", 5.0);
 }
 
 double PreferencesGui::markFuzz()
