@@ -265,7 +265,13 @@ class TestArcFittingOffsets(PathTestBase):
     """Tests for arc fitting with offset operations."""
 
     def assert_offset_line_and_arc_count(
-        self, a, offset_distance, expected_curves, expected_lines, expected_arcs
+        self,
+        a,
+        offset_distance,
+        expected_curves,
+        expected_lines,
+        expected_ccw_arcs,
+        expected_cw_arcs=0,
     ):
         """Helper: Assert that offsetting an area produces expected line and arc counts.
 
@@ -274,7 +280,8 @@ class TestArcFittingOffsets(PathTestBase):
             offset_distance: Distance to offset (positive = outward for CCW curves)
             expected_curves: Expected number of curves after offset
             expected_lines: Expected total number of line segments across all curves
-            expected_arcs: Expected total number of arc segments across all curves
+            expected_ccw_arcs: Expected total number of CCW arc segments (type=1) across all curves
+            expected_cw_arcs: Expected total number of CW arc segments (type=-1) across all curves (default: 0)
         """
         # Store original curves for debug output
         orig_curves = a.getCurves()
@@ -295,17 +302,20 @@ class TestArcFittingOffsets(PathTestBase):
         # Build detailed output for debugging
         result_summary = []
         total_lines = 0
-        total_arcs = 0
+        total_ccw_arcs = 0
+        total_cw_arcs = 0
 
         for i, curve in enumerate(curves):
             vertices = list(curve.getVertices())
             lines = [v for v in vertices[1:] if v.type == 0]
-            arcs = [v for v in vertices[1:] if v.type != 0]
+            ccw_arcs = [v for v in vertices[1:] if v.type == 1]
+            cw_arcs = [v for v in vertices[1:] if v.type == -1]
             total_lines += len(lines)
-            total_arcs += len(arcs)
+            total_ccw_arcs += len(ccw_arcs)
+            total_cw_arcs += len(cw_arcs)
 
             result_summary.append(
-                f"  Curve {i}: {len(vertices)} vertices ({len(lines)} lines, {len(arcs)} arcs)"
+                f"  Curve {i}: {len(vertices)} vertices ({len(lines)} lines, {len(ccw_arcs)} CCW arcs, {len(cw_arcs)} CW arcs)"
             )
             for v in vertices:
                 result_summary.append(
@@ -322,10 +332,14 @@ class TestArcFittingOffsets(PathTestBase):
             )
 
         # Check line and arc counts
-        if total_lines != expected_lines or total_arcs != expected_arcs:
+        if (
+            total_lines != expected_lines
+            or total_ccw_arcs != expected_ccw_arcs
+            or total_cw_arcs != expected_cw_arcs
+        ):
             self.fail(
-                f"Expected {expected_lines} lines and {expected_arcs} arcs, "
-                f"got {total_lines} lines and {total_arcs} arcs\n"
+                f"Expected {expected_lines} lines, {expected_ccw_arcs} CCW arcs, and {expected_cw_arcs} CW arcs, "
+                f"got {total_lines} lines, {total_ccw_arcs} CCW arcs, and {total_cw_arcs} CW arcs\n"
                 f"Offset distance: {offset_distance}\n"
                 f"Original curves:\n" + "\n".join(orig_summary) + "\n"
                 f"Result curves:\n" + "\n".join(result_summary)
@@ -334,12 +348,12 @@ class TestArcFittingOffsets(PathTestBase):
     def test_square_offset_outward(self):
         """Test that offsetting a square outward produces 4 lines and 4 arcs."""
         a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]))
-        self.assert_offset_line_and_arc_count(a, 1.0, 1, 4, 4)  # 1 curve, 4 lines, 4 arcs
+        self.assert_offset_line_and_arc_count(a, 1.0, 1, 4, 4)  # 1 curve, 4 lines, 4 CCW arcs
 
     def test_square_offset_inward(self):
         """Test that offsetting a square inward produces 4 lines and no arcs."""
         a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]))
-        self.assert_offset_line_and_arc_count(a, -1.0, 1, 4, 0)  # 1 curve, 4 lines, 0 arcs
+        self.assert_offset_line_and_arc_count(a, -1.0, 1, 4, 0)  # 1 curve, 4 lines, 0 CCW arcs
 
     def test_square_offset_inward_collapse(self):
         """Test that offsetting a square inward past its half-width produces no curves."""
@@ -349,12 +363,46 @@ class TestArcFittingOffsets(PathTestBase):
     def test_square_with_semicircle_top_offset_outward(self):
         """Test offsetting a square with semicircular top outward."""
         a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10, 1, 5, 10), (0, 0)]))
-        self.assert_offset_line_and_arc_count(a, 1.0, 1, 3, 3)  # 1 curve, 3 lines, 3 arcs
+        self.assert_offset_line_and_arc_count(a, 1.0, 1, 3, 3)  # 1 curve, 3 lines, 3 CCW arcs
 
     def test_square_with_semicircle_top_offset_inward(self):
         """Test offsetting a square with semicircular top inward."""
         a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10, 1, 5, 10), (0, 0)]))
-        self.assert_offset_line_and_arc_count(a, -1.0, 1, 3, 1)  # 1 curve, 3 lines, 1 arc
+        self.assert_offset_line_and_arc_count(a, -1.0, 1, 3, 1)  # 1 curve, 3 lines, 1 CCW arc
+
+    def test_square_with_quarter_circle_top_offset_outward(self):
+        """Test offsetting a square with quarter-circular top outward."""
+        # The points at the end of the circle generate little ccw arcs centered on them
+        a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10, 1, 5, 5), (0, 0)]))
+        self.assert_offset_line_and_arc_count(a, 1.0, 1, 3, 3)  # 1 curve, 3 lines, 3 CCW arcs
+
+    def test_square_with_quarter_circle_top_offset_inward(self):
+        """Test offsetting a square with quarter-circular top inward."""
+        a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10, 1, 5, 5), (0, 0)]))
+        self.assert_offset_line_and_arc_count(a, -1.0, 1, 3, 1)  # 1 curve, 3 lines, 1 CCW arc
+
+    def test_square_with_three_quarter_circle_top_offset_outward(self):
+        """Test offsetting a square with 3/4-circular top outward."""
+        a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10, 1, 5, 15), (0, 0)]))
+        self.assert_offset_line_and_arc_count(a, 1.0, 1, 3, 3)  # 1 curve, 3 lines, 3 CCW arcs
+
+    def test_square_with_three_quarter_circle_top_offset_inward(self):
+        """Test offsetting a square with 3/4-circular top inward."""
+        # The points at the end of the circle generate little cw arcs centered on them
+        a = make_area(make_curve([(0, 0), (10, 0), (10, 10), (0, 10, 1, 5, 15), (0, 0)]))
+        self.assert_offset_line_and_arc_count(a, -1.0, 1, 3, 1, 2)  # 1 curve, 3 lines, 1 CCW, 2 CW
+
+    def test_two_circles_offset_outward(self):
+        """Test offsetting two overlapping circles outward."""
+        # Lens shape: top circle (0,4) r=5 from (3,0) to (-3,0), bottom circle (0,-4) r=5 back to (3,0)
+        a = make_area(make_curve([(3, 0), (-3, 0, 1, 0, 4), (3, 0, 1, 0, -4)]))
+        self.assert_offset_line_and_arc_count(a, 1.0, 1, 0, 2)  # 1 curve, 2 CCW arcs
+
+    def test_two_circles_offset_inward(self):
+        """Test offsetting two overlapping circles inward."""
+        # Lens shape: top circle (0,4) r=5 from (3,0) to (-3,0), bottom circle (0,-4) r=5 back to (3,0)
+        a = make_area(make_curve([(3, 0), (-3, 0, 1, 0, 4), (3, 0, 1, 0, -4)]))
+        self.assert_offset_line_and_arc_count(a, -1.0, 1, 0, 2, 2)  # 1 curve, 2 CCW arcs, 2 CW arcs
 
     def test_two_shapes_offset_merge(self):
         """Test offsetting two shapes that merge together."""
@@ -369,10 +417,10 @@ class TestArcFittingOffsets(PathTestBase):
         a2 = make_area(a.getCurves())
 
         # Offset by 1.0 (not enough to merge)
-        self.assert_offset_line_and_arc_count(a, 1.0, 2, 7, 7)  # 2 curves, 7 lines, 7 arcs
+        self.assert_offset_line_and_arc_count(a, 1.0, 2, 7, 7)  # 2 curves, 7 lines, 7 CCW arcs
 
         # Offset by 2.0 (merges --> +1 line, +1 arc)
-        self.assert_offset_line_and_arc_count(a2, 2.0, 1, 8, 8)  # 1 curve, 8 lines, 8 arcs
+        self.assert_offset_line_and_arc_count(a2, 2.0, 1, 8, 8)  # 1 curve, 8 lines, 8 CCW arcs
 
 
 class TestArcFittingBooleans(PathTestBase):
@@ -415,7 +463,7 @@ class TestArcFittingBooleans(PathTestBase):
             operation: Boolean operation name ("Union", "Subtract", "Intersect", "Xor")
             expected_curves: Expected number of curves after operation
             expected_lines: Expected total number of line segments across all curves
-            expected_arcs: Expected total number of arc segments across all curves
+            expected_arcs: Expected total number of CCW arc segments (type=1) across all curves
         """
         # Store input curves for debug output
         input1_summary = []
@@ -445,17 +493,20 @@ class TestArcFittingBooleans(PathTestBase):
         # Build detailed output for debugging
         result_summary = []
         total_lines = 0
-        total_arcs = 0
+        total_ccw_arcs = 0
+        total_cw_arcs = 0
 
         for i, curve in enumerate(curves):
             vertices = list(curve.getVertices())
             lines = [v for v in vertices[1:] if v.type == 0]
-            arcs = [v for v in vertices[1:] if v.type != 0]
+            ccw_arcs = [v for v in vertices[1:] if v.type == 1]
+            cw_arcs = [v for v in vertices[1:] if v.type == -1]
             total_lines += len(lines)
-            total_arcs += len(arcs)
+            total_ccw_arcs += len(ccw_arcs)
+            total_cw_arcs += len(cw_arcs)
 
             result_summary.append(
-                f"  Curve {i}: {len(vertices)} vertices ({len(lines)} lines, {len(arcs)} arcs)"
+                f"  Curve {i}: {len(vertices)} vertices ({len(lines)} lines, {len(ccw_arcs)} CCW arcs, {len(cw_arcs)} CW arcs)"
             )
             for v in vertices:
                 result_summary.append(
@@ -471,11 +522,21 @@ class TestArcFittingBooleans(PathTestBase):
                 f"Result curves:\n" + "\n".join(result_summary)
             )
 
-        # Check line and arc counts
-        if total_lines != expected_lines or total_arcs != expected_arcs:
+        # Check that there are no CW arcs
+        if total_cw_arcs != 0:
             self.fail(
-                f"Expected {expected_lines} lines and {expected_arcs} arcs after {operation}, "
-                f"got {total_lines} lines and {total_arcs} arcs\n"
+                f"Expected 0 CW arcs, got {total_cw_arcs}\n"
+                f"Operation: {operation}\n"
+                f"Input area 1:\n" + "\n".join(input1_summary) + "\n"
+                f"Input area 2:\n" + "\n".join(input2_summary) + "\n"
+                f"Result curves:\n" + "\n".join(result_summary)
+            )
+
+        # Check line and arc counts
+        if total_lines != expected_lines or total_ccw_arcs != expected_arcs:
+            self.fail(
+                f"Expected {expected_lines} lines and {expected_arcs} CCW arcs after {operation}, "
+                f"got {total_lines} lines and {total_ccw_arcs} CCW arcs\n"
                 f"Input area 1:\n" + "\n".join(input1_summary) + "\n"
                 f"Input area 2:\n" + "\n".join(input2_summary) + "\n"
                 f"Result curves:\n" + "\n".join(result_summary)
