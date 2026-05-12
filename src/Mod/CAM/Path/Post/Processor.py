@@ -1556,7 +1556,9 @@ class PostProcessor:
         first_name, first_gcode = all_job_sections[0]
         all_job_sections[0] = (first_name, safety_gcode + first_gcode)
 
-    def _convert_job_sections(self, postables, header_lines, preamble_lines, unit_command, pre_job_lines):
+    def _convert_job_sections(
+        self, postables, header_lines, preamble_lines, unit_command, pre_job_lines
+    ):
         """Convert each section to output-code"""
 
         job_sections = []
@@ -1578,7 +1580,7 @@ class PostProcessor:
                 job_sections.append((section_name, gcode_string))
 
         return job_sections
-        
+
     def export2(self) -> Union[None, GCodeSections]:
         """
         Process jobs through all postprocessing stages to produce final G-code.
@@ -1630,7 +1632,9 @@ class PostProcessor:
         pre_job_lines = self._collect_pre_job_lines()
 
         # convert postables to machine-specific gcode
-        job_sections = self._convert_job_sections(postables, header_lines, preamble_lines, unit_command, pre_job_lines)
+        job_sections = self._convert_job_sections(
+            postables, header_lines, preamble_lines, unit_command, pre_job_lines
+        )
 
         self._append_bcnc_postamble(job_sections)
         all_job_sections.extend(job_sections)
