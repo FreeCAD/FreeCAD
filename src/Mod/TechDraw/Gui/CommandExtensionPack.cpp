@@ -1570,9 +1570,9 @@ void CmdTechDrawExtensionLockUnlockView::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Lock/Unlock View"));
     for (auto& sel : selection) {
-        auto* obj = static_cast<TechDraw::DrawViewPart*>(sel.getObject());
+        auto* obj = dynamic_cast<TechDraw::DrawView*>(sel.getObject());
 
-        if (obj->isDerivedFrom<TechDraw::DrawViewPart>()) {
+        if (obj) {
             bool lockPosition = obj->LockPosition.getValue();
             lockPosition = !lockPosition;
             obj->LockPosition.setValue(lockPosition);
@@ -1584,7 +1584,7 @@ void CmdTechDrawExtensionLockUnlockView::activated(int iMsg)
 bool CmdTechDrawExtensionLockUnlockView::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
     return (havePage && haveView);
 }
 
