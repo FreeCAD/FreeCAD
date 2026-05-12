@@ -75,7 +75,7 @@ std::vector<std::string> UnitsSchemas::descriptions()
 std::vector<std::string> UnitsSchemas::abbreviations()
 {
     return getVec([](const UnitsSchemaSpec& spec) {
-        return QCoreApplication::translate("UnitsApi", spec.abbreviation).toStdString();
+        return spec.abbreviation;
     });
 }
 
