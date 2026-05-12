@@ -261,7 +261,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="217"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation>Az anyag színe egyenletes szórt fényben. A felület kinézete környezeti megvilágításban irányított fény, árnyékok és tükröződés nélkül.</translation>
+      <translation>Az anyag színe egyenletes szórt fényben. A felület kinézete környezeti megvilágításban irányított fény, árnyékok és tükröződés nélkül</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="228"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="256"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation>A tükröződő területek nagysága és élessége. Magasabb értékhez kisebb, élesen elhatárolt területek, míg alacsonyabb értékhez nagyobb, elmosottab területek tartoznak. A visszavert fény intenzitását a visszavert szín határozza meg.</translation>
+      <translation>A tükröződő területek nagysága és élessége. Magasabb értékhez kisebb, élesen elhatárolt területek, míg alacsonyabb értékhez nagyobb, elmosottabb területek tartoznak. A visszavert fény intenzitását a visszavert szín határozza meg.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="268"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="269"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation>A testen áthatoló fény aránya.</translation>
+      <translation>A testen áthatoló fény aránya</translation>
     </message>
   </context>
   <context>
@@ -650,19 +650,15 @@ Ha le van tiltva, név szerint vannak rendezve.</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="207"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
-      <translation>Raszteres kép (*.jpg, *.jpeg, *.png, *.bmp)</translation>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation type="unfinished">Image files</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="208"/>
-      <location filename="../../ImageEdit.cpp" line="223"/>
-      <source>All files (*)</source>
-      <translation>Minden fájl (*)</translation>
-    </message>
-    <message>
-      <location filename="../../ImageEdit.cpp" line="222"/>
-      <source>Image files (*.svg)</source>
-      <translation>Vektoros kép (*.svg)</translation>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>Összes fájl</translation>
     </message>
   </context>
   <context>

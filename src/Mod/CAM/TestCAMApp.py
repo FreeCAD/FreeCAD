@@ -52,6 +52,7 @@ from CAMTests.TestPathHelix import TestPathHelix
 from CAMTests.TestPathHelixGenerator import TestPathHelixGenerator
 from CAMTests.TestPathSpiralGenerator import TestPathSpiralGenerator
 from CAMTests.TestPathLog import TestPathLog
+from CAMTests.TestPathLogNew import TestPathLogNew
 from CAMTests.TestPathOpUtil import TestPathOpUtil
 from CAMTests.TestPostToolProcessing import TestToolLengthOffset, TestToolProcessing
 
@@ -61,6 +62,7 @@ from CAMTests.TestPostProcessor import (
     TestPostProcessorFactory,
     TestResolvingPostProcessorName,
     TestHeaderBuilder,
+    TestPostProcessorClassification,
     TestConfigurationBundle,
 )
 from CAMTests.TestPostOutput import (
@@ -72,6 +74,12 @@ from CAMTests.TestPathPreferences import TestPathPreferences
 from CAMTests.TestPathPocket import TestPathPocket
 from CAMTests.TestPathProfile import TestPathProfile
 from CAMTests.TestPathPropertyBag import TestPathPropertyBag
+from CAMTests.TestPathRotaryGenerators import TestPathRotaryGenerators
+from CAMTests.TestPathRotaryParallel import TestPathRotaryParallel
+from CAMTests.TestPathRotaryRings import TestPathRotaryRings
+from CAMTests.TestPathRotarySurface import TestPathRotarySurface
+from CAMTests.TestPathRotaryPostRegression import TestPathRotaryPostRegression
+from CAMTests.TestPathRotaryWrap import TestRotaryWrapStrategy
 from CAMTests.TestPathRotationGenerator import TestPathRotationGenerator
 from CAMTests.TestPathSetupSheet import TestPathSetupSheet
 from CAMTests.TestPathStock import TestPathStock

@@ -94,17 +94,17 @@
   <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="127"/>
+      <location filename="../../CommandExport.cpp" line="128"/>
       <source>Robot</source>
       <translation>რობოტი</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="128"/>
+      <location filename="../../CommandExport.cpp" line="129"/>
       <source>Kuka Full Subroutine</source>
       <translation>სრული ქვეპროგრამა Kuka</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="129"/>
+      <location filename="../../CommandExport.cpp" line="130"/>
       <source>Exports the trajectory as a full KRL subroutine</source>
       <translation>გაიტანს ტრაექტორიას სრული KRIL ქვეპროგრამის სახით</translation>
     </message>
@@ -297,7 +297,7 @@
       <location filename="../../CommandTrajectory.cpp" line="201"/>
       <location filename="../../CommandTrajectory.cpp" line="486"/>
       <location filename="../../CommandExport.cpp" line="63"/>
-      <location filename="../../CommandExport.cpp" line="144"/>
+      <location filename="../../CommandExport.cpp" line="145"/>
       <location filename="../../CommandInsertRobot.cpp" line="70"/>
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="167"/>
@@ -308,12 +308,12 @@
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Select VRML file for Robot</source>
-      <translation type="unfinished">Select VRML file for Robot</translation>
+      <translation>აირჩიეთ VRML ფაილი რობოტისთვის</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="56"/>
       <source>VRML Files (*.wrl *.vrml)</source>
-      <translation type="unfinished">VRML Files (*.wrl *.vrml)</translation>
+      <translation>VRML ფაილები (*.wrl *.vrml)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
@@ -338,7 +338,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="110"/>
       <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="145"/>
+      <location filename="../../CommandExport.cpp" line="146"/>
       <location filename="../../Command.cpp" line="270"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>აირჩიეთ ერთი რობოტი და ერთი ტრაექტორიის ობიექტი.</translation>
@@ -355,19 +355,13 @@
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="91"/>
-      <location filename="../../CommandExport.cpp" line="172"/>
+      <location filename="../../CommandExport.cpp" line="173"/>
       <source>KRL file</source>
       <translation>KRL ფაილი</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="92"/>
-      <location filename="../../CommandExport.cpp" line="173"/>
-      <source>All Files</source>
-      <translation>ყველა ფაილი</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExport.cpp" line="95"/>
-      <location filename="../../CommandExport.cpp" line="176"/>
+      <location filename="../../CommandExport.cpp" line="96"/>
+      <location filename="../../CommandExport.cpp" line="178"/>
       <source>Export program</source>
       <translation>პროგრამის გატანა</translation>
     </message>

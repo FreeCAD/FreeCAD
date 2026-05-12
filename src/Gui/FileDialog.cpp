@@ -288,7 +288,7 @@ Filter Filter::fromFilterString(const QString& filter)
     const auto name = filter.left(start).trimmed();
     const auto patternsPart = filter.mid(start + 1, end - start - 1);
     // ";" separators are explicitly not supported as this could
-    // encourage having more than one canonical string represenation.
+    // encourage having more than one canonical string representation.
     return {name, patternsPart.split(QLatin1Char(' '), Qt::SkipEmptyParts)};
 }
 
@@ -419,10 +419,17 @@ QStringList FileDialogInternal::nativeFileDialog(
         );
     }
     selectedFilterIndex = qtFilterList.indexOf(selectedQtFilter);
+    if (selectedFilterIndex < 0 && selected.isEmpty()) {
+        // No files selected means the user cancelled, and a missing/incorrect filter can be
+        // returned by Qt's implementations. Default to index 0 as caller code still might
+        // use this value even though it should not.
+        selectedFilterIndex = 0;
+    }
     if (selectedFilterIndex < 0) {
         Base::Console().error(
             "Qt-backed nativeFileDialog returned a selected filter that wasn't in the original "
-            "list, defaulting to index 0"
+            "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+            selectedQtFilter.toStdString()
         );
         selectedFilterIndex = 0;
     }
@@ -534,7 +541,7 @@ QString FileDialog::getSaveFileName(
         // to existing dir), don't touch it and don't use QFileDialog::selectFile() later.
         if (!(fi.fileName().isEmpty() || fi.isDir())) {
             // If there is a file name at the end, make sure it matches one of the patterns
-            // of the pre-selected filter, if applicable.
+            // of the preselected filter, if applicable.
             hasFilename = true;
             if (actuallySelectedFilterIndex >= 0) {
                 FileDialogInternal::normalizeSavePath(
@@ -588,8 +595,11 @@ QString FileDialog::getSaveFileName(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console()
-                .error("FileDialog returned a selected filter that wasn't in the original list, defaulting to index 0");
+            Base::Console().error(
+                "Non-native FileDialog returned a selected filter that wasn't in the original "
+                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                dlg.selectedNameFilter().toStdString()
+            );
             actuallySelectedFilterIndex = 0;
         }
     }
@@ -716,8 +726,11 @@ QString FileDialog::getOpenFileName(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console()
-                .error("FileDialog returned a selected filter that wasn't in the original list, defaulting to index 0");
+            Base::Console().error(
+                "Non-native FileDialog returned a selected filter that wasn't in the original "
+                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                dlg.selectedNameFilter().toStdString()
+            );
             actuallySelectedFilterIndex = 0;
         }
     }
@@ -808,8 +821,11 @@ QStringList FileDialog::getOpenFileNames(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console()
-                .error("FileDialog returned a selected filter that wasn't in the original list, defaulting to index 0");
+            Base::Console().error(
+                "Non-native FileDialog returned a selected filter that wasn't in the original "
+                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                dlg.selectedNameFilter().toStdString()
+            );
             actuallySelectedFilterIndex = 0;
         }
     }

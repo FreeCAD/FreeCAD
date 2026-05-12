@@ -650,19 +650,15 @@ Mura bhfuil tic sa bhosca seo, déanfar iad a shórtáil de réir a n-ainm.</tra
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="207"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
-      <translation>Comhaid íomhá (*.jpg *.jpeg *.png *.bmp)</translation>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation>Comhaid íomhá</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="208"/>
-      <location filename="../../ImageEdit.cpp" line="223"/>
-      <source>All files (*)</source>
-      <translation>Gach comhad (*)</translation>
-    </message>
-    <message>
-      <location filename="../../ImageEdit.cpp" line="222"/>
-      <source>Image files (*.svg)</source>
-      <translation>Image files (*.svg)</translation>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>Gach comhad</translation>
     </message>
   </context>
   <context>

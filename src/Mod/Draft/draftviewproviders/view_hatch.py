@@ -87,19 +87,8 @@ class ViewProviderDraftHatch:
         QtCore.QObject.connect(action_edit, QtCore.SIGNAL("triggered()"), self.edit)
         menu.addAction(action_edit)
 
-        action_transform = QtGui.QAction(
-            Gui.getIcon("Std_TransformManip.svg"),
-            translate("Command", "Transform"),  # Context `Command` instead of `draft`.
-            menu,
-        )
-        QtCore.QObject.connect(action_transform, QtCore.SIGNAL("triggered()"), self.transform)
-        menu.addAction(action_transform)
-
-        return True  # Removes `Transform` and `Set colors` from the default
+        return True  # Removes `Set colors` from the default
         # Part::FeaturePython context menu. See view_base.py.
 
     def edit(self):
         Gui.ActiveDocument.setEdit(self.Object, 0)
-
-    def transform(self):
-        Gui.ActiveDocument.setEdit(self.Object, 1)

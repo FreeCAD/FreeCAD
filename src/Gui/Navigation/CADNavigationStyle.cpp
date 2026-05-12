@@ -48,9 +48,9 @@ const char* CADNavigationStyle::mouseButtons(ViewerMode mode)
         case NavigationStyle::SELECTION:
             return QT_TR_NOOP("Press left mouse button");
         case NavigationStyle::PANNING:
-            return QT_TR_NOOP("Press middle mouse button");
+            return QT_TR_NOOP("Press middle or ctrl+right mouse button");
         case NavigationStyle::DRAGGING:
-            return QT_TR_NOOP("Press middle+left or middle+right mouse button");
+            return QT_TR_NOOP("Press middle+left, middle+right or shift+right mouse button");
         case NavigationStyle::ZOOMING:
             return QT_TR_NOOP(
                 "Scroll mouse wheel or keep middle button depressed\n"

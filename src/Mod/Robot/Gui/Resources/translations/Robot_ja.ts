@@ -95,17 +95,17 @@
   <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="127"/>
+      <location filename="../../CommandExport.cpp" line="128"/>
       <source>Robot</source>
       <translation>ロボット</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="128"/>
+      <location filename="../../CommandExport.cpp" line="129"/>
       <source>Kuka Full Subroutine</source>
       <translation>KUKAフルサブルーチン</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="129"/>
+      <location filename="../../CommandExport.cpp" line="130"/>
       <source>Exports the trajectory as a full KRL subroutine</source>
       <translation>軌道をフルKRLサブルーティーンとしてエクスポートする</translation>
     </message>
@@ -298,7 +298,7 @@
       <location filename="../../CommandTrajectory.cpp" line="201"/>
       <location filename="../../CommandTrajectory.cpp" line="486"/>
       <location filename="../../CommandExport.cpp" line="63"/>
-      <location filename="../../CommandExport.cpp" line="144"/>
+      <location filename="../../CommandExport.cpp" line="145"/>
       <location filename="../../CommandInsertRobot.cpp" line="70"/>
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="167"/>
@@ -339,7 +339,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="110"/>
       <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="145"/>
+      <location filename="../../CommandExport.cpp" line="146"/>
       <location filename="../../Command.cpp" line="270"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>1 つのロボットと軌道オブジェクトを 1 つ選択します。</translation>
@@ -356,19 +356,13 @@
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="91"/>
-      <location filename="../../CommandExport.cpp" line="172"/>
+      <location filename="../../CommandExport.cpp" line="173"/>
       <source>KRL file</source>
       <translation>KRLファイル</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="92"/>
-      <location filename="../../CommandExport.cpp" line="173"/>
-      <source>All Files</source>
-      <translation>すべてのファイル</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExport.cpp" line="95"/>
-      <location filename="../../CommandExport.cpp" line="176"/>
+      <location filename="../../CommandExport.cpp" line="96"/>
+      <location filename="../../CommandExport.cpp" line="178"/>
       <source>Export program</source>
       <translation>プログラムをエクスポート</translation>
     </message>

@@ -1150,7 +1150,7 @@ Py::Object View3DInventorPy::getCamera()
         else {
             buffer[0] = '\0';
         }
-        return Py::String(buffer);
+        return Py::String(std::string_view {buffer});
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -1857,7 +1857,7 @@ Py::Object View3DInventorPy::listNavigationTypes()
 
 Py::Object View3DInventorPy::getNavigationType()
 {
-    std::string name = getView3DInventorPtr()->getViewer()->navigationStyle()->getTypeId().getName();
+    const auto name = getView3DInventorPtr()->getViewer()->navigationStyle()->getTypeId().getName();
     return Py::String(name);
 }
 

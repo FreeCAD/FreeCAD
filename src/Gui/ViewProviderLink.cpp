@@ -2073,7 +2073,11 @@ QPixmap ViewProviderLink::getOverlayPixmap() const
         return BitmapFactory().pixmapFromSvg("LinkSubOverlay", QSizeF(px, px));
     }
     else {
-        return BitmapFactory().pixmapFromSvg("LinkOverlay", QSizeF(px, px));
+        return BitmapFactory().pixmapFromSvg(
+            getObject()->getLinkedObject()->getDocument()->isReadOnlyFile() ? "LinkOverlayReadOnly"
+                                                                            : "LinkOverlay",
+            QSizeF(px, px)
+        );
     }
 }
 
@@ -2086,7 +2090,7 @@ void ViewProviderLink::onChanged(const App::Property* prop)
     if (prop == &ChildViewProvider) {
         childVp = freecad_cast<ViewProviderDocumentObject*>(ChildViewProvider.getObject().get());
         if (childVp && getObject()) {
-            if (strcmp(childVp->getTypeId().getName(), getObject()->getViewProviderName()) != 0
+            if (childVp->getTypeId().getName() == getObject()->getViewProviderName()
                 && !childVp->allowOverride(*getObject())) {
                 FC_ERR(
                     "Child view provider type '" << childVp->getTypeId().getName()

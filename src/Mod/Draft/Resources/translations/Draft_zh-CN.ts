@@ -117,12 +117,12 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="602"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="612"/>
       <source>The distance the dimension line is additionally extended</source>
-      <translation>尺寸线额外扩展的距离</translation>
+      <translation>尺寸线额外延伸的距离</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="605"/>
       <source>Dimension line overshoot</source>
-      <translation>尺寸线过度</translation>
+      <translation>尺寸线延伸量</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="625"/>
@@ -284,7 +284,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
       <source>Annotations</source>
-      <translation>注释</translation>
+      <translation>标注</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="208"/>
@@ -470,7 +470,7 @@ This only works if "Link array" is off.</source>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="228"/>
       <source>Fuse</source>
-      <translation>结合</translation>
+      <translation>融合</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="235"/>
@@ -1272,7 +1272,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="570"/>
       <source>Dimension line overshoot</source>
-      <translation>尺寸线过度</translation>
+      <translation>尺寸线延伸量</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="577"/>
@@ -1391,7 +1391,7 @@ for linear dimensions.</source>
     <message>
       <location filename="../ui/dialogHatch.ui" line="14"/>
       <source>Hatch</source>
-      <translation>剖面线</translation>
+      <translation>填充</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="20"/>
@@ -1401,7 +1401,7 @@ for linear dimensions.</source>
     <message>
       <location filename="../ui/dialogHatch.ui" line="34"/>
       <source>Pattern</source>
-      <translation>模式</translation>
+      <translation>图案</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
@@ -1655,7 +1655,7 @@ This allows indicating a direction and then type a distance.</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
       <source>Visual</source>
-      <translation>视角</translation>
+      <translation>视觉</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="20"/>
@@ -1801,7 +1801,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="595"/>
       <source>Dimension line overshoot</source>
-      <translation>尺寸线过度</translation>
+      <translation>尺寸线延伸量</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="39"/>
@@ -2043,7 +2043,7 @@ SVG 文件中的一个单位将被解释为一毫米。</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="101"/>
       <source>Add wires for invalid faces</source>
-      <translation>为无效面添加线</translation>
+      <translation>为无效面添加导线</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
@@ -2055,7 +2055,7 @@ SVG 文件中的一个单位将被解释为一毫米。</translation>
       <source>If face generation results in a degenerated face,
 a raw wire from the original shape is added</source>
       <translation>如果面生成导致退化面，
-则添加来自原始形状的原始线框</translation>
+则添加来自原始形状的原始导线</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="117"/>
@@ -2080,42 +2080,56 @@ a raw wire from the original shape is added</source>
 	最佳值取决于导入的绝对大小。典型值介于 1 到 5 之间。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="205"/>
+      <location filename="../ui/preferences-svg.ui" line="190"/>
+      <source>Maximum deviation for approximation of complex curves</source>
+      <translation>复杂曲线近似处理的最大偏差</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="210"/>
+      <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
+Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
+Set to zero to disable approximation.</source>
+      <translation>将椭圆、双曲线、抛物线以及贝塞尔和 B 样条曲线
+近似转换为圆弧和直线时的最大偏差。此设置对 CAM 工作台非常有用。
+设为 0 则禁用近似处理。</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="256"/>
       <source>Export style</source>
       <translation>导出格式</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="212"/>
+      <location filename="../ui/preferences-svg.ui" line="263"/>
       <source>Style of SVG file to write when exporting a sketch</source>
       <translation>导出草图时要写入的 SVG 文件样式</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="225"/>
+      <location filename="../ui/preferences-svg.ui" line="276"/>
       <source>Translated (for print &amp; display)</source>
       <translation>转译(用于打印和显示)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="230"/>
+      <location filename="../ui/preferences-svg.ui" line="281"/>
       <source>Raw (for CAM)</source>
       <translation>粗略(用于CAM)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
+      <location filename="../ui/preferences-svg.ui" line="293"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
       <translation>SVG中的所有白线都将以黑色显示，以提高白色背景下的可读性</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="245"/>
+      <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
       <translation>将白色线条颜色转换为黑色</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="265"/>
+      <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
       <translation>离散化弧的最大分段长度</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="288"/>
+      <location filename="../ui/preferences-svg.ui" line="336"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
@@ -2377,7 +2391,7 @@ These are often used for hatches and dimensions</source>
       <location filename="../ui/preferences-dxf.ui" line="360"/>
       <source>If checked, the boundaries of hatch objects will be imported as closed wires.
 (Legacy importer only)</source>
-      <translation>如果勾选，填充对象的边界将作为闭合线框导入。
+      <translation>如果勾选，填充对象的边界将作为闭合导线导入。
 （仅限旧版导入器）</translation>
     </message>
     <message>
@@ -2437,7 +2451,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</source
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
-      <location filename="../ui/preferences-svg.ui" line="191"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>导出选项</translation>
     </message>
@@ -3039,7 +3053,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="670"/>
       <source>Close</source>
-      <translation>关闭</translation>
+      <translation>闭合</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="683"/>
@@ -3340,7 +3354,7 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     <message>
       <location filename="../../DraftGui.py" line="672"/>
       <source>Finishes and closes the current line</source>
-      <translation>处理后关闭当前线</translation>
+      <translation>处理后闭合当前导线</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="681"/>
@@ -3393,7 +3407,7 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     <message>
       <location filename="../../DraftGui.py" line="856"/>
       <source>DWire</source>
-      <translation>草图线</translation>
+      <translation>草绘导线</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="879"/>
@@ -3446,7 +3460,7 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     <message>
       <location filename="../../DraftGui.py" line="970"/>
       <source>Trimex</source>
-      <translation>Trimex</translation>
+      <translation>修剪/延伸</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1077"/>
@@ -3669,7 +3683,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/utils.py" line="572"/>
       <source>Wires:</source>
-      <translation>线框:</translation>
+      <translation>导线：</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="573"/>
@@ -3689,7 +3703,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/utils.py" line="583"/>
       <source>Wire</source>
-      <translation>线框</translation>
+      <translation>导线</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="616"/>
@@ -3749,15 +3763,30 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="195"/>
-      <location filename="../../draftguitools/gui_labels.py" line="222"/>
+      <location filename="../../draftguitools/gui_labels.py" line="223"/>
       <source>Pick endpoint of leader line</source>
       <translation>选取引线的端点</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="205"/>
-      <location filename="../../draftguitools/gui_labels.py" line="232"/>
+      <location filename="../../draftguitools/gui_labels.py" line="233"/>
       <source>Pick text position</source>
       <translation>选择文本位置</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="243"/>
+      <source>%1 pick arrow point</source>
+      <translation type="unfinished">%1 pick arrow point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="247"/>
+      <source>%1 pick corner point</source>
+      <translation type="unfinished">%1 pick corner point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="251"/>
+      <source>%1 pick text point</source>
+      <translation type="unfinished">%1 pick text point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="129"/>
@@ -3768,9 +3797,39 @@ or try saving to a lower DWG version.</source>
       <translation>选取起点</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="504"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="506"/>
       <source>Edges do not intersect!</source>
       <translation>边不相交！</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="593"/>
+      <source>%1 pick dimension position</source>
+      <translation type="unfinished">%1 pick dimension position</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="595"/>
+      <source>%1 select edge</source>
+      <translation type="unfinished">%1 select edge</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="612"/>
+      <source>%1 pick next dimension point</source>
+      <translation type="unfinished">%1 pick next dimension point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="614"/>
+      <source>%1 finish</source>
+      <translation>%1 完成</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="620"/>
+      <source>%1 pick first dimension point</source>
+      <translation type="unfinished">%1 pick first dimension point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="629"/>
+      <source>%1 pick second dimension point</source>
+      <translation type="unfinished">%1 pick second dimension point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="182"/>
@@ -3780,7 +3839,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="205"/>
       <source>Create Wire</source>
-      <translation>创建线</translation>
+      <translation>创建导线</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="316"/>
@@ -3795,7 +3854,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="375"/>
       <source>Unable to create a wire from the selected objects</source>
-      <translation>无法从选定的对象创建线框</translation>
+      <translation>无法从选定的对象创建导线</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="407"/>
@@ -3833,7 +3892,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="97"/>
       <source>Only Draft lines and wires can be joined</source>
-      <translation>只有Draft直线和线框可以连接</translation>
+      <translation>只有草绘直线和导线可以连接</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="107"/>
@@ -3944,33 +4003,53 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="76"/>
-      <source>%1 constrain</source>
-      <translation>%1 约束</translation>
+      <source>Hold %1 constrain</source>
+      <translation type="unfinished">Hold %1 constrain</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="83"/>
-      <source>%1 snap</source>
-      <translation>%1 捕捉</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="81"/>
+      <source>Hold %1 horizontal/vertical dimension</source>
+      <translation type="unfinished">Hold %1 horizontal/vertical dimension</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="100"/>
-      <source>%1/%2/%3 switch constraint</source>
-      <translation>%1/%2/%3 切换约束</translation>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="86"/>
+      <source>Hold %1 radial dimension</source>
+      <translation type="unfinished">Hold %1 radial dimension</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="93"/>
+      <source>Hold %1 snap</source>
+      <translation type="unfinished">Hold %1 snap</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="110"/>
+      <source>%1 / %2 / %3 switch constraint</source>
+      <translation type="unfinished">%1 / %2 / %3 switch constraint</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="120"/>
       <source>%1 toggle relative</source>
       <translation>%1 切换相对坐标</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="119"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="129"/>
       <source>%1 toggle global</source>
       <translation>%1 全局模式</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_tool_utils.py" line="128"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="138"/>
       <source>%1 toggle continue</source>
       <translation>%1 连续模式</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="149"/>
+      <source>%1 / hold %2 select edge</source>
+      <translation type="unfinished">%1 / hold %2 select edge</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="151"/>
+      <source>Hold %1 select edge</source>
+      <translation type="unfinished">Hold %1 select edge</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="311"/>
@@ -4050,32 +4129,37 @@ or try saving to a lower DWG version.</source>
       <translation>%1 选择第三个点</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="118"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <source>Only Draft lines, wires, and curves can be highlighted</source>
+      <translation>只有草绘直线、导线和曲线才能高亮显示</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="119"/>
       <source>Select an object to edit</source>
       <translation>选择要编辑的对象</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="295"/>
+      <location filename="../../draftguitools/gui_edit.py" line="298"/>
       <source>Select a Draft object to edit</source>
       <translation>选择要编辑的草稿对象</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="501"/>
+      <location filename="../../draftguitools/gui_edit.py" line="503"/>
       <source>Edit Node</source>
       <translation>编辑节点</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="814"/>
+      <location filename="../../draftguitools/gui_edit.py" line="816"/>
       <source>Too many objects selected, maximum number set to:</source>
       <translation>选择的对象过多，最大数量设置为：</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="555"/>
+      <location filename="../../draftguitools/gui_edit.py" line="557"/>
       <source>No edit point found for selected object</source>
       <translation>未找到所选对象的编辑点</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="822"/>
+      <location filename="../../draftguitools/gui_edit.py" line="824"/>
       <source>: this object is not editable</source>
       <translation>: 此对象不可编辑</translation>
     </message>
@@ -4173,8 +4257,9 @@ or try saving to a lower DWG version.</source>
       <translation>创建点</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="214"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <location filename="../../draftguitools/gui_points.py" line="189"/>
+      <location filename="../../draftguitools/gui_texts.py" line="180"/>
       <source>%1 pick point</source>
       <translation>%1 选择点</translation>
     </message>
@@ -4366,7 +4451,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="502"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
-      <translation>无法修剪这些对象，仅支持 Draft 线和圆弧</translation>
+      <translation>无法修剪这些对象，仅支持草绘直线和圆弧</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="522"/>
@@ -4402,7 +4487,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="505"/>
       <source>Unable to trim these objects, too many wires</source>
-      <translation>过多线段导致无法修剪这些对象</translation>
+      <translation>过多导线导致无法修剪这些对象</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="75"/>
@@ -4440,17 +4525,17 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="126"/>
       <source>Open Wire</source>
-      <translation>打开线</translation>
+      <translation>开放导线</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="129"/>
       <source>Close Wire</source>
-      <translation>闭合线</translation>
+      <translation>闭合导线</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="133"/>
       <source>Reverse Wire</source>
-      <translation>反转线</translation>
+      <translation>反转导线</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="176"/>
@@ -4646,7 +4731,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>创建尺寸</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="490"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="492"/>
       <source>Edge too short!</source>
       <translation>边缘太短了！</translation>
     </message>
@@ -4763,7 +4848,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>选择字符串形状工具位置点</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="242"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="245"/>
       <source>Create ShapeString</source>
       <translation>创建字符串形状工具</translation>
     </message>
@@ -5430,7 +5515,7 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="475"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="193"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="199"/>
       <source>Flatten</source>
       <translation>平面化</translation>
     </message>
@@ -5542,12 +5627,12 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="616"/>
       <source>Found closed wires: creating faces</source>
-      <translation>找到闭合线: 创建面</translation>
+      <translation>找到闭合导线: 创建面</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="622"/>
       <source>Found several wires or edges: wiring them</source>
-      <translation>发现几条线或边：将其连接起来</translation>
+      <translation>发现几条导线或边：将其连接起来</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="630"/>
@@ -5826,7 +5911,7 @@ of existing objects in all opened documents?</source>
       <translation>合并图层重复项</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="183"/>
+      <location filename="../../importDXF.py" line="189"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -6190,7 +6275,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>点对象没有离散点，不能用于阵列</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="159"/>
+      <location filename="../../importDXF.py" line="165"/>
       <source>Download of DXF libraries failed.
 Please install the DXF Library addon manually
 from menu Tools → Addon Manager</source>
@@ -6222,12 +6307,12 @@ from menu Tools → Addon Manager</source>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1264"/>
+      <location filename="../../importSVG.py" line="1326"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>未知的 SVG 导出样式，切换到已翻译</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1305"/>
+      <location filename="../../importSVG.py" line="1367"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>导出列表中没有包含有效边界框的对象</translation>
     </message>
@@ -6276,12 +6361,12 @@ from menu Tools → Addon Manager</source>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="42"/>
       <source>Hatch</source>
-      <translation>剖面线</translation>
+      <translation>填充</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="46"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation>在选定对象的表面上创建阴影</translation>
+      <translation>在选定对象的表面上创建填充效果</translation>
     </message>
   </context>
   <context>
@@ -6425,7 +6510,7 @@ If the "Copy" option is active, it will create rotated copies.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="75"/>
       <source>Trimex</source>
-      <translation>Trimex</translation>
+      <translation>修剪/延伸</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="78"/>
@@ -7880,15 +7965,6 @@ beyond the dimension line</source>
       <location filename="../../draftviewproviders/view_rectangle.py" line="46"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
       <translation>定义纹理贴图（覆盖填充图案）</translation>
-    </message>
-  </context>
-  <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../draftviewproviders/view_base.py" line="503"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
-      <source>Transform</source>
-      <translation>变换</translation>
     </message>
   </context>
   <context>

@@ -775,8 +775,8 @@ public:
     /// Get the argument values that were provided at the start of the application.
     static char** GetARGV(){return _argv;}
 
-    /// Get the application process id.
-    static int64_t applicationPid();
+    /// Get a constant unique ID specific to this application instance.
+    static int64_t uniqueInstanceId();
     /// @}
 
     /**

@@ -738,7 +738,7 @@ int ViewProviderPy::setCustomAttributes(const char* attr, PyObject* value)
 Py::Object ViewProviderPy::getAnnotation() const
 {
     try {
-        auto node = getViewProviderPtr()->getAnnotation();
+        auto node = getViewProviderPtr()->getOrCreateAnnotation();
         PyObject* Ptr
             = Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", node, 1);
         node->ref();

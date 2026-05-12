@@ -471,7 +471,7 @@ This command only works with a mesh object.</source>
       <source>Edge has %n adjacent face(s)</source>
       <translation type="unfinished">
         <numerusform>Edge has %n adjacent face(s)</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
+        <numerusform>விளிம்பில் அருகில் உள்ள%n முகங்கள்</numerusform>
       </translation>
     </message>
     <message>
@@ -524,9 +524,9 @@ This command only works with a mesh object.</source>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="616"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent faces</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
+      <translation>
+        <numerusform>விளிம்பில் அருகில் உள்ள%n முகம்</numerusform>
+        <numerusform>விளிம்பில் அருகில் உள்ள%n முகங்கள்</numerusform>
       </translation>
     </message>
     <message>

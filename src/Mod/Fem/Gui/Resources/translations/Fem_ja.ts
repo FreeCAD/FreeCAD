@@ -1651,8 +1651,8 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
-      <source>Succesive over-relaxation (SOR)</source>
-      <translation type="unfinished">Succesive over-relaxation (SOR)</translation>
+      <source>Successive over-relaxation (SOR)</source>
+      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
@@ -1691,117 +1691,13 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="237"/>
       <location filename="../../TaskFemConstraint.cpp" line="259"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>入力エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="238"/>
       <source>You must specify at least one reference</source>
       <translation>少なくとも 1 つの参照を指定する必要があります。</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
-    <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintContact</name>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintForce</name>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="476"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintPressure</name>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintPulley</name>
-    <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintSpring</name>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTransform</name>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
     </message>
   </context>
   <context>
@@ -1815,14 +1711,6 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="102"/>
       <source>Meshing failure</source>
       <translation>メッシュ作成失敗</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgPost</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="394"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
     </message>
   </context>
   <context>
@@ -1860,8 +1748,8 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintBearing.cpp" line="205"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="215"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="224"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="171"/>
@@ -1922,8 +1810,8 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="131"/>
@@ -2017,19 +1905,19 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
+      <source>Nothing selected!</source>
+      <translation>何も選択されていません!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="255"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="299"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="332"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
-      <source>Nothing selected!</source>
-      <translation>何も選択されていません!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
@@ -2062,19 +1950,19 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
+      <source>Nothing selected!</source>
+      <translation>何も選択されていません!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="130"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="171"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="203"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
-      <source>Nothing selected!</source>
-      <translation>何も選択されていません!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
@@ -2163,8 +2051,8 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
-      <source>Empty selection</source>
-      <translation>選択されていません</translation>
+      <source>Empty Selection</source>
+      <translation type="unfinished">Empty Selection</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
@@ -2173,17 +2061,17 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
+      <source>Selected object is not a part object!</source>
+      <translation>選択されたオブジェクトはパートオブジェクトではありません!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="675"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="693"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="703"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="712"/>
-      <source>Wrong selection</source>
-      <translation>誤った選択</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
-      <source>Selected object is not a part object!</source>
-      <translation>選択されたオブジェクトはパートオブジェクトではありません!</translation>
+      <source>Wrong Selection</source>
+      <translation>間違った選択</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="676"/>
@@ -2207,19 +2095,19 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
+      <source>Nothing selected!</source>
+      <translation>何も選択されていません!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="867"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="909"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
-      <source>Nothing selected!</source>
-      <translation>何も選択されていません!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
@@ -2241,55 +2129,55 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="93"/>
       <source>Select geometry of type: </source>
       <translation>以下の種類のジオメトリーを選択: </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="93"/>
       <source>Vertex, Edge, Face</source>
       <translation>頂点、エッジ、面</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="134"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="184"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="207"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="216"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="207"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
       <source>Nothing selected!</source>
       <translation>何も選択されていません!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="134"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="216"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="185"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
       <source>Selected object is not a part!</source>
       <translation>選択されたオブジェクトはパーツではありません！</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
       <source>External object selection is not supported</source>
       <translation>外部オブジェクトの選択はサポートされていません</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="180"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="181"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>解析フィーチャーごとに1種類の選択 (頂点、面、エッジ) しかできません!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="339"/>
-      <source>Wrong selection</source>
-      <translation>誤った選択</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="332"/>
+      <source>Wrong Selection</source>
+      <translation>間違った選択</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
       <source>Select an edge or a face.</source>
       <translation>エッジまたは面を選択してください。</translation>
     </message>
@@ -2300,8 +2188,8 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintGear.cpp" line="155"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="174"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="156"/>
@@ -2333,20 +2221,20 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="359"/>
+      <source>Nothing selected!</source>
+      <translation>何も選択されていません!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="291"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="299"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="311"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="359"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="369"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="380"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="359"/>
-      <source>Nothing selected!</source>
-      <translation>何も選択されていません!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="291"/>
@@ -2388,8 +2276,8 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="209"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="237"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="131"/>
@@ -2439,19 +2327,19 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
+      <source>Nothing selected!</source>
+      <translation>何も選択されていません!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="157"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
-      <source>Nothing selected!</source>
-      <translation>何も選択されていません!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
@@ -2497,19 +2385,19 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
+      <source>Nothing selected!</source>
+      <translation>何も選択されていません!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="150"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="160"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="204"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
-      <source>Nothing selected!</source>
-      <translation>何も選択されていません!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
@@ -2542,18 +2430,18 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
+      <source>Nothing selected!</source>
+      <translation>何も選択されていません!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="207"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="215"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="265"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
-      <source>Nothing selected!</source>
-      <translation>何も選択されていません!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="207"/>
@@ -2573,21 +2461,6 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintTransform.cpp" line="211"/>
       <source>Analysis feature update error</source>
       <translation>解析フィーチャーの更新エラー</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="316"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="326"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="349"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="359"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="379"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="423"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
@@ -2638,6 +2511,21 @@ that "MAXGS" needs to be increased.</source>
       <translation>変換可能な面が変更されました。変換可能な面だけを追加し、変換できない面は削除してください！</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="316"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="326"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="349"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="359"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="379"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="423"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
       <source>Only faces can be picked</source>
       <translation>面のみを選択できます。</translation>
@@ -2651,12 +2539,12 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="678"/>
+      <location filename="../../TaskPostBoxes.cpp" line="687"/>
       <source>Data Along a Line Options</source>
       <translation>直線に沿うデータのオプション</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1086"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1095"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>長さ</translation>
@@ -2665,12 +2553,12 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1120"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1129"/>
       <source>Data at Point Options</source>
       <translation>点位置データのオプション</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1461"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1470"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 (%2; %3; %4): %5 %6</translation>
     </message>
@@ -2678,7 +2566,7 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="526"/>
+      <location filename="../../TaskPostBoxes.cpp" line="535"/>
       <source>Implicit function</source>
       <translation>陰関数</translation>
     </message>
@@ -3526,8 +3414,8 @@ with harmonic/oscillating driving current</source>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
-      <source>Drag the refinement, that should be altered, into the Manipulate object in the document tree</source>
-      <translation type="unfinished">Drag the refinement, that should be altered, into the Manipulate object in the document tree</translation>
+      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
+      <translation type="unfinished">Drag the refinement that should be altered into the Manipulate object in the document tree</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="70"/>
@@ -3591,15 +3479,11 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshAdvanced.ui" line="210"/>
       <location filename="../ui/MeshAdvanced.ui" line="399"/>
       <location filename="../ui/MeshDistance.ui" line="68"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <location filename="../ui/MeshManipulate.ui" line="527"/>
-      <location filename="../ui/MeshManipulate.ui" line="636"/>
-      <location filename="../ui/MeshManipulate.ui" line="708"/>
-      <location filename="../ui/MeshManipulate.ui" line="780"/>
       <location filename="../ui/MeshAdvanced.ui" line="179"/>
       <location filename="../ui/MeshDistance.ui" line="115"/>
       <source>Distance at which the mesh size will be SizeMaximum</source>
@@ -3612,13 +3496,11 @@ with harmonic/oscillating driving current</source>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
       <location filename="../ui/MeshAdvanced.ui" line="337"/>
       <location filename="../ui/MeshAdvanced.ui" line="430"/>
       <location filename="../ui/MeshDistance.ui" line="178"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="365"/>
@@ -3676,6 +3558,14 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="761"/>
       <source>Delta</source>
       <translation type="unfinished">Delta</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <source>Delta in the aforementioned equation</source>
+      <translation type="unfinished">Delta in the aforementioned equation</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="565"/>
@@ -3864,6 +3754,11 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
     </message>
     <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
+      <source>Number of nodes on the edge</source>
+      <translation type="unfinished">Number of nodes on the edge</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
@@ -3900,6 +3795,11 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
       <source>Coefficient</source>
       <translation>係数</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
+      <source>Coefficient for bump/progression growth rate</source>
+      <translation type="unfinished">Coefficient for bump/progression growth rate</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="34"/>
@@ -3977,12 +3877,12 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <location filename="../ui/MeshAdvanced.ui" line="583"/>
       <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
       <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</translation>
     </message>
@@ -4021,12 +3921,12 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshAdvanced.ui" line="840"/>
       <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
       <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</translation>
     </message>
@@ -4062,8 +3962,8 @@ Example: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
-      <source>Uses a datafield from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
-      <translation type="unfinished">Uses a datafield from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
+      <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
+      <translation type="unfinished">Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
@@ -4072,8 +3972,8 @@ Example: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5 or 6 sided volumes</source>
-      <translation type="unfinished">Select any number of 5 or 6 sided volumes</translation>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation type="unfinished">Select any number of 5- or 6-sided volumes</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
@@ -4087,13 +3987,13 @@ Example: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surface belonging to the selected volumes that do not have a transfinite definitions already become transfinite automatically.
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
 Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
 
 Notes:
 1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works with any number of volumes, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges and surface belonging to the selected volumes that do not have a transfinite definitions already become transfinite automatically.
+      <translation type="unfinished">If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
 Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
 
 Notes:
@@ -4184,8 +4084,8 @@ Notes:
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on distance to chosen reference geometries.</source>
-      <translation type="unfinished">Define mesh element size based on distance to chosen reference geometries.</translation>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation type="unfinished">Define mesh element size based on the distance to the chosen reference geometries.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="140"/>
@@ -4204,8 +4104,8 @@ Notes:
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surface it is the sampling size per direction.</source>
-      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surface it is the sampling size per direction.</translation>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="329"/>
@@ -4246,8 +4146,8 @@ Notes:
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="184"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinements mesh size output: It shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh, therefore details smaller then the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinements mesh size output: It shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh, therefore details smaller then the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="187"/>
@@ -4261,8 +4161,8 @@ Notes:
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
-      <source>Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</source>
-      <translation type="unfinished">Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</translation>
+      <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
+      <translation type="unfinished">Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
@@ -7395,19 +7295,19 @@ No matching module was found in the current Python path.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
+      <source>Nothing selected!</source>
+      <translation>何も選択されていません!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="319"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="361"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="394"/>
-      <source>Selection error</source>
-      <translation>選択エラー</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
-      <source>Nothing selected!</source>
-      <translation>何も選択されていません!</translation>
+      <source>Selection Error</source>
+      <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
@@ -7424,14 +7324,6 @@ No matching module was found in the current Python path.</source>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
       <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
       <translation>拘束ごとに1種類の選択 (頂点、面、エッジ) しかできません!</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
-    <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
     </message>
   </context>
   <context>
@@ -8192,7 +8084,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostFrames</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="554"/>
+      <location filename="../../TaskPostBoxes.cpp" line="563"/>
       <source>Result Frames</source>
       <translation>結果フレーム</translation>
     </message>
@@ -8200,7 +8092,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostCalculator</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2248"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2257"/>
       <source>Calculator options</source>
       <translation>計算機オプション</translation>
     </message>
@@ -8665,7 +8557,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="453"/>
+      <location filename="../../TaskPostBoxes.cpp" line="462"/>
       <source>Result Display Options</source>
       <translation>結果表示オプション</translation>
     </message>
@@ -8673,7 +8565,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostBranch</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="623"/>
+      <location filename="../../TaskPostBoxes.cpp" line="632"/>
       <source>Branch Behaviour</source>
       <translation>ブランチの動作</translation>
     </message>
@@ -8681,7 +8573,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1495"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1504"/>
       <source>Clip Region, Choose Implicit Function</source>
       <translation>クリップ領域、陰関数を選択</translation>
     </message>
@@ -8689,7 +8581,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1646"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1655"/>
       <source>Contours Filter Options</source>
       <translation>等高線フィルターのオプション</translation>
     </message>
@@ -8697,7 +8589,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1810"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1819"/>
       <source>Function Cut, Choose Implicit Function</source>
       <translation>関数による切り取り、陰関数を選択</translation>
     </message>
@@ -8705,7 +8597,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1943"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1952"/>
       <source>Scalar Clip Options</source>
       <translation>スカラークリップのオプション</translation>
     </message>
@@ -8713,7 +8605,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2067"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2076"/>
       <source>Warp Options</source>
       <translation>たわみのオプション</translation>
     </message>
@@ -8823,8 +8715,8 @@ Leave blank to use default Python executable</source>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="705"/>
-      <source>Adds a structured layer of mesh elmenets on 2D model boundaries</source>
-      <translation type="unfinished">Adds a structured layer of mesh elmenets on 2D model boundaries</translation>
+      <source>Adds a structured layer of mesh elements on 2D model boundaries</source>
+      <translation type="unfinished">Adds a structured layer of mesh elements on 2D model boundaries</translation>
     </message>
   </context>
   <context>
@@ -8904,8 +8796,8 @@ Leave blank to use default Python executable</source>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="967"/>
-      <source>Creates a fixed amount of nodes on an endge with a structured algorithm</source>
-      <translation type="unfinished">Creates a fixed amount of nodes on an endge with a structured algorithm</translation>
+      <source>Creates a fixed number of nodes on an edge with a structured algorithm</source>
+      <translation type="unfinished">Creates a fixed number of nodes on an edge with a structured algorithm</translation>
     </message>
   </context>
   <context>
@@ -8930,8 +8822,8 @@ Leave blank to use default Python executable</source>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="998"/>
-      <source>Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces</source>
-      <translation type="unfinished">Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces</translation>
+      <source>Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</source>
+      <translation type="unfinished">Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</translation>
     </message>
   </context>
   <context>
@@ -9067,6 +8959,78 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
+    <message>
+      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintForce</name>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgPost</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <message>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
     <name>FemGui::DlgSettingsFemInOutVtkImp</name>
     <message>
       <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
@@ -9077,6 +9041,54 @@ Leave blank to use default Python executable</source>
       <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
       <source>Highest</source>
       <translation>最高次</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPressure</name>
+    <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintSpring</name>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPulley</name>
+    <message>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
+      <source>Input Error</source>
+      <translation>入力エラー</translation>
     </message>
   </context>
 </TS>

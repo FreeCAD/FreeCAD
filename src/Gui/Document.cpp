@@ -963,7 +963,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
 {
     auto pcProvider = static_cast<ViewProviderDocumentObject*>(getViewProvider(&Obj));
     if (!pcProvider) {
-        std::string cName = Obj.getViewProviderNameStored();
+        std::string_view cName {Obj.getViewProviderNameStored()};
         for (;;) {
             if (cName.empty()) {
                 // handle document object with no view provider specified
@@ -971,7 +971,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
                 return;
             }
             Base::Type type = Base::Type::getTypeIfDerivedFrom(
-                cName.c_str(),
+                cName,
                 ViewProviderDocumentObject::getClassTypeId(),
                 true
             );

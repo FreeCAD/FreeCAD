@@ -109,7 +109,7 @@ void StdCmdWorkbench::activated(int i)
     catch (...) {
         QMessageBox::critical(
             getMainWindow(),
-            QObject::tr("Cannot load workbench"),
+            QObject::tr("Cannot Load Workbench"),
             QObject::tr("A general error occurred while loading the workbench")
         );
     }
