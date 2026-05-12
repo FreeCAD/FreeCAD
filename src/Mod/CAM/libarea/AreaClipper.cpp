@@ -388,43 +388,20 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
         p = SimplifyPath(p, CArea::m_clipper_clean_distance, is_closed);
     }
 
-    // Pick a start index
     // TODO for open paths start at one end and iterate in the direction of
     // decreasing z (which may be a nuanced notion given newly generated z
     // values)
     // Actually this order issue may need to be tagged/documented somehow when
     // mapping new zs back to the old ones they came from; the new path may *only* have new zs.
     // Yeah, do that. But only for open paths. Also write a test for it.
-    int j0 = 0;
-    if (is_closed && p.size() > 0) {
-        // Find index with minimum z-value
-        for (int j = 0; j < p.size(); j++) {
-            if (p[j].z < p[j0].z) {
-                j0 = j;
-            }
-        }
 
-        // Find the first instance in the contiguous run of min-z
-        int64_t min_z = p[j0].z;
-        int start_search = j0;
-        do {
-            int prev_idx = (j0 - 1 + p.size()) % p.size();
-            if (p[prev_idx].z != min_z) {
-                break;  // Found the start of the run
-            }
-            j0 = prev_idx;
-        } while (j0 != start_search);  // Stop if we've wrapped all the way around
-    }
-
-    std::cerr << "Starting at j0=" << j0 << std::endl;
-
-    // Loop through points starting at j0
+    // Loop through points
     int64_t prevZ = -1;
     heeks::Point prevP;
     double phi_total = 0.0;
     int num_j = p.size() + (is_closed ? 1 : 0);
     for (int dj = 0; dj < num_j; dj++) {
-        const int j = (j0 + (reverse ? -1 : 1) * dj + 2 * p.size()) % p.size();
+        const int j = ((reverse ? -1 : 1) * dj + 2 * p.size()) % p.size();
         const Point64& pt = p[j];
         PointD dp = ToPointD(pt);
         heeks::Point p(dp.x / CArea::m_units, dp.y / CArea::m_units);
@@ -515,6 +492,63 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
 
         prevZ = dp.z;
         prevP = p;
+    }
+
+    // For closed paths, check if it starts and ends with the same arc:
+    // [0] line vertex with starting point
+    // [1] arc vertex
+    // [n-1] arc vertex, for the same arc
+    // If they are the same and aren't too long to be merged, then merge them
+    if (is_closed && curve.m_vertices.size() >= 3) {
+        const CVertex& last_vertex = curve.m_vertices.back();
+        const CVertex& second_vertex = *std::next(curve.m_vertices.begin());
+
+        // Check if both are arcs with the same type and center
+        if (last_vertex.m_type != 0 && second_vertex.m_type != 0
+            && last_vertex.m_type == second_vertex.m_type && last_vertex.m_c == second_vertex.m_c) {
+
+            // Calculate total arc angle to ensure it doesn't exceed 2*PI
+            const heeks::Point& p0 = curve.m_vertices.front().m_p;
+            const heeks::Point& p1 = second_vertex.m_p;
+            auto second_to_last_it = std::prev(curve.m_vertices.end(), 2);
+            const heeks::Point& p_prev = second_to_last_it->m_p;
+            const heeks::Point& center = last_vertex.m_c;
+
+            // Compute the ngular span of each arc (from p_prev to p0)
+            double phi_prev = atan2(p_prev.y - center.y, p_prev.x - center.x);
+            double phi0 = atan2(p0.y - center.y, p0.x - center.x);
+            double phi1 = atan2(p1.y - center.y, p1.x - center.x);
+
+            double dphi_last = phi0 - phi_prev;
+            double dphi_first = phi1 - phi0;
+
+            // Ensure dphi sign matches vertex type (CCW=1 should be positive, CW=-1 should be negative)
+            if (last_vertex.m_type == 1) {
+                if (dphi_last < 0) {
+                    dphi_last += 2 * M_PI;
+                }
+                if (dphi_first < 0) {
+                    dphi_first += 2 * M_PI;
+                }
+            }
+            else {
+                if (dphi_last > 0) {
+                    dphi_last -= 2 * M_PI;
+                }
+                if (dphi_first > 0) {
+                    dphi_first -= 2 * M_PI;
+                }
+            }
+
+            // Check if total exceeds a full circle; if not, then combine them
+            if (abs(dphi_last) + abs(dphi_first) < 2 * M_PI) {
+                curve.m_vertices.pop_back();
+                curve.m_vertices.front().m_p = p_prev;
+
+                std::cerr << "Merged final arc with second arc: moved start to (" << p_prev.x
+                          << ", " << p_prev.y << ")" << std::endl;
+            }
+        }
     }
 }
 
