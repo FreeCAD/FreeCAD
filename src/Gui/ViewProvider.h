@@ -765,9 +765,6 @@ public:
 
     virtual void setRenderCacheMode(int);
 
-    /// Internal use to invalidate all bounding box cache
-    static void clearBoundingBoxCache();
-
 protected:
     /** Helper method to check that the node is valid, i.e. it must not cause
      * and infinite recursion.
@@ -839,9 +836,6 @@ private:
     int viewOverrideMode {-1};
     std::string _sCurrentMode;
     std::map<std::string, int> _sDisplayMaskModes;
-
-    struct BoundingBoxCache;
-    mutable std::unique_ptr<BoundingBoxCache> bboxCache;
 };
 
 }  // namespace Gui
