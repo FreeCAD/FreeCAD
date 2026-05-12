@@ -806,10 +806,7 @@ class Edit(gui_base_original.Modifier):
                 if obj.Base is None:
                     continue
                 base_typ = utils.get_type(obj.Base)
-                if (
-                    base_typ == "Sketcher::SketchObject"
-                    and edit_sketcher._is_editable(obj.Base)
-                ):
+                if base_typ == "Sketcher::SketchObject" and edit_sketcher._is_editable(obj.Base):
                     tmp.add(obj.Base)
                 elif base_typ == "Wire":
                     tmp.add(obj.Base)

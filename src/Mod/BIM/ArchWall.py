@@ -1873,13 +1873,13 @@ if FreeCAD.GuiUp:
                 self.alignCenter.setChecked(True)
 
             layout.addRow(translate("Arch", "Alignment"), self.alignLayout)
-            
+
             # Nodes
             self.edit_nodes_button = QtGui.QPushButton()
             self.edit_nodes_button.setText(translate("Arch", "Switch to Editing Nodes"))
             layout.addRow(self.edit_nodes_button)
             self.edit_nodes_button.clicked.connect(self.edit_nodes)
-            
+
             # Wall Options first, then Components (inherited self.form)
             self.form = [self.wallWidget, self.form]
 
