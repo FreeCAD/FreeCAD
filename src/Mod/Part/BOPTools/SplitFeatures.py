@@ -31,6 +31,24 @@ from . import SplitAPI
 import FreeCAD
 import Part
 
+
+def _get_shape(obj):
+    """Get an object's shape in document coordinates."""
+    if hasattr(obj, "Shape"):
+        return Part.getShape(obj, retType=2)[0]
+
+    if hasattr(obj, "Group"):
+        shapes = []
+        for child in obj.Group:
+            shape = _get_shape(child)
+            if shape is not None and not shape.isNull():
+                shapes.append(shape)
+        if shapes:
+            return Part.makeCompound(shapes)
+
+    return None
+
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -101,7 +119,11 @@ class FeatureBooleanFragments:
         self.Type = "FeatureBooleanFragments"
 
     def execute(self, selfobj):
-        shapes = [obj.Shape for obj in selfobj.Objects]
+        shapes = [
+            shape
+            for shape in (_get_shape(obj) for obj in selfobj.Objects)
+            if shape is not None and not shape.isNull()
+        ]
         if len(shapes) == 1 and shapes[0].ShapeType == "Compound":
             shapes = shapes[0].childShapes()
         if len(shapes) < 2:
@@ -300,29 +322,15 @@ class FeatureSlice:
         if len(selfobj.Tools) < 1:
             raise ValueError("No slicing objects supplied!")
 
-        # helper function to get the shape from object or group
-        def get_shape(obj):
-            """get shape from a part object or compound from a group."""
-            if hasattr(obj, "Shape"):
-                return obj.Shape
-            elif hasattr(obj, "Group"):  # it's a group/container from ie. slice apart
-                shapes = []
-                for child in obj.Group:
-                    if hasattr(child, "Shape"):
-                        shapes.append(child.Shape)
-                if shapes:
-                    return Part.makeCompound(shapes)
-            return None
-
         # get base shape
-        base_shape = get_shape(selfobj.Base)
+        base_shape = _get_shape(selfobj.Base)
         if base_shape is None or base_shape.isNull():
             raise ValueError("Base object has no valid shape!")
 
         # get tool shapes
         tool_shapes = []
         for tool in selfobj.Tools:
-            shape = get_shape(tool)
+            shape = _get_shape(tool)
             if shape is not None and not shape.isNull():
                 tool_shapes.append(shape)
 

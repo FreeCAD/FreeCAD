@@ -967,6 +967,29 @@ class PartBOPTestContainer(unittest.TestCase):
         fuse = bp.make_multi_common([cyl.Name, box.Name])
         self.assertEqual(part, fuse.getParent())
 
+    def testBooleanFragmentsRespectInputPlacement(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+
+        placed_box = self.Doc.addObject("Part::Box", "PlacedBox")
+        placed_box.Length = 10
+        placed_box.Width = 10
+        placed_box.Height = 10
+        placed_box.Placement.Base = FreeCAD.Vector(10, 0, 0)
+
+        from BOPTools import SplitFeatures
+
+        fragments = SplitFeatures.makeBooleanFragments("Fragments")
+        fragments.Objects = [box, placed_box]
+        fragments.Mode = "CompSolid"
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(fragments.Shape.BoundBox.XMin, 0.0)
+        self.assertAlmostEqual(fragments.Shape.BoundBox.XMax, 20.0)
+        self.assertEqual(len(fragments.Shape.Solids), 2)
+
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
 
