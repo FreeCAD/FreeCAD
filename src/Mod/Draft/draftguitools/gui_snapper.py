@@ -570,7 +570,7 @@ class Snapper:
 
         The parallel line of the last object, if any.
         """
-        tsnap = self.snapToHold(point)
+        tsnap = self.snapToHold(point, constrain)
         if tsnap:
             if self.tracker and not self.selectMode:
                 self.tracker.setCoords(tsnap[2])
@@ -916,7 +916,7 @@ class Snapper:
                     return None
         return None
 
-    def snapToHold(self, point):
+    def snapToHold(self, point, constrain=False):
         """Return a snap location that is orthogonal to hold points.
 
         Or if possible at crossings.
@@ -951,16 +951,17 @@ class Snapper:
                     return [p[0], "ortho", p[1]]
         # then try to stick to a line
         for p in self.holdPoints:
-            d = DraftGeomUtils.findDistance(point, [p, p.add(u)])
-            if d:
-                if d.Length < self.radius:
+            candidates = []
+            for affinity, direction in (("x", u), ("y", v)):
+                d = DraftGeomUtils.findDistance(point, [p, p.add(direction)])
+                if d and d.Length < self.radius:
                     fp = point.add(d)
-                    return [p, "extension", fp]
-            d = DraftGeomUtils.findDistance(point, [p, p.add(v)])
-            if d:
-                if d.Length < self.radius:
-                    fp = point.add(d)
-                    return [p, "extension", fp]
+                    candidates.append((d.Length, affinity, [p, "extension", fp]))
+            if candidates:
+                _, affinity, snap = min(candidates, key=lambda item: item[0])
+                if constrain:
+                    self.affinity = affinity
+                return snap
         return None
 
     def snapToExtPerpendicular(self, last):
