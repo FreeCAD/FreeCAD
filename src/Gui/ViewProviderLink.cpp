@@ -588,7 +588,13 @@ public:
         this->nodeMap.swap(nodeMap);
     }
 
-    bool getElementPicked(bool addname, int type, const SoPickedPoint* pp, std::ostream& str) const
+    bool getElementPicked(
+        bool addname,
+        int type,
+        const SoPickedPoint* pp,
+        std::ostream& str,
+        const Gui::SelectionPickContext* pickContext
+    ) const
     {
         if (!pp || !isLinked()) {
             return false;
@@ -610,11 +616,11 @@ public:
             if (it == nodeMap.end()) {
                 return false;
             }
-            return it->second->getElementPicked(true, LinkView::SnapshotChild, pp, str);
+            return it->second->getElementPicked(true, LinkView::SnapshotChild, pp, str, pickContext);
         }
         else {
             std::string subname;
-            if (!pcLinked->getElementPicked(pp, subname)) {
+            if (!pcLinked->getElementPicked(pp, subname, pickContext)) {
                 return false;
             }
             str << subname;
@@ -1643,6 +1649,15 @@ void LinkView::updateLink()
 
 bool LinkView::linkGetElementPicked(const SoPickedPoint* pp, std::string& subname) const
 {
+    return linkGetElementPicked(pp, subname, nullptr);
+}
+
+bool LinkView::linkGetElementPicked(
+    const SoPickedPoint* pp,
+    std::string& subname,
+    const SelectionPickContext* pickContext
+) const
+{
     std::ostringstream ss;
     CoinPtr<SoPath> path {pp->getPath()};
     if (!nodeArray.empty()) {
@@ -1683,7 +1698,7 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint* pp, std::string& subnam
         }
 
         if (info.isLinked()) {
-            if (!info.linkInfo->getElementPicked(false, childType, pp, ss)) {
+            if (!info.linkInfo->getElementPicked(false, childType, pp, ss, pickContext)) {
                 return false;
             }
             subname = ss.str();
@@ -1696,7 +1711,7 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint* pp, std::string& subnam
     }
 
     if (nodeType >= 0) {
-        if (linkInfo->getElementPicked(false, nodeType, pp, ss)) {
+        if (linkInfo->getElementPicked(false, nodeType, pp, ss, pickContext)) {
             subname = ss.str();
             return true;
         }
@@ -1714,7 +1729,7 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint* pp, std::string& subnam
         }
 
         std::ostringstream ss2;
-        if (!sub.linkInfo->getElementPicked(false, SnapshotTransform, pp, ss2)) {
+        if (!sub.linkInfo->getElementPicked(false, SnapshotTransform, pp, ss2, pickContext)) {
             return false;
         }
         const std::string& element = ss2.str();
@@ -2841,6 +2856,15 @@ bool ViewProviderLink::canDragAndDropObject(App::DocumentObject* obj) const
 
 bool ViewProviderLink::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
 {
+    return getElementPicked(pp, subname, nullptr);
+}
+
+bool ViewProviderLink::getElementPicked(
+    const SoPickedPoint* pp,
+    std::string& subname,
+    const SelectionPickContext* pickContext
+) const
+{
     if (!isSelectable()) {
         return false;
     }
@@ -2852,10 +2876,10 @@ bool ViewProviderLink::getElementPicked(const SoPickedPoint* pp, std::string& su
         auto path = pp->getPath();
         int idx = path->findNode(childVpLink->getSnapshot(LinkView::SnapshotTransform));
         if (idx >= 0) {
-            return childVp->getElementPicked(pp, subname);
+            return childVp->getElementPicked(pp, subname, pickContext);
         }
     }
-    bool ret = linkView->linkGetElementPicked(pp, subname);
+    bool ret = linkView->linkGetElementPicked(pp, subname, pickContext);
     if (!ret) {
         return ret;
     }

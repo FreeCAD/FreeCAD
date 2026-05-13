@@ -3831,6 +3831,15 @@ bool ViewProviderSketch::getElementPicked(const SoPickedPoint* pp, std::string& 
     return ViewProvider2DObject::getElementPicked(pp, subname);
 }
 
+bool ViewProviderSketch::getElementPicked(
+    const SoPickedPoint* pp,
+    std::string& subname,
+    const Gui::SelectionPickContext*
+) const
+{
+    return getElementPicked(pp, subname);
+}
+
 std::vector<std::pair<std::string, std::string>> ViewProviderSketch::getRelatedElements(
     const std::string& subname,
     const SbVec3f& pickPoint

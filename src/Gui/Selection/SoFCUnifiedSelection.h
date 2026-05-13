@@ -51,6 +51,8 @@ class SbVec2f;
 namespace Gui
 {
 
+struct SelectionPickContext;
+
 namespace SelectionPickPolicy
 {
 
@@ -76,6 +78,7 @@ GuiExport std::size_t choosePreferredPick(const std::vector<Candidate>& picked);
 class Document;
 class ViewProviderDocumentObject;
 class SoFCUnifiedSelectionTestAccess;
+class SelectionGate;
 
 class AutoPreselection
 {
@@ -182,7 +185,6 @@ private:
         const SbVec2f* cursorPosition = nullptr
     );
     static bool canFinalizeSinglePick(const std::vector<PickedInfo>&);
-    static bool shouldExpandPickRadius(const std::vector<PickedInfo>&);
 
     bool setPreselect(const PickedInfo&);
     bool setPreselect(
@@ -200,7 +202,8 @@ private:
         const SoPickedPointList& points,
         const SoPath* actionPath,
         bool singlePick,
-        bool copyPickedPoints = false
+        bool copyPickedPoints = false,
+        const SelectionPickContext* pickContext = nullptr
     ) const;
     std::vector<PickedInfo> getExpandedPickedList(SoHandleEventAction* action) const;
     std::vector<PickedInfo> getPickedList(SoHandleEventAction* action, bool singlePick) const;

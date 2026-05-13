@@ -32,6 +32,7 @@ class SoFullPath;
 class SoGroup;
 class SoPickedPoint;
 class SoSeparator;
+class SbVec2f;
 
 class QMenu;
 class QObject;
@@ -41,6 +42,8 @@ namespace Gui
 
 class ViewProvider;
 class ViewProviderDocumentObject;
+class SelectionGate;
+struct SelectionPickContext;
 
 /**
  * @brief Extension with special viewprovider calls
@@ -189,6 +192,16 @@ public:
     virtual bool extensionGetElementPicked(const SoPickedPoint*, std::string&) const
     {
         return false;
+    }
+    /// Context-aware extension hook; \a pickContext may be null when callers only need the legacy
+    /// pick resolution.
+    virtual bool extensionGetElementPicked(
+        const SoPickedPoint* pp,
+        std::string& subname,
+        const SelectionPickContext* /*pickContext*/
+    ) const
+    {
+        return extensionGetElementPicked(pp, subname);
     }
     virtual bool extensionGetDetailPath(const char*, SoFullPath*, SoDetail*&) const
     {

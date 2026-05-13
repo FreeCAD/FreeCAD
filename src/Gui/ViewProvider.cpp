@@ -1015,6 +1015,26 @@ bool ViewProvider::getElementPicked(const SoPickedPoint* pp, std::string& subnam
             return true;
         }
     }
+    return resolvePickedElementFromDetail(pp, subname);
+}
+
+bool ViewProvider::getElementPicked(
+    const SoPickedPoint* pp,
+    std::string& subname,
+    const SelectionPickContext* pickContext
+) const
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionGetElementPicked(pp, subname, pickContext)) {
+            return true;
+        }
+    }
+    return resolvePickedElementFromDetail(pp, subname);
+}
+
+bool ViewProvider::resolvePickedElementFromDetail(const SoPickedPoint* pp, std::string& subname) const
+{
     subname = getElement(pp ? pp->getDetail() : nullptr);
     return true;
 }

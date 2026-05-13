@@ -119,6 +119,11 @@ public:
 
     /// return a hit element given the picked point which contains the full node path
     bool getElementPicked(const SoPickedPoint*, std::string& subname) const override;
+    bool getElementPicked(
+        const SoPickedPoint*,
+        std::string& subname,
+        const SelectionPickContext* pickContext
+    ) const override;
     /// return the coin node detail and path to the node of the subname
     bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
 

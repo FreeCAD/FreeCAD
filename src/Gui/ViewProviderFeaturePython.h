@@ -231,6 +231,18 @@ public:
         delete imp;
     }
 
+private:
+    template<typename Fallback>
+    bool dispatchGetElementPicked(const SoPickedPoint* pp, std::string& subname, Fallback&& fallback) const
+    {
+        const auto ret = imp->getElementPicked(pp, subname);
+        if (ret == ViewProviderFeaturePythonImp::NotImplemented) {
+            return fallback();
+        }
+        return ret == ViewProviderFeaturePythonImp::Accepted;
+    }
+
+public:
     // Returns the icon
     QIcon getIcon() const override
     {
@@ -313,14 +325,19 @@ public:
     }
     bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override
     {
-        auto ret = imp->getElementPicked(pp, subname);
-        if (ret == ViewProviderFeaturePythonImp::NotImplemented) {
+        return dispatchGetElementPicked(pp, subname, [&]() {
             return ViewProviderT::getElementPicked(pp, subname);
-        }
-        else if (ret == ViewProviderFeaturePythonImp::Accepted) {
-            return true;
-        }
-        return false;
+        });
+    }
+    bool getElementPicked(
+        const SoPickedPoint* pp,
+        std::string& subname,
+        const SelectionPickContext* pickContext
+    ) const override
+    {
+        return dispatchGetElementPicked(pp, subname, [&]() {
+            return ViewProviderT::getElementPicked(pp, subname, pickContext);
+        });
     }
     std::string getElement(const SoDetail* det) const override
     {
