@@ -1205,16 +1205,19 @@ bool FaceUniter::process()
             std::vector<TopAbs_ShapeEnum> types = {TopAbs_FACE, TopAbs_EDGE, TopAbs_VERTEX};
 
             // track any modifications created by the reShape operation in the sewer
-            for (TopAbs_ShapeEnum &type : types) {
+            for (TopAbs_ShapeEnum& type : types) {
                 workShellExplorer.Init(workShell, type);
 
                 for (; workShellExplorer.More(); workShellExplorer.Next()) {
-                    const TopoDS_Shape &workShellSubShape = workShellExplorer.Value();
+                    const TopoDS_Shape& workShellSubShape = workShellExplorer.Value();
 
                     if (sew.IsModifiedSubShape(workShellSubShape)) {
-                        // we add a modified shape entry even if `workShellSubShape` is already present as a key
-                        // for extra info to give the topological naming method.
-                        modifiedShapes.emplace_back(workShellSubShape, sew.ModifiedSubShape(workShellSubShape));
+                        // we add a modified shape entry even if `workShellSubShape` is already
+                        // present as a key for extra info to give the topological naming method.
+                        modifiedShapes.emplace_back(
+                            workShellSubShape,
+                            sew.ModifiedSubShape(workShellSubShape)
+                        );
                     }
                 }
             }
