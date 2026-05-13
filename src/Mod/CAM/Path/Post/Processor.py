@@ -1954,16 +1954,16 @@ class PostProcessor:
 
         # Comments
         if command_name.startswith("("):
-            gcode = [ self._convert_comment(command) ]
+            gcode = [self._convert_comment(command)]
 
             # We use comments for some sequence signals (Probe, etc.)
-            if 'probe_open' in command.Annotations:
-                gcode.append( self._convert_probe_open(command) )
-            elif 'probe_close' in command.Annotations:
-                gcode.append( self._convert_probe_close(command) )
+            if "probe_open" in command.Annotations:
+                gcode.append(self._convert_probe_open(command))
+            elif "probe_close" in command.Annotations:
+                gcode.append(self._convert_probe_close(command))
 
             # drop None/""
-            return "\n".join( [l for l in gcode if l] )
+            return "\n".join([l for l in gcode if l])
 
         # Rapid moves
         if command_name in Constants.GCODE_MOVE_RAPID:

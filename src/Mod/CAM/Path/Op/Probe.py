@@ -96,7 +96,11 @@ class ObjectProbing(PathOp.ObjectOp):
             return
 
         # annotation so the PP has canonical signal for open/close, and gets the filename
-        self.commandlist.append(Path.Command(f"(Begin Probing {obj.OutputFileName})", {}, {"probe_open" : obj.OutputFileName}))
+        self.commandlist.append(
+            Path.Command(
+                f"(Begin Probing {obj.OutputFileName})", {}, {"probe_open": obj.OutputFileName}
+            )
+        )
 
         stock = PathUtils.findParentJob(obj).Stock
         bb = stock.Shape.BoundBox
@@ -127,7 +131,7 @@ class ObjectProbing(PathOp.ObjectOp):
                 self.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
 
         # annotation so the PP has canonical signal for open/close
-        self.commandlist.append(Path.Command("(PROBECLOSE)", {}, {"probe_close" : ""}))
+        self.commandlist.append(Path.Command("(PROBECLOSE)", {}, {"probe_close": ""}))
 
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj, job) ... set default value for RetractHeight"""
