@@ -377,7 +377,9 @@ static void MakePoly(const CCurve& curve, Path64& p, bool reverse, ArcFittingMap
          It2 != curve.m_vertices.end();
          It2++) {
         const CVertex& vertex = *It2;
-        auto zLoop = std::next(It2) == curve.m_vertices.end() ? std::optional<int>(z0) : std::nullopt;
+        const bool isLoop = std::next(It2) == curve.m_vertices.end() && curve.IsClosed()
+            && curve.m_vertices.size() > 1;
+        auto zLoop = isLoop ? std::optional<int>(z0) : std::nullopt;
         AddVertex(vertex, prev_vertex, arcMap, zLoop);
         prev_vertex = &vertex;
     }
@@ -439,6 +441,10 @@ static void SetFromResult(
         path = SimplifyPath(path, CArea::m_clipper_clean_distance, is_closed);
     }
 
+    if (path.size() == 0) {
+        return;
+    }
+
     // TODO for open paths start at one end and iterate in the direction of
     // decreasing z (which may be a nuanced notion given newly generated z
     // values)
@@ -450,7 +456,7 @@ static void SetFromResult(
     int64_t prevZ = -1;
     heeks::Point prevP;
     double phi_total = 0.0;
-    int num_j = path.size() + (is_closed ? 1 : 0);
+    int num_j = path.size() + (is_closed && path.size() > 1 ? 1 : 0);
     for (int dj = 0; dj < num_j; dj++) {
         const int j = ((reverse ? -1 : 1) * dj + 2 * path.size()) % path.size();
         const Point64& pt = path[j];
