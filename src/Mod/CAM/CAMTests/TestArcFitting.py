@@ -453,7 +453,14 @@ class TestArcFittingBooleans(PathTestBase):
         self.square = make_area(square_curve)
 
     def assert_boolean_line_and_arc_count(
-        self, a1, a2, operation, expected_curves, expected_lines, expected_arcs
+        self,
+        a1,
+        a2,
+        operation,
+        expected_curves,
+        expected_lines,
+        expected_ccw_arcs,
+        expected_cw_arcs=0,
     ):
         """Helper: Perform boolean operation and assert line and arc counts.
 
@@ -463,7 +470,8 @@ class TestArcFittingBooleans(PathTestBase):
             operation: Boolean operation name ("Union", "Subtract", "Intersect", "Xor")
             expected_curves: Expected number of curves after operation
             expected_lines: Expected total number of line segments across all curves
-            expected_arcs: Expected total number of CCW arc segments (type=1) across all curves
+            expected_ccw_arcs: Expected total number of CCW arc segments (type=1) across all curves
+            expected_cw_arcs: Expected total number of CW arc segments (type=-1) across all curves (default 0)
         """
         # Store input curves for debug output
         input1_summary = []
@@ -522,21 +530,15 @@ class TestArcFittingBooleans(PathTestBase):
                 f"Result curves:\n" + "\n".join(result_summary)
             )
 
-        # Check that there are no CW arcs
-        if total_cw_arcs != 0:
-            self.fail(
-                f"Expected 0 CW arcs, got {total_cw_arcs}\n"
-                f"Operation: {operation}\n"
-                f"Input area 1:\n" + "\n".join(input1_summary) + "\n"
-                f"Input area 2:\n" + "\n".join(input2_summary) + "\n"
-                f"Result curves:\n" + "\n".join(result_summary)
-            )
-
         # Check line and arc counts
-        if total_lines != expected_lines or total_ccw_arcs != expected_arcs:
+        if (
+            total_lines != expected_lines
+            or total_ccw_arcs != expected_ccw_arcs
+            or total_cw_arcs != expected_cw_arcs
+        ):
             self.fail(
-                f"Expected {expected_lines} lines and {expected_arcs} CCW arcs after {operation}, "
-                f"got {total_lines} lines and {total_ccw_arcs} CCW arcs\n"
+                f"Expected {expected_lines} lines, {expected_ccw_arcs} CCW arcs, and {expected_cw_arcs} CW arcs after {operation}, "
+                f"got {total_lines} lines, {total_ccw_arcs} CCW arcs, and {total_cw_arcs} CW arcs\n"
                 f"Input area 1:\n" + "\n".join(input1_summary) + "\n"
                 f"Input area 2:\n" + "\n".join(input2_summary) + "\n"
                 f"Result curves:\n" + "\n".join(result_summary)
@@ -556,7 +558,7 @@ class TestArcFittingBooleans(PathTestBase):
 
     def test_subtract_semicircle_from_square(self):
         """Test subtracting semicircle from square (square - semicircle)."""
-        self.assert_boolean_line_and_arc_count(self.square, self.semicircle, "Subtract", 1, 5, 1)
+        self.assert_boolean_line_and_arc_count(self.square, self.semicircle, "Subtract", 1, 5, 0, 1)
 
 
 if __name__ == "__main__":
