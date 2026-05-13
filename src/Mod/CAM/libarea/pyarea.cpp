@@ -369,7 +369,6 @@ void init_pyarea(py::module& m)
         .def("PerimToPoint", &CCurve::PerimToPoint)
         .def("PointToPerim", &CCurve::PointToPerim)
         .def("FitArcs", &CCurve::FitArcs)
-        .def("UnFitArcs", &CCurve::UnFitArcs)
         .def("Intersections", &CurveIntersections);
 
     py::class_<CBox2D>(m, "Box")

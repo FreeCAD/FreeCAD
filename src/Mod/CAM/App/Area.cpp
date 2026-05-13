@@ -454,7 +454,7 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
                 }
                 ccurve.append(CVertex(type, Point(p.X(), p.Y()), Point(center.X(), center.Y())));
                 if (to_edges) {
-                    ccurve.UnFitArcs();
+                    ccurve.Discretize();
                     CCurve c;
                     c.append(ccurve.m_vertices.front());
                     auto it = ccurve.m_vertices.begin();
