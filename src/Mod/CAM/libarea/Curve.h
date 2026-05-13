@@ -139,10 +139,6 @@ public:
     void ChangeStart(const Point& p);
     void ChangeEnd(const Point& p);
     bool Offset(double leftwards_value);
-    void OffsetForward(
-        double forwards_value,
-        bool refit_arcs = true
-    );  // for drag-knife compensation
     void Break(const Point& p);
     void ExtractSeparateCurves(
         const std::list<Point>& ordered_points,

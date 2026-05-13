@@ -868,65 +868,6 @@ void CCurve::GetSpans(std::list<Span>& spans) const
     }
 }
 
-void CCurve::OffsetForward(double forwards_value, bool refit_arcs)
-{
-    // for drag-knife compensation
-
-    // replace arcs with lines
-    UnFitArcs();
-
-    std::list<Span> spans;
-    GetSpans(spans);
-
-    m_vertices.clear();
-
-    // shift all the spans
-    for (std::list<Span>::iterator It = spans.begin(); It != spans.end(); It++) {
-        Span& span = *It;
-        Point v = span.GetVector(0.0);
-        v.normalize();
-        Point shift = v * forwards_value;
-        span.m_p = span.m_p + shift;
-        span.m_v.m_p = span.m_v.m_p + shift;
-    }
-
-    // loop through the shifted spans
-    for (std::list<Span>::iterator It = spans.begin(); It != spans.end();) {
-        Span& span = *It;
-        Point v = span.GetVector(0.0);
-        v.normalize();
-
-        // add the span
-        if (It == spans.begin()) {
-            m_vertices.push_back(span.m_p);
-        }
-        m_vertices.push_back(span.m_v.m_p);
-
-        It++;
-        if (It != spans.end()) {
-            Span& next_span = *It;
-            Point nv = next_span.GetVector(0.0);
-            nv.normalize();
-            double sin_angle = v ^ nv;
-            bool sharp_corner = (fabs(sin_angle) > 0.5);  // angle > 30 degrees
-
-            if (sharp_corner) {
-                // add an arc to the start of the next span
-                int arc_type = ((sin_angle > 0) ? 1 : (-1));
-                Point centre = span.m_v.m_p - v * forwards_value;
-                m_vertices.emplace_back(arc_type, next_span.m_p, centre);
-            }
-        }
-    }
-
-    if (refit_arcs) {
-        FitArcs();  // find the arcs again
-    }
-    else {
-        UnFitArcs();  // convert those little arcs added to lines
-    }
-}
-
 double CCurve::Perim() const
 {
     const Point* prev_p = NULL;
