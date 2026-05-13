@@ -103,6 +103,21 @@ def make_area(curves):
     return a
 
 
+def make_mirrored_arcs(x, y):
+    """Upper arc and lower arc centered on y-axis at +-y, hitting the x-axis at x"""
+    return make_area(
+        [
+            make_curve(
+                [
+                    (x, 0),  # Start at right intersection point
+                    (-x, 0, 1, 0, y),  # Arc to left intersection (through top)
+                    (x, 0, 1, 0, -y),  # Arc back to start (through bottom)
+                ]
+            )
+        ]
+    )
+
+
 class TestArcFittingRoundTrip(PathTestBase):
     """Tests for FitArcs and UnfitArcs round-trip operations."""
 
@@ -424,10 +439,21 @@ class TestArcFittingOffsets(PathTestBase):
         a2 = make_area(a.getCurves())
 
         # Offset by 1.0 (not enough to merge)
-        self.assert_offset_line_and_arc_count(a, 1.0, 2, 7, 7)  # 2 curves, 7 lines, 7 CCW arcs
+        self.assert_offset_line_and_arc_count(a, 1, 2, 7, 7)  # 2 curves, 7 lines, 7 CCW arcs
 
         # Offset by 2.0 (merges --> +1 line, +1 arc)
-        self.assert_offset_line_and_arc_count(a2, 2.0, 1, 8, 8)  # 1 curve, 8 lines, 8 CCW arcs
+        self.assert_offset_line_and_arc_count(a2, 2, 1, 8, 8)  # 1 curve, 8 lines, 8 CCW arcs
+
+    def test_mirrored_semicircles(self):
+        a = make_mirrored_arcs(5, 0)  # arcs about (0, 0) that hit x-axis at 5
+        self.assert_offset_line_and_arc_count(a, 1, 1, 0, 2)  # 1 curve, 0 lines, 2 CCW arcs
+
+    def test_mirrored_less_than_semicircles(self):
+        # choose y big enough to not round the point expansion to nothing, but just barely
+        x = 5
+        y = area.get_accuracy() * x * 1.5
+        a = make_mirrored_arcs(x, -y)  # arcs about (0, -+epsilon) that hit x-axis at 5
+        self.assert_offset_line_and_arc_count(a, 1, 1, 0, 4)  # 1 curve, 0 lines, 4 CCW arcs
 
 
 class TestArcFittingBooleans(PathTestBase):

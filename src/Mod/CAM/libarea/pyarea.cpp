@@ -111,6 +111,11 @@ static double get_units()
     return CArea::get_units();
 }
 
+static double get_accuracy()
+{
+    return CArea::get_accuracy();
+}
+
 static bool holes_linked()
 {
     return CArea::HolesLinked();
@@ -400,6 +405,7 @@ void init_pyarea(py::module& m)
 
     m.def("set_units", set_units);
     m.def("get_units", get_units);
+    m.def("get_accuracy", get_accuracy);
     m.def("holes_linked", holes_linked);
     m.def("AreaFromDxf", AreaFromDxf);
     m.def("TangentialArc", TangentialArc);
