@@ -410,6 +410,12 @@ struct BaseExport Tools
     static std::string getEffectiveOperatingSystemNumericLocale();
     static void setCurrentNumericFormattingLocale(std::string_view localeName);
     static std::string getCurrentNumericFormattingLocale();
+    static void setCurrentNumericFormattingSeparators(
+        std::string_view decimalSeparator,
+        std::string_view groupingSeparator
+    );
+    static std::string getCurrentNumericFormattingDecimalSeparator();
+    static std::string getCurrentNumericFormattingGroupingSeparator();
     static void setIcuDefaultLocale(std::string_view icuLocaleId);
 
     static std::vector<std::string> splitSubName(const std::string& subname);

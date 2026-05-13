@@ -64,25 +64,72 @@ bool useQtLikeGeneralScientific(const double value, const int precision)
     return exponent < -4 || exponent >= precision;
 }
 
-std::string localizeDecimalSeparator(std::string value, const icu::Locale& locale)
+struct NumericFormatSymbols
 {
+    std::string decimal;
+    std::string grouping;
+};
+
+NumericFormatSymbols resolveNumericFormatSymbols(const icu::Locale& locale)
+{
+    NumericFormatSymbols result {
+        Base::Tools::getCurrentNumericFormattingDecimalSeparator(),
+        Base::Tools::getCurrentNumericFormattingGroupingSeparator()
+    };
+
     UErrorCode status = U_ZERO_ERROR;
     icu::DecimalFormatSymbols symbols(locale, status);
-    if (!U_SUCCESS(status)) {
-        return value;
+    if (U_SUCCESS(status)) {
+        if (result.decimal.empty()) {
+            result.decimal = toUtf8(
+                symbols.getSymbol(icu::DecimalFormatSymbols::kDecimalSeparatorSymbol)
+            );
+        }
+        if (result.grouping.empty()) {
+            result.grouping = toUtf8(
+                symbols.getSymbol(icu::DecimalFormatSymbols::kGroupingSeparatorSymbol)
+            );
+        }
     }
 
-    const std::string decimal = toUtf8(
-        symbols.getSymbol(icu::DecimalFormatSymbols::kDecimalSeparatorSymbol)
-    );
-    if (decimal == ".") {
+    if (result.decimal.empty()) {
+        result.decimal = ".";
+    }
+
+    return result;
+}
+
+void applyNumericFormatSymbols(icu::DecimalFormat& format, const NumericFormatSymbols& symbols)
+{
+    const auto* current = format.getDecimalFormatSymbols();
+    if (!current) {
+        return;
+    }
+
+    icu::DecimalFormatSymbols adjusted(*current);
+    if (!symbols.decimal.empty()) {
+        const auto decimal = icu::UnicodeString::fromUTF8(symbols.decimal);
+        adjusted.setSymbol(icu::DecimalFormatSymbols::kDecimalSeparatorSymbol, decimal, false);
+        adjusted.setSymbol(icu::DecimalFormatSymbols::kMonetarySeparatorSymbol, decimal, false);
+    }
+    if (!symbols.grouping.empty()) {
+        const auto grouping = icu::UnicodeString::fromUTF8(symbols.grouping);
+        adjusted.setSymbol(icu::DecimalFormatSymbols::kGroupingSeparatorSymbol, grouping, false);
+        adjusted.setSymbol(icu::DecimalFormatSymbols::kMonetaryGroupingSeparatorSymbol, grouping, false);
+    }
+    format.setDecimalFormatSymbols(adjusted);
+}
+
+std::string localizeDecimalSeparator(std::string value, std::string_view decimalSeparator)
+{
+    if (decimalSeparator.empty() || decimalSeparator == ".") {
         return value;
     }
 
     auto pos = value.find('.');
     while (pos != std::string::npos) {
-        value.replace(pos, 1, decimal);
-        pos = value.find('.', pos + decimal.size());
+        value.replace(pos, 1, decimalSeparator);
+        pos = value.find('.', pos + decimalSeparator.size());
     }
 
     return value;
@@ -91,12 +138,12 @@ std::string localizeDecimalSeparator(std::string value, const icu::Locale& local
 std::string formatDefaultScientificLikeQt(
     const double value,
     const Base::QuantityFormat& format,
-    const icu::Locale& locale
+    const NumericFormatSymbols& symbols
 )
 {
     std::ostringstream out;
     out << std::setprecision(std::max(1, format.getPrecision())) << value;
-    return localizeDecimalSeparator(out.str(), locale);
+    return localizeDecimalSeparator(out.str(), symbols.decimal);
 }
 
 icu::Locale resolveIcuLocale(std::string_view localeId)
@@ -113,6 +160,7 @@ std::string formatNumberIcu(const double value, const Base::QuantityFormat& form
 {
     UErrorCode status = U_ZERO_ERROR;
     const icu::Locale locale = resolveIcuLocale(localeId);
+    const NumericFormatSymbols symbols = resolveNumericFormatSymbols(locale);
 
     std::unique_ptr<icu::NumberFormat> nf(icu::NumberFormat::createInstance(locale, status));
     if (!U_SUCCESS(status) || !nf) {
@@ -130,7 +178,11 @@ std::string formatNumberIcu(const double value, const Base::QuantityFormat& form
                 break;
         }
         out << std::setprecision(format.getPrecision()) << value;
-        return out.str();
+        return localizeDecimalSeparator(out.str(), symbols.decimal);
+    }
+
+    if (auto* df = dynamic_cast<icu::DecimalFormat*>(nf.get())) {
+        applyNumericFormatSymbols(*df, symbols);
     }
 
     if (format.option & Base::QuantityFormat::OmitGroupSeparator) {
@@ -153,7 +205,7 @@ std::string formatNumberIcu(const double value, const Base::QuantityFormat& form
             [[fallthrough]];
         case Base::QuantityFormat::Default:
             if (useQtLikeGeneralScientific(value, precision)) {
-                return formatDefaultScientificLikeQt(value, format, locale);
+                return formatDefaultScientificLikeQt(value, format, symbols);
             }
             if (auto* df = dynamic_cast<icu::DecimalFormat*>(nf.get()); precision > 0 && df) {
                 df->setSignificantDigitsUsed(true);

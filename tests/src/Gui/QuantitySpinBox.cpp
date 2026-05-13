@@ -89,7 +89,7 @@ private Q_SLOTS:
 
     void test_CanonicalDecimalPointRemainsAcceptedInCommaLocale()  // NOLINT
     {
-        ScopedNumericLocales locales("da_DK", "en_US");
+        tests::ScopedNumericLocaleState localeState {"da_DK", "en_US", "fr_FR"};
 
         Gui::QuantitySpinBox spinBox;
         const auto result = spinBox.valueFromText("10.00 mm");
@@ -99,10 +99,11 @@ private Q_SLOTS:
 
     void test_GroupedEditDoesNotCorruptRawValue()  // NOLINT
     {
-        ScopedNumericLocales locales("en_US", "en_US");
+        tests::ScopedNumericLocaleState localeState {"en_US", "en_US", "en_US"};
 
         Gui::QuantitySpinBox spinBox;
         Base::Quantity quantity(10.0, "mm");
+
         Base::QuantityFormat format(Base::QuantityFormat::Fixed, 2);
         format.option = Base::QuantityFormat::None;
         quantity.setFormat(format);
@@ -117,6 +118,25 @@ private Q_SLOTS:
         QCOMPARE(spinBox.rawValue(), 1010.0);
         QCOMPARE(spinBox.text(), QStringLiteral("1,010.00 mm"));
     }
+
+    void test_EffectiveSeparatorsOverrideFormattingLocaleId()  // NOLINT
+    {
+        tests::ScopedQtDefaultLocale qtLocale {"pt_PT"};
+        tests::ScopedCurrentNumericFormattingLocale formattingLocale {"en_US"};
+        tests::ScopedCurrentNumericFormattingSeparators separators {QLocale()};
+
+        Gui::QuantitySpinBox spinBox;
+        Base::Quantity quantity(1.5, "mm");
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, 2);
+        format.option = Base::QuantityFormat::None;
+        quantity.setFormat(format);
+
+        spinBox.setValue(quantity);
+
+        QCOMPARE(spinBox.text(), QStringLiteral("1,50 mm"));
+        QCOMPARE(spinBox.text().at(1), QLocale().decimalPoint());
+    }
+
 private:
     std::unique_ptr<Gui::QuantitySpinBox> qsb;
 };

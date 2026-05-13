@@ -129,6 +129,50 @@ private:
     std::string previous;
 };
 
+class ScopedCurrentNumericFormattingSeparators
+{
+public:
+    ScopedCurrentNumericFormattingSeparators()
+        : previousDecimal {Base::Tools::getCurrentNumericFormattingDecimalSeparator()}
+        , previousGrouping {Base::Tools::getCurrentNumericFormattingGroupingSeparator()}
+    {}
+
+    ScopedCurrentNumericFormattingSeparators(
+        std::string_view decimalSeparator,
+        std::string_view groupingSeparator
+    )
+        : previousDecimal {Base::Tools::getCurrentNumericFormattingDecimalSeparator()}
+        , previousGrouping {Base::Tools::getCurrentNumericFormattingGroupingSeparator()}
+    {
+        Base::Tools::setCurrentNumericFormattingSeparators(decimalSeparator, groupingSeparator);
+    }
+
+    explicit ScopedCurrentNumericFormattingSeparators(const QLocale& locale)
+        : ScopedCurrentNumericFormattingSeparators(
+              detail::toUtf8(QString(locale.decimalPoint())),
+              detail::toUtf8(QString(locale.groupSeparator()))
+          )
+    {}
+
+    ~ScopedCurrentNumericFormattingSeparators()
+    {
+        Base::Tools::setCurrentNumericFormattingSeparators(previousDecimal, previousGrouping);
+    }
+
+    ScopedCurrentNumericFormattingSeparators(const ScopedCurrentNumericFormattingSeparators&) = delete;
+    ScopedCurrentNumericFormattingSeparators(ScopedCurrentNumericFormattingSeparators&&) = delete;
+    ScopedCurrentNumericFormattingSeparators& operator=(
+        const ScopedCurrentNumericFormattingSeparators&
+    ) = delete;
+    ScopedCurrentNumericFormattingSeparators& operator=(
+        ScopedCurrentNumericFormattingSeparators&&
+    ) = delete;
+
+private:
+    std::string previousDecimal;
+    std::string previousGrouping;
+};
+
 class ScopedOperatingSystemNumericLocale
 {
 public:
@@ -184,6 +228,7 @@ public:
     )
         : qt {qtLocale}
         , formatting {formattingLocale}
+        , separators {detail::toQtLocale(qtLocale)}
         , icu {icuLocale}
     {}
 
@@ -195,6 +240,7 @@ public:
 private:
     ScopedQtDefaultLocale qt;
     ScopedCurrentNumericFormattingLocale formatting;
+    ScopedCurrentNumericFormattingSeparators separators;
     ScopedIcuDefaultLocale icu;
 };
 

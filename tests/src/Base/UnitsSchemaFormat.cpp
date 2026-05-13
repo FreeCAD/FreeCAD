@@ -111,3 +111,20 @@ TEST(UnitsSchemaFormatTest, default_translation_uses_current_numeric_formatting_
 
     EXPECT_EQ(translateValue(1.5, fmt), "1,50");
 }
+
+TEST(UnitsSchemaFormatTest, effective_numeric_separators_override_locale_symbols)
+{
+    tests::ScopedCurrentNumericFormattingSeparators separators {",", "\xC2\xA0"};
+
+    Base::QuantityFormat fmtFixed(Base::QuantityFormat::Fixed, 2);
+    fmtFixed.option = Base::QuantityFormat::None;
+    EXPECT_EQ(translateValue(1.5, fmtFixed, "en_US"), "1,50");
+
+    Base::QuantityFormat fmtGrouped(Base::QuantityFormat::Default, 0);
+    fmtGrouped.option = Base::QuantityFormat::None;
+    EXPECT_EQ(
+        translateValue(12345.0, fmtGrouped, "en_US"),
+        std::string {"12\xC2\xA0"
+                     "345"}
+    );
+}

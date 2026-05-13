@@ -38,6 +38,14 @@ private Q_SLOTS:
             QString::fromStdString(Base::Tools::getCurrentNumericFormattingLocale()),
             QStringLiteral("de_DE")
         );
+        QCOMPARE(
+            QString::fromStdString(Base::Tools::getCurrentNumericFormattingDecimalSeparator()),
+            QStringLiteral(",")
+        );
+        QCOMPARE(
+            QString::fromStdString(Base::Tools::getCurrentNumericFormattingGroupingSeparator()),
+            QStringLiteral(".")
+        );
         QCOMPARE(QString::fromLatin1(icu::Locale::getDefault().getName()), QStringLiteral("de_DE"));
     }
 };

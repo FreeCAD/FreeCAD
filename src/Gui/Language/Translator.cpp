@@ -64,6 +64,12 @@ struct ResolvedNumericLocale
     std::string icuLocaleId;
 };
 
+std::string toUtf8(const QString& text)
+{
+    const QByteArray utf8 = text.toUtf8();
+    return std::string(utf8.constData(), utf8.size());
+}
+
 QLocale localeFromName(const std::string& localeName, const QLocale& fallback)
 {
     if (localeName.empty()) {
@@ -92,7 +98,7 @@ ResolvedNumericLocale resolveNumericLocale(const Translator& translator, const s
         ? Base::Tools::getEffectiveOperatingSystemNumericLocale()
         : translator.locale(language);
     const QLocale qtLocale = localeFromName(localeName, QLocale::system());
-    return {qtLocale, qtLocale.name().toStdString()};
+    return {qtLocale, toUtf8(qtLocale.name())};
 }
 }  // namespace
 
@@ -389,21 +395,31 @@ void Translator::applyLocaleFormattingPreference() const
 
 void Translator::setLocale(const std::string& language) const
 {
-    // Resolve Qt, FreeCAD quantity formatting, and ICU from the same numeric locale source so
-    // widget separators and formatted quantities cannot drift apart.
+    // Resolve Qt, the quantity formatting locale id, and the effective separators from the same
+    // numeric locale source so quantity formatting can match what Qt widgets display.
     const auto resolved = resolveNumericLocale(*this, language);
+    const auto decimalSeparator = toUtf8(QString(resolved.qtLocale.decimalPoint()));
+    const auto groupingSeparator = toUtf8(QString(resolved.qtLocale.groupSeparator()));
+    const auto previousLocaleId = Base::Tools::getCurrentNumericFormattingLocale();
+    const auto previousDecimalSeparator = Base::Tools::getCurrentNumericFormattingDecimalSeparator();
+    const auto previousGroupingSeparator = Base::Tools::getCurrentNumericFormattingGroupingSeparator();
+    const bool wasInitialized = !previousLocaleId.empty() || !previousDecimalSeparator.empty()
+        || !previousGroupingSeparator.empty();
+    const bool localeChanged = previousLocaleId != resolved.icuLocaleId
+        || previousDecimalSeparator != decimalSeparator
+        || previousGroupingSeparator != groupingSeparator;
     QLocale::setDefault(resolved.qtLocale);
     Base::Tools::setCurrentNumericFormattingLocale(resolved.icuLocaleId);
+    Base::Tools::setCurrentNumericFormattingSeparators(decimalSeparator, groupingSeparator);
     Base::Tools::setIcuDefaultLocale(resolved.icuLocaleId);
     updateLocaleChange();
 
-#ifdef FC_DEBUG
-    Base::Console().log(
-        "Locale changed to %s => %s\n",
-        qPrintable(resolved.qtLocale.bcp47Name()),
-        qPrintable(resolved.qtLocale.name())
-    );
-#endif
+    if (wasInitialized && localeChanged) {
+        const QByteArray bcp47Name = resolved.qtLocale.bcp47Name().toUtf8();
+        const QByteArray localeName = resolved.qtLocale.name().toUtf8();
+        Base::Console()
+            .log("Locale changed to %s => %s\n", bcp47Name.constData(), localeName.constData());
+    }
 }
 
 void Translator::updateLocaleChange() const
