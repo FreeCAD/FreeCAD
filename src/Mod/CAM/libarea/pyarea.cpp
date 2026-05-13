@@ -370,6 +370,7 @@ void init_pyarea(py::module& m)
 
     py::class_<CArea>(m, "Area")
         .def(py::init<>())
+        .def_readwrite("reversed", &CArea::m_reversed)
         .def("getCurves", &getCurves)
         .def("append", &CArea::append)
         .def("ClipperNoop", &CArea::ClipperNoop)

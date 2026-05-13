@@ -387,7 +387,7 @@ static void MakePoly(const CCurve& curve, Path64& p, bool reverse, ArcFittingMap
 
     p.resize(pts_for_AddVertex.size());
     if (reverse) {
-        std::size_t i = pts_for_AddVertex.size() - 1;  // clipper wants them the opposite way to CArea
+        std::size_t i = pts_for_AddVertex.size() - 1;
         for (std::list<PointD>::iterator It = pts_for_AddVertex.begin();
              It != pts_for_AddVertex.end();
              It++, i--) {
@@ -799,7 +799,7 @@ void CArea::PopulateClipper(Clipper64& c, bool as_clip, ArcFittingMap& arcMap) c
         }
 
         Path64 p;
-        MakePoly(curve, p, false, arcMap);
+        MakePoly(curve, p, m_reversed, arcMap);
 
         if (is_closed) {
             closed_paths.push_back(p);
@@ -841,7 +841,7 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
     c.Execute(op, subjFillType, closed_paths, open_paths);
 
     // Set closed paths as result
-    SetFromResult(*this, closed_paths, false, true, true);
+    SetFromResult(*this, closed_paths, m_reversed, true, true);
 
     // Append open paths to result
     SetFromResult(*this, open_paths, false, false, false);

@@ -85,6 +85,7 @@ class CArea
 public:
     std::list<CCurve> m_curves;
     ArcFittingMap m_arc_fitting_map;
+    bool m_reversed = true;
     static double m_accuracy;
     static double m_units;  // 1.0 for mm, 25.4 for inches. All points are multiplied by this before
                             // going to the engine
