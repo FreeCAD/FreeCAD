@@ -215,9 +215,8 @@ class Shape2DView(DraftObject):
         return [shape.copy()]
 
     def execute(self, obj, force_update=False):
-        if (
-            self.props_changed_placement_only(obj)
-            or (not force_update and not getattr(obj, "AutoUpdate", True))
+        if self.props_changed_placement_only(obj) or (
+            not force_update and not getattr(obj, "AutoUpdate", True)
         ):
             obj.positionBySupport()
             self.props_changed_clear()
