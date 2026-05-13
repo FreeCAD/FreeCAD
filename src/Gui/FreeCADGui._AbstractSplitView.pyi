@@ -49,6 +49,14 @@ class _AbstractSplitView:
         """Return one contained viewer by index."""
         ...
 
+    def __len__(self) -> int:
+        """Return the number of contained 3D viewers."""
+        ...
+
+    def __getitem__(self, index: int, /) -> _View3DInventorViewer:
+        """Return one contained viewer by index using sequence access."""
+        ...
+
     def close(self) -> None:
         """Close the split-view container."""
         ...
