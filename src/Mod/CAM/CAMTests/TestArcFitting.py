@@ -94,6 +94,7 @@ def make_area(curves):
         curves: Single curve or list of curves to add to the area
     """
     a = area.Area()
+    a.reversed = False
     if isinstance(curves, list):
         for c in curves:
             a.append(c)
