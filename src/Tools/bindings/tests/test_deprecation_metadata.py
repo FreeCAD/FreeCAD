@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
+import ast
 from pathlib import Path
+import re
 import sys
 import tempfile
 import textwrap
 import unittest
 
-
 BINDINGS_ROOT = Path(__file__).resolve().parents[1]
+SRC_ROOT = Path(__file__).resolve().parents[3]
 if str(BINDINGS_ROOT) not in sys.path:
     sys.path.insert(0, str(BINDINGS_ROOT))
 
@@ -205,6 +207,94 @@ class DeprecationMetadataTest(unittest.TestCase):
 
         self.assertNotIn("Base::warnDeprecatedPythonApi(", generated_cpp)
         self.assertNotIn("#include <Base/Interpreter.h>", generated_cpp)
+
+    def test_repo_stubs_do_not_use_legacy_deprecation_markers(self) -> None:
+        legacy_marker = re.compile(r"Deprecated:|deprecated --|Deprecated --|deprecated -")
+        offenders = []
+
+        for path in SRC_ROOT.rglob("*.pyi"):
+            text = path.read_text(encoding="utf-8")
+            tree = ast.parse(text, filename=str(path))
+
+            for node in tree.body:
+                if isinstance(node, ast.ClassDef):
+                    deprecated_attributes = self._deprecated_attributes(node)
+                    for stmt, docstring in self._attribute_docstrings(node):
+                        if (
+                            legacy_marker.search(docstring)
+                            and stmt.target.id not in deprecated_attributes
+                        ):
+                            offenders.append(
+                                f"{path.relative_to(SRC_ROOT).as_posix()}:{stmt.lineno}:{stmt.target.id}"
+                            )
+
+                    for func in self._function_defs(node.body):
+                        docstring = ast.get_docstring(func) or ""
+                        if legacy_marker.search(docstring) and not self._has_deprecated_decorator(
+                            func
+                        ):
+                            offenders.append(
+                                f"{path.relative_to(SRC_ROOT).as_posix()}:{func.lineno}:{func.name}"
+                            )
+
+                elif isinstance(node, ast.FunctionDef):
+                    docstring = ast.get_docstring(node) or ""
+                    if legacy_marker.search(docstring) and not self._has_deprecated_decorator(node):
+                        offenders.append(
+                            f"{path.relative_to(SRC_ROOT).as_posix()}:{node.lineno}:{node.name}"
+                        )
+
+        self.assertEqual(offenders, [])
+
+    def _has_deprecated_decorator(self, node: ast.AST) -> bool:
+        decorators = getattr(node, "decorator_list", [])
+        return any(self._decorator_name(decorator) == "deprecated" for decorator in decorators)
+
+    def _decorator_name(self, decorator: ast.expr) -> str | None:
+        match decorator:
+            case ast.Name(id=name):
+                return name
+            case ast.Attribute(attr=attr):
+                return attr
+            case ast.Call(func=func):
+                return self._decorator_name(func)
+        return None
+
+    def _deprecated_attributes(self, node: ast.ClassDef) -> set[str]:
+        names = set()
+        for decorator in node.decorator_list:
+            if not isinstance(decorator, ast.Call):
+                continue
+            if self._decorator_name(decorator) != "deprecated_attributes":
+                continue
+            for keyword in decorator.keywords:
+                if keyword.arg:
+                    names.add(keyword.arg)
+        return names
+
+    def _attribute_docstrings(self, node: ast.ClassDef):
+        for index, stmt in enumerate(node.body):
+            if not isinstance(stmt, ast.AnnAssign) or not isinstance(stmt.target, ast.Name):
+                continue
+            if index + 1 >= len(node.body):
+                continue
+            next_stmt = node.body[index + 1]
+            if (
+                isinstance(next_stmt, ast.Expr)
+                and isinstance(next_stmt.value, ast.Constant)
+                and isinstance(next_stmt.value.value, str)
+            ):
+                yield stmt, next_stmt.value.value
+
+    def _function_defs(self, nodes: list[ast.stmt]) -> list[ast.FunctionDef]:
+        funcs = []
+        for node in nodes:
+            if isinstance(node, ast.FunctionDef):
+                funcs.append(node)
+            elif isinstance(node, ast.If):
+                funcs.extend(self._function_defs(node.body))
+                funcs.extend(self._function_defs(node.orelse))
+        return funcs
 
 
 if __name__ == "__main__":
