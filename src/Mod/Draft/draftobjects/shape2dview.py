@@ -34,7 +34,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
-from draftgeoutils import wires as geo_wires
 from draftobjects.base import DraftObject
 from draftutils import groups
 from draftutils import gui_utils
@@ -157,6 +156,7 @@ class Shape2DView(DraftObject):
         "returns projected edges from a shape and a direction"
         import Part
         import TechDraw
+        import DraftGeomUtils
 
         edges = []
         _groups = TechDraw.projectEx(shape, direction)
@@ -169,7 +169,7 @@ class Shape2DView(DraftObject):
                     edges.append(g)
         edges = self.cleanExcluded(obj, edges)
         if getattr(obj, "Tessellation", False):
-            return geo_wires.cleanProjection(
+            return DraftGeomUtils.cleanProjection(
                 Part.makeCompound(edges), obj.Tessellation, obj.SegmentLength
             )
         else:
@@ -214,13 +214,18 @@ class Shape2DView(DraftObject):
             return shape.SubShapes
         return [shape.copy()]
 
-    def execute(self, obj):
-        if self.props_changed_placement_only(obj) or not getattr(obj, "AutoUpdate", True):
+    def execute(self, obj, force_update=False):
+
+        if (
+            self.props_changed_placement_only(obj)
+            or (not force_update and not getattr(obj, "AutoUpdate", True))
+        ):
             obj.positionBySupport()
             self.props_changed_clear()
             return
 
         import Part
+        import DraftGeomUtils
 
         pl = obj.Placement
         if obj.Base:
@@ -385,7 +390,7 @@ class Shape2DView(DraftObject):
                                         c = self.getProjected(obj, c, proj)
                             # faces = []
                             # if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
-                            #    wires = geo_wires.findWires(c.Edges)
+                            #    wires = DraftGeomUtils.findWires(c.Edges)
                             #    for w in wires:
                             #        if w.isClosed():
                             #            faces.append(Part.Face(w))
