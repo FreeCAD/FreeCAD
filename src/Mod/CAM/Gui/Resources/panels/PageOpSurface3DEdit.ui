@@ -54,12 +54,12 @@
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="strategy">
-        <property name="toolTip"><string>Top-level finishing strategy. SurfacePattern projects a 2D pattern onto the model surface via drop-cutter. Waterline and Z-Level Hybrid strategies arrive in later slices.</string></property>
+        <property name="toolTip"><string>Top-level finishing strategy. Surface Pattern projects a 2D pattern onto the model surface via drop-cutter. Waterline and Z-Level Hybrid are also available.</string></property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="cutMode_label">
-        <property name="text"><string>Cut Mode</string></property>
+        <property name="text"><string>Cut mode</string></property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -77,7 +77,7 @@
      <layout class="QGridLayout" name="gridLayout_pattern">
       <item row="0" column="0">
        <widget class="QLabel" name="cutPattern_label">
-        <property name="text"><string>Cut Pattern</string></property>
+        <property name="text"><string>Cut pattern</string></property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -87,7 +87,7 @@
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="cutPatternAngle_label">
-        <property name="text"><string>Pattern Angle</string></property>
+        <property name="text"><string>Pattern angle</string></property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -97,18 +97,18 @@
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="cutPatternReversed_label">
-        <property name="text"><string>Reverse Pattern</string></property>
+        <property name="text"><string>Reverse pattern</string></property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QCheckBox" name="cutPatternReversed">
-        <property name="toolTip"><string>Reverse the direction in which scan lines are generated.</string></property>
+        <property name="toolTip"><string>Reverses the direction in which scan lines are generated</string></property>
         <property name="text"><string/></property>
        </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="stepOver_label">
-        <property name="text"><string>Step Over</string></property>
+        <property name="text"><string>Step over</string></property>
        </widget>
       </item>
       <item row="3" column="1">
@@ -118,7 +118,7 @@
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="sampleInterval_label">
-        <property name="text"><string>Sample Interval</string></property>
+        <property name="text"><string>Sample interval</string></property>
        </widget>
       </item>
       <item row="4" column="1">
@@ -128,12 +128,12 @@
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="depthOffset_label">
-        <property name="text"><string>Depth Offset</string></property>
+        <property name="text"><string>Depth offset</string></property>
        </widget>
       </item>
       <item row="5" column="1">
        <widget class="Gui::QuantitySpinBox" name="depthOffset">
-        <property name="toolTip"><string>Constant Z offset added to every projected point. Use a positive value to leave finishing stock for a subsequent pass.</string></property>
+        <property name="toolTip"><string>Constant Z offset added to every projected point. Positive values leave finishing stock for a subsequent pass.</string></property>
        </widget>
       </item>
      </layout>
@@ -146,7 +146,7 @@
      <layout class="QGridLayout" name="gridLayout_boundary">
       <item row="0" column="0">
        <widget class="QLabel" name="boundaryAdjustment_label">
-        <property name="text"><string>Boundary Adjustment</string></property>
+        <property name="text"><string>Boundary adjustment</string></property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -156,7 +156,7 @@
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="handleMultiple_label">
-        <property name="text"><string>Multi-Feature Handling</string></property>
+        <property name="text"><string>Multi-feature handling</string></property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -174,7 +174,7 @@
      <layout class="QGridLayout" name="gridLayout_waterline">
       <item row="0" column="0">
        <widget class="QLabel" name="minSampleInterval_label">
-        <property name="text"><string>Min Sample Interval</string></property>
+        <property name="text"><string>Min sample interval</string></property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -192,17 +192,17 @@
      <layout class="QGridLayout" name="gridLayout_zlevel">
       <item row="0" column="0">
        <widget class="QLabel" name="cutPatternZLevel_label">
-        <property name="text"><string>ZLevel Floor Pattern</string></property>
+        <property name="text"><string>Z-level floor pattern</string></property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="cutPatternZLevel">
-        <property name="toolTip"><string>Floor-clearing pattern after each ZLevel contour pass. None: only emit contour. Line: parallel passes. Spiral: continuous spiral.</string></property>
+        <property name="toolTip"><string>Floor-clearing pattern after each Z-level contour pass. None: only emit contour. Line: parallel passes. Spiral: continuous spiral.</string></property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="stockToLeave_label">
-        <property name="text"><string>Stock To Leave</string></property>
+        <property name="text"><string>Stock to leave</string></property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -212,7 +212,7 @@
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="samplingAccuracy_label">
-        <property name="text"><string>Sampling Accuracy</string></property>
+        <property name="text"><string>Sampling accuracy</string></property>
        </widget>
       </item>
       <item row="2" column="1">
@@ -222,7 +222,7 @@
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="clearPlanarOnly_label">
-        <property name="text"><string>Clear Planar Floors Only</string></property>
+        <property name="text"><string>Clear planar floors only</string></property>
        </widget>
       </item>
       <item row="3" column="1">
@@ -233,7 +233,7 @@
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="ignoreOuter_label">
-        <property name="text"><string>Ignore Outer</string></property>
+        <property name="text"><string>Ignore outer</string></property>
        </widget>
       </item>
       <item row="4" column="1">
@@ -252,7 +252,7 @@
      <layout class="QGridLayout" name="gridLayout_mesh">
       <item row="0" column="0">
        <widget class="QLabel" name="accuracyLevel_label">
-        <property name="text"><string>Speed vs. Accuracy</string></property>
+        <property name="text"><string>Speed vs. accuracy</string></property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -264,7 +264,7 @@
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="meshSimplification_label">
-        <property name="text"><string>Mesh Simplification</string></property>
+        <property name="text"><string>Mesh simplification</string></property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -276,7 +276,7 @@
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="linearDeflection_label">
-        <property name="text"><string>Linear Deflection</string></property>
+        <property name="text"><string>Linear deflection</string></property>
        </widget>
       </item>
       <item row="2" column="1">
@@ -286,7 +286,7 @@
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="angularDeflection_label">
-        <property name="text"><string>Angular Deflection</string></property>
+        <property name="text"><string>Angular deflection</string></property>
        </widget>
       </item>
       <item row="3" column="1">
@@ -296,7 +296,7 @@
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="optimizeLinearPaths_label">
-        <property name="text"><string>Optimize Linear Paths</string></property>
+        <property name="text"><string>Optimize linear paths</string></property>
        </widget>
       </item>
       <item row="4" column="1">
