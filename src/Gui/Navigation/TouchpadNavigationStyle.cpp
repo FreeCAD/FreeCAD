@@ -84,6 +84,7 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent* const ev)
     // event, we only need this flag to see if any processing happened
     // at all.
     SbBool processed = false;
+    bool triedSelectionDrag = false;
 
     const ViewerMode curmode = this->currentmode;
     ViewerMode newmode = curmode;
@@ -177,7 +178,11 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent* const ev)
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
         const auto event = (const SoLocation2Event*)ev;
-        if (this->currentmode == NavigationStyle::ZOOMING) {
+        if (this->currentmode == NavigationStyle::SELECTION && this->button1down) {
+            triedSelectionDrag = true;
+            processed = handleSelectionDragMotion(event, newmode, false, false);
+        }
+        else if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
         }
@@ -232,6 +237,9 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent* const ev)
             newmode = NavigationStyle::IDLE;
             break;
         case BUTTON1DOWN:
+            if (newmode == NavigationStyle::INTERACT) {
+                break;
+            }
             // make sure not to change the selection when stopping spinning
             if (curmode == NavigationStyle::SPINNING) {
                 newmode = NavigationStyle::IDLE;
@@ -302,7 +310,7 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent* const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if (!processed) {
+    if (!processed && !triedSelectionDrag) {
         processed = inherited::processSoEvent(ev);
     }
     return processed;
