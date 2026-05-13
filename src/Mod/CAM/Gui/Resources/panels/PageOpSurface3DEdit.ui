@@ -21,7 +21,7 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="toolController_label">
-        <property name="text"><string>Tool Controller</string></property>
+        <property name="text"><string>Tool controller</string></property>
        </widget>
       </item>
       <item row="0" column="1">
