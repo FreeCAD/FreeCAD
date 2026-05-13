@@ -213,7 +213,7 @@ Command = PathOpGui.SetupOperation(
     QT_TRANSLATE_NOOP("CAM_Surface3D", "3D Surface (new)"),
     QT_TRANSLATE_NOOP(
         "CAM_Surface3D",
-        "3D surface finishing operation built on the surface_* generators.",
+        "Creates a 3D surface finishing toolpath on selected faces.",
     ),
     PathSurface3D.SetupProperties,
 )

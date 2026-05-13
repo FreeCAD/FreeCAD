@@ -118,7 +118,7 @@ class ObjectSurface3D(PathOp.ObjectOp):
             if warn:
                 msg = translate("CAM_Surface3D", "New property added to")
                 msg += ' "{}": {}'.format(obj.Label, self.addNewProps) + ". "
-                msg += translate("CAM_Surface3D", "Check default value(s).")
+                msg += translate("CAM_Surface3D", "Check the default values.")
                 FreeCAD.Console.PrintWarning(msg + "\n")
 
         self.propertiesReady = True
@@ -131,9 +131,9 @@ class ObjectSurface3D(PathOp.ObjectOp):
                 "Strategy",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Top-level finishing strategy. SurfacePattern projects a 2D pattern "
-                    "onto the surface via drop-cutter; Waterline and ZLevelHybrid arrive "
-                    "in later slices.",
+                    "Top-level finishing strategy. Surface Pattern projects a 2D pattern "
+                    "onto the surface via drop-cutter. Waterline and Z-Level Hybrid "
+                    "are also available.",
                 ),
             ),
             (
