@@ -109,6 +109,15 @@ bool ViewProviderPlacement::getElementPicked(const SoPickedPoint* pp, std::strin
     return Axis->getElementPicked(pp, subname);
 }
 
+bool ViewProviderPlacement::getElementPicked(
+    const SoPickedPoint* pp,
+    std::string& subname,
+    const SelectionPickContext*
+) const
+{
+    return getElementPicked(pp, subname);
+}
+
 bool ViewProviderPlacement::getDetailPath(
     const char* subname,
     SoFullPath* pPath,

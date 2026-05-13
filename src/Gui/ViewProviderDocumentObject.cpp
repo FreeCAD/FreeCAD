@@ -668,9 +668,18 @@ bool ViewProviderDocumentObject::showInTree() const
 
 bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
 {
+    return getElementPicked(pp, subname, nullptr);
+}
+
+bool ViewProviderDocumentObject::getElementPicked(
+    const SoPickedPoint* pp,
+    std::string& subname,
+    const SelectionPickContext* pickContext
+) const
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
-        if (ext->extensionGetElementPicked(pp, subname)) {
+        if (ext->extensionGetElementPicked(pp, subname, pickContext)) {
             return true;
         }
     }
@@ -679,7 +688,7 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint* pp, std::
     int idx;
     if (!childRoot || (idx = pcModeSwitch->whichChild.getValue()) < 0
         || pcModeSwitch->getChild(idx) != childRoot) {
-        return ViewProvider::getElementPicked(pp, subname);
+        return resolvePickedElementFromDetail(pp, subname);
     }
 
     SoPath* path = pp->getPath();
@@ -697,7 +706,7 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint* pp, std::
     }
     std::ostringstream str;
     str << obj->getNameInDocument() << '.';
-    if (vp->getElementPicked(pp, subname)) {
+    if (vp->getElementPicked(pp, subname, pickContext)) {
         str << subname;
     }
     subname = str.str();
