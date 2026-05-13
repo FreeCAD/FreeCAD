@@ -280,7 +280,7 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         self.tool_ctx = adapt_toolbit(tc)
         self._result: Optional[FeedSpeedResult] = None
 
-        self.setWindowTitle(translate("CAM_FeedsSpeeds", "Suggest Feeds & Speeds"))
+        self.setWindowTitle(translate("CAM_FeedsSpeeds", "Feeds & Speeds"))
         self._build_ui()
         self._refresh()
 
@@ -292,11 +292,11 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         tool_label = (
             self.toolbit.Label if self.toolbit else translate("CAM_FeedsSpeeds", "(no tool)")
         )
-        ctx_form.addRow(translate("CAM_FeedsSpeeds", "Tool:"), QtWidgets.QLabel(tool_label))
+        ctx_form.addRow(translate("CAM_FeedsSpeeds", "Tool"), QtWidgets.QLabel(tool_label))
         material_label = self.material_ctx.name or translate(
             "CAM_FeedsSpeeds", "(none — generic resolution)"
         )
-        ctx_form.addRow(translate("CAM_FeedsSpeeds", "Material:"), QtWidgets.QLabel(material_label))
+        ctx_form.addRow(translate("CAM_FeedsSpeeds", "Material"), QtWidgets.QLabel(material_label))
 
         self.op_type_combo = QtWidgets.QComboBox()
         self.op_type_combo.addItem(translate("CAM_FeedsSpeeds", "(any)"), None)
@@ -308,7 +308,7 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
             if idx >= 0:
                 self.op_type_combo.setCurrentIndex(idx)
         self.op_type_combo.currentIndexChanged.connect(self._refresh)
-        ctx_form.addRow(translate("CAM_FeedsSpeeds", "Op type:"), self.op_type_combo)
+        ctx_form.addRow(translate("CAM_FeedsSpeeds", "Op type"), self.op_type_combo)
 
         # Preset picker — sentinel index 0 = "Auto (use resolver)".
         # Other entries pick a specific named preset directly, bypassing
@@ -316,7 +316,7 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         self.preset_combo = QtWidgets.QComboBox()
         self._populate_preset_combo()
         self.preset_combo.currentIndexChanged.connect(self._on_preset_picked)
-        ctx_form.addRow(translate("CAM_FeedsSpeeds", "Apply preset:"), self.preset_combo)
+        ctx_form.addRow(translate("CAM_FeedsSpeeds", "Apply preset"), self.preset_combo)
         outer.addLayout(ctx_form)
 
         # Suggestion frame
@@ -324,13 +324,13 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         sb_layout = QtWidgets.QFormLayout(self.suggestion_box)
 
         self.source_label = QtWidgets.QLabel("—")
-        sb_layout.addRow(translate("CAM_FeedsSpeeds", "Source:"), self.source_label)
+        sb_layout.addRow(translate("CAM_FeedsSpeeds", "Source"), self.source_label)
 
         self.confidence_bar = QtWidgets.QProgressBar()
         self.confidence_bar.setRange(0, 100)
         self.confidence_bar.setValue(0)
         self.confidence_bar.setTextVisible(True)
-        sb_layout.addRow(translate("CAM_FeedsSpeeds", "Confidence:"), self.confidence_bar)
+        sb_layout.addRow(translate("CAM_FeedsSpeeds", "Confidence"), self.confidence_bar)
 
         # Comparison grid
         self.compare_grid = QtWidgets.QGridLayout()
@@ -341,7 +341,7 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         )
         self.compare_grid.addWidget(QtWidgets.QLabel(translate("CAM_FeedsSpeeds", "Δ")), 0, 3)
         self._row_labels: list[Tuple[QtWidgets.QLabel, QtWidgets.QLabel, QtWidgets.QLabel]] = []
-        for i, name in enumerate(("Spindle", "Horiz feed", "Vert feed"), start=1):
+        for i, name in enumerate(("Spindle", "Horizontal feed", "Vertical feed"), start=1):
             self.compare_grid.addWidget(QtWidgets.QLabel(translate("CAM_FeedsSpeeds", name)), i, 0)
             cur = QtWidgets.QLabel("—")
             sug = QtWidgets.QLabel("—")
@@ -375,7 +375,7 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         self.preset_combo.blockSignals(True)
         try:
             self.preset_combo.clear()
-            self.preset_combo.addItem(translate("CAM_FeedsSpeeds", "Auto (use resolver)"), None)
+            self.preset_combo.addItem(translate("CAM_FeedsSpeeds", "Automatic"), None)
             presets = list(self.tool_ctx.presets) if self.tool_ctx else []
             for i, preset in enumerate(presets):
                 label = derive_preset_label(preset)
@@ -477,8 +477,7 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
             self.warnings_label.setText(
                 translate(
                     "CAM_FeedsSpeeds",
-                    "No matching preset on this tool. Open the tool from the library "
-                    "to add presets.",
+                    "No matching preset found. Presets can be added in the toolbit library editor.",
                 )
             )
             self.apply_button.setEnabled(False)

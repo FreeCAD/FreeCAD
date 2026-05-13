@@ -55,7 +55,7 @@ class MachinabilityMaterialDialog(QtWidgets.QDialog):
         self.selected_uuid: Optional[str] = None
         self.selected_name: Optional[str] = None
 
-        self.setWindowTitle(translate("CAM_FeedsSpeeds", "Choose material"))
+        self.setWindowTitle(translate("CAM_FeedsSpeeds", "Material Browser"))
 
         self._material_tree = FreeCADGui.UiLoader().createWidget("MatGui::MaterialTreeWidget")
         self._tree_wrapper = MatGui.MaterialTreeWidget(self._material_tree)

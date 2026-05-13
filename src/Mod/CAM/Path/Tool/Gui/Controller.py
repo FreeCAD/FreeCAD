@@ -248,7 +248,7 @@ class ToolControllerEditor(object):
         self.feedsSpeedsButton.setToolTip(
             translate(
                 "CAM_ToolController",
-                "Suggest feeds and speeds for this tool controller",
+                "Suggests feeds and speeds for this tool controller",
             )
         )
         self.feedsSpeedsButton.clicked.connect(self._onFeedsSpeedsClicked)

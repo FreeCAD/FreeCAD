@@ -98,7 +98,7 @@ class _EditPresetDialog(QtGui.QDialog):
         parent=None,
     ):
         super().__init__(parent)
-        self.setWindowTitle(translate("CAM_FeedsSpeeds", "Edit preset"))
+        self.setWindowTitle(translate("CAM_FeedsSpeeds", "Edit Preset"))
         layout = QtGui.QFormLayout(self)
 
         self._initial = preset or make_preset()
@@ -113,7 +113,7 @@ class _EditPresetDialog(QtGui.QDialog):
         self.name_edit.setPlaceholderText(
             translate("CAM_FeedsSpeeds", "Optional, e.g. 'Aluminum aggressive'")
         )
-        layout.addRow(translate("CAM_FeedsSpeeds", "Name:"), self.name_edit)
+        layout.addRow(translate("CAM_FeedsSpeeds", "Name"), self.name_edit)
 
         # Material row: read-only label, Browse button opens the
         # Machinability-filtered MaterialDialog. UUID is the authoritative
@@ -128,33 +128,33 @@ class _EditPresetDialog(QtGui.QDialog):
         self.generic_check = QtGui.QCheckBox(translate("CAM_FeedsSpeeds", "Generic (any material)"))
         self.generic_check.toggled.connect(self._on_generic_toggled)
         mat_row.addWidget(self.generic_check)
-        layout.addRow(translate("CAM_FeedsSpeeds", "Material:"), mat_row)
+        layout.addRow(translate("CAM_FeedsSpeeds", "Material"), mat_row)
 
         # Op type
         self.op_type_combo = QtGui.QComboBox()
         self.op_type_combo.addItem(translate("CAM_FeedsSpeeds", "(any)"), None)
         for op in OP_TYPES:
             self.op_type_combo.addItem(op, op)
-        layout.addRow(translate("CAM_FeedsSpeeds", "Op type:"), self.op_type_combo)
+        layout.addRow(translate("CAM_FeedsSpeeds", "Op type"), self.op_type_combo)
 
         # Engineering values
         self.surface_speed_spin = QtGui.QDoubleSpinBox()
         self.surface_speed_spin.setRange(0, 100000)
         self.surface_speed_spin.setDecimals(2)
         self.surface_speed_spin.setSuffix(" m/min")
-        layout.addRow(translate("CAM_FeedsSpeeds", "Surface speed:"), self.surface_speed_spin)
+        layout.addRow(translate("CAM_FeedsSpeeds", "Surface speed"), self.surface_speed_spin)
 
         self.chipload_spin = QtGui.QDoubleSpinBox()
         self.chipload_spin.setRange(0, 10)
         self.chipload_spin.setDecimals(4)
         self.chipload_spin.setSuffix(" mm/tooth")
-        layout.addRow(translate("CAM_FeedsSpeeds", "Chipload:"), self.chipload_spin)
+        layout.addRow(translate("CAM_FeedsSpeeds", "Chipload"), self.chipload_spin)
 
         self.vert_ratio_spin = QtGui.QDoubleSpinBox()
         self.vert_ratio_spin.setRange(0, 1)
         self.vert_ratio_spin.setDecimals(3)
         self.vert_ratio_spin.setValue(0.33)
-        layout.addRow(translate("CAM_FeedsSpeeds", "Vert feed ratio:"), self.vert_ratio_spin)
+        layout.addRow(translate("CAM_FeedsSpeeds", "Vertical feed ratio"), self.vert_ratio_spin)
 
         # Raw values: entered directly as feed/speed. When tool geometry
         # is known, these stay in sync with surface_speed/chipload above
@@ -164,11 +164,11 @@ class _EditPresetDialog(QtGui.QDialog):
         self.raw_feed_spin = QtGui.QDoubleSpinBox()
         self.raw_feed_spin.setRange(0, 100000)
         self.raw_feed_spin.setSuffix(" mm/min")
-        raw_form.addRow(translate("CAM_FeedsSpeeds", "Horiz feed:"), self.raw_feed_spin)
+        raw_form.addRow(translate("CAM_FeedsSpeeds", "Horizontal feed"), self.raw_feed_spin)
         self.raw_speed_spin = QtGui.QDoubleSpinBox()
         self.raw_speed_spin.setRange(0, 200000)
         self.raw_speed_spin.setSuffix(" rpm")
-        raw_form.addRow(translate("CAM_FeedsSpeeds", "Spindle speed:"), self.raw_speed_spin)
+        raw_form.addRow(translate("CAM_FeedsSpeeds", "Spindle speed"), self.raw_speed_spin)
         layout.addRow(raw_box)
 
         # Wire up bidirectional sync. Each handler reads geometry; when
@@ -371,8 +371,8 @@ class PresetsTab(QtGui.QWidget):
             [
                 translate("CAM_FeedsSpeeds", "Name"),
                 translate("CAM_FeedsSpeeds", "Material"),
-                translate("CAM_FeedsSpeeds", "Op type"),
-                translate("CAM_FeedsSpeeds", "Surface speed"),
+                translate("CAM_FeedsSpeeds", "Op Type"),
+                translate("CAM_FeedsSpeeds", "Surface Speed"),
                 translate("CAM_FeedsSpeeds", "Chipload"),
                 translate("CAM_FeedsSpeeds", "Notes"),
             ]
@@ -384,7 +384,7 @@ class PresetsTab(QtGui.QWidget):
 
         button_row = QtGui.QHBoxLayout()
         button_row.addStretch()
-        self.add_button = QtGui.QPushButton(translate("CAM_FeedsSpeeds", "Add preset"))
+        self.add_button = QtGui.QPushButton(translate("CAM_FeedsSpeeds", "Add Preset"))
         self.add_button.clicked.connect(self._on_add)
         button_row.addWidget(self.add_button)
 
