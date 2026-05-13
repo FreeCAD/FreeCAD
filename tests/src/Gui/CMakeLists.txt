@@ -25,4 +25,6 @@ target_link_libraries(Gui_tests_run PRIVATE
     ${Google_Tests_LIBS}
     FreeCADApp
     FreeCADGui
+    Part
+    PartGui
 )
