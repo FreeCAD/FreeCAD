@@ -234,6 +234,15 @@ class DraftWorkbench(FreeCADGui.Workbench):
             ]:
                 self.appendContextMenu("", ["Draft_Hyperlink"])
 
+        if FreeCADGui.Selection.getSelection():
+            from draftutils import utils
+
+            for obj in FreeCADGui.Selection.getSelection():
+                if utils.get_type(obj) != "Shape2DView":
+                    break
+            else:
+                self.appendContextMenu("", ["Draft_UpdateShape2DView"])
+
         self.appendContextMenu("Utilities", self.context_commands)
 
     def GetClassName(self):
