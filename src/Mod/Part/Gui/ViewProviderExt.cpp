@@ -50,15 +50,26 @@
 
 #include <QAction>
 #include <QMenu>
-#include <sstream>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <optional>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
 
+#include <Inventor/SbLinear.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormal.h>
@@ -74,10 +85,12 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/TimeInfo.h>
+#include <Base/Tools2D.h>
 #include <Base/Tools.h>
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/ViewParams.h>
@@ -99,6 +112,631 @@ FC_LOG_LEVEL_INIT("Part", true, true)
 using namespace PartGui;
 
 PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
+
+namespace
+{
+
+// Gate checks and candidate discovery
+
+bool containsGatedType(const std::unordered_set<std::string>& gatedTypes, const char* type)
+{
+    return type && gatedTypes.find(type) != gatedTypes.end();
+}
+
+bool isFaceOnlyGate(const std::unordered_set<std::string>& gatedTypes)
+{
+    return containsGatedType(gatedTypes, "Face") && !containsGatedType(gatedTypes, "Edge")
+        && !containsGatedType(gatedTypes, "Vertex");
+}
+
+struct ProjectedImagePoint
+{
+    Base::Vector2d position;
+    double depth;
+};
+
+ProjectedImagePoint projectToImagePoint(const Base::Vector3d& point, const SbMatrix& objectToImage)
+{
+    SbVec3f imagePoint(
+        static_cast<float>(point.x),
+        static_cast<float>(point.y),
+        static_cast<float>(point.z)
+    );
+    objectToImage.multVecMatrix(imagePoint, imagePoint);
+    return {{0.5 * imagePoint[0] + 0.5, 0.5 * imagePoint[1] + 0.5}, imagePoint[2]};
+}
+
+double cross2d(const Base::Vector2d& lhs, const Base::Vector2d& rhs)
+{
+    return lhs.x * rhs.y - lhs.y * rhs.x;
+}
+
+bool pointInTriangle2d(
+    const Base::Vector2d& point,
+    const Base::Vector2d& a,
+    const Base::Vector2d& b,
+    const Base::Vector2d& c
+)
+{
+    constexpr double edgeTolerance = 1.0e-9;
+    const auto ab = cross2d(b - a, point - a);
+    const auto bc = cross2d(c - b, point - b);
+    const auto ca = cross2d(a - c, point - c);
+    const bool hasNegative = ab < -edgeTolerance || bc < -edgeTolerance || ca < -edgeTolerance;
+    const bool hasPositive = ab > edgeTolerance || bc > edgeTolerance || ca > edgeTolerance;
+    return !(hasNegative && hasPositive);
+}
+
+struct ProjectedTriangleScore
+{
+    double distanceSquared;
+    double depth;
+};
+
+struct ProjectedFaceScore
+{
+    ProjectedTriangleScore score;
+    int faceIndex;
+};
+
+bool isBetterProjectedScore(const ProjectedTriangleScore& lhs, const ProjectedTriangleScore& rhs)
+{
+    constexpr double distanceTolerance = 1.0e-9;
+    constexpr double depthTolerance = 1.0e-6;
+
+    const auto distanceDelta = lhs.distanceSquared - rhs.distanceSquared;
+    if (std::abs(distanceDelta) > distanceTolerance) {
+        return distanceDelta < 0.0;
+    }
+
+    // Image-space Z preserves front-to-back ordering after projection, so use it to break
+    // screen-space ties between neighboring faces.
+    const auto depthDelta = lhs.depth - rhs.depth;
+    if (std::abs(depthDelta) > depthTolerance) {
+        return depthDelta < 0.0;
+    }
+
+    return false;
+}
+
+bool isBetterProjectedFaceScore(const ProjectedFaceScore& lhs, const ProjectedFaceScore& rhs)
+{
+    if (isBetterProjectedScore(lhs.score, rhs.score)) {
+        return true;
+    }
+    if (isBetterProjectedScore(rhs.score, lhs.score)) {
+        return false;
+    }
+    return lhs.faceIndex < rhs.faceIndex;
+}
+
+ProjectedTriangleScore projectToSegmentScore(
+    const Base::Vector2d& point,
+    const ProjectedImagePoint& start,
+    const ProjectedImagePoint& end
+)
+{
+    constexpr double segmentTolerance = 1.0e-12;
+    const auto segment = end.position - start.position;
+    const auto lengthSquared = segment.Sqr();
+    if (lengthSquared <= segmentTolerance) {
+        return {(point - start.position).Sqr(), start.depth};
+    }
+
+    const auto t = std::clamp(((point - start.position) * segment) / lengthSquared, 0.0, 1.0);
+    const auto closest = start.position + segment * t;
+    return {
+        (point - closest).Sqr(),
+        start.depth + t * (end.depth - start.depth),
+    };
+}
+
+std::optional<std::array<double, 3>> getTriangleBarycentricWeights(
+    const Base::Vector2d& point,
+    const Base::Vector2d& a,
+    const Base::Vector2d& b,
+    const Base::Vector2d& c
+)
+{
+    constexpr double triangleTolerance = 1.0e-12;
+    const auto denominator = cross2d(b - a, c - a);
+    if (std::abs(denominator) <= triangleTolerance) {
+        return {};
+    }
+
+    const auto beta = cross2d(point - a, c - a) / denominator;
+    const auto gamma = cross2d(b - a, point - a) / denominator;
+    return std::array<double, 3> {1.0 - beta - gamma, beta, gamma};
+}
+
+ProjectedTriangleScore projectToTriangleScore(
+    const Base::Vector2d& point,
+    const ProjectedImagePoint& a,
+    const ProjectedImagePoint& b,
+    const ProjectedImagePoint& c
+)
+{
+    if (pointInTriangle2d(point, a.position, b.position, c.position)) {
+        if (auto weights = getTriangleBarycentricWeights(point, a.position, b.position, c.position)) {
+            return {
+                0.0,
+                (*weights)[0] * a.depth + (*weights)[1] * b.depth + (*weights)[2] * c.depth,
+            };
+        }
+    }
+
+    auto bestScore = projectToSegmentScore(point, a, b);
+    const auto bcScore = projectToSegmentScore(point, b, c);
+    if (isBetterProjectedScore(bcScore, bestScore)) {
+        bestScore = bcScore;
+    }
+    const auto caScore = projectToSegmentScore(point, c, a);
+    if (isBetterProjectedScore(caScore, bestScore)) {
+        bestScore = caScore;
+    }
+    return bestScore;
+}
+
+struct SampleOffset
+{
+    int dx;
+    int dy;
+    int distanceSquared;
+};
+
+struct FaceHitScore
+{
+    int faceIndex;
+    int distanceSquared;
+    int hits;
+    double bestRayDistance;
+};
+
+bool isBetterFaceHitScore(const FaceHitScore& lhs, const FaceHitScore& rhs)
+{
+    if (lhs.distanceSquared != rhs.distanceSquared) {
+        return lhs.distanceSquared < rhs.distanceSquared;
+    }
+    if (lhs.hits != rhs.hits) {
+        return lhs.hits > rhs.hits;
+    }
+    constexpr double rayDistanceTolerance = 1.0e-6;
+    if (std::abs(lhs.bestRayDistance - rhs.bestRayDistance) > rayDistanceTolerance) {
+        return lhs.bestRayDistance < rhs.bestRayDistance;
+    }
+    return lhs.faceIndex < rhs.faceIndex;
+}
+
+struct FaceTriangleGeometry
+{
+    int faceIndex;
+    std::vector<std::array<Base::Vector3d, 3>> triangles;
+};
+
+class FaceGatePromotionResolver
+{
+public:
+    // Face-only gates should treat an edge or vertex hover as intent for a nearby visible face.
+    // Topology gives the small candidate set, and scene rays through the pick-radius neighborhood
+    // choose the visible face without trusting Coin's raw hit ordering.
+    FaceGatePromotionResolver(
+        const Part::TopoShape& shape,
+        const std::string& element,
+        const SoPickedPoint& pickedPoint,
+        const Gui::SelectionPickContext& pickContext
+    )
+        : shape(shape)
+        , element(element)
+        , pickedPoint(pickedPoint)
+        , pickContext(pickContext)
+        , cursorPosition(
+              (*pickContext.normalizedCursorPosition)[0],
+              (*pickContext.normalizedCursorPosition)[1]
+          )
+    {}
+
+    std::optional<std::string> promote() const
+    {
+        const auto faceIndices = collectPromotedFaceIndices();
+        if (faceIndices.empty()) {
+            return {};
+        }
+
+        if (hasNeighborhoodContext()) {
+            return findVisibleCandidateFaceElement(faceIndices);
+        }
+
+        return findProjectedCandidateFaceElement(faceIndices);
+    }
+
+private:
+    struct RingHitSummary
+    {
+        int hits {0};
+        double bestRayDistance {std::numeric_limits<double>::infinity()};
+    };
+
+    std::vector<std::array<Base::Vector3d, 3>> collectFaceTriangles(int faceIndex) const
+    {
+        auto faceShape = shape.getSubTopoShape(TopAbs_FACE, faceIndex, true);
+        if (faceShape.isNull()) {
+            return {};
+        }
+
+        std::vector<Base::Vector3d> points;
+        std::vector<Data::ComplexGeoData::Facet> facets;
+        faceShape.getFaces(points, facets, faceShape.getAccuracy());
+        if (points.empty() || facets.empty()) {
+            return {};
+        }
+
+        std::vector<std::array<Base::Vector3d, 3>> triangles;
+        triangles.reserve(facets.size());
+        for (const auto& facet : facets) {
+            if (facet.I1 >= points.size() || facet.I2 >= points.size() || facet.I3 >= points.size()) {
+                continue;
+            }
+
+            triangles.push_back({
+                points[facet.I1],
+                points[facet.I2],
+                points[facet.I3],
+            });
+        }
+
+        return triangles;
+    }
+
+    std::vector<int> collectPromotedFaceIndices() const
+    {
+        const auto subShape = shape.findShape(element.c_str());
+        if (subShape.IsNull()) {
+            return {};
+        }
+
+        std::set<int> faceIndices;
+        const auto ancestors = shape.findAncestors(subShape, TopAbs_FACE);
+        faceIndices.insert(ancestors.begin(), ancestors.end());
+        return {faceIndices.begin(), faceIndices.end()};
+    }
+
+    static std::vector<SampleOffset> collectSampleOffsets(float pickRadius)
+    {
+        const int maxOffset = std::max(1, static_cast<int>(std::ceil(pickRadius)));
+        std::vector<SampleOffset> offsets;
+        offsets.reserve((2 * maxOffset + 1) * (2 * maxOffset + 1));
+
+        // Exclude the center sample: the raw pick already hit the edge or vertex there. Neighboring
+        // samples recover the adjacent face that is actually visible inside the pick radius.
+        for (int dy = -maxOffset; dy <= maxOffset; ++dy) {
+            for (int dx = -maxOffset; dx <= maxOffset; ++dx) {
+                const int distanceSquared = dx * dx + dy * dy;
+                if (distanceSquared > maxOffset * maxOffset || distanceSquared == 0) {
+                    continue;
+                }
+                offsets.push_back({dx, dy, distanceSquared});
+            }
+        }
+
+        std::ranges::sort(offsets, [](const SampleOffset& lhs, const SampleOffset& rhs) {
+            if (lhs.distanceSquared != rhs.distanceSquared) {
+                return lhs.distanceSquared < rhs.distanceSquared;
+            }
+            if (lhs.dy != rhs.dy) {
+                return lhs.dy < rhs.dy;
+            }
+            return lhs.dx < rhs.dx;
+        });
+        return offsets;
+    }
+
+    std::vector<FaceTriangleGeometry> buildCandidateFaceGeometry(const std::vector<int>& faceIndices) const
+    {
+        std::vector<FaceTriangleGeometry> geometries;
+        geometries.reserve(faceIndices.size());
+        for (int faceIndex : faceIndices) {
+            FaceTriangleGeometry geometry {faceIndex, collectFaceTriangles(faceIndex)};
+            if (!geometry.triangles.empty()) {
+                geometries.push_back(std::move(geometry));
+            }
+        }
+
+        return geometries;
+    }
+
+    std::optional<std::pair<Base::Vector3d, Base::Vector3d>> getSceneRayAtSample(
+        const SbVec2s& samplePosition
+    ) const
+    {
+        if (!pickContext.repick.isValid()) {
+            return {};
+        }
+
+        SoRayPickAction rayPick(*pickContext.repick.viewportRegion);
+        rayPick.setPoint(samplePosition);
+        rayPick.setRadius(0.0F);
+        rayPick.setPickAll(false);
+        rayPick.apply(pickContext.repick.sceneRoot);
+        rayPick.computeWorldSpaceRay();
+
+        const auto& line = rayPick.getLine();
+        const SbVec3f origin = line.getPosition();
+        SbVec3f direction = line.getDirection();
+        if (direction.equals(SbVec3f(0.0f, 0.0f, 0.0f), 1.0e-12f)) {
+            return {};
+        }
+        direction.normalize();
+
+        return std::pair {
+            Base::Vector3d(origin[0], origin[1], origin[2]),
+            Base::Vector3d(direction[0], direction[1], direction[2]),
+        };
+    }
+
+    static std::optional<double> intersectRayWithTriangle(
+        const Base::Vector3d& origin,
+        const Base::Vector3d& direction,
+        const std::array<Base::Vector3d, 3>& triangle
+    )
+    {
+        constexpr double epsilon = 1.0e-12;
+
+        const auto edge1 = triangle[1] - triangle[0];
+        const auto edge2 = triangle[2] - triangle[0];
+        const auto pvec = direction % edge2;
+        const auto det = edge1 * pvec;
+        if (std::abs(det) <= epsilon) {
+            return {};
+        }
+
+        const auto invDet = 1.0 / det;
+        const auto tvec = origin - triangle[0];
+        const auto u = (tvec * pvec) * invDet;
+        if (u < 0.0 || u > 1.0) {
+            return {};
+        }
+
+        const auto qvec = tvec % edge1;
+        const auto v = (direction * qvec) * invDet;
+        if (v < 0.0 || (u + v) > 1.0) {
+            return {};
+        }
+
+        const auto t = (edge2 * qvec) * invDet;
+        if (t <= epsilon) {
+            return {};
+        }
+
+        return t;
+    }
+
+    static std::optional<double> getClosestFaceRayDistance(
+        const FaceTriangleGeometry& geometry,
+        const Base::Vector3d& origin,
+        const Base::Vector3d& direction
+    )
+    {
+        std::optional<double> bestDistance;
+        for (const auto& triangle : geometry.triangles) {
+            if (auto distance = intersectRayWithTriangle(origin, direction, triangle)) {
+                if (!bestDistance || *distance < *bestDistance) {
+                    bestDistance = *distance;
+                }
+            }
+        }
+
+        return bestDistance;
+    }
+
+    std::optional<std::string> findVisibleCandidateFaceElement(const std::vector<int>& faceIndices) const
+    {
+        if (faceIndices.empty() || !pickContext.repick.isValid()) {
+            return {};
+        }
+
+        const auto geometries = buildCandidateFaceGeometry(faceIndices);
+        if (geometries.empty()) {
+            return {};
+        }
+
+        const auto offsets = collectSampleOffsets(pickContext.repick.pickRadius);
+        if (offsets.empty()) {
+            return {};
+        }
+
+        const auto viewportOrigin = pickContext.repick.viewportRegion->getViewportOriginPixels();
+        const auto viewportSize = pickContext.repick.viewportRegion->getViewportSizePixels();
+        if (viewportSize[0] <= 0 || viewportSize[1] <= 0) {
+            return {};
+        }
+
+        std::size_t offsetIndex = 0;
+        while (offsetIndex < offsets.size()) {
+            const int ringDistanceSquared = offsets[offsetIndex].distanceSquared;
+            std::unordered_map<int, RingHitSummary> ringHits;
+            std::size_t ringEnd = offsetIndex;
+
+            while (ringEnd < offsets.size()
+                   && offsets[ringEnd].distanceSquared == ringDistanceSquared) {
+                const auto& offset = offsets[ringEnd];
+                const int sampleX = pickContext.repick.eventPosition->getValue()[0] + offset.dx;
+                const int sampleY = pickContext.repick.eventPosition->getValue()[1] + offset.dy;
+                if (sampleX >= viewportOrigin[0] && sampleY >= viewportOrigin[1]
+                    && sampleX < viewportOrigin[0] + viewportSize[0]
+                    && sampleY < viewportOrigin[1] + viewportSize[1]) {
+                    const SbVec2s samplePosition(
+                        static_cast<short>(sampleX),
+                        static_cast<short>(sampleY)
+                    );
+                    if (auto ray = getSceneRayAtSample(samplePosition)) {
+                        std::optional<FaceHitScore> visibleHit;
+                        for (const auto& geometry : geometries) {
+                            if (auto distance
+                                = getClosestFaceRayDistance(geometry, ray->first, ray->second)) {
+                                FaceHitScore hit {
+                                    geometry.faceIndex,
+                                    ringDistanceSquared,
+                                    1,
+                                    *distance,
+                                };
+                                if (!visibleHit || hit.bestRayDistance < visibleHit->bestRayDistance) {
+                                    visibleHit = hit;
+                                }
+                            }
+                        }
+
+                        if (visibleHit) {
+                            auto& summary = ringHits[visibleHit->faceIndex];
+                            summary.hits += 1;
+                            summary.bestRayDistance
+                                = std::min(summary.bestRayDistance, visibleHit->bestRayDistance);
+                        }
+                    }
+                }
+                ++ringEnd;
+            }
+
+            if (!ringHits.empty()) {
+                std::optional<FaceHitScore> bestScore;
+                for (const auto& [faceIndex, summary] : ringHits) {
+                    FaceHitScore score {
+                        faceIndex,
+                        ringDistanceSquared,
+                        summary.hits,
+                        summary.bestRayDistance,
+                    };
+                    if (!bestScore || isBetterFaceHitScore(score, *bestScore)) {
+                        bestScore = score;
+                    }
+                }
+
+                if (bestScore) {
+                    return std::string("Face") + std::to_string(bestScore->faceIndex);
+                }
+            }
+
+            offsetIndex = ringEnd;
+        }
+
+        return {};
+    }
+
+    std::optional<std::string> findProjectedCandidateFaceElement(const std::vector<int>& faceIndices) const
+    {
+        const SoNode* imageSpaceNode = nullptr;
+        if (const auto* path = pickedPoint.getPath()) {
+            imageSpaceNode = path->getHead();
+        }
+        const auto& objectToImage = pickedPoint.getObjectToImage(imageSpaceNode);
+
+        std::optional<ProjectedFaceScore> bestFace;
+        for (int faceIndex : faceIndices) {
+            const auto triangles = collectFaceTriangles(faceIndex);
+            if (triangles.empty()) {
+                continue;
+            }
+
+            std::optional<ProjectedTriangleScore> bestTriangleScore;
+            for (const auto& triangle : triangles) {
+                const auto triangleScore = projectToTriangleScore(
+                    cursorPosition,
+                    projectToImagePoint(triangle[0], objectToImage),
+                    projectToImagePoint(triangle[1], objectToImage),
+                    projectToImagePoint(triangle[2], objectToImage)
+                );
+                if (!bestTriangleScore.has_value()
+                    || isBetterProjectedScore(triangleScore, *bestTriangleScore)) {
+                    bestTriangleScore = triangleScore;
+                }
+            }
+
+            if (!bestTriangleScore.has_value()) {
+                continue;
+            }
+
+            const ProjectedFaceScore faceScore {*bestTriangleScore, faceIndex};
+            if (!bestFace.has_value() || isBetterProjectedFaceScore(faceScore, *bestFace)) {
+                bestFace = faceScore;
+            }
+        }
+
+        if (!bestFace.has_value()) {
+            return {};
+        }
+
+        return std::string("Face") + std::to_string(bestFace->faceIndex);
+    }
+
+    bool hasNeighborhoodContext() const
+    {
+        return pickContext.repick.isValid();
+    }
+
+    const Part::TopoShape& shape;
+    const std::string& element;
+    const SoPickedPoint& pickedPoint;
+    const Gui::SelectionPickContext& pickContext;
+    Base::Vector2d cursorPosition;
+};
+
+// Top-level face-only gate promotion
+
+std::optional<std::string> promoteFaceOnlyGatePick(
+    const PartGui::ViewProviderPartExt& viewProvider,
+    const SoPickedPoint* pickedPoint,
+    const std::string& element,
+    const Gui::SelectionPickContext* pickContext
+)
+{
+    const auto* gate = pickContext ? pickContext->gate : nullptr;
+    const auto* normalizedCursorPosition = pickContext ? pickContext->normalizedCursorPosition
+                                                       : nullptr;
+    if (!gate || element.empty()) {
+        return {};
+    }
+
+    auto* feature = viewProvider.getObject<Part::Feature>();
+    if (!feature) {
+        return {};
+    }
+
+    const auto* geometry = feature->getPropertyOfGeometry();
+    const auto* complexData = geometry ? geometry->getComplexData() : nullptr;
+    if (!complexData) {
+        return {};
+    }
+
+    const auto gatedTypes = gate->getGatedTypes(complexData->getElementTypes());
+    if (gatedTypes.empty()) {
+        return {};
+    }
+
+    if (!isFaceOnlyGate(gatedTypes)) {
+        return {};
+    }
+
+    const auto elementType = Part::TopoShape::getElementTypeAndIndex(element.c_str()).first;
+    if (elementType != "Edge" && elementType != "Vertex") {
+        return {};
+    }
+
+    try {
+        if (!pickedPoint || !normalizedCursorPosition) {
+            return {};
+        }
+
+        // Keep the rendered shape alive for the resolver; it stores a reference while collecting
+        // topology and face triangles.
+        const auto renderedShape = viewProvider.getRenderedShape();
+        const FaceGatePromotionResolver resolver(renderedShape, element, *pickedPoint, *pickContext);
+        return resolver.promote();
+    }
+    catch (...) {
+        return {};
+    }
+}
+
+}  // namespace
 
 
 //**************************************************************************
@@ -590,6 +1228,22 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
     }
 
     return str.str();
+}
+
+bool ViewProviderPartExt::resolvePickedElement(
+    const SoPickedPoint* pp,
+    std::string& subname,
+    const Gui::SelectionPickContext* pickContext
+) const
+{
+    if (!ViewProviderGeometryObject::resolvePickedElement(pp, subname, pickContext)) {
+        return false;
+    }
+    if (auto faceElement = promoteFaceOnlyGatePick(*this, pp, subname, pickContext)) {
+        subname = *faceElement;
+    }
+
+    return true;
 }
 
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
