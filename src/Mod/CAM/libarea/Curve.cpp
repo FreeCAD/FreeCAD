@@ -312,7 +312,7 @@ void CCurve::FitArcs(bool retry)
     }
 }
 
-void CCurve::UnFitArcs()
+void CCurve::Discretize()
 {
     std::list<Point> new_pts;
 

@@ -124,7 +124,7 @@ public:
     void append(const CVertex& vertex);
 
     void FitArcs(bool retry = false);
-    void UnFitArcs();
+    void Discretize();
     Point NearestPoint(const Point& p) const;
     Point NearestPoint(const CCurve& p, double* d = NULL) const;
     Point NearestPoint(const Span& p, double* d = NULL) const;
