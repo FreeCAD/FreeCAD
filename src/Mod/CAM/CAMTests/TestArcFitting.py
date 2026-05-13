@@ -105,13 +105,19 @@ def make_area(curves):
 class TestArcFittingRoundTrip(PathTestBase):
     """Tests for FitArcs and UnfitArcs round-trip operations."""
 
-    def assert_curve_unchanged_by_roundtrip(self, c):
-        """Helper: Assert that UnFitArcs->FitArcs doesn't change the given Curve."""
-        # Store original vertices
-        orig = list(c.getVertices())
-        c.UnFitArcs()
-        c.FitArcs(False)
-        result = list(c.getVertices())
+    def assert_area_unchanged_by_roundtrip(self, a):
+        """Helper: Assert that UnFitArcs->FitArcs doesn't change the given Area."""
+        # Store original vertices from all curves
+        orig = []
+        for curve in a.getCurves():
+            orig.extend(list(curve.getVertices()))
+
+        a.ClipperNoop()
+
+        # Extract result vertices from all curves
+        result = []
+        for curve in a.getCurves():
+            result.extend(list(curve.getVertices()))
 
         # Helper to format vertex for display
         def fmt_vertex(v):
@@ -160,57 +166,57 @@ class TestArcFittingRoundTrip(PathTestBase):
     def test_empty_roundtrip(self):
         """Test that round-trip preserves an empty curve."""
         c = area.Curve()
-        self.assert_curve_unchanged_by_roundtrip(c)
+        self.assert_area_unchanged_by_roundtrip(make_area(c))
 
     def test_single_vertex_roundtrip(self):
         """Test that round-trip preserves a single-vertex curve."""
         c = make_curve([(1, 1)])
-        self.assert_curve_unchanged_by_roundtrip(c)
+        self.assert_area_unchanged_by_roundtrip(make_area(c))
 
     def test_line_roundtrip(self):
         """Test that round-trip preserves a simple line."""
         c = make_curve([(0, 0), (10, 10)])
-        self.assert_curve_unchanged_by_roundtrip(c)
+        self.assert_area_unchanged_by_roundtrip(make_area(c))
 
     def test_small_arc_ccw_roundtrip(self):
         """Test that round-trip preserves a 90-degree CCW arc."""
         c = make_curve([(10, 0), (0, 10, 1, 0, 0)])
-        self.assert_curve_unchanged_by_roundtrip(c)
+        self.assert_area_unchanged_by_roundtrip(make_area(c))
 
     def test_small_arc_cw_roundtrip(self):
         """Test that round-trip preserves a 90-degree CW arc."""
         c = make_curve([(10, 0), (0, -10, -1, 0, 0)])
-        self.assert_curve_unchanged_by_roundtrip(c)
+        self.assert_area_unchanged_by_roundtrip(make_area(c))
 
     def test_180_arc_ccw_roundtrip(self):
         """Test that round-trip preserves a 180-degree CCW arc."""
         c = make_curve([(10, 0), (-10, 0, 1, 0, 0)])
-        self.assert_curve_unchanged_by_roundtrip(c)
+        self.assert_area_unchanged_by_roundtrip(make_area(c))
 
     def test_180_arc_cw_roundtrip(self):
         """Test that round-trip preserves a 180-degree CW arc."""
         c = make_curve([(-10, 0), (10, 0, -1, 0, 0)])
-        self.assert_curve_unchanged_by_roundtrip(c)
+        self.assert_area_unchanged_by_roundtrip(make_area(c))
 
     def test_closed_line_before_arc_ccw_roundtrip(self):
         """Test closed curve: line then CCW arc back to start."""
         c = make_curve([(0, 0), (10, 0), (0, 0, 1, 5, 0)])
-        self.assert_curve_unchanged_by_roundtrip(c)
+        self.assert_area_unchanged_by_roundtrip(make_area(c))
 
     def test_closed_line_before_arc_cw_roundtrip(self):
         """Test closed curve: line then CW arc back to start."""
         c = make_curve([(0, 0), (10, 0), (0, 0, -1, 5, 0)])
-        self.assert_curve_unchanged_by_roundtrip(c)
+        self.assert_area_unchanged_by_roundtrip(make_area(c))
 
     def test_closed_line_after_arc_ccw_roundtrip(self):
         """Test closed curve: CCW arc then line back to start."""
         c = make_curve([(0, 0), (10, 0, 1, 5, 0), (0, 0)])
-        self.assert_curve_unchanged_by_roundtrip(c)
+        self.assert_area_unchanged_by_roundtrip(make_area(c))
 
     def test_closed_line_after_arc_cw_roundtrip(self):
         """Test closed curve: CW arc then line back to start."""
         c = make_curve([(0, 0), (10, 0, -1, 5, 0), (0, 0)])
-        self.assert_curve_unchanged_by_roundtrip(c)
+        self.assert_area_unchanged_by_roundtrip(make_area(c))
 
     def test_subdivided_polygons_roundtrip(self):
         """Exploratory test: sweep parameters on regular polygon side count and side subdivision count."""
@@ -228,7 +234,7 @@ class TestArcFittingRoundTrip(PathTestBase):
 
                 try:
                     c = make_regular_polygon(num_sides, radius, subdivisions)
-                    self.assert_curve_unchanged_by_roundtrip(c)
+                    self.assert_area_unchanged_by_roundtrip(make_area(c))
                     results[(num_sides, subdivisions)] = "PASS"
                 except AssertionError as e:
                     results[(num_sides, subdivisions)] = "FAIL"

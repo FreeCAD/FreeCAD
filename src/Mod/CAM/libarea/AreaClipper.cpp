@@ -841,6 +841,30 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
     SetFromResult(*this, open_paths, false, false, false);
 }
 
+void CArea::ClipperNoop()
+{
+    Paths64 closed_paths;
+    Paths64 open_paths;
+    for (const CCurve& curve : m_curves) {
+        bool is_closed = curve.IsClosed();
+        Path64 p;
+        MakePoly(curve, p, false, m_arc_fitting_map);
+
+        if (is_closed) {
+            closed_paths.push_back(p);
+        }
+        else {
+            open_paths.push_back(p);
+        }
+    }
+
+    // Set closed paths as result
+    SetFromResult(*this, closed_paths, false, true, true);
+
+    // Append open paths to result
+    SetFromResult(*this, open_paths, false, false, false);
+}
+
 void CArea::OffsetWithClipper(
     double offset,
     JoinType joinType,
