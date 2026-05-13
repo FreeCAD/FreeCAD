@@ -116,6 +116,15 @@ static double get_accuracy()
     return CArea::get_accuracy();
 }
 
+static CArea copy_area(const CArea& area)
+{
+    CArea copy;
+    copy.m_curves = area.m_curves;
+    copy.m_arc_fitting_map = area.m_arc_fitting_map;
+    copy.m_reversed = area.m_reversed;
+    return copy;
+}
+
 static bool holes_linked()
 {
     return CArea::HolesLinked();
@@ -406,6 +415,7 @@ void init_pyarea(py::module& m)
     m.def("set_units", set_units);
     m.def("get_units", get_units);
     m.def("get_accuracy", get_accuracy);
+    m.def("copy_area", copy_area);
     m.def("holes_linked", holes_linked);
     m.def("AreaFromDxf", AreaFromDxf);
     m.def("TangentialArc", TangentialArc);

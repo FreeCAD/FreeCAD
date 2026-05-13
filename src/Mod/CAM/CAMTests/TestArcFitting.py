@@ -118,6 +118,155 @@ def make_mirrored_arcs(x, y):
     )
 
 
+def rotate_curve(curve, start_i):
+    """Rotate a (closed) curve to start at a different vertex index.
+
+    Args:
+        curve: Curve object to rotate
+        start_i: Index of the vertex to become the new start (must be >= 1)
+
+    Returns:
+        New rotated Curve object
+    """
+    vertices = list(curve.getVertices())
+
+    if start_i == 0 or len(vertices) <= 1:
+        return curve
+
+    # Create new curve starting at start_i
+    new_curve = area.Curve()
+    new_curve.append(area.Vertex(area.Point(vertices[start_i].p.x, vertices[start_i].p.y)))
+
+    # Add remaining vertices in rotated order
+    indices = list(range(start_i + 1, len(vertices))) + list(range(1, start_i + 1))
+    for i in indices:
+        v = vertices[i % len(vertices)]
+        if v.type == 0:
+            new_curve.append(area.Vertex(area.Point(v.p.x, v.p.y)))
+        else:
+            new_curve.append(
+                area.Vertex(v.type, area.Point(v.p.x, v.p.y), area.Point(v.c.x, v.c.y))
+            )
+
+    return new_curve
+
+
+def rotate_curve_in_area(a, curve_i, start_i):
+    """Create a new area with one curve rotated to start at a different vertex.
+
+    Args:
+        a: Area object
+        curve_i: Index of the curve to rotate
+        start_i: Index of the vertex to become the new start (must be >= 1)
+
+    Returns:
+        New Area object with the specified curve rotated
+    """
+    result = area.Area()
+    result.reversed = a.reversed
+
+    for i, c in enumerate(a.getCurves()):
+        if i == curve_i:
+            result.append(rotate_curve(c, start_i))
+        else:
+            result.append(c)
+
+    return result
+
+
+def canonicalize_area(a):
+    """Sort area contents canonically.
+
+    For each curve, rotate to start at the vertex with lowest y (tie break lowest x).
+    Sort curves by their (sorted) first point using the same criteria.
+
+    Args:
+        a: Area object to canonicalize
+
+    Returns:
+        New canonicalized Area object
+    """
+    canonicalized_curves = []
+
+    for curve in a.getCurves():
+        vertices = list(curve.getVertices())
+        if len(vertices) <= 1:
+            # Empty or single-vertex curve, nothing to rotate
+            canonicalized_curves.append(curve)
+            continue
+
+        # Find the canonical start index (lowest y, then lowest x)
+        # Start from index 0 (the starting point) since all positions are valid starts
+        start_i = 0
+        min_y = vertices[0].p.y
+        min_x = vertices[0].p.x
+
+        for i, v in enumerate(vertices):
+            if v.p.y < min_y or (v.p.y == min_y and v.p.x < min_x):
+                start_i = i
+                min_y = v.p.y
+                min_x = v.p.x
+
+        # Rotate the curve to start at start_i
+        canonicalized_curves.append(rotate_curve(curve, start_i))
+
+    # Sort curves by their first point (lowest y, then lowest x)
+    canonicalized_curves.sort(key=lambda c: (c.getVertices()[0].p.y, c.getVertices()[0].p.x))
+
+    # Create new area with sorted curves
+    result = area.Area()
+    result.reversed = a.reversed
+    for c in canonicalized_curves:
+        result.append(c)
+
+    return result
+
+
+def areas_equal(a1, a2):
+    """Compare if two areas are exactly equal, including curve order.
+
+    Note: You may want to canonicalize areas before using this function.
+
+    Args:
+        a1: First area to compare
+        a2: Second area to compare
+
+    Returns:
+        True if areas are equal, False otherwise
+    """
+    # Compare number of curves
+    curves1 = list(a1.getCurves())
+    curves2 = list(a2.getCurves())
+
+    if len(curves1) != len(curves2):
+        return False
+
+    # Compare each curve
+    for curve1, curve2 in zip(curves1, curves2):
+        vertices1 = list(curve1.getVertices())
+        vertices2 = list(curve2.getVertices())
+
+        if len(vertices1) != len(vertices2):
+            return False
+
+        # Compare each vertex
+        for v1, v2 in zip(vertices1, vertices2):
+            # Compare type
+            if v1.type != v2.type:
+                return False
+
+            # Compare position (exact)
+            if v1.p.x != v2.p.x or v1.p.y != v2.p.y:
+                return False
+
+            # Compare center for arcs (type != 0)
+            if v1.type != 0:
+                if v1.c.x != v2.c.x or v1.c.y != v2.c.y:
+                    return False
+
+    return True
+
+
 class TestArcFittingRoundTrip(PathTestBase):
     """Tests for FitArcs and UnfitArcs round-trip operations."""
 
@@ -288,7 +437,7 @@ class TestArcFittingOffsets(PathTestBase):
 
     def assert_offset_line_and_arc_count(
         self,
-        a,
+        area_orig,
         offset_distance,
         expected_curves,
         expected_lines,
@@ -298,13 +447,16 @@ class TestArcFittingOffsets(PathTestBase):
         """Helper: Assert that offsetting an area produces expected line and arc counts.
 
         Args:
-            a: Area object to offset
+            area_orig: Area object to offset
             offset_distance: Distance to offset (positive = outward for CCW curves)
             expected_curves: Expected number of curves after offset
             expected_lines: Expected total number of line segments across all curves
             expected_ccw_arcs: Expected total number of CCW arc segments (type=1) across all curves
             expected_cw_arcs: Expected total number of CW arc segments (type=-1) across all curves (default: 0)
         """
+        # Make a copy to preserve the original
+        a = area.copy_area(area_orig)
+
         # Store original curves for debug output
         orig_curves = a.getCurves()
         orig_summary = []
@@ -366,6 +518,19 @@ class TestArcFittingOffsets(PathTestBase):
                 f"Original curves:\n" + "\n".join(orig_summary) + "\n"
                 f"Result curves:\n" + "\n".join(result_summary)
             )
+
+        # Test rotation invariance: result should be the same regardless of input curve starting position
+        result_orig_canon = canonicalize_area(a)
+        for curve_i, orig_curve in enumerate(area_orig.getCurves()):
+            for start_i in range(1, len(orig_curve.getVertices())):
+                rotated_area = rotate_curve_in_area(area_orig, curve_i, start_i)
+                rotated_area.OffsetWithClipper(offset_distance)
+                rotated_result_canon = canonicalize_area(rotated_area)
+
+                self.assertTrue(
+                    areas_equal(rotated_result_canon, result_orig_canon),
+                    f"Offset result differs when curve {curve_i} starts at index {start_i} instead of 0",
+                )
 
     def test_square_offset_outward(self):
         """Test that offsetting a square outward produces 4 lines and 4 arcs."""
@@ -455,6 +620,32 @@ class TestArcFittingOffsets(PathTestBase):
         a = make_mirrored_arcs(x, -y)  # arcs about (0, -+epsilon) that hit x-axis at 5
         self.assert_offset_line_and_arc_count(a, 1, 1, 0, 4)  # 1 curve, 0 lines, 4 CCW arcs
 
+    def test_canonicalize(self):
+        """Test canonicalization of area."""
+        # Create a simple square starting at different positions
+        square1 = make_curve([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)])
+        square2 = make_curve([(10, 0), (10, 10), (0, 10), (0, 0), (10, 0)])  # rotated start
+
+        a1 = make_area(square1)
+        a2 = make_area(square2)
+
+        # Canonicalize both
+        a1_canon = canonicalize_area(a1)
+        a2_canon = canonicalize_area(a2)
+        self.assertTrue(areas_equal(a1_canon, a2_canon))
+
+    def test_rotate_canonicalize(self):
+        """Test canonicalization of area."""
+        # Create a simple square starting at different positions
+        square1 = make_curve([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)])
+        a1 = make_area(square1)
+        a2 = rotate_curve_in_area(a1, 0, 1)
+
+        # Canonicalize both
+        a1_canon = canonicalize_area(a1)
+        a2_canon = canonicalize_area(a2)
+        self.assertTrue(areas_equal(a1_canon, a2_canon))
+
 
 class TestArcFittingBooleans(PathTestBase):
     """Tests for arc fitting with boolean operations."""
@@ -487,8 +678,8 @@ class TestArcFittingBooleans(PathTestBase):
 
     def assert_boolean_line_and_arc_count(
         self,
-        a1,
-        a2,
+        a1_orig,
+        a2_orig,
         operation,
         expected_curves,
         expected_lines,
@@ -498,14 +689,18 @@ class TestArcFittingBooleans(PathTestBase):
         """Helper: Perform boolean operation and assert line and arc counts.
 
         Args:
-            a1: First area object
-            a2: Second area object
+            a1_orig: First area object
+            a2_orig: Second area object
             operation: Boolean operation name ("Union", "Subtract", "Intersect", "Xor")
             expected_curves: Expected number of curves after operation
             expected_lines: Expected total number of line segments across all curves
             expected_ccw_arcs: Expected total number of CCW arc segments (type=1) across all curves
             expected_cw_arcs: Expected total number of CW arc segments (type=-1) across all curves (default 0)
         """
+        # Make copies to preserve the originals
+        a1 = area.copy_area(a1_orig)
+        a2 = area.copy_area(a2_orig)
+
         # Store input curves for debug output
         input1_summary = []
         for i, curve in enumerate(a1.getCurves()):
@@ -576,6 +771,28 @@ class TestArcFittingBooleans(PathTestBase):
                 f"Input area 2:\n" + "\n".join(input2_summary) + "\n"
                 f"Result curves:\n" + "\n".join(result_summary)
             )
+
+        # Test rotation invariance: result should be the same regardless of input curve starting positions
+        result_orig_canon = canonicalize_area(a1)
+        for curve1_i, curve1 in enumerate(a1_orig.getCurves()):
+            for start1_i in range(1, len(curve1.getVertices())):
+                for curve2_i, curve2 in enumerate(a2_orig.getCurves()):
+                    for start2_i in range(1, len(curve2.getVertices())):
+                        # Create rotated versions of both areas
+                        rotated_a1 = rotate_curve_in_area(a1_orig, curve1_i, start1_i)
+                        rotated_a2 = rotate_curve_in_area(a2_orig, curve2_i, start2_i)
+
+                        # Perform same operation
+                        op_method = getattr(rotated_a1, operation)
+                        op_method(rotated_a2)
+
+                        # Check result is the same
+                        rotated_result_canon = canonicalize_area(rotated_a1)
+                        self.assertTrue(
+                            areas_equal(rotated_result_canon, result_orig_canon),
+                            f"{operation} result differs when area1 curve {curve1_i} starts at {start1_i} "
+                            f"and area2 curve {curve2_i} starts at {start2_i}",
+                        )
 
     def test_union_square_semicircle(self):
         """Test union of square overlapping a semicircular shape."""
