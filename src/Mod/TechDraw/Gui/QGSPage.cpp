@@ -439,6 +439,10 @@ bool QGSPage::attachView(App::DocumentObject* obj)
         return true;
     }
 
+    if (qview) {
+        qview->updatePositionFromFeatureXY();
+    }
+
     return (qview != nullptr);
 }
 
@@ -558,7 +562,6 @@ QGIView* QGSPage::addDrawViewClip(TechDraw::DrawViewClip* view)
     auto qview(new QGIViewClip);
     qview->setViewFeature(view);
     addItemToScene(qview);
-    qview->setPosition(Rez::guiX(view->X.getValue()), Rez::guiX(view->Y.getValue()));
     qview->installSceneEventFilter(qview);
     return qview;
 }

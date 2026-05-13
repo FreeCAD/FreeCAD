@@ -72,6 +72,8 @@ public:
     void updateData(const App::Property*) override;
 
     QGIView* getQView();
+    static QGIView* getOwnerQView(const QGIView* qgiv);
+
     MDIViewPage* getMDIViewPage() const;
     Gui::MDIView *getMDIView() const override;
     ViewProviderPage* getViewProviderPage() const;
