@@ -22,18 +22,19 @@
 # *                                                                         *
 # ***************************************************************************
 
+import os
+import unittest
 
+import FreeCAD
 from Path.Post.Processor import PostProcessorFactory
 from Machine.models.machine import Machine
-import FreeCAD
 import Path
 import Path.Post.Command as PathCommand
-import Path.Post.PostList as PostList
+from Path.Post import PostList
 import Path.Post.Utils as PostUtils
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
-import os
-import unittest
+from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
 
 from .FilePathTestUtils import assertFilePathsEqual
 
@@ -425,8 +426,6 @@ class TestExport2Integration(unittest.TestCase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.newDocument("export2_test")
 
-        import Part
-
         box = cls.doc.addObject("Part::Box", "TestBox")
         box.Length = 100
         box.Width = 100
@@ -481,8 +480,6 @@ class TestExport2Integration(unittest.TestCase):
 
     def _create_machine(self, **output_options):
         """Helper to create a machine with specified output options."""
-        from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
-
         machine = Machine.create_3axis_config()
         machine.name = "TestMachine"
 
@@ -588,6 +585,8 @@ class TestExport2Integration(unittest.TestCase):
 
     def _run_export2(self, machine=None, job=None):
         """Helper to run export2 and return results."""
+        if machine is None:
+            machine = self._create_machine()
         post = self._create_postprocessor(machine, job)
         return post.export2()
 
@@ -751,10 +750,7 @@ class TestExport2Integration(unittest.TestCase):
 
     def test010_export2_returns_gcode_sections(self):
         """Test that export2() returns a non-empty list of (name, gcode) tuples."""
-        from Path.Post.Processor import PostProcessor
-
-        post = PostProcessor(self.job, "", "", "mm")
-        results = post.export2()
+        results = self._run_export2()
 
         self.assertIsNotNone(results, "export2 should return results")
         self.assertIsInstance(results, list)
@@ -1932,7 +1928,7 @@ class TestExport2Integration(unittest.TestCase):
                 Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0}),
             ]
         ):
-            results = self._run_export2(machine)
+            self._run_export2(machine)
 
             # After export2, schema defaults should have been applied
             self.assertIn(

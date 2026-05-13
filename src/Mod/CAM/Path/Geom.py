@@ -307,7 +307,9 @@ def cmdsForEdge(edge, flip=False, approximation=False, hSpeed=0, vSpeed=0, tol=0
 
         if isinstance(edge.Curve, Part.BSplineCurve):
             # convert B-Spline to arcs and lines
-            curves = edge.Curve.toBiArcs(tol)
+            curve = edge.Curve
+            trimmed_curve = curve.trim(*edge.ParameterRange)
+            curves = trimmed_curve.toBiArcs(tol)
             for curve in curves:
                 edge = curve.toShape()
                 if isinstance(edge.Curve, Part.Circle) and not isVertical(edge.Curve.Axis):

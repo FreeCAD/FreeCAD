@@ -2101,26 +2101,26 @@ bool Document::saveToFile(const char* filename) const
     return true;
 }
 
-void Document::registerLabel(const std::string& newLabel)
+void Document::registerLabel(std::string_view newLabel)
 {
     if (!newLabel.empty()) {
         d->objectLabelManager.addExactName(newLabel);
     }
 }
 
-void Document::unregisterLabel(const std::string& oldLabel)
+void Document::unregisterLabel(std::string_view oldLabel)
 {
     if (!oldLabel.empty()) {
         d->objectLabelManager.removeExactName(oldLabel);
     }
 }
 
-bool Document::containsLabel(const std::string& label)
+bool Document::containsLabel(std::string_view label)
 {
     return d->objectLabelManager.containsName(label);
 }
 
-std::string Document::makeUniqueLabel(const std::string& modelLabel)
+std::string Document::makeUniqueLabel(std::string_view modelLabel)
 {
     if (modelLabel.empty()) {
         return {};
@@ -3289,11 +3289,13 @@ bool Document::recomputeFeature(DocumentObject* feature, bool recursive)
     return feature->isValid();
 }
 
-DocumentObject* Document::addObject(const char* sType,
-                                    const char* pObjectName,
-                                    const bool isNew,
-                                    const char* viewType,
-                                    const bool isPartial)
+DocumentObject* Document::addObject(
+    std::string_view sType,
+    const char* pObjectName,
+    const bool isNew,
+    const char* viewType,
+    const bool isPartial
+)
 {
     const Base::Type type =
         Base::Type::getTypeIfDerivedFrom(sType, DocumentObject::getClassTypeId(), true);
@@ -3828,9 +3830,9 @@ const char* Document::getObjectName(const DocumentObject* pFeat) const
     return nullptr;
 }
 
-std::string Document::getUniqueObjectName(const char* proposedName) const
+std::string Document::getUniqueObjectName(std::string_view proposedName) const
 {
-    if (!proposedName || *proposedName == '\0') {
+    if (proposedName.empty()) {
         return {};
     }
     std::string cleanName = Base::Tools::getIdentifier(proposedName);
@@ -3842,8 +3844,7 @@ std::string Document::getUniqueObjectName(const char* proposedName) const
     return d->objectNameManager.makeUniqueName(cleanName, 3);
 }
 
-    bool
-Document::haveSameBaseName(const std::string& name, const std::string& label)
+bool Document::haveSameBaseName(std::string_view name, std::string_view label)
 {
     // Both Labels and Names use the same decomposition rules for names,
     // i.e. the default one supplied by UniqueNameManager, so we can use either

@@ -1525,7 +1525,7 @@ void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char
     if (prop == &Direction) {
         // Direction was PropertyVector, then briefly PropertyDirection, now back to PropertyVector
         App::PropertyDirection tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+        if (tmp.getTypeId().getName() == TypeName) {
             tmp.setContainer(this);
             tmp.Restore(reader);
             auto tmpValue = tmp.getValue();
@@ -1537,7 +1537,7 @@ void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char
     if (prop == &XDirection) {
         // XDirection was PropertyVector, then briefly PropertyDirection, now back to PropertyVector
         App::PropertyDirection tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+        if (tmp.getTypeId().getName() == TypeName) {
             tmp.setContainer(this);
             tmp.Restore(reader);
             auto tmpValue = tmp.getValue();

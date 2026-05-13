@@ -256,6 +256,15 @@ jobs:
 
     # Python linting steps
 
+      - name: Set up pixi for stub smoke checks
+        if: always()
+        uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
+
+      - name: Install Python stub smoke-check dependencies
+        if: always()
+        run: |
+          python3 -m pip install --user uv
+
       - name: Pylint
         if: inputs.checkPylint && inputs.changedPythonFiles != '' && always()
         continue-on-error: ${{ inputs.pylintFailSilent }}
@@ -272,6 +281,15 @@ jobs:
         run: |
           python3 tools/lint/black.py \
             --files "${{ inputs.changedPythonFiles }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Generated binding stubs smoke check
+        if: always()
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          python3 tools/lint/python_stubs.py \
+            --files "${{ inputs.changedFiles }}" \
             --log-dir "${{ env.logdir }}" \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
 

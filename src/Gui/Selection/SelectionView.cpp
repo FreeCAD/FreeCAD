@@ -583,20 +583,20 @@ void SelectionView::showPart()
     }
 }
 
-QString SelectionView::getModule(const char* type) const
+QString SelectionView::getModule(std::string_view type) const
 {
     // go up the inheritance tree and find the module name of the first
     // sub-class that has not the prefix "App::"
-    std::string prefix;
+    std::string_view prefix;
     Base::Type typeId = Base::Type::fromName(type);
 
     while (!typeId.isBad()) {
-        std::string temp(typeId.getName());
-        std::string::size_type pos = temp.find_first_of("::");
+        const auto typeName = typeId.getName();
+        const auto pos = typeName.find_first_of("::");
 
-        std::string module;
+        std::string_view module;
         if (pos != std::string::npos) {
-            module = std::string(temp, 0, pos);
+            module = typeName.substr(0, pos);
         }
         if (module != "App") {
             prefix = module;
@@ -607,7 +607,7 @@ QString SelectionView::getModule(const char* type) const
         typeId = typeId.getParent();
     }
 
-    return QString::fromStdString(prefix);
+    return QString::fromUtf8(prefix.data(), prefix.size());
 }
 
 QString SelectionView::getProperty(App::DocumentObject* obj) const
@@ -1026,7 +1026,7 @@ void SelectionMenu::addWholeObjectSelection(
     if (sobj) {
         if (sobj != sel.obj) {
             // sub-objects
-            std::string typeName = sobj->getTypeId().getName();
+            const auto typeName = sobj->getTypeId().getName();
             if (typeName == "App::Part" || typeName == "PartDesign::Body") {
                 shouldAdd = true;
             }

@@ -342,7 +342,9 @@ QStringList FileDialogInternal::nativeFileDialog(
 
     // Select starting directory, if any
     if (startPathInfo.isAbsolute()) {
-        const auto startFolder = qStringToWCharArray(startPathInfo.absoluteDir().path());
+        const auto startFolder = qStringToWCharArray(
+            QDir::toNativeSeparators(startPathInfo.absoluteDir().path())
+        );
         ComPointer<IShellItem> shellStartFolder;
         if (SUCCEEDED(SHCreateItemFromParsingName(
                 startFolder.get(),

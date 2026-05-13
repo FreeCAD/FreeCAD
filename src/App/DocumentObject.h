@@ -1054,13 +1054,15 @@ public:
 
     bool renameDynamicProperty(Property *prop, const char *name) override;
 
-    App::Property* addDynamicProperty(const char* type,
-                                      const char* name = nullptr,
-                                      const char* group = nullptr,
-                                      const char* doc = nullptr,
-                                      short attr = 0,
-                                      bool ro = false,
-                                      bool hidden = false) override;
+    App::Property* addDynamicProperty(
+        std::string_view type,
+        const char* name = nullptr,
+        const char* group = nullptr,
+        const char* doc = nullptr,
+        short attr = 0,
+        bool ro = false,
+        bool hidden = false
+    ) override;
 
     /**
      * @brief Resolve the last document object referenced in the subname.
