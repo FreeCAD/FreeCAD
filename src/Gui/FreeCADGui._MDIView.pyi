@@ -4,9 +4,12 @@
 
 from __future__ import annotations
 
-from typing import Literal, overload
+from typing import Literal, TypeAlias, overload
 
 from FreeCAD import DocumentObject
+
+_ActiveObjectReference: TypeAlias = tuple[DocumentObject, DocumentObject, str]
+_EmptyActiveObjectReference: TypeAlias = tuple[None, None, str]
 
 class _MDIView:
     """Base MDI view wrapper for FreeCAD GUI view types."""
@@ -65,7 +68,7 @@ class _MDIView:
     @overload
     def getActiveObject(
         self, name: str, resolve: Literal[False], /
-    ) -> tuple[DocumentObject | None, DocumentObject | None, str]: ...
+    ) -> _ActiveObjectReference | _EmptyActiveObjectReference: ...
     def cast_to_base(self) -> _MDIView:
         """Return this view as the base MDI view wrapper."""
         ...
