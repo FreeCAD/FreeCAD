@@ -784,7 +784,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     // remaining = clearable - prevCleared
     CArea remaining(clearable);
     remaining.Clip(
-        toClipperOp(Area::OperationDifference),
+        Clipper2Lib::ClipType::Difference,
         *(clearedAreasInPlane.myArea),
         myParams.SubjectFill,
         myParams.ClipFill
@@ -800,12 +800,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
         params.MiterLimit,
         roundPrecision
     );
-    restCArea.Clip(
-        toClipperOp(Area::OperationIntersection),
-        clearable,
-        myParams.SubjectFill,
-        myParams.ClipFill
-    );
+    restCArea.Clip(Clipper2Lib::ClipType::Intersection, clearable, myParams.SubjectFill, myParams.ClipFill);
 
     if (restCArea.m_curves.size() == 0) {
         return {};
@@ -2728,7 +2723,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 myParams.MiterLimit,
                 myParams.RoundPrecision
             );
-            out.Clip(toClipperOp(OperationIntersection), area, myParams.SubjectFill, myParams.ClipFill);
+            out.Clip(Clipper2Lib::ClipType::Intersection, area, myParams.SubjectFill, myParams.ClipFill);
             done = true;
             break;
         }

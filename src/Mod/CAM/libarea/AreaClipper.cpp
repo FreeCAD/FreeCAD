@@ -835,7 +835,7 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
     c.Execute(op, subjFillType, closed_paths, open_paths);
 
     // Set closed paths as result
-    SetFromResult(*this, closed_paths, true, true, true);
+    SetFromResult(*this, closed_paths, false, true, true);
 
     // Append open paths to result
     SetFromResult(*this, open_paths, false, false, false);
