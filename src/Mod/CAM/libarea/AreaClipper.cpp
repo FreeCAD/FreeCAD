@@ -413,12 +413,18 @@ static void MakePolyPoly(const CArea& area, Paths64& pp, bool reverse, ArcFittin
     }
 }
 
-static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed, const ArcFittingMap& arcMap)
+static void SetFromResult(
+    CCurve& curve,
+    Path64& path,
+    bool reverse,
+    bool is_closed,
+    const ArcFittingMap& arcMap
+)
 {
-    std::cerr << "\n=== SetFromResult: Path with " << p.size() << " points ===" << std::endl;
+    std::cerr << "\n=== SetFromResult: Path with " << path.size() << " points ===" << std::endl;
 
     if (CArea::m_clipper_clean_distance >= heeks::Point::tolerance) {
-        p = SimplifyPath(p, CArea::m_clipper_clean_distance, is_closed);
+        path = SimplifyPath(path, CArea::m_clipper_clean_distance, is_closed);
     }
 
     // TODO for open paths start at one end and iterate in the direction of
@@ -432,10 +438,14 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
     int64_t prevZ = -1;
     heeks::Point prevP;
     double phi_total = 0.0;
-    int num_j = p.size() + (is_closed ? 1 : 0);
+    int num_j = path.size() + (is_closed ? 1 : 0);
     for (int dj = 0; dj < num_j; dj++) {
-        const int j = ((reverse ? -1 : 1) * dj + 2 * p.size()) % p.size();
-        const Point64& pt = p[j];
+        const int j = ((reverse ? -1 : 1) * dj + 2 * path.size()) % path.size();
+        const int jnext = ((reverse ? -1 : 1) * (dj + 1) + 2 * path.size()) % path.size();
+        const bool hasNext = (dj + 1 < num_j) || is_closed;
+        const bool nextGenerated = (dj + 1 == num_j) && is_closed;
+
+        const Point64& pt = path[j];
         PointD dp = ToPointD(pt);
         heeks::Point p(dp.x / CArea::m_units, dp.y / CArea::m_units);
 
@@ -452,46 +462,17 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
             std::cerr << "  [" << dj << "] j=" << j << " (" << p.x << ", " << p.y << ", " << pt.z
                       << ") ";
             std::cerr << "Edge (" << prevZ << ", " << pt.z << "): LINE";
-
-            // Check if prevZ and pt.z map to the same point
-            if (prevZ != -1 && prevZ != pt.z) {
-                auto prev_it = arcMap.point_map.find(prevZ);
-                auto curr_it = arcMap.point_map.find(pt.z);
-                if (prev_it != arcMap.point_map.end() && curr_it != arcMap.point_map.end()) {
-                    const heeks::Point& prev_center = prev_it->second;
-                    const heeks::Point& curr_center = curr_it->second;
-                    if (prev_center == curr_center) {
-                        std::cerr << " [WARNING: z=" << prevZ << " and z=" << pt.z
-                                  << " map to same point (" << prev_center.x << ", "
-                                  << prev_center.y << ")]";
-                    }
-                }
-            }
             std::cerr << std::endl;
 
             curve.m_vertices.emplace_back(0, p, heeks::Point {0, 0});
             phi_total = 0.0;
         }
         else {
-            heeks::Point center;
-            if (prevZ == pt.z) {
-                auto point_it = arcMap.point_map.find(pt.z);
-                if (point_it != arcMap.point_map.end()) {
-                    center = point_it->second;
-                }
-                else {
-                    std::cerr << std::endl
-                              << "ERROR: prevZ == pt.z (" << pt.z << ") but not in point_map."
-                              << std::endl;
-                    throw std::runtime_error("prevZ == pt.z but z not in point_map");
-                }
-            }
-            else {
-                center = centerIt->second;
-            }
+            const bool isPointExpansion = prevZ == pt.z;
+            heeks::Point center = isPointExpansion ? arcMap.point_map.at(pt.z) : centerIt->second;
 
-            const double phi0 = atan2(prevP.y - center.y, prevP.x - center.x);
-            const double phi1 = atan2(p.y - center.y, p.x - center.x);
+            double phi0 = atan2(prevP.y - center.y, prevP.x - center.x);
+            double phi1 = atan2(p.y - center.y, p.x - center.x);
 
             double dphi = phi1 - phi0;
             if (dphi > M_PI) {
@@ -503,6 +484,160 @@ static void SetFromResult(CCurve& curve, Path64& p, bool reverse, bool is_closed
 
             // Positive dphi means ccw arc, negative means cw arc
             int type = (dphi > 0) ? 1 : -1;
+
+            // Helper for recentering an angle on a target reference angle TODO deduplicate, and use
+            // on dphi
+            auto recenter = [](double phi, double phi_ref) {
+                if (phi - phi_ref > M_PI) {
+                    return phi - 2 * M_PI;
+                }
+                else if (phi - phi_ref < -M_PI) {
+                    return phi + 2 * M_PI;
+                }
+                return phi;
+            };
+
+            // Check if next segment is an original arc (for point expansion)
+            if (isPointExpansion && hasNext) {
+                const Point64& pt_next = path[jnext];
+                std::pair<int64_t, int64_t> zPairNext(
+                    std::min(pt.z, pt_next.z),
+                    std::max(pt.z, pt_next.z)
+                );
+                auto centerNextIt = arcMap.arc_centers.find(zPairNext);
+
+                if (centerNextIt != arcMap.arc_centers.end() && centerNextIt->second != center) {
+                    // Next is an original arc, with boundary at this point expansion's center point
+                    const heeks::Point& center_next = centerNextIt->second;
+                    PointD dp_next = ToPointD(pt_next);
+                    heeks::Point p_next(dp_next.x / CArea::m_units, dp_next.y / CArea::m_units);
+
+                    // Angle from next arc's center to this point expansion's center
+                    double phi_boundary = atan2(center.y - center_next.y, center.x - center_next.x);
+
+                    // Angle from next arc's center to its end point
+                    double phi_next = atan2(p_next.y - center_next.y, p_next.x - center_next.x);
+
+                    phi0 = recenter(phi0, phi_boundary);
+                    phi1 = recenter(phi1, phi_boundary);
+                    phi_next = recenter(phi_next, phi_boundary);
+
+                    // Compute type of next arc
+                    int type_next = (phi_next - phi_boundary > 0) ? 1 : -1;
+
+                    if (type == type_next) {
+                        // Compute radius of next arc from center_next to current point p
+                        double dx = p.x - center_next.x;
+                        double dy = p.y - center_next.y;
+                        double radius_next = sqrt(dx * dx + dy * dy);
+                        const double allowed_angle_error = CArea::m_accuracy / CArea::m_units
+                            / radius_next;
+
+                        if (abs(phi_boundary - phi0) < allowed_angle_error
+                            || ((phi_boundary < phi0) == (phi_boundary < phi_next))) {
+                            std::cerr << "  [ACTION: SUBSUME]" << std::endl;
+                            // Subsume this point expansion with the subsequent arc
+                            if (nextGenerated) {
+                                // Update its start location to prevP
+                                curve.m_vertices.front().m_p = prevP;
+                            }
+                            else {
+                                // Next arc will generate appropriately by simply not changing prevP
+                            }
+                            continue;
+                        }
+                        else if ((phi_boundary < phi1) == (phi_boundary < phi_next)) {
+                            std::cerr << "  [ACTION: REPLACE PART]" << std::endl;
+                            // Replace part of this point expansion with the next arc
+
+                            // Change p to the new point at that radius at angle phi_boundary
+                            p.x = center_next.x + radius_next * cos(phi_boundary);
+                            p.y = center_next.y + radius_next * sin(phi_boundary);
+
+                            if (nextGenerated) {
+                                // Update its start location to p
+                                curve.m_vertices.front().m_p = p;
+                            }
+                        }
+                        else {
+                            std::cerr << "  [ACTION: NO ACTION]" << std::endl;
+                            // No action required; full point expansion is correct
+                        }
+                    }
+                    else {
+                        std::cerr << "  [ACTION: TYPES DIFFER]" << std::endl;
+                    }
+                }
+            }
+
+            // For original arcs, check if the next segment is a point expansion of the arc's endpoint
+            if (!isPointExpansion && hasNext) {
+                const Point64& pt_next = path[jnext];
+                if (pt_next.z == pt.z && arcMap.point_map.at(pt_next.z) != center) {
+                    // It is; determine how much the arc should be expanded into that region
+                    const heeks::Point& center_next = arcMap.point_map.at(pt_next.z);
+                    PointD dp_next = ToPointD(pt_next);
+                    heeks::Point p_next(dp_next.x / CArea::m_units, dp_next.y / CArea::m_units);
+
+                    // Angle from this arc's center to the point expansion's center
+                    double phi_boundary = atan2(center_next.y - center.y, center_next.x - center.x);
+
+                    // Angle from this arc's center to the expansion's end point
+                    double phi_next = atan2(p_next.y - center.y, p_next.x - center.x);
+
+                    phi0 = recenter(phi0, phi_boundary);
+                    phi1 = recenter(phi1, phi_boundary);
+                    phi_next = recenter(phi_next, phi_boundary);
+
+                    // Compute type of next arc
+                    int type_next = (phi_next - phi1 > 0) ? 1 : -1;
+
+                    if (type == type_next) {
+                        // Compute radius of this arc from center to current point p
+                        double dx = p.x - center.x;
+                        double dy = p.y - center.y;
+                        double radius = sqrt(dx * dx + dy * dy);
+                        const double allowed_angle_error = CArea::m_accuracy / CArea::m_units
+                            / radius;
+
+                        if (abs(phi_boundary - phi_next) < allowed_angle_error
+                            || ((phi_boundary < phi1) == (phi_boundary < phi_next))) {
+                            std::cerr << "  [ACTION: SUBSUME]" << std::endl;
+                            // Subsume the subsequent point expansion with this arc
+                            p = p_next;
+                            if (nextGenerated) {
+                                // Delete it, and update start location for the next move
+                                curve.m_vertices.erase(std::next(curve.m_vertices.begin()));
+                                curve.m_vertices.front().m_p = p;
+                            }
+                            else {
+                                // Skip the point expansion that comes next
+                                dj += 1;
+                            }
+                        }
+                        else if ((phi_boundary < phi1) == (phi_boundary < phi0)) {
+                            std::cerr << "  [ACTION: REPLACE PART]" << std::endl;
+                            // Replace part of the subsequent point expansion with this arc
+
+                            // Change p to the new point at that radius at angle phi_boundary
+                            p.x = center.x + radius * cos(phi_boundary);
+                            p.y = center.y + radius * sin(phi_boundary);
+
+                            if (nextGenerated) {
+                                // Update its start location to p
+                                curve.m_vertices.front().m_p = p;
+                            }
+                        }
+                        else {
+                            std::cerr << "  [ACTION: NO ACTION]" << std::endl;
+                            // No action required; full point expansion is correct
+                        }
+                    }
+                    else {
+                        std::cerr << "  [ACTION: TYPES DIFFER]" << std::endl;
+                    }
+                }
+            }
 
             if (curve.m_vertices.size() > 0 && curve.m_vertices.back().m_type == type
                 && curve.m_vertices.back().m_c == center && phi_total + abs(dphi) <= 2 * M_PI) {
