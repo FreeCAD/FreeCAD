@@ -569,11 +569,11 @@ static void zigzag(const CArea& input_a)
         Point p2(x1, y);
         Point p3(x1, y0);
         CCurve c;
-        c.m_vertices.emplace_back(0, p0, null_point, 0);
-        c.m_vertices.emplace_back(0, p1, null_point, 0);
-        c.m_vertices.emplace_back(0, p2, null_point, 1);
-        c.m_vertices.emplace_back(0, p3, null_point, 0);
-        c.m_vertices.emplace_back(0, p0, null_point, 1);
+        c.m_vertices.emplace_back(0, p0, null_point);
+        c.m_vertices.emplace_back(0, p1, null_point);
+        c.m_vertices.emplace_back(0, p2, null_point);
+        c.m_vertices.emplace_back(0, p3, null_point);
+        c.m_vertices.emplace_back(0, p0, null_point);
         CArea a2;
         a2.m_curves.push_back(c);
         a2.Intersect(a);
@@ -710,14 +710,10 @@ void CArea::MakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketP
                         }
                         else {
                             if (nmin != endCurve.m_vertices.back().m_p) {
-                                endCurve.append(
-                                    CVertex(smin.m_v.m_type, nmin, smin.m_v.m_c, smin.m_v.m_user_data)
-                                );
+                                endCurve.append(CVertex(smin.m_v.m_type, nmin, smin.m_v.m_c));
                             }
                             if (nmin != it->m_v.m_p) {
-                                startCurve.append(
-                                    CVertex(smin.m_v.m_type, it->m_v.m_p, smin.m_v.m_c, smin.m_v.m_user_data)
-                                );
+                                startCurve.append(CVertex(smin.m_v.m_type, it->m_v.m_p, smin.m_v.m_c));
                             }
                         }
                     }

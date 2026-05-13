@@ -319,11 +319,9 @@ void init_pyarea(py::module& m)
         .def(py::init<CVertex>())
         .def(py::init<int, Point, Point>())
         .def(py::init<Point>())
-        .def(py::init<int, Point, Point, int>())
         .def_readwrite("type", &CVertex::m_type)
         .def_readwrite("p", &CVertex::m_p)
-        .def_readwrite("c", &CVertex::m_c)
-        .def_readwrite("user_data", &CVertex::m_user_data);
+        .def_readwrite("c", &CVertex::m_c);
 
     py::class_<Span>(m, "Span")
         .def(py::init<Span>())

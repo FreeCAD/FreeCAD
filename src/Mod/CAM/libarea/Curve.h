@@ -59,16 +59,14 @@ public:
     int m_type;  // 0 - line ( or start point ), 1 - anti-clockwise arc, -1 - clockwise arc
     Point m_p;   // end point
     Point m_c;   // centre point in absolute coordinates
-    int m_user_data;
 
     CVertex()
         : m_type(0)
         , m_p(Point(0, 0))
         , m_c(Point(0, 0))
-        , m_user_data(0)
     {}
-    CVertex(int type, const Point& p, const Point& c, int user_data = 0);
-    CVertex(const Point& p, int user_data = 0);
+    CVertex(int type, const Point& p, const Point& c);
+    CVertex(const Point& p);
 };
 
 class Span
