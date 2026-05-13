@@ -141,6 +141,7 @@ HELPER_PYI_FILES = {
 }
 PUBLIC_STUB_DECORATORS = {
     "classmethod",
+    "deprecated",
     "overload",
     "staticmethod",
 }
