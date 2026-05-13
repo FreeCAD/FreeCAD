@@ -84,7 +84,8 @@ QGIView::QGIView()
     m_label(new QGCustomLabel()),
     m_border(new QGCustomBorder()),
     m_caption(new QGICaption()),
-    m_lock(new QGCustomImage())
+    m_lock(new QGCustomImage()),
+    m_inhibitSnapOnPosChange(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -185,7 +186,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         else {
             // For general views we check if we need to snap to a position
             if (!(QApplication::keyboardModifiers() & Qt::AltModifier)) {
-                snapPosition(newPos);
+                if (!m_inhibitSnapOnPosChange) {
+                    snapPosition(newPos);
+                }
+                m_inhibitSnapOnPosChange = false;
             }
         }
 
@@ -273,6 +277,10 @@ void QGIView::dragFinished()
 //! position, otherwise it is the position within the ProjectionGroup.
 void QGIView::snapPosition(QPointF& newPosition)
 {
+    if (m_inhibitSnapOnPosChange) {
+        return;
+    }
+
     if (!Preferences::SnapViews()) {
         return;
     }

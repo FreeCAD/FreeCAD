@@ -243,6 +243,8 @@ private:
                        QPointF& outCaptionPos,
                        QPointF& outLabelPos,
                        QPointF& outLockPos) const;
+
+    bool m_inhibitSnapOnPosChange{false};
 };
 
 } // namespace
