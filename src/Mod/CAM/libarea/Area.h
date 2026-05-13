@@ -117,6 +117,7 @@ public:
         double miterLimit = 5.0,
         double arcTolerance = 0.0
     );
+    void ClipperNoop();  // converts to clipper and back (arc fiting) without performing clipper ops
     void Thicken(double value);
     void FitArcs();
     unsigned int num_curves()
