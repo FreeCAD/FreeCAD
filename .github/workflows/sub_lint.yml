@@ -198,7 +198,7 @@ jobs:
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+        uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
         with:
           egress-policy: audit
 
@@ -256,6 +256,15 @@ jobs:
 
     # Python linting steps
 
+      - name: Set up pixi for stub smoke checks
+        if: always()
+        uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
+
+      - name: Install Python stub smoke-check dependencies
+        if: always()
+        run: |
+          python3 -m pip install --user uv
+
       - name: Pylint
         if: inputs.checkPylint && inputs.changedPythonFiles != '' && always()
         continue-on-error: ${{ inputs.pylintFailSilent }}
@@ -272,6 +281,15 @@ jobs:
         run: |
           python3 tools/lint/black.py \
             --files "${{ inputs.changedPythonFiles }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Generated binding stubs smoke check
+        if: always()
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          python3 tools/lint/python_stubs.py \
+            --files "${{ inputs.changedFiles }}" \
             --log-dir "${{ env.logdir }}" \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
 

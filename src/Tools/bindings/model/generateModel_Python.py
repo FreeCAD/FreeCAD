@@ -147,6 +147,7 @@ class FunctionSignature:
         return ast.unparse(node)
 
     def update_flags(self, func: ast.FunctionDef) -> None:
+        self.typing_only_flag = False
         for deco in func.decorator_list:
             match deco:
                 case ast.Name(id, _):
@@ -167,6 +168,8 @@ class FunctionSignature:
                     self.static_flag = True
                 case "overload":
                     self.is_overload = True
+                case "typing_only":
+                    self.typing_only_flag = True
 
 
 class Function:
@@ -181,52 +184,62 @@ class Function:
         self.signatures.append(FunctionSignature(func))
 
     @property
+    def public_signatures(self) -> list[FunctionSignature]:
+        return [sig for sig in self.signatures if not sig.typing_only_flag]
+
+    @property
     def docstring(self) -> str:
-        return "\n\n".join((f.docstring for f in self.signatures if f.docstring))
+        return "\n\n".join((f.docstring for f in self.public_signatures if f.docstring))
 
     @property
     def has_keywords(self) -> bool:
-        overloads = len(self.signatures) > 1
+        signatures = self.public_signatures
+        overloads = len(signatures) > 1
         if overloads:
-            return any(sig.has_keywords for sig in self.signatures if sig.is_overload)
-        return self.signatures[0].has_keywords
+            return any(sig.has_keywords for sig in signatures if sig.is_overload)
+        return signatures[0].has_keywords if signatures else False
 
     @property
     def signature(self) -> FunctionSignature | None:
         """First non overload signature"""
-        for sig in self.signatures:
+        for sig in self.public_signatures:
             if not sig.is_overload:
                 return sig
         return None
 
     @property
     def doc_signatures(self) -> list[FunctionSignature]:
-        if len(self.signatures) == 1:
-            return [self.signatures[0]]
+        signatures = self.public_signatures
+        if len(signatures) == 1:
+            return [signatures[0]]
 
-        implemented = [sig for sig in self.signatures if not sig.is_overload]
-        return implemented or [sig for sig in self.signatures if sig.is_overload]
+        implemented = [sig for sig in signatures if not sig.is_overload]
+        return implemented or [sig for sig in signatures if sig.is_overload]
 
     @property
     def annotated_signatures(self) -> list[FunctionSignature]:
-        overloads = [sig for sig in self.signatures if sig.is_overload]
+        overloads = [sig for sig in self.public_signatures if sig.is_overload]
         return overloads or self.doc_signatures
 
     @property
     def static_flag(self) -> bool:
-        return any(sig.static_flag for sig in self.signatures)
+        return any(sig.static_flag for sig in self.public_signatures)
 
     @property
     def const_flag(self) -> bool:
-        return any(sig.const_flag for sig in self.signatures)
+        return any(sig.const_flag for sig in self.public_signatures)
 
     @property
     def class_flag(self) -> bool:
-        return any(sig.class_flag for sig in self.signatures)
+        return any(sig.class_flag for sig in self.public_signatures)
 
     @property
     def noargs_flag(self) -> bool:
-        return any(sig.noargs_flag for sig in self.signatures)
+        return any(sig.noargs_flag for sig in self.public_signatures)
+
+    @property
+    def typing_only_flag(self) -> bool:
+        return bool(self.signatures) and not self.public_signatures
 
     def add_signature_docs(self, doc: Documentation) -> None:
         _compose_signature_docs(
@@ -507,6 +520,8 @@ def _parse_methods(functions: dict[str, Function]) -> List[Methode]:
     methods = []
 
     for func in functions.values():
+        if func.typing_only_flag:
+            continue
         doc_obj = _parse_docstring_for_documentation(func.docstring)
         func.add_signature_docs(doc_obj)
         method_params = []

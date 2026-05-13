@@ -22,6 +22,7 @@
 #include "TaskMassProperties.h"
 #include "Mod/Measure/App/MassPropertiesResult.h"
 #include "Mod/Measure/App/MassPropertiesObject.h"
+#include "ViewProviderMassPropertiesResult.h"
 #include "ui_TaskMassProperties.h"
 
 #include <QtCore/QScopedValueRollback>
@@ -282,8 +283,8 @@ TaskMassProperties::TaskMassProperties()
         tr("Physical Properties"),
         panel->takePage(panel->ui.physicalPropertiesPage)
     );
-    addTaskBox("Std_Point", tr("Center of Gravity"), panel->takePage(panel->ui.centerOfGravityPage));
-    addTaskBox("Std_Point", tr("Center of Volume"), panel->takePage(panel->ui.centerOfVolumePage));
+    addTaskBox("COG-Icon", tr("Center of Gravity"), panel->takePage(panel->ui.centerOfGravityPage));
+    addTaskBox("COV-Icon", tr("Center of Volume"), panel->takePage(panel->ui.centerOfVolumePage));
     addTaskBox("Std_CoordinateSystem", tr("Inertia"), panel->takePage(panel->ui.inertiaPage));
 
     updateInertiaVisibility();
@@ -414,21 +415,13 @@ void TaskMassProperties::removeTemporaryObjects()
         return;
     }
 
-    if (!doc->getObject("Center_of_Gravity") && !doc->getObject("Center_of_Volume")
-        && !doc->getObject("Principal_Axes_LCS")) {
+    if (!doc->getObject("MassPropertiesPreview")) {
         return;
     }
 
-    doc->openTransaction("Remove temporary datum objects");
-
-    if (doc->getObject("Center_of_Gravity")) {
-        doc->removeObject("Center_of_Gravity");
-    }
-    if (doc->getObject("Center_of_Volume")) {
-        doc->removeObject("Center_of_Volume");
-    }
-    if (doc->getObject("Principal_Axes_LCS")) {
-        doc->removeObject("Principal_Axes_LCS");
+    doc->openTransaction("Remove temporary mass properties object");
+    if (doc->getObject("MassPropertiesPreview")) {
+        doc->removeObject("MassPropertiesPreview");
     }
 
     doc->commitTransaction();
@@ -1154,12 +1147,42 @@ void TaskMassProperties::tryUpdate()
 
     const auto infoSnapshot = currentInfo;
     QTimer::singleShot(0, this, [this, infoSnapshot, hasAxisSelection]() {
-        currentInfo = infoSnapshot;
-        createDatum(currentInfo.cog, "Center_of_Gravity");
-        createDatum(currentInfo.cov, "Center_of_Volume");
-        if (!hasAxisSelection) {
-            createLCS("Principal_Axes_LCS");
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (!doc) {
+            return;
         }
+
+        App::DocumentObject* obj = doc->getObject("MassPropertiesPreview");
+        if (!obj) {
+            obj = doc->addObject("Measure::Result", "MassPropertiesPreview");
+        }
+
+        obj->Visibility.setValue(true);
+
+        auto* guiDoc = Gui::Application::Instance->activeDocument();
+        if (!guiDoc) {
+            return;
+        }
+
+        auto* view = dynamic_cast<Gui::ViewProviderDocumentObject*>(guiDoc->getViewProvider(obj));
+        if (!view) {
+            return;
+        }
+
+        if (auto* resultView = dynamic_cast<ViewProviderMassPropertiesResult*>(view)) {
+            resultView->setCenters(infoSnapshot.cog, infoSnapshot.cov);
+            resultView->setPrincipalAxes(
+                infoSnapshot.cog,
+                infoSnapshot.principalAxis1,
+                infoSnapshot.principalAxis2,
+                infoSnapshot.principalAxis3,
+                !hasAxisSelection
+            );
+        }
+
+        view->setShowable(true);
+        view->ShowInTree.setValue(false);
+        view->show();
     });
 }
 
@@ -1244,17 +1267,17 @@ void TaskMassProperties::createLCS(std::string name, bool removeExisting)
         Base::Matrix4D mat;
         mat.setToUnity();
 
-        mat[0][0] = currentInfo.principalAxisX.x;
-        mat[1][0] = currentInfo.principalAxisX.y;
-        mat[2][0] = currentInfo.principalAxisX.z;
+        mat[0][0] = currentInfo.principalAxis1.x;
+        mat[1][0] = currentInfo.principalAxis1.y;
+        mat[2][0] = currentInfo.principalAxis1.z;
 
-        mat[0][1] = currentInfo.principalAxisY.x;
-        mat[1][1] = currentInfo.principalAxisY.y;
-        mat[2][1] = currentInfo.principalAxisY.z;
+        mat[0][1] = currentInfo.principalAxis2.x;
+        mat[1][1] = currentInfo.principalAxis2.y;
+        mat[2][1] = currentInfo.principalAxis2.z;
 
-        mat[0][2] = currentInfo.principalAxisZ.x;
-        mat[1][2] = currentInfo.principalAxisZ.y;
-        mat[2][2] = currentInfo.principalAxisZ.z;
+        mat[0][2] = currentInfo.principalAxis3.x;
+        mat[1][2] = currentInfo.principalAxis3.y;
+        mat[2][2] = currentInfo.principalAxis3.z;
 
         plm.setRotation(mat);
 
@@ -1346,8 +1369,6 @@ void TaskMassProperties::saveResult()
     }
 
     doc->openTransaction("Add Mass Properties");
-
-    Measure::Result::init();
 
     auto group = freecad_cast<App::DocumentObjectGroup*>(doc->getObject("Measurements"));
 
@@ -1498,9 +1519,9 @@ void TaskMassProperties::saveResult()
         setQuantity("InertiaJy", "Inertia", Base::Quantity(currentInfo.inertiaJ.y, Base::Unit::Inertia));
         setQuantity("InertiaJz", "Inertia", Base::Quantity(currentInfo.inertiaJ.z, Base::Unit::Inertia));
 
-        setVector("PrincipalAxisX", "Inertia", currentInfo.principalAxisX);
-        setVector("PrincipalAxisY", "Inertia", currentInfo.principalAxisY);
-        setVector("PrincipalAxisZ", "Inertia", currentInfo.principalAxisZ);
+        setVector("PrincipalAxis1", "Inertia", currentInfo.principalAxis1);
+        setVector("PrincipalAxis2", "Inertia", currentInfo.principalAxis2);
+        setVector("PrincipalAxis3", "Inertia", currentInfo.principalAxis3);
     }
 
     if (group) {
@@ -1510,6 +1531,16 @@ void TaskMassProperties::saveResult()
 
     if (auto* guiDoc = Gui::Application::Instance->activeDocument()) {
         if (auto* view = dynamic_cast<Gui::ViewProviderDocumentObject*>(guiDoc->getViewProvider(obj))) {
+            if (auto* resultView = dynamic_cast<ViewProviderMassPropertiesResult*>(view)) {
+                resultView->setCenters(currentInfo.cog, currentInfo.cov);
+                resultView->setPrincipalAxes(
+                    currentInfo.cog,
+                    currentInfo.principalAxis1,
+                    currentInfo.principalAxis2,
+                    currentInfo.principalAxis3,
+                    !hasAxisSelection
+                );
+            }
             view->setShowable(true);
             view->show();
         }

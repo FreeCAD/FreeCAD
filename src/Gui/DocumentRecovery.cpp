@@ -806,8 +806,8 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(
     for (const QFileInfo& it : locks) {
         QString bn = it.baseName();
         // ignore the lock file for this instance
-        QString pid = QString::number(App::Application::applicationPid());
-        if (bn.startsWith(exeName) && bn.indexOf(pid) < 0) {
+        QString uiid = QString::number(App::Application::uniqueInstanceId());
+        if (bn.startsWith(exeName) && bn.indexOf(uiid) < 0) {
             QString fn = it.absoluteFilePath();
 
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
@@ -817,11 +817,11 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(
 #endif
             if (flock.try_lock()) {
                 // OK, this file is a leftover from a previous crash
-                QString crashed_pid = bn.mid(exeName.length() + 1);
-                // search for transient directories with this PID
+                QString crashedUiid = bn.mid(exeName.length() + 1);
+                // search for transient directories with this UIID
                 QString filter;
                 QTextStream str(&filter);
-                str << exeName << "_Doc_*_" << crashed_pid;
+                str << exeName << "_Doc_*_" << crashedUiid;
                 tmp.setNameFilters(QStringList() << filter);
                 tmp.setFilter(QDir::Dirs);
                 QList<QFileInfo> dirs = tmp.entryInfoList();

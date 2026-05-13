@@ -491,7 +491,7 @@ Vrijednost u rasponu 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>

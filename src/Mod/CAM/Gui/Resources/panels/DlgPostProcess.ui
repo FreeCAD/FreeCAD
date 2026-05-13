@@ -23,7 +23,7 @@
    <item>
     <widget class="QLabel" name="labelJobTitle">
      <property name="styleSheet">
-      <string>font-weight: bold; font-size: 13px;</string>
+      <string notr="true">font-weight: bold; font-size: 13px;</string>
      </property>
      <property name="text">
       <string>Post Processing - Job: (unknown)</string>
@@ -180,7 +180,7 @@
           <item row="0" column="0" colspan="2">
            <widget class="QLabel" name="labelPostParamsPlaceholder">
             <property name="styleSheet">
-             <string>color: gray;</string>
+             <string notr="true">color: gray;</string>
             </property>
             <property name="text">
              <string>(No additional parameters for this post processor)</string>
@@ -303,7 +303,7 @@
            <item>
             <widget class="QLabel" name="labelNoMachineOutput">
              <property name="styleSheet">
-              <string>color: gray; font-style: italic;</string>
+              <string notr="true">color: gray; font-style: italic;</string>
              </property>
              <property name="text">
               <string>(Select a machine on the Overview tab to see machine output options)</string>
@@ -414,7 +414,7 @@
        <item>
         <widget class="QLabel" name="labelOutputStatus">
          <property name="styleSheet">
-          <string>color: gray; font-style: italic;</string>
+          <string notr="true">color: gray; font-style: italic;</string>
          </property>
          <property name="text">
           <string>Press &quot;Generate Output&quot; to preview G-code before saving.</string>
@@ -490,7 +490,7 @@
        <item>
         <widget class="QLabel" name="labelWarningsStatus">
          <property name="styleSheet">
-          <string>color: green; font-weight: bold;</string>
+          <string notr="true">color: green; font-weight: bold;</string>
          </property>
          <property name="text">
           <string>No issues found.</string>

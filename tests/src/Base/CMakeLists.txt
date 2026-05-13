@@ -17,6 +17,7 @@ add_executable(Base_tests_run
         Parameter.cpp
         Placement.cpp
         Persistence.cpp
+        PyException.cpp
         Quantity.cpp
         Reader.cpp
         Rotation.cpp

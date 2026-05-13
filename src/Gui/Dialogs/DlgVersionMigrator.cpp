@@ -485,7 +485,7 @@ void DlgVersionMigrator::migrate()
             }
             auto warning = new QMessageBox(mainWindow);
             warning->setIcon(QMessageBox::Warning);
-            warning->setWindowTitle(QObject::tr("Migration completed with warnings"));
+            warning->setWindowTitle(QObject::tr("Migration Completed With Warnings"));
             auto logFileName = QStringLiteral("migration-to-")
                 + QString::fromStdString(
                                    App::ApplicationDirectories::versionStringForPath(major, minor)
@@ -509,7 +509,7 @@ void DlgVersionMigrator::migrate()
     else {
         QMessageBox::critical(
             mainWindow,
-            QObject::tr("Migration failed"),
+            QObject::tr("Migration Failed"),
             QObject::tr("Migration failed. See the Report View for details.")
         );
     }
