@@ -57,6 +57,7 @@ class TestRubberbandSelection(unittest.TestCase):
         ("Revit", "Gui::RevitNavigationStyle"),
         ("SolidWorks", "Gui::SolidWorksNavigationStyle"),
         ("TinkerCAD", "Gui::TinkerCADNavigationStyle"),
+        ("Touchpad", "Gui::TouchpadNavigationStyle"),
     )
     ADDITIVE_DRAG_STYLES = (
         ("CAD", "Gui::CADNavigationStyle"),
@@ -64,6 +65,7 @@ class TestRubberbandSelection(unittest.TestCase):
         ("Revit", "Gui::RevitNavigationStyle"),
         ("SolidWorks", "Gui::SolidWorksNavigationStyle"),
         ("TinkerCAD", "Gui::TinkerCADNavigationStyle"),
+        ("Touchpad", "Gui::TouchpadNavigationStyle"),
     )
     MODIFIED_DRAG_STYLES = (
         ("Gesture", "Gui::GestureNavigationStyle"),
@@ -97,12 +99,18 @@ class TestRubberbandSelection(unittest.TestCase):
                 "3D view widget wrapping is unavailable in this test environment"
             )
 
+        self.view_preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+        self.old_enable_selection = self.view_preferences.GetBool("EnableSelection", True)
+        self.view_preferences.SetBool("EnableSelection", True)
+
         self.viewer.setEnabledNaviCube(False)
         self.view.setAxisCross(False)
         self._refresh_view()
 
     def tearDown(self):
         FreeCADGui.Selection.clearSelection()
+        if hasattr(self, "view_preferences"):
+            self.view_preferences.SetBool("EnableSelection", self.old_enable_selection)
         if self.doc is not None:
             FreeCAD.closeDocument(self.doc.Name)
 
