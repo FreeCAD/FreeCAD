@@ -445,6 +445,8 @@ static void SetFromResult(
         return;
     }
 
+    const double max_arc_length = 2 * PI * .99;
+
     // TODO for open paths start at one end and iterate in the direction of
     // decreasing z (which may be a nuanced notion given newly generated z
     // values)
@@ -547,7 +549,7 @@ static void SetFromResult(
                         // or phi0 > phi1 > phi_next (type -1)
                         // always: type * phi0 < type * phi1 < type * phi_next
                         if (type * phi_boundary - angle_error < type * phi0) {
-                            std::cerr << "  [ACTION: SUBSUME]" << std::endl;
+                            std::cerr << "  [ACTION POINT_EXP: SUBSUME]" << std::endl;
                             // Subsume this point expansion with the subsequent arc
                             if (nextGenerated) {
                                 // Update its start location to prevP
@@ -556,7 +558,7 @@ static void SetFromResult(
                             continue;
                         }
                         else if (type * phi_boundary + angle_error < type * phi1) {
-                            std::cerr << "  [ACTION: REPLACE PART]" << std::endl;
+                            std::cerr << "  [ACTION POINT_EXP: REPLACE PART]" << std::endl;
                             // Replace part of this point expansion with the next arc
                             p.x = arc_center.x + arc_radius * cos(phi_boundary);
                             p.y = arc_center.y + arc_radius * sin(phi_boundary);
@@ -566,12 +568,19 @@ static void SetFromResult(
                             }
                         }
                         else {
-                            std::cerr << "  [ACTION: NO ACTION]" << std::endl;
+                            std::cerr
+                                << "  [ACTION POINT_EXP: NO ACTION] phi_boundary=" << phi_boundary
+                                << " phi0=" << phi0 << " phi1=" << phi1
+                                << " angle_error=" << angle_error
+                                << " (type*phi_boundary-err)=" << (type * phi_boundary - angle_error)
+                                << " (type*phi0)=" << (type * phi0)
+                                << " (type*phi_boundary+err)=" << (type * phi_boundary + angle_error)
+                                << " (type*phi1)=" << (type * phi1) << std::endl;
                             // No action required; full point expansion is correct
                         }
                     }
                     else {
-                        std::cerr << "  [ACTION: TYPES DIFFER]" << std::endl;
+                        std::cerr << "  [ACTION POINT_EXP: TYPES DIFFER]" << std::endl;
                     }
                 }
             }
@@ -604,7 +613,7 @@ static void SetFromResult(
                         // or phi0 > phi1 > phi_next (type -1)
                         // always: type * phi0 < type * phi1 < type * phi_next
                         if (type * phi_boundary + angle_error > phi_next) {
-                            std::cerr << "  [ACTION: SUBSUME]" << std::endl;
+                            std::cerr << "  [ACTION ARC: SUBSUME]" << std::endl;
                             // Subsume the subsequent point expansion with this arc
                             p = p_next;
                             if (nextGenerated) {
@@ -618,7 +627,7 @@ static void SetFromResult(
                             }
                         }
                         else if (type * phi_boundary - angle_error > phi1) {
-                            std::cerr << "  [ACTION: REPLACE PART]" << std::endl;
+                            std::cerr << "  [ACTION ARC: REPLACE PART]" << std::endl;
                             // Replace part of the subsequent point expansion with this arc
                             p.x = center.x + radius * cos(phi_boundary);
                             p.y = center.y + radius * sin(phi_boundary);
@@ -628,18 +637,25 @@ static void SetFromResult(
                             }
                         }
                         else {
-                            std::cerr << "  [ACTION: NO ACTION]" << std::endl;
+                            std::cerr
+                                << "  [ACTION ARC: NO ACTION] phi_boundary=" << phi_boundary
+                                << " phi1=" << phi1 << " phi_next=" << phi_next
+                                << " angle_error=" << angle_error
+                                << " (type*phi_boundary+err)=" << (type * phi_boundary + angle_error)
+                                << " (type*phi_next)=" << (type * phi_next)
+                                << " (type*phi_boundary-err)=" << (type * phi_boundary - angle_error)
+                                << " (type*phi1)=" << (type * phi1) << std::endl;
                             // No action required; full point expansion is correct
                         }
                     }
                     else {
-                        std::cerr << "  [ACTION: TYPES DIFFER]" << std::endl;
+                        std::cerr << "  [ACTION ARC: TYPES DIFFER]" << std::endl;
                     }
                 }
             }
 
             if (curve.m_vertices.size() > 0 && curve.m_vertices.back().m_type == type
-                && curve.m_vertices.back().m_c == center && phi_total + abs(dphi) <= 2 * M_PI) {
+                && curve.m_vertices.back().m_c == center && phi_total + abs(dphi) <= max_arc_length) {
                 // Extend the previous CVertex arc
                 std::cerr << "  [" << dj << "] j=" << j << " (" << p.x << ", " << p.y << ", "
                           << pt.z << ") ";
@@ -691,7 +707,7 @@ static void SetFromResult(
         if (last_vertex.m_type != 0 && second_vertex.m_type != 0
             && last_vertex.m_type == second_vertex.m_type && last_vertex.m_c == second_vertex.m_c) {
 
-            // Calculate total arc angle to ensure it doesn't exceed 2*PI
+            // Calculate total arc angle to ensure it doesn't exceed max_arc_length
             const heeks::Point& p0 = curve.m_vertices.front().m_p;
             const heeks::Point& p1 = second_vertex.m_p;
             auto second_to_last_it = std::prev(curve.m_vertices.end(), 2);
@@ -724,8 +740,8 @@ static void SetFromResult(
                 }
             }
 
-            // Check if total exceeds a full circle; if not, then combine them
-            if (abs(dphi_last) + abs(dphi_first) < 2 * M_PI) {
+            // Check if total exceeds max_arc_length; if not, then combine them
+            if (abs(dphi_last) + abs(dphi_first) < max_arc_length) {
                 curve.m_vertices.pop_back();
                 curve.m_vertices.front().m_p = p_prev;
 
