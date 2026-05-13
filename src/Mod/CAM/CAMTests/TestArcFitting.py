@@ -20,9 +20,7 @@
 ################################################################################
 
 """
-Unit tests for arc fitting/unfitting operations.
-Tests verify that FitArcs/UnfitArcs preserve geometry through round-trips
-and that operations (offset, boolean) handle arcs correctly.
+Unit tests for clipper arc fitting/unfitting operations.
 """
 
 import unittest
@@ -268,10 +266,10 @@ def areas_equal(a1, a2):
 
 
 class TestArcFittingRoundTrip(PathTestBase):
-    """Tests for FitArcs and UnfitArcs round-trip operations."""
+    """Tests for round-trip conversions to clipper and back (ClipperNoop)."""
 
     def assert_area_unchanged_by_roundtrip(self, a):
-        """Helper: Assert that UnFitArcs->FitArcs doesn't change the given Area."""
+        """Helper: Assert that ClipperNoop (arc to lines and restore) doesn't change the Area."""
         # Store original vertices from all curves
         orig = []
         for curve in a.getCurves():
