@@ -98,6 +98,32 @@ static std::unique_ptr<wchar_t[]> qStringToWCharArray(const QString& s, size_t r
     return std::unique_ptr<wchar_t[]>(result);
 }
 
+// NOLINTBEGIN(bugprone-branch-clone)
+static std::pair<QString, QString> getDirectoryAndFileName(const QString& startPath)
+{
+    const QFileInfo startPathInfo(startPath);
+    if (startPathInfo.isRelative()) {  // Relative path
+        // Only use for file name suggestion
+        return std::make_pair<QString, QString>({}, startPathInfo.fileName());
+    }
+    if (startPathInfo.isFile()) {  // Absolute path to existing file
+        // Set starting directory to its parent and select the file
+        return std::make_pair<QString, QString>(startPathInfo.absolutePath(), startPathInfo.fileName());
+    }
+    if (startPathInfo.isDir()) {  // Absolute path to existing directory
+        // Set starting directory to itself
+        return std::make_pair<QString, QString>(startPathInfo.absoluteFilePath(), {});
+    }
+    if (startPathInfo.dir().exists()) {  // Absolute path to non-existent file in existent directory
+        // Set starting directory to its parent and use as file name suggestion
+        return std::make_pair<QString, QString>(startPathInfo.absolutePath(), startPathInfo.fileName());
+    }
+    // Absolute path whose 2 last components do not exist, only use file name
+    // Fallback, only use for file name suggestion as the directory above is useless
+    return std::make_pair<QString, QString>({}, startPathInfo.fileName());
+}
+// NOLINTEND(bugprone-branch-clone)
+
 /* The legacy Get{Open,Save}FileNameW() functions never change how the file filters are
  * displayed, inherently avoiding the problem in issue #23139.
  */
@@ -138,18 +164,31 @@ static QStringList legacyNativeFileDialog(
 
     // Preselect file name, if any
     constexpr const DWORD SelectionBufferSize = 65535;
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays)
     auto selectedFile = std::make_unique<wchar_t[]>(SelectionBufferSize);
 
-    const QFileInfo startPathInfo(startPath);
-    startPathInfo.fileName().toWCharArray(selectedFile.get());
-    selectedFile[startPathInfo.fileName().size()] = L'\0';
+    auto [initialDirStr, startFileNameStr] = getDirectoryAndFileName(startPath);
+    if (!startFileNameStr.isEmpty()) {
+        startFileNameStr.toWCharArray(selectedFile.get());
+        selectedFile[startFileNameStr.size()] = L'\0';
+    }
+    else {
+        selectedFile[0] = L'\0';
+    }
 
     ofn.nMaxFile = SelectionBufferSize;
     ofn.lpstrFile = selectedFile.get();
 
     // Select starting directory, if any
-    auto initialDir = qStringToWCharArray(QDir::toNativeSeparators(startPath));
-    ofn.lpstrInitialDir = initialDir.get();
+    if (!initialDirStr.isEmpty()) {
+        initialDirStr = QDir::toNativeSeparators(initialDirStr);
+        // Remove any trailing separators
+        while (!initialDirStr.isEmpty() && initialDirStr.endsWith('\\')) {
+            initialDirStr.remove(initialDirStr.size() - 1, 1);
+        }
+        const auto initialDir = qStringToWCharArray(initialDirStr);
+        ofn.lpstrInitialDir = initialDir.get();
+    }
 
     // Set title
     auto title = qStringToWCharArray(caption);
@@ -336,15 +375,20 @@ QStringList FileDialogInternal::nativeFileDialog(
     }
 
     // Preselect file name, if any
-    const QFileInfo startPathInfo(startPath);
-    const auto startFileName = qStringToWCharArray(startPathInfo.fileName());
-    fileDialog->SetFileName(startFileName.get());
+    auto [startFolderStr, startFileNameStr] = getDirectoryAndFileName(startPath);
+    if (!startFileNameStr.isEmpty()) {
+        const auto startFileName = qStringToWCharArray(startFileNameStr);
+        fileDialog->SetFileName(startFileName.get());
+    }
 
     // Select starting directory, if any
-    if (startPathInfo.isAbsolute()) {
-        const auto startFolder = qStringToWCharArray(
-            QDir::toNativeSeparators(startPathInfo.absoluteDir().path())
-        );
+    if (!startFolderStr.isEmpty()) {
+        startFolderStr = QDir::toNativeSeparators(startFolderStr);
+        // Remove any trailing separators that would make SHCreateItemFromParsingName fail
+        while (!startFolderStr.isEmpty() && startFolderStr.endsWith('\\')) {
+            startFolderStr.remove(startFolderStr.size() - 1, 1);
+        }
+        const auto startFolder = qStringToWCharArray(startFolderStr);
         ComPointer<IShellItem> shellStartFolder;
         if (SUCCEEDED(SHCreateItemFromParsingName(
                 startFolder.get(),
@@ -353,6 +397,13 @@ QStringList FileDialogInternal::nativeFileDialog(
                 shellStartFolder.ppvObject()
             ))) {
             fileDialog->SetFolder(shellStartFolder);
+        }
+        else {
+            Base::Console().error(
+                "SHCreateItemFromParsingName(\"%s\") failed, file dialog will have "
+                "wrong starting folder",
+                startFolderStr.toStdString()
+            );
         }
     }
 
