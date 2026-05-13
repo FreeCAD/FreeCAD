@@ -594,7 +594,7 @@
         <item row="10" column="2">
          <widget class="Gui::PrefCheckBox" name="ckb_pipeline_result">
           <property name="text">
-           <string>Pipeline only (use refactored solver)</string>
+           <string>No legacy results (use enhanced solver)</string>
           </property>
           <property name="toolTip">
            <string>Load results as pipeline instead of CCX_Results objects.
