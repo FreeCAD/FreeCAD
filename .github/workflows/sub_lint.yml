@@ -230,7 +230,7 @@ jobs:
         run: |
           python3 tools/lint/generic_checks.py \
             --lineendings-check \
-            --files "${{ inputs.changedFiles }}" \
+            --files ${{ inputs.changedFiles }} \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}" \
             --log-dir "${{ env.logdir }}"
 
@@ -240,7 +240,7 @@ jobs:
         run: |
           python3 tools/lint/generic_checks.py \
             --whitespace-check \
-            --files "${{ inputs.changedFiles }}" \
+            --files ${{ inputs.changedFiles }} \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}" \
             --log-dir "${{ env.logdir }}"
 
@@ -250,7 +250,7 @@ jobs:
         run: |
           python3 tools/lint/generic_checks.py \
             --tabs-check \
-            --files "${{ inputs.changedFiles }}" \
+            --files ${{ inputs.changedFiles }} \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}" \
             --log-dir "${{ env.logdir }}"
 
@@ -270,7 +270,7 @@ jobs:
         continue-on-error: ${{ inputs.pylintFailSilent }}
         run: |
           python3 tools/lint/pylint.py \
-            --files "${{ inputs.changedPythonFiles }}" \
+            --files ${{ inputs.changedPythonFiles }} \
             --disable "${{ inputs.pylintDisable }}" \
             --log-dir "${{ env.logdir }}" \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
@@ -280,7 +280,7 @@ jobs:
         continue-on-error: ${{ inputs.blackFailSilent }}
         run: |
           python3 tools/lint/black.py \
-            --files "${{ inputs.changedPythonFiles }}" \
+            --files ${{ inputs.changedPythonFiles }} \
             --log-dir "${{ env.logdir }}" \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
 
@@ -289,7 +289,6 @@ jobs:
         run: |
           export PATH="$HOME/.local/bin:$PATH"
           python3 tools/lint/python_stubs.py \
-            --files "${{ inputs.changedFiles }}" \
             --log-dir "${{ env.logdir }}" \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
 
@@ -309,7 +308,7 @@ jobs:
         continue-on-error: ${{ inputs.qtConnectionsFailSilent }}
         run: |
           python3 tools/lint/qt_connections.py \
-            --files "${{ inputs.changedFiles }}" \
+            --files ${{ inputs.changedFiles }} \
             --log-dir "${{ env.logdir }}" \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
 
@@ -318,7 +317,7 @@ jobs:
         continue-on-error: ${{ inputs.cpplintFailSilent }}
         run: |
           python3 tools/lint/cpplint.py \
-            --files "${{ inputs.changedCppFiles }}" \
+            --files ${{ inputs.changedCppFiles }} \
             --log-dir "${{ env.logdir }}" \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
 
@@ -327,7 +326,7 @@ jobs:
         continue-on-error: ${{ inputs.clangFormatFailSilent }}
         run: |
           python3 tools/lint/clang_format.py \
-            --files "${{ inputs.changedCppFiles }}" \
+            --files ${{ inputs.changedCppFiles }} \
             --clang-style "${{ inputs.clangStyle }}" \
             --log-dir "${{ env.logdir }}" \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
@@ -348,7 +347,7 @@ jobs:
         continue-on-error: ${{ inputs.clangTidyFailSilent }}
         run: |
           python3 tools/lint/clang_tidy.py \
-            --files "${{ inputs.changedCppFiles }}" \
+            --files ${{ inputs.changedCppFiles }} \
             --line-filter '${{ inputs.changedCppLines }}' \
             --clang-style "${{ inputs.clangStyle }}" \
             --log-dir "${{ env.logdir }}" \
@@ -359,7 +358,7 @@ jobs:
         continue-on-error: ${{ inputs.clazyFailSilent }}
         run: |
           python3 tools/lint/clazy.py \
-            --files "${{ inputs.changedCppFiles }}" \
+            --files ${{ inputs.changedCppFiles }} \
             --clazy-checks "${{ inputs.clazyChecks }}" \
             --log-dir "${{ env.logdir }}" \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
@@ -369,7 +368,7 @@ jobs:
         continue-on-error: ${{ inputs.clazyQT6FailSilent }}
         run: |
           python3 tools/lint/clazy_qt6.py \
-            --files "${{ inputs.changedCppFiles }}" \
+            --files ${{ inputs.changedCppFiles }} \
             --clazy-qt6-checks "${{ inputs.clazyQT6Checks }}" \
             --log-dir "${{ env.logdir }}" \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}"

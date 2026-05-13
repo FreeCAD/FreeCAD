@@ -104,7 +104,7 @@ def main():
     clang_cmd = clang_tidy_base_cmd
     if args.line_filter:
         clang_cmd = clang_cmd + [f"--line-filter={args.line_filter}"]
-    clang_cmd = clang_cmd + args.files.split()
+    clang_cmd = clang_cmd + args.files
     print("clang_cmd = ", clang_cmd)
     clang_stdout, clang_stderr, _ = run_command(clang_cmd)
     clang_tidy_output = clang_stdout + clang_stderr

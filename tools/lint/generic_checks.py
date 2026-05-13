@@ -1,5 +1,4 @@
 import argparse
-import glob
 import os
 from utils import (
     add_common_arguments,
@@ -104,8 +103,7 @@ def main():
     args = parser.parse_args()
     init_environment(args)
 
-    file_list = glob.glob(args.files, recursive=True)
-    file_list = [f for f in file_list if os.path.isfile(f)]
+    file_list = [f for f in args.files if os.path.isfile(f)]
 
     report_sections = []
 

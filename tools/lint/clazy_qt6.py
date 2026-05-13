@@ -59,7 +59,8 @@ def main():
     parser.add_argument(
         "--files",
         required=True,
-        help="A space-separated list (or glob-expanded string) of C++ files to check.",
+        nargs="+",
+        help="List of C++ files to check.",
     )
     parser.add_argument(
         "--clazy-qt6-checks",
@@ -90,7 +91,7 @@ def main():
         f"-checks={args.clazy_qt6_checks}",
         "-p",
         build_dir,
-    ] + args.files.split()
+    ] + args.files
 
     stdout, stderr, _ = run_command(cmd)
     output = stdout + stderr

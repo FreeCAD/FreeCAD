@@ -64,7 +64,7 @@ def main():
     cpplint_filters = load_cpplint_filters("cpplint.cfg")
 
     aggregated_output = ""
-    for file in args.files.split():
+    for file in args.files:
         cmd = [
             "cpplint",
             f"--filters={cpplint_filters}",

@@ -53,7 +53,7 @@ def main():
     init_environment(args)
 
     all_matches = []
-    for file_path in args.files.split():
+    for file_path in args.files:
         logging.debug(f"Checking file: {file_path}")
         matches = check_qt_connections(file_path)
         all_matches.extend(matches)

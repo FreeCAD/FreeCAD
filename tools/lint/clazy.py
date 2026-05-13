@@ -57,7 +57,8 @@ def main():
     parser.add_argument(
         "--files",
         required=True,
-        help="A space-separated list (or glob-expanded string) of C++ files to check.",
+        nargs="+",
+        help="List of C++ files to check.",
     )
     parser.add_argument(
         "--clazy-checks",
@@ -80,9 +81,7 @@ def main():
     fix_file = "clazy.yaml"
 
     output = ""
-    file_list = args.files.split()
-
-    for file in file_list:
+    for file in args.files:
         cmd = [
             "clazy-standalone",
             f"--export-fixes={fix_file}",

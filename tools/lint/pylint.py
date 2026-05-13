@@ -22,10 +22,10 @@ def get_enabled_checks(log_dir: str) -> str:
     return enabled_log_path
 
 
-def run_pylint(files: str, disable: str, log_dir: str) -> str:
+def run_pylint(files: list, disable: str, log_dir: str) -> str:
     """Run pylint on the provided files and log the output."""
     pylint_log_path = os.path.join(log_dir, "pylint.log")
-    cmd = ["pylint", f"--disable={disable}"] + files.split()
+    cmd = ["pylint", f"--disable={disable}"] + files
     stdout, stderr, _ = run_command(cmd, check=False)
     combined_output = stdout + "\n" + stderr
     write_file(pylint_log_path, combined_output)

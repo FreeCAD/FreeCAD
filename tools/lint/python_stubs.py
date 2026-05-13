@@ -6,7 +6,7 @@ import shlex
 import subprocess
 import sys
 
-from utils import add_common_arguments, append_file, init_environment
+from utils import append_file, init_environment
 
 
 def run_check_command(log_dir: str, repo_root: str) -> int:
@@ -46,7 +46,15 @@ def main():
     parser = argparse.ArgumentParser(
         description="Run the Python binding stub generator and smoke type checks."
     )
-    add_common_arguments(parser)
+    parser.add_argument(
+        "--log-dir", required=True, help="Directory where log files will be written."
+    )
+    parser.add_argument(
+        "--report-file",
+        required=True,
+        help="Path to the Markdown report file to append results.",
+    )
+    parser.add_argument("--verbose", action="store_true", help="Enable verbose output.")
     args = parser.parse_args()
     init_environment(args)
 
