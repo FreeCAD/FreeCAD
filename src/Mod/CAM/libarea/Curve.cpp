@@ -57,18 +57,16 @@ double Line::Dist(const Point& p) const
     return pn.dist(p);
 }
 
-CVertex::CVertex(int type, const Point& p, const Point& c, int user_data)
+CVertex::CVertex(int type, const Point& p, const Point& c)
     : m_type(type)
     , m_p(p)
     , m_c(c)
-    , m_user_data(user_data)
 {}
 
-CVertex::CVertex(const Point& p, int user_data)
+CVertex::CVertex(const Point& p)
     : m_type(0)
     , m_p(p)
     , m_c(0.0, 0.0)
-    , m_user_data(user_data)
 {}
 
 void CCurve::append(const CVertex& vertex)
@@ -140,7 +138,6 @@ bool CCurve::CheckForArc(
     arc.m_s = prev_vt.m_p;
     arc.m_e = might_be_an_arc.back()->m_p;
     arc.SetDirWithPoint(might_be_an_arc.front()->m_p);
-    arc.m_user_data = might_be_an_arc.back()->m_user_data;
 
     double angs = atan2(arc.m_s.y - arc.m_c.y, arc.m_s.x - arc.m_c.x);
     double ange = atan2(arc.m_e.y - arc.m_c.y, arc.m_e.x - arc.m_c.x);
@@ -205,10 +202,10 @@ void CCurve::AddArcOrLines(
     else {
         if (arc_found) {
             if (arc.AlmostALine()) {
-                new_vertices.emplace_back(arc.m_e, arc.m_user_data);
+                new_vertices.emplace_back(arc.m_e);
             }
             else {
-                new_vertices.emplace_back(arc.m_dir ? 1 : -1, arc.m_e, arc.m_c, arc.m_user_data);
+                new_vertices.emplace_back(arc.m_dir ? 1 : -1, arc.m_e, arc.m_c);
             }
 
             arc_added = true;
