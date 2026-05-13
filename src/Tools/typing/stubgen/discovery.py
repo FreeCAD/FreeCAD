@@ -38,6 +38,7 @@ from .model import (
     ModuleDef,
     PYMETHODDEF_RE,
     PYMETHOD_ALIAS_RE,
+    PYCXX_SEQUENCE_SLOT_RE,
     PYIMPORT_ADD_MODULE_RE,
     PYMODULEDEF_RE,
     PYMODULE_ADD_FUNCTIONS_RE,
@@ -47,6 +48,7 @@ from .model import (
     PY_OBJECT_WRAPPER_RE,
     PublicTypeGroup,
     PublicTypeTarget,
+    SUPPORT_SEQUENCE_RE,
 )
 from .naming import valid_identifier
 from .parsing import (
@@ -82,6 +84,11 @@ KNOWN_PYCXX_MODULE_HINTS: dict[tuple[str, str], str] = {
     ("src/Base/Translate.cpp", "__Translate__"): "FreeCAD.Qt",
     ("src/Gui/UiLoader.cpp", "PySideUic"): "FreeCADGui.PySideUic",
     ("src/Mod/Part/App/AppPartPy.cpp", "ShapeFix"): "Part.ShapeFix",
+}
+
+PYCXX_SEQUENCE_SLOT_BINDINGS: dict[str, tuple[str, MethodKind]] = {
+    "sequence_length": ("__len__", "noargs"),
+    "sequence_item": ("__getitem__", "varargs"),
 }
 
 
@@ -363,6 +370,57 @@ def inferred_pymethoddef_module(
     return None
 
 
+def supported_sequence_contexts(source: str, contexts: list[ContextEntry]) -> set[str]:
+    supported: set[str] = set()
+    for match in SUPPORT_SEQUENCE_RE.finditer(source):
+        kind, context = nearest_context(contexts, match.start())
+        if kind == "python_type":
+            supported.add(context)
+    return supported
+
+
+def extract_pycxx_sequence_slots(root: Path, path: Path, source: str) -> list[BindingMethod]:
+    rel = path.relative_to(root).as_posix()
+    contexts = discover_contexts(source)
+    supported_contexts = supported_sequence_contexts(source, contexts)
+    if not supported_contexts:
+        return []
+
+    methods: list[BindingMethod] = []
+    seen: set[tuple[str, str]] = set()
+    for match in PYCXX_SEQUENCE_SLOT_RE.finditer(source):
+        slot_name = match.group("slot")
+        python_name, method_kind = PYCXX_SEQUENCE_SLOT_BINDINGS[slot_name]
+        kind, context = nearest_context(contexts, match.start())
+        if kind != "python_type" or context not in supported_contexts:
+            continue
+        key = (context, python_name)
+        if key in seen:
+            continue
+        seen.add(key)
+        owner = match.group("owner")
+        cxx_callable = f"{normalize_cpp_qualified_name(owner)}::{slot_name}" if owner else slot_name
+        methods.append(
+            BindingMethod(
+                family="pycxx_slot",
+                source=rel,
+                line=line_number(source, match.start()),
+                table=None,
+                context_kind=kind,
+                context_name=context,
+                inferred_module=None,
+                method_kind=method_kind,
+                python_name=python_name,
+                cxx_callable=cxx_callable,
+                flags="",
+                doc="",
+                generated_source=generated_source(rel),
+            )
+        )
+
+    return methods
+
+
 def extract_pycxx_methods(root: Path, path: Path, source: str) -> list[BindingMethod]:
     rel = path.relative_to(root).as_posix()
     contexts = discover_contexts(source)
@@ -498,6 +556,7 @@ def collect_methods(root: Path, source_dir: Path) -> list[BindingMethod]:
         except OSError:
             continue
         methods.extend(extract_pycxx_methods(root, path, source))
+        methods.extend(extract_pycxx_sequence_slots(root, path, source))
         methods.extend(extract_pymethoddef_methods(root, path, source, table_modules))
 
     return sorted(methods, key=lambda method: (method.source, method.line, method.python_name))
