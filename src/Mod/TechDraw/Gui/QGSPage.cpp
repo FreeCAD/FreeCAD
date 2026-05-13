@@ -303,34 +303,6 @@ std::vector<QGIView*> QGSPage::getViews() const
     return result;
 }
 
-int QGSPage::addQView(QGIView* view)
-{
-    QGIView* existing = getQGIVByName(view->getViewName());
-    if (!existing) { //don't add twice!
-        addItem(view);
-
-        TechDraw::DrawView *viewObj = view->getViewObject();
-        // Preserve the desired position, as addToGroup() adjusts the child view's position
-        QPointF viewPos(Rez::guiX(viewObj->X.getValue()), -Rez::guiX(viewObj->Y.getValue()));
-        // Find if it belongs to a parent
-        QGIView *parent = findParent(view);
-        if (parent) {
-            parent->addToGroup(view);
-        }
-        view->setPos(viewPos);
-
-        auto viewProvider = dynamic_cast<ViewProviderDrawingView *>(QGIView::getViewProvider(viewObj));
-        if (viewProvider) {
-            view->setZValue(viewProvider->StackOrder.getValue());
-        }
-
-        view->updateView(true);
-    } else {
-        Base::Console().message("QGSP::addQView - qview already exists\n");
-    }
-    return 0;
-}
-
 int QGSPage::removeQView(QGIView* view)
 {
     if (view) {
