@@ -59,7 +59,6 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 ViewProviderDrawingView::ViewProviderDrawingView() :
     m_myName(std::string())
 {
-//    Base::Console().message("VPDV::VPDV\n");
     initExtension(this);
 
     sPixmap = "TechDraw_TreeView";

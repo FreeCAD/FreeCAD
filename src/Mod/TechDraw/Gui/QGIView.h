@@ -232,7 +232,7 @@ private:
     QPen m_decorPen;
     double m_lockWidth;
     double m_lockHeight;
-    int m_zOrder;
+    int m_zOrder{0};
 
     bool m_snapped{false};
 
