@@ -9,7 +9,7 @@ from FreeCADGui import _MDIView, _View3DInventorViewer
 class _AbstractSplitView:
     """Split-view container that manages multiple 3D viewers."""
 
-    def fitAll(self, factor: float = 1.0, /) -> None:
+    def fitAll(self) -> None:
         """Fit all visible content into the active split view."""
         ...
 
