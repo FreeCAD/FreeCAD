@@ -1156,17 +1156,19 @@ int SketchObject::deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeo
 
     std::vector<int> delgeometries;
 
-    // those with less than 2 constraints must be removed
-    if (focus2constraints < 2)
+    // those with less than 2 constraints must be removed;
+    // when deleting the parent geometry (delgeoid=true), force-remove all internal elements
+    // regardless of constraint count (e.g. Coincident constraints from exposeInternalGeometry)
+    if (focus2constraints < 2 || (delgeoid && focus2elementindex >= 0))
         delgeometries.push_back(focus2elementindex);
 
-    if (focus1constraints < 2)
+    if (focus1constraints < 2 || (delgeoid && focus1elementindex >= 0))
         delgeometries.push_back(focus1elementindex);
 
-    if (minorconstraints < 2)
+    if (minorconstraints < 2 || (delgeoid && minorelementindex >= 0))
         delgeometries.push_back(minorelementindex);
 
-    if (majorconstraints < 2)
+    if (majorconstraints < 2 || (delgeoid && majorelementindex >= 0))
         delgeometries.push_back(majorelementindex);
 
     if (delgeoid)
