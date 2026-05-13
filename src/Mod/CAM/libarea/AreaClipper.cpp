@@ -874,32 +874,6 @@ void CArea::Thicken(double value)
     this->Reorder();
 }
 
-void UnFitArcs(CCurve& curve, ArcFittingMap& arcMap)
-{
-    pts_for_AddVertex.clear();
-    const CVertex* prev_vertex = NULL;
-    for (std::list<CVertex>::const_iterator It2 = curve.m_vertices.begin();
-         It2 != curve.m_vertices.end();
-         It2++) {
-        const CVertex& vertex = *It2;
-        AddVertex(vertex, prev_vertex, arcMap);
-        prev_vertex = &vertex;
-    }
-
-    curve.m_vertices.clear();
-
-    for (std::list<PointD>::iterator It = pts_for_AddVertex.begin(); It != pts_for_AddVertex.end();
-         It++) {
-        PointD& pt = *It;
-        CVertex vertex(
-            0,
-            heeks::Point(pt.x / CArea::m_units, pt.y / CArea::m_units),
-            heeks::Point(0.0, 0.0)
-        );
-        curve.m_vertices.push_back(vertex);
-    }
-}
-
 void CArea::ZCallback(
     const Point64& e1bot,
     const Point64& e1top,
