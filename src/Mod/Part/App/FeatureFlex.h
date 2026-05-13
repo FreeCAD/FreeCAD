@@ -30,7 +30,7 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <Mod/Part/PartGlobal.h>
 
-#include <exprtk.hpp>
+#include <../3rdParty/exprtk/exprtk.hpp>
 
 #include "PartFeature.h"
 
