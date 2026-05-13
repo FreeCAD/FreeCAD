@@ -4,10 +4,81 @@
 
 from __future__ import annotations
 
-from typing import Any, overload
+from collections.abc import Callable
+from typing import Any, Literal, TypeAlias, TypedDict, overload
 
-from FreeCAD import Placement, Rotation, Vector
+from FreeCAD import DocumentObject, Placement, Rotation, Vector
 from FreeCADGui import _MDIView, _View3DInventorViewer
+
+_Point2: TypeAlias = tuple[int, int]
+_Point3: TypeAlias = tuple[float, float, float]
+_Quaternion: TypeAlias = tuple[float, float, float, float]
+_ViewOrientation: TypeAlias = (
+    Literal[
+        "Top",
+        "Bottom",
+        "Front",
+        "Rear",
+        "Left",
+        "Right",
+        "Isometric",
+        "Dimetric",
+        "Trimetric",
+        "Custom",
+    ]
+    | str
+)
+_StereoType: TypeAlias = (
+    Literal["Mono", "Anaglyph", "QuadBuffer", "InterleavedRows", "InterleavedColumns"] | int | str
+)
+_CameraType: TypeAlias = Literal["Orthographic", "Perspective"] | int | str
+_DraggerCallbackType: TypeAlias = Literal[
+    "addFinishCallback",
+    "addStartCallback",
+    "addMotionCallback",
+    "addValueChangedCallback",
+]
+
+class _View3DObjectInfo(TypedDict, total=False):
+    """Hit-test payload returned for one picked object in the 3D view."""
+
+    x: float
+    y: float
+    z: float
+    Document: str
+    Object: str
+    Component: str
+    ParentObject: DocumentObject
+    SubName: str
+
+class _View3DRayInfo(TypedDict, total=False):
+    """World-space ray-pick payload returned by ``getObjectInfoRay()``."""
+
+    PickedPoint: Vector
+    Document: str
+    Object: str
+    ParentObject: str
+    Component: str
+    SubName: str
+
+class _View3DEventInfo(TypedDict, total=False):
+    """Dictionary payload passed to one classic 3D-view event callback."""
+
+    Type: str
+    Time: str
+    Position: _Point2
+    ShiftDown: bool
+    CtrlDown: bool
+    AltDown: bool
+    State: str
+    Key: str
+    Button: str
+    Delta: int
+    Translation: _Point3
+    Rotation: _Quaternion
+
+_View3DEventCallback: TypeAlias = Callable[[_View3DEventInfo], object]
+_View3DProxyCallback: TypeAlias = Callable[[object], object]
 
 class _View3DInventor:
     """Primary 3D Inventor view wrapper used by the FreeCAD GUI."""
@@ -64,7 +135,9 @@ class _View3DInventor:
         """Orient the camera trimetrically."""
         ...
 
-    def viewDefaultOrientation(self, view: str | None = None, scale: float = -1.0, /) -> None:
+    def viewDefaultOrientation(
+        self, view: _ViewOrientation | None = None, scale: float = -1.0, /
+    ) -> None:
         """Restore the default camera orientation."""
         ...
 
@@ -84,8 +157,14 @@ class _View3DInventor:
         """Zoom the camera out."""
         ...
 
+    @overload
+    def viewPosition(self) -> Placement | None:
+        """Return the current view placement."""
+        ...
+
+    @overload
     def viewPosition(
-        self, placement: Placement | None = None, steps: int = 0, duration: int = -1, /
+        self, placement: Placement, steps: int = 0, duration: int = -1, /
     ) -> Placement | None:
         """Return or animate the current view placement."""
         ...
@@ -122,7 +201,7 @@ class _View3DInventor:
         """Return a textual dump of one scene-graph node."""
         ...
 
-    def setStereoType(self, stereo_type: int | str, /) -> None:
+    def setStereoType(self, stereo_type: _StereoType, /) -> None:
         """Set the stereo rendering mode."""
         ...
 
@@ -157,7 +236,7 @@ class _View3DInventor:
         """Return the current camera description."""
         ...
 
-    def getCameraNode(self) -> Any:
+    def getCameraNode(self) -> Any | None:
         """Return the underlying camera node."""
         ...
 
@@ -169,7 +248,7 @@ class _View3DInventor:
         """Return the current camera up direction."""
         ...
 
-    def setViewDirection(self, direction: Vector | tuple[float, float, float], /) -> None:
+    def setViewDirection(self, direction: _Point3, /) -> None:
         """Set the camera view direction."""
         ...
 
@@ -194,7 +273,7 @@ class _View3DInventor:
         """Return the current camera type name."""
         ...
 
-    def setCameraType(self, camera_type: int | str, /) -> None:
+    def setCameraType(self, camera_type: _CameraType, /) -> None:
         """Set the camera type."""
         ...
 
@@ -206,11 +285,13 @@ class _View3DInventor:
         """Return the current cursor position in view coordinates."""
         ...
 
-    def getObjectInfo(self, point: object, radius: float = 0.0, /) -> dict[str, Any] | None:
+    def getObjectInfo(self, point: _Point2, radius: float = 0.0, /) -> _View3DObjectInfo | None:
         """Return hit-test information for one point."""
         ...
 
-    def getObjectsInfo(self, point: object, radius: float = 0.0, /) -> list[dict[str, Any]] | None:
+    def getObjectsInfo(
+        self, point: _Point2, radius: float = 0.0, /
+    ) -> list[_View3DObjectInfo] | None:
         """Return hit-test information for all objects near one point."""
         ...
 
@@ -219,7 +300,7 @@ class _View3DInventor:
         ...
 
     @overload
-    def getObjectInfoRay(self, start: Vector, direction: Vector, /) -> dict[str, Any] | None:
+    def getObjectInfoRay(self, start: Vector, direction: Vector, /) -> _View3DRayInfo | None:
         """Return hit-test information for one world-space ray."""
         ...
 
@@ -233,32 +314,49 @@ class _View3DInventor:
         direction_y: float,
         direction_z: float,
         /,
-    ) -> dict[str, Any] | None: ...
+    ) -> _View3DRayInfo | None: ...
+    @overload
     def getPoint(self, x: int, y: int, /) -> Vector:
         """Project one screen-space point into world coordinates."""
         ...
 
+    @overload
+    def getPoint(self, point: _Point2, /) -> Vector: ...
+    @overload
     def getPointOnFocalPlane(self, x: int, y: int, /) -> Vector:
         """Project one screen-space point onto the focal plane."""
         ...
 
-    def getPointOnScreen(self, point: Vector | tuple[float, float, float], /) -> tuple[int, int]:
+    @overload
+    def getPointOnFocalPlane(self, point: _Point2, /) -> Vector: ...
+    @overload
+    def getPointOnScreen(self, point: Vector, /) -> _Point2:
         """Project one world-space point onto the screen."""
         ...
 
-    def getPointOnViewport(self, point: Vector | tuple[float, float, float], /) -> tuple[int, int]:
+    @overload
+    def getPointOnScreen(self, x: float, y: float, z: float, /) -> _Point2: ...
+    @overload
+    def getPointOnViewport(self, point: Vector, /) -> _Point2:
         """Project one world-space point into viewport coordinates."""
         ...
 
+    @overload
+    def getPointOnViewport(self, x: float, y: float, z: float, /) -> _Point2: ...
+    @overload
     def projectPointToLine(self, x: int, y: int, /) -> tuple[Vector, Vector]:
         """Project one screen-space point to a world-space line."""
         ...
 
-    def addEventCallback(self, event_type: str, callback: object, /) -> object:
+    @overload
+    def projectPointToLine(self, point: _Point2, /) -> tuple[Vector, Vector]: ...
+    def addEventCallback(
+        self, event_type: str, callback: _View3DEventCallback, /
+    ) -> _View3DEventCallback:
         """Register one event callback."""
         ...
 
-    def removeEventCallback(self, event_type: str, callback: object, /) -> None:
+    def removeEventCallback(self, event_type: str, callback: _View3DEventCallback, /) -> None:
         """Remove one event callback."""
         ...
 
@@ -279,26 +377,26 @@ class _View3DInventor:
         ...
 
     def addEventCallbackPivy(
-        self, event_type: object, callback: object, extended: int = 1, /
-    ) -> object:
+        self, event_type: object, callback: _View3DProxyCallback, extended: bool | int = 1, /
+    ) -> _View3DProxyCallback:
         """Register one Pivy event callback."""
         ...
 
     def removeEventCallbackPivy(
-        self, event_type: object, callback: object, extended: int = 1, /
-    ) -> object:
+        self, event_type: object, callback: _View3DProxyCallback, extended: bool | int = 1, /
+    ) -> _View3DProxyCallback:
         """Remove one Pivy event callback."""
         ...
 
     def addEventCallbackSWIG(
-        self, event_type: object, callback: object, extended: int = 1, /
-    ) -> object:
+        self, event_type: object, callback: _View3DProxyCallback, extended: bool | int = 1, /
+    ) -> _View3DProxyCallback:
         """Register one SWIG event callback."""
         ...
 
     def removeEventCallbackSWIG(
-        self, event_type: object, callback: object, extended: int = 1, /
-    ) -> object:
+        self, event_type: object, callback: _View3DProxyCallback, extended: bool | int = 1, /
+    ) -> _View3DProxyCallback:
         """Remove one SWIG event callback."""
         ...
 
@@ -323,14 +421,22 @@ class _View3DInventor:
         ...
 
     def addDraggerCallback(
-        self, dragger: object, callback_type: str, callback: object, /
-    ) -> object:
+        self,
+        dragger: object,
+        callback_type: _DraggerCallbackType,
+        callback: _View3DProxyCallback,
+        /,
+    ) -> _View3DProxyCallback:
         """Register one dragger callback."""
         ...
 
     def removeDraggerCallback(
-        self, dragger: object, callback_type: str, callback: object, /
-    ) -> object:
+        self,
+        dragger: object,
+        callback_type: _DraggerCallbackType,
+        callback: _View3DProxyCallback,
+        /,
+    ) -> _View3DProxyCallback:
         """Remove one dragger callback."""
         ...
 
@@ -351,7 +457,7 @@ class _View3DInventor:
         toggle: int = -1,
         beforeEditing: bool = False,
         noManip: bool = True,
-        pla: object | None = None,
+        pla: Placement = ...,
     ) -> None:
         """Toggle or configure the clipping plane."""
         ...

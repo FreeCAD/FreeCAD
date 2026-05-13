@@ -4,9 +4,14 @@
 
 from __future__ import annotations
 
-from typing import Any, overload
+from typing import Any, TypeAlias, overload
 
 from FreeCAD import Matrix, Vector
+from FreeCADGui import NavigationStyle
+
+_Point2: TypeAlias = tuple[int, int]
+_Point3: TypeAlias = tuple[float, float, float]
+_Color: TypeAlias = tuple[float, float, float]
 
 class _View3DInventorViewer:
     """Low-level Coin viewer wrapper behind the 3D view."""
@@ -27,7 +32,7 @@ class _View3DInventorViewer:
         """Replace the root scene graph."""
         ...
 
-    def seekToPoint(self, point: tuple[int, int] | tuple[float, float, float], /) -> None:
+    def seekToPoint(self, point: _Point2 | _Point3, /) -> None:
         """Center the viewer on one screen or world point."""
         ...
 
@@ -45,14 +50,14 @@ class _View3DInventorViewer:
         ...
 
     @overload
-    def getPoint(self, point: tuple[int, int], /) -> Vector: ...
+    def getPoint(self, point: _Point2, /) -> Vector: ...
     @overload
     def getPointOnFocalPlane(self, x: int, y: int, /) -> Vector:
         """Project one screen-space point onto the focal plane."""
         ...
 
     @overload
-    def getPointOnFocalPlane(self, point: tuple[int, int], /) -> Vector: ...
+    def getPointOnFocalPlane(self, point: _Point2, /) -> Vector: ...
     def getPickRadius(self) -> float:
         """Return the current pick radius."""
         ...
@@ -79,9 +84,9 @@ class _View3DInventorViewer:
 
     def setGradientBackgroundColor(
         self,
-        from_color: tuple[float, float, float],
-        to_color: tuple[float, float, float],
-        mid_color: tuple[float, float, float] | None = None,
+        from_color: _Color,
+        to_color: _Color,
+        mid_color: _Color | None = None,
         /,
     ) -> None:
         """Set explicit gradient background colors."""
@@ -115,6 +120,6 @@ class _View3DInventorViewer:
         """Set the navigation-cube corner."""
         ...
 
-    def getNavigationStyle(self) -> object | None:
+    def getNavigationStyle(self) -> NavigationStyle | None:
         """Return the current navigation-style object, if any."""
         ...
