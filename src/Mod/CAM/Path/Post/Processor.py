@@ -1907,6 +1907,9 @@ class PostProcessor:
     def convert_command_to_gcode(self, command: Path.Command) -> str:
         """
         Converts a single-line command to gcode.
+        Return one-string
+            use "\n" to join multiple-lines
+        Return None or "" for nothing.
 
         This method dispatches to specialized hook methods based on command type.
         Derived postprocessors can override individual hook methods to customize
@@ -1951,7 +1954,16 @@ class PostProcessor:
 
         # Comments
         if command_name.startswith("("):
-            return self._convert_comment(command)
+            gcode = [ self._convert_comment(command) ]
+
+            # We use comments for some sequence signals (Probe, etc.)
+            if 'probe_open' in command.Annotations:
+                gcode.append( self._convert_probe_open(command) )
+            elif 'probe_close' in command.Annotations:
+                gcode.append( self._convert_probe_close(command) )
+
+            # drop None/""
+            return "\n".join( [l for l in gcode if l] )
 
         # Rapid moves
         if command_name in Constants.GCODE_MOVE_RAPID:
@@ -2238,10 +2250,30 @@ class PostProcessor:
     def _convert_probe(self, command: Path.Command) -> str:
         """
         Converts a probe command to gcode.
+        _convert_probe_open(command) is called to start the sequence
+        _convert_probe_close(command) is called to end the sequence
 
         This method can be overridden by derived postprocessors to customize probe handling.
         """
         return self._convert_move(command)
+
+    def _convert_probe_open(self, command: Path.Command) -> str:
+        """Probe sequence is starting, do your prefix
+            command is a comment, already processed as a comment.
+            command.Annotations["probe_open"] has the filename from the operation
+                if the filename is "", generate something from the section_name, Postable.Name, "probe", and count
+
+        This method can be overridden by derived postprocessors to customize handling.
+        """
+        return None
+
+    def _convert_probe_close(self, command: Path.Command) -> str:
+        """Probe sequence is ended, do your postfix
+            command is a comment, already processed as a comment.
+
+        This method can be overridden by derived postprocessors to customize handling.
+        """
+        return None
 
     def _convert_dwell(self, command: Path.Command) -> str:
         """
