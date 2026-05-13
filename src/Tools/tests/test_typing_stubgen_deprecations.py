@@ -16,7 +16,12 @@ from src.Tools.typing.stubgen.class_merge import (  # noqa: E402
     public_class_stub_source,
     public_import_target_index,
 )
-from src.Tools.typing.stubgen.model import BindingClass  # noqa: E402
+from src.Tools.typing.stubgen.model import BindingClass, BindingMethod  # noqa: E402
+from src.Tools.typing.stubgen.render import write_stub_file  # noqa: E402
+from src.Tools.typing.stubgen.source_inputs import (  # noqa: E402
+    parse_module_stub_signature_overrides,
+    parse_source_type_stub_signature_overrides,
+)
 
 
 class TestTypingStubgenDeprecations(unittest.TestCase):
@@ -120,6 +125,145 @@ class TestTypingStubgenDeprecations(unittest.TestCase):
             "str",
         )
 
+    def test_module_stub_preserves_deprecated_function_decorators(self) -> None:
+        source = textwrap.dedent("""
+            from typing_extensions import deprecated
+
+            @deprecated("Use replacement instead.")
+            def old_function(value: int, /) -> str:
+                \"\"\"Deprecated module function.\"\"\"
+                ...
+            """).lstrip()
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source_dir = root / "src"
+            stub_path = source_dir / "App" / "Example.module.pyi"
+            stub_path.parent.mkdir(parents=True)
+            stub_path.write_text(source, encoding="utf-8")
+
+            parsed = parse_module_stub_signature_overrides(root, source_dir)
+            signature_group, _ = parsed[("Example", "old_function")]
+            self.assertEqual(signature_group[0].deprecated_message, "Use replacement instead.")
+
+            method = self._binding_method(
+                source="src/App/Example.cpp",
+                context_kind="pycxx_module",
+                context_name="Example",
+                inferred_module="Example",
+                python_name="old_function",
+            )
+            out_path = root / "out" / "Example.pyi"
+            write_stub_file(
+                out_path,
+                [method],
+                stub_signature_overrides={
+                    (method.source, method.context_name, method.python_name): signature_group
+                },
+            )
+
+            public_tree = ast.parse(out_path.read_text(encoding="utf-8"), filename=str(out_path))
+
+        self.assertTrue(
+            any(
+                isinstance(node, ast.ImportFrom)
+                and node.module == "typing_extensions"
+                and any(alias.name == "deprecated" for alias in node.names)
+                for node in public_tree.body
+            )
+        )
+        public_function = next(
+            node for node in public_tree.body if isinstance(node, ast.FunctionDef)
+        )
+        self.assertEqual(
+            self._deprecated_message(public_function),
+            "Use replacement instead.",
+        )
+        self.assertEqual(ast.get_docstring(public_function), "Deprecated module function.")
+
+    def test_type_stub_preserves_deprecated_method_decorators(self) -> None:
+        source = textwrap.dedent("""
+            from typing_extensions import deprecated
+
+            class _Example:
+                @deprecated("Use newMethod instead.")
+                def oldMethod(self, value: int, /) -> object:
+                    \"\"\"Deprecated typed method.\"\"\"
+                    ...
+            """).lstrip()
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source_dir = root / "src"
+            stub_path = source_dir / "Gui" / "FreeCADGui._Example.pyi"
+            stub_path.parent.mkdir(parents=True)
+            stub_path.write_text(source, encoding="utf-8")
+
+            parsed = parse_source_type_stub_signature_overrides(root, source_dir)
+            signature_group, _ = parsed[("FreeCADGui", "_Example", "oldMethod")]
+            self.assertEqual(signature_group[0].deprecated_message, "Use newMethod instead.")
+
+            method = self._binding_method(
+                source="src/Gui/ExamplePy.cpp",
+                context_kind="python_type",
+                context_name="_Example",
+                inferred_module="FreeCADGui",
+                python_name="oldMethod",
+            )
+            out_path = root / "out" / "FreeCADGui._Example.pyi"
+            write_stub_file(
+                out_path,
+                [method],
+                class_name="_Example",
+                stub_signature_overrides={
+                    (method.source, method.context_name, method.python_name): signature_group
+                },
+            )
+
+            public_tree = ast.parse(out_path.read_text(encoding="utf-8"), filename=str(out_path))
+
+        self.assertTrue(
+            any(
+                isinstance(node, ast.ImportFrom)
+                and node.module == "typing_extensions"
+                and any(alias.name == "deprecated" for alias in node.names)
+                for node in public_tree.body
+            )
+        )
+        public_class = next(node for node in public_tree.body if isinstance(node, ast.ClassDef))
+        public_method = next(
+            node
+            for node in public_class.body
+            if isinstance(node, ast.FunctionDef) and node.name == "oldMethod"
+        )
+        self.assertEqual(self._deprecated_message(public_method), "Use newMethod instead.")
+        self.assertEqual(ast.get_docstring(public_method), "Deprecated typed method.")
+
+    @staticmethod
+    def _binding_method(
+        *,
+        source: str,
+        context_kind: str,
+        context_name: str,
+        inferred_module: str | None,
+        python_name: str,
+    ) -> BindingMethod:
+        return BindingMethod(
+            family="pycxx_add_method",
+            source=source,
+            line=1,
+            table=None,
+            context_kind=context_kind,
+            context_name=context_name,
+            inferred_module=inferred_module,
+            method_kind="varargs",
+            python_name=python_name,
+            cxx_callable=f"dummy::{python_name}",
+            flags="",
+            doc="",
+            generated_source=False,
+        )
+
     @staticmethod
     def _function_with_decorator(
         body: list[ast.stmt],
@@ -147,15 +291,25 @@ class TestTypingStubgenDeprecations(unittest.TestCase):
 
     @staticmethod
     def _decorator_name(decorator: ast.expr) -> str:
-        match decorator:
-            case ast.Name(id=name):
-                return name
-            case ast.Call(func=func):
-                return TestTypingStubgenDeprecations._decorator_name(func)
-            case ast.Attribute(attr=attr):
-                return attr
-            case _:
-                return ast.unparse(decorator)
+        if isinstance(decorator, ast.Name):
+            return decorator.id
+        if isinstance(decorator, ast.Call):
+            return TestTypingStubgenDeprecations._decorator_name(decorator.func)
+        if isinstance(decorator, ast.Attribute):
+            return decorator.attr
+        return ast.unparse(decorator)
+
+    @staticmethod
+    def _deprecated_message(node: ast.FunctionDef) -> str | None:
+        for decorator in node.decorator_list:
+            if TestTypingStubgenDeprecations._decorator_name(decorator) != "deprecated":
+                continue
+            if isinstance(decorator, ast.Call) and decorator.args:
+                value = decorator.args[0]
+                if isinstance(value, ast.Constant) and isinstance(value.value, str):
+                    return value.value
+            return ""
+        return None
 
 
 if __name__ == "__main__":

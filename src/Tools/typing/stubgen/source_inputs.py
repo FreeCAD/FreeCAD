@@ -47,6 +47,28 @@ from .parsing import (
 )
 
 
+def deprecated_message_from_decorator(decorator: ast.expr) -> str | None:
+    if decorator_name(decorator).split(".", 1)[-1] != "deprecated":
+        return None
+
+    if not isinstance(decorator, ast.Call):
+        return ""
+
+    for arg in decorator.args:
+        if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
+            return arg.value.strip()
+    return ""
+
+
+def deprecated_message_from_function_node(node: ast.FunctionDef) -> str | None:
+    for decorator in node.decorator_list:
+        if message := deprecated_message_from_decorator(decorator):
+            return message
+        if message == "":
+            return ""
+    return None
+
+
 def binding_export_name(class_name: str, export_kwargs: dict[str, object]) -> str:
     name = export_kwargs.get("Name")
     if isinstance(name, str) and name:
@@ -214,7 +236,13 @@ def stub_signature_from_function_node(
         parameters = parameters.removeprefix("self,").lstrip()
     else:
         raise ValueError(f"{path}: {class_symbol}.{node.name} must be an instance method")
-    return StubSignature(parameters, returns, class_symbol, doc)
+    return StubSignature(
+        parameters,
+        returns,
+        class_symbol,
+        doc,
+        deprecated_message=deprecated_message_from_function_node(node),
+    )
 
 
 def module_stub_signature_from_function_node(
@@ -226,7 +254,12 @@ def module_stub_signature_from_function_node(
     parameters, returns, doc = extracted_function_signature_parts(path, module_name, source, node)
     if parameters.startswith(("self", "cls")):
         raise ValueError(f"{path}: {module_name}.{node.name} must not declare self or cls")
-    return StubSignature(parameters, returns, doc=doc)
+    return StubSignature(
+        parameters,
+        returns,
+        doc=doc,
+        deprecated_message=deprecated_message_from_function_node(node),
+    )
 
 
 def append_module_signature_group(

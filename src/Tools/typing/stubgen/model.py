@@ -219,6 +219,7 @@ class StubSignature:
     returns: str
     class_symbol: str | None = None
     doc: str | None = None
+    deprecated_message: str | None = None
 
 
 @dataclass(frozen=True)

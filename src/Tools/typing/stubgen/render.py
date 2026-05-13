@@ -75,6 +75,10 @@ def render_docstring_lines(doc: str) -> tuple[str, ...]:
     return tuple(lines)
 
 
+def deprecated_decorator_line(message: str) -> str:
+    return f"@deprecated({ast.unparse(ast.Constant(value=message))})"
+
+
 def render_stub_lines(
     method: BindingMethod,
     class_method: bool = False,
@@ -102,6 +106,8 @@ def render_stub_lines(
             signature_text = format_signature(parameters, class_method)
             if use_overload:
                 rendered.append("@overload")
+            if known_signature.deprecated_message is not None:
+                rendered.append(deprecated_decorator_line(known_signature.deprecated_message))
             if known_signature.doc:
                 rendered.append(f"def {method.python_name}{signature_text} -> {returns}:")
                 rendered.extend(render_docstring_lines(known_signature.doc))
@@ -125,13 +131,32 @@ def methods_need_overload_import(
     )
 
 
-def typing_import_line(
+def methods_need_deprecated_import(
     methods: list[BindingMethod],
     stub_signature_overrides: StubSignatureOverrides | None,
-) -> str:
+) -> bool:
+    overrides = stub_signature_overrides or {}
+    return any(
+        signature.deprecated_message is not None
+        for method in methods
+        for signatures in (known_stub_signatures(method, overrides),)
+        if signatures is not None
+        for signature in signatures
+    )
+
+
+def typing_import_lines(
+    methods: list[BindingMethod],
+    stub_signature_overrides: StubSignatureOverrides | None,
+) -> list[str]:
+    lines: list[str] = []
     if methods_need_overload_import(methods, stub_signature_overrides):
-        return "from typing import Any, overload"
-    return "from typing import Any"
+        lines.append("from typing import Any, overload")
+    else:
+        lines.append("from typing import Any")
+    if methods_need_deprecated_import(methods, stub_signature_overrides):
+        lines.append("from typing_extensions import deprecated")
+    return lines
 
 
 def rendered_method_blocks(
@@ -170,7 +195,7 @@ def write_stub_file(
     path.parent.mkdir(parents=True, exist_ok=True)
     lines = [
         "from __future__ import annotations",
-        typing_import_line(methods, stub_signature_overrides),
+        *typing_import_lines(methods, stub_signature_overrides),
         "",
     ]
 
@@ -212,7 +237,7 @@ def type_stub_lines(
     ]
     if include_future_import:
         lines.append("from __future__ import annotations")
-    lines.extend([typing_import_line(methods, stub_signature_overrides), ""])
+    lines.extend([*typing_import_lines(methods, stub_signature_overrides), ""])
 
     for type_group in type_groups:
         base_clause = f"({', '.join(type_group.base_symbols)})" if type_group.base_symbols else ""
