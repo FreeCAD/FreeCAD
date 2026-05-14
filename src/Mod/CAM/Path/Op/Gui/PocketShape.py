@@ -59,11 +59,6 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
             | PathPocketBaseGui.FeatureRestMachining
         )
 
-    def taskPanelBaseLocationPage(self, obj, features):
-        if not hasattr(self, "extensionsPanel"):
-            self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(obj, features)
-        return self.extensionsPanel
-
 
 Command = PathOpGui.SetupOperation(
     "Pocket Shape",

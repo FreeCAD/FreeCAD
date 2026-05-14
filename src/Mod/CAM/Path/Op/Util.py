@@ -535,3 +535,34 @@ def getClearedAreas(currentOp, bbox):
             dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
             clearedAreas.append(op.Path.getClearedArea(diameter, z + dz, bbox))
     return clearedAreas
+
+
+def getExtensions(faces, offset, solids, tolerance=0.01):
+    """getExtension(faces, offset, solids)
+    Returns extensions for faces which not intersect with solids
+    """
+    extensions = []
+    for face in faces:
+        # Part.show(face)
+        # oface = face.makeOffset2D(offset)
+        plane = PathUtils.makeWorkplane(face)
+        oface = PathUtils.getOffsetArea(face, offset, plane=plane, tolerance=tolerance)
+        # Part.show(oface)
+        if not Path.Geom.isRoughly(oface.Volume, 0):
+            print("Extension error: makeOffset2D() produced not flat shape.")
+            print("Attempt to create face from outer wire")
+            face = Part.Face(face.OuterWire)
+            # Part.show(face)
+            oface = face.makeOffset2D(offset)
+            # Part.show(oface)
+            if not Path.Geom.isRoughly(oface.Volume, 0):
+                print("Extension error: makeOffset2D() produced not flat shape")
+                continue
+        eface = oface.cut(solids)
+        # Part.show(eface)
+        if not eface.isNull():
+            extensions.append(eface)
+        else:
+            print("Extension error: cut() produced empty shape")
+
+    return extensions
