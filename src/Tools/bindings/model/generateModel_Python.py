@@ -913,10 +913,6 @@ def parse_module_python_code(path: str) -> GenerateModel:
 
     tree = ast.parse(source_code)
 
-    class_defs = [node for node in tree.body if isinstance(node, ast.ClassDef)]
-    if class_defs:
-        raise ValueError(".module.pyi files cannot contain exported classes")
-
     functions = _collect_functions(tree)
     if not functions:
         raise ValueError("No module-level functions found for export.")

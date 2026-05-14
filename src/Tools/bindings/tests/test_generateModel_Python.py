@@ -168,6 +168,33 @@ class GenerateModelPythonTests(unittest.TestCase):
         self.assertEqual([method.Name for method in export.Method], ["ping"])
         self.assertIn("Example module doc.", export.Documentation.UserDocu)
 
+    def test_module_stub_allows_helper_classes_and_enums(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from enum import IntEnum
+            from typing import Protocol
+
+            class Mode(IntEnum):
+                One = 1
+
+            class Gate(Protocol):
+                def allow(self, /) -> bool: ...
+
+            def ping() -> None:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse(str(path))
+
+        export = model.PythonModule[0]
+        self.assertEqual([method.Name for method in export.Method], ["ping"])
+
     def test_module_stub_rejects_bound_method_decorators(self):
         source = textwrap.dedent("""
             from __future__ import annotations
