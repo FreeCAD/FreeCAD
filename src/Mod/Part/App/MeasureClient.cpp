@@ -71,14 +71,14 @@ using Attacher::AttachEnginePlane;
 // https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/Selection/SelectionSummary.cpp
 
 // Should work with edges and wires
-static float getLength(TopoDS_Shape& wire)
+static double getLength(TopoDS_Shape& wire)
 {
     GProp_GProps gprops;
     BRepGProp::LinearProperties(wire, gprops);
     return gprops.Mass();
 }
 
-static float getFaceArea(TopoDS_Shape& face)
+static double getFaceArea(TopoDS_Shape& face)
 {
     GProp_GProps gprops;
     BRepGProp::SurfaceProperties(face, gprops);
