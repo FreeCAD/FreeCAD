@@ -87,6 +87,7 @@
 #include "LinkViewPy.h"
 #include "MainWindow.h"
 #include "Macro.h"
+#include "FreeCADGuiModulePy.h"
 #include "PreferencePackManager.h"
 #include "PythonConsolePy.h"
 #include "PythonDebugger.h"
@@ -267,7 +268,7 @@ struct ApplicationP
     std::bitset<32> StatusBits;
 };
 
-static PyObject* FreeCADGui_subgraphFromObject(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sSubgraphFromObject(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &o)) {
@@ -331,7 +332,7 @@ static PyObject* FreeCADGui_subgraphFromObject(PyObject* /*self*/, PyObject* arg
     return Py_None;
 }
 
-static PyObject* FreeCADGui_exportSubgraph(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sExportSubgraph(PyObject* /*self*/, PyObject* args)
 {
     const char* format = "VRML";
     PyObject* proxy;
@@ -373,34 +374,13 @@ static PyObject* FreeCADGui_exportSubgraph(PyObject* /*self*/, PyObject* args)
     }
 }
 
-static PyObject* FreeCADGui_getSoDBVersion(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetSoDBVersion(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
     return PyUnicode_FromString(SoDB::getVersion());
 }
-
-struct PyMethodDef FreeCADGui_methods[] = {
-    {"subgraphFromObject",
-     FreeCADGui_subgraphFromObject,
-     METH_VARARGS,
-     "subgraphFromObject(object) -> Node\n\n"
-     "Return the Inventor subgraph to an object"},
-    {"exportSubgraph",
-     FreeCADGui_exportSubgraph,
-     METH_VARARGS,
-     "exportSubgraph(Node, File or Buffer, [Format='VRML']) -> None\n\n"
-     "Exports the sub-graph in the requested format"
-     "The format string can be VRML or IV"},
-    {"getSoDBVersion",
-     FreeCADGui_getSoDBVersion,
-     METH_VARARGS,
-     "getSoDBVersion() -> String\n\n"
-     "Return a text string containing the name\n"
-     "of the Coin library and version information"},
-    {nullptr, nullptr, 0, nullptr} /* sentinel */
-};
 
 class MainThreadInvoker final: public QObject
 {
@@ -580,17 +560,6 @@ Application::Application(bool GUIenabled)
         // setting up Python binding
         Base::PyGILStateLocker lock;
 
-        PyDoc_STRVAR(
-            FreeCADGui_doc,
-            "The functions in the FreeCADGui module allow working with GUI documents,\n"
-            "view providers, views, workbenches and much more.\n\n"
-            "The FreeCADGui instance provides a list of references of GUI documents which\n"
-            "can be addressed by a string. These documents contain the view providers for\n"
-            "objects in the associated App document. An App and GUI document can be\n"
-            "accessed with the same name.\n\n"
-            "The FreeCADGui module also provides a set of functions to work with so called\n"
-            "workbenches.");
-
         // if this returns a valid pointer then the 'FreeCADGui' Python module was loaded,
         // otherwise the executable was launched
         PyObject* modules = PyImport_GetModuleDict();
@@ -598,9 +567,9 @@ Application::Application(bool GUIenabled)
         if (!module) {
             static struct PyModuleDef FreeCADGuiModuleDef = {PyModuleDef_HEAD_INIT,
                                                              "FreeCADGui",
-                                                             FreeCADGui_doc,
+                                                             Gui::FreeCADGuiModulePy::moduleDocumentation(),
                                                              -1,
-                                                             ApplicationPy::Methods,
+                                                             Gui::FreeCADGuiModulePy::Methods,
                                                              nullptr,
                                                              nullptr,
                                                              nullptr,
@@ -608,10 +577,6 @@ Application::Application(bool GUIenabled)
             module = PyModule_Create(&FreeCADGuiModuleDef);
 
             PyDict_SetItemString(modules, "FreeCADGui", module);
-        }
-        else {
-            // extend the method list
-            PyModule_AddFunctions(module, ApplicationPy::Methods);
         }
         Py::Module(module).setAttr(std::string("ActiveDocument"), Py::None());
         Py::Module(module).setAttr(std::string("HasQtBug_129596"),
@@ -704,19 +669,6 @@ Application::Application(bool GUIenabled)
 
     Base::PyGILStateLocker lock;
     PyObject* module = PyImport_AddModule("FreeCADGui");
-    PyMethodDef* meth = FreeCADGui_methods;
-    PyObject* dict = PyModule_GetDict(module);
-    for (; meth->ml_name; meth++) {
-        PyObject* descr;
-        descr = PyCFunction_NewEx(meth, nullptr, nullptr);
-        if (!descr) {
-            break;
-        }
-        if (PyDict_SetItemString(dict, meth->ml_name, descr) != 0) {
-            break;
-        }
-        Py_DECREF(descr);
-    }
 
     SoQtOffscreenRendererPy::init_type();
     Base::Interpreter().addType(SoQtOffscreenRendererPy::type_object(),

@@ -14,12 +14,21 @@ from collections.abc import Sequence
 from enum import IntEnum
 from typing import Any, ClassVar, Literal, Protocol, TypeAlias, overload
 
+from Base.Metadata import module, typing_only
 from FreeCAD import DocumentObject
 
 _Pathish: TypeAlias = str | bytes | bytearray
 _IconContent: TypeAlias = str | bytes | bytearray | memoryview
 _WorkbenchMenu: TypeAlias = str | Sequence[str]
 _WorkbenchCommands: TypeAlias = str | Sequence[str]
+
+module(
+    Name="FreeCADGui",
+    Namespace="Gui",
+    Include="ApplicationPy.h",
+    CallbackOwner="ApplicationPy",
+    CallbackPrefix="s",
+)
 
 class UserInput(IntEnum):
     """Enum of keyboard, mouse, and modifier tokens used by GUI input hints."""
@@ -434,10 +443,12 @@ def runCommand(name: str, index: int = 0, /) -> None:
     """Run one registered GUI command."""
     ...
 
+@typing_only
 def listCommands() -> list[str]:
     """Return the registered GUI command names."""
     ...
 
+@typing_only
 def isCommandActive(name: str, /) -> bool:
     """Return whether one command is active in the current GUI context."""
     ...
@@ -605,6 +616,14 @@ def setUserEditMode(mode: str, /) -> bool:
 # GUI lifecycle helpers
 def coinRemoveAllChildren(node: object, /) -> None:
     """Remove all Coin child nodes from one parent node."""
+    ...
+
+def applyElementColorOverride(target: object, colors: dict[str, object], /) -> None:
+    """Apply secondary element color overrides to one Coin node or path."""
+    ...
+
+def clearElementColorOverride(target: object, /) -> None:
+    """Clear secondary element color overrides from one Coin node or path."""
     ...
 
 def suspendWaitCursor() -> None:
