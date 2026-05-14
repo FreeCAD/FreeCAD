@@ -28,6 +28,18 @@ class TestAreaOperations(unittest.TestCase):
         a.append(c)
         return a
 
+    def create_square_reversed(self, x, y, size):
+        """Helper: Create a clockwise square Area at position (x,y) with given size."""
+        a = area.Area()
+        c = area.Curve()
+        c.append(area.Vertex(area.Point(x, y)))
+        c.append(area.Vertex(area.Point(x, y + size)))
+        c.append(area.Vertex(area.Point(x + size, y + size)))
+        c.append(area.Vertex(area.Point(x + size, y)))
+        c.append(area.Vertex(area.Point(x, y)))  # Close the curve
+        a.append(c)
+        return a
+
     def create_circle(self, cx, cy, radius):
         """Helper: Create a circular Area (approximated as polygon)."""
         a = area.Area()
@@ -160,6 +172,36 @@ class TestAreaOperations(unittest.TestCase):
 
         # Check area
         self.assertAreaNear(a, 12 * 12, msg="Outward offset by -1")
+
+    def test_offset_inward_reversed(self):
+        """Test offsetting a clockwise square inward."""
+        a = self.create_square_reversed(0, 0, 10)
+
+        # Offset inward by 1
+        a.Offset(1.0)
+
+        # Should have single CCW curve
+        curves = a.getCurves()
+        self.assertEqual(len(curves), 1, "Offset should produce single curve")
+        self.assertFalse(curves[0].IsClockwise(), "Offset curve should be counter-clockwise")
+
+        # Check area
+        self.assertAreaNear(a, 8 * 8, msg="Inward offset by 1 (reversed input)")
+
+    def test_offset_outward_reversed(self):
+        """Test offsetting a clockwise square outward (negative offset)."""
+        a = self.create_square_reversed(0, 0, 10)
+
+        # Offset outward by -1 (negative means outward in Area convention)
+        a.Offset(-1.0)
+
+        # Should have single CCW curve
+        curves = a.getCurves()
+        self.assertEqual(len(curves), 1, "Offset should produce single curve")
+        self.assertFalse(curves[0].IsClockwise(), "Offset curve should be counter-clockwise")
+
+        # Check area
+        self.assertAreaNear(a, 12 * 12, msg="Outward offset by -1 (reversed input)")
 
     def test_offset_circle(self):
         """Test offsetting a circle."""
