@@ -12,6 +12,8 @@ from utils import (
     emit_problem_matchers,
 )
 
+CPP_EXTENSIONS = (".cpp", ".cxx", ".cc", ".c", ".hpp", ".hxx", ".hh", ".h")
+
 
 def check_qt_connections(file_path):
     """
@@ -55,6 +57,8 @@ def main():
 
     all_matches = []
     for file_path in args.files:
+        if not file_path.lower().endswith(CPP_EXTENSIONS):
+            continue
         logging.debug(f"Checking file: {file_path}")
         matches = check_qt_connections(file_path)
         all_matches.extend(matches)
