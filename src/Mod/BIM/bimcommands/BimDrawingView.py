@@ -78,6 +78,7 @@ class BIM_DrawingView:
                 FreeCADGui.doCommand("cobj.Label = " + repr(translate("BIM", "Cut lines")))
                 FreeCADGui.doCommand("cobj.InPlace = False")
                 FreeCADGui.doCommand('cobj.ProjectionMode = "Cutfaces"')
+                FreeCADGui.doCommand("cobj.ViewObject.LineWidth = 4")
                 FreeCADGui.doCommand("obj.addObject(cobj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
