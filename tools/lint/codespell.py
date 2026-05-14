@@ -54,35 +54,18 @@ def main():
     parser = argparse.ArgumentParser(
         description="Run codespell on files and append a Markdown report."
     )
-    parser.add_argument(
-        "--files",
-        nargs="+",
-        required=True,
-        help="List of files to spell check."
-    )
+    parser.add_argument("--files", nargs="+", required=True, help="List of files to spell check.")
     parser.add_argument(
         "--ignore-words",
         required=True,
         help="Comma-separated list of words to ignore (from codespellignore).",
     )
-    parser.add_argument(
-        "--log-dir",
-        required=True,
-        help="Directory to store the log file."
-    )
-    parser.add_argument(
-        "--report-file",
-        required=True,
-        help="Name of the report file."
-    )
+    parser.add_argument("--log-dir", required=True, help="Directory to store the log file.")
+    parser.add_argument("--report-file", required=True, help="Name of the report file.")
     parser.add_argument(
         "--skip", required=True, help="Comma-separated list of file patterns to skip."
     )
-    parser.add_argument(
-        "--verbose",
-        action='store_true',
-        help="Use verbose output."
-    )
+    parser.add_argument("--verbose", action="store_true", help="Use verbose output.")
     args = parser.parse_args()
     init_environment(args)
 

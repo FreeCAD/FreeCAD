@@ -37,9 +37,7 @@ def check_trailing_whitespace(file_paths):
             with open(path, "r", encoding="utf-8") as f:
                 lines = f.read().splitlines()
                 error_lines = [
-                    idx
-                    for idx, line in enumerate(lines, start=1)
-                    if line != line.rstrip()
+                    idx for idx, line in enumerate(lines, start=1) if line != line.rstrip()
                 ]
                 if error_lines:
                     issues[path] = error_lines
@@ -58,9 +56,7 @@ def check_tabs(file_paths):
         try:
             with open(path, "r", encoding="utf-8") as f:
                 lines = f.read().splitlines()
-                tab_lines = [
-                    idx for idx, line in enumerate(lines, start=1) if "\t" in line
-                ]
+                tab_lines = [idx for idx, line in enumerate(lines, start=1) if "\t" in line]
                 if tab_lines:
                     issues[path] = tab_lines
         except Exception as e:
@@ -132,9 +128,7 @@ def main():
 
             ws_log_file = os.path.join(args.log_dir, "whitespace.log")
             write_file(ws_log_file, ws_output)
-            emit_problem_matchers(
-                ws_log_file, "grepMatcherWarning.json", "grepMatcher-warning"
-            )
+            emit_problem_matchers(ws_log_file, "grepMatcherWarning.json", "grepMatcher-warning")
         report_sections.append(format_report("Trailing Whitespace", ws_issues))
         total_issues += len(ws_issues)
 
@@ -153,9 +147,7 @@ def main():
 
             tab_log_file = os.path.join(args.log_dir, "tabs.log")
             write_file(tab_log_file, tab_output)
-            emit_problem_matchers(
-                tab_log_file, "grepMatcherWarning.json", "grepMatcher-warning"
-            )
+            emit_problem_matchers(tab_log_file, "grepMatcherWarning.json", "grepMatcher-warning")
         report_sections.append(format_report("Tab Usage", tab_issues))
         total_issues += len(tab_issues)
 

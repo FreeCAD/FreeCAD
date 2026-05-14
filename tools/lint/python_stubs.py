@@ -69,9 +69,17 @@ def main():
     report = [
         f"<details><summary>{section_title}</summary>",
         "",
-        report_section("Stub generation", "Stub generation", os.path.join(args.log_dir, "python-stubs-generate.log")),
-        report_section("Pyright smoke check", "Pyright", os.path.join(args.log_dir, "python-stubs-pyright.log")),
-        report_section("Pyrefly smoke check", "Pyrefly", os.path.join(args.log_dir, "python-stubs-pyrefly.log")),
+        report_section(
+            "Stub generation",
+            "Stub generation",
+            os.path.join(args.log_dir, "python-stubs-generate.log"),
+        ),
+        report_section(
+            "Pyright smoke check", "Pyright", os.path.join(args.log_dir, "python-stubs-pyright.log")
+        ),
+        report_section(
+            "Pyrefly smoke check", "Pyrefly", os.path.join(args.log_dir, "python-stubs-pyrefly.log")
+        ),
         "</details>",
         "",
     ]

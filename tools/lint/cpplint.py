@@ -15,6 +15,7 @@ from utils import (
 
 DEFAULT_LINE_LENGTH_LIMIT = 100
 
+
 def load_cpplint_filters(conf_file="cpplint.cfg"):
     """Load cpplint filters from a configuration file."""
     try:
@@ -25,12 +26,14 @@ def load_cpplint_filters(conf_file="cpplint.cfg"):
         logging.warning(f"Could not load {conf_file}: {e}")
         return ""
 
+
 def count_cpplint_errors(log_text: str) -> int:
     """
     Count the number of cpplint error/warning lines.
     """
     matches = re.findall(r"\[[0-9]+\]$", log_text, re.MULTILINE)
     return len(matches)
+
 
 def generate_markdown_report(aggregated_output: str, errors_count: int) -> str:
     """Generate a Markdown report section based on cpplint output and error count."""
@@ -50,6 +53,7 @@ def generate_markdown_report(aggregated_output: str, errors_count: int) -> str:
     report_lines.append("</details>")
     report_lines.append("")
     return "\n".join(report_lines)
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -85,6 +89,7 @@ def main():
     append_file(args.report_file, report)
 
     sys.exit(0 if errors_count == 0 else 1)
+
 
 if __name__ == "__main__":
     main()

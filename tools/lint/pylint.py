@@ -63,9 +63,7 @@ def parse_pylint_output(log_path: str) -> dict:
     }
 
 
-def generate_markdown_report(
-    pylint_counts: dict, enabled_checks_log: str, pylint_log: str
-) -> str:
+def generate_markdown_report(pylint_counts: dict, enabled_checks_log: str, pylint_log: str) -> str:
     """Generate a Markdown-formatted report based on pylint results and logs."""
 
     def generate_summary(counts: dict) -> str:
@@ -102,9 +100,7 @@ def generate_markdown_report(
     summary = generate_summary(pylint_counts)
     report_lines.append(f"<details><summary>{summary}</summary>")
     report_lines.append("")
-    report_lines.append(
-        "<details><summary>:information_source: Enabled checks</summary>"
-    )
+    report_lines.append("<details><summary>:information_source: Enabled checks</summary>")
     report_lines.append("")
     report_lines.append("````")
     report_lines.append(read_file_contents(enabled_checks_log))

@@ -47,9 +47,7 @@ def generate_markdown_report(
     report_lines.append("````")
     report_lines.append("</details>")
     report_lines.append("")
-    report_lines.append(
-        "<details><summary>:information_source: Enabled checks</summary>"
-    )
+    report_lines.append("<details><summary>:information_source: Enabled checks</summary>")
     report_lines.append("")
     report_lines.append("````")
     report_lines.append(enabled_checks_content)

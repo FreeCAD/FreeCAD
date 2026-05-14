@@ -107,9 +107,7 @@ def main():
     warnings_count = count_occurrences(warning_pattern, output)
     notes_count = count_occurrences(note_pattern, output)
 
-    logging.info(
-        f"Found {errors_count} errors, {warnings_count} warnings, {notes_count} notes"
-    )
+    logging.info(f"Found {errors_count} errors, {warnings_count} warnings, {notes_count} notes")
 
     report = generate_markdown_report(output, errors_count, warnings_count, notes_count)
     append_file(args.report_file, report + "\n")
