@@ -112,6 +112,11 @@ PyObject* ApplicationPy::sIsRestoring(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(Py::Boolean(GetApplication().isRestoring()));
 }
 
+PyObject* ApplicationPy::sOpen(PyObject* self, PyObject* args, PyObject* kwd)
+{
+    return sOpenDocument(self, args, kwd);
+}
+
 PyObject* ApplicationPy::sOpenDocument(PyObject* /*self*/, PyObject* args, PyObject* kwd)
 {
     char* Name {};
@@ -361,7 +366,7 @@ PyObject* ApplicationPy::sGetDocument(PyObject* /*self*/, PyObject* args)
     return doc->getPyObject();
 }
 
-PyObject* ApplicationPy::sGetParam(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sParamGet(PyObject* /*self*/, PyObject* args)
 {
     char* pstr = nullptr;
     if (!PyArg_ParseTuple(args, "s", &pstr)) {
@@ -406,7 +411,7 @@ PyObject* ApplicationPy::sSaveParameter(PyObject* /*self*/, PyObject* args)
 }
 
 
-PyObject* ApplicationPy::sGetConfig(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sConfigGet(PyObject* /*self*/, PyObject* args)
 {
     char* pstr {};
 
@@ -425,7 +430,7 @@ PyObject* ApplicationPy::sGetConfig(PyObject* /*self*/, PyObject* args)
     return PyUnicode_FromString("");
 }
 
-PyObject* ApplicationPy::sDumpConfig(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sConfigDump(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -438,7 +443,7 @@ PyObject* ApplicationPy::sDumpConfig(PyObject* /*self*/, PyObject* args)
     return dict;
 }
 
-PyObject* ApplicationPy::sSetConfig(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sConfigSet(PyObject* /*self*/, PyObject* args)
 {
     char *pstr {};
     char *pstr2 {};
@@ -453,7 +458,7 @@ PyObject* ApplicationPy::sSetConfig(PyObject* /*self*/, PyObject* args)
     return Py_None;
 }
 
-PyObject* ApplicationPy::sGetVersion(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sVersion(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -673,7 +678,7 @@ PyObject* ApplicationPy::sGetExportType(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(dict);
 }
 
-PyObject* ApplicationPy::sGetResourcePath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetResourceDir(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -683,7 +688,7 @@ PyObject* ApplicationPy::sGetResourcePath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(datadir);
 }
 
-PyObject* ApplicationPy::sGetLibraryPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetLibraryDir(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -713,7 +718,7 @@ PyObject* ApplicationPy::sGetUserCachePath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(datadir);
 }
 
-PyObject* ApplicationPy::sGetUserConfigPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetUserConfigDir(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -723,7 +728,7 @@ PyObject* ApplicationPy::sGetUserConfigPath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(datadir);
 }
 
-PyObject* ApplicationPy::sGetUserAppDataPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetUserAppDataDir(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -733,7 +738,7 @@ PyObject* ApplicationPy::sGetUserAppDataPath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(user_data_dir);
 }
 
-PyObject* ApplicationPy::sGetUserMacroPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetUserMacroDir(PyObject* /*self*/, PyObject* args)
 {
     PyObject* actual = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &actual)) {
@@ -752,7 +757,7 @@ PyObject* ApplicationPy::sGetUserMacroPath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(user_macro_dir);
 }
 
-PyObject* ApplicationPy::sGetHelpPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetHelpDir(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -804,7 +809,7 @@ PyObject* ApplicationPy::sListDocuments(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* ApplicationPy::sAddDocObserver(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sAddDocumentObserver(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o {};
     if (!PyArg_ParseTuple(args, "O", &o)) {
@@ -818,7 +823,7 @@ PyObject* ApplicationPy::sAddDocObserver(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* ApplicationPy::sRemoveDocObserver(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sRemoveDocumentObserver(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o {};
     if (!PyArg_ParseTuple(args, "O", &o)) {
