@@ -482,7 +482,7 @@ void CArea::Xor(const CArea& a2)
 
 void CArea::OffsetInward(double inwards_value)
 {
-    OffsetWithClipper(-inwards_value);
+    Offset(-inwards_value);
 }
 
 void CArea::PopulateClipper(Clipper64& c, bool as_clip, ArcFittingMap& arcMap) const
@@ -596,13 +596,7 @@ void CArea::ClipperNoop()
     );
 }
 
-void CArea::OffsetWithClipper(
-    double offset,
-    JoinType joinType,
-    EndType endType,
-    double miterLimit,
-    double arcTolerance
-)
+void CArea::Offset(double offset, JoinType joinType, EndType endType, double miterLimit, double arcTolerance)
 {
     offset *= m_clipper_scale;
     if (arcTolerance == 0.0) {
@@ -650,10 +644,10 @@ void CArea::Thicken(double value)
 {
     // Create inward offset on a copy
     CArea inner(*this);
-    inner.OffsetWithClipper(-value);
+    inner.Offset(-value);
 
     // Create outward offset on current area
-    this->OffsetWithClipper(value);
+    this->Offset(value);
 
     // Subtract inner from outer to create the thickened band
     this->Subtract(inner);
