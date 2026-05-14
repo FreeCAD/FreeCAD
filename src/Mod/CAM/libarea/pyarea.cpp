@@ -226,21 +226,6 @@ std::list<Point> spanIntersect(const Span& span1, const Span& span2)
     return pts;
 }
 
-
-geoff_geometry::Matrix* MatrixFromVector(std::vector<double> v)
-{
-    double array[16];
-    int i = 0;
-    for (double vi : v) {
-        array[i] = vi;
-        i++;
-        if (i >= 16) {
-            break;
-        }
-    }
-    return new geoff_geometry::Matrix(array);
-}
-
 std::list<CCurve> InsideCurves(const CArea& a, const CCurve& curve)
 {
     std::list<CCurve> curves_inside;
@@ -377,11 +362,6 @@ void init_pyarea(py::module& m)
         .def("Thicken", &CArea::Thicken)
         .def("Intersections", &AreaIntersections)
         .def("GetArea", &AreaGetArea);
-
-    py::class_<geoff_geometry::Matrix, std::shared_ptr<geoff_geometry::Matrix>>(m, "Matrix")
-        .def(py::init<geoff_geometry::Matrix>())
-        .def(py::init(&MatrixFromVector))
-        .def("Multiply", &geoff_geometry::Matrix::Multiply);
 
     m.def("set_units", set_units);
     m.def("get_units", get_units);
