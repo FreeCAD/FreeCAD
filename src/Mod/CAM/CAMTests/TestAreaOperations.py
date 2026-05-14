@@ -54,7 +54,7 @@ class TestAreaOperations(unittest.TestCase):
         """Helper: Assert area is within tolerance of expected value.
         Default tolerance is 1% of expected_area.
         """
-        actual = abs(area_obj.GetArea())  # Note: GetArea() not Area()
+        actual = area_obj.GetArea()
         if tolerance is None:
             tolerance = abs(expected_area) * 0.01
         if msg is None:
@@ -147,7 +147,7 @@ class TestAreaOperations(unittest.TestCase):
 
         # Should be empty (no curves to check orientation)
         self.assertEqual(a1.num_curves(), 0, "Complete subtraction should be empty")
-        area_val = abs(a1.GetArea())
+        area_val = a1.GetArea()
         self.assertEqual(area_val, 0)
 
     # ========================================================================
@@ -296,7 +296,7 @@ class TestAreaOperations(unittest.TestCase):
     def test_reorder(self):
         """Test Reorder doesn't break the area."""
         a = self.create_square(0, 0, 10)
-        original_area = abs(a.GetArea())
+        original_area = a.GetArea()
 
         # Reorder should not change area
         a.Reorder()
