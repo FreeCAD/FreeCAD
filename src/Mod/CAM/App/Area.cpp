@@ -308,8 +308,8 @@ int Area::addShape(
         return skipped;
     }
 
-    CArea _area;
-    CArea _areaOpen;
+    CAreaReversed _area;
+    CAreaReversed _areaOpen;
 
     for (TopExp_Explorer it(shape, TopAbs_WIRE); it.More(); it.Next()) {
         haveShape = true;
@@ -794,7 +794,6 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     // rest = intersect(clearable, offset(remaining, dTool))
     // add buffer to dTool to compensate for oversizing in getClearedArea
     CArea restCArea(remaining);
-    restCArea.m_reversed = false;
     restCArea.OffsetWithClipper(
         diameter + buffer,
         myParams.JoinType,
@@ -842,7 +841,7 @@ void Area::addToBuild(CArea& area, const TopoDS_Shape& shape)
         myHaveFace = it.More();
     }
     TopoDS_Shape plane = getPlane();
-    CArea areaOpen;
+    CAreaReversed areaOpen;
     mySkippedShapes += addShape(
         area,
         shape,
@@ -2103,11 +2102,11 @@ void Area::build()
     getPlane(&trsf);
 
     try {
-        myArea = std::make_unique<CArea>();
-        myAreaOpen = std::make_unique<CArea>();
+        myArea = std::make_unique<CAreaReversed>();      // TODO don't want it reversed
+        myAreaOpen = std::make_unique<CAreaReversed>();  // TODO don't want it reversed
 
         CAreaConfig conf(myParams);
-        CArea areaClip;
+        CAreaReversed areaClip;
 
         mySkippedShapes = 0;
         short op = OperationUnion;
@@ -2216,6 +2215,7 @@ TopoDS_Shape Area::toShape(CArea& area, short fill, int reorient)
     if (myParams.FitArcs) {
         if (&area == myArea.get()) {
             CArea copy(area);
+            copy.m_reversed = true;
             copy.FitArcs();
             return toShape(copy, bFill, &trsf, reorient);
         }
@@ -2287,7 +2287,7 @@ TopoDS_Shape Area::getShape(int index)
     makeOffset(areas, PARAM_FIELDS(AREA_MY, AREA_PARAMS_OFFSET));
 
     if (areas.empty()) {
-        areas.push_back(make_shared<CArea>(*myArea));
+        areas.push_back(make_shared<CArea>(*myArea));  // TODO seeds from myArea
     }
 
     Area areaPocket(&myParams);
@@ -2351,7 +2351,7 @@ TopoDS_Shape Area::makeOffset(
     makeOffset(areas, PARAM_FIELDS(PARAM_FARG, AREA_PARAMS_OFFSET), from_center);
     if (areas.empty()) {
         if (myParams.Thicken && myParams.ToolRadius > Precision::Confusion()) {
-            CArea area(*myArea);
+            CArea area(*myArea);  // TODO inherits from myArea
             area.Thicken(myParams.ToolRadius);
             return toShape(area, FillFace, reorient);
         }
@@ -2390,7 +2390,7 @@ TopoDS_Shape Area::makeOffset(
 std::shared_ptr<CArea> Area::performSingleOffset(double offset)
 {
     auto area = make_shared<CArea>();
-    CArea areaOpen;
+    CAreaReversed areaOpen;
 
 #ifdef AREA_OFFSET_ALGO
     switch (myParams.Algo) {
@@ -2476,7 +2476,6 @@ void Area::makeOffset(
         if (previous_area_offset && check_gaps) {
             // Offset backwards by tool radius and subtract to find a gap
             CArea curr_offset_opposite = *area;
-            curr_offset_opposite.m_reversed = false;
             curr_offset_opposite.OffsetWithClipper(
                 -sign_stepover * tool_radius,
                 jt,
@@ -2500,7 +2499,6 @@ void Area::makeOffset(
 
                     // Recompute gap check
                     CArea test_offset_opposite = *test_area;
-                    test_offset_opposite.m_reversed = false;
                     test_offset_opposite.OffsetWithClipper(
                         -sign_stepover * tool_radius,
                         jt,
@@ -2527,7 +2525,6 @@ void Area::makeOffset(
 
             // Cache this pass's inner offset, and check if done
             previous_area_offset = *area;
-            previous_area_offset->m_reversed = false;
             previous_area_offset->OffsetWithClipper(
                 sign_stepover * tool_radius,
                 jt,
@@ -2566,7 +2563,6 @@ void Area::makeOffset(
         // Compute and cache the offset of current area for next iteration's gap check
         if (check_gaps && !previous_area_offset) {
             previous_area_offset = *area;
-            previous_area_offset->m_reversed = false;
             previous_area_offset->OffsetWithClipper(
                 sign_stepover * tool_radius,
                 jt,
@@ -2648,7 +2644,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
 
     CAreaConfig conf(myParams);
 
-    CArea out;
+    CAreaReversed out;
     PocketMode pm;
 
     switch (mode) {
@@ -2742,6 +2738,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
     if (!done) {
         CAreaPocketParams params(tool_radius, extra_offset, stepover, from_center, pm, angle);
         CArea in(*myArea);
+        in.m_reversed = true;
         // MakePocketToolPath internally uses libarea Offset which somehow demands
         // reorder before input, otherwise nothing is shown.
         in.Reorder();

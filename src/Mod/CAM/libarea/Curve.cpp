@@ -825,7 +825,7 @@ bool CCurve::Offset(double leftwards_value)
                 inwards_offset = -inwards_offset;
                 cw = true;
             }
-            CArea a;
+            CAreaReversed a;
             a.append(*this);
             a.Offset(inwards_offset);
             if (a.m_curves.size() == 1) {
@@ -959,7 +959,7 @@ void CCurve::operator+=(const CCurve& curve)
 
 void CCurve::CurveIntersections(const CCurve& c, std::list<Point>& pts) const
 {
-    CArea a;
+    CAreaReversed a;
     a.append(*this);
     a.CurveIntersections(c, pts);
 }
