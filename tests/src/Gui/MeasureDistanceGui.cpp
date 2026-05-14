@@ -19,7 +19,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <gp_Pnt.hxx>
 
-#include <Inventor/nodes/SoCone.h>
+#include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoNode.h>
@@ -64,23 +64,21 @@ protected:
 QApplication* MeasureDistanceGui::qapp = nullptr;
 Gui::Application* MeasureDistanceGui::guiApp = nullptr;
 
-// Walks the scenegraph to count visible cone nodes used as arrowheads
-void countVisibleCones(const SoNode* node, int& coneCount)
+// Walks the scenegraph to count SoCallback nodes (used for GL arrowhead rendering)
+void countCallbacks(const SoNode* node, int& count)
 {
     if (!node) {
         return;
     }
 
-    if (const auto* cone = dynamic_cast<const SoCone*>(node)) {
-        if (cone->height.getValue() > 0.0f && cone->bottomRadius.getValue() > 0.0f) {
-            ++coneCount;
-        }
+    if (dynamic_cast<const SoCallback*>(node)) {
+        ++count;
         return;
     }
 
     if (const auto* group = dynamic_cast<const SoGroup*>(node)) {
         for (int i = 0; i < group->getNumChildren(); ++i) {
-            countVisibleCones(group->getChild(i), coneCount);
+            countCallbacks(group->getChild(i), count);
         }
     }
 }
@@ -157,13 +155,14 @@ TEST_F(MeasureDistanceGui, arrowsAreInstantiatedForTwoPoints)
     SoSeparator* root = viewProvider->getRoot();
     ASSERT_NE(root, nullptr);
 
-    int coneCount = 0;
-    countVisibleCones(root, coneCount);
+    // Arrowheads are drawn via a GL render callback rather than cone scene-graph nodes.
+    EXPECT_TRUE(viewProvider->ShowArrows.getValue());
+    int callbackCount = 0;
+    countCallbacks(root, callbackCount);
+    EXPECT_GE(callbackCount, 1);
 
     int lineCount = 0;
     countIndexedLineSets(root, lineCount);
-
-    EXPECT_EQ(coneCount, 2);
     EXPECT_GE(lineCount, 2);
 
     App::GetApplication().closeDocument(doc->getName());
