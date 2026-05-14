@@ -138,8 +138,10 @@ class TestAreaOperations(unittest.TestCase):
         # Offset inward by 1
         a.Offset(1.0)
 
-        # Should have result
-        self.assertGreater(a.num_curves(), 0, "Offset should produce curves")
+        # Should have single CCW curve
+        curves = a.getCurves()
+        self.assertEqual(len(curves), 1, "Offset should produce single curve")
+        self.assertFalse(curves[0].IsClockwise(), "Offset curve should be counter-clockwise")
 
         # Check area
         self.assertAreaNear(a, 8 * 8, msg="Inward offset by 1")
@@ -151,8 +153,10 @@ class TestAreaOperations(unittest.TestCase):
         # Offset outward by -1 (negative means outward in Area convention)
         a.Offset(-1.0)
 
-        # Should have result
-        self.assertGreater(a.num_curves(), 0, "Offset should produce curves")
+        # Should have single CCW curve
+        curves = a.getCurves()
+        self.assertEqual(len(curves), 1, "Offset should produce single curve")
+        self.assertFalse(curves[0].IsClockwise(), "Offset curve should be counter-clockwise")
 
         # Check area
         self.assertAreaNear(a, 12 * 12, msg="Outward offset by -1")
