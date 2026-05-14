@@ -118,7 +118,7 @@ static void AddVertex(
     }
 }
 
-static void MakePoly(const CCurve& curve, Path64& p, bool reverse, ArcFittingMap& arcMap)
+static void MakePoly(const CCurve& curve, Path64& p, ArcFittingMap& arcMap)
 {
     pts_for_AddVertex.clear();
     const CVertex* prev_vertex = NULL;
@@ -140,32 +140,21 @@ static void MakePoly(const CCurve& curve, Path64& p, bool reverse, ArcFittingMap
     }
 
     p.resize(pts_for_AddVertex.size());
-    if (reverse) {
-        std::size_t i = pts_for_AddVertex.size() - 1;
-        for (std::list<PointD>::iterator It = pts_for_AddVertex.begin();
-             It != pts_for_AddVertex.end();
-             It++, i--) {
-            p[i] = ToPoint64(*It);
-        }
-    }
-    else {
-        unsigned int i = 0;
-        for (std::list<PointD>::iterator It = pts_for_AddVertex.begin();
-             It != pts_for_AddVertex.end();
-             It++, i++) {
-            p[i] = ToPoint64(*It);
-        }
+    unsigned int i = 0;
+    for (std::list<PointD>::iterator It = pts_for_AddVertex.begin(); It != pts_for_AddVertex.end();
+         It++, i++) {
+        p[i] = ToPoint64(*It);
     }
 }
 
-static void MakePolyPoly(const CArea& area, Paths64& pp, bool reverse, ArcFittingMap& arcMap)
+static void MakePolyPoly(const CArea& area, Paths64& pp, ArcFittingMap& arcMap)
 {
     pp.clear();
 
     for (std::list<CCurve>::const_iterator It = area.m_curves.begin(); It != area.m_curves.end();
          It++) {
         pp.push_back(Path64());
-        MakePoly(*It, pp.back(), reverse, arcMap);
+        MakePoly(*It, pp.back(), arcMap);
     }
 }
 
@@ -181,13 +170,7 @@ double recenter(double phi, double phi_ref = 0)
     return phi;
 };
 
-static void SetFromResult(
-    CCurve& curve,
-    Path64& path,
-    bool reverse,
-    bool is_closed,
-    const ArcFittingMap& arcMap
-)
+static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const ArcFittingMap& arcMap)
 {
     if (CArea::m_clipper_clean_distance >= heeks::Point::tolerance) {
         path = SimplifyPath(path, CArea::m_clipper_clean_distance, is_closed);
@@ -212,12 +195,12 @@ static void SetFromResult(
     double phi_total = 0.0;
     int num_j = path.size() + (is_closed && path.size() > 1 ? 1 : 0);
     for (int dj = 0; dj < num_j; dj++) {
-        const int j = ((reverse ? -1 : 1) * dj + 2 * path.size()) % path.size();
+        const int j = dj % path.size();
         const Point64& pt = path[j];
         PointD dp = ToPointD(pt);
         heeks::Point p(dp.x, dp.y);
 
-        const int jnext = ((reverse ? -1 : 1) * (dj + 1) + 2 * path.size()) % path.size();
+        const int jnext = (dj + 1) % path.size();
         const bool hasNext = (dj + 1 < num_j) || is_closed;
         const bool nextGenerated = (dj + 1 == num_j) && is_closed;
         const Point64& pt_next = path[jnext];
@@ -451,7 +434,6 @@ static void SetFromResult(
     CArea& area,               // area to populate
     Paths64& pp,               // clipper data to put in the area
     bool is_closed = true,     // flag if the clipper paths are closed
-    bool reversed = false,     // flag for reversing curve vertex order
     bool clear_area = true,    // flag for clearing the area's curves before populating
     bool clear_arc_map = true  // flag for clearing arc metadata when done
 )
@@ -469,7 +451,7 @@ static void SetFromResult(
 
         area.m_curves.emplace_back();
         CCurve& curve = area.m_curves.back();
-        SetFromResult(curve, p, reversed, is_closed, area.m_arc_fitting_map);
+        SetFromResult(curve, p, is_closed, area.m_arc_fitting_map);
     }
 
     // Reset arc fitting map to ensure clean state
@@ -518,7 +500,7 @@ void CArea::PopulateClipper(Clipper64& c, bool as_clip, ArcFittingMap& arcMap) c
         }
 
         Path64 p;
-        MakePoly(curve, p, false, arcMap);
+        MakePoly(curve, p, arcMap);
 
         if (is_closed) {
             closed_paths.push_back(p);
@@ -564,7 +546,6 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
         *this,
         closed_paths,
         /*is_closed=*/true,
-        /*reversed=*/false,
         /*clear_area=*/true,
         /*clear_arc_map=*/false
     );
@@ -574,7 +555,6 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
         *this,
         open_paths,
         /*is_closed=*/false,
-        /*reversed=*/false,
         /*clear_area=*/false,
         /*clear_arc_map=*/true
     );
@@ -587,7 +567,7 @@ void CArea::ClipperNoop()
     for (const CCurve& curve : m_curves) {
         bool is_closed = curve.IsClosed();
         Path64 p;
-        MakePoly(curve, p, false, m_arc_fitting_map);
+        MakePoly(curve, p, m_arc_fitting_map);
 
         if (is_closed) {
             closed_paths.push_back(p);
@@ -602,7 +582,6 @@ void CArea::ClipperNoop()
         *this,
         closed_paths,
         /*is_closed=*/true,
-        /*reversed=*/false,
         /*clear_area=*/true,
         /*clear_arc_map=*/false
     );
@@ -612,7 +591,6 @@ void CArea::ClipperNoop()
         *this,
         open_paths,
         /*is_closed=*/false,
-        /*reversed=*/false,
         /*clear_area=*/false,
         /*clear_arc_map=*/true
     );
@@ -642,7 +620,7 @@ void CArea::OffsetWithClipper(
     clipper.SetZCallback(MakeZCallback());
 
     Paths64 pp;
-    MakePolyPoly(*this, pp, false, m_arc_fitting_map);
+    MakePolyPoly(*this, pp, m_arc_fitting_map);
 
     // Collect closed paths to add together (holes must be added with outer boundary)
     Paths64 closedPaths;
