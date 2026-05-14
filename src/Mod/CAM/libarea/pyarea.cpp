@@ -13,7 +13,6 @@
 #include "Area.h"
 #include "Point.h"
 #include "AreaDxf.h"
-#include "kurve/geometry.h"
 #include "Adaptive.hpp"
 
 #include <pybind11/pybind11.h>
@@ -219,34 +218,6 @@ Span getLastCurveSpan(const CCurve& c)
     return Span((*VIt).m_p, v, c.m_vertices.size() == 2);
 }
 
-std::list<Point> spanIntersect(const Span& span1, const Span& span2)
-{
-    std::list<Point> pts;
-    span1.Intersect(span2, pts);
-    return pts;
-}
-
-std::list<CCurve> InsideCurves(const CArea& a, const CCurve& curve)
-{
-    std::list<CCurve> curves_inside;
-    a.InsideCurves(curve, curves_inside);
-    return curves_inside;
-}
-
-std::list<Point> CurveIntersections(const CCurve& c1, const CCurve& c2)
-{
-    std::list<Point> pts;
-    c1.CurveIntersections(c2, pts);
-    return pts;
-}
-
-std::list<Point> AreaIntersections(const CArea& a, const CCurve& c2)
-{
-    std::list<Point> pts;
-    a.CurveIntersections(c2, pts);
-    return pts;
-}
-
 double AreaGetArea(const CArea& a)
 {
     return a.GetArea();
@@ -301,7 +272,6 @@ void init_pyarea(py::module& m)
         .def("MidParam", &Span::MidParam)
         .def("Length", &Span::Length)
         .def("GetVector", &Span::GetVector)
-        .def("Intersect", &spanIntersect)
         .def_readwrite("p", &Span::m_p)
         .def_readwrite("v", &Span::m_v);
 
@@ -329,8 +299,7 @@ void init_pyarea(py::module& m)
         .def("Perim", &CCurve::Perim)
         .def("PerimToPoint", &CCurve::PerimToPoint)
         .def("PointToPerim", &CCurve::PointToPerim)
-        .def("FitArcs", &CCurve::FitArcs)
-        .def("Intersections", &CurveIntersections);
+        .def("FitArcs", &CCurve::FitArcs);
 
     py::class_<CBox2D>(m, "Box")
         .def(py::init<CBox2D>())
@@ -358,9 +327,7 @@ void init_pyarea(py::module& m)
         .def("Reorder", &CArea::Reorder)
         .def("MakePocketToolpath", &MakePocketToolpath)
         .def("Split", &SplitArea)
-        .def("InsideCurves", &InsideCurves)
         .def("Thicken", &CArea::Thicken)
-        .def("Intersections", &AreaIntersections)
         .def("GetArea", &AreaGetArea);
 
     m.def("set_units", set_units);

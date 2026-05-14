@@ -32,7 +32,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
 #include <cmath>
-#include "kurve/geometry.h"
+
+using namespace std;
 
 namespace heeks
 {

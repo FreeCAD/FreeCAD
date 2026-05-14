@@ -18,7 +18,6 @@ bool CArea::HolesLinked()
     return false;
 }
 
-// static const double PI = 3.1415926535897932;
 double CArea::m_clipper_scale = 10000.0;
 
 // Convert between PointD (double) and Point64 (int64) with scaling
@@ -70,11 +69,11 @@ static void AddVertex(
 
             if (vertex.m_type == -1 && phi1 > phi0) {
                 // fix to make it clockwise
-                phi1 -= 2 * PI;
+                phi1 -= 2 * M_PI;
             }
             else if (vertex.m_type == 1 && phi1 < phi0) {
                 // fix to make it counterclockwise
-                phi1 += 2 * PI;
+                phi1 += 2 * M_PI;
             }
 
             // what is the delta phi to get an accuracy of aber
@@ -322,7 +321,7 @@ static void SetFromResult(
         return;
     }
 
-    const double max_arc_length = 2 * PI * .99;
+    const double max_arc_length = 2 * M_PI * .99;
 
     // TODO for open paths start at one end and iterate in the direction of
     // decreasing z (which may be a nuanced notion given newly generated z
@@ -721,13 +720,13 @@ void CArea::OffsetWithClipper(
     if (arcTolerance == 0.0) {
         // Clipper arc tolerance definition: https://goo.gl/4odfQh
         double dphi = acos(1.0 - m_accuracy * m_clipper_scale / fabs(offset));
-        int Segments = (int)ceil(PI / dphi);
+        int Segments = (int)ceil(M_PI / dphi);
         if (Segments < 2 * CArea::m_min_arc_points) {
             Segments = 2 * CArea::m_min_arc_points;
         }
         // if (Segments > CArea::m_max_arc_points)
         //     Segments=CArea::m_max_arc_points;
-        dphi = PI / Segments;
+        dphi = M_PI / Segments;
         arcTolerance = (1.0 - cos(dphi)) * fabs(offset);
     }
     else {

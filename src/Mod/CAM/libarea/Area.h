@@ -134,9 +134,6 @@ public:
     static bool HolesLinked();
     void Split(std::list<CArea>& m_areas) const;
     double GetArea(bool always_add = false) const;
-    void SpanIntersections(const Span& span, std::list<Point>& pts) const;
-    void CurveIntersections(const CCurve& curve, std::list<Point>& pts) const;
-    void InsideCurves(const CCurve& curve, std::list<CCurve>& curves_inside) const;
 
     void ChangeStartToNearest(const Point* pstart = NULL, double min_dist = 1.0);
 
