@@ -463,7 +463,7 @@ class TestArcFittingOffsets(PathTestBase):
                     f"    type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
                 )
 
-        a.OffsetWithClipper(offset_distance)
+        a.Offset(offset_distance)
 
         # Get the resulting curves
         curves = a.getCurves()
@@ -519,7 +519,7 @@ class TestArcFittingOffsets(PathTestBase):
         for curve_i, orig_curve in enumerate(area_orig.getCurves()):
             for start_i in range(1, len(orig_curve.getVertices())):
                 rotated_area = rotate_curve_in_area(area_orig, curve_i, start_i)
-                rotated_area.OffsetWithClipper(offset_distance)
+                rotated_area.Offset(offset_distance)
                 rotated_result_canon = canonicalize_area(rotated_area)
 
                 self.assertTrue(
