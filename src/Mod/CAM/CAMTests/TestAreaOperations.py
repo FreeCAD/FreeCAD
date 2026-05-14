@@ -186,7 +186,14 @@ class TestAreaOperations(unittest.TestCase):
         a.Thicken(2.0)
 
         # Should have result
-        self.assertGreater(a.num_curves(), 0, "Thicken should produce curves")
+        curves = a.getCurves()
+        self.assertEqual(len(curves), 2, "Thicken should produce 2 curves (outer + hole)")
+
+        # First curve is the outer boundary (CCW)
+        self.assertFalse(curves[0].IsClockwise(), "Outer curve should be counter-clockwise")
+
+        # Second curve is the inner hole (CW)
+        self.assertTrue(curves[1].IsClockwise(), "Inner hole should be clockwise")
 
         # Check area
         corners = 4 * (2 * 2 - math.pi * 2 * 2 / 4)
