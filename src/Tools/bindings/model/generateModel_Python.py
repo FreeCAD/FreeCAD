@@ -907,6 +907,27 @@ def _module_export_name_from_path(path: str) -> str:
     return os.path.splitext(filename)[0]
 
 
+def _validate_module_runtime_metadata(metadata: dict) -> tuple[str, str]:
+    runtime = metadata.get("Runtime", "") or "PyMethodDef"
+    module_class = metadata.get("ModuleClass", "") or ""
+
+    if not isinstance(runtime, str):
+        raise ValueError("module Runtime must be a string")
+    if not isinstance(module_class, str):
+        raise ValueError("module ModuleClass must be a string")
+
+    if runtime not in {"PyMethodDef", "ExtensionModule"}:
+        raise ValueError(f"unsupported module Runtime '{runtime}'")
+
+    if runtime == "ExtensionModule":
+        if not module_class:
+            raise ValueError("module Runtime='ExtensionModule' requires ModuleClass")
+        if not (metadata.get("Include", "") or ""):
+            raise ValueError("module Runtime='ExtensionModule' requires Include")
+
+    return runtime, module_class
+
+
 def parse_module_python_code(path: str) -> GenerateModel:
     with open(path, "r", encoding="utf-8") as file:
         source_code = file.read()
@@ -924,6 +945,7 @@ def parse_module_python_code(path: str) -> GenerateModel:
         allow_overload_signatures=True,
     )
     metadata, explicit_export = _extract_module_kwargs(tree)
+    runtime, module_class = _validate_module_runtime_metadata(metadata)
     _apply_module_callback_defaults(methods, metadata)
 
     module_name = _get_module_from_path(path)
@@ -940,6 +962,8 @@ def parse_module_python_code(path: str) -> GenerateModel:
             Name=export_name,
             Namespace=namespace,
             Include=metadata.get("Include", "") or "",
+            Runtime=runtime,
+            ModuleClass=module_class,
             IsExplicitlyExported=explicit_export,
         )
     )

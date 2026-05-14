@@ -222,6 +222,8 @@ class PythonModuleExport:
     Name: str = ""
     Namespace: str = ""
     Include: str = ""
+    Runtime: str = "PyMethodDef"
+    ModuleClass: str = ""
     IsExplicitlyExported: bool = False
 
 

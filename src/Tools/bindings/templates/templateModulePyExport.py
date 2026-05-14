@@ -20,7 +20,7 @@
 #                                                                              #
 ################################################################################
 
-from . import template
+from . import template  # pylint: disable=no-name-in-module
 import sys
 from pathlib import Path
 import shutil
@@ -48,6 +48,20 @@ class TemplateModulePyExport(template.ModelTemplate):
             if not doc or not doc.UserDocu:
                 return ""
             return escapeString(doc.UserDocu, indent) or ""
+
+        def extensionCallback(method):
+            if method.Callback:
+                if "::" in method.Callback:
+                    return f"&{method.Callback}"
+                return f"&{self.export.ModuleClass}::{method.Callback}"
+            return f"&{self.export.ModuleClass}::{method.Name}"
+
+        def extensionAddMethod(method):
+            if method.Keyword:
+                return "add_keyword_method"
+            if method.NoArgs:
+                return "add_noargs_method"
+            return "add_varargs_method"
 
         print("TemplateModulePyExport", outputDir / exportName)
 
@@ -88,21 +102,31 @@ namespace @self.export.Namespace.replace("::"," { namespace ")@
 // @self.export.Name@ModulePy - Python module helper
 //===========================================================================
 
++ if self.export.Runtime == "ExtensionModule":
+class @self.export.ModuleClass@;
+-
+
 class @self.export.Name@ModulePy
 {
 public:
++ if self.export.Runtime == "ExtensionModule":
+    static void initialize(@self.export.ModuleClass@& module);
+= else:
     static PyMethodDef Methods[];
     static int addModuleMethods(PyObject* module);
+-
     static const char* moduleDocumentation();
 
     /** @name callbacks and implementers for the python module methods */
     //@{
++ if self.export.Runtime != "ExtensionModule":
 + for i in self.export.Method:
 + if not i.Callback:
     /// callback for the @i.Name@() function
     static PyObject* staticCallback_@i.Name@(@("PyObject* self, PyObject* args, PyObject* kwd" if i.Keyword else "PyObject* self, PyObject* args")@);
     /// implementer for the @i.Name@() function
     static PyObject* @i.Name@(@("PyObject* args, PyObject* kwd" if i.Keyword else "" if i.NoArgs else "PyObject* args")@);
+-
 -
 -
     //@}
@@ -124,8 +148,10 @@ public:
 #include "@self.export.Include@"
 -
 
++ if self.export.Runtime != "ExtensionModule":
 #include <Base/Exception.h>
 #include <Base/PyObjectBase.h>
+-
 #include <CXX/Objects.hxx>
 
 #if defined(__clang__)
@@ -135,6 +161,19 @@ public:
 
 using namespace @self.export.Namespace@;
 
++ if self.export.Runtime == "ExtensionModule":
+void @self.export.Name@ModulePy::initialize(@self.export.ModuleClass@& module)
+{
++ for i in self.export.Method:
+    module.@extensionAddMethod(i)@(
+        "@i.Name@",
+        @extensionCallback(i)@,
+        "@docString(i.Documentation, indent=8)@"
+    );
+-
+    module.initialize(moduleDocumentation());
+}
+= else:
 /// Methods structure of @self.export.Name@ModulePy
 PyMethodDef @self.export.Name@ModulePy::Methods[] = {
 + for i in self.export.Method:
@@ -157,12 +196,14 @@ int @self.export.Name@ModulePy::addModuleMethods(PyObject* module)
 {
     return PyModule_AddFunctions(module, Methods);
 }
+-
 
 const char* @self.export.Name@ModulePy::moduleDocumentation()
 {
     return "@docString(self.export.Documentation, indent=12)@";
 }
 
++ if self.export.Runtime != "ExtensionModule":
 + for i in self.export.Method:
 + if not i.Callback:
 // @i.Name@() callback and implementer
@@ -201,6 +242,7 @@ PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(@("PyObject* self,
 
 -
 -
+-
 
 #if defined(__clang__)
 # pragma clang diagnostic pop
@@ -216,6 +258,7 @@ PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(@("PyObject* self,
 
 using namespace @self.export.Namespace@;
 
++ if self.export.Runtime != "ExtensionModule":
 + for i in self.export.Method:
 + if not i.Callback:
 PyObject* @self.export.Name@ModulePy::@i.Name@(@("PyObject* /*args*/, PyObject* /*kwd*/" if i.Keyword else "" if i.NoArgs else "PyObject* /*args*/")@)
@@ -224,6 +267,7 @@ PyObject* @self.export.Name@ModulePy::@i.Name@(@("PyObject* /*args*/, PyObject* 
     return nullptr;
 }
 
+-
 -
 -
 """

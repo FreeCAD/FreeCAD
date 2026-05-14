@@ -296,6 +296,29 @@ class GenerateModelPythonTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "CallbackPrefix requires CallbackOwner"):
                 parse(str(path))
 
+    def test_extension_module_stub_requires_module_class(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import module
+
+            module(Runtime="ExtensionModule")
+
+            def ping() -> None:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            with self.assertRaisesRegex(
+                ValueError, "Runtime='ExtensionModule' requires ModuleClass"
+            ):
+                parse(str(path))
+
     def test_module_stub_generation_writes_module_wrapper_files(self):
         source = textwrap.dedent("""
             from __future__ import annotations
@@ -412,6 +435,59 @@ class GenerateModelPythonTests(unittest.TestCase):
         self.assertNotIn("staticCallback_loadFile", header)
         self.assertNotIn("staticCallback_loadFile", module_cpp)
         self.assertNotIn("PyObject* ExampleModulePy::loadFile", module_imp)
+
+    def test_extension_module_stub_generation_writes_extension_helper_files(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import module
+
+            \"\"\"Example helper module.\"\"\"
+
+            module(
+                Name="Example",
+                Namespace="TestBindings",
+                Include="ExampleBinding.h",
+                Runtime="ExtensionModule",
+                ModuleClass="ExampleBinding",
+            )
+
+            def ping(value: int, /) -> object:
+                \"\"\"
+                Ping the module.
+                \"\"\"
+                ...
+
+            def reset() -> None:
+                \"\"\"
+                Reset the module state.
+                \"\"\"
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            output_dir = Path(temp_dir) / "generated"
+            output_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            generate(str(path), str(output_dir))
+
+            header = (output_dir / "ExampleModulePy.h").read_text(encoding="utf-8")
+            module_cpp = (output_dir / "ExampleModulePy.cpp").read_text(encoding="utf-8")
+            module_imp = (output_dir / "ExampleModulePyImp.cpp").read_text(encoding="utf-8")
+
+        self.assertIn("static void initialize(ExampleBinding& module);", header)
+        self.assertNotIn("PyMethodDef Methods[]", header)
+        self.assertIn('#include "ExampleBinding.h"', module_cpp)
+        self.assertIn("module.add_varargs_method(", module_cpp)
+        self.assertIn("&ExampleBinding::ping", module_cpp)
+        self.assertIn("&ExampleBinding::reset", module_cpp)
+        self.assertIn("module.initialize(moduleDocumentation())", module_cpp)
+        self.assertIn('return "Example helper module.";', module_cpp)
+        self.assertNotIn("PyErr_SetString(PyExc_NotImplementedError", module_imp)
 
 
 if __name__ == "__main__":
