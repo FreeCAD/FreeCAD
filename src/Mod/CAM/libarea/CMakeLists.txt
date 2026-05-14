@@ -23,11 +23,9 @@ include_directories(${pybind11_INCLUDE_DIR})
 
 # this defines the source-files for library
 set(AREA_SRC_COMMON
-    Arc.cpp
     Area.cpp
     AreaOrderer.cpp
     AreaPocket.cpp
-    Circle.cpp
     Curve.cpp
 )
 
