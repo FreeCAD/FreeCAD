@@ -132,7 +132,7 @@ static bool holes_linked()
 
 static CArea AreaFromDxf(const char* filepath)
 {
-    CArea area;
+    CAreaReversed area;
     AreaDxfRead dxf(&area, filepath);
     dxf.DoRead();
     return area;
@@ -182,11 +182,6 @@ std::list<CArea> SplitArea(const CArea& a)
     a.Split(areas);
 
     return areas;
-}
-
-void dxfArea(CArea& area, const char* /*str*/)
-{
-    area = CArea();
 }
 
 py::list getCurveSpans(const CCurve& c)

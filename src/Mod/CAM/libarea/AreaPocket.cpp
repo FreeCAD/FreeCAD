@@ -20,7 +20,7 @@ class IslandAndOffset
 {
 public:
     const CCurve* island;
-    CArea offset;
+    CAreaReversed offset;
     std::list<CCurve> island_inners;
     std::list<IslandAndOffset*> touching_offsets;
 
@@ -239,7 +239,7 @@ void CurveTree::MakeOffsets2()
     if (CArea::m_please_abort) {
         return;
     }
-    CArea smaller;
+    CAreaReversed smaller;
     smaller.m_curves.push_back(curve);
     smaller.Offset(pocket_params->stepover);
 
@@ -467,6 +467,7 @@ void recur(std::list<CArea>& arealist, const CArea& a1, const CAreaPocketParams&
     }
 
     CArea a_offset = a1;
+    a_offset.m_reversed = true;
     a_offset.Offset(params.stepover);
 
     // split curves into new areas
@@ -474,7 +475,7 @@ void recur(std::list<CArea>& arealist, const CArea& a1, const CAreaPocketParams&
         for (std::list<CCurve>::iterator It = a_offset.m_curves.begin();
              It != a_offset.m_curves.end();
              It++) {
-            CArea a2;
+            CAreaReversed a2;
             a2.m_curves.push_back(*It);
             recur(arealist, a2, params, level + 1);
         }
@@ -498,7 +499,7 @@ void recur(std::list<CArea>& arealist, const CArea& a1, const CAreaPocketParams&
                     recur(arealist, *a2, params, level + 1);
                 }
                 else {
-                    a2 = new CArea();
+                    a2 = new CAreaReversed();
                 }
                 a2->m_curves.push_back(curve);
             }
@@ -534,48 +535,6 @@ void CArea::MakeOnePocketCurve(std::list<CCurve>& curve_list, const CAreaPocketP
     if (CArea::m_please_abort) {
         return;
     }
-#if 0  // simple offsets with feed or rapid joins
-	CArea area_for_feed_possible = *this;
-
-	area_for_feed_possible.Offset(-params.tool_radius - 0.01);
-	CArea a_offset = *this;
-
-	std::list<CArea> arealist;
-	recur(arealist, a_offset, params, 0);
-
-	bool first = true;
-
-	for(std::list<CArea>::iterator It = arealist.begin(); It != arealist.end(); It++)
-	{
-		CArea& area = *It;
-		for(std::list<CCurve>::iterator It = area.m_curves.begin(); It != area.m_curves.end(); It++)
-		{
-			CCurve& curve = *It;
-			if(!first)
-			{
-				// try to join these curves with a feed move, if possible and not too long
-				CCurve &prev_curve = curve_list.back();
-				const Point &prev_p = prev_curve.m_vertices.back().m_p;
-				const Point &next_p = curve.m_vertices.front().m_p;
-
-				if(feed_possible(area_for_feed_possible, prev_p, next_p, params.tool_radius))
-				{
-					// join curves
-					prev_curve += curve;
-				}
-				else
-				{
-					curve_list.push_back(curve);
-				}
-			}
-			else
-			{
-				curve_list.push_back(curve);
-			}
-			first = false;
-		}
-	}
-#else
     pocket_params = &params;
     if (m_curves.size() == 0) {
         CArea::m_processing_done += CArea::m_single_area_processing_length;
@@ -641,7 +600,6 @@ void CArea::MakeOnePocketCurve(std::list<CCurve>& curve_list, const CAreaPocketP
     }
 
     CArea::m_processing_done += CArea::m_single_area_processing_length * 0.1;
-#endif
 }
 
 }  // namespace heeks

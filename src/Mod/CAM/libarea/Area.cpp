@@ -541,6 +541,7 @@ static void zigzag(const CArea& input_a)
     one_over_units = 1 / CArea::m_units;
 
     CArea a(input_a);
+    a.m_reversed = true;
     rotate_area(a);
 
     CBox2D b;
@@ -574,7 +575,7 @@ static void zigzag(const CArea& input_a)
         c.m_vertices.emplace_back(0, p2, null_point);
         c.m_vertices.emplace_back(0, p3, null_point);
         c.m_vertices.emplace_back(0, p0, null_point);
-        CArea a2;
+        CAreaReversed a2;
         a2.m_curves.push_back(c);
         a2.Intersect(a);
         make_zig(a2, y0, y);
@@ -626,6 +627,7 @@ void CArea::MakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketP
     stepover_for_pocket = params.stepover;
 
     CArea a_offset = *this;
+    a_offset.m_reversed = true;
     double current_offset = params.tool_radius + params.extra_offset;
 
     a_offset.Offset(current_offset);
@@ -778,6 +780,7 @@ void CArea::Split(std::list<CArea>& m_areas) const
     }
     else {
         CArea a = *this;
+        a.m_reversed = true;
         a.Reorder();
 
         if (CArea::m_please_abort) {
@@ -818,9 +821,9 @@ double CArea::GetArea(bool always_add) const
 
 eOverlapType GetOverlapType(const CCurve& c1, const CCurve& c2)
 {
-    CArea a1;
+    CAreaReversed a1;
     a1.m_curves.push_back(c1);
-    CArea a2;
+    CAreaReversed a2;
     a2.m_curves.push_back(c2);
 
     return GetOverlapType(a1, a2);
@@ -829,6 +832,7 @@ eOverlapType GetOverlapType(const CCurve& c1, const CCurve& c2)
 eOverlapType GetOverlapType(const CArea& a1, const CArea& a2)
 {
     CArea A1(a1);
+    A1.m_reversed = true;
 
     A1.Subtract(a2);
     if (A1.m_curves.size() == 0) {
@@ -836,6 +840,7 @@ eOverlapType GetOverlapType(const CArea& a1, const CArea& a2)
     }
 
     CArea A2(a2);
+    A2.m_reversed = true;
     A2.Subtract(a1);
     if (A2.m_curves.size() == 0) {
         return eOutside;
@@ -852,14 +857,14 @@ eOverlapType GetOverlapType(const CArea& a1, const CArea& a2)
 
 bool IsInside(const Point& p, const CCurve& c)
 {
-    CArea a;
+    CAreaReversed a;
     a.m_curves.push_back(c);
     return IsInside(p, a);
 }
 
 bool IsInside(const Point& p, const CArea& a)
 {
-    CArea a2;
+    CAreaReversed a2;
     CCurve c;
     c.m_vertices.emplace_back(Point(p.x - 0.01, p.y - 0.01));
     c.m_vertices.emplace_back(Point(p.x + 0.01, p.y - 0.01));
@@ -930,7 +935,7 @@ void CArea::CurveIntersections(const CCurve& curve, std::list<Point>& pts) const
 class ThickLine
 {
 public:
-    CArea m_area;
+    CAreaReversed m_area;
     CCurve m_curve;
 
     ThickLine(const CCurve& curve)
