@@ -30,9 +30,6 @@ set(AREA_SRC_COMMON
     AreaPocket.cpp
     Circle.cpp
     Curve.cpp
-    kurve/Construction.cpp
-    kurve/Finite.cpp
-    kurve/kurve.cpp
 )
 
 set(AREA_SRC_CLIPPER
@@ -54,7 +51,6 @@ else(DEFINED INCLUDE_INSTALL_DIR)
     set(includedir ${CMAKE_INSTALL_PREFIX}/${INCLUDE_INSTALL_DIR})
 endif(DEFINED INCLUDE_INSTALL_DIR)
 
-file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/kurve/*.h")
 file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
 # this makes the Python module

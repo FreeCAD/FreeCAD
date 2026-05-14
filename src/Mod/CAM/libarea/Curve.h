@@ -98,10 +98,6 @@ public:
     Point MidParam(double param) const;
     double Length() const;
     Point GetVector(double fraction) const;
-    void Intersect(
-        const Span& s,
-        std::list<Point>& pts
-    ) const;  // finds all the intersection points between two spans
 };
 
 class CCurve
@@ -149,8 +145,6 @@ public:
     void GetSpans(std::list<Span>& spans) const;
     void RemoveTinySpans();
     void operator+=(const CCurve& p);
-    void SpanIntersections(const Span& s, std::list<Point>& pts) const;
-    void CurveIntersections(const CCurve& c, std::list<Point>& pts) const;
 };
 
 }  // namespace heeks

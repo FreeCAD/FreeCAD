@@ -28,7 +28,6 @@ double CArea::m_MakeOffsets_increment = 0.0;
 double CArea::m_split_processing_length = 0.0;
 bool CArea::m_set_processing_length_in_split = false;
 double CArea::m_after_MakeOffsets_length = 0.0;
-// static const double PI = 3.1415926535897932;
 
 #define _CAREA_PARAM_DEFINE(_class, _type, _name) \
     _type CArea::get_##_name() \
@@ -619,7 +618,7 @@ void CArea::SplitAndMakePocketToolpath(std::list<CCurve>& curve_list, const CAre
 
 void CArea::MakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketParams& params) const
 {
-    double radians_angle = params.zig_angle * PI / 180;
+    double radians_angle = params.zig_angle * M_PI / 180;
     sin_angle_for_zigs = sin(-radians_angle);
     cos_angle_for_zigs = cos(-radians_angle);
     sin_minus_angle_for_zigs = sin(radians_angle);
@@ -879,59 +878,6 @@ bool IsInside(const Point& p, const CArea& a)
     return true;
 }
 
-void CArea::SpanIntersections(const Span& span, std::list<Point>& pts) const
-{
-    // this returns all the intersections of this area with the given span, ordered along the span
-
-    // get all points where this area's curves intersect the span
-    std::list<Point> pts2;
-    for (std::list<CCurve>::const_iterator It = m_curves.begin(); It != m_curves.end(); It++) {
-        const CCurve& c = *It;
-        c.SpanIntersections(span, pts2);
-    }
-
-    // order them along the span
-    std::multimap<double, Point> ordered_points;
-    for (std::list<Point>::iterator It = pts2.begin(); It != pts2.end(); It++) {
-        Point& p = *It;
-        double t;
-        if (span.On(p, &t)) {
-            ordered_points.insert(std::make_pair(t, p));
-        }
-    }
-
-    // add them to the given list of points
-    for (std::multimap<double, Point>::iterator It = ordered_points.begin();
-         It != ordered_points.end();
-         It++) {
-        Point p = It->second;
-        pts.push_back(p);
-    }
-}
-
-void CArea::CurveIntersections(const CCurve& curve, std::list<Point>& pts) const
-{
-    // this returns all the intersections of this area with the given curve, ordered along the curve
-    std::list<Span> spans;
-    curve.GetSpans(spans);
-    for (std::list<Span>::iterator It = spans.begin(); It != spans.end(); It++) {
-        Span& span = *It;
-        std::list<Point> pts2;
-        SpanIntersections(span, pts2);
-        for (std::list<Point>::iterator It = pts2.begin(); It != pts2.end(); It++) {
-            Point& pt = *It;
-            if (pts.size() == 0) {
-                pts.push_back(pt);
-            }
-            else {
-                if (pt != pts.back()) {
-                    pts.push_back(pt);
-                }
-            }
-        }
-    }
-}
-
 class ThickLine
 {
 public:
@@ -945,26 +891,5 @@ public:
         m_area.Thicken(0.001);
     }
 };
-
-void CArea::InsideCurves(const CCurve& curve, std::list<CCurve>& curves_inside) const
-{
-    // 1. find the intersectionpoints between these two curves.
-    std::list<Point> pts;
-    CurveIntersections(curve, pts);
-
-    // 2.separate curve2 in multiple curves between these intersections.
-    std::list<CCurve> separate_curves;
-    curve.ExtractSeparateCurves(pts, separate_curves);
-
-    // 3. if the midpoint of a separate curve lies in a1, then we return it.
-    for (std::list<CCurve>::iterator It = separate_curves.begin(); It != separate_curves.end(); It++) {
-        CCurve& curve = *It;
-        double length = curve.Perim();
-        Point mid_point = curve.PerimToPoint(length * 0.5);
-        if (IsInside(mid_point, *this)) {
-            curves_inside.push_back(curve);
-        }
-    }
-}
 
 }  // namespace heeks

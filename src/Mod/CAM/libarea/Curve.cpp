@@ -7,7 +7,6 @@
 #include "Circle.h"
 #include "Arc.h"
 #include "Area.h"
-#include "kurve/geometry.h"
 
 namespace heeks
 {
@@ -17,8 +16,6 @@ const Point operator*(const double& d, const Point& p)
     return p * d;
 }
 double Point::tolerance = 0.001;
-
-// static const double PI = 3.1415926535897932; duplicated in kurve/geometry.h
 
 // This function is moved from header here to solve windows DLL not export
 // static variable problem
@@ -334,18 +331,18 @@ void CCurve::Discretize()
 
                 ang1 = atan2(dy, dx);
                 if (ang1 < 0) {
-                    ang1 += 2.0 * PI;
+                    ang1 += 2.0 * M_PI;
                 }
                 dx = (vertex.m_p.x - vertex.m_c.x) * CArea::m_units;
                 dy = (vertex.m_p.y - vertex.m_c.y) * CArea::m_units;
                 ang2 = atan2(dy, dx);
                 if (ang2 < 0) {
-                    ang2 += 2.0 * PI;
+                    ang2 += 2.0 * M_PI;
                 }
 
                 if (vertex.m_type == -1) {  // clockwise
                     if (ang2 > ang1) {
-                        phit = 2.0 * PI - ang2 + ang1;
+                        phit = 2.0 * M_PI - ang2 + ang1;
                     }
                     else {
                         phit = ang1 - ang2;
@@ -353,7 +350,7 @@ void CCurve::Discretize()
                 }
                 else {  // counter_clockwise
                     if (ang1 > ang2) {
-                        phit = -(2.0 * PI - ang1 + ang2);
+                        phit = -(2.0 * M_PI - ang1 + ang2);
                     }
                     else {
                         phit = -(ang2 - ang1);
@@ -631,15 +628,15 @@ void CCurve::ExtractSeparateCurves(
 
     CCurve current_curve;
 
-    std::list<Point>::const_iterator PIt = ordered_points.begin();
-    Point point = *PIt;
+    std::list<Point>::const_iterator M_PIt = ordered_points.begin();
+    Point point = *M_PIt;
 
     for (std::list<CVertex>::const_iterator VIt = m_vertices.begin(); VIt != m_vertices.end(); VIt++) {
         const CVertex& vertex = *VIt;
         if (prev_p)  // not the first vertex
         {
             Span span(*prev_p, vertex);
-            while ((PIt != ordered_points.end()) && span.On(point)) {
+            while ((M_PIt != ordered_points.end()) && span.On(point)) {
                 CVertex v(vertex);
                 v.m_p = point;
                 current_curve.m_vertices.push_back(v);
@@ -648,9 +645,9 @@ void CCurve::ExtractSeparateCurves(
                 }
                 current_curve = CCurve();               // make a new curve
                 current_curve.m_vertices.push_back(v);  // add it's first point
-                PIt++;
-                if (PIt != ordered_points.end()) {
-                    point = *PIt;  // increment the point
+                M_PIt++;
+                if (M_PIt != ordered_points.end()) {
+                    point = *M_PIt;  // increment the point
                 }
             }
 
@@ -755,16 +752,6 @@ Point CCurve::NearestPoint(const Span& p, double* d) const
     return best_point;
 }
 
-static geoff_geometry::Span MakeSpan(const Span& span)
-{
-    return geoff_geometry::Span(
-        span.m_v.m_type,
-        geoff_geometry::Point(span.m_p.x, span.m_p.y),
-        geoff_geometry::Point(span.m_v.m_p.x, span.m_v.m_p.y),
-        geoff_geometry::Point(span.m_v.m_c.x, span.m_v.m_c.y)
-    );
-}
-
 void CCurve::GetSpans(std::list<Span>& spans) const
 {
     const Point* prev_p = NULL;
@@ -862,35 +849,6 @@ void CCurve::operator+=(const CCurve& curve)
         }
         else {
             m_vertices.push_back(vt);
-        }
-    }
-}
-
-void CCurve::CurveIntersections(const CCurve& c, std::list<Point>& pts) const
-{
-    CAreaReversed a;
-    a.append(*this);
-    a.CurveIntersections(c, pts);
-}
-
-void CCurve::SpanIntersections(const Span& s, std::list<Point>& pts) const
-{
-    std::list<Span> spans;
-    GetSpans(spans);
-    for (std::list<Span>::iterator It = spans.begin(); It != spans.end(); It++) {
-        Span& span = *It;
-        std::list<Point> pts2;
-        span.Intersect(s, pts2);
-        for (std::list<Point>::iterator It = pts2.begin(); It != pts2.end(); It++) {
-            Point& pt = *It;
-            if (pts.size() == 0) {
-                pts.push_back(pt);
-            }
-            else {
-                if (pt != pts.back()) {
-                    pts.push_back(pt);
-                }
-            }
         }
     }
 }
@@ -1098,7 +1056,7 @@ double IncludedAngle(const Point& v0, const Point& v1, int dir)
         return 0;
     }
     if (inc_ang < -1. + 1.0e-10) {
-        inc_ang = PI;
+        inc_ang = M_PI;
     }
     else {  // dot product,   v1 . v2  =  cos ang
         if (inc_ang > 1.0) {
@@ -1107,7 +1065,7 @@ double IncludedAngle(const Point& v0, const Point& v1, int dir)
         inc_ang = acos(inc_ang);  // 0 to pi radians
 
         if (dir * (v0 ^ v1) < 0) {
-            inc_ang = 2 * PI - inc_ang;  // cp
+            inc_ang = 2 * M_PI - inc_ang;  // cp
         }
     }
     return dir * inc_ang;
@@ -1212,20 +1170,6 @@ Point Span::GetVector(double fraction) const
     }
     else {
         return Point(v.y, -v.x);
-    }
-}
-
-void Span::Intersect(const Span& s, std::list<Point>& pts) const
-{
-    // finds all the intersection points between two spans and puts them in the given list
-    geoff_geometry::Point pInt1, pInt2;
-    double t[4];
-    int num_int = MakeSpan(*this).Intof(MakeSpan(s), pInt1, pInt2, t);
-    if (num_int > 0) {
-        pts.emplace_back(pInt1.x, pInt1.y);
-    }
-    if (num_int > 1) {
-        pts.emplace_back(pInt2.x, pInt2.y);
     }
 }
 
