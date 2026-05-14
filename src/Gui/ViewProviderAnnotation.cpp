@@ -38,6 +38,7 @@
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoRotationXYZ.h>
 #include <Inventor/nodes/SoText2.h>
@@ -353,11 +354,17 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
 
     // plain image
     SoSeparator* textsep = new SoAnnotation();
+    auto pickStyleObj = new SoPickStyle();
+    pickStyleObj->style = SoPickStyle::SHAPE_ON_TOP;
+    textsep->addChild(pickStyleObj);
     textsep->addChild(pBaseTranslation);
     textsep->addChild(pImage);
 
     // image with line
     SoSeparator* linesep = new SoAnnotation();
+    auto pickStyleLine = new SoPickStyle();
+    pickStyleLine->style = SoPickStyle::SHAPE_ON_TOP;
+    linesep->addChild(pickStyleLine);
     linesep->addChild(pBaseTranslation);
     linesep->addChild(pColor);
     linesep->addChild(pCoords);
