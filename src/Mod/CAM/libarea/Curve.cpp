@@ -755,36 +755,6 @@ Point CCurve::NearestPoint(const Span& p, double* d) const
     return best_point;
 }
 
-static geoff_geometry::Kurve MakeKurve(const CCurve& curve)
-{
-    geoff_geometry::Kurve k;
-    for (std::list<CVertex>::const_iterator It = curve.m_vertices.begin();
-         It != curve.m_vertices.end();
-         It++) {
-        const CVertex& v = *It;
-        k.Add(
-            geoff_geometry::spVertex(
-                v.m_type,
-                geoff_geometry::Point(v.m_p.x, v.m_p.y),
-                geoff_geometry::Point(v.m_c.x, v.m_c.y)
-            )
-        );
-    }
-    return k;
-}
-
-static CCurve MakeCCurve(const geoff_geometry::Kurve& k)
-{
-    CCurve c;
-    int n = k.nSpans();
-    for (int i = 0; i <= n; i++) {
-        geoff_geometry::spVertex spv;
-        k.Get(i, spv);
-        c.append(CVertex(spv.type, Point(spv.p.x, spv.p.y), Point(spv.pc.x, spv.pc.y)));
-    }
-    return c;
-}
-
 static geoff_geometry::Span MakeSpan(const Span& span)
 {
     return geoff_geometry::Span(
@@ -793,67 +763,6 @@ static geoff_geometry::Span MakeSpan(const Span& span)
         geoff_geometry::Point(span.m_v.m_p.x, span.m_v.m_p.y),
         geoff_geometry::Point(span.m_v.m_c.x, span.m_v.m_c.y)
     );
-}
-
-bool CCurve::Offset(double leftwards_value)
-{
-    // use the kurve code donated by Geoff Hawkesford, to offset the curve as an open curve
-    // returns true for success, false for failure
-    bool success = true;
-
-    CCurve save_curve = *this;
-
-    try {
-        geoff_geometry::Kurve k = MakeKurve(*this);
-        geoff_geometry::Kurve kOffset;
-        int ret = 0;
-        k.OffsetMethod1(kOffset, fabs(leftwards_value), (leftwards_value > 0) ? 1 : -1, 1, ret);
-        success = (ret == 0);
-        if (success) {
-            *this = MakeCCurve(kOffset);
-        }
-    }
-    catch (...) {
-        success = false;
-    }
-
-    if (!success) {
-        if (this->IsClosed()) {
-            double inwards_offset = leftwards_value;
-            bool cw = false;
-            if (this->IsClockwise()) {
-                inwards_offset = -inwards_offset;
-                cw = true;
-            }
-            CAreaReversed a;
-            a.append(*this);
-            a.Offset(inwards_offset);
-            if (a.m_curves.size() == 1) {
-                Span* start_span = NULL;
-                if (this->m_vertices.size() > 1) {
-                    std::list<CVertex>::iterator It = m_vertices.begin();
-                    CVertex& v0 = *It;
-                    It++;
-                    CVertex& v1 = *It;
-                    start_span = new Span(v0.m_p, v1, true);
-                }
-                *this = a.m_curves.front();
-                if (this->IsClockwise() != cw) {
-                    this->Reverse();
-                }
-                if (start_span) {
-                    Point forward = start_span->GetVector(0.0);
-                    Point left(-forward.y, forward.x);
-                    Point offset_start = start_span->m_p + left * leftwards_value;
-                    this->ChangeStart(this->NearestPoint(offset_start));
-                    delete start_span;
-                }
-                success = true;
-            }
-        }
-    }
-
-    return success;
 }
 
 void CCurve::GetSpans(std::list<Span>& spans) const

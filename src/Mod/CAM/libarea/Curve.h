@@ -138,7 +138,6 @@ public:
     bool IsClosed() const;
     void ChangeStart(const Point& p);
     void ChangeEnd(const Point& p);
-    bool Offset(double leftwards_value);
     void Break(const Point& p);
     void ExtractSeparateCurves(
         const std::list<Point>& ordered_points,
