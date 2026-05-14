@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 from utils import (
     add_common_arguments,
     init_environment,
@@ -106,6 +107,7 @@ def main():
     file_list = [f for f in args.files if os.path.isfile(f)]
 
     report_sections = []
+    total_issues = 0
 
     # Check non-Unix line endings.
     if args.lineendings_check:
@@ -113,6 +115,7 @@ def main():
         for file, detail in le_issues.items():
             print(f"::warning file={file},title={file}::{detail}")
         report_sections.append(format_report("Non-Unix Line Endings", le_issues))
+        total_issues += len(le_issues)
 
     # Check trailing whitespace.
     if args.whitespace_check:
@@ -133,6 +136,7 @@ def main():
                 ws_log_file, "grepMatcherWarning.json", "grepMatcher-warning"
             )
         report_sections.append(format_report("Trailing Whitespace", ws_issues))
+        total_issues += len(ws_issues)
 
     # Check tab usage.
     if args.tabs_check:
@@ -153,10 +157,13 @@ def main():
                 tab_log_file, "grepMatcherWarning.json", "grepMatcher-warning"
             )
         report_sections.append(format_report("Tab Usage", tab_issues))
+        total_issues += len(tab_issues)
 
     report_content = "\n".join(report_sections)
     write_file(args.report_file, report_content)
     print("Lint report generated at:", args.report_file)
+
+    sys.exit(0 if total_issues == 0 else 1)
 
 
 if __name__ == "__main__":
