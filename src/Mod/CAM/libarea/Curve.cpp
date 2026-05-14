@@ -1229,14 +1229,4 @@ void Span::Intersect(const Span& s, std::list<Point>& pts) const
     }
 }
 
-void tangential_arc(const Point& p0, const Point& p1, const Point& v0, Point& c, int& dir)
-{
-    geoff_geometry::Point gp0(p0.x, p0.y);
-    geoff_geometry::Point gp1(p1.x, p1.y);
-    geoff_geometry::Vector2d gv0(v0.x, v0.y);
-    geoff_geometry::Point gc;
-    geoff_geometry::tangential_arc(gp0, gp1, gv0, gc, dir);
-    c = Point(gc.x, gc.y);
-}
-
 }  // namespace heeks

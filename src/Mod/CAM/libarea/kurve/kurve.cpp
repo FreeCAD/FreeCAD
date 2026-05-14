@@ -1683,27 +1683,4 @@ Kurve Kurve::Part(double fromParam, double toParam)
     return k;
 }
 
-void tangential_arc(const Point& p0, const Point& p1, const Vector2d& v0, Point& c, int& dir)
-{
-    // sets dir to 0, if a line is needed, else to 1 or -1 for acw or cw arc and sets c
-    dir = 0;
-
-    if (p0.Dist(p1) > 0.0000000001 && v0.magnitude() > 0.0000000001) {
-        Vector2d v1(p0, p1);
-        Point halfway(p0 + Point(v1 * 0.5));
-        Plane pl1(halfway, v1);
-        Plane pl2(p0, v0);
-        Line plane_line;
-        if (pl1.Intof(pl2, plane_line)) {
-            Line l1(halfway, v1);
-            double t1, t2;
-            Line lshort;
-            plane_line.Shortest(l1, lshort, t1, t2);
-            c = lshort.p0;
-            Vector3d cross = Vector3d(v0) ^ Vector3d(v1);
-            dir = (cross.getz() > 0) ? 1 : -1;
-        }
-    }
-}
-
 }  // namespace geoff_geometry
