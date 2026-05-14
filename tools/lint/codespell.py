@@ -19,7 +19,7 @@ def download_dictionary(url, dest):
     try:
         urllib.request.urlretrieve(url, dest)
     except Exception as e:
-        logging.error(f"Error downloading dictionary: {e}", file=sys.stderr)
+        logging.error(f"Error downloading dictionary: {e}")
         sys.exit(1)
 
 
@@ -56,7 +56,6 @@ def main():
     )
     parser.add_argument(
         "--files",
-        action="extend",
         nargs="+",
         required=True,
         help="List of files to spell check."
