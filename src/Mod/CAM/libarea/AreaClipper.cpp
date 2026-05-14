@@ -518,7 +518,7 @@ void CArea::PopulateClipper(Clipper64& c, bool as_clip, ArcFittingMap& arcMap) c
         }
 
         Path64 p;
-        MakePoly(curve, p, m_reversed, arcMap);
+        MakePoly(curve, p, false, arcMap);
 
         if (is_closed) {
             closed_paths.push_back(p);
@@ -564,7 +564,7 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
         *this,
         closed_paths,
         /*is_closed=*/true,
-        /*reversed=*/m_reversed,
+        /*reversed=*/false,
         /*clear_area=*/true,
         /*clear_arc_map=*/false
     );

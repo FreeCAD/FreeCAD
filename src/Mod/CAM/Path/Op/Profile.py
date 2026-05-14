@@ -437,11 +437,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         offset = obj.OffsetExtra.Value
         if obj.UseComp:
             offset = self.radius + obj.OffsetExtra.Value
-        if offset == 0.0:
-            if direction == "CCW":
-                params["orientation"] = 1
-            else:
-                params["orientation"] = 0
 
         if obj.NumPasses > 1:
             # Disable path sorting to ensure that offsets appear in order, from farthest offset to closest, on all layers
