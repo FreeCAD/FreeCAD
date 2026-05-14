@@ -50,19 +50,9 @@ static void print_curve(const CCurve& c)
     for (std::list<CVertex>::const_iterator It = c.m_vertices.begin(); It != c.m_vertices.end();
          It++, i++) {
         const CVertex& vertex = *It;
-        printf(
-            "vertex %d type = %d, x = %g, y = %g",
-            i + 1,
-            vertex.m_type,
-            vertex.m_p.x / CArea::get_units(),
-            vertex.m_p.y / CArea::get_units()
-        );
+        printf("vertex %d type = %d, x = %g, y = %g", i + 1, vertex.m_type, vertex.m_p.x, vertex.m_p.y);
         if (vertex.m_type) {
-            printf(
-                ", xc = %g, yc = %g",
-                vertex.m_c.x / CArea::get_units(),
-                vertex.m_c.y / CArea::get_units()
-            );
+            printf(", xc = %g, yc = %g", vertex.m_c.x, vertex.m_c.y);
         }
         printf("\n");
     }
@@ -89,16 +79,6 @@ static CVertex FirstVertex(const CCurve& curve)
 static CVertex LastVertex(const CCurve& curve)
 {
     return curve.m_vertices.back();
-}
-
-static void set_units(double units)
-{
-    CArea::set_units(units);
-}
-
-static double get_units()
-{
-    return CArea::get_units();
 }
 
 static double get_accuracy()
@@ -317,8 +297,6 @@ void init_pyarea(py::module& m)
         .def("Thicken", &CArea::Thicken)
         .def("GetArea", &AreaGetArea);
 
-    m.def("set_units", set_units);
-    m.def("get_units", get_units);
     m.def("get_accuracy", get_accuracy);
     m.def("copy_area", copy_area);
     m.def("holes_linked", holes_linked);

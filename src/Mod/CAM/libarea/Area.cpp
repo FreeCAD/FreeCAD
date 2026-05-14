@@ -15,7 +15,6 @@ namespace heeks
 {
 
 double CArea::m_accuracy = 0.01;
-double CArea::m_units = 1.0;
 bool CArea::m_clipper_simple = false;
 double CArea::m_clipper_clean_distance = 0.0;
 bool CArea::m_fit_arcs = true;
@@ -54,7 +53,6 @@ CAREA_PARAM_DEFINE(bool, fit_arcs)
 CAREA_PARAM_DEFINE(bool, clipper_simple)
 CAREA_PARAM_DEFINE(double, clipper_clean_distance)
 CAREA_PARAM_DEFINE(double, accuracy)
-CAREA_PARAM_DEFINE(double, units)
 CAREA_PARAM_DEFINE(short, min_arc_points)
 CAREA_PARAM_DEFINE(short, max_arc_points)
 CAREA_PARAM_DEFINE(double, clipper_scale)
@@ -141,7 +139,6 @@ static double sin_angle_for_zigs = 0.0;
 static double cos_angle_for_zigs = 0.0;
 static double sin_minus_angle_for_zigs = 0.0;
 static double cos_minus_angle_for_zigs = 0.0;
-static double one_over_units = 0.0;
 
 static Point rotated_point(const Point& p)
 {
@@ -191,7 +188,7 @@ static void rotate_area(CArea& a)
 void test_y_point(int i, const Point& p, Point& best_p, bool& found, int& best_index, double y, bool left_not_right)
 {
     // only consider points at y
-    if (fabs(p.y - y) < 0.002 * one_over_units) {
+    if (fabs(p.y - y) < 0.002) {
         if (found) {
             // equal high point
             if (left_not_right) {
@@ -364,8 +361,7 @@ void add_reorder_zig(ZigZag& zigzag)
                      It3 != z.zig.m_vertices.end() && !zag_removed;
                      It3++) {
                     const CVertex& v = *It3;
-                    if ((fabs(zag_e.x - v.m_p.x) < (0.002 * one_over_units))
-                        && (fabs(zag_e.y - v.m_p.y) < (0.002 * one_over_units))) {
+                    if ((fabs(zag_e.x - v.m_p.x) < (0.002)) && (fabs(zag_e.y - v.m_p.y) < (0.002))) {
                         // remove zag from zigzag
                         zigzag.zag.m_vertices.clear();
                         zag_removed = true;
@@ -383,8 +379,7 @@ void add_reorder_zig(ZigZag& zigzag)
         std::list<ZigZag>& zigzag_list = *It;
         const ZigZag& last_zigzag = zigzag_list.back();
         const Point& e = last_zigzag.zig.m_vertices.back().m_p;
-        if ((fabs(zig_s.x - e.x) < (0.002 * one_over_units))
-            && (fabs(zig_s.y - e.y) < (0.002 * one_over_units))) {
+        if ((fabs(zig_s.x - e.x) < (0.002)) && (fabs(zig_s.y - e.y) < (0.002))) {
             zigzag_list.push_back(zigzag);
             return;
         }
@@ -452,8 +447,6 @@ static void zigzag(const CArea& input_a)
         return;
     }
 
-    one_over_units = 1 / CArea::m_units;
-
     CArea a(input_a);
     a.m_reversed = true;
     rotate_area(a);
@@ -466,7 +459,7 @@ static void zigzag(const CArea& input_a)
 
     double height = b.MaxY() - b.MinY();
     int num_steps = int(height / stepover_for_pocket + 1);
-    double y = b.MinY();  // + 0.1 * one_over_units;
+    double y = b.MinY();
     Point null_point(0, 0);
     rightward_for_zigs = true;
 
@@ -508,15 +501,12 @@ void CArea::SplitAndMakePocketToolpath(std::list<CCurve>& curve_list, const CAre
 {
     CArea::m_processing_done = 0.0;
 
-    double save_units = CArea::m_units;
-    CArea::m_units = 1.0;
     std::list<CArea> areas;
     m_split_processing_length = 50.0;  // jump to 50 percent after split
     m_set_processing_length_in_split = true;
     Split(areas);
     m_set_processing_length_in_split = false;
     CArea::m_processing_done = m_split_processing_length;
-    CArea::m_units = save_units;
 
     if (areas.size() == 0) {
         return;
