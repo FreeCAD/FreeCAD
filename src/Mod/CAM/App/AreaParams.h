@@ -178,9 +178,6 @@
          "Force maximum stepover even if not all area is cleared. Without this flag set, the "     \
          "stepover may be reduced (for large stepover, >50%) to ensure full area coverage"))
 
-#define AREA_PARAMS_POCKET_CONF \
-    ((bool, thicken, Thicken, false, "Thicken the resulting wires with ToolRadius"))
-
 /** Operation code */
 #define AREA_PARAMS_OPCODE \
     ((enum, \
@@ -420,7 +417,6 @@
     AREA_PARAMS_OFFSET \
     AREA_PARAMS_OFFSET_CONF \
     AREA_PARAMS_POCKET \
-    AREA_PARAMS_POCKET_CONF \
     AREA_PARAMS_SECTION
 
 /** Group of all Area configuration parameters */
