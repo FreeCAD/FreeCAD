@@ -406,16 +406,48 @@ class TestPathOpenProfile(PathTestBase):
         # Process non-rapid move commands and calculate lengths
         move_lengths = []
         last = FreeCAD.Vector(0.0, 0.0, 0.0)
+        path_start = None
+        path_end = None
 
         for cmd in self.profile.Path.Commands:
             instr = PathLanguage.Maneuver.InstructionFromCommand(cmd, last)
             if instr.isMove() and not instr.isRapid() and last.z == instr.positionEnd().z:
+                if path_start is None:
+                    path_start = last
+                path_end = instr.positionEnd()
                 length = instr.pathLength()
                 move_lengths.append(length)
             last = instr.positionEnd()
 
         # Check expected move count: 2 offset triangle legs and an arc between
         self.assertGreater(len(move_lengths), 2, "Should have at least 3 moves")
+
+        # Check path offset by comparing distances to triangle vertices
+        # Triangle edge goes from (triangle_base, 0) to (triangle_base/2, triangle_height)
+        # Use path Z coordinates to ignore Z in distance calculation
+        triangle_start = FreeCAD.Vector(self.triangle_base, 0, path_end.z)
+        triangle_end = FreeCAD.Vector(self.triangle_base / 2.0, self.triangle_height, path_start.z)
+
+        # Calculate distances (Z already matches, so this is XY distance)
+        start_to_end = path_start.distanceToPoint(triangle_end)
+        end_to_start = path_end.distanceToPoint(triangle_start)
+
+        # Path should be offset from triangle edges by approximately the tool radius
+        tool_radius = self.profile.OpToolDiameter.Value / 2.0
+        tolerance = tool_radius * 0.1  # 10% tolerance
+
+        self.assertAlmostEqual(
+            start_to_end,
+            tool_radius,
+            delta=tolerance,
+            msg=f"Path start offset from triangle end (d={start_to_end:.2f}) should be ~tool radius ({tool_radius:.2f})",
+        )
+        self.assertAlmostEqual(
+            end_to_start,
+            tool_radius,
+            delta=tolerance,
+            msg=f"Path end offset from triangle start (d={end_to_start:.2f}) should be ~tool radius ({tool_radius:.2f})",
+        )
 
         # Check lengths of leg moves
         leg_length = math.hypot(self.triangle_base / 2.0, self.triangle_height)

@@ -239,7 +239,7 @@ void CurveTree::MakeOffsets2()
     if (CArea::m_please_abort) {
         return;
     }
-    CAreaReversed smaller;
+    CArea smaller;
     smaller.m_curves.push_back(curve);
     smaller.OffsetInward(pocket_params->stepover);
 
@@ -467,7 +467,6 @@ void recur(std::list<CArea>& arealist, const CArea& a1, const CAreaPocketParams&
     }
 
     CArea a_offset = a1;
-    a_offset.m_reversed = true;
     a_offset.OffsetInward(params.stepover);
 
     // split curves into new areas
