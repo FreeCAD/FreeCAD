@@ -528,7 +528,7 @@ void CArea::MakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketP
     a_offset.m_reversed = true;
     double current_offset = params.tool_radius + params.extra_offset;
 
-    a_offset.Offset(current_offset);
+    a_offset.OffsetInward(current_offset);
 
     if (params.mode == ZigZagPocketMode || params.mode == ZigZagThenSingleOffsetPocketMode) {
         curve_list_for_zigs = &curve_list;

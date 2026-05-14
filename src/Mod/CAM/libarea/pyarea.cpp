@@ -285,7 +285,7 @@ void init_pyarea(py::module& m)
         .def("Subtract", &CArea::Subtract)
         .def("Intersect", &CArea::Intersect)
         .def("Union", &CArea::Union)
-        .def("Offset", &CArea::Offset)
+        .def("OffsetInward", &CArea::OffsetInward)  // Deprecated, prefer OffsetWithClipper
         .def("OffsetWithClipper", [](CArea& self, double offset) { self.OffsetWithClipper(offset); })
         .def("text", &print_area)
         .def("num_curves", &CArea::num_curves)

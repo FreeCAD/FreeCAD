@@ -107,7 +107,7 @@ public:
     void Intersect(const CArea& a2);
     void Union(const CArea& a2);
     void Xor(const CArea& a2);
-    void Offset(double inwards_value);
+    void OffsetInward(double inwards_value);  // Deprecated: use OffsetWithClipper
     void OffsetWithClipper(
         double offset,
         Clipper2Lib::JoinType joinType = Clipper2Lib::JoinType::Round,
