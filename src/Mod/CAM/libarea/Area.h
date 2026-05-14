@@ -85,7 +85,6 @@ class CArea
 public:
     std::list<CCurve> m_curves;
     ArcFittingMap m_arc_fitting_map;
-    bool m_reversed = false;
     static double m_accuracy;
     static double m_clipper_clean_distance;
     static bool m_fit_arcs;
@@ -174,17 +173,6 @@ private:
 
     // Helper to create bound Z callback
     Clipper2Lib::ZCallback64 MakeZCallback();
-};
-
-// Helper class to make the transition from expecting CArea to be reversed from
-// clipper to expecting it to be in the same orientation as clipper
-class CAreaReversed: public CArea
-{
-public:
-    CAreaReversed()
-    {
-        m_reversed = true;
-    }
 };
 
 enum eOverlapType

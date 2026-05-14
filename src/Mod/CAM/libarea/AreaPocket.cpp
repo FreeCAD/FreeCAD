@@ -20,7 +20,7 @@ class IslandAndOffset
 {
 public:
     const CCurve* island;
-    CAreaReversed offset;
+    CArea offset;
     std::list<CCurve> island_inners;
     std::list<IslandAndOffset*> touching_offsets;
 
@@ -474,7 +474,7 @@ void recur(std::list<CArea>& arealist, const CArea& a1, const CAreaPocketParams&
         for (std::list<CCurve>::iterator It = a_offset.m_curves.begin();
              It != a_offset.m_curves.end();
              It++) {
-            CAreaReversed a2;
+            CArea a2;
             a2.m_curves.push_back(*It);
             recur(arealist, a2, params, level + 1);
         }
@@ -498,7 +498,7 @@ void recur(std::list<CArea>& arealist, const CArea& a1, const CAreaPocketParams&
                     recur(arealist, *a2, params, level + 1);
                 }
                 else {
-                    a2 = new CAreaReversed();
+                    a2 = new CArea();
                 }
                 a2->m_curves.push_back(curve);
             }

@@ -582,7 +582,6 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
 
 void CArea::ClipperNoop()
 {
-    fprintf(stderr, "DEBUG_AREACLIPPER_NOOP: m_reversed=%d\n", m_reversed);
     Paths64 closed_paths;
     Paths64 open_paths;
     for (const CCurve& curve : m_curves) {

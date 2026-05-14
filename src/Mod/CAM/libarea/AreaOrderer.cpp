@@ -124,11 +124,11 @@ void CInnerCurves::GetArea(CArea& area, bool outside, bool use_curve)
 void CInnerCurves::Unite(shared_ptr<CInnerCurves> c)
 {
     // unite all the curves in c, with this one
-    shared_ptr<CArea> new_area(new CAreaReversed());
+    shared_ptr<CArea> new_area(new CArea());
     new_area->m_curves.push_back(*m_curve);
     m_unite_area = new_area;
 
-    CAreaReversed a2;
+    CArea a2;
     c->GetArea(a2);
 
     m_unite_area->Union(a2);
@@ -167,7 +167,7 @@ void CAreaOrderer::Insert(shared_ptr<CCurve> pcurve)
 
 CArea CAreaOrderer::ResultArea() const
 {
-    CAreaReversed a;
+    CArea a;
 
     if (m_top_level) {
         m_top_level->GetArea(a);

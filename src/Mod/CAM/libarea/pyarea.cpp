@@ -91,7 +91,6 @@ static CArea copy_area(const CArea& area)
     CArea copy;
     copy.m_curves = area.m_curves;
     copy.m_arc_fitting_map = area.m_arc_fitting_map;
-    copy.m_reversed = area.m_reversed;
     return copy;
 }
 
@@ -278,7 +277,6 @@ void init_pyarea(py::module& m)
 
     py::class_<CArea>(m, "Area")
         .def(py::init<>())
-        .def_readwrite("reversed", &CArea::m_reversed)
         .def("getCurves", &getCurves)
         .def("append", &CArea::append)
         .def("ClipperNoop", &CArea::ClipperNoop)

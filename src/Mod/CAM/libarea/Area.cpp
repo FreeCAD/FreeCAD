@@ -442,7 +442,6 @@ static void zigzag(const CArea& input_a)
     }
 
     CArea a(input_a);
-    a.m_reversed = true;
     rotate_area(a);
 
     CBox2D b;
@@ -476,7 +475,7 @@ static void zigzag(const CArea& input_a)
         c.m_vertices.emplace_back(0, p2, null_point);
         c.m_vertices.emplace_back(0, p1, null_point);
         c.m_vertices.emplace_back(0, p0, null_point);
-        CAreaReversed a2;
+        CArea a2;
         a2.m_curves.push_back(c);
         a2.Intersect(a);
         make_zig(a2, y0, y);
@@ -525,7 +524,6 @@ void CArea::MakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketP
     stepover_for_pocket = params.stepover;
 
     CArea a_offset = *this;
-    a_offset.m_reversed = true;
     double current_offset = params.tool_radius + params.extra_offset;
 
     a_offset.OffsetInward(current_offset);
@@ -678,7 +676,6 @@ void CArea::Split(std::list<CArea>& m_areas) const
     }
     else {
         CArea a = *this;
-        a.m_reversed = true;
         a.Reorder();
 
         if (CArea::m_please_abort) {
@@ -719,9 +716,9 @@ double CArea::GetArea(bool always_add) const
 
 eOverlapType GetOverlapType(const CCurve& c1, const CCurve& c2)
 {
-    CAreaReversed a1;
+    CArea a1;
     a1.m_curves.push_back(c1);
-    CAreaReversed a2;
+    CArea a2;
     a2.m_curves.push_back(c2);
 
     return GetOverlapType(a1, a2);
@@ -730,7 +727,6 @@ eOverlapType GetOverlapType(const CCurve& c1, const CCurve& c2)
 eOverlapType GetOverlapType(const CArea& a1, const CArea& a2)
 {
     CArea A1(a1);
-    A1.m_reversed = true;
 
     A1.Subtract(a2);
     if (A1.m_curves.size() == 0) {
@@ -738,7 +734,6 @@ eOverlapType GetOverlapType(const CArea& a1, const CArea& a2)
     }
 
     CArea A2(a2);
-    A2.m_reversed = true;
     A2.Subtract(a1);
     if (A2.m_curves.size() == 0) {
         return eOutside;
