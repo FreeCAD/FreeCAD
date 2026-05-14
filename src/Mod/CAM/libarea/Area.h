@@ -134,8 +134,6 @@ public:
     void Split(std::list<CArea>& m_areas) const;
     double GetArea(bool always_add = false) const;
 
-    void ChangeStartToNearest(const Point* pstart = NULL, double min_dist = 1.0);
-
     // Avoid outside direct accessing static member variable because of Windows DLL issue
 #define CAREA_PARAM_DECLARE(_type, _name) \
     static _type get_##_name(); \

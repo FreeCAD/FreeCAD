@@ -119,8 +119,6 @@ public:
     }
     bool IsClosed() const;
     void ChangeStart(const Point& p);
-    void ChangeEnd(const Point& p);
-    void Break(const Point& p);
     void ExtractSeparateCurves(
         const std::list<Point>& ordered_points,
         std::list<CCurve>& separate_curves

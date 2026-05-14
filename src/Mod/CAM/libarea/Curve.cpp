@@ -347,31 +347,6 @@ void CCurve::ChangeStart(const Point& p)
     }
 }
 
-void CCurve::Break(const Point& p)
-{
-    // inserts a point, if it lies on the curve
-    const Point* prev_p = NULL;
-
-    for (std::list<CVertex>::iterator VIt = m_vertices.begin(); VIt != m_vertices.end(); VIt++) {
-        CVertex& vertex = *VIt;
-
-        if (p == vertex.m_p) {
-            break;  // point is already on a vertex
-        }
-
-        if (prev_p) {
-            Span span(*prev_p, vertex);
-            if (span.On(p)) {
-                CVertex v(vertex);
-                v.m_p = p;
-                m_vertices.insert(VIt, v);
-                break;
-            }
-        }
-        prev_p = &(vertex.m_p);
-    }
-}
-
 void CCurve::ExtractSeparateCurves(
     const std::list<Point>& ordered_points,
     std::list<CCurve>& separate_curves
@@ -447,39 +422,6 @@ void CCurve::RemoveTinySpans()
             new_curve.m_vertices.push_back(vertex);
         }
     }
-    m_vertices.swap(new_curve.m_vertices);
-}
-
-void CCurve::ChangeEnd(const Point& p)
-{
-    // changes the end position of the Kurve, doesn't keep closed kurves closed
-    CCurve new_curve;
-
-    const Point* prev_p = NULL;
-
-    for (std::list<CVertex>::const_iterator VIt = m_vertices.begin(); VIt != m_vertices.end(); VIt++) {
-        const CVertex& vertex = *VIt;
-
-        if (prev_p) {
-            Span span(*prev_p, vertex);
-            if (span.On(p)) {
-                CVertex v(vertex);
-                v.m_p = p;
-                new_curve.m_vertices.push_back(v);
-                break;
-            }
-            else {
-                if (p != vertex.m_p) {
-                    new_curve.m_vertices.push_back(vertex);
-                }
-            }
-        }
-        else {
-            new_curve.m_vertices.push_back(vertex);
-        }
-        prev_p = &(vertex.m_p);
-    }
-
     m_vertices.swap(new_curve.m_vertices);
 }
 
