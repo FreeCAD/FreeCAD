@@ -38,14 +38,6 @@ std::list<CCurve> getCurves(const CArea& area)
     return area.m_curves;
 }
 
-py::tuple transformed_point(const geoff_geometry::Matrix& matrix, double x, double y, double z)
-{
-    geoff_geometry::Point3d p(x, y, z);
-    p = p.Transform(matrix);
-
-    return py::make_tuple(p.x, p.y, p.z);
-}
-
 static void print_curve(const CCurve& c)
 {
     std::size_t nvertices = c.m_vertices.size();
@@ -390,7 +382,6 @@ void init_pyarea(py::module& m)
     py::class_<geoff_geometry::Matrix, std::shared_ptr<geoff_geometry::Matrix>>(m, "Matrix")
         .def(py::init<geoff_geometry::Matrix>())
         .def(py::init(&MatrixFromVector))
-        .def("TransformedPoint", &transformed_point)
         .def("Multiply", &geoff_geometry::Matrix::Multiply);
 
     m.def("set_units", set_units);
