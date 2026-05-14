@@ -373,7 +373,6 @@ SET(PathPythonOp_SRCS
     Path/Op/Deburr.py
     Path/Op/Engrave.py
     Path/Op/EngraveBase.py
-    Path/Op/FeatureExtension.py
     Path/Op/Drilling.py
     Path/Op/Helix.py
     Path/Op/MillFace.py
@@ -406,7 +405,6 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Deburr.py
     Path/Op/Gui/Drilling.py
     Path/Op/Gui/Engrave.py
-    Path/Op/Gui/FeatureExtension.py
     Path/Op/Gui/Helix.py
     Path/Op/Gui/MillFace.py
     Path/Op/Gui/MillFacing.py

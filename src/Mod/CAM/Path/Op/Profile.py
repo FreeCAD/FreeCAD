@@ -57,7 +57,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpFeatures(self, obj):
         """areaOpFeatures(obj) ... returns operation-specific features"""
-        return PathOp.FeatureBaseFaces | PathOp.FeatureBaseEdges | PathOp.FeatureBaseModels
+        return (
+            PathOp.FeatureBaseFaces
+            | PathOp.FeatureBaseEdges
+            | PathOp.FeatureBaseModels
+            | PathOp.FeatureExtension
+        )
 
     def initAreaOp(self, obj):
         """initAreaOp(obj) ... creates all profile specific properties."""
@@ -544,8 +549,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         """_preprocessBase(obj) ... returns envelope of selected shapes"""
         shapeTups = []
 
-        self.solids = [base.Shape for base in self.model]
-        self.tol = self.job.GeometryTolerance.Value
+        self.solids = [b.Shape for b in self.model if b.Shape.Faces]
+        self.tol = self.job.GeometryTolerance.Value or 0.01
 
         bases = []
         edgeslist = []
@@ -613,6 +618,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     shapeTups.append((shapeEnv, True, "pathProfile"))
 
         if obj.processPerimeter:
+            if obj.ExtensionOffset:
+                ext = Path.Op.Util.getExtendedFaces(
+                    face, obj.ExtensionOffset.Value, self.solids, self.tol
+                )
+                face = Part.Compound(ext)
             try:
                 shapeEnv = PathUtils.getEnvelope(face, depthparams=self.depthparams)
             except Exception as ee:
@@ -639,6 +649,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             f = flatWire.Wires[0]
             if f:
                 shape = Part.Face(f)
+                if obj.ExtensionOffset:
+                    ext = Path.Op.Util.getExtendedFaces(
+                        shape, obj.ExtensionOffset.Value, self.solids, self.tol
+                    )
+                    shape = Part.Compound(ext)
                 shapeEnv = PathUtils.getEnvelope(shape, depthparams=self.depthparams)
                 if shapeEnv:
                     shapeTups.append((shapeEnv, False, "pathProfile"))
@@ -1477,6 +1492,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 def SetupProperties():
     setup = PathAreaOp.SetupProperties()
     setup.extend([tup[1] for tup in ObjectProfile.areaOpProperties(False)])
+    setup.append("ExtensionOffset")
     return setup
 
 

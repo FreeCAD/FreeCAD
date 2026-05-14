@@ -46,6 +46,7 @@ FeaturePocket = 0x01
 FeatureFacing = 0x02
 FeatureOutline = 0x04
 FeatureRestMachining = 0x08
+FeatureExtension = 0x10
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -53,6 +54,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     FeaturePocket  ... used for pocketing operation
     FeatureFacing  ... used for face milling operation
     FeatureOutline ... used for pocket-shape operation
+    FeatureExtension ... used for pocket-shape operation
     """
 
     def pocketFeatures(self):
@@ -60,8 +62,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
           FeaturePocket  ... used for pocketing operation
           FeatureFacing  ... used for face milling operation
           FeatureOutline ... used for pocket-shape operation
+          FeatureExtension ... used for pocket-shape operation
         Must be overwritten by subclasses"""
         pass
+
+    def initPage(self, obj):
+        self.form.extraOffset.setProperty("unit", obj.ExtraOffset.getUserPreferred()[2])
+        if FeatureExtension & self.pocketFeatures():
+            self.form.extensionOffset.setProperty("unit", obj.ExtensionOffset.getUserPreferred()[2])
 
     def getForm(self):
         """getForm() ... returns UI, adapted to the results from pocketFeatures()"""
@@ -75,24 +83,19 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         self.populateCombobox(form, enumTups, comboToPropertyMap)
 
-        if not FeatureFacing & self.pocketFeatures():
+        if not (FeatureFacing & self.pocketFeatures()):
             form.facingWidget.hide()
             form.clearEdges.hide()
-
-        if FeaturePocket & self.pocketFeatures():
-            form.extraOffset_label.setText(translate("PathPocket", "Pass Extension"))
-            form.extraOffset.setToolTip(
-                translate(
-                    "PathPocket",
-                    "The distance the facing operation will extend beyond the boundary shape.",
-                )
-            )
 
         if not (FeatureOutline & self.pocketFeatures()):
             form.useOutline.hide()
 
         if not (FeatureRestMachining & self.pocketFeatures()):
             form.useRestMachining.hide()
+
+        if not (FeatureExtension & self.pocketFeatures()):
+            form.extensionOffset.hide()
+            form.extensionOffset_label.hide()
 
         return form
 
@@ -106,8 +109,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         else:
             self.form.angle.setEnabled(True)
 
-        if setModel:
-            PathGuiUtil.updateInputField(obj, "Angle", self.form.angle)
+        if setModel and getattr(obj.Angle, "Value", obj.Angle) != self.form.angle.value():
+            obj.Angle = self.form.angle.value()
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
@@ -144,18 +147,19 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             if obj.ClearEdges != self.form.clearEdges.isChecked():
                 obj.ClearEdges = self.form.clearEdges.isChecked()
 
+        if FeatureExtension & self.pocketFeatures():
+            PathGuiUtil.updateInputField(obj, "ExtensionOffset", self.form.extensionOffset)
+
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.form.stepOver.setValue(obj.StepOver)
-        self.form.extraOffset.setText(
-            FreeCAD.Units.Quantity(obj.ExtraOffset.Value, FreeCAD.Units.Length).UserString
-        )
+        self.form.extraOffset.setProperty("rawValue", obj.ExtraOffset.Value)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
         self.form.useRestMachining.setChecked(obj.UseRestMachining)
         if FeatureOutline & self.pocketFeatures():
             self.form.useOutline.setChecked(obj.UseOutline)
 
-        self.form.angle.setText(FreeCAD.Units.Quantity(obj.Angle, FreeCAD.Units.Angle).UserString)
+        self.form.angle.setValue(getattr(obj.Angle, "Value", obj.Angle))
         self.updateAngle(obj, False)
 
         self.form.minTravel.setChecked(obj.MinTravel)
@@ -169,6 +173,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if FeatureFacing & self.pocketFeatures():
             self.selectInComboBox(obj.BoundaryShape, self.form.boundaryShape)
             self.form.clearEdges.setChecked(obj.ClearEdges)
+
+        if FeatureExtension & self.pocketFeatures():
+            self.form.extensionOffset.setProperty("rawValue", obj.ExtensionOffset.Value)
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
@@ -189,6 +196,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if FeatureFacing & self.pocketFeatures():
             signals.append(self.form.boundaryShape.currentIndexChanged)
             signals.append(self.form.clearEdges.clicked)
+
+        if FeatureExtension & self.pocketFeatures():
+            signals.append(self.form.extensionOffset.editingFinished)
 
         return signals
 

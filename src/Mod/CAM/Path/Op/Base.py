@@ -65,6 +65,7 @@ FeatureBaseModels = 0x0800  # Base
 FeatureLocations = 0x1000  # Locations
 FeatureCoolant = 0x2000  # Coolant
 FeatureDiameters = 0x4000  # Turning Diameters
+FeatureExtension = 0x8000  # Extension
 
 FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges
 
@@ -173,6 +174,7 @@ class ObjectOp(object):
         FeatureLocations     ... Base location support
         FeatureCoolant       ... Support for operation coolant
         FeatureDiameters     ... Support for turning operation diameters
+        FeatureExtension     ... Support for Extension
 
     The base class handles all base API and forwards calls to subclasses with
     an op prefix. For instance, an op is not expected to overwrite onChanged(),
@@ -257,6 +259,16 @@ class ObjectOp(object):
             "CollisionClearance",
             "Linking",
             QT_TRANSLATE_NOOP("App::Property", "Distance for collision detection"),
+        )
+
+    def addExtension(self, obj):
+        obj.addProperty(
+            "App::PropertyLength",
+            "ExtensionOffset",
+            "Extension",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Extension for working area limited by the model shape"
+            ),
         )
 
     def __init__(self, obj, name, parentJob=None):
@@ -437,6 +449,9 @@ class ObjectOp(object):
         if FeatureLinking & features:
             self.addLinking(obj)
 
+        if FeatureExtension & features:
+            self.addExtension(obj)
+
         # members being set later
         self.commandlist = None
         self.horizFeed = None
@@ -608,6 +623,11 @@ class ObjectOp(object):
             )
             obj.Workplane = FreeCAD.Vector(0, 0, 1)
 
+        if FeatureExtension & features and not hasattr(obj, "ExtensionOffset"):
+            self.addExtension(obj)
+            if getattr(obj, "ExtensionFeature", None):
+                obj.ExtensionOffset = min(obj.ExtensionLengthDefault, obj.OpToolDiameter.Value / 2)
+
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
 
@@ -712,7 +732,7 @@ class ObjectOp(object):
                     if hasattr(shape, "ShapeType"):
                         Path.Log.debug(f"  Shape type: {shape.ShapeType}")
                     if hasattr(shape, "isNull") and shape.isNull():
-                        Path.Log.warning(f"  Transformed shape is null, using original")
+                        Path.Log.warning("  Transformed shape is null, using original")
                         shape = base_obj.Shape
                     elif hasattr(shape, "Volume") and shape.Volume < 1e-9:
                         Path.Log.debug(f"  Transformed shape has very small volume: {shape.Volume}")
@@ -721,7 +741,7 @@ class ObjectOp(object):
                     if hasattr(shape, "Faces"):
                         Path.Log.debug(f"  Shape has {len(shape.Faces)} faces")
                         if len(shape.Faces) == 0:
-                            Path.Log.warning(f"  Transformed shape has no faces!")
+                            Path.Log.warning("  Transformed shape has no faces!")
 
                     proxy_cache[key] = _TransformedShapeProxy(base_obj, shape)
                 else:

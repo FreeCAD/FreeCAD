@@ -24,7 +24,6 @@
 import FreeCAD
 import Path
 import Path.Op.Gui.Base as PathOpGui
-import Path.Op.Gui.FeatureExtension as PathFeatureExtensionsGui
 import Path.Op.Gui.PocketBase as PathPocketBaseGui
 import Path.Op.PocketShape as PathPocketShape
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -57,12 +56,8 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
             PathPocketBaseGui.FeaturePocket
             | PathPocketBaseGui.FeatureOutline
             | PathPocketBaseGui.FeatureRestMachining
+            | PathPocketBaseGui.FeatureExtension
         )
-
-    def taskPanelBaseLocationPage(self, obj, features):
-        if not hasattr(self, "extensionsPanel"):
-            self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(obj, features)
-        return self.extensionsPanel
 
 
 Command = PathOpGui.SetupOperation(

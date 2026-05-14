@@ -575,3 +575,38 @@ def getClearedAreas(currentOp, bbox):
         opPath = _stripRotaryAxes(op.Path) if rotated else op.Path
         clearedAreas.append(opPath.getClearedArea(diameter, z + dz, bbox))
     return clearedAreas
+
+
+def getExtendedFaces(faces, offset, solids, cut_original=False, tolerance=0.01):
+    """getExtended(faces, offset, solids)
+    Get offset from face(s) and cut solids from it
+    Cut solids also from original face(s) if cut_original is True
+    Return list of original face(s) and extensions
+    """
+    extensions = []
+    if isinstance(faces, Part.Face):
+        faces = [faces]
+    for face in faces:
+        if cut_original:
+            cface = face.copy()
+            translate_dist = face.BoundBox.ZLength + Path.Geom.Tolerance
+            cface.translate(FreeCAD.Vector(0, 0, translate_dist))
+            cface = cface.cut(solids)
+            cface.translate(FreeCAD.Vector(0, 0, -translate_dist))
+            extensions.extend(cface.Faces)
+        else:
+            extensions.extend(face.Faces)
+        if not offset:
+            continue
+        plane = PathUtils.makeWorkplane(face)
+        oface = PathUtils.getOffsetArea(face, offset, plane=plane, tolerance=tolerance)
+        if not oface:
+            Path.Log.warning("Extension error: getOffsetArea() failed")
+            continue
+        ext = oface.cut(solids)
+        if ext.isNull() or not ext.Faces:
+            Path.Log.warning("Extension error: cut() failed")
+            continue
+        extensions.extend(ext.Faces)  # ext can be a Face or Shell
+
+    return extensions

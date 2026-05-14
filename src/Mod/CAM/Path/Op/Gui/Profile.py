@@ -46,9 +46,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     FeatureProcessing ... Are the processing check boxes supported by the operation
     """
 
-    # def initPage(self, obj):
-    #     self.setTitle("Profile - " + obj.Label)
-    #     self.updateVisibility()
+    def initPage(self, obj):
+        # self.setTitle("Profile - " + obj.Label)
+        # self.updateVisibility()
+        self.form.extraOffset.setProperty("unit", obj.OffsetExtra.getUserPreferred()[2])
+        self.form.extensionOffset.setProperty("unit", obj.ExtensionOffset.getUserPreferred()[2])
+        self.form.stepover.setProperty("unit", obj.Stepover.getUserPreferred()[2])
 
     def profileFeatures(self):
         """profileFeatures() ... return which of the optional profile features are supported.
@@ -78,6 +81,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.Direction != str(self.form.direction.currentData()):
             obj.Direction = str(self.form.direction.currentData())
         PathGuiUtil.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
+        PathGuiUtil.updateInputField(obj, "ExtensionOffset", self.form.extensionOffset)
         obj.NumPasses = self.form.numPasses.value()
         PathGuiUtil.updateInputField(obj, "Stepover", self.form.stepover)
 
@@ -100,14 +104,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         self.selectInComboBox(obj.Side, self.form.cutSide)
         self.selectInComboBox(obj.Direction, self.form.direction)
-        self.form.extraOffset.setText(
-            FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString
-        )
+        self.form.extraOffset.setProperty("rawValue", obj.OffsetExtra.Value)
+        self.form.extensionOffset.setProperty("rawValue", obj.ExtensionOffset.Value)
+        self.form.stepover.setProperty("rawValue", obj.Stepover.Value)
         self.form.numPasses.setValue(obj.NumPasses)
-        self.form.stepover.setText(
-            FreeCAD.Units.Quantity(obj.Stepover.Value, FreeCAD.Units.Length).UserString
-        )
-
         self.form.useCompensation.setChecked(obj.UseComp)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
         self.form.processHoles.setChecked(obj.processHoles)
@@ -124,6 +124,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.cutSide.currentIndexChanged)
         signals.append(self.form.direction.currentIndexChanged)
         signals.append(self.form.extraOffset.editingFinished)
+        signals.append(self.form.extensionOffset.editingFinished)
         signals.append(self.form.numPasses.editingFinished)
         signals.append(self.form.stepover.editingFinished)
         if hasattr(self.form.useCompensation, "checkStateChanged"):  # Qt version >= 6.7.0
