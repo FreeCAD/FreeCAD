@@ -1629,8 +1629,6 @@ public:
 # pragma warning(default : 4522)
 #endif
 
-void tangential_arc(const Point& p0, const Point& p1, const Vector2d& v0, Point& c, int& dir);
-
 int EqualiseSpanCount(
     Kurve& k1,
     Kurve& k2,

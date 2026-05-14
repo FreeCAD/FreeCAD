@@ -227,15 +227,6 @@ Span getLastCurveSpan(const CCurve& c)
     return Span((*VIt).m_p, v, c.m_vertices.size() == 2);
 }
 
-py::tuple TangentialArc(const Point& p0, const Point& p1, const Point& v0)
-{
-    Point c;
-    int dir;
-    tangential_arc(p0, p1, v0, c, dir);
-
-    return py::make_tuple(c, dir);
-}
-
 std::list<Point> spanIntersect(const Span& span1, const Span& span2)
 {
     std::list<Point> pts;
@@ -408,7 +399,6 @@ void init_pyarea(py::module& m)
     m.def("copy_area", copy_area);
     m.def("holes_linked", holes_linked);
     m.def("AreaFromDxf", AreaFromDxf);
-    m.def("TangentialArc", TangentialArc);
 
     using namespace AdaptivePath;
     py::enum_<MotionType>(m, "AdaptiveMotionType")

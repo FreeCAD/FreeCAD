@@ -153,6 +153,4 @@ public:
     void CurveIntersections(const CCurve& c, std::list<Point>& pts) const;
 };
 
-void tangential_arc(const Point& p0, const Point& p1, const Point& v0, Point& c, int& dir);
-
 }  // namespace heeks
