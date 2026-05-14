@@ -1145,14 +1145,9 @@ class _Wall(ArchComponent.Component):
                         shpEdges = obj.Base.Shape.Edges
                         baseEdges = []
                         for edge in shpEdges:
-                            if isinstance(
-                                edge,
-                                (
-                                    Part.LineSegment,
-                                    Part.Circle,
-                                    Part.ArcOfCircle,
-                                    Part.Ellipse,
-                                ),
+                            if (
+                                 isinstance(edge.Curve, (Part.Line, Part.Circle))
+                                 or isinstance(edge.Curve, Part.Ellipse) and edge.isClosed()
                             ):
                                 baseEdges.append(edge)
                         clusters = Part.getSortedClusters(baseEdges)
