@@ -250,6 +250,17 @@ class BuildingPart(ArchIFC.IfcProduct):
                 QT_TRANSLATE_NOOP("App::Property", "The level of the (0,0,0) point of this level"),
                 locked=True,
             )
+        if not "PlanCutHeight" in pl:
+            obj.addProperty(
+                "App::PropertyLength",
+                "PlanCutHeight",
+                "BuildingPart",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The plan cut height of this level for derived footprint views",
+                ),
+                locked=True,
+            )
         if not "Area" in pl:
             obj.addProperty(
                 "App::PropertyArea",
@@ -317,6 +328,7 @@ class BuildingPart(ArchIFC.IfcProduct):
                 ),
                 locked=True,
             )
+        self._sync_plan_cut_height_property(obj)
 
     def onDocumentRestored(self, obj):
 
@@ -367,6 +379,8 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         if (prop == "Height" or prop == "HeightPropagate") and obj.Height.Value:
             self.touchChildren(obj)
+        elif prop == "IfcType":
+            self._sync_plan_cut_height_property(obj)
 
         elif prop == "Placement":
             if hasattr(self, "oldPlacement") and self.oldPlacement != obj.Placement:
@@ -388,6 +402,23 @@ class BuildingPart(ArchIFC.IfcProduct):
                         )
                     if deltap:
                         child.Placement.move(deltap)
+
+    def _sync_plan_cut_height_property(self, obj):
+        """Expose plan cut height only on building storeys.
+
+        The footprint display mode uses this document-saved value to derive
+        plan cuts for objects contained in a level. Other BuildingPart roles do
+        not currently consume it, so keep the property hidden there.
+        """
+
+        if not hasattr(obj, "PlanCutHeight"):
+            return
+        if getattr(obj, "IfcType", "") == "Building Storey":
+            obj.setEditorMode("PlanCutHeight", 0)
+            if not obj.PlanCutHeight.Value:
+                obj.PlanCutHeight = 1000
+        else:
+            obj.setEditorMode("PlanCutHeight", 2)
 
     def execute(self, obj):
         "gather all the child shapes into a compound"

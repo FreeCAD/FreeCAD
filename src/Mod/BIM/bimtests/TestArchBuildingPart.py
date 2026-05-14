@@ -81,6 +81,9 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         floor = Arch.makeFloor(name="TestFloor")
         self.assertIsNotNone(floor, "makeFloor failed to create a floor object.")
         self.assertEqual(floor.Label, "TestFloor", "Floor label is incorrect.")
+        self.assertAlmostEqual(
+            floor.PlanCutHeight.Value, 1000.0, msg="Floor plan cut height default is incorrect."
+        )
 
     def test_makeBuilding(self):
         """Test the makeBuilding function."""
