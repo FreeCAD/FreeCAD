@@ -122,9 +122,9 @@ private:
     SoSwitch* pDeltaLabelSwitch {nullptr};
 
     SoTranslate2Dragger* pDeltaDragger[3] {};
-    SoTransform*         pDeltaLabelTranslation[3] {};
-    Gui::SoFrameLabel*   pDeltaLabel[3] {};
-    SoCoordinate3*       pDeltaLeaderCoords[3] {};
+    SoTransform* pDeltaLabelTranslation[3] {};
+    Gui::SoFrameLabel* pDeltaLabel[3] {};
+    SoCoordinate3* pDeltaLeaderCoords[3] {};
 
     SoSFVec3f fieldPosition1;
     SoSFVec3f fieldPosition2;

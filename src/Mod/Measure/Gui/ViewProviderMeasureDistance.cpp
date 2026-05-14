@@ -577,11 +577,12 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
         }
         else {
             Base::Console().warning(
-                "ViewProviderMeasureDistance: delta label %d not found in scene graph; label will not be draggable.\n", i
+                "ViewProviderMeasureDistance: delta label %d not found in scene graph; label will "
+                "not be draggable.\n",
+                i
             );
         }
     }
-
 }
 
 ViewProviderMeasureDistance::~ViewProviderMeasureDistance()
@@ -699,9 +700,7 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
         // pDeltaLabelSwitch follows via field connection.
     }
     else if (prop == &ShowArrows) {
-        pArrowSwitch->whichChild.setValue(
-            ShowArrows.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE
-        );
+        pArrowSwitch->whichChild.setValue(ShowArrows.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE);
     }
     else if (prop == &ArrowSize) {
         const double clamped = std::clamp(ArrowSize.getValue(), 0.1, 10.0);
@@ -750,21 +749,21 @@ void ViewProviderMeasureDistance::drawArrowheads(SoState* state)
     }
 
     // world units per pixel at focal distance, same as SoDatumLabel
-    const SbViewVolume& vv  = SoViewVolumeElement::get(state);
+    const SbViewVolume& vv = SoViewVolumeElement::get(state);
     const SbViewportRegion& vpr = SoViewportRegionElement::get(state);
     SbVec2s vpSize = vpr.getViewportSizePixels();
-    float focal    = SoFocalDistanceElement::get(state);
+    float focal = SoFocalDistanceElement::get(state);
     SbVec3f focal_pt = vv.getSightPoint(focal);
-    float scalePx  = vv.getWorldToScreenScale(focal_pt, 1.0F) / float(vpSize[0]);
+    float scalePx = vv.getWorldToScreenScale(focal_pt, 1.0F) / float(vpSize[0]);
 
     const float arrowH = scalePx * 14.0f * static_cast<float>(ArrowSize.getValue());
-    const float halfW  = arrowH * 0.4f;
+    const float halfW = arrowH * 0.4f;
 
     SbVec3f dir = diff;
     dir.normalize();
 
-    SbVec3f projDir  = vv.getProjectionDirection();
-    SbVec3f camUp    = vv.getViewUp();
+    SbVec3f projDir = vv.getProjectionDirection();
+    SbVec3f camUp = vv.getViewUp();
     SbVec3f camRight = projDir.cross(camUp);
     camRight.normalize();
     camUp.normalize();
@@ -782,18 +781,18 @@ void ViewProviderMeasureDistance::drawArrowheads(SoState* state)
     glColor3f(1.0f, 1.0f, 1.0f);
 
     auto drawArrow = [&](const SbVec3f& tip, const SbVec3f& awayDir) {
-        SbVec3f base  = tip + awayDir * arrowH;
-        SbVec3f left  = base - perp * halfW;
+        SbVec3f base = tip + awayDir * arrowH;
+        SbVec3f left = base - perp * halfW;
         SbVec3f right = base + perp * halfW;
         glBegin(GL_TRIANGLES);
-        glVertex3f(tip[0],   tip[1],   tip[2]);
-        glVertex3f(left[0],  left[1],  left[2]);
+        glVertex3f(tip[0], tip[1], tip[2]);
+        glVertex3f(left[0], left[1], left[2]);
         glVertex3f(right[0], right[1], right[2]);
         glEnd();
     };
 
     drawArrow(p2v, -dir);
-    drawArrow(p1v,  dir);
+    drawArrow(p1v, dir);
 
     glPopAttrib();
 }
@@ -803,13 +802,11 @@ void ViewProviderMeasureDistance::onLabelMoved()
 {}
 
 
-
 void ViewProviderMeasureDistance::finishRestoring()
 {
     ViewProviderMeasureBase::finishRestoring();
     initDeltaLabelPositions();
 }
-
 
 
 void ViewProviderMeasureDistance::positionAnno(const Measure::MeasureBase* measureObject)
