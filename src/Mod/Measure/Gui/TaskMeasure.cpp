@@ -31,6 +31,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
 #include <Mod/Measure/App/MeasureDistance.h>
+#include <App/PropertyGeo.h>
 #include <App/PropertyStandard.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
@@ -50,8 +51,10 @@ using enum Gui::InputHint::UserInput;
 #include <QShortcut>
 #include <QToolTip>
 #include <QSignalBlocker>
+#include <QTextStream>
 
 #include <Base/Quantity.h>
+#include <Base/UnitsApi.h>
 #include <array>
 
 using namespace MeasureGui;
@@ -93,6 +96,28 @@ QString extractUnitFromResultString(const QString& resultString)
     }
 
     return QString();
+}
+
+QString unitExpressionFromLabel(QString unitLabel)
+{
+    return unitLabel.replace(QChar(0x00B2), QLatin1String("^2"));
+}
+
+Base::Quantity targetUnitFromLabel(const QString& unitLabel)
+{
+    return Base::Quantity::parse((QLatin1String("1 ") + unitExpressionFromLabel(unitLabel)).toStdString());
+}
+
+QString formatValueWithPreferredPrecision(double value)
+{
+    const int decimals = Base::UnitsApi::getDecimals();
+    const int significantDigits = decimals > 0 ? decimals : 1;
+
+    // Use preferred decimal places, if between -1 and 1: preferred significant digits
+    if (std::abs(value) < 1.0 && value != 0.0) {
+        return QString::number(value, 'g', significantDigits);
+    }
+    return QString::number(value, 'f', decimals);
 }
 }  // namespace
 
@@ -472,10 +497,10 @@ void TaskMeasure::updateResultWithUnit()
     QString resultString;
     auto prop = _mMeasureObject->getResultProp();
     auto qtyProp = dynamic_cast<App::PropertyQuantity*>(prop);
+    auto vectorDistanceProp = dynamic_cast<App::PropertyVectorDistance*>(prop);
 
     if (qtyProp) {
-        double value = qtyProp->getQuantityValue().getValue();
-        resultString = QString::number(value);
+        resultString = QString::fromStdString(qtyProp->getQuantityValue().getUserString());
     }
     else {
         resultString = _mMeasureObject->getResultString();
@@ -484,24 +509,38 @@ void TaskMeasure::updateResultWithUnit()
     QString currentUnit = unitSwitch->currentText();
 
     if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
-        Base::Quantity resultQty = Base::Quantity::parse(resultString.toStdString());
-        // Parse unit string like "1 mm" to get the target quantity
-        Base::Quantity targetUnit = Base::Quantity::parse(
-            (QLatin1String("1 ") + currentUnit).toStdString()
-        );
-        double convertedValue = resultQty.getValueAs(targetUnit);
+        Base::Quantity targetUnit = targetUnitFromLabel(currentUnit);
 
-        QString formattedValue;
-        // 4 decimal places, if between -1 and 1: 4 significant digits
-        if (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) {
-            formattedValue = QString::number(convertedValue, 'g', 4);
+        if (vectorDistanceProp) {
+            const Base::Vector3d value = vectorDistanceProp->getValue();
+            QString formattedResult;
+            QTextStream stream(&formattedResult);
+            stream << "X: "
+                   << formatValueWithPreferredPrecision(
+                          Base::Quantity(value.x, vectorDistanceProp->getUnit()).getValueAs(targetUnit)
+                      )
+                   << " " << currentUnit << Qt::endl
+                   << "Y: "
+                   << formatValueWithPreferredPrecision(
+                          Base::Quantity(value.y, vectorDistanceProp->getUnit()).getValueAs(targetUnit)
+                      )
+                   << " " << currentUnit << Qt::endl
+                   << "Z: "
+                   << formatValueWithPreferredPrecision(
+                          Base::Quantity(value.z, vectorDistanceProp->getUnit()).getValueAs(targetUnit)
+                      )
+                   << " " << currentUnit;
+            valueResult->setText(formattedResult);
         }
         else {
-            formattedValue = QString::number(convertedValue, 'f', 4);
-        }
+            Base::Quantity resultQty = qtyProp ? qtyProp->getQuantityValue()
+                                               : Base::Quantity::parse(resultString.toStdString());
+            double convertedValue = resultQty.getValueAs(targetUnit);
 
-        QString formattedResult = formattedValue + QLatin1String(" ") + currentUnit;
-        valueResult->setText(formattedResult);
+            QString formattedValue = formatValueWithPreferredPrecision(convertedValue);
+            QString formattedResult = formattedValue + QLatin1String(" ") + currentUnit;
+            valueResult->setText(formattedResult);
+        }
     }
     else {
         valueResult->setText(resultString);

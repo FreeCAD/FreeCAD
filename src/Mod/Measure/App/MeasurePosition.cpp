@@ -26,6 +26,7 @@
 #include <App/Application.h>
 #include <App/MeasureManager.h>
 #include <App/Document.h>
+#include <Base/Quantity.h>
 
 #include "MeasurePosition.h"
 
@@ -130,14 +131,15 @@ QString MeasurePosition::getResultString()
         return {};
     }
 
-    Base::Vector3d value = Position.getValue();
-    QString unit = QString::fromStdString(Position.getUnit().getString());
-    int precision = 2;
+    const Base::Vector3d value = Position.getValue();
+    const Base::Unit unit = Position.getUnit();
     QString text;
 
-    QTextStream(&text) << "X: " << QString::number(value.x, 'f', precision) << " " << unit << Qt::endl
-                       << "Y: " << QString::number(value.y, 'f', precision) << " " << unit << Qt::endl
-                       << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
+    QTextStream(&text) << "X: " << QString::fromStdString(Base::Quantity(value.x, unit).getUserString())
+                       << Qt::endl
+                       << "Y: " << QString::fromStdString(Base::Quantity(value.y, unit).getUserString())
+                       << Qt::endl
+                       << "Z: " << QString::fromStdString(Base::Quantity(value.z, unit).getUserString());
     return text;
 }
 
