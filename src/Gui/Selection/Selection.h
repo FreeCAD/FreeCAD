@@ -735,10 +735,9 @@ public:
     static SelectionSingleton& instance();
     static void destruct();
     friend class SelectionFilter;
+    friend class SelectionModulePy;
 
     // Python interface
-    static PyMethodDef Methods[];
-
 protected:
     static PyObject* sAddSelection(PyObject* self, PyObject* args);
     static PyObject* sUpdateSelection(PyObject* self, PyObject* args);
@@ -749,17 +748,17 @@ protected:
     static PyObject* sGetSelection(PyObject* self, PyObject* args);
     static PyObject* sSetPreselection(PyObject* self, PyObject* args, PyObject* kwd);
     static PyObject* sGetPreselection(PyObject* self, PyObject* args);
-    static PyObject* sRemPreselection(PyObject* self, PyObject* args);
     static PyObject* sApplyCoinHighlight(PyObject* self, PyObject* args, PyObject* kwd);
     static PyObject* sClearCoinHighlight(PyObject* self, PyObject* args, PyObject* kwd);
     static PyObject* sApplyCoinSelection(PyObject* self, PyObject* args, PyObject* kwd);
     static PyObject* sClearCoinSelection(PyObject* self, PyObject* args, PyObject* kwd);
+    static PyObject* sClearPreselection(PyObject* self, PyObject* args);
     static PyObject* sGetCompleteSelection(PyObject* self, PyObject* args);
     static PyObject* sGetSelectionEx(PyObject* self, PyObject* args);
     static PyObject* sGetSelectionObject(PyObject* self, PyObject* args);
     static PyObject* sSetSelectionStyle(PyObject* self, PyObject* args);
-    static PyObject* sAddSelObserver(PyObject* self, PyObject* args);
-    static PyObject* sRemSelObserver(PyObject* self, PyObject* args);
+    static PyObject* sAddObserver(PyObject* self, PyObject* args);
+    static PyObject* sRemoveObserver(PyObject* self, PyObject* args);
     static PyObject* sAddSelectionGate(PyObject* self, PyObject* args);
     static PyObject* sRemoveSelectionGate(PyObject* self, PyObject* args);
     static PyObject* sGetPickedList(PyObject* self, PyObject* args);

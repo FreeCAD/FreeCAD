@@ -12,8 +12,17 @@ from collections.abc import Sequence
 from enum import Enum, IntEnum
 from typing import Literal, Protocol, overload
 
+from Base.Metadata import module
 from FreeCAD import DocumentObject
 from FreeCADGui import SelectionObject
+
+module(
+    Name="Selection",
+    Namespace="Gui",
+    Include="Selection/Selection.h",
+    CallbackOwner="SelectionSingleton",
+    CallbackPrefix="s",
+)
 
 _Point3 = tuple[float, float, float]
 _RGBColor = tuple[float, float, float]
