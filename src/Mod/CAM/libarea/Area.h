@@ -87,7 +87,6 @@ public:
     ArcFittingMap m_arc_fitting_map;
     bool m_reversed = false;
     static double m_accuracy;
-    static bool m_clipper_simple;
     static double m_clipper_clean_distance;
     static bool m_fit_arcs;
     static int m_min_arc_points;
@@ -139,7 +138,6 @@ public:
 
     CAREA_PARAM_DECLARE(double, tolerance)
     CAREA_PARAM_DECLARE(bool, fit_arcs)
-    CAREA_PARAM_DECLARE(bool, clipper_simple)
     CAREA_PARAM_DECLARE(double, clipper_clean_distance)
     CAREA_PARAM_DECLARE(double, accuracy)
     CAREA_PARAM_DECLARE(double, clipper_scale)

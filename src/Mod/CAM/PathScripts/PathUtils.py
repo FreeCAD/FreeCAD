@@ -403,7 +403,6 @@ def getOffsetArea(
     areaParams["Deflection"] = tolerance
     areaParams["Accuracy"] = tolerance
     areaParams["Tolerance"] = 1e-5  # Equal point tolerance
-    areaParams["Simplify"] = True
     areaParams["CleanDistance"] = tolerance / 5
 
     if joinType is not None:
