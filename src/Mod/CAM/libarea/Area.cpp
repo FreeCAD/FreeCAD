@@ -777,18 +777,4 @@ bool IsInside(const Point& p, const CArea& a)
     return true;
 }
 
-class ThickLine
-{
-public:
-    CAreaReversed m_area;
-    CCurve m_curve;
-
-    ThickLine(const CCurve& curve)
-    {
-        m_curve = curve;
-        m_area.append(curve);
-        m_area.Thicken(0.001);
-    }
-};
-
 }  // namespace heeks
