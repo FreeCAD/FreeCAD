@@ -189,12 +189,18 @@ macro(generate_from_py_ BASE_NAME)
 endmacro(generate_from_py_)
 
 macro(generate_module_from_py BASE_NAME)
+    set(MODULE_OUTPUT_BASE_NAME "${BASE_NAME}")
+    if(${ARGC} GREATER 1)
+        set(MODULE_OUTPUT_BASE_NAME "${ARGV1}")
+    endif()
+
     set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py")
     file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
     file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.module.pyi" SOURCE_NATIVE_PATH)
 
-    set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}ModulePy.cpp")
-    set(SOURCE_H_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}ModulePy.h")
+    set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${MODULE_OUTPUT_BASE_NAME}ModulePy.cpp")
+    set(SOURCE_H_PATH "${CMAKE_CURRENT_BINARY_DIR}/${MODULE_OUTPUT_BASE_NAME}ModulePy.h")
+    set(SOURCE_IMP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${MODULE_OUTPUT_BASE_NAME}ModulePyImp.cpp")
 
     GET_FILENAME_COMPONENT(OUTPUT_PATH "${SOURCE_CPP_PATH}" PATH)
     file(TO_NATIVE_PATH "${OUTPUT_PATH}" OUTPUT_NATIVE_PATH)
@@ -208,14 +214,14 @@ macro(generate_module_from_py BASE_NAME)
     endif()
 
     add_custom_command(
-        OUTPUT "${SOURCE_H_PATH}" "${SOURCE_CPP_PATH}"
+        OUTPUT "${SOURCE_H_PATH}" "${SOURCE_CPP_PATH}" "${SOURCE_IMP_PATH}"
         COMMAND ${Python3_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.module.pyi
         MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.module.pyi"
         DEPENDS
             "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateModulePyExport.py"
             "${TOOL_PATH}"
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-        COMMENT "Building ${BASE_NAME}ModulePy.h/.cpp out of ${BASE_NAME}.module.pyi"
+        COMMENT "Building ${MODULE_OUTPUT_BASE_NAME}ModulePy.h/.cpp/.Imp.cpp out of ${BASE_NAME}.module.pyi"
     )
 endmacro(generate_module_from_py)
 

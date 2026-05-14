@@ -116,6 +116,7 @@ class Method:
 
     # Attributes
     Name: str = ""
+    Callback: Optional[str] = None
     Const: Optional[bool] = None
     Keyword: bool = False
     NoArgs: bool = False
@@ -220,6 +221,7 @@ class PythonModuleExport:
     ModuleName: str = ""
     Name: str = ""
     Namespace: str = ""
+    Include: str = ""
     IsExplicitlyExported: bool = False
 
 

@@ -23,6 +23,7 @@
 from . import template
 import sys
 from pathlib import Path
+import shutil
 import model.generateTools
 
 
@@ -54,12 +55,13 @@ class TemplateModulePyExport(template.ModelTemplate):
 
         outputImp = outputDir / f"{exportName}ModulePyImp.cpp"
         inputImp = inputDir / f"{exportName}ModulePyImp.cpp"
-        if not outputImp.exists():
-            if not inputImp.exists():
-                file = outputImp.open("wb")
-                print("TemplateModulePyExport", "TemplateImplement", file.name)
-                model.generateTools.replace(self.TemplateImplement, locals(), file)
-                file.close()
+        if inputImp.exists():
+            shutil.copyfile(inputImp, outputImp)
+        elif not outputImp.exists():
+            file = outputImp.open("wb")
+            print("TemplateModulePyExport", "TemplateImplement", file.name)
+            model.generateTools.replace(self.TemplateImplement, locals(), file)
+            file.close()
 
         outputCpp = outputDir / f"{exportName}ModulePy.cpp"
         with outputCpp.open("wb") as file:
@@ -96,21 +98,11 @@ public:
     /** @name callbacks and implementers for the python module methods */
     //@{
 + for i in self.export.Method:
-+ if i.Keyword:
++ if not i.Callback:
     /// callback for the @i.Name@() function
-    static PyObject* staticCallback_@i.Name@(PyObject* self, PyObject* args, PyObject* kwd);
+    static PyObject* staticCallback_@i.Name@(@("PyObject* self, PyObject* args, PyObject* kwd" if i.Keyword else "PyObject* self, PyObject* args")@);
     /// implementer for the @i.Name@() function
-    static PyObject* @i.Name@(PyObject* args, PyObject* kwd);
-= elif i.NoArgs:
-    /// callback for the @i.Name@() function
-    static PyObject* staticCallback_@i.Name@(PyObject* self, PyObject* args);
-    /// implementer for the @i.Name@() function
-    static PyObject* @i.Name@();
-= else:
-    /// callback for the @i.Name@() function
-    static PyObject* staticCallback_@i.Name@(PyObject* self, PyObject* args);
-    /// implementer for the @i.Name@() function
-    static PyObject* @i.Name@(PyObject* args);
+    static PyObject* @i.Name@(@("PyObject* args, PyObject* kwd" if i.Keyword else "" if i.NoArgs else "PyObject* args")@);
 -
 -
     //@}
@@ -128,6 +120,10 @@ public:
 
 #include "@self.export.Name@ModulePy.h"
 
++ if self.export.Include:
+#include "@self.export.Include@"
+-
+
 #include <Base/Exception.h>
 #include <Base/PyObjectBase.h>
 #include <CXX/Objects.hxx>
@@ -143,16 +139,14 @@ using namespace @self.export.Namespace@;
 PyMethodDef @self.export.Name@ModulePy::Methods[] = {
 + for i in self.export.Method:
     {"@i.Name@",
-+ if i.Keyword:
++ if i.Callback:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(@i.Callback@)),
+= elif i.Keyword:
         reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(staticCallback_@i.Name@)),
-        METH_VARARGS|METH_KEYWORDS,
-= elif i.NoArgs:
-        reinterpret_cast<PyCFunction>(staticCallback_@i.Name@),
-        METH_NOARGS,
 = else:
         reinterpret_cast<PyCFunction>(staticCallback_@i.Name@),
-        METH_VARARGS,
 -
+        @("METH_VARARGS|METH_KEYWORDS" if i.Keyword else "METH_NOARGS" if i.NoArgs else "METH_VARARGS")@,
         "@docString(i.Documentation, indent=8)@"
     },
 -
@@ -170,27 +164,16 @@ const char* @self.export.Name@ModulePy::moduleDocumentation()
 }
 
 + for i in self.export.Method:
++ if not i.Callback:
 // @i.Name@() callback and implementer
 // PyObject* @self.export.Name@ModulePy::@i.Name@(PyObject* args){};
 // has to be implemented in @self.export.Name@ModulePyImp.cpp
-+ if i.Keyword:
-PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(PyObject* self, PyObject* args, PyObject* kwd)
-= elif i.NoArgs:
-PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(PyObject* self, PyObject* Py_UNUSED(args))
-= else:
-PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(PyObject* self, PyObject* args)
--
+PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(@("PyObject* self, PyObject* args, PyObject* kwd" if i.Keyword else "PyObject* self, PyObject* Py_UNUSED(args)" if i.NoArgs else "PyObject* self, PyObject* args")@)
 {
     (void)self;
 
     try {
-+ if i.Keyword:
-        return @self.export.Name@ModulePy::@i.Name@(args, kwd);
-= elif i.NoArgs:
-        return @self.export.Name@ModulePy::@i.Name@();
-= else:
-        return @self.export.Name@ModulePy::@i.Name@(args);
--
+        return @self.export.Name@ModulePy::@i.Name@@("(args, kwd)" if i.Keyword else "()" if i.NoArgs else "(args)")@;
     }  // Please sync the following catch implementation with PY_CATCH
     catch (const Base::Exception& e)
     {
@@ -217,6 +200,7 @@ PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(PyObject* self, Py
 }
 
 -
+-
 
 #if defined(__clang__)
 # pragma clang diagnostic pop
@@ -233,17 +217,13 @@ PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(PyObject* self, Py
 using namespace @self.export.Namespace@;
 
 + for i in self.export.Method:
-+ if i.Keyword:
-PyObject* @self.export.Name@ModulePy::@i.Name@(PyObject* /*args*/, PyObject* /*kwd*/)
-= elif i.NoArgs:
-PyObject* @self.export.Name@ModulePy::@i.Name@()
-= else:
-PyObject* @self.export.Name@ModulePy::@i.Name@(PyObject* /*args*/)
--
++ if not i.Callback:
+PyObject* @self.export.Name@ModulePy::@i.Name@(@("PyObject* /*args*/, PyObject* /*kwd*/" if i.Keyword else "" if i.NoArgs else "PyObject* /*args*/")@)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return nullptr;
 }
 
+-
 -
 """

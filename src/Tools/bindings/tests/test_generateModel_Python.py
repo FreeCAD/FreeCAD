@@ -104,7 +104,7 @@ class GenerateModelPythonTests(unittest.TestCase):
 
             \"\"\"Example module doc.\"\"\"
 
-            module(Name="Example", Namespace="TestBindings")
+            module(Name="Example", Namespace="TestBindings", Include="ExampleBinding.h")
 
             def ping(value: int, /, *, retry: bool = ...) -> object:
                 \"\"\"
@@ -130,6 +130,7 @@ class GenerateModelPythonTests(unittest.TestCase):
         export = model.PythonModule[0]
         self.assertEqual(export.Name, "Example")
         self.assertEqual(export.Namespace, "TestBindings")
+        self.assertEqual(export.Include, "ExampleBinding.h")
         self.assertEqual(export.ModuleName, Path(temp_dir).name)
         self.assertTrue(export.IsExplicitlyExported)
         self.assertEqual([method.Name for method in export.Method], ["ping", "reset"])
@@ -187,6 +188,87 @@ class GenerateModelPythonTests(unittest.TestCase):
             ):
                 parse(str(path))
 
+    def test_module_stub_supports_callback_backed_overloads(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from typing import overload
+
+            from Base.Metadata import callback
+
+            @callback("TestBindings::sListSchemas")
+            @overload
+            def listSchemas() -> tuple[str, ...]:
+                \"\"\"Return all schemas.\"\"\"
+                ...
+
+            @overload
+            def listSchemas(index: int, /) -> str:
+                \"\"\"Return one schema.\"\"\"
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse(str(path))
+
+        export = model.PythonModule[0]
+        self.assertEqual([method.Name for method in export.Method], ["listSchemas"])
+        self.assertEqual(export.Method[0].Callback, "TestBindings::sListSchemas")
+        self.assertIn("listSchemas()", export.Method[0].Documentation.UserDocu)
+        self.assertIn("listSchemas(index, /)", export.Method[0].Documentation.UserDocu)
+
+    def test_module_stub_infers_callback_symbols_from_module_metadata(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import callback, module
+
+            module(CallbackOwner="TestBindings", CallbackPrefix="s")
+
+            def loadFile(path: str, /) -> None:
+                ...
+
+            @callback("TestBindings::sOpenDocument")
+            def open(path: str, /) -> None:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse(str(path))
+
+        export = model.PythonModule[0]
+        self.assertEqual(export.Method[0].Callback, "TestBindings::sLoadFile")
+        self.assertEqual(export.Method[1].Callback, "TestBindings::sOpenDocument")
+
+    def test_module_stub_rejects_callback_prefix_without_owner(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import module
+
+            module(CallbackPrefix="s")
+
+            def ping() -> None:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "CallbackPrefix requires CallbackOwner"):
+                parse(str(path))
+
     def test_module_stub_generation_writes_module_wrapper_files(self):
         source = textwrap.dedent("""
             from __future__ import annotations
@@ -231,6 +313,78 @@ class GenerateModelPythonTests(unittest.TestCase):
         self.assertIn("METH_VARARGS|METH_KEYWORDS", module_cpp)
         self.assertIn("METH_NOARGS", module_cpp)
         self.assertIn('PyErr_SetString(PyExc_NotImplementedError, "Not implemented")', module_imp)
+
+    def test_module_stub_generation_uses_existing_callback_symbols(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from typing import overload
+
+            from Base.Metadata import callback, module
+
+            module(Include="ExampleBinding.h")
+
+            @callback("TestBindings::sListSchemas")
+            @overload
+            def listSchemas() -> tuple[str, ...]:
+                ...
+
+            @overload
+            def listSchemas(index: int, /) -> str:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            output_dir = Path(temp_dir) / "generated"
+            output_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            generate(str(path), str(output_dir))
+
+            header = (output_dir / "ExampleModulePy.h").read_text(encoding="utf-8")
+            module_cpp = (output_dir / "ExampleModulePy.cpp").read_text(encoding="utf-8")
+            module_imp = (output_dir / "ExampleModulePyImp.cpp").read_text(encoding="utf-8")
+
+        self.assertIn("TestBindings::sListSchemas", module_cpp)
+        self.assertIn('#include "ExampleBinding.h"', module_cpp)
+        self.assertNotIn("staticCallback_listSchemas", header)
+        self.assertNotIn("staticCallback_listSchemas", module_cpp)
+        self.assertNotIn("PyObject* ExampleModulePy::listSchemas", module_imp)
+
+    def test_module_stub_generation_uses_inferred_callback_symbols(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import module
+
+            module(Include="ExampleBinding.h", CallbackOwner="TestBindings", CallbackPrefix="s")
+
+            def loadFile(path: str, /) -> None:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            output_dir = Path(temp_dir) / "generated"
+            output_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            generate(str(path), str(output_dir))
+
+            header = (output_dir / "ExampleModulePy.h").read_text(encoding="utf-8")
+            module_cpp = (output_dir / "ExampleModulePy.cpp").read_text(encoding="utf-8")
+            module_imp = (output_dir / "ExampleModulePyImp.cpp").read_text(encoding="utf-8")
+
+        self.assertIn("TestBindings::sLoadFile", module_cpp)
+        self.assertIn('#include "ExampleBinding.h"', module_cpp)
+        self.assertNotIn("staticCallback_loadFile", header)
+        self.assertNotIn("staticCallback_loadFile", module_cpp)
+        self.assertNotIn("PyObject* ExampleModulePy::loadFile", module_imp)
 
 
 if __name__ == "__main__":

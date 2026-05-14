@@ -57,6 +57,7 @@ class FunctionSignature:
     class_flag: bool = False
     noargs_flag: bool = False
     is_overload: bool = False
+    callback: str | None = None
 
     def __init__(self, func: ast.FunctionDef):
         self.args = []
@@ -150,13 +151,9 @@ class FunctionSignature:
     def update_flags(self, func: ast.FunctionDef) -> None:
         self.typing_only_flag = False
         for deco in func.decorator_list:
-            match deco:
-                case ast.Name(id, _):
-                    name = id
-                case ast.Attribute(_, attr, _):
-                    name = attr
-                case _:
-                    continue
+            name = _decorator_name(deco)
+            if name is None:
+                continue
 
             match name:
                 case "constmethod":
@@ -171,6 +168,15 @@ class FunctionSignature:
                     self.is_overload = True
                 case "typing_only":
                     self.typing_only_flag = True
+                case "callback":
+                    if not isinstance(deco, ast.Call):
+                        raise ValueError("callback decorator requires a string callback symbol")
+                    callback = _extract_single_string_argument(deco, "callback")
+                    if callback is None:
+                        raise ValueError(
+                            "callback decorator requires a single string callback symbol"
+                        )
+                    self.callback = callback
 
 
 class Function:
@@ -209,6 +215,10 @@ class Function:
         return None
 
     @property
+    def parse_signature(self) -> FunctionSignature | None:
+        return self.signature or next(iter(self.public_signatures), None)
+
+    @property
     def doc_signatures(self) -> list[FunctionSignature]:
         signatures = self.public_signatures
         if len(signatures) == 1:
@@ -241,6 +251,18 @@ class Function:
     @property
     def typing_only_flag(self) -> bool:
         return bool(self.signatures) and not self.public_signatures
+
+    @property
+    def callback(self) -> str | None:
+        callback = None
+        for sig in self.public_signatures:
+            if not sig.callback:
+                continue
+            if callback is None:
+                callback = sig.callback
+            elif callback != sig.callback:
+                raise ValueError(f"Function '{self.name}' declares multiple callback symbols")
+        return callback
 
     def add_signature_docs(self, doc: Documentation) -> None:
         _compose_signature_docs(
@@ -333,6 +355,42 @@ def _extract_decorator_kwargs(decorator: ast.expr) -> dict:
             case _:
                 pass
     return result
+
+
+def _extract_single_string_argument(call: ast.Call, decorator_name: str) -> str | None:
+    if len(call.args) != 1 or call.keywords:
+        raise ValueError(f"{decorator_name} decorator requires a single string argument")
+
+    match call.args[0]:
+        case ast.Constant(value=str() as value):
+            return value
+        case _:
+            raise ValueError(f"{decorator_name} decorator requires a single string argument")
+
+
+def _capitalize_callback_basename(name: str) -> str:
+    if not name:
+        return name
+    return f"{name[0].upper()}{name[1:]}"
+
+
+def _apply_module_callback_defaults(methods: list[Method], metadata: dict) -> None:
+    owner = metadata.get("CallbackOwner", "") or ""
+    prefix = metadata.get("CallbackPrefix", "") or ""
+
+    if prefix and not owner:
+        raise ValueError("module CallbackPrefix requires CallbackOwner")
+
+    if not owner:
+        return
+
+    if not isinstance(owner, str) or not isinstance(prefix, str):
+        raise ValueError("module CallbackOwner and CallbackPrefix must be strings")
+
+    for method in methods:
+        if method.Callback:
+            continue
+        method.Callback = f"{owner}::{prefix}{_capitalize_callback_basename(method.Name)}"
 
 
 def _parse_docstring_for_documentation(docstring: str) -> Documentation:
@@ -539,6 +597,7 @@ def _parse_methods(
     *,
     skip_bound_argument: bool,
     allow_bound_decorators: bool,
+    allow_overload_signatures: bool = False,
 ) -> List[Method]:
     """
     Parse methods from collected class functions, extracting:
@@ -559,7 +618,7 @@ def _parse_methods(
         func.add_signature_docs(doc_obj)
         method_params = []
 
-        signature = func.signature
+        signature = func.parse_signature if allow_overload_signatures else func.signature
         if signature is None:
             continue
 
@@ -575,6 +634,7 @@ def _parse_methods(
             Name=func.name,
             Documentation=doc_obj,
             Parameter=method_params,
+            Callback=func.callback,
             Const=func.const_flag if allow_bound_decorators else False,
             Static=func.static_flag if allow_bound_decorators else False,
             Class=func.class_flag if allow_bound_decorators else False,
@@ -865,8 +925,10 @@ def parse_module_python_code(path: str) -> GenerateModel:
         functions,
         skip_bound_argument=False,
         allow_bound_decorators=False,
+        allow_overload_signatures=True,
     )
     metadata, explicit_export = _extract_module_kwargs(tree)
+    _apply_module_callback_defaults(methods, metadata)
 
     module_name = _get_module_from_path(path)
     export_name = metadata.get("Name", "") or _module_export_name_from_path(path)
@@ -881,6 +943,7 @@ def parse_module_python_code(path: str) -> GenerateModel:
             ModuleName=module_name or "",
             Name=export_name,
             Namespace=namespace,
+            Include=metadata.get("Include", "") or "",
             IsExplicitlyExported=explicit_export,
         )
     )
