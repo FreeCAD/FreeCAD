@@ -119,7 +119,6 @@ public:
     std::list<CVertex> m_vertices;
     void append(const CVertex& vertex);
 
-    void FitArcs(bool retry = false);
     void Discretize();
     Point NearestPoint(const Point& p) const;
     Point NearestPoint(const CCurve& p, double* d = NULL) const;

@@ -69,14 +69,6 @@ void CArea::move(CCurve&& curve)
     m_curves.push_back(std::move(curve));
 }
 
-void CArea::FitArcs()
-{
-    for (std::list<CCurve>::iterator It = m_curves.begin(); It != m_curves.end(); It++) {
-        CCurve& curve = *It;
-        curve.FitArcs();
-    }
-}
-
 Point CArea::NearestPoint(const Point& p) const
 {
     double best_dist = 0.0;
