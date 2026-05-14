@@ -31,6 +31,7 @@
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
@@ -260,11 +261,13 @@ TopoDS_Wire ImpExpDxfRead::BuildWireFromPolyline(std::list<VertexInfo>& vertices
         TopoDS_Edge edge;
 
         if (start_vertex.bulge == 0.0) {
-            edge = BRepBuilderAPI_MakeEdge(
-                       makePoint(start_vertex.location),
-                       makePoint(end_vertex.location)
-            )
-                       .Edge();
+            BRepBuilderAPI_MakeEdge edgeMaker(
+                makePoint(start_vertex.location),
+                makePoint(end_vertex.location)
+            );
+            if (edgeMaker.IsDone()) {
+                edge = edgeMaker.Edge();
+            }
         }
         else {
             double cot = ((1.0 / start_vertex.bulge) - start_vertex.bulge) / 2.0;
@@ -933,7 +936,8 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
     BlockDefinitionCollector blockCollector(
         *this,
         temporaryBlock.GeometryBuilders,
-        temporaryBlock.Inserts
+        temporaryBlock.Inserts,
+        temporaryBlock.FeaturePythonBuilders
     );
     if (!ReadBlockContents()) {
         return false;  // Abort on parsing error
@@ -1262,33 +1266,106 @@ void ImpExpDxfRead::OnReadText(
     const double rotation
 )
 {
+    // Note that our parameters do not contain all the information needed to properly orient the
+    // text. As a result the text will always appear on the XY plane.
     if (shouldSkipEntity() || !m_importAnnotations) {
         return;
     }
 
-    auto* p = static_cast<App::FeaturePython*>(document->addObject("App::FeaturePython", "Text"));
-    if (p) {
-        p->addDynamicProperty("App::PropertyString", "DxfEntityType", "Internal", "DXF entity type");
-        static_cast<App::PropertyString*>(p->getPropertyByName("DxfEntityType"))->setValue("TEXT");
-
-        p->addDynamicProperty("App::PropertyStringList", "Text", "Data", "Text content");
-        // Explicitly create the vector to resolve ambiguity
-        std::vector<std::string> text_values = {text};
-        static_cast<App::PropertyStringList*>(p->getPropertyByName("Text"))->setValues(text_values);
-
-        p->addDynamicProperty("App::PropertyFloat", "DxfTextHeight", "Internal", "Original text height");
-        static_cast<App::PropertyFloat*>(p->getPropertyByName("DxfTextHeight"))->setValue(height);
-
-        p->addDynamicProperty("App::PropertyPlacement", "Placement", "Base", "Object placement");
-        Base::Placement pl;
-        pl.setPosition(point);
-        pl.setRotation(Base::Rotation(Base::Vector3d(0, 0, 1), Base::toRadians(rotation)));
-        static_cast<App::PropertyPlacement*>(p->getPropertyByName("Placement"))->setValue(pl);
-
-        Collector->AddObject(p, "Text");
-    }
+    // Capture by value so the lambda can be stored in a block definition and called later
+    // when an INSERT references that block (with the INSERT's transform applied).
+    auto makeText = [this, rotation, point, text, height](
+                        const Base::Matrix4D& transform
+                    ) -> App::FeaturePython* {
+        PyObject* draftModule = getDraftModule();
+        if (draftModule != nullptr) {
+            Base::Matrix4D localTransform;
+            // rotation from dxf.cpp is in degrees for TEXT entities; convert to radians.
+            localTransform.rotZ(Base::toRadians(rotation));
+            localTransform.move(point);
+            PyObject* placement = new Base::PlacementPy(Base::Placement(transform * localTransform));
+            // Scale the text height by the INSERT's X-axis scale factor (norm of first column).
+            double xScale = Base::Vector3d(transform[0][0], transform[1][0], transform[2][0]).Length();
+            double scaledHeight = height * (xScale > 0.0 ? xScale : 1.0);
+            // Draft.make_text() uses App.activeDocument(), so temporarily activate the
+            // target document to ensure the object is created in the right place.
+            App::Document* prevActive = App::GetApplication().getActiveDocument();
+            if (prevActive != document) {
+                App::GetApplication().setActiveDocument(document);
+            }
+            // NOLINTNEXTLINE(readability/nolint)
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
+            auto builtText = dynamic_cast<App::FeaturePythonPyT<App::DocumentObjectPy>*>(
+                (
+                    Base::PyObjectBase*
+                )PyObject_CallMethod(draftModule, "make_text", "sOif", text.c_str(), placement, 0, scaledHeight)
+            );
+            Py_DECREF(placement);
+            if (prevActive != document) {
+                App::GetApplication().setActiveDocument(prevActive);
+            }
+            if (builtText != nullptr) {
+                auto* result = dynamic_cast<App::FeaturePython*>(builtText->getDocumentObjectPtr());
+                Py_DECREF(builtText);
+                return result;
+            }
+            // Draft.make_text() raised a Python exception; clear it so it does not
+            // propagate unexpectedly into unrelated code.
+            if (PyErr_Occurred()) {
+                PyErr_Print();
+                PyErr_Clear();
+            }
+        }
+        return nullptr;
+    };
+    Collector->AddObject((FeaturePythonBuilder)makeText);
 }
 
+void ImpExpDxfRead::OnReadSolid(
+    const Base::Vector3d& first,
+    const Base::Vector3d& second,
+    const Base::Vector3d& third,
+    const Base::Vector3d& fourth
+)
+{
+    if (shouldSkipEntity()) {
+        return;
+    }
+
+    try {
+        // A DXF SOLID with identical 3rd and 4th vertices is a triangle.
+        bool isTriangle = (third - fourth).Length() < Precision::Confusion();
+
+        // DXF SOLID vertex order is 1-2-4-3, not 1-2-3-4; connecting naively produces a bowtie.
+        BRepBuilderAPI_MakeWire wireBuilder;
+        wireBuilder.Add(BRepBuilderAPI_MakeEdge(makePoint(first), makePoint(second)).Edge());
+        if (isTriangle) {
+            wireBuilder.Add(BRepBuilderAPI_MakeEdge(makePoint(second), makePoint(third)).Edge());
+            wireBuilder.Add(BRepBuilderAPI_MakeEdge(makePoint(third), makePoint(first)).Edge());
+        }
+        else {
+            wireBuilder.Add(BRepBuilderAPI_MakeEdge(makePoint(second), makePoint(fourth)).Edge());
+            wireBuilder.Add(BRepBuilderAPI_MakeEdge(makePoint(fourth), makePoint(third)).Edge());
+            wireBuilder.Add(BRepBuilderAPI_MakeEdge(makePoint(third), makePoint(first)).Edge());
+        }
+
+        if (!wireBuilder.IsDone()) {
+            Base::Console().warning("ImpExpDxf - failed to create SOLID wire\n");
+            return;
+        }
+
+        BRepBuilderAPI_MakeFace faceBuilder(wireBuilder.Wire());
+        if (!faceBuilder.IsDone()) {
+            Base::Console().warning("ImpExpDxf - failed to create SOLID face\n");
+            return;
+        }
+
+        Collector->AddObject(faceBuilder.Face(), "Solid");
+    }
+    catch (const Standard_Failure&) {
+        Base::Console().warning("ImpExpDxf - failed to create SOLID face\n");
+    }
+}
 
 void ImpExpDxfRead::OnReadInsert(
     const Base::Vector3d& point,
@@ -1646,7 +1723,9 @@ void ImpExpDxfRead::DrawingEntityCollector::AddObject(FeaturePythonBuilder shape
     Reader.IncrementCreatedObjectCount();
     App::FeaturePython* shape = shapeBuilder(Reader.OCSOrientationTransform);
     if (shape != nullptr) {
+        Reader.MoveToLayer(shape);
         Reader._addOriginalLayerProperty(shape);
+        Reader.ApplyGuiStyles(shape);
     }
 }
 
