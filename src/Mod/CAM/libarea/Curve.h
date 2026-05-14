@@ -115,7 +115,7 @@ public:
     double GetArea() const;
     bool IsClockwise() const
     {
-        return GetArea() > 0;
+        return GetArea() < 0;
     }
     bool IsClosed() const;
     void ChangeStart(const Point& p);

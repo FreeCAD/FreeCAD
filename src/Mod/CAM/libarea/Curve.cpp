@@ -796,14 +796,14 @@ double Span::GetArea() const
     if (m_v.m_type) {
         double angle = IncludedAngle();
         double radius = m_p.dist(m_v.m_c);
-        return (
+        return -(
             0.5
             * ((m_v.m_c.x - m_p.x) * (m_v.m_c.y + m_p.y)
                - (m_v.m_c.x - m_v.m_p.x) * (m_v.m_c.y + m_v.m_p.y) - angle * radius * radius)
         );
     }
 
-    return 0.5 * (m_v.m_p.x - m_p.x) * (m_p.y + m_v.m_p.y);
+    return -0.5 * (m_v.m_p.x - m_p.x) * (m_p.y + m_v.m_p.y);
 }
 
 double Span::Parameter(const Point& p) const
