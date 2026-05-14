@@ -57,12 +57,8 @@ static void AddVertex(
             const int64_t z = arcMap.z_next++;
             PointD p(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z);
             arcMap.point_map[z] = vertex.m_p;
-            std::cerr << "point_map[" << z << "] = (" << vertex.m_p.x << ", " << vertex.m_p.y << ")"
-                      << std::endl;
             pts_for_AddVertex.push_back(p);
             arcMap.z_prev = z;
-            std::cerr << "AddVertex: Line/First z=" << z << " at (" << vertex.m_p.x << ", "
-                      << vertex.m_p.y << ")" << std::endl;
         }
     }
     else {
@@ -92,19 +88,11 @@ static void AddVertex(
             const double dphi = (phi1 - phi0) / num_segments;
 
             const int64_t z_start = arcMap.z_next;
-            std::cerr << "AddVertex: Arc z=" << z_start << ".." << (z_start + num_segments - 1)
-                      << " (" << num_segments << " segments), endpoint=(" << vertex.m_p.x << ", "
-                      << vertex.m_p.y << "), center=(" << vertex.m_c.x << ", " << vertex.m_c.y
-                      << ")" << std::endl;
-
             for (int i = 1; i <= num_segments; i++) {
                 if (i == num_segments) {
                     if (zLoop.has_value()) {
                         // since zLoop represents the curve start, its z value will be smaller
                         arcMap.arc_centers[{*zLoop, arcMap.z_prev}] = vertex.m_c;
-                        std::cerr << "arc_centers[(" << *zLoop << ", " << arcMap.z_prev << ")] = ("
-                                  << vertex.m_c.x << ", " << vertex.m_c.y
-                                  << ") [closing arc back to start]" << std::endl;
                     }
                     else {
                         const int64_t z = arcMap.z_next++;
@@ -112,8 +100,6 @@ static void AddVertex(
                             PointD(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z)
                         );
                         arcMap.point_map[z] = vertex.m_p;
-                        std::cerr << "point_map[" << z << "] = (" << vertex.m_p.x << ", "
-                                  << vertex.m_p.y << ") [arc endpoint]" << std::endl;
                         arcMap.arc_centers[{arcMap.z_prev, z}] = vertex.m_c;
                         arcMap.z_prev = z;
                     }
@@ -125,8 +111,6 @@ static void AddVertex(
                     pts_for_AddVertex.push_back(PointD(px * CArea::m_units, py * CArea::m_units, z));
                     // Store arc center in point_map for intermediate points
                     arcMap.point_map[z] = vertex.m_c;
-                    std::cerr << "point_map[" << z << "] = (" << vertex.m_c.x << ", "
-                              << vertex.m_c.y << ") [arc center]" << std::endl;
                     arcMap.arc_centers[{arcMap.z_prev, z}] = vertex.m_c;
                     arcMap.z_prev = z;
                 }
@@ -278,7 +262,6 @@ static void MakePoly(const CCurve& curve, Path64& p, bool reverse, ArcFittingMap
         AddVertex(vertex, prev_vertex, arcMap, zLoop);
         prev_vertex = &vertex;
     }
-    std::cerr << std::endl;
 
     p.resize(pts_for_AddVertex.size());
     if (reverse) {
@@ -330,8 +313,6 @@ static void SetFromResult(
     const ArcFittingMap& arcMap
 )
 {
-    std::cerr << "\n=== SetFromResult: Path with " << path.size() << " points ===" << std::endl;
-
     if (CArea::m_clipper_clean_distance >= heeks::Point::tolerance) {
         path = SimplifyPath(path, CArea::m_clipper_clean_distance, is_closed);
     }
@@ -376,11 +357,6 @@ static void SetFromResult(
             || ((prevZ != pt.z) && (centerIt == arcMap.arc_centers.end()));
 
         if (isLine) {
-            std::cerr << std::endl;  // Extra newline before adding new vertex
-            std::cerr << "  [" << dj << "] j=" << j << " (" << p.x << ", " << p.y << ", " << pt.z
-                      << ") ";
-            std::cerr << "Edge (" << prevZ << ", " << pt.z << "): LINE";
-            std::cerr << std::endl;
 
             curve.m_vertices.emplace_back(0, p, heeks::Point {0, 0});
             phi_total = 0.0;
@@ -444,7 +420,6 @@ static void SetFromResult(
                         // or phi0 > phi1 > phi_next (type -1)
                         // always: type * phi0 < type * phi1 < type * phi_next
                         if (type * phi_boundary - angle_error < type * phi0) {
-                            std::cerr << "  [ACTION POINT_EXP: SUBSUME]" << std::endl;
                             // Subsume this point expansion with the subsequent arc
                             if (nextGenerated) {
                                 // Update its start location to prevP
@@ -453,7 +428,6 @@ static void SetFromResult(
                             continue;
                         }
                         else if (type * phi_boundary + angle_error < type * phi1) {
-                            std::cerr << "  [ACTION POINT_EXP: REPLACE PART]" << std::endl;
                             // Replace part of this point expansion with the next arc
                             p.x = arc_center.x + arc_radius * cos(phi_boundary);
                             p.y = arc_center.y + arc_radius * sin(phi_boundary);
@@ -463,19 +437,8 @@ static void SetFromResult(
                             }
                         }
                         else {
-                            std::cerr
-                                << "  [ACTION POINT_EXP: NO ACTION] phi_boundary=" << phi_boundary
-                                << " phi0=" << phi0 << " phi1=" << phi1
-                                << " angle_error=" << angle_error
-                                << " (type*phi_boundary-err)=" << (type * phi_boundary - angle_error)
-                                << " (type*phi0)=" << (type * phi0)
-                                << " (type*phi_boundary+err)=" << (type * phi_boundary + angle_error)
-                                << " (type*phi1)=" << (type * phi1) << std::endl;
                             // No action required; full point expansion is correct
                         }
-                    }
-                    else {
-                        std::cerr << "  [ACTION POINT_EXP: TYPES DIFFER]" << std::endl;
                     }
                 }
             }
@@ -508,7 +471,6 @@ static void SetFromResult(
                         // or phi0 > phi1 > phi_next (type -1)
                         // always: type * phi0 < type * phi1 < type * phi_next
                         if (type * phi_boundary + angle_error > phi_next) {
-                            std::cerr << "  [ACTION ARC: SUBSUME]" << std::endl;
                             // Subsume the subsequent point expansion with this arc
                             p = p_next;
                             if (nextGenerated) {
@@ -522,7 +484,6 @@ static void SetFromResult(
                             }
                         }
                         else if (type * phi_boundary - angle_error > phi1) {
-                            std::cerr << "  [ACTION ARC: REPLACE PART]" << std::endl;
                             // Replace part of the subsequent point expansion with this arc
                             p.x = center.x + radius * cos(phi_boundary);
                             p.y = center.y + radius * sin(phi_boundary);
@@ -532,19 +493,8 @@ static void SetFromResult(
                             }
                         }
                         else {
-                            std::cerr
-                                << "  [ACTION ARC: NO ACTION] phi_boundary=" << phi_boundary
-                                << " phi1=" << phi1 << " phi_next=" << phi_next
-                                << " angle_error=" << angle_error
-                                << " (type*phi_boundary+err)=" << (type * phi_boundary + angle_error)
-                                << " (type*phi_next)=" << (type * phi_next)
-                                << " (type*phi_boundary-err)=" << (type * phi_boundary - angle_error)
-                                << " (type*phi1)=" << (type * phi1) << std::endl;
                             // No action required; full point expansion is correct
                         }
-                    }
-                    else {
-                        std::cerr << "  [ACTION ARC: TYPES DIFFER]" << std::endl;
                     }
                 }
             }
@@ -552,34 +502,11 @@ static void SetFromResult(
             if (curve.m_vertices.size() > 0 && curve.m_vertices.back().m_type == type
                 && curve.m_vertices.back().m_c == center && phi_total + abs(dphi) <= max_arc_length) {
                 // Extend the previous CVertex arc
-                std::cerr << "  [" << dj << "] j=" << j << " (" << p.x << ", " << p.y << ", "
-                          << pt.z << ") ";
-                std::cerr << "Edge (" << prevZ << ", " << pt.z << "): ARC";
-                if (prevZ == pt.z) {
-                    std::cerr << " (prevZ==pt.z), center from point_map=(" << center.x << ", "
-                              << center.y << ")";
-                }
-                else {
-                    std::cerr << ", center from arc_centers=(" << center.x << ", " << center.y << ")";
-                }
-                std::cerr << " -> EXTEND" << std::endl;
                 curve.m_vertices.back().m_p = p;
                 phi_total += abs(dphi);
             }
             else {
                 // Add a new CVertex for the arc
-                std::cerr << std::endl;  // Extra newline before adding new vertex
-                std::cerr << "  [" << dj << "] j=" << j << " (" << p.x << ", " << p.y << ", "
-                          << pt.z << ") ";
-                std::cerr << "Edge (" << prevZ << ", " << pt.z << "): ARC";
-                if (prevZ == pt.z) {
-                    std::cerr << " (prevZ==pt.z), center from point_map=(" << center.x << ", "
-                              << center.y << ")";
-                }
-                else {
-                    std::cerr << ", center from arc_centers=(" << center.x << ", " << center.y << ")";
-                }
-                std::cerr << " -> NEW" << std::endl;
                 curve.m_vertices.emplace_back(type, p, center);
                 phi_total = abs(dphi);
             }
@@ -639,9 +566,6 @@ static void SetFromResult(
             if (abs(dphi_last) + abs(dphi_first) < max_arc_length) {
                 curve.m_vertices.pop_back();
                 curve.m_vertices.front().m_p = p_prev;
-
-                std::cerr << "Merged final arc with second arc: moved start to (" << p_prev.x
-                          << ", " << p_prev.y << ")" << std::endl;
             }
         }
     }
