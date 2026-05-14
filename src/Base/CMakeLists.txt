@@ -109,6 +109,7 @@ generate_from_py(Axis)
 generate_from_py(Unit)
 generate_from_py(Quantity)
 generate_from_py(Precision)
+generate_module_from_py(FreeCAD.Qt Qt)
 generate_module_from_py(FreeCAD.Console Console)
 generate_module_from_py(FreeCAD.Units Units)
 generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
@@ -142,6 +143,7 @@ SET(FreeCADBase_Pyi_SRCS
     Type.pyi
     Unit.pyi
     Precision.pyi
+    FreeCAD.Qt.module.pyi
     FreeCAD.Console.module.pyi
     FreeCAD.Units.module.pyi
 )
@@ -229,6 +231,7 @@ SET(FreeCADBase_CPP_SRCS
     Tools2D.cpp
     Tools3D.cpp
     Translation.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/QtModulePyImp.cpp
     Translate.cpp
     Type.cpp
     TypePyImp.cpp
