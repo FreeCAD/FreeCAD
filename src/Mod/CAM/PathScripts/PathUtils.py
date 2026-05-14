@@ -401,7 +401,6 @@ def getOffsetArea(
     areaParams["OpenMode"] = 0
     areaParams["MaxArcPoints"] = 400  # 400
     areaParams["Project"] = True
-    areaParams["FitArcs"] = False  # Can be buggy & expensive
     areaParams["Deflection"] = tolerance
     areaParams["Accuracy"] = tolerance
     areaParams["Tolerance"] = 1e-5  # Equal point tolerance

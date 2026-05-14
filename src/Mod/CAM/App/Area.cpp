@@ -147,7 +147,6 @@ CAreaConfig::CAreaConfig(const CAreaParams& p, bool noFitArcs)
 
     PARAM_FOREACH(AREA_CONF_SAVE_AND_APPLY, AREA_PARAMS_CAREA);
 
-    // Arc fitting is lossy. We shall reduce the number of unnecessary fit
     if (noFitArcs) {
         CArea::set_fit_arcs(false);
     }
@@ -693,6 +692,7 @@ std::shared_ptr<Area> Area::getClearedArea(
     Base::BoundBox3d bbox
 )
 {
+    // TODO reconsider these values in light of the new arc fitting process
     // Precision losses in arc/segment conversions (multiples of Accuracy):
     // 2.3 in generation of gcode (see documentation in the implementation of CCurve::CheckForArc
     // (libarea/Curve.cpp) 1 in gcode arc to segment 1 in Thicken() cleared area 2 in getRestArea
@@ -704,10 +704,7 @@ std::shared_ptr<Area> Area::getClearedArea(
     params.SubjectFill = Clipper2Lib::FillRule::NonZero;
     params.ClipFill = Clipper2Lib::FillRule::NonZero;
 
-    // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all
-    // off those arcs will be converted back to segments again for clipper differencing in
-    // getRestArea anyway
-    CAreaConfig conf(params, /*no_fit_arcs*/ true);
+    CAreaConfig conf(params);
 
     ClearedAreaSegmentVisitor visitor(zmax, diameter / 2 + buffer, bbox);
     PathSegmentWalker walker(*path);
@@ -1695,7 +1692,6 @@ int Area::project(
     area.myParams.Offset = 0.0;
     area.myParams.PocketMode = 0;
     area.myParams.Explode = false;
-    area.myParams.FitArcs = false;
     area.myParams.Reorient = false;
     area.myParams.Outline = true;
     area.myParams.Fill = TopExp_Explorer(shape_in, TopAbs_FACE).More() ? FillFace : FillNone;
@@ -2211,15 +2207,6 @@ TopoDS_Shape Area::toShape(CArea& area, short fill, int reorient)
             break;
         default:
             bFill = false;
-    }
-    if (myParams.FitArcs) {
-        if (&area == myArea.get()) {
-            CArea copy(area);
-            copy.m_reversed = true;
-            copy.FitArcs();
-            return toShape(copy, bFill, &trsf, reorient);
-        }
-        area.FitArcs();
     }
     return toShape(area, bFill, &trsf, reorient);
 }
