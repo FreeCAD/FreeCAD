@@ -2303,12 +2303,8 @@ TopoDS_Shape Area::getShape(int index)
     TopoDS_Compound compound;
     builder.MakeCompound(compound);
 
-    short fill = myParams.Thicken ? FillFace : FillNone;
     for (shared_ptr<CArea> area : areas) {
-        if (myParams.Thicken) {
-            area->Thicken(myParams.ToolRadius);
-        }
-        const TopoDS_Shape& shape = toShape(*area, fill);
+        const TopoDS_Shape& shape = toShape(*area, FillNone);
         if (shape.IsNull()) {
             continue;
         }
@@ -2337,26 +2333,15 @@ TopoDS_Shape Area::makeOffset(
     std::list<shared_ptr<CArea>> areas;
     makeOffset(areas, PARAM_FIELDS(PARAM_FARG, AREA_PARAMS_OFFSET), from_center);
     if (areas.empty()) {
-        if (myParams.Thicken && myParams.ToolRadius > Precision::Confusion()) {
-            CArea area(*myArea);  // TODO inherits from myArea
-            area.Thicken(myParams.ToolRadius);
-            return toShape(area, FillFace, reorient);
-        }
         return TopoDS_Shape();
     }
     BRep_Builder builder;
     TopoDS_Compound compound;
     builder.MakeCompound(compound);
 
-    bool thicken = myParams.Thicken && myParams.ToolRadius > Precision::Confusion();
-
     for (shared_ptr<CArea> area : areas) {
         short fill;
-        if (thicken) {
-            area->Thicken(myParams.ToolRadius);
-            fill = FillFace;
-        }
-        else if (areas.size() == 1) {
+        if (areas.size() == 1) {
             fill = myParams.Fill;
         }
         else {
@@ -2703,13 +2688,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
         in.MakePocketToolpath(out.m_curves, params);
     }
 
-    if (myParams.Thicken) {
-        out.Thicken(tool_radius);
-        return toShape(out, FillFace);
-    }
-    else {
-        return toShape(out, FillNone);
-    }
+    return toShape(out, FillNone);
 }
 
 static inline bool IsLeft(const gp_Pnt& a, const gp_Pnt& b, const gp_Pnt& c)
