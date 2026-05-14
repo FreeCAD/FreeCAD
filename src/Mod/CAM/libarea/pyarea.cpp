@@ -289,8 +289,7 @@ void init_pyarea(py::module& m)
         .def("Break", &CCurve::Break)
         .def("Perim", &CCurve::Perim)
         .def("PerimToPoint", &CCurve::PerimToPoint)
-        .def("PointToPerim", &CCurve::PointToPerim)
-        .def("FitArcs", &CCurve::FitArcs);
+        .def("PointToPerim", &CCurve::PointToPerim);
 
     py::class_<CBox2D>(m, "Box")
         .def(py::init<CBox2D>())
@@ -310,7 +309,6 @@ void init_pyarea(py::module& m)
         .def("Union", &CArea::Union)
         .def("Offset", &CArea::Offset)
         .def("OffsetWithClipper", [](CArea& self, double offset) { self.OffsetWithClipper(offset); })
-        .def("FitArcs", &CArea::FitArcs)
         .def("text", &print_area)
         .def("num_curves", &CArea::num_curves)
         .def("NearestPoint", &CArea::NearestPoint)

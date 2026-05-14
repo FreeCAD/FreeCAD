@@ -120,7 +120,6 @@ public:
     );
     void ClipperNoop();  // converts to clipper and back (arc fiting) without performing clipper ops
     void Thicken(double value);
-    void FitArcs();
     unsigned int num_curves()
     {
         return static_cast<int>(m_curves.size());
