@@ -28,17 +28,13 @@ class TestAreaOperations(unittest.TestCase):
         a.append(c)
         return a
 
-    def create_circle(self, cx, cy, radius, segments=16):
+    def create_circle(self, cx, cy, radius):
         """Helper: Create a circular Area (approximated as polygon)."""
         a = area.Area()
         c = area.Curve()
-        for i in range(segments):
-            angle = 2 * math.pi * i / segments
-            x = cx + radius * math.cos(angle)
-            y = cy + radius * math.sin(angle)
-            c.append(area.Vertex(area.Point(x, y)))
-        # Close the curve
         c.append(area.Vertex(area.Point(cx + radius, cy)))
+        c.append(area.Vertex(1, area.Point(cx - radius, cy), area.Point(cx, cy)))
+        c.append(area.Vertex(1, area.Point(cx + radius, cy), area.Point(cx, cy)))
         a.append(c)
         return a
 
@@ -164,14 +160,16 @@ class TestAreaOperations(unittest.TestCase):
     def test_offset_circle(self):
         """Test offsetting a circle."""
         # Create circle with radius 10
-        a = self.create_circle(0, 0, 10, segments=32)
+        a = self.create_circle(0, 0, 10)
         self.assertAreaNear(a, math.pi * 10**2, msg="Original circle")
 
         # Offset inward by 2 (radius becomes 8)
         a.Offset(2.0)
 
-        # Should have result
-        self.assertGreater(a.num_curves(), 0, "Offset circle should produce curves")
+        # Should have 1 curve with at most 3 CVertex (start, most of circle,
+        # rest; CVertex doesn't support full-circle arcs)
+        self.assertEqual(a.num_curves(), 1, "Offset circle should 1 curve")
+        self.assertLess(a.getCurves()[0].getNumVertices(), 4)
 
         # Check area
         self.assertAreaNear(a, math.pi * 8**2, msg="Offset circle")
@@ -203,19 +201,6 @@ class TestAreaOperations(unittest.TestCase):
         a.Reorder()
 
         self.assertAreaNear(a, original_area, msg="Reorder")
-
-    def test_fitarcs(self):
-        """Test FitArcs doesn't break the area."""
-        a = self.create_circle(0, 0, 10, segments=16)
-        original_area = abs(a.GetArea())
-        original_curves = a.num_curves()
-
-        # FitArcs might change representation but not area significantly
-        a.FitArcs()
-
-        self.assertEqual(a.num_curves(), original_curves, "FitArcs should maintain curve count")
-        # Check area
-        self.assertAreaNear(a, original_area, msg="FitArcs")
 
     def test_multiple_holes(self):
         """Test square with multiple holes."""

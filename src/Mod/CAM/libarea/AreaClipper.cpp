@@ -153,110 +153,6 @@ static void MakeLoop(
     CArea::m_units = save_units;
 }
 
-static void OffsetWithLoops(
-    const Paths64& pp,
-    Paths64& pp_new,
-    double inwards_value,
-    ArcFittingMap& arcMap,
-    const ZCallback64& zcallback
-)
-{
-    Clipper64 c;
-    c.SetZCallback(zcallback);
-
-    bool inwards = (inwards_value > 0);
-    bool reverse = false;
-    double radius = -fabs(inwards_value);
-
-    if (inwards) {
-        // add a large square on the outside, to be removed later
-        Path64 p;
-        p.push_back(ToPoint64(PointD(-10000.0, -10000.0)));
-        p.push_back(ToPoint64(PointD(-10000.0, 10000.0)));
-        p.push_back(ToPoint64(PointD(10000.0, 10000.0)));
-        p.push_back(ToPoint64(PointD(10000.0, -10000.0)));
-
-        c.AddSubject({p});
-    }
-    else {
-        reverse = true;
-    }
-
-    for (unsigned int i = 0; i < pp.size(); i++) {
-        const Path64& p = pp[i];
-
-        pts_for_AddVertex.clear();
-
-        if (p.size() > 2) {
-            if (reverse) {
-                for (std::size_t j = p.size() - 1; j > 1; j--) {
-                    MakeLoop(ToPointD(p[j]), ToPointD(p[j - 1]), ToPointD(p[j - 2]), radius, arcMap);
-                }
-                MakeLoop(ToPointD(p[1]), ToPointD(p[0]), ToPointD(p[p.size() - 1]), radius, arcMap);
-                MakeLoop(
-                    ToPointD(p[0]),
-                    ToPointD(p[p.size() - 1]),
-                    ToPointD(p[p.size() - 2]),
-                    radius,
-                    arcMap
-                );
-            }
-            else {
-                MakeLoop(
-                    ToPointD(p[p.size() - 2]),
-                    ToPointD(p[p.size() - 1]),
-                    ToPointD(p[0]),
-                    radius,
-                    arcMap
-                );
-                MakeLoop(ToPointD(p[p.size() - 1]), ToPointD(p[0]), ToPointD(p[1]), radius, arcMap);
-                for (std::size_t j = 2; j < p.size(); j++) {
-                    MakeLoop(ToPointD(p[j - 2]), ToPointD(p[j - 1]), ToPointD(p[j]), radius, arcMap);
-                }
-            }
-
-            Path64 loopy_polygon;
-            loopy_polygon.reserve(pts_for_AddVertex.size());
-            for (std::list<PointD>::iterator It = pts_for_AddVertex.begin();
-                 It != pts_for_AddVertex.end();
-                 It++) {
-                loopy_polygon.push_back(ToPoint64(*It));
-            }
-
-            c.AddSubject({loopy_polygon});
-            pts_for_AddVertex.clear();
-        }
-    }
-
-    Paths64 solution;
-    c.Execute(ClipType::Union, FillRule::NonZero, solution);
-
-    pp_new = solution;
-
-    if (inwards) {
-        // remove the large square
-        if (pp_new.size() > 0) {
-            pp_new.erase(pp_new.begin());
-        }
-    }
-    else {
-        // reverse all the resulting polygons
-        Paths64 copy = pp_new;
-        pp_new.clear();
-        pp_new.resize(copy.size());
-        for (unsigned int i = 0; i < copy.size(); i++) {
-            const Path64& p = copy[i];
-            Path64 p_new;
-            p_new.resize(p.size());
-            std::size_t size_minus_one = p.size() - 1;
-            for (std::size_t j = 0; j < p.size(); j++) {
-                p_new[j] = p[size_minus_one - j];
-            }
-            pp_new[i] = p_new;
-        }
-    }
-}
-
 static void MakeObround(const heeks::Point& pt0, const CVertex& vt1, double radius, ArcFittingMap& arcMap)
 {
     Span span(pt0, vt1);
@@ -717,11 +613,13 @@ void CArea::Xor(const CArea& a2)
 
 void CArea::Offset(double inwards_value)
 {
-    Paths64 pp, pp2;
-    MakePolyPoly(*this, pp, false, m_arc_fitting_map);
-    OffsetWithLoops(pp, pp2, inwards_value * m_units, m_arc_fitting_map, MakeZCallback());
-    SetFromResult(*this, pp2, false, true, true);
-    this->Reorder();
+    // Set up m_reversed to mirror old behavior of OffsetWithLoops
+    const bool save_reverse = m_reversed;
+    m_reversed = inwards_value <= 0;
+
+    OffsetWithClipper(-inwards_value);
+
+    m_reversed = save_reverse;
 }
 
 void CArea::PopulateClipper(Clipper64& c, bool as_clip, ArcFittingMap& arcMap) const
@@ -862,7 +760,7 @@ void CArea::OffsetWithClipper(
     Paths64 pp2;
     clipper.Execute(offset, pp2);
 
-    SetFromResult(*this, pp2, false, true, true);
+    SetFromResult(*this, pp2, m_reversed, true, true);
     this->Reorder();
 }
 
