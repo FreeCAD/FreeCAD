@@ -16,12 +16,19 @@ from utils import (
 DEFAULT_LINE_LENGTH_LIMIT = 100
 
 
-def load_cpplint_filters(conf_file="cpplint.cfg"):
-    """Load cpplint filters from a configuration file."""
+def load_cpplint_filters(conf_file=None):
+    """Load cpplint filters from a configuration file.
+
+    The config file lists one filter per line. Lines are stripped, blanks are
+    dropped, and any trailing commas are removed before joining everything into
+    a single comma-separated string suitable for cpplint's --filters= flag.
+    """
+    if conf_file is None:
+        conf_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cpplint.cfg")
     try:
         with open(conf_file, "r", encoding="utf-8") as f:
-            filters = f.read().strip()
-            return filters
+            entries = [line.strip().rstrip(",") for line in f]
+        return ",".join(entry for entry in entries if entry)
     except Exception as e:
         logging.warning(f"Could not load {conf_file}: {e}")
         return ""
@@ -65,17 +72,15 @@ def main():
 
     run_command(["pip", "install", "-q", "cpplint"], check=True)
 
-    cpplint_filters = load_cpplint_filters("cpplint.cfg")
+    cpplint_filters = load_cpplint_filters()
+
+    base_cmd = ["cpplint", f"--linelength={DEFAULT_LINE_LENGTH_LIMIT}"]
+    if cpplint_filters:
+        base_cmd.insert(1, f"--filters={cpplint_filters}")
 
     aggregated_output = ""
     for file in args.files:
-        cmd = [
-            "cpplint",
-            f"--filters={cpplint_filters}",
-            f"--linelength={DEFAULT_LINE_LENGTH_LIMIT}",
-            file,
-        ]
-        stdout, stderr, _ = run_command(cmd)
+        stdout, stderr, _ = run_command(base_cmd + [file])
         aggregated_output += stdout + stderr + "\n"
 
     cpplint_log = os.path.join(args.log_dir, "cpplint.log")
