@@ -33,8 +33,6 @@ set(AREA_SRC_COMMON
     kurve/Construction.cpp
     kurve/Finite.cpp
     kurve/kurve.cpp
-    kurve/Matrix.cpp
-    kurve/offset.cpp
 )
 
 set(AREA_SRC_CLIPPER
