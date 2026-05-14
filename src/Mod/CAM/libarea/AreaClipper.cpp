@@ -20,6 +20,8 @@ bool CArea::HolesLinked()
 
 double CArea::m_clipper_scale = 10000.0;
 
+static const int min_arc_points = 4;
+
 // Convert between PointD (double) and Point64 (int64) with scaling
 static Point64 ToPoint64(const PointD& p)
 {
@@ -83,8 +85,7 @@ static void AddVertex(
             const double max_dphi = 2 * acos((radius - CArea::m_accuracy) / radius);
 
             // determine the number of segments
-            const int num_segments
-                = max(CArea::m_min_arc_points, (int)ceil(abs(phi1 - phi0) / max_dphi));
+            const int num_segments = max(min_arc_points, (int)ceil(abs(phi1 - phi0) / max_dphi));
             const double dphi = (phi1 - phi0) / num_segments;
 
             const int64_t z_start = arcMap.z_next;
@@ -708,12 +709,7 @@ void CArea::OffsetWithClipper(
     if (arcTolerance == 0.0) {
         // Clipper arc tolerance definition: https://goo.gl/4odfQh
         double dphi = acos(1.0 - m_accuracy * m_clipper_scale / fabs(offset));
-        int Segments = (int)ceil(M_PI / dphi);
-        if (Segments < 2 * CArea::m_min_arc_points) {
-            Segments = 2 * CArea::m_min_arc_points;
-        }
-        // if (Segments > CArea::m_max_arc_points)
-        //     Segments=CArea::m_max_arc_points;
+        int Segments = max(2 * min_arc_points, (int)ceil(M_PI / dphi));
         dphi = M_PI / Segments;
         arcTolerance = (1.0 - cos(dphi)) * fabs(offset);
     }

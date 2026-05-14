@@ -399,7 +399,6 @@ def getOffsetArea(
     areaParams["SectionCount"] = 1  # -1 = full(all per depthparams??) sections
     areaParams["Reorient"] = True
     areaParams["OpenMode"] = 0
-    areaParams["MaxArcPoints"] = 400  # 400
     areaParams["Project"] = True
     areaParams["Deflection"] = tolerance
     areaParams["Accuracy"] = tolerance
