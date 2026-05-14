@@ -2390,44 +2390,15 @@ TopoDS_Shape Area::makeOffset(
 std::shared_ptr<CArea> Area::performSingleOffset(double offset)
 {
     auto area = make_shared<CArea>();
-    CAreaReversed areaOpen;
-
-#ifdef AREA_OFFSET_ALGO
-    switch (myParams.Algo) {
-        case Area::Algolibarea:
-            // Separate closed and open curves for libarea
-            for (const CCurve& c : myArea->m_curves) {
-                if (c.IsClosed()) {
-                    area->append(c);
-                }
-                else {
-                    areaOpen.append(c);
-                }
-            }
-            // libarea somehow fails offset without Reorder, but ClipperOffset
-            // works okay. Don't know why
-            area->Reorder();
-            area->Offset(-offset);
-            if (areaOpen.m_curves.size()) {
-                areaOpen.Thicken(offset);
-                area->Clip(Clipper2Lib::ClipType::Union, areaOpen, myParams.SubjectFill, myParams.ClipFill);
-            }
-            break;
-        case Area::AlgoClipperOffset:
-#endif
-            *area = *myArea;
-            area->m_reversed = false;
-            area->OffsetWithClipper(
-                offset,
-                myParams.JoinType,
-                myParams.EndType,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
-#ifdef AREA_OFFSET_ALGO
-            break;
-    }
-#endif
+    *area = *myArea;
+    area->m_reversed = false;
+    area->OffsetWithClipper(
+        offset,
+        myParams.JoinType,
+        myParams.EndType,
+        myParams.MiterLimit,
+        myParams.RoundPrecision
+    );
 
     return area;
 }

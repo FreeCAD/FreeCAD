@@ -23,9 +23,6 @@
 
 #pragma once
 
-// define this to enable offset algo selection
-// #define AREA_OFFSET_ALGO
-
 /** \file
  * Parameters definition for Path::Area and its companion
  * See \ref ParamPage "here" for details of parameter definition.
@@ -263,17 +260,9 @@
          "will be created. A small offset is usually required to avoid the tangential cut.",       \
          App::PropertyPrecision))AREA_PARAMS_SECTION_EXTRA
 
-#ifdef AREA_OFFSET_ALGO
-# define AREA_PARAMS_OFFSET_ALGO \
-     ((enum, algo, Algo, 0, "Offset algorithm type", (Clipper)(libarea)))
-#else
-# define AREA_PARAMS_OFFSET_ALGO
-#endif
-
 /** Offset configuration parameters */
 #define AREA_PARAMS_OFFSET_CONF \
-    AREA_PARAMS_OFFSET_ALGO( \
-        (enum2, \
+    ((enum2, \
          join_type, \
          JoinType, \
          Clipper2Lib::JoinType::Round, \
