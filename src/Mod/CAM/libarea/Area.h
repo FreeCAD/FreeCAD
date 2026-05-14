@@ -142,8 +142,6 @@ public:
     CAREA_PARAM_DECLARE(bool, clipper_simple)
     CAREA_PARAM_DECLARE(double, clipper_clean_distance)
     CAREA_PARAM_DECLARE(double, accuracy)
-    CAREA_PARAM_DECLARE(short, min_arc_points)
-    CAREA_PARAM_DECLARE(short, max_arc_points)
     CAREA_PARAM_DECLARE(double, clipper_scale)
 
     void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip, ArcFittingMap& arcMap) const;
