@@ -160,7 +160,6 @@ def rotate_curve_in_area(a, curve_i, start_i):
         New Area object with the specified curve rotated
     """
     result = area.Area()
-    result.reversed = a.reversed
 
     for i, c in enumerate(a.getCurves()):
         if i == curve_i:
@@ -212,7 +211,6 @@ def canonicalize_area(a):
 
     # Create new area with sorted curves
     result = area.Area()
-    result.reversed = a.reversed
     for c in canonicalized_curves:
         result.append(c)
 
