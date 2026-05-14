@@ -25,7 +25,6 @@ include_directories(${pybind11_INCLUDE_DIR})
 set(AREA_SRC_COMMON
     Arc.cpp
     Area.cpp
-    AreaDxf.cpp
     AreaOrderer.cpp
     AreaPocket.cpp
     Circle.cpp

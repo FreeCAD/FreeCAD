@@ -12,7 +12,6 @@
 
 #include "Area.h"
 #include "Point.h"
-#include "AreaDxf.h"
 #include "Adaptive.hpp"
 
 #include <pybind11/pybind11.h>
@@ -119,14 +118,6 @@ static CArea copy_area(const CArea& area)
 static bool holes_linked()
 {
     return CArea::HolesLinked();
-}
-
-static CArea AreaFromDxf(const char* filepath)
-{
-    CAreaReversed area;
-    AreaDxfRead dxf(&area, filepath);
-    dxf.DoRead();
-    return area;
 }
 
 static void append_point(CCurve& c, const Point& p)
@@ -335,7 +326,6 @@ void init_pyarea(py::module& m)
     m.def("get_accuracy", get_accuracy);
     m.def("copy_area", copy_area);
     m.def("holes_linked", holes_linked);
-    m.def("AreaFromDxf", AreaFromDxf);
 
     using namespace AdaptivePath;
     py::enum_<MotionType>(m, "AdaptiveMotionType")
