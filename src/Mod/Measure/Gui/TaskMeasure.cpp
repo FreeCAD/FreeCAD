@@ -105,7 +105,9 @@ QString unitExpressionFromLabel(QString unitLabel)
 
 Base::Quantity targetUnitFromLabel(const QString& unitLabel)
 {
-    return Base::Quantity::parse((QLatin1String("1 ") + unitExpressionFromLabel(unitLabel)).toStdString());
+    return Base::Quantity::parse(
+        (QLatin1String("1 ") + unitExpressionFromLabel(unitLabel)).toStdString()
+    );
 }
 
 QString formatValueWithPreferredPrecision(double value)
@@ -515,21 +517,22 @@ void TaskMeasure::updateResultWithUnit()
             const Base::Vector3d value = vectorDistanceProp->getValue();
             QString formattedResult;
             QTextStream stream(&formattedResult);
-            stream << "X: "
-                   << formatValueWithPreferredPrecision(
-                          Base::Quantity(value.x, vectorDistanceProp->getUnit()).getValueAs(targetUnit)
-                      )
-                   << " " << currentUnit << Qt::endl
-                   << "Y: "
-                   << formatValueWithPreferredPrecision(
-                          Base::Quantity(value.y, vectorDistanceProp->getUnit()).getValueAs(targetUnit)
-                      )
-                   << " " << currentUnit << Qt::endl
-                   << "Z: "
-                   << formatValueWithPreferredPrecision(
-                          Base::Quantity(value.z, vectorDistanceProp->getUnit()).getValueAs(targetUnit)
-                      )
-                   << " " << currentUnit;
+            stream
+                << "X: "
+                << formatValueWithPreferredPrecision(
+                       Base::Quantity(value.x, vectorDistanceProp->getUnit()).getValueAs(targetUnit)
+                   )
+                << " " << currentUnit << Qt::endl
+                << "Y: "
+                << formatValueWithPreferredPrecision(
+                       Base::Quantity(value.y, vectorDistanceProp->getUnit()).getValueAs(targetUnit)
+                   )
+                << " " << currentUnit << Qt::endl
+                << "Z: "
+                << formatValueWithPreferredPrecision(
+                       Base::Quantity(value.z, vectorDistanceProp->getUnit()).getValueAs(targetUnit)
+                   )
+                << " " << currentUnit;
             valueResult->setText(formattedResult);
         }
         else {

@@ -135,11 +135,12 @@ QString MeasurePosition::getResultString()
     const Base::Unit unit = Position.getUnit();
     QString text;
 
-    QTextStream(&text) << "X: " << QString::fromStdString(Base::Quantity(value.x, unit).getUserString())
-                       << Qt::endl
-                       << "Y: " << QString::fromStdString(Base::Quantity(value.y, unit).getUserString())
-                       << Qt::endl
-                       << "Z: " << QString::fromStdString(Base::Quantity(value.z, unit).getUserString());
+    QTextStream(
+        &text
+    ) << "X: "
+      << QString::fromStdString(Base::Quantity(value.x, unit).getUserString()) << Qt::endl
+      << "Y: " << QString::fromStdString(Base::Quantity(value.y, unit).getUserString()) << Qt::endl
+      << "Z: " << QString::fromStdString(Base::Quantity(value.z, unit).getUserString());
     return text;
 }
 
