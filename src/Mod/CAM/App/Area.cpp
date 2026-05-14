@@ -2255,7 +2255,7 @@ TopoDS_Shape Area::getShape(int index)
     makeOffset(areas, PARAM_FIELDS(AREA_MY, AREA_PARAMS_OFFSET));
 
     if (areas.empty()) {
-        areas.push_back(make_shared<CArea>(*myArea));  // TODO seeds from myArea
+        areas.push_back(make_shared<CArea>(*myArea));
     }
 
     Area areaPocket(&myParams);
