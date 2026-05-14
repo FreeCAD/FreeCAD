@@ -761,10 +761,15 @@ void CArea::OffsetWithClipper(
 
 void CArea::Thicken(double value)
 {
-    Paths64 pp;
-    OffsetSpansWithObrounds(*this, pp, value, m_arc_fitting_map, MakeZCallback());
-    SetFromResult(*this, pp);
-    this->Reorder();
+    // Create inward offset on a copy
+    CArea inner(*this);
+    inner.OffsetWithClipper(-value);
+
+    // Create outward offset on current area
+    this->OffsetWithClipper(value);
+
+    // Subtract inner from outer to create the thickened band
+    this->Subtract(inner);
 }
 
 void CArea::ZCallback(
