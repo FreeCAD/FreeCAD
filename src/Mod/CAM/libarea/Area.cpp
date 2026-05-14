@@ -753,28 +753,4 @@ eOverlapType GetOverlapType(const CArea& a1, const CArea& a2)
     return eCrossing;
 }
 
-bool IsInside(const Point& p, const CCurve& c)
-{
-    CAreaReversed a;
-    a.m_curves.push_back(c);
-    return IsInside(p, a);
-}
-
-bool IsInside(const Point& p, const CArea& a)
-{
-    CAreaReversed a2;
-    CCurve c;
-    c.m_vertices.emplace_back(Point(p.x - 0.01, p.y - 0.01));
-    c.m_vertices.emplace_back(Point(p.x + 0.01, p.y - 0.01));
-    c.m_vertices.emplace_back(Point(p.x + 0.01, p.y + 0.01));
-    c.m_vertices.emplace_back(Point(p.x - 0.01, p.y + 0.01));
-    c.m_vertices.emplace_back(Point(p.x - 0.01, p.y - 0.01));
-    a2.m_curves.push_back(c);
-    a2.Intersect(a);
-    if (fabs(a2.GetArea()) < 0.0004) {
-        return false;
-    }
-    return true;
-}
-
 }  // namespace heeks

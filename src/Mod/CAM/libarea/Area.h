@@ -197,7 +197,5 @@ enum eOverlapType
 
 eOverlapType GetOverlapType(const CCurve& c1, const CCurve& c2);
 eOverlapType GetOverlapType(const CArea& a1, const CArea& a2);
-bool IsInside(const Point& p, const CCurve& c);
-bool IsInside(const Point& p, const CArea& a);
 
 }  // namespace heeks
