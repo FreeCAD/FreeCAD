@@ -766,6 +766,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     }
 
     CArea clearable(*myArea);
+    clearable.m_reversed = false;
     clearable.OffsetWithClipper(
         -diameter / 2,
         myParams.JoinType,
@@ -793,6 +794,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     // rest = intersect(clearable, offset(remaining, dTool))
     // add buffer to dTool to compensate for oversizing in getClearedArea
     CArea restCArea(remaining);
+    restCArea.m_reversed = false;
     restCArea.OffsetWithClipper(
         diameter + buffer,
         myParams.JoinType,
@@ -2408,6 +2410,7 @@ std::shared_ptr<CArea> Area::performSingleOffset(double offset)
         case Area::AlgoClipperOffset:
 #endif
             *area = *myArea;
+            area->m_reversed = false;
             area->OffsetWithClipper(
                 offset,
                 myParams.JoinType,
@@ -2467,6 +2470,7 @@ void Area::makeOffset(
         if (previous_area_offset && check_gaps) {
             // Offset backwards by tool radius and subtract to find a gap
             CArea curr_offset_opposite = *area;
+            curr_offset_opposite.m_reversed = false;
             curr_offset_opposite.OffsetWithClipper(
                 -sign_stepover * tool_radius,
                 jt,
@@ -2490,6 +2494,7 @@ void Area::makeOffset(
 
                     // Recompute gap check
                     CArea test_offset_opposite = *test_area;
+                    test_offset_opposite.m_reversed = false;
                     test_offset_opposite.OffsetWithClipper(
                         -sign_stepover * tool_radius,
                         jt,
@@ -2516,6 +2521,7 @@ void Area::makeOffset(
 
             // Cache this pass's inner offset, and check if done
             previous_area_offset = *area;
+            previous_area_offset->m_reversed = false;
             previous_area_offset->OffsetWithClipper(
                 sign_stepover * tool_radius,
                 jt,
@@ -2554,6 +2560,7 @@ void Area::makeOffset(
         // Compute and cache the offset of current area for next iteration's gap check
         if (check_gaps && !previous_area_offset) {
             previous_area_offset = *area;
+            previous_area_offset->m_reversed = false;
             previous_area_offset->OffsetWithClipper(
                 sign_stepover * tool_radius,
                 jt,
@@ -2710,6 +2717,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 }
             }
             auto area = *myArea;
+            area.m_reversed = false;
             area.OffsetWithClipper(
                 -tool_radius - extra_offset,
                 myParams.JoinType,
