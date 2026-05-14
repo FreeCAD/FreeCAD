@@ -560,22 +560,34 @@ static void SetFromResult(
     }
 }
 
-static void SetFromResult(CArea& area, Paths64& pp, bool reverse, bool is_closed, bool clear)
+static void SetFromResult(
+    CArea& area,               // area to populate
+    Paths64& pp,               // clipper data to put in the area
+    bool is_closed = true,     // flag if the clipper paths are closed
+    bool clear_area = true,    // flag for clearing the area's curves before populating
+    bool clear_arc_map = true  // flag for clearing arc metadata when done
+)
 {
     // delete existing geometry
-    if (clear) {
+    if (clear_area) {
         area.m_curves.clear();
     }
 
     // Process intersection points before reconstructing curves
     area.ProcessIntersectionPoints(pp, is_closed);
 
+    bool reverse = is_closed ? area.m_reversed : false;
     for (unsigned int i = 0; i < pp.size(); i++) {
         Path64& p = pp[i];
 
         area.m_curves.emplace_back();
         CCurve& curve = area.m_curves.back();
         SetFromResult(curve, p, reverse, is_closed, area.m_arc_fitting_map);
+    }
+
+    // Reset arc fitting map to ensure clean state
+    if (clear_arc_map) {
+        area.m_arc_fitting_map = ArcFittingMap();
     }
 }
 
@@ -667,10 +679,10 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
     c.Execute(op, subjFillType, closed_paths, open_paths);
 
     // Set closed paths as result
-    SetFromResult(*this, closed_paths, m_reversed, true, true);
+    SetFromResult(*this, closed_paths, /*is_closed=*/true, /*clear_area=*/true, /*clear_arc_map=*/false);
 
     // Append open paths to result
-    SetFromResult(*this, open_paths, false, false, false);
+    SetFromResult(*this, open_paths, /*is_closed=*/false, /*clear_area=*/false, /*clear_arc_map=*/true);
 }
 
 void CArea::ClipperNoop()
@@ -691,10 +703,10 @@ void CArea::ClipperNoop()
     }
 
     // Set closed paths as result
-    SetFromResult(*this, closed_paths, false, true, true);
+    SetFromResult(*this, closed_paths, /*is_closed=*/true, /*clear_area=*/true, /*clear_arc_map=*/false);
 
     // Append open paths to result
-    SetFromResult(*this, open_paths, false, false, false);
+    SetFromResult(*this, open_paths, /*is_closed=*/false, /*clear_area=*/false, /*clear_arc_map=*/true);
 }
 
 void CArea::OffsetWithClipper(
@@ -743,7 +755,7 @@ void CArea::OffsetWithClipper(
     Paths64 pp2;
     clipper.Execute(offset, pp2);
 
-    SetFromResult(*this, pp2, m_reversed, true, true);
+    SetFromResult(*this, pp2);
     this->Reorder();
 }
 
@@ -751,7 +763,7 @@ void CArea::Thicken(double value)
 {
     Paths64 pp;
     OffsetSpansWithObrounds(*this, pp, value, m_arc_fitting_map, MakeZCallback());
-    SetFromResult(*this, pp, false, true, true);
+    SetFromResult(*this, pp);
     this->Reorder();
 }
 
