@@ -341,6 +341,8 @@ generate_from_py(EditableDatumLabel)
 generate_from_py(Navigation/NavigationStyle)
 generate_module_from_py(FreeCADGui)
 generate_module_from_py(FreeCADGui.Selection Selection)
+generate_module_from_py(FreeCADGui.PySideUic PySideUic)
+generate_module_from_py(FreeCADDbg)
 
 generate_embed_from_py(FreeCADGuiInit GuiInitScript.h)
 generate_embed_from_py(FreeCADGuiTest GuiTestScript.h)
@@ -1312,7 +1314,9 @@ SOURCE_GROUP("Selection" FILES ${Selection_SRCS})
 
 # The FreeCADGui sources
 SET(FreeCADGui_CPP_SRCS
+    ${CMAKE_CURRENT_BINARY_DIR}/FreeCADDbgModulePyImp.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/FreeCADGuiModulePyImp.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/PySideUicModulePyImp.cpp
     Application.cpp
     ApplicationPy.cpp
     AutoSaver.cpp
