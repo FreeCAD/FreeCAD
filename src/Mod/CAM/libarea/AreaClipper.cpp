@@ -451,6 +451,7 @@ static void SetFromResult(
     CArea& area,               // area to populate
     Paths64& pp,               // clipper data to put in the area
     bool is_closed = true,     // flag if the clipper paths are closed
+    bool reversed = false,     // flag for reversing curve vertex order
     bool clear_area = true,    // flag for clearing the area's curves before populating
     bool clear_arc_map = true  // flag for clearing arc metadata when done
 )
@@ -463,13 +464,12 @@ static void SetFromResult(
     // Process intersection points before reconstructing curves
     area.ProcessIntersectionPoints(pp, is_closed);
 
-    bool reverse = is_closed ? area.m_reversed : false;
     for (unsigned int i = 0; i < pp.size(); i++) {
         Path64& p = pp[i];
 
         area.m_curves.emplace_back();
         CCurve& curve = area.m_curves.back();
-        SetFromResult(curve, p, reverse, is_closed, area.m_arc_fitting_map);
+        SetFromResult(curve, p, reversed, is_closed, area.m_arc_fitting_map);
     }
 
     // Reset arc fitting map to ensure clean state
@@ -498,15 +498,9 @@ void CArea::Xor(const CArea& a2)
     Clip(ClipType::Xor, a2, FillRule::EvenOdd, FillRule::EvenOdd);
 }
 
-void CArea::Offset(double inwards_value)
+void CArea::OffsetInward(double inwards_value)
 {
-    // Set up m_reversed to mirror old behavior of OffsetWithLoops
-    const bool save_reverse = m_reversed;
-    m_reversed = inwards_value <= 0;
-
     OffsetWithClipper(-inwards_value);
-
-    m_reversed = save_reverse;
 }
 
 void CArea::PopulateClipper(Clipper64& c, bool as_clip, ArcFittingMap& arcMap) const
@@ -566,14 +560,29 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
     c.Execute(op, subjFillType, closed_paths, open_paths);
 
     // Set closed paths as result
-    SetFromResult(*this, closed_paths, /*is_closed=*/true, /*clear_area=*/true, /*clear_arc_map=*/false);
+    SetFromResult(
+        *this,
+        closed_paths,
+        /*is_closed=*/true,
+        /*reversed=*/m_reversed,
+        /*clear_area=*/true,
+        /*clear_arc_map=*/false
+    );
 
     // Append open paths to result
-    SetFromResult(*this, open_paths, /*is_closed=*/false, /*clear_area=*/false, /*clear_arc_map=*/true);
+    SetFromResult(
+        *this,
+        open_paths,
+        /*is_closed=*/false,
+        /*reversed=*/false,
+        /*clear_area=*/false,
+        /*clear_arc_map=*/true
+    );
 }
 
 void CArea::ClipperNoop()
 {
+    fprintf(stderr, "DEBUG_AREACLIPPER_NOOP: m_reversed=%d\n", m_reversed);
     Paths64 closed_paths;
     Paths64 open_paths;
     for (const CCurve& curve : m_curves) {
@@ -590,10 +599,24 @@ void CArea::ClipperNoop()
     }
 
     // Set closed paths as result
-    SetFromResult(*this, closed_paths, /*is_closed=*/true, /*clear_area=*/true, /*clear_arc_map=*/false);
+    SetFromResult(
+        *this,
+        closed_paths,
+        /*is_closed=*/true,
+        /*reversed=*/false,
+        /*clear_area=*/true,
+        /*clear_arc_map=*/false
+    );
 
     // Append open paths to result
-    SetFromResult(*this, open_paths, /*is_closed=*/false, /*clear_area=*/false, /*clear_arc_map=*/true);
+    SetFromResult(
+        *this,
+        open_paths,
+        /*is_closed=*/false,
+        /*reversed=*/false,
+        /*clear_area=*/false,
+        /*clear_arc_map=*/true
+    );
 }
 
 void CArea::OffsetWithClipper(
