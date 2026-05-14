@@ -73,10 +73,12 @@ class TestAreaOperations(unittest.TestCase):
 
         a1.Union(a2)
 
-        # Should have result
-        self.assertGreater(a1.num_curves(), 0, "Union should produce curves")
+        # Should have 1 CCW curve
+        curves = a1.getCurves()
+        self.assertEqual(len(curves), 1)
+        self.assertFalse(curves[0].IsClockwise())
 
-        # Check unioned area
+        # Check area
         self.assertAreaNear(a1, 100 + 100 - 50, msg="Union of overlapping squares")
 
     def test_union_separate_squares(self):
@@ -86,8 +88,11 @@ class TestAreaOperations(unittest.TestCase):
 
         a1.Union(a2)
 
-        # Should have 2 separate curves
-        self.assertEqual(a1.num_curves(), 2, "Union of separate squares should have 2 curves")
+        # Should have 2 separate curves, both CCW
+        curves = a1.getCurves()
+        self.assertEqual(len(curves), 2, "Union of separate squares should have 2 curves")
+        self.assertFalse(curves[0].IsClockwise(), "Both curves should be counter-clockwise")
+        self.assertFalse(curves[1].IsClockwise())
 
         # Check area
         self.assertAreaNear(a1, 100 + 100, msg="Union of separate squares")
@@ -99,8 +104,10 @@ class TestAreaOperations(unittest.TestCase):
 
         a1.Intersect(a2)
 
-        # Should have result
-        self.assertGreater(a1.num_curves(), 0, "Intersect should produce curves")
+        # Should have 1 CCW curve
+        curves = a1.getCurves()
+        self.assertEqual(len(curves), 1)
+        self.assertFalse(curves[0].IsClockwise())
 
         # Check area
         self.assertAreaNear(a1, 5 * 10, msg="Intersection area")
@@ -122,8 +129,11 @@ class TestAreaOperations(unittest.TestCase):
 
         outer.Subtract(hole)
 
-        # Should have curves (outer boundary + hole)
-        self.assertGreater(outer.num_curves(), 0, "Subtract should produce curves")
+        # Should have 2 curves: outer CCW, hole CW
+        curves = outer.getCurves()
+        self.assertEqual(len(curves), 2, "Subtract should produce 2 curves (outer + hole)")
+        self.assertFalse(curves[0].IsClockwise())
+        self.assertTrue(curves[1].IsClockwise())
 
         # Check area
         self.assertAreaNear(outer, 20 * 20 - 10 * 10, msg="Square with hole")
@@ -135,7 +145,8 @@ class TestAreaOperations(unittest.TestCase):
 
         a1.Subtract(a2)
 
-        # Should be empty
+        # Should be empty (no curves to check orientation)
+        self.assertEqual(a1.num_curves(), 0, "Complete subtraction should be empty")
         area_val = abs(a1.GetArea())
         self.assertEqual(area_val, 0)
 
