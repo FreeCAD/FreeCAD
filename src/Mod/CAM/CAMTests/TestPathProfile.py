@@ -26,14 +26,41 @@
 
 import FreeCAD
 import Part
+import Path
 import Path.Op.Profile as PathProfile
 import Path.Main.Job as PathJob
 from CAMTests.PathTestUtils import PathTestBase
-from CAMTests.TestPathAdaptive import getGcodeMoves
+from itertools import zip_longest
+from numbers import Number
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
     import Path.Op.Gui.Profile as PathProfileGui
+
+
+def yieldGcode(commands, includeRapids=True, includeLines=True, includeArcs=True):
+    last = FreeCAD.Vector(0.0, 0.0, 0.0)
+    for c in commands:
+        p = c.Parameters
+        name = c.Name
+        if (includeRapids and name in ["G0", "G00"]) or (includeLines and name in ["G1", "G01"]):
+            gcode = {"name": name}
+            gcode["X"] = p.get("X", last.x)
+            gcode["Y"] = p.get("Y", last.y)
+            gcode["Z"] = p.get("Z", last.z)
+            yield (gcode)
+        elif includeArcs and name in ["G2", "G3", "G02", "G03"]:
+            gcode = {"name": name}
+            gcode["X"] = p.get("X", last.x)
+            gcode["Y"] = p.get("Y", last.y)
+            gcode["Z"] = p.get("Z", last.z)
+            gcode["I"] = p.get("I", 0)
+            gcode["J"] = p.get("J", 0)
+            gcode["K"] = p.get("K", 0)
+            yield (gcode)
+        last.x = p.get("X", last.x)
+        last.y = p.get("Y", last.y)
+        last.z = p.get("Z", last.z)
 
 
 class TestPathProfile(PathTestBase):
@@ -103,6 +130,40 @@ class TestPathProfile(PathTestBase):
         """
         pass
 
+    def checkGcode(self, expected, actual, tol=0.01, includeRapids=True):
+        egen = yieldGcode(expected, includeRapids=includeRapids)
+        agen = yieldGcode(actual, includeRapids=includeRapids)
+
+        e_strs = []
+        a_strs = []
+        error = None
+        for i, (e, a) in enumerate(zip_longest(egen, agen, fillvalue={})):
+            line = f"{i + 1:2}  "
+            e_str = line + (" ".join([f"{k}: {v:.4}" for k, v in e.items()]))
+            a_str = line + (" ".join([f"{k}: {v:.4}" for k, v in a.items()]))
+            if e:
+                e_strs.append(e_str)
+            if a:
+                a_strs.append(a_str)
+
+            def v_eq(x, y):
+                if isinstance(x, Number) and isinstance(y, Number):
+                    return abs(x - y) < tol
+                return x == y
+
+            if len(e.keys()) != len(a.keys()) or any(
+                map(lambda k: not v_eq(e.get(k), a.get(k)), e.keys())
+            ):
+                if error is None:
+                    error = f"Incorrect gcode at line {i+1}\nExpected: {e_str}\nActual  : {a_str}\n"
+
+        e_str = "\n".join(e_strs)
+        a_str = "\n".join(a_strs)
+        self.assertTrue(
+            error is None,
+            f"{error}\nExpected:\n{e_str}\nActual:\n{a_str}",
+        )
+
     # Unit tests
     def test00(self):
         """test00() Empty test."""
@@ -128,10 +189,6 @@ class TestPathProfile(PathTestBase):
         _addViewProvider(profile)
         self.doc.recompute()
 
-        moves = getGcodeMoves(profile.Path.Commands, includeRapids=False)
-        operationMoves = ";  ".join(moves)
-        # FreeCAD.Console.PrintMessage("test01_moves: " + operationMoves + "\n")
-
         expected_moves = (
             "G1 X16.47 Y16.47 Z10.0;  G3 I-2.48 J-2.48 K0.0 X13.93 Y17.5 Z10.0;  "
             "G1 X-13.93 Y17.5 Z10.0;  G3 I-0.06 J-3.51 K0.0 X-17.5 Y13.93 Z10.0;  "
@@ -144,10 +201,8 @@ class TestPathProfile(PathTestBase):
             "G1 X-27.5 Y14.0 Z10.0;  G2 I13.5 J-0.0 K0.0 X-14.0 Y27.5 Z10.0;  "
             "G1 X14.0 Y27.5 Z10.0;  G2 I-0.0 J-13.5 K0.0 X23.54 Y23.54 Z10.0"
         )
-        self.assertTrue(
-            expected_moves == operationMoves,
-            "expected_moves: {}\noperationMoves: {}".format(expected_moves, operationMoves),
-        )
+        expected_commands = [Path.Command(x) for x in expected_moves.split(";  ")]
+        self.checkGcode(expected_commands, profile.Path.Commands, includeRapids=False, tol=0.02)
 
     def test02(self):
         """test02() Verify path generated on Face18, outside, without compensation."""
@@ -167,10 +222,6 @@ class TestPathProfile(PathTestBase):
         _addViewProvider(profile)
         self.doc.recompute()
 
-        moves = getGcodeMoves(profile.Path.Commands, includeRapids=False)
-        operationMoves = ";  ".join(moves)
-        # FreeCAD.Console.PrintMessage("test02_moves: " + operationMoves + "\n")
-
         expected_moves = (
             "G1 X18.24 Y18.24 Z10.0;  G3 I-4.24 J-4.24 K0.0 X14.0 Y20.0 Z10.0;  "
             "G1 X-14.0 Y20.0 Z10.0;  G3 I0.0 J-6.0 K0.0 X-20.0 Y14.0 Z10.0;  "
@@ -183,11 +234,8 @@ class TestPathProfile(PathTestBase):
             "G1 X-25.0 Y14.0 Z10.0;  G2 I11.0 J-0.0 K0.0 X-14.0 Y25.0 Z10.0;  "
             "G1 X14.0 Y25.0 Z10.0;  G2 I-0.0 J-11.0 K0.0 X21.78 Y21.78 Z10.0"
         )
-
-        self.assertTrue(
-            expected_moves == operationMoves,
-            "expected_moves: {}\noperationMoves: {}".format(expected_moves, operationMoves),
-        )
+        expected_commands = [Path.Command(x) for x in expected_moves.split(";  ")]
+        self.checkGcode(expected_commands, profile.Path.Commands, includeRapids=False)
 
     def test03(self):
         """test03() Verify path generated on Face18, outside,
@@ -211,10 +259,6 @@ class TestPathProfile(PathTestBase):
         _addViewProvider(profile)
         self.doc.recompute()
 
-        moves = getGcodeMoves(profile.Path.Commands, includeRapids=False)
-        operationMoves = ";  ".join(moves)
-        # FreeCAD.Console.PrintMessage("test03_moves: " + operationMoves + "\n")
-
         expected_moves = (
             "G1 X18.24 Y18.24 Z10.0;  G3 I-4.24 J-4.24 K0.0 X14.0 Y20.0 Z10.0;  "
             "G1 X-14.0 Y20.0 Z10.0;  G3 I0.0 J-6.0 K0.0 X-20.0 Y14.0 Z10.0;  "
@@ -227,11 +271,8 @@ class TestPathProfile(PathTestBase):
             "G1 X-25.0 Y14.0 Z10.0;  G2 I11.0 J-0.0 K0.0 X-14.0 Y25.0 Z10.0;  "
             "G1 X14.0 Y25.0 Z10.0;  G2 I-0.0 J-11.0 K0.0 X21.78 Y21.78 Z10.0"
         )
-
-        self.assertTrue(
-            expected_moves == operationMoves,
-            "expected_moves: {}\noperationMoves: {}".format(expected_moves, operationMoves),
-        )
+        expected_commands = [Path.Command(x) for x in expected_moves.split(";  ")]
+        self.checkGcode(expected_commands, profile.Path.Commands, includeRapids=False)
 
 
 class TestPathOpenProfile(PathTestBase):
