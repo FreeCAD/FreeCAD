@@ -77,7 +77,7 @@ void CCurve::Discretize()
     for (std::list<CVertex>::const_iterator It2 = m_vertices.begin(); It2 != m_vertices.end(); It2++) {
         const CVertex& vertex = *It2;
         if (vertex.m_type == 0 || prev_vertex == NULL) {
-            new_pts.push_back(vertex.m_p * CArea::m_units);
+            new_pts.push_back(vertex.m_p);
         }
         else {
             if (vertex.m_p != prev_vertex->m_p) {
@@ -86,15 +86,15 @@ void CCurve::Discretize()
                 int i;
                 double ang1, ang2, phit;
 
-                dx = (prev_vertex->m_p.x - vertex.m_c.x) * CArea::m_units;
-                dy = (prev_vertex->m_p.y - vertex.m_c.y) * CArea::m_units;
+                dx = prev_vertex->m_p.x - vertex.m_c.x;
+                dy = prev_vertex->m_p.y - vertex.m_c.y;
 
                 ang1 = atan2(dy, dx);
                 if (ang1 < 0) {
                     ang1 += 2.0 * M_PI;
                 }
-                dx = (vertex.m_p.x - vertex.m_c.x) * CArea::m_units;
-                dy = (vertex.m_p.y - vertex.m_c.y) * CArea::m_units;
+                dx = vertex.m_p.x - vertex.m_c.x;
+                dy = vertex.m_p.y - vertex.m_c.y;
                 ang2 = atan2(dy, dx);
                 if (ang2 < 0) {
                     ang2 += 2.0 * M_PI;
@@ -138,16 +138,16 @@ void CCurve::Discretize()
 
                 dphi = phit / (Segments);
 
-                double px = prev_vertex->m_p.x * CArea::m_units;
-                double py = prev_vertex->m_p.y * CArea::m_units;
+                double px = prev_vertex->m_p.x;
+                double py = prev_vertex->m_p.y;
 
                 for (i = 1; i <= Segments; i++) {
-                    dx = px - vertex.m_c.x * CArea::m_units;
-                    dy = py - vertex.m_c.y * CArea::m_units;
+                    dx = px - vertex.m_c.x;
+                    dy = py - vertex.m_c.y;
                     phi = atan2(dy, dx);
 
-                    double nx = vertex.m_c.x * CArea::m_units + radius * cos(phi - dphi);
-                    double ny = vertex.m_c.y * CArea::m_units + radius * sin(phi - dphi);
+                    double nx = vertex.m_c.x + radius * cos(phi - dphi);
+                    double ny = vertex.m_c.y + radius * sin(phi - dphi);
 
                     new_pts.emplace_back(nx, ny);
 
@@ -163,7 +163,7 @@ void CCurve::Discretize()
 
     for (std::list<Point>::iterator It = new_pts.begin(); It != new_pts.end(); It++) {
         Point& pt = *It;
-        CVertex vertex(0, pt / CArea::m_units, Point(0.0, 0.0));
+        CVertex vertex(0, pt, Point(0.0, 0.0));
         m_vertices.push_back(vertex);
     }
 }

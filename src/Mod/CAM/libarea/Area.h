@@ -87,8 +87,6 @@ public:
     ArcFittingMap m_arc_fitting_map;
     bool m_reversed = false;
     static double m_accuracy;
-    static double m_units;  // 1.0 for mm, 25.4 for inches. All points are multiplied by this before
-                            // going to the engine
     static bool m_clipper_simple;
     static double m_clipper_clean_distance;
     static bool m_fit_arcs;
@@ -144,7 +142,6 @@ public:
     CAREA_PARAM_DECLARE(bool, clipper_simple)
     CAREA_PARAM_DECLARE(double, clipper_clean_distance)
     CAREA_PARAM_DECLARE(double, accuracy)
-    CAREA_PARAM_DECLARE(double, units)
     CAREA_PARAM_DECLARE(short, min_arc_points)
     CAREA_PARAM_DECLARE(short, max_arc_points)
     CAREA_PARAM_DECLARE(double, clipper_scale)

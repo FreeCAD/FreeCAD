@@ -55,7 +55,7 @@ static void AddVertex(
     if (vertex.m_type == 0 || prev_vertex == NULL) {
         if (!zLoop.has_value()) {
             const int64_t z = arcMap.z_next++;
-            PointD p(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z);
+            PointD p(vertex.m_p.x, vertex.m_p.y, z);
             arcMap.point_map[z] = vertex.m_p;
             pts_for_AddVertex.push_back(p);
             arcMap.z_prev = z;
@@ -80,7 +80,7 @@ static void AddVertex(
             const double dx = prev_vertex->m_p.x - vertex.m_c.x;
             const double dy = prev_vertex->m_p.y - vertex.m_c.y;
             const double radius = sqrt(dx * dx + dy * dy);
-            const double max_dphi = 2 * acos((radius - CArea::m_accuracy / CArea::m_units) / radius);
+            const double max_dphi = 2 * acos((radius - CArea::m_accuracy) / radius);
 
             // determine the number of segments
             const int num_segments
@@ -96,9 +96,7 @@ static void AddVertex(
                     }
                     else {
                         const int64_t z = arcMap.z_next++;
-                        pts_for_AddVertex.push_back(
-                            PointD(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units, z)
-                        );
+                        pts_for_AddVertex.push_back(PointD(vertex.m_p.x, vertex.m_p.y, z));
                         arcMap.point_map[z] = vertex.m_p;
                         arcMap.arc_centers[{arcMap.z_prev, z}] = vertex.m_c;
                         arcMap.z_prev = z;
@@ -108,7 +106,7 @@ static void AddVertex(
                     const int64_t z = arcMap.z_next++;
                     const double px = vertex.m_c.x + radius * cos(phi0 + dphi * i);
                     const double py = vertex.m_c.y + radius * sin(phi0 + dphi * i);
-                    pts_for_AddVertex.push_back(PointD(px * CArea::m_units, py * CArea::m_units, z));
+                    pts_for_AddVertex.push_back(PointD(px, py, z));
                     // Store arc center in point_map for intermediate points
                     arcMap.point_map[z] = vertex.m_c;
                     arcMap.arc_centers[{arcMap.z_prev, z}] = vertex.m_c;
@@ -143,13 +141,8 @@ static void MakeLoop(
     CVertex v1(arc_dir, p1 + right1 * radius, p1);
     CVertex v2(0, p2 + right1 * radius, heeks::Point(0, 0));
 
-    double save_units = CArea::m_units;
-    CArea::m_units = 1.0;
-
     AddVertex(v1, &v0, arcMap);
     AddVertex(v2, &v1, arcMap);
-
-    CArea::m_units = save_units;
 }
 
 static void MakeObround(const heeks::Point& pt0, const CVertex& vt1, double radius, ArcFittingMap& arcMap)
@@ -168,17 +161,12 @@ static void MakeObround(const heeks::Point& pt0, const CVertex& vt1, double radi
     CVertex v3(-vt1.m_type, pt0 + right0 * -radius, vt1.m_c);
     CVertex v4(1, pt0 + right0 * radius, pt0);
 
-    double save_units = CArea::m_units;
-    CArea::m_units = 1.0;
-
     const int z0 = arcMap.z_next;
     AddVertex(v0, NULL, arcMap);
     AddVertex(v1, &v0, arcMap);
     AddVertex(v2, &v1, arcMap);
     AddVertex(v3, &v2, arcMap);
     AddVertex(v4, &v3, arcMap, {z0});
-
-    CArea::m_units = save_units;
 }
 
 static void OffsetSpansWithObrounds(
@@ -339,14 +327,14 @@ static void SetFromResult(
         const int j = ((reverse ? -1 : 1) * dj + 2 * path.size()) % path.size();
         const Point64& pt = path[j];
         PointD dp = ToPointD(pt);
-        heeks::Point p(dp.x / CArea::m_units, dp.y / CArea::m_units);
+        heeks::Point p(dp.x, dp.y);
 
         const int jnext = ((reverse ? -1 : 1) * (dj + 1) + 2 * path.size()) % path.size();
         const bool hasNext = (dj + 1 < num_j) || is_closed;
         const bool nextGenerated = (dj + 1 == num_j) && is_closed;
         const Point64& pt_next = path[jnext];
         PointD dp_next = ToPointD(pt_next);
-        heeks::Point p_next(dp_next.x / CArea::m_units, dp_next.y / CArea::m_units);
+        heeks::Point p_next(dp_next.x, dp_next.y);
 
         // Construct ordered pair for arc detection
         std::pair<int64_t, int64_t> zPair(std::min(prevZ, pt.z), std::max(prevZ, pt.z));
@@ -414,7 +402,7 @@ static void SetFromResult(
                         double dx = p.x - arc_center.x;
                         double dy = p.y - arc_center.y;
                         double arc_radius = sqrt(dx * dx + dy * dy);
-                        const double angle_error = CArea::m_accuracy / CArea::m_units / arc_radius;
+                        const double angle_error = CArea::m_accuracy / arc_radius;
 
                         // matching type means we have phi0 < ph1 < phi_next (type 1)
                         // or phi0 > phi1 > phi_next (type -1)
@@ -465,7 +453,7 @@ static void SetFromResult(
                         double dx = p.x - center.x;
                         double dy = p.y - center.y;
                         double radius = sqrt(dx * dx + dy * dy);
-                        const double angle_error = CArea::m_accuracy / CArea::m_units / radius;
+                        const double angle_error = CArea::m_accuracy / radius;
 
                         // matching type means we have phi0 < ph1 < phi_next (type 1)
                         // or phi0 > phi1 > phi_next (type -1)
@@ -716,7 +704,7 @@ void CArea::OffsetWithClipper(
     double arcTolerance
 )
 {
-    offset *= m_units * m_clipper_scale;
+    offset *= m_clipper_scale;
     if (arcTolerance == 0.0) {
         // Clipper arc tolerance definition: https://goo.gl/4odfQh
         double dphi = acos(1.0 - m_accuracy * m_clipper_scale / fabs(offset));
@@ -766,7 +754,7 @@ void CArea::OffsetWithClipper(
 void CArea::Thicken(double value)
 {
     Paths64 pp;
-    OffsetSpansWithObrounds(*this, pp, value * m_units, m_arc_fitting_map, MakeZCallback());
+    OffsetSpansWithObrounds(*this, pp, value, m_arc_fitting_map, MakeZCallback());
     SetFromResult(*this, pp, false, true, true);
     this->Reorder();
 }
@@ -789,7 +777,7 @@ void CArea::ZCallback(
 
         // Add the new point to the point map
         PointD dp = ToPointD(pt);
-        m_arc_fitting_map.point_map[pt.z] = heeks::Point(dp.x / m_units, dp.y / m_units);
+        m_arc_fitting_map.point_map[pt.z] = heeks::Point(dp.x, dp.y);
     }
 }
 
