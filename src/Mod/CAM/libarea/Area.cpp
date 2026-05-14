@@ -472,9 +472,9 @@ static void zigzag(const CArea& input_a)
         Point p3(x1, y0);
         CCurve c;
         c.m_vertices.emplace_back(0, p0, null_point);
-        c.m_vertices.emplace_back(0, p1, null_point);
-        c.m_vertices.emplace_back(0, p2, null_point);
         c.m_vertices.emplace_back(0, p3, null_point);
+        c.m_vertices.emplace_back(0, p2, null_point);
+        c.m_vertices.emplace_back(0, p1, null_point);
         c.m_vertices.emplace_back(0, p0, null_point);
         CAreaReversed a2;
         a2.m_curves.push_back(c);
