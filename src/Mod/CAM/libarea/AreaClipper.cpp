@@ -470,7 +470,7 @@ static void SetFromResult(
                         // matching type means we have phi0 < ph1 < phi_next (type 1)
                         // or phi0 > phi1 > phi_next (type -1)
                         // always: type * phi0 < type * phi1 < type * phi_next
-                        if (type * phi_boundary + angle_error > phi_next) {
+                        if (type * phi_boundary + angle_error > type * phi_next) {
                             // Subsume the subsequent point expansion with this arc
                             p = p_next;
                             if (nextGenerated) {
@@ -483,7 +483,7 @@ static void SetFromResult(
                                 dj += 1;
                             }
                         }
-                        else if (type * phi_boundary - angle_error > phi1) {
+                        else if (type * phi_boundary - angle_error > type * phi1) {
                             // Replace part of the subsequent point expansion with this arc
                             p.x = center.x + radius * cos(phi_boundary);
                             p.y = center.y + radius * sin(phi_boundary);
