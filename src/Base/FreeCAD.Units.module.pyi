@@ -10,7 +10,16 @@ from __future__ import annotations
 
 from typing import Literal, TypeAlias, overload
 
+from Base.Metadata import module
 from FreeCAD.Base import Quantity
+
+module(
+    Name="Units",
+    Namespace="Base",
+    Include="UnitsApi.h",
+    CallbackOwner="UnitsApi",
+    CallbackPrefix="s",
+)
 
 _NumberFormat: TypeAlias = Literal["g", "f", "e"]
 Radian: Quantity

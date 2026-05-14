@@ -109,6 +109,8 @@ generate_from_py(Axis)
 generate_from_py(Unit)
 generate_from_py(Quantity)
 generate_from_py(Precision)
+generate_module_from_py(FreeCAD.Console Console)
+generate_module_from_py(FreeCAD.Units Units)
 generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
 
 if(SWIG_FOUND)
@@ -140,6 +142,8 @@ SET(FreeCADBase_Pyi_SRCS
     Type.pyi
     Unit.pyi
     Precision.pyi
+    FreeCAD.Console.module.pyi
+    FreeCAD.Units.module.pyi
 )
 SOURCE_GROUP("Pyi" FILES ${FreeCADBase_Pyi_SRCS})
 
@@ -147,6 +151,7 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsApi.cpp
     UnitsApiPy.cpp
     UnitsApi.h
+    ${CMAKE_CURRENT_BINARY_DIR}/UnitsModulePyImp.cpp
     UnitsConvData.h
     UnitsSchema.h
     UnitsSchema.cpp
@@ -179,6 +184,7 @@ SET(FreeCADBase_CPP_SRCS
     BoundBoxPyImp.cpp
     Builder3D.cpp
     Console.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/ConsoleModulePyImp.cpp
     ConsoleObserver.cpp
     Color.cpp
     CoordinateSystem.cpp
