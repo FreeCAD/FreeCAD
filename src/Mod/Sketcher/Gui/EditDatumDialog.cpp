@@ -292,7 +292,7 @@ void EditDatumDialog::accepted()
 
                     Gui::cmdAppObjectArgs(
                         sketch,
-                        "setDatum(%i,App.Units.Quantity('%f %s'))",
+                        "setDatum(%i,App.Units.Quantity('%.17g %s'))",
                         ConstrNbr,
                         newDatum,
                         unitString
