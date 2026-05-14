@@ -290,8 +290,7 @@ void init_pyarea(py::module& m)
         .def("Rotate", static_cast<void (Point::*)(double, double)>(&Point::Rotate))
         .def("Rotate", static_cast<void (Point::*)(double)>(&Point::Rotate))
         .def_readwrite("x", &Point::x)
-        .def_readwrite("y", &Point::y)
-        .def("Transform", &Point::Transform);
+        .def_readwrite("y", &Point::y);
 
     py::class_<CVertex>(m, "Vertex")
         .def(py::init<CVertex>())
