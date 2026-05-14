@@ -189,6 +189,17 @@ private:
     Clipper2Lib::ZCallback64 MakeZCallback();
 };
 
+// Helper class to make the transition from expecting CArea to be reversed from
+// clipper to expecting it to be in the same orientation as clipper
+class CAreaReversed: public CArea
+{
+public:
+    CAreaReversed()
+    {
+        m_reversed = true;
+    }
+};
+
 enum eOverlapType
 {
     eOutside,
