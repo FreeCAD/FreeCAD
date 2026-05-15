@@ -55,6 +55,11 @@ class BIM_DrawingView:
     def Activated(self):
 
         import Draft
+        
+        view_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+        default_line_width = view_prefs.GetInt("DefaultShapeLineWidth", 2)
+        thickness_ratio = PARAMS.GetFloat("CutAreasLineThicknessRatio", 2.0)
+        cut_lines_width = default_line_width * thickness_ratio
 
         FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create 2D View"))
         FreeCADGui.addModule("Arch")
@@ -78,7 +83,7 @@ class BIM_DrawingView:
                 FreeCADGui.doCommand("cobj.Label = " + repr(translate("BIM", "Cut lines")))
                 FreeCADGui.doCommand("cobj.InPlace = False")
                 FreeCADGui.doCommand('cobj.ProjectionMode = "Cutfaces"')
-                FreeCADGui.doCommand("cobj.ViewObject.LineWidth = 4")
+                FreeCADGui.doCommand("cobj.ViewObject.LineWidth = " + str(cut_lines_width))
                 FreeCADGui.doCommand("obj.addObject(cobj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
