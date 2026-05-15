@@ -721,6 +721,7 @@ QAction* MainWindow::createPythonConsoleWindowAction(QObject* parent)
     action->setText(tr("Open Python Console in Window"));
     action->setToolTip(tr("Open Python Console in Window"));
     action->setStatusTip(tr("Open Python Console in Window"));
+    action->setProperty("DockTitleBarAction", true);
     connect(action, &QAction::triggered, this, [this]() { showPythonConsoleWindow(true); });
     return action;
 }
@@ -735,15 +736,6 @@ QAction* MainWindow::createDockPythonConsoleAction(QObject* parent)
     action->setStatusTip(tr("Dock Python Console"));
     connect(action, &QAction::triggered, this, [this]() { dockPythonConsole(); });
     return action;
-}
-
-void MainWindow::syncPythonConsoleWindowAction(bool checked)
-{
-    if (auto cmd = Application::Instance->commandManager().getCommandByName("Std_PythonConsoleWindow")) {
-        if (auto action = cmd->getAction()) {
-            action->setBlockedChecked(checked);
-        }
-    }
 }
 
 void MainWindow::setupPythonConsoleDockWidget(QDockWidget* dock)
@@ -823,7 +815,6 @@ void MainWindow::showPythonConsoleWindow(bool show)
     if (!show) {
         d->pythonConsoleWindow->hide();
         group->SetBool("Visible", false);
-        syncPythonConsoleWindowAction(false);
         saveWindowSettings(true);
         return;
     }
@@ -846,7 +837,6 @@ void MainWindow::showPythonConsoleWindow(bool show)
     }
 
     group->SetBool("Visible", true);
-    syncPythonConsoleWindowAction(true);
     d->pythonConsoleWindow->show();
     d->pythonConsoleWindow->raise();
     d->pythonConsoleWindow->activateWindow();
@@ -884,7 +874,6 @@ void MainWindow::dockPythonConsole()
         }
         dock->toggleViewAction()->setData(QByteArray("Std_PythonView"));
         setupPythonConsoleDockWidget(dock);
-        syncPythonConsoleWindowAction(false);
         pcPython->show();
         dock->setVisible(d->pythonConsoleDockVisibleBeforeWindow);
         if (d->pythonConsoleDockVisibleBeforeWindow) {

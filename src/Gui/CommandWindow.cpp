@@ -28,7 +28,6 @@
 #include "Action.h"
 #include "Application.h"
 #include "MainWindow.h"
-#include "PythonConsole.h"
 #include "View.h"
 #include "Document.h"
 #include "Dialogs/DlgActivateWindowImp.h"
@@ -304,61 +303,6 @@ Action* StdCmdDockViewMenu::createAction()
 }
 
 //===========================================================================
-// Std_PythonConsoleWindow
-//===========================================================================
-
-DEF_STD_CMD_AC(StdCmdPythonConsoleWindow)
-
-StdCmdPythonConsoleWindow::StdCmdPythonConsoleWindow()
-    : Command("Std_PythonConsoleWindow")
-{
-    sGroup = "View";
-    sMenuText = QT_TR_NOOP("Python Console Window");
-    sToolTipText = QT_TR_NOOP("Opens the Python console as a standalone window");
-    sWhatsThis = "Std_PythonConsoleWindow";
-    sStatusTip = sToolTipText;
-    sPixmap = "applications-python";
-    eType = 0;
-}
-
-void StdCmdPythonConsoleWindow::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    auto mainWindow = getMainWindow();
-    const bool visible = mainWindow->isPythonConsoleStandalone()
-        && mainWindow->pythonConsole()->window()->isVisible();
-    if (visible) {
-        mainWindow->dockPythonConsole();
-    }
-    else {
-        mainWindow->showPythonConsoleWindow(true);
-    }
-
-    if (_pcAction) {
-        _pcAction->setBlockedChecked(!visible);
-    }
-}
-
-Action* StdCmdPythonConsoleWindow::createAction()
-{
-    _pcAction = Command::createAction();
-    _pcAction->setCheckable(true);
-    return _pcAction;
-}
-
-bool StdCmdPythonConsoleWindow::isActive()
-{
-    if (_pcAction) {
-        const bool visible = getMainWindow()->isPythonConsoleStandalone()
-            && getMainWindow()->pythonConsole()->window()->isVisible();
-        _pcAction->setBlockedChecked(visible);
-    }
-
-    return getMainWindow()->pythonConsole() != nullptr;
-}
-
-//===========================================================================
 // Std_ToolBarMenu
 //===========================================================================
 
@@ -572,7 +516,6 @@ void CreateWindowStdCommands()
     rcCmdMgr.addCommand(new StdCmdActivatePrevWindow());
     rcCmdMgr.addCommand(new StdCmdWindows());
     rcCmdMgr.addCommand(new StdCmdDockViewMenu());
-    rcCmdMgr.addCommand(new StdCmdPythonConsoleWindow());
     rcCmdMgr.addCommand(new StdCmdToolBarMenu());
     rcCmdMgr.addCommand(new StdCmdToggleToolBarLock());
     rcCmdMgr.addCommand(new StdCmdWindowsMenu());

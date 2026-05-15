@@ -333,7 +333,6 @@ private:
     bool updateDAGView(bool show);
     QAction* createPythonConsoleWindowAction(QObject* parent);
     QAction* createDockPythonConsoleAction(QObject* parent);
-    void syncPythonConsoleWindowAction(bool checked);
 
     void populateToolBarMenu(QMenu*);
     void populateDockWindowMenu(QMenu*);
