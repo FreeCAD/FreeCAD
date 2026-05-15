@@ -100,7 +100,11 @@ static int          get3dMarkerSize();
 static ViewFrameMode getViewFrameMode();
 static void setViewFrameMode(ViewFrameMode newMode);
 
-
+enum class ViewSizeMode {
+    Paper = 0,
+    Screen = 1
+};
+static ViewSizeMode screenMode();
 };
 
 } //end namespace TechDrawGui
