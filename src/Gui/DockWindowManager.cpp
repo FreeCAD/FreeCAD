@@ -532,14 +532,12 @@ void DockWindowManager::setup(DockWindowItems* items)
                 dw = addDockWindow(jt.value()->objectName().toUtf8(), jt.value(), it.pos);
                 jt.value()->show();
                 dw->toggleViewAction()->setData(it.name);
-                getMainWindow()->setupPythonConsoleDockWidget(dw);
                 dw->setVisible(visible);
             }
         }
         else {
             dw->setVisible(visible);
             dw->toggleViewAction()->setVisible(true);
-            getMainWindow()->setupPythonConsoleDockWidget(dw);
             int index = docked.indexOf(dw);
             docked.removeAt(index);
         }

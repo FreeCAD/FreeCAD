@@ -816,6 +816,25 @@ void MainWindow::showPythonConsoleWindow(bool show)
 
         if (auto geometry = group->GetASCII("Geometry"); !geometry.empty()) {
             d->pythonConsoleWindow->restoreGeometry(QByteArray::fromBase64(geometry.c_str()));
+            if (const auto screen
+                = QGuiApplication::screenAt(d->pythonConsoleWindow->geometry().center())) {
+                const QRect available = screen->availableGeometry();
+                const QSize size = d->pythonConsoleWindow->size().boundedTo(available.size());
+                const int x = qBound(
+                    available.left(),
+                    d->pythonConsoleWindow->x(),
+                    available.right() - size.width() + 1
+                );
+                const int y = qBound(
+                    available.top(),
+                    d->pythonConsoleWindow->y(),
+                    available.bottom() - size.height() + 1
+                );
+                d->pythonConsoleWindow->setGeometry(QRect(QPoint(x, y), size));
+            }
+            else if (const auto primaryScreen = QGuiApplication::primaryScreen()) {
+                d->pythonConsoleWindow->move(primaryScreen->availableGeometry().topLeft());
+            }
         }
     }
 
@@ -2300,7 +2319,9 @@ void MainWindow::switchToTopLevelMode()
 
 void MainWindow::switchToDockedMode()
 {
-    dockPythonConsole();
+    if (isPythonConsoleStandalone()) {
+        dockPythonConsole();
+    }
 
     // Search for all top-level MDI views
     QWidgetList toplevel = QApplication::topLevelWidgets();
@@ -2420,6 +2441,7 @@ void MainWindow::loadWindowSettings()
     std::clog << "Toolbars restored" << std::endl;
 
     OverlayManager::instance()->restore();
+    setupPythonConsoleDockWidget(DockWindowManager::instance()->getDockContainer("Python console"));
 
     auto group = d->hGrp->GetGroup("PythonConsoleWindow");
     d->pythonConsoleDockVisibleBeforeWindow = group->GetBool("DockVisibleBeforeWindow", false);

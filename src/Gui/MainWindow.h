@@ -228,7 +228,6 @@ public:
     bool isRestoringWindowState() const;
     PythonConsole* pythonConsole() const;
     bool isPythonConsoleStandalone() const;
-    void setupPythonConsoleDockWidget(QDockWidget* dock);
 
 public Q_SLOTS:
     /**
@@ -331,6 +330,7 @@ private:
     bool updateTaskView(bool show);
     bool updateComboView(bool show);
     bool updateDAGView(bool show);
+    void setupPythonConsoleDockWidget(QDockWidget* dock);
     QAction* createPythonConsoleWindowAction(QObject* parent);
     QAction* createDockPythonConsoleAction(QObject* parent);
 
