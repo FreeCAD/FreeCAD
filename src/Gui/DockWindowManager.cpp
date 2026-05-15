@@ -552,6 +552,11 @@ void DockWindowManager::setup(DockWindowItems* items)
     tabifyDockWidgets(items);
 }
 
+const QList<DockWindowItem>& DockWindowManager::dockWindowItems() const
+{
+    return d->_dockWindowItems.dockWidgets();
+}
+
 void DockWindowManager::tabifyDockWidgets(DockWindowItems* items)
 {
     // Tabify dock widgets only once to avoid to override the current layout

@@ -85,6 +85,7 @@ public:
     QWidget* unregisterDockWindow(const char* name);
     QWidget* findRegisteredDockWindow(const char* name);
     void setup(DockWindowItems*);
+    const QList<DockWindowItem>& dockWindowItems() const;
 
     /// Adds a QDockWidget to the main window and sets \a widget as its widget
     QDockWidget* addDockWindow(

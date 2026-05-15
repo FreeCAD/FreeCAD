@@ -1824,6 +1824,8 @@ void MainWindow::onDockWindowMenuAboutToShow()
 void MainWindow::populateDockWindowMenu(QMenu* menu)
 {
     bool addedPythonConsole = false;
+    QSet<QDockWidget*> addedDocks;
+
     auto addPythonConsoleMenu = [this, &addedPythonConsole, menu]() {
         if (addedPythonConsole) {
             return;
@@ -1883,17 +1885,33 @@ void MainWindow::populateDockWindowMenu(QMenu* menu)
         windowAction->setStatusTip(tr("Shows the Python console as a standalone window"));
     };
 
-    QList<QDockWidget*> dock = this->findChildren<QDockWidget*>();
-    for (auto& it : dock) {
-        if (it->objectName() == QStringLiteral("Python console")) {
-            addPythonConsoleMenu();
-            continue;
+    auto addDockMenuItem = [&addedDocks, &addPythonConsoleMenu, menu](QDockWidget* dock) {
+        if (!dock || addedDocks.contains(dock)) {
+            return;
         }
-        QAction* action = it->toggleViewAction();
+        addedDocks.insert(dock);
+
+        if (dock->objectName() == QStringLiteral("Python console")) {
+            addPythonConsoleMenu();
+            return;
+        }
+
+        QAction* action = dock->toggleViewAction();
         action->setToolTip(tr("Toggles this dockable window"));
         action->setStatusTip(tr("Toggles this dockable window"));
         action->setWhatsThis(tr("Toggles this dockable window"));
         menu->addAction(action);
+    };
+
+    auto dockManager = DockWindowManager::instance();
+    for (const auto& item : dockManager->dockWindowItems()) {
+        const QByteArray dockName = item.name.toUtf8();
+        addDockMenuItem(dockManager->getDockContainer(dockName.constData()));
+    }
+
+    const QList<QDockWidget*> dock = this->findChildren<QDockWidget*>();
+    for (auto& it : dock) {
+        addDockMenuItem(it);
     }
 
     addPythonConsoleMenu();
