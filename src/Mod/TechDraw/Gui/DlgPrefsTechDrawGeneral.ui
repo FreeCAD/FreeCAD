@@ -907,7 +907,7 @@ for ProjectionGroups</string>
         <item row="1" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="psb_SnapFactor">
           <property name="toolTip">
-           <string>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</string>
+           <string>Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1032,7 +1032,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note:  Snapping settings for dimensions are on the dimensions tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for dimensions are on the dimensions tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
