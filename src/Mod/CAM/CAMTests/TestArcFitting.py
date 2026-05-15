@@ -805,6 +805,40 @@ class TestArcFittingBooleans(PathTestBase):
         """Test subtracting semicircle from square (square - semicircle)."""
         self.assert_boolean_line_and_arc_count(self.square, self.semicircle, "Subtract", 1, 5, 0, 1)
 
+    def assert_open_path_reversal_identical(self, open_curve, closed_curve):
+        """Helper: Assert that TestIntersectOpenPathReversal produces identical results for all reversal permutations.
+
+        Args:
+            open_area: Area containing open path(s)
+            closed_area: Area containing closed path(s) to intersect with
+        """
+        a = [make_area(open_curve) for i in range(4)]
+        closed_area = make_area(closed_curve)
+
+        # Test all 4 permutations of the two types of reversal
+        a[0].TestIntersectOpenPathReversal(closed_area, False, False)
+        a[1].TestIntersectOpenPathReversal(closed_area, False, True)
+        a[2].TestIntersectOpenPathReversal(closed_area, True, False)
+        a[3].TestIntersectOpenPathReversal(closed_area, True, True)
+
+        # All results should be identical
+        self.assertTrue(
+            areas_equal(a[0], a[1]), "Results differ: no reversal vs path order reversed"
+        )
+        self.assertTrue(
+            areas_equal(a[0], a[2]), "Results differ: no reversal vs path contents reversed"
+        )
+        self.assertTrue(
+            areas_equal(a[0], a[3]),
+            "Results differ: no reversal vs both path contents and order reversed",
+        )
+
+    def test_open_path_reversal_no_clip(self):
+        """Test open path reversal when path is fully contained in box (no clipping)."""
+        open_curve = make_curve([(1, 1), (3, 3), (5, 5), (7, 7)])
+        closed_curve = make_curve([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)])
+        self.assert_open_path_reversal_identical(open_curve, closed_curve)
+
 
 if __name__ == "__main__":
     unittest.main()

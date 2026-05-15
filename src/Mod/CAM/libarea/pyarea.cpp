@@ -293,7 +293,8 @@ void init_pyarea(py::module& m)
         .def("MakePocketToolpath", &MakePocketToolpath)
         .def("Split", &SplitArea)
         .def("Thicken", &CArea::Thicken)
-        .def("GetArea", &AreaGetArea);
+        .def("GetArea", &AreaGetArea)
+        .def("TestIntersectOpenPathReversal", &CArea::TestIntersectOpenPathReversal);
 
     m.def("get_accuracy", get_accuracy);
     m.def("copy_area", copy_area);

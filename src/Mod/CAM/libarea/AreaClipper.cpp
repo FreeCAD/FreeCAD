@@ -6,6 +6,7 @@
 
 #include "Area.h"
 #include "clipper2/clipper.h"
+#include <algorithm>
 #include <cmath>
 #include <functional>
 #include <optional>
@@ -529,7 +530,14 @@ void CArea::PopulateClipper(Clipper64& c, bool as_clip, ArcFittingMap& arcMap) c
     }
 }
 
-void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, FillRule clipFillType)
+void CArea::_Clip(
+    ClipType op,
+    const CArea& clip_area,
+    FillRule subjFillType,
+    FillRule clipFillType,
+    bool reverseOpenPathContents,
+    bool reverseOpenPathOrder
+)
 {
     Clipper64 c;
     c.SetZCallback(MakeZCallback());
@@ -540,6 +548,18 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
     Paths64 closed_paths;
     Paths64 open_paths;
     c.Execute(op, subjFillType, closed_paths, open_paths);
+
+    // Reverse open path contents if requested
+    if (reverseOpenPathContents) {
+        for (auto& path : open_paths) {
+            std::reverse(path.begin(), path.end());
+        }
+    }
+
+    // Reverse open path order if requested
+    if (reverseOpenPathOrder) {
+        std::reverse(open_paths.begin(), open_paths.end());
+    }
 
     // Set closed paths as result
     SetFromResult(
@@ -558,6 +578,11 @@ void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, Fil
         /*clear_area=*/false,
         /*clear_arc_map=*/true
     );
+}
+
+void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, FillRule clipFillType)
+{
+    _Clip(op, clip_area, subjFillType, clipFillType, false, false);
 }
 
 void CArea::ClipperNoop()
@@ -593,6 +618,22 @@ void CArea::ClipperNoop()
         /*is_closed=*/false,
         /*clear_area=*/false,
         /*clear_arc_map=*/true
+    );
+}
+
+void CArea::TestIntersectOpenPathReversal(
+    const CArea& clip_area,
+    bool reverseOpenPathContents,
+    bool reverseOpenPathOrder
+)
+{
+    _Clip(
+        ClipType::Intersection,
+        clip_area,
+        FillRule::EvenOdd,
+        FillRule::EvenOdd,
+        reverseOpenPathContents,
+        reverseOpenPathOrder
     );
 }
 
