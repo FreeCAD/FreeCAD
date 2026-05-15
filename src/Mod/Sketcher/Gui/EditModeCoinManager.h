@@ -180,7 +180,7 @@ public:
             InvalidPoint = -1,
             InvalidCurve = -1,
             ExternalCurve = -3,
-            InvalidLazyExternal = InvalidPoint
+            InvalidLazyExternalId = InvalidPoint
         };
 
         enum class Axes
@@ -194,18 +194,18 @@ public:
         int PointIndex = InvalidPoint;
         int GeoIndex = InvalidCurve;  // valid values are 0,1,2,... for normal geometry and
                                       // -3,-4,-5,... for external geometry
-        int LazyExternalId = InvalidLazyExternal;
-        bool LazyExternalVertex = false;
         Axes Cross = Axes::None;
+        int LazyExternalId = InvalidLazyExternalId;
+        bool LazyExternalVertex = false;
         std::set<int> ConstrIndices;
 
         inline void clear()
         {
             PointIndex = InvalidPoint;
             GeoIndex = InvalidCurve;
-            LazyExternalId = InvalidLazyExternal;
-            LazyExternalVertex = false;
             Cross = Axes::None;
+            LazyExternalId = InvalidLazyExternalId;
+            LazyExternalVertex = false;
             ConstrIndices.clear();
         }
     };

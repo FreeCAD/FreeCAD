@@ -127,8 +127,27 @@ private:
     static inline int getPreselectPoint(const ViewProviderSketch& vp);
     static inline int getPreselectCurve(const ViewProviderSketch& vp);
     static inline int getPreselectCross(const ViewProviderSketch& vp);
-    static inline int getPreselectLazyExternal(const ViewProviderSketch& vp);
+    static inline int getPreselectLazyExternalId(const ViewProviderSketch& vp);
     static inline bool isPreselectLazyExternalVertex(const ViewProviderSketch& vp);
+    static inline std::vector<int> getSelectedLazyExternalReferenceIds(const ViewProviderSketch& vp);
+    static inline bool getLazyExternalSourceReference(
+        const ViewProviderSketch& vp,
+        int lazyExternalId,
+        std::string& sourceObjectName,
+        std::string& subName,
+        bool& intersection,
+        bool& vertex
+    );
+    static inline int materializeLazyExternalSourceReference(
+        ViewProviderSketch& vp,
+        const std::string& sourceObjectName,
+        const std::string& subName,
+        bool intersection,
+        bool defining
+    );
+    static inline void clearSelectedLazyExternalReferences(ViewProviderSketch& vp);
+    static inline void suspendLazyExternalGeometryLayer(ViewProviderSketch& vp);
+    static inline void resumeLazyExternalGeometryLayer(ViewProviderSketch& vp);
 
     static inline void moveConstraint(
         ViewProviderSketch& vp,
@@ -257,6 +276,11 @@ public:
     //@}
 
 private:  // NVI
+    virtual bool allowLazyExternalPreselection() const
+    {
+        return true;
+    }
+
     void preActivated() override;
     virtual void onWidgetChanged()
     {}
@@ -298,8 +322,25 @@ protected:
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
-    int getPreselectLazyExternal() const;
+    int getPreselectLazyExternalId() const;
     bool isPreselectLazyExternalVertex() const;
+    std::vector<int> getSelectedLazyExternalReferenceIds() const;
+    bool getLazyExternalSourceReference(
+        int lazyExternalId,
+        std::string& sourceObjectName,
+        std::string& subName,
+        bool& intersection,
+        bool& vertex
+    ) const;
+    int materializeLazyExternalSourceReference(
+        const std::string& sourceObjectName,
+        const std::string& subName,
+        bool intersection,
+        bool defining
+    );
+    void clearSelectedLazyExternalReferences();
+    void suspendLazyExternalGeometryLayer();
+    void resumeLazyExternalGeometryLayer();
 
     Sketcher::SketchObject* getSketchObject();
 

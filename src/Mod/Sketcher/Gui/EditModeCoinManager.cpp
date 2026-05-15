@@ -954,6 +954,11 @@ void EditModeCoinManager::createEditModeInventorNodes()
     // stuff for the EditCurves +++++++++++++++++++++++++++++++++++++++
     SoSeparator* editCurvesRoot = new SoSeparator;
     editModeScenegraphNodes.EditRoot->addChild(editCurvesRoot);
+
+    SoPickStyle* editCurvesPickStyle = new SoPickStyle;
+    editCurvesPickStyle->style.setValue(SoPickStyle::UNPICKABLE);
+    editCurvesRoot->addChild(editCurvesPickStyle);
+
     editModeScenegraphNodes.EditCurvesMaterials = new SoMaterial;
     editModeScenegraphNodes.EditCurvesMaterials->setName("EditCurvesMaterials");
     editCurvesRoot->addChild(editModeScenegraphNodes.EditCurvesMaterials);

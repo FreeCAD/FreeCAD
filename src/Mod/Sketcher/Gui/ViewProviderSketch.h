@@ -34,11 +34,11 @@
 #include <memory>
 #include <set>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include <Base/Parameter.h>
 #include <Base/Placement.h>
+#include <Base/Type.h>
 #include <Gui/Document.h>
 #include <Gui/GLPainter.h>
 #include <Gui/Selection/Selection.h>
@@ -238,7 +238,6 @@ private:
         );
 
         void updateLazyExternalGeometryEnabled(const std::string& string, App::Property* property);
-        void updateShowHiddenLazyExternalGeometry(const std::string& string, App::Property* property);
 
     private:
         ViewProviderSketch& Client;
@@ -365,7 +364,7 @@ private:
             InvalidPoint = -1,
             InvalidCurve = -1,
             ExternalCurve = -3,
-            InvalidLazyExternal = InvalidPoint
+            InvalidLazyExternalId = InvalidPoint
         };
 
         enum class Axes
@@ -385,7 +384,7 @@ private:
         {
             PreselectPoint = InvalidPoint;
             PreselectCurve = InvalidCurve;
-            PreselectLazyExternalId = InvalidLazyExternal;
+            PreselectLazyExternalId = InvalidLazyExternalId;
             PreselectLazyExternalVertex = false;
             PreselectCross = Axes::None;
             PreselectConstraintSet.clear();
@@ -414,7 +413,7 @@ private:
         }
         bool isLazyExternalPreselected() const
         {
-            return PreselectLazyExternalId > InvalidLazyExternal;
+            return PreselectLazyExternalId > InvalidLazyExternalId;
         }
         bool isLazyExternalVertex() const
         {
@@ -507,7 +506,6 @@ private:
         bool autoRecompute = false;
         bool recalculateInitialSolutionWhileDragging = false;
         bool lazyExternalGeometryEnabled = true;
-        bool showHiddenLazyExternalGeometry = true;
 
         bool isShownVirtualSpace = false;  // indicates whether the present virtual space view is the
                                            // Real Space or the Virtual Space (virtual space 1 or 2)
@@ -783,27 +781,43 @@ protected:
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(Gui::View3DInventorViewer*) override;
 
-public:
-    /** @name Lazy external geometry edit-session layer */
+private:
+    /** @name On-demand external geometry edit-session layer
+     *
+     * These helpers manage temporary lazy external references. They either query/select overlay
+     * entries or materialize them into real SketchObject external geometry when a tool needs a
+     * stable GeoId. Keep them private; collaborators should use the existing attorney classes.
+     */
     //@{
-    int materializeLazyExternalReference(int lazyExternalId);
+    /// Add the source reference to the sketch if needed and return the resulting external GeoId.
+    int materializeLazyExternalSourceReference(
+        const std::string& sourceObjectName,
+        const std::string& subName,
+        bool intersection,
+        bool defining = false
+    );
     Base::Type getLazyExternalGeometryType(int lazyExternalId) const;
     bool isLazyExternalReferenceVertex(int lazyExternalId) const;
-    void setLazyExternalReferenceSelected(int lazyExternalId, bool selected);
-    void toggleLazyExternalReferenceSelected(int lazyExternalId);
+    bool getLazyExternalSourceReference(
+        int lazyExternalId,
+        std::string& sourceObjectName,
+        std::string& subName,
+        bool& intersection,
+        bool& vertex
+    ) const;
+    bool selectLazyExternalReference(int lazyExternalId, bool toggle);
+    bool isLazyExternalReferenceSelected(int lazyExternalId) const;
     std::vector<int> getSelectedLazyExternalReferenceIds() const;
     void clearSelectedLazyExternalReferences();
     void suspendLazyExternalGeometryLayer();
     void resumeLazyExternalGeometryLayer();
-    bool syncLazySources();
     void redrawLazyExternalGeometryLayer();
     bool isLazyExternalGeometryEnabled() const;
     void setLazyExternalGeometryPreferenceEnabled(bool enabled);
-    void setShowHiddenLazyExternalGeometryPreference(bool showHidden);
+    bool ensureLazyExternalGeometryLayer();
     //@}
 
 protected:
-    bool ensureLazyExternalGeometryLayer();
     static void camSensCB(void* data, SoSensor*);        // camera sensor callback
     static void camSensDeleteCB(void* data, SoSensor*);  // camera sensor callback
     void onCameraChanged(SoCamera* cam);
@@ -878,17 +892,18 @@ private:
     bool detectAndShowPreselection(
         SoPickedPoint* Point,
         const SbVec2s* cursorPos = nullptr,
-        const Gui::View3DInventorViewer* viewer = nullptr
+        const Gui::View3DInventorViewer* viewer = nullptr,
+        bool allowLazyExternalPreselectionAtCursor = true
     );
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
-    int getPreselectLazyExternal() const;
+    int getPreselectLazyExternalId() const;
     bool isPreselectLazyExternalVertex() const;
     void setPreselectPoint(int PreselectPoint);
     void setPreselectRootPoint();
     void resetPreselectPoint();
-    void clearLazyPreselectionIfNeeded(bool hadLazyPreselection);
+    void clearLazyExternalPreselectionIfNeeded(bool hadLazyPreselection);
 
     bool setPreselect(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
     //@}
@@ -970,16 +985,17 @@ private:
     // gets the list of geometry of the sketchobject or of the solver instance
     const GeoList getGeoList() const;
 
-    GeoListFacade getGeoListFacade() const;
-
-    Base::Placement getEditingPlacement() const;
-
     std::unique_ptr<SoRayPickAction> getRayPickAction() const;
-    int getClosestLazyExternalAtCursor(
+    int preselectLazyExternalAtCursor(
         const SbVec2s& cursorPos,
         const Gui::View3DInventorViewer* viewer,
         bool& vertex
     );
+    GeoListFacade getGeoListFacade() const;
+
+    Base::Placement getEditingPlacement() const;
+
+    void setPreselectLazyExternal(int lazyExternalId, bool vertex);
 
     SbVec2f getScreenCoordinates(SbVec2f sketchcoordinates) const;
 

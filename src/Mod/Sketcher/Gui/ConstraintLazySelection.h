@@ -28,8 +28,9 @@
 #include <string>
 #include <vector>
 
-#include <Mod/Sketcher/App/SketchObject.h>
+#include <Base/Type.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Mod/Sketcher/App/GeoEnum.h>
 
 namespace Gui
 {
@@ -49,11 +50,14 @@ struct SelIdPair
     int LazyExternalId = -1;
     bool IsLazyExternal = false;
     bool LazyExternalVertex = false;
+    std::string LazyExternalSourceObjectName;
+    std::string LazyExternalSubelement;
+    bool LazyExternalIntersection = false;
 };
 
 ViewProviderSketch* getActiveSketchGui(Gui::Document* guiDocument);
 
-struct LazyExternalSubName
+struct LazyExternalSubelement
 {
     int id = -1;
     bool vertex = false;
@@ -61,23 +65,23 @@ struct LazyExternalSubName
 
 bool selectionPairsEqual(const SelIdPair& lhs, const SelIdPair& rhs);
 
-std::optional<LazyExternalSubName> parseLazyExternalSubName(const std::string& subName);
+std::optional<LazyExternalSubelement> parseLazyExternalSubelement(const std::string& subName);
 
 
-class ActivatedSelection
+class ActivatedLazySelection
 {
 public:
-    ActivatedSelection(
+    ActivatedLazySelection(
         Gui::Command& command,
         Gui::Document* guiDocument,
-        bool includeLazyVertices = false,
+        bool includeLazyExternalVertices = false,
         bool* sharedCommandActive = nullptr
     );
-    ActivatedSelection(const ActivatedSelection&) = delete;
-    ActivatedSelection& operator=(const ActivatedSelection&) = delete;
-    ActivatedSelection(ActivatedSelection&& other) noexcept;
-    ActivatedSelection& operator=(ActivatedSelection&&) = delete;
-    ~ActivatedSelection();
+    ActivatedLazySelection(const ActivatedLazySelection&) = delete;
+    ActivatedLazySelection& operator=(const ActivatedLazySelection&) = delete;
+    ActivatedLazySelection(ActivatedLazySelection&& other) noexcept;
+    ActivatedLazySelection& operator=(ActivatedLazySelection&&) = delete;
+    ~ActivatedLazySelection();
 
     const std::vector<Gui::SelectionObject>& getSelection() const;
 
@@ -86,10 +90,10 @@ public:
     void abortCommand();
 
 private:
-    void begin(Gui::Document* guiDocument, bool includeLazyVertices);
-    void abortLazyCommand();
-    bool isLazyCommandActive() const;
-    void setLazyCommandActive(bool active);
+    void begin(Gui::Document* guiDocument, bool includeLazyExternalVertices);
+    void abortLazyExternalCommand();
+    bool isLazyExternalCommandActive() const;
+    void setLazyExternalCommandActive(bool active);
 
     Gui::Command* command = nullptr;
     bool* sharedCommandActive = nullptr;
@@ -98,25 +102,21 @@ private:
     bool abortOnDestroy = true;
 };
 
-class LazySelectionResolver
+class LazyExternalSelectionResolver
 {
 public:
-    static bool hasPendingLazySelection(
+    static bool hasPendingLazyExternalSelection(
         ViewProviderSketch* sketchgui,
         bool includeEdges = true,
         bool includeVertices = false
     );
 
-    static bool materializePendingLazySelection(ViewProviderSketch* sketchgui, bool includeLazyVertices);
-
-    static void appendPendingLazySubNames(
+    static bool materializePendingLazyExternalSelection(
         ViewProviderSketch* sketchgui,
-        std::vector<std::string>& subNames,
-        bool includeEdges = true,
-        bool includeVertices = true
+        bool includeLazyExternalVertices
     );
 
-    static void appendPendingLazySelectionPairs(
+    static void appendPendingLazyExternalSelectionPairs(
         ViewProviderSketch* sketchgui,
         std::vector<SelIdPair>& points,
         std::vector<SelIdPair>& curves,
@@ -124,26 +124,27 @@ public:
         bool includeVertices = true
     );
 
-    static void clearPendingLazySelection(ViewProviderSketch* sketchgui);
+    static void clearPendingLazyExternalSelection(ViewProviderSketch* sketchgui);
 
-    static bool makeLazySelectionPair(
+    static bool makeLazyExternalSelectionPair(
         ViewProviderSketch* sketchgui,
-        int lazyId,
-        bool lazyVertex,
+        int lazyExternalId,
+        bool lazyExternalVertex,
         SelIdPair& item,
         std::string* subName = nullptr,
         Base::Type* geoType = nullptr
     );
 
-    static void setLazySelectionSelected(
+    static void setLazyExternalSelectionSelected(
         ViewProviderSketch* sketchgui,
         const SelIdPair& item,
         bool selected
     );
 
-    static bool materializeLazySelectionPairs(
+    static bool materializeLazyExternalSelectionPairs(
         ViewProviderSketch* sketchgui,
-        std::vector<SelIdPair>& items
+        std::vector<SelIdPair>& items,
+        bool preserveLazyExternalIdentity = false
     );
 };
 

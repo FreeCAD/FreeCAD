@@ -27,6 +27,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <utility>
 
 #include <App/IndexedName.h>
 #include <Gui/CommandT.h>
@@ -40,15 +41,123 @@ namespace SketcherGui
 class ViewProviderSketchLazySelectionAttorney
 {
 public:
-    static int getPreselectLazyExternal(const ViewProviderSketch& viewProvider);
+    static int getPreselectLazyExternalId(const ViewProviderSketch& viewProvider);
+    static Base::Type getLazyExternalGeometryType(
+        const ViewProviderSketch& viewProvider,
+        int lazyExternalId
+    );
+    static bool isLazyExternalReferenceVertex(const ViewProviderSketch& viewProvider, int lazyExternalId);
+    static bool getLazyExternalSourceReference(
+        const ViewProviderSketch& viewProvider,
+        int lazyExternalId,
+        std::string& sourceObjectName,
+        std::string& subName,
+        bool& intersection,
+        bool& vertex
+    );
+    static int materializeLazyExternalSourceReference(
+        ViewProviderSketch& viewProvider,
+        const std::string& sourceObjectName,
+        const std::string& subName,
+        bool intersection,
+        bool defining
+    );
+    static bool selectLazyExternalReference(
+        ViewProviderSketch& viewProvider,
+        int lazyExternalId,
+        bool toggle
+    );
+    static bool isLazyExternalReferenceSelected(
+        const ViewProviderSketch& viewProvider,
+        int lazyExternalId
+    );
+    static std::vector<int> getSelectedLazyExternalReferenceIds(const ViewProviderSketch& viewProvider);
+    static void clearSelectedLazyExternalReferences(ViewProviderSketch& viewProvider);
     static void resetPreselectPoint(ViewProviderSketch& viewProvider);
 };
 
-int ViewProviderSketchLazySelectionAttorney::getPreselectLazyExternal(
+int ViewProviderSketchLazySelectionAttorney::getPreselectLazyExternalId(
     const ViewProviderSketch& viewProvider
 )
 {
-    return viewProvider.getPreselectLazyExternal();
+    return viewProvider.getPreselectLazyExternalId();
+}
+
+Base::Type ViewProviderSketchLazySelectionAttorney::getLazyExternalGeometryType(
+    const ViewProviderSketch& viewProvider,
+    int lazyExternalId
+)
+{
+    return viewProvider.getLazyExternalGeometryType(lazyExternalId);
+}
+
+bool ViewProviderSketchLazySelectionAttorney::isLazyExternalReferenceVertex(
+    const ViewProviderSketch& viewProvider,
+    int lazyExternalId
+)
+{
+    return viewProvider.isLazyExternalReferenceVertex(lazyExternalId);
+}
+
+bool ViewProviderSketchLazySelectionAttorney::getLazyExternalSourceReference(
+    const ViewProviderSketch& viewProvider,
+    int lazyExternalId,
+    std::string& sourceObjectName,
+    std::string& subName,
+    bool& intersection,
+    bool& vertex
+)
+{
+    return viewProvider.getLazyExternalSourceReference(
+        lazyExternalId,
+        sourceObjectName,
+        subName,
+        intersection,
+        vertex
+    );
+}
+
+int ViewProviderSketchLazySelectionAttorney::materializeLazyExternalSourceReference(
+    ViewProviderSketch& viewProvider,
+    const std::string& sourceObjectName,
+    const std::string& subName,
+    bool intersection,
+    bool defining
+)
+{
+    return viewProvider
+        .materializeLazyExternalSourceReference(sourceObjectName, subName, intersection, defining);
+}
+
+bool ViewProviderSketchLazySelectionAttorney::selectLazyExternalReference(
+    ViewProviderSketch& viewProvider,
+    int lazyExternalId,
+    bool toggle
+)
+{
+    return viewProvider.selectLazyExternalReference(lazyExternalId, toggle);
+}
+
+bool ViewProviderSketchLazySelectionAttorney::isLazyExternalReferenceSelected(
+    const ViewProviderSketch& viewProvider,
+    int lazyExternalId
+)
+{
+    return viewProvider.isLazyExternalReferenceSelected(lazyExternalId);
+}
+
+std::vector<int> ViewProviderSketchLazySelectionAttorney::getSelectedLazyExternalReferenceIds(
+    const ViewProviderSketch& viewProvider
+)
+{
+    return viewProvider.getSelectedLazyExternalReferenceIds();
+}
+
+void ViewProviderSketchLazySelectionAttorney::clearSelectedLazyExternalReferences(
+    ViewProviderSketch& viewProvider
+)
+{
+    viewProvider.clearSelectedLazyExternalReferences();
 }
 
 void ViewProviderSketchLazySelectionAttorney::resetPreselectPoint(ViewProviderSketch& viewProvider)
@@ -58,23 +167,20 @@ void ViewProviderSketchLazySelectionAttorney::resetPreselectPoint(ViewProviderSk
 
 namespace
 {
-constexpr const char* LazyExternalVertexPrefix = "LazyExternalVertex";
-constexpr const char* LazyExternalEdgePrefix = "LazyExternalEdge";
+constexpr const char* LazyExternalVertexSubelementPrefix = "LazyExternalVertex";
+constexpr const char* LazyExternalEdgeSubelementPrefix = "LazyExternalEdge";
 
 std::string makeExternalSubNameFromGeoId(int geoId)
 {
     return "ExternalEdge" + std::to_string(Sketcher::GeoEnum::RefExt + 1 - geoId);
 }
 
-std::string makeLazyExternalSubName(int lazyId, bool lazyVertex)
+std::string makeLazyExternalSubelement(int lazyExternalId, bool lazyExternalVertex)
 {
-    return std::string(lazyVertex ? LazyExternalVertexPrefix : LazyExternalEdgePrefix)
-        + std::to_string(lazyId);
-}
-
-bool containsSubName(const std::vector<std::string>& subNames, const std::string& subName)
-{
-    return std::find(subNames.begin(), subNames.end(), subName) != subNames.end();
+    return std::string(
+               lazyExternalVertex ? LazyExternalVertexSubelementPrefix : LazyExternalEdgeSubelementPrefix
+           )
+        + std::to_string(lazyExternalId);
 }
 
 bool containsSelectionPair(const std::vector<SelIdPair>& items, const SelIdPair& item)
@@ -84,46 +190,72 @@ bool containsSelectionPair(const std::vector<SelIdPair>& items, const SelIdPair&
     });
 }
 
-std::vector<int> collectPendingLazyIds(ViewProviderSketch* sketchgui)
+std::vector<int> collectLazyExternalIds(ViewProviderSketch* sketchgui, bool includePreselection)
 {
-    std::vector<int> lazyIds;
+    std::vector<int> lazyExternalIds;
     if (!sketchgui) {
-        return lazyIds;
+        return lazyExternalIds;
     }
 
-    lazyIds = sketchgui->getSelectedLazyExternalReferenceIds();
-    const int preselectLazyId = ViewProviderSketchLazySelectionAttorney::getPreselectLazyExternal(
+    lazyExternalIds = ViewProviderSketchLazySelectionAttorney::getSelectedLazyExternalReferenceIds(
         *sketchgui
     );
-    if (preselectLazyId >= 0
-        && std::find(lazyIds.begin(), lazyIds.end(), preselectLazyId) == lazyIds.end()) {
-        lazyIds.push_back(preselectLazyId);
+
+    if (includePreselection) {
+        const int preselectLazyExternalId
+            = ViewProviderSketchLazySelectionAttorney::getPreselectLazyExternalId(*sketchgui);
+        if (preselectLazyExternalId >= 0
+            && std::find(lazyExternalIds.begin(), lazyExternalIds.end(), preselectLazyExternalId)
+                == lazyExternalIds.end()) {
+            lazyExternalIds.push_back(preselectLazyExternalId);
+        }
     }
 
-    return lazyIds;
+    return lazyExternalIds;
 }
 
-bool isLazyExternalVertexReference(ViewProviderSketch* sketchgui, int lazyId)
+bool isLazyExternalVertexReference(ViewProviderSketch* sketchgui, int lazyExternalId)
 {
-    return sketchgui && sketchgui->isLazyExternalReferenceVertex(lazyId);
+    return sketchgui
+        && ViewProviderSketchLazySelectionAttorney::isLazyExternalReferenceVertex(
+               *sketchgui,
+               lazyExternalId
+        );
 }
 
 template<typename Callback>
-void forEachPendingLazyReference(
+void forEachLazyExternalReference(
+    ViewProviderSketch* sketchgui,
+    bool includeEdges,
+    bool includeVertices,
+    bool includePreselection,
+    Callback&& callback
+)
+{
+    for (int lazyExternalId : collectLazyExternalIds(sketchgui, includePreselection)) {
+        const bool lazyExternalVertex = isLazyExternalVertexReference(sketchgui, lazyExternalId);
+        if ((lazyExternalVertex && includeVertices) || (!lazyExternalVertex && includeEdges)) {
+            callback(lazyExternalId, lazyExternalVertex);
+        }
+    }
+}
+
+template<typename Callback>
+void forEachPendingLazyExternalReference(
     ViewProviderSketch* sketchgui,
     bool includeEdges,
     bool includeVertices,
     Callback&& callback
 )
 {
-    for (int lazyId : collectPendingLazyIds(sketchgui)) {
-        const bool lazyVertex = isLazyExternalVertexReference(sketchgui, lazyId);
-        if ((lazyVertex && includeVertices) || (!lazyVertex && includeEdges)) {
-            callback(lazyId, lazyVertex);
-        }
-    }
+    forEachLazyExternalReference(
+        sketchgui,
+        includeEdges,
+        includeVertices,
+        true,
+        std::forward<Callback>(callback)
+    );
 }
-
 
 void clearPendingSelection(ViewProviderSketch* sketchgui)
 {
@@ -131,41 +263,70 @@ void clearPendingSelection(ViewProviderSketch* sketchgui)
         return;
     }
 
-    sketchgui->clearSelectedLazyExternalReferences();
     ViewProviderSketchLazySelectionAttorney::resetPreselectPoint(*sketchgui);
+    ViewProviderSketchLazySelectionAttorney::clearSelectedLazyExternalReferences(*sketchgui);
 }
 
 bool makeSelectionPair(
     ViewProviderSketch* sketchgui,
-    int lazyId,
-    bool lazyVertex,
+    int lazyExternalId,
+    bool lazyExternalVertex,
     SelIdPair& item,
     std::string* subName = nullptr,
     Base::Type* geoType = nullptr
 )
 {
-    if (!sketchgui || lazyId < 0) {
+    if (!sketchgui || lazyExternalId < 0) {
+        return false;
+    }
+
+    std::string sourceObjectName;
+    std::string sourceSubName;
+    bool sourceIntersection = false;
+    bool sourceVertex = false;
+    if (!ViewProviderSketchLazySelectionAttorney::getLazyExternalSourceReference(
+            *sketchgui,
+            lazyExternalId,
+            sourceObjectName,
+            sourceSubName,
+            sourceIntersection,
+            sourceVertex
+        )) {
+        return false;
+    }
+    if (sourceVertex != lazyExternalVertex) {
         return false;
     }
 
     item.GeoId = Sketcher::GeoEnum::GeoUndef;
-    item.PosId = lazyVertex ? Sketcher::PointPos::start : Sketcher::PointPos::none;
-    item.LazyExternalId = lazyId;
+    item.PosId = sourceVertex ? Sketcher::PointPos::start : Sketcher::PointPos::none;
+    item.LazyExternalId = lazyExternalId;
     item.IsLazyExternal = true;
-    item.LazyExternalVertex = lazyVertex;
+    item.LazyExternalVertex = sourceVertex;
+    item.LazyExternalSourceObjectName = std::move(sourceObjectName);
+    item.LazyExternalSubelement = std::move(sourceSubName);
+    item.LazyExternalIntersection = sourceIntersection;
 
     if (subName) {
-        *subName = makeLazyExternalSubName(lazyId, lazyVertex);
+        *subName = makeLazyExternalSubelement(lazyExternalId, sourceVertex);
     }
     if (geoType) {
-        *geoType = lazyVertex ? Part::GeomPoint::getClassTypeId()
-                              : sketchgui->getLazyExternalGeometryType(lazyId);
+        *geoType = sourceVertex
+            ? Part::GeomPoint::getClassTypeId()
+            : ViewProviderSketchLazySelectionAttorney::getLazyExternalGeometryType(
+                  *sketchgui,
+                  lazyExternalId
+              );
     }
 
     return true;
 }
 
-bool materializeSelectionPair(ViewProviderSketch* sketchgui, SelIdPair& item)
+bool materializeSelectionPair(
+    ViewProviderSketch* sketchgui,
+    SelIdPair& item,
+    bool preserveLazyExternalIdentity
+)
 {
     if (!item.IsLazyExternal) {
         return true;
@@ -174,34 +335,91 @@ bool materializeSelectionPair(ViewProviderSketch* sketchgui, SelIdPair& item)
         return false;
     }
 
-    const int geoId = sketchgui->materializeLazyExternalReference(item.LazyExternalId);
+    const int geoId = ViewProviderSketchLazySelectionAttorney::materializeLazyExternalSourceReference(
+        *sketchgui,
+        item.LazyExternalSourceObjectName,
+        item.LazyExternalSubelement,
+        item.LazyExternalIntersection,
+        false
+    );
     if (geoId == Sketcher::GeoEnum::GeoUndef) {
         return false;
     }
 
+    const bool wasLazyVertex = item.LazyExternalVertex;
     item.GeoId = geoId;
-    item.PosId = item.LazyExternalVertex ? Sketcher::PointPos::start : Sketcher::PointPos::none;
+    item.PosId = wasLazyVertex ? Sketcher::PointPos::start : Sketcher::PointPos::none;
+
+    if (!preserveLazyExternalIdentity) {
+        item.LazyExternalId = -1;
+        item.IsLazyExternal = false;
+        item.LazyExternalVertex = false;
+        item.LazyExternalSourceObjectName.clear();
+        item.LazyExternalSubelement.clear();
+        item.LazyExternalIntersection = false;
+    }
+
     return true;
 }
 
+bool materializeLazyExternalSelection(
+    ViewProviderSketch* sketchgui,
+    bool includeLazyExternalVertices,
+    bool includePreselection
+)
+{
+    if (!sketchgui || !sketchgui->getSketchObject()) {
+        return true;
+    }
+
+    bool consumedLazyExternalSelection = false;
+    bool materializationFailed = false;
+    forEachLazyExternalReference(
+        sketchgui,
+        true,
+        includeLazyExternalVertices,
+        includePreselection,
+        [&](int lazyExternalId, bool lazyExternalVertex) {
+            consumedLazyExternalSelection = true;
+            SelIdPair item;
+            if (!makeSelectionPair(sketchgui, lazyExternalId, lazyExternalVertex, item)) {
+                materializationFailed = true;
+                return;
+            }
+            if (!materializeSelectionPair(sketchgui, item, false)) {
+                materializationFailed = true;
+                return;
+            }
+
+            const std::string subName = makeExternalSubNameFromGeoId(item.GeoId);
+            if (!sketchgui->isSelected(subName)) {
+                sketchgui->addSelection(subName);
+            }
+        }
+    );
+
+    if (consumedLazyExternalSelection) {
+        clearPendingSelection(sketchgui);
+    }
+    return !materializationFailed;
+}
 
 }  // namespace
 
-
-ActivatedSelection::ActivatedSelection(
+ActivatedLazySelection::ActivatedLazySelection(
     Gui::Command& command,
     Gui::Document* guiDocument,
-    bool includeLazyVertices,
+    bool includeLazyExternalVertices,
     bool* sharedCommandActive
 )
     : command(&command)
     , sharedCommandActive(sharedCommandActive)
 {
-    begin(guiDocument, includeLazyVertices);
+    begin(guiDocument, includeLazyExternalVertices);
     selection = Gui::Command::getSelection().getSelectionEx();
 }
 
-ActivatedSelection::ActivatedSelection(ActivatedSelection&& other) noexcept
+ActivatedLazySelection::ActivatedLazySelection(ActivatedLazySelection&& other) noexcept
     : command(other.command)
     , sharedCommandActive(other.sharedCommandActive)
     , selection(std::move(other.selection))
@@ -214,69 +432,76 @@ ActivatedSelection::ActivatedSelection(ActivatedSelection&& other) noexcept
     other.abortOnDestroy = false;
 }
 
-ActivatedSelection::~ActivatedSelection()
+ActivatedLazySelection::~ActivatedLazySelection()
 {
     if (abortOnDestroy) {
-        abortLazyCommand();
+        abortLazyExternalCommand();
     }
 }
 
-const std::vector<Gui::SelectionObject>& ActivatedSelection::getSelection() const
+const std::vector<Gui::SelectionObject>& ActivatedLazySelection::getSelection() const
 {
     return selection;
 }
 
-void ActivatedSelection::openCommand(const char* name)
+void ActivatedLazySelection::openCommand(const char* name)
 {
-    if (isLazyCommandActive()) {
+    if (isLazyExternalCommandActive()) {
         return;
     }
 
     command->openCommand(name);
 }
 
-void ActivatedSelection::commitCommand()
+void ActivatedLazySelection::commitCommand()
 {
     command->commitCommand();
-    setLazyCommandActive(false);
+    setLazyExternalCommandActive(false);
     abortOnDestroy = false;
 }
 
-void ActivatedSelection::abortCommand()
+void ActivatedLazySelection::abortCommand()
 {
     command->abortCommand();
-    setLazyCommandActive(false);
+    setLazyExternalCommandActive(false);
     abortOnDestroy = false;
 }
 
-void ActivatedSelection::begin(Gui::Document* guiDocument, bool includeLazyVertices)
+void ActivatedLazySelection::begin(Gui::Document* guiDocument, bool includeLazyExternalVertices)
 {
     auto* sketchgui = getActiveSketchGui(guiDocument);
-    if (!LazySelectionResolver::hasPendingLazySelection(sketchgui, true, includeLazyVertices)) {
+    if (!LazyExternalSelectionResolver::hasPendingLazyExternalSelection(
+            sketchgui,
+            true,
+            includeLazyExternalVertices
+        )) {
         return;
     }
 
     command->openCommand(QT_TRANSLATE_NOOP("Command", "Add constraint"));
-    setLazyCommandActive(true);
+    setLazyExternalCommandActive(true);
 
-    if (!LazySelectionResolver::materializePendingLazySelection(sketchgui, includeLazyVertices)) {
+    if (!LazyExternalSelectionResolver::materializePendingLazyExternalSelection(
+            sketchgui,
+            includeLazyExternalVertices
+        )) {
         abortCommand();
     }
 }
 
-void ActivatedSelection::abortLazyCommand()
+void ActivatedLazySelection::abortLazyExternalCommand()
 {
-    if (isLazyCommandActive()) {
+    if (isLazyExternalCommandActive()) {
         abortCommand();
     }
 }
 
-bool ActivatedSelection::isLazyCommandActive() const
+bool ActivatedLazySelection::isLazyExternalCommandActive() const
 {
     return sharedCommandActive ? *sharedCommandActive : localCommandActive;
 }
 
-void ActivatedSelection::setLazyCommandActive(bool active)
+void ActivatedLazySelection::setLazyExternalCommandActive(bool active)
 {
     if (sharedCommandActive) {
         *sharedCommandActive = active;
@@ -294,88 +519,53 @@ ViewProviderSketch* getActiveSketchGui(Gui::Document* guiDocument)
 bool selectionPairsEqual(const SelIdPair& lhs, const SelIdPair& rhs)
 {
     if (lhs.IsLazyExternal || rhs.IsLazyExternal) {
-        return lhs.IsLazyExternal == rhs.IsLazyExternal && lhs.LazyExternalId == rhs.LazyExternalId
-            && lhs.LazyExternalVertex == rhs.LazyExternalVertex;
+        return lhs.IsLazyExternal == rhs.IsLazyExternal
+            && lhs.LazyExternalVertex == rhs.LazyExternalVertex
+            && lhs.LazyExternalSourceObjectName == rhs.LazyExternalSourceObjectName
+            && lhs.LazyExternalSubelement == rhs.LazyExternalSubelement
+            && lhs.LazyExternalIntersection == rhs.LazyExternalIntersection;
     }
     return lhs.GeoId == rhs.GeoId && lhs.PosId == rhs.PosId;
 }
 
-std::optional<LazyExternalSubName> parseLazyExternalSubName(const std::string& subName)
+std::optional<LazyExternalSubelement> parseLazyExternalSubelement(const std::string& subName)
 {
     const Data::IndexedName indexedSubName(subName.c_str());
     if (!indexedSubName || indexedSubName.getIndex() <= 0) {
         return std::nullopt;
     }
 
-    if (std::strcmp(indexedSubName.getType(), LazyExternalVertexPrefix) == 0) {
-        return LazyExternalSubName {indexedSubName.getIndex(), true};
+    if (std::strcmp(indexedSubName.getType(), LazyExternalVertexSubelementPrefix) == 0) {
+        return LazyExternalSubelement {indexedSubName.getIndex(), true};
     }
-    if (std::strcmp(indexedSubName.getType(), LazyExternalEdgePrefix) == 0) {
-        return LazyExternalSubName {indexedSubName.getIndex(), false};
+    if (std::strcmp(indexedSubName.getType(), LazyExternalEdgeSubelementPrefix) == 0) {
+        return LazyExternalSubelement {indexedSubName.getIndex(), false};
     }
     return std::nullopt;
 }
 
-bool LazySelectionResolver::hasPendingLazySelection(
+bool LazyExternalSelectionResolver::hasPendingLazyExternalSelection(
     ViewProviderSketch* sketchgui,
     bool includeEdges,
     bool includeVertices
 )
 {
     bool hasPending = false;
-    forEachPendingLazyReference(sketchgui, includeEdges, includeVertices, [&](int, bool) {
+    forEachPendingLazyExternalReference(sketchgui, includeEdges, includeVertices, [&](int, bool) {
         hasPending = true;
     });
     return hasPending;
 }
 
-bool LazySelectionResolver::materializePendingLazySelection(
+bool LazyExternalSelectionResolver::materializePendingLazyExternalSelection(
     ViewProviderSketch* sketchgui,
-    bool includeLazyVertices
+    bool includeLazyExternalVertices
 )
 {
-    if (!sketchgui || !sketchgui->getSketchObject()) {
-        return true;
-    }
-
-    bool consumedLazySelection = false;
-    bool materializationFailed = false;
-    forEachPendingLazyReference(sketchgui, true, includeLazyVertices, [&](int lazyId, bool) {
-        consumedLazySelection = true;
-        const int geoId = sketchgui->materializeLazyExternalReference(lazyId);
-        if (geoId == Sketcher::GeoEnum::GeoUndef) {
-            materializationFailed = true;
-            return;
-        }
-
-        const std::string subName = makeExternalSubNameFromGeoId(geoId);
-        if (!sketchgui->isSelected(subName)) {
-            sketchgui->addSelection(subName);
-        }
-    });
-
-    if (consumedLazySelection) {
-        clearPendingSelection(sketchgui);
-    }
-    return !materializationFailed;
+    return materializeLazyExternalSelection(sketchgui, includeLazyExternalVertices, true);
 }
 
-void LazySelectionResolver::appendPendingLazySubNames(
-    ViewProviderSketch* sketchgui,
-    std::vector<std::string>& subNames,
-    bool includeEdges,
-    bool includeVertices
-)
-{
-    forEachPendingLazyReference(sketchgui, includeEdges, includeVertices, [&](int lazyId, bool lazyVertex) {
-        const std::string lazySubName = makeLazyExternalSubName(lazyId, lazyVertex);
-        if (!containsSubName(subNames, lazySubName)) {
-            subNames.push_back(lazySubName);
-        }
-    });
-}
-
-void LazySelectionResolver::appendPendingLazySelectionPairs(
+void LazyExternalSelectionResolver::appendPendingLazyExternalSelectionPairs(
     ViewProviderSketch* sketchgui,
     std::vector<SelIdPair>& points,
     std::vector<SelIdPair>& curves,
@@ -383,69 +573,94 @@ void LazySelectionResolver::appendPendingLazySelectionPairs(
     bool includeVertices
 )
 {
-    forEachPendingLazyReference(sketchgui, includeEdges, includeVertices, [&](int lazyId, bool lazyVertex) {
-        SelIdPair item;
-        if (!makeSelectionPair(sketchgui, lazyId, lazyVertex, item)) {
-            return;
-        }
+    forEachPendingLazyExternalReference(
+        sketchgui,
+        includeEdges,
+        includeVertices,
+        [&](int lazyExternalId, bool lazyExternalVertex) {
+            SelIdPair item;
+            if (!makeSelectionPair(sketchgui, lazyExternalId, lazyExternalVertex, item)) {
+                return;
+            }
 
-        auto& target = lazyVertex ? points : curves;
-        if (!containsSelectionPair(target, item)) {
-            target.push_back(item);
+            auto& target = lazyExternalVertex ? points : curves;
+            if (!containsSelectionPair(target, item)) {
+                target.push_back(item);
+            }
+            setLazyExternalSelectionSelected(sketchgui, item, true);
         }
-        sketchgui->setLazyExternalReferenceSelected(lazyId, true);
-    });
+    );
 }
 
-void LazySelectionResolver::clearPendingLazySelection(ViewProviderSketch* sketchgui)
+void LazyExternalSelectionResolver::clearPendingLazyExternalSelection(ViewProviderSketch* sketchgui)
 {
     clearPendingSelection(sketchgui);
 }
 
-bool LazySelectionResolver::makeLazySelectionPair(
+bool LazyExternalSelectionResolver::makeLazyExternalSelectionPair(
     ViewProviderSketch* sketchgui,
-    int lazyId,
-    bool lazyVertex,
+    int lazyExternalId,
+    bool lazyExternalVertex,
     SelIdPair& item,
     std::string* subName,
     Base::Type* geoType
 )
 {
-    return makeSelectionPair(sketchgui, lazyId, lazyVertex, item, subName, geoType);
+    return makeSelectionPair(sketchgui, lazyExternalId, lazyExternalVertex, item, subName, geoType);
 }
 
-void LazySelectionResolver::setLazySelectionSelected(
+void LazyExternalSelectionResolver::setLazyExternalSelectionSelected(
     ViewProviderSketch* sketchgui,
     const SelIdPair& item,
     bool selected
 )
 {
-    if (sketchgui && item.IsLazyExternal) {
-        sketchgui->setLazyExternalReferenceSelected(item.LazyExternalId, selected);
+    if (!sketchgui || !item.IsLazyExternal || item.LazyExternalId < 0) {
+        return;
+    }
+
+    if (selected) {
+        ViewProviderSketchLazySelectionAttorney::selectLazyExternalReference(
+            *sketchgui,
+            item.LazyExternalId,
+            false
+        );
+    }
+    else if (
+        ViewProviderSketchLazySelectionAttorney::isLazyExternalReferenceSelected(
+            *sketchgui,
+            item.LazyExternalId
+        )
+    ) {
+        ViewProviderSketchLazySelectionAttorney::selectLazyExternalReference(
+            *sketchgui,
+            item.LazyExternalId,
+            true
+        );
     }
 }
 
-bool LazySelectionResolver::materializeLazySelectionPairs(
+bool LazyExternalSelectionResolver::materializeLazyExternalSelectionPairs(
     ViewProviderSketch* sketchgui,
-    std::vector<SelIdPair>& items
+    std::vector<SelIdPair>& items,
+    bool preserveLazyExternalIdentity
 )
 {
-    bool consumedLazySelection = false;
+    bool consumedLazyExternalSelection = false;
     for (auto& item : items) {
-        consumedLazySelection = consumedLazySelection || item.IsLazyExternal;
-        if (!materializeSelectionPair(sketchgui, item)) {
-            if (consumedLazySelection) {
+        consumedLazyExternalSelection = consumedLazyExternalSelection || item.IsLazyExternal;
+        if (!materializeSelectionPair(sketchgui, item, preserveLazyExternalIdentity)) {
+            if (consumedLazyExternalSelection) {
                 clearPendingSelection(sketchgui);
             }
             return false;
         }
     }
 
-    if (consumedLazySelection) {
+    if (consumedLazyExternalSelection) {
         clearPendingSelection(sketchgui);
     }
     return true;
 }
-
 
 }  // namespace SketcherGui

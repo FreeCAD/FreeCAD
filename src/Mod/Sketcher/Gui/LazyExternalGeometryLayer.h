@@ -24,12 +24,11 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
-#include <set>
 #include <string>
 #include <vector>
 
-#include <Base/Tools2D.h>
 #include <Base/Vector3D.h>
 
 class SoCoordinate3;
@@ -78,15 +77,61 @@ int resolveExternalGeometryIndex(
     Sketcher::SketchObject* sketch,
     App::DocumentObject* sourceObject,
     const std::string& subName,
-    bool intersection,
-    int fallbackIndex
+    bool intersection
 );
 
 struct DrawingParameters;
 
+/// Owns the edit-mode overlay used for on-demand external geometry previews.
+///
+/// The layer stores temporary source references and preview geometry only; it does not add
+/// anything to SketchObject::ExternalGeometry.
 class LazyExternalGeometryLayer
 {
 public:
+    LazyExternalGeometryLayer();
+    ~LazyExternalGeometryLayer();
+
+    LazyExternalGeometryLayer(const LazyExternalGeometryLayer&) = delete;
+    LazyExternalGeometryLayer& operator=(const LazyExternalGeometryLayer&) = delete;
+
+    void attachTo(SoSeparator* editRoot);
+    void detach();
+
+    /// Add or reuse a temporary preview for a source object subelement. Returns the lazy id, or -1.
+    int preselectSourceReference(
+        Sketcher::SketchObject* sketch,
+        App::DocumentObject* sourceObject,
+        const std::string& subName,
+        bool intersection = false
+    );
+
+    /// Return the first preview geometry for the lazy id, or nullptr if the id is not active.
+    const Part::Geometry* getPreviewGeometry(int id) const;
+    bool isElementVertex(int id) const;
+    /// Resolve a lazy id back to its source object name, subelement, and mode flags.
+    bool getSourceReference(
+        int id,
+        std::string& sourceObjectName,
+        std::string& subName,
+        bool& intersection,
+        bool& vertex
+    ) const;
+
+    bool selectElement(int id, bool selected);
+    bool isElementSelected(int id) const;
+    std::vector<int> getSelectedElementIds() const;
+    void clearSelectedElements();
+    void clearPreselectedElement();
+
+    /// Temporarily disables preview picking/selection without destroying already tracked elements.
+    void setEnabled(bool enabled);
+    bool isEnabled() const;
+
+    /// Rebuild the Coin nodes from the currently tracked preview elements.
+    void draw(const DrawingParameters& parameters, int viewOrientationFactor);
+
+private:
     enum class ElementType
     {
         Edge,
@@ -106,98 +151,38 @@ public:
         std::string subName;
         ElementType type = ElementType::Edge;
         bool intersection = false;
+        bool selected = false;
         std::vector<std::unique_ptr<Part::Geometry>> geometry;
-    };
 
-    struct HitResult
-    {
-        int id = -1;
-        bool isVertex = false;
-        double distance = 0.0;
-
-        bool isValid() const
+        bool isVertex() const
         {
-            return id >= 0;
+            return type == ElementType::Vertex;
         }
-    };
-
-    LazyExternalGeometryLayer();
-    ~LazyExternalGeometryLayer();
-
-    LazyExternalGeometryLayer(const LazyExternalGeometryLayer&) = delete;
-    LazyExternalGeometryLayer& operator=(const LazyExternalGeometryLayer&) = delete;
-
-    void attachTo(SoSeparator* editRoot);
-    void detach();
-
-    void clear();
-    void rebuildSources(Sketcher::SketchObject* sketch);
-    bool syncSources(Sketcher::SketchObject* sketch);
-
-    const Element* getElement(int id) const;
-    const Part::Geometry* getPreviewGeometry(int id) const;
-    bool isElementVertex(int id) const;
-    bool isElementSelected(int id) const;
-    std::vector<int> getSelectedElementIds() const;
-
-    void setPreselectedElement(int id);
-    void clearPreselectedElement();
-    void setSelectedElement(int id, bool selected);
-    void clearSelectedElements();
-
-    void setEnabled(bool enabled);
-    bool isEnabled() const;
-    void setShowHiddenEdges(bool showHidden);
-    HitResult findClosestElement(
-        Sketcher::SketchObject* sketch,
-        const Base::Vector2d& point,
-        double maxDistance
-    );
-
-    void draw(const DrawingParameters& parameters, int viewOrientationFactor);
-
-private:
-    struct Source
-    {
-        App::DocumentObject* object = nullptr;
-        int edgeCount = 0;
-        int vertexCount = 0;
     };
 
     int addSourceReference(
         Sketcher::SketchObject* sketch,
         App::DocumentObject* sourceObject,
         const std::string& subName,
-        bool intersection,
-        bool buildPreview = true,
-        const std::vector<std::unique_ptr<Part::Geometry>>* visibleGeometry = nullptr
+        bool intersection
     );
 
     Element* getElement(int id);
+    const Element* getElement(int id) const;
     const Element* findElementBySource(
         App::DocumentObject* sourceObject,
         const std::string& subName,
         bool intersection
     ) const;
 
-    static std::vector<Source> collectSources(Sketcher::SketchObject* sketch);
-    static std::vector<std::string> getSourceNames(const std::vector<Source>& sources);
-
     void createNodes();
     void resetNodes();
-    void rebuildFromSourceObjects(
-        Sketcher::SketchObject* sketch,
-        const std::vector<Source>& sources,
-        std::vector<std::string> sourceNames
-    );
-    bool ensurePreview(Sketcher::SketchObject* sketch, Element& element);
-    void appendElementToCoin(
+    void appendElementGeometry(
         const Element& element,
         std::vector<Base::Vector3d>& points,
         std::vector<Base::Vector3d>& curveCoords,
         std::vector<int32_t>& curveVertexCounts
     );
-    bool shouldDraw(const Element& element) const;
 
 private:
     SoSeparator* parentRoot = nullptr;
@@ -211,11 +196,8 @@ private:
     SoLineSet* highlightCurveSet = nullptr;
 
     std::vector<Element> elements;
-    std::vector<std::string> sourceObjectNames;
     int preselectedElementId = -1;
-    std::set<int> selectedElementIds;
     bool enabled = true;
-    bool showHiddenEdges = true;
     int nextId = 1;
 };
 

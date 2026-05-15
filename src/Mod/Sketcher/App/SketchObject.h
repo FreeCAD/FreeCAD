@@ -248,18 +248,16 @@ public:
         bool defining = false,
         bool intersection = false
     );
-    /// Build the projected geometry for an external edge/vertex without adding it to the sketch.
+    /**
+     * Build a preview of the projected external edge/vertex without adding it to the sketch.
+     *
+     * The returned geometries are temporary drawing/selection previews owned by the caller. This
+     * function must not change ExternalGeometry, ExternalTypes, expressions, or constraints.
+     */
     std::vector<std::unique_ptr<Part::Geometry>> buildProjectedExternalGeometry(
         App::DocumentObject* Obj,
         const char* SubName,
         bool intersection = false
-    ) const;
-    std::vector<std::unique_ptr<Part::Geometry>> buildVisibleExternalGeometryOnSketchPlane(
-        App::DocumentObject* Obj
-    ) const;
-    bool isProjectedExternalGeometryVisibleOnSketchPlane(
-        const std::vector<std::unique_ptr<Part::Geometry>>& projectedGeometry,
-        const std::vector<std::unique_ptr<Part::Geometry>>& visibleGeometry
     ) const;
     /** delete external
      *  ExtGeoId >= 0 with 0 corresponding to the first user defined
