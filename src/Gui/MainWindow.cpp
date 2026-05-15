@@ -350,6 +350,12 @@ public:
 protected:
     void closeEvent(QCloseEvent* event) override
     {
+        if (property("MainWindowClosing").toBool() || !event->spontaneous()) {
+            setProperty("ClosedByApplication", true);
+            event->accept();
+            return;
+        }
+
         event->ignore();
         if (auto mainWindow = getMainWindow()) {
             mainWindow->dockPythonConsole();
@@ -1955,6 +1961,10 @@ void MainWindow::closeEvent(QCloseEvent* e)
         Q_EMIT mainWindowClosed();
         d->activityTimer->stop();
 
+        if (d->pythonConsoleWindow) {
+            d->pythonConsoleWindow->setProperty("MainWindowClosing", true);
+        }
+
         // https://forum.freecad.org/viewtopic.php?f=8&t=67748
         // When the session manager jumps in it can happen that the closeEvent()
         // function is triggered twice and for the second call the main window might be
@@ -2452,7 +2462,11 @@ void MainWindow::saveWindowSettings(bool canDelay)
     if (d->pythonConsoleWindow) {
         auto group = d->hGrp->GetGroup("PythonConsoleWindow");
         group->SetBool("Standalone", isPythonConsoleStandalone());
-        group->SetBool("Visible", d->pythonConsoleWindow->isVisible());
+        group->SetBool(
+            "Visible",
+            d->pythonConsoleWindow->isVisible()
+                || d->pythonConsoleWindow->property("ClosedByApplication").toBool()
+        );
         group->SetBool("DockVisibleBeforeWindow", d->pythonConsoleDockVisibleBeforeWindow);
         group->SetASCII("Geometry", d->pythonConsoleWindow->saveGeometry().toBase64().constData());
     }
