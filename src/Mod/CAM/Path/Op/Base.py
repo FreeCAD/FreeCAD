@@ -861,7 +861,7 @@ class ObjectOp(object):
         if obj.Comment:
             self.commandlist.append(Path.Command("(%s)" % obj.Comment))
 
-        result = self.opExecute(obj)
+        self.opExecute(obj)
 
         if self.commandlist and (FeatureHeights & self.opFeatures(obj)):
             # Let's finish by rapid to clearance...just for safety
@@ -914,7 +914,6 @@ class ObjectOp(object):
         obj.Path = path
         obj.CycleTime = getCycleTimeEstimate(obj)
         self.job.Proxy.getCycleTime()
-        return result
 
     def addBase(self, obj, base, sub):
         Path.Log.track(obj, base, sub)
