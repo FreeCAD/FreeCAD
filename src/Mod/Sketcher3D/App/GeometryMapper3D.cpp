@@ -42,6 +42,7 @@ void GeometryMapper3D::push(
 {
     perGeo.clear();
 
+    int firstPointHandle = -1;
     for (std::size_t i = 0; i < geoList.size(); ++i) {
         const Part::Geometry* g = geoList[i];
         if (!g) {
@@ -51,7 +52,11 @@ void GeometryMapper3D::push(
 
         if (g->is<Part::GeomPoint>()) {
             const Base::Vector3d pos = static_cast<const Part::GeomPoint*>(g)->getPoint();
-            perGeo[geoId].pointHandle = solver.addPoint(pos);
+            const int h = solver.addPoint(pos);
+            perGeo[geoId].pointHandle = h;
+            if (firstPointHandle < 0) {
+                firstPointHandle = h;
+            }
         }
         else if (g->is<Part::GeomLineSegment>()) {
             const auto* seg = static_cast<const Part::GeomLineSegment*>(g);
@@ -60,8 +65,17 @@ void GeometryMapper3D::push(
             m.endHandle = solver.addPoint(seg->getEndPoint());
             m.lineHandle = solver.addLine(m.startHandle, m.endHandle);
             perGeo[geoId] = m;
+            if (firstPointHandle < 0) {
+                firstPointHandle = m.startHandle;
+            }
         }
         // Circle / Arc / others deferred.
+    }
+
+    // Ground the first point to remove the 3 translational DOFs.
+    // so this will anchor the sketch
+    if (firstPointHandle >= 0) {
+        solver.groundPoint(firstPointHandle, 0);
     }
 
     for (std::size_t ci = 0; ci < constraints.size(); ++ci) {
@@ -69,6 +83,17 @@ void GeometryMapper3D::push(
         const int tagId = static_cast<int>(ci) + 1;  // GCS tag 0 is reserved.
 
         switch (c.Type) {
+            case Constraint3D::Distance3D: {
+                if (c.getElements().size() < 2) {
+                    break;
+                }
+                const int a = resolvePointHandle(c.getElements()[0]);
+                const int b = resolvePointHandle(c.getElements()[1]);
+                if (a >= 0 && b >= 0) {
+                    solver.addConstraintDistance(tagId, a, b, c.Value);
+                }
+                break;
+            }
             case Constraint3D::Coincident3D: {
                 if (c.getElements().size() < 2) {
                     break;
@@ -77,6 +102,37 @@ void GeometryMapper3D::push(
                 const int b = resolvePointHandle(c.getElements()[1]);
                 if (a >= 0 && b >= 0) {
                     solver.addConstraintCoincident(tagId, a, b);
+                }
+                break;
+            }
+            case Constraint3D::Parallel3D: {
+                if (c.getElements().size() < 2) {
+                    break;
+                }
+                const int la = resolveLineHandle(c.getElements()[0]);
+                const int lb = resolveLineHandle(c.getElements()[1]);
+                if (la >= 0 && lb >= 0) {
+                    solver.addConstraintParallel(tagId, la, lb);
+                }
+                break;
+            }
+            case Constraint3D::AlongX:
+            case Constraint3D::AlongY:
+            case Constraint3D::AlongZ: {
+                if (c.getElements().size() != 1) {
+                    break;
+                }
+                const int l = resolveLineHandle(c.getElements()[0]);
+                if (l >= 0) {
+                    if (c.Type == Constraint3D::AlongX) {
+                        solver.addConstraintAlongX(tagId, l);
+                    }
+                    else if (c.Type == Constraint3D::AlongY) {
+                        solver.addConstraintAlongY(tagId, l);
+                    }
+                    else if (c.Type == Constraint3D::AlongZ) {
+                        solver.addConstraintAlongZ(tagId, l);
+                    }
                 }
                 break;
             }
@@ -97,15 +153,24 @@ int GeometryMapper3D::resolvePointHandle(const GeoElementId3D& ref) const
 
     switch (ref.Pos) {
         case PointPos::none:
-            return m.pointHandle;  // Geometry is a standalone point.
+            return m.pointHandle;
         case PointPos::start:
             return m.startHandle;
         case PointPos::end:
             return m.endHandle;
         case PointPos::mid:
-            return -1;  // Not yet meaningful for Point/Line.
+            return -1;
     }
     return -1;
+}
+
+int GeometryMapper3D::resolveLineHandle(const GeoElementId3D& ref) const
+{
+    auto it = perGeo.find(ref.GeoId);
+    if (it == perGeo.end()) {
+        return -1;
+    }
+    return it->second.lineHandle;
 }
 
 void GeometryMapper3D::writeBack(const Solver3D& solver, std::vector<Part::Geometry*>& geoList) const

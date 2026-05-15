@@ -27,12 +27,21 @@
 
 #include <BRep_Tool.hxx>
 #include <Standard_Failure.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Pnt.hxx>
+#include <TopExp.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopoDS.hxx>
+
+#include <App/Document.h>
+#include <App/ElementMap.h>
+#include <App/IndexedName.h>
+#include <App/MappedName.h>
+#include <Base/Console.h>
+#include <Base/Vector3D.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include "GeometryMapper3D.h"
 #include "Sketch3DObject.h"
@@ -80,37 +89,124 @@ int Sketch3DObject::addConstraint(const Constraint3D& c)
     return idx;
 }
 
-GeoElementId3D Sketch3DObject::resolvePickedVertex(const TopoDS_Vertex& vertex) const
+
+namespace
 {
-    if (vertex.IsNull()) {
+// extract the stable geometry id and vertex position from names
+bool parseMappedName(const char* mapped, long& stableId, PointPos& pos)
+{
+    if (!mapped || mapped[0] != 'g') {
+        return false;
+    }
+    const char* p = mapped + 1;
+    char* end = nullptr;
+    const long g = std::strtol(p, &end, 10);
+    if (end == p) {
+        return false;
+    }
+    stableId = g;
+    pos = PointPos::none;
+    if (*end == 'v') {
+        const char* q = end + 1;
+        const long v = std::strtol(q, &end, 10);
+        if (end == q || v < 0 || v > 3) {
+            return false;
+        }
+        pos = static_cast<PointPos>(v);
+    }
+    return true;
+}
+
+GeoKind kindFromGeometry(const Part::Geometry* g)
+{
+    if (!g) {
+        return GeoKind::Unknown;
+    }
+    if (g->is<Part::GeomPoint>()) {
+        return GeoKind::Point;
+    }
+    if (g->is<Part::GeomLineSegment>()) {
+        return GeoKind::Line;
+    }
+    // Extend with Circle/Arc once they're wired through buildShape.
+    return GeoKind::Unknown;
+}
+}  // namespace
+
+GeoElementId3D Sketch3DObject::resolveSubName(const std::string& subname) const
+{
+    if (subname.empty()) {
         return {};
     }
-    const gp_Pnt pnt = BRep_Tool::Pnt(vertex);
-    const Base::Vector3d target(pnt.X(), pnt.Y(), pnt.Z());
+
+    Data::MappedElement el = Shape.getShape().getElementName(subname.c_str());
+    if (!el.name) {
+        return {};
+    }
+
+    long stableId = -1;
+    PointPos pos = PointPos::none;
+    const std::string mapped = el.name.toString();
+    if (!parseMappedName(mapped.c_str(), stableId, pos)) {
+        return {};
+    }
+
+    // Stable id is current positional GeoId.
+    auto it = stableToIndex.find(stableId);
+    if (it == stableToIndex.end()) {
+        return {};
+    }
+    const int geoId = it->second;
 
     const auto& geos = Geometry.getValues();
-    constexpr double tol = 1e-6;
-    for (std::size_t i = 0; i < geos.size(); ++i) {
-        const Part::Geometry* g = geos[i];
-        if (!g) {
+    if (geoId < 0 || geoId >= static_cast<int>(geos.size())) {
+        return {};
+    }
+    return {geoId, pos, kindFromGeometry(geos[geoId])};
+}
+
+bool Sketch3DObject::arePointsCoincident3D(const GeoElementId3D& a, const GeoElementId3D& b) const
+{
+    if (!a.isValid() || !b.isValid()) {
+        return false;
+    }
+    if (a == b) {
+        return true;
+    }
+
+    // graph edges means Two points are already coincident if there is any path from one to
+    // the other.
+    std::map<GeoElementId3D, std::vector<GeoElementId3D>> coincident;
+    for (const Constraint3D& c : Constraints.getConstraints()) {
+        if (c.Type != Constraint3D::Coincident3D || c.getElements().size() < 2) {
             continue;
         }
-        const int geoId = static_cast<int>(i);
-        if (const auto* gp = dynamic_cast<const Part::GeomPoint*>(g)) {
-            if ((gp->getPoint() - target).Length() < tol) {
-                return {geoId, PointPos::none, GeoKind::Point};
-            }
+
+        const auto& elements = c.getElements();
+        coincident[elements[0]].push_back(elements[1]);
+        coincident[elements[1]].push_back(elements[0]);
+    }
+
+    std::vector<GeoElementId3D> pending {a};
+    std::set<GeoElementId3D> visited;
+    while (!pending.empty()) {
+        const GeoElementId3D current = pending.back();
+        pending.pop_back();
+
+        if (current == b) {
+            return true;
         }
-        else if (const auto* ls = dynamic_cast<const Part::GeomLineSegment*>(g)) {
-            if ((ls->getStartPoint() - target).Length() < tol) {
-                return {geoId, PointPos::start, GeoKind::Line};
-            }
-            if ((ls->getEndPoint() - target).Length() < tol) {
-                return {geoId, PointPos::end, GeoKind::Line};
-            }
+        if (!visited.insert(current).second) {
+            continue;
+        }
+
+        auto it = coincident.find(current);
+        if (it != coincident.end()) {
+            pending.insert(pending.end(), it->second.begin(), it->second.end());
         }
     }
-    return {};
+
+    return false;
 }
 
 short Sketch3DObject::mustExecute() const
@@ -119,6 +215,39 @@ short Sketch3DObject::mustExecute() const
         return 1;
     }
     return Part::Feature::mustExecute();
+}
+
+void Sketch3DObject::onChanged(const App::Property* prop)
+{
+    if (prop == &Geometry) {
+        assignStableIds();
+    }
+    Part::Feature::onChanged(prop);
+}
+
+void Sketch3DObject::assignStableIds()
+{
+    stableToIndex.clear();
+    const auto& geos = Geometry.getValues();
+    for (long i = 0; i < static_cast<long>(geos.size()); ++i) {
+        const Part::Geometry* geo = geos[i];
+        if (!geo) {
+            continue;
+        }
+        auto gf = Sketcher::GeometryFacade::getFacade(geo);
+        if (gf->getId() == 0) {
+            gf->setId(++geoLastId);
+        }
+        else if (gf->getId() > geoLastId) {
+            geoLastId = gf->getId();
+        }
+        // Defensive duplicate handling
+        while (!stableToIndex.insert({gf->getId(), static_cast<int>(i)}).second) {
+            Base::Console()
+                .warning("Sketcher3D: duplicate stable id %ld -> %ld\n", gf->getId(), geoLastId + 1);
+            gf->setId(++geoLastId);
+        }
+    }
 }
 
 void Sketch3DObject::acceptGeometry()
@@ -156,7 +285,17 @@ int Sketch3DObject::solve(bool updateGeo)
     mapper.push(Geometry.getValues(), Constraints.getConstraints(), solver);
     const int status = solver.solve();
 
-    if (updateGeo && status == Solver3D::OK) {
+    if (updateGeo && status != Solver3D::OK && status != Solver3D::Redundant) {
+        Base::Console().warning(
+            "Sketcher3D debug: skipping geometry writeback because solver status=%d\n",
+            status
+        );
+    }
+
+    // write back on Redundant too, the GCS numeric solve succeeded
+    // as they are not a failure.
+    const bool solved = (status == Solver3D::OK || status == Solver3D::Redundant);
+    if (updateGeo && solved) {
         // Clone the list, update values in place, then reassign so the
         // property transaction captures the change.
         std::vector<Part::Geometry*> updated;
@@ -205,13 +344,55 @@ App::DocumentObjectExecReturn* Sketch3DObject::execute()
     }
 }
 
+Part::TopoShape Sketch3DObject::makeNamedEdge(const Part::Geometry* geo, const std::string& edgeName) const
+{
+    Part::TopoShape shape(geo->toShape());
+    if (!shape.hasElementMap()) {
+        shape.resetElementMap(std::make_shared<Data::ElementMap>());
+    }
+    shape.setElementName(
+        Data::IndexedName::fromConst("Edge", 1),
+        Data::MappedName::fromRawData(edgeName.c_str()),
+        0L
+    );
+
+    const auto* curve = dynamic_cast<const Part::GeomBoundedCurve*>(geo);
+    if (!curve) {
+        return shape;
+    }
+
+    TopTools_IndexedMapOfShape vmap;
+    TopExp::MapShapes(shape.getShape(), TopAbs_VERTEX, vmap);
+    const Base::Vector3d ends[] = {curve->getStartPoint(), curve->getEndPoint()};
+    const PointPos posIds[] = {PointPos::start, PointPos::end};
+    for (int i = 1; i <= vmap.Extent(); ++i) {
+        const gp_Pnt gpt = BRep_Tool::Pnt(TopoDS::Vertex(vmap(i)));
+        const Base::Vector3d pt(gpt.X(), gpt.Y(), gpt.Z());
+        for (std::size_t j = 0; j < sizeof(posIds) / sizeof(posIds[0]); ++j) {
+            if (ends[j] == pt) {
+                const std::string vname = edgeName + 'v'
+                    + std::to_string(static_cast<int>(posIds[j]));
+                shape.setElementName(
+                    Data::IndexedName::fromConst("Vertex", i),
+                    Data::MappedName::fromRawData(vname.c_str()),
+                    0L
+                );
+                break;
+            }
+        }
+    }
+    return shape;
+}
+
 void Sketch3DObject::buildShape()
 {
-    std::vector<Part::TopoShape> shapes;
+    std::vector<Part::TopoShape> edges;
+    std::vector<Part::TopoShape> vertices;
     const auto& geos = Geometry.getValues();
-    shapes.reserve(geos.size());
+    edges.reserve(geos.size());
 
-    for (const Part::Geometry* g : geos) {
+    for (std::size_t i = 0; i < geos.size(); ++i) {
+        const Part::Geometry* g = geos[i];
         if (!g) {
             continue;
         }
@@ -219,13 +400,52 @@ void Sketch3DObject::buildShape()
         if (occtShape.IsNull()) {
             continue;
         }
-        shapes.emplace_back(occtShape);
+        // The mapped name uses the stable id
+        const long stableId = Sketcher::GeometryFacade::getFacade(g)->getId();
+        const std::string gname = "g" + std::to_string(stableId);
+
+        if (g->is<Part::GeomPoint>()) {
+            Part::TopoShape v {TopoDS::Vertex(occtShape)};
+            if (!v.hasElementMap()) {
+                v.resetElementMap(std::make_shared<Data::ElementMap>());
+            }
+            v.setElementName(
+                Data::IndexedName::fromConst("Vertex", 1),
+                Data::MappedName::fromRawData(gname.c_str()),
+                0L
+            );
+            vertices.push_back(v);
+            vertices.back().copyElementMap(v, Part::OpCodes::Sketch3D);
+        }
+        else if (g->is<Part::GeomLineSegment>()) {
+            edges.push_back(makeNamedEdge(g, gname));
+        }
+        // Extend with Circle/Arc/Ellipse/BSpline.
     }
 
-    if (shapes.empty()) {
+    if (edges.empty() && vertices.empty()) {
         Shape.setValue(Part::TopoShape());
         return;
     }
 
-    Shape.setValue(Part::TopoShape().makeElementCompound(shapes));
+    auto* doc = getDocument();
+    Part::TopoShape result(0, doc ? doc->getStringHasher() : nullptr);
+
+    if (vertices.empty()) {
+        result.makeElementWires(edges, Part::OpCodes::Sketch3D);
+    }
+    else {
+        std::vector<Part::TopoShape> all;
+        if (!edges.empty()) {
+            auto wires = Part::TopoShape().makeElementWires(edges, Part::OpCodes::Sketch3D);
+            for (const auto& w : wires.getSubTopoShapes(TopAbs_WIRE)) {
+                all.push_back(w);
+            }
+        }
+        all.insert(all.end(), vertices.begin(), vertices.end());
+        result.makeElementCompound(all);
+    }
+
+    result.Tag = getID();
+    Shape.setValue(result);
 }

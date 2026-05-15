@@ -26,9 +26,6 @@
 #ifndef SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
 #define SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
 
-
-#include <memory>
-
 #include <QCoreApplication>
 
 #include <Base/Vector3D.h>
@@ -77,13 +74,11 @@ public:
     {
         return planeBase;
     }
-    /// Move the workplane anchor point. 
+    /// move the workplane anchor point.
     void setPlaneBase(const Base::Vector3d& base);
     /// Switch to the next plane (XY ->YZ -> ZX -> XY).
     void cyclePlane();
 
-    /// Task-panel backreference so updateData() can push refreshes.
-    /// Set by TaskDlgEditSketch3D on open, cleared on close.
     void setTaskPanel(TaskSketcher3DTool* panel)
     {
         taskPanel = panel;
@@ -126,13 +121,15 @@ protected:
     void unsetEdit(int ModNum) override;
 
 private:
-    /// Project screen-space cursor onto the sketch's XY plane (z=0).
+    /// Project screen space cursor onto the sketch's XY plane (z=0).
     /// Falls back to the focal plane if the camera ray is parallel to z=0.
-    Base::Vector3d
-    projectToSketchPlane(const SbVec2s& cursorPx, const Gui::View3DInventorViewer* viewer) const;
+    Base::Vector3d projectToSketchPlane(
+        const SbVec2s& cursorPx,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
 
-    /// (Re)build the translucent quad showing the current active plane.
-    /// Removes any previous overlay; attaches fresh nodes to pcRoot.
+    /// Rebuild the translucent quad showing the current active plane.
+    /// Removes any previous overlay, attaches fresh nodes to pcRoot.
     void rebuildPlaneOverlay();
 
     std::unique_ptr<DrawSketchHandler3D> handler;
@@ -141,6 +138,9 @@ private:
     ActivePlane activePlane {ActivePlane::XY};
     Base::Vector3d planeBase {0.0, 0.0, 0.0};
     SoSeparator* planeOverlay {nullptr};
+
+    /// Workbench name from before setEdit.same as partdesign
+    std::string oldWb;
 };
 
 }  // namespace Sketcher3DGui

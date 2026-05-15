@@ -957,11 +957,7 @@ int System::addConstraintCoordinateY(Point& p, double* y, int tagId, bool drivin
 
 // 3D constraints
 
-int System::addConstraintP2PDistance3D(Point3D& p1,
-                                       Point3D& p2,
-                                       double* distance,
-                                       int tagId,
-                                       bool driving)
+int System::addConstraintP2PDistance3D(Point3D& p1, Point3D& p2, double* distance, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintP2PDistance3D(p1, p2, distance);
     constr->setTag(tagId);
@@ -969,28 +965,61 @@ int System::addConstraintP2PDistance3D(Point3D& p1,
     return addConstraint(constr);
 }
 
-int System::addConstraintParallel3D(Point3D& p1,
-                                    Point3D& p2,
-                                    Point3D& p3,
-                                    Point3D& p4,
-                                    int tagId,
-                                    bool driving)
+namespace
 {
-    
-    Constraint* constrX = new ConstraintParallel3D(p1, p2, p3, p4, ConstraintParallel3D::X);
-    constrX->setTag(tagId);
-    constrX->setDriving(driving);
-    addConstraint(constrX);
 
-    Constraint* constrY = new ConstraintParallel3D(p1, p2, p3, p4, ConstraintParallel3D::Y);
-    constrY->setTag(tagId);
-    constrY->setDriving(driving);
-    addConstraint(constrY);
+// instead of using three equation we are susing two equations(as we only need two last one is just
+// redundant) for the parallelism, so we need to choose the two most significant components of the
+// direction vectors to use for the constraint, and skip the least significant one. This function
+// returns which component to skip.
+ConstraintParallel3D::Component referenceParallelComponent(
+    Point3D& p1,
+    Point3D& p2,
+    Point3D& p3,
+    Point3D& p4
+)
+{
+    const double d1x = *p1.x - *p2.x;
+    const double d1y = *p1.y - *p2.y;
+    const double d1z = *p1.z - *p2.z;
+    const double d2x = *p3.x - *p4.x;
+    const double d2y = *p3.y - *p4.y;
+    const double d2z = *p3.z - *p4.z;
 
-    Constraint* constrZ = new ConstraintParallel3D(p1, p2, p3, p4, ConstraintParallel3D::Z);
-    constrZ->setTag(tagId);
-    constrZ->setDriving(driving);
-    return addConstraint(constrZ);
+    const double len1Sq = d1x * d1x + d1y * d1y + d1z * d1z;
+    const bool useFirst = len1Sq > std::numeric_limits<double>::epsilon();
+    const double refX = useFirst ? d1x : d2x;
+    const double refY = useFirst ? d1y : d2y;
+    const double refZ = useFirst ? d1z : d2z;
+
+    if (std::abs(refX) >= std::abs(refY) && std::abs(refX) >= std::abs(refZ)) {
+        return ConstraintParallel3D::X;
+    }
+    if (std::abs(refY) >= std::abs(refZ)) {
+        return ConstraintParallel3D::Y;
+    }
+    return ConstraintParallel3D::Z;
+}
+}  // namespace
+
+int System::addConstraintParallel3D(Point3D& p1, Point3D& p2, Point3D& p3, Point3D& p4, int tagId, bool driving)
+{
+    const ConstraintParallel3D::Component skipped = referenceParallelComponent(p1, p2, p3, p4);
+
+    auto addComponent = [&](ConstraintParallel3D::Component component) {
+        Constraint* constr = new ConstraintParallel3D(p1, p2, p3, p4, component);
+        constr->setTag(tagId);
+        constr->setDriving(driving);
+        return addConstraint(constr);
+    };
+
+    int lastIdx = -1;
+    for (auto c : {ConstraintParallel3D::X, ConstraintParallel3D::Y, ConstraintParallel3D::Z}) {
+        if (c != skipped) {
+            lastIdx = addComponent(c);
+        }
+    }
+    return lastIdx;
 }
 
 // 3D derived constraints

@@ -23,86 +23,42 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3D_CONSTRAINT3D_H
-#define SKETCHER3D_CONSTRAINT3D_H
+#ifndef SKETCHER3DGUI_DLGEDITCONSTRAINTVALUE_H
+#define SKETCHER3DGUI_DLGEDITCONSTRAINTVALUE_H
 
-#include "Mod/Sketcher3D/App/GeoEnum3D.h"
+#include <QDialog>
 
-#include <Mod/Sketcher3D/App/PreCompiled.h>
-
-#include <Base/FileInfo.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
-#include <Base/Writer.h>
-
+#include <Base/Unit.h>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
-#include <Base/Persistence.h>
-
-namespace Base
+namespace Gui
 {
-class Writer;
-class XMLReader;
-}  // namespace Base
+class PrefQuantitySpinBox;
+}
 
-namespace Sketcher3D
+namespace Sketcher3DGui
 {
 
-/// Constraint data class for Sketcher3D
-class Sketcher3DExport Constraint3D: public Base::Persistence
+class Sketcher3DGuiExport DlgEditConstraintValue: public QDialog
 {
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    Q_OBJECT
 
 public:
-    enum Constraint3DType : int
-    {
-        Distance3D = 0,
-        Coincident3D,
-        Parallel3D,
-        AlongX,
-        AlongY,
-        AlongZ,
-        NumConstraintTypes
-    };
+    DlgEditConstraintValue(
+        const QString& title,
+        const QString& label,
+        double initialValue,
+        const Base::Unit& unit,
+        QWidget* parent = nullptr
+    );
+    ~DlgEditConstraintValue() override;
 
-    Constraint3DType Type = Constraint3DType::Distance3D;
-
-    double Value = 0.0;
-
-    bool isDriving = true;
-
-    /// Return the string name for a constraint type.
-    static const char* typeToString(Constraint3DType t);
-
-    // Persistence
-    unsigned int getMemSize() const override;
-    void Save(Base::Writer& writer) const override;
-    void Restore(Base::XMLReader& reader) override;
-
-    const std::vector<GeoElementId3D>& getElements() const
-    {
-        return elements;
-    }
-
-    void setElements(std::vector<GeoElementId3D> newElements)
-    {
-        elements = std::move(newElements);
-    }
-
+    double value() const;
 
 private:
-    constexpr static std::array<const char*, Constraint3DType::NumConstraintTypes> type2str {{
-        "Distance3D",
-        "Coincident3D",
-        "Parallel3D",
-        "AlongX",
-        "AlongY",
-        "AlongZ",
-    }};
-
-    std::vector<GeoElementId3D> elements;
+    Gui::PrefQuantitySpinBox* spin {nullptr};
 };
 
-}  // namespace Sketcher3D
+}  // namespace Sketcher3DGui
 
-#endif  // SKETCHER3D_CONSTRAINT3D_H
+#endif  // SKETCHER3DGUI_DLGEDITCONSTRAINTVALUE_H

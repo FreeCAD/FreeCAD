@@ -81,6 +81,7 @@ void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
             << "Sketcher3D_CreateLine"
             << "Sketcher3D_CreatePolyline"
             << "Separator"
-            << "Sketcher3D_ConstrainCoincident";
+            << "Sketcher3D_ConstrainDistance"
+            << "Sketcher3D_ConstrainCoincident"
+            << "Sketcher3D_CompParallel";
 }
-

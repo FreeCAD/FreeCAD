@@ -45,7 +45,7 @@ namespace Sketcher3D
 class Constraint3D;
 class Solver3D;
 
-/** Translation layer between Sketch3DObject stored Geometry and 
+/** Translation layer between Sketch3DObject stored Geometry and
  *  Constraint3D lists and the lower level Solver3D handles. A
  *  mapper instance is built per recompute, populated via push(), then
  *  discarded after writeBack().
@@ -71,14 +71,17 @@ public:
 private:
     struct GeoMapping
     {
-        int pointHandle {-1};  // for GeomPoint
-        int startHandle {-1};  // for GeomLineSegment start
-        int endHandle {-1};    // for GeomLineSegment end
-        int lineHandle {-1};   // for GeomLineSegment line
+        int pointHandle {-1};  // GeomPoint
+        int startHandle {-1};  // GeomLineSegment start
+        int endHandle {-1};    // GeomLineSegment end
+        int lineHandle {-1};   // GeomLineSegment line
     };
 
     /// Resolve a constraint to a solver point
     int resolvePointHandle(const GeoElementId3D& ref) const;
+
+    /// Resolve a constraint to a solver line handle.
+    int resolveLineHandle(const GeoElementId3D& ref) const;
 
     std::map<int, GeoMapping> perGeo;
 };

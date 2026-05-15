@@ -23,86 +23,46 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3D_CONSTRAINT3D_H
-#define SKETCHER3D_CONSTRAINT3D_H
+#ifndef SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H
+#define SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H
 
-#include "Mod/Sketcher3D/App/GeoEnum3D.h"
+#include "DrawSketchHandler3D.h"
 
-#include <Mod/Sketcher3D/App/PreCompiled.h>
+class SoCoordinate3;
+class SoSwitch;
 
-#include <Base/FileInfo.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
-#include <Base/Writer.h>
-
-#include <Mod/Sketcher3D/Sketcher3DGlobal.h>
-
-#include <Base/Persistence.h>
-
-namespace Base
-{
-class Writer;
-class XMLReader;
-}  // namespace Base
-
-namespace Sketcher3D
+namespace Sketcher3DGui
 {
 
-/// Constraint data class for Sketcher3D
-class Sketcher3DExport Constraint3D: public Base::Persistence
+class Sketcher3DGuiExport DrawSketchHandlerPolyline3D: public DrawSketchHandler3D
 {
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
-
 public:
-    enum Constraint3DType : int
-    {
-        Distance3D = 0,
-        Coincident3D,
-        Parallel3D,
-        AlongX,
-        AlongY,
-        AlongZ,
-        NumConstraintTypes
-    };
+    DrawSketchHandlerPolyline3D();
+    ~DrawSketchHandlerPolyline3D() override;
 
-    Constraint3DType Type = Constraint3DType::Distance3D;
+    bool pressButton(const Base::Vector3d& pos) override;
+    bool mouseMove(const Base::Vector3d& pos) override;
+    bool keyPressed(int key) override;
 
-    double Value = 0.0;
-
-    bool isDriving = true;
-
-    /// Return the string name for a constraint type.
-    static const char* typeToString(Constraint3DType t);
-
-    // Persistence
-    unsigned int getMemSize() const override;
-    void Save(Base::Writer& writer) const override;
-    void Restore(Base::XMLReader& reader) override;
-
-    const std::vector<GeoElementId3D>& getElements() const
-    {
-        return elements;
-    }
-
-    void setElements(std::vector<GeoElementId3D> newElements)
-    {
-        elements = std::move(newElements);
-    }
-
+protected:
+    void onActivated() override;
 
 private:
-    constexpr static std::array<const char*, Constraint3DType::NumConstraintTypes> type2str {{
-        "Distance3D",
-        "Coincident3D",
-        "Parallel3D",
-        "AlongX",
-        "AlongY",
-        "AlongZ",
-    }};
+    enum class State
+    {
+        PickFirst,
+        PickNext,
+    };
 
-    std::vector<GeoElementId3D> elements;
+    State state {State::PickFirst};
+    Base::Vector3d lastPos {0.0, 0.0, 0.0};
+
+    int prevSegGeoId {-1};
+
+    SoCoordinate3* rubberCoords {nullptr};
+    SoSwitch* rubberSwitch {nullptr};
 };
 
-}  // namespace Sketcher3D
+}  // namespace Sketcher3DGui
 
-#endif  // SKETCHER3D_CONSTRAINT3D_H
+#endif  // SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H

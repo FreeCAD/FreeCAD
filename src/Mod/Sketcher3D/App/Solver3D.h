@@ -71,6 +71,24 @@ public:
     /// Coincident constraint between two points.
     void addConstraintCoincident(int tagId, int pointHandleA, int pointHandleB);
 
+    /// Parallel constraint between two lines.
+    void addConstraintParallel(int tagId, int lineHandleA, int lineHandleB);
+
+    /// Constraint to align a line along the X axis.
+    void addConstraintAlongX(int tagId, int lineHandle);
+
+    /// Constraint to align a line along the Y axis.
+    void addConstraintAlongY(int tagId, int lineHandle);
+
+    /// Constraint to align a line along the Z axis.
+    void addConstraintAlongZ(int tagId, int lineHandle);
+
+    /// Distance constraint between two points.
+    void addConstraintDistance(int tagId, int pointHandleA, int pointHandleB, double distance);
+
+    /// Lock a point x/y/z to its current value.
+    void groundPoint(int pointHandle, int tagId = 0);
+
     int solve();
 
     /// Read back the current value of a point after solve().
@@ -94,13 +112,17 @@ public:
     }
 
 private:
-    /// allocator for solver 
+    /// Allocate a solver owned unknown parameter, declared as an unknown.
     double* allocParam(double value);
+    /// Allocate a solver owned driven parameter
+    double* allocDrivenParam(double value);
 
     GCS::System gcs;
 
-    // pointers storage, for the duration of the solve.
+    // ownedParams for unknowns
+    // ownedDrivenParams for driving values that the solver reads but never moves.
     std::vector<std::unique_ptr<double>> ownedParams;
+    std::vector<std::unique_ptr<double>> ownedDrivenParams;
 
     // Mapping from handle index to underlying GCS struct.
     std::vector<GCS::Point3D> points;

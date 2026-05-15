@@ -40,11 +40,18 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 
+#include <Standard_Failure.hxx>
+#include <TopAbs_ShapeEnum.hxx>
+#include <TopoDS_Shape.hxx>
+
 #include <Base/Console.h>
+#include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Mod/Part/App/TopoShape.h>
+#include <Mod/Sketcher3D/App/GeoEnum3D.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "DrawSketchHandler3D.h"
@@ -59,11 +66,13 @@ PROPERTY_SOURCE(Sketcher3DGui::ViewProviderSketch3D, PartGui::ViewProviderPart)
 
 namespace
 {
-inline QStringList editModeToolbarNames() {
+inline QStringList editModeToolbarNames()
+{
     return {QStringLiteral("Sketcher3D Edit")};
 }
 
-inline QStringList nonEditModeToolbarNames() {
+inline QStringList nonEditModeToolbarNames()
+{
     return {
         QStringLiteral("Structure"),
         QStringLiteral("Sketcher"),
@@ -72,6 +81,7 @@ inline QStringList nonEditModeToolbarNames() {
 
 constexpr float kPlaneHalfSize = 50.0F;
 constexpr float kPlaneTransparency = 0.75F;
+constexpr const char* kEditingWorkbench = "SketcherWorkbench";
 
 SbVec3f planeNormal(ViewProviderSketch3D::ActivePlane p)
 {
@@ -208,6 +218,8 @@ bool ViewProviderSketch3D::setEdit(int ModNum)
     Gui::Selection().clearSelection();
     Gui::Selection().rmvPreselect();
 
+    oldWb = Gui::Command::assureWorkbench(kEditingWorkbench);
+
     // save non edit toolbar state and switch to edit mode toolbars
     Gui::ToolBarManager::getInstance()->setState(
         nonEditModeToolbarNames(),
@@ -255,6 +267,12 @@ void ViewProviderSketch3D::unsetEdit(int ModNum)
     );
 
     Gui::Control().closeDialog();
+
+    // restore the workbench that was active before setEdit.
+    if (!oldWb.empty()) {
+        Gui::Command::assureWorkbench(oldWb.c_str());
+        oldWb.clear();
+    }
 }
 
 void ViewProviderSketch3D::activateHandler(std::unique_ptr<DrawSketchHandler3D> h)
@@ -289,10 +307,7 @@ bool ViewProviderSketch3D::mouseButtonPressed(
         Base::Vector3d p = projectToSketchPlane(cursorPos, viewer);
         return handler->pressButton(p);
     }
-    if (button == SoMouseButtonEvent::BUTTON2) {
-        purgeHandler();
-        return true;
-    }
+
     return false;
 }
 
@@ -307,6 +322,16 @@ bool ViewProviderSketch3D::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
 
 bool ViewProviderSketch3D::keyPressed(bool pressed, int key)
 {
+    if (key == SoKeyboardEvent::ESCAPE) {
+        if (handler) {
+            if (!pressed) {
+                handler->keyPressed(key);
+            }
+            return true;
+        }
+        return false;
+    }
+
     if (!pressed) {
         return false;
     }
@@ -325,6 +350,9 @@ void ViewProviderSketch3D::cyclePlane()
     const int next = (static_cast<int>(activePlane) + 1) % 3;
     activePlane = static_cast<ActivePlane>(next);
     rebuildPlaneOverlay();
+    if (taskPanel) {
+        taskPanel->refresh();
+    }
     Base::Console().message("Sketcher3D: active plane = %s\n", planeLabel(activePlane));
 }
 
@@ -332,6 +360,9 @@ void ViewProviderSketch3D::setPlaneBase(const Base::Vector3d& base)
 {
     planeBase = base;
     rebuildPlaneOverlay();
+    if (taskPanel) {
+        taskPanel->refresh();
+    }
 }
 
 void ViewProviderSketch3D::rebuildPlaneOverlay()

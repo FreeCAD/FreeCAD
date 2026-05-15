@@ -29,25 +29,26 @@
 #include <memory>
 #include <vector>
 
+#include <App/IndexedName.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PropertyGeometryList.h>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
 #include "Constraint3D.h"
+#include "GeoEnum3D.h"
 #include "PropertyConstraint3DList.h"
-
-class TopoDS_Vertex;
 
 namespace Part
 {
 class Geometry;
-}
+class TopoShape;
+}  // namespace Part
 
 namespace Sketcher3D
 {
 
 /** 3D sketch document object.
- *  Inherited Part::Feature so downstream part operations can use 
+ *  Inherited Part::Feature so downstream part operations can use
  *  it directly.
  */
 class Sketcher3DExport Sketch3DObject: public Part::Feature
@@ -73,24 +74,47 @@ public:
     /// add a constraint. Returns its index in Constraints.
     int addConstraint(const Constraint3D& c);
 
-    /// Resolve a picked 3D vertex back to the Sketcher3D element that
-    /// produced it.
-    GeoElementId3D resolvePickedVertex(const TopoDS_Vertex& vertex) const;
+    /// Resolve a shape subname like "Edge1" or "Vertex2" to the owning
+    /// sketch geometry. Uses stable element map names so references survives
+    GeoElementId3D resolveSubName(const std::string& subname) const;
 
-    /// Run the solver. Writes solved positions back into Geometry 
+    /// Return true when two points are already connected by Coincident3D
+    /// constraints, directly or through other coincident points.
+    bool arePointsCoincident3D(const GeoElementId3D& a, const GeoElementId3D& b) const;
+
+    /// Run the solver. Writes solved positions back into Geometry
     /// when updateGeo is true. Returns a status code.
     int solve(bool updateGeo = true);
 
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
 
+    /// when the Geometry property changes we run assignStableIds()
+    /// so stable IDs are available always.
+    void onChanged(const App::Property* prop) override;
+
 private:
     /// Drop constraints whose referenced GeoIds are out of range or point
     /// to null geometry slots. Runs at the top of execute().
     void acceptGeometry();
 
-    /// Build the output TopoShape from the current (solved) geometry.
+    /// Build the output TopoShape from the current (solved) geometry,
+    /// the built Shape property will have resolveSubName.
     void buildShape();
+
+    /// Build a named edge shape and name its endpoint vertices
+    Part::TopoShape makeNamedEdge(const Part::Geometry* geo, const std::string& edgeName) const;
+
+    /// Ensure every geometry has a stable ID and rebuild the lookup from
+    /// stable ID to current Geometry index.
+    void assignStableIds();
+
+    /// Monotonic counter for stable geometry IDs.
+    long geoLastId = 0;
+
+    /// stable id map to current positional index in Geometry. Rebuilt by
+    /// assignStableIds(). "g{stableId}"
+    std::map<long, int> stableToIndex;
 };
 
 }  // namespace Sketcher3D

@@ -25,6 +25,7 @@
 
 #include "PreCompiled.h"
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
 
 #include "Solver3D.h"
@@ -40,6 +41,7 @@ void Solver3D::clear()
 {
     gcs.clear();
     ownedParams.clear();
+    ownedDrivenParams.clear();
     points.clear();
     lines.clear();
     parameters.clear();
@@ -54,6 +56,12 @@ double* Solver3D::allocParam(double value)
     return ownedParams.back().get();
 }
 
+double* Solver3D::allocDrivenParam(double value)
+{
+    ownedDrivenParams.emplace_back(std::make_unique<double>(value));
+    return ownedDrivenParams.back().get();
+}
+
 int Solver3D::addPoint(const Base::Vector3d& pos)
 {
     double* px = allocParam(pos.x);
@@ -65,8 +73,8 @@ int Solver3D::addPoint(const Base::Vector3d& pos)
 
 int Solver3D::addLine(int pointHandleA, int pointHandleB)
 {
-    if (pointHandleA < 0 || pointHandleA >= static_cast<int>(points.size())
-        || pointHandleB < 0 || pointHandleB >= static_cast<int>(points.size())) {
+    if (pointHandleA < 0 || pointHandleA >= static_cast<int>(points.size()) || pointHandleB < 0
+        || pointHandleB >= static_cast<int>(points.size())) {
         throw Base::IndexError("Solver3D::addLine point handle out of range");
     }
     GCS::Line3D line;
@@ -78,11 +86,74 @@ int Solver3D::addLine(int pointHandleA, int pointHandleB)
 
 void Solver3D::addConstraintCoincident(int tagId, int pointHandleA, int pointHandleB)
 {
-    if (pointHandleA < 0 || pointHandleA >= static_cast<int>(points.size())
-        || pointHandleB < 0 || pointHandleB >= static_cast<int>(points.size())) {
+    if (pointHandleA < 0 || pointHandleA >= static_cast<int>(points.size()) || pointHandleB < 0
+        || pointHandleB >= static_cast<int>(points.size())) {
         throw Base::IndexError("Solver3D::addConstraintCoincident handle out of range");
     }
     gcs.addConstraintP2PCoincident3D(points[pointHandleA], points[pointHandleB], tagId);
+}
+
+void Solver3D::addConstraintParallel(int tagId, int lineHandleA, int lineHandleB)
+{
+    if (lineHandleA < 0 || lineHandleA >= static_cast<int>(lines.size()) || lineHandleB < 0
+        || lineHandleB >= static_cast<int>(lines.size())) {
+        throw Base::IndexError("Solver3D::addConstraintParallel handle out of range");
+    }
+    GCS::Line3D& la = lines[lineHandleA];
+    GCS::Line3D& lb = lines[lineHandleB];
+    gcs.addConstraintParallel3D(la.p1, la.p2, lb.p1, lb.p2, tagId);
+}
+
+void Solver3D::addConstraintAlongX(int tagId, int lineHandle)
+{
+    if (lineHandle < 0 || lineHandle >= static_cast<int>(lines.size())) {
+        throw Base::IndexError("Solver3D::addConstraintAlongX handle out of range");
+    }
+    GCS::Line3D& line = lines[lineHandle];
+    gcs.addConstraintLineAlongX3D(line, tagId);
+}
+
+void Solver3D::addConstraintAlongY(int tagId, int lineHandle)
+{
+    if (lineHandle < 0 || lineHandle >= static_cast<int>(lines.size())) {
+        throw Base::IndexError("Solver3D::addConstraintAlongY handle out of range");
+    }
+    GCS::Line3D& line = lines[lineHandle];
+    gcs.addConstraintLineAlongY3D(line, tagId);
+}
+
+void Solver3D::addConstraintAlongZ(int tagId, int lineHandle)
+{
+    if (lineHandle < 0 || lineHandle >= static_cast<int>(lines.size())) {
+        throw Base::IndexError("Solver3D::addConstraintAlongZ handle out of range");
+    }
+    GCS::Line3D& line = lines[lineHandle];
+    gcs.addConstraintLineAlongZ3D(line, tagId);
+}
+
+void Solver3D::addConstraintDistance(int tagId, int pointHandleA, int pointHandleB, double distance)
+{
+    if (pointHandleA < 0 || pointHandleA >= static_cast<int>(points.size()) || pointHandleB < 0
+        || pointHandleB >= static_cast<int>(points.size())) {
+        throw Base::IndexError("Solver3D::addConstraintDistance handle out of range");
+    }
+    double* d = allocDrivenParam(distance);
+    gcs.addConstraintP2PDistance3D(points[pointHandleA], points[pointHandleB], d, tagId);
+}
+
+void Solver3D::groundPoint(int pointHandle, int tagId)
+{
+    if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size())) {
+        throw Base::IndexError("Solver3D::groundPoint handle out of range");
+    }
+    GCS::Point3D& p = points[pointHandle];
+    // Lock the current position by tying x/y/z.
+    double* gx = allocDrivenParam(*p.x);
+    double* gy = allocDrivenParam(*p.y);
+    double* gz = allocDrivenParam(*p.z);
+    gcs.addConstraintCoordinateX3D(p, gx, tagId);
+    gcs.addConstraintCoordinateY3D(p, gy, tagId);
+    gcs.addConstraintCoordinateZ3D(p, gz, tagId);
 }
 
 int Solver3D::solve()
@@ -97,25 +168,27 @@ int Solver3D::solve()
     gcs.declareUnknowns(parameters);
     gcs.initSolution();
 
-    const int dofs = gcs.diagnose();
-    (void)dofs;
+    gcs.diagnose();
     gcs.getConflicting(conflictingTags);
     gcs.getRedundant(redundantTags);
-
-    if (!conflictingTags.empty()) {
-        return dofs < 0 ? OverConstrained : Conflicting;
-    }
 
     const int status = gcs.solve();
     if (status == GCS::Success || status == GCS::Converged) {
         gcs.applySolution();
         if (!redundantTags.empty()) {
+            Base::Console().warning(
+                "Sketcher3D debug: Solver3D solved but returns Redundant, redundantTags=%d\n",
+                static_cast<int>(redundantTags.size())
+            );
             return Redundant;
         }
         return OK;
     }
     if (status == GCS::SuccessfulSolutionInvalid) {
         return Malformed;
+    }
+    if (!conflictingTags.empty()) {
+        return Conflicting;
     }
     return SolverFailed;
 }

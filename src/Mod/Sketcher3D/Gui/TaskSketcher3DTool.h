@@ -25,6 +25,8 @@
 #ifndef SKETCHER3DGUI_TASKSKETCHER3DTOOL_H
 #define SKETCHER3DGUI_TASKSKETCHER3DTOOL_H
 
+#include <QStringList>
+
 #include <Gui/TaskView/TaskView.h>
 
 class QLabel;
@@ -44,7 +46,7 @@ public:
     explicit TaskSketcher3DTool(ViewProviderSketch3D* sketchView);
     ~TaskSketcher3DTool() override;
 
-    /// rebuild lists 
+    /// rebuild lists
     void refresh();
 
     /// Update the hint line.
@@ -52,14 +54,20 @@ public:
 
 private Q_SLOTS:
     void onElementRowClicked(QListWidgetItem* item);
+    void onConstraintRowClicked(QListWidgetItem* item);
 
 private:
+    void populateStatus();
     void populateElements();
     void populateConstraints();
+    void selectSubNames(const QStringList& subnames) const;
+    /// Delete every currently-selected row of constraintsList.
 
     ViewProviderSketch3D* sketchView {nullptr};
 
     QLabel* hintLabel {nullptr};
+    QLabel* statusLabel {nullptr};
+    QLabel* planeLabel {nullptr};
     QListWidget* elementsList {nullptr};
     QListWidget* constraintsList {nullptr};
     QLabel* elementsHeader {nullptr};
