@@ -570,13 +570,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
             # get bottom wire from not horizontal faces
             if vertFaces:
-                fzMin = min(e.BoundBox.ZMin for f in vertFaces for e in f.Edges)
-                bottomEdges = [
-                    e
-                    for f in vertFaces
-                    for e in f.Edges
-                    if Path.Geom.isRoughly(e.BoundBox.ZMax, fzMin)
-                ]
+                bottomEdges = []
+                for f in vertFaces:
+                    fzMin = min(e.BoundBox.ZMin for e in f.Edges)
+                    bEs = [e for e in f.Edges if Path.Geom.isRoughly(e.BoundBox.ZMax, fzMin)]
+                    bottomEdges.extend(bEs)
                 for cluster in Part.getSortedClusters(bottomEdges):
                     wire = Part.Wire(Part.__sortEdges__(cluster))
                     edgeslist.extend(cluster)
