@@ -61,6 +61,7 @@ class GuiExport SoArrowGeometry: public SoLinearGeometryKit
     SO_KIT_CATALOG_ENTRY_HEADER(pickStyle);
     SO_KIT_CATALOG_ENTRY_HEADER(arrowBody);
     SO_KIT_CATALOG_ENTRY_HEADER(arrowTip);
+    SO_KIT_CATALOG_ENTRY_HEADER(point);
 
     SO_KIT_CATALOG_ENTRY_HEADER(_arrowBodyTranslation);
     SO_KIT_CATALOG_ENTRY_HEADER(_arrowTipTranslation);
@@ -73,6 +74,7 @@ public:
     SoSFFloat coneHeight;
     SoSFFloat cylinderHeight;
     SoSFFloat cylinderRadius;
+    SoSFFloat pointRadius;
 
 protected:
     ~SoArrowGeometry() override = default;
@@ -119,6 +121,7 @@ public:
 
     SoSFFloat cylinderHeight;
     SoSFFloat cylinderRadius;
+    SoSFFloat startOffset;
     SoSFColor color;
 
 protected:

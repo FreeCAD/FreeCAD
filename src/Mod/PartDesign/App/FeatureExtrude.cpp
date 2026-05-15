@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
 #include <limits>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 #include <BRep_Builder.hxx>
@@ -56,6 +57,14 @@ App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstra
     = {-std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), 1.0};
 double FeatureExtrude::maxAngle = 90 - Base::toDegrees<double>(Precision::Angular());
 App::PropertyAngle::Constraints FeatureExtrude::floatAngle = {-maxAngle, maxAngle, 1.0};
+
+namespace
+{
+bool isDimensionMethod(const std::string& method)
+{
+    return method == "Length" || method == "LengthFromOrigin";
+}
+}  // namespace
 
 FeatureExtrude::FeatureExtrude() = default;
 
@@ -224,10 +233,11 @@ void FeatureExtrude::updateProperties()
                                        bool& upToShapeEnabled,
                                        bool& localAlongSketchNormal,
                                        bool& localOffset) {
-        if (method == "Length") {
+        if (isDimensionMethod(method)) {
             lengthEnabled = true;
             taperVisible = true;
             localAlongSketchNormal = true;
+            localOffset = true;
         }
         else if (method == "UpToFace") {
             upToFaceEnabled = true;
@@ -336,18 +346,48 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     std::string method2(Type2.getValueAsString());
 
     // Validate parameters
+    const bool dimension1 = isDimensionMethod(method);
+    const bool dimension2 = Sidemethod == "Two sides" && isDimensionMethod(method2);
+    double start1 = dimension1 ? Offset.getValue() : 0.0;
+    double start2 = dimension2 ? Offset2.getValue() : 0.0;
+
     double L = method == "ThroughAll" ? getThroughAllLength()
-        : method == "Length"          ? Length.getValue()
+        : dimension1                  ? Length.getValue()
                                       : 0.0;
     double L2 = Sidemethod == "Two sides" ? method2 == "ThroughAll" ? getThroughAllLength()
-            : method2 == "Length"                                   ? Length2.getValue()
+            : dimension2                                            ? Length2.getValue()
                                                                     : 0.0
                                           : 0.0;
 
-    if ((Sidemethod == "One side" && method == "Length")
-        || (Sidemethod == "Two sides" && method == "Length" && method2 == "Length")) {
+    double span1 = dimension1 && method == "LengthFromOrigin" ? L - start1 : L;
+    double span2 = dimension2 && method2 == "LengthFromOrigin" ? L2 - start2 : L2;
+    const double end1 = start1 + span1;
+    const double end2 = start2 + span2;
 
-        if (std::abs(L + L2) < Precision::Confusion()) {
+    if (Sidemethod == "Symmetric" && dimension1
+        && (start1 < -Precision::Confusion() || end1 < -Precision::Confusion())) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Start and end must not be negative in symmetric mode.")
+        );
+    }
+
+    if (Sidemethod == "Two sides" && dimension1 && dimension2) {
+        const double minSide1 = std::min(start1, end1);
+        const double minSide2 = std::min(start2, end2);
+        if (minSide1 + minSide2 < -Precision::Confusion()) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Start and end must not cross beyond the nearest value on the opposite side."
+            ));
+        }
+    }
+
+    if (((Sidemethod == "One side" || Sidemethod == "Symmetric") && dimension1)
+        || (Sidemethod == "Two sides" && dimension1 && dimension2)) {
+        const double totalSpan = Sidemethod == "Two sides" ? std::abs(span1) + std::abs(span2)
+                                                           : std::abs(span1);
+
+        if (totalSpan < Precision::Confusion()) {
             if (addSubType == Type::Additive) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Cannot create a pad with a total length of zero.")
@@ -447,7 +487,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         // to make dir as long that its projection to the SketchVector
         // equals the SketchVector.
         // This is the scalar product of both vectors.
-        // Since the pad length cannot be negative, the factor must not be negative.
+        // Negative dimension spans are handled by reversing the extrusion direction.
 
         double factor = fabs(dir * gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z));
 
@@ -463,6 +503,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         if (AlongSketchNormal.getValue()) {
             L = L / factor;
             L2 = L2 / factor;
+            start1 = start1 / factor;
+            start2 = start2 / factor;
+            span1 = span1 / factor;
+            span2 = span2 / factor;
         }
 
         // explicitly set the Direction so that the dialog shows also the used direction
@@ -483,13 +527,26 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
         std::vector<TopoShape> prisms;  // Stores prisms, all in global CS
         double taper1 = TaperAngle.getValue();
-        double offset1 = Offset.getValue();
+        double offset1 = dimension1 ? 0.0 : Offset.getValue();
+
+        auto movedSketchForStart =
+            [](const TopoShape& sourceSketch, double start, const gp_Dir& sideDir) {
+                if (std::fabs(start) <= Precision::Confusion()) {
+                    return sourceSketch;
+                }
+
+                TopoShape movedSketch = sourceSketch.makeElementCopy();
+                gp_Trsf startTransform;
+                startTransform.SetTranslation(gp_Vec(sideDir) * start);
+                movedSketch.move(startTransform);
+                return movedSketch;
+            };
 
         if (Sidemethod == "One side") {
             TopoShape prism1 = generateSingleExtrusionSide(
-                sketchshape,
+                movedSketchForStart(sketchshape, start1, dir),
                 method,
-                L,
+                dimension1 ? span1 : L,
                 taper1,
                 UpToFace,
                 UpToShape,
@@ -504,7 +561,48 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         else if (Sidemethod == "Symmetric") {
             // For Length mode, we are not doing a mirror, but we extrude along the same axis
             // in both directions as it is what users expect.
-            if (method == "Length") {
+            // LengthFromOrigin behaves the same.
+            if (dimension1 && std::fabs(start1) >= Precision::Confusion()) {
+                gp_Dir dir2 = dir;
+                dir2.Reverse();
+                const double symmetricStart = start1 / 2.0;
+                const double symmetricSpan = span1 / 2.0;
+
+                TopoShape prism1 = generateSingleExtrusionSide(
+                    movedSketchForStart(sketchshape, symmetricStart, dir),
+                    method,
+                    symmetricSpan,
+                    taper1,
+                    UpToFace,
+                    UpToShape,
+                    dir,
+                    offset1,
+                    makeface,
+                    base,
+                    invObjLoc
+                );
+                if (!prism1.isNull() && !prism1.getShape().IsNull()) {
+                    prisms.push_back(prism1);
+                }
+
+                TopoShape prism2 = generateSingleExtrusionSide(
+                    movedSketchForStart(sketchshape, symmetricStart, dir2),
+                    method,
+                    symmetricSpan,
+                    taper1,
+                    UpToFace,
+                    UpToShape,
+                    dir2,
+                    offset1,
+                    makeface,
+                    base,
+                    invObjLoc
+                );
+                if (!prism2.isNull() && !prism2.getShape().IsNull()) {
+                    prisms.push_back(prism2);
+                }
+            }
+            else if (dimension1) {
                 if (std::fabs(taper1) > Precision::Angular()) {
                     // TAPERED case: We must create two separate prisms and fuse them
                     // to ensure the taper originates correctly from the sketch plane in both
@@ -607,15 +705,20 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         }
         else if (Sidemethod == "Two sides") {
             double taper2 = TaperAngle2.getValue();
-            double offset2 = Offset2.getValue();
+            double offset2 = dimension2 ? 0.0 : Offset2.getValue();
             gp_Dir dir2 = dir;
             dir2.Reverse();
             bool noTaper = std::fabs(taper1) < Precision::Angular()
                 && std::fabs(taper2) < Precision::Angular();
-            bool method1LengthBased = method == "Length" || method == "ThroughAll";
-            bool method2LengthBased = method2 == "Length" || method2 == "ThroughAll";
+            bool method1LengthBased = dimension1 || method == "ThroughAll";
+            bool method2LengthBased = dimension2 || method2 == "ThroughAll";
+            const bool hasDimensionStart = (dimension1 && std::fabs(start1) > Precision::Confusion())
+                || (dimension2 && std::fabs(start2) > Precision::Confusion());
+            const bool nonNegativeSpans = (!dimension1 || span1 >= 0.0)
+                && (!dimension2 || span2 >= 0.0);
 
-            if (method1LengthBased && method2 != "UpToFirst" && noTaper) {
+            if (!hasDimensionStart && nonNegativeSpans && method1LengthBased
+                && method2 != "UpToFirst" && noTaper) {
                 gp_Trsf start_transform;
                 start_transform.SetTranslation(gp_Vec(dir) * L);
 
@@ -638,7 +741,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     prisms.push_back(prism);
                 }
             }
-            else if (method2LengthBased && method != "UpToFirst" && noTaper) {
+            else if (
+                !hasDimensionStart && nonNegativeSpans && method2LengthBased
+                && method != "UpToFirst" && noTaper
+            ) {
                 gp_Trsf start_transform;
                 start_transform.SetTranslation(gp_Vec(dir).Reversed() * L2);
 
@@ -663,9 +769,9 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             else {
                 TopoShape prism1 = generateSingleExtrusionSide(
-                    sketchshape.makeElementCopy(),
+                    movedSketchForStart(sketchshape, start1, dir),
                     method,
-                    L,
+                    dimension1 ? span1 : L,
                     taper1,
                     UpToFace,
                     UpToShape,
@@ -681,9 +787,9 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
                 // Side 2
                 TopoShape prism2 = generateSingleExtrusionSide(
-                    sketchshape.makeElementCopy(),
+                    movedSketchForStart(sketchshape, start2, dir2),
                     method2,
-                    L2,
+                    dimension2 ? span2 : L2,
                     taper2,
                     UpToFace2,
                     UpToShape2,
@@ -908,8 +1014,16 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
             }
         }
     }
-    else if (method == "Length" || method == "ThroughAll") {
+    else if (isDimensionMethod(method) || method == "ThroughAll") {
         using std::numbers::pi;
+
+        if (isDimensionMethod(method) && std::fabs(length) < Precision::Confusion()) {
+            return TopoShape(0);
+        }
+        if (length < 0.0) {
+            dir.Reverse();
+            length = -length;
+        }
 
         Part::ExtrusionParameters params;
         params.taperAngleFwd = Base::toRadians(taperAngleDeg);

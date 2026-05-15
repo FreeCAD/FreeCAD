@@ -79,14 +79,14 @@
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="labelLength">
+      <widget class="QLabel" name="labelOffset">
        <property name="text">
-        <string>Length</string>
+        <string>Offset to face</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit" native="true">
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit" native="true">
        <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
@@ -96,14 +96,14 @@
       </widget>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="labelOffset">
+      <widget class="QLabel" name="labelLength">
        <property name="text">
-        <string>Offset to face</string>
+        <string>Length</string>
        </property>
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit" native="true">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit" native="true">
        <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
@@ -308,14 +308,14 @@
       <widget class="QComboBox" name="changeMode2"/>
      </item>
      <item row="10" column="0">
-      <widget class="QLabel" name="labelLength2">
+      <widget class="QLabel" name="labelOffset2">
        <property name="text">
-        <string>Length</string>
+        <string>Offset to face</string>
        </property>
       </widget>
      </item>
      <item row="10" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2" native="true">
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit2" native="true">
        <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
@@ -325,14 +325,14 @@
       </widget>
      </item>
      <item row="11" column="0">
-      <widget class="QLabel" name="labelOffset2">
+      <widget class="QLabel" name="labelLength2">
        <property name="text">
-        <string>Offset to face</string>
+        <string>Length</string>
        </property>
       </widget>
      </item>
      <item row="11" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit2" native="true">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2" native="true">
        <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
