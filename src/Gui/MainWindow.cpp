@@ -730,7 +730,7 @@ QAction* MainWindow::createDockPythonConsoleAction(QObject* parent)
 {
     auto action = new QAction(parent);
     action->setObjectName(QStringLiteral("DockPythonConsoleTitleAction"));
-    action->setIcon(Gui::BitmapFactory().iconFromTheme("window-new"));
+    action->setIcon(Gui::BitmapFactory().iconFromTheme("view-bottom"));
     action->setText(tr("Dock Python Console"));
     action->setToolTip(tr("Dock Python Console"));
     action->setStatusTip(tr("Dock Python Console"));
@@ -804,6 +804,7 @@ void MainWindow::showPythonConsoleWindow(bool show)
         toolbar->setMovable(false);
         toolbar->setFloatable(false);
         toolbar->setIconSize(QSize(16, 16));
+        toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         toolbar->addAction(createDockPythonConsoleAction(toolbar));
         d->pythonConsoleWindow->addToolBar(Qt::TopToolBarArea, toolbar);
 
@@ -812,31 +813,47 @@ void MainWindow::showPythonConsoleWindow(bool show)
         }
     }
 
-    if (!show) {
-        d->pythonConsoleWindow->hide();
-        group->SetBool("Visible", false);
-        saveWindowSettings(true);
-        return;
-    }
-
-    auto pDockMgr = DockWindowManager::instance();
-    if (auto dock = pDockMgr->getDockContainer("Python console")) {
-        d->pythonConsoleDockVisibleBeforeWindow = dock->isVisible();
-        if (dock->widget() == pcPython) {
-            pcPython->setParent(nullptr);
-            dock->setWidget(nullptr);
+    const bool alreadyStandalone = d->pythonConsoleWindow->centralWidget() == pcPython;
+    if (!alreadyStandalone) {
+        const bool restoringStandaloneMode = group->GetBool("Standalone", false);
+        auto pDockMgr = DockWindowManager::instance();
+        if (auto dock = pDockMgr->getDockContainer("Python console")) {
+            d->pythonConsoleDockVisibleBeforeWindow = restoringStandaloneMode
+                ? group->GetBool("DockVisibleBeforeWindow", dock->isVisible())
+                : dock->isVisible();
+            if (dock->widget() == pcPython) {
+                pcPython->setParent(nullptr);
+                dock->setWidget(nullptr);
+            }
+            dock->hide();
         }
-        dock->hide();
-    }
-    else {
-        d->pythonConsoleDockVisibleBeforeWindow = false;
+        else {
+            d->pythonConsoleDockVisibleBeforeWindow = group->GetBool("DockVisibleBeforeWindow", false);
+        }
     }
 
     if (d->pythonConsoleWindow->centralWidget() != pcPython) {
         d->pythonConsoleWindow->setCentralWidget(pcPython);
     }
 
-    group->SetBool("Visible", true);
+    group->SetBool("Standalone", true);
+    group->SetBool("DockVisibleBeforeWindow", d->pythonConsoleDockVisibleBeforeWindow);
+    group->SetBool("Visible", show);
+
+    if (!show) {
+        d->pythonConsoleWindow->hide();
+        saveWindowSettings(true);
+        return;
+    }
+
+    if (auto dock = DockWindowManager::instance()->getDockContainer("Python console")) {
+        if (dock->widget() == pcPython) {
+            pcPython->setParent(nullptr);
+            dock->setWidget(nullptr);
+        }
+        dock->hide();
+    }
+
     d->pythonConsoleWindow->show();
     d->pythonConsoleWindow->raise();
     d->pythonConsoleWindow->activateWindow();
@@ -855,6 +872,7 @@ void MainWindow::dockPythonConsole()
     auto group = d->hGrp->GetGroup("PythonConsoleWindow");
     if (d->pythonConsoleWindow) {
         group->SetASCII("Geometry", d->pythonConsoleWindow->saveGeometry().toBase64().constData());
+        group->SetBool("Standalone", false);
         group->SetBool("Visible", false);
         if (d->pythonConsoleWindow->centralWidget() == pcPython) {
             d->pythonConsoleWindow->takeCentralWidget();
@@ -876,6 +894,7 @@ void MainWindow::dockPythonConsole()
         setupPythonConsoleDockWidget(dock);
         pcPython->show();
         dock->setVisible(d->pythonConsoleDockVisibleBeforeWindow);
+        group->SetBool("DockVisibleBeforeWindow", d->pythonConsoleDockVisibleBeforeWindow);
         if (d->pythonConsoleDockVisibleBeforeWindow) {
             dock->raise();
         }
@@ -2375,8 +2394,9 @@ void MainWindow::loadWindowSettings()
     OverlayManager::instance()->restore();
 
     auto group = d->hGrp->GetGroup("PythonConsoleWindow");
-    if (group->GetBool("Visible", false)) {
-        showPythonConsoleWindow(true);
+    d->pythonConsoleDockVisibleBeforeWindow = group->GetBool("DockVisibleBeforeWindow", false);
+    if (group->GetBool("Standalone", false)) {
+        showPythonConsoleWindow(group->GetBool("Visible", false));
     }
 }
 
@@ -2431,7 +2451,9 @@ void MainWindow::saveWindowSettings(bool canDelay)
 
     if (d->pythonConsoleWindow) {
         auto group = d->hGrp->GetGroup("PythonConsoleWindow");
+        group->SetBool("Standalone", isPythonConsoleStandalone());
         group->SetBool("Visible", d->pythonConsoleWindow->isVisible());
+        group->SetBool("DockVisibleBeforeWindow", d->pythonConsoleDockVisibleBeforeWindow);
         group->SetASCII("Geometry", d->pythonConsoleWindow->saveGeometry().toBase64().constData());
     }
 
