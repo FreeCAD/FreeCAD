@@ -189,6 +189,12 @@ QIcon iconForConstraint(Sketcher3D::Constraint3D::Constraint3DType type)
             return Gui::BitmapFactory().iconFromTheme("Constraint_Vertical");
         case Sketcher3D::Constraint3D::AlongZ:
             return Gui::BitmapFactory().iconFromTheme("Std_Axis");
+        case Sketcher3D::Constraint3D::DistanceX3D:
+            return Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance");
+        case Sketcher3D::Constraint3D::DistanceY3D:
+            return Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance");
+        case Sketcher3D::Constraint3D::DistanceZ3D:
+            return Gui::BitmapFactory().iconFromTheme("Constraint_Length");
         case Sketcher3D::Constraint3D::Distance3D:
         default:
             return Gui::BitmapFactory().iconFromTheme("Constraint_Length");
@@ -469,7 +475,10 @@ void TaskSketcher3DTool::populateConstraints()
                            .arg(static_cast<int>(i + 1))
                            .arg(type)
                            .arg(refs.join(QStringLiteral(", ")));
-        if (c.Type == Sketcher3D::Constraint3D::Distance3D) {
+        if (c.Type == Sketcher3D::Constraint3D::Distance3D
+            || c.Type == Sketcher3D::Constraint3D::DistanceX3D
+            || c.Type == Sketcher3D::Constraint3D::DistanceY3D
+            || c.Type == Sketcher3D::Constraint3D::DistanceZ3D) {
             text += tr(" = %1").arg(c.Value, 0, 'f', 3);
         }
         auto* item = new QListWidgetItem(iconForConstraint(c.Type), text, constraintsList);

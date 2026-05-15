@@ -979,18 +979,18 @@ ConstraintParallel3D::Component referenceParallelComponent(
     Point3D& p4
 )
 {
-    const double d1x = *p1.x - *p2.x;
-    const double d1y = *p1.y - *p2.y;
-    const double d1z = *p1.z - *p2.z;
-    const double d2x = *p3.x - *p4.x;
-    const double d2y = *p3.y - *p4.y;
-    const double d2z = *p3.z - *p4.z;
+    double d1x = *p1.x - *p2.x;
+    double d1y = *p1.y - *p2.y;
+    double d1z = *p1.z - *p2.z;
+    double d2x = *p3.x - *p4.x;
+    double d2y = *p3.y - *p4.y;
+    double d2z = *p3.z - *p4.z;
 
-    const double len1Sq = d1x * d1x + d1y * d1y + d1z * d1z;
-    const bool useFirst = len1Sq > std::numeric_limits<double>::epsilon();
-    const double refX = useFirst ? d1x : d2x;
-    const double refY = useFirst ? d1y : d2y;
-    const double refZ = useFirst ? d1z : d2z;
+    double len1Sq = d1x * d1x + d1y * d1y + d1z * d1z;
+    bool useFirst = len1Sq > std::numeric_limits<double>::epsilon();
+    double refX = useFirst ? d1x : d2x;
+    double refY = useFirst ? d1y : d2y;
+    double refZ = useFirst ? d1z : d2z;
 
     if (std::abs(refX) >= std::abs(refY) && std::abs(refX) >= std::abs(refZ)) {
         return ConstraintParallel3D::X;

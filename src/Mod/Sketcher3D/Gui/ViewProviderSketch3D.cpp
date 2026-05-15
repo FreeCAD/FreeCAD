@@ -170,7 +170,7 @@ const char* planeLabel(ViewProviderSketch3D::ActivePlane p)
 
 ViewProviderSketch3D::ViewProviderSketch3D()
 {
-    PointSize.setValue(8.0F);
+    PointSize.setValue(5.0F);
     LineWidth.setValue(2.0F);
 }
 

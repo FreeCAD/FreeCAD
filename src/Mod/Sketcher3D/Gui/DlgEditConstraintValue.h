@@ -49,7 +49,8 @@ public:
         const QString& label,
         double initialValue,
         const Base::Unit& unit,
-        QWidget* parent = nullptr
+        QWidget* parent = nullptr,
+        bool allowNegative = false
     );
     ~DlgEditConstraintValue() override;
 

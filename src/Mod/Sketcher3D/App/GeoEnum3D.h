@@ -32,6 +32,11 @@
 namespace Sketcher3D
 {
 
+enum GeoEnum3D
+{
+    GeoUndef = -2000,  // Undefined geometry
+};
+
 /// Position on a geometry element (start/end/mid/none).
 enum class PointPos : int
 {
@@ -53,7 +58,7 @@ enum class GeoKind
 
 struct Sketcher3DExport GeoElementId3D
 {
-    int GeoId = -2000;            // GeoUndef
+    int GeoId = GeoEnum3D::GeoUndef;
     PointPos Pos = PointPos::none;
     GeoKind Kind = GeoKind::Unknown;
 
@@ -66,7 +71,7 @@ struct Sketcher3DExport GeoElementId3D
 
     bool isValid() const
     {
-        return GeoId > -2000;
+        return GeoId != GeoEnum3D::GeoUndef;
     }
 
     bool isCurve() const

@@ -86,8 +86,31 @@ public:
     /// Distance constraint between two points.
     void addConstraintDistance(int tagId, int pointHandleA, int pointHandleB, double distance);
 
-    /// Lock a point x/y/z to its current value.
-    void groundPoint(int pointHandle, int tagId = 0);
+    /// Signed X-distance constraint between two points (x_b - x_a == distance).
+    void addConstraintDistanceX(int tagId, int pointHandleA, int pointHandleB, double distance);
+
+    /// Signed Y-distance constraint between two points (y_b - y_a == distance).
+    void addConstraintDistanceY(int tagId, int pointHandleA, int pointHandleB, double distance);
+
+    /// Signed Z-distance constraint between two points (z_b - z_a == distance).
+    void addConstraintDistanceZ(int tagId, int pointHandleA, int pointHandleB, double distance);
+
+    /// Lock the X coordinate of a single point to a value
+    /// (signed distance from the global YZ plane).
+    void addConstraintCoordinateX(int tagId, int pointHandle, double value);
+
+    /// Lock the Y coordinate of a single point to a value.
+    void addConstraintCoordinateY(int tagId, int pointHandle, double value);
+
+    /// Lock the Z coordinate of a single point to a value.
+    void addConstraintCoordinateZ(int tagId, int pointHandle, double value);
+
+    /// Lock a point x/y/z to its current value. lockX/Y/Z toggles individual axes.
+    void groundPoint(int pointHandle,
+                     int tagId = 0,
+                     bool lockX = true,
+                     bool lockY = true,
+                     bool lockZ = true);
 
     int solve();
 

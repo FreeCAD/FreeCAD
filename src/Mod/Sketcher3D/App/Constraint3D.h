@@ -62,6 +62,9 @@ public:
         AlongX,
         AlongY,
         AlongZ,
+        DistanceX3D,
+        DistanceY3D,
+        DistanceZ3D,
         NumConstraintTypes
     };
 
@@ -98,6 +101,9 @@ private:
         "AlongX",
         "AlongY",
         "AlongZ",
+        "DistanceX3D",
+        "DistanceY3D",
+        "DistanceZ3D",
     }};
 
     std::vector<GeoElementId3D> elements;

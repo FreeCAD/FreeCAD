@@ -44,6 +44,7 @@
 #include <TopoDS_Vertex.hxx>
 #include <gp_Pnt.hxx>
 
+#include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Sketcher3D/App/Constraint3D.h>
 #include <Mod/Sketcher3D/App/GeoEnum3D.h>
@@ -200,7 +201,7 @@ CmdSketcher3DConstrainDistance::CmdSketcher3DConstrainDistance()
     sAppModule = "Sketcher3D";
     sGroup = QT_TR_NOOP("Sketcher3D");
     sMenuText = QT_TR_NOOP("Constrain distance");
-    sToolTipText = QT_TR_NOOP("Force two 3D points to be at a specific distance");
+    sToolTipText = QT_TR_NOOP("Force a 3D line length, or the distance between two 3D points");
     sWhatsThis = "Sketcher3D_ConstrainDistance";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Length";
@@ -225,6 +226,7 @@ void CmdSketcher3DConstrainDistance::activated(int iMsg)
     const auto sels
         = Gui::Selection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId());
     const Part::TopoShape& shape = sketch->Shape.getShape();
+    const auto& geos = sketch->Geometry.getValues();
     for (const auto& s : sels) {
         if (s.getObject() != sketch) {
             continue;
@@ -237,22 +239,38 @@ void CmdSketcher3DConstrainDistance::activated(int iMsg)
             catch (const Standard_Failure&) {
                 continue;
             }
-            if (sub.IsNull() || sub.ShapeType() != TopAbs_VERTEX) {
+            if (sub.IsNull()) {
                 continue;
             }
-            const TopoDS_Vertex v = TopoDS::Vertex(sub);
-            // Convert the selected subshape name to a sketch geometry reference.
+
             auto id = sketch->resolveSubName(subname);
-            if (id.isValid()) {
-                refs.push_back(id);
+            if (!id.isValid()) {
+                continue;
+            }
+
+            if (sub.ShapeType() == TopAbs_VERTEX) {
+                const TopoDS_Vertex v = TopoDS::Vertex(sub);
                 const gp_Pnt p = BRep_Tool::Pnt(v);
+                refs.push_back(id);
                 positions.emplace_back(p.X(), p.Y(), p.Z());
+            }
+            else if (sub.ShapeType() == TopAbs_EDGE && id.Kind == Sketcher3D::GeoKind::Line
+                     && id.Pos == Sketcher3D::PointPos::none && id.GeoId >= 0
+                     && id.GeoId < static_cast<int>(geos.size())) {
+                if (const auto* line = dynamic_cast<const Part::GeomLineSegment*>(geos[id.GeoId])) {
+                    refs.emplace_back(id.GeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line);
+                    positions.push_back(line->getStartPoint());
+                    refs.emplace_back(id.GeoId, Sketcher3D::PointPos::end, Sketcher3D::GeoKind::Line);
+                    positions.push_back(line->getEndPoint());
+                }
             }
         }
     }
 
     if (refs.size() != 2) {
-        Base::Console().warning("Sketcher3D: select exactly two 3D sketch points for Distance.\n");
+        Base::Console().warning(
+            "Sketcher3D: select one 3D sketch line or exactly two 3D sketch points for Distance.\n"
+        );
         return;
     }
     if (refs[0] == refs[1]) {
@@ -287,6 +305,217 @@ void CmdSketcher3DConstrainDistance::activated(int iMsg)
 }
 
 bool CmdSketcher3DConstrainDistance::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+// helper for axisdistanceConstraint
+void addAxisDistanceConstraint(
+    Gui::Command* command,
+    Sketcher3D::Constraint3D::Constraint3DType type,
+    char axis,
+    const QString& dialogTitle,
+    const char* commandText
+)
+{
+    if (!command) {
+        return;
+    }
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    if (!sketch) {
+        return;
+    }
+
+    std::vector<Sketcher3D::GeoElementId3D> refs;
+    std::vector<Base::Vector3d> positions;
+    const auto sels
+        = Gui::Selection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId());
+    const Part::TopoShape& shape = sketch->Shape.getShape();
+    for (const auto& s : sels) {
+        if (s.getObject() != sketch) {
+            continue;
+        }
+        for (const std::string& subname : s.getSubNames()) {
+            TopoDS_Shape sub;
+            try {
+                sub = shape.getSubShape(subname.c_str(), /*silent=*/true);
+            }
+            catch (const Standard_Failure&) {
+                continue;
+            }
+            if (sub.IsNull() || sub.ShapeType() != TopAbs_VERTEX) {
+                continue;
+            }
+            const TopoDS_Vertex v = TopoDS::Vertex(sub);
+            auto id = sketch->resolveSubName(subname);
+            if (id.isValid()) {
+                refs.push_back(id);
+                const gp_Pnt p = BRep_Tool::Pnt(v);
+                positions.emplace_back(p.X(), p.Y(), p.Z());
+            }
+        }
+    }
+
+    if (refs.empty() || refs.size() > 2) {
+        Base::Console().warning("Sketcher3D: select one or two 3D sketch points for Distance%c.\n", axis);
+        return;
+    }
+    if (refs.size() == 2 && refs[0] == refs[1]) {
+        Base::Console().warning("Sketcher3D: Distance%c needs two distinct points.\n", axis);
+        return;
+    }
+
+    // One point: seed from the absolute coordinate (distance to the corresponding global plane).
+    // Two points: seed from the signed component-wise delta.
+    const Base::Vector3d ref = refs.size() == 2 ? (positions[1] - positions[0]) : positions[0];
+    double seedValue = 0.0;
+    switch (axis) {
+        case 'X':
+            seedValue = ref.x;
+            break;
+        case 'Y':
+            seedValue = ref.y;
+            break;
+        case 'Z':
+            seedValue = ref.z;
+            break;
+    }
+
+    DlgEditConstraintValue dlg(
+        dialogTitle,
+        QObject::tr("Distance:"),
+        seedValue,
+        Base::Unit::Length,
+        Gui::getMainWindow(),
+        true
+    );
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+    const double finalValue = dlg.value();
+
+    command->openCommand(commandText);
+    Sketcher3D::Constraint3D c;
+    c.Type = type;
+    c.Value = finalValue;
+    if (refs.size() == 2) {
+        c.setElements({refs[0], refs[1]});
+    }
+    else {
+        c.setElements({refs[0]});
+    }
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    command->commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainDistanceX)
+
+CmdSketcher3DConstrainDistanceX::CmdSketcher3DConstrainDistanceX()
+    : Command("Sketcher3D_ConstrainDistanceX")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain distance X");
+    sToolTipText = QT_TR_NOOP(
+        "Force the X-axis distance: pick one point to lock its X coordinate, or two "
+        "points to fix the signed X delta between them"
+    );
+    sWhatsThis = "Sketcher3D_ConstrainDistanceX";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_HorizontalDistance";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainDistanceX::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    addAxisDistanceConstraint(
+        this,
+        Sketcher3D::Constraint3D::DistanceX3D,
+        'X',
+        QObject::tr("Constrain distance X"),
+        QT_TRANSLATE_NOOP("Command", "Constrain distance X")
+    );
+}
+
+bool CmdSketcher3DConstrainDistanceX::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainDistanceY)
+
+CmdSketcher3DConstrainDistanceY::CmdSketcher3DConstrainDistanceY()
+    : Command("Sketcher3D_ConstrainDistanceY")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain distance Y");
+    sToolTipText = QT_TR_NOOP(
+        "Force the Y-axis distance: pick one point to lock its Y coordinate, or two "
+        "points to fix the signed Y delta between them"
+    );
+    sWhatsThis = "Sketcher3D_ConstrainDistanceY";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_VerticalDistance";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainDistanceY::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    addAxisDistanceConstraint(
+        this,
+        Sketcher3D::Constraint3D::DistanceY3D,
+        'Y',
+        QObject::tr("Constrain distance Y"),
+        QT_TRANSLATE_NOOP("Command", "Constrain distance Y")
+    );
+}
+
+bool CmdSketcher3DConstrainDistanceY::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainDistanceZ)
+
+CmdSketcher3DConstrainDistanceZ::CmdSketcher3DConstrainDistanceZ()
+    : Command("Sketcher3D_ConstrainDistanceZ")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain distance Z");
+    sToolTipText = QT_TR_NOOP(
+        "Force the Z-axis distance: pick one point to lock its Z coordinate, or two "
+        "points to fix the signed Z delta between them"
+    );
+    sWhatsThis = "Sketcher3D_ConstrainDistanceZ";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Length";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainDistanceZ::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    addAxisDistanceConstraint(
+        this,
+        Sketcher3D::Constraint3D::DistanceZ3D,
+        'Z',
+        QObject::tr("Constrain distance Z"),
+        QT_TRANSLATE_NOOP("Command", "Constrain distance Z")
+    );
+}
+
+bool CmdSketcher3DConstrainDistanceZ::isActive()
 {
     return isSketch3DInEdit();
 }
@@ -597,6 +826,40 @@ bool CmdSketcher3DConstrainAlongZ::isActive()
     return isSketch3DInEdit();
 }
 
+class CmdSketcher3DCompDistance: public Gui::GroupCommand
+{
+public:
+    CmdSketcher3DCompDistance()
+        : GroupCommand("Sketcher3D_CompDistance")
+    {
+        sAppModule = "Sketcher3D";
+        sGroup = QT_TR_NOOP("Sketcher3D");
+        sMenuText = QT_TR_NOOP("Dimensional constraint");
+        sToolTipText = QT_TR_NOOP("Constrain a 3D line length or the distance between 3D points");
+        sWhatsThis = "Sketcher3D_CompDistance";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Sketcher3D_ConstrainDistance");
+        addCommand("Sketcher3D_ConstrainDistanceX");
+        addCommand("Sketcher3D_ConstrainDistanceY");
+        addCommand("Sketcher3D_ConstrainDistanceZ");
+    }
+
+    const char* className() const override
+    {
+        return "CmdSketcher3DCompDistance";
+    }
+
+    bool isActive() override
+    {
+        return isSketch3DInEdit();
+    }
+};
+
 class CmdSketcher3DCompParallel: public Gui::GroupCommand
 {
 public:
@@ -642,10 +905,14 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateLine());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreatePolyline());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistance());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceX());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceY());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceZ());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainCoincident());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainParallel());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongX());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongY());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongZ());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompDistance());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompParallel());
 }

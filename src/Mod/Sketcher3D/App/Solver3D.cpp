@@ -141,19 +141,88 @@ void Solver3D::addConstraintDistance(int tagId, int pointHandleA, int pointHandl
     gcs.addConstraintP2PDistance3D(points[pointHandleA], points[pointHandleB], d, tagId);
 }
 
-void Solver3D::groundPoint(int pointHandle, int tagId)
+void Solver3D::addConstraintDistanceX(int tagId, int pointHandleA, int pointHandleB, double distance)
+{
+    if (pointHandleA < 0 || pointHandleA >= static_cast<int>(points.size()) || pointHandleB < 0
+        || pointHandleB >= static_cast<int>(points.size())) {
+        throw Base::IndexError("Solver3D::addConstraintDistanceX handle out of range");
+    }
+    double* d = allocDrivenParam(distance);
+    GCS::Point3D& a = points[pointHandleA];
+    GCS::Point3D& b = points[pointHandleB];
+    gcs.addConstraintDifference(a.x, b.x, d, tagId);
+}
+
+void Solver3D::addConstraintDistanceY(int tagId, int pointHandleA, int pointHandleB, double distance)
+{
+    if (pointHandleA < 0 || pointHandleA >= static_cast<int>(points.size()) || pointHandleB < 0
+        || pointHandleB >= static_cast<int>(points.size())) {
+        throw Base::IndexError("Solver3D::addConstraintDistanceY handle out of range");
+    }
+    double* d = allocDrivenParam(distance);
+    GCS::Point3D& a = points[pointHandleA];
+    GCS::Point3D& b = points[pointHandleB];
+    gcs.addConstraintDifference(a.y, b.y, d, tagId);
+}
+
+void Solver3D::addConstraintDistanceZ(int tagId, int pointHandleA, int pointHandleB, double distance)
+{
+    if (pointHandleA < 0 || pointHandleA >= static_cast<int>(points.size()) || pointHandleB < 0
+        || pointHandleB >= static_cast<int>(points.size())) {
+        throw Base::IndexError("Solver3D::addConstraintDistanceZ handle out of range");
+    }
+    double* d = allocDrivenParam(distance);
+    GCS::Point3D& a = points[pointHandleA];
+    GCS::Point3D& b = points[pointHandleB];
+    gcs.addConstraintDifference(a.z, b.z, d, tagId);
+}
+
+void Solver3D::addConstraintCoordinateX(int tagId, int pointHandle, double value)
+{
+    if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size())) {
+        throw Base::IndexError("Solver3D::addConstraintCoordinateX handle out of range");
+    }
+    double* v = allocDrivenParam(value);
+    gcs.addConstraintCoordinateX3D(points[pointHandle], v, tagId);
+}
+
+void Solver3D::addConstraintCoordinateY(int tagId, int pointHandle, double value)
+{
+    if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size())) {
+        throw Base::IndexError("Solver3D::addConstraintCoordinateY handle out of range");
+    }
+    double* v = allocDrivenParam(value);
+    gcs.addConstraintCoordinateY3D(points[pointHandle], v, tagId);
+}
+
+void Solver3D::addConstraintCoordinateZ(int tagId, int pointHandle, double value)
+{
+    if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size())) {
+        throw Base::IndexError("Solver3D::addConstraintCoordinateZ handle out of range");
+    }
+    double* v = allocDrivenParam(value);
+    gcs.addConstraintCoordinateZ3D(points[pointHandle], v, tagId);
+}
+
+void Solver3D::groundPoint(int pointHandle, int tagId, bool lockX, bool lockY, bool lockZ)
 {
     if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size())) {
         throw Base::IndexError("Solver3D::groundPoint handle out of range");
     }
     GCS::Point3D& p = points[pointHandle];
-    // Lock the current position by tying x/y/z.
-    double* gx = allocDrivenParam(*p.x);
-    double* gy = allocDrivenParam(*p.y);
-    double* gz = allocDrivenParam(*p.z);
-    gcs.addConstraintCoordinateX3D(p, gx, tagId);
-    gcs.addConstraintCoordinateY3D(p, gy, tagId);
-    gcs.addConstraintCoordinateZ3D(p, gz, tagId);
+    // Lock the current position on each requested axis.
+    if (lockX) {
+        double* gx = allocDrivenParam(*p.x);
+        gcs.addConstraintCoordinateX3D(p, gx, tagId);
+    }
+    if (lockY) {
+        double* gy = allocDrivenParam(*p.y);
+        gcs.addConstraintCoordinateY3D(p, gy, tagId);
+    }
+    if (lockZ) {
+        double* gz = allocDrivenParam(*p.z);
+        gcs.addConstraintCoordinateZ3D(p, gz, tagId);
+    }
 }
 
 int Solver3D::solve()
