@@ -14,7 +14,7 @@ from collections.abc import Sequence
 from enum import IntEnum
 from typing import Any, ClassVar, Literal, Protocol, TypeAlias, overload
 
-from Base.Metadata import module, typing_only
+from Base.Metadata import bootstrap_export, module, typing_only
 from FreeCAD import DocumentObject
 
 _Pathish: TypeAlias = str | bytes | bytearray
@@ -634,18 +634,22 @@ def resumeWaitCursor() -> None:
     """Resume the global wait cursor after suspension."""
     ...
 
+@bootstrap_export
 def showMainWindow(inThread: bool = False, /) -> None:
     """Show the main application window."""
     ...
 
+@bootstrap_export
 def exec_loop() -> None:
     """Enter the GUI event loop."""
     ...
 
+@bootstrap_export
 def setupWithoutGUI() -> None:
     """Initialize GUI services without showing the main window."""
     ...
 
+@bootstrap_export
 def embedToWindow(pointer: str, /) -> None:
     """Embed the GUI into an existing native window handle."""
     ...

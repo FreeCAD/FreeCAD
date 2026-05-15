@@ -578,6 +578,11 @@ Application::Application(bool GUIenabled)
 
             PyDict_SetItemString(modules, "FreeCADGui", module);
         }
+        else if (Gui::FreeCADGuiModulePy::addModuleMethods(module) != 0) {
+            // FreeCADCmd can import a bootstrap-only FreeCADGui module before the GUI app exists;
+            // upgrade it to the full GUI surface now.
+            throw Py::Exception();
+        }
         Py::Module(module).setAttr(std::string("ActiveDocument"), Py::None());
         Py::Module(module).setAttr(std::string("HasQtBug_129596"),
 #ifdef HAS_QTBUG_129596

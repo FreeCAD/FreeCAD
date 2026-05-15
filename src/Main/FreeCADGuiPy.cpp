@@ -65,12 +65,13 @@ PyMOD_INIT_FUNC(FreeCADGui)
         if (Base::Type::fromName("Gui::BaseView").isBad()) {
             Gui::Application::initApplication();
         }
+        // Console imports only expose the bootstrap-safe FreeCADGui surface.
         static struct PyModuleDef FreeCADGuiModuleDef = {
             PyModuleDef_HEAD_INIT,
             "FreeCADGui",
             Gui::FreeCADGuiModulePy::moduleDocumentation(),
             -1,
-            Gui::FreeCADGuiModulePy::Methods,
+            Gui::FreeCADGuiModulePy::BootstrapMethods,
             nullptr,
             nullptr,
             nullptr,

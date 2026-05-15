@@ -645,6 +645,11 @@ PyObject* ApplicationPy::sGetDocument(PyObject* /*self*/, PyObject* args)
 {
     requirePythonMainThread("FreeCADGui.getDocument");
 
+    if (!Application::Instance) {
+        PyErr_SetString(PyExc_ImportError, "FreeCADGui is not initialized");
+        return nullptr;
+    }
+
     char* pstr = nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         Document* pcDoc = Application::Instance->getDocument(pstr);
