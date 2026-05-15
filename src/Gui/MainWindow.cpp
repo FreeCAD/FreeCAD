@@ -102,6 +102,7 @@
 #include "ModuleIO.h"
 #include "NotificationArea.h"
 #include "OverlayManager.h"
+#include "ProgramInformation.h"
 #include "ProgressBar.h"
 #include "PropertyView.h"
 #include "PythonConsole.h"
@@ -365,14 +366,20 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->whatsthis = false;
     d->assistant = new Assistant();
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-    // this forces QT to switch to OpenGL mode, this prevents delay and flickering of the window
-    // after opening project and prevent issues with double initialization of the window
-    //
+    // 1. Force Qt to switch to OpenGL mode, this prevents delay and flickering of the window
+    // after opening project and prevent issues with double initialization of the window.
     // https://stackoverflow.com/questions/76026196/how-to-force-qt-to-use-the-opengl-window-type
-    auto _OpenGLWidget = new QOpenGLWidget(this);
-    _OpenGLWidget->move(QPoint(-100, -100));
-#endif
+    // 2. Grab an OpenGL context for version info reporting.
+    struct OpenGLContextGrabWidget: public QOpenGLWidget
+    {
+        using QOpenGLWidget::QOpenGLWidget;
+        void initializeGL() final override
+        {
+            ProgramInformation::initOpenGLInformation(*this);
+        }
+    };
+    auto openGLWidget = new OpenGLContextGrabWidget(this);
+    openGLWidget->move(QPoint(-100, -100));
 
     // global access
     instance = this;

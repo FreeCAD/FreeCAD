@@ -24,6 +24,8 @@
 #include "ProgramInformation.h"
 
 #include <QApplication>
+#include <QOpenGLFunctions>
+#include <QOpenGLWidget>
 #include <QScreen>
 #include <QStyle>
 
@@ -112,6 +114,29 @@ void ProgramInformation::getQtBackendInformation(std::stringstream& str)
         << dialogBackendToString(DialogOptions::colorDialogBackend()) << "\n";
 }
 
+static std::string openGLInfo = "";
+
+// Expects to be called from within initializeGL() of the passed QOpenGLWidget.
+void ProgramInformation::initOpenGLInformation(QOpenGLWidget& widget)
+{
+    std::stringstream str;
+    auto* const funcs = widget.context()->functions();
+    const char* glVersion = reinterpret_cast<const char*>(funcs->glGetString(GL_VERSION));
+    str << (glVersion ? glVersion : "<unavailable>") << '/';
+    const char* glVendor = reinterpret_cast<const char*>(funcs->glGetString(GL_VENDOR));
+    str << (glVendor ? glVendor : "<unavailable>") << '/';
+    const char* glRenderer = reinterpret_cast<const char*>(funcs->glGetString(GL_RENDERER));
+    str << (glRenderer ? glRenderer : "<unavailable>");
+    openGLInfo = str.str();
+}
+
+void ProgramInformation::getOpenGLInformation(std::stringstream& str)
+{
+    if (!openGLInfo.empty()) {
+        str << "OpenGL version/vendor/renderer: " << openGLInfo << "\n";
+    }
+}
+
 std::string ProgramInformation::collect(const std::map<std::string, std::string>& config)
 {
     std::stringstream str;
@@ -120,6 +145,7 @@ std::string ProgramInformation::collect(const std::map<std::string, std::string>
     Gui::ProgramInformation::getQtBackendInformation(str);
     Gui::ProgramInformation::getNavigationStyleInformation(str);
     Gui::ProgramInformation::getDpiInformation(str);
+    Gui::ProgramInformation::getOpenGLInformation(str);
     App::ProgramInformation::getVerboseAddOnsInfo(str, config);
     return str.str();
 }
