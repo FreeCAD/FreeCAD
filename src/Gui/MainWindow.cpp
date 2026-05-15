@@ -717,7 +717,7 @@ QAction* MainWindow::createPythonConsoleWindowAction(QObject* parent)
 {
     auto action = new QAction(parent);
     action->setObjectName(QStringLiteral("PythonConsoleWindowTitleAction"));
-    action->setIcon(Gui::BitmapFactory().iconFromTheme("window-new"));
+    action->setIcon(Gui::BitmapFactory().iconFromTheme("python-console-window"));
     action->setText(tr("Open Python Console in Window"));
     action->setToolTip(tr("Open Python Console in Window"));
     action->setStatusTip(tr("Open Python Console in Window"));
@@ -730,7 +730,7 @@ QAction* MainWindow::createDockPythonConsoleAction(QObject* parent)
 {
     auto action = new QAction(parent);
     action->setObjectName(QStringLiteral("DockPythonConsoleTitleAction"));
-    action->setIcon(Gui::BitmapFactory().iconFromTheme("view-bottom"));
+    action->setIcon(Gui::BitmapFactory().iconFromTheme("python-console-dock"));
     action->setText(tr("Dock Python Console"));
     action->setToolTip(tr("Dock Python Console"));
     action->setStatusTip(tr("Dock Python Console"));
