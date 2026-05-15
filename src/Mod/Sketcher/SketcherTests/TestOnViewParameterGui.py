@@ -3,6 +3,7 @@
 import unittest
 
 import FreeCAD
+import Part
 
 try:
     import FreeCADGui
@@ -50,6 +51,15 @@ class TestOnViewParameterGui(unittest.TestCase):
 
         if self.doc.Name in FreeCAD.listDocuments():
             FreeCAD.closeDocument(self.doc.Name)
+
+    def pack_color(self, color):
+        r, g, b, a = color
+        return (
+            int(r * 255.0 + 0.5) << 24
+            | int(g * 255.0 + 0.5) << 16
+            | int(b * 255.0 + 0.5) << 8
+            | int(a * 255.0 + 0.5)
+        )
 
     def pump(self, timeout_ms=50):
         loop = QtCore.QEventLoop()
@@ -132,6 +142,31 @@ class TestOnViewParameterGui(unittest.TestCase):
             for spinbox in main_window.findChildren(QtGui.QAbstractSpinBox)
             if spinbox.isVisible()
         ]
+
+    @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
+    def test_auto_color_restores_line_color_from_preferences(self):
+        self.sketch.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(10, 0, 0)),
+            False,
+        )
+        self.doc.recompute()
+
+        params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+        old_color = params.GetUnsigned("SketchEdgeColor", 0xFFFFFFFF)
+        manual_color = 0x112233FF
+        preference_color = 0x44AA88FF
+
+        try:
+            view = self.sketch.ViewObject
+            view.AutoColor = False
+            view.LineColor = manual_color
+            params.SetUnsigned("SketchEdgeColor", preference_color)
+
+            view.AutoColor = True
+
+            self.assertEqual(self.pack_color(view.LineColor), preference_color)
+        finally:
+            params.SetUnsigned("SketchEdgeColor", old_color)
 
     @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
     def test_rectangle_ovp_enter_finishes_without_crash(self):

@@ -882,6 +882,7 @@ private:
     void slotToolWidgetChanged(QWidget* newwidget);
 
     void updateColorPropertiesVisibility();
+    void updateAutomaticColorProperties();
 
     /** @name Attorney functions*/
     //@{
