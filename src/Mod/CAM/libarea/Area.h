@@ -130,6 +130,21 @@ public:
     void Split(std::list<CArea>& m_areas) const;
     double GetArea(bool always_add = false) const;
 
+    // Test helper method for checking that if clipper reverses open paths,
+    // it is handled properly.
+    //
+    // This CArea should hold an open path, and the provided clip_area should have a closed
+    // path. This method will behave the same as Intersect, but before converting clipper
+    // results back to CArea it will optionally reverse the open paths.
+    //
+    // reverseOpenPathContents: if true, reverse the contents (vertices) of each open path
+    // reverseOpenPathOrder: if true, reverse the order of the open paths themselves
+    void TestIntersectOpenPathReversal(
+        const CArea& clip_area,
+        bool reverseOpenPathContents,
+        bool reverseOpenPathOrder
+    );
+
     // Avoid outside direct accessing static member variable because of Windows DLL issue
 #define CAREA_PARAM_DECLARE(_type, _name) \
     static _type get_##_name(); \
@@ -173,6 +188,16 @@ private:
 
     // Helper to create bound Z callback
     Clipper2Lib::ZCallback64 MakeZCallback();
+
+    // Internal implementation of Clip with optional open path reversal
+    void _Clip(
+        Clipper2Lib::ClipType op,
+        const CArea& clip_area,
+        Clipper2Lib::FillRule subjFillType,
+        Clipper2Lib::FillRule clipFillType,
+        bool reverseOpenPathContents,
+        bool reverseOpenPathOrder
+    );
 };
 
 enum eOverlapType
