@@ -57,8 +57,8 @@ class BIM_DrawingView:
         import Draft
         
         view_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
-        default_line_width = view_prefs.GetInt("DefaultShapeLineWidth", 2)
-        thickness_ratio = PARAMS.GetFloat("CutAreasLineThicknessRatio", 2.0)
+        default_line_width = view_prefs.GetInt("DefaultShapeLineWidth", 4)
+        thickness_ratio = PARAMS.GetFloat("CutAreasLineThicknessRatio", 4.0)
         cut_lines_width = default_line_width * thickness_ratio
 
         FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create 2D View"))
