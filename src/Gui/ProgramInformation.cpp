@@ -21,13 +21,16 @@
  *                                                                         *
  **************************************************************************/
 
-#include <string>
+#include "ProgramInformation.h"
+
 #include <QApplication>
 #include <QScreen>
 #include <QStyle>
 
 #include <App/Application.h>
-#include "ProgramInformation.h"
+#include <App/ProgramInformation.h>
+
+#include "FileDialog.h"
 
 using namespace Gui;
 
@@ -88,4 +91,39 @@ void ProgramInformation::getDpiInformation(std::stringstream& str)
         << QApplication::primaryScreen()->logicalDotsPerInch() << "/"
         << QApplication::primaryScreen()->physicalDotsPerInch() << "/"
         << QApplication::primaryScreen()->devicePixelRatio() << "\n";
+}
+
+void ProgramInformation::getDialogInformation(std::stringstream& str)
+{
+    constexpr auto backendToString = [](DialogOptions::Backend backend) {
+        switch (backend) {
+            case DialogOptions::Backend::NonNative:
+                return "non-native";
+            case DialogOptions::Backend::ViaQt:
+                return "via Qt";
+            case DialogOptions::Backend::ViaWin32:
+                return "via Win32";
+            default:
+                return "?";
+        }
+    };
+    str << "File dialog/Color dialog: " << backendToString(DialogOptions::fileDialogBackend())
+        << "/" << backendToString(DialogOptions::colorDialogBackend()) << "\n";
+}
+
+std::string ProgramInformation::collect(const std::map<std::string, std::string>& config)
+{
+    std::stringstream str;
+    App::ProgramInformation::getVerboseCommonInfo(str, config);
+    Gui::ProgramInformation::getStyleInformation(str);
+    Gui::ProgramInformation::getDialogInformation(str);
+    Gui::ProgramInformation::getNavigationStyleInformation(str);
+    Gui::ProgramInformation::getDpiInformation(str);
+    App::ProgramInformation::getVerboseAddOnsInfo(str, config);
+    return str.str();
+}
+
+std::string ProgramInformation::collect()
+{
+    return collect(App::Application::Config());
 }

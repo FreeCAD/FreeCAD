@@ -480,14 +480,7 @@ void AboutDialog::linkActivated(const QUrl& link)
 
 void AboutDialog::copyToClipboard()
 {
-    const auto& config = App::Application::Config();
-    std::stringstream str;
-    App::ProgramInformation::getVerboseCommonInfo(str, config);
-    Gui::ProgramInformation::getStyleInformation(str);
-    Gui::ProgramInformation::getNavigationStyleInformation(str);
-    Gui::ProgramInformation::getDpiInformation(str);
-    App::ProgramInformation::getVerboseAddOnsInfo(str, config);
-    QString data = QString::fromStdString(str.str());
+    QString data = QString::fromStdString(Gui::ProgramInformation::collect());
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
