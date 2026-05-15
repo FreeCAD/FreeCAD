@@ -806,12 +806,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
            << "Std_RecentMacros"
            << "Separator"
            << "Std_DlgMacroExecuteDirect"
-           << "Std_MacroAttachDebugger"
-           << "Std_MacroStartDebug"
-           << "Std_MacroStopDebug"
-           << "Std_MacroStepOver"
-           << "Std_MacroStepInto"
-           << "Std_ToggleBreakpoint";
+           << "Std_MacroAttachDebugger";
 
     // Windows
     auto wnd = new MenuItem(menuBar);
