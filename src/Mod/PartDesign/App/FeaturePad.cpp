@@ -57,8 +57,8 @@ Pad::Pad()
     SideType.setEnums(SideTypesEnums);
     Type.setEnums(TypeEnums);
     Type2.setEnums(TypeEnums);
-    ADD_PROPERTY_TYPE(Length, (10.0), "Side1", App::Prop_None, "Pad length");
-    ADD_PROPERTY_TYPE(Length2, (10.0), "Side2", App::Prop_None, "Pad length in 2nd direction");
+    ADD_PROPERTY_TYPE(Length, (10.0), "Side1", App::Prop_None, "Pad end position");
+    ADD_PROPERTY_TYPE(Length2, (10.0), "Side2", App::Prop_None, "Pad end position in 2nd direction");
     ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pad", App::Prop_None, "Use custom vector for pad direction");
     ADD_PROPERTY_TYPE(
         Direction,
@@ -85,13 +85,19 @@ Pad::Pad()
         App::Prop_None,
         "Faces or shape(s) where pad will end on side2"
     );
-    ADD_PROPERTY_TYPE(Offset, (0.0), "Side1", App::Prop_None, "Offset from face in which pad will end");
+    ADD_PROPERTY_TYPE(
+        Offset,
+        (0.0),
+        "Side1",
+        App::Prop_None,
+        "Pad start position for length mode; offset from end face for up-to modes"
+    );
     ADD_PROPERTY_TYPE(
         Offset2,
         (0.0),
         "Side2",
         App::Prop_None,
-        "Offset from face in which pad will end on side 2"
+        "Pad start position for length mode on side 2; offset from end face for up-to modes"
     );
     Offset.setConstraints(&signedLengthConstraint);
     Offset2.setConstraints(&signedLengthConstraint);

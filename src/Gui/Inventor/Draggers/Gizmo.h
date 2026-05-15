@@ -114,6 +114,7 @@ public:
     void setProperty(QuantitySpinBox* property);
     void setMultFactor(const double val);
     void setAddFactor(const double val);
+    void setBaseStart(const double val);
     void setVisibility(bool visible);
 
 private:
@@ -162,6 +163,7 @@ public:
     void setProperty(QuantitySpinBox* property);
     void setMultFactor(const double val);
     void setAddFactor(const double val);
+    void setBaseAngleRange(const double start, const double end);
     void setVisibility(bool visible);
 
 private:

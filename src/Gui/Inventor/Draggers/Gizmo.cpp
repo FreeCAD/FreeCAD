@@ -265,6 +265,12 @@ void LinearGizmo::setAddFactor(const double val)
     setDragLength(property->value().getValue());
 }
 
+void LinearGizmo::setBaseStart(const double val)
+{
+    auto base = SO_GET_PART(dragger, "baseGeom", SoArrowBase);
+    base->startOffset = static_cast<float>(val);
+}
+
 void LinearGizmo::setVisibility(bool visible)
 {
     this->visible = visible;
@@ -307,9 +313,7 @@ void LinearGizmo::draggingContinued()
         value = snapToStep(value, baseStep * getCoarseLinearSnapMultiplier());
     }
 
-    // TODO: Need to change the lower limit to sudoThis->property->minimum() once the
-    // two direction extrude work gets merged
-    value = std::clamp(value, dragger->translationIncrement.getValue(), property->maximum());
+    value = std::clamp(value, property->minimum(), property->maximum());
 
     property->setValue(value);
     setDragLength(value);
@@ -575,6 +579,14 @@ void RotationGizmo::setAddFactor(const double val)
 {
     addFactor = val;
     setRotAngle(property->value().getValue());
+}
+
+void RotationGizmo::setBaseAngleRange(const double start, const double end)
+{
+    auto base = SO_GET_PART(dragger, "baseGeom", SoRotatorBase);
+    base->startAngle = static_cast<float>(start);
+    base->endAngle = static_cast<float>(end);
+    base->useAngleRange = true;
 }
 
 void RotationGizmo::setVisibility(bool visible)

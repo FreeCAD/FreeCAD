@@ -58,8 +58,8 @@ Pocket::Pocket()
     SideType.setEnums(SideTypesEnums);
     Type.setEnums(TypeEnums);
     Type2.setEnums(TypeEnums);
-    ADD_PROPERTY_TYPE(Length, (5.0), "Side1", App::Prop_None, "Pocket length");
-    ADD_PROPERTY_TYPE(Length2, (5.0), "Side2", App::Prop_None, "Pocket length in 2nd direction");
+    ADD_PROPERTY_TYPE(Length, (5.0), "Side1", App::Prop_None, "Pocket end position");
+    ADD_PROPERTY_TYPE(Length2, (5.0), "Side2", App::Prop_None, "Pocket end position in 2nd direction");
     ADD_PROPERTY_TYPE(
         UseCustomVector,
         (false),
@@ -98,13 +98,19 @@ Pocket::Pocket()
         App::Prop_None,
         "Face(s) or shape(s) where pocket will end"
     );
-    ADD_PROPERTY_TYPE(Offset, (0.0), "Side1", App::Prop_None, "Offset from face in which pocket will end");
+    ADD_PROPERTY_TYPE(
+        Offset,
+        (0.0),
+        "Side1",
+        App::Prop_None,
+        "Pocket start position for length mode; offset from end face for up-to modes"
+    );
     ADD_PROPERTY_TYPE(
         Offset2,
         (0.0),
         "Side2",
         App::Prop_None,
-        "Offset from face in which pocket will end on side 2"
+        "Pocket start position for length mode on side 2; offset from end face for up-to modes"
     );
     Offset.setConstraints(&signedLengthConstraint);
     Offset2.setConstraints(&signedLengthConstraint);

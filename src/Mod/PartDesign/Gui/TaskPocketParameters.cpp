@@ -24,7 +24,6 @@
 
 #include <Precision.hxx>
 
-
 #include <Mod/PartDesign/App/FeaturePocket.h>
 
 #include "ui_TaskPadPocketParameters.h"
@@ -39,13 +38,26 @@ using namespace Gui;
 TaskPocketParameters::TaskPocketParameters(ViewProviderPocket* PocketView, QWidget* parent, bool newObj)
     : TaskExtrudeParameters(PocketView, parent, "PartDesign_Pocket", tr("Pocket Parameters"))
 {
+    ui->labelLength->setText(tr("End"));
+    ui->labelOffset->setText(tr("Start"));
+    ui->labelLength2->setText(tr("End"));
+    ui->labelOffset2->setText(tr("Start"));
+
+    ui->lengthEdit->setToolTip(
+        tr("End position of the pocket measured from the sketch plane on side 1")
+    );
     ui->offsetEdit->setToolTip(
-        tr("Offset from the selected face at which the pocket will end on side 1")
+        tr("Start position of the pocket measured from the sketch plane on side 1")
+    );
+    ui->lengthEdit2->setToolTip(
+        tr("End position of the pocket measured from the sketch plane on side 2")
     );
     ui->offsetEdit2->setToolTip(
-        tr("Offset from the selected face at which the pocket will end on side 2")
+        tr("Start position of the pocket measured from the sketch plane on side 2")
     );
     ui->checkBoxReversed->setToolTip(tr("Reverses pocket direction"));
+
+    placeOffsetBeforeLength();
 
     // set the history path
     ui->lengthEdit->setEntryName(QByteArray("Length"));
@@ -82,12 +94,31 @@ void TaskPocketParameters::translateModeList(QComboBox* box, int index)
     box->setCurrentIndex(index);
 }
 
+void TaskPocketParameters::updatePocketStartEndLabels()
+{
+    ui->labelLength->setText(tr("End"));
+    ui->labelLength2->setText(tr("End"));
+
+    const bool side1IsDimension = static_cast<Mode>(ui->changeMode->currentIndex())
+        == Mode::Dimension;
+    const bool side2IsDimension = static_cast<Mode>(ui->changeMode2->currentIndex())
+        == Mode::Dimension;
+    ui->labelOffset->setText(side1IsDimension ? tr("Start") : tr("Offset"));
+    ui->labelOffset2->setText(side2IsDimension ? tr("Start") : tr("Offset"));
+}
+
 void TaskPocketParameters::updateUI(Side side)
 {
     // update direction combobox
     fillDirectionCombo();
     // set and enable checkboxes
     updateWholeUI(Type::Pocket, side);
+    updatePocketStartEndLabels();
+}
+
+bool TaskPocketParameters::showOffsetInDimension() const
+{
+    return true;
 }
 
 void TaskPocketParameters::onModeChanged(int index, Side side)

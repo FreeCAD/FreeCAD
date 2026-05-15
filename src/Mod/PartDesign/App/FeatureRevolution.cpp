@@ -62,14 +62,16 @@ Revolution::Revolution()
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden),
         "Axis"
     );
-    ADD_PROPERTY_TYPE(Angle, (fullAngle), "Revolution", App::Prop_None, "Angle");
+    ADD_PROPERTY_TYPE(StartAngle, (emptyAngle), "Revolution", App::Prop_None, "Start angle");
+    ADD_PROPERTY_TYPE(Angle, (fullAngle), "Revolution", App::Prop_None, "End angle");
     ADD_PROPERTY_TYPE(
-        Angle2,
+        StartAngle2,
         (emptyAngle),
         "Revolution",
         App::Prop_None,
-        "Revolution length in 2nd direction"
+        "Start angle in 2nd direction"
     );
+    ADD_PROPERTY_TYPE(Angle2, (emptyAngle), "Revolution", App::Prop_None, "End angle in 2nd direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Revolution", App::Prop_None, "Face where revolution will end");
     ADD_PROPERTY_TYPE(
         ReferenceAxis,
