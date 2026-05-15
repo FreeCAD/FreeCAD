@@ -41,6 +41,8 @@
 #include <QOpenGLWidget>
 #include <QPainter>
 #include <QProcess>
+#include <QPointer>
+#include <QPushButton>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QScreen>
@@ -53,7 +55,6 @@
 #include <QUrlQuery>
 #include <QWhatsThis>
 #include <QWindow>
-#include <QPushButton>
 #include <string>
 
 
@@ -321,6 +322,9 @@ struct MainWindowP
     bool whatsthis;
     QString whatstext;
     Assistant* assistant;
+    QPointer<PythonConsole> pythonConsole;
+    QPointer<QMainWindow> pythonConsoleWindow;
+    bool pythonConsoleDockVisibleBeforeWindow = false;
     int currentStatusType = 100;
     int actionUpdateDelay = 0;
     QMap<QString, QPointer<UrlHandler>> urlHandler;
@@ -330,6 +334,27 @@ struct MainWindowP
     bool _restoring = false;
     QTime _showNormal;
     void restoreWindowState(const QByteArray&);
+};
+
+class PythonConsoleWindow: public QMainWindow
+{
+public:
+    explicit PythonConsoleWindow(QWidget* parent = nullptr)
+        : QMainWindow(parent, Qt::Window)
+    {
+        setObjectName(QStringLiteral("PythonConsoleWindow"));
+        setAttribute(Qt::WA_DeleteOnClose, false);
+        setAttribute(Qt::WA_QuitOnClose, false);
+    }
+
+protected:
+    void closeEvent(QCloseEvent* event) override
+    {
+        event->ignore();
+        if (auto mainWindow = getMainWindow()) {
+            mainWindow->dockPythonConsole();
+        }
+    }
 };
 
 }  // namespace Gui
@@ -530,6 +555,7 @@ MainWindow::~MainWindow()
     if (d->mdiArea) {
         disconnect(d->mdiArea, &QMdiArea::subWindowActivated, this, &MainWindow::onWindowActivated);
     }
+    delete d->pythonConsoleWindow;
     delete d->status;
     delete d;
     instance = nullptr;
@@ -677,6 +703,7 @@ bool MainWindow::setupPythonConsole()
         pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
         pcPython->setObjectName(QStringLiteral("Python console"));
         pcPython->setWindowTitle(QDockWidget::tr("Python Console"));
+        d->pythonConsole = pcPython;
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
         pDockMgr->registerDockWindow("Std_PythonView", pcPython);
@@ -684,6 +711,189 @@ bool MainWindow::setupPythonConsole()
     }
 
     return false;
+}
+
+QAction* MainWindow::createPythonConsoleWindowAction(QObject* parent)
+{
+    auto action = new QAction(parent);
+    action->setObjectName(QStringLiteral("PythonConsoleWindowTitleAction"));
+    action->setIcon(Gui::BitmapFactory().iconFromTheme("window-new"));
+    action->setText(tr("Open Python Console in Window"));
+    action->setToolTip(tr("Open Python Console in Window"));
+    action->setStatusTip(tr("Open Python Console in Window"));
+    connect(action, &QAction::triggered, this, [this]() { showPythonConsoleWindow(true); });
+    return action;
+}
+
+QAction* MainWindow::createDockPythonConsoleAction(QObject* parent)
+{
+    auto action = new QAction(parent);
+    action->setObjectName(QStringLiteral("DockPythonConsoleTitleAction"));
+    action->setIcon(Gui::BitmapFactory().iconFromTheme("window-new"));
+    action->setText(tr("Dock Python Console"));
+    action->setToolTip(tr("Dock Python Console"));
+    action->setStatusTip(tr("Dock Python Console"));
+    connect(action, &QAction::triggered, this, [this]() { dockPythonConsole(); });
+    return action;
+}
+
+void MainWindow::syncPythonConsoleWindowAction(bool checked)
+{
+    if (auto cmd = Application::Instance->commandManager().getCommandByName("Std_PythonConsoleWindow")) {
+        if (auto action = cmd->getAction()) {
+            action->setBlockedChecked(checked);
+        }
+    }
+}
+
+void MainWindow::setupPythonConsoleDockWidget(QDockWidget* dock)
+{
+    if (!dock || dock->objectName() != QStringLiteral("Python console")) {
+        return;
+    }
+
+    const auto actions = dock->actions();
+    for (auto action : actions) {
+        if (action->objectName() == QStringLiteral("PythonConsoleWindowTitleAction")) {
+            return;
+        }
+    }
+
+    dock->addAction(createPythonConsoleWindowAction(dock));
+
+    if (auto titleBar = dock->titleBarWidget();
+        titleBar && titleBar->objectName() == QStringLiteral("OverlayTitle")) {
+        OverlayManager::instance()->setupTitleBar(dock);
+    }
+}
+
+PythonConsole* MainWindow::pythonConsole() const
+{
+    if (d->pythonConsole) {
+        return d->pythonConsole;
+    }
+
+    if (auto pc = DockWindowManager::instance()->getDockWindow("Python console")) {
+        d->pythonConsole = qobject_cast<PythonConsole*>(pc);
+    }
+    if (!d->pythonConsole) {
+        d->pythonConsole = qobject_cast<PythonConsole*>(
+            DockWindowManager::instance()->findRegisteredDockWindow("Std_PythonView")
+        );
+    }
+    if (!d->pythonConsole) {
+        d->pythonConsole = findChild<PythonConsole*>();
+    }
+
+    return d->pythonConsole;
+}
+
+bool MainWindow::isPythonConsoleStandalone() const
+{
+    return d->pythonConsoleWindow && pythonConsole()
+        && d->pythonConsoleWindow->centralWidget() == pythonConsole();
+}
+
+void MainWindow::showPythonConsoleWindow(bool show)
+{
+    auto pcPython = pythonConsole();
+    if (!pcPython) {
+        return;
+    }
+
+    auto group = d->hGrp->GetGroup("PythonConsoleWindow");
+    if (!d->pythonConsoleWindow) {
+        d->pythonConsoleWindow = new PythonConsoleWindow();
+        d->pythonConsoleWindow->setWindowTitle(QDockWidget::tr("Python Console"));
+        d->pythonConsoleWindow->setWindowIcon(pcPython->windowIcon());
+        d->pythonConsoleWindow->resize(800, 300);
+        auto toolbar = new QToolBar(d->pythonConsoleWindow);
+        toolbar->setObjectName(QStringLiteral("PythonConsoleWindowToolBar"));
+        toolbar->setMovable(false);
+        toolbar->setFloatable(false);
+        toolbar->setIconSize(QSize(16, 16));
+        toolbar->addAction(createDockPythonConsoleAction(toolbar));
+        d->pythonConsoleWindow->addToolBar(Qt::TopToolBarArea, toolbar);
+
+        if (auto geometry = group->GetASCII("Geometry"); !geometry.empty()) {
+            d->pythonConsoleWindow->restoreGeometry(QByteArray::fromBase64(geometry.c_str()));
+        }
+    }
+
+    if (!show) {
+        d->pythonConsoleWindow->hide();
+        group->SetBool("Visible", false);
+        syncPythonConsoleWindowAction(false);
+        saveWindowSettings(true);
+        return;
+    }
+
+    auto pDockMgr = DockWindowManager::instance();
+    if (auto dock = pDockMgr->getDockContainer("Python console")) {
+        d->pythonConsoleDockVisibleBeforeWindow = dock->isVisible();
+        if (dock->widget() == pcPython) {
+            pcPython->setParent(nullptr);
+            dock->setWidget(nullptr);
+        }
+        dock->hide();
+    }
+    else {
+        d->pythonConsoleDockVisibleBeforeWindow = false;
+    }
+
+    if (d->pythonConsoleWindow->centralWidget() != pcPython) {
+        d->pythonConsoleWindow->setCentralWidget(pcPython);
+    }
+
+    group->SetBool("Visible", true);
+    syncPythonConsoleWindowAction(true);
+    d->pythonConsoleWindow->show();
+    d->pythonConsoleWindow->raise();
+    d->pythonConsoleWindow->activateWindow();
+    pcPython->show();
+    pcPython->setFocus();
+    saveWindowSettings(true);
+}
+
+void MainWindow::dockPythonConsole()
+{
+    auto pcPython = pythonConsole();
+    if (!pcPython) {
+        return;
+    }
+
+    auto group = d->hGrp->GetGroup("PythonConsoleWindow");
+    if (d->pythonConsoleWindow) {
+        group->SetASCII("Geometry", d->pythonConsoleWindow->saveGeometry().toBase64().constData());
+        group->SetBool("Visible", false);
+        if (d->pythonConsoleWindow->centralWidget() == pcPython) {
+            d->pythonConsoleWindow->takeCentralWidget();
+        }
+        d->pythonConsoleWindow->hide();
+    }
+
+    auto dock = DockWindowManager::instance()->getDockContainer("Python console");
+    if (!dock) {
+        DockWindowManager::instance()->registerDockWindow("Std_PythonView", pcPython);
+        dock = DockWindowManager::instance()
+                   ->addDockWindow("Python console", pcPython, Qt::BottomDockWidgetArea);
+    }
+    if (dock) {
+        if (dock->widget() != pcPython) {
+            dock->setWidget(pcPython);
+        }
+        dock->toggleViewAction()->setData(QByteArray("Std_PythonView"));
+        setupPythonConsoleDockWidget(dock);
+        syncPythonConsoleWindowAction(false);
+        pcPython->show();
+        dock->setVisible(d->pythonConsoleDockVisibleBeforeWindow);
+        if (d->pythonConsoleDockVisibleBeforeWindow) {
+            dock->raise();
+        }
+        OverlayManager::instance()->refresh(dock);
+    }
+
+    saveWindowSettings(true);
 }
 
 bool MainWindow::updateTreeView(bool show)
@@ -1599,14 +1809,80 @@ void MainWindow::onDockWindowMenuAboutToShow()
 
 void MainWindow::populateDockWindowMenu(QMenu* menu)
 {
+    bool addedPythonConsole = false;
+    auto addPythonConsoleMenu = [this, &addedPythonConsole, menu]() {
+        if (addedPythonConsole) {
+            return;
+        }
+        addedPythonConsole = true;
+
+        const bool standalone = isPythonConsoleStandalone();
+        const bool visible = standalone
+            ? pythonConsole() && pythonConsole()->window()->isVisible()
+            : DockWindowManager::instance()->getDockContainer("Python console")
+                && DockWindowManager::instance()->getDockContainer("Python console")->isVisible();
+
+        auto pythonMenu = menu->addMenu(
+            Gui::BitmapFactory().iconFromTheme("applications-python"),
+            QDockWidget::tr("Python Console")
+        );
+
+        auto visibleAction = pythonMenu->addAction(tr("Show Python Console"), this, [this]() {
+            if (isPythonConsoleStandalone()) {
+                showPythonConsoleWindow(!pythonConsole()->window()->isVisible());
+            }
+            else if (auto dock = DockWindowManager::instance()->getDockContainer("Python console")) {
+                dock->setVisible(!dock->isVisible());
+                if (dock->isVisible()) {
+                    dock->raise();
+                }
+                saveWindowSettings(true);
+            }
+        });
+        visibleAction->setCheckable(true);
+        visibleAction->setChecked(visible);
+        visibleAction->setToolTip(tr("Shows or hides the Python console"));
+        visibleAction->setStatusTip(tr("Shows or hides the Python console"));
+
+        pythonMenu->addSeparator();
+
+        auto pythonModeGroup = new QActionGroup(pythonMenu);
+        pythonModeGroup->setExclusive(true);
+
+        auto panelAction = pythonMenu->addAction(tr("Panel"), this, [this]() {
+            d->pythonConsoleDockVisibleBeforeWindow = true;
+            dockPythonConsole();
+        });
+        panelAction->setCheckable(true);
+        panelAction->setChecked(!standalone);
+        panelAction->setActionGroup(pythonModeGroup);
+        panelAction->setToolTip(tr("Shows the Python console as a dock panel"));
+        panelAction->setStatusTip(tr("Shows the Python console as a dock panel"));
+
+        auto windowAction = pythonMenu->addAction(tr("Window"), this, [this]() {
+            showPythonConsoleWindow(true);
+        });
+        windowAction->setCheckable(true);
+        windowAction->setChecked(standalone);
+        windowAction->setActionGroup(pythonModeGroup);
+        windowAction->setToolTip(tr("Shows the Python console as a standalone window"));
+        windowAction->setStatusTip(tr("Shows the Python console as a standalone window"));
+    };
+
     QList<QDockWidget*> dock = this->findChildren<QDockWidget*>();
     for (auto& it : dock) {
+        if (it->objectName() == QStringLiteral("Python console")) {
+            addPythonConsoleMenu();
+            continue;
+        }
         QAction* action = it->toggleViewAction();
         action->setToolTip(tr("Toggles this dockable window"));
         action->setStatusTip(tr("Toggles this dockable window"));
         action->setWhatsThis(tr("Toggles this dockable window"));
         menu->addAction(action);
     }
+
+    addPythonConsoleMenu();
 }
 
 void MainWindow::setDockWindowMenu(QMenu* menu)
@@ -1988,6 +2264,8 @@ void MainWindow::switchToTopLevelMode()
 
 void MainWindow::switchToDockedMode()
 {
+    dockPythonConsole();
+
     // Search for all top-level MDI views
     QWidgetList toplevel = QApplication::topLevelWidgets();
     for (const auto& it : toplevel) {
@@ -2106,6 +2384,11 @@ void MainWindow::loadWindowSettings()
     std::clog << "Toolbars restored" << std::endl;
 
     OverlayManager::instance()->restore();
+
+    auto group = d->hGrp->GetGroup("PythonConsoleWindow");
+    if (group->GetBool("Visible", false)) {
+        showPythonConsoleWindow(true);
+    }
 }
 
 bool MainWindow::isRestoringWindowState() const
@@ -2156,6 +2439,12 @@ void MainWindow::saveWindowSettings(bool canDelay)
     QRect rect(this->pos(), this->size());
     ss << rect.left() << " " << rect.top() << " " << rect.width() << " " << rect.height();
     d->hGrp->SetASCII("Geometry", ss.str().c_str());
+
+    if (d->pythonConsoleWindow) {
+        auto group = d->hGrp->GetGroup("PythonConsoleWindow");
+        group->SetBool("Visible", d->pythonConsoleWindow->isVisible());
+        group->SetASCII("Geometry", d->pythonConsoleWindow->saveGeometry().toBase64().constData());
+    }
 
     DockWindowManager::instance()->saveState();
     OverlayManager::instance()->save();

@@ -33,6 +33,8 @@
 class QMimeData;
 class QUrl;
 class QMdiSubWindow;
+class QDockWidget;
+class QAction;
 
 namespace App
 {
@@ -47,6 +49,7 @@ class CommandManager;
 class Document;
 class MacroManager;
 class MDIView;
+class PythonConsole;
 
 namespace DockWnd
 {
@@ -223,6 +226,9 @@ public:
     void initDockWindows(bool show);
 
     bool isRestoringWindowState() const;
+    PythonConsole* pythonConsole() const;
+    bool isPythonConsoleStandalone() const;
+    void setupPythonConsoleDockWidget(QDockWidget* dock);
 
 public Q_SLOTS:
     /**
@@ -274,6 +280,8 @@ public Q_SLOTS:
     void whatsThis();
     void switchToTopLevelMode();
     void switchToDockedMode();
+    void showPythonConsoleWindow(bool show = true);
+    void dockPythonConsole();
 
     void statusMessageChanged();
 
@@ -323,6 +331,9 @@ private:
     bool updateTaskView(bool show);
     bool updateComboView(bool show);
     bool updateDAGView(bool show);
+    QAction* createPythonConsoleWindowAction(QObject* parent);
+    QAction* createDockPythonConsoleAction(QObject* parent);
+    void syncPythonConsoleWindowAction(bool checked);
 
     void populateToolBarMenu(QMenu*);
     void populateDockWindowMenu(QMenu*);

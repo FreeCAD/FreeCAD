@@ -1018,6 +1018,7 @@ public:
         else if (auto dockWidget = qobject_cast<QDockWidget*>(parent)) {
             const QDockWidget::DockWidgetFeatures features = dockWidget->features();
 
+            actions.append(dockWidget->actions());
             actions.append(&_actOverlay);
             if (features.testFlag(QDockWidget::DockWidgetFloatable)) {
                 actions.append(&_actFloat);

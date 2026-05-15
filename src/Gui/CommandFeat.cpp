@@ -32,6 +32,7 @@
 #include "CommandT.h"
 #include "DockWindowManager.h"
 #include "Document.h"
+#include "MainWindow.h"
 #include "PythonConsole.h"
 #include "Selection.h"
 #include "SelectionObject.h"
@@ -317,10 +318,14 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
             }
         }
         // show the python console if it's not already visible, and set the keyboard focus to it
-        QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
-        auto pcPython = qobject_cast<PythonConsole*>(pc);
+        auto pcPython = getMainWindow()->pythonConsole();
         if (pcPython) {
-            DockWindowManager::instance()->activate(pcPython);
+            if (getMainWindow()->isPythonConsoleStandalone()) {
+                getMainWindow()->showPythonConsoleWindow(true);
+            }
+            else {
+                DockWindowManager::instance()->activate(pcPython);
+            }
             pcPython->setFocus();
         }
     }
