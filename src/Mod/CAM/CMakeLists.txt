@@ -81,6 +81,7 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/LeadInOut.py
     Path/Dressup/Gui/Mirror.py
     Path/Dressup/Gui/Boundary.py
+    Path/Dressup/Gui/PlungeMilling.py
     Path/Dressup/Gui/Preferences.py
     Path/Dressup/Gui/RampEntry.py
     Path/Dressup/Gui/Tags.py
