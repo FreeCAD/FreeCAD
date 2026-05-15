@@ -27,6 +27,7 @@ import Path
 import Path.Op.Util as PathOpUtil
 import CAMTests.PathTestUtils as PathTestUtils
 import math
+from unittest.mock import MagicMock
 
 from FreeCAD import Vector
 
@@ -980,3 +981,226 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         wire = PathOpUtil.orientWire(Part.Wire([e0m, e1m, e2m]))
         self.assertPointsMatch(wireMarkers(wire), pts)
+
+
+def _makeRectanglePath(x0, y0, x1, y1, z):
+    """Build a Path object that walks the rectangle perimeter at depth z."""
+    cmds = [
+        Path.Command("G0", {"X": x0, "Y": y0, "Z": z + 5}),
+        Path.Command("G1", {"X": x0, "Y": y0, "Z": z}),
+        Path.Command("G1", {"X": x1, "Y": y0, "Z": z}),
+        Path.Command("G1", {"X": x1, "Y": y1, "Z": z}),
+        Path.Command("G1", {"X": x0, "Y": y1, "Z": z}),
+        Path.Command("G1", {"X": x0, "Y": y0, "Z": z}),
+    ]
+    return Path.Path(cmds)
+
+
+def _makeFakeOp(name, workplane, path, diameter=5.0, active=True):
+    """Build a minimal duck-typed op for getClearedAreas filtering tests."""
+    op = MagicMock()
+    op.Name = name
+    op.Active = active
+    op.Workplane = workplane
+    op.Path = path
+    op.ToolController.Tool.Diameter.getValueAs.return_value = diameter
+    # Strip TipAngle so the dz drill branch in getClearedAreas is not taken
+    del op.ToolController.Tool.TipAngle
+    # No RestMachiningPass attribute on a regular op
+    del op.RestMachiningPass
+    return op
+
+
+class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
+    """Verify getClearedAreas filters previous ops by Workplane.
+
+    REST machining stores each op's Path in its own (rotated) workplane frame.
+    Mixing frames produces meaningless cleared-area polygons, so previous ops
+    with a different Workplane than the current op must be skipped.
+    """
+
+    def _makeJob(self, ops):
+        job = MagicMock()
+        job.GeometryTolerance.getValueAs.return_value = 0.001
+        job.Operations.Group = ops
+        return job
+
+    def _makeCurrentOp(self, name, workplane, job):
+        op = MagicMock()
+        op.Name = name
+        op.Workplane = workplane
+        op.Proxy.job = job
+        return op
+
+    def _bbox(self):
+        bb = FreeCAD.BoundBox()
+        bb.add(FreeCAD.Vector(-50, -50, -10))
+        bb.add(FreeCAD.Vector(50, 50, 10))
+        return bb
+
+    def test_sameWorkplaneIncluded(self):
+        """A previous op sharing the current op's Workplane is included."""
+        z_up = Vector(0, 0, 1)
+        prev = _makeFakeOp("Prev", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
+        job = self._makeJob([prev, "_currentSentinel"])
+        current = self._makeCurrentOp("_currentSentinel", z_up, job)
+        # Wire baseOp() lookup so it returns the op itself (no dressup wrapper).
+        # PathDressup.baseOp(op) returns op when not wrapped, which is what
+        # MagicMock-based ops simulate by default. We patch the Group entry
+        # for current to be the actual op instance to exercise the break.
+        job.Operations.Group = [prev, current]
+
+        areas = PathOpUtil.getClearedAreas(current, self._bbox())
+        self.assertEqual(len(areas), 1, "Same-workplane previous op must be included")
+
+    def test_differentWorkplaneSkipped(self):
+        """A previous op with a different Workplane is skipped."""
+        z_up = Vector(0, 0, 1)
+        x_dir = Vector(1, 0, 0)
+        prev_top = _makeFakeOp("PrevTop", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
+        prev_side = _makeFakeOp("PrevSide", x_dir, _makeRectanglePath(-15, -15, 15, 15, -1))
+        current = MagicMock()
+        current.Name = "Current"
+        current.Workplane = x_dir
+        job = self._makeJob([prev_top, prev_side, current])
+        current.Proxy.job = job
+
+        areas = PathOpUtil.getClearedAreas(current, self._bbox())
+        self.assertEqual(
+            len(areas),
+            1,
+            "Only the same-workplane previous op (PrevSide) should contribute cleared area",
+        )
+
+    def test_currentOpStopsIteration(self):
+        """Ops at or after the current op in the list are not considered."""
+        z_up = Vector(0, 0, 1)
+        prev = _makeFakeOp("Prev", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
+        later = _makeFakeOp("Later", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
+        current = MagicMock()
+        current.Name = "Current"
+        current.Workplane = z_up
+        job = self._makeJob([prev, current, later])
+        current.Proxy.job = job
+
+        areas = PathOpUtil.getClearedAreas(current, self._bbox())
+        self.assertEqual(len(areas), 1, "Operations after the current op must be ignored")
+
+    def test_inactiveOpSkipped(self):
+        """Inactive previous ops are skipped regardless of Workplane."""
+        z_up = Vector(0, 0, 1)
+        prev = _makeFakeOp("Prev", z_up, _makeRectanglePath(-20, -20, 20, 20, -1), active=False)
+        current = MagicMock()
+        current.Name = "Current"
+        current.Workplane = z_up
+        job = self._makeJob([prev, current])
+        current.Proxy.job = job
+
+        areas = PathOpUtil.getClearedAreas(current, self._bbox())
+        self.assertEqual(len(areas), 0, "Inactive previous ops must not contribute")
+
+    def test_missingWorkplaneTreatedAsZUp(self):
+        """An op without a Workplane property is treated as Z-up."""
+        z_up = Vector(0, 0, 1)
+        prev = _makeFakeOp("Prev", None, _makeRectanglePath(-20, -20, 20, 20, -1))
+        # Remove Workplane to simulate an older op missing the property.
+        del prev.Workplane
+        current = MagicMock()
+        current.Name = "Current"
+        current.Workplane = z_up
+        job = self._makeJob([prev, current])
+        current.Proxy.job = job
+
+        areas = PathOpUtil.getClearedAreas(current, self._bbox())
+        self.assertEqual(len(areas), 1, "A previous op without Workplane should default to Z-up")
+
+
+class TestStripRotaryAxes(PathTestUtils.PathTestBase):
+    """Verify _stripRotaryAxes drops rotary parameters from path commands."""
+
+    def test_pureRotaryCommandDropped(self):
+        """A G0 with only rotary parameters is removed entirely."""
+        path = Path.Path(
+            [
+                Path.Command("G0", {"A": 90.0}),
+                Path.Command("G1", {"X": 1.0, "Y": 2.0, "Z": -1.0}),
+            ]
+        )
+        stripped = PathOpUtil._stripRotaryAxes(path)
+        self.assertEqual(len(stripped.Commands), 1)
+        self.assertEqual(stripped.Commands[0].Name, "G1")
+        self.assertNotIn("A", stripped.Commands[0].Parameters)
+
+    def test_mixedCommandKeepsLinearAxes(self):
+        """A move that carries both linear and rotary axes keeps the linear ones."""
+        path = Path.Path(
+            [
+                Path.Command("G1", {"X": 5.0, "Y": 6.0, "Z": -2.0, "B": 45.0}),
+            ]
+        )
+        stripped = PathOpUtil._stripRotaryAxes(path)
+        self.assertEqual(len(stripped.Commands), 1)
+        params = stripped.Commands[0].Parameters
+        self.assertEqual(params.get("X"), 5.0)
+        self.assertEqual(params.get("Y"), 6.0)
+        self.assertEqual(params.get("Z"), -2.0)
+        for axis in ("A", "B", "C", "U", "V", "W"):
+            self.assertNotIn(axis, params)
+
+    def test_clearedAreaIgnoresLeadingRotation(self):
+        """Cleared area on a stripped path matches the same path without the rotary G0.
+
+        This is the property that makes REST machining correct in 3+2: the
+        leading rotary command must not cause PathSegmentWalker to rotate the
+        subsequent X/Y/Z positions.
+        """
+        bbox = FreeCAD.BoundBox()
+        bbox.add(FreeCAD.Vector(-50, -50, -10))
+        bbox.add(FreeCAD.Vector(50, 50, 10))
+
+        # A simple square traverse at z=-1.
+        moves = [
+            Path.Command("G0", {"X": -10, "Y": -10, "Z": 5}),
+            Path.Command("G1", {"X": -10, "Y": -10, "Z": -1}),
+            Path.Command("G1", {"X": 10, "Y": -10, "Z": -1}),
+            Path.Command("G1", {"X": 10, "Y": 10, "Z": -1}),
+            Path.Command("G1", {"X": -10, "Y": 10, "Z": -1}),
+            Path.Command("G1", {"X": -10, "Y": -10, "Z": -1}),
+        ]
+        plain = Path.Path(moves)
+        rotated = Path.Path([Path.Command("G0", {"B": -90.0})] + moves)
+
+        plainArea = plain.getClearedArea(5.0, 0.0, bbox)
+        rotatedRawArea = rotated.getClearedArea(5.0, 0.0, bbox)
+        rotatedStrippedArea = PathOpUtil._stripRotaryAxes(rotated).getClearedArea(5.0, 0.0, bbox)
+
+        # Compare via Wires count + bounding box of resulting shape — we just
+        # need to confirm that stripping recovers the unrotated cleared area
+        # and that the raw rotated walk produces something different.
+        plainShape = plainArea.toTopoShape()
+        rotatedRawShape = rotatedRawArea.toTopoShape()
+        strippedShape = rotatedStrippedArea.toTopoShape()
+
+        plainBB = plainShape.BoundBox
+        strippedBB = strippedShape.BoundBox
+        rawBB = rotatedRawShape.BoundBox
+
+        # Stripped result should match the plain (no-rotation) result.
+        self.assertAlmostEqual(plainBB.XMin, strippedBB.XMin, places=3)
+        self.assertAlmostEqual(plainBB.XMax, strippedBB.XMax, places=3)
+        self.assertAlmostEqual(plainBB.YMin, strippedBB.YMin, places=3)
+        self.assertAlmostEqual(plainBB.YMax, strippedBB.YMax, places=3)
+
+        # The unstripped rotated walk should NOT match — confirms the bug is
+        # real and that the strip is doing the work.
+        differs = (
+            not Path.Geom.isRoughly(plainBB.XMin, rawBB.XMin)
+            or not Path.Geom.isRoughly(plainBB.XMax, rawBB.XMax)
+            or not Path.Geom.isRoughly(plainBB.YMin, rawBB.YMin)
+            or not Path.Geom.isRoughly(plainBB.YMax, rawBB.YMax)
+        )
+        self.assertTrue(
+            differs,
+            "Unstripped rotated path should produce a rotation-compensated "
+            "cleared area different from the plain path",
+        )
