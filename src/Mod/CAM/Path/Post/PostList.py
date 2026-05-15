@@ -32,6 +32,7 @@ if debug:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
+
 def _get_effective_fixtures(processor):
     """Return the fixture list the postprocessor should use.
 
