@@ -1243,7 +1243,6 @@ class ObjectOp(object):
         obj.Path = path
         obj.CycleTime = getCycleTimeEstimate(obj)
         self.job.Proxy.getCycleTime()
-        return result
 
     def addBase(self, obj, base, sub):
         Path.Log.track(obj, base, sub)
