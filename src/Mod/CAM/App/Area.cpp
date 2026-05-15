@@ -692,11 +692,19 @@ std::shared_ptr<Area> Area::getClearedArea(
     Base::BoundBox3d bbox
 )
 {
-    // TODO reconsider these values in light of the new arc fitting process
+    // Note: these estimates for precision loss are old, based on previous-generation clipper 1 and
+    // heuristic arc fitting. I am unsure what would be a better estimate now so I am leaving it as
+    // is, but is definitely a conservative estimate now (very conservative? I'm not sure the 2.3
+    // applies at all any more, and arc precision is much improved by the new fitting process) so it
+    // should be ok.
+    //
     // Precision losses in arc/segment conversions (multiples of Accuracy):
-    // 2.3 in generation of gcode (see documentation in the implementation of CCurve::CheckForArc
-    // (libarea/Curve.cpp) 1 in gcode arc to segment 1 in Thicken() cleared area 2 in getRestArea
-    // target area offset in and back out Oversize cleared areas by buffer to smooth out imprecision
+    //
+    // 2.3 in generation of gcode (specified in obsolete-and-deleted documentation of
+    // CCurve::CheckForArc (libarea/Curve.cpp)), 1 in gcode arc to segment, 1 in Thicken() cleared
+    // area, 2 in getRestArea (offset in and back out).
+    //
+    // Oversize cleared areas by an appropriately sized buffer to smooth out imprecision
     // in arc/segment conversion. getRestArea() will compensate for this
     AreaParams params = {};
     const double buffer = params.Accuracy * 3;
@@ -728,12 +736,9 @@ std::shared_ptr<Area> Area::getClearedArea(
 
 std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter)
 {
+    // See the comment at the start of getClearedArea() -- the calculations/buffer specified here
+    // must match that computation
     build();
-    // Precision losses in arc/segment conversions (multiples of Accuracy):
-    // 2.3 in generation of gcode (see documentation in the implementation of CCurve::CheckForArc
-    // (libarea/Curve.cpp) 1 in gcode arc to segment 1 in Thicken() cleared area 2 in getRestArea
-    // target area offset in and back out Cleared area representations are oversized by buffer to
-    // smooth out imprecision in arc/segment conversion. getRestArea() will compensate for this
     AreaParams params = myParams;
     params.Accuracy = myParams.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
     const double buffer = myParams.Accuracy * 3;
