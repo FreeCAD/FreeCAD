@@ -73,11 +73,12 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/__init__.py
     Path/Dressup/Gui/Array.py
     Path/Dressup/Gui/AxisMap.py
+    Path/Dressup/Gui/Boundary.py
     Path/Dressup/Gui/DogboneII.py
     Path/Dressup/Gui/Dragknife.py
     Path/Dressup/Gui/LeadInOut.py
     Path/Dressup/Gui/Mirror.py
-    Path/Dressup/Gui/Boundary.py
+    Path/Dressup/Gui/PlungeMilling.py
     Path/Dressup/Gui/Preferences.py
     Path/Dressup/Gui/RampEntry.py
     Path/Dressup/Gui/Tags.py
@@ -457,6 +458,7 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/bidirectional_facing.py
     Path/Base/Generator/helix.py
     Path/Base/Generator/linking.py
+    Path/Base/Generator/plunge_milling.py
     Path/Base/Generator/ramp_entry.py
     Path/Base/Generator/rotary_dropcutter.py
     Path/Base/Generator/rotary_parallel.py
@@ -585,6 +587,7 @@ SET(Tests_SRCS
     CAMTests/TestPathLogNew.py
     CAMTests/TestPathOpDeburr.py
     CAMTests/TestPathOpUtil.py
+    CAMTests/TestPathPlungeMillingGenerator.py
     CAMTests/TestPostCore.py
     CAMTests/TestPostProcessor.py
     CAMTests/TestPostOutput.py
