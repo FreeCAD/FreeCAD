@@ -100,7 +100,7 @@ class GenerateModelPythonTests(unittest.TestCase):
         source = textwrap.dedent("""
             from __future__ import annotations
 
-            from Base.Metadata import module, no_args
+            from Base.Metadata import bootstrap_export, module, no_args
 
             \"\"\"Example module doc.\"\"\"
 
@@ -112,6 +112,7 @@ class GenerateModelPythonTests(unittest.TestCase):
                 \"\"\"
                 ...
 
+            @bootstrap_export
             @no_args
             def reset() -> None:
                 \"\"\"
@@ -136,6 +137,9 @@ class GenerateModelPythonTests(unittest.TestCase):
         self.assertEqual([method.Name for method in export.Method], ["ping", "reset"])
         self.assertTrue(export.Method[0].Keyword)
         self.assertTrue(export.Method[1].NoArgs)
+        self.assertFalse(export.Method[0].Bootstrap)
+        self.assertTrue(export.Method[1].Bootstrap)
+        self.assertEqual([method.Name for method in export.BootstrapMethods], ["reset"])
         self.assertIn("Example module doc.", export.Documentation.UserDocu)
         self.assertIn("ping(value, /, *, retry=...)", export.Method[0].Documentation.UserDocu)
         self.assertIn("reset()", export.Method[1].Documentation.UserDocu)
@@ -214,6 +218,30 @@ class GenerateModelPythonTests(unittest.TestCase):
                 ValueError, "Module-level function 'ping' cannot use bound-method decorators"
             ):
                 parse(str(path))
+
+    def test_module_stub_rejects_bootstrap_export_on_class_methods(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import bootstrap_export, export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export
+            class Example(PyObjectBase):
+                @bootstrap_export
+                def ping(self) -> None:
+                    ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            with self.assertRaisesRegex(
+                ValueError, "Class method 'ping' cannot use bootstrap_export decorator"
+            ):
+                parse_python_code(str(path))
 
     def test_module_stub_supports_callback_backed_overloads(self):
         source = textwrap.dedent("""
@@ -323,7 +351,7 @@ class GenerateModelPythonTests(unittest.TestCase):
         source = textwrap.dedent("""
             from __future__ import annotations
 
-            from Base.Metadata import no_args
+            from Base.Metadata import bootstrap_export, no_args
 
             \"\"\"Example module doc.\"\"\"
 
@@ -333,6 +361,7 @@ class GenerateModelPythonTests(unittest.TestCase):
                 \"\"\"
                 ...
 
+            @bootstrap_export
             @no_args
             def reset() -> None:
                 \"\"\"
@@ -357,12 +386,20 @@ class GenerateModelPythonTests(unittest.TestCase):
 
         self.assertIn("class ExampleModulePy", header)
         self.assertIn("static const char* moduleDocumentation();", header)
+        self.assertIn("static PyMethodDef BootstrapMethods[];", header)
         self.assertIn("PyModule_AddFunctions(module, Methods)", module_cpp)
         self.assertIn('return "Example module doc.";', module_cpp)
         self.assertIn('#include "ExampleModulePy.cpp"', module_imp)
         self.assertIn("METH_VARARGS|METH_KEYWORDS", module_cpp)
         self.assertIn("METH_NOARGS", module_cpp)
         self.assertIn('PyErr_SetString(PyExc_NotImplementedError, "Not implemented")', module_imp)
+
+        bootstrap_table = module_cpp.split(
+            "PyMethodDef ExampleModulePy::BootstrapMethods[] = {", 1
+        )[1]
+        bootstrap_table = bootstrap_table.split("};", 1)[0]
+        self.assertIn('{"reset"', bootstrap_table)
+        self.assertNotIn('{"ping"', bootstrap_table)
 
     def test_module_stub_generation_uses_existing_callback_symbols(self):
         source = textwrap.dedent("""

@@ -150,6 +150,7 @@ class FunctionSignature:
 
     def update_flags(self, func: ast.FunctionDef) -> None:
         self.typing_only_flag = False
+        self.bootstrap_export_flag = False
         for deco in func.decorator_list:
             name = _decorator_name(deco)
             if name is None:
@@ -168,6 +169,8 @@ class FunctionSignature:
                     self.is_overload = True
                 case "typing_only":
                     self.typing_only_flag = True
+                case "bootstrap_export":
+                    self.bootstrap_export_flag = True
                 case "callback":
                     if not isinstance(deco, ast.Call):
                         raise ValueError("callback decorator requires a string callback symbol")
@@ -263,6 +266,10 @@ class Function:
             elif callback != sig.callback:
                 raise ValueError(f"Function '{self.name}' declares multiple callback symbols")
         return callback
+
+    @property
+    def bootstrap_export_flag(self) -> bool:
+        return any(sig.bootstrap_export_flag for sig in self.public_signatures)
 
     def add_signature_docs(self, doc: Documentation) -> None:
         _compose_signature_docs(
@@ -610,6 +617,8 @@ def _parse_methods(
     for func in functions.values():
         if func.typing_only_flag:
             continue
+        if allow_bound_decorators and func.bootstrap_export_flag:
+            raise ValueError(f"Class method '{func.name}' cannot use bootstrap_export decorator")
         if not allow_bound_decorators and (func.static_flag or func.class_flag or func.const_flag):
             raise ValueError(
                 f"Module-level function '{func.name}' cannot use bound-method decorators"
@@ -640,6 +649,7 @@ def _parse_methods(
             Class=func.class_flag if allow_bound_decorators else False,
             Keyword=func.has_keywords,
             NoArgs=func.noargs_flag,
+            Bootstrap=func.bootstrap_export_flag if not allow_bound_decorators else False,
         )
 
         methods.append(method)

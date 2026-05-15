@@ -63,6 +63,13 @@ class TemplateModulePyExport(template.ModelTemplate):
                 return "add_noargs_method"
             return "add_varargs_method"
 
+        def methodFlags(method):
+            if method.Keyword:
+                return "METH_VARARGS|METH_KEYWORDS"
+            if method.NoArgs:
+                return "METH_NOARGS"
+            return "METH_VARARGS"
+
         print("TemplateModulePyExport", outputDir / exportName)
 
         outputDir.mkdir(parents=True, exist_ok=True)
@@ -113,6 +120,7 @@ public:
     static void initialize(@self.export.ModuleClass@& module);
 = else:
     static PyMethodDef Methods[];
+    static PyMethodDef BootstrapMethods[];
     static int addModuleMethods(PyObject* module);
 -
     static const char* moduleDocumentation();
@@ -185,7 +193,24 @@ PyMethodDef @self.export.Name@ModulePy::Methods[] = {
 = else:
         reinterpret_cast<PyCFunction>(staticCallback_@i.Name@),
 -
-        @("METH_VARARGS|METH_KEYWORDS" if i.Keyword else "METH_NOARGS" if i.NoArgs else "METH_VARARGS")@,
+        @methodFlags(i)@,
+        "@docString(i.Documentation, indent=8)@"
+    },
+-
+    {nullptr, nullptr, 0, nullptr}  /* Sentinel */
+};
+
+PyMethodDef @self.export.Name@ModulePy::BootstrapMethods[] = {
++ for i in self.export.BootstrapMethods:
+    {"@i.Name@",
++ if i.Callback:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(@i.Callback@)),
+= elif i.Keyword:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(staticCallback_@i.Name@)),
+= else:
+        reinterpret_cast<PyCFunction>(staticCallback_@i.Name@),
+-
+        @methodFlags(i)@,
         "@docString(i.Documentation, indent=8)@"
     },
 -

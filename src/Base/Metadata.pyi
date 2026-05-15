@@ -51,6 +51,12 @@ def typing_only(method: _FuncT, /) -> _FuncT:
     """
     ...
 
+def bootstrap_export(method: _FuncT, /) -> _FuncT:
+    """
+    Mark a module function for export from bootstrap-only module import paths.
+    """
+    ...
+
 def sequence_protocol(**kwargs: Any) -> Callable[[_ClassT], _ClassT]:
     """
     A decorator to attach sequence protocol metadata to a class.

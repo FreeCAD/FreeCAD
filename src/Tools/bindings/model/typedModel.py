@@ -120,6 +120,7 @@ class Method:
     Const: Optional[bool] = None
     Keyword: bool = False
     NoArgs: bool = False
+    Bootstrap: bool = False
     Class: bool = False
     Static: bool = False
 
@@ -225,6 +226,10 @@ class PythonModuleExport:
     Runtime: str = "PyMethodDef"
     ModuleClass: str = ""
     IsExplicitlyExported: bool = False
+
+    @property
+    def BootstrapMethods(self) -> list[Method]:
+        return [method for method in self.Method if method.Bootstrap]
 
 
 #
