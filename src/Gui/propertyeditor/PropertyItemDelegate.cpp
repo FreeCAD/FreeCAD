@@ -395,7 +395,7 @@ void PropertyItemDelegate::setModelData(
         return;
     }
     auto childItem = static_cast<PropertyItem*>(index.internalPointer());
-    const bool commitOnClose = dynamic_cast<PropertyStringItem*>(childItem) != nullptr;
+    const bool commitOnClose = childItem->commitOnEditorClose();
     if (!changed && !commitOnClose) {
         return;
     }
