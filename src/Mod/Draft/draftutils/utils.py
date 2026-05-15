@@ -542,14 +542,9 @@ def shapify(obj, delete=True):
     elif len(shape.Wires) == 1:
         name = "Wire"
     elif len(shape.Edges) == 1:
-        import DraftGeomUtils
-
-        if DraftGeomUtils.geomType(shape.Edges[0]) == "Line":
-            name = "Line"
-        else:
-            name = "Circle"
+        name = "Edge"
     else:
-        name = getRealName(obj.Name)
+        name = get_real_name(obj.Name)
 
     if delete:
         App.ActiveDocument.removeObject(obj.Name)

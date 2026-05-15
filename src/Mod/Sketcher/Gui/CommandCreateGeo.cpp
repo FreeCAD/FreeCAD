@@ -1377,7 +1377,7 @@ CmdSketcherCreateText::CmdSketcherCreateText()
     sWhatsThis = "Sketcher_CreateText";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateText";
-    sAccel = "G, T";
+    sAccel = "";
     eType = ForEdit;
 }
 

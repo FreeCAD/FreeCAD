@@ -243,12 +243,18 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def fuse(self, tools: Tuple[TopoShape, ...], tolerance: float = 0.0, /) -> TopoShape:
+    def fuse(
+        self,
+        tools: Tuple[TopoShape, ...],
+        tolerance: float = 0.0,
+        *,
+        noElementMap: bool = False,
+    ) -> TopoShape:
         """
         Union of this and a given (list of) topo shape.
         fuse(tool) -> Shape
           or
-        fuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
+        fuse((tool1,tool2,...),[tolerance=0.0], noElementMap=False) -> Shape
         --
         Union of this and a given list of topo shapes.
 
@@ -258,14 +264,22 @@ class TopoShape(ComplexGeoData):
         - Parallelization of Boolean Operations algorithm
 
         Beginning from OCCT 6.8.1 a tolerance value can be specified.
+        Set noElementMap=True for transient analysis geometry where stable
+        element naming is not needed.
         """
         ...
 
     @constmethod
-    def multiFuse(self, tools: Tuple[TopoShape, ...], tolerance: float = 0.0, /) -> TopoShape:
+    def multiFuse(
+        self,
+        tools: Tuple[TopoShape, ...],
+        tolerance: float = 0.0,
+        *,
+        noElementMap: bool = False,
+    ) -> TopoShape:
         """
         Union of this and a given list of topo shapes.
-        multiFuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
+        multiFuse((tool1,tool2,...),[tolerance=0.0], noElementMap=False) -> Shape
         --
         Supports (OCCT 6.9.0 and above):
         - Fuzzy Boolean operations (global tolerance for a Boolean operation)
@@ -273,6 +287,8 @@ class TopoShape(ComplexGeoData):
         - Parallelization of Boolean Operations algorithm
 
         Beginning from OCCT 6.8.1 a tolerance value can be specified.
+        Set noElementMap=True for transient analysis geometry where stable
+        element naming is not needed.
         Deprecated: use fuse() instead.
         """
         ...
@@ -893,15 +909,23 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def copy(self, copyGeom: bool = True, copyMesh: bool = False, /) -> TopoShape:
+    def copy(
+        self,
+        copyGeom: bool = True,
+        copyMesh: bool = False,
+        *,
+        noElementMap: bool = False,
+    ) -> TopoShape:
         """
         Create a copy of this shape
-        copy(copyGeom=True, copyMesh=False) -> Shape
+        copy(copyGeom=True, copyMesh=False, noElementMap=False) -> Shape
         --
         If copyMesh is True, triangulation contained in original shape will be
         copied along with geometry.
         If copyGeom is False, only topological objects will be copied, while
         geometry and triangulation will be shared with original shape.
+        Set noElementMap=True for transient geometry where stable element
+        naming is not needed.
         """
         ...
 

@@ -34,6 +34,7 @@
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepLProp_CurveTool.hxx>
 #include <Geom_Curve.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <GeomLib_Tool.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
@@ -637,11 +638,55 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeOverlapEdges(const std::vector<
     return outEdges;
 }
 
+// Check whether two edges run along the same path by sampling interior points
+// on each curve and projecting them onto the other. Endpoint coincidence alone
+// is unreliable for tightly clustered arcs (e.g. torus projections) where
+// distinct concentric curves share start/end points. Both directions of
+// sampling must agree to declare coincidence.
+bool DrawProjectSplit::curvesCoincide(const TopoDS_Edge& e0,
+                                      const TopoDS_Edge& e1,
+                                      double tol)
+{
+    Standard_Real f0, l0, f1, l1;
+    Handle(Geom_Curve) c0 = BRep_Tool::Curve(e0, f0, l0);
+    Handle(Geom_Curve) c1 = BRep_Tool::Curve(e1, f1, l1);
+    if (c0.IsNull() || c1.IsNull()) {
+        return false;
+    }
+
+    constexpr int kNumSamples = 5;  // 4 interior samples (i = 1..4)
+
+    auto allSamplesOnOther = [tol](const Handle(Geom_Curve)& src, double sf, double sl,
+                                   const Handle(Geom_Curve)& dst, double df, double dl) {
+        for (int i = 1; i < kNumSamples; ++i) {
+            double t = sf + (sl - sf) * static_cast<double>(i) / kNumSamples;
+            gp_Pnt p = src->Value(t);
+            GeomAPI_ProjectPointOnCurve proj(p, dst, df, dl);
+            if (proj.NbPoints() == 0 || proj.LowerDistance() > tol) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    return allSamplesOnOther(c0, f0, l0, c1, f1, l1)
+        && allSamplesOnOther(c1, f1, l1, c0, f0, l0);
+}
+
 //determine if edge0 & edge1 are superimposed, and classify the type of overlap
 int DrawProjectSplit::isSubset(const TopoDS_Edge &edge0, const TopoDS_Edge &edge1)
 {
     if (!boxesIntersect(edge0, edge1)) {
         return NOTASUBSET;      //boxes don't intersect, so edges do not overlap
+    }
+
+    // Two edges may have intersecting bounding boxes and even share endpoints
+    // without lying on the same curve (e.g. concentric arcs on a torus
+    // projection). Verify with point sampling before trusting the
+    // tolerance-based OCCT boolean Common operation, which can over-match
+    // grazing arcs and cause legitimate edges to be deleted.
+    if (!curvesCoincide(edge0, edge1, FUZZYADJUST * EWTOLERANCE)) {
+        return NOTASUBSET;
     }
 
     //bboxes of edges intersect

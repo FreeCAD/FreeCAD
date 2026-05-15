@@ -88,6 +88,38 @@ class PrecisionPy(PyObjectBase):
 
 Classes are defined in a way that closely mirrors the C++ counterparts. The Python classes use decorators to attach metadata and include docstrings that retain original formatting.
 
+### Module Definitions
+
+Module-level Python APIs can be declared in `.module.pyi` files. These files export
+top-level functions instead of `PyObjectBase` wrapper classes, and the generator emits
+`<Name>ModulePy.h/.cpp` helpers that can be attached to a handwritten `Py::ExtensionModule`
+using `PyModule_AddFunctions()`.
+
+The module name defaults to the `.module.pyi` filename, and the C++ namespace defaults
+to that same value. Use `Base.Metadata.module(...)` only when you need to override those
+defaults.
+
+**Example:**
+
+```python
+from Base.Metadata import no_args
+
+"""Material subsystem helpers."""
+
+def addMaterialObserver(observer: object, /) -> None:
+    """
+    Register a material observer.
+    """
+    ...
+
+@no_args
+def refresh() -> None:
+    """
+    Refresh cached material data.
+    """
+    ...
+```
+
 ### Method Overloading
 
 For methods that require multiple signatures (overloads), use the `@overload` decorator. A final implementation that handles variable arguments (`*args`, `**kwargs`) is provided as a placeholder.

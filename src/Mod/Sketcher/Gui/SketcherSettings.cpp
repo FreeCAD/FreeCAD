@@ -364,7 +364,7 @@ SketcherSettingsGrid::~SketcherSettingsGrid()
 
 bool SketcherSettingsGrid::event(QEvent* event)
 {
-    if (event->type() == QEvent::PaletteChange) {
+    if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
         const QBrush brush = palette().windowText();
@@ -598,7 +598,7 @@ SketcherSettingsAppearance::~SketcherSettingsAppearance()
 
 bool SketcherSettingsAppearance::event(QEvent* event)
 {
-    if (event->type() == QEvent::PaletteChange) {
+    if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
         const QBrush brush = palette().windowText();

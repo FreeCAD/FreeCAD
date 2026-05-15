@@ -35,13 +35,14 @@ import lazy_loader.lazy_loader as lz
 import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
+from draftgeoutils import edges as geo_edges
+from draftgeoutils import general as geo_general
 from draftutils import params
 from draftutils import utils
 from draftutils.messages import _msg, _wrn
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 TechDraw = lz.LazyLoader("TechDraw", globals(), "TechDraw")
 
 ## \addtogroup draftfunctions
@@ -373,7 +374,7 @@ def get_path(
                 first = False
             else:
                 # invert further wires to create holes
-                wire = DraftGeomUtils.invert(wire)
+                wire = geo_edges.invert(wire)
 
             wire.fixWire()
             egroups.append(Part.__sortEdges__(wire.Edges))
@@ -401,8 +402,8 @@ def get_path(
                     if (verts[0].Point - previousverts[-1].Point).Length > 1e-6:
                         raise ValueError("edges not ordered")
 
-            iscircle = DraftGeomUtils.geomType(edge) == "Circle"
-            isellipse = DraftGeomUtils.geomType(edge) == "Ellipse"
+            iscircle = geo_general.geomType(edge) == "Circle"
+            isellipse = geo_general.geomType(edge) == "Ellipse"
 
             if iscircle or isellipse:
                 _type, data = _get_path_circ_ellipse(
@@ -424,7 +425,7 @@ def get_path(
 
                 # else the `edata` was properly augmented, so re-assing it
                 edata = data
-            elif DraftGeomUtils.geomType(edge) == "Line":
+            elif geo_general.geomType(edge) == "Line":
                 v = get_proj(verts[-1].Point, plane)
                 edata += "L {} {} ".format(v.x, v.y)
             else:
