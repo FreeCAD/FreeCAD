@@ -23,6 +23,7 @@
 
 import TestApp
 
+from CAMTests.TestAreaOperations import TestAreaOperations
 from CAMTests.TestCAMSanity import TestCAMSanity
 
 from CAMTests.TestLinkingGenerator import TestGetLinkingMoves
@@ -31,7 +32,6 @@ from CAMTests.TestMachine import (
     TestMachineFactory,
     TestToolhead,
 )
-from CAMTests.TestPathProfile import TestPathProfile
 
 from CAMTests.TestPathAdaptive import TestPathAdaptive
 from CAMTests.TestPathCommandAnnotations import TestPathCommandAnnotations
@@ -72,7 +72,7 @@ from CAMTests.TestPostOutput import (
 
 from CAMTests.TestPathPreferences import TestPathPreferences
 from CAMTests.TestPathPocket import TestPathPocket
-from CAMTests.TestPathProfile import TestPathProfile
+from CAMTests.TestPathProfile import TestPathProfile, TestPathOpenProfile
 from CAMTests.TestPathPropertyBag import TestPathPropertyBag
 from CAMTests.TestPathRotaryGenerators import TestPathRotaryGenerators
 from CAMTests.TestPathRotaryParallel import TestPathRotaryParallel
