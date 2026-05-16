@@ -43,32 +43,26 @@ protected:
 void createRectangle(Sketcher::SketchObject* sketch, double width, double height)
 {
     auto line1 = std::make_unique<Part::GeomLineSegment>();
-    line1->setPoints(Base::Vector3d(0, 0, 0),
-                     Base::Vector3d(width, 0, 0));
+    line1->setPoints(Base::Vector3d(0, 0, 0), Base::Vector3d(width, 0, 0));
     sketch->addGeometry(line1.release(), false);
 
     auto line2 = std::make_unique<Part::GeomLineSegment>();
-    line2->setPoints(Base::Vector3d(width, 0, 0),
-                     Base::Vector3d(width, height, 0));
+    line2->setPoints(Base::Vector3d(width, 0, 0), Base::Vector3d(width, height, 0));
     sketch->addGeometry(line2.release(), false);
 
     auto line3 = std::make_unique<Part::GeomLineSegment>();
-    line3->setPoints(Base::Vector3d(width, height, 0),
-                     Base::Vector3d(0, height, 0));
+    line3->setPoints(Base::Vector3d(width, height, 0), Base::Vector3d(0, height, 0));
     sketch->addGeometry(line3.release(), false);
 
     auto line4 = std::make_unique<Part::GeomLineSegment>();
-    line4->setPoints(Base::Vector3d(0, height, 0),
-                     Base::Vector3d(0, 0, 0));
+    line4->setPoints(Base::Vector3d(0, height, 0), Base::Vector3d(0, 0, 0));
     sketch->addGeometry(line4.release(), false);
 
-    auto createConstraint =
-        [](Sketcher::ConstraintType type,
-           int geo1,
-           Sketcher::PointPos pos1,
-           int geo2,
-           Sketcher::PointPos pos2)
-    {
+    auto createConstraint = [](Sketcher::ConstraintType type,
+                               int geo1,
+                               Sketcher::PointPos pos1,
+                               int geo2,
+                               Sketcher::PointPos pos2) {
         auto c = std::make_unique<Sketcher::Constraint>();
 
         c->Type = type;
@@ -81,45 +75,54 @@ void createRectangle(Sketcher::SketchObject* sketch, double width, double height
         return c;
     };
 
-    sketch->addConstraint(
-        createConstraint(
-            Sketcher::ConstraintType::Coincident,
-            0, Sketcher::PointPos::end,
-            1, Sketcher::PointPos::start
-        ).release());
+    sketch->addConstraint(createConstraint(
+                              Sketcher::ConstraintType::Coincident,
+                              0,
+                              Sketcher::PointPos::end,
+                              1,
+                              Sketcher::PointPos::start
+    )
+                              .release());
 
-    sketch->addConstraint(
-        createConstraint(
-            Sketcher::ConstraintType::Coincident,
-            1, Sketcher::PointPos::end,
-            2, Sketcher::PointPos::start
-        ).release());
+    sketch->addConstraint(createConstraint(
+                              Sketcher::ConstraintType::Coincident,
+                              1,
+                              Sketcher::PointPos::end,
+                              2,
+                              Sketcher::PointPos::start
+    )
+                              .release());
 
-    sketch->addConstraint(
-        createConstraint(
-            Sketcher::ConstraintType::Coincident,
-            2, Sketcher::PointPos::end,
-            3, Sketcher::PointPos::start
-        ).release());
+    sketch->addConstraint(createConstraint(
+                              Sketcher::ConstraintType::Coincident,
+                              2,
+                              Sketcher::PointPos::end,
+                              3,
+                              Sketcher::PointPos::start
+    )
+                              .release());
 
-    sketch->addConstraint(
-        createConstraint(
-            Sketcher::ConstraintType::Coincident,
-            3, Sketcher::PointPos::end,
-            0, Sketcher::PointPos::start
-        ).release());
+    sketch->addConstraint(createConstraint(
+                              Sketcher::ConstraintType::Coincident,
+                              3,
+                              Sketcher::PointPos::end,
+                              0,
+                              Sketcher::PointPos::start
+    )
+                              .release());
 }
 
-TEST_F(GeoFeatureGroupTest, testDocumentObjectGroupAcceptsBoolean) {
+TEST_F(GeoFeatureGroupTest, testDocumentObjectGroupAcceptsBoolean)
+{
     auto group = _doc->addObject<App::DocumentObjectGroup>("Group");
 
     auto body1 = _doc->addObject<PartDesign::Body>("Body10x10");
     group->addObject(body1);
-    
+
     auto sketch1 = _doc->addObject<Sketcher::SketchObject>("Sketch1");
     body1->addObject(sketch1);
     createRectangle(sketch1, 10.0, 10.0);
-    
+
     auto pad1 = _doc->addObject<PartDesign::Pad>("Pad10");
     body1->addObject(pad1);
     pad1->Profile.setValue(sketch1);
@@ -128,23 +131,23 @@ TEST_F(GeoFeatureGroupTest, testDocumentObjectGroupAcceptsBoolean) {
 
     auto body2 = _doc->addObject<PartDesign::Body>("Body10x20");
     group->addObject(body2);
-    
+
     auto sketch2 = _doc->addObject<Sketcher::SketchObject>("Sketch2");
     body2->addObject(sketch2);
     createRectangle(sketch2, 10.0, 20.0);
-    
+
     auto pad2 = _doc->addObject<PartDesign::Pad>("Pad20");
     body2->addObject(pad2);
     pad2->Profile.setValue(sketch2);
-    pad2->Length.setValue(20.0); // Altura do Pad = 20
+    pad2->Length.setValue(20.0);  // Altura do Pad = 20
     body2->Group.setValue({sketch2, pad2});
 
     auto boolOp = _doc->addObject<PartDesign::Boolean>("BooleanOp");
     body1->addObject(boolOp);
-    
-    boolOp->Type.setValue("Fuse"); 
 
-    boolOp->Group.setValue({body2}); 
+    boolOp->Type.setValue("Fuse");
+
+    boolOp->Group.setValue({body2});
     _doc->recompute();
 
     std::vector<App::Property*> list;
