@@ -101,7 +101,7 @@ Py::Object MDIViewPy::repr()
         throw Py::RuntimeError("Cannot print representation of deleted object");
     }
 
-    return Py::String(_view->getTypeId().getName());
+    return Base::toPyString(_view->getTypeId().getName());
 }
 
 Py::Object MDIViewPy::printView(const Py::Tuple& args)
