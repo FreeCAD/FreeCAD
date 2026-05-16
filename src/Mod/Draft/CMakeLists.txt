@@ -3,6 +3,10 @@
 add_subdirectory(App)
 
 IF (BUILD_GUI)
+    add_subdirectory(Gui)
+ENDIF (BUILD_GUI)
+
+IF (BUILD_GUI)
     PYSIDE_WRAP_RC(Draft_QRC_SRCS Resources/Draft.qrc)
 ENDIF (BUILD_GUI)
 
