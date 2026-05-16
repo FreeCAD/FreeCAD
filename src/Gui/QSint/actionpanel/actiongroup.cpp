@@ -84,27 +84,12 @@ QBoxLayout* ActionGroup::groupLayout()
     return myGroup->groupLayout();
 }
 
-ActionLabel* ActionGroup::addAction(QAction *action, bool addToLayout, bool addStretch)
-{
-    if (!action) return nullptr;
-
-    auto *label = new ActionLabel(action, this);
-    myGroup->addActionLabel(label, addToLayout, addStretch);
-
-    return label;
-}
-
 ActionLabel* ActionGroup::addActionLabel(ActionLabel *label, bool addToLayout, bool addStretch)
 {
     if (!label) return nullptr;
 
     myGroup->addActionLabel(label, addToLayout, addStretch);
     return label;
-}
-
-bool ActionGroup::addWidget(QWidget *widget, bool addToLayout, bool addStretch)
-{
-    return myGroup->addWidget(widget, addToLayout, addStretch);
 }
 
 void ActionGroup::showHide()
