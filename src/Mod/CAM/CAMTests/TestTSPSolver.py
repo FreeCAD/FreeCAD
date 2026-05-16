@@ -190,7 +190,7 @@ class TestTSPSolver(PathTestBase):
         self.print_tunnels(tunnels, "Input tunnels")
 
         # Test without flipping
-        sorted_tunnels_no_flip = PathUtils.sort_tunnels_tsp(tunnels, allowFlipping=False)
+        sorted_tunnels_no_flip = tsp_solver.solveTunnels(tunnels, allowFlipping=False)
         self.print_tunnels(sorted_tunnels_no_flip, "Sorted tunnels (no flipping)")
 
         self.assertEqual(len(sorted_tunnels_no_flip), 7)
@@ -199,7 +199,7 @@ class TestTSPSolver(PathTestBase):
             self.assertFalse(tunnel["flipped"])
 
         # Test with flipping allowed
-        sorted_tunnels_with_flip = PathUtils.sort_tunnels_tsp(tunnels, allowFlipping=True)
+        sorted_tunnels_with_flip = tsp_solver.solveTunnels(tunnels, allowFlipping=True)
         self.print_tunnels(sorted_tunnels_with_flip, "Sorted tunnels (flipping allowed)")
 
         self.assertEqual(len(sorted_tunnels_with_flip), 7)
@@ -260,10 +260,11 @@ class TestTSPSolver(PathTestBase):
         ]
 
         # Test 1: No start/end constraints
-        print("\n=== Pentagram Test: No start/end constraints ===")
+        if self.DEBUG:
+            print("\n=== Pentagram Test: No start/end constraints ===")
         self.print_tunnels(tunnels, "Input pentagram tunnels")
 
-        sorted_no_constraints = PathUtils.sort_tunnels_tsp(tunnels, allowFlipping=True)
+        sorted_no_constraints = tsp_solver.solveTunnels(tunnels, allowFlipping=True)
         self.print_tunnels(sorted_no_constraints, "Sorted (no constraints)")
         self.assertEqual(len(sorted_no_constraints), 5)
 
@@ -271,8 +272,9 @@ class TestTSPSolver(PathTestBase):
         start_point = [pentagram_points[0][0], pentagram_points[0][1]]  # Start at point 0
         end_point = [pentagram_points[2][0], pentagram_points[2][1]]  # End at point 2
 
-        print(f"\n=== Pentagram Test: Start at {start_point}, End at {end_point} ===")
-        sorted_with_start_end = PathUtils.sort_tunnels_tsp(
+        if self.DEBUG:
+            print(f"\n=== Pentagram Test: Start at {start_point}, End at {end_point} ===")
+        sorted_with_start_end = tsp_solver.solveTunnels(
             tunnels,
             allowFlipping=True,
             routeStartPoint=start_point,
@@ -282,8 +284,9 @@ class TestTSPSolver(PathTestBase):
         self.assertEqual(len(sorted_with_start_end), 5)
 
         # Test 3: With just start point
-        print(f"\n=== Pentagram Test: Start at {start_point}, no end constraint ===")
-        sorted_with_start_only = PathUtils.sort_tunnels_tsp(
+        if self.DEBUG:
+            print(f"\n=== Pentagram Test: Start at {start_point}, no end constraint ===")
+        sorted_with_start_only = tsp_solver.solveTunnels(
             tunnels, allowFlipping=True, routeStartPoint=start_point
         )
         self.print_tunnels(sorted_with_start_only, "Sorted (start only constraint)")
@@ -352,11 +355,12 @@ class TestTSPSolver(PathTestBase):
             },  # 3 -> 5 (diagonal)
         ]
 
-        print("\n=== Complex Wire Test: End at (25, 10), no start constraint ===")
+        if self.DEBUG:
+            print("\n=== Complex Wire Test: End at (25, 10), no start constraint ===")
         self.print_tunnels(tunnels, "Input complex wire tunnels")
 
         end_point = [25.0, 10.0]  # End at point 4
-        sorted_tunnels = PathUtils.sort_tunnels_tsp(
+        sorted_tunnels = tsp_solver.solveTunnels(
             tunnels, allowFlipping=False, routeEndPoint=end_point
         )
         self.print_tunnels(sorted_tunnels, "Sorted (end only constraint)")
@@ -405,7 +409,7 @@ class TestTSPSolver(PathTestBase):
         self.print_tunnels(tunnels, "Input tunnels with extra data")
 
         # Test with flipping allowed to ensure extra data survives optimization
-        result = PathUtils.sort_tunnels_tsp(tunnels, allowFlipping=True)
+        result = tsp_solver.solveTunnels(tunnels, allowFlipping=True)
 
         self.print_tunnels(result, "Sorted tunnels with extra data preserved")
 
