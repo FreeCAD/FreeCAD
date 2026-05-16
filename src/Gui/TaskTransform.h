@@ -27,17 +27,22 @@
 #include "TaskView/TaskView.h"
 #include "ViewProviderDragger.h"
 
+#include <Base/Placement.h>
 #include <Base/ServiceProvider.h>
+
+#include "TransientPlacementTargetProvider.h"
 
 #include <App/Application.h>
 #include <App/Services.h>
 
 class SoDragger;
+class SoEventCallback;
 
 namespace Gui
 {
 class QuantitySpinBox;
 class SoTransformDragger;
+class View3DInventorViewer;
 class ViewProviderDragger;
 class Ui_TaskTransformDialog;
 
@@ -109,6 +114,7 @@ private:
     static inline bool firstDrag = true;
     static void dragStartCallback(void* data, SoDragger* d);
     static void dragMotionCallback(void* data, SoDragger* d);
+    static void transientPickCallback(void* data, SoEventCallback* cb);
 
     void setSelectionMode(SelectionMode mode);
     SelectionMode getSelectionMode() const;
@@ -145,6 +151,7 @@ private:
     bool isDraggerAlignedToCoordinateSystem() const;
 
     ViewProviderDragger* vp;
+    Gui::View3DInventorViewer* transientPickViewer {nullptr};
 
     const App::SubObjectPlacementProvider* subObjectPlacementProvider;
     const App::CenterOfMassProvider* centerOfMassProvider;

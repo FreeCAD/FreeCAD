@@ -46,7 +46,16 @@
 #include "TaskTransform.h"
 #include "ui_TaskTransform.h"
 
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/events/SoButtonEvent.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoPickStyle.h>
+
+#include "MainWindow.h"
+#include "TransientPlacementTargetProvider.h"
+#include "View3DInventor.h"
 
 using namespace Gui;
 
@@ -110,6 +119,17 @@ TaskTransform::TaskTransform(
 
 TaskTransform::~TaskTransform()
 {
+    if (transientPickViewer) {
+        transientPickViewer
+            ->removeEventCallback(SoLocation2Event::getClassTypeId(), transientPickCallback, this);
+        transientPickViewer
+            ->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), transientPickCallback, this);
+        for (auto* p : TransientPlacementTargetRegistry::instance().all()) {
+            p->deactivate(transientPickViewer);
+        }
+        transientPickViewer = nullptr;
+    }
+
     Gui::Application::Instance->commandManager()
         .getCommandByName("Std_OrthographicCamera")
         ->setEnabled(true);
@@ -401,6 +421,18 @@ void TaskTransform::setSelectionMode(SelectionMode mode)
 {
     Gui::Selection().clearSelection();
 
+    // Tear down any previous transient-pick state before applying the new mode.
+    if (transientPickViewer) {
+        transientPickViewer
+            ->removeEventCallback(SoLocation2Event::getClassTypeId(), transientPickCallback, this);
+        transientPickViewer
+            ->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), transientPickCallback, this);
+        for (auto* p : TransientPlacementTargetRegistry::instance().all()) {
+            p->deactivate(transientPickViewer);
+        }
+        transientPickViewer = nullptr;
+    }
+
     SoPickStyle* draggerPickStyle = SO_GET_PART(dragger, "pickStyle", SoPickStyle);
 
     ui->pickTransformOriginButton->setText(tr("Pick Reference"));
@@ -413,6 +445,25 @@ void TaskTransform::setSelectionMode(SelectionMode mode)
             blockSelection(false);
             ui->referenceLineEdit->setText(tr("Select face, edge, or vertex…"));
             ui->pickTransformOriginButton->setText(tr("Cancel"));
+            {
+                auto* view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+                if (view) {
+                    transientPickViewer = view->getViewer();
+                    for (auto* p : TransientPlacementTargetRegistry::instance().all()) {
+                        p->activate(transientPickViewer);
+                    }
+                    transientPickViewer->addEventCallback(
+                        SoLocation2Event::getClassTypeId(),
+                        transientPickCallback,
+                        this
+                    );
+                    transientPickViewer->addEventCallback(
+                        SoMouseButtonEvent::getClassTypeId(),
+                        transientPickCallback,
+                        this
+                    );
+                }
+            }
             break;
 
         case SelectionMode::SelectAlignTarget:
@@ -420,6 +471,25 @@ void TaskTransform::setSelectionMode(SelectionMode mode)
             draggerPickStyle->setOverride(true);
             ui->alignToOtherObjectButton->setText(tr("Cancel"));
             blockSelection(false);
+            {
+                auto* view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+                if (view) {
+                    transientPickViewer = view->getViewer();
+                    for (auto* p : TransientPlacementTargetRegistry::instance().all()) {
+                        p->activate(transientPickViewer);
+                    }
+                    transientPickViewer->addEventCallback(
+                        SoLocation2Event::getClassTypeId(),
+                        transientPickCallback,
+                        this
+                    );
+                    transientPickViewer->addEventCallback(
+                        SoMouseButtonEvent::getClassTypeId(),
+                        transientPickCallback,
+                        this
+                    );
+                }
+            }
             break;
 
         case SelectionMode::None:
@@ -552,6 +622,74 @@ void TaskTransform::onAlignToOtherObject()
     }
 
     setSelectionMode(SelectionMode::SelectAlignTarget);
+}
+
+void TaskTransform::transientPickCallback(void* data, SoEventCallback* cb)
+{
+    auto* task = static_cast<TaskTransform*>(data);
+
+    const auto* ev = cb->getEvent();
+    const bool isHover = ev->isOfType(SoLocation2Event::getClassTypeId());
+    bool isClick = false;
+    if (ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        const auto* mev = static_cast<const SoMouseButtonEvent*>(ev);
+        isClick = mev->getButton() == SoMouseButtonEvent::BUTTON1
+            && mev->getState() == SoButtonEvent::DOWN;
+    }
+    if (!isHover && !isClick) {
+        return;
+    }
+
+    const SoPickedPoint* pp = cb->getPickedPoint();
+
+    for (auto* provider : TransientPlacementTargetRegistry::instance().all()) {
+        auto result = provider->resolvePick(pp);
+        if (!result) {
+            continue;
+        }
+
+        // Consume click events to suppress normal selection; leave hover events
+        // unconsumed so other listeners are unaffected.
+        if (isClick) {
+            cb->setHandled();
+        }
+
+        const auto rootPlacement = App::GeoFeature::getGlobalPlacement(task->vp->getObject());
+        const auto relativePlacement = rootPlacement.inverse() * result->placement;
+
+        if (isHover) {
+            // Mirror the SetPreselect branch of onSelectionChanged: preview only.
+            switch (task->selectionMode) {
+                case SelectionMode::SelectAlignTarget:
+                    task->vp->setDraggerPlacement(task->vp->getObjectPlacement() * relativePlacement);
+                    break;
+                case SelectionMode::SelectTransformOrigin:
+                    task->vp->setTransformOrigin(relativePlacement);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else {
+            // Mirror the AddSelection branch of onSelectionChanged: commit.
+            switch (task->selectionMode) {
+                case SelectionMode::SelectAlignTarget:
+                    task->vp->setDraggerPlacement(task->vp->getObjectPlacement() * relativePlacement);
+                    task->moveObjectToDragger(task->getRelevantComponents());
+                    task->setSelectionMode(SelectionMode::None);
+                    break;
+                case SelectionMode::SelectTransformOrigin:
+                    task->customTransformOrigin = relativePlacement;
+                    task->ui->referenceLineEdit->setText(QString::fromStdString(result->label));
+                    task->updateTransformOrigin();
+                    task->setSelectionMode(SelectionMode::None);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return;  // first matching provider wins
+    }
 }
 
 ViewProviderDragger::DraggerComponents TaskTransform::getRelevantComponents()
