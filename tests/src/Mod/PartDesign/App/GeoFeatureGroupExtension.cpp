@@ -140,7 +140,7 @@ TEST_F(GeoFeatureGroupTest, testDocumentObjectGroupAcceptsBoolean)
     auto pad2 = _doc->addObject<PartDesign::Pad>("Pad20");
     body2->addObject(pad2);
     pad2->Profile.setValue(sketch2);
-    pad2->Length.setValue(20.0); //20 in height difference
+    pad2->Length.setValue(20.0);  // 20 in height difference
     body2->Group.setValue({sketch2, pad2});
 
     auto boolOp = _doc->addObject<PartDesign::Boolean>("BooleanOp");
