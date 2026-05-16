@@ -145,7 +145,7 @@ PUBLIC_STUB_DECORATORS = {
     "staticmethod",
 }
 
-BindingFamily: TypeAlias = Literal["pycxx_add_method", "pymethoddef"]
+BindingFamily: TypeAlias = Literal["module_stub", "pycxx_add_method", "pymethoddef"]
 ContextKind: TypeAlias = Literal["pycxx_module", "pymethoddef_table", "python_type", "unknown"]
 MethodKind: TypeAlias = Literal["keyword", "noargs", "varargs"]
 ContextEntry: TypeAlias = tuple[int, ContextKind, str]
