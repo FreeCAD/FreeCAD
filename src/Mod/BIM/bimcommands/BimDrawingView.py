@@ -57,7 +57,7 @@ class BIM_DrawingView:
     def Activated(self):
 
         import Draft
-        
+
         default_line_width = view_params.GetInt("DefaultShapeLineWidth", 2)
         thickness_ratio = arch_params.GetFloat("CutLineThickness", 2.0)
         cut_lines_width = default_line_width * thickness_ratio
