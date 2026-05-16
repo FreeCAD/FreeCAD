@@ -1893,6 +1893,13 @@ Qt::DropActions TreeWidget::supportedDropActions() const
 
 bool TreeWidget::event(QEvent* e)
 {
+    if (e->type() == QEvent::ShortcutOverride) {
+        auto ke = static_cast<QKeyEvent*>(e);
+        if (ke->key() == Qt::Key_Space && ke->modifiers() == Qt::NoModifier) {
+            ke->accept();
+            return true;
+        }
+    }
     return QTreeWidget::event(e);
 }
 
@@ -1975,6 +1982,17 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
             event->accept();
             return;
         }
+    }
+
+    else if (event->key() == Qt::Key_Space && event->modifiers() == Qt::NoModifier) {
+        if (auto* cmd = Gui::Application::Instance->commandManager().getCommandByName(
+                "Std_ToggleVisibility"
+            )) {
+            cmd->invoke(0, Command::TriggerAction);
+        }
+        setFocus();
+        event->accept();
+        return;
     }
 
     QTreeWidget::keyPressEvent(event);
