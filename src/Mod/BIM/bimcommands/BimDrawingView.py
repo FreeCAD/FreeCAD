@@ -31,6 +31,8 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+view_params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+arch_params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
 
 
 class BIM_DrawingView:
@@ -56,9 +58,8 @@ class BIM_DrawingView:
 
         import Draft
         
-        view_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
-        default_line_width = view_prefs.GetInt("DefaultShapeLineWidth", 4)
-        thickness_ratio = PARAMS.GetFloat("CutAreasLineThicknessRatio", 4.0)
+        default_line_width = view_params.GetInt("DefaultShapeLineWidth", 2)
+        thickness_ratio = arch_params.GetFloat("CutLineThickness", 2.0)
         cut_lines_width = default_line_width * thickness_ratio
 
         FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create 2D View"))
