@@ -593,6 +593,7 @@ PyMOD_INIT_FUNC(Part)
     Part::FuzzyHelper::setBooleanFuzzy(hGrp->GetFloat("BooleanFuzzy",10.0));
 
     Base::registerServiceImplementation<App::SubObjectPlacementProvider>(new AttacherSubObjectPlacement);
+    Base::registerServiceImplementation<App::SubObjectSnapProvider>(new AttacherSubObjectSnap);
     Base::registerServiceImplementation<App::CenterOfMassProvider>(new PartCenterOfMass);
     Base::registerServiceImplementation<App::CustomAttributeProvider>(new ShapeAttributeProvider);
     Base::registerServiceImplementation<App::PseudoShapeProvider>(new PartPseudoShapeProvider);
