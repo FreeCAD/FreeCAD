@@ -53,7 +53,7 @@ class ObjectDressup:
                 "App::Property", "Percent of cutter diameter to step over on each pass"
             ),
         )
-        obj.StepOver = 50
+        obj.StepOver = 20
         obj.Proxy = self
 
     def dumps(self):
@@ -117,11 +117,11 @@ class ObjectDressup:
                     continue
 
                 if Path.Geom.isVertical(edge):
-                    commands.append(cmd)
+                    # commands.append(cmd)
                     machine.addCommand(cmd)
                     continue
 
-                if isinstance(edge.Curve, Part.Circle):
+                if False and isinstance(edge.Curve, Part.Circle):
                     # split arc by two parts to get extra point in the middle of arc
                     firstPar = edge.FirstParameter
                     midPar = firstPar + (edge.LastParameter - edge.FirstParameter) / 2
@@ -137,10 +137,11 @@ class ObjectDressup:
                     if number >= 2:
                         points = e.discretize(Number=number)
                     else:
-                        points = [e.discretize(Number=3)[1]]
+                        points = [e.Vertexes[0].Point, e.Vertexes[-1].Point]
 
                     for p in points:
-                        if last and Path.Geom.pointsCoincide(p, last):
+                        if last and Path.Geom.pointsCoincide(p, last, step / 2):
+                            # skip too close point
                             continue
                         commands.append(Path.Command("G0", {"X": p.x, "Y": p.y}))
                         commands.append(Path.Command("G1", {"Z": p.z, "F": vertFeed}))
@@ -148,8 +149,6 @@ class ObjectDressup:
                         last = p
 
             machine.addCommand(cmd)
-            if cmd.Name in Constants.GCODE_MOVE_RAPID:
-                retractHeight = machine.getPosition().z
 
         obj.Path = Path.Path(commands)
 
