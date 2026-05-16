@@ -82,12 +82,14 @@ TaskTransform::TaskTransform(
     Gui::SoTransformDragger* dragger,
     QWidget* parent,
     App::SubObjectPlacementProvider* subObjectPlacementProvider,
-    App::CenterOfMassProvider* centerOfMassProvider
+    App::CenterOfMassProvider* centerOfMassProvider,
+    App::SubObjectSnapProvider* subObjectSnapProvider
 )
     : TaskBox(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"), tr("Transform"), false, parent)
     , vp(vp)
     , subObjectPlacementProvider(subObjectPlacementProvider)
     , centerOfMassProvider(centerOfMassProvider)
+    , subObjectSnapProvider(subObjectSnapProvider)
     , dragger(dragger)
     , ui(new Ui_TaskTransformDialog)
 {
@@ -497,6 +499,22 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
     auto attachedPlacement = subObjectPlacementProvider->calculate(msg.Object, localPlacement);
 
     auto selectedObjectPlacement = rootPlacement.inverse() * globalPlacement * attachedPlacement;
+
+    // If a snap provider is registered, try snapping to an edge endpoint
+    if (subObjectSnapProvider) {
+        // Pass nullopt for non-3D selections
+        std::optional<Base::Vector3d> worldCursor;
+        if (msg.x != 0.0f || msg.y != 0.0f || msg.z != 0.0f) {
+            worldCursor = Base::Vector3d(msg.x, msg.y, msg.z);
+        }
+
+        if (auto snapPos = subObjectSnapProvider
+                               ->snapPosition(msg.Object, worldCursor, globalPlacement.toMatrix())) {
+            Base::Vector3d rootLocalSnapPos;
+            rootPlacement.inverse().toMatrix().multVec(*snapPos, rootLocalSnapPos);
+            selectedObjectPlacement.setPosition(rootLocalSnapPos);
+        }
+    }
 
     auto label = QStringLiteral("%1#%2.%3")
                      .arg(
