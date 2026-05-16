@@ -13,9 +13,10 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
-#include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePad.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+
+// NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
 class GeoFeatureGroupTest: public ::testing::Test
 {
@@ -139,7 +140,7 @@ TEST_F(GeoFeatureGroupTest, testDocumentObjectGroupAcceptsBoolean)
     auto pad2 = _doc->addObject<PartDesign::Pad>("Pad20");
     body2->addObject(pad2);
     pad2->Profile.setValue(sketch2);
-    pad2->Length.setValue(20.0);  // Altura do Pad = 20
+    pad2->Length.setValue(20.0); //20 in height difference
     body2->Group.setValue({sketch2, pad2});
 
     auto boolOp = _doc->addObject<PartDesign::Boolean>("BooleanOp");
@@ -172,3 +173,5 @@ TEST_F(GeoFeatureGroupTest, testIsLinkValidCrossFailure)
     bool valid = App::GeoFeatureGroupExtension::isLinkValid(&linkProp);
     EXPECT_FALSE(valid);
 }
+
+// NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
