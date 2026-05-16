@@ -991,7 +991,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                 }
                 ss.str("");
                 
-                if (other.getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
                     ensureElementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
                 }
                 ensureElementMap()->setElementName(element, name, Tag, &sids);
@@ -1473,7 +1473,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     infoMap[TopAbs_COMPOUND] = &faceInfo;
     infoMap[TopAbs_COMPSOLID] = &faceInfo;
 
-    if (ensureElementMap()->getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
         std::ostringstream ss;
         std::string postfix;
         Data::MappedName newName;
@@ -2003,7 +2003,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             }
             delayed = true;
         }
-    } else if (ensureElementMap()->getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+    } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
         // This algorithm has some edgecase detection from the V1 Algorithm, which is why it looks a little bit copypasted.
 
         std::unordered_map<TopoDS_Shape, ReverseMapBase> reverseGeneratedMap { };
@@ -6511,10 +6511,10 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
     Hasher = hasher;
     Tag = tag;
 
-    if (ensureElementMap()->getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
         resetElementMap();
         copyElementMap(tmp, postfix);
-    } else if (ensureElementMap()->getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+    } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
         std::vector<Data::MappedElement> copiedElementMap = tmp.ensureElementMap()->getAll();
 
         for (Data::MappedElement &mappedElement : copiedElementMap) {

@@ -903,14 +903,6 @@ Document::Document(const char* documentName)
                       0,
                       PropertyType(Prop_Hidden),
                       "Whether to use hasher on topological naming");
-    ADD_PROPERTY_TYPE(ToponamingAlgorithmVersion,
-                      (""),
-                      0,
-                      Prop_None,
-                      "The topological naming algorithm to use for the objects in this document.");
-
-    ToponamingAlgorithmVersion.setEnums({"V1", "V2"});
-    ToponamingAlgorithmVersion.setValue(1);
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,

@@ -593,7 +593,7 @@ MappedName ElementMap::setElementName(const IndexedName& element,
 
     Data::MappedName mappedName(name);
 
-    if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
         std::ostringstream ss;
 
         for (int i = 0;;) {
@@ -617,7 +617,7 @@ MappedName ElementMap::setElementName(const IndexedName& element,
             }
             sid = &_sid;
         }
-    } else if (getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+    } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
         int duplicateIndex = 0;
 
         IndexedName existing;
@@ -663,7 +663,7 @@ void ElementMap::encodeElementName(char element_type,
                                    long tag,
                                    bool forceTag) const
 {
-    if (name.getHistoryAlgorithm() != App::HistoryAlgorithm::V1 && this->getHistoryAlgorithm() != App::HistoryAlgorithm::V1)
+    if (App::getSelectedHistoryAlgorithm() != App::HistoryAlgorithm::V1)
         return;
 
     if (postfix && (postfix[0] != 0)) {
@@ -800,7 +800,7 @@ MappedName ElementMap::renameDuplicateElement(int index,
                                               ElementIDRefs& sids,
                                               long masterTag) const
 {
-    if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
         int idx = index;
         std::ostringstream ss;
         ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << idx;
@@ -1234,7 +1234,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
         // skip encoding only when masterTag=0, child.tag=0, and count is exactly at threshold
         bool skipEncoding = (masterTag == 0 && child.tag == 0 && child.count == threshold && child.elementMap);
 
-        if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1
+        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1
             && (child.count >= threshold && !skipEncoding)
                || !child.elementMap)
         {
@@ -1263,7 +1263,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             IndexedName childIdx(child.indexedName);
             IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
             for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
-                if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
                     ElementIDRefs sids;
                     MappedName name = child.elementMap->find(childIdx, &sids);
                     if (!name) {
@@ -1284,7 +1284,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
                                     child.postfix.constData(),
                                     child.tag);
                     setElementName(idx, name, masterTag, &sids);
-                } else if (getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+                } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
                     std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> names = child.elementMap->findAll(childIdx);
 
                     for (const auto& name : names) {
@@ -1298,7 +1298,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             continue;
         }
 
-        if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1 && entry->index != 1) {
+        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1 && entry->index != 1) {
             // There is some ambiguity in child mapping. We need some
             // additional postfix for disambiguation. NOTE: We are not
             // using ComplexGeoData::indexPostfix() so we don't confuse

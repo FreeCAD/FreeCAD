@@ -3,6 +3,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <string_view>
 #include <utility>
 #include "FCGlobal.h"
@@ -14,6 +15,12 @@ enum HistoryAlgorithm : int {
     V1 = 0,
     V2 = 1
 };
+
+AppExport HistoryAlgorithm getSelectedHistoryAlgorithm();
+AppExport HistoryAlgorithm getDefaultHistoryAlgorithm();
+AppExport std::vector<std::string> getAllHistoryAlgorithms();
+AppExport HistoryAlgorithm getHistoryAlgorithmFromString(std::string historyAlgorithmTypeString);
+AppExport std::string getStringNameOfHistoryAlgorithm(HistoryAlgorithm historyAlgorithmTypeEnum);
 
 /// Return type for lookups of new and old style sub-element names
 struct ElementNamePair

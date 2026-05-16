@@ -267,9 +267,9 @@ void SketchObject::buildShape()
 
         Data::MappedName builtName = Data::MappedName();
 
-        if (builtName.getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
             builtName = name;
-        } else if (builtName.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
             builtName = Data::MappedName::makeSection({name},
                                                       {},
                                                       tag,
@@ -1845,7 +1845,7 @@ std::vector<Data::MappedElement> SketchObject::findSimilarNames(const Data::Mapp
     if (ret.empty()) {
         const Part::TopoShape &internalShape = InternalShape.getShape();
 
-        if (internalShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2 && searchName.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
             for (const Data::MappedElement &loopNamePair : internalShape.getElementMap()) {
                 if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name)) {
                     std::string loopNameIndexString = internalPrefix();
