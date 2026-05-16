@@ -223,7 +223,7 @@
 
 
 
-<item row="2" column="0">   
+<item row="2" column="0">
    <layout class="QHBoxLayout" name="horizontalLayout">
    <item row="10" column="0">
     <widget class="QToolButton" name="PushButtonReverse">
@@ -284,7 +284,7 @@
 
 
 
-   
+
    <item row="11" column="0">
     <widget class="QGroupBox" name="groupBox_limits">
      <property name="title">
