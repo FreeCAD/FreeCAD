@@ -442,6 +442,193 @@ class TestTSPSolver(PathTestBase):
             elif tunnel["index"] == 1:
                 self.assertEqual(tunnel["notes"], "high precision")
 
+    def print_pairs(self, pairs, title):
+        """Helper function to print pair information."""
+        if not self.DEBUG:
+            return
+        print(f"\n{title}:")
+        for i, pair in enumerate(pairs):
+            orig_idx = pair.get("index", "N/A")
+            flipped = pair.get("flipped", False)
+            print(
+                f"  {i} (orig {orig_idx}): ({pair['x']:.2f},{pair['y']:.2f})"
+                f" alt=({pair.get('xAlt', pair['x']):.2f},{pair.get('yAlt', pair['y']):.2f})"
+                f" flipped={flipped}"
+            )
+
+    def test_10_pairs_empty(self):
+        """Test that an empty pairs list returns an empty list."""
+        result = tsp_solver.solvePairs([])
+        self.assertEqual(result, [])
+
+    def test_11_pairs_single(self):
+        """Test that a single pair is returned unchanged (not flipped)."""
+        pairs = [{"x": 5.0, "y": 3.0, "xAlt": 10.0, "yAlt": 3.0}]
+        result = tsp_solver.solvePairs(pairs)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["index"], 0)
+        self.assertFalse(result[0]["flipped"])
+        self.assertRoughly(result[0]["x"], 5.0)
+        self.assertRoughly(result[0]["y"], 3.0)
+
+    def test_12_pairs_basic_ordering(self):
+        """Test that pairs are ordered by nearest-neighbor distance.
+
+        Four symmetric pairs (xAlt == x) arranged on a horizontal line but given
+        in shuffled order.  The temp start point is (0, 0), so the solver should
+        visit them left-to-right: indices 2 → 1 → 3 → 0.
+        """
+        pairs = [
+            {"x": 30.0, "y": 0.0, "xAlt": 30.0, "yAlt": 0.0},  # index 0
+            {"x": 10.0, "y": 0.0, "xAlt": 10.0, "yAlt": 0.0},  # index 1
+            {"x": 0.0, "y": 0.0, "xAlt": 0.0, "yAlt": 0.0},  # index 2
+            {"x": 20.0, "y": 0.0, "xAlt": 20.0, "yAlt": 0.0},  # index 3
+        ]
+        self.print_pairs(pairs, "Input pairs (basic ordering)")
+        result = tsp_solver.solvePairs(pairs)
+        self.print_pairs(result, "Sorted pairs (basic ordering)")
+
+        self.assertEqual(len(result), 4)
+        self.assertEqual(sorted([p["index"] for p in result]), [0, 1, 2, 3])
+        self.assertEqual([p["index"] for p in result], [2, 1, 3, 0])
+        for pair in result:
+            self.assertFalse(pair["flipped"])
+
+    def test_13_pairs_flipping(self):
+        """Test that the solver flips a pair when the alternative endpoint is closer.
+
+        Pair 1 has x=20 (far from previous) and xAlt=5 (close to previous).
+        The solver should flip it so that x=5 becomes the approach point.
+        """
+        pairs = [
+            {"x": 0.0, "y": 0.0, "xAlt": 0.0, "yAlt": 0.0},  # index 0
+            {"x": 20.0, "y": 0.0, "xAlt": 5.0, "yAlt": 0.0},  # index 1 — should flip
+            {"x": 10.0, "y": 0.0, "xAlt": 10.0, "yAlt": 0.0},  # index 2
+        ]
+        self.print_pairs(pairs, "Input pairs (flipping)")
+        result = tsp_solver.solvePairs(pairs)
+        self.print_pairs(result, "Sorted pairs (flipping)")
+
+        self.assertEqual(len(result), 3)
+        self.assertEqual(sorted([p["index"] for p in result]), [0, 1, 2])
+        self.assertEqual([p["index"] for p in result], [0, 1, 2])
+
+        # Pair 0: not flipped, coords unchanged
+        self.assertFalse(result[0]["flipped"])
+        self.assertRoughly(result[0]["x"], 0.0)
+        self.assertRoughly(result[0]["y"], 0.0)
+
+        # Pair 1: should be flipped — x/xAlt swapped
+        self.assertTrue(result[1]["flipped"])
+        self.assertRoughly(result[1]["x"], 5.0)
+        self.assertRoughly(result[1]["xAlt"], 20.0)
+
+        # Pair 2: not flipped
+        self.assertFalse(result[2]["flipped"])
+
+    def test_14_pairs_start_point(self):
+        """Test that the pair nearest to routeStartPoint is visited first."""
+        pairs = [
+            {"x": 0.0, "y": 0.0, "xAlt": 0.0, "yAlt": 0.0},  # index 0
+            {"x": 10.0, "y": 0.0, "xAlt": 10.0, "yAlt": 0.0},  # index 1
+            {"x": 20.0, "y": 0.0, "xAlt": 20.0, "yAlt": 0.0},  # index 2
+            {"x": 30.0, "y": 0.0, "xAlt": 30.0, "yAlt": 0.0},  # index 3
+        ]
+        self.print_pairs(pairs, "Input pairs (start point)")
+        result = tsp_solver.solvePairs(pairs, routeStartPoint=[30.0, 0.0])
+        self.print_pairs(result, "Sorted pairs (start point)")
+
+        self.assertEqual(len(result), 4)
+        self.assertEqual(sorted([p["index"] for p in result]), [0, 1, 2, 3])
+        self.assertEqual(result[0]["index"], 3)
+
+    def test_15_pairs_end_point(self):
+        """Test that the pair nearest to routeEndPoint is visited last."""
+        pairs = [
+            {"x": 0.0, "y": 0.0, "xAlt": 0.0, "yAlt": 0.0},  # index 0
+            {"x": 10.0, "y": 0.0, "xAlt": 10.0, "yAlt": 0.0},  # index 1
+            {"x": 20.0, "y": 0.0, "xAlt": 20.0, "yAlt": 0.0},  # index 2
+            {"x": 30.0, "y": 0.0, "xAlt": 30.0, "yAlt": 0.0},  # index 3
+        ]
+        self.print_pairs(pairs, "Input pairs (end point)")
+        # End point is beyond the rightmost pair; pair 3 should end up last.
+        result = tsp_solver.solvePairs(pairs, routeEndPoint=[35.0, 0.0])
+        self.print_pairs(result, "Sorted pairs (end point)")
+
+        self.assertEqual(len(result), 4)
+        self.assertEqual(sorted([p["index"] for p in result]), [0, 1, 2, 3])
+        self.assertEqual(result[-1]["index"], 3)
+
+    def test_16_pairs_start_end_points(self):
+        """Test that both start and end constraints are respected simultaneously."""
+        pairs = [
+            {"x": 0.0, "y": 0.0, "xAlt": 0.0, "yAlt": 0.0},  # index 0
+            {"x": 10.0, "y": 0.0, "xAlt": 10.0, "yAlt": 0.0},  # index 1
+            {"x": 20.0, "y": 0.0, "xAlt": 20.0, "yAlt": 0.0},  # index 2
+            {"x": 30.0, "y": 0.0, "xAlt": 30.0, "yAlt": 0.0},  # index 3
+        ]
+        self.print_pairs(pairs, "Input pairs (start+end)")
+        result = tsp_solver.solvePairs(
+            pairs, routeStartPoint=[-5.0, 0.0], routeEndPoint=[35.0, 0.0]
+        )
+        self.print_pairs(result, "Sorted pairs (start+end)")
+
+        self.assertEqual(len(result), 4)
+        self.assertEqual(sorted([p["index"] for p in result]), [0, 1, 2, 3])
+        self.assertEqual(result[0]["index"], 0)
+        self.assertEqual(result[-1]["index"], 3)
+
+    def test_17_pairs_extra_data_passthrough(self):
+        """Test that extra keys in input dicts are preserved in the output."""
+        pairs = [
+            {"x": 10.0, "y": 0.0, "xAlt": 10.0, "yAlt": 0.0, "op_id": "B", "feed": 500},
+            {"x": 0.0, "y": 0.0, "xAlt": 0.0, "yAlt": 0.0, "op_id": "A", "feed": 300},
+            {"x": 20.0, "y": 0.0, "xAlt": 20.0, "yAlt": 0.0, "op_id": "C", "feed": 400},
+        ]
+        self.print_pairs(pairs, "Input pairs (extra data)")
+        result = tsp_solver.solvePairs(pairs)
+        self.print_pairs(result, "Sorted pairs (extra data preserved)")
+
+        self.assertEqual(len(result), 3)
+        for pair in result:
+            # Solver-added keys must be present
+            self.assertIn("x", pair)
+            self.assertIn("y", pair)
+            self.assertIn("xAlt", pair)
+            self.assertIn("yAlt", pair)
+            self.assertIn("flipped", pair)
+            self.assertIn("index", pair)
+            # Extra keys must survive
+            self.assertIn("op_id", pair)
+            self.assertIn("feed", pair)
+            # Values must match the original pair
+            original = pairs[pair["index"]]
+            self.assertEqual(pair["op_id"], original["op_id"])
+            self.assertEqual(pair["feed"], original["feed"])
+
+    def test_18_pairs_no_alt_coords(self):
+        """Test that pairs without xAlt/yAlt default correctly (no flipping)."""
+        # xAlt/yAlt are omitted; the C++ wrapper defaults them to x/y.
+        # Since both orientations are identical, no pair should be flipped.
+        pairs = [
+            {"x": 5.0, "y": 0.0},  # index 0
+            {"x": 0.0, "y": 0.0},  # index 1
+            {"x": 10.0, "y": 0.0},  # index 2
+        ]
+        self.print_pairs(pairs, "Input pairs (no alt coords)")
+        result = tsp_solver.solvePairs(pairs)
+        self.print_pairs(result, "Sorted pairs (no alt coords)")
+
+        self.assertEqual(len(result), 3)
+        self.assertEqual(sorted([p["index"] for p in result]), [0, 1, 2])
+        # Nearest-neighbor from (0,0): pair 1 → pair 0 → pair 2
+        self.assertEqual([p["index"] for p in result], [1, 0, 2])
+        for pair in result:
+            self.assertFalse(pair["flipped"])
+            # xAlt/yAlt should have been added by the solver, matching x/y
+            self.assertRoughly(pair["xAlt"], pair["x"])
+            self.assertRoughly(pair["yAlt"], pair["y"])
+
 
 if __name__ == "__main__":
     import unittest
