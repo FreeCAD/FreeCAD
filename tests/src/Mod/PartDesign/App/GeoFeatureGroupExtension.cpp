@@ -17,16 +17,22 @@
 #include <Mod/PartDesign/App/FeaturePad.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
-class GeoFeatureGroupTest : public ::testing::Test {
+class GeoFeatureGroupTest: public ::testing::Test
+{
 protected:
-    static void SetUpTestSuite() { tests::initApplication(); }
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
 
-    void SetUp() override {
+    void SetUp() override
+    {
         _docName = App::GetApplication().getUniqueDocumentName("GeoTest");
         _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
     }
 
-    void TearDown() override {
+    void TearDown() override
+    {
         App::GetApplication().closeDocument(_docName.c_str());
     }
 
@@ -148,7 +154,8 @@ TEST_F(GeoFeatureGroupTest, testDocumentObjectGroupAcceptsBoolean) {
     }
 }
 
-TEST_F(GeoFeatureGroupTest, testIsLinkValidCrossFailure) {
+TEST_F(GeoFeatureGroupTest, testIsLinkValidCrossFailure)
+{
     auto body1 = _doc->addObject<PartDesign::Body>("Body1");
     auto body2 = _doc->addObject<PartDesign::Body>("Body2");
 
