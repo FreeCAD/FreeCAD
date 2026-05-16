@@ -24,6 +24,9 @@
 #include <Base/Interpreter.h>
 #include <Base/Vector3D.h>
 
+#include <App/Link.h>
+#include <App/Part.h>
+
 #include "Services.h"
 
 AttacherSubObjectPlacement::AttacherSubObjectPlacement()
@@ -54,6 +57,19 @@ std::optional<Base::Vector3d> PartCenterOfMass::ofDocumentObject(App::DocumentOb
 
             return (feature->Placement.getValue().inverse() * comPlacement).getPosition();
         }
+        return {};
+    }
+
+    // getTopoShape applies all placement levels so centerOfGravity() is in world
+    // space; undo the object's own placement to get the dragger-local offset.
+    const auto shape = Part::Feature::getTopoShape(object, Part::ShapeOption::Transform);
+    if (!shape.isNull()) {
+        if (const auto cog = shape.centerOfGravity()) {
+            const Base::Placement comPlacement {*cog, Base::Rotation {}};
+            if (const auto* prop = object->getPlacementProperty()) {
+                return (prop->getValue().inverse() * comPlacement).getPosition();
+            }
+        }
     }
 
     return {};
@@ -61,7 +77,20 @@ std::optional<Base::Vector3d> PartCenterOfMass::ofDocumentObject(App::DocumentOb
 
 bool PartCenterOfMass::supports(App::DocumentObject* object) const
 {
-    return object->isDerivedFrom<Part::Feature>();
+    if (object->isDerivedFrom<Part::Feature>()) {
+        return true;
+    }
+
+    if (object->isDerivedFrom<App::Link>()) {
+        const auto* linked = object->getLinkedObject(true);
+        return linked && linked != object;
+    }
+
+    if (object->isDerivedFrom<App::Part>()) {
+        return !object->getSubObjects().empty();
+    }
+
+    return false;
 }
 
 std::optional<PyObject*> ShapeAttributeProvider::getAttribute(
