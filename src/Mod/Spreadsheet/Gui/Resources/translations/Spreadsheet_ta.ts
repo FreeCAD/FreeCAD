@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="955"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="957"/>
+      <location filename="../../Command.cpp" line="956"/>
       <source>&amp;New Spreadsheet</source>
       <translation>புதிய விரிதாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="957"/>
       <source>Creates a new spreadsheet</source>
       <translation>புதிய விரிதாளை உருவாக்குகிறது</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Align &amp;Bottom</source>
       <translation>&amp;கீழே சீரமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Aligns cell contents to the bottom</source>
       <translation>செல் உள்ளடக்கங்களை கீழே சீரமைக்கிறது</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="343"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="345"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Align Horizontal &amp;Center</source>
       <translation>கிடைமட்ட &amp;மையத்தை சீரமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="345"/>
       <source>Aligns cell contents to the horizontal center</source>
       <translation>செல் உள்ளடக்கங்களை கிடைமட்ட மையத்தில் சீரமைக்கிறது</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="286"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Align &amp;Left</source>
       <translation>இடதுபுறம் சீரமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="289"/>
+      <location filename="../../Command.cpp" line="288"/>
       <source>Aligns cell contents to the left</source>
       <translation>செல் உள்ளடக்கங்களை இடதுபுறமாக சீரமைக்கிறது</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="400"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Align &amp;Right</source>
       <translation>வலதுபுறம் சீரமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="403"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Aligns cell contents to the right</source>
       <translation>செல் உள்ளடக்கங்களை வலதுபுறமாக சீரமைக்கிறது</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="457"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
+      <location filename="../../Command.cpp" line="458"/>
       <source>Align &amp;Top</source>
       <translation>சீரமை &amp;மேலே</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="460"/>
+      <location filename="../../Command.cpp" line="459"/>
       <source>Aligns cell contents to the top</source>
       <translation>செல் உள்ளடக்கங்களை மேலே சீரமைக்கிறது</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="571"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="573"/>
+      <location filename="../../Command.cpp" line="572"/>
       <source>Align &amp;Vertical Center</source>
       <translation>செங்குத்து மையத்தை சீரமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="574"/>
+      <location filename="../../Command.cpp" line="573"/>
       <source>Aligns cell contents to the vertical center</source>
       <translation>செல் உள்ளடக்கங்களை செங்குத்து மையத்தில் சீரமைக்கிறது</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>&amp;Export Spreadsheet</source>
       <translation>&amp;ஏற்றுமதி விரிதாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Exports the spreadsheet to a CSV file</source>
       <translation>விரிதாளை காபிம கோப்பிற்கு ஏற்றுமதி செய்கிறது</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="883"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Set Alias</source>
       <translation>மாற்றுப்பெயரை அமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Sets an alias for the selected cell</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கலத்திற்கு மாற்றுப்பெயரை அமைக்கிறது</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="628"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="630"/>
+      <location filename="../../Command.cpp" line="629"/>
       <source>&amp;Bold Text</source>
       <translation>தடித்த உரை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="631"/>
+      <location filename="../../Command.cpp" line="630"/>
       <source>Sets the text in the selected cells bold</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கலங்களில் உள்ள உரையை தடிமனாக அமைக்கிறது</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="713"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="715"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source>&amp;Italic Text</source>
       <translation>சாய்வு உரை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="715"/>
       <source>Sets the text in the selected cells italic</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கலங்களில் சாய்வு உரையை அமைக்கிறது</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="798"/>
       <source>Spreadsheet</source>
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="800"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>&amp;Underline Text</source>
       <translation>உரையை அடிக்கோடிடவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>Underlines the text in the selected cells</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கலங்களில் உள்ள உரையை அடிக்கோடிடவும்</translation>
     </message>
@@ -302,52 +302,52 @@
       <translation>பிளவு செல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Left-align cell</source>
       <translation>இடது சீரமைக்கப்பட்ட செல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="365"/>
       <source>Center cell</source>
       <translation>மைய செல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="423"/>
+      <location filename="../../Command.cpp" line="422"/>
       <source>Right-align cell</source>
       <translation>வலது-சீரமைப்பு செல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="479"/>
       <source>Top-align cell</source>
       <translation>மேல்-சீரமைப்பு செல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="537"/>
+      <location filename="../../Command.cpp" line="536"/>
       <source>Bottom-align cell</source>
       <translation>கீழே சீரமைக்கும் செல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="594"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Vertically center cells</source>
       <translation>செங்குத்தாக மைய செல்கள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="669"/>
+      <location filename="../../Command.cpp" line="668"/>
       <source>Set bold text</source>
       <translation>தடிமனான உரையை அமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="754"/>
+      <location filename="../../Command.cpp" line="753"/>
       <source>Set italic text</source>
       <translation>சாய்வு உரையை அமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="839"/>
+      <location filename="../../Command.cpp" line="838"/>
       <source>Set underline text</source>
       <translation>உரையை அடிக்கோடிட்டு அமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="969"/>
+      <location filename="../../Command.cpp" line="968"/>
       <source>Create Spreadsheet</source>
       <translation>விரிதாளை உருவாக்கவும்</translation>
     </message>
@@ -749,24 +749,12 @@ Spreadsheet.my_alias_name க்கு பதிலாக Spreadsheet.B1</transl
       <translation>விரிவுத்தாள்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="108"/>
-      <location filename="../../Command.cpp" line="199"/>
-      <source>CSV (*.csv *.CSV)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV)</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
-      <location filename="../../Command.cpp" line="200"/>
-      <source>All (*)</source>
-      <translation type="unfinished">All (*)</translation>
-    </message>
-    <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="112"/>
       <source>Export File</source>
       <translation>ஏற்றுமதி கோப்பு</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="138"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show Spreadsheet</source>
       <translation>விரிதாளைக் காட்டு</translation>
     </message>
@@ -1192,11 +1180,6 @@ Defaults to: %V = %A
       <location filename="../../SpreadsheetView.cpp" line="284"/>
       <source>Export PDF</source>
       <translation>PDFஐ ஏற்றுமதி செய்</translation>
-    </message>
-    <message>
-      <location filename="../../SpreadsheetView.cpp" line="286"/>
-      <source>PDF file</source>
-      <translation>PDF கோப்பு</translation>
     </message>
   </context>
   <context>

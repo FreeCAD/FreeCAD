@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="955"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="957"/>
+      <location filename="../../Command.cpp" line="956"/>
       <source>&amp;New Spreadsheet</source>
       <translation>&amp;Nowy arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="957"/>
       <source>Creates a new spreadsheet</source>
       <translation>Tworzy nowy arkusz kalkulacyjny</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Align &amp;Bottom</source>
       <translation>Wyrównaj do &amp;dołu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Aligns cell contents to the bottom</source>
       <translation>Wyrównuje zawartość komórki do dołu</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="343"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="345"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Align Horizontal &amp;Center</source>
       <translation>Wyśrodkuj w p&amp;oziomie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="345"/>
       <source>Aligns cell contents to the horizontal center</source>
       <translation>Wyrównuje zawartość komórki poziomo do środka</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="286"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Align &amp;Left</source>
       <translation>Wyrównaj do &amp;lewej</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="289"/>
+      <location filename="../../Command.cpp" line="288"/>
       <source>Aligns cell contents to the left</source>
       <translation>Wyrównuje zawartość komórki do lewej</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="400"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Align &amp;Right</source>
       <translation>Wyrównaj do &amp;prawej</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="403"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Aligns cell contents to the right</source>
       <translation>Wyrównuje zawartość komórki do prawej</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="457"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
+      <location filename="../../Command.cpp" line="458"/>
       <source>Align &amp;Top</source>
       <translation>Wyrównaj do &amp;góry</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="460"/>
+      <location filename="../../Command.cpp" line="459"/>
       <source>Aligns cell contents to the top</source>
       <translation>Wyrównuje zawartość komórki do góry</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="571"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="573"/>
+      <location filename="../../Command.cpp" line="572"/>
       <source>Align &amp;Vertical Center</source>
       <translation>Wyśrodkuj w p&amp;ionie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="574"/>
+      <location filename="../../Command.cpp" line="573"/>
       <source>Aligns cell contents to the vertical center</source>
       <translation>Wyrównuje zawartość komórki pionowo do środka</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>&amp;Export Spreadsheet</source>
       <translation>&amp;Eksportuj arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Exports the spreadsheet to a CSV file</source>
       <translation>Eksportuje arkusz do pliku CSV</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="883"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Set Alias</source>
       <translation>Ustaw alias</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Sets an alias for the selected cell</source>
       <translation>Ustawia alias dla wybranej komórki</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="628"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="630"/>
+      <location filename="../../Command.cpp" line="629"/>
       <source>&amp;Bold Text</source>
       <translation>&amp;Pogrubienie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="631"/>
+      <location filename="../../Command.cpp" line="630"/>
       <source>Sets the text in the selected cells bold</source>
       <translation>Pogrubia tekst w wybranych komórkach</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="713"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="715"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source>&amp;Italic Text</source>
       <translation>Kursywa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="715"/>
       <source>Sets the text in the selected cells italic</source>
       <translation>Ustawia kursywę dla tekstu w wybranych komórkach</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="798"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="800"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>&amp;Underline Text</source>
       <translation>&amp;Podkreślenie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>Underlines the text in the selected cells</source>
       <translation>Podkreśla tekst w wybranych komórkach</translation>
     </message>
@@ -302,52 +302,52 @@
       <translation>Podziel komórkę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Left-align cell</source>
       <translation>Wyrównaj komórkę do lewej</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="365"/>
       <source>Center cell</source>
       <translation>Wyśrodkuj komórkę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="423"/>
+      <location filename="../../Command.cpp" line="422"/>
       <source>Right-align cell</source>
       <translation>Wyrównaj komórkę do prawej</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="479"/>
       <source>Top-align cell</source>
       <translation>Wyrównaj komórkę do góry</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="537"/>
+      <location filename="../../Command.cpp" line="536"/>
       <source>Bottom-align cell</source>
       <translation>Wyrównaj komórkę do dołu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="594"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Vertically center cells</source>
       <translation>Wyśrodkuj komórkę w pionie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="669"/>
+      <location filename="../../Command.cpp" line="668"/>
       <source>Set bold text</source>
       <translation>Ustaw pogrubiony tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="754"/>
+      <location filename="../../Command.cpp" line="753"/>
       <source>Set italic text</source>
       <translation>Ustaw pochylony tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="839"/>
+      <location filename="../../Command.cpp" line="838"/>
       <source>Set underline text</source>
       <translation>Ustaw podkreślony tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="969"/>
+      <location filename="../../Command.cpp" line="968"/>
       <source>Create Spreadsheet</source>
       <translation>Utwórz Arkusz kalkulacyjny</translation>
     </message>
@@ -748,24 +748,12 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="108"/>
-      <location filename="../../Command.cpp" line="199"/>
-      <source>CSV (*.csv *.CSV)</source>
-      <translation>CSV (*.csv *.CSV)</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
-      <location filename="../../Command.cpp" line="200"/>
-      <source>All (*)</source>
-      <translation>Wszystkie (*)</translation>
-    </message>
-    <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="112"/>
       <source>Export File</source>
       <translation>Eksportuj plik</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="138"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show Spreadsheet</source>
       <translation>Pokaż arkusz</translation>
     </message>
@@ -1203,11 +1191,6 @@ Domyślnie %V = %A
       <location filename="../../SpreadsheetView.cpp" line="284"/>
       <source>Export PDF</source>
       <translation>Eksportuj do formatu PDF</translation>
-    </message>
-    <message>
-      <location filename="../../SpreadsheetView.cpp" line="286"/>
-      <source>PDF file</source>
-      <translation>Plik PDF</translation>
     </message>
   </context>
   <context>

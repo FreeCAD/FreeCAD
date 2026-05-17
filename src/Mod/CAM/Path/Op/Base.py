@@ -57,6 +57,7 @@ FeatureStartPoint = 0x0008  # StartPoint
 FeatureFinishDepth = 0x0010  # FinishDepth
 FeatureStepDown = 0x0020  # StepDown
 FeatureNoFinalDepth = 0x0040  # edit or not edit FinalDepth
+FeatureLinking = 0x0080  # Linking
 FeatureBaseVertexes = 0x0100  # Base
 FeatureBaseEdges = 0x0200  # Base
 FeatureBaseFaces = 0x0400  # Base
@@ -156,6 +157,26 @@ class ObjectOp(object):
                 QT_TRANSLATE_NOOP("App::Property", "Holds the min Z value of Stock"),
             )
             obj.setEditorMode("OpStockZMin", 1)  # read-only
+
+    def addLinking(self, obj):
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "LinkingMode",
+            "Linking",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Method collision detection to create optimal path between areas"
+                "\n\nCompromise: uses tool diameter (middle long time computation)"
+                "\nFastest: not related from tool size (fast computation)"
+                "\nSafest: uses cross section of tool shape (most long time computation)",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "LinkingSafetyMargin",
+            "Linking",
+            QT_TRANSLATE_NOOP("App::Property", "Distance for collision detection"),
+        )
 
     def __init__(self, obj, name, parentJob=None):
         Path.Log.track()
@@ -327,6 +348,9 @@ class ObjectOp(object):
                 QT_TRANSLATE_NOOP("App::Property", "Upper limit of the turning diameter."),
             )
 
+        if FeatureLinking & features:
+            self.addLinking(obj)
+
         # members being set later
         self.commandlist = None
         self.horizFeed = None
@@ -339,6 +363,7 @@ class ObjectOp(object):
         self.vertFeed = None
         self.vertRapid = None
         self.addNewProps = None
+        self.isBaseValid = True
 
         self.initOperation(obj)
 
@@ -377,6 +402,11 @@ class ObjectOp(object):
                 (translate("CAM_Operation", "Flood"), "Flood"),
                 (translate("CAM_Operation", "Mist"), "Mist"),
             ],
+            "LinkingMode": [
+                (translate("CAM_Operation", "Fastest"), "Fastest"),
+                (translate("CAM_Operation", "Compromise"), "Compromise"),
+                (translate("CAM_Operation", "Safest"), "Safest"),
+            ],
         }
 
         if dataType == "raw":
@@ -406,6 +436,7 @@ class ObjectOp(object):
 
     def onDocumentRestored(self, obj):
         Path.Log.track()
+        self.checkBase(obj)
         features = self.opFeatures(obj)
         if (
             FeatureBaseGeometry & features
@@ -475,6 +506,14 @@ class ObjectOp(object):
                 QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"),
             )
             obj.StepDown = 0
+
+        if FeatureLinking & features and not hasattr(obj, "LinkingMode"):
+            self.addLinking(obj)
+            for n in self.opPropertyEnumerations():
+                if hasattr(obj, n[0]):
+                    setattr(obj, n[0], n[1])
+            obj.LinkingMode = "Fastest"
+            self.applyExpression(obj, "LinkingSafetyMargin", "OpToolDiameter")
 
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
@@ -547,14 +586,13 @@ class ObjectOp(object):
     def onChanged(self, obj, prop):
         """onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead."""
-
-        # there's a bit of cycle going on here, if sanitizeBase causes the transaction to
-        # be cancelled we end right here again with the unsainitized Base - if that is the
-        # case, stop the cycle and return immediately
-        if prop == "Base" and self.sanitizeBase(obj):
+        if prop == "Base" and not self.checkBase(obj):
             return
 
-        if "Restore" not in obj.State and prop in ["Base", "StartDepth", "FinalDepth"]:
+        if not getattr(self, "isBaseValid", True):
+            return
+
+        if "Restore" not in obj.State and prop in ("Base", "StartDepth", "FinalDepth"):
             self.updateDepths(obj, True)
 
         self.opOnChanged(obj, prop)
@@ -634,6 +672,10 @@ class ObjectOp(object):
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
+
+        if FeatureLinking & features:
+            obj.LinkingMode = "Fastest"
+            self.applyExpression(obj, "LinkingSafetyMargin", "OpToolDiameter")
 
         self.opSetDefaultValues(obj, job)
         return job
@@ -735,18 +777,22 @@ class ObjectOp(object):
 
         self.opUpdateDepths(obj)
 
-    def sanitizeBase(self, obj):
-        """sanitizeBase(obj) ... check if Base is valid and clear on errors."""
+    def checkBase(self, obj):
+        """checkBase(obj) ... check if Base is valid."""
         if hasattr(obj, "Base"):
             try:
                 for o, sublist in obj.Base:
                     for sub in sublist:
                         o.Shape.getElement(sub)
-            except Part.OCCError:
-                Path.Log.error("{} - stale base geometry detected - clearing.".format(obj.Label))
-                obj.Base = []
-                return True
-        return False
+            except Exception:
+                Path.Log.error(
+                    "%s - stale base geometry detected - %s, %s" % (obj.Label, o.Label, sub)
+                )
+                self.isBaseValid = False
+                return False
+
+        self.isBaseValid = True
+        return True
 
     @waiting_effects
     def execute(self, obj):
@@ -779,8 +825,10 @@ class ObjectOp(object):
         if not self._setBaseAndStock(obj):
             return
 
-        # make sure Base is still valid or clear it
-        self.sanitizeBase(obj)
+        # make sure Base is still valid
+        if not self.checkBase(obj):
+            obj.Path = Path.Path()
+            raise Exception("Base geometry error!")
 
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController

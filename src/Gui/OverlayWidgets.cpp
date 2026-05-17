@@ -1563,8 +1563,17 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     }
     setProperty("transparent", option != OverlayOption::Disable);
 
-    proxyWidget->setStyleSheet(stylesheet);
-    this->setStyleSheet(stylesheet);
+    auto refreshStyleSheet = [](QWidget* w, const QString& s) {
+        if (w->styleSheet() != s) {
+            w->setStyleSheet(s);
+        }
+        else {
+            w->style()->unpolish(w);
+            w->style()->polish(w);
+        }
+    };
+    refreshStyleSheet(proxyWidget, stylesheet);
+    refreshStyleSheet(this, stylesheet);
     setOverlayMode(this, option);
 
     _graphicsEffect->setEnabled(effectEnabled() && (enable || isTransparent()));

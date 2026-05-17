@@ -49,9 +49,11 @@
 #include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Mod/Part/App/Attacher.h>
+#include <Mod/Part/App/BodyBase.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
 #include <Mod/Sketcher/App/Constraint.h>
+#include <Mod/Sketcher/App/ExternalGeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "SketchMirrorDialog.h"
@@ -1063,6 +1065,185 @@ bool CmdSketcherMirrorSketch::isActive()
     return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
 }
 
+// Private helpers for CmdSketcherMergeSketches::activated()
+namespace {
+
+    // Import external geometries from srcSketch into dstSketch
+    // and build a mapping: srcGeoId -> dstGeoId.
+    //
+    // Rules:
+    //   - If an external object from srcSketch is out of scope → do not import; map to GeoUndef
+    //   - If dstSketch already has equivalent external geometries → reuse their GeoIds
+    //   - Otherwise → import by calling addExternal() and map to the newly assigned GeoIds
+    //
+    std::map<int, int> importExternalGeometry(
+        const Sketcher::SketchObject* srcSketch,
+        Sketcher::SketchObject* dstSketch,
+        bool silent = false)
+    {
+        // extGeoIdMap    : srcGeoId -> dstGeoId (return value)
+        // displayIdMap   : srcGeoId -> srcDisplayId
+        // refGeoIdMap    : refName  -> list of srcGeoId
+        // emptyGeoIdList : fallback empty list
+        std::map<int, int> extGeoIdMap;
+        std::map<int, int> displayIdMap;
+        std::unordered_map<std::string, std::vector<int>> refGeoIdMap;
+        std::vector<int> emptyGeoIdList;
+        int srcGeoId = 0;
+        for (const auto geo : srcSketch->getExternalGeometry()) {
+            --srcGeoId;
+            if (srcGeoId <= Sketcher::GeoEnum::RefExt) {
+                extGeoIdMap[srcGeoId] = Sketcher::GeoEnum::GeoUndef;
+            } else {
+                extGeoIdMap[srcGeoId] = srcGeoId;
+            }
+
+            auto egf = Sketcher::ExternalGeometryFacade::getFacade(geo);
+            displayIdMap[srcGeoId] = egf->getId();
+            refGeoIdMap[egf->getRef()].push_back(srcGeoId);
+        }
+
+        // helper: check if the external object is in scope for dstSketch
+        auto isExternalObjectInScope =
+            [&](const App::DocumentObject* srcExtObj) -> bool {
+            if (dstSketch->getDocument() != srcExtObj->getDocument()) {
+                return false; // different documents, not in scope
+            }
+            auto dstBody = Part::BodyBase::findBodyOf(dstSketch);
+            auto srcBody = Part::BodyBase::findBodyOf(srcExtObj);
+            if (dstBody != srcBody) {
+                return false; // different bodies, not in scope
+            }
+            return true; // in scope
+        };
+
+        // helper: find existing external GeoIds in dstSketch matching the given refName
+        auto findExistingExternalGeoIds =
+            [&](const std::string& refName) -> std::vector<int> {
+            std::vector<int> result;
+            int srcGeoId = 0;
+            for (const auto& geo : dstSketch->getExternalGeometry()) {
+                --srcGeoId;
+                auto egf = Sketcher::ExternalGeometryFacade::getFacade(geo);
+                if (egf->getRef() == refName) {
+                    result.push_back(srcGeoId);
+                }
+            }
+            return result;
+        };
+
+        // helper: update existing extGeoIdMap entries using src/dst GeoIds
+        auto updateGeoIdMapping =
+            [&](const std::vector<int>& srcGeoIds,
+                const std::vector<int>& dstGeoIds) {
+            auto src = srcGeoIds;
+            auto dst = dstGeoIds;
+            std::sort(src.begin(), src.end(), std::greater<int>());
+            std::sort(dst.begin(), dst.end(), std::greater<int>());
+
+            const size_t count = std::min(src.size(), dst.size());
+            for (size_t i = 0; i < count; ++i) {
+                auto it = extGeoIdMap.find(src[i]);
+                if (it != extGeoIdMap.end()) {
+                    it->second = dst[i];
+                }
+            }
+        };
+
+        // helper: print warnings for skipped external geometry displayIds
+        auto printSkippedDisplayIds =
+            [&](const std::vector<int>& skippedGeoIds) {
+            for (const auto& srcGeoId : skippedGeoIds) {
+                auto displayId = displayIdMap.count(srcGeoId)
+                                ? displayIdMap.at(srcGeoId)
+                                : Sketcher::GeoEnum::GeoUndef;
+                QString msg = qApp->translate(
+                    "CmdSketcherMergeSketches",
+                    "Skipping external geometry #%1\n")
+                    .arg(displayId);
+                Base::Console().message(msg.toUtf8().constData());
+            }
+        };
+
+        // helper: get refName-style subNames from srcSketch (without old suffixes)
+        auto getExtSubs =
+            [&]() -> std::vector<std::string> {
+            auto newSubs = srcSketch->ExternalGeometry.getSubValues(true);
+            const auto& oldSubs = srcSketch->ExternalGeometry.getSubValues(false);
+            const size_t count = std::min(newSubs.size(), oldSubs.size());
+            for (size_t i = 0; i < count; ++i) {
+                std::string suffix = std::string(".") + oldSubs[i];
+                if (newSubs[i].ends_with(suffix)) {
+                    newSubs[i].erase(newSubs[i].size() - suffix.size());
+                }
+            }
+            return newSubs;
+        };
+
+        // --- main processing starts here ---
+
+        const auto& srcExtObjs = srcSketch->ExternalGeometry.getValues();
+        const auto& srcExtSubs = getExtSubs();
+        const auto& srcOldSubs = srcSketch->ExternalGeometry.getSubValues(false);
+
+        for (size_t i = 0; i < srcExtObjs.size(); ++i) {
+            const auto& srcExtObj = srcExtObjs[i];
+            const auto& srcExtSub = srcExtSubs[i];
+            const auto& srcOldSub = srcOldSubs[i];
+
+            std::string refName = std::string(srcExtObj->getNameInDocument()) + "." + srcExtSub;
+            const auto& srcGeoIds = (refGeoIdMap.count(refName)
+                                  ? refGeoIdMap.at(refName)
+                                  : emptyGeoIdList);
+            std::string oldRefName = std::string(srcExtObj->getNameInDocument()) + "." + srcOldSub;
+
+            // 1) Reject out-of-scope external object
+            if (!isExternalObjectInScope(srcExtObj)) {
+                if (!silent) {
+                    QString msg = qApp->translate(
+                        "CmdSketcherMergeSketches",
+                        "External geometry '%1' is out of scope:\n")
+                        .arg(oldRefName.c_str());
+                    Base::Console().message(msg.toUtf8().constData());
+                    printSkippedDisplayIds(srcGeoIds);
+                }
+                continue;
+            }
+
+            // 2) Reuse existing external geometries if present
+            auto existingGeoIds = findExistingExternalGeoIds(refName);
+            if (!existingGeoIds.empty()) {
+                updateGeoIdMapping(srcGeoIds, existingGeoIds);
+                continue;
+            }
+
+            // 3) Add new external geometry to dst
+            int beforeCount = dstSketch->getExternalGeometryCount();
+            int result = dstSketch->addExternal(srcExtObj, srcExtSub.c_str());
+            int afterCount = dstSketch->getExternalGeometryCount();
+
+            // addExternal() failed
+            if (result < 0) {
+                if (!silent) {
+                    printSkippedDisplayIds(srcGeoIds);
+                }
+                continue;
+            }
+
+            // getExternalGeometryCount() includes H/V axes,
+            // so -beforeCount is the last valid GeoId.
+            // Therefore, the new GeoIds are from -(beforeCount+1) to -afterCount.
+            std::vector<int> dstGeoIds;
+            for (int j = beforeCount + 1; j <= afterCount; ++j) {
+                dstGeoIds.push_back(-j);
+            }
+            updateGeoIdMapping(srcGeoIds, dstGeoIds);
+        }
+
+        return extGeoIdMap;
+    }
+}
+
 DEF_STD_CMD_A(CmdSketcherMergeSketches)
 
 CmdSketcherMergeSketches::CmdSketcherMergeSketches()
@@ -1097,55 +1278,120 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Sketch");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Merge sketches"));
-    doCommand(
-        Doc, "App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
 
-    Sketcher::SketchObject* mergesketch =
-        static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));
+    std::set<Part::BodyBase*> bodies;
+    for (const auto& sel : selection) {
+        const auto* srcSketch = static_cast<const Sketcher::SketchObject*>(sel.getObject());
+        bodies.insert(Part::BodyBase::findBodyOf(srcSketch));
+    }
+    if (bodies.size() == 1 && *bodies.begin() != nullptr) {
+        // all sketches belong to the same body → create merged sketch inside the body
+        doCommand(
+            Doc,
+            "App.activeDocument().%s.newObject('Sketcher::SketchObject', '%s')",
+            (*bodies.begin())->getNameInDocument(),
+            FeatName.c_str());
+    } else {
+        // otherwise, create the merged sketch at the document level
+        doCommand(
+            Doc,
+            "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
+            FeatName.c_str());
+    }
+    auto* mergeSketch = static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));
 
     int baseGeometry = 0;
     int baseConstraints = 0;
 
-    for (std::vector<Gui::SelectionObject>::const_iterator it = selection.begin();
-         it != selection.end();
-         ++it) {
-        const Sketcher::SketchObject* Obj =
-            static_cast<const Sketcher::SketchObject*>((*it).getObject());
-        int addedGeometries = mergesketch->addGeometry(Obj->getInternalGeometry());
+    // constraint indices to delete after merging
+    std::vector<int> constraintsToDelete;
 
-        int addedConstraints = mergesketch->addCopyOfConstraints(*Obj);
-
-        // Coverity issue 513796: make sure the loop below can complete
-        if (addedConstraints < 0) {
-            continue;  // There were no constraints
+    // helper: remap GeoId for merged constraints; return false if remapping fails
+    auto remapGeoId =
+        [&](int& geoId,
+            const std::map<int, int>& extGeoIdMap) -> bool {
+        if (geoId == Sketcher::GeoEnum::GeoUndef
+            || geoId == Sketcher::GeoEnum::HAxis
+            || geoId == Sketcher::GeoEnum::VAxis) {
+            return true;
         }
-        if (addedConstraints - baseConstraints < 0) {
+
+        // external reference
+        if (geoId <= Sketcher::GeoEnum::RefExt) {
+            auto it = extGeoIdMap.find(geoId);
+            if (it == extGeoIdMap.end()) {
+                return false; // not in map
+            }
+            if (it->second == Sketcher::GeoEnum::GeoUndef) {
+                return false; // invalid (not imported)
+            }
+            geoId = it->second;
+            return true;
+        }
+
+        // internal reference
+        int newId = geoId + baseGeometry;
+        if (newId >= static_cast<int>(mergeSketch->getInternalGeometry().size())) {
+            return false; // out of range
+        }
+        geoId = newId;
+        return true;
+    };
+
+    for (const auto& sel : selection) {
+        const auto* srcSketch = static_cast<const Sketcher::SketchObject*>(sel.getObject());
+
+        // addGeometry() returns Geometry.getSize()-1 (last index, not an error code).
+        // Adding 1 restores it to the total count.
+        int afterGeometry = 1 + mergeSketch->addGeometry(srcSketch->getInternalGeometry());
+
+        auto extGeoIdMap = importExternalGeometry(srcSketch, mergeSketch);
+
+        // addCopyOfConstraints() returns Constraints.getSize()-1 (last index, not an error code).
+        // Adding 1 restores it to the total count.
+        int afterConstraints = 1 + mergeSketch->addCopyOfConstraints(*srcSketch);
+        int addedConstraints = afterConstraints - baseConstraints;
+        int srcConstraints = srcSketch->Constraints.getValues().size();
+
+        if (addedConstraints < 0) {
             throw Base::ValueError("Constraint error in CmdSketcherMergeSketches");
         }
-
-        for (int i = 0; i <= (addedConstraints - baseConstraints); i++) {
-            Sketcher::Constraint* constraint =
-                mergesketch->Constraints.getValues()[i + baseConstraints];
-
-            if (constraint->First != Sketcher::GeoEnum::GeoUndef
-                && constraint->First != Sketcher::GeoEnum::HAxis
-                && constraint->First != Sketcher::GeoEnum::VAxis)
-                // not x, y axes or origin
-                constraint->First += baseGeometry;
-            if (constraint->Second != Sketcher::GeoEnum::GeoUndef
-                && constraint->Second != Sketcher::GeoEnum::HAxis
-                && constraint->Second != Sketcher::GeoEnum::VAxis)
-                // not x, y axes or origin
-                constraint->Second += baseGeometry;
-            if (constraint->Third != Sketcher::GeoEnum::GeoUndef
-                && constraint->Third != Sketcher::GeoEnum::HAxis
-                && constraint->Third != Sketcher::GeoEnum::VAxis)
-                // not x, y axes or origin
-                constraint->Third += baseGeometry;
+        if (addedConstraints != srcConstraints) {
+            QString msg = qApp->translate(
+                "CmdSketcherMergeSketches",
+                "Copied %1 of %2 constraints from '%3'. Some were skipped.\n")
+                .arg(addedConstraints)
+                .arg(srcConstraints)
+                .arg(srcSketch->getNameInDocument());
+            Base::Console().message(msg.toUtf8().constData());
+        }
+        if (addedConstraints > 0) {
+            for (int i = 0; i < addedConstraints; i++) {
+                int index = i + baseConstraints;
+                auto* constraint = mergeSketch->Constraints.getValues()[index];
+                if (!remapGeoId(constraint->First, extGeoIdMap)
+                    || !remapGeoId(constraint->Second, extGeoIdMap)
+                    || !remapGeoId(constraint->Third, extGeoIdMap)) {
+                    constraintsToDelete.push_back(index);
+                    QString msg = qApp->translate(
+                        "CmdSketcherMergeSketches",
+                        "Skipping constraint #%1 of '%2': references unmerged geometry.\n")
+                        .arg(i+1)
+                        .arg(srcSketch->getNameInDocument());
+                    Base::Console().message(msg.toUtf8().constData());
+                    continue;
+                }
+            }
         }
 
-        baseGeometry = addedGeometries + 1;
-        baseConstraints = addedConstraints + 1;
+        baseGeometry = afterGeometry;
+        baseConstraints = afterConstraints;
+    }
+
+    // delete in descending order to keep indices valid
+    std::sort(constraintsToDelete.begin(), constraintsToDelete.end(), std::greater<int>());
+    for (int index : constraintsToDelete) {
+        mergeSketch->delConstraint(index);
     }
 
     // apply the placement of the first sketch in the list (#0002434)

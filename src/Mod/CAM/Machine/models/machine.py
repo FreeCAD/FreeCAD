@@ -274,6 +274,26 @@ class LinearAxis:
         )
 
 
+class WrapStrategy(Enum):
+    """How rotary-axis G-code values should wrap.
+
+    UNWOUND : emit monotonic A across full revolutions (e.g. 4613.86°).
+              Right for controllers that treat the rotary as a linear
+              axis (no wrap awareness).
+    MODULO  : emit A in [0, 360). Right for indexers and any controller
+              where direction across the wrap is irrelevant.
+    REZERO  : emit A in [0, 360) and inject `G92 A0` at every full
+              revolution to keep modal A small while preserving direction.
+              A `G92.1` is appended at end of path to clear the offset.
+              Right for shortest-path wrapping rotaries (LinuxCNC
+              ANGULAR / wrapped_rotary) when continuous direction matters.
+    """
+
+    UNWOUND = "unwound"
+    MODULO = "modulo"
+    REZERO = "rezero"
+
+
 @dataclass
 class RotaryAxis:
     """Represents a single rotary axis in a machine configuration"""
@@ -290,6 +310,7 @@ class RotaryAxis:
     joint_origin: List[float] = field(default_factory=lambda: [0, 0, 0])
     solution_preference: str = "shortest"  # "shortest", "positive", "negative"
     allow_flip: bool = True
+    wrap_strategy: WrapStrategy = WrapStrategy.UNWOUND
 
     def __post_init__(self):
         """Normalize rotation vector and validate parameters after initialization"""
@@ -334,6 +355,7 @@ class RotaryAxis:
             "joint_origin": self.joint_origin,
             "solution_preference": self.solution_preference,
             "allow_flip": self.allow_flip,
+            "wrap_strategy": self.wrap_strategy.value,
         }
 
     @classmethod
@@ -355,6 +377,7 @@ class RotaryAxis:
             data.get("joint_origin", [0, 0, 0]),
             data.get("solution_preference", "shortest"),
             data.get("allow_flip", True),
+            WrapStrategy(data.get("wrap_strategy", "unwound")),
         )
 
 
@@ -1050,6 +1073,7 @@ class Machine:
                 "max_velocity": axis_obj.max_velocity,
                 "solution_preference": axis_obj.solution_preference,
                 "allow_flip": axis_obj.allow_flip,
+                "wrap_strategy": axis_obj.wrap_strategy.value,
             }
 
         data = {
@@ -1480,6 +1504,7 @@ class Machine:
 
                 # Legacy support for prefer_positive
                 prefer_positive = axis_data.get("prefer_positive", True)
+                wrap_strategy = WrapStrategy(axis_data.get("wrap_strategy", "unwound"))
 
                 config.rotary_axes[axis_name] = RotaryAxis(
                     name=axis_name,
@@ -1494,6 +1519,7 @@ class Machine:
                     joint_origin=joint_origin,
                     solution_preference=solution_preference,
                     allow_flip=allow_flip,
+                    wrap_strategy=wrap_strategy,
                 )
 
         # Parse kinematics if present

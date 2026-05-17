@@ -126,7 +126,7 @@ public:
         }
 
         // Get the Geometry handler based on the module
-        const char* className = sub->getTypeId().getName();
+        const auto className = sub->getTypeId().getName();
         std::string mod = Base::Type::getModuleName(className);
 
         auto handler = getGeometryHandler(mod);

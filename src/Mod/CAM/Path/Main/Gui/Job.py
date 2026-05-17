@@ -39,6 +39,8 @@ import Path.Main.Stock as PathStock
 import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathScripts.PathUtils as PathUtils
 from Path.Tool.toolbit.ui.selector import ToolBitSelector
+from Machine.models import MachineFactory
+from Machine.ui.editor import MachineEditorDialog
 import math
 import traceback
 from PySide import QtWidgets
@@ -252,7 +254,7 @@ class ViewProvider:
         self.deleteOnReject = False
 
     def resetTaskPanel(self):
-        self.showOriginAxis(False)
+        self.showOriginAxis(self.vobj.Visibility)
         self.taskPanel = None
 
     def unsetEdit(self, arg1, arg2):
@@ -367,10 +369,11 @@ class ViewProvider:
 
 
 class MaterialDialog(QtWidgets.QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, current_uuid=None):
         super(MaterialDialog, self).__init__(parent)
 
-        self.setWindowTitle("Assign Material")
+        self.setWindowTitle(translate("CAM_Job", "Assign Stock Material"))
+        self.uuid = current_uuid
 
         self.materialTree = FreeCADGui.UiLoader().createWidget("MatGui::MaterialTreeWidget")
         self.materialTreeWidget = MatGui.MaterialTreeWidget(self.materialTree)
@@ -380,6 +383,12 @@ class MaterialDialog(QtWidgets.QDialog):
         material_filter.RequiredModels = [Materials.UUIDs().Machinability]
         self.materialTreeWidget.setFilter(material_filter)
         self.materialTreeWidget.selectFilter("Machining Materials")
+
+        if current_uuid:
+            try:
+                self.materialTreeWidget.UUID = current_uuid
+            except Exception as e:
+                Path.Log.debug("Could not pre-select material %s: %s" % (current_uuid, e))
 
         # Create OK and Cancel buttons
         self.okButton = QtWidgets.QPushButton("OK")
@@ -450,11 +459,14 @@ class StockEdit(object):
             obj.Document.removeObject(obj.Stock.Name)
         Path.Log.track(stock.Name)
         obj.Stock = stock
+        PathStock.ApplyStockViewDefaults(stock)
         if stock.ViewObject and stock.ViewObject.Proxy:
             stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
     def setLengthField(self, widget, prop):
-        widget.setText(FreeCAD.Units.Quantity(prop.Value, FreeCAD.Units.Length).UserString)
+        quantity = FreeCAD.Units.Quantity(prop.Value, FreeCAD.Units.Length)
+        widget.setProperty("unit", quantity.getUserPreferred()[2])
+        widget.setProperty("rawValue", prop.Value)
 
     # the following members must be overwritten by subclasses
     def editorFrame(self):
@@ -487,17 +499,29 @@ class StockFromBaseBoundBoxEdit(StockEdit):
             fields = ["xneg", "xpos", "yneg", "ypos", "zneg", "zpos"]
         try:
             if "xneg" in fields:
-                stock.ExtXneg = FreeCAD.Units.Quantity(self.form.stockExtXneg.text())
+                stock.ExtXneg = FreeCAD.Units.Quantity(
+                    self.form.stockExtXneg.property("rawValue"), FreeCAD.Units.Length
+                )
             if "xpos" in fields:
-                stock.ExtXpos = FreeCAD.Units.Quantity(self.form.stockExtXpos.text())
+                stock.ExtXpos = FreeCAD.Units.Quantity(
+                    self.form.stockExtXpos.property("rawValue"), FreeCAD.Units.Length
+                )
             if "yneg" in fields:
-                stock.ExtYneg = FreeCAD.Units.Quantity(self.form.stockExtYneg.text())
+                stock.ExtYneg = FreeCAD.Units.Quantity(
+                    self.form.stockExtYneg.property("rawValue"), FreeCAD.Units.Length
+                )
             if "ypos" in fields:
-                stock.ExtYpos = FreeCAD.Units.Quantity(self.form.stockExtYpos.text())
+                stock.ExtYpos = FreeCAD.Units.Quantity(
+                    self.form.stockExtYpos.property("rawValue"), FreeCAD.Units.Length
+                )
             if "zneg" in fields:
-                stock.ExtZneg = FreeCAD.Units.Quantity(self.form.stockExtZneg.text())
+                stock.ExtZneg = FreeCAD.Units.Quantity(
+                    self.form.stockExtZneg.property("rawValue"), FreeCAD.Units.Length
+                )
             if "zpos" in fields:
-                stock.ExtZpos = FreeCAD.Units.Quantity(self.form.stockExtZpos.text())
+                stock.ExtZpos = FreeCAD.Units.Quantity(
+                    self.form.stockExtZpos.property("rawValue"), FreeCAD.Units.Length
+                )
         except Exception:
             pass
 
@@ -542,35 +566,47 @@ class StockFromBaseBoundBoxEdit(StockEdit):
             self.form.linkStockAndModel.setChecked(False)
 
     def checkXpos(self):
-        self.trackXpos = self.form.stockExtXneg.text() == self.form.stockExtXpos.text()
+        self.trackXpos = self.form.stockExtXneg.property(
+            "rawValue"
+        ) == self.form.stockExtXpos.property("rawValue")
         self.getFields(self.obj, ["xpos"])
 
     def checkYpos(self):
-        self.trackYpos = self.form.stockExtYneg.text() == self.form.stockExtYpos.text()
+        self.trackYpos = self.form.stockExtYneg.property(
+            "rawValue"
+        ) == self.form.stockExtYpos.property("rawValue")
         self.getFields(self.obj, ["ypos"])
 
     def checkZpos(self):
-        self.trackZpos = self.form.stockExtZneg.text() == self.form.stockExtZpos.text()
+        self.trackZpos = self.form.stockExtZneg.property(
+            "rawValue"
+        ) == self.form.stockExtZpos.property("rawValue")
         self.getFields(self.obj, ["zpos"])
 
     def updateXpos(self):
         fields = ["xneg"]
         if self.trackXpos:
-            self.form.stockExtXpos.setText(self.form.stockExtXneg.text())
+            self.form.stockExtXpos.setProperty(
+                "rawValue", self.form.stockExtXneg.property("rawValue")
+            )
             fields.append("xpos")
         self.getFields(self.obj, fields)
 
     def updateYpos(self):
         fields = ["yneg"]
         if self.trackYpos:
-            self.form.stockExtYpos.setText(self.form.stockExtYneg.text())
+            self.form.stockExtYpos.setProperty(
+                "rawValue", self.form.stockExtYneg.property("rawValue")
+            )
             fields.append("ypos")
         self.getFields(self.obj, fields)
 
     def updateZpos(self):
         fields = ["zneg"]
         if self.trackZpos:
-            self.form.stockExtZpos.setText(self.form.stockExtZneg.text())
+            self.form.stockExtZpos.setProperty(
+                "rawValue", self.form.stockExtZneg.property("rawValue")
+            )
             fields.append("zpos")
         self.getFields(self.obj, fields)
 
@@ -588,11 +624,17 @@ class StockCreateBoxEdit(StockEdit):
         try:
             if self.IsStock(obj):
                 if "length" in fields:
-                    obj.Stock.Length = FreeCAD.Units.Quantity(self.form.stockBoxLength.text())
+                    obj.Stock.Length = FreeCAD.Units.Quantity(
+                        self.form.stockBoxLength.property("rawValue"), FreeCAD.Units.Length
+                    )
                 if "width" in fields:
-                    obj.Stock.Width = FreeCAD.Units.Quantity(self.form.stockBoxWidth.text())
+                    obj.Stock.Width = FreeCAD.Units.Quantity(
+                        self.form.stockBoxWidth.property("rawValue"), FreeCAD.Units.Length
+                    )
                 if "height" in fields:
-                    obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockBoxHeight.text())
+                    obj.Stock.Height = FreeCAD.Units.Quantity(
+                        self.form.stockBoxHeight.property("rawValue"), FreeCAD.Units.Length
+                    )
             else:
                 Path.Log.error("Stock not a box!")
         except Exception:
@@ -626,9 +668,13 @@ class StockCreateCylinderEdit(StockEdit):
         try:
             if self.IsStock(obj):
                 if "radius" in fields:
-                    obj.Stock.Radius = FreeCAD.Units.Quantity(self.form.stockCylinderRadius.text())
+                    obj.Stock.Radius = FreeCAD.Units.Quantity(
+                        self.form.stockCylinderRadius.property("rawValue"), FreeCAD.Units.Length
+                    )
                 if "height" in fields:
-                    obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockCylinderHeight.text())
+                    obj.Stock.Height = FreeCAD.Units.Quantity(
+                        self.form.stockCylinderHeight.property("rawValue"), FreeCAD.Units.Length
+                    )
             else:
                 Path.Log.error(translate("CAM_Job", "Stock not a cylinder!"))
         except Exception:
@@ -751,7 +797,6 @@ class TaskPanel:
         self.obj = vobj.Object
         self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/PathEdit.ui")
-        self.template = PathJobDlg.JobTemplateExport(self.obj, self.form.jobBox.widget(1))
         self.name = self.obj.Name
 
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
@@ -823,22 +868,56 @@ class TaskPanel:
             for text, data in enumTups[prop]:  #  load enumerations
                 box.addItem(text, data)
 
+    def _currentStockMaterial(self):
+        """Return the (uuid, name) of the stock's currently assigned material,
+        or (None, None) if nothing is assigned."""
+        stock = getattr(self.obj, "Stock", None)
+        if stock is None:
+            return (None, None)
+        mat = getattr(stock, "ShapeMaterial", None)
+        if mat is None:
+            return (None, None)
+        name = getattr(mat, "Name", "") or ""
+        if name in ("", "Default"):
+            return (None, None)
+        return (getattr(mat, "UUID", None), name)
+
+    def updateMaterialLabel(self):
+        """Refresh the material label next to btnMaterial to reflect the
+        currently assigned stock material."""
+        label = getattr(self.form, "materialLabel", None)
+        if label is None:
+            return
+        _, name = self._currentStockMaterial()
+        if name:
+            label.setText(name)
+            label.setStyleSheet("")
+        else:
+            label.setText(translate("CAM_Job", "(none assigned)"))
+            label.setStyleSheet("color: gray; font-style: italic;")
+
     def assignMaterial(self):
-        dialog = MaterialDialog()
+        current_uuid, _ = self._currentStockMaterial()
+        dialog = MaterialDialog(current_uuid=current_uuid)
         result = dialog.exec_()
 
-        if result == QtWidgets.QDialog.Accepted:
-            FreeCAD.Console.PrintMessage("Material assigned\n")
-            # Add code to handle the material assignment
-
-            if dialog.uuid is not None:
-                material_manager = Materials.MaterialManager()
-                material = material_manager.getMaterial(dialog.uuid)
-                self.obj.Stock.ShapeMaterial = material
+        if result == QtWidgets.QDialog.Accepted and dialog.uuid is not None:
+            material_manager = Materials.MaterialManager()
+            material = material_manager.getMaterial(dialog.uuid)
+            self.obj.Stock.ShapeMaterial = material
+            PathStock.ApplyStockViewDefaults(self.obj.Stock)
+            self.updateMaterialLabel()
 
     def preCleanup(self):
         Path.Log.track()
         FreeCADGui.Selection.removeObserver(self)
+        # Restore natural selectability: model selectable, stock non-selectable
+        stock = self.obj.Stock
+        if stock and stock.ViewObject:
+            stock.ViewObject.Selectable = False
+        for base in self.obj.Model.Group:
+            if base and base.ViewObject:
+                base.ViewObject.Selectable = True
         self.vproxy.resetEditVisibility(self.obj)
         self.vproxy.resetTaskPanel()
 
@@ -1060,6 +1139,7 @@ class TaskPanel:
         self.stockEdit.setFields(self.obj)
         self.setupGlobal.setFields()
         self.setupOps.setFields()
+        self.populateMachineCombo()
 
     def setPostProcessorOutputFile(self):
         filename = QtGui.QFileDialog.getSaveFileName(
@@ -1221,8 +1301,6 @@ class TaskPanel:
                 pass
             item.setText("%g" % getattr(tc, prop).Value)
 
-        self.template.updateUI()
-
     def modelSetAxis(self, axis):
         Path.Log.track(axis)
 
@@ -1347,6 +1425,61 @@ class TaskPanel:
                 for sel in selection:
                     Draft.rotate(sel.Object, angle, sel.Object.Shape.BoundBox.Center, axis)
 
+    def populateMachineCombo(self):
+        """Populate jobMachine combo from MachineFactory and select current Job.Machine."""
+        combo = self.form.jobMachine
+        combo.blockSignals(True)
+        combo.clear()
+        try:
+            entries = MachineFactory.list_configuration_files()
+        except Exception as e:
+            Path.Log.warning("Failed to list machines: %s" % e)
+            entries = [("<none>", None)]
+        for display, filename in entries:
+            combo.addItem(display, filename or "")
+        current = getattr(self.obj, "Machine", "") or ""
+        idx = combo.findData(current)
+        if idx < 0:
+            idx = 0
+        combo.setCurrentIndex(idx)
+        combo.blockSignals(False)
+
+    def machineChanged(self):
+        """Write the selected machine filename back to Job.Machine."""
+        if not hasattr(self.obj, "Machine"):
+            return
+        data = self.form.jobMachine.currentData()
+        self.obj.Machine = data if data else ""
+
+    def newMachine(self):
+        """Open the Machine Editor to create a new machine, then refresh the combo."""
+        try:
+            editor = MachineEditorDialog()
+            if editor.exec_() == QtWidgets.QDialog.Accepted:
+                new_filename = getattr(editor, "filename", None)
+                self.populateMachineCombo()
+                if new_filename:
+                    idx = self.form.jobMachine.findData(new_filename)
+                    if idx >= 0:
+                        self.form.jobMachine.setCurrentIndex(idx)
+        except Exception as e:
+            Path.Log.error("Failed to open Machine Editor: %s" % e)
+
+    def togglePickTarget(self, checked):
+        """Toggle whether origin/axis picks target the Stock or the Model.
+        When checked (Picking: Model): model selectable, stock non-selectable.
+        When unchecked (Picking: Stock): stock selectable, model non-selectable."""
+        stock = self.obj.Stock
+        if stock and stock.ViewObject:
+            stock.ViewObject.Selectable = not checked
+        for base in self.obj.Model.Group:
+            if base and base.ViewObject:
+                base.ViewObject.Selectable = checked
+        if checked:
+            self.form.pickTargetToggle.setText(translate("CAM_Job", "Picking: Model"))
+        else:
+            self.form.pickTargetToggle.setText(translate("CAM_Job", "Picking: Stock"))
+
     def alignSetOrigin(self):
         obj, by = self.alignMoveToOrigin()
 
@@ -1360,6 +1493,7 @@ class TaskPanel:
         placement = FreeCADGui.ActiveDocument.ActiveView.viewPosition()
         placement.Base = placement.Base + by
         FreeCADGui.ActiveDocument.ActiveView.viewPosition(placement, 0)
+        FreeCADGui.Selection.clearSelection()
 
     def alignMoveToOrigin(self):
         selObject = None
@@ -1443,9 +1577,6 @@ class TaskPanel:
                     % (self.form.stock.currentText(), index)
                 )
         self.stockEdit.activate(self.obj, index == -1)
-
-        if -1 != index:
-            self.template.updateUI()
 
     def refreshStock(self):
         self.updateStockEditor(self.form.stock.currentIndex(), True)
@@ -1569,12 +1700,10 @@ class TaskPanel:
 
     def tabPageChanged(self, index):
         if index == 0:
-            # update the template with potential changes
             self.getFields()
             self.setupGlobal.accept()
             self.setupOps.accept()
             self.obj.Document.recompute()
-            self.template.updateUI()
 
     def setupUi(self, activate):
         self.setupGlobal.setupUi()
@@ -1584,10 +1713,15 @@ class TaskPanel:
             Path.Log.error(str(ee))
         self.updateStockEditor(-1, False)
         self.setFields()
+        FreeCADGui.Selection.clearSelection()
 
         # Info
         self.form.jobLabel.editingFinished.connect(self.getFields)
         self.form.jobModelEdit.clicked.connect(self.jobModelEdit)
+
+        # Machine
+        self.form.jobMachine.currentIndexChanged.connect(self.machineChanged)
+        self.form.jobMachineNew.clicked.connect(self.newMachine)
 
         # Post Processor
         self.form.postProcessor.currentIndexChanged.connect(self.getFields)
@@ -1617,6 +1751,7 @@ class TaskPanel:
 
         # Stock, Orientation and Alignment
         self.form.btnMaterial.clicked.connect(self.assignMaterial)
+        self.updateMaterialLabel()
         self.form.centerInStock.clicked.connect(self.alignCenterInStock)
         self.form.centerInStockXY.clicked.connect(self.alignCenterInStockXY)
 
@@ -1632,6 +1767,8 @@ class TaskPanel:
 
         self.form.setOrigin.clicked.connect(self.alignSetOrigin)
         self.form.moveToOrigin.clicked.connect(self.alignMoveToOrigin)
+        self.form.pickTargetToggle.toggled.connect(self.togglePickTarget)
+        self.togglePickTarget(self.form.pickTargetToggle.isChecked())
 
         self.form.modelMoveLeftUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 1, 0)))
         self.form.modelMoveLeft.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 0, 0)))
@@ -1668,11 +1805,6 @@ class TaskPanel:
             self.form.setCurrentIndex(4)
 
         self.form.currentChanged.connect(self.tabPageChanged)
-        self.template.exportButton().clicked.connect(self.templateExport)
-
-    def templateExport(self):
-        self.getFields()
-        PathJobCmd.CommandJobTemplateExport.SaveDialog(self.obj, self.template)
 
     def open(self):
         FreeCADGui.Selection.addObserver(self)

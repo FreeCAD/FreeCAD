@@ -168,7 +168,7 @@ protected:
     static void getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace);
 
     /// Create a shape with shapes and faces from a given LinkSubList
-    /// return 0 if almost one full shape is selected else the face count
+    /// return the face count or 2 if a unique full shape is selected
     static int getUpToShapeFromLinkSubList(
         TopoShape& upToShape,
         const App::PropertyLinkSubList& refShape

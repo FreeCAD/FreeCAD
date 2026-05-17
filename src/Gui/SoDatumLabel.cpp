@@ -44,6 +44,7 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoFocalDistanceElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/misc/SoState.h>
@@ -1455,6 +1456,47 @@ void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& t
     glDrawArrow(geom.pnt4, geom.dirEnd, arrowWidth, arrowLength);
 }
 
+namespace
+{
+/*!
+ * \brief Compute sketch rotation angle in screen space.
+ *
+ * Calculates the rotation of the sketch relative to the camera view.
+ * The angle is measured from the camera right vector to the sketch's local X axis.
+ *
+ * \param state Current Coin3D traversal state used to retrieve view and model matrices.
+ * \param viewVolume Active view volume describing the camera projection and orientation.
+ * \param flip If true, the resulting angle is inverted to account for back-facing view direction.
+ *
+ * \return Rotation angle in radians in the range [-pi, pi].
+ *         Positive values correspond to counter-clockwise (CCW) rotation,
+ *         negative values correspond to clockwise (CW) rotation.
+ */
+float getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, bool flip)
+{
+    // Camera basis from view volume (screen space axes
+    SbVec3f camRight = viewVolume.lrf - viewVolume.llf;
+    SbVec3f camUp = viewVolume.ulf - viewVolume.llf;
+
+    camRight.normalize();
+    camUp.normalize();
+
+    // Sketch local X axis in world space
+    const SbMatrix& m = SoModelMatrixElement::get(state);
+    SbVec3f xWorld;
+    m.multDirMatrix(SbVec3f(1, 0, 0), xWorld);
+
+    // Compute angle in screen space
+    float cosA = xWorld.dot(camRight);
+    float sinA = xWorld.dot(camUp);
+
+    float angleRad = std::atan2(sinA, cosA);
+
+    // Optional flip correction (back-facing view)
+    return flip ? angleRad : -angleRad;
+}
+}  // unnamed namespace
+
 // NOLINTNEXTLINE
 void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset)
 {
@@ -1467,6 +1509,17 @@ void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, con
     SbVec3f z = vv.zVector();
 
     bool flip = norm.getValue().dot(z) > std::numeric_limits<float>::epsilon();
+
+    const float sketchAngle = getSketchRotationAngle(state, vv, flip);
+    const float absLabelAngle = std::abs(sketchAngle + angle);
+
+    constexpr float quarter = 90.0F;  // vertical line
+    constexpr float hysteresis = 15.0F;  // extra to avoid flipping back and forth when close to vertical
+    constexpr float threshold = Base::toRadians(quarter + hysteresis);
+
+    if ((flip && absLabelAngle > threshold) || (!flip && absLabelAngle < threshold)) {
+        angle += std::numbers::pi;
+    }
 
     static bool init = false;
     static bool npot = false;

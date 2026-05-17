@@ -43,6 +43,9 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import DraftVecUtils
+from draftgeoutils import edges as geo_edges
+from draftgeoutils import geometry as geo_geometry
+from draftgeoutils import offsets as geo_offsets
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftguitools import gui_trackers as trackers
@@ -160,8 +163,6 @@ class Offset(gui_base_original.Modifier):
             Dictionary with strings that indicates the type of event received
             from the 3D view.
         """
-        import DraftGeomUtils
-
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
@@ -173,30 +174,28 @@ class Offset(gui_base_original.Modifier):
                 gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
                 and self.constrainSeg
             ):
-                dist = DraftGeomUtils.findPerpendicular(
-                    self.point, self.shape, self.constrainSeg[1]
-                )
+                dist = geo_geometry.findPerpendicular(self.point, self.shape, self.constrainSeg[1])
             else:
-                dist = DraftGeomUtils.findPerpendicular(self.point, self.shape.Edges)
+                dist = geo_geometry.findPerpendicular(self.point, self.shape.Edges)
             if dist:
                 self.ghost.on()
                 if self.mode == "Wire":
                     d = dist[0].negative()
-                    v1 = DraftGeomUtils.getTangent(self.shape.Edges[0], self.point)
-                    v2 = DraftGeomUtils.getTangent(self.shape.Edges[dist[1]], self.point)
+                    v1 = geo_edges.getTangent(self.shape.Edges[0], self.point)
+                    v2 = geo_edges.getTangent(self.shape.Edges[dist[1]], self.point)
                     a = -DraftVecUtils.angle(v1, v2, self.wp.axis)
                     self.dvec = DraftVecUtils.rotate(d, a, self.wp.axis)
                     occmode = self.ui.occOffset.isChecked()
                     params.set_param("Offset_OCC", occmode)
-                    _wire = DraftGeomUtils.offsetWire(self.shape, self.dvec, occ=occmode)
+                    _wire = geo_offsets.offsetWire(self.shape, self.dvec, occ=occmode)
                     self.ghost.update(_wire, forceclosed=occmode)
                 elif self.mode == "BSpline":
                     d = dist[0].negative()
                     e = self.shape.Edges[0]
-                    basetan = DraftGeomUtils.getTangent(e, self.point)
+                    basetan = geo_edges.getTangent(e, self.point)
                     self.npts = []
                     for p in self.sel.Points:
-                        currtan = DraftGeomUtils.getTangent(e, p)
+                        currtan = geo_edges.getTangent(e, p)
                         a = -DraftVecUtils.angle(currtan, basetan, self.wp.axis)
                         self.dvec = DraftVecUtils.rotate(d, a, self.wp.axis)
                         self.npts.append(p.add(self.dvec))

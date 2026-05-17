@@ -269,12 +269,12 @@ Es können mehrere Ordner hinzugefügt werden; dabei werden Pfade mit ";;" getre
   <context>
     <name>Start::DisplayedFilesModel</name>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="130"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Created at:</source>
       <translation>Erstellt am:</translation>
     </message>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
       <source>Modified at:</source>
       <translation>Geändert am:</translation>
     </message>
