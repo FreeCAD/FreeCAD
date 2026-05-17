@@ -37,7 +37,7 @@ private:
     std::unique_ptr<Attacher::AttachEngine3D> attacher;
 };
 
-class AttacherSubObjectSnap final: public App::SubObjectSnapProvider
+class PartSubObjectSnap final: public App::SubObjectSnapProvider
 {
 public:
     std::optional<Base::Vector3d> snapPosition(

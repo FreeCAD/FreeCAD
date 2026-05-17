@@ -500,14 +500,11 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
 
     auto selectedObjectPlacement = rootPlacement.inverse() * globalPlacement * attachedPlacement;
 
-    // If a snap provider is registered, try snapping to an edge endpoint
     if (subObjectSnapProvider) {
-        // Pass nullopt for non-3D selections
         std::optional<Base::Vector3d> worldCursor;
-        if (msg.x != 0.0f || msg.y != 0.0f || msg.z != 0.0f) {
+        if (msg.hasPickedPoint) {
             worldCursor = Base::Vector3d(msg.x, msg.y, msg.z);
         }
-
         if (auto snapPos = subObjectSnapProvider
                                ->snapPosition(msg.Object, worldCursor, globalPlacement.toMatrix())) {
             Base::Vector3d rootLocalSnapPos;
