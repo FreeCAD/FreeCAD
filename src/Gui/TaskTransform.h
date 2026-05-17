@@ -52,7 +52,8 @@ public:
     {
         None,
         SelectTransformOrigin,
-        SelectAlignTarget
+        SelectAlignTarget,
+        SelectCustomCS
     };
     enum class PlacementMode
     {
@@ -63,7 +64,8 @@ public:
     enum class PositionMode
     {
         Local,
-        Global
+        Global,
+        Custom
     };
 
     struct CoordinateSystem
@@ -94,6 +96,7 @@ private Q_SLOTS:
     void onPlacementModeChange(int index);
 
     void onPickTransformOrigin();
+    void onPickCoordinateSystemReference();
     void onTransformOriginReset();
     void onAlignRotationChanged();
 
@@ -115,6 +118,7 @@ private:
 
     CoordinateSystem globalCoordinateSystem() const;
     CoordinateSystem localCoordinateSystem() const;
+    CoordinateSystem customCoordinateSystem() const;
     CoordinateSystem currentCoordinateSystem() const;
 
     Base::Rotation::EulerSequence eulerSequence() const;
@@ -158,6 +162,7 @@ private:
     PositionMode positionMode {PositionMode::Local};
 
     std::optional<Base::Placement> customTransformOrigin {};
+    std::optional<Base::Placement> customCoordinateSystemPlacement {};
     Base::Placement referencePlacement {};
     Base::Placement globalOrigin {};
     Base::Rotation referenceRotation {};
