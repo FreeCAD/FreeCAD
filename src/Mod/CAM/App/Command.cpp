@@ -150,7 +150,9 @@ std::string Command::toGCode(int precision, bool padzero) const
 
     // Add annotations as a comment if they exist
     if (!Annotations.empty()) {
-        str << " ; ";
+        const bool commentOnly =
+            Parameters.empty() && !Name.empty() && Name.front() == '(' && Name.back() == ')';
+        str << (commentOnly ? "; " : " ; ");
         bool first = true;
         for (const auto& pair : Annotations) {
             if (!first) {
@@ -184,6 +186,7 @@ void Command::setFromGCode(const std::string& str)
     auto comment_pos = str.find("; ");
     if (comment_pos != std::string::npos) {
         gcode_part = str.substr(0, comment_pos);
+        boost::trim_right(gcode_part);
         annotation_part = str.substr(comment_pos + 1);  // length of "; "
     }
 

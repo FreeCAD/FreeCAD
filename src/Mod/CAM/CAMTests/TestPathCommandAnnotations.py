@@ -378,3 +378,23 @@ class TestPathCommandAnnotations(PathTestBase):
         self.assertEqual(c1.Parameters["Y"], 5.0)
         self.assertEqual(c1.Annotations["retract"], 15.5)
         self.assertEqual(c1.Annotations["angle"], 30.25)
+
+    def test21(self):
+        """Test comment command save/restore with annotations."""
+        c1 = Path.Command("(xx)", {}, {"a": "x"})
+        content = c1.dumpContent()
+
+        self.assertIn('gcode="(xx); a:\'x\'"', content)
+        self.assertNotIn('gcode="(xx) ;', content)
+
+        c2 = Path.Command()
+        c2.restoreContent(content)
+        self.assertEqual(c2.Name, "(xx)")
+        self.assertEqual(c2.Annotations["a"], "x")
+
+        c2.setFromGCode("(xx) ; a:'x'")
+        self.assertEqual(c2.Name, "(xx)")
+        self.assertEqual(c2.Annotations["a"], "x")
+
+        c3 = Path.Command("G1", {"X": 1.0}, {"a": "x"})
+        self.assertIn(" ; a:", c3.dumpContent())
