@@ -37,6 +37,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/Parameter.h>
 #include <Base/ProgramVersion.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
@@ -1617,7 +1618,15 @@ void PropertyString::Save(Base::Writer& writer) const
     writer.Stream() << writer.ind() << "<String ";
     bool exported = false;
     if (obj && obj->isAttachedToDocument() && obj->isExporting() && &obj->Label == this) {
-        if (obj->allowDuplicateLabel()) {
+        static ParameterGrp::handle documentPrefs;
+        if (!documentPrefs) {
+            documentPrefs =
+                GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
+        }
+
+        const bool preserveDuplicateLabels =
+            obj->allowDuplicateLabel() || documentPrefs->GetBool("DuplicateLabels");
+        if (preserveDuplicateLabels) {
             writer.Stream() << "restore=\"1\" ";
         }
         else if (_cValue == obj->getNameInDocument()) {

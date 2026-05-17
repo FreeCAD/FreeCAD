@@ -249,6 +249,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         doCommand(Doc,
                   "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.Label = 'Sketch'", FeatName.c_str());
         if (mapmode < Attacher::mmDummy_NumberOfModes)
             doCommand(Gui,
                       "App.activeDocument().%s.MapMode = \"%s\"",
@@ -299,6 +300,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
                   "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
         }
+        doCommand(Doc, "App.activeDocument().%s.Label = 'Sketch'", FeatName.c_str());
 
         doCommand(Doc,
                   "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f, %f, %f), "
