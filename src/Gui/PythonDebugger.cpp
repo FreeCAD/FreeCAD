@@ -178,6 +178,7 @@ void PythonDebugStdout::init_type()
     behaviors().supportRepr();
     add_varargs_method("write", &PythonDebugStdout::write, "write to stdout");
     add_varargs_method("flush", &PythonDebugStdout::flush, "flush the output");
+    behaviors().readyType();
 }
 
 PythonDebugStdout::PythonDebugStdout() = default;
@@ -218,6 +219,7 @@ void PythonDebugStderr::init_type()
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
     add_varargs_method("write", &PythonDebugStderr::write, "write to stderr");
+    behaviors().readyType();
 }
 
 PythonDebugStderr::PythonDebugStderr() = default;
@@ -253,6 +255,7 @@ void PythonDebugExcept::init_type()
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
     add_varargs_method("fc_excepthook", &PythonDebugExcept::excepthook, "Custom exception handler");
+    behaviors().readyType();
 }
 
 PythonDebugExcept::PythonDebugExcept() = default;
@@ -290,6 +293,13 @@ public:
         , depth(0)
     {}
     ~PythonDebuggerPy() override = default;
+
+    static void init_type()
+    {
+        behaviors().name("PythonDebuggerPy");
+        behaviors().doc("Internal Python debugger state object");
+        behaviors().readyType();
+    };
     PythonDebugger* dbg;
     int depth;
 };
@@ -328,6 +338,7 @@ struct PythonDebuggerP
     explicit PythonDebuggerP(PythonDebugger* that)
     {
         Base::PyGILStateLocker lock;
+        PythonDebuggerPy::init_type();
         out_n = new PythonDebugStdout();
         err_n = new PythonDebugStderr();
         pypde = new PythonDebugExcept();

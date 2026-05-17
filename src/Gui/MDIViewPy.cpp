@@ -64,6 +64,7 @@ void MDIViewPy::init_type()
         "getActiveObject(name,resolve=True)\nreturns the active object for the given type"
     );
     add_varargs_method("cast_to_base", &MDIViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
+    behaviors().readyType();
 }
 
 PyObject* MDIViewPy::extension_object_new(struct _typeobject* /*type*/, PyObject* /*args*/, PyObject* /*kwds*/)
