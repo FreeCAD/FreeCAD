@@ -252,7 +252,12 @@ PartCmdFaceSelection::PartCmdFaceSelection()
 void PartCmdFaceSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Face SELECT App::Link SUBELEMENT Face')");
+    doCommand(
+        Command::Gui,
+        "Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Face "
+        "SELECT App::Link SUBELEMENT Face "
+        "SELECT Part::Part2DObject SUBELEMENT InternalFace')"
+    );
 }
 
 
