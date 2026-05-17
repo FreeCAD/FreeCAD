@@ -178,6 +178,7 @@ void PythonDebugStdout::init_type()
     behaviors().supportRepr();
     add_varargs_method("write", &PythonDebugStdout::write, "write to stdout");
     add_varargs_method("flush", &PythonDebugStdout::flush, "flush the output");
+    behaviors().supportGetattr();
     behaviors().readyType();
 }
 
@@ -219,6 +220,7 @@ void PythonDebugStderr::init_type()
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
     add_varargs_method("write", &PythonDebugStderr::write, "write to stderr");
+    behaviors().supportGetattr();
     behaviors().readyType();
 }
 
@@ -255,6 +257,7 @@ void PythonDebugExcept::init_type()
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
     add_varargs_method("fc_excepthook", &PythonDebugExcept::excepthook, "Custom exception handler");
+    behaviors().supportGetattr();
     behaviors().readyType();
 }
 
