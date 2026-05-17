@@ -83,6 +83,20 @@ void alignGridLayoutColumns(const std::list<QGridLayout*>& layouts, unsigned col
     }
 }
 
+constexpr std::array<const char*, 3> customCoordinateSystemLabels {"X′", "Y′", "Z′"};
+
+QString linkedSelectionLabel(const SelectionChanges& msg)
+{
+    assert(msg.pOriginalMsg);
+
+    return QStringLiteral("%1#%2.%3")
+        .arg(
+            QLatin1String(msg.pOriginalMsg->pObjectName),
+            QLatin1String(msg.pObjectName),
+            QLatin1String(msg.pSubName)
+        );
+}
+
 }  // namespace
 
 TaskTransform::TaskTransform(
@@ -215,7 +229,9 @@ void TaskTransform::setupGui()
     loadPlacementModeItems();
     loadPositionModeItems();
 
+    ui->referenceLabel->hide();
     ui->referencePickerWidget->hide();
+    ui->customCSReferenceLabel->hide();
     ui->customCSPickerWidget->hide();
     ui->alignRotationCheckBox->hide();
 
@@ -307,8 +323,7 @@ void TaskTransform::setupGui()
         {ui->absolutePositionLayout,
          ui->absoluteRotationLayout,
          ui->transformOriginLayout,
-         ui->referencePickerLayout,
-         ui->customCSPickerLayout}
+         ui->coordinateSystemLayout}
     );
 
     loadPreferences();
@@ -490,7 +505,8 @@ TaskTransform::CoordinateSystem TaskTransform::customCoordinateSystem() const
     if (!customCoordinateSystemPlacement.has_value()) {
         return globalCoordinateSystem();
     }
-    return {{"X′", "Y′", "Z′"}, globalOrigin * (*customCoordinateSystemPlacement)};
+    auto [xLabel, yLabel, zLabel] = customCoordinateSystemLabels;
+    return {{xLabel, yLabel, zLabel}, globalOrigin * (*customCoordinateSystemPlacement)};
 }
 
 TaskTransform::CoordinateSystem TaskTransform::currentCoordinateSystem() const
@@ -522,53 +538,7 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
     }
 
     if (selectionMode == SelectionMode::SelectCustomCS && msg.Type == SelectionChanges::AddSelection) {
-        auto doc = Application::Instance->getDocument(msg.pDocName);
-        auto obj = doc->getDocument()->getObject(msg.pObjectName);
-        if (!obj) {
-            return;
-        }
-
-        Base::Placement refPlacement;
-        QString label;
-
-        if (msg.pOriginalMsg && subObjectPlacementProvider) {
-            auto orgDoc = Application::Instance->getDocument(msg.pOriginalMsg->pDocName);
-            auto orgObj = orgDoc->getDocument()->getObject(msg.pOriginalMsg->pObjectName);
-            auto gp = App::GeoFeature::getGlobalPlacement(obj, orgObj, msg.pOriginalMsg->pSubName);
-            auto localPlacement = App::GeoFeature::getPlacementFromProp(obj, "Placement");
-            try {
-                refPlacement = gp * subObjectPlacementProvider->calculate(msg.Object, localPlacement);
-            }
-            catch (const Base::Exception&) {
-                // Shape type unsupported for attacher (e.g. Solid): fall back to the
-                // link-aware placement already resolved above, preserving link-instance transforms.
-                refPlacement = gp;
-            }
-            label = QStringLiteral("%1#%2.%3")
-                        .arg(
-                            QLatin1String(msg.pOriginalMsg->pObjectName),
-                            QLatin1String(msg.pObjectName),
-                            QLatin1String(msg.pSubName)
-                        );
-        }
-        else if (obj->getDocument() == vp->getObject()->getDocument()) {
-            // Tree-view pick without link resolution: only accept same-document objects
-            // to avoid treating cross-document placements as if they were in this document's space.
-            refPlacement = App::GeoFeature::getGlobalPlacement(obj);
-            label = QString::fromLatin1(obj->Label.getValue());
-        }
-        else {
-            return;
-        }
-
-        customCoordinateSystemPlacement = refPlacement;
-        ui->customCSLineEdit->setText(label);
-        setSelectionMode(SelectionMode::None);
-        showCoordinateSystemIndicator();
-        updateInputLabels();
-        updatePositionAndRotationUi();
-        updateTransformOrigin();
-        updateDraggerLabels();
+        setCustomCoordinateSystemFromSelection(msg);
         return;
     }
 
@@ -605,12 +575,7 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
         selectedObjectPlacement.setPosition(rootLocalSnapPos);
     }
 
-    auto label = QStringLiteral("%1#%2.%3")
-                     .arg(
-                         QLatin1String(msg.pOriginalMsg->pObjectName),
-                         QLatin1String(msg.pObjectName),
-                         QLatin1String(msg.pSubName)
-                     );
+    auto label = linkedSelectionLabel(msg);
 
     switch (selectionMode) {
         case SelectionMode::SelectTransformOrigin: {
@@ -643,6 +608,52 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
             // no-op
             break;
     }
+}
+
+void TaskTransform::setCustomCoordinateSystemFromSelection(const SelectionChanges& msg)
+{
+    auto doc = Application::Instance->getDocument(msg.pDocName);
+    auto obj = doc->getDocument()->getObject(msg.pObjectName);
+    if (!obj) {
+        return;
+    }
+
+    Base::Placement refPlacement;
+    QString label;
+
+    if (msg.pOriginalMsg && subObjectPlacementProvider) {
+        auto orgDoc = Application::Instance->getDocument(msg.pOriginalMsg->pDocName);
+        auto orgObj = orgDoc->getDocument()->getObject(msg.pOriginalMsg->pObjectName);
+        auto gp = App::GeoFeature::getGlobalPlacement(obj, orgObj, msg.pOriginalMsg->pSubName);
+        auto localPlacement = App::GeoFeature::getPlacementFromProp(obj, "Placement");
+        try {
+            refPlacement = gp * subObjectPlacementProvider->calculate(msg.Object, localPlacement);
+        }
+        catch (const Base::Exception&) {
+            // Shape type unsupported for attacher (e.g. Solid): fall back to the
+            // link-aware placement already resolved above, preserving link-instance transforms.
+            refPlacement = gp;
+        }
+        label = linkedSelectionLabel(msg);
+    }
+    else if (obj->getDocument() == vp->getObject()->getDocument()) {
+        // Tree-view pick without link resolution: only accept same-document objects
+        // to avoid treating cross-document placements as if they were in this document's space.
+        refPlacement = App::GeoFeature::getGlobalPlacement(obj);
+        label = QString::fromUtf8(obj->Label.getValue());
+    }
+    else {
+        return;
+    }
+
+    customCoordinateSystemPlacement = refPlacement;
+    ui->customCSLineEdit->setText(label);
+    setSelectionMode(SelectionMode::None);
+    showCoordinateSystemIndicator();
+    updateInputLabels();
+    updatePositionAndRotationUi();
+    updateTransformOrigin();
+    updateDraggerLabels();
 }
 
 void TaskTransform::onAlignRotationChanged()
@@ -763,7 +774,9 @@ void TaskTransform::updateTransformOrigin()
         }
     };
 
-    ui->referencePickerWidget->setVisible(placementMode == PlacementMode::Custom);
+    const bool showReference = (placementMode == PlacementMode::Custom);
+    ui->referenceLabel->setVisible(showReference);
+    ui->referencePickerWidget->setVisible(showReference);
 
     if (placementMode == PlacementMode::Custom && !customTransformOrigin.has_value()) {
         setSelectionMode(SelectionMode::SelectTransformOrigin);
@@ -819,32 +832,40 @@ bool TaskTransform::isDraggerAlignedToCoordinateSystem() const
     return positionMode != PositionMode::Local && ui->alignRotationCheckBox->isChecked();
 }
 
+static SoGroup* findActiveEditingRoot(Gui::Document* doc)
+{
+    const auto views = doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
+    for (auto* mdi : views) {
+        auto* view3d = static_cast<View3DInventor*>(mdi);
+        View3DInventorViewer* viewer = view3d->getViewer();
+        if (viewer->isEditingViewProvider()) {
+            return dynamic_cast<SoGroup*>(viewer->getEditingRoot());
+        }
+    }
+    return nullptr;
+}
+
 void TaskTransform::showCoordinateSystemIndicator()
 {
-    auto* view3d = dynamic_cast<View3DInventor*>(vp->getDocument()->getEditingViewOfViewProvider(vp));
-    if (!view3d) {
-        return;
-    }
-
-    auto* editingRoot = dynamic_cast<SoGroup*>(view3d->getViewer()->getEditingRoot());
+    auto* editingRoot = findActiveEditingRoot(vp->getDocument());
     if (!editingRoot) {
         return;
     }
 
     hideCoordinateSystemIndicator();
 
-    auto* transform = new SoTransform();
-    csIndicatorTransform = transform;
+    csIndicatorTransform = new SoTransform();
 
     auto* indicator = new SoFCPlacementIndicatorKit();
     if (positionMode == PositionMode::Custom) {
-        indicator->axisLabels.set1Value(0, "X\xe2\x80\xb2");
-        indicator->axisLabels.set1Value(1, "Y\xe2\x80\xb2");
-        indicator->axisLabels.set1Value(2, "Z\xe2\x80\xb2");
+        auto [xLabel, yLabel, zLabel] = customCoordinateSystemLabels;
+        indicator->axisLabels.set1Value(0, xLabel);
+        indicator->axisLabels.set1Value(1, yLabel);
+        indicator->axisLabels.set1Value(2, zLabel);
     }
 
     auto* annotation = new So3DAnnotation();
-    annotation->addChild(transform);
+    annotation->addChild(csIndicatorTransform);
     annotation->addChild(indicator);
 
     auto* root = new SoSeparator();
@@ -862,12 +883,9 @@ void TaskTransform::hideCoordinateSystemIndicator()
         return;
     }
 
-    auto* view3d = dynamic_cast<View3DInventor*>(vp->getDocument()->getEditingViewOfViewProvider(vp));
-    if (view3d) {
-        auto* editingRoot = dynamic_cast<SoGroup*>(view3d->getViewer()->getEditingRoot());
-        if (editingRoot) {
-            editingRoot->removeChild(csIndicatorRoot);
-        }
+    auto* editingRoot = findActiveEditingRoot(vp->getDocument());
+    if (editingRoot) {
+        editingRoot->removeChild(csIndicatorRoot);
     }
 
     csIndicatorRoot = nullptr;
@@ -896,6 +914,7 @@ void TaskTransform::onCoordinateSystemChange([[maybe_unused]] int mode)
     positionMode = ui->positionModeComboBox->currentData().value<PositionMode>();
 
     ui->alignRotationCheckBox->setVisible(positionMode != PositionMode::Local);
+    ui->customCSReferenceLabel->setVisible(positionMode == PositionMode::Custom);
     ui->customCSPickerWidget->setVisible(positionMode == PositionMode::Custom);
 
     if (positionMode == PositionMode::Local) {

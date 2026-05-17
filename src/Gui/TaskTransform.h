@@ -34,6 +34,10 @@
 #include <App/Application.h>
 #include <App/Services.h>
 
+#include <array>
+#include <optional>
+#include <string>
+
 class SoDragger;
 class SoTransform;
 
@@ -143,6 +147,7 @@ private:
 
     void resetReferencePlacement();
     void resetReferenceRotation();
+    void setCustomCoordinateSystemFromSelection(const SelectionChanges& msg);
 
     ViewProviderDragger::DraggerComponents getRelevantComponents();
     void moveObjectToDragger(
@@ -162,7 +167,7 @@ private:
 
     CoinPtr<SoTransformDragger> dragger;
     CoinPtr<SoSeparator> csIndicatorRoot;
-    SoTransform* csIndicatorTransform {nullptr};
+    CoinPtr<SoTransform> csIndicatorTransform;
 
     Ui_TaskTransformDialog* ui;
 

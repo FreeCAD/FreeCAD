@@ -22,6 +22,7 @@
  ******************************************************************************/
 
 #include <sstream>
+#include <optional>
 
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoComplexity.h>
@@ -248,13 +249,16 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
 
     auto sep = new SoSeparator;
 
-    auto labelAt = [&](int i, const char* fallback) -> const char* {
-        return axisLabels.getNum() > i ? axisLabels[i].getString() : fallback;
+    auto labelAt = [&](int i) -> std::optional<const char*> {
+        if (axisLabels.getNum() <= i) {
+            return std::nullopt;
+        }
+        return axisLabels[i].getString();
     };
 
     if (axes.getValue() & X) {
         sep->addChild(createAxis(
-            labelAt(0, "X"),
+            labelAt(0).value_or("X"),
             Base::Vector3d::UnitX,
             ViewParams::instance()->getAxisXColor(),
             xyOffset
@@ -263,7 +267,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
 
     if (axes.getValue() & Y) {
         sep->addChild(createAxis(
-            labelAt(1, "Y"),
+            labelAt(1).value_or("Y"),
             Base::Vector3d::UnitY,
             ViewParams::instance()->getAxisYColor(),
             xyOffset
@@ -275,7 +279,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
                                                              : axisMargin + additionalAxisMargin;
 
         sep->addChild(createAxis(
-            labelAt(2, "Z"),
+            labelAt(2).value_or("Z"),
             Base::Vector3d::UnitZ,
             ViewParams::instance()->getAxisZColor(),
             zOffset
