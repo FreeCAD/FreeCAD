@@ -150,8 +150,8 @@ std::string Command::toGCode(int precision, bool padzero) const
 
     // Add annotations as a comment if they exist
     if (!Annotations.empty()) {
-        const bool commentOnly =
-            Parameters.empty() && !Name.empty() && Name.front() == '(' && Name.back() == ')';
+        const bool commentOnly = Parameters.empty() && !Name.empty() && Name.front() == '('
+            && Name.back() == ')';
         str << (commentOnly ? "; " : " ; ");
         bool first = true;
         for (const auto& pair : Annotations) {

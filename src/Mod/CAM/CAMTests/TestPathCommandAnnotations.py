@@ -384,7 +384,7 @@ class TestPathCommandAnnotations(PathTestBase):
         c1 = Path.Command("(xx)", {}, {"a": "x"})
         content = c1.dumpContent()
 
-        self.assertIn('gcode="(xx); a:\'x\'"', content)
+        self.assertIn("gcode=\"(xx); a:'x'\"", content)
         self.assertNotIn('gcode="(xx) ;', content)
 
         c2 = Path.Command()
