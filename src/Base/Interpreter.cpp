@@ -203,6 +203,7 @@ public:
         behaviors().doc("Python standard output");
         add_varargs_method("write", &PythonStdOutput::write, "write()");
         add_varargs_method("flush", &PythonStdOutput::flush, "flush()");
+        behaviors().supportGetattr();
         behaviors().readyType();
     }
 
