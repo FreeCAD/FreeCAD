@@ -215,7 +215,9 @@ void TaskTransform::setupGui()
     loadPlacementModeItems();
     loadPositionModeItems();
 
+    ui->referenceLabel->hide();
     ui->referencePickerWidget->hide();
+    ui->customCSReferenceLabel->hide();
     ui->customCSPickerWidget->hide();
     ui->alignRotationCheckBox->hide();
 
@@ -307,8 +309,7 @@ void TaskTransform::setupGui()
         {ui->absolutePositionLayout,
          ui->absoluteRotationLayout,
          ui->transformOriginLayout,
-         ui->referencePickerLayout,
-         ui->customCSPickerLayout}
+         ui->coordinateSystemLayout}
     );
 
     loadPreferences();
@@ -752,7 +753,9 @@ void TaskTransform::updateTransformOrigin()
         }
     };
 
-    ui->referencePickerWidget->setVisible(placementMode == PlacementMode::Custom);
+    const bool showReference = (placementMode == PlacementMode::Custom);
+    ui->referenceLabel->setVisible(showReference);
+    ui->referencePickerWidget->setVisible(showReference);
 
     if (placementMode == PlacementMode::Custom && !customTransformOrigin.has_value()) {
         setSelectionMode(SelectionMode::SelectTransformOrigin);
@@ -808,14 +811,22 @@ bool TaskTransform::isDraggerAlignedToCoordinateSystem() const
     return positionMode != PositionMode::Local && ui->alignRotationCheckBox->isChecked();
 }
 
+static SoGroup* findActiveEditingRoot(Gui::Document* doc)
+{
+    const auto views = doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
+    for (auto* mdi : views) {
+        auto* view3d = static_cast<View3DInventor*>(mdi);
+        View3DInventorViewer* viewer = view3d->getViewer();
+        if (viewer->isEditingViewProvider()) {
+            return dynamic_cast<SoGroup*>(viewer->getEditingRoot());
+        }
+    }
+    return nullptr;
+}
+
 void TaskTransform::showCoordinateSystemIndicator()
 {
-    auto* view3d = dynamic_cast<View3DInventor*>(vp->getDocument()->getEditingViewOfViewProvider(vp));
-    if (!view3d) {
-        return;
-    }
-
-    auto* editingRoot = dynamic_cast<SoGroup*>(view3d->getViewer()->getEditingRoot());
+    auto* editingRoot = findActiveEditingRoot(vp->getDocument());
     if (!editingRoot) {
         return;
     }
@@ -851,12 +862,9 @@ void TaskTransform::hideCoordinateSystemIndicator()
         return;
     }
 
-    auto* view3d = dynamic_cast<View3DInventor*>(vp->getDocument()->getEditingViewOfViewProvider(vp));
-    if (view3d) {
-        auto* editingRoot = dynamic_cast<SoGroup*>(view3d->getViewer()->getEditingRoot());
-        if (editingRoot) {
-            editingRoot->removeChild(csIndicatorRoot);
-        }
+    auto* editingRoot = findActiveEditingRoot(vp->getDocument());
+    if (editingRoot) {
+        editingRoot->removeChild(csIndicatorRoot);
     }
 
     csIndicatorRoot = nullptr;
@@ -885,6 +893,7 @@ void TaskTransform::onCoordinateSystemChange([[maybe_unused]] int mode)
     positionMode = ui->positionModeComboBox->currentData().value<PositionMode>();
 
     ui->alignRotationCheckBox->setVisible(positionMode != PositionMode::Local);
+    ui->customCSReferenceLabel->setVisible(positionMode == PositionMode::Custom);
     ui->customCSPickerWidget->setVisible(positionMode == PositionMode::Custom);
 
     if (positionMode == PositionMode::Local) {
