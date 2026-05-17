@@ -1893,6 +1893,15 @@ Qt::DropActions TreeWidget::supportedDropActions() const
 
 bool TreeWidget::event(QEvent* e)
 {
+    if (e->type() == QEvent::ShortcutOverride) {
+        auto ke = static_cast<QKeyEvent*>(e);
+        if (ke->key() == Qt::Key_Space && ke->modifiers() == Qt::NoModifier) {
+            // Claim the Space key so Qt does not fire the global
+            // Std_ToggleVisibility
+            ke->accept();
+            return true;
+        }
+    }
     return QTreeWidget::event(e);
 }
 
@@ -1975,6 +1984,29 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
             event->accept();
             return;
         }
+    }
+
+    else if (event->key() == Qt::Key_Space && event->modifiers() == Qt::NoModifier) {
+        // Toggle each selected feature's own visibility directly
+        for (auto* raw : selectedItems()) {
+            if (raw->type() != ObjectType) {
+                continue;
+            }
+            auto* vp = static_cast<DocumentObjectItem*>(raw)->object();
+            if (!vp || !vp->canToggleVisibility()) {
+                continue;
+            }
+            auto* appObj = vp->getObject();
+            vp->Gui::ViewProvider::toggleVisibility();
+            Selection().updateSelection(
+                vp->isShow(),
+                appObj->getDocument()->getName(),
+                appObj->getNameInDocument()
+            );
+        }
+        setFocus();
+        event->accept();
+        return;
     }
 
     QTreeWidget::keyPressEvent(event);
