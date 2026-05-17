@@ -4985,6 +4985,10 @@ class DxfDraftPostProcessor:
                             ViewProviderDraft(obj.ViewObject)
                     elif proxy_name == "Text":
                         if hasattr(obj, "DxfTextHeight"):
+                            # DXF TEXT heights are already drawing values, so the active
+                            # Draft annotation scale multiplier must not resize imported text.
+                            if hasattr(obj.ViewObject, "ScaleMultiplier"):
+                                obj.ViewObject.ScaleMultiplier = 1.0
                             obj.ViewObject.FontSize = obj.DxfTextHeight * TEXTSCALING
                 except Exception as e:
                     FCC.PrintWarning(f"Failed to set ViewProvider for {obj.Name}: {e}\n")
