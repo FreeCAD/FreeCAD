@@ -407,7 +407,10 @@ def createJointRigidGroupJoint(objs):
 
     if len(objs) < 2:
         App.Console.PrintWarning(
-            QT_TRANSLATE_NOOP("Assembly_CreateJointRigidGroup", "Select at least 2 components to create a rigid group")
+            QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointRigidGroup",
+                "Select at least 2 components to create a rigid group",
+            )
         )
         return None
 
