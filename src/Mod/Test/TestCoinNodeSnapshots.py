@@ -992,6 +992,31 @@ def _pixel_bbox(path: Path, predicate):
     return (min_x, min_y, max_x, max_y)
 
 
+def _mean_rgb(path: Path, x: int, y: int, radius: int = 2) -> tuple[float, float, float]:
+    from PySide.QtGui import QImage  # type: ignore
+
+    img = QImage(str(path)).convertToFormat(QImage.Format_ARGB32)
+    if img.isNull():
+        raise AssertionError(f"unreadable image: {path}")
+
+    r_total = 0
+    g_total = 0
+    b_total = 0
+    count = 0
+    for yy in range(max(0, y - radius), min(img.height(), y + radius + 1)):
+        for xx in range(max(0, x - radius), min(img.width(), x + radius + 1)):
+            pixel = img.pixel(xx, yy)
+            r_total += (pixel >> 16) & 0xFF
+            g_total += (pixel >> 8) & 0xFF
+            b_total += pixel & 0xFF
+            count += 1
+
+    if count == 0:
+        raise AssertionError(f"sample window around ({x}, {y}) is empty for {path}")
+
+    return (r_total / count, g_total / count, b_total / count)
+
+
 def _compare_images(
     expected_path: Path,
     actual_path: Path,
@@ -1326,6 +1351,127 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                 f"(marker bbox={marker_bbox}, text bbox={text_bbox}, image={actual_path})"
             ),
         )
+
+    def test_so_brep_face_set_per_part_material_binding_regression(self):
+        _, FreeCADGui, coin = _require_gui()
+
+        if importlib.util.find_spec("PartGui") is not None:
+            importlib.import_module("PartGui")
+
+        width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
+        height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
+        out_dir = Path(
+            os.environ.get(
+                "FC_VISUAL_OUT_DIR",
+                os.path.join(tempfile.gettempdir(), "FreeCADTesting", "CoinNodeSnapshots"),
+            )
+        )
+        actual_path = out_dir / "actual" / "SoBrepFaceSetPerPartMaterialBindingRegression.png"
+
+        root = coin.SoSeparator()
+
+        cam = coin.SoOrthographicCamera()
+        cam.position.setValue(0.0, 0.0, 2.0)
+        cam.nearDistance.setValue(1.0)
+        cam.farDistance.setValue(5.0)
+        cam.height.setValue(2.0)
+        root.addChild(cam)
+
+        root.addChild(coin.SoDirectionalLight())
+
+        light_model = coin.SoLightModel()
+        light_model.model.setValue(coin.SoLightModel.BASE_COLOR)
+        root.addChild(light_model)
+
+        coords = coin.SoCoordinate3()
+        coords.point.setValues(
+            0,
+            8,
+            [
+                coin.SbVec3f(-0.7, -0.7, 0.0),
+                coin.SbVec3f(0.7, -0.7, 0.0),
+                coin.SbVec3f(0.7, 0.7, 0.0),
+                coin.SbVec3f(-0.7, 0.7, 0.0),
+                coin.SbVec3f(-0.7, -0.7, -0.2),
+                coin.SbVec3f(0.7, -0.7, -0.2),
+                coin.SbVec3f(0.7, 0.7, -0.2),
+                coin.SbVec3f(-0.7, 0.7, -0.2),
+            ],
+        )
+        root.addChild(coords)
+
+        material = coin.SoMaterial()
+        material.diffuseColor.setValues(
+            0,
+            2,
+            [
+                coin.SbColor(0.90, 0.15, 0.15),
+                coin.SbColor(0.15, 0.75, 0.20),
+            ],
+        )
+        root.addChild(material)
+
+        material_binding = coin.SoMaterialBinding()
+        material_binding.value = coin.SoMaterialBinding.PER_PART
+        root.addChild(material_binding)
+
+        faces = _instantiate(coin, "SoBrepFaceSet")
+        faces.coordIndex.setValues(
+            0,
+            16,
+            [
+                0,
+                1,
+                2,
+                -1,
+                0,
+                2,
+                3,
+                -1,
+                4,
+                5,
+                6,
+                -1,
+                4,
+                6,
+                7,
+                -1,
+            ],
+        )
+        faces.partIndex.setValues(0, 2, [2, 2])
+        root.addChild(faces)
+
+        _render_png(FreeCADGui, coin, root, actual_path, width, height, frame_camera=False)
+        self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
+        self.assertGreater(
+            _non_background_pixel_count(actual_path),
+            1000,
+            f"SoBrepFaceSet per-part regression render seems empty: {actual_path}",
+        )
+
+        top_left_rgb = _mean_rgb(actual_path, int(width * 0.35), int(height * 0.35), radius=8)
+        bottom_right_rgb = _mean_rgb(actual_path, int(width * 0.65), int(height * 0.65), radius=8)
+
+        for label, rgb in (
+            ("top-left triangle", top_left_rgb),
+            ("bottom-right triangle", bottom_right_rgb),
+        ):
+            r, g, b = rgb
+            self.assertGreater(
+                r,
+                g + 60.0,
+                f"{label} should keep the front face's red material (got {rgb}, image={actual_path})",
+            )
+            self.assertGreater(
+                r,
+                b + 60.0,
+                f"{label} should keep the front face's red material (got {rgb}, image={actual_path})",
+            )
+            self.assertGreater(
+                r,
+                120.0,
+                f"{label} should stay visibly red (got {rgb}, image={actual_path})",
+            )
 
     def test_coin_node_snapshots(self):
         """Render each configured node and compare against baseline images."""

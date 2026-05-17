@@ -453,15 +453,12 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
 bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContextPtr ctx, SelContextPtr ctx2)
 {
     // SoBrepFaceSet groups rendered triangles into topological faces via
-    // partIndex. When we can express selection/highlight through Coin state,
-    // remap those per-part colors onto the per-face material binding that
-    // SoIndexedFaceSet actually consumes during GLRender().
+    // partIndex. Coin's IndexedFaceSet consumes one material index per
+    // rendered triangle face, so any per-part coloring must be remapped to
+    // per-face indices before GLRender(). Selection/highlight overlays reuse
+    // the same remap path.
     const bool hasPrimary = ctx && (ctx->isHighlighted() || !ctx->selectionIndex.empty());
     const bool hasSecondary = ctx2 && (!ctx2->colors.empty() || !ctx2->selectionIndex.empty());
-    if (!hasPrimary && !hasSecondary) {
-        return false;
-    }
-
     auto* state = action->getState();
     const auto mb = SoMaterialBindingElement::get(state);
     const int partCount = this->partIndex.getNum();
@@ -475,15 +472,19 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
         return false;
     }
     const int diffuseSize = element->getNumDiffuse();
-    if (mb != SoMaterialBindingElement::OVERALL
-        && !(mb == SoMaterialBindingElement::PER_PART && diffuseSize >= partCount)) {
+    const bool needsBasePerPartRemap
+        = (mb == SoMaterialBindingElement::PER_PART && diffuseSize >= partCount);
+    if (!hasPrimary && !hasSecondary && !needsBasePerPartRemap) {
+        return false;
+    }
+    if (mb != SoMaterialBindingElement::OVERALL && !needsBasePerPartRemap) {
         static bool warnedUnsupportedBinding = false;
         if (!warnedUnsupportedBinding) {
             warnedUnsupportedBinding = true;
             SoDebugError::postWarning(
                 "SoBrepFaceSet::overrideMaterialBinding",
                 "Unsupported material binding for Coin face remap; falling back to explicit "
-                "overlay passes. Current Part face highlighting expects OVERALL or PER_PART."
+                "overlay passes. Current Part face rendering expects OVERALL or PER_PART."
             );
         }
         return false;

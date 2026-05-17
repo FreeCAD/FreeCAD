@@ -105,11 +105,13 @@ def _instantiate(coin, type_name: str):
     return node
 
 
-def _save_active_view_png(view, out_path: Path, width: int, height: int) -> None:
+def _save_active_view_png(
+    view, out_path: Path, width: int, height: int, *, view_fn: str = "viewFront"
+) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     if hasattr(view, "setAxisCross"):
         view.setAxisCross(False)
-    view.viewFront()
+    getattr(view, view_fn)()
     view.fitAll()
     view.saveImage(str(out_path), width, height, "White")
 
@@ -137,6 +139,49 @@ def _mean_rgb(path: Path, x: int, y: int, radius: int = 2) -> tuple[float, float
         raise AssertionError(f"sample window around ({x}, {y}) is empty for {path}")
 
     return (r_total / count, g_total / count, b_total / count)
+
+
+def _pixel_bbox(path: Path, predicate):
+    from PySide.QtGui import QImage  # type: ignore
+
+    img = QImage(str(path))
+    if img.isNull():
+        return None
+
+    min_x = img.width()
+    min_y = img.height()
+    max_x = -1
+    max_y = -1
+
+    for y in range(img.height()):
+        for x in range(img.width()):
+            pixel = img.pixel(x, y)
+            r = (pixel >> 16) & 0xFF
+            g = (pixel >> 8) & 0xFF
+            b = pixel & 0xFF
+            if not predicate(r, g, b):
+                continue
+
+            min_x = min(min_x, x)
+            min_y = min(min_y, y)
+            max_x = max(max_x, x)
+            max_y = max(max_y, y)
+
+    if max_x < min_x or max_y < min_y:
+        return None
+
+    return (min_x, min_y, max_x, max_y)
+
+
+def _bbox_relative_point(
+    bbox: tuple[int, int, int, int], x_ratio: float, y_ratio: float
+) -> tuple[int, int]:
+    min_x, min_y, max_x, max_y = bbox
+    width = max(1, max_x - min_x)
+    height = max(1, max_y - min_y)
+    x = min_x + int(width * x_ratio)
+    y = min_y + int(height * y_ratio)
+    return (x, y)
 
 
 def _make_material(view_object, rgba: tuple[float, float, float, float], transparency: float = 0.0):
@@ -286,3 +331,63 @@ class TestViewProviderLink(unittest.TestCase):
         self.assertGreater(
             cg, cb + 80, f"clearing face override did not restore green: {(cr, cg, cb)}"
         )
+
+    def test_link_renders_per_face_colors_without_triangle_split(self):
+        box = self.doc.addObject("Part::Box", "Box")
+        link = self.doc.addObject("App::Link", "Link")
+        link.LinkedObject = box
+
+        self.doc.recompute()
+        self.FreeCADGui.updateGui()
+
+        box.ViewObject.Visibility = False
+
+        view = self.FreeCADGui.getDocument(self.doc.Name).ActiveView
+        self.assertIsNotNone(view, "expected the GUI document to expose an active 3D view")
+
+        width = 512
+        height = 512
+        out_dir = Path(tempfile.gettempdir()) / "FreeCADTesting" / "ViewProviderLink"
+        override_path = out_dir / "link-per-face-top.png"
+
+        box.ViewObject.DiffuseColor = [
+            (1.0, 0.0, 0.0, 1.0),
+            (0.0, 1.0, 0.0, 1.0),
+            (0.0, 0.0, 1.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+            (1.0, 0.0, 1.0, 1.0),
+            (0.0, 1.0, 1.0, 1.0),
+        ]
+        self.FreeCADGui.updateGui()
+
+        _save_active_view_png(view, override_path, width, height, view_fn="viewTop")
+        bbox = _pixel_bbox(override_path, lambda r, g, b: min(r, g, b) < 250)
+        self.assertIsNotNone(
+            bbox, f"linked per-face colors did not render any visible pixels: {override_path}"
+        )
+
+        top_left_rgb = _mean_rgb(override_path, *_bbox_relative_point(bbox, 0.35, 0.35), radius=8)
+        bottom_right_rgb = _mean_rgb(
+            override_path, *_bbox_relative_point(bbox, 0.65, 0.65), radius=8
+        )
+
+        for label, rgb in (
+            ("top-left triangle", top_left_rgb),
+            ("bottom-right triangle", bottom_right_rgb),
+        ):
+            r, g, b = rgb
+            self.assertGreater(
+                g,
+                r + 40.0,
+                f"{label} should keep the linked top face's cyan color (got {rgb})",
+            )
+            self.assertGreater(
+                b,
+                r + 40.0,
+                f"{label} should keep the linked top face's cyan color (got {rgb})",
+            )
+            self.assertGreater(
+                min(g, b),
+                120.0,
+                f"{label} should stay visibly cyan through the link render path (got {rgb})",
+            )
