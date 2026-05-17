@@ -32,19 +32,14 @@ public:
     AttacherSubObjectPlacement();
 
     Base::Placement calculate(App::SubObjectT object, Base::Placement basePlacement) const override;
-
-private:
-    std::unique_ptr<Attacher::AttachEngine3D> attacher;
-};
-
-class AttacherSubObjectSnap final: public App::SubObjectSnapProvider
-{
-public:
     std::optional<Base::Vector3d> snapPosition(
-        App::SubObjectT object,
+        const App::SubObjectT& object,
         std::optional<Base::Vector3d> worldCursor,
         const Base::Matrix4D& objectToWorld
     ) const override;
+
+private:
+    std::unique_ptr<Attacher::AttachEngine3D> attacher;
 };
 
 class PartCenterOfMass final: public App::CenterOfMassProvider

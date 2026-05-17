@@ -46,24 +46,19 @@ public:
     * Returns placement of sub object relative to the base placement.
     */
     virtual Base::Placement calculate(SubObjectT object, Base::Placement basePlacement) const = 0;
-};
 
-/**
-* Given a hovered sub-object and the world-space cursor position, this service
-* optionally returns a world-space snap position (e.g. an edge endpoint).
-* When it returns a value, callers should override the dragger position while
-* keeping the rotation that SubObjectPlacementProvider computed.
-*/
-class SubObjectSnapProvider
-{
-public:
-    virtual ~SubObjectSnapProvider() = default;
-
+    /**
+    * Given a hovered sub-object and the world-space cursor position, optionally returns a
+    * world-space snap position (e.g. an edge endpoint).
+    */
     virtual std::optional<Base::Vector3d> snapPosition(
-        SubObjectT object,
-        std::optional<Base::Vector3d> worldCursor,
-        const Base::Matrix4D& objectToWorld
-    ) const = 0;
+        const SubObjectT&,
+        std::optional<Base::Vector3d>,
+        const Base::Matrix4D&
+    ) const
+    {
+        return std::nullopt;
+    }
 };
 
 /**

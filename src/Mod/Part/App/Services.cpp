@@ -63,8 +63,8 @@ constexpr double edgeEndpointSnapThreshold = 0.15;
 
 }  // namespace
 
-std::optional<Base::Vector3d> AttacherSubObjectSnap::snapPosition(
-    App::SubObjectT object,
+std::optional<Base::Vector3d> AttacherSubObjectPlacement::snapPosition(
+    const App::SubObjectT& object,
     std::optional<Base::Vector3d> worldCursor,
     const Base::Matrix4D& objectToWorld
 ) const

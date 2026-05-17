@@ -83,9 +83,7 @@ public:
         App::SubObjectPlacementProvider* subObjectPlacementProvider
         = Base::provideService<App::SubObjectPlacementProvider>(),
         App::CenterOfMassProvider* centerOfMassProvider
-        = Base::provideService<App::CenterOfMassProvider>(),
-        App::SubObjectSnapProvider* subObjectSnapProvider
-        = Base::provideService<App::SubObjectSnapProvider>()
+        = Base::provideService<App::CenterOfMassProvider>()
     );
     ~TaskTransform() override;
 
@@ -150,7 +148,6 @@ private:
 
     const App::SubObjectPlacementProvider* subObjectPlacementProvider;
     const App::CenterOfMassProvider* centerOfMassProvider;
-    const App::SubObjectSnapProvider* subObjectSnapProvider;
 
     CoinPtr<SoTransformDragger> dragger;
 
