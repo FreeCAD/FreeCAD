@@ -405,12 +405,16 @@ def createJointRigidGroupJoint(objs):
     if not UtilsAssembly.activeAssembly():
         return None
 
-    if len(objs) == 0:
+    if len(objs) < 2:
+        App.Console.PrintWarning(
+            QT_TRANSLATE_NOOP("Assembly_CreateJointRigidGroup", "Select at least 2 components to create a rigid group")
+        )
         return None
 
     assembly = UtilsAssembly.activeAssembly()
     joint_group = UtilsAssembly.getJointGroup(assembly)
     rg = joint_group.newObject("App::FeaturePython", "RigidGroupJoint")
+
     JointObject.RigidGroupJoint(rg, objs)
     JointObject.ViewProviderRigidGroupJoint(rg.ViewObject)
 

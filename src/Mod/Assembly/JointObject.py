@@ -1333,7 +1333,7 @@ class RigidGroupJoint:
 
         members = self._validMembers(fp)
         if len(members) < 2:
-            App.Console.PrintWarning("Assembly: Rigid group needs at least 2 valid components.\n")
+            App.Console.PrintError("Assembly: Rigid group needs at least 2 valid components.\n")
             return
 
         anchor = members[0]
