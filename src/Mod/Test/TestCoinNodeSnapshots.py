@@ -1017,6 +1017,35 @@ def _mean_rgb(path: Path, x: int, y: int, radius: int = 2) -> tuple[float, float
     return (r_total / count, g_total / count, b_total / count)
 
 
+def _bbox_relative_point(
+    bbox: tuple[int, int, int, int], x_ratio: float, y_ratio: float
+) -> tuple[int, int]:
+    min_x, min_y, max_x, max_y = bbox
+    width = max(1, max_x - min_x)
+    height = max(1, max_y - min_y)
+    x = min_x + int(width * x_ratio)
+    y = min_y + int(height * y_ratio)
+    return (x, y)
+
+
+def _make_top_view_scene(coin, node, *, center: tuple[float, float, float], camera_height: float):
+    root = coin.SoSeparator()
+
+    cam = coin.SoOrthographicCamera()
+    cam.position.setValue(center[0], center[1], center[2] + 30.0)
+    cam.nearDistance.setValue(1.0)
+    cam.farDistance.setValue(100.0)
+    cam.height.setValue(camera_height)
+    root.addChild(cam)
+
+    light_model = coin.SoLightModel()
+    light_model.model.setValue(coin.SoLightModel.BASE_COLOR)
+    root.addChild(light_model)
+
+    root.addChild(node)
+    return root
+
+
 def _compare_images(
     expected_path: Path,
     actual_path: Path,
@@ -1472,6 +1501,90 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                 120.0,
                 f"{label} should stay visibly red (got {rgb}, image={actual_path})",
             )
+
+    def test_so_brep_face_set_partial_render_transparency_regression(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+        importlib.import_module("Part")
+        importlib.import_module("PartGui")
+
+        width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
+        height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
+        out_dir = Path(
+            os.environ.get(
+                "FC_VISUAL_OUT_DIR",
+                os.path.join(tempfile.gettempdir(), "FreeCADTesting", "CoinNodeSnapshots"),
+            )
+        )
+        actual_path = out_dir / "actual" / "SoBrepFaceSetPartialRenderTransparencyRegression.png"
+
+        doc = FreeCAD.newDocument("SoBrepFaceSetPartialRenderTransparencyRegression")
+        try:
+            box = doc.addObject("Part::Box", "Box")
+            doc.recompute()
+            FreeCADGui.ActiveDocument = FreeCADGui.getDocument(doc.Name)
+
+            box.ViewObject.DiffuseColor = [
+                (0.90, 0.18, 0.18, 1.0),
+                (0.18, 0.78, 0.22, 1.0),
+                (0.18, 0.38, 0.92, 1.0),
+                (0.94, 0.82, 0.18, 1.0),
+                (0.82, 0.28, 0.86, 1.0),
+                (0.92, 0.18, 0.18, 1.0),
+            ]
+            box.ViewObject.Transparency = 35
+            box.ViewObject.partialRender(["Face6"], False)
+            FreeCADGui.updateGui()
+
+            root = _make_top_view_scene(
+                coin,
+                box.ViewObject.RootNode,
+                center=(5.0, 5.0, 5.0),
+                camera_height=14.0,
+            )
+            _render_png(FreeCADGui, coin, root, actual_path, width, height, frame_camera=False)
+
+            self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
+            self.assertGreater(
+                _non_background_pixel_count(actual_path),
+                1000,
+                f"partial transparent face render seems empty: {actual_path}",
+            )
+
+            bbox = _pixel_bbox(actual_path, lambda r, g, b, _a: min(r, g, b) < 250)
+            self.assertIsNotNone(
+                bbox, f"partial transparent face render produced no visible pixels: {actual_path}"
+            )
+
+            top_left_rgb = _mean_rgb(actual_path, *_bbox_relative_point(bbox, 0.35, 0.35), radius=8)
+            bottom_right_rgb = _mean_rgb(
+                actual_path, *_bbox_relative_point(bbox, 0.65, 0.65), radius=8
+            )
+
+            for label, rgb in (
+                ("top-left triangle", top_left_rgb),
+                ("bottom-right triangle", bottom_right_rgb),
+            ):
+                r, g, b = rgb
+                self.assertGreater(
+                    r,
+                    g + 30.0,
+                    f"{label} should keep the partially rendered top face's red color (got {rgb}, image={actual_path})",
+                )
+                self.assertGreater(
+                    r,
+                    b + 30.0,
+                    f"{label} should keep the partially rendered top face's red color (got {rgb}, image={actual_path})",
+                )
+                self.assertGreater(
+                    r,
+                    150.0,
+                    f"{label} should stay visibly red even with transparency (got {rgb}, image={actual_path})",
+                )
+        finally:
+            if getattr(FreeCADGui, "Selection", None) is not None:
+                FreeCADGui.Selection.clearSelection()
+            if FreeCAD.getDocument(doc.Name):
+                FreeCAD.closeDocument(doc.Name)
 
     def test_coin_node_snapshots(self):
         """Render each configured node and compare against baseline images."""

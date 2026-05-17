@@ -530,10 +530,6 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
     if (singleColor > 0 && !partialRender) {
         SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
         SoOverrideElement::setMaterialBindingOverride(state, this, true);
-        if (hasBaseTransparency) {
-            SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
-            SoLazyElement::setTransparencyType(state, SoGLRenderAction::BLEND);
-        }
         packedColors.push_back(diffuseColor);
         SoLazyElement::setPacked(state, this, 1, packedColors.data(), hasBaseTransparency);
         SoTextureEnabledElement::set(state, this, false);
@@ -663,10 +659,6 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
     const bool hasTransparency = hasBaseTransparency || usesTransparencyMask;
 
     SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::PER_FACE_INDEXED);
-    if (hasTransparency) {
-        SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
-        SoLazyElement::setTransparencyType(state, SoGLRenderAction::BLEND);
-    }
     SoLazyElement::setPacked(state, this, packedColors.size(), packedColors.data(), hasTransparency);
     SoTextureEnabledElement::set(state, this, false);
     return true;
