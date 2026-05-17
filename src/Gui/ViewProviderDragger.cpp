@@ -109,6 +109,22 @@ void ViewProviderDragger::setGizmoContainer(Gui::GizmoContainer* gizmoContainer)
     this->gizmoContainer = gizmoContainer;
 }
 
+void ViewProviderDragger::setCoTransformViewProviders(std::vector<ViewProviderDragger*> vps)
+{
+    coTransformVPs = std::move(vps);
+}
+
+const std::vector<ViewProviderDragger*>& ViewProviderDragger::getCoTransformViewProviders() const
+{
+    return coTransformVPs;
+}
+
+void ViewProviderDragger::applyVisualPlacement(const Base::Placement& placement)
+{
+    pcTransform->translation.setValue(Base::convertTo<SbVec3f>(placement.getPosition()));
+    pcTransform->rotation.setValue(Base::convertTo<SbRotation>(placement.getRotation()));
+}
+
 void ViewProviderDragger::onChanged(const App::Property* property)
 {
     if (property == &TransformOrigin) {
@@ -227,6 +243,14 @@ void ViewProviderDragger::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
 
+    for (auto* coVP : coTransformVPs) {
+        if (auto* prop = coVP->getObject()->getPlacementProperty()) {
+            coVP->applyVisualPlacement(prop->getValue());
+        }
+    }
+    coTransformVPs.clear();
+    coTransformInitialPlacements.clear();
+
     transformDragger.reset();
 
     Gui::Control().closeDialog(getDocument()->getDocument());
@@ -267,7 +291,14 @@ void ViewProviderDragger::dragStartCallback(void* data, [[maybe_unused]] SoDragg
     auto vp = static_cast<ViewProviderDragger*>(data);
 
     vp->draggerPlacement = vp->getDraggerPlacement();
+    vp->dragStartDraggerPlacement = vp->draggerPlacement;
     vp->transformDragger->clearIncrementCounts();
+
+    vp->coTransformInitialPlacements.clear();
+    vp->coTransformInitialPlacements.reserve(vp->coTransformVPs.size());
+    for (auto* coVP : vp->coTransformVPs) {
+        vp->coTransformInitialPlacements.push_back(coVP->getObjectPlacement());
+    }
 }
 
 void ViewProviderDragger::dragFinishCallback(void* data, [[maybe_unused]] SoDragger* d)
@@ -290,6 +321,14 @@ void ViewProviderDragger::dragMotionCallback(void* data, [[maybe_unused]] SoDrag
 
 void ViewProviderDragger::updatePlacementFromDragger(DraggerComponents components)
 {
+    // Capture lazily for spin-box edits that skip dragStartCallback.
+    if (!coTransformVPs.empty() && coTransformInitialPlacements.empty()) {
+        coTransformInitialPlacements.reserve(coTransformVPs.size());
+        for (auto* coVP : coTransformVPs) {
+            coTransformInitialPlacements.push_back(coVP->getObjectPlacement());
+        }
+    }
+
     const auto placement = getObject()->getPlacementProperty();
 
     if (!placement) {
@@ -351,6 +390,21 @@ void ViewProviderDragger::updatePlacementFromDragger(DraggerComponents component
     }
 
     placement->setValue((finalDraggerPlacement * getTransformOrigin().inverse()));
+
+    if (!coTransformVPs.empty()) {
+        const Base::Placement newPrimaryPlacement = finalDraggerPlacement
+            * getTransformOrigin().inverse();
+        const Base::Placement delta = newPrimaryPlacement * oldObjectPlacement.inverse();
+        for (std::size_t i = 0; i < coTransformVPs.size(); ++i) {
+            if (auto* coProp = coTransformVPs[i]->getObject()->getPlacementProperty()) {
+                if (!coProp->isReadOnly()) {
+                    coProp->setValue(delta * coTransformInitialPlacements[i]);
+                }
+            }
+        }
+        coTransformInitialPlacements.clear();
+    }
+
     updateDraggerPosition();
 }
 
@@ -421,6 +475,13 @@ void ViewProviderDragger::updateTransformFromDragger()
 
     pcTransform->translation.setValue(Base::convertTo<SbVec3f>(placement.getPosition()));
     pcTransform->rotation.setValue(Base::convertTo<SbRotation>(placement.getRotation()));
+
+    if (!coTransformVPs.empty() && !coTransformInitialPlacements.empty()) {
+        const Base::Placement delta = getDraggerPlacement() * dragStartDraggerPlacement.inverse();
+        for (std::size_t i = 0; i < coTransformVPs.size(); ++i) {
+            coTransformVPs[i]->applyVisualPlacement(delta * coTransformInitialPlacements[i]);
+        }
+    }
 }
 
 Base::Placement ViewProviderDragger::getObjectPlacement() const

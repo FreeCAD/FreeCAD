@@ -53,6 +53,7 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "Selection.h"
+#include "ViewProviderDragger.h"
 #include "Dialogs/DlgObjectSelection.h"
 #include "Dialogs/DlgProjectInformationImp.h"
 #include "Dialogs/DlgProjectUtility.h"
@@ -1909,36 +1910,78 @@ StdCmdTransformManip::StdCmdTransformManip()
     sPixmap = "Std_TransformManip";
 }
 
+namespace
+{
+std::vector<App::DocumentObject*> transformableSelection()
+{
+    // Use NoResolve so App::Link objects are returned directly with their own Placement.
+    auto sel = Gui::Selection().getObjectsOfType(
+        App::DocumentObject::getClassTypeId(),
+        nullptr,
+        ResolveMode::NoResolve
+    );
+    std::erase_if(sel, [](App::DocumentObject* obj) {
+        const auto* prop = obj->getPlacementProperty();
+        return !prop || prop->isReadOnly() || obj->isFreezed();
+    });
+    return sel;
+}
+}  // namespace
+
 void StdCmdTransformManip::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     if (getActiveGuiDocument()->getInEdit()) {
         getActiveGuiDocument()->resetEdit();
     }
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
+
+    // Resolve links for the primary object so forwardToLink() fires correctly in setEdit().
+    const auto resolvedSel = Gui::Selection().getObjectsOfType(
         App::GeoFeature::getClassTypeId(),
         nullptr,
         ResolveMode::FollowLink
     );
-    Gui::ViewProvider* vp = Application::Instance->getViewProvider(sel.front());
+
+    const auto rawSel = transformableSelection();
+    if (rawSel.empty()) {
+        return;
+    }
+
+    App::DocumentObject* primaryObj = resolvedSel.empty() ? rawSel.front() : resolvedSel.front();
+
+    Gui::ViewProvider* primaryVP = Application::Instance->getViewProvider(primaryObj);
+
     // FIXME: Need a way to force 'Transform' edit mode
     // #0000477: Proper interface for edit modes of view provider
-    if (vp) {
-        getActiveGuiDocument()->setEdit(vp, Gui::ViewProvider::Transform);
+    if (!primaryVP) {
+        return;
     }
+
+    // Use dynamic_cast instead of freecad_cast: ViewProviderLink is registered in the
+    // FreeCAD type system under ViewProviderDocumentObject, not ViewProviderDragger.
+    std::vector<ViewProviderDragger*> coVPs;
+    coVPs.reserve(rawSel.size() > 1 ? rawSel.size() - 1 : 0);
+    for (std::size_t i = 1; i < rawSel.size(); ++i) {
+        if (auto* coVP = dynamic_cast<ViewProviderDragger*>(
+                Application::Instance->getViewProvider(rawSel[i])
+            )) {
+            coVPs.push_back(coVP);
+        }
+    }
+
+    // Must be set before setEdit() so TaskTransform sees coTransformVPs on construction.
+    if (auto* draggerVP = dynamic_cast<ViewProviderDragger*>(primaryVP)) {
+        draggerVP->setCoTransformViewProviders(std::move(coVPs));
+    }
+
+    getActiveGuiDocument()->setEdit(primaryVP, Gui::ViewProvider::Transform);
 }
 
 bool StdCmdTransformManip::isActive()
 {
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
-    );
-    return (
-        sel.size() == 1 && !sel.front()->isFreezed() && sel.front()->getPlacementProperty()
-        && !sel.front()->getPlacementProperty()->isReadOnly()
-    );
+    // NoResolve catches both plain GeoFeatures and App::Link objects
+    // (App::Link is not a GeoFeature subclass but has its own Placement).
+    return !transformableSelection().empty();
 }
 
 //===========================================================================

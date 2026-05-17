@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include <cassert>
+#include <cmath>
 #include <limits>
 #include <QApplication>
 
@@ -634,13 +635,79 @@ void TaskTransform::updateTransformOrigin()
 {
     auto getTransformOrigin = [this](const PlacementMode& mode) -> Base::Placement {
         switch (mode) {
-            case PlacementMode::ObjectOrigin:
-                return {};
-            case PlacementMode::Centroid:
-                if (const auto com = centerOfMassProvider->ofDocumentObject(vp->getObject())) {
-                    return {*com, {}};
+            case PlacementMode::ObjectOrigin: {
+                const auto& coVPs = vp->getCoTransformViewProviders();
+                if (coVPs.empty()) {
+                    return {};
                 }
-                return {};
+                Base::Vector3d sumPos = vp->getObjectPlacement().getPosition();
+                for (const auto* coVP : coVPs) {
+                    sumPos += coVP->getObjectPlacement().getPosition();
+                }
+                const double count = static_cast<double>(1 + coVPs.size());
+                const Base::Vector3d avgPos = sumPos / count;
+
+                // Quaternion averaging with sign-flip for hemisphere consistency.
+                double qx {}, qy {}, qz {}, qw {};
+                vp->getObjectPlacement().getRotation().getValue(qx, qy, qz, qw);
+                double sx = qx, sy = qy, sz = qz, sw = qw;
+                for (const auto* coVP : coVPs) {
+                    double cx {}, cy {}, cz {}, cw {};
+                    coVP->getObjectPlacement().getRotation().getValue(cx, cy, cz, cw);
+                    if (qx * cx + qy * cy + qz * cz + qw * cw < 0.0) {
+                        cx = -cx;
+                        cy = -cy;
+                        cz = -cz;
+                        cw = -cw;
+                    }
+                    sx += cx;
+                    sy += cy;
+                    sz += cz;
+                    sw += cw;
+                }
+                const double len = std::sqrt(sx * sx + sy * sy + sz * sz + sw * sw);
+                const Base::Rotation avgRot(sx / len, sy / len, sz / len, sw / len);
+
+                // Result is in primary object's local frame.
+                return vp->getObjectPlacement().inverse() * Base::Placement(avgPos, avgRot);
+            }
+            case PlacementMode::Centroid: {
+                const auto& coVPs = vp->getCoTransformViewProviders();
+                if (coVPs.empty()) {
+                    if (const auto com = centerOfMassProvider->ofDocumentObject(vp->getObject())) {
+                        return {*com, {}};
+                    }
+                    return {};
+                }
+                // Average world-space COMs, then convert to primary's local frame.
+                auto worldCOM = [&](ViewProviderDragger* anyVP) -> std::optional<Base::Vector3d> {
+                    if (auto com = centerOfMassProvider->ofDocumentObject(anyVP->getObject())) {
+                        Base::Vector3d dst;
+                        anyVP->getObjectPlacement().multVec(*com, dst);
+                        return dst;
+                    }
+                    return {};
+                };
+                Base::Vector3d sumWorldCOM;
+                int validCount = 0;
+                if (auto wcom = worldCOM(vp)) {
+                    sumWorldCOM += *wcom;
+                    ++validCount;
+                }
+                for (const auto* coVP : coVPs) {
+                    if (auto wcom = worldCOM(const_cast<ViewProviderDragger*>(coVP))) {
+                        sumWorldCOM += *wcom;
+                        ++validCount;
+                    }
+                }
+                if (validCount == 0) {
+                    return {};
+                }
+                const Base::Vector3d avgWorldCOM = sumWorldCOM / static_cast<double>(validCount);
+                Base::Vector3d localAvgCOM;
+                vp->getObjectPlacement().inverse().multVec(avgWorldCOM, localAvgCOM);
+                return {localAvgCOM, {}};
+            }
             case PlacementMode::Custom:
                 return customTransformOrigin.value_or(Base::Placement {});
             default:
@@ -811,8 +878,9 @@ void TaskTransformDialog::openCommand()
 
 void TaskTransformDialog::updateDraggerPlacement()
 {
-    const auto placement = vp->getObjectPlacement();
-    vp->setDraggerPlacement(placement);
+    // updateDraggerPosition places the dragger at objectPlacement * transformOrigin,
+    // which is correct for both single and multi-object cases after undo/redo.
+    vp->updateDraggerPosition();
 }
 
 void TaskTransformDialog::onUndo()

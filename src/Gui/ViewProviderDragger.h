@@ -27,6 +27,7 @@
 #include <Base/Placement.h>
 #include <App/PropertyGeo.h>
 #include <Base/Bitmask.h>
+#include <vector>
 
 class SoDragger;
 class SoTransform;
@@ -116,6 +117,12 @@ public:
     /// Sets placement of dragger relative to objects origin
     void setDraggerPlacement(const Base::Placement& placement);
 
+    void setCoTransformViewProviders(std::vector<ViewProviderDragger*> vps);
+    const std::vector<ViewProviderDragger*>& getCoTransformViewProviders() const;
+    /// Updates pcTransform for visual preview without touching the Placement property.
+    void applyVisualPlacement(const Base::Placement& placement);
+    void updateDraggerPosition();
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
@@ -143,9 +150,13 @@ private:
     static void dragFinishCallback(void* data, SoDragger* d);
     static void dragMotionCallback(void* data, SoDragger* d);
 
-    void updateDraggerPosition();
-
     Base::Placement draggerPlacement {};
+
+    std::vector<ViewProviderDragger*> coTransformVPs {};
+    /// Dragger placement captured at the start of the current drag gesture.
+    Base::Placement dragStartDraggerPlacement {};
+    /// World-space placements of all secondary VPs captured at drag gesture start.
+    std::vector<Base::Placement> coTransformInitialPlacements {};
 
     // Rotation by orthonormalizing depending on given axes components
     Base::Rotation orthonormalize(
