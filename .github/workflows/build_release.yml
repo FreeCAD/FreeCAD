@@ -7,8 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  actions: write
+  contents: read
 
 concurrency:
   group: build-release-${{ github.event_name }}
@@ -18,6 +17,9 @@ jobs:
   upload_src:
     runs-on: ubuntu-latest
     if: github.repository_owner == 'FreeCAD'
+    permissions:
+      contents: write
+      actions: write
     outputs:
       build_tag: ${{ steps.get_tag.outputs.build_tag }}
     steps:
@@ -106,6 +108,8 @@ jobs:
 
   build:
     needs: upload_src
+    permissions:
+      contents: write
     strategy:
       matrix:
         include:

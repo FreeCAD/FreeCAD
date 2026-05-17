@@ -48,11 +48,12 @@ on:
 
 permissions:
   contents: read
-  actions: write
 
 jobs:
   Gate:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     outputs:
       should-run: ${{ steps.check.outputs.should-run }}
     steps:

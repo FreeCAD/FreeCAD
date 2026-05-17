@@ -52,6 +52,9 @@ on:
       reportFile:
         value: ${{ jobs.Build.outputs.reportFile }}
 
+permissions:
+  contents: read
+
 jobs:
   build_with_pixi:
     runs-on: ${{ matrix.os }}

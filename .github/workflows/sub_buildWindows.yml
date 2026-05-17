@@ -58,6 +58,9 @@ on:
       reportFile:
         value: ${{ jobs.Build.outputs.reportFile }}
 
+permissions:
+  contents: read
+
 jobs:
   Build:
     runs-on: windows-latest
