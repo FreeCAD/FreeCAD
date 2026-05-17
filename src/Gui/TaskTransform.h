@@ -27,12 +27,15 @@
 #include "TaskView/TaskView.h"
 #include "ViewProviderDragger.h"
 
+#include <Inventor/nodes/SoSeparator.h>
+
 #include <Base/ServiceProvider.h>
 
 #include <App/Application.h>
 #include <App/Services.h>
 
 class SoDragger;
+class SoTransform;
 
 namespace Gui
 {
@@ -148,12 +151,18 @@ private:
 
     bool isDraggerAlignedToCoordinateSystem() const;
 
+    void showCoordinateSystemIndicator();
+    void hideCoordinateSystemIndicator();
+    void updateCoordinateSystemIndicator();
+
     ViewProviderDragger* vp;
 
     const App::SubObjectPlacementProvider* subObjectPlacementProvider;
     const App::CenterOfMassProvider* centerOfMassProvider;
 
     CoinPtr<SoTransformDragger> dragger;
+    CoinPtr<SoSeparator> csIndicatorRoot;
+    SoTransform* csIndicatorTransform {nullptr};
 
     Ui_TaskTransformDialog* ui;
 

@@ -47,7 +47,14 @@
 #include "TaskTransform.h"
 #include "ui_TaskTransform.h"
 
+#include "Inventor/SoFCPlacementIndicatorKit.h"
+#include "Inventor/So3DAnnotation.h"
+#include "View3DInventor.h"
+
 #include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoGroup.h>
 
 using namespace Gui;
 
@@ -111,6 +118,8 @@ TaskTransform::TaskTransform(
 
 TaskTransform::~TaskTransform()
 {
+    hideCoordinateSystemIndicator();
+
     Gui::Application::Instance->commandManager()
         .getCommandByName("Std_OrthographicCamera")
         ->setEnabled(true);
@@ -555,6 +564,7 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
         customCoordinateSystemPlacement = refPlacement;
         ui->customCSLineEdit->setText(label);
         setSelectionMode(SelectionMode::None);
+        showCoordinateSystemIndicator();
         updateInputLabels();
         updatePositionAndRotationUi();
         updateTransformOrigin();
@@ -809,6 +819,69 @@ bool TaskTransform::isDraggerAlignedToCoordinateSystem() const
     return positionMode != PositionMode::Local && ui->alignRotationCheckBox->isChecked();
 }
 
+void TaskTransform::showCoordinateSystemIndicator()
+{
+    auto* view3d = dynamic_cast<View3DInventor*>(vp->getDocument()->getEditingViewOfViewProvider(vp));
+    if (!view3d) {
+        return;
+    }
+
+    auto* editingRoot = dynamic_cast<SoGroup*>(view3d->getViewer()->getEditingRoot());
+    if (!editingRoot) {
+        return;
+    }
+
+    hideCoordinateSystemIndicator();
+
+    auto* transform = new SoTransform();
+    csIndicatorTransform = transform;
+
+    auto* indicator = new SoFCPlacementIndicatorKit();
+    if (positionMode == PositionMode::Custom) {
+        indicator->axisLabels.set1Value(0, "X\xe2\x80\xb2");
+        indicator->axisLabels.set1Value(1, "Y\xe2\x80\xb2");
+        indicator->axisLabels.set1Value(2, "Z\xe2\x80\xb2");
+    }
+
+    auto* annotation = new So3DAnnotation();
+    annotation->addChild(transform);
+    annotation->addChild(indicator);
+
+    auto* root = new SoSeparator();
+    root->addChild(annotation);
+    csIndicatorRoot = root;
+
+    editingRoot->addChild(csIndicatorRoot);
+
+    updateCoordinateSystemIndicator();
+}
+
+void TaskTransform::hideCoordinateSystemIndicator()
+{
+    if (!csIndicatorRoot) {
+        return;
+    }
+
+    auto* view3d = dynamic_cast<View3DInventor*>(vp->getDocument()->getEditingViewOfViewProvider(vp));
+    if (view3d) {
+        auto* editingRoot = dynamic_cast<SoGroup*>(view3d->getViewer()->getEditingRoot());
+        if (editingRoot) {
+            editingRoot->removeChild(csIndicatorRoot);
+        }
+    }
+
+    csIndicatorRoot = nullptr;
+    csIndicatorTransform = nullptr;
+}
+
+void TaskTransform::updateCoordinateSystemIndicator()
+{
+    if (!csIndicatorTransform) {
+        return;
+    }
+    ViewProviderDragger::updateTransform(currentCoordinateSystem().origin, csIndicatorTransform);
+}
+
 void TaskTransform::onTransformOriginReset()
 {
     vp->resetTransformOrigin();
@@ -824,6 +897,16 @@ void TaskTransform::onCoordinateSystemChange([[maybe_unused]] int mode)
 
     ui->alignRotationCheckBox->setVisible(positionMode != PositionMode::Local);
     ui->customCSPickerWidget->setVisible(positionMode == PositionMode::Custom);
+
+    if (positionMode == PositionMode::Local) {
+        hideCoordinateSystemIndicator();
+    }
+    else if (
+        positionMode == PositionMode::Global
+        || (positionMode == PositionMode::Custom && customCoordinateSystemPlacement.has_value())
+    ) {
+        showCoordinateSystemIndicator();
+    }
 
     updateInputLabels();
     updatePositionAndRotationUi();
