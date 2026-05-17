@@ -67,6 +67,7 @@ public:
 
 protected:
 /*    virtual void onChanged(const App::Property* prop) override;*/
+    void validateScale() override;
     Base::BoundBox3d bbox;
     std::string getSVGHead();
     std::string getSVGTail();

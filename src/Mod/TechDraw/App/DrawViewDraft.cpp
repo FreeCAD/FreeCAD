@@ -73,6 +73,16 @@ short DrawViewDraft::mustExecute() const
     return DrawViewSymbol::mustExecute();
 }
 
+void DrawViewDraft::validateScale()
+{
+    if (ScaleType.isValue("Page")) {
+        // Keep restored Page scale selections instead of demoting stale saved Scale values.
+        checkScale();
+        return;
+    }
+
+    TechDraw::DrawView::validateScale();
+}
 
 
 App::DocumentObjectExecReturn *DrawViewDraft::execute()
