@@ -110,6 +110,11 @@ static bool isSelectionCheckBoxesEnabled()
     return TreeParams::getCheckBoxesSelection();
 }
 
+static bool isPlainSpaceKey(const QKeyEvent* event)
+{
+    return event->key() == Qt::Key_Space && event->modifiers() == Qt::NoModifier;
+}
+
 void TreeParams::onItemBackgroundChanged()
 {
     if (getItemBackground()) {
@@ -1893,6 +1898,14 @@ Qt::DropActions TreeWidget::supportedDropActions() const
 
 bool TreeWidget::event(QEvent* e)
 {
+    if (e->type() == QEvent::ShortcutOverride) {
+        auto keyEvent = static_cast<QKeyEvent*>(e);
+        if (isPlainSpaceKey(keyEvent) && Gui::Selection().size() != 0) {
+            e->accept();
+            return true;
+        }
+    }
+
     return QTreeWidget::event(e);
 }
 
@@ -1938,6 +1951,15 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
     if (event->matches(QKeySequence::Find)) {
         event->accept();
         onSearchObjects();
+        return;
+    }
+    else if (isPlainSpaceKey(event) && Gui::Selection().size() != 0) {
+        const bool restoreFocus = hasFocus();
+        Gui::Application::Instance->commandManager().runCommandByName("Std_ToggleVisibility");
+        if (restoreFocus) {
+            setFocus(Qt::OtherFocusReason);
+        }
+        event->accept();
         return;
     }
     else if (event->modifiers() == Qt::AltModifier) {
