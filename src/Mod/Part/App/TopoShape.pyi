@@ -473,7 +473,6 @@ class TopoShape(ComplexGeoData):
     ) -> TopoShape:
         """
         Apply a transformation on this shape in place and return self.
-        transformShape(Matrix, [boolean copy=False, checkScale=False]) -> shape
         --
         If copy is True the underlying geometry is duplicated and the transformation is baked into
         it. If copy is False the transformation is applied as a location change without modifying
@@ -490,9 +489,9 @@ class TopoShape(ComplexGeoData):
     ) -> TopoShape:
         """
         Return a new shape with the transformation applied; leave self unchanged.
-        transformed(Matrix, copy=False, checkScale=False, op=None) -> shape
         --
-        The copy and checkScale arguments have the same meaning as in transformShape().
+        The copy and checkScale arguments have the same meaning as in transformShape(). op is
+        unused.
         """
         ...
 
