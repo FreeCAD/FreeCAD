@@ -40,6 +40,8 @@ on:
     types: [opened, synchronize, reopened]
   merge_group: ~
 
+permissions:
+  contents: read
 
 concurrency:
   group: FC-CI-primary-${{ github.head_ref || github.run_id }}
