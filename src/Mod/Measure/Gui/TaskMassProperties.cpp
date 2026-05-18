@@ -1146,7 +1146,7 @@ void TaskMassProperties::tryUpdate()
         && referenceDatum->isDerivedFrom<App::Line>();
 
     const auto infoSnapshot = currentInfo;
-    QTimer::singleShot(0, this, [this, infoSnapshot, hasAxisSelection]() {
+    QTimer::singleShot(0, this, [infoSnapshot, hasAxisSelection]() {
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (!doc) {
             return;
