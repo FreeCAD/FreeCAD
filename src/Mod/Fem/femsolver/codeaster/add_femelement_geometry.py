@@ -34,146 +34,171 @@ import FreeCAD
 def add_femelement_geometry(commtxt, ele_name, ca_writer):
     """Function to add elements to Code Aster input file, currently only supports shell elements"""
     mat_objs = ca_writer.mat_objs
-    matname = mat_objs[0].Name  # Set default material name for cases where no layup is specified
+    # matname = mat_objs[0].Name  # Set default material name for cases where no layup is specified
     lams = []
     commtxt += "# Geometric properties of element\n"
     if ca_writer.member.geos_beamsection:
         FreeCAD.Console.PrintError("Beams not yet supported for Code Aster\n")
 
     elif ca_writer.member.geos_shelllaminate:
-        # only use the first shelllaminate object
-        shelllam_obj = ca_writer.member.geos_shelllaminate[0]["Object"]
-        thicknesses = shelllam_obj.Thicknesses
-        orientations = shelllam_obj.Orientations
-        assert len(thicknesses) == len(
-            orientations
-        ), f"{len(thicknesses)} ply thicknesses given, {len(orientations)} orientation angles given, these should match (i.e provide one thickness and one angle for every ply"
-        if len(shelllam_obj.Windall["elements"]) == 0:
-            FreeCAD.Console.PrintWarning("Overwriting materials list\n")
-            materials = []
-            matnames = (
-                []
-            )  # TODO work out better way of naming materials without needing to reference the object, i.e. use a version of the Card Name condensed to remove spaces
-            if len(mat_objs) == 1:
-                FreeCAD.Console.PrintMessage(
-                    "Single material, {}, applied to all plies\n".format(
-                        mat_objs[0].Material["CardName"]
-                    )
-                )
-                for i in range(len(thicknesses)):
-                    materials.append(mat_objs[0].Material)
-                    matnames.append(mat_objs[0].Name)
-            elif len(mat_objs) == len(shelllam_obj.Thicknesses):
-                FreeCAD.Console.PrintMessage("Multiple materials applied to each ply\n")
-                for mo in mat_objs:
-                    materials.append(mo.Material)
-                    matnames.append(mo.Name)
-            else:
-                FreeCAD.Console.PrintWarning(
-                    "Number of materials in analysis more than 1 but not equal to number of plies\n"
-                )
-                for i in range(len(thicknesses)):
-                    if i < len(mat_objs) - 1:
-                        materials.append(mat_objs[i].Material)
-                        matnames.append(mat_objs[i].Name)
-                    else:
-                        materials.append(mat_objs[-1].Material)
-                        matnames.append(mat_objs[-1].Name)
-            geoms = []
-            i = 0
-            for ref in shelllam_obj.References:
-                # TODO: work out how to create group of all elements and apply to that in case where len(shelllam_obj.References) == 0.
-                for geom in ref[1]:
-                    geoms.append(geom)
-                matname = "LAYUP" + str(i)
-                layup = {
-                    "group": ref[0].Name,
-                    "matnames": matnames,
-                    "thicknesses": thicknesses,
-                    "orientations": orientations,
-                }
-                i += 1
-                commtxt += add_layup(matname, layup)
-                lams = [matname]
-                ori_vec = shelllam_obj.Orientation
-                commtxt += add_laminate([layup], ele_name, ori_vec)
-                ca_writer.tools.group_elements[ref[0].Name] = geoms
-        else:
-            # TODO Need better way of managing material lists, at the moment the first one in the list is assumed as the default (so should be very thin, weak isotropic material) and 2nd entry in list is applied to all wound plies.
-            FreeCAD.Console.PrintMessage("Applying filament winding layup\n")
-            matnames = []
-            for mo in mat_objs:
-                matnames.append(mo.Name)
-
-            commtxt += "# WindAll object detected\n"
-            geoms = []
-            i = 0
-            for ref in shelllam_obj.References:
-                # TODO: work out how to create group of all elements and apply to that in case where len(shelllam_obj.References) == 0.
-                for geom in ref[1]:
-                    geoms.append(geom)
-                # Set default layup
-                baselayup = {
-                    "group": ref[0].Name,
-                    "matnames": [matnames[0]],
-                    "thicknesses": [thicknesses[0]],
-                    "orientations": [orientations[0]],
-                }
-                layups = [baselayup]
-                lams = [ref[0].Name]
-                ori_vec = shelllam_obj.Orientation
-                commtxt += add_layup(ref[0].Name, baselayup)
-                for e, t, o in zip(
-                    shelllam_obj.Windall["elements"],
-                    shelllam_obj.Windall["thicknesslists"],
-                    shelllam_obj.Windall["orientationlists"],
-                ):
-                    mn = [matnames[0]]
-                    for i in range(1, len(t)):
-                        mn.append(matnames[1])
-                    gname = "E" + str(e)
-                    lams.append(gname)
-                    # TODO: WORK OUT WHY IT'S NOT PUTTING IN THE EXTRA PLIES!
-                    layup = {"group": gname, "matnames": mn, "thicknesses": t, "orientations": o}
-                    layups.append(layup)
-                    commtxt += add_layup(layup["group"], layup)
-                commtxt += add_grps(layups)
-                commtxt += add_laminate(layups, ele_name, ori_vec)
-                ca_writer.tools.group_elements[ref[0].Name] = geoms
+        commtxt, lams = add_shell_laminate(commtxt, ele_name, mat_objs, ca_writer)
 
     elif ca_writer.member.geos_shellthickness:
-        # only use the first shellthickness object
-        shellth_obj = ca_writer.member.geos_shellthickness[0]["Object"]
-        thickness = shellth_obj.Thickness.getValueAs("mm").Value
+        commtxt, lams = add_shell2D(commtxt, mat_objs, ele_name, ca_writer)
+
+    return commtxt, lams
+
+
+def add_shell2D(commtxt, mat_objs, ele_name, ca_writer):
+    """Adds a 2D element geometry type shell"""
+    # only use the first shellthickness object
+    shellth_obj = ca_writer.member.geos_shellthickness[0]["Object"]
+    thickness = shellth_obj.Thickness.getValueAs("mm").Value
+    lams = [mat_objs[0].Name]
+    geoms = []
+    i = 0
+    for (
+        ref
+    ) in (
+        shellth_obj.References
+    ):  # TODO: work out how to create group of all elements and apply to that in case where len(shellth_obj.References) == 0.
+        for geom in ref[1]:
+            geoms.append(geom)
+
+        if "YoungsModulusX" in mat_objs[0].Material.keys():
+            matname = mat_objs[0].Name + "LAYUP" + str(i)
+            lams = [matname]
+            i += 1
+            commtxt += "# Orthotropic material detected, added to shell at default angle\n"
+            commtxt += f"{matname} = DEFI_COMPOSITE(COUCHE=(_F(EPAIS={thickness},\n"
+            commtxt += f"                               MATER={mat_objs[0].Name},\n"
+            commtxt += "                               ORIENTATION = 0)))\n\n"
+
+        commtxt += (
+            f"# Shell elements detected, thickness {thickness}mm on item {ref[0].Name,geom}\n"
+        )
+        commtxt += f"{ele_name} = AFFE_CARA_ELEM(COQUE=_F(EPAIS={thickness},\n"
+        commtxt += f"                                   GROUP_MA=({str(geoms)[1:-1]})),\n"
+        commtxt += "                          MODELE=model)\n\n"
+
+    FreeCAD.Console.PrintMessage(f"Shell of thickness {thickness}mm added.\n")
+    return commtxt, lams
+
+
+def add_shell_laminate(commtxt, ele_name, mat_objs, ca_writer):
+    """Adds a shell laminate type object"""
+    # only use the first shelllaminate object
+    shelllam_obj = ca_writer.member.geos_shelllaminate[0]["Object"]
+    thicknesses = shelllam_obj.Thicknesses
+    orientations = shelllam_obj.Orientations
+    assert len(thicknesses) == len(
+        orientations
+    ), f"{len(thicknesses)} ply thicknesses given, {len(orientations)} orientation angles given, these should match (i.e provide one thickness and one angle for every ply"
+    if len(shelllam_obj.Windall["elements"]) == 0:
+        commtxt, lams = apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs)
+    else:
+        commtxt, lams = apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs)
+
+    return commtxt, lams
+
+
+def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs):
+    """Applies a constant layup over the whole part"""
+    FreeCAD.Console.PrintMessage("Overwriting materials list\n")
+    materials = []
+    thicknesses = shelllam_obj.Thicknesses
+    orientations = shelllam_obj.Orientations
+    matnames = (
+        []
+    )  # TODO work out better way of naming materials without needing to reference the object, i.e. use a version of the Card Name condensed to remove spaces
+    if len(mat_objs) == 1:
+        FreeCAD.Console.PrintMessage(
+            "Single material, {}, applied to all plies\n".format(mat_objs[0].Material["CardName"])
+        )
+        for i in range(len(thicknesses)):
+            materials.append(mat_objs[0].Material)
+            matnames.append(mat_objs[0].Name)
+    elif len(mat_objs) == len(thicknesses):
+        FreeCAD.Console.PrintMessage("Multiple materials applied to each ply\n")
+        for mo in mat_objs:
+            materials.append(mo.Material)
+            matnames.append(mo.Name)
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Number of materials in analysis more than 1 but not equal to number of plies\n"
+        )
+        for i in range(len(thicknesses)):
+            if i < len(mat_objs) - 1:
+                materials.append(mat_objs[i].Material)
+                matnames.append(mat_objs[i].Name)
+            else:
+                materials.append(mat_objs[-1].Material)
+                matnames.append(mat_objs[-1].Name)
+    geoms = []
+    i = 0
+    for ref in shelllam_obj.References:
+        # TODO: work out how to create group of all elements and apply to that in case where len(shelllam_obj.References) == 0.
+        for geom in ref[1]:
+            geoms.append(geom)
+        matname = "LAYUP" + str(i)
+        layup = {
+            "group": str(geoms)[1:-1],
+            "matnames": matnames,
+            "thicknesses": thicknesses,
+            "orientations": orientations,
+        }
+        i += 1
+        commtxt += add_layup(matname, layup)
         lams = [matname]
-        geoms = []
-        i = 0
-        for (
-            ref
-        ) in (
-            shellth_obj.References
-        ):  # TODO: work out how to create group of all elements and apply to that in case where len(shellth_obj.References) == 0.
-            for geom in ref[1]:
-                geoms.append(geom)
+        ori_vec = shelllam_obj.Orientation
+        commtxt += add_laminate([layup], ele_name, ori_vec)
+    return commtxt, lams
 
-            if "YoungsModulusX" in mat_objs[0].Material.keys():
-                matname = mat_objs[0].Name + "LAYUP" + str(i)
-                i += 1
-                commtxt += "# Orthotropic material detected, added to shell at default angle\n"
-                commtxt += f"{matname} = DEFI_COMPOSITE(COUCHE=(_F(EPAIS={thickness},\n"
-                commtxt += f"                               MATER={mat_objs[0].Name},\n"
-                commtxt += "                               ORIENTATION = 0)))\n\n"
 
-            commtxt += (
-                f"# Shell elements detected, thickness {thickness}mm on item {ref[0].Name,geom}\n"
-            )
-            commtxt += f"{ele_name} = AFFE_CARA_ELEM(COQUE=_F(EPAIS={thickness},\n"
-            commtxt += f"                                   GROUP_MA=('{ref[0].Name}', )),\n"
-            commtxt += "                          MODELE=model)\n\n"
+def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs):
+    """Apply a layup which varies across elements"""
+    # TODO Need better way of managing material lists, at the moment the first one in the list is assumed as the default (so should be very thin, weak isotropic material) and 2nd entry in list is applied to all wound plies.
+    FreeCAD.Console.PrintMessage("Applying variable layup\n")
+    matnames = []
+    thicknesses = shelllam_obj.Thicknesses
+    orientations = shelllam_obj.Orientations
+    for mo in mat_objs:
+        matnames.append(mo.Name)
 
-            ca_writer.tools.group_elements[ref[0].Name] = geoms
-        FreeCAD.Console.PrintMessage(f"Shell of thickness {thickness}mm added.\n")
-
+    commtxt += "# WindAll object detected\n"
+    geoms = []
+    i = 0
+    for ref in shelllam_obj.References:
+        # TODO: work out how to create group of all elements and apply to that in case where len(shelllam_obj.References) == 0.
+        for geom in ref[1]:
+            geoms.append(geom)
+        # Set default layup
+        baselayup = {
+            "group": ref[0].Name,
+            "matnames": [matnames[0]],
+            "thicknesses": [thicknesses[0]],
+            "orientations": [orientations[0]],
+        }
+        layups = [baselayup]
+        lams = [ref[0].Name]
+        ori_vec = shelllam_obj.Orientation
+        commtxt += add_layup(ref[0].Name, baselayup)
+        for e, t, o in zip(
+            shelllam_obj.Windall["elements"],
+            shelllam_obj.Windall["thicknesslists"],
+            shelllam_obj.Windall["orientationlists"],
+        ):
+            mn = [matnames[0]]
+            for i in range(1, len(t)):
+                mn.append(matnames[1])
+            gname = "E" + str(e)
+            lams.append(gname)
+            # TODO: WORK OUT WHY IT'S NOT PUTTING IN THE EXTRA PLIES!
+            layup = {"group": gname, "matnames": mn, "thicknesses": t, "orientations": o}
+            layups.append(layup)
+            commtxt += add_layup(layup["group"], layup)
+        commtxt += add_grps(layups)
+        commtxt += add_laminate(layups, ele_name, ori_vec)
     return commtxt, lams
 
 
@@ -216,7 +241,7 @@ def add_laminate(layups, ele_name, ori_vec):
         thicktot = sum(thicknesses)
         commtxt += f"                                _F(COQUE_NCOU = {len(thicknesses)},\n"
         commtxt += f"                                   EPAIS={thicktot},\n"
-        commtxt += f"                                   GROUP_MA=('{group}', ),\n"
+        commtxt += f"                                   GROUP_MA=({group} ),\n"
         commtxt += f"                                   VECTEUR={ori_vec_str}),\n"
     commtxt += "                          ),\n"
     commtxt += "                          MODELE=model)\n\n"

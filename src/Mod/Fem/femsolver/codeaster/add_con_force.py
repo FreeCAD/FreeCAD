@@ -54,28 +54,21 @@ def add_con_force(commtxt, ca_writer):
             elif type(o) == Part.Face:
                 tot += o.Area
 
-        txt = "Force load: {} on: {} of: {} at: {} spread across: {} Vertices, length or area\n".format(
-            i, force_obj.Name, F, dirvec, tot
-        )
-        FreeCAD.Console.PrintMessage(txt)
-        commtxt += "#" + txt
+        txt = "Force load: {i} on: {force_obj.Name} of: {F} at: {dirvec} spread across: {tot} Vertices, length or area\n"
+        # FreeCAD.Console.PrintMessage(txt)
+        commtxt += "# " + txt
 
         F /= tot
         for ref in force_obj.References:
             for geom in ref[1]:
                 geoms.append(geom)
-            ca_writer.forces.append("force{}".format(len(ca_writer.forces)))
-            commtxt += "{} = AFFE_CHAR_MECA(FORCE_ARETE=_F(FX={},\n".format(
-                ca_writer.forces[0], F * dirvec.x
-            )
-            commtxt += "                                     FY={},\n".format(F * dirvec.y)
-            commtxt += "                                     FZ={},\n".format(F * dirvec.z)
-            commtxt += "                                     GROUP_MA=('{}', )),\n".format(
-                force_obj.Name
-            )
-            commtxt += "                      MODELE=model)\n\n"
+        ca_writer.forces.append("force{}".format(len(ca_writer.forces)))
+        commtxt += f"{ca_writer.forces[-1]} = AFFE_CHAR_MECA(FORCE_ARETE=_F(FX={F * dirvec.x},\n"
+        commtxt += f"                                     FY={F * dirvec.y},\n"
+        commtxt += f"                                     FZ={F * dirvec.z},\n"
+        commtxt += f"                                     GROUP_MA=({str(geoms)[1:-1]}, )),\n"
+        commtxt += "                      MODELE=model)\n\n"
 
-        # ca_writer.tools.group_elements[force_obj.Name] = geoms
     return commtxt
 
 
