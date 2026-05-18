@@ -1022,7 +1022,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("PolyLine parameters"));
+        return QString(QObject::tr("Polyline parameters"));
     }
 
     bool canGoToNextMode() override
