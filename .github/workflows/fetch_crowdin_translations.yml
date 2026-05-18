@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "0 0 * * 1"
 
+# Writes happen via the GH_TOKEN_FOR_CROWDIN_SYNC secret; GITHUB_TOKEN stays read-only.
+permissions:
+  contents: read
+
 jobs:
   update-crowdin:
     runs-on: ubuntu-latest

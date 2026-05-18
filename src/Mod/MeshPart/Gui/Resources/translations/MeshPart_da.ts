@@ -202,7 +202,7 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was selected</source>
-      <translation type="unfinished">No point was selected</translation>
+      <translation>Intet punkt blev valgt</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Start</translation>
     </message>
   </context>
   <context>
@@ -370,7 +370,7 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Estimat</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="206"/>
@@ -410,12 +410,12 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
       <source>Very fine</source>
-      <translation type="unfinished">Very fine</translation>
+      <translation>Meget fin</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="259"/>
       <source>User defined</source>
-      <translation type="unfinished">User defined</translation>
+      <translation>Brugerdefineret</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
@@ -480,7 +480,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation type="unfinished">Leave panel open</translation>
+      <translation>Lad panelet stå åbent</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
@@ -518,7 +518,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="204"/>
       <source>Select plane</source>
-      <translation type="unfinished">Select plane</translation>
+      <translation>Vælg plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
@@ -531,7 +531,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Select plane</source>
-      <translation type="unfinished">Select plane</translation>
+      <translation>Vælg plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="98"/>
@@ -546,22 +546,22 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <translation>Vælg den side der skal beholdes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Under</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Over</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="112"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Opdel</translation>
     </message>
   </context>
   <context>

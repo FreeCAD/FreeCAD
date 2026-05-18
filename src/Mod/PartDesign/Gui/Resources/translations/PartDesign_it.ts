@@ -1470,12 +1470,12 @@ Se zero, è uguale a Raggio2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1051"/>
       <source>%1 fine dragging</source>
-      <translation type="unfinished">%1 fine dragging</translation>
+      <translation>%1 trascinamento fine</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1054"/>
       <source>%1 coarse dragging</source>
-      <translation type="unfinished">%1 coarse dragging</translation>
+      <translation>%1 trascinamento grossolano</translation>
     </message>
   </context>
   <context>
@@ -5444,12 +5444,12 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
       <source>%1 fine dragging</source>
-      <translation type="unfinished">%1 fine dragging</translation>
+      <translation>%1 trascinamento fine</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="141"/>
       <source>%1 coarse dragging</source>
-      <translation type="unfinished">%1 coarse dragging</translation>
+      <translation>%1 trascinamento grossolano</translation>
     </message>
   </context>
   <context>

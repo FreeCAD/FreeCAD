@@ -7708,7 +7708,7 @@ I volumi delle forme che si sovrappongono verranno rimossi.</translation>
       <location filename="../../PatternParametersWidget.cpp" line="80"/>
       <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Angular Spacing</source>
-      <translation>Spaziatura tngolare</translation>
+      <translation>Spaziatura angolare</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="423"/>
@@ -7724,7 +7724,7 @@ I volumi delle forme che si sovrappongono verranno rimossi.</translation>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="940"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>Ripristina spaziatura</translation>
     </message>
   </context>
   <context>

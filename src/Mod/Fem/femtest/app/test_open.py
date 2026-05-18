@@ -213,6 +213,10 @@ class TestObjectOpen(unittest.TestCase):
 
         self.assertEqual(ElementGeometry2D, doc.ElementGeometry2D.Proxy.__class__)
 
+        from femobjects.element_geometry_laminate import ElementGeometryLaminate
+
+        self.assertEqual(ElementGeometryLaminate, doc.ElementGeometryLaminate.Proxy.__class__)
+
         from femobjects.element_rotation1D import ElementRotation1D
 
         self.assertEqual(ElementRotation1D, doc.ElementRotation1D.Proxy.__class__)

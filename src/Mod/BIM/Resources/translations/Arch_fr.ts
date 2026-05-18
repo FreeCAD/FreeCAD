@@ -1704,7 +1704,7 @@ automatiquement enregistrés maintenant.</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="36"/>
       <source>Pick Selected</source>
-      <translation>Choisir la sélection</translation>
+      <translation>Sélectionner</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
@@ -4527,7 +4527,7 @@ placée dans votre dossier macros.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="1704"/>
       <source>Pick Selected</source>
-      <translation>Choisir la sélection</translation>
+      <translation>Sélectionner</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1710"/>
@@ -5084,7 +5084,7 @@ placée dans votre dossier macros.</translation>
     <message>
       <location filename="../../ArchCoveringGui.py" line="527"/>
       <source>Hatch Pattern</source>
-      <translation>Motif hachuré</translation>
+      <translation>Motif de hachures</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="531"/>
@@ -5145,7 +5145,7 @@ placée dans votre dossier macros.</translation>
     <message>
       <location filename="../../ArchCoveringGui.py" line="640"/>
       <source>Visuals</source>
-      <translation>Illustrations</translation>
+      <translation>Paramètres graphiques</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="672"/>
@@ -5181,7 +5181,7 @@ placée dans votre dossier macros.</translation>
       <location filename="../../ArchCoveringGui.py" line="748"/>
       <location filename="../../ArchCoveringGui.py" line="771"/>
       <source>Pick</source>
-      <translation>Choisir</translation>
+      <translation>Sélectionner</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="752"/>
@@ -5191,7 +5191,7 @@ placée dans votre dossier macros.</translation>
     <message>
       <location filename="../../ArchCoveringGui.py" line="770"/>
       <source>Picking…</source>
-      <translation>Choisir…</translation>
+      <translation>Sélection en cours…</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="779"/>
@@ -5209,7 +5209,7 @@ placée dans votre dossier macros.</translation>
 - Tuiles pleines : tuiles 3D physiques avec des joints réels. Idéales pour les détails précis et le comptage.
 - Motif paramétrique : une grille de lignes sur une seule dalle. Affichage plus rapide que les tuiles réelles.
 - Monolithique : une seule surface lisse. Idéal pour la peinture, le plâtre ou les revêtements de sol sans joints.
-- Motif hachuré : symboles techniques de dessin (hachures) sur une seule dalle.</translation>
+- Motif de hachures : symboles techniques de dessin (hachures) sur une seule dalle.</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="796"/>
@@ -5224,7 +5224,7 @@ placée dans votre dossier macros.</translation>
     <message>
       <location filename="../../ArchCoveringGui.py" line="817"/>
       <source>Continue</source>
-      <translation>Continuer</translation>
+      <translation>Continu</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="824"/>
@@ -5255,13 +5255,13 @@ placée dans votre dossier macros.</translation>
       <location filename="../../ArchCoveringGui.py" line="878"/>
       <source>Enter interactive mode to visually place the grid origin and rotate the grid. Click to finish and set the origin. Optionally press R / Shift+R to rotate the tile preview by the PickRotationStep angle (configurable in the View properties).</source>
       <translation>Entrer en mode interactif pour positionner visuellement l'origine de la grille et faire pivoter celle-ci. Cliquer pour terminer et définir l'origine.
-Il est également possible d'appuyer sur R / Maj+R pour faire pivoter l'aperçu de la tuile selon l'angle PickRotationStep (configurable dans les
-propriétés de la vue).</translation>
+Il est aussi possible d'appuyer sur R / Maj+R pour faire pivoter l'aperçu de la tuile selon l'angle défini par la propriété ''Pick Rotation Step''
+configurable dans les propriétés vue.</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="879"/>
       <source>Match Working Plane</source>
-      <translation>Faire correspondre le plan de travail</translation>
+      <translation>Aligner le plan de travail</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="885"/>
@@ -5378,7 +5378,7 @@ propriétés de la vue).</translation>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1058"/>
       <source>The scale of the hatch pattern</source>
-      <translation>Facteur d"échelle du motif de hachure</translation>
+      <translation>Facteur d'échelle du motif de hachures</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1060"/>
@@ -5408,22 +5408,22 @@ propriétés de la vue).</translation>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1104"/>
       <source>Texture image</source>
-      <translation>Image de la texture</translation>
+      <translation>Image pour la texture</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1111"/>
       <source>Horizontal texture multiplier</source>
-      <translation>Multiplicateur de texture horizontale</translation>
+      <translation>Multiplicateur horizontal pour la texture</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1115"/>
       <source>Vertical texture multiplier</source>
-      <translation>Multiplicateur de texture verticale</translation>
+      <translation>Multiplicateur vertical pour la texture</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1118"/>
       <source>Texture scale</source>
-      <translation>Facteur d'échelle de la texture</translation>
+      <translation>Multiplicateur pour la texture</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1165"/>
@@ -9744,7 +9744,7 @@ Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé.<
 - Tuiles pleines : tuiles 3D physiques avec des joints réels. Idéales pour les détails précis et le comptage.
 - Motif paramétrique : une grille de lignes sur une seule dalle. Affichage plus rapide que les tuiles réelles.
 - Monolithique : une seule surface lisse. Idéal pour la peinture, le plâtre ou les revêtements de sol sans joints.
-- Motif hachuré : symboles techniques de dessin (hachures) sur une seule dalle.</translation>
+- Motif de hachures : symboles techniques de dessin (hachures) sur une seule dalle.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="136"/>
@@ -9804,7 +9804,7 @@ Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé.<
     <message>
       <location filename="../../ArchCovering.py" line="228"/>
       <source>The area enclosed by the outer boundary of the base face, ignoring any holes</source>
-      <translation>Aire délimitée par le contour extérieur de la face de base, sans tenir compte des trous</translation>
+      <translation>Surface délimitée par le contour extérieur de la face de base, sans tenir compte des trous</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="238"/>
@@ -9819,7 +9819,7 @@ Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé.<
     <message>
       <location filename="../../ArchCovering.py" line="254"/>
       <source>The area of discarded material (Gross - Net)</source>
-      <translation>Surface des matériaux mis au rebut (brute/net)</translation>
+      <translation>Surface des matériaux mis au rebut (surface brute - surface net)</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="261"/>
@@ -9864,7 +9864,7 @@ Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé.<
     <message>
       <location filename="../../ArchCovering.py" line="326"/>
       <source>The scale of the hatch pattern</source>
-      <translation>Facteur d"échelle du motif de hachure</translation>
+      <translation>Facteur d'échelle du motif de hachures</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="336"/>

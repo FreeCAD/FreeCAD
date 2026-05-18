@@ -615,6 +615,15 @@ class MeshSetsGetter:
             self.femmesh, self.femelement_faces_table, self.member.geos_shellthickness
         )
 
+    def get_element_geometry_laminate_elements(self):
+        # get element ids and write them into the objects
+        FreeCAD.Console.PrintMessage("Shell laminates\n")
+        if not self.femelement_faces_table:
+            self.femelement_faces_table = meshtools.get_femelement_faces_table(self.femmesh)
+        meshtools.get_femelement_sets(
+            self.femmesh, self.femelement_faces_table, self.member.geos_shelllaminate
+        )
+
     def get_element_geometry1D_elements(self):
         # get element ids and write them into the objects
         FreeCAD.Console.PrintMessage("Beam sections\n")
@@ -625,7 +634,7 @@ class MeshSetsGetter:
         )
 
     def get_element_rotation1D_elements(self):
-        # get for each geometry edge direction the element ids and rotation norma
+        # get for each geometry edge direction the element ids and rotation normals
         FreeCAD.Console.PrintMessage("Beam rotations\n")
         if self.theshape is None:
             FreeCAD.Console.PrintError(

@@ -372,6 +372,10 @@ def fill_femresult_mechanical(res_obj, result_set):
         disp = result_set["disp"]
         res_obj.DisplacementVectors = list(map((lambda x: x), disp.values()))
         res_obj.NodeNumbers = list(disp)
+        mag = []
+        for v in res_obj.DisplacementVectors:
+            mag.append(v.Length)
+        res_obj.DisplacementLengths = mag
 
         # fill res_obj.NodeStressXX etc if they exist in result_set
         # list values are just added

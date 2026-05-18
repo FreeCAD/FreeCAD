@@ -1116,7 +1116,7 @@ Predefinito a: %V = %A
       <location filename="../../SheetTableView.cpp" line="161"/>
       <source>Insert %n Columns Left</source>
       <translation>
-        <numerusform>Inserisci %n colonna a sinistra</numerusform>
+        <numerusform>Inserisci una colonna a sinistra</numerusform>
         <numerusform>Inserisci %n colonne a sinistra</numerusform>
       </translation>
     </message>
@@ -1124,7 +1124,7 @@ Predefinito a: %V = %A
       <location filename="../../SheetTableView.cpp" line="163"/>
       <source>Insert %n Columns Right</source>
       <translation>
-        <numerusform>Inserisci %n colonne a destra</numerusform>
+        <numerusform>Inserisci una colonna a destra</numerusform>
         <numerusform>Inserisci %n colonne a destra</numerusform>
       </translation>
     </message>

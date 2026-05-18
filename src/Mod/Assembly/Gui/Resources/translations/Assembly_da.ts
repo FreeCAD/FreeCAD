@@ -349,7 +349,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="495"/>
       <source>Enter your formula…</source>
-      <translation type="unfinished">Enter your formula…</translation>
+      <translation>Indtast din formel…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="548"/>
@@ -474,17 +474,17 @@ SLOPE definerer udglatnigen af overgangen mellem henholdsvis 0 og H1 og H2 til 0
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1045"/>
       <source>Animation</source>
-      <translation type="unfinished">Animation</translation>
+      <translation>Animation</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1046"/>
       <source>Not enough frames to create an animation.</source>
-      <translation type="unfinished">Not enough frames to create an animation.</translation>
+      <translation>Ikke nok billeder til at oprette en animation.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1053"/>
       <source>Save Animation</source>
-      <translation type="unfinished">Save Animation</translation>
+      <translation>Gem Animation</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1075"/>
@@ -499,12 +499,12 @@ SLOPE definerer udglatnigen af overgangen mellem henholdsvis 0 og H1 og H2 til 0
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1103"/>
       <source>Assembling animation…</source>
-      <translation type="unfinished">Assembling animation…</translation>
+      <translation>Samler animation…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1119"/>
       <source>An error occurred while saving the animation</source>
-      <translation type="unfinished">An error occurred while saving the animation</translation>
+      <translation>Der opstod en fejl under lagring af animationen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1137"/>
@@ -1222,7 +1222,7 @@ Filerne hedder "runPreDrag. smt" og "dragging.log" og er placeret i standardmapp
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
       <source>Save the animation as a GIF or video file.</source>
-      <translation type="unfinished">Save the animation as a GIF or video file.</translation>
+      <translation>Gem animationen som en GIF- eller videofil.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="197"/>
@@ -1639,7 +1639,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="268"/>
       <source>Select components with DoFs</source>
-      <translation type="unfinished">Select components with DoFs</translation>
+      <translation>Vælg komponenter med DoF'er</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>

@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1852"/>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Distance</source>
       <translation>Distantzia</translation>
     </message>
@@ -175,22 +175,22 @@
       <translation>Apurtutako lotura: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1671"/>
+      <location filename="../../../JointObject.py" line="1695"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Aukeratutako 2 elementuak 2 pieza ezberdinetakoak</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1854"/>
+      <location filename="../../../JointObject.py" line="1878"/>
       <source>Radius 1</source>
       <translation>Erradioa 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1856"/>
+      <location filename="../../../JointObject.py" line="1880"/>
       <source>Thread pitch</source>
       <translation>Hariaren urratsa</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1858"/>
+      <location filename="../../../JointObject.py" line="1882"/>
       <source>Pitch radius</source>
       <translation>Urrats-zirkulu erradioa</translation>
     </message>
@@ -1322,8 +1322,8 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
-      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

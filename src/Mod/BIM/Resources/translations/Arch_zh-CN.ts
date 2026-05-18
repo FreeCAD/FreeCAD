@@ -4733,7 +4733,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="2718"/>
       <source>Covering</source>
-      <translation type="unfinished">Covering</translation>
+      <translation>覆盖层</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="58"/>
@@ -5003,22 +5003,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="524"/>
       <source>Solid Tiles</source>
-      <translation type="unfinished">Solid Tiles</translation>
+      <translation>实体瓷砖</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="525"/>
       <source>Parametric Pattern</source>
-      <translation type="unfinished">Parametric Pattern</translation>
+      <translation>参数化图案</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="526"/>
       <source>Monolithic</source>
-      <translation type="unfinished">Monolithic</translation>
+      <translation>整体式</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="527"/>
       <source>Hatch Pattern</source>
-      <translation type="unfinished">Hatch Pattern</translation>
+      <translation>填充图案</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="531"/>
@@ -5043,22 +5043,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="537"/>
       <source>Stacked (None)</source>
-      <translation type="unfinished">Stacked (None)</translation>
+      <translation>堆叠 (无偏移)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="538"/>
       <source>Half Bond (1/2)</source>
-      <translation type="unfinished">Half Bond (1/2)</translation>
+      <translation>二分之一工字铺 (1/2)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="539"/>
       <source>Third Bond (1/3)</source>
-      <translation type="unfinished">Third Bond (1/3)</translation>
+      <translation>三分之一工字铺 (1/3)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="540"/>
       <source>Quarter Bond (1/4)</source>
-      <translation type="unfinished">Quarter Bond (1/4)</translation>
+      <translation>四分之一工字铺 (1/4)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="541"/>
@@ -5069,12 +5069,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="619"/>
       <source>Covering Definition</source>
-      <translation type="unfinished">Covering Definition</translation>
+      <translation>覆盖层定义</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="634"/>
       <source>Layout and Boundaries</source>
-      <translation type="unfinished">Layout and Boundaries</translation>
+      <translation>布局与边界</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="640"/>
@@ -5093,23 +5093,23 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchCoveringGui.py" line="675"/>
       <location filename="../../ArchCoveringGui.py" line="731"/>
       <source>The object or face this covering is applied to:</source>
-      <translation type="unfinished">The object or face this covering is applied to:</translation>
+      <translation>此覆盖层应用于的对象或面：</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="686"/>
       <location filename="../../ArchCoveringGui.py" line="746"/>
       <source>The object or face this covering is applied to</source>
-      <translation type="unfinished">The object or face this covering is applied to</translation>
+      <translation>此覆盖层应用于的对象或面</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="718"/>
       <source>%1 (%2 faces)</source>
-      <translation type="unfinished">%1 (%2 faces)</translation>
+      <translation>%1 (%2 个面)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="725"/>
       <source>%1 objects selected</source>
-      <translation type="unfinished">%1 objects selected</translation>
+      <translation>已选择 %1 个对象</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="748"/>
@@ -5120,12 +5120,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="752"/>
       <source>Enable interactive face selection in the 3D view</source>
-      <translation type="unfinished">Enable interactive face selection in the 3D view</translation>
+      <translation>在 3D 视图中启用交互式面选择</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="770"/>
       <source>Picking…</source>
-      <translation type="unfinished">Picking…</translation>
+      <translation>正在拾取…</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="779"/>
@@ -5139,11 +5139,11 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
 - Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
 - Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
 - Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</source>
-      <translation type="unfinished">How the finish is created and displayed:
-- Solid Tiles: Physical 3D tiles with real gaps. Best for accurate detail and counting.
-- Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
-- Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
-- Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</translation>
+      <translation>装饰面创建和显示的方式：
+- 实体瓷砖：具有真实间隙的物理 3D 瓷砖。最适合精确细节和计数。
+- 参数化图案：单块平板上的线网格。显示速度比真实瓷砖快。
+- 整体式：单一的光滑表面。适用于油漆、抹灰或无缝地板。
+- 填充图案：单块平板上的工程制图符号（阴影线）。</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="796"/>
@@ -5153,7 +5153,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="801"/>
       <source>The thickness of the finish</source>
-      <translation type="unfinished">The thickness of the finish</translation>
+      <translation>装饰面的厚度</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="817"/>
@@ -5163,67 +5163,67 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="824"/>
       <source>If checked, the dialog stays open after creating the covering, allowing to pick another face</source>
-      <translation type="unfinished">If checked, the dialog stays open after creating the covering, allowing to pick another face</translation>
+      <translation>如果勾选，对话框在创建覆盖层后将保持打开状态，以便拾取另一个面</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="847"/>
       <source>Use standard corner or center alignment relative to the boundary</source>
-      <translation type="unfinished">Use standard corner or center alignment relative to the boundary</translation>
+      <translation>相对于边界使用标准的角对齐或中心对齐</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="855"/>
       <source>Select which part of the usable boundary to anchor the pattern origin to</source>
-      <translation type="unfinished">Select which part of the usable boundary to anchor the pattern origin to</translation>
+      <translation>选择将图案原点锚定到可用边界的哪个部分</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="867"/>
       <source>Use a manually picked 3D point or match the current Working Plane</source>
-      <translation type="unfinished">Use a manually picked 3D point or match the current Working Plane</translation>
+      <translation>使用手动拾取的 3D 点或匹配当前工作平面</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="868"/>
       <source>Interactive</source>
-      <translation type="unfinished">Interactive</translation>
+      <translation>交互式</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="878"/>
       <source>Enter interactive mode to visually place the grid origin and rotate the grid. Click to finish and set the origin. Optionally press R / Shift+R to rotate the tile preview by the PickRotationStep angle (configurable in the View properties).</source>
-      <translation type="unfinished">Enter interactive mode to visually place the grid origin and rotate the grid. Click to finish and set the origin. Optionally press R / Shift+R to rotate the tile preview by the PickRotationStep angle (configurable in the View properties).</translation>
+      <translation>进入交互模式以视觉化放置网格原点并旋转网格。点击以完成并设置原点。可选按 R / Shift+R 键按 PickRotationStep 角度旋转瓷砖预览（可在视图属性中配置）。</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="879"/>
       <source>Match Working Plane</source>
-      <translation type="unfinished">Match Working Plane</translation>
+      <translation>匹配工作平面</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="885"/>
       <source>Use the position and orientation of the active Working Plane for the covering</source>
-      <translation type="unfinished">Use the position and orientation of the active Working Plane for the covering</translation>
+      <translation>使用当前工作平面的位置和方向作为覆盖层基准</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="895"/>
       <source>Shift the grid along U</source>
-      <translation type="unfinished">Shift the grid along U</translation>
+      <translation>沿 U 轴移动网格</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="900"/>
       <source>Shift the grid along V</source>
-      <translation type="unfinished">Shift the grid along V</translation>
+      <translation>沿 V 轴移动网格</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="904"/>
       <source>U offset</source>
-      <translation type="unfinished">U offset</translation>
+      <translation>U 偏移</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="905"/>
       <source>V offset</source>
-      <translation type="unfinished">V offset</translation>
+      <translation>V 偏移</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="912"/>
       <source>Manual rotation of the tile grid</source>
-      <translation type="unfinished">Manual rotation of the tile grid</translation>
+      <translation>手动旋转瓷砖网格</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="913"/>
@@ -5239,32 +5239,32 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="930"/>
       <source>Distance to offset the covering inwards from the boundary</source>
-      <translation type="unfinished">Distance to offset the covering inwards from the boundary</translation>
+      <translation>覆盖层从边界向内偏移的距离</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="932"/>
       <source>Border setback</source>
-      <translation type="unfinished">Border setback</translation>
+      <translation>边界缩进</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="995"/>
       <source>The length of the tiles</source>
-      <translation type="unfinished">The length of the tiles</translation>
+      <translation>瓷砖长度</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1001"/>
       <source>The width of the tiles</source>
-      <translation type="unfinished">The width of the tiles</translation>
+      <translation>瓷砖宽度</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1007"/>
       <source>The width of the joints between tiles</source>
-      <translation type="unfinished">The width of the joints between tiles</translation>
+      <translation>瓷砖之间的灰缝宽度</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1008"/>
       <source>Joint width</source>
-      <translation type="unfinished">Joint width</translation>
+      <translation>灰缝宽度</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1022"/>
@@ -5272,25 +5272,25 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
 - Stacked: all joints align vertically
 - Half/Third/Quarter Bond: shifts by a fraction of the tile length
 - Custom: manual offset value</source>
-      <translation type="unfinished">The horizontal shift applied to every second row:
-- Stacked: all joints align vertically
-- Half/Third/Quarter Bond: shifts by a fraction of the tile length
-- Custom: manual offset value</translation>
+      <translation>应用于每隔一行的水平偏移：
+- 堆叠：所有灰缝垂直对齐
+- 二分/三分/四分之一工字铺：按瓷砖长度的分数偏移
+- 自定义：手动设置偏移值</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1028"/>
       <source>Custom offset for running bond rows</source>
-      <translation type="unfinished">Custom offset for running bond rows</translation>
+      <translation>工字铺行的自定义偏移量</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1030"/>
       <source>Stagger</source>
-      <translation type="unfinished">Stagger</translation>
+      <translation>交错</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1041"/>
       <source>The PAT file to use for hatching</source>
-      <translation type="unfinished">The PAT file to use for hatching</translation>
+      <translation>用于填充的 PAT 文件</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1048"/>
@@ -5300,7 +5300,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="1052"/>
       <source>The name of the pattern to use</source>
-      <translation type="unfinished">The name of the pattern to use</translation>
+      <translation>要使用的图案名称</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1053"/>
@@ -5310,7 +5310,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="1058"/>
       <source>The scale of the hatch pattern</source>
-      <translation type="unfinished">The scale of the hatch pattern</translation>
+      <translation>填充图案的比例</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1060"/>
@@ -5320,87 +5320,87 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="1072"/>
       <source>Texture repeat interval along U</source>
-      <translation type="unfinished">Texture repeat interval along U</translation>
+      <translation>沿 U 轴的纹理重复间隔</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1075"/>
       <source>Texture repeat interval along V</source>
-      <translation type="unfinished">Texture repeat interval along V</translation>
+      <translation>沿 V 轴的纹理重复间隔</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1086"/>
       <source>Note: In Monolithic mode, dimensions control the repeat interval of the optional surface texture.</source>
-      <translation type="unfinished">Note: In Monolithic mode, dimensions control the repeat interval of the optional surface texture.</translation>
+      <translation>注意：在整体式模式下，尺寸控制可选表面纹理的重复间隔。</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1097"/>
       <source>An image file to map onto each tile or substrate</source>
-      <translation type="unfinished">An image file to map onto each tile or substrate</translation>
+      <translation>映射到每个瓷砖或基材上的图像文件</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1104"/>
       <source>Texture image</source>
-      <translation type="unfinished">Texture image</translation>
+      <translation>纹理图像</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1111"/>
       <source>Horizontal texture multiplier</source>
-      <translation type="unfinished">Horizontal texture multiplier</translation>
+      <translation>水平纹理倍增器</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1115"/>
       <source>Vertical texture multiplier</source>
-      <translation type="unfinished">Vertical texture multiplier</translation>
+      <translation>垂直纹理倍增器</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1118"/>
       <source>Texture scale</source>
-      <translation type="unfinished">Texture scale</translation>
+      <translation>纹理比例</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1165"/>
       <source>Select Texture</source>
-      <translation type="unfinished">Select Texture</translation>
+      <translation>选择纹理</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1174"/>
       <source>Select Pattern</source>
-      <translation type="unfinished">Select Pattern</translation>
+      <translation>选择图案</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1390"/>
       <source>Could not resolve base geometry.</source>
-      <translation type="unfinished">Could not resolve base geometry.</translation>
+      <translation>无法解析基础几何体。</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1588"/>
       <source>%1 pick tile origin</source>
-      <translation type="unfinished">%1 pick tile origin</translation>
+      <translation>%1 拾取瓷砖原点</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1592"/>
       <source>%1 rotate tile CW / Shift+%1 rotate tile CCW</source>
-      <translation type="unfinished">%1 rotate tile CW / Shift+%1 rotate tile CCW</translation>
+      <translation>%1 顺时针旋转瓷砖 / Shift+%1 逆时针旋转瓷砖</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1600"/>
       <source>%1 pick new base face or object</source>
-      <translation type="unfinished">%1 pick new base face or object</translation>
+      <translation>%1 拾取新的基础面或对象</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1604"/>
       <source>%1+%2 add face or object</source>
-      <translation type="unfinished">%1+%2 add face or object</translation>
+      <translation>%1+%2 添加面或对象</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1611"/>
       <source>%1 pick planar face or object</source>
-      <translation type="unfinished">%1 pick planar face or object</translation>
+      <translation>%1 拾取平面或对象</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1615"/>
       <source>%1+%2 add planar face or object</source>
-      <translation type="unfinished">%1+%2 add planar face or object</translation>
+      <translation>%1+%2 添加平面或对象</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="648"/>
@@ -6831,7 +6831,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1958"/>
       <source>No closed wires found.</source>
-      <translation type="unfinished">No closed wires found.</translation>
+      <translation>未找到闭合线框。</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1504"/>
@@ -6990,32 +6990,32 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCovering.py" line="507"/>
       <source>The specified tile size is too small to be modeled.</source>
-      <translation type="unfinished">The specified tile size is too small to be modeled.</translation>
+      <translation>指定的瓷砖尺寸太小，无法建模。</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="514"/>
       <source>The joint width is too small to model individual units.</source>
-      <translation type="unfinished">The joint width is too small to model individual units.</translation>
+      <translation>灰缝宽度太小，无法对单个单元进行建模。</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="522"/>
       <source>The number of tiles is too high for individual units to be modeled.</source>
-      <translation type="unfinished">The number of tiles is too high for individual units to be modeled.</translation>
+      <translation>瓷砖数量过多，无法对单个单元进行建模。</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="530"/>
       <source>The number of tiles is extremely high. Layout lines are hidden.</source>
-      <translation type="unfinished">The number of tiles is extremely high. Layout lines are hidden.</translation>
+      <translation>瓷砖数量极大。布局线已隐藏。</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="679"/>
       <source>BorderSetback is too large and collapses the face. Setback ignored.</source>
-      <translation type="unfinished">BorderSetback is too large and collapses the face. Setback ignored.</translation>
+      <translation>边界缩进量（BorderSetback）太大导致面塌陷。已忽略缩进。</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="719"/>
       <source>A hole is larger than the shrunken area. Skipping this hole.</source>
-      <translation type="unfinished">A hole is larger than the shrunken area. Skipping this hole.</translation>
+      <translation>孔洞大于收缩后的区域。跳过此孔洞。</translation>
     </message>
     <message>
       <location filename="../../ArchSql.py" line="2255"/>
@@ -9597,7 +9597,7 @@ The ladybug or pysolar Python module is required.</source>
     <message>
       <location filename="../../ArchCovering.py" line="104"/>
       <source>The object or face this covering is applied to</source>
-      <translation type="unfinished">The object or face this covering is applied to</translation>
+      <translation>此覆盖层应用于的对象或面</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="129"/>
@@ -9606,141 +9606,141 @@ The ladybug or pysolar Python module is required.</source>
 - Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
 - Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
 - Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</source>
-      <translation type="unfinished">How the finish is created and displayed:
-- Solid Tiles: Physical 3D tiles with real gaps. Best for accurate detail and counting.
-- Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
-- Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
-- Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</translation>
+      <translation>装饰面创建和显示的方式：
+- 实体瓷砖：具有真实间隙的物理 3D 瓷砖。最适合精确细节和计数。
+- 参数化图案：单块平板上的线网格。显示速度比真实瓷砖快。
+- 整体式：单一的光滑表面。适用于油漆、抹灰或无缝地板。
+- 填充图案：单块平板上的工程制图符号（阴影线）。</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="136"/>
       <source>The alignment of the tile grid</source>
-      <translation type="unfinished">The alignment of the tile grid</translation>
+      <translation>瓷砖网格的对齐方式</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="143"/>
       <source>Rotation of the finish</source>
-      <translation type="unfinished">Rotation of the finish</translation>
+      <translation>装饰面的旋转角度</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="150"/>
       <source>The length of the tiles</source>
-      <translation type="unfinished">The length of the tiles</translation>
+      <translation>瓷砖长度</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="157"/>
       <source>The width of the tiles</source>
-      <translation type="unfinished">The width of the tiles</translation>
+      <translation>瓷砖宽度</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="164"/>
       <source>The thickness of the tiles</source>
-      <translation type="unfinished">The thickness of the tiles</translation>
+      <translation>瓷砖厚度</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="171"/>
       <source>The width of the joints</source>
-      <translation type="unfinished">The width of the joints</translation>
+      <translation>灰缝宽度</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="178"/>
       <source>The running bond logic</source>
-      <translation type="unfinished">The running bond logic</translation>
+      <translation>工字铺逻辑</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="191"/>
       <source>Custom offset for running bond rows</source>
-      <translation type="unfinished">Custom offset for running bond rows</translation>
+      <translation>工字铺行的自定义偏移量</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="201"/>
       <source>A manual offset to shift the grid origin (X=U, Y=V). The Z component is ignored</source>
-      <translation type="unfinished">A manual offset to shift the grid origin (X=U, Y=V). The Z component is ignored</translation>
+      <translation>手动偏移以移动网格原点 (X=U, Y=V)。忽略 Z 分量</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="211"/>
       <source>Distance to offset the covering inwards from the base boundary</source>
-      <translation type="unfinished">Distance to offset the covering inwards from the base boundary</translation>
+      <translation>覆盖层从基础边界向内偏移的距离</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="218"/>
       <source>The surface area of the base face</source>
-      <translation type="unfinished">The surface area of the base face</translation>
+      <translation>基面的表面积</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="228"/>
       <source>The area enclosed by the outer boundary of the base face, ignoring any holes</source>
-      <translation type="unfinished">The area enclosed by the outer boundary of the base face, ignoring any holes</translation>
+      <translation>由基面外部边界围成的面积，忽略任何孔洞</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="238"/>
       <source>The individual area of each hole in the base face, in mm², sorted by size (largest first)</source>
-      <translation type="unfinished">The individual area of each hole in the base face, in mm², sorted by size (largest first)</translation>
+      <translation>基面中每个孔洞的单独面积（单位：mm²），按大小排序（最大优先）</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="247"/>
       <source>Total area of material units consumed (Full + Partial)</source>
-      <translation type="unfinished">Total area of material units consumed (Full + Partial)</translation>
+      <translation>消耗的材料单元总面积（完整 + 部分）</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="254"/>
       <source>The area of discarded material (Gross - Net)</source>
-      <translation type="unfinished">The area of discarded material (Gross - Net)</translation>
+      <translation>废弃材料的面积（毛重 - 净重）</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="261"/>
       <source>The total linear length of all joints</source>
-      <translation type="unfinished">The total linear length of all joints</translation>
+      <translation>所有灰缝的总线性长度</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="268"/>
       <source>The length of the substrate outer perimeter</source>
-      <translation type="unfinished">The length of the substrate outer perimeter</translation>
+      <translation>基材外周长的长度</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="275"/>
       <source>The number of full tiles</source>
-      <translation type="unfinished">The number of full tiles</translation>
+      <translation>完整瓷砖的数量</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="282"/>
       <source>The number of cut/partial tiles</source>
-      <translation type="unfinished">The number of cut/partial tiles</translation>
+      <translation>切割/部分瓷砖的数量</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="292"/>
       <source>An image file to map onto each tile. The file is embedded in the document.</source>
-      <translation type="unfinished">An image file to map onto each tile. The file is embedded in the document.</translation>
+      <translation>要映射到每个瓷砖上的图像文件。该文件已嵌入文档中。</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="302"/>
       <source>Scaling of the texture on each tile (X=U, Y=V). The Z component is ignored.</source>
-      <translation type="unfinished">Scaling of the texture on each tile (X=U, Y=V). The Z component is ignored.</translation>
+      <translation>每个瓷砖上纹理的缩放比例 (X=U, Y=V)。忽略 Z 分量。</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="312"/>
       <source>The PAT file to use for hatching. The file is embedded in the document.</source>
-      <translation type="unfinished">The PAT file to use for hatching. The file is embedded in the document.</translation>
+      <translation>用于填充的 PAT 文件。该文件已嵌入文档中。</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="319"/>
       <source>The name of the pattern in the PAT file</source>
-      <translation type="unfinished">The name of the pattern in the PAT file</translation>
+      <translation>PAT 文件中的图案名称</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="326"/>
       <source>The scale of the hatch pattern</source>
-      <translation type="unfinished">The scale of the hatch pattern</translation>
+      <translation>填充图案的比例</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="336"/>
       <source>Stored U-axis direction that keeps the tiling basis stable across recomputes</source>
-      <translation type="unfinished">Stored U-axis direction that keeps the tiling basis stable across recomputes</translation>
+      <translation>存储的 U 轴方向，可在重新计算时保持瓷砖基准稳定</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="346"/>
       <source>The specific IFC subtype of this covering. Exported as IfcCovering.PredefinedType.</source>
-      <translation type="unfinished">The specific IFC subtype of this covering. Exported as IfcCovering.PredefinedType.</translation>
+      <translation>此覆盖层的特定 IFC 子类型。导出为 IfcCovering.PredefinedType。</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="483"/>
@@ -9765,7 +9765,7 @@ The ladybug or pysolar Python module is required.</source>
     <message>
       <location filename="../../ArchCoveringGui.py" line="62"/>
       <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
-      <translation type="unfinished">Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</translation>
+      <translation>在交互式放置网格期间，每次按 R / Shift+R 键时应用的旋转步长（度）。</translation>
     </message>
   </context>
   <context>
@@ -13659,13 +13659,13 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../ArchCoveringGui.py" line="128"/>
       <source>Edit Covering</source>
-      <translation type="unfinished">Edit Covering</translation>
+      <translation>编辑覆盖层</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1757"/>
       <location filename="../../bimcommands/BimCovering.py" line="83"/>
       <source>Create Covering</source>
-      <translation type="unfinished">Create Covering</translation>
+      <translation>创建覆盖层</translation>
     </message>
   </context>
   <context>
@@ -13681,12 +13681,12 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimCovering.py" line="44"/>
       <source>Covering</source>
-      <translation type="unfinished">Covering</translation>
+      <translation>覆盖层</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCovering.py" line="47"/>
       <source>Creates a covering (floor finish, cladding) on a selected face</source>
-      <translation type="unfinished">Creates a covering (floor finish, cladding) on a selected face</translation>
+      <translation>在选定的面上创建覆盖层（地板饰面、外墙覆层）</translation>
     </message>
   </context>
   <context>

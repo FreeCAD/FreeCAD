@@ -48,6 +48,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
+    DlgSettingsFemCodeAster.ui
     DlgSettingsFemElmer.ui
     DlgSettingsFemExportAbaqus.ui
     DlgSettingsFemGeneral.ui
@@ -104,6 +105,9 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemCcxImp.cpp
     DlgSettingsFemCcxImp.h
+    DlgSettingsFemCodeAster.ui
+    DlgSettingsFemCodeAsterImp.cpp
+    DlgSettingsFemCodeAsterImp.h
     DlgSettingsFemElmer.ui
     DlgSettingsFemElmerImp.cpp
     DlgSettingsFemElmerImp.h
@@ -437,6 +441,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
     Resources/ui/ElementGeometry2D.ui
+    Resources/ui/ElementGeometryLaminate.ui
     Resources/ui/ElementRotation1D.ui
     Resources/ui/FlowVelocity.ui
     Resources/ui/InitialFlowVelocity.ui
@@ -463,6 +468,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ResultShow.ui
     Resources/ui/SolverCalculiX.ui
     Resources/ui/SolverCcxTools.ui
+    Resources/ui/SolverCodeAster.ui
     Resources/ui/SolverElmer.ui
     Resources/ui/SolverZ88.ui
     Resources/ui/TaskPostGlyph.ui

@@ -122,16 +122,6 @@ TYPE_CONTEXT_RULES = (
         public_targets=(PublicTypeTarget("FreeCADGui", "_PyResource"),),
     ),
     TypeContextRule(
-        source="src/Mod/Sandbox/App/DocumentProtectorPy.cpp",
-        context_name="DocumentProtectorPy",
-        public_targets=(PublicTypeTarget("Sandbox", "_DocumentProtector"),),
-    ),
-    TypeContextRule(
-        source="src/Mod/Sandbox/App/DocumentProtectorPy.cpp",
-        context_name="DocumentObjectProtectorPy",
-        public_targets=(PublicTypeTarget("Sandbox", "_DocumentObjectProtector"),),
-    ),
-    TypeContextRule(
         source="src/Mod/Spreadsheet/Gui/SpreadsheetView.cpp",
         context_name="SheetViewPy",
         public_targets=(PublicTypeTarget("SpreadsheetGui", "_SheetView"),),

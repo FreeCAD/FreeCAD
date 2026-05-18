@@ -7730,7 +7730,7 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="940"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>Athshocraigh an spásáil</translation>
     </message>
   </context>
   <context>

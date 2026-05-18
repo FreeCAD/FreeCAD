@@ -1325,7 +1325,7 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Má tá tionól gníomhach: Cruthaíonn sé comhpháirt a ghlasálann dhá chuid le chéile go statach, rud a chuireann cosc ​​ar aon ghluaiseacht nó rothlú&lt;/p&gt;&lt;p&gt;2 - Má tá cuid gníomhach: Suíonn sé fo-chodanna trí na córais chomhordanáidí roghnaithe a mheaitseáil. Bogfaidh an dara cuid roghnaithe.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

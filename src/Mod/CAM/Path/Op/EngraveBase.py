@@ -68,8 +68,15 @@ class ObjectOp(PathOp.ObjectOp):
         tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
         biDir = getattr(obj, "CutPattern", None) == "Bidirectional"
 
-        # decompose wires to get edges in right order
-        wires = [w for wire in wires for w in PathOpUtil.makeWires(wire.Edges)]
+        if getattr(obj, "Approximation", False):
+            wires = [PathOpUtil.approximateWire(w, tolerance=tol) for w in wires]
+
+        # decompose and orient wires to get edges in right order
+        wires = [
+            PathOpUtil.orientWire(Part.Wire(se), forward=forward)
+            for wire in wires
+            for se in Part.sortEdges(wire.Edges)
+        ]
 
         # sort wires, adapted from Area.py
         if len(wires) > 1:
@@ -81,7 +88,6 @@ class ObjectOp(PathOp.ObjectOp):
             wires = [j["wire"] for j in locations]
 
         for wire in wires:
-            wire = PathOpUtil.orientWire(wire, forward=forward)
             reverseDir = False
             edges = wire.Edges
             startIdx = min(start_idx, len(wire.Edges) - 1)
@@ -92,35 +98,20 @@ class ObjectOp(PathOp.ObjectOp):
 
             for indexZ, z in enumerate(zValues):
                 Path.Log.debug(z)
-                if indexZ and (wire.isClosed() or biDir):
-                    # Skip retract and add step down to next Z for closed profile
-                    self.appendCommand(
-                        Path.Command("G1", {"Z": startPoint.z}),
-                        z,
-                        relZ,
-                        self.vertFeed,
+                if indexZ == 0 or (not wire.isClosed() and not biDir):
+                    Path.Log.debug("processing first edge entry")
+                    # Add moves to first point of wire
+                    self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+                    self.commandlist.append(
+                        Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y})
                     )
+                    self.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
+                    lastPoint = startPoint
+
+                self.appendCommand(Path.Command("G1", {"Z": startPoint.z}), z, relZ, self.vertFeed)
 
                 edgesDir = reversed(edges) if reverseDir and indexZ else edges
-
-                for indexE, edge in enumerate(edgesDir):
-                    if indexE == 0 and (indexZ == 0 or (not wire.isClosed() and not biDir)):
-                        Path.Log.debug("processing first edge entry")
-                        # Add moves to first point of wire
-                        self.commandlist.append(
-                            Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
-                        )
-                        self.commandlist.append(
-                            Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y})
-                        )
-                        self.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
-                        self.appendCommand(
-                            Path.Command("G1", {"Z": startPoint.z}),
-                            z,
-                            relZ,
-                            self.vertFeed,
-                        )
-                        lastPoint = startPoint
+                for edge in edgesDir:
 
                     if len(edges) == 1:
                         # wire with one edge

@@ -63,10 +63,11 @@
 #include <TopoDS_Shape.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_DataMapOfShapeShape.hxx>
+#include <TopTools_DataMapOfIntegerListOfShape.hxx>
+#include <TopTools_DataMapOfIntegerShape.hxx>
 
 #include <Base/Console.h>
 
@@ -1204,18 +1205,45 @@ bool FaceUniter::process()
                 sew.Add(*sewIt);
             }
             sew.Perform();
+
+            // update the list of modifications
+            for (auto& it : modifiedShapes) {
+                if (sew.IsModified(it.second)) {
+                    it.second = sew.Modified(it.second);
+
+                    // TODO: uncomment in the V2 algorithm PR
+                    // if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                    break;
+                    // }
+                }
+            }
+
+            TopExp_Explorer workShellExplorer;
+            std::vector<TopAbs_ShapeEnum> types = {TopAbs_FACE, TopAbs_EDGE, TopAbs_VERTEX};
+
+            // track any modifications created by the reShape operation in the sewer
+            for (TopAbs_ShapeEnum& type : types) {
+                workShellExplorer.Init(workShell, type);
+
+                for (; workShellExplorer.More(); workShellExplorer.Next()) {
+                    const TopoDS_Shape& workShellSubShape = workShellExplorer.Value();
+
+                    if (sew.IsModifiedSubShape(workShellSubShape)) {
+                        // we add a modified shape entry even if `workShellSubShape` is already
+                        // present as a key for extra info to give the topological naming method.
+                        modifiedShapes.emplace_back(
+                            workShellSubShape,
+                            sew.ModifiedSubShape(workShellSubShape)
+                        );
+                    }
+                }
+            }
+
             try {
                 workShell = TopoDS::Shell(sew.SewedShape());
             }
             catch (Standard_Failure&) {
                 return false;
-            }
-            // update the list of modifications
-            for (auto& it : modifiedShapes) {
-                if (sew.IsModified(it.second)) {
-                    it.second = sew.Modified(it.second);
-                    break;
-                }
             }
         }
         else {
@@ -1261,15 +1289,15 @@ bool FaceUniter::process()
         TopTools_DataMapOfShapeShape faceMap;
         edgeFuse.Faces(faceMap);
         for (mapIt.Initialize(faceMap); mapIt.More(); mapIt.Next()) {
-            bool isModifiedFace = false;
+            bool isModifiedShape = false;
             for (auto& it : modifiedShapes) {
                 if (mapIt.Key().IsSame(it.second)) {
                     // Note: IsEqual() for some reason does not work
                     it.second = mapIt.Value();
-                    isModifiedFace = true;
+                    isModifiedShape = true;
                 }
             }
-            if (!isModifiedFace) {
+            if (!isModifiedShape) {
                 // Catch faces that were not united but whose boundary was changed (probably because
                 // several adjacent faces were united)
                 // See https://sourceforge.net/apps/mantisbt/free-cad/view.php?id=873
@@ -1322,7 +1350,7 @@ void Part::BRepBuilderAPI_RefineModel::Build()
 #endif
 {
     if (myShape.IsNull()) {
-        Standard_Failure::Raise("Cannot remove splitter from empty shape");
+        throw Standard_Failure("Cannot remove splitter from empty shape");
     }
 
     if (myShape.ShapeType() == TopAbs_SOLID) {
@@ -1343,7 +1371,7 @@ void Part::BRepBuilderAPI_RefineModel::Build()
                 }
             }
             else {
-                Standard_Failure::Raise("Removing splitter failed");
+                throw Standard_Failure("Removing splitter failed");
             }
         }
         myShape = mkSolid.Solid();
@@ -1357,7 +1385,7 @@ void Part::BRepBuilderAPI_RefineModel::Build()
             LogModifications(uniter);
         }
         else {
-            Standard_Failure::Raise("Removing splitter failed");
+            throw Standard_Failure("Removing splitter failed");
         }
     }
     else if (myShape.ShapeType() == TopAbs_COMPOUND) {

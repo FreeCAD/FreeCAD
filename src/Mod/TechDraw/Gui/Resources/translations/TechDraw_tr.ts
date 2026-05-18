@@ -2156,8 +2156,8 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <translation>Kırık görünüm oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1911"/>
       <location filename="../../PagePrinter.cpp" line="444"/>
+      <location filename="../../Command.cpp" line="1911"/>
       <source>Save page to DXF</source>
       <translation>Sayfayı DXF olarak kaydet</translation>
     </message>
@@ -2209,8 +2209,13 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <translation type="unfinished">Add Quadrant vertices</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="543"/>
+      <location filename="../../TaskRichAnno.cpp" line="112"/>
+      <source>Edit Annotation</source>
+      <translation type="unfinished">Edit Annotation</translation>
+    </message>
+    <message>
       <location filename="../../TaskRichAnno.cpp" line="153"/>
+      <location filename="../../CommandAnnotate.cpp" line="543"/>
       <source>Create Annotation</source>
       <translation>Açıklama Oluşturun</translation>
     </message>
@@ -2783,11 +2788,6 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <source>Edit Weld Symbol</source>
       <translation>Kaynak sembolünü düzenle</translation>
     </message>
-    <message>
-      <location filename="../../TaskRichAnno.cpp" line="112"/>
-      <source>Edit Annotation</source>
-      <translation type="unfinished">Edit Annotation</translation>
-    </message>
   </context>
   <context>
     <name>CompassWidget</name>
@@ -3050,6 +3050,26 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
+      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../Command.cpp" line="865"/>
+      <location filename="../../Command.cpp" line="982"/>
+      <location filename="../../Command.cpp" line="989"/>
+      <location filename="../../Command.cpp" line="994"/>
+      <location filename="../../Command.cpp" line="1032"/>
+      <location filename="../../Command.cpp" line="1131"/>
+      <location filename="../../Command.cpp" line="1398"/>
+      <location filename="../../Command.cpp" line="1415"/>
+      <location filename="../../Command.cpp" line="1420"/>
+      <location filename="../../Command.cpp" line="1429"/>
+      <location filename="../../Command.cpp" line="1482"/>
+      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1711"/>
+      <location filename="../../Command.cpp" line="1770"/>
       <location filename="../../CommandAnnotate.cpp" line="115"/>
       <location filename="../../CommandAnnotate.cpp" line="120"/>
       <location filename="../../CommandAnnotate.cpp" line="311"/>
@@ -3077,26 +3097,6 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <location filename="../../CommandAnnotate.cpp" line="1354"/>
       <location filename="../../CommandAnnotate.cpp" line="1361"/>
       <location filename="../../CommandAnnotate.cpp" line="1425"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
-      <location filename="../../Command.cpp" line="638"/>
-      <location filename="../../Command.cpp" line="648"/>
-      <location filename="../../Command.cpp" line="865"/>
-      <location filename="../../Command.cpp" line="982"/>
-      <location filename="../../Command.cpp" line="989"/>
-      <location filename="../../Command.cpp" line="994"/>
-      <location filename="../../Command.cpp" line="1032"/>
-      <location filename="../../Command.cpp" line="1131"/>
-      <location filename="../../Command.cpp" line="1398"/>
-      <location filename="../../Command.cpp" line="1415"/>
-      <location filename="../../Command.cpp" line="1420"/>
-      <location filename="../../Command.cpp" line="1429"/>
-      <location filename="../../Command.cpp" line="1482"/>
-      <location filename="../../Command.cpp" line="1501"/>
-      <location filename="../../Command.cpp" line="1627"/>
-      <location filename="../../Command.cpp" line="1705"/>
-      <location filename="../../Command.cpp" line="1711"/>
-      <location filename="../../Command.cpp" line="1770"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
@@ -3187,6 +3187,36 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <translation>Bu seçimde şekil, grup veya bağlantı yok</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="310"/>
+      <location filename="../../CommandExtensionDims.cpp" line="519"/>
+      <location filename="../../CommandExtensionDims.cpp" line="807"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
+      <location filename="../../CommandCreateDims.cpp" line="1499"/>
+      <location filename="../../CommandCreateDims.cpp" line="1547"/>
+      <location filename="../../CommandCreateDims.cpp" line="1595"/>
+      <location filename="../../CommandCreateDims.cpp" line="1643"/>
+      <location filename="../../CommandCreateDims.cpp" line="1691"/>
+      <location filename="../../CommandCreateDims.cpp" line="1738"/>
+      <location filename="../../CommandCreateDims.cpp" line="1785"/>
+      <location filename="../../CommandCreateDims.cpp" line="1832"/>
+      <location filename="../../CommandCreateDims.cpp" line="1879"/>
+      <location filename="../../CommandCreateDims.cpp" line="1975"/>
+      <location filename="../../CommandCreateDims.cpp" line="2100"/>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="748"/>
+      <location filename="../../Command.cpp" line="841"/>
+      <location filename="../../Command.cpp" line="904"/>
+      <location filename="../../CommandExtensionPack.cpp" line="299"/>
+      <location filename="../../CommandExtensionPack.cpp" line="602"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1222"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1467"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1765"/>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="161"/>
       <location filename="../../CommandAnnotate.cpp" line="213"/>
@@ -3202,40 +3232,20 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <location filename="../../CommandAnnotate.cpp" line="1260"/>
       <location filename="../../CommandAnnotate.cpp" line="1341"/>
       <location filename="../../CommandAnnotate.cpp" line="1407"/>
-      <location filename="../../CommandCreateDims.cpp" line="1499"/>
-      <location filename="../../CommandCreateDims.cpp" line="1547"/>
-      <location filename="../../CommandCreateDims.cpp" line="1595"/>
-      <location filename="../../CommandCreateDims.cpp" line="1643"/>
-      <location filename="../../CommandCreateDims.cpp" line="1691"/>
-      <location filename="../../CommandCreateDims.cpp" line="1738"/>
-      <location filename="../../CommandCreateDims.cpp" line="1785"/>
-      <location filename="../../CommandCreateDims.cpp" line="1832"/>
-      <location filename="../../CommandCreateDims.cpp" line="1879"/>
-      <location filename="../../CommandCreateDims.cpp" line="1975"/>
-      <location filename="../../CommandCreateDims.cpp" line="2100"/>
-      <location filename="../../CommandExtensionDims.cpp" line="310"/>
-      <location filename="../../CommandExtensionDims.cpp" line="519"/>
-      <location filename="../../CommandExtensionDims.cpp" line="807"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
-      <location filename="../../CommandExtensionPack.cpp" line="299"/>
-      <location filename="../../CommandExtensionPack.cpp" line="602"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1222"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1467"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1765"/>
-      <location filename="../../Command.cpp" line="748"/>
-      <location filename="../../Command.cpp" line="841"/>
-      <location filename="../../Command.cpp" line="904"/>
       <source>Task in progress</source>
       <translation>Görev sürüyor</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="311"/>
+      <location filename="../../CommandExtensionDims.cpp" line="520"/>
+      <location filename="../../CommandExtensionDims.cpp" line="808"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
+      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="905"/>
       <location filename="../../CommandAnnotate.cpp" line="101"/>
       <location filename="../../CommandAnnotate.cpp" line="162"/>
       <location filename="../../CommandAnnotate.cpp" line="214"/>
@@ -3251,16 +3261,6 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <location filename="../../CommandAnnotate.cpp" line="1261"/>
       <location filename="../../CommandAnnotate.cpp" line="1342"/>
       <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../CommandExtensionDims.cpp" line="311"/>
-      <location filename="../../CommandExtensionDims.cpp" line="520"/>
-      <location filename="../../CommandExtensionDims.cpp" line="808"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="842"/>
-      <location filename="../../Command.cpp" line="905"/>
       <source>Close active task dialog and try again</source>
       <translation>Etkin görev penceresini kapatıp yeniden deneyin</translation>
     </message>
@@ -3439,6 +3439,7 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <translation>Açmak için bir SVG dosyası seçin</translation>
     </message>
     <message>
+      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../CommandCreateDims.cpp" line="2001"/>
       <location filename="../../CommandCreateDims.cpp" line="2017"/>
       <location filename="../../CommandCreateDims.cpp" line="2043"/>
@@ -3451,7 +3452,13 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <location filename="../../CommandCreateDims.cpp" line="2364"/>
       <location filename="../../CommandCreateDims.cpp" line="2372"/>
       <location filename="../../CommandCreateDims.cpp" line="2381"/>
-      <location filename="../../TaskDimension.cpp" line="551"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../Command.cpp" line="1200"/>
+      <location filename="../../Command.cpp" line="1207"/>
+      <location filename="../../Command.cpp" line="1215"/>
+      <location filename="../../Command.cpp" line="1227"/>
       <location filename="../../CommandExtensionPack.cpp" line="1878"/>
       <location filename="../../CommandExtensionPack.cpp" line="2002"/>
       <location filename="../../CommandDecorate.cpp" line="418"/>
@@ -3459,13 +3466,6 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <location filename="../../CommandDecorate.cpp" line="432"/>
       <location filename="../../CommandDecorate.cpp" line="439"/>
       <location filename="../../CommandDecorate.cpp" line="445"/>
-      <location filename="../../CommandAlign.cpp" line="53"/>
-      <location filename="../../Command.cpp" line="1200"/>
-      <location filename="../../Command.cpp" line="1207"/>
-      <location filename="../../Command.cpp" line="1215"/>
-      <location filename="../../Command.cpp" line="1227"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <source>Incorrect Selection</source>
       <translation>Hatalı seçim</translation>
     </message>
@@ -3593,12 +3593,12 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <translation>2 düz çizgi seçin</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="768"/>
-      <location filename="../../CommandAnnotate.cpp" line="1021"/>
       <location filename="../../CommandExtensionPack.cpp" line="897"/>
       <location filename="../../CommandExtensionPack.cpp" line="920"/>
       <location filename="../../CommandExtensionPack.cpp" line="942"/>
       <location filename="../../CommandExtensionPack.cpp" line="978"/>
+      <location filename="../../CommandAnnotate.cpp" line="768"/>
+      <location filename="../../CommandAnnotate.cpp" line="1021"/>
       <source>Wrong Selection</source>
       <translation>Yanlış seçim</translation>
     </message>
@@ -3821,9 +3821,9 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <location filename="../../ViewProviderPage.cpp" line="219"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>Devam etmek istediğinizden emin misiniz?</translation>
     </message>
@@ -4091,9 +4091,9 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <translation>TechDraw Biçimi Özelleştir</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1022"/>
       <location filename="../../CommandExtensionDims.cpp" line="2329"/>
       <location filename="../../CommandExtensionPack.cpp" line="2143"/>
+      <location filename="../../CommandAnnotate.cpp" line="1022"/>
       <source>Selection is empty</source>
       <translation>Seçim boş</translation>
     </message>
@@ -4289,14 +4289,14 @@ Hiç nesne seçilmemişse, bir SVG veya görüntü dosyası seçmek için dosya 
       <translation>Metni güncellemek için tıklayın</translation>
     </message>
     <message>
-      <location filename="../../SymbolChooser.cpp" line="59"/>
-      <source>Select a Symbol</source>
-      <translation type="unfinished">Select a Symbol</translation>
-    </message>
-    <message>
       <location filename="../../QGIRichAnno.cpp" line="400"/>
       <source>Resize Rich Annotation</source>
       <translation type="unfinished">Resize Rich Annotation</translation>
+    </message>
+    <message>
+      <location filename="../../SymbolChooser.cpp" line="59"/>
+      <source>Select a Symbol</source>
+      <translation type="unfinished">Select a Symbol</translation>
     </message>
   </context>
   <context>
@@ -4318,18 +4318,18 @@ it has a weld symbol that would become broken.</source>
       <translation>Bu görünümü silemezsiniz; çünkü bir veya daha fazla bağımlı görünüm var ve bunlar bozulacaktır.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderPage.cpp" line="222"/>
-      <location filename="../../ViewProviderWeld.cpp" line="143"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
+      <location filename="../../ViewProviderWeld.cpp" line="143"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
       <source>Object dependencies</source>
       <translation>Nesne bağımlılıkları</translation>
     </message>
@@ -10216,6 +10216,14 @@ bu ölçüyü şu anda silemezsiniz.</translation>
     </message>
   </context>
   <context>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <message>
+      <location filename="../../TaskLineDecor.cpp" line="463"/>
+      <source>Restore Invisible Lines</source>
+      <translation>Görünmez Çizgileri Geri Getir</translation>
+    </message>
+  </context>
+  <context>
     <name>Cmd2LineCenterLine</name>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="653"/>
@@ -10265,14 +10273,6 @@ bu ölçüyü şu anda silemezsiniz.</translation>
       <location filename="../../CommandDecorate.cpp" line="140"/>
       <source>Toggles the grid on the active page</source>
       <translation type="unfinished">Toggles the grid on the active page</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskDlgLineDecor</name>
-    <message>
-      <location filename="../../TaskLineDecor.cpp" line="463"/>
-      <source>Restore Invisible Lines</source>
-      <translation>Görünmez Çizgileri Geri Getir</translation>
     </message>
   </context>
 </TS>

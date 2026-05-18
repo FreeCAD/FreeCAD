@@ -3946,7 +3946,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2351"/>
       <source>X coordinate of the point</source>
-      <translation type="unfinished">X coordinate of the point</translation>
+      <translation>X koordinat for punktet</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2364"/>
@@ -3957,7 +3957,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2374"/>
       <source>Y coordinate of the point</source>
-      <translation type="unfinished">Y coordinate of the point</translation>
+      <translation>Y koordinat for punktet</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2387"/>
@@ -4030,7 +4030,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2397"/>
       <source>Z coordinate of the point</source>
-      <translation type="unfinished">Z coordinate of the point</translation>
+      <translation>Z koordinat for punktet</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2431"/>
@@ -4573,7 +4573,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.cpp" line="54"/>
       <source>Ctrl</source>
-      <translation type="unfinished">Ctrl</translation>
+      <translation>Ctrl</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.cpp" line="57"/>
@@ -5050,7 +5050,7 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../SectionCutting.ui" line="145"/>
       <location filename="../../SectionCutting.ui" line="213"/>
       <source>Flip</source>
-      <translation type="unfinished">Flip</translation>
+      <translation>Vend</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="106"/>
@@ -6616,7 +6616,7 @@ Continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Opdel</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -6665,7 +6665,7 @@ Continue?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="97"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsæt</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="242"/>
@@ -6716,7 +6716,7 @@ Continue?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsæt</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="244"/>
@@ -6825,7 +6825,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="269"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsæt</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="354"/>
@@ -7044,7 +7044,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X-factor</source>
-      <translation type="unfinished">X-factor</translation>
+      <translation>X-faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="29"/>
@@ -7059,7 +7059,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z-factor</source>
-      <translation type="unfinished">Z-factor</translation>
+      <translation>Z-faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
@@ -7069,7 +7069,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y-factor</source>
-      <translation type="unfinished">Y-factor</translation>
+      <translation>Y-faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
@@ -7256,7 +7256,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="91"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsæt</translation>
     </message>
   </context>
   <context>
@@ -7638,7 +7638,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgExportStep.cpp" line="215"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>Vis ikke denne dialog igen</translation>
     </message>
   </context>
   <context>
@@ -7646,7 +7646,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>Vis ikke denne dialog igen</translation>
     </message>
   </context>
   <context>

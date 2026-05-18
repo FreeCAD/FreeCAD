@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="1678"/>
       <source>BIM View</source>
-      <translation type="unfinished">BIM View</translation>
+      <translation>BIM Visning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1679"/>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="1349"/>
       <source>Clip Group</source>
-      <translation type="unfinished">Clip Group</translation>
+      <translation>Klip Gruppe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1350"/>
       <source>Inserts a new clip group for the selected view</source>
-      <translation type="unfinished">Inserts a new clip group for the selected view</translation>
+      <translation>Indsætter en ny klippegruppe for den valgte visning</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="1386"/>
       <source>Add View To Clip Group</source>
-      <translation type="unfinished">Add View To Clip Group</translation>
+      <translation>Tilføj Visning Til Klip Gruppe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1387"/>
       <source>Adds the selected view to a clip group</source>
-      <translation type="unfinished">Adds the selected view to a clip group</translation>
+      <translation>Tilføjer den markerede visning til en klip gruppe</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="1470"/>
       <source>Remove From Clip Group</source>
-      <translation type="unfinished">Remove From Clip Group</translation>
+      <translation>Fjern Fra Klip Gruppe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1471"/>
@@ -394,7 +394,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1611"/>
       <source>Draft View</source>
-      <translation type="unfinished">Draft View</translation>
+      <translation>Kladde Visning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1613"/>
@@ -4869,7 +4869,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="552"/>
       <source>Alt</source>
-      <translation type="unfinished">Alt</translation>
+      <translation>Alt</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="559"/>
@@ -5218,7 +5218,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="592"/>
       <source>Grid color</source>
-      <translation type="unfinished">Grid color</translation>
+      <translation>Gitter farve</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="604"/>
@@ -6299,8 +6299,7 @@ Fast, but result is a collection of short straight lines.</translation>
       <location filename="../../MDIViewPage.cpp" line="429"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different orientation than the drawing.
-Do you want to continue?</translation>
+      <translation>Denne printer bruger en anden orientering end tegningen. Vil du gerne fortsætte?</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="438"/>
@@ -7399,7 +7398,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="52"/>
       <source>Number of decimals</source>
-      <translation type="unfinished">Number of decimals</translation>
+      <translation>Antal decimaler</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="65"/>
