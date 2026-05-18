@@ -1,6 +1,6 @@
 # FreeCAD AI Policy
 
-With recent developments in AI technology it is becoming clear that AI technology will have a big impact on Open Source projects including FreeCAD. This document outlines the core project values regarding the technology and acts as the compass that should guide us in decisions concerning AI. With this policy, the FreeCAD developer community **puts people in the first row** while **acknowledging the concerns**. It enforces **contributions with humans in the driver seat** and raises awareness of **fully open and frugal AI**.
+With recent developments in the field of AI it is becoming clear that AI technology will have a big impact on Open Source projects including FreeCAD. This document outlines the core project values regarding the technology and acts as the compass that should guide us in decisions concerning AI. With this policy, the FreeCAD developer community **puts people in the first row** while **acknowledging the concerns**. It enforces **contributions with humans in the driver seat** and raises awareness of **fully open and frugal AI**.
 
 We expect from our contributors:
 
@@ -24,19 +24,19 @@ The concerns include, but are not limited to:
 - **societal:** exploiting workers for content moderation, affecting the learning process
 - **open source projects:** high-volume of low-quality vibe-coded PRs, interaction with AI chatbots, unclear decision process in agentic AI, and increased burden on reviewers and maintainers
 
-#### Frugal and fully open AI alternatives
+### Frugal and fully open AI alternatives
 
-Although the problems with AI regarding open source projects don’t disappear with alternatives, FreeCAD as a project wants to raise awareness of alternatives to the large LLMs that can only be trained by large organizations. Examples are frugal AI initiatives and fully open source AI models such as Apertus by the Swiss AI initiative that is trained on fully open data in a carbon-neutral and water-neutral data center.
+Although the problems with AI regarding open source projects don’t disappear with alternatives, FreeCAD as a project wants to raise awareness of alternatives to the large LLMs that can only be trained by large organizations. Examples are frugal AI initiatives and fully open source AI models such as Apertus that is trained on fully open data in a carbon-neutral and water-neutral data center.
 
 ## Humans in the driver seat
 
 FreeCAD is made by humans and for humans, and we believe that it is important for it to stay like that. With contributions we expect to interact with actual people behind their computer, discuss solutions, and look for the best possible outcomes. Reviewers must know that when talking with contributors, they talk to someone who can take responsibility for the contributions, knows how the code works, and who is eager to learn and improve. The project is open to all people: domain experts and new developers alike. With each contribution we value the interaction with the contributor and the community building as much as the improvement to FreeCAD. We want to help the contributor improve their skills and learn how their input can cause real change.
 
-With AI contributions it is almost impossible to support these values and to ensure that they are actually followed. That's why for each contribution we expect it to have human behind the wheel throughout the whole process and be presented by humans, not AI tools. While it won't be possible to verify that fully, we trust our community to do the right thing and contribute in a good faith with these values in mind. In particular, we will not accept pull requests with clearly AI-generated code, commit messages, PR descriptions, and responses to reviewer feedback. 
+With AI contributions it is almost impossible to support these values and to ensure that they are actually followed. That's why for each contribution we expect it to have human behind the wheel throughout the whole process and be presented by humans, not AI tools. While it won't be possible to verify that fully, we trust our community to do the right thing and contribute in a good faith with these values in mind. In particular, we will not accept pull requests with clearly AI-generated code, commit messages, PR descriptions, and responses to reviewer feedback.
 
-## Action plan
+## Concrete measures
 
-#### Disclosure
+### Disclosure
 
 We request disclosure of the used technology with tags in the PR and in the commit messages:
 
@@ -51,10 +51,10 @@ Assisted-by: gemini-2.5-pro (rev-1)
 Assisted-by: GPT-4o-2024-08-06
 ```
 
-#### PR template
+### PR template
 
-We modify the Pull Request template to include a required checkbox that says “This PR is not unverified AI output, I take responsibility for it, and all communications on this PR is done by me.”. Don't be afraid that your English is not perfect - we are mostly non-native speakers. We don't recommend using machine translation, but if you do - add original text too.
+We ask the contributor in the Pull Request template to mark a required checkbox that says “This PR is not unverified AI output, I take responsibility for it, and all communication from my side in this PR is done by me personally.”. Don't be afraid that your English is not perfect - we are mostly non-native speakers. We don't recommend using machine translation, but if you do - add original text too.
 
-#### “Unverified” label
+### “Unverified” label
 
-PRs from outside of Developers group will be marked as "Unverified" to help us find potential violations. After few successful contributions we will add new contributors to the groups - but don't hesitate to ask us to do it sooner.
+PRs from outside the Developers group will be marked as "Unverified" to help us find potential violations.  After several successful contributions we will add new contributors to the groups - but don't hesitate to ask us to do it sooner.
