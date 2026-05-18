@@ -100,7 +100,9 @@ def replace_in_toml_section(content: str, section: str, key: str, value: str) ->
 
     section_start = section_match.start()
     next_section = re.search(r"\n\[", content[section_match.end() :])
-    section_end = section_match.end() + next_section.start() if next_section else len(content)
+    section_end = (
+        section_match.end() + next_section.start() if next_section else len(content)
+    )
 
     section_text = content[section_start:section_end]
     field_pattern = rf'({re.escape(key)}\s*=\s*)"[^"]*"'
@@ -118,7 +120,9 @@ def sync_workspace_pixi_toml(filepath: Path, version: VersionInfo) -> tuple[str,
     return updated, updated != content
 
 
-def sync_rattler_build_pixi_toml(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
+def sync_rattler_build_pixi_toml(
+    filepath: Path, version: VersionInfo
+) -> tuple[str, bool]:
     """Sync the rattler-build pixi.toml version, name, and description fields.
 
     Updates fields under the [package] section.
@@ -126,7 +130,9 @@ def sync_rattler_build_pixi_toml(filepath: Path, version: VersionInfo) -> tuple[
     content = filepath.read_text(encoding="utf-8")
     updated = content
     updated = replace_in_toml_section(updated, "[package]", "version", version.conda)
-    updated = replace_in_toml_section(updated, "[package]", "name", version.lowercase_name)
+    updated = replace_in_toml_section(
+        updated, "[package]", "name", version.lowercase_name
+    )
     updated = replace_in_toml_section(updated, "[package]", "description", version.name)
     return updated, updated != content
 
@@ -190,19 +196,43 @@ def sync_fedora_spec(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
 
     return updated, updated != content
 
+
 def sync_startup_wm_class(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
     """Sync the desktop file StartupWMClass field.
 
     Updates:
-      - StartupWMClass=FreeCAD-1.2
+      - StartupWMClass=FreeCAD-1.2.0
     """
     content = filepath.read_text(encoding="utf-8")
     updated = content
 
     # Version:           1.2.0
-    updated = re.sub(r"(StartupWMClass=)\S+", rf"\g<1>FreeCAD-{version.major}.{version.minor}", updated,)
+    updated = re.sub(
+        r"(StartupWMClass=)\S+",
+        rf"\g<1>FreeCAD-{version.major}.{version.minor}",
+        updated,
+    )
 
     return updated, updated != content
+
+
+def sync_wayland_app_id(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
+    """Sync .desktop file name with version.
+
+    Updates:
+       - App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD-1.2.0";
+    """
+    content = filepath.read_text(encoding="utf-8")
+    updated = content
+
+    # Version:           1.2.0
+    updated = re.sub(
+        r'(App::Application::Config\(\)\["DesktopFileName"\]\s*=\s*")[^"]+(")',
+        rf"\g<1>org.freecad.FreeCAD-{version.major}.{version.minor}\g<2>",
+        updated,
+    )
+    return updated, updated != content
+
 
 # Each entry is (relative_path, sync_function).
 SYNC_TARGETS = [
@@ -212,6 +242,17 @@ SYNC_TARGETS = [
     ("package/WindowsInstaller/include/declarations.nsh", sync_declarations_nsh),
     ("package/fedora/freecad.spec", sync_fedora_spec),
     ("src/XDGData/org.freecad.FreeCAD.desktop", sync_startup_wm_class),
+    ("src/Main/MainGui.cpp", sync_wayland_app_id),
+]
+
+
+# Each entry is (relative_old_path, new_name_fn).
+# Renames are handled separately in run() so --check mode never touches the filesystem.
+RENAME_TARGETS = [
+    (
+        "src/XDGData/org.freecad.FreeCAD.desktop",
+        lambda v: f"src/XDGData/org.freecad.FreeCAD-{v.major}.{v.minor}.desktop",
+    ),
 ]
 
 
@@ -244,6 +285,28 @@ def run(repo_root: Path, check_only: bool) -> bool:
                 print(f"  UPDATED: {relative_path}")
         else:
             print(f"  OK: {relative_path}")
+
+    for relative_old, new_name_fn in RENAME_TARGETS:
+        old_path = repo_root / relative_old
+        new_path = repo_root / new_name_fn(version)
+
+        if not old_path.exists():
+            if new_path.exists():
+                print(f"  OK: {relative_old} (already renamed to {new_path.name})")
+            else:
+                print(f"  SKIP: {relative_old} (file not found)")
+            continue
+
+        if old_path == new_path:
+            print(f"  OK: {relative_old}")
+            continue
+
+        all_synced = False
+        if check_only:
+            print(f"  OUT OF SYNC: {relative_old} → {new_path.name}")
+        else:
+            old_path.rename(new_path)
+            print(f"  RENAMED: {relative_old} → {new_path.name}")
 
     return all_synced
 
