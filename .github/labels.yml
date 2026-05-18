@@ -106,6 +106,16 @@
 - changed-files:
   - any-glob-to-any-file:  ['src/3rdParty/**/*']
 
+# 'Language' related labels
+
+"Language: C++":
+- changed-files:
+  - any-glob-to-any-file: ['**/*.cpp', '**/*.cxx', '**/*.cc', '**/*.h', '**/*.hpp', '**/*.hxx']
+
+"Language: Python":
+- changed-files:
+  - any-glob-to-any-file: ['**/*.py']
+
 # 'Topic' related labels
 
 "Topic: Stylesheets":
