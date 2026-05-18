@@ -31,7 +31,6 @@ if App.GuiUp:
     from PySide import QtCore, QtGui, QtWidgets
 
 import UtilsAssembly
-import Assembly_rc
 
 __title__ = "Assembly Command to Solve Assembly"
 __author__ = "Ondsel"
