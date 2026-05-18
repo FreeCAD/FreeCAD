@@ -1682,7 +1682,7 @@ void DSHPolyLineController::configureToolWidget()
             WCheckbox::FirstBox,
             QApplication::translate(
                 "TaskSketcherTool_c1_PolyLine",
-                "Add a fillet between the current and previous line."
+                "Adds a fillet between the current and previous line"
             )
         );
         syncCheckboxToHandler(WCheckbox::FirstBox, handler->fillet);
