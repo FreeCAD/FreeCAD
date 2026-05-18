@@ -51,24 +51,20 @@ public:
     double Dist(const Point& p) const;
 };
 
-class CArc;
-
 class CVertex
 {
 public:
     int m_type;  // 0 - line ( or start point ), 1 - anti-clockwise arc, -1 - clockwise arc
     Point m_p;   // end point
     Point m_c;   // centre point in absolute coordinates
-    int m_user_data;
 
     CVertex()
         : m_type(0)
         , m_p(Point(0, 0))
         , m_c(Point(0, 0))
-        , m_user_data(0)
     {}
-    CVertex(int type, const Point& p, const Point& c, int user_data = 0);
-    CVertex(const Point& p, int user_data = 0);
+    CVertex(int type, const Point& p, const Point& c);
+    CVertex(const Point& p);
 };
 
 class Span
@@ -100,33 +96,17 @@ public:
     Point MidParam(double param) const;
     double Length() const;
     Point GetVector(double fraction) const;
-    void Intersect(
-        const Span& s,
-        std::list<Point>& pts
-    ) const;  // finds all the intersection points between two spans
 };
 
 class CCurve
 {
     // a closed curve, please make sure you add an end point, the same as the start point
 
-protected:
-    void AddArcOrLines(
-        bool check_for_arc,
-        std::list<CVertex>& new_vertices,
-        std::list<const CVertex*>& might_be_an_arc,
-        CArc& arc,
-        bool& arc_found,
-        bool& arc_added
-    );
-    static bool CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& might_be_an_arc, CArc& arc);
-
 public:
     std::list<CVertex> m_vertices;
     void append(const CVertex& vertex);
 
-    void FitArcs(bool retry = false);
-    void UnFitArcs();
+    void Discretize();
     Point NearestPoint(const Point& p) const;
     Point NearestPoint(const CCurve& p, double* d = NULL) const;
     Point NearestPoint(const Span& p, double* d = NULL) const;
@@ -135,17 +115,10 @@ public:
     double GetArea() const;
     bool IsClockwise() const
     {
-        return GetArea() > 0;
+        return GetArea() < 0;
     }
     bool IsClosed() const;
     void ChangeStart(const Point& p);
-    void ChangeEnd(const Point& p);
-    bool Offset(double leftwards_value);
-    void OffsetForward(
-        double forwards_value,
-        bool refit_arcs = true
-    );  // for drag-knife compensation
-    void Break(const Point& p);
     void ExtractSeparateCurves(
         const std::list<Point>& ordered_points,
         std::list<CCurve>& separate_curves
@@ -156,10 +129,6 @@ public:
     void GetSpans(std::list<Span>& spans) const;
     void RemoveTinySpans();
     void operator+=(const CCurve& p);
-    void SpanIntersections(const Span& s, std::list<Point>& pts) const;
-    void CurveIntersections(const CCurve& c, std::list<Point>& pts) const;
 };
-
-void tangential_arc(const Point& p0, const Point& p1, const Point& v0, Point& c, int& dir);
 
 }  // namespace heeks

@@ -7,6 +7,9 @@
 
 #pragma once
 
+#include <map>
+#include <set>
+#include <tuple>
 #include "Curve.h"
 #include "clipper2/clipper.h"
 
@@ -49,14 +52,40 @@ struct CAreaPocketParams
     }
 };
 
+// Arc fitting map for tracking arc information through Clipper operations
+struct ArcFittingMap
+{
+    // Map from z-coordinate label to source point coordinates
+    // z-values > 0 are used as labels (z=0 is clipper default and should not be used here)
+    std::map<int64_t, Point> point_map;
+
+    // Arc centers: maps pairs of z-values (z1, z2) where z1 < z2 to the center point of the arc
+    // between them If a pair exists in this map, the segment is an arc; otherwise it's a line
+    std::map<std::pair<int64_t, int64_t>, Point> arc_centers;
+
+    // Intersection tracking: maps the new value of a point created in an
+    // intersection to the z values of points used to compute that intersection
+    // Format: intersection_z -> (e1bot.z, e1top.z, e2bot.z, e2top.z)
+    std::map<int64_t, std::tuple<int64_t, int64_t, int64_t, int64_t>> intersections;
+
+    // Track the maximum z-value used for allocation
+    int64_t z_next;
+
+    // Track the previous z-label for arc connectivity
+    int64_t z_prev;
+
+    ArcFittingMap()
+        : z_next(1)
+        , z_prev(0)
+    {}
+};
+
 class CArea
 {
 public:
     std::list<CCurve> m_curves;
+    ArcFittingMap m_arc_fitting_map;
     static double m_accuracy;
-    static double m_units;  // 1.0 for mm, 25.4 for inches. All points are multiplied by this before
-                            // going to the engine
-    static bool m_clipper_simple;
     static double m_clipper_clean_distance;
     static bool m_fit_arcs;
     static int m_min_arc_points;
@@ -77,16 +106,16 @@ public:
     void Intersect(const CArea& a2);
     void Union(const CArea& a2);
     void Xor(const CArea& a2);
-    void Offset(double inwards_value);
-    void OffsetWithClipper(
+    void OffsetInward(double inwards_value);  // Deprecated: use Offset
+    void Offset(
         double offset,
         Clipper2Lib::JoinType joinType = Clipper2Lib::JoinType::Round,
         Clipper2Lib::EndType endType = Clipper2Lib::EndType::Round,
         double miterLimit = 5.0,
         double arcTolerance = 0.0
     );
+    void ClipperNoop();  // converts to clipper and back (arc fiting) without performing clipper ops
     void Thicken(double value);
-    void FitArcs();
     unsigned int num_curves()
     {
         return static_cast<int>(m_curves.size());
@@ -100,11 +129,6 @@ public:
     static bool HolesLinked();
     void Split(std::list<CArea>& m_areas) const;
     double GetArea(bool always_add = false) const;
-    void SpanIntersections(const Span& span, std::list<Point>& pts) const;
-    void CurveIntersections(const CCurve& curve, std::list<Point>& pts) const;
-    void InsideCurves(const CCurve& curve, std::list<CCurve>& curves_inside) const;
-
-    void ChangeStartToNearest(const Point* pstart = NULL, double min_dist = 1.0);
 
     // Avoid outside direct accessing static member variable because of Windows DLL issue
 #define CAREA_PARAM_DECLARE(_type, _name) \
@@ -113,15 +137,11 @@ public:
 
     CAREA_PARAM_DECLARE(double, tolerance)
     CAREA_PARAM_DECLARE(bool, fit_arcs)
-    CAREA_PARAM_DECLARE(bool, clipper_simple)
     CAREA_PARAM_DECLARE(double, clipper_clean_distance)
     CAREA_PARAM_DECLARE(double, accuracy)
-    CAREA_PARAM_DECLARE(double, units)
-    CAREA_PARAM_DECLARE(short, min_arc_points)
-    CAREA_PARAM_DECLARE(short, max_arc_points)
     CAREA_PARAM_DECLARE(double, clipper_scale)
 
-    void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip) const;
+    void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip, ArcFittingMap& arcMap) const;
 
     // Following functions is add to operate on possible open curves
     void Clip(
@@ -130,6 +150,29 @@ public:
         Clipper2Lib::FillRule subjFillType = Clipper2Lib::FillRule::EvenOdd,
         Clipper2Lib::FillRule clipFillType = Clipper2Lib::FillRule::EvenOdd
     );
+
+    // Process intersection points to determine if their edges come from arcs.
+    //
+    // m_arc_fitting_map stores a record of which edges in Clipper are
+    // approximations of arcs, but if a Clipper operation splits any of these
+    // edges, that map will need to be updated to show that the resulting
+    // partial edge came from the same arc. This function does that update.
+    //
+    // This must be run after Clipper operations, before converting back to arcs.
+    void ProcessIntersectionPoints(const Clipper2Lib::Paths64& paths, bool is_closed);
+
+private:
+    // Z-callback for Clipper intersection handling
+    void ZCallback(
+        const Clipper2Lib::Point64& e1bot,
+        const Clipper2Lib::Point64& e1top,
+        const Clipper2Lib::Point64& e2bot,
+        const Clipper2Lib::Point64& e2top,
+        Clipper2Lib::Point64& pt
+    );
+
+    // Helper to create bound Z callback
+    Clipper2Lib::ZCallback64 MakeZCallback();
 };
 
 enum eOverlapType
@@ -142,7 +185,5 @@ enum eOverlapType
 
 eOverlapType GetOverlapType(const CCurve& c1, const CCurve& c2);
 eOverlapType GetOverlapType(const CArea& a1, const CArea& a2);
-bool IsInside(const Point& p, const CCurve& c);
-bool IsInside(const Point& p, const CArea& a);
 
 }  // namespace heeks
