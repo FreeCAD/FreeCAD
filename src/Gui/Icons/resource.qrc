@@ -173,8 +173,6 @@
         <file>preferences-general.svg</file>
         <file>preferences-import-export.svg</file>
         <file>preferences-python.svg</file>
-        <file>python-console-dock.svg</file>
-        <file>python-console-window.svg</file>
         <file>preferences-system.svg</file>
         <file>preferences-workbenches.svg</file>
         <file>process-stop.svg</file>
@@ -354,8 +352,6 @@
         <file>media-playback-stop.svg</file>
         <file>preferences-display.svg</file>
         <file>preferences-python.svg</file>
-        <file>python-console-dock.svg</file>
-        <file>python-console-window.svg</file>
         <file>preferences-general.svg</file>
         <file>preferences-import-export.svg</file>
         <file>preferences-workbenches.svg</file>

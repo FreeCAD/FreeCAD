@@ -49,6 +49,7 @@
 #include <QSettings>
 #include <QSignalMapper>
 #include <QStatusBar>
+#include <QStyle>
 #include <QThread>
 #include <QTimer>
 #include <QToolBar>
@@ -348,6 +349,18 @@ public:
     }
 
 protected:
+    QMenu* createPopupMenu() override
+    {
+        auto action = findChild<QAction*>(QStringLiteral("DockPythonConsoleTitleAction"));
+        if (!action) {
+            return nullptr;
+        }
+
+        auto menu = new QMenu(this);
+        menu->addAction(action);
+        return menu;
+    }
+
     void closeEvent(QCloseEvent* event) override
     {
         if (property("MainWindowClosing").toBool() || !event->spontaneous()) {
@@ -723,7 +736,7 @@ QAction* MainWindow::createPythonConsoleWindowAction(QObject* parent)
 {
     auto action = new QAction(parent);
     action->setObjectName(QStringLiteral("PythonConsoleWindowTitleAction"));
-    action->setIcon(Gui::BitmapFactory().iconFromTheme("python-console-window"));
+    action->setIcon(qApp->style()->standardIcon(QStyle::SP_TitleBarMaxButton));
     action->setText(tr("Open Python Console in Window"));
     action->setToolTip(tr("Open Python Console in Window"));
     action->setStatusTip(tr("Open Python Console in Window"));
@@ -736,7 +749,7 @@ QAction* MainWindow::createDockPythonConsoleAction(QObject* parent)
 {
     auto action = new QAction(parent);
     action->setObjectName(QStringLiteral("DockPythonConsoleTitleAction"));
-    action->setIcon(Gui::BitmapFactory().iconFromTheme("python-console-dock"));
+    action->setIcon(qApp->style()->standardIcon(QStyle::SP_TitleBarNormalButton));
     action->setText(tr("Dock Python Console"));
     action->setToolTip(tr("Dock Python Console"));
     action->setStatusTip(tr("Dock Python Console"));
@@ -811,7 +824,9 @@ void MainWindow::showPythonConsoleWindow(bool show)
         toolbar->setFloatable(false);
         toolbar->setIconSize(QSize(16, 16));
         toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-        toolbar->addAction(createDockPythonConsoleAction(toolbar));
+        auto dockAction = createDockPythonConsoleAction(toolbar);
+        toolbar->addAction(dockAction);
+        toolbar->setContextMenuPolicy(Qt::ActionsContextMenu);
         d->pythonConsoleWindow->addToolBar(Qt::TopToolBarArea, toolbar);
 
         if (auto geometry = group->GetASCII("Geometry"); !geometry.empty()) {
