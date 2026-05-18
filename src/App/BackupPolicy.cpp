@@ -228,7 +228,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                         // An error here is typically that we over-ran the maximum buffer length (
                         // which should be a *very* unusual condition).
                         Base::Console().error("Failed to create valid backup file name from format string:\n");
-                        Base::Console().error(saveBackupDateFormat.c_str());
+                        Base::Console().error("{}", saveBackupDateFormat);
                         const auto knownGoodFormat {"%Y-%m-%d_%H-%M-%S"};
                         std::strftime(buffer.data(), bufferLength, knownGoodFormat, &local_tm);
                     }

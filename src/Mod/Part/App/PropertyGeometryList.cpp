@@ -211,7 +211,7 @@ void PropertyGeometryList::trySaveGeometry(Geometry* geom, Base::Writer& writer)
     }
     catch (const Base::NotImplementedError& e) {
         Base::Console()
-            .warning(std::string("PropertyGeometryList"), "Not yet implemented: %s\n", e.what());
+            .warning("PropertyGeometryList", "Not yet implemented: {}\n", e.what());
     }
 }
 
@@ -234,7 +234,7 @@ void PropertyGeometryList::tryRestoreGeometry(Geometry* geom, Base::XMLReader& r
     }
     catch (const Base::NotImplementedError& e) {
         Base::Console()
-            .warning(std::string("PropertyGeometryList"), "Not yet implemented: %s\n", e.what());
+            .warning("PropertyGeometryList", "Not yet implemented: {}\n", e.what());
     }
 }
 

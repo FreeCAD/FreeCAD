@@ -352,7 +352,7 @@ std::string ParameterManager::replacePlaceholders(
                 auto tokenValue = resolve(tokenName, context);
 
                 if (!tokenValue) {
-                    Base::Console().warning("Requested non-existent style parameter token '%s'.\n", tokenName);
+                    Base::Console().warning("Requested non-existent style parameter token '{}'.\n", tokenName);
                     return QStringLiteral("");
                 }
 
@@ -368,7 +368,7 @@ std::string ParameterManager::replacePlaceholders(
             }
             catch (Base::Exception& e) {
                 Base::Console().warning(
-                    "Failed to evaluate inline expression '@{%s}': %s\n",
+                    "Failed to evaluate inline expression '@{{{}}}': {}\n",
                     exprBody,
                     e.what()
                 );
@@ -411,7 +411,7 @@ std::optional<Value> ParameterManager::resolve(const std::string& name, ResolveC
     }
 
     if (context.visited.contains(name)) {
-        Base::Console().warning("The style parameter '%s' contains circular-reference.\n", name);
+        Base::Console().warning("The style parameter '{}' contains circular-reference.\n", name);
         return expression(name);
     }
 

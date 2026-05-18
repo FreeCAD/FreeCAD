@@ -364,7 +364,7 @@ void NetworkRetriever::wgetFinished(int exitCode, QProcess::ExitStatus status)
     wget->setReadChannel(QProcess::StandardError);
     if (wget->canReadLine()) {
         QByteArray data = wget->readAll();
-        Base::Console().warning(data);
+        Base::Console().warning("{}", data.toStdString());
     }
     Q_EMIT wgetExited();
 }

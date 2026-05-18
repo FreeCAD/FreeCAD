@@ -128,7 +128,7 @@ TEST(Console, QueuedModeCallsPostEventHandlerWhenSet)
     });
 
     Base::Console().setConnectionMode(Base::ConsoleSingleton::Queued);
-    Base::Console().log(std::string("N"), "%s", "X");
+    Base::Console().send<Base::LogStyle::Log>("N", "{}", "X");
     Base::Console().setConnectionMode(Base::ConsoleSingleton::Direct);
     Base::Console().setPostEventHandler({});
 

@@ -21,6 +21,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <fmt/printf.h>
 
 #include <Base/Interpreter.h>
 #include <Base/Matrix.h>
@@ -743,15 +744,24 @@ protected:
     // popup "Notification" show up in black in the output window and an information icon in the
     // notification popup "Log" goes to a log somewhere and not to the screen/user at all
 
-    template<typename... args>
-    static void ImportError(const char* format, args&&... argValues)
+    template<typename... Args>
+    static void ImportError(const char* format, Args&&... argValues)
     {
-        Base::ConsoleSingleton::instance().warning(format, std::forward<args>(argValues)...);
+        Base::ConsoleSingleton::instance().send<Base::LogStyle::Warning>(
+            "",
+            "{}",
+            fmt::sprintf(format, std::forward<Args>(argValues)...)
+        );
     }
-    template<typename... args>
-    static void ImportObservation(const char* format, args&&... argValues)
+
+    template<typename... Args>
+    static void ImportObservation(const char* format, Args&&... argValues)
     {
-        Base::ConsoleSingleton::instance().message(format, std::forward<args>(argValues)...);
+        Base::ConsoleSingleton::instance().send<Base::LogStyle::Message>(
+            "",
+            "{}",
+            fmt::sprintf(format, std::forward<Args>(argValues)...)
+        );
     }
     template<typename... args>
     void UnsupportedFeature(const char* format, args&&... argValues);

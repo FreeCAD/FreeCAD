@@ -375,7 +375,7 @@ void StartupPostProcess::checkOpenGL()
                                .arg(major)
                                .arg(minor)
                 + QStringLiteral("\n");
-            Base::Console().warning(message.toStdString().c_str());
+            Base::Console().warning("{}", message.toStdString());
             Dialog::DlgCheckableMessageBox::showMessage(
                 QCoreApplication::applicationName() + QStringLiteral(" - ")
                     + QObject::tr("Invalid OpenGL Version"),

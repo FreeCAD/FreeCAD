@@ -945,7 +945,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
             catch (...) {
                 std::ostringstream msg;
                 msg << Label.getValue() << ": failed to make 2D offset" << std::endl;
-                Base::Console().error(msg.str().c_str());
+                Base::Console().error("{}", msg.str());
             }
         }
 

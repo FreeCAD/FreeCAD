@@ -140,7 +140,7 @@ public:
                     Base::Console().log("??? ");
             }
 
-            Base::Console().log(inventor_event->getTypeId().getName().getString());
+            Base::Console().log("{}", inventor_event->getTypeId().getName().getString());
         }
         if (isMouseButtonEvent() || isGestureEvent()) {
             Base::Console().log(

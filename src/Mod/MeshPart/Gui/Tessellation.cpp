@@ -357,7 +357,7 @@ void Tessellation::process(int method, App::Document* doc, const std::list<App::
     }
     catch (const Base::Exception& e) {
         doc->abortTransaction();
-        Base::Console().error(e.what());
+        Base::Console().error("{}", e.what());
     }
 }
 

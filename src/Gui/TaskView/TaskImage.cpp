@@ -584,7 +584,7 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
         }
         else {
             Base::Console().warning(
-                std::string("Image scale"),
+                "Image scale",
                 "The second point is too close. Retry!\n"
             );
         }

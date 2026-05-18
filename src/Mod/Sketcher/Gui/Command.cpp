@@ -1161,7 +1161,7 @@ namespace {
                     "CmdSketcherMergeSketches",
                     "Skipping external geometry #%1\n")
                     .arg(displayId);
-                Base::Console().message(msg.toUtf8().constData());
+                Base::Console().message("{}", msg.toUtf8().constData());
             }
         };
 
@@ -1204,7 +1204,7 @@ namespace {
                         "CmdSketcherMergeSketches",
                         "External geometry '%1' is out of scope:\n")
                         .arg(oldRefName.c_str());
-                    Base::Console().message(msg.toUtf8().constData());
+                    Base::Console().message("{}", msg.toUtf8().constData());
                     printSkippedDisplayIds(srcGeoIds);
                 }
                 continue;
@@ -1363,7 +1363,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
                 .arg(addedConstraints)
                 .arg(srcConstraints)
                 .arg(srcSketch->getNameInDocument());
-            Base::Console().message(msg.toUtf8().constData());
+            Base::Console().message("{}", msg.toUtf8().constData());
         }
         if (addedConstraints > 0) {
             for (int i = 0; i < addedConstraints; i++) {
@@ -1378,7 +1378,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
                         "Skipping constraint #%1 of '%2': references unmerged geometry.\n")
                         .arg(i+1)
                         .arg(srcSketch->getNameInDocument());
-                    Base::Console().message(msg.toUtf8().constData());
+                    Base::Console().message("{}", msg.toUtf8().constData());
                     continue;
                 }
             }

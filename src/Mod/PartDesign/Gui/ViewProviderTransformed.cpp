@@ -172,7 +172,7 @@ void ViewProviderTransformed::handleTransformedResult(PartDesign::Transformed* p
 
     auto error = pcTransformed->getDocument()->getErrorDescription(pcTransformed);
     if (error) {
-        Base::Console().translatedUserError("ViewProviderTransformed", error);
+        Base::Console().translatedUserError("ViewProviderTransformed", "{}", error);
     }
 }
 

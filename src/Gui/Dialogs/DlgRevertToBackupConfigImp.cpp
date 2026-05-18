@@ -104,7 +104,8 @@ void DlgRevertToBackupConfigImp::accept()
     auto items = ui->listWidget->selectedItems();
     if (items.count() != 1) {
         Base::Console().error(
-            tr("No selection in dialog, cannot load backup file").toStdString().c_str()
+            "{}",
+            tr("No selection in dialog, cannot load backup file").toStdString()
         );
         return;
     }

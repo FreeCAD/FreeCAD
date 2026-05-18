@@ -1351,11 +1351,15 @@ void SketchObject::validateExternalLinks()
         }
         catch (Base::IndexError& indexError) {
             Base::Console().warning(
-                this->getFullLabel(), (indexError.getMessage() + "\n").c_str());
+                this->getFullLabel(),
+                std::format_string<std::string>{ "{}" },
+                indexError.getMessage() + "\n");
         }
         catch (Base::ValueError& valueError) {
             Base::Console().warning(
-                this->getFullLabel(), (valueError.getMessage() + "\n").c_str());
+                this->getFullLabel(),
+                std::format_string<std::string>{ "{}" },
+                valueError.getMessage() + "\n");
         }
         catch (Standard_Failure&) {
         }

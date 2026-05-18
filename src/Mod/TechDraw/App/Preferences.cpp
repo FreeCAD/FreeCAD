@@ -465,7 +465,7 @@ int Preferences::lineStandard()
     // this message will appear many times if the parameter is invalid.
     int parameterValue = getPreferenceGroup("Standards")->GetInt("LineStandard", 1);
     if (parameterValue < 0) {
-        Base::Console().warning(qPrintable(QApplication::translate(
+        Base::Console().warning("{}", qPrintable(QApplication::translate(
         "Preferences", "The LineStandard parameter is invalid. Using zero instead.", nullptr)));
         return 0;
     }

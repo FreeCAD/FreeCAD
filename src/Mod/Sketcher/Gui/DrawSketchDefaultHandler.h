@@ -528,7 +528,7 @@ protected:
                 // RuntimeError exceptions inside of the block above must provide a translatable
                 // message. It is reported both to developer (report view) and user (notifications
                 // area).
-                Base::Console().error(e.what());
+                Base::Console().error("{}", e.what());
             }
 
             // Keep the recompute separate so that everything is drawn even if execution fails
@@ -540,7 +540,7 @@ protected:
                 // RuntimeError exceptions inside of the block above must provide a translatable
                 // message. It is reported both to developer (report view) and user (notifications
                 // area).
-                Base::Console().error(e.what());
+                Base::Console().error("{}", e.what());
             }
             return handleContinuousMode();
         }
@@ -979,9 +979,15 @@ protected:
         sketchobject->diagnoseAdditionalConstraints(autoConstraints);
 
         if (sketchobject->getLastHasRedundancies()) {
-            Base::Console().warning(
+            Base::Console().send<
+                Base::LogStyle::Warning
+            >(
                 sketchobject->getFullLabel(),
-                QT_TRANSLATE_NOOP("Notifications", "Autoconstraints cause redundancy. Removing them") "\n"
+                "{}",
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Autoconstraints cause redundancy. Removing them"
+                )
             );
 
             auto lastsketchconstraintindex = sketchobject->Constraints.getSize() - 1;
@@ -1285,7 +1291,7 @@ private:
             );
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
     }
 

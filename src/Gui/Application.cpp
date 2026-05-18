@@ -1672,7 +1672,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
         Base::Interpreter().runString(nameGui.c_str());
     }
     catch (const Base::Exception& e) {
-        Base::Console().warning(e.what());
+        Base::Console().warning("{}", e.what());
         return;
     }
 
@@ -2366,7 +2366,7 @@ void messageHandlerCoin(const SoError* error, void* /*userdata*/)
     }
     else if (error) {
         const char* msg = error->getDebugString().getString();
-        Base::Console().log(msg);
+        Base::Console().log("{}", msg);
     }
 }
 
