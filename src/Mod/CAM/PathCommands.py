@@ -68,7 +68,7 @@ class _CommandSelectLoop:
                 "\nor wire which contain selected edge."
                 "\n\nSelect two edges: searching loop edges in wires of the shape"
                 "\nor tangent edges."
-                "\n\nSelect three or more edges: searching horizontal wires",
+                "\n\nSelect three or more edges: searching horizontal wires"
                 "\n\nWithout sub selection all edges of the shape will be selected",
             ),
             "CmdType": "ForEdit",
@@ -113,7 +113,7 @@ class _CommandSelectLoop:
                     edges = tangentEdgeLoop(obj, subs[0], subs[1])
 
             if not edges:
-                # searching any wire with first selected edge
+                # searching all horizontal wires which contains selected edges
                 edges = wiresdetect(obj, subs)
 
         if edges and not names:
