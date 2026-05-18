@@ -2116,7 +2116,7 @@ void ViewProviderLink::handleChangedPropertyName(
 {
     // Migration: ShapeMaterial (App::PropertyMaterial) -> ShapeAppearance (App::PropertyMaterialList)
     if (strcmp(PropName, "ShapeMaterial") == 0
-        && TypeName == App::PropertyColor::getClassTypeId().getName()) {
+        && TypeName == App::PropertyMaterial::getClassTypeId().getName()) {
         App::PropertyMaterial prop;
         prop.Restore(reader);
         // Set the whole material object into the list (it will default to index 0)
