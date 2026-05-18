@@ -356,57 +356,55 @@ class ObjectOp(PathOp.ObjectOp):
 
         return pp, simobj
 
-    def _buildProfileOpenEdges(self, obj, edgeList, isHole, start, getsim):
-        """_buildPathArea(obj, edgeList, isHole, start, getsim) ... internal function."""
+    def _buildProfileOpenEdges(self, obj, openWire, start, getsim):
+        """_buildPathArea(obj, openWire, start, getsim) ... internal function."""
         Path.Log.track()
 
         paths = []
         heights = [i for i in self.depthparams]
         Path.Log.debug("depths: {}".format(heights))
         for i in range(0, len(heights)):
-            for baseShape in edgeList:
-                hWire = Part.Compound([Part.Wire(se) for se in Part.sortEdges(baseShape.Edges)])
-                hWire.translate(FreeCAD.Vector(0, 0, heights[i] - hWire.BoundBox.ZMin))
+            openWire.translate(FreeCAD.Vector(0, 0, heights[i] - openWire.BoundBox.ZMin))
 
-                pathParams = {}
-                pathParams["shapes"] = [hWire]
-                pathParams["feedrate"] = self.horizFeed
-                pathParams["feedrate_v"] = self.vertFeed
-                pathParams["verbose"] = True
-                pathParams["resume_height"] = obj.SafeHeight.Value
-                pathParams["retraction"] = obj.ClearanceHeight.Value
-                pathParams["return_end"] = True
-                # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
-                pathParams["preamble"] = False
+            pathParams = {}
+            pathParams["shapes"] = [openWire]
+            pathParams["feedrate"] = self.horizFeed
+            pathParams["feedrate_v"] = self.vertFeed
+            pathParams["verbose"] = True
+            pathParams["resume_height"] = obj.SafeHeight.Value
+            pathParams["retraction"] = obj.ClearanceHeight.Value
+            pathParams["return_end"] = True
+            # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
+            pathParams["preamble"] = False
 
-                # Always manually setting pathParams["start"] to the first or
-                # last vertex of the wire (depending on obj.Direction) ensures
-                # the edge is always milled in the correct direction. Using
-                # self.endVector would allow Path.fromShapes to reverse the
-                # direction if that would shorten the travel move and thus cause
-                # the edges being milled in seemingly random directions.
+            # Always manually setting pathParams["start"] to the first or
+            # last vertex of the wire (depending on obj.Direction) ensures
+            # the edge is always milled in the correct direction. Using
+            # self.endVector would allow Path.fromShapes to reverse the
+            # direction if that would shorten the travel move and thus cause
+            # the edges being milled in seemingly random directions.
 
-                verts = hWire.Wires[0].Vertexes
-                idx = 0
-                if obj.Direction == "CCW":
-                    idx = len(verts) - 1
-                x = verts[idx].X
-                y = verts[idx].Y
-                # Zero start value adjustments for Path.fromShapes() bug
-                if Path.Geom.isRoughly(x, 0.0):
-                    x = 0.00001
-                if Path.Geom.isRoughly(y, 0.0):
-                    y = 0.00001
-                pathParams["start"] = FreeCAD.Vector(x, y, verts[0].Z)
+            verts = openWire.Wires[0].Vertexes
+            idx = 0
+            if obj.Direction == "CCW":
+                idx = len(verts) - 1
+            x = verts[idx].X
+            y = verts[idx].Y
+            # Zero start value adjustments for Path.fromShapes() bug
+            if Path.Geom.isRoughly(x, 0.0):
+                x = 0.00001
+            if Path.Geom.isRoughly(y, 0.0):
+                y = 0.00001
+            pathParams["start"] = FreeCAD.Vector(x, y, verts[0].Z)
 
-                obj.PathParams = str(
-                    {key: value for key, value in pathParams.items() if key != "shapes"}
-                )
-                Path.Log.debug("Path with params: {}".format(obj.PathParams))
+            obj.PathParams = str(
+                {key: value for key, value in pathParams.items() if key != "shapes"}
+            )
+            Path.Log.debug("Path with params: {}".format(obj.PathParams))
 
-                pp, end_vector = Path.fromShapes(**pathParams)
-                paths.extend(pp.Commands)
-                Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
+            pp, end_vector = Path.fromShapes(**pathParams)
+            paths.extend(pp.Commands)
+            Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
 
         self.endVector = end_vector
         simobj = None
@@ -426,7 +424,6 @@ class ObjectOp(PathOp.ObjectOp):
 
         # Instantiate class variables for operation reference
         self.endVector = None
-        self.leadIn = 2.0
 
         # Initiate depthparams and calculate operation heights for operation
         self.depthparams = self._customDepthParams(obj, obj.StartDepth.Value, obj.FinalDepth.Value)
@@ -437,16 +434,7 @@ class ObjectOp(PathOp.ObjectOp):
         else:
             start = None
 
-        # Adjust tuples length received from other PathWB tools/operations
-        shapes = []
-        for shp in self.areaOpShapes(obj):
-            if len(shp) == 2:
-                fc, iH = shp
-                #     fc, iH,  sub or description
-                tup = fc, iH, "otherOp"
-                shapes.append(tup)
-            else:
-                shapes.append(shp)
+        shapes = self.areaOpShapes(obj)
 
         # Sorting shapes
         if (
@@ -456,15 +444,22 @@ class ObjectOp(PathOp.ObjectOp):
         ):
             locations = []
             for s in shapes:
-                if s[2] == "OpenEdge":
-                    shp = Part.makeCompound(s[0])
-                else:
-                    shp = s[0]
+                shp = s[0]
                 locations.append({"x": shp.BoundBox.XMax, "y": shp.BoundBox.YMax, "shape": s})
-
             locations = PathUtils.sort_locations(locations, ["x", "y"])
-
             shapes = [j["shape"] for j in locations]
+
+        # Adjust tuples length received from other PathWB tools/operations
+        rshapes = []
+        for shp in shapes:
+            if len(shp) == 2:
+                rshapes.append((shp[0], shp[1], "otherOp"))
+            elif len(shp) == 3 and isinstance(shp[1], list):  # unpack open wires
+                rshapes.extend((s, False, "OpenEdge") for s in shp[1])
+            else:
+                rshapes.append(shp)
+
+        shapes = rshapes
 
         # Combine similar tasks for Collectively HandleMultipleFeatures
         if (
@@ -478,14 +473,8 @@ class ObjectOp(PathOp.ObjectOp):
                 combine = []
                 for sh, iH, desc in shapes:
                     if (iH, desc) == key:
-                        if desc == "OpenEdge":  # is a list of shapes
-                            combine.extend(sh)
-                        else:
-                            combine.append(sh)
-                if desc == "OpenEdge":  # should be a list of shapes
-                    fc = [Part.makeCompound(combine)]
-                else:
-                    fc = Part.makeCompound(combine)
+                        combine.append(sh)
+                fc = Part.makeCompound(combine)
                 collectively.append((fc, key[0], key[1]))
 
             shapes = collectively
@@ -504,7 +493,7 @@ class ObjectOp(PathOp.ObjectOp):
 
             try:
                 if profileEdgesIsOpen:
-                    pp, sim = self._buildProfileOpenEdges(obj, shape, isHole, start, getsim)
+                    pp, sim = self._buildProfileOpenEdges(obj, shape, start, getsim)
                 else:
                     pp, sim = self._buildPathArea(obj, shape, isHole, start, getsim)
             except Exception as e:
