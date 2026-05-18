@@ -21,8 +21,6 @@
 #                                                                           *
 # **************************************************************************/
 
-import Assembly_rc
-
 
 class AssemblyCommandGroup:
     def __init__(self, cmdlist, menu, tooltip=None):

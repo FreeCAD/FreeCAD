@@ -3,6 +3,8 @@ macro(SetupShibokenAndPyside)
 
     option(FREECAD_USE_SHIBOKEN "Links to the shiboken library at build time. If OFF its Python module is imported at runtime" ON)
     option(FREECAD_USE_PYSIDE "Links to the PySide libraries at build time." ON)
+    option(FREECAD_BINARY_PYTHON_RC_FILES "Put Qt resource file binaries outside of their corresponding Python files." ON)
+    mark_as_advanced(FREECAD_BINARY_PYTHON_RC_FILES)
 
     if(DEFINED MACPORTS_PREFIX)
         find_package(Shiboken REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
@@ -177,35 +179,93 @@ macro(SetupShibokenAndPyside)
 
 endmacro()
 
+file(
+    GENERATE
+    OUTPUT "${CMAKE_BINARY_DIR}/cMake/FreeCAD_Helpers/PysideQtRccGen.cmake"
+    CONTENT [[
+cmake_minimum_required(VERSION 3.22.0)
+file(WRITE "${OUT}"
+    "# Auto-generated loading code for ${RCCBIN}\n"
+    "from pathlib import Path\n"
+    "from PySide${PYSIDE_MAJOR_VERSION}.QtCore import QResource\n"
+    "QResource.registerResource(str(Path(__file__).absolute().parent / \"${RCCBIN}\"))\n"
+)
+]])
 
-macro(PYSIDE_WRAP_RC outfiles)
-  if(NOT PYSIDE_RCC_EXECUTABLE)
-    message(FATAL_ERROR "Qt rcc is required for generating ${ARGN}")
-  endif()
-  foreach(it ${ARGN})
-    get_filename_component(outfile ${it} NAME_WE)
-    get_filename_component(infile ${it} ABSOLUTE)
-    set(outfile "${CMAKE_CURRENT_BINARY_DIR}/${outfile}_rc.py")
-    #ADD_CUSTOM_TARGET(${it} ALL
-    #  DEPENDS ${outfile}
-    #)
-    if(WIN32 OR APPLE)
-        add_custom_command(OUTPUT ${outfile}
-          COMMAND ${PYSIDE_RCC_EXECUTABLE} ${RCCOPTIONS} ${infile} -o ${outfile}
-          MAIN_DEPENDENCY ${infile}
-        )
-    else()
-        # Especially on Open Build Service we don't want changing date like
-        # pyside-rcc generates in comments at beginning, which is why
-        # we follow the tool command with in-place sed.
-        add_custom_command(OUTPUT "${outfile}"
-          COMMAND "${PYSIDE_RCC_EXECUTABLE}" ${RCCOPTIONS} "${infile}" ${PY_ATTRIBUTE} -o "${outfile}"
-          # The line below sometimes catches unwanted lines too - but there is no date in the file
-          # anymore with Qt5 RCC, so commenting it out for now...
-          #COMMAND sed "/^# /d" "${outfile}" >"${outfile}.tmp" && mv "${outfile}.tmp" "${outfile}"
-          MAIN_DEPENDENCY "${infile}"
-        )
+# Function to generate Python files for Qt resources
+# Usage -
+#   PYSIDE_WRAP_RC(
+#     [RELATIVE outfiles_relative]
+#     [ABSOLUTE outfiles_absolute]
+#     [RESOURCES resources]
+#   )
+# Arguments -
+#   outfiles_relative - name of the list variable to append generated files' relative paths to
+#   outfiles_absolute - name of the list variable to append generated files' absolute paths to
+#   resources         - a list of .rc files to compile into Python Qt resources
+# The generated files are created in ${CMAKE_CURRENT_BINARY_DIR} and their name depends on the
+# respective resource files passed in ARGN.
+function(PYSIDE_WRAP_RC)
+    set(options)
+    set(oneValueArgs
+        RELATIVE
+        ABSOLUTE
+    )
+    set(multiValueArgs
+        RESOURCES
+    )
+    cmake_parse_arguments(arg "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+    if(NOT PYSIDE_RCC_EXECUTABLE)
+        message(FATAL_ERROR "Qt rcc is required for generating ${ARGN}")
     endif()
-    list(APPEND ${outfiles} ${outfile})
-  endforeach()
-endmacro()
+    if(("${arg_RELATIVE}" STREQUAL "") AND ("${arg_ABSOLUTE}" STREQUAL ""))
+        message(FATAL_ERROR "Neither RELATIVE or ABSOLUTE lists were specified")
+    endif()
+    foreach(it ${arg_RESOURCES})
+        get_filename_component(rcpy_base ${it} NAME_WE)
+        get_filename_component(infile ${it} ABSOLUTE)
+        file(RELATIVE_PATH infile_relative_to_root "${CMAKE_SOURCE_DIR}" "${infile}")
+        set(rcpy_relative "${rcpy_base}_rc.py")
+        set(rcpy "${CMAKE_CURRENT_BINARY_DIR}/${rcpy_relative}")
+
+        if(FREECAD_BINARY_PYTHON_RC_FILES)
+            set(rccbin_relative "${rcpy_base}_rc.rcc")
+            set(rccbin "${CMAKE_CURRENT_BINARY_DIR}/${rccbin_relative}")
+            add_custom_command(OUTPUT "${rcpy}" "${rccbin}"
+                COMMAND "${PYSIDE_RCC_EXECUTABLE}" --binary "${infile}" -o "${rccbin}"
+                COMMAND "${CMAKE_COMMAND}" -DOUT="${rcpy}" -DRCCBIN="${rccbin_relative}"
+                        -DPYSIDE_MAJOR_VERSION="${PYSIDE_MAJOR_VERSION}"
+                        -P "${CMAKE_BINARY_DIR}/cMake/FreeCAD_Helpers/PysideQtRccGen.cmake"
+                MAIN_DEPENDENCY "${infile}"
+                DEPENDS "${PYSIDE_RCC_EXECUTABLE}"
+                        "${CMAKE_BINARY_DIR}/cMake/FreeCAD_Helpers/PysideQtRccGen.cmake"
+                COMMENT "Generating binary Python Qt Resource files for ${infile_relative_to_root}"
+            )
+            if(NOT "${arg_RELATIVE}" STREQUAL "")
+                list(APPEND ${arg_RELATIVE} "${rcpy_relative}" "${rccbin_relative}")
+            endif()
+            if(NOT "${arg_ABSOLUTE}" STREQUAL "")
+                list(APPEND ${arg_ABSOLUTE} "${rcpy}" "${rccbin}")
+            endif()
+        else()
+            add_custom_command(OUTPUT "${rcpy}"
+                COMMAND "${PYSIDE_RCC_EXECUTABLE}" ${PYSIDE_RCC_OPTIONS} "${infile}" -o "${rcpy}"
+                MAIN_DEPENDENCY "${infile}"
+                DEPENDS "${PYSIDE_RCC_EXECUTABLE}"
+                COMMENT "Generating Python Qt Resource file for ${infile_relative_to_root}"
+            )
+            if(NOT "${arg_RELATIVE}" STREQUAL "")
+                list(APPEND ${arg_RELATIVE} "${rcpy_relative}")
+            endif()
+            if(NOT "${arg_ABSOLUTE}" STREQUAL "")
+                list(APPEND ${arg_ABSOLUTE} "${rcpy}")
+            endif()
+        endif()
+    endforeach()
+    if(NOT "${arg_RELATIVE}" STREQUAL "")
+        set(${arg_RELATIVE} "${${arg_RELATIVE}}" PARENT_SCOPE)
+    endif()
+    if(NOT "${arg_ABSOLUTE}" STREQUAL "")
+        set(${arg_ABSOLUTE} "${${arg_ABSOLUTE}}" PARENT_SCOPE)
+    endif()
+endfunction()
