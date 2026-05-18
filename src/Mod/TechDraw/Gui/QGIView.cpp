@@ -1014,7 +1014,7 @@ int QGIView::calculateFontPixelWidth(const QFont &font)
 const double QGIView::DefaultFontSizeInMM = 5.0;
 
 void QGIView::dumpRect(const char* text, QRectF rect) {
-    Base::Console().message("DUMP - %s - rect: (%.3f, %.3f) x (%.3f, %.3f)\n", text,
+    Base::Console().message("DUMP - {} - rect: ({:.3f}, {:.3f}) x ({:.3f}, {:.3f})\n", text,
                             rect.left(), rect.top(), rect.right(), rect.bottom());
 }
 

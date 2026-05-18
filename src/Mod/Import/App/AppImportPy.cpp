@@ -173,7 +173,7 @@ private:
                     reader.read(hDoc);
                 }
                 catch (OSD_Exception& e) {
-                    Base::Console().error("%s\n", e.GetMessageString());
+                    Base::Console().error("{}\n", e.GetMessageString());
                     Base::Console().message("Try to load STEP file without colors...\n");
 
                     Part::ImportStepParts(pcDoc, Utf8Name.c_str());
@@ -186,7 +186,7 @@ private:
                     reader.read(hDoc);
                 }
                 catch (OSD_Exception& e) {
-                    Base::Console().error("%s\n", e.GetMessageString());
+                    Base::Console().error("{}\n", e.GetMessageString());
                     Base::Console().message("Try to load IGES file without colors...\n");
 
                     Part::ImportIgesParts(pcDoc, Utf8Name.c_str());
@@ -654,7 +654,7 @@ private:
             PyMem_Free(fname);
             App::DocumentObject* obj
                 = static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
-            Base::Console().message("Imp:writeDXFObject - docObj: %s\n", obj->getNameInDocument());
+            Base::Console().message("Imp:writeDXFObject - docObj: {}\n", obj->getNameInDocument());
 
             if ((versionParm == 12) || (versionParm == 14)) {
                 versionOverride = true;

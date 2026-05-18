@@ -10744,7 +10744,7 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
     elts.erase(new_end, elts.end());
 
     if (elts.size() < 2) {
-        Base::Console().warning("Cannot create %s constraint: minimum 2 geometries.\n", constraintType.c_str());
+        Base::Console().warning("Cannot create {} constraint: minimum 2 geometries.\n", constraintType);
         return false;
     }
 
@@ -10759,7 +10759,7 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
         }
 
         if (!totalBBox.HasFinitePart()) {
-            Base::Console().warning("Cannot create %s constraint: bounding box is infinite\n", constraintType.c_str());
+            Base::Console().warning("Cannot create {} constraint: bounding box is infinite\n", constraintType);
             return false;
         }
 
@@ -10811,7 +10811,7 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
             isTextHeight ? "True" : "False");
     }
     else {
-        Base::Console().error("Unsupported list constraint type: %s\n", constraintType.c_str());
+        Base::Console().error("Unsupported list constraint type: {}\n", constraintType);
         return false;
     }
 

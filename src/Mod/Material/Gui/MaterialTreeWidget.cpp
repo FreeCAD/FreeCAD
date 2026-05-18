@@ -271,7 +271,7 @@ void MaterialTreeWidget::updateMaterial(const QString& uuid)
         material = std::make_shared<Materials::Material>(*getMaterialManager().getMaterial(uuid));
     }
     catch (Materials::MaterialNotFound const&) {
-        Base::Console().log("*** Unable to load material '%s'\n", uuid.toStdString().c_str());
+        Base::Console().log("*** Unable to load material '{}'\n", uuid.toStdString());
     }
 
     m_materialDisplay = material->getName();

@@ -2761,7 +2761,7 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
     command += camera;
     command += "\")";
 
-    Base::Console().message("%s\n", camera.c_str());
+    Base::Console().message("{}\n", camera);
     getGuiApplication()->macroManager()->addLine(MacroManager::Gui, command.c_str());
 }
 

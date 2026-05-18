@@ -151,7 +151,7 @@ static void setupF3D()
     if (f3d.major >= 2) {
         f3d.baseArgs = getF3DOptions(f3dPath);
     }
-    Base::Console().log("Running f3d version %d.%d\n", f3d.major, f3d.minor);
+    Base::Console().log("Running f3d version {}.{}\n", f3d.major, f3d.minor);
 }
 
 ThumbnailSource::ThumbnailSource(QString file)
@@ -172,16 +172,16 @@ void ThumbnailSource::run()
         QStringList args(f3d.baseArgs);
         args << QLatin1String("--output=") + _thumbnailPath << _file;
 
-        Base::Console().log("Creating thumbnail for %s...\n", _file.toStdString());
+        Base::Console().log("Creating thumbnail for {}...\n", _file.toStdString());
         QProcess process;
         process.start(f3dPath, args);
         if (!process.waitForFinished()) {
             process.kill();
-            Base::Console().log("Creating thumbnail for %s timed out\n", _file.toStdString());
+            Base::Console().log("Creating thumbnail for {} timed out\n", _file.toStdString());
             return;
         }
         if (process.exitStatus() == QProcess::CrashExit) {
-            Base::Console().log("Creating thumbnail for %s crashed\n", _file.toStdString());
+            Base::Console().log("Creating thumbnail for {} crashed\n", _file.toStdString());
             return;
         }
         if (process.exitCode() != 0) {

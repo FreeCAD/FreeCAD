@@ -322,7 +322,7 @@ void MaterialProperty::setValue(const QString& value)
             setQuantity(Base::Quantity::parse(value.toStdString()));
         }
         catch (const Base::ParserError& e) {
-            Base::Console().log("MaterialProperty::setValue Error '%s' - '%s'\n",
+            Base::Console().log("MaterialProperty::setValue Error '{}' - '{}'\n",
                                 e.what(),
                                 value.toStdString().c_str());
             // Save as a string
@@ -743,7 +743,7 @@ void Material::addPhysical(const QString& uuid)
                     _physical[propertyName] = std::make_shared<MaterialProperty>(property, uuid);
                 }
                 catch (const UnknownValueType&) {
-                    Base::Console().error("Property '%s' has unknown type '%s'. Ignoring\n",
+                    Base::Console().error("Property '{}' has unknown type '{}'. Ignoring\n",
                                           property.getName().toStdString().c_str(),
                                           property.getPropertyType().toStdString().c_str());
                 }
@@ -785,7 +785,7 @@ void Material::removePhysical(const QString& uuid)
         setEditStateAlter();
     }
     catch (ModelNotFound const&) {
-        Base::Console().log("Physical model not found '%s'\n", uuid.toStdString().c_str());
+        Base::Console().log("Physical model not found '{}'\n", uuid.toStdString());
     }
 }
 
@@ -821,7 +821,7 @@ void Material::addAppearance(const QString& uuid)
         }
     }
     catch (ModelNotFound const&) {
-        Base::Console().log("Appearance model not found '%s'\n", uuid.toStdString().c_str());
+        Base::Console().log("Appearance model not found '{}'\n", uuid.toStdString());
     }
 }
 
@@ -1445,7 +1445,7 @@ void Material::saveModels(QTextStream& stream, bool saveInherited) const
                     }
                 }
                 catch (const PropertyNotFound&) {
-                    Base::Console().log("Material::saveModels Property not found '%s'\n",
+                    Base::Console().log("Material::saveModels Property not found '{}'\n",
                                         propertyName.toStdString().c_str());
                 }
 
@@ -1842,8 +1842,8 @@ void Material::validate(Material& other) const
     }
 
     if (_tags.size() != other._tags.size()) {
-        Base::Console().log("Local tags count %d\n", _tags.size());
-        Base::Console().log("Remote tags count %d\n", other._tags.size());
+        Base::Console().log("Local tags count {}\n", _tags.size());
+        Base::Console().log("Remote tags count {}\n", other._tags.size());
         throw InvalidMaterial("Material tags counts don't match");
     }
     if (!other._tags.contains(_tags)) {
@@ -1851,8 +1851,8 @@ void Material::validate(Material& other) const
     }
 
     if (_physicalUuids.size() != other._physicalUuids.size()) {
-        Base::Console().log("Local physical model count %d\n", _physicalUuids.size());
-        Base::Console().log("Remote physical model count %d\n", other._physicalUuids.size());
+        Base::Console().log("Local physical model count {}\n", _physicalUuids.size());
+        Base::Console().log("Remote physical model count {}\n", other._physicalUuids.size());
         throw InvalidMaterial("Material physical model counts don't match");
     }
     if (!other._physicalUuids.contains(_physicalUuids)) {
@@ -1860,8 +1860,8 @@ void Material::validate(Material& other) const
     }
 
     if (_physicalUuids.size() != other._physicalUuids.size()) {
-        Base::Console().log("Local appearance model count %d\n", _physicalUuids.size());
-        Base::Console().log("Remote appearance model count %d\n", other._physicalUuids.size());
+        Base::Console().log("Local appearance model count {}\n", _physicalUuids.size());
+        Base::Console().log("Remote appearance model count {}\n", other._physicalUuids.size());
         throw InvalidMaterial("Material appearance model counts don't match");
     }
     if (!other._physicalUuids.contains(_physicalUuids)) {
@@ -1869,8 +1869,8 @@ void Material::validate(Material& other) const
     }
 
     if (_allUuids.size() != other._allUuids.size()) {
-        Base::Console().log("Local model count %d\n", _allUuids.size());
-        Base::Console().log("Remote model count %d\n", other._allUuids.size());
+        Base::Console().log("Local model count {}\n", _allUuids.size());
+        Base::Console().log("Remote model count {}\n", other._allUuids.size());
         throw InvalidMaterial("Material model counts don't match");
     }
     if (!other._allUuids.contains(_allUuids)) {

@@ -182,7 +182,7 @@ void ImportOCAFAssembly::loadShapes(
     );
 
     label.Dump(str);
-    Base::Console().message(str.str().c_str());
+    Base::Console().message("{}", str.str());
 #endif
 
     std::string asm_name = assembly;

@@ -191,13 +191,13 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                             try {
                                 if (!it.deleteFile()) {
                                     backupManagementError = true;
-                                    Base::Console().warning("Cannot remove backup file : %s\n",
+                                    Base::Console().warning("Cannot remove backup file : {}\n",
                                                             it.fileName().c_str());
                                 }
                             }
                             catch (...) {
                                 backupManagementError = true;
-                                Base::Console().warning("Cannot remove backup file : %s\n",
+                                Base::Console().warning("Cannot remove backup file : {}\n",
                                                         it.fileName().c_str());
                             }
                         }
@@ -310,7 +310,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                 fi.deleteFile();
             }
             catch (...) {
-                Base::Console().warning("Cannot remove backup file: %s\n",
+                Base::Console().warning("Cannot remove backup file: {}\n",
                                         fi.fileName().c_str());
                 backupManagementError = true;
             }

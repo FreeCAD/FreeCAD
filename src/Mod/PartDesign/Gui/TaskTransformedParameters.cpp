@@ -422,7 +422,7 @@ void TaskTransformedParameters::fillAxisCombo(Gui::ComboLinks& combolinks, Part:
             combolinks.addLink(orig->getZ(), "", tr("Base Z-axis"));
         }
         catch (const Base::Exception& ex) {
-            Base::Console().error("%s\n", ex.what());
+            Base::Console().error("{}\n", ex.what());
         }
     }
 
@@ -458,7 +458,7 @@ void TaskTransformedParameters::fillPlanesCombo(Gui::ComboLinks& combolinks, Par
             combolinks.addLink(orig->getXZ(), "", tr("Base XZ-plane"));
         }
         catch (const Base::Exception& ex) {
-            Base::Console().error("%s\n", ex.what());
+            Base::Console().error("{}\n", ex.what());
         }
     }
 

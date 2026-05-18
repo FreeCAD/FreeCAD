@@ -554,6 +554,6 @@ TransactionObject* TransactionFactory::createTransaction(const Base::Type& type)
         }
     }
 
-    Base::Console().log("Cannot create transaction object from %s\n", type.getName());
+    Base::Console().log("Cannot create transaction object from {}\n", type.getName());
     return nullptr;
 }

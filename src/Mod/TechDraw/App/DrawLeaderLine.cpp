@@ -295,7 +295,7 @@ Base::Vector3d DrawLeaderLine::lastSegmentDirection() const
 //! pagePoints are in mm from bottom left of page.
 DrawLeaderLine* DrawLeaderLine::makeLeader(DrawViewPart* parent, std::vector<Base::Vector3d> pagePoints, int iStartSymbol, int iEndSymbol)
 {
-    Base::Console().message("DLL::makeLeader(%s, %d, %d, %d)\n", parent->getNameInDocument(), pagePoints.size(), iStartSymbol, iEndSymbol);
+    Base::Console().message("DLL::makeLeader({}, {}, {}, {})\n", parent->getNameInDocument(), pagePoints.size(), iStartSymbol, iEndSymbol);
     if (pagePoints.size() < 2) {
         Base::Console().message("DLL::makeLeader - not enough pagePoints\n");
         return {};
@@ -467,9 +467,9 @@ bool DrawLeaderLine::getDefAuto() const
 
 void DrawLeaderLine::dumpWaypoints(const std::vector<Base::Vector3d> &points, const std::string &label)
 {
-    Base::Console().message("DLL::dumpWaypoints - %s\n", label.c_str());
+    Base::Console().message("DLL::dumpWaypoints - {}\n", label);
     for (auto& p : points) {
-        Base::Console().message(">>>> a point: %s\n", DU::formatVector(p).c_str());
+        Base::Console().message(">>>> a point: {}\n", DU::formatVector(p));
     }
 }
 

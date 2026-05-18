@@ -247,7 +247,7 @@ void TaskPatternParameters::showOriginAxes(bool show)
             }
         }
         catch (const Base::Exception& ex) {
-            Base::Console().error("TaskPatternParameters: Error accessing origin axes: %s\n", ex.what());
+            Base::Console().error("TaskPatternParameters: Error accessing origin axes: {}\n", ex.what());
         }
     }
 }

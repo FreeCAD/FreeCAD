@@ -62,7 +62,7 @@ void PATPathMaker::lineSetToFillItems(LineSet& ls)
         m_fillItems.push_back(fillItem);
 
         if (m_segCount > m_maxSeg) {
-            Base::Console().warning("PAT segment count exceeded: %ld\n", m_segCount);
+            Base::Console().warning("PAT segment count exceeded: {}\n", m_segCount);
             break;
         }
     }
@@ -153,7 +153,7 @@ QPainterPath PATPathMaker::dashedPPath(const std::vector<double> dashPattern, co
          while (travel < lineLength) {
              bool stop = false;
             if (m_segCount > 10000) {
-                Base::Console().warning("PAT segment count exceeded: %ld\n", m_segCount);
+                Base::Console().warning("PAT segment count exceeded: {}\n", m_segCount);
                 break;
             }
 

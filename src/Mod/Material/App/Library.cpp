@@ -67,7 +67,7 @@ QByteArray Library::getIcon(const QString& iconPath)
 {
     QFile file(iconPath);
     if (!file.open(QIODevice::ReadOnly)) {
-        Base::Console().log("Failed to open icon file '%s'\n", iconPath.toStdString().c_str());
+        Base::Console().log("Failed to open icon file '{}'\n", iconPath.toStdString());
         return QByteArray();  // Return an empty QByteArray if file opening fails
     }
 

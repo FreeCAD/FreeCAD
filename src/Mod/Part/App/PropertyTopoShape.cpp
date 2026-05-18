@@ -618,7 +618,7 @@ void PropertyPartShape::saveToFile(Base::Writer& writer) const
             );
         }
         else {
-            Base::Console().error("Cannot save BRep file '%s'\n", fi.filePath().c_str());
+            Base::Console().error("Cannot save BRep file '{}'\n", fi.filePath());
         }
 
         std::stringstream ss;
@@ -704,7 +704,7 @@ void PropertyPartShape::loadFromStream(Base::Reader& reader)
     catch (const std::exception&) {
         reader.imbue(savedLocale);
         if (!reader.eof()) {
-            Base::Console().warning("Failed to load BRep file %s\n", reader.getFileName().c_str());
+            Base::Console().warning("Failed to load BRep file {}\n", reader.getFileName());
         }
     }
 }

@@ -129,9 +129,9 @@ void PyException::reportException() const
         PySys_SetObject("last_traceback", PP_last_traceback);
         Console().developerError(
             "pyException",
-            "%s%s: %s\n",
-            _stackTrace.c_str(),
-            _errorType.c_str(),
+            "{}{}: {}\n",
+            _stackTrace,
+            _errorType,
             what()
         );
     }

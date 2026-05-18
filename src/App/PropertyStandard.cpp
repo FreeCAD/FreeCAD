@@ -1607,7 +1607,7 @@ void PropertyString::Save(Base::Writer& writer) const
     auto verifyXMLString = [this](std::string& input) {
         const std::string output = this->validateXMLString(input);
         if (output != input) {
-            Base::Console().warning("XML output: Validate invalid string:\n'%s'\n'%s'\n",
+            Base::Console().warning("XML output: Validate invalid string:\n'{}'\n'{}'\n",
                                     input, output);
         }
         return output;

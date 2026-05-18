@@ -83,7 +83,7 @@ TEST(Console, DirectModeDeliversToObserver)
 
     Base::Console().setConnectionMode(Base::ConsoleSingleton::Direct);
 
-    Base::Console().message("Hello %s", "world");
+    Base::Console().message("Hello {}", "world");
 
     ASSERT_EQ(1U, logs.size());
     EXPECT_EQ(Base::LogStyle::Message, logs[0].level);
@@ -100,7 +100,7 @@ TEST(Console, QueuedModeFallsBackToDirectWithoutHandler)
     Base::Console().setPostEventHandler({});
     Base::Console().setConnectionMode(Base::ConsoleSingleton::Queued);
 
-    Base::Console().warning("Warn %d", 7);
+    Base::Console().warning("Warn {}", 7);
 
     Base::Console().setConnectionMode(Base::ConsoleSingleton::Direct);
 

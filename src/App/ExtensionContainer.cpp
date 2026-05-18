@@ -395,13 +395,13 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const
             ext->extensionSave(writer);
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
         catch (const std::exception& e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
         catch (const char* e) {
-            Base::Console().error("%s\n", e);
+            Base::Console().error("{}\n", e);
         }
 #ifndef FC_DEBUG
         catch (...) {
@@ -467,13 +467,13 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader)
             throw;  // re-throw
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
         catch (const std::exception& e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
         catch (const char* e) {
-            Base::Console().error("%s\n", e);
+            Base::Console().error("{}\n", e);
         }
 #ifndef FC_DEBUG
         catch (...) {

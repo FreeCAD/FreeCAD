@@ -154,7 +154,7 @@ CenterLine* CenterLine::CenterLineBuilder(const DrawViewPart* partFeat,
                                           const Mode mode,
                                           const bool flip)
 {
-//    Base::Console().message("CL::CLBuilder()\n - subNames: %d\n", subNames.size());
+//    Base::Console().message("CL::CLBuilder()\n - subNames: {}\n", subNames.size());
     std::pair<Base::Vector3d, Base::Vector3d> ends;
     std::vector<std::string> faces;
     std::vector<std::string> edges;
@@ -188,7 +188,7 @@ CenterLine* CenterLine::CenterLineBuilder(const DrawViewPart* partFeat,
         verts = subNames;
     }
     if ((ends.first).IsEqual(ends.second, Precision::Confusion())) {
-        Base::Console().warning("CenterLineBuilder - endpoints are equal: %s\n",
+        Base::Console().warning("CenterLineBuilder - endpoints are equal: {}\n",
                               DrawUtil::formatVector(ends.first).c_str());
         Base::Console().warning("CenterLineBuilder - check V/H/A and/or Flip parameters\n");
         return nullptr;
@@ -206,7 +206,7 @@ CenterLine* CenterLine::CenterLineBuilder(const DrawViewPart* partFeat,
 
 TechDraw::BaseGeomPtr CenterLine::scaledGeometry(const TechDraw::DrawViewPart* partFeat)
 {
-//    Base::Console().message("CL::scaledGeometry() - m_type: %d\n", m_type);
+//    Base::Console().message("CL::scaledGeometry() - m_type: {}\n", m_type);
     double scale = partFeat->getScale();
     double viewAngleDeg = partFeat->Rotation.getValue();
     std::pair<Base::Vector3d, Base::Vector3d> ends;
@@ -268,7 +268,7 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(const TechDraw::DrawViewPart* p
 
 TechDraw::BaseGeomPtr CenterLine::scaledAndRotatedGeometry(TechDraw::DrawViewPart* partFeat)
 {
-//    Base::Console().message("CL::scaledGeometry() - m_type: %d\n", m_type);
+//    Base::Console().message("CL::scaledGeometry() - m_type: {}\n", m_type);
     double scale = partFeat->getScale();
     double viewAngleDeg = partFeat->Rotation.getValue();
     std::pair<Base::Vector3d, Base::Vector3d> ends;
@@ -376,8 +376,8 @@ std::string CenterLine::toString() const
 
 void CenterLine::dump(const char* title)
 {
-    Base::Console().message("CL::dump - %s \n", title);
-    Base::Console().message("CL::dump - %s \n", toString().c_str());
+    Base::Console().message("CL::dump - {} \n", title);
+    Base::Console().message("CL::dump - {} \n", toString());
 }
 
 //! rotate a notional 2d vector from p1 to p2 around its midpoint by angleDeg
@@ -585,7 +585,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(const 
 {
     Q_UNUSED(flip)
 
-//    Base::Console().message("CL::calc2Lines() - mode: %d flip: %d edgeNames: %d\n", mode, flip, edgeNames.size());
+//    Base::Console().message("CL::calc2Lines() - mode: {} flip: {} edgeNames: {}\n", mode, flip, edgeNames.size());
     std::pair<Base::Vector3d, Base::Vector3d> result;
     if (edgeNames.empty()) {
         Base::Console().warning("CL::calcEndPoints2Lines - no edges!\n");
@@ -604,11 +604,11 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(const 
         if (bg) {
             edges.push_back(bg);
         } else {
-            Base::Console().message("CL::calcEndPoints2Lines - no geom for index: %d\n", idx);
+            Base::Console().message("CL::calcEndPoints2Lines - no geom for index: {}\n", idx);
         }
     }
     if (edges.size() != 2) {
-        Base::Console().message("CL::calcEndPoints2Lines - wrong number of edges: %d!\n", edges.size());
+        Base::Console().message("CL::calcEndPoints2Lines - wrong number of edges: {}!\n", edges.size());
         throw Base::IndexError("CenterLine wrong number of edges.");
     }
 
@@ -703,7 +703,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(const
                                                       const bool flip)
 
 {
-//    Base::Console().message("CL::calc2Points() - mode: %d\n", mode);
+//    Base::Console().message("CL::calc2Points() - mode: {}\n", mode);
     if (vertNames.empty()) {
         Base::Console().warning("CL::calcEndPoints2Points - no points!\n");
         return std::pair<Base::Vector3d, Base::Vector3d>();
@@ -899,7 +899,7 @@ void CenterLine::Save(Base::Writer &writer) const
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
         aoc->Save(writer);
     } else {
-        Base::Console().message("CL::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
+        Base::Console().message("CL::Save - unimplemented geomType: {}\n", static_cast<int>(m_geometry->getGeomType()));
     }
 
     writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << std::endl;
@@ -1006,7 +1006,7 @@ void CenterLine::Restore(Base::XMLReader &reader)
         aoc->setOCCEdge(GeometryUtils::edgeFromCircleArc(aoc));
         m_geometry = aoc;
     } else {
-        Base::Console().warning("CL::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
+        Base::Console().warning("CL::Restore - unimplemented geomType: {}\n", static_cast<int>(gType));
     }
 
     // older documents may not have the LineNumber element, so we need to check the

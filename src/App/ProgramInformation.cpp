@@ -308,7 +308,7 @@ void ProgramInformation::getIfcInfo(std::stringstream& str)
     catch (const Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().log("%s\n", e.what());
+        Base::Console().log("{}\n", e.what());
     }
 }
 

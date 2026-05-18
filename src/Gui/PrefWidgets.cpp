@@ -155,7 +155,7 @@ void PrefWidget::failedToSave(const QString& name) const
     if (objname.isEmpty()) {
         objname = "Undefined";
     }
-    Console().warning("Cannot save %s (%s)\n", typeid(*this).name(), objname.constData());
+    Console().warning("Cannot save {} ({})\n", typeid(*this).name(), objname.toStdString());
 }
 
 void PrefWidget::failedToRestore(const QString& name) const
@@ -164,7 +164,7 @@ void PrefWidget::failedToRestore(const QString& name) const
     if (objname.isEmpty()) {
         objname = "Undefined";
     }
-    Console().warning("Cannot restore %s (%s)\n", typeid(*this).name(), objname.constData());
+    Console().warning("Cannot restore {} ({})\n", typeid(*this).name(), objname.toStdString());
 }
 
 // --------------------------------------------------------------------

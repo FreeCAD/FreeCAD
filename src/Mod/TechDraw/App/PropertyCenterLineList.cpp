@@ -156,7 +156,7 @@ void PropertyCenterLineList::Restore(Base::XMLReader &reader)
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
-            Base::Console().error("CenterLine \"%s\" within a PropertyCenterLineList was subject to a partial restore.\n", reader.localName());
+            Base::Console().error("CenterLine \"{}\" within a PropertyCenterLineList was subject to a partial restore.\n", reader.localName());
             if(isOrderRelevant()) {
                 // Pushes the best try by the CenterLine class
                 values.push_back(newG);

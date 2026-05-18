@@ -145,7 +145,7 @@ public:
     }
     void setIncludeEmptyLibraries(bool value)
     {
-        Base::Console().log("setIncludeEmptyLibraries(%s)\n", (value ? "true" : "false"));
+        Base::Console().log("setIncludeEmptyLibraries({})\n", (value ? "true" : "false"));
         _filterOptions.setIncludeEmptyLibraries(value);
     }
 

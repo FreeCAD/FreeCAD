@@ -101,7 +101,7 @@ void SymbolChooser::onCancelClicked()
 void SymbolChooser::onItemClicked(QListWidgetItem* item)
 {
     Q_UNUSED(item);
-    // Base::Console().message("SCS::onItemClicked(%s)\n", qPrintable(item->text()));
+    // Base::Console().message("SCS::onItemClicked({})\n", qPrintable(item->text()));
     // Are item and currentItem() the same? Should use item?
     QListWidgetItem* sourceItem = ui->lwSymbols->currentItem();
     QString targetText = sourceItem->text();
@@ -110,14 +110,14 @@ void SymbolChooser::onItemClicked(QListWidgetItem* item)
                    QStringLiteral(".svg");
     Q_EMIT symbolSelected(m_symbolPath, m_source);
 
-    // Base::Console().message("SC::onOKClicked - symbol: %s\n", qPrintable(m_symbolPath));
+    // Base::Console().message("SC::onOKClicked - symbol: {}\n", qPrintable(m_symbolPath));
     accept();
 }
 
 void SymbolChooser::onDirectoryChanged(const QString& newDir)
 {
     ui->lwSymbols->clear(); // Remove all previous symbols
-    // Base::Console().message("SC::onDirectoryChanged(%s)\n", qPrintable(newDir));
+    // Base::Console().message("SC::onDirectoryChanged({})\n", qPrintable(newDir));
     m_symbolDir = newDir + QStringLiteral("/");
     loadSymbolNames(m_symbolDir);
 }

@@ -135,7 +135,7 @@ PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
         setLayout(layout);
     }
     else {
-        Base::Console().error("Failed to load UI file from '%s'\n", (const char*)fn.toUtf8());
+        Base::Console().error("Failed to load UI file from '{}'\n", fn.toStdString());
     }
 }
 

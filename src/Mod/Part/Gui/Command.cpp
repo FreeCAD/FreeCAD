@@ -1312,7 +1312,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("Cannot convert %s because %s.\n", it->Label.getValue(), e.what());
+                Base::Console().error("Cannot convert {} because {}.\n", it->Label.getValue(), e.what());
             }
         }
     }
@@ -1377,7 +1377,7 @@ void CmdPartReverseShape::activated(int iMsg)
                 copyVisual(name.c_str(), "PointColor", it->getNameInDocument());
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("Cannot convert %s because %s.\n", it->Label.getValue(), e.what());
+                Base::Console().error("Cannot convert {} because {}.\n", it->Label.getValue(), e.what());
             }
         }
     }

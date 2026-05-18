@@ -297,7 +297,7 @@ void cmdAppDocumentArgs(const App::Document* doc, const std::string& cmd, Args&&
         );
     }
     catch (const std::exception& e) {
-        Base::Console().developerError(doc->Label.getStrValue(), "%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().developerError(doc->Label.getStrValue(), "{}: {}\n", e.what(), cmd);
     }
     catch (const Base::Exception&) {
         Base::Console().developerError(
@@ -447,7 +447,7 @@ void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
         );
     }
     catch (const std::exception& e) {
-        Base::Console().developerError(obj->getFullLabel(), "%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().developerError(obj->getFullLabel(), "{}: {}\n", e.what(), cmd);
     }
     catch (const Base::Exception&) {
         Base::Console().developerError(
@@ -483,7 +483,7 @@ void cmdGuiObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
         );
     }
     catch (const std::exception& e) {
-        Base::Console().developerError(obj->getFullLabel(), "%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().developerError(obj->getFullLabel(), "{}: {}\n", e.what(), cmd);
     }
     catch (const Base::Exception&) {
         Base::Console().developerError(
@@ -523,10 +523,10 @@ void doCommandT(Gui::Command::DoCmd_Type cmdType, const std::string& cmd, Args&&
         Gui::Command::doCommand(cmdType, "%s", _cmd.c_str());
     }
     catch (const std::exception& e) {
-        Base::Console().developerError("doCommandT", "%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().developerError("doCommandT", "{}: {}\n", e.what(), cmd);
     }
     catch (const Base::Exception&) {
-        Base::Console().developerError("doCommandT", "%s\n", _cmd.c_str());
+        Base::Console().developerError("doCommandT", "{}\n", _cmd);
         throw;
     }
 }

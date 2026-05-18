@@ -158,7 +158,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
         brep_hlr->Hide();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().error("GO::projectShape - OCC error - %s - while projecting shape\n",
+        Base::Console().error("GO::projectShape - OCC error - {} - while projecting shape\n",
                               e.GetMessageString());
         throw Base::RuntimeError("GeometryObject::projectShape - OCC error");
     }
@@ -452,7 +452,7 @@ TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape& face, const gp_Ax2&
 //!add edges meeting filter criteria for category, visibility
 void GeometryObject::extractGeometry(EdgeClass category, bool hlrVisible)
 {
-    //    Base::Console().message("GO::extractGeometry(%d, %d)\n", category, hlrVisible);
+    //    Base::Console().message("GO::extractGeometry({}, {})\n", category, hlrVisible);
     TopoDS_Shape filtEdges;
     if (hlrVisible) {
         switch (category) {
@@ -666,7 +666,7 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 // insertGeomForCE(ce)
 int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 {
-    //    Base::Console().message("GO::addCosmeticEdge(%X) 0\n", ce);
+    //    Base::Console().message("GO::addCosmeticEdge({:X}) 0\n", ce);
     double scale = m_parent->getScale();
     TechDraw::BaseGeomPtr e = ce->scaledGeometry(scale);
     e->setCosmetic(true);
@@ -713,7 +713,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end, st
 
 int GeometryObject::addCosmeticEdge(TechDraw::BaseGeomPtr base, std::string tagString)
 {
-    //    Base::Console().message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
+    //    Base::Console().message("GO::addCosmeticEdge({:X}, {}) 3\n", base, tagString);
     base->setCosmetic(true);
     base->setHlrVisible(true);
     base->source(SourceType::COSMETICEDGE);
@@ -799,7 +799,7 @@ bool GeometryObject::isWithinArc(double theta, double first, double last, bool c
 //note bbx is scaled
 Base::BoundBox3d GeometryObject::calcBoundingBox() const
 {
-    //    Base::Console().message("GO::calcBoundingBox() - edges: %d\n", edgeGeom.size());
+    //    Base::Console().message("GO::calcBoundingBox() - edges: {}\n", edgeGeom.size());
     Bnd_Box testBox;
     testBox.SetGap(0.0);
     if (!edgeGeom.empty()) {

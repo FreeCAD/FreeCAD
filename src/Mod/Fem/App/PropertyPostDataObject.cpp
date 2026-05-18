@@ -424,7 +424,7 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
             );
         }
         else {
-            Base::Console().error("Cannot save vtk file '%s'\n", fi.filePath().c_str());
+            Base::Console().error("Cannot save vtk file '{}'\n", fi.filePath());
         }
 
         std::stringstream ss;

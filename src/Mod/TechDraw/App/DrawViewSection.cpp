@@ -424,7 +424,7 @@ App::DocumentObjectExecReturn* DrawViewSection::execute()
     Base::Vector3d orgPnt = SectionOrigin.getValue();
 
     if (!isReallyInBox(gp_Pnt(orgPnt.x, orgPnt.y, orgPnt.z), centerBox)) {
-        Base::Console().warning("DVS: SectionOrigin doesn't intersect part in %s\n",
+        Base::Console().warning("DVS: SectionOrigin doesn't intersect part in {}\n",
                                 getNameInDocument());
     }
 
@@ -524,7 +524,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
         const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
         FCBRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
         if (!mkCut.IsDone()) {
-            Base::Console().warning("DVS: Section cut has failed in %s\n", getNameInDocument());
+            Base::Console().warning("DVS: Section cut has failed in {}\n", getNameInDocument());
             continue;
         }
         builder.Add(cutPieces, mkCut.Shape());
@@ -554,7 +554,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {// prism & input don't intersect.  rawShape is
                            // garbage, don't bother.
-        Base::Console().warning("DVS::makeSectionCut - prism & input don not intersect - %s\n",
+        Base::Console().warning("DVS::makeSectionCut - prism & input don not intersect - {}\n",
                                 Label.getValue());
         return;
     }
@@ -595,7 +595,7 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& uncenteredCutShap
         }
     }
     catch (Standard_Failure& e1) {
-        Base::Console().warning("DVS::prepareShape - failed to build shape %s - %s **\n",
+        Base::Console().warning("DVS::prepareShape - failed to build shape {} - {} **\n",
                                 getNameInDocument(),
                                 e1.GetMessageString());
     }
@@ -781,7 +781,7 @@ TopoDS_Compound DrawViewSection::mapToPage(const TopoDS_Shape& shapeToAlign)
     // stdZ);
     // project the faces in the shapeToAlign, build new faces from the resulting
     // wires and combine everything into a compound of faces
-    //    Base::Console().message("DVS::mapToPage() - shapeToAlign.null: %d\n",
+    //    Base::Console().message("DVS::mapToPage() - shapeToAlign.null: {}\n",
     //    shapeToAlign.IsNull());
     if (debugSection()) {
         BRepTools::Write(shapeToAlign, "DVSShapeToAlign.brep");// debug
@@ -844,7 +844,7 @@ TopoDS_Compound DrawViewSection::mapToPage(const TopoDS_Shape& shapeToAlign)
             // this may or may not be significant.  In the offset or noparallel
             // strategies, a profile segment that is parallel to the SectionNormal
             // will not generate a face.
-            Base::Console().log("DVS::mapToPage - %s - section face has no valid wires.\n",
+            Base::Console().log("DVS::mapToPage - {} - section face has no valid wires.\n",
                                 getNameInDocument());
             continue;
         }
@@ -895,7 +895,7 @@ TopoDS_Shape DrawViewSection::makeFaceFromWires(std::vector<TopoDS_Wire>& inWire
         }
 
         if (!mkFace.IsDone()) {
-            Base::Console().warning("DVS::makeFaceFromWires - %s - failed to make section face.\n",
+            Base::Console().warning("DVS::makeFaceFromWires - {} - failed to make section face.\n",
                                     getNameInDocument());
             return {};
         }
@@ -1146,7 +1146,7 @@ gp_Ax2 DrawViewSection::getSectionCS() const
         sectionCS = gp_Ax2(gOrigin, gNormal, gXDir);
     }
     catch (...) {
-        Base::Console().error("DVS::getSectionCS - %s - failed to create section CS\n",
+        Base::Console().error("DVS::getSectionCS - {} - failed to create section CS\n",
                               getNameInDocument());
     }
     return sectionCS;
@@ -1291,7 +1291,7 @@ void DrawViewSection::makeLineSets()
     std::string fileSpec = PatIncluded.getValue();
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().message("%s can not read hatch file: %s\n",
+        Base::Console().message("{} can not read hatch file: {}\n",
                                 getNameInDocument(),
                                 fileSpec.c_str());
         return;

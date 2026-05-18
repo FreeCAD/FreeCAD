@@ -212,7 +212,7 @@ void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         tempSet.clear();
 
-        Base::Console().message("Picked Element:%i Face:%i\n", elem, face);
+        Base::Console().message("Picked Element:{} Face:{}\n", elem, face);
 
 
         if (!ui->checkBox_Add->isChecked()) {

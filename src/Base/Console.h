@@ -243,7 +243,7 @@ using PyMethodDef = struct PyMethodDef;
 //             _instance.prefix(_str, _file, _line) << _msg;                                          \
 //             if (_instance.add_eol)                                                                 \
 //                 _str << '\n';                                                                      \
-//             Base::Console()._func(_notifier, "{}", _str.str().c_str());                            \
+//             Base::Console()._func(_notifier, "{}", _str.str());                            \
 //             if (_instance.refresh)                                                                 \
 //                 Base::Console().refresh();                                                         \
 //         }                                                                                          \
@@ -449,7 +449,7 @@ public:
  *  instance of the class from every where in c++ by simply using:
  *  \code
  *  #include <Base/Console.h>
- *  Base::Console().log("Stage: %d",i);
+ *  Base::Console().log("Stage: {}",i);
  *  \endcode
  *  \par
  *  ConsoleSingleton is able to switch between several modes to, e.g. switch

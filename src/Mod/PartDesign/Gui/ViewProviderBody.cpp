@@ -280,14 +280,14 @@ bool ViewProviderBody::doubleClicked()
 //    //Base::Console().error("ViewProviderBody::updateTree()\n");
 //    PartDesign::Body* body = getObject<PartDesign::Body>();
 //    bool active = body->IsActive.getValue();
-//    //Base::Console().error("Body is %s\n", active ? "active" : "inactive");
+//    //Base::Console().error("Body is {}\n", active ? "active" : "inactive");
 //    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
 //    std::vector<App::DocumentObject*> features = body->Group.getValues();
 //    bool highlight = true;
 //    App::DocumentObject* tip = body->Tip.getValue();
 //    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f !=
 //    features.end(); f++) {
-//        //Base::Console().error("Highlighting %s: %s\n", (*f)->getNameInDocument(), highlight ?
+//        //Base::Console().error("Highlighting {}: {}\n", (*f)->getNameInDocument(), highlight ?
 //        "true" : "false"); Gui::ViewProviderDocumentObject* vp =
 //        dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
 //        if (vp != NULL)
@@ -358,7 +358,7 @@ void ViewProviderBody::onChanged(const App::Property* prop)
                 setDisplayMaskMode(DisplayMode.getValueAsString());
             }
             else {
-                Base::Console().message("Set override mode: %s\n", getOverrideMode().c_str());
+                Base::Console().message("Set override mode: {}\n", getOverrideMode());
                 setDisplayMaskMode(getOverrideMode().c_str());
             }
         }

@@ -343,7 +343,7 @@ public:
             e.reportException();
         }
         catch (const std::exception& e) {
-            Base::Console().error("C++ exception in onViewValueChanged: %s\n", e.what());
+            Base::Console().error("C++ exception in onViewValueChanged: {}\n", e.what());
         }
     }
 

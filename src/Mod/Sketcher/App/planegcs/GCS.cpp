@@ -5611,7 +5611,7 @@ void System::identifyConflictingRedundantConstraints(
                 break;
         }
 
-        Base::Console().log("Sketcher::RedundantSolving-{}-\n", solvername.c_str());
+        Base::Console().log("Sketcher::RedundantSolving-{}-\n", solvername);
     }
 
     if (res == Success) {

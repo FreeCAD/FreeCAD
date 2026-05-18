@@ -52,7 +52,7 @@ void QGVNavStyleSolidWorks::handleKeyReleaseEvent(QKeyEvent *event)
 void QGVNavStyleSolidWorks::handleMousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)
-//    Base::Console().message("QGVNSSolidWorks::handleMousePressEvent() - button: %d buttons: %d\n", event->button(), event->buttons());
+//    Base::Console().message("QGVNSSolidWorks::handleMousePressEvent() - button: {} buttons: {}\n", event->button(), event->buttons());
 }
 
 void QGVNavStyleSolidWorks::handleMouseMoveEvent(QMouseEvent *event)
@@ -97,7 +97,7 @@ void QGVNavStyleSolidWorks::handleMouseMoveEvent(QMouseEvent *event)
 
 void QGVNavStyleSolidWorks::handleMouseReleaseEvent(QMouseEvent *event)
 {
-//    Base::Console().message("QGVNSSolidWorks::handleMouseReleaseEvent() - button: %d buttons: %d\n", event->button(), event->buttons());
+//    Base::Console().message("QGVNSSolidWorks::handleMouseReleaseEvent() - button: {} buttons: {}\n", event->button(), event->buttons());
     if (getViewer()->isBalloonPlacing()) {
         placeBalloon(event->pos());
     }

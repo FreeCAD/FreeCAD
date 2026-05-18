@@ -206,7 +206,7 @@ App::DocumentObjectExecReturn* SketchObject::execute()
     catch (const Base::Exception&) {
         // 9/16/24: We used to clear the constraints here, but we no longer want to do that
         // as missing reference geometry is not considered an error while we sort out sketcher UI.
-        // Base::Console().error("%s\nClear constraints to external geometry\n", e.what());
+        // Base::Console().error("{}\nClear constraints to external geometry\n", e.what());
         // we cannot trust the constraints of external geometries, so remove them
         //  delConstraintsToExternal();
     }

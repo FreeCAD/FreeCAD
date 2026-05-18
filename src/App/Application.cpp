@@ -1043,7 +1043,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().error("Exception opening file: {} [{}]\n", name, e.what());
             }
             catch (const std::exception &e) {
                 if (!errs && isMainDoc)
@@ -1051,7 +1051,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().error("Exception opening file: {} [{}]\n", name, e.what());
             }
             catch (...) {
                 if (errs) {
@@ -1153,8 +1153,8 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     for (auto &doc : openedDocs) {
         auto &timing = timings[doc];
-        Base::Console().log("%s restore time: %f\n", doc.getDocumentName(), timing.d1.count());
-        Base::Console().log("%s postprocess time: %f\n", doc.getDocumentName(), timing.d2.count());
+        Base::Console().log("{} restore time: {}\n", doc.getDocumentName(), timing.d1.count());
+        Base::Console().log("{} postprocess time: {}\n", doc.getDocumentName(), timing.d2.count());
     }
     PropertyLinkBase::updateAllElementReferences();
     _isRestoring = false;
@@ -2019,9 +2019,9 @@ void Application::destruct()
     for (const auto &it : paramMgr) {
         if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
             if (it.second->HasSerializer() && !it.second->IgnoreSave()) {
-                Base::Console().log("Saving %s...\n", it.first.c_str());
+                Base::Console().log("Saving {}...\n", it.first);
                 it.second->SaveDocument();
-                Base::Console().log("Saving %s...done\n", it.first.c_str());
+                Base::Console().log("Saving {}...done\n", it.first);
             }
         }
     }
@@ -2849,7 +2849,7 @@ void Application::initConfig(int argc, char ** argv)
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (mConfig["Verbose"] != "Strict")
-            Base::Console().message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
+            Base::Console().message("{} {}, Libs: {}.{}.{}{}R{}\n{}",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
@@ -2859,7 +2859,7 @@ void Application::initConfig(int argc, char ** argv)
                               mConfig["BuildRevision"].c_str(),
                               mConfig["CopyrightInfo"].c_str());
         else
-            Base::Console().message("%s %s, Libs: %s.%s.%s%sR%s\n",
+            Base::Console().message("{} {}, Libs: {}.{}.{}{}R{}\n",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
@@ -3041,11 +3041,11 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             if (auto cannonicalPath = file.getCannonicalPath()) {
                 file = Base::FileInfo(*cannonicalPath);
             } else {
-                Base::Console().error("Failed to process symlink file: %s\n", file.filePath());
+                Base::Console().error("Failed to process symlink file: {}\n", file.filePath());
             }
         }
 
-        Base::Console().log("Init:     Processing file: %s\n",file.filePath().c_str());
+        Base::Console().log("Init:     Processing file: {}\n",file.filePath());
 
         try {
             if (file.hasExtension("fcstd") || file.hasExtension("fcbak")
@@ -3081,10 +3081,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
                     processed.push_back(it);
-                    Base::Console().log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
+                    Base::Console().log("Command line open: {}.open(u\"{}\")\n",mods.front(),escapedstr);
                 }
                 else if (file.exists()) {
-                    Base::Console().warning("File format not supported: %s \n", file.filePath().c_str());
+                    Base::Console().warning("File format not supported: {} \n", file.filePath());
                 }
             }
         }
@@ -3092,10 +3092,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
+            Base::Console().error("Exception while processing file: {} [{}]\n", file.filePath(), e.what());
         }
         catch (...) {
-            Base::Console().error("Unknown exception while processing file: %s \n", file.filePath().c_str());
+            Base::Console().error("Unknown exception while processing file: {} \n", file.filePath());
         }
     }
 
@@ -3137,14 +3137,14 @@ void Application::processCmdLineFiles()
                     ,mods.front().c_str(),output.c_str());
             }
             else {
-                Base::Console().warning("File format not supported: %s \n", output.c_str());
+                Base::Console().warning("File format not supported: {} \n", output);
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
+            Base::Console().error("Exception while saving to file: {} [{}]\n", output, e.what());
         }
         catch (...) {
-            Base::Console().error("Unknown exception while saving to file: %s \n", output.c_str());
+            Base::Console().error("Unknown exception while saving to file: {} \n", output);
         }
     }
 }
@@ -3168,7 +3168,7 @@ void Application::runApplication()
         Base::Console().log("Exiting on purpose\n");
     }
     else {
-        Base::Console().log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
+        Base::Console().log("Unknown Run mode ({}) in main()?!?\n\n", mConfig["RunMode"]);
     }
 }
 
@@ -3218,10 +3218,10 @@ void Application::logStatus()
 {
     const std::string time_str = boost::posix_time::to_simple_string(
         boost::posix_time::second_clock::local_time());
-    Base::Console().log("Time = %s\n", time_str.c_str());
+    Base::Console().log("Time = {}\n", time_str);
 
     for (const auto & It : mConfig) {
-        Base::Console().log("%s = %s\n", It.first.c_str(), It.second.c_str());
+        Base::Console().log("{} = {}\n", It.first, It.second);
     }
 }
 
@@ -3254,7 +3254,7 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().error("%s in file %s.\n"
+        Base::Console().error("{} in file {}.\n"
                               "Continue with an empty configuration.\n",
                               e.what(), mConfig["SystemParameter"].c_str());
         _pcSysParamMngr->CreateDocument();
@@ -3288,7 +3288,7 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().error("%s in file %s.\n"
+        Base::Console().error("{} in file {}.\n"
                               "Continue with an empty configuration.\n",
                               e.what(), mConfig["UserParameter"].c_str());
         _pcUserParamMngr->CreateDocument();

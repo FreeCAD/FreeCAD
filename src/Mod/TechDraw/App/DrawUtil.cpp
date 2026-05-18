@@ -74,7 +74,7 @@ using namespace TechDraw;
 
 /*static*/ int DrawUtil::getIndexFromName(const std::string& geomName)
 {
-    //   Base::Console().message("DU::getIndexFromName(%s)\n", geomName.c_str());
+    //   Base::Console().message("DU::getIndexFromName({})\n", geomName);
     boost::regex re("\\d+$");// one of more digits at end of string
     boost::match_results<std::string::const_iterator> what;
     boost::match_flag_type flags = boost::match_default;
@@ -446,7 +446,7 @@ bool DrawUtil::apparentIntersection(TopoDS_Edge& edge0, TopoDS_Edge& edge1, gp_P
     }
 
     gp_Vec g(D - C);//between a point on each line
-    Base::Console().message("DU::apparentInter - C: %s  D: %s  g: %s\n",
+    Base::Console().message("DU::apparentInter - C: {}  D: {}  g: {}\n",
                             formatVector(C).c_str(),
                             formatVector(D).c_str(),
                             formatVector(g).c_str());
@@ -455,7 +455,7 @@ bool DrawUtil::apparentIntersection(TopoDS_Edge& edge0, TopoDS_Edge& edge1, gp_P
     double h = fxg.Magnitude();
     gp_Vec fxe = f.Crossed(e);
     double k = fxe.Magnitude();
-    Base::Console().message("DU::apparentInter - h: %.3f k: %.3f\n", h, k);
+    Base::Console().message("DU::apparentInter - h: {:.3f} k: {:.3f}\n", h, k);
     if (fpCompare(k, 0.0)) {
         //no intersection
         return false;
@@ -1051,7 +1051,7 @@ QPointF DrawUtil::invertY(QPointF v)
 //! Note: the centering operation is not considered here
 Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const Base::Vector3d &qtPoint)
 {
-//    Base::Console().message("DGU::toPaperSpace(%s)\n", formatVector(qtPoint).c_str());
+//    Base::Console().message("DGU::toPaperSpace({})\n", formatVector(qtPoint));
     // From Y+ is down to Y+ is up
     Base::Vector3d appPoint = invertY(qtPoint);
 
@@ -1077,7 +1077,7 @@ Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const QPointF& qtP
 //obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::split(std::string csvLine)
 {
-    //    Base::Console().message("DU::split - csvLine: %s\n", csvLine.c_str());
+    //    Base::Console().message("DU::split - csvLine: {}\n", csvLine);
     std::vector<std::string> result;
     std::stringstream lineStream(csvLine);
     std::string cell;
@@ -1091,7 +1091,7 @@ std::vector<std::string> DrawUtil::split(std::string csvLine)
 //obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::tokenize(std::string csvLine, std::string delimiter)
 {
-    //    Base::Console().message("DU::tokenize - csvLine: %s delimit: %s\n", csvLine.c_str(), delimiter.c_str());
+    //    Base::Console().message("DU::tokenize - csvLine: {} delimit: {}\n", csvLine, delimiter);
     std::string s(csvLine);
     size_t pos = 0;
     std::vector<std::string> tokens;
@@ -1193,7 +1193,7 @@ bool DrawUtil::isCrazy(TopoDS_Edge e)
         }
     }
 
-    //    Base::Console().message("DU::isCrazy - returns: %d ratio: %.3f\n", false, ratio);
+    //    Base::Console().message("DU::isCrazy - returns: {} ratio: {:.3f}\n", false, ratio);
     return false;
 }
 
@@ -1827,7 +1827,7 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
 //create empty outSpec file if inSpec
 void DrawUtil::copyFile(std::string inSpec, std::string outSpec)
 {
-    //    Base::Console().message("DU::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
+    //    Base::Console().message("DU::copyFile({}, {})\n", inSpec, outSpec);
     if (inSpec.empty()) {
         // create an empty file
         Base::FileInfo fi(outSpec);
@@ -1879,12 +1879,12 @@ bool DrawUtil::isGuiUp()
 // various debugging routines.
 void DrawUtil::dumpVertexes(const char* text, const TopoDS_Shape& s)
 {
-    Base::Console().message("DUMP - %s\n", text);
+    Base::Console().message("DUMP - {}\n", text);
     TopExp_Explorer expl(s, TopAbs_VERTEX);
     for (int i = 1; expl.More(); expl.Next(), i++) {
         const TopoDS_Vertex& v = TopoDS::Vertex(expl.Current());
         gp_Pnt pnt = BRep_Tool::Pnt(v);
-        Base::Console().message("v%d: (%.3f, %.3f, %.3f)\n", i, pnt.X(), pnt.Y(), pnt.Z());
+        Base::Console().message("v{}: ({:.3f}, {:.3f}, {:.3f})\n", i, pnt.X(), pnt.Y(), pnt.Z());
     }
 }
 
@@ -1893,7 +1893,7 @@ void DrawUtil::countFaces(const char* text, const TopoDS_Shape& s)
     TopTools_IndexedMapOfShape mapOfFaces;
     TopExp::MapShapes(s, TopAbs_FACE, mapOfFaces);
     int num = mapOfFaces.Extent();
-    Base::Console().message("COUNT - %s has %d Faces\n", text, num);
+    Base::Console().message("COUNT - {} has {} Faces\n", text, num);
 }
 
 //count # of unique Wires in shape.
@@ -1902,7 +1902,7 @@ void DrawUtil::countWires(const char* text, const TopoDS_Shape& s)
     TopTools_IndexedMapOfShape mapOfWires;
     TopExp::MapShapes(s, TopAbs_WIRE, mapOfWires);
     int num = mapOfWires.Extent();
-    Base::Console().message("COUNT - %s has %d wires\n", text, num);
+    Base::Console().message("COUNT - {} has {} wires\n", text, num);
 }
 
 void DrawUtil::countEdges(const char* text, const TopoDS_Shape& s)
@@ -1910,12 +1910,12 @@ void DrawUtil::countEdges(const char* text, const TopoDS_Shape& s)
     TopTools_IndexedMapOfShape mapOfEdges;
     TopExp::MapShapes(s, TopAbs_EDGE, mapOfEdges);
     int num = mapOfEdges.Extent();
-    Base::Console().message("COUNT - %s has %d edges\n", text, num);
+    Base::Console().message("COUNT - {} has {} edges\n", text, num);
 }
 
 void DrawUtil::dumpEdges(const char* text, const TopoDS_Shape& s)
 {
-    Base::Console().message("DUMP - %s\n", text);
+    Base::Console().message("DUMP - {}\n", text);
     TopExp_Explorer expl(s, TopAbs_EDGE);
     for (int i = 1; expl.More(); expl.Next(), i++) {
         const TopoDS_Edge& e = TopoDS::Edge(expl.Current());
@@ -1925,9 +1925,9 @@ void DrawUtil::dumpEdges(const char* text, const TopoDS_Shape& s)
 
 void DrawUtil::dump1Vertex(const char* text, const TopoDS_Vertex& v)
 {
-    //    Base::Console().message("DUMP - dump1Vertex - %s\n",text);
+    //    Base::Console().message("DUMP - dump1Vertex - {}\n",text);
     gp_Pnt pnt = BRep_Tool::Pnt(v);
-    Base::Console().message("%s: (%.3f, %.3f, %.3f)\n", text, pnt.X(), pnt.Y(), pnt.Z());
+    Base::Console().message("{}: ({:.3f}, {:.3f}, {:.3f})\n", text, pnt.X(), pnt.Y(), pnt.Z());
 }
 
 void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
@@ -1939,7 +1939,7 @@ void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
     const gp_Pnt& vStart = propStart.Value();
     BRepLProp_CLProps propEnd(adapt, end, 0, Precision::Confusion());
     const gp_Pnt& vEnd = propEnd.Value();
-    //Base::Console().message("%s edge:%d start:(%.3f, %.3f, %.3f)/%0.3f end:(%.2f, %.3f, %.3f)/%.3f\n", label, i,
+    //Base::Console().message("{} edge:{} start:({:.3f}, {:.3f}, {:.3f})/%0.3f end:({:.2f}, {:.3f}, {:.3f})/{:.3f}\n", label, i,
     //                        vStart.X(), vStart.Y(), vStart.Z(), start, vEnd.X(), vEnd.Y(), vEnd.Z(), end);
     Base::Console().message(
         "%s edge:%d start:(%.3f, %.3f, %.3f)  end:(%.2f, %.3f, %.3f) Orient: %d\n",
@@ -1953,7 +1953,7 @@ void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
         vEnd.Z(),
         static_cast<int>(e.Orientation()));
     double edgeLength = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
-    Base::Console().message(">>>>>>> length: %.3f  distance: %.3f ratio: %.3f type: %d\n",
+    Base::Console().message(">>>>>>> length: {:.3f}  distance: {:.3f} ratio: {:.3f} type: {}\n",
                             edgeLength,
                             vStart.Distance(vEnd),
                             edgeLength / vStart.Distance(vEnd),
@@ -1987,7 +1987,7 @@ void DrawUtil::dumpCS(const char* text, const gp_Ax2& CS)
     gp_Dir baseX = CS.XDirection();
     gp_Dir baseY = CS.YDirection();
     gp_Pnt baseOrg = CS.Location();
-    Base::Console().message("DU::dumpCS - %s Loc: %s Axis: %s X: %s Y: %s\n",
+    Base::Console().message("DU::dumpCS - {} Loc: {} Axis: {} X: {} Y: {}\n",
                             text,
                             DrawUtil::formatVector(baseOrg).c_str(),
                             DrawUtil::formatVector(baseAxis).c_str(),
@@ -2001,7 +2001,7 @@ void DrawUtil::dumpCS3(const char* text, const gp_Ax3& CS)
     gp_Dir baseX = CS.XDirection();
     gp_Dir baseY = CS.YDirection();
     gp_Pnt baseOrg = CS.Location();
-    Base::Console().message("DU::dumpCS3 - %s Loc: %s Axis: %s X: %s Y: %s\n",
+    Base::Console().message("DU::dumpCS3 - {} Loc: {} Axis: {} X: {} Y: {}\n",
                             text,
                             DrawUtil::formatVector(baseOrg).c_str(),
                             DrawUtil::formatVector(baseAxis).c_str(),

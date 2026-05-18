@@ -122,7 +122,7 @@ public:
             Base::Console().log("button3 release ");
         }
         if (isMouseButtonEvent()) {
-            Base::Console().log("%x", modifiers);
+            Base::Console().log("{:x}", modifiers);
         }
         if (isGestureEvent()) {
             Base::Console().log("Gesture ");

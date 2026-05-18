@@ -96,7 +96,7 @@ void DrawPage::onChanged(const App::Property* prop)
     if (prop == &KeepUpdated && KeepUpdated.getValue()) {
         if (!isRestoring() && !isUnsetting()) {
             //would be nice if this message was displayed immediately instead of after the recomputeFeature
-            Base::Console().message("Rebuilding Views for: %s/%s\n", getNameInDocument(),
+            Base::Console().message("Rebuilding Views for: {}/{}\n", getNameInDocument(),
                                     Label.getValue());
             updateAllViews();
             purgeTouched();
@@ -267,7 +267,7 @@ int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
 
     //check if View fits on Page
     if (!view->checkFit(this)) {
-        Base::Console().warning("%s is larger than page. Will be scaled.\n",
+        Base::Console().warning("{} is larger than page. Will be scaled.\n",
                                 view->getNameInDocument());
         view->ScaleType.setValue("Automatic");
     }
@@ -438,7 +438,7 @@ void DrawPage::unsetupObject()
         Views.setValues(emptyViews);
     }
     catch (...) {
-        Base::Console().warning("DP::unsetupObject - %s - error while deleting children\n",
+        Base::Console().warning("DP::unsetupObject - {} - error while deleting children\n",
                                 getNameInDocument());
     }
 

@@ -179,7 +179,7 @@ void QGIPrimPath::setWidth(double w)
 void QGIPrimPath::setStyle(Qt::PenStyle s)
 {
 // TODO: edge lines for faces are drawn with setStyle(Qt::NoPen) and trigger this message.
-//    Base::Console().warning("QGIPP::setStyle(Qt: %d) is deprecated. Use setLinePen instead\n", s);
+//    Base::Console().warning("QGIPP::setStyle(Qt: {}) is deprecated. Use setLinePen instead\n", s);
     m_styleNormal = s;
     m_pen.setStyle(s);
 }
@@ -187,7 +187,7 @@ void QGIPrimPath::setStyle(Qt::PenStyle s)
 void QGIPrimPath::setStyle(int s)
 {
 // TODO: edge lines for faces are drawn with setStyle(Qt::NoPen) and trigger this message.
-//    Base::Console().warning("QGIPP::setStyle(int: %d) is deprecated. Use setLinePen instead\n", s);
+//    Base::Console().warning("QGIPP::setStyle(int: {}) is deprecated. Use setLinePen instead\n", s);
     m_styleNormal = static_cast<Qt::PenStyle>(s);
     m_pen.setStyle(m_styleNormal);
 }

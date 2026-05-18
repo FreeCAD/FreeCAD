@@ -834,7 +834,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     }
     bool ro = Prop.isReadOnly();
 
-    Base::Console().log("Parameter %s was updated\n", Prop.getName());
+    Base::Console().log("Parameter {} was updated\n", Prop.getName());
 
     auto updateCheckable = [&](QCheckBox* widget, bool value) {
         [[maybe_unused]] QSignalBlocker blocker(widget);
@@ -1380,7 +1380,7 @@ void TaskHoleParameters::Observer::slotChangedObject(
 )
 {
     if (&Obj == hole) {
-        Base::Console().log("Parameter %s was updated with a new value\n", Prop.getName());
+        Base::Console().log("Parameter {} was updated with a new value\n", Prop.getName());
         if (Obj.getDocument()) {
             owner->changedObject(*Obj.getDocument(), Prop);
         }

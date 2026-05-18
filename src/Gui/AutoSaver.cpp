@@ -104,7 +104,7 @@ void AutoSaver::flushPendingSave(const QString& documentName)
         saveDocument(it->first, *it->second);
     }
     catch (...) {
-        Base::Console().error("Failed to auto-save document '%s'\n", it->first.c_str());
+        Base::Console().error("Failed to auto-save document '{}'\n", it->first);
     }
 }
 
@@ -216,7 +216,7 @@ void AutoSaver::timerEvent(QTimerEvent* event)
                 break;
             }
             catch (...) {
-                Base::Console().error("Failed to auto-save document '%s'\n", it.first.c_str());
+                Base::Console().error("Failed to auto-save document '{}'\n", it.first);
             }
         }
     }

@@ -125,7 +125,7 @@ void VectorEditWidget::setValueNoNotify(Base::Vector3d newValue)
 
 void VectorEditWidget::slotExpandButtonToggled(bool checked)
 {
-//    Base::Console().message("VEW::slotExpand - checked: %d\n", checked);
+//    Base::Console().message("VEW::slotExpand - checked: {}\n", checked);
     if (checked) {
         vectorEditLayout->addLayout(VectorEditItemLayout);
         vectorEditLayout->addItem(verticalSpacer);
@@ -173,7 +173,7 @@ void VectorEditWidget::slotZValueChanged(double newValue)
 
 void VectorEditWidget::updateDisplay()
 {
-//    Base::Console().message("VEW::updateDisplay() - m_value: %s\n", DrawUtil::formatVector(m_value).c_str());
+//    Base::Console().message("VEW::updateDisplay() - m_value: {}\n", DrawUtil::formatVector(m_value));
     QString qNewDisplayString = QString::fromStdString(DrawUtil::formatVector(m_value));
     leVectorDisplay->setText(qNewDisplayString);
 }

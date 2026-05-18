@@ -311,7 +311,7 @@ void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path& mo
         TryFindPreferencePacksInPackage(mod);
     }
     catch (const std::exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
     }
     catch (...) {
         // Failed to read the metadata, or to create the preferencePack based on it...

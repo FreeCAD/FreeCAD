@@ -659,7 +659,7 @@ void Placement::onSelectedVertexClicked()
             axis = Base::Vector3d(picked[0] - picked[1]);
         }
         double length = axis.Length();
-        Base::Console().message("Distance: %.8f\n", length);
+        Base::Console().message("Distance: {:.8f}\n", length);
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {  // copy to clipboard on
                                                                        // Shift+click
             QLocale loc;
@@ -710,7 +710,7 @@ void Placement::onSelectedVertexClicked()
         double angle;
         rot.getRawValue(tmp, angle);
         double length = (a - c).Length();
-        Base::Console().message("Distance: %.8f\n", length);
+        Base::Console().message("Distance: {:.8f}\n", length);
         Base::Vector3d v1(a - b);
         Base::Vector3d v2(c - b);
         v1.Normalize();

@@ -530,7 +530,7 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
             break;
         }
         catch (const Standard_Failure& e) {
-            Base::Console().log("Geom::baseFactory - OCC error - %s - while making spline\n",
+            Base::Console().log("Geom::baseFactory - OCC error - {} - while making spline\n",
                               e.GetMessageString());
             break;
         }
@@ -572,7 +572,7 @@ TopoDS_Edge BaseGeom::completeEdge(const TopoDS_Edge &edge) {
         }
     }
     catch (Standard_Failure &e) {
-        Base::Console().error("BaseGeom::completeEdge OCC error: %s\n", e.GetMessageString());
+        Base::Console().error("BaseGeom::completeEdge OCC error: {}\n", e.GetMessageString());
     }
 
     return TopoDS_Edge();
@@ -616,7 +616,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
 
 TopoShape BaseGeom::asTopoShape(double scale)
 {
-//    Base::Console().message("BG::asTopoShape(%.3f) - dump: %s\n", scale, dump().c_str());
+//    Base::Console().message("BG::asTopoShape({:.3f}) - dump: {}\n", scale, dump());
     TopoDS_Shape unscaledShape = ShapeUtils::scaleShape(getOCCEdge(), 1.0 / scale);
     TopoDS_Edge unscaledEdge = TopoDS::Edge(unscaledShape);
     return unscaledEdge;
@@ -678,7 +678,7 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
         a = v3.DotCross(v1, v2);
     }
     catch (const Standard_Failure& e) {
-        Base::Console().error("Geom::AOE::AOE - OCC error - %s - while making AOE in ctor\n",
+        Base::Console().error("Geom::AOE::AOE - OCC error - {} - while making AOE in ctor\n",
                               e.GetMessageString());
     }
 
@@ -1372,7 +1372,7 @@ void Vertex::restoreVertexTag(Base::XMLReader& reader)
 
 void Vertex::dump(const char* title)
 {
-    Base::Console().message("TD::Vertex - %s - point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
+    Base::Console().message("TD::Vertex - {} - point: {} vis: {} cosmetic: {}  cosLink: {} cosTag: {}\n",
                             title, DrawUtil::formatVector(pnt).c_str(), hlrVisible, cosmetic, cosmeticLink,
                             cosmeticTag.c_str());
 }

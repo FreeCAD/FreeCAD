@@ -330,7 +330,7 @@ bool QGIViewBalloon::getGroupSelection()
 //Set selection state for this and its children
 void QGIViewBalloon::setGroupSelection(bool isSelected)
 {
-    //    Base::Console().message("QGIVB::setGroupSelection(%d)\n", b);
+    //    Base::Console().message("QGIVB::setGroupSelection({})\n", b);
     setSelected(isSelected);
     balloonLabel->setSelected(isSelected);
     balloonLines->setSelected(isSelected);
@@ -340,7 +340,7 @@ void QGIViewBalloon::setGroupSelection(bool isSelected)
 
 void QGIViewBalloon::select(bool state)
 {
-    //    Base::Console().message("QGIVBall::select(%d)\n", state);
+    //    Base::Console().message("QGIVBall::select({})\n", state);
     setSelected(state);
     draw();
 }
@@ -541,7 +541,7 @@ void QGIViewBalloon::balloonLabelDragFinished()
 //from QGVP::mouseReleaseEvent - pos = eventPos in scene coords?
 void QGIViewBalloon::placeBalloon(QPointF pos)
 {
-    //    Base::Console().message("QGIVB::placeBalloon(%s)\n",
+    //    Base::Console().message("QGIVB::placeBalloon({})\n",
     //                            DrawUtil::formatVector(pos).c_str());
     auto balloon(dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()));
     if (!balloon) {

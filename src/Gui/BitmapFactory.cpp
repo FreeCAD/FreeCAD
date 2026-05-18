@@ -282,7 +282,7 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
         return icon;
     }
 
-    Base::Console().warning("Cannot find icon: %s\n", name);
+    Base::Console().warning("Cannot find icon: {}\n", name);
     return QPixmap(Gui::BitmapFactory().pixmapFromSvg("help-browser", QSize(16, 16)));
 }
 

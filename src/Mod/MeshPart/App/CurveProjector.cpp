@@ -355,7 +355,7 @@ void CurveProjectorSimple::projectCurve(
                 FaceProjctMap[It.Position()].push_back(TempResultPoint);
                 str << TempResultPoint.x << " " << TempResultPoint.y << " " << TempResultPoint.z
                     << std::endl;
-                Base::Console().log("IDX %d\n", It.Position());
+                Base::Console().log("IDX {}\n", It.Position());
 
                 if (bFirst) {
                     bFirst = false;
@@ -367,7 +367,7 @@ void CurveProjectorSimple::projectCurve(
     }
 
     str.close();
-    Base::Console().log("Projection map [%d facets with %d points]\n", FaceProjctMap.size(), PointCount);
+    Base::Console().log("Projection map [{} facets with {} points]\n", FaceProjctMap.size(), PointCount);
 }
 
 
@@ -477,7 +477,7 @@ void CurveProjectorWithToolMesh::makeToolMesh(const TopoDS_Edge& aEdge, std::vec
         LineSegs.push_back(s);
     }
 
-    Base::Console().log("Projection map [%d facets with %d points]\n", FaceProjctMap.size(), PointCount);
+    Base::Console().log("Projection map [{} facets with {} points]\n", FaceProjctMap.size(), PointCount);
 
 
     // build up the new mesh

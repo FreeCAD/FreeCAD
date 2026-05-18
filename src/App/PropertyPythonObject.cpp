@@ -274,7 +274,7 @@ std::string PropertyPythonObject::toString() const
     }
     catch (Py::Exception&) {
         Py::String typestr(this->object.type().str());
-        Base::Console().error("PropertyPythonObject::toString(): failed for %s\n",
+        Base::Console().error("PropertyPythonObject::toString(): failed for {}\n",
                               typestr.as_string().c_str());
         Base::PyException e;  // extract the Python error text
         e.reportException();
@@ -420,7 +420,7 @@ void PropertyPythonObject::restoreObject(Base::XMLReader& reader)
         e.clear();
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
     }
     catch (...) {
         Base::Console().error("Critical error in PropertyPythonObject::restoreObject\n");

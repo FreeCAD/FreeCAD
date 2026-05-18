@@ -179,7 +179,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     //       if the sketch can't be made into an appropriate face/prism.
     if (CuttingToolWireObject.getValue()->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
         if (!validateSketchNormal(CuttingToolWireObject.getValue())) {
-            Base::Console().warning("cutting object not aligned with section normal in %s\n", Label.getValue());
+            Base::Console().warning("cutting object not aligned with section normal in {}\n", Label.getValue());
         }
     }
 
@@ -272,7 +272,7 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
         waitingForAlign(true);
     }
     catch (...) {
-        Base::Console().warning("%s failed to make alignedPieces\n", Label.getValue());
+        Base::Console().warning("{} failed to make alignedPieces\n", Label.getValue());
         return;
     }
 
@@ -461,7 +461,7 @@ DrawComplexSection::findSectionPlaneIntersections(const TopoDS_Shape& shapeToInt
 {
     if (shapeToIntersect.IsNull()) {
         // this shouldn't happen
-        Base::Console().warning("DCS::findSectionPlaneInter - %s - cut shape is Null\n",
+        Base::Console().warning("DCS::findSectionPlaneInter - {} - cut shape is Null\n",
                                 getNameInDocument());
         return {};
     }
@@ -726,7 +726,7 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
         }
         else {
             //probably can't happen as cut profile has been checked before this
-            Base::Console().warning("DCS::makeSectionLineGeometry - profile is type: %d\n",
+            Base::Console().warning("DCS::makeSectionLineGeometry - profile is type: {}\n",
                                     static_cast<int>(sScaled.ShapeType()));
             return {};
         }
@@ -815,7 +815,7 @@ bool DrawComplexSection::validateOffsetProfile(const TopoDS_Wire& profile, Base:
         if (angleRad < angleThresholdRad &&
             angleRad > 0.0) {
             // profile segment is slightly skewed. possible bad SectionNormal?
-            Base::Console().warning("%s profile is slightly skewed. Check SectionNormal low decimal places\n",
+            Base::Console().warning("{} profile is slightly skewed. Check SectionNormal low decimal places\n",
                                     getNameInDocument());
             return false;
         }
@@ -1601,7 +1601,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingToolFromClosedProfile(const TopoDS_W
         }
     }
     catch (...) {
-        Base::Console().error("%s could not make tool from closed profile\n", Label.getValue());
+        Base::Console().error("{} could not make tool from closed profile\n", Label.getValue());
         return {};
     }
     gp_Dir gpNormal = getFaceNormal(toolFace);
@@ -1621,7 +1621,7 @@ bool DrawComplexSection::validateProfileAlignment(const TopoDS_Wire& profileWire
         // just a warning here, so don't fail on this
         constexpr double AngleThresholdDeg{5.0};
         if (!validateOffsetProfile(profileWire, SectionNormal.getValue(), AngleThresholdDeg)) {
-            Base::Console().warning("%s: profile and section normal are misaligned\n", Label.getValue());
+            Base::Console().warning("{}: profile and section normal are misaligned\n", Label.getValue());
         }
     }
 
@@ -1629,7 +1629,7 @@ bool DrawComplexSection::validateProfileAlignment(const TopoDS_Wire& profileWire
     //       if the sketch can't be made into an appropriate face/prism.
     if (CuttingToolWireObject.getValue()->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
         if (!validateSketchNormal(CuttingToolWireObject.getValue())) {
-            Base::Console().error("%s: cutting object not aligned with section normal\n", Label.getValue());
+            Base::Console().error("{}: cutting object not aligned with section normal\n", Label.getValue());
             return false;
         }
     }

@@ -699,13 +699,13 @@ unsigned validateSketches(
             continue;
         }
 
-        // Base::Console().error("Checking sketch %s\n", (*s)->getNameInDocument());
+        // Base::Console().error("Checking sketch {}\n", (*s)->getNameInDocument());
         //  Check whether this sketch is already being used by another feature
         //  Body features don't count...
         std::vector<App::DocumentObject*> inList = (*s)->getInList();
         std::vector<App::DocumentObject*>::iterator o = inList.begin();
         while (o != inList.end()) {
-            // Base::Console().error("Inlist: %s\n", (*o)->getNameInDocument());
+            // Base::Console().error("Inlist: {}\n", (*o)->getNameInDocument());
             if ((*o)->isDerivedFrom<PartDesign::Body>()) {
                 o = inList.erase(o);  // ignore bodies
             }
