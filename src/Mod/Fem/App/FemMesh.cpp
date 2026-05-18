@@ -580,7 +580,8 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
     TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
     ShapeAnalysis_ShapeTolerance analysis;
     double limit = analysis.Tolerance(solid, 1, shapetype);
-    Base::Console().log("The limit if a node is in or out: {:.12f} in scientific: {:.4e} \n", limit, limit);
+    Base::Console()
+        .log("The limit if a node is in or out: {:.12f} in scientific: {:.4e} \n", limit, limit);
 
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());

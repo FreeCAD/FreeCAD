@@ -78,26 +78,15 @@ FC_LOG_LEVEL_INIT("Tree", false, true, true)
     Base::Console().send<Base::LogStyle::Warning>(notifier, "{}", msg)
 #define TREE_SEND_ERR(notifier, msg) \
     Base::Console().send<Base::LogStyle::Error>(notifier, "{}", msg)
-#define TREE_SEND_LOG(notifier, msg) \
-    Base::Console().send<Base::LogStyle::Log>(notifier, "{}", msg)
+#define TREE_SEND_LOG(notifier, msg) Base::Console().send<Base::LogStyle::Log>(notifier, "{}", msg)
 
 #define _TREE_PRINT(_level, _func, _msg) \
-    _FC_PRINT( \
-        FC_LOG_INSTANCE, \
-        _level, \
-        _func, \
-        '[' << getTreeName() << "] " << _msg \
-    )
-#define TREE_MSG(_msg) \
-    _TREE_PRINT(FC_LOGLEVEL_MSG, TREE_SEND_MSG, _msg)
-#define TREE_WARN(_msg) \
-    _TREE_PRINT(FC_LOGLEVEL_WARN, TREE_SEND_WARN, _msg)
-#define TREE_ERR(_msg) \
-    _TREE_PRINT(FC_LOGLEVEL_ERR, TREE_SEND_ERR, _msg)
-#define TREE_LOG(_msg) \
-    _TREE_PRINT(FC_LOGLEVEL_LOG, TREE_SEND_LOG, _msg)
-#define TREE_TRACE(_msg) \
-    _TREE_PRINT(FC_LOGLEVEL_TRACE, TREE_SEND_LOG, _msg)
+    _FC_PRINT(FC_LOG_INSTANCE, _level, _func, '[' << getTreeName() << "] " << _msg)
+#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG, TREE_SEND_MSG, _msg)
+#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN, TREE_SEND_WARN, _msg)
+#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR, TREE_SEND_ERR, _msg)
+#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG, TREE_SEND_LOG, _msg)
+#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE, TREE_SEND_LOG, _msg)
 
 using namespace Gui;
 namespace sp = std::placeholders;

@@ -127,13 +127,7 @@ void PyException::reportException() const
         // set sys.last_vars to make post-mortem debugging work
         PyGILStateLocker locker;
         PySys_SetObject("last_traceback", PP_last_traceback);
-        Console().developerError(
-            "pyException",
-            "{}{}: {}\n",
-            _stackTrace,
-            _errorType,
-            what()
-        );
+        Console().developerError("pyException", "{}{}: {}\n", _stackTrace, _errorType, what());
     }
 }
 

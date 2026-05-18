@@ -248,16 +248,16 @@ using PyMethodDef = struct PyMethodDef;
 //                 Base::Console().refresh();                                                         \
 //         }                                                                                          \
 //     } while (0)
-// 
+//
 // #define _FC_PRINT(_instance, _l, _func, _msg)                                                      \
 //     __FC_PRINT(_instance, _l, _func, std::string(), _msg, __FILE__, __LINE__)
-// 
+//
 // #define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, message, _msg)
 // #define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, developerWarning, _msg)
 // #define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, developerError, _msg)
 // #define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, log, _msg)
 // #define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, log, _msg)
-// 
+//
 // #define _FC_MSG(_file, _line, _msg)                                                                \
 //     __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, message, std::string(), _msg, _file, _line)
 // #define _FC_WARN(_file, _line, _msg)                                                               \
@@ -664,8 +664,7 @@ public:
             ContentType content,
             const std::string& notifiername,
             const std::string& msg
-        ) const
-            = 0;
+        ) const = 0;
 
         virtual void refresh() const = 0;
     };

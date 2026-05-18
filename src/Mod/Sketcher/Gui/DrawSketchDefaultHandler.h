@@ -979,15 +979,10 @@ protected:
         sketchobject->diagnoseAdditionalConstraints(autoConstraints);
 
         if (sketchobject->getLastHasRedundancies()) {
-            Base::Console().send<
-                Base::LogStyle::Warning
-            >(
+            Base::Console().send<Base::LogStyle::Warning>(
                 sketchobject->getFullLabel(),
                 "{}",
-                QT_TRANSLATE_NOOP(
-                    "Notifications",
-                    "Autoconstraints cause redundancy. Removing them"
-                )
+                QT_TRANSLATE_NOOP("Notifications", "Autoconstraints cause redundancy. Removing them")
             );
 
             auto lastsketchconstraintindex = sketchobject->Constraints.getSize() - 1;
