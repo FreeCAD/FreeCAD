@@ -2125,7 +2125,7 @@ bool Document::containsLabel(std::string_view label)
     return d->objectLabelManager.containsName(label);
 }
 
-std::tuple<std::string, std::string, unsigned int, Base::UnlimitedUnsigned> Document::decomposeLabel(
+std::tuple<std::string_view, std::string_view, unsigned int, Base::UnlimitedUnsigned> Document::decomposeLabel(
     std::string_view label
 ) const
 {
@@ -2147,7 +2147,7 @@ std::string Document::makeUniqueLinkLabel(std::string_view baseLabel)
         return {};
     }
 
-    return d->objectLabelManager.makeUniqueName(baseLabel + " <1>");
+    return d->objectLabelManager.makeUniqueName(std::string(baseLabel) + " <1>");
 }
 
 bool Document::isAnyRestoring()
