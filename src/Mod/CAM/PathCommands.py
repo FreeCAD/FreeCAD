@@ -28,7 +28,7 @@ import Path
 import Path.Dressup.Utils as PathDressup
 
 from PathScripts.PathUtils import loopdetect
-from PathScripts.PathUtils import wiredetect
+from PathScripts.PathUtils import wiresdetect
 from PathScripts.PathUtils import horizontalEdgeLoop
 from PathScripts.PathUtils import tangentEdgeLoop
 from PathScripts.PathUtils import horizontalFaceLoop
@@ -68,6 +68,7 @@ class _CommandSelectLoop:
                 "\nor wire which contain selected edge."
                 "\n\nSelect two edges: searching loop edges in wires of the shape"
                 "\nor tangent edges."
+                "\n\nSelect three or more edges: searching horizontal wires",
                 "\n\nWithout sub selection all edges of the shape will be selected",
             ),
             "CmdType": "ForEdit",
@@ -104,7 +105,7 @@ class _CommandSelectLoop:
             if len(subs) == 1:
                 # one edge selected: searching horizontal edge loop
                 edges = horizontalEdgeLoop(obj, subs[0])
-            else:
+            elif len(subs) == 2:
                 # two edges selected: searching wire in shape which contain both edges
                 edges = loopdetect(obj, subs[0], subs[1])
                 if not edges:
@@ -113,7 +114,7 @@ class _CommandSelectLoop:
 
             if not edges:
                 # searching any wire with first selected edge
-                edges = wiredetect(obj, subs[0])
+                edges = wiresdetect(obj, subs)
 
         if edges and not names:
             hashList = [e.hashCode() for e in edges]

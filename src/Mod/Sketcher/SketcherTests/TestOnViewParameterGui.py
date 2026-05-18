@@ -51,6 +51,15 @@ class TestOnViewParameterGui(unittest.TestCase):
         if self.doc.Name in FreeCAD.listDocuments():
             FreeCAD.closeDocument(self.doc.Name)
 
+    def pack_color(self, color):
+        r, g, b, a = color
+        return (
+            int(r * 255.0 + 0.5) << 24
+            | int(g * 255.0 + 0.5) << 16
+            | int(b * 255.0 + 0.5) << 8
+            | int(a * 255.0 + 0.5)
+        )
+
     def pump(self, timeout_ms=50):
         loop = QtCore.QEventLoop()
         QtCore.QTimer.singleShot(timeout_ms, loop.quit)
@@ -198,3 +207,33 @@ class TestOnViewParameterGui(unittest.TestCase):
             4,
             "Expected the rectangle to be created after accepting both OVPs",
         )
+
+    @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
+    def test_auto_color_restores_line_color_from_preferences(self):
+        view_params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+        color_key = "SketchEdgeColor"
+        had_color = color_key in view_params.GetUnsigneds()
+        old_color = view_params.GetUnsigned(color_key, 0)
+
+        try:
+            manual_color = 0x112233FF
+            preference_color = 0x44AA88FF
+
+            view = self.sketch.ViewObject
+            view.AutoColor = False
+            view.LineColor = manual_color
+            self.assertEqual(self.pack_color(view.LineColor), manual_color)
+
+            view_params.SetUnsigned(color_key, preference_color)
+            self.pump(100)
+            self.assertEqual(self.pack_color(view.LineColor), manual_color)
+
+            view.AutoColor = True
+            self.pump(100)
+
+            self.assertEqual(self.pack_color(view.LineColor), preference_color)
+        finally:
+            if had_color:
+                view_params.SetUnsigned(color_key, old_color)
+            else:
+                view_params.RemUnsigned(color_key)

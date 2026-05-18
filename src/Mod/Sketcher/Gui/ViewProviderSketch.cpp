@@ -3457,6 +3457,7 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
 
     if (prop == &AutoColor) {
         updateColorPropertiesVisibility();
+        updateAutomaticColorProperties();
         return;
     }
 
@@ -3490,6 +3491,17 @@ void SketcherGui::ViewProviderSketch::updateColorPropertiesVisibility()
     ShapeAppearance.setStatus(App::Property::Hidden, usesAutomaticColors);
 }
 
+void SketcherGui::ViewProviderSketch::updateAutomaticColorProperties()
+{
+    if (!AutoColor.getValue()) {
+        return;
+    }
+
+    pObserver->updateFromParameter("SketchEdgeColor");
+    pObserver->updateFromParameter("SketchVertexColor");
+    pObserver->updateFromParameter("SketchFaceColor");
+}
+
 void SketcherGui::ViewProviderSketch::startRestoring()
 {
     // small hack: before restoring mark AutoColor property as non-touched
@@ -3516,9 +3528,7 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
 
     if (AutoColor.getValue()) {
         // update colors according to current user preferences
-        pObserver->updateFromParameter("SketchEdgeColor");
-        pObserver->updateFromParameter("SketchVertexColor");
-        pObserver->updateFromParameter("SketchFaceColor");
+        updateAutomaticColorProperties();
 
         updateColorPropertiesVisibility();
     }
