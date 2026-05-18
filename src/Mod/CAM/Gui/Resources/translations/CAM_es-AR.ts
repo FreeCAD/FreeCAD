@@ -1065,7 +1065,7 @@ Los valores más grandes (más a la derecha) calcularán más rápido; los valor
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="287"/>
       <source>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</source>
-      <translation type="unfinished">The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</translation>
+      <translation>Ángulo máximo permitido para la entrada de la rampa helicoidal. Si se establece en cero, se desactiva la limitación por ángulo de rampa.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="297"/>
@@ -4889,8 +4889,8 @@ Los valores más grandes (más a la derecha) calcularán más rápido; los valor
       <location filename="../../../Path/Op/Adaptive.py" line="1671"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
-      <translation type="unfinished">The maximum allowable helix ramp entry angle (degrees)
-Set to zero to disable limitation by ramp angle</translation>
+      <translation>Ángulo máximo de entrada permitido en la rampa helicoidal (grados).
+Establecer en cero para desactivar la limitación por ángulo de rampa</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1681"/>
@@ -4932,7 +4932,7 @@ Establecer en cero para desactivar la limitación por paso</translation>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1918"/>
       <source>The maximum allowable descent in a single revolution of the helixSet to zero to disable limitation by pitch</source>
-      <translation type="unfinished">The maximum allowable descent in a single revolution of the helixSet to zero to disable limitation by pitch</translation>
+      <translation>Descenso máximo permitido en una sola revolución de la hélice. Establecer en cero para desactivar la limitación por paso</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1615"/>
@@ -7474,7 +7474,7 @@ o en las aristas tangentes.</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="149"/>
       <source>Current unit schema &apos;{}&apos; expresses velocity in values &lt;i&gt;per second&lt;/i&gt;.</source>
-      <translation type="unfinished">Current unit schema &apos;{}&apos; expresses velocity in values &lt;i&gt;per second&lt;/i&gt;.</translation>
+      <translation>El esquema de unidades actual &apos;{}&apos; expresa la velocidad en valores &lt;i&gt;por segundo&lt;i&gt;.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="161"/>
@@ -10429,7 +10429,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="68"/>
       <source>V-Bit</source>
-      <translation type="unfinished">V-Bit</translation>
+      <translation>V-Bit</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="64"/>
@@ -11231,13 +11231,13 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2221"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2311"/>
       <source>JSON Error</source>
-      <translation type="unfinished">JSON Error</translation>
+      <translation>JSON Error</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2222"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2312"/>
       <source>Invalid JSON: {}</source>
-      <translation type="unfinished">Invalid JSON: {}</translation>
+      <translation>Inválido JSON {}</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2227"/>
@@ -11249,32 +11249,32 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2228"/>
       <source>Failed to parse data: {}</source>
-      <translation type="unfinished">Failed to parse data: {}</translation>
+      <translation>Error al analizar los datos: {}</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2241"/>
       <source>Edit as Form</source>
-      <translation type="unfinished">Edit as Form</translation>
+      <translation>Editar como formulario</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2247"/>
       <source>Failed to generate JSON: {}</source>
-      <translation type="unfinished">Failed to generate JSON: {}</translation>
+      <translation>Error al generar JSON: {}</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2285"/>
       <source>Duplicate Machine Name</source>
-      <translation type="unfinished">Duplicate Machine Name</translation>
+      <translation>Nombre de máquina duplicado</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2289"/>
       <source>A machine with the name &apos;{}&apos; already exists. Please choose a different name.</source>
-      <translation type="unfinished">A machine with the name &apos;{}&apos; already exists. Please choose a different name.</translation>
+      <translation>Ya existe una máquina con el nombre &apos;{}&apos;. Por favor, elija un nombre diferente.</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2319"/>
       <source>Failed to save: {}</source>
-      <translation type="unfinished">Failed to save: {}</translation>
+      <translation>Error al guardar: {}</translation>
     </message>
   </context>
   <context>
@@ -11282,17 +11282,17 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="105"/>
       <source>No base operation</source>
-      <translation type="unfinished">No base operation</translation>
+      <translation>No hay operación base</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="112"/>
       <source>Base object &apos;%s&apos; is not derived from Path::Feature</source>
-      <translation type="unfinished">Base object &apos;%s&apos; is not derived from Path::Feature</translation>
+      <translation>El objeto base &apos;%s&apos; no se deriva de Path::Feature</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="119"/>
       <source>Base operation &apos;%s&apos; with empty path</source>
-      <translation type="unfinished">Base operation &apos;%s&apos; with empty path</translation>
+      <translation>Operación base &apos;%s&apos; con ruta vacía</translation>
     </message>
   </context>
   <context>
@@ -11305,7 +11305,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="268"/>
       <source>Creates mirror of a selected path</source>
-      <translation type="unfinished">Creates mirror of a selected path</translation>
+      <translation>Crea un reflejo de la ruta seleccionada</translation>
     </message>
   </context>
   <context>
@@ -11341,12 +11341,12 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="217"/>
       <source>Bidirectional</source>
-      <translation type="unfinished">Bidirectional</translation>
+      <translation>Bidireccional</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="218"/>
       <source>Directional</source>
-      <translation type="unfinished">Directional</translation>
+      <translation>Direccional</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="219"/>
@@ -11356,12 +11356,12 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Op/Gui/MillFacing.py" line="165"/>
       <source>Mill Facing</source>
-      <translation type="unfinished">Mill Facing</translation>
+      <translation>Revestimiento de laminación</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/MillFacing.py" line="168"/>
       <source>Create a Mill Facing Operation to machine the top surface of stock</source>
-      <translation type="unfinished">Create a Mill Facing Operation to machine the top surface of stock</translation>
+      <translation>Cree una operación de fresado frontal para mecanizar la superficie superior del material</translation>
     </message>
   </context>
   <context>

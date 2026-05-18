@@ -1470,12 +1470,12 @@ Más nialas é, is ionann é agus Ga2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1051"/>
       <source>%1 fine dragging</source>
-      <translation type="unfinished">%1 fine dragging</translation>
+      <translation>%1 tarraingt mhín</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1054"/>
       <source>%1 coarse dragging</source>
-      <translation type="unfinished">%1 coarse dragging</translation>
+      <translation>%1 tarraingt gharbh</translation>
     </message>
   </context>
   <context>
@@ -5449,12 +5449,12 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
       <source>%1 fine dragging</source>
-      <translation type="unfinished">%1 fine dragging</translation>
+      <translation>%1 tarraingt mhín</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="141"/>
       <source>%1 coarse dragging</source>
-      <translation type="unfinished">%1 coarse dragging</translation>
+      <translation>%1 tarraingt gharbh</translation>
     </message>
   </context>
   <context>

@@ -42,7 +42,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="705"/>
       <source>Test Console Output</source>
-      <translation type="unfinished">Test Console Output</translation>
+      <translation>Test Konsol Output</translation>
     </message>
     <message>
       <location filename="../CommandTest.cpp" line="706"/>
@@ -184,7 +184,7 @@
     <message>
       <location filename="../TaskElementColors.cpp" line="202"/>
       <source>Set colors</source>
-      <translation type="unfinished">Set colors</translation>
+      <translation>Angiv farver</translation>
     </message>
   </context>
   <context>
@@ -1100,7 +1100,7 @@ med højre eller venstre knap og flyt musen op eller ned</translation>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="194"/>
       <source>Pack Already Exists</source>
-      <translation type="unfinished">Pack Already Exists</translation>
+      <translation>Pakke Findes Allerede</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="195"/>
@@ -1202,12 +1202,12 @@ med højre eller venstre knap og flyt musen op eller ned</translation>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="244"/>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="314"/>
       <source>Empty Text</source>
-      <translation type="unfinished">Empty Text</translation>
+      <translation>Tom Tekst</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
       <source>No Item Selected</source>
-      <translation type="unfinished">No Item Selected</translation>
+      <translation>Intet Element Valgt</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="213"/>
@@ -2033,7 +2033,7 @@ Dette kan f.eks. skyldes manglende rettigheder</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="149"/>
       <source>Changes all values to default values</source>
-      <translation type="unfinished">Changes all values to default values</translation>
+      <translation>Ændre alle værdier til standard værdier</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="166"/>
@@ -2194,7 +2194,7 @@ Angiv en anden mappe.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.cpp" line="314"/>
       <source>%1 not found. Would you like to start from the beginning?</source>
-      <translation type="unfinished">%1 not found. Would you like to start from the beginning?</translation>
+      <translation>%1 blev ikke fundet. Vil du starte fra begyndelsen?</translation>
     </message>
   </context>
   <context>
@@ -2425,7 +2425,7 @@ Angiv en anden mappe.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="96"/>
       <source>UUID</source>
-      <translation type="unfinished">UUID</translation>
+      <translation>UUID</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="119"/>
@@ -2545,23 +2545,23 @@ Angiv en anden mappe.</translation>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="79"/>
       <source>Empty Source</source>
-      <translation type="unfinished">Empty Source</translation>
+      <translation>Tom Kilde</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
       <source>Empty Destination</source>
-      <translation type="unfinished">Empty Destination</translation>
+      <translation>Tom Destination</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="103"/>
       <source>Failed to Extract Document</source>
-      <translation type="unfinished">Failed to Extract Document</translation>
+      <translation>Kunne ikke udpakke dokumentet</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="120"/>
       <source>Failed to Create Document</source>
-      <translation type="unfinished">Failed to Create Document</translation>
+      <translation>Kunne ikke oprette dokumentet</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
@@ -3661,7 +3661,7 @@ Du kan også bruge metoden: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocumentImp.cpp" line="119"/>
       <source>Warning: The format '%1' produces '%2' which contains invalid characters. They will be replaced with '-' when saving.</source>
-      <translation type="unfinished">Warning: The format '%1' produces '%2' which contains invalid characters. They will be replaced with '-' when saving.</translation>
+      <translation>Advarsel: Formatet '%1' producerer '%2' som indeholder ugyldige tegn. De vil blive erstattet med '-' når du gemmer.</translation>
     </message>
   </context>
   <context>
@@ -3823,12 +3823,12 @@ Du kan også bruge metoden: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="56"/>
       <source>Offscreen (new)</source>
-      <translation type="unfinished">Offscreen (new)</translation>
+      <translation>Offscreen (ny)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="57"/>
       <source>Offscreen (old)</source>
-      <translation type="unfinished">Offscreen (old)</translation>
+      <translation>Offscreen (gammel)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="58"/>
@@ -5326,7 +5326,7 @@ Søjlen 'Status' viser, om dokumentet kan gendannes.</translation>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="967"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1014"/>
       <source>Existing Item</source>
-      <translation type="unfinished">Existing Item</translation>
+      <translation>Eksisterende Element</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="830"/>
@@ -5491,7 +5491,7 @@ Søjlen 'Status' viser, om dokumentet kan gendannes.</translation>
     <message>
       <location filename="../RemoteDebugger.ui" line="78"/>
       <source>Port</source>
-      <translation type="unfinished">Port</translation>
+      <translation>Port</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="58"/>
@@ -6258,7 +6258,7 @@ Gem ændringerne?</translation>
       <location filename="../MainWindow.cpp" line="467"/>
       <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
-      <translation type="unfinished">Quick Measure</translation>
+      <translation>Hurtig Opmåling</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="479"/>
@@ -6788,7 +6788,7 @@ Afslut uden at gemme?</translation>
     <message>
       <location filename="../PythonConsole.cpp" line="1344"/>
       <source>&amp;Copy Command</source>
-      <translation type="unfinished">&amp;Copy Command</translation>
+      <translation>&amp;Kopier Kommando</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1347"/>
@@ -6834,7 +6834,7 @@ Afslut uden at gemme?</translation>
     <message>
       <location filename="../PythonConsole.cpp" line="1376"/>
       <source>Word Wrap</source>
-      <translation type="unfinished">Word Wrap</translation>
+      <translation>Tekstombrydning</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1408"/>
@@ -7037,7 +7037,7 @@ Specify another directory?</source>
     <message>
       <location filename="../TaskElementColors.ui" line="14"/>
       <source>Set Element Color</source>
-      <translation type="unfinished">Set Element Color</translation>
+      <translation>Sæt Elementfarve</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
@@ -8369,7 +8369,7 @@ Vil du fortsætte?</translation>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="812"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="838"/>
       <source>New Text Item</source>
-      <translation type="unfinished">New Text Item</translation>
+      <translation>Nyt Tekstelement</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="839"/>
@@ -9197,7 +9197,7 @@ i den aktuelle kopi vil gå tabt.
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="171"/>
       <source>Edit Image Plane</source>
-      <translation type="unfinished">Edit Image Plane</translation>
+      <translation>Rediger Billedplan</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="281"/>
@@ -10154,7 +10154,7 @@ Fortsæt?
     <message>
       <location filename="../CommandDoc.cpp" line="1604"/>
       <source>Object Dependencies</source>
-      <translation type="unfinished">Object Dependencies</translation>
+      <translation>Objekt Afhængigheder</translation>
     </message>
   </context>
   <context>
@@ -10235,7 +10235,7 @@ Fortsæt?
     <message>
       <location filename="../CommandDoc.cpp" line="1391"/>
       <source>Object Dependencies</source>
-      <translation type="unfinished">Object Dependencies</translation>
+      <translation>Objekt Afhængigheder</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1392"/>
@@ -12719,7 +12719,7 @@ er kun aktiveret hvis alle pixels i området er ugennemsigtige.</translation>
       <location filename="../InputHintWidget.cpp" line="293"/>
       <source>⇧ Shift</source>
       <extracomment>Keyboard key for Shift on Windows &amp; Linux</extracomment>
-      <translation type="unfinished">⇧ Shift</translation>
+      <translation>⇧ Shift</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="350"/>
@@ -12878,17 +12878,17 @@ er kun aktiveret hvis alle pixels i området er ugennemsigtige.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="59"/>
       <source>RadioButton</source>
-      <translation type="unfinished">RadioButton</translation>
+      <translation>RadioKnap</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="67"/>
       <source>Item 1</source>
-      <translation type="unfinished">Item 1</translation>
+      <translation>Element 1</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="72"/>
       <source>Item 2</source>
-      <translation type="unfinished">Item 2</translation>
+      <translation>Element 2</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="80"/>
@@ -12911,7 +12911,7 @@ er kun aktiveret hvis alle pixels i området er ugennemsigtige.</translation>
     <message>
       <location filename="../TaskView/TaskSolverMessages.ui" line="26"/>
       <source>DOF</source>
-      <translation type="unfinished">DOF</translation>
+      <translation>DOF</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskSolverMessages.ui" line="33"/>
@@ -13025,7 +13025,7 @@ er kun aktiveret hvis alle pixels i området er ugennemsigtige.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="914"/>
       <source>Revert Document</source>
-      <translation type="unfinished">Revert Document</translation>
+      <translation>Gendan dokument</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="916"/>
@@ -14680,7 +14680,7 @@ Dette gør at vinduet til enhver tid er gennemsigtigt.</translation>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="306"/>
       <source>Value out of range (%1 out of [%2, %3])</source>
-      <translation type="unfinished">Value out of range (%1 out of [%2, %3])</translation>
+      <translation>Værdi uden for rækkevidde (%1 ud af [%2, %3])</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="380"/>
@@ -14803,7 +14803,7 @@ Dette gør at vinduet til enhver tid er gennemsigtigt.</translation>
     <message>
       <location filename="../FreeCADGuiInit.py" line="463"/>
       <source>Portable Document Format</source>
-      <translation type="unfinished">Portable Document Format</translation>
+      <translation>Portabelt Dokumentformat</translation>
     </message>
   </context>
   <context>
@@ -14837,7 +14837,7 @@ Dette gør at vinduet til enhver tid er gennemsigtigt.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4299"/>
       <source>Toggle Bottom Panels</source>
-      <translation type="unfinished">Toggle Bottom Panels</translation>
+      <translation>Slå Bundpaneler Til/Fra</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4300"/>

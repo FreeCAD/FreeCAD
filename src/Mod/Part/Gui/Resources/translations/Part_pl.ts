@@ -7768,7 +7768,7 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="940"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>Zresetuj odstępy</translation>
     </message>
   </context>
   <context>

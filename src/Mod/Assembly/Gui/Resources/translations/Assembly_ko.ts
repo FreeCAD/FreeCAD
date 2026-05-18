@@ -1322,7 +1322,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - 어셈블리가 활성 상태일 때: 두 파트를 영구적으로 잠금하여 이동이나 회전을 방지하는 연결부를 만듭니다&lt;/p&gt;&lt;p&gt;2 - 파트가 활성 상태일 때: 선택한 좌표계를 일치시켜 하위 파트를 배치합니다. 두 번째로 선택한 파트가 이동합니다.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

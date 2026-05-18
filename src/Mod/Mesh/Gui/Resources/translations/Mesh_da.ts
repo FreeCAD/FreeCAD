@@ -389,7 +389,7 @@
     <message>
       <location filename="../../Command.cpp" line="1023"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Opdel</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1024"/>
@@ -786,7 +786,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1167"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Opdel</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1242"/>

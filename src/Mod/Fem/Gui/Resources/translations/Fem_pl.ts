@@ -1667,7 +1667,7 @@ solvera Cholesky i otrzymasz komunikat o błędzie,
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>Sukcesywna nadrelaksacja (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
@@ -3897,11 +3897,10 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+      <translation>Dostępne są współrzędne x, y, z (małe litery) oraz standardowe funkcje matematyczne, 
+takie jak Sin, Log (wielką literą). Dodatkowo wszystkie ulepszenia potomne są dostępne poprzez zmienną F, np. F1, F2 itd. Obsługiwane operatory to +, -, , /, ^. 
 
-Example: "F2 + Sin(z)"</translation>
+Przykład: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3941,11 +3940,10 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
+      <translation>Dostępne są współrzędne x, y, z (małe litery) oraz standardowe funkcje matematyczne, 
+takie jak Sin, Log (wielką literą). Dodatkowo wszystkie ulepszenia potomne są dostępne poprzez zmienną F, np. F1, F2 itd. Obsługiwane operatory to +, -, , /, ^. 
 
-Example: "F2 + Sin(z)"</translation>
+Przykład: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>

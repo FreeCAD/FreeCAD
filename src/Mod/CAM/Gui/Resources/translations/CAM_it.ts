@@ -296,7 +296,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="14"/>
       <source>Post Processor</source>
-      <translation>Post Processore</translation>
+      <translation>Post processore</translation>
     </message>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
@@ -1066,7 +1066,7 @@ Valori più grandi (più a destra) saranno calcolati più velocemente; valori pi
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="287"/>
       <source>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</source>
-      <translation type="unfinished">The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</translation>
+      <translation>Angolo massimo consentito della rampa elicoidale d'ingresso. Impostare su zero per disabilitare la limitazione dell'angolo di rampa.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="297"/>
@@ -1096,7 +1096,7 @@ Valori più grandi (più a destra) saranno calcolati più velocemente; valori pi
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="196"/>
       <source>Operation type</source>
-      <translation type="unfinished">Operation type</translation>
+      <translation>Tipo di operazione</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="213"/>
@@ -1278,7 +1278,7 @@ Valori più grandi (più a destra) saranno calcolati più velocemente; valori pi
     <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="23"/>
       <source>⚠ DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. Please use the Drilling operation with Strategy set to &apos;Tapping&apos; instead. Existing Tapping operations will continue to work but you cannot create new ones.</source>
-      <translation type="unfinished">⚠ DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. Please use the Drilling operation with Strategy set to &apos;Tapping&apos; instead. Existing Tapping operations will continue to work but you cannot create new ones.</translation>
+      <translation>⚠ DEPRECATO: L'operazione Tapping è obsoleta e verrà rimossa in una versione futura. Si prega di utilizzare l'operazione Drilling con la strategia impostata su &apos;Tapping&apos;. Le operazioni Tapping esistenti continueranno a funzionare, ma non sarà possibile crearne di nuove.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
@@ -1418,7 +1418,7 @@ Valori più grandi (più a destra) saranno calcolati più velocemente; valori pi
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
       <source>Enable extensions</source>
-      <translation type="unfinished">Enable extensions</translation>
+      <translation>Abilita estensioni</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="65"/>
@@ -1594,7 +1594,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="234"/>
       <source>Ignore holes</source>
-      <translation type="unfinished">Ignore holes</translation>
+      <translation>Ignora fori</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="265"/>
@@ -1658,12 +1658,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="108"/>
       <source>X offset</source>
-      <translation type="unfinished">X offset</translation>
+      <translation>Offset X</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="122"/>
       <source>Y offset</source>
-      <translation type="unfinished">Y offset</translation>
+      <translation>Offset Y</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="145"/>
@@ -1846,12 +1846,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="229"/>
       <source>No base geometry Selected</source>
-      <translation type="unfinished">No base geometry Selected</translation>
+      <translation>Nessuna geometria di base selezionata</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="235"/>
       <source>No base geometry selected</source>
-      <translation type="unfinished">No base geometry selected</translation>
+      <translation>Nessuna geometria di base selezionata</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="248"/>
@@ -2746,7 +2746,7 @@ Vedi la politica di salvataggio del file qui sotto su come gestire i conflitti d
     <message>
       <location filename="../preferences/PathJob.ui" line="72"/>
       <source>Default geometry tolerance</source>
-      <translation type="unfinished">Default geometry tolerance</translation>
+      <translation>Tolleranza geometria predefinita</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="79"/>
@@ -2756,7 +2756,7 @@ Vedi la politica di salvataggio del file qui sotto su come gestire i conflitti d
     <message>
       <location filename="../preferences/PathJob.ui" line="92"/>
       <source>Default curve accuracy</source>
-      <translation type="unfinished">Default curve accuracy</translation>
+      <translation>Precisione curva predefinita</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="99"/>
@@ -2776,17 +2776,17 @@ Vedi la politica di salvataggio del file qui sotto su come gestire i conflitti d
     <message>
       <location filename="../preferences/PathJob.ui" line="207"/>
       <source>File save policy</source>
-      <translation type="unfinished">File save policy</translation>
+      <translation>Politica salvataggio del file</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="228"/>
       <source>Open file dialog</source>
-      <translation type="unfinished">Open file dialog</translation>
+      <translation>Apri finestra dialogo file</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="233"/>
       <source>Open file dialog on conflict</source>
-      <translation type="unfinished">Open file dialog on conflict</translation>
+      <translation>Apri finestra dialogo file su conflitto</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="265"/>
@@ -2806,7 +2806,7 @@ Vedi la politica di salvataggio del file qui sotto su come gestire i conflitti d
     <message>
       <location filename="../preferences/PathJob.ui" line="302"/>
       <source>Default arguments</source>
-      <translation type="unfinished">Default arguments</translation>
+      <translation>Argomenti predefiniti</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="309"/>
@@ -2939,7 +2939,7 @@ Vedi la politica di salvataggio del file qui sotto su come gestire i conflitti d
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="326"/>
       <source>Path selection style</source>
-      <translation type="unfinished">Path selection style</translation>
+      <translation>Stile selezione del percorso</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="354"/>
@@ -3075,7 +3075,7 @@ Vedi la politica di salvataggio del file qui sotto su come gestire i conflitti d
       <location filename="../preferences/Advanced.ui" line="64"/>
       <location filename="../preferences/Advanced.ui" line="83"/>
       <source>Suppress warning whenever a path selection mode is activated</source>
-      <translation type="unfinished">Suppress warning whenever a path selection mode is activated</translation>
+      <translation>Sopprimere gli avvisi ogni volta che viene attivata una modalità di selezione del percorso</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="67"/>
@@ -3095,7 +3095,7 @@ Vedi la politica di salvataggio del file qui sotto su come gestire i conflitti d
     <message>
       <location filename="../preferences/Advanced.ui" line="117"/>
       <source>If OpenCAMLib is installed with Python bindings, it can be used by some additional 3D operations. NOTE: Enabling OpenCAMLib here requires a restart of FreeCAD to take effect.</source>
-      <translation type="unfinished">If OpenCAMLib is installed with Python bindings, it can be used by some additional 3D operations. NOTE: Enabling OpenCAMLib here requires a restart of FreeCAD to take effect.</translation>
+      <translation>Se OpenCAMLib è installato con i binding Python, può essere utilizzato per alcune operazioni 3D aggiuntive. NOTA: L'attivazione di OpenCAMLib in questo caso richiede il riavvio di FreeCAD affinché abbia effetto.</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="127"/>
@@ -4664,7 +4664,7 @@ Solo per gli stili: Arco, Linea, Perpendicolare e Tangente</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="123"/>
       <source>Select the Post Processor</source>
-      <translation>Selezionare il Post processore</translation>
+      <translation>Selezionare il post processore</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="132"/>
@@ -4685,7 +4685,7 @@ Solo per gli stili: Arco, Linea, Perpendicolare e Tangente</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="159"/>
       <source>Job Cycle Time Estimation</source>
-      <translation>Stima del tempo di lavorazione</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="169"/>
@@ -4893,8 +4893,8 @@ Valori più grandi (più a destra) saranno calcolati più velocemente; valori pi
       <location filename="../../../Path/Op/Adaptive.py" line="1671"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
-      <translation type="unfinished">The maximum allowable helix ramp entry angle (degrees)
-Set to zero to disable limitation by ramp angle</translation>
+      <translation>L'angolo massimo di ingresso di rampa a elica consentito (gradi)
+Impostare a zero per disabilitare la limitazione per angolo di rampa</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1681"/>
@@ -8562,7 +8562,7 @@ Questo non eliminerà gli utensili contenuti al suo interno.</translation>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="317"/>
       <source>Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</source>
-      <translation type="unfinished">Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</translation>
+      <translation>Estensione predefinita per i file di output (senza il punto). Estensioni comuni: nc, gcode, tap, ngc, sbp, ecc.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="322"/>
@@ -9783,7 +9783,7 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1011"/>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1024"/>
       <source>The selected machine has no post-processor configured.</source>
-      <translation type="unfinished">The selected machine has no post-processor configured.</translation>
+      <translation>La macchina selezionata non ha un post processore configurato.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1036"/>
@@ -10114,12 +10114,12 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="50"/>
       <source>Assets</source>
-      <translation type="unfinished">Assets</translation>
+      <translation>Asset</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="56"/>
       <source>Asset Location</source>
-      <translation type="unfinished">Asset Location</translation>
+      <translation>Posizione asset</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="57"/>
@@ -10129,7 +10129,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="65"/>
       <source>Note: Select the directory that will contain the Tools folder with Bit/, Shape/, and Library/ subfolders and the Machines/ folder.</source>
-      <translation type="unfinished">Note: Select the directory that will contain the Tools folder with Bit/, Shape/, and Library/ subfolders and the Machines/ folder.</translation>
+      <translation>Nota: selezionare la directory che conterrà la cartella Tools con le sottocartelle Bit/, Shape/ e Library/ e la cartella Machines/.</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="70"/>
@@ -10140,12 +10140,12 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="88"/>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="105"/>
       <source>Machines</source>
-      <translation type="unfinished">Machines</translation>
+      <translation>Macchine</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="97"/>
       <source>Warning: Machine definition is an experimental feature. Changes made here will not affect any CAM functionality</source>
-      <translation type="unfinished">Warning: Machine definition is an experimental feature. Changes made here will not affect any CAM functionality</translation>
+      <translation>Attenzione: la definizione della macchina è una funzionalità sperimentale. Le modifiche apportate qui non influiranno su alcuna funzionalità CAM</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="113"/>
@@ -10165,7 +10165,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="144"/>
       <source>Select Asset Directory</source>
-      <translation type="unfinished">Select Asset Directory</translation>
+      <translation>Seleziona cartella asset</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="163"/>
@@ -10175,17 +10175,17 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="164"/>
       <source>The selected asset path is not writable.</source>
-      <translation type="unfinished">The selected asset path is not writable.</translation>
+      <translation>Il percorso dell'asset selezionato non è scrivibile.</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="222"/>
       <source>Delete Machine</source>
-      <translation type="unfinished">Delete Machine</translation>
+      <translation>Elimina macchina</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="225"/>
       <source>Are you sure you want to delete this machine file?</source>
-      <translation type="unfinished">Are you sure you want to delete this machine file?</translation>
+      <translation>Si è sicuri di voler eliminare questo file di macchina?</translation>
     </message>
   </context>
   <context>
@@ -10767,7 +10767,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="112"/>
       <source>Post Processor</source>
-      <translation>Post Processore</translation>
+      <translation>Post processore</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="113"/>
@@ -11222,12 +11222,12 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1792"/>
       <source>Postprocessor Selection</source>
-      <translation type="unfinished">Postprocessor Selection</translation>
+      <translation>Selezione post processore</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1802"/>
       <source>Select the postprocessor file for this machine</source>
-      <translation type="unfinished">Select the postprocessor file for this machine</translation>
+      <translation>Seleziona il file di post processore per questa macchina</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1828"/>

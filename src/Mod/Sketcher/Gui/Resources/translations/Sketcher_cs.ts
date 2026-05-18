@@ -214,8 +214,7 @@
       <location filename="../../Command.cpp" line="1360"/>
       <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
 </source>
-      <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
-</translation>
+      <translation>Zkopírováno %1 z %2 vazeb od '%3'. Některé byly přeskočeny.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1376"/>

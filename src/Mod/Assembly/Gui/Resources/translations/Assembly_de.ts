@@ -1323,7 +1323,7 @@ Die Dateien heißen "runPreDrag.asmt" und "dragging.log" und befinden sich im St
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Wenn eine Baugruppe aktiv ist: Erstellt ein Gelenk, das zwei Teile statisch miteinander verbindet und jegliche Bewegung oder Drehung verhindert&lt;/p&gt;&lt;p&gt;2 - Wenn ein Teil aktiv ist: Positioniert Unterteile durch Abgleich mit ausgewählten Koordinatensystemen. Das zweite ausgewählte Teil wird verschoben.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="629"/>
       <source>&amp;Bold Text</source>
-      <translation type="unfinished">&amp;Bold Text</translation>
+      <translation>&amp;Fed Tekst</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="630"/>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="714"/>
       <source>&amp;Italic Text</source>
-      <translation type="unfinished">&amp;Italic Text</translation>
+      <translation>&amp;Kursiv Tekst</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="715"/>
       <source>Sets the text in the selected cells italic</source>
-      <translation type="unfinished">Sets the text in the selected cells italic</translation>
+      <translation>Sætter teksten i de markerede celler kursiv</translation>
     </message>
   </context>
   <context>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="799"/>
       <source>&amp;Underline Text</source>
-      <translation type="unfinished">&amp;Underline Text</translation>
+      <translation>&amp;Understreg Tekst</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="800"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../qtcolorpicker.cpp" line="558"/>
       <source>Custom Colors</source>
-      <translation type="unfinished">Custom Colors</translation>
+      <translation>Brugerdefinerede Farver</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="653"/>
@@ -304,17 +304,17 @@
     <message>
       <location filename="../../Command.cpp" line="308"/>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Venstrejuster celle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Centrer celle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="422"/>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Højrejuster celle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="479"/>
@@ -339,12 +339,12 @@
     <message>
       <location filename="../../Command.cpp" line="753"/>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Sæt kursiv tekst</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="838"/>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Understreg tekst</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="968"/>
@@ -359,27 +359,27 @@
     <message>
       <location filename="../../SheetModel.cpp" line="628"/>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Rediger celle</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="166"/>
       <source>Set text color</source>
-      <translation type="unfinished">Set text color</translation>
+      <translation>Angiv tekstfarve</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="206"/>
       <source>Clear text color</source>
-      <translation type="unfinished">Clear text color</translation>
+      <translation>Ryd tekstfarve</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="243"/>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Angiv baggrundsfarve</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="283"/>
       <source>Clear background color</source>
-      <translation type="unfinished">Clear background color</translation>
+      <translation>Ryd baggrundsfarve</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="224"/>
@@ -389,28 +389,28 @@
     <message>
       <location filename="../../SheetTableView.cpp" line="326"/>
       <source>Insert Rows</source>
-      <translation type="unfinished">Insert Rows</translation>
+      <translation>Indsæt Rækker</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="353"/>
       <source>Remove Rows</source>
-      <translation type="unfinished">Remove Rows</translation>
+      <translation>Fjern Rækker</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="366"/>
       <source>Remove Columns</source>
-      <translation type="unfinished">Remove Columns</translation>
+      <translation>Fjern Kolonner</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="339"/>
       <source>Insert Columns</source>
-      <translation type="unfinished">Insert Columns</translation>
+      <translation>Indsæt Kolonner</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
       <location filename="../../SheetTableView.cpp" line="581"/>
       <source>Clear Cells</source>
-      <translation type="unfinished">Clear Cells</translation>
+      <translation>Ryd Celler</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="204"/>
@@ -425,12 +425,12 @@
     <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>Bind celler</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Afbind celler</translation>
     </message>
   </context>
   <context>
@@ -438,17 +438,17 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Bind Regneark Celler</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation type="unfinished">First cell in range</translation>
+      <translation>Første celle i området</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation type="unfinished">Last cell in range</translation>
+      <translation>Sidste celle i området</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
@@ -472,12 +472,12 @@ The expression must evaluate to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>Bind celler</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells</source>
-      <translation type="unfinished">To cells</translation>
+      <translation>Til celler</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
@@ -491,12 +491,12 @@ The expression must evaluate to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation type="unfinished">Which spread sheet to bind to</translation>
+      <translation>Hvilket regneark skal der bindes til</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet</source>
-      <translation type="unfinished">Sheet</translation>
+      <translation>Ark</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -587,7 +587,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range</source>
-      <translation type="unfinished">Cell range</translation>
+      <translation>Celleområde</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
@@ -607,7 +607,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>Fjern Opsætning</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -711,7 +711,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Tekst til enheden</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -751,17 +751,17 @@ Regneark.mit_alias_navn i stedet for Regneark.B1</translation>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="112"/>
       <source>Export File</source>
-      <translation type="unfinished">Export File</translation>
+      <translation>Eksportér Fil</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show Spreadsheet</source>
-      <translation type="unfinished">Show Spreadsheet</translation>
+      <translation>Vis Regneark</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="104"/>
       <source>Sets the text color of cells</source>
-      <translation type="unfinished">Sets the text color of cells</translation>
+      <translation>Sætter tekstfarven på celler</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="105"/>
@@ -783,7 +783,7 @@ Regneark.mit_alias_navn i stedet for Regneark.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="719"/>
       <source>Copy &amp; Paste Failed</source>
-      <translation type="unfinished">Copy &amp; Paste Failed</translation>
+      <translation>Kopiering &amp; Indsæt Mislykkedes</translation>
     </message>
   </context>
   <context>
@@ -912,12 +912,12 @@ Regneark.mit_alias_navn i stedet for Regneark.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="147"/>
       <source>-</source>
-      <translation type="unfinished">-</translation>
+      <translation>-</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="197"/>
       <source>+</source>
-      <translation type="unfinished">+</translation>
+      <translation>+</translation>
     </message>
   </context>
   <context>
@@ -925,7 +925,7 @@ Regneark.mit_alias_navn i stedet for Regneark.B1</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="231"/>
       <source>Bind Cells</source>
-      <translation type="unfinished">Bind Cells</translation>
+      <translation>Bind Celler</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="232"/>
@@ -939,19 +939,19 @@ Continue?</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="283"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Bind Regneark Celler</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="284"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Fejl:
 </translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="311"/>
       <source>Unbind Cells</source>
-      <translation type="unfinished">Unbind Cells</translation>
+      <translation>Afbind Celler</translation>
     </message>
   </context>
   <context>
@@ -964,7 +964,7 @@ Continue?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation type="unfinished">Display Settings</translation>
+      <translation>Visuelle Indstillinger</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
@@ -992,7 +992,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="119"/>
       <source>Import/Export Settings</source>
-      <translation type="unfinished">Import/Export Settings</translation>
+      <translation>Importér/Eksporter Indstillinger</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
@@ -1002,12 +1002,12 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="48"/>
       <source>Defines a default zoom level for table view from 60% to 160%</source>
-      <translation type="unfinished">Defines a default zoom level for table view from 60% to 160%</translation>
+      <translation>Definerer et standard zoomniveau for tabelvisning fra 60% til 160%</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>
       <source>Default zoom level</source>
-      <translation type="unfinished">Default zoom level</translation>
+      <translation>Standard zoomniveau</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="131"/>
@@ -1022,7 +1022,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="167"/>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
+      <translation>fane</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="191"/>
@@ -1064,7 +1064,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="150"/>
       <source>Remove Rows</source>
-      <translation type="unfinished">Remove Rows</translation>
+      <translation>Fjern Rækker</translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="167"/>
@@ -1077,77 +1077,77 @@ Defaults to: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="562"/>
       <source>Properties…</source>
-      <translation type="unfinished">Properties…</translation>
+      <translation>Egenskaber…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="187"/>
       <location filename="../../SheetTableView.cpp" line="571"/>
       <source>Bind…</source>
-      <translation type="unfinished">Bind…</translation>
+      <translation>Bind…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Configuration Table…</source>
-      <translation type="unfinished">Configuration Table…</translation>
+      <translation>Konfigurationstabel…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="192"/>
       <location filename="../../SheetTableView.cpp" line="565"/>
       <source>Merge Cells</source>
-      <translation type="unfinished">Merge Cells</translation>
+      <translation>Flet Celler</translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="141"/>
       <source>Insert %n Rows Above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Rows Above</numerusform>
-        <numerusform>Insert %n Rows Above</numerusform>
+      <translation>
+        <numerusform>Indsæt %n Række Ovenover</numerusform>
+        <numerusform>Indsæt %n Rækker Ovenover</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="143"/>
       <source>Insert %n Rows Below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Rows Below</numerusform>
-        <numerusform>Insert %n Rows Below</numerusform>
+      <translation>
+        <numerusform>Indsæt %n Række Nedenfor</numerusform>
+        <numerusform>Indsæt %n Rækker Nedenfor</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="161"/>
       <source>Insert %n Columns Left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Columns Left</numerusform>
-        <numerusform>Insert %n Columns Left</numerusform>
+      <translation>
+        <numerusform>Indsæt %n Kolonne til Venstre</numerusform>
+        <numerusform>Indsæt %n Kolonner til Venstre</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="163"/>
       <source>Insert %n Columns Right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Columns Right</numerusform>
-        <numerusform>Insert %n Columns Right</numerusform>
+      <translation>
+        <numerusform>Indsæt %n Kolonne til Højre</numerusform>
+        <numerusform>Indsæt %n Kolonner til Højre</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="170"/>
       <source>Remove Columns</source>
-      <translation type="unfinished">Remove Columns</translation>
+      <translation>Fjern Kolonner</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="183"/>
       <source>Properties</source>
-      <translation type="unfinished">Properties</translation>
+      <translation>Egenskaber</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="188"/>
       <source>Configuration Table</source>
-      <translation type="unfinished">Configuration Table</translation>
+      <translation>Konfigurationstabel</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="197"/>
       <location filename="../../SheetTableView.cpp" line="566"/>
       <source>Split Cell</source>
-      <translation type="unfinished">Split Cell</translation>
+      <translation>Opdel Celle</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="201"/>
@@ -1192,7 +1192,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Regneark</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -1202,7 +1202,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>&amp;Stilarter</translation>
     </message>
   </context>
   <context>
@@ -1219,12 +1219,12 @@ Defaults to: %V = %A
     <message>
       <location filename="../../ZoomableView.cpp" line="116"/>
       <source>New zoom level:</source>
-      <translation type="unfinished">New zoom level:</translation>
+      <translation>Nyt zoomniveau:</translation>
     </message>
     <message>
       <location filename="../../ZoomableView.cpp" line="116"/>
       <source>Zoom Level</source>
-      <translation type="unfinished">Zoom Level</translation>
+      <translation>Zoom Niveau</translation>
     </message>
   </context>
   <context>
@@ -1232,12 +1232,12 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="291"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>Opsætning Af Konfigurationstabel</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="348"/>
       <source>Unsetup Configuration Table</source>
-      <translation type="unfinished">Unsetup Configuration Table</translation>
+      <translation>Fjern Opsætning Af Konfigurationstabel</translation>
     </message>
   </context>
 </TS>

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="790"/>
       <source>Centerline Between 2 Lines</source>
-      <translation type="unfinished">Centerline Between 2 Lines</translation>
+      <translation>Middenparallel tussen 2 lijnen</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>Adds a centerline between 2 selected lines</source>
-      <translation type="unfinished">Adds a centerline between 2 selected lines</translation>
+      <translation>Voeg een middenparallel tussen 2 geselecteerde lijnen toe</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="865"/>
       <source>Centerline Between 2 Points</source>
-      <translation type="unfinished">Centerline Between 2 Points</translation>
+      <translation>Middelloodlijn tussen 2 punten</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>Adds a centerline between 2 selected points</source>
-      <translation type="unfinished">Adds a centerline between 2 selected points</translation>
+      <translation>Voeg een middelloodlijn tussen 2 geselecteerde punten toe</translation>
     </message>
   </context>
   <context>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1018"/>
       <source>Detail View</source>
-      <translation type="unfinished">Detail View</translation>
+      <translation>Gedetailleerde weergave</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1019"/>
@@ -9302,7 +9302,7 @@ een open taak dialoogvenster is.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Extent</source>
-      <translation type="unfinished">Extent</translation>
+      <translation>Omvang</translation>
     </message>
   </context>
   <context>
@@ -10122,7 +10122,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="654"/>
       <source>Adds a centerline between 2 selected lines</source>
-      <translation type="unfinished">Adds a centerline between 2 selected lines</translation>
+      <translation>Voeg een middenparallel tussen 2 geselecteerde lijnen toe</translation>
     </message>
   </context>
   <context>
@@ -10130,7 +10130,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="658"/>
       <source>Adds a centerline between 2 selected points</source>
-      <translation type="unfinished">Adds a centerline between 2 selected points</translation>
+      <translation>Voeg een middelloodlijn tussen 2 geselecteerde punten toe</translation>
     </message>
   </context>
   <context>
@@ -10225,7 +10225,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="653"/>
       <source>Centerline Between 2 Lines</source>
-      <translation type="unfinished">Centerline Between 2 Lines</translation>
+      <translation>Middenparallel tussen 2 lijnen</translation>
     </message>
   </context>
   <context>
@@ -10233,7 +10233,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="657"/>
       <source>Centerline Between 2 Points</source>
-      <translation type="unfinished">Centerline Between 2 Points</translation>
+      <translation>Middelloodlijn tussen 2 punten</translation>
     </message>
   </context>
   <context>

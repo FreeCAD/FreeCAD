@@ -4280,7 +4280,7 @@ or try saving to a lower DWG version.</source>
       <translation>Стварыць кропку</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="214"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <location filename="../../draftguitools/gui_points.py" line="189"/>
       <location filename="../../draftguitools/gui_texts.py" line="180"/>
       <source>%1 pick point</source>
@@ -4872,7 +4872,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Выберыце кропку месцазнаходжання контуру радка</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="243"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="245"/>
       <source>Create ShapeString</source>
       <translation>Стварыць контур радка</translation>
     </message>
@@ -7984,15 +7984,6 @@ beyond the dimension line</source>
       <location filename="../../draftviewproviders/view_rectangle.py" line="46"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
       <translation>Вызначае тэкстурную выяву (перавызначае шаблоны штрыхоўкі)</translation>
-    </message>
-  </context>
-  <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../draftviewproviders/view_base.py" line="503"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
-      <source>Transform</source>
-      <translation>Пераўтварыць</translation>
     </message>
   </context>
   <context>

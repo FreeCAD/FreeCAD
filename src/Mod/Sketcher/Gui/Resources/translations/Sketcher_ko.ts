@@ -180,8 +180,7 @@
       <location filename="../../Command.cpp" line="1160"/>
       <source>Skipping external geometry #%1
 </source>
-      <translation type="unfinished">Skipping external geometry #%1
-</translation>
+      <translation>#%1 외부 도형 건너뛰는 중</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1203"/>
