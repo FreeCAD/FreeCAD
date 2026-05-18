@@ -1280,7 +1280,7 @@ public:
     void unregisterLabel(std::string_view oldLabel);
     /// Check if a label exists.
     bool containsLabel(std::string_view label);
-    std::tuple<std::string, std::string, unsigned int, Base::UnlimitedUnsigned> decomposeLabel(
+    std::tuple<std::string_view, std::string_view, unsigned int, Base::UnlimitedUnsigned> decomposeLabel(
         std::string_view label
     ) const;
     /// Create a unique label based on the given modelLabel.
