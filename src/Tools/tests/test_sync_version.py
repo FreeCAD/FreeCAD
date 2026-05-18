@@ -174,23 +174,21 @@ class TestSyncWaylandAppId(unittest.TestCase):
             result, changed = sync_wayland_app_id(filepath, make_version())
             self.assertTrue(changed)
             self.assertIn('["DesktopFileName"] = "org.freecad.FreeCAD-1.2"', result)
- 
+
     def test_already_synced(self):
         with tempfile.TemporaryDirectory() as tmp:
-            content = MAINGUI_CPP.replace(
-                '"org.freecad.FreeCAD"', '"org.freecad.FreeCAD-1.2"'
-            )
+            content = MAINGUI_CPP.replace('"org.freecad.FreeCAD"', '"org.freecad.FreeCAD-1.2"')
             filepath = write_temp_file(Path(tmp), "MainGui.cpp", content)
             result, changed = sync_wayland_app_id(filepath, make_version())
             self.assertFalse(changed)
- 
+
     def test_only_uses_major_minor(self):
         with tempfile.TemporaryDirectory() as tmp:
             filepath = write_temp_file(Path(tmp), "MainGui.cpp", MAINGUI_CPP)
             result, changed = sync_wayland_app_id(filepath, make_version(major=2, minor=3, patch=9))
             self.assertIn("org.freecad.FreeCAD-2.3", result)
             self.assertNotIn("2.3.9", result)
- 
+
     def test_no_match_returns_unchanged(self):
         with tempfile.TemporaryDirectory() as tmp:
             content = "// no DesktopFileName assignment here\n"
@@ -198,12 +196,13 @@ class TestSyncWaylandAppId(unittest.TestCase):
             result, changed = sync_wayland_app_id(filepath, make_version())
             self.assertFalse(changed)
             self.assertEqual(result, content)
- 
+
     def test_preserves_surrounding_code(self):
         with tempfile.TemporaryDirectory() as tmp:
             filepath = write_temp_file(Path(tmp), "MainGui.cpp", MAINGUI_CPP)
             result, changed = sync_wayland_app_id(filepath, make_version())
             self.assertIn("QGuiApplication::setDesktopFileName", result)
+
 
 def write_temp_file(directory: Path, name: str, content: str) -> Path:
     filepath = directory / name
@@ -561,6 +560,7 @@ class TestRun(unittest.TestCase):
             run(root, check_only=False)
             content = (root / "src/Main/MainGui.cpp").read_text(encoding="utf-8")
             self.assertIn('"org.freecad.FreeCAD-1.2"', content)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -100,9 +100,7 @@ def replace_in_toml_section(content: str, section: str, key: str, value: str) ->
 
     section_start = section_match.start()
     next_section = re.search(r"\n\[", content[section_match.end() :])
-    section_end = (
-        section_match.end() + next_section.start() if next_section else len(content)
-    )
+    section_end = section_match.end() + next_section.start() if next_section else len(content)
 
     section_text = content[section_start:section_end]
     field_pattern = rf'({re.escape(key)}\s*=\s*)"[^"]*"'
@@ -120,9 +118,7 @@ def sync_workspace_pixi_toml(filepath: Path, version: VersionInfo) -> tuple[str,
     return updated, updated != content
 
 
-def sync_rattler_build_pixi_toml(
-    filepath: Path, version: VersionInfo
-) -> tuple[str, bool]:
+def sync_rattler_build_pixi_toml(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
     """Sync the rattler-build pixi.toml version, name, and description fields.
 
     Updates fields under the [package] section.
@@ -130,9 +126,7 @@ def sync_rattler_build_pixi_toml(
     content = filepath.read_text(encoding="utf-8")
     updated = content
     updated = replace_in_toml_section(updated, "[package]", "version", version.conda)
-    updated = replace_in_toml_section(
-        updated, "[package]", "name", version.lowercase_name
-    )
+    updated = replace_in_toml_section(updated, "[package]", "name", version.lowercase_name)
     updated = replace_in_toml_section(updated, "[package]", "description", version.name)
     return updated, updated != content
 
