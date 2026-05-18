@@ -1142,6 +1142,8 @@ void ToolBarManager::onToggleStatusBarWidget(QWidget* widget, bool visible)
 
 bool ToolBarManager::eventFilter(QObject* source, QEvent* ev)
 {
+    static QPointer<QToolBar> movedToolBar;
+
     bool res = false;
     switch (ev->type()) {
         case QEvent::Show:
@@ -1153,6 +1155,13 @@ bool ToolBarManager::eventFilter(QObject* source, QEvent* ev)
                 }
             }
             break;
+        case QEvent::MouseButtonPress: {
+            auto mev = static_cast<QMouseEvent*>(ev);
+            if (mev->button() == Qt::LeftButton) {
+                movedToolBar.clear();
+            }
+            break;
+        }
         case QEvent::MouseButtonRelease: {
             auto mev = static_cast<QMouseEvent*>(ev);
             if (mev->button() == Qt::RightButton) {
@@ -1160,11 +1169,25 @@ bool ToolBarManager::eventFilter(QObject* source, QEvent* ev)
                     return true;
                 }
             }
+            if (mev->button() == Qt::LeftButton) {
+                auto toolbar = qobject_cast<QToolBar*>(source);
+                if (toolbar && movedToolBar == toolbar) {
+                    getMainWindow()->saveWindowSettings(true);
+                }
+                movedToolBar.clear();
+            }
         }
         // fall through
-        case QEvent::MouseMove:
-            res = addToolBarToArea(source, static_cast<QMouseEvent*>(ev));
+        case QEvent::MouseMove: {
+            auto mev = static_cast<QMouseEvent*>(ev);
+            if ((mev->buttons() & Qt::LeftButton) != 0) {
+                if (auto toolbar = qobject_cast<QToolBar*>(source)) {
+                    movedToolBar = toolbar;
+                }
+            }
+            res = addToolBarToArea(source, mev);
             break;
+        }
         case QEvent::ParentChange:
             if (auto toolbar = qobject_cast<QToolBar*>(source)) {
                 resizingToolbars[toolbar] = toolbar;
