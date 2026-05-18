@@ -1497,6 +1497,8 @@ void StdCmdDelete::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     int tid = 0;
+    QPointer<QWidget> focusBefore;
+
     try {
         std::set<App::Document*> docs;
         std::vector<App::TransactionLocker> tlocks;
@@ -1511,6 +1513,13 @@ void StdCmdDelete::activated(int iMsg)
             // commitCommand();
             return;
         }
+
+        // Snapshot focus before any popup can steal it. After the delete
+        // completes and any modal dialogs close, restore focus so keyboard
+        // navigation continues from where the user was working.
+        // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
+        focusBefore = QApplication::focusWidget();
+
         // Ensure that the document from which we send the command
         // can undo it (e.g delete a subobject of an assembly
         // from the assembly file)
@@ -1667,6 +1676,16 @@ void StdCmdDelete::activated(int iMsg)
     App::GetApplication().commitTransaction(tid);
     Gui::getMainWindow()->setUpdatesEnabled(true);
     Gui::getMainWindow()->update();
+
+    // Restore focus to the widget the user was working in.
+    if (focusBefore) {
+        QPointer<QWidget> target = focusBefore;
+        QTimer::singleShot(0, target, [target]() {
+            if (target && target->isVisible() && target->isEnabled()) {
+                target->setFocus(Qt::OtherFocusReason);
+            }
+        });
+    }
 }
 
 bool StdCmdDelete::isActive()
