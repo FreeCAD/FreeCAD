@@ -1196,7 +1196,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
             " by default, if this is now blank then you should revert it back to"
             " Ctrl+Shift+ by pressing both keys at the same time."
         );
-        Base::Console().warning("%s\n", qPrintable(msgMain));
+        Base::Console().warning("{}\n", qPrintable(msgMain));
     }
 }
 

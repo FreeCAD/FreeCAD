@@ -105,7 +105,7 @@ bool Assistant::startAssistant()
 
         static bool first = true;
         if (first) {
-            Base::Console().log("Help file at %s\n", (const char*)qhc.toUtf8());
+            Base::Console().log("Help file at {}\n", qhc.toStdString());
             first = false;
         }
 
@@ -182,13 +182,13 @@ bool Assistant::startAssistant()
 void Assistant::readyReadStandardOutput()
 {
     QByteArray data = proc->readAllStandardOutput();
-    Base::Console().log("Help view: %s\n", data.constData());
+    Base::Console().log("Help view: {}\n", data.toStdString());
 }
 
 void Assistant::readyReadStandardError()
 {
     QByteArray data = proc->readAllStandardError();
-    Base::Console().log("Help view: %s\n", data.constData());
+    Base::Console().log("Help view: {}\n", data.toStdString());
 }
 
 #include "moc_Assistant.cpp"

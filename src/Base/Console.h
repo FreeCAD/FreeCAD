@@ -36,6 +36,7 @@
 #include <set>
 #include <string>
 #include <sstream>
+#include <format>
 #include <FCGlobal.h>
 
 #include <fmt/printf.h>
@@ -235,38 +236,81 @@ using PyMethodDef = struct PyMethodDef;
 
 #define FC_LOG_LEVEL_INIT(_tag, ...) _FC_LOG_LEVEL_INIT(FC_LOG_INSTANCE, _tag, ##__VA_ARGS__)
 
-#define __FC_PRINT(_instance, _l, _func, _notifier, _msg, _file, _line)                            \
+// #define __FC_PRINT(_instance, _l, _func, _notifier, _msg, _file, _line)                            \
+//     do {                                                                                           \
+//         if (_instance.isEnabled(_l)) {                                                             \
+//             std::stringstream _str;                                                                \
+//             _instance.prefix(_str, _file, _line) << _msg;                                          \
+//             if (_instance.add_eol)                                                                 \
+//                 _str << '\n';                                                                      \
+//             Base::Console()._func(_notifier, "{}", _str.str());                            \
+//             if (_instance.refresh)                                                                 \
+//                 Base::Console().refresh();                                                         \
+//         }                                                                                          \
+//     } while (0)
+//
+// #define _FC_PRINT(_instance, _l, _func, _msg)                                                      \
+//     __FC_PRINT(_instance, _l, _func, std::string(), _msg, __FILE__, __LINE__)
+//
+// #define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, message, _msg)
+// #define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, developerWarning, _msg)
+// #define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, developerError, _msg)
+// #define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, log, _msg)
+// #define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, log, _msg)
+//
+// #define _FC_MSG(_file, _line, _msg)                                                                \
+//     __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, message, std::string(), _msg, _file, _line)
+// #define _FC_WARN(_file, _line, _msg)                                                               \
+//     __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, developerWarning, std::string(), _msg, _file, _line)
+// #define _FC_ERR(_file, _line, _msg)                                                                \
+//     __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, developerError, std::string(), _msg, _file, _line)
+// #define _FC_LOG(_file, _line, _msg)                                                                \
+//     __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, log, std::string(), _msg, _file, _line)
+// #define _FC_TRACE(_file, _line, _msg)                                                              \
+//     __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, log, std::string(), _msg, _file, _line)
+
+#define __FC_PRINT(_instance, _l, _send_expr, _notifier, _msg, _file, _line)                       \
     do {                                                                                           \
         if (_instance.isEnabled(_l)) {                                                             \
             std::stringstream _str;                                                                \
             _instance.prefix(_str, _file, _line) << _msg;                                          \
             if (_instance.add_eol)                                                                 \
                 _str << '\n';                                                                      \
-            Base::Console()._func(_notifier, _str.str().c_str());                                  \
+            _send_expr(_notifier, _str.str());                                                     \
             if (_instance.refresh)                                                                 \
                 Base::Console().refresh();                                                         \
         }                                                                                          \
     } while (0)
 
-#define _FC_PRINT(_instance, _l, _func, _msg)                                                      \
-    __FC_PRINT(_instance, _l, _func, std::string(), _msg, __FILE__, __LINE__)
+#define FC_SEND_MSG(notifier, msg) \
+    Base::Console().send<Base::LogStyle::Message>(notifier, "{}", msg)
+#define FC_SEND_WARN(notifier, msg) \
+    Base::Console().send<Base::LogStyle::Warning, Base::IntendedRecipient::Developer, Base::ContentType::Untranslatable>(notifier, "{}", msg)
+#define FC_SEND_ERR(notifier, msg) \
+    Base::Console().send<Base::LogStyle::Error, Base::IntendedRecipient::Developer, Base::ContentType::Untranslatable>(notifier, "{}", msg)
+#define FC_SEND_LOG(notifier, msg) \
+    Base::Console().send<Base::LogStyle::Log>(notifier, "{}", msg)
 
-#define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, message, _msg)
-#define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, developerWarning, _msg)
-#define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, developerError, _msg)
-#define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, log, _msg)
-#define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, log, _msg)
+#define _FC_PRINT(_instance, _l, _send_expr, _msg)                                                 \
+    __FC_PRINT(_instance, _l, _send_expr, std::string(), _msg, __FILE__, __LINE__)
 
-#define _FC_MSG(_file, _line, _msg)                                                                \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, message, std::string(), _msg, _file, _line)
-#define _FC_WARN(_file, _line, _msg)                                                               \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, developerWarning, std::string(), _msg, _file, _line)
-#define _FC_ERR(_file, _line, _msg)                                                                \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, developerError, std::string(), _msg, _file, _line)
-#define _FC_LOG(_file, _line, _msg)                                                                \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, log, std::string(), _msg, _file, _line)
-#define _FC_TRACE(_file, _line, _msg)                                                              \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, log, std::string(), _msg, _file, _line)
+#define FC_MSG(_msg)   _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, FC_SEND_MSG, _msg)
+#define FC_WARN(_msg)  _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, FC_SEND_WARN, _msg)
+#define FC_ERR(_msg)   _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, FC_SEND_ERR, _msg)
+#define FC_LOG(_msg)   _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, FC_SEND_LOG, _msg)
+#define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, FC_SEND_LOG, _msg)
+
+#define _FC_MSG(_file, _line, _msg) \
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, FC_SEND_MSG, std::string(), _msg, _file, _line)
+#define _FC_WARN(_file, _line, _msg) \
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, FC_SEND_WARN, std::string(), _msg, _file, _line)
+#define _FC_ERR(_file, _line, _msg) \
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, FC_SEND_ERR, std::string(), _msg, _file, _line)
+#define _FC_LOG(_file, _line, _msg) \
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, FC_SEND_LOG, std::string(), _msg, _file, _line)
+#define _FC_TRACE(_file, _line, _msg) \
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, FC_SEND_LOG, std::string(), _msg, _file, _line)
+
 
 #define FC_XYZ(_pt) '(' << (_pt).X() << ", " << (_pt).Y() << ", " << (_pt).Z() << ')'
 #define FC_xy(_pt) '(' << (_pt).x << ", " << (_pt).y << ')'
@@ -405,7 +449,7 @@ public:
  *  instance of the class from every where in c++ by simply using:
  *  \code
  *  #include <Base/Console.h>
- *  Base::Console().log("Stage: %d",i);
+ *  Base::Console().log("Stage: {}",i);
  *  \endcode
  *  \par
  *  ConsoleSingleton is able to switch between several modes to, e.g. switch
@@ -495,68 +539,80 @@ public:
         Notification can be direct or via queue.
     */
     template<LogStyle, IntendedRecipient = IntendedRecipient::All, ContentType = ContentType::Untranslated, typename... Args>
-    void send(const std::string& notifiername, const char* pMsg, Args&&... args);
+    void send(const std::string& notifiername, std::format_string<Args...> fmt, Args&&... args);
 
     /// Prints a Message
     template<typename... Args>
-    void message(const char* pMsg, Args&&... args);
+    void message(std::format_string<Args...> fmt, Args&&... args);
     /// Prints a warning Message
     template<typename... Args>
-    void warning(const char* pMsg, Args&&... args);
+    void warning(std::format_string<Args...> fmt, Args&&... args);
     /// Prints a error Message
     template<typename... Args>
-    void error(const char* pMsg, Args&&... args);
+    void error(std::format_string<Args...> fmt, Args&&... args);
     /// Prints a log Message
     template<typename... Args>
-    void log(const char* pMsg, Args&&... args);
+    void log(std::format_string<Args...> fmt, Args&&... args);
     /// Prints a Critical Message
     template<typename... Args>
-    void critical(const char* pMsg, Args&&... args);
+    void critical(std::format_string<Args...> fmt, Args&&... args);
     /// Sends a User Notification
     template<typename... Args>
-    void userNotification(const char* pMsg, Args&&... args);
+    void userNotification(std::format_string<Args...> fmt, Args&&... args);
     /// Sends an already translated User Notification
     template<typename... Args>
-    void userTranslatedNotification(const char* pMsg, Args&&... args);
+    void userTranslatedNotification(std::format_string<Args...> fmt, Args&&... args);
 
 
     /// Prints a Message with source indication
     template<typename... Args>
-    void message(const std::string& notifier, const char* pMsg, Args&&... args);
+    void message(const std::string& notifier, std::format_string<Args...> fmt, Args&&... args);
     /// Prints a warning Message with source indication
     template<typename... Args>
-    void warning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void warning(const std::string& notifier, std::format_string<Args...> fmt, Args&&... args);
     template<typename... Args>
-    void developerWarning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void developerWarning(const std::string& notifier, std::format_string<Args...> fmt, Args&&... args);
     template<typename... Args>
-    void userWarning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void userWarning(const std::string& notifier, std::format_string<Args...> fmt, Args&&... args);
     template<typename... Args>
-    void translatedUserWarning(const std::string& notifier, const char* pMsg, Args&&... args);
+    void translatedUserWarning(
+        const std::string& notifier,
+        std::format_string<Args...> fmt,
+        Args&&... args
+    );
     /// Prints a error Message with source indication
     template<typename... Args>
-    void error(const std::string& notifier, const char* pMsg, Args&&... args);
+    void error(const std::string& notifier, std::format_string<Args...> fmt, Args&&... args);
     template<typename... Args>
-    void developerError(const std::string& notifier, const char* pMsg, Args&&... args);
+    void developerError(const std::string& notifier, std::format_string<Args...> fmt, Args&&... args);
     template<typename... Args>
     /// A noexcept DeveloperError for use in destructors. When compiled in debug, terminates via an
     /// assert. In release, the exception is silently caught and dropped.
-    void destructorError(const std::string& notifier, const char* pMsg, Args&&... args) noexcept;
+    void destructorError(
+        const std::string& notifier,
+        std::format_string<Args...> fmt,
+        Args&&... args
+    ) noexcept;
     template<typename... Args>
-    void userError(const std::string& notifier, const char* pMsg, Args&&... args);
+    void userError(const std::string& notifier, std::format_string<Args...> fmt, Args&&... args);
     template<typename... Args>
-    void translatedUserError(const std::string& notifier, const char* pMsg, Args&&... args);
+    void translatedUserError(const std::string& notifier, std::format_string<Args...> fmt, Args&&... args);
     /// Prints a log Message with source indication
     template<typename... Args>
-    void log(const std::string& notifier, const char* pMsg, Args&&... args);
+    void log(const std::string& notifier, std::format_string<Args...> fmt, Args&&... args);
     /// Prints a Critical Message with source indication
     template<typename... Args>
-    void critical(const std::string& notifier, const char* pMsg, Args&&... args);
+    void critical(const std::string& notifier, std::format_string<Args...> fmt, Args&&... args);
     /// Sends a User Notification with source indication
     template<typename... Args>
-    void userNotification(const std::string& notifier, const char* pMsg, Args&&... args);
+    void userNotification(const std::string& notifier, std::format_string<Args...> fmt, Args&&... args);
     /// Sends an already translated User Notification with source indication
     template<typename... Args>
-    void userTranslatedNotification(const std::string& notifier, const char* pMsg, Args&&... args);
+    void userTranslatedNotification(
+        const std::string& notifier,
+        std::format_string<Args...> fmt,
+        Args&&... args
+    );
 
     // Notify a message directly to observers
     template<LogStyle, IntendedRecipient = IntendedRecipient::All, ContentType = ContentType::Untranslated>
@@ -822,45 +878,61 @@ public:
  *  @see UserTranslatedNotification
  */
 template<typename... Args>
-void Base::ConsoleSingleton::message(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::message(std::format_string<Args...> fmt, Args&&... args)
 {
-    message(std::string(""), pMsg, std::forward<Args>(args)...);
+    message(std::string(""), fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::message(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::message(
+    const std::string& notifier,
+    std::format_string<Args...> fmt,
+    Args&&... args
+)
 {
-    send<LogStyle::Message>(notifier, pMsg, std::forward<Args>(args)...);
+    send<LogStyle::Message>(notifier, fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::warning(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::warning(std::format_string<Args...> fmt, Args&&... args)
 {
-    warning(std::string(""), pMsg, std::forward<Args>(args)...);
+    warning(std::string(""), fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::warning(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::warning(
+    const std::string& notifier,
+    std::format_string<Args...> fmt,
+    Args&&... args
+)
 {
-    send<LogStyle::Warning>(notifier, pMsg, std::forward<Args>(args)...);
+    send<LogStyle::Warning>(notifier, fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::developerWarning(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::developerWarning(
+    const std::string& notifier,
+    std::format_string<Args...> fmt,
+    Args&&... args
+)
 {
     send<LogStyle::Warning, IntendedRecipient::Developer, ContentType::Untranslatable>(
         notifier,
-        pMsg,
+        fmt,
         std::forward<Args>(args)...
     );
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::userWarning(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::userWarning(
+    const std::string& notifier,
+    std::format_string<Args...> fmt,
+    Args&&... args
+)
 {
     send<LogStyle::Warning, IntendedRecipient::User, ContentType::Untranslated>(
         notifier,
-        pMsg,
+        fmt,
         std::forward<Args>(args)...
     );
 }
@@ -868,35 +940,43 @@ void Base::ConsoleSingleton::userWarning(const std::string& notifier, const char
 template<typename... Args>
 void Base::ConsoleSingleton::translatedUserWarning(
     const std::string& notifier,
-    const char* pMsg,
+    std::format_string<Args...> fmt,
     Args&&... args
 )
 {
     send<LogStyle::Warning, IntendedRecipient::User, ContentType::Translated>(
         notifier,
-        pMsg,
+        fmt,
         std::forward<Args>(args)...
     );
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::error(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::error(std::format_string<Args...> fmt, Args&&... args)
 {
-    error(std::string(""), pMsg, std::forward<Args>(args)...);
+    error(std::string(""), fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::error(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::error(
+    const std::string& notifier,
+    std::format_string<Args...> fmt,
+    Args&&... args
+)
 {
-    send<LogStyle::Error>(notifier, pMsg, std::forward<Args>(args)...);
+    send<LogStyle::Error>(notifier, fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::developerError(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::developerError(
+    const std::string& notifier,
+    std::format_string<Args...> fmt,
+    Args&&... args
+)
 {
     send<LogStyle::Error, IntendedRecipient::Developer, ContentType::Untranslatable>(
         notifier,
-        pMsg,
+        fmt,
         std::forward<Args>(args)...
     );
 }
@@ -904,14 +984,14 @@ void Base::ConsoleSingleton::developerError(const std::string& notifier, const c
 template<typename... Args>
 void Base::ConsoleSingleton::destructorError(
     const std::string& notifier,
-    const char* pMsg,
+    std::format_string<Args...> fmt,
     Args&&... args
 ) noexcept
 {
     try {
         send<LogStyle::Error, IntendedRecipient::Developer, ContentType::Untranslatable>(
             notifier,
-            pMsg,
+            fmt,
             std::forward<Args>(args)...
         );
     }
@@ -921,11 +1001,15 @@ void Base::ConsoleSingleton::destructorError(
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::userError(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::userError(
+    const std::string& notifier,
+    std::format_string<Args...> fmt,
+    Args&&... args
+)
 {
     send<LogStyle::Error, IntendedRecipient::User, ContentType::Untranslated>(
         notifier,
-        pMsg,
+        fmt,
         std::forward<Args>(args)...
     );
 }
@@ -933,75 +1017,87 @@ void Base::ConsoleSingleton::userError(const std::string& notifier, const char* 
 template<typename... Args>
 void Base::ConsoleSingleton::translatedUserError(
     const std::string& notifier,
-    const char* pMsg,
+    std::format_string<Args...> fmt,
     Args&&... args
 )
 {
     send<LogStyle::Error, IntendedRecipient::User, ContentType::Translated>(
         notifier,
-        pMsg,
+        fmt,
         std::forward<Args>(args)...
     );
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::critical(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::critical(std::format_string<Args...> fmt, Args&&... args)
 {
-    critical(std::string(""), pMsg, std::forward<Args>(args)...);
+    critical(std::string(""), fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::critical(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::critical(
+    const std::string& notifier,
+    std::format_string<Args...> fmt,
+    Args&&... args
+)
 {
-    send<LogStyle::Critical>(notifier, pMsg, std::forward<Args>(args)...);
+    send<LogStyle::Critical>(notifier, fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::userNotification(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::userNotification(std::format_string<Args...> fmt, Args&&... args)
 {
-    userNotification(std::string(""), pMsg, std::forward<Args>(args)...);
+    userNotification(std::string(""), fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::userNotification(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::userNotification(
+    const std::string& notifier,
+    std::format_string<Args...> fmt,
+    Args&&... args
+)
 {
     send<LogStyle::Notification, IntendedRecipient::User, ContentType::Untranslated>(
         notifier,
-        pMsg,
+        fmt,
         std::forward<Args>(args)...
     );
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::userTranslatedNotification(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::userTranslatedNotification(std::format_string<Args...> fmt, Args&&... args)
 {
-    userTranslatedNotification(std::string(""), pMsg, std::forward<Args>(args)...);
+    userTranslatedNotification(std::string(""), fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 void Base::ConsoleSingleton::userTranslatedNotification(
     const std::string& notifier,
-    const char* pMsg,
+    std::format_string<Args...> fmt,
     Args&&... args
 )
 {
     send<LogStyle::Notification, IntendedRecipient::User, ContentType::Translated>(
         notifier,
-        pMsg,
+        fmt,
         std::forward<Args>(args)...
     );
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::log(const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::log(std::format_string<Args...> fmt, Args&&... args)
 {
-    log(std::string(""), pMsg, std::forward<Args>(args)...);
+    log(std::string(""), fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void Base::ConsoleSingleton::log(const std::string& notifier, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::log(
+    const std::string& notifier,
+    std::format_string<Args...> fmt,
+    Args&&... args
+)
 {
-    send<LogStyle::Log>(notifier, pMsg, std::forward<Args>(args)...);
+    send<LogStyle::Log>(notifier, fmt, std::forward<Args>(args)...);
 }
 
 template<
@@ -1009,28 +1105,20 @@ template<
     Base::IntendedRecipient recipient /*= Base::IntendedRecipient::All*/,
     Base::ContentType contenttype /*= Base::ContentType::Untranslated*/,
     typename... Args>
-void Base::ConsoleSingleton::send(const std::string& notifiername, const char* pMsg, Args&&... args)
+void Base::ConsoleSingleton::send(
+    const std::string& notifiername,
+    std::format_string<Args...> fmt,
+    Args&&... args
+)
 {
-    std::string format;
-    try {
-        format = fmt::sprintf(pMsg, args...);
-    }
-    catch (fmt::format_error& e) {
-        // We can't allow an exception to propagate out of this method, which gets used in some
-        // destructors. Instead, make the string's contents the error message that fmt::sprintf gave
-        // us.
-        format = std::string("ERROR: Invalid format string or arguments provided.\n");
-        format += e.what();
-    }
+    std::string formatted = std::format(fmt, std::forward<Args>(args)...);
 
     if (connectionMode == Direct) {
-        notify<category, recipient, contenttype>(notifiername, format);
+        notify<category, recipient, contenttype>(notifiername, formatted);
     }
     else {
-
         const auto type = getConsoleMsg(category);
-
-        postEvent(type, recipient, contenttype, notifiername, format);
+        postEvent(type, recipient, contenttype, notifiername, formatted);
     }
 }
 

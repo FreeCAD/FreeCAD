@@ -86,7 +86,7 @@ QRectF DrawViewImage::getRect() const { return {0.0, 0.0, Width.getValue(), Heig
 
 void DrawViewImage::replaceImageIncluded(std::string newImageFile)
 {
-    //    Base::Console().message("DVI::replaceImageIncluded(%s)\n", newImageFile.c_str());
+    //    Base::Console().message("DVI::replaceImageIncluded({})\n", newImageFile);
     if (newImageFile.empty()) {
         return;
     }

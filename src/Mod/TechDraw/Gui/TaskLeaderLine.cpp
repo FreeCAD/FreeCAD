@@ -418,10 +418,10 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
 
 void TaskLeaderLine::dumpTrackerPoints(std::vector<Base::Vector3d>& tPoints) const
 {
-    Base::Console().message("TTL::dumpTrackerPoints(%d)\n", tPoints.size());
-    Base::Console().message("TTL::dumpTrackerPoints - attach point: %s\n", DU::formatVector(m_attachPoint).c_str());
+    Base::Console().message("TTL::dumpTrackerPoints({})\n", tPoints.size());
+    Base::Console().message("TTL::dumpTrackerPoints - attach point: {}\n", DU::formatVector(m_attachPoint));
     for (auto& point : tPoints) {
-        Base::Console().message("TTL::dumpTrackerPoints - a point: %s\n", DU::formatVector(point).c_str());
+        Base::Console().message("TTL::dumpTrackerPoints - a point: {}\n", DU::formatVector(point));
     }
 }
 
@@ -622,7 +622,7 @@ void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> trackerScenePoints, 
 {
     //in this case, we already know who the parent is.  We don't need QGTracker to tell us.
     (void) qgParent;
-    //    Base::Console().message("TTL::onTrackerFinished() - parent: %X\n", qgParent);
+    //    Base::Console().message("TTL::onTrackerFinished() - parent: {:X}\n", qgParent);
     if (trackerScenePoints.empty()) {
         Base::Console().error("TaskLeaderLine - no points available\n");
         return;
@@ -675,7 +675,7 @@ void TaskLeaderLine::removeTracker()
 void TaskLeaderLine::onCancelEditClicked(bool clicked)
 {
     Q_UNUSED(clicked);
-//    Base::Console().message("TTL::onCancelEditClicked() m_pbTrackerState: %d\n",
+//    Base::Console().message("TTL::onCancelEditClicked() m_pbTrackerState: {}\n",
 //                            m_pbTrackerState);
     abandonEditSession();
     if (m_lineFeat) {

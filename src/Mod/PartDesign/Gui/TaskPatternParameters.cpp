@@ -247,7 +247,7 @@ void TaskPatternParameters::showOriginAxes(bool show)
             }
         }
         catch (const Base::Exception& ex) {
-            Base::Console().error("TaskPatternParameters: Error accessing origin axes: %s\n", ex.what());
+            Base::Console().error("TaskPatternParameters: Error accessing origin axes: {}\n", ex.what());
         }
     }
 }
@@ -352,7 +352,8 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     getReferencedSelection(patternObj, msg, selObj, directions);
     if (!selObj) {
         Base::Console().warning(
-            tr("Invalid selection. Select an edge, planar face, or datum line.").toStdString().c_str()
+            "{}",
+            tr("Invalid selection. Select an edge, planar face, or datum line.").toStdString()
         );
         return;
     }

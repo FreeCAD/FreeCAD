@@ -242,7 +242,7 @@ Py::Object PythonDebugStderr::write(const Py::Tuple& args)
     }
 
     if (strlen(msg) > 0) {
-        Base::Console().error("%s", msg);
+        Base::Console().error("{}", msg);
     }
 
     return Py::None();

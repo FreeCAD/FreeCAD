@@ -567,7 +567,7 @@ void QGIDatumLabel::setPrettyNormal()
 
 void QGIDatumLabel::setColor(QColor color)
 {
-    //    Base::Console().message("QGIDL::setColor(%s)\n", qPrintable(c.name()));
+    //    Base::Console().message("QGIDL::setColor({})\n", qPrintable(c.name()));
     m_colNormal = color;
     m_dimText->setColor(m_colNormal);
     m_tolTextOver->setColor(m_colNormal);

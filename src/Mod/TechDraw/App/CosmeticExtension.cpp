@@ -127,7 +127,7 @@ int CosmeticExtension::add1CVToGV(const std::string& tag)
 {
     TechDraw::CosmeticVertex* cv = getCosmeticVertex(tag);
     if (!cv) {
-        Base::Console().message("CE::add1CVToGV - cv %s not found\n", tag.c_str());
+        Base::Console().message("CE::add1CVToGV - cv {} not found\n", tag);
         return 0;
     }
     double scale = getOwner()->getScale();
@@ -156,7 +156,7 @@ void CosmeticExtension::refreshCVGeoms()
 /// find the position of a cosmetic vertex with the given tag in the parent view's geometry list
 int CosmeticExtension::getCVIndex(const std::string& tag)
 {
-    //    Base::Console().message("CE::getCVIndex(%s)\n", tag.c_str());
+    //    Base::Console().message("CE::getCVIndex({})\n", tag);
     std::vector<TechDraw::VertexPtr> gVerts = getOwner()->getVertexGeometry();
     std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
 
@@ -172,7 +172,7 @@ int CosmeticExtension::getCVIndex(const std::string& tag)
     int base = gVerts.size();
     i = 0;
     for (auto& cv : cVerts) {
-        //        Base::Console().message("CE::getCVIndex - cv tag: %s\n",
+        //        Base::Console().message("CE::getCVIndex - cv tag: {}\n",
         //                                cv->getTagAsString().c_str());
         if (cv->getTagAsString() == tag) {
             return base + i;
@@ -180,7 +180,7 @@ int CosmeticExtension::getCVIndex(const std::string& tag)
         i++;
     }
 
-    //    Base::Console().message("CE::getCVIndex - returns: %d\n", result);
+    //    Base::Console().message("CE::getCVIndex - returns: {}\n", result);
     return -1;
 }
 
@@ -190,7 +190,7 @@ int CosmeticExtension::getCVIndex(const std::string& tag)
 /// invert should be set to false.
 std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos, bool invert)
 {
-//    Base::Console().message("CEx::addCosmeticVertex(%s)\n",
+//    Base::Console().message("CEx::addCosmeticVertex({})\n",
 //                             DrawUtil::formatVector(pos).c_str());
     std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
     Base::Vector3d tempPos = pos;
@@ -206,7 +206,7 @@ std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos, bool
 /// retrieve a cosmetic vertex by unique id
 TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertex(const std::string& tagString) const
 {
-//    Base::Console().message("CEx::getCosmeticVertex(%s)\n", tagString.c_str());
+//    Base::Console().message("CEx::getCosmeticVertex({})\n", tagString);
     const std::vector<TechDraw::CosmeticVertex*> verts = CosmeticVertexes.getValues();
     for (auto& cv: verts) {
         std::string cvTag = cv->getTagAsString();
@@ -221,7 +221,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertex(const std::string
 /// used when selecting
 TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const std::string& name) const
 {
-//    Base::Console().message("CEx::getCVBySelection(%s)\n", name.c_str());
+//    Base::Console().message("CEx::getCVBySelection({})\n", name);
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
     if (!dvp) {
@@ -299,7 +299,7 @@ int CosmeticExtension::add1CEToGE(const std::string& tag)
 {
     TechDraw::CosmeticEdge* ce = getCosmeticEdge(tag);
     if (!ce) {
-        Base::Console().message("CEx::add1CEToGE 2 - ce %s not found\n", tag.c_str());
+        Base::Console().message("CEx::add1CEToGE 2 - ce {} not found\n", tag);
         return -1;
     }
     double scale = getOwner()->getScale();

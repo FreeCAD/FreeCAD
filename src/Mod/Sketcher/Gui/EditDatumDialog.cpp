@@ -508,7 +508,7 @@ void EditDatumDialog::performAutoScale(double newDatum)
             ConstrNbr = sketch->getSingleScaleDefiningConstraint();
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("Exception performing autoscale: %s\n", e.what());
+            Base::Console().error("Exception performing autoscale: {}\n", e.what());
         }
     }
 }

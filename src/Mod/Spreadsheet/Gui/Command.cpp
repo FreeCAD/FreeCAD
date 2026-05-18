@@ -218,7 +218,7 @@ void CmdSpreadsheetImport::activated(int iMsg)
                 sheet->execute();
             }
             else {
-                Base::Console().error(errMsg.c_str());
+                Base::Console().error("{}", errMsg);
                 return;
             }
         }

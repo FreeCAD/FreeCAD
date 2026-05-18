@@ -182,7 +182,7 @@ void GridExtensionP::getClosestGridPoint(double& x, double& y) const
     closestdim(x, computedGridValue);
     closestdim(y, computedGridValue);
 
-    // Base::Console().log("gridvalue=%f, (x,y)=(%f,%f)", computedGridValue, x, y);
+    // Base::Console().log("gridvalue={}, (x,y)=({},{})", computedGridValue, x, y);
 }
 
 bool GridExtensionP::checkCameraZoomChange(const Gui::View3DInventorViewer* viewer)

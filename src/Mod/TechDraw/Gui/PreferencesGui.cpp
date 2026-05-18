@@ -188,7 +188,7 @@ QString PreferencesGui::weldingDirectory()
     QString qSymbolDir = QString::fromUtf8(symbolDir.c_str());
     Base::FileInfo fi(symbolDir);
     if (!fi.isReadable()) {
-        Base::Console().warning("Welding Directory: %s is not readable\n", symbolDir.c_str());
+        Base::Console().warning("Welding Directory: {} is not readable\n", symbolDir);
         qSymbolDir = QString::fromUtf8(defaultDir.c_str());
     }
     return qSymbolDir;

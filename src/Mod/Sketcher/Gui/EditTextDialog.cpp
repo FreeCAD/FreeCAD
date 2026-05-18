@@ -141,6 +141,6 @@ void EditTextDialog::on_buttonBox_accepted()
     }
     catch (const Base::Exception& e) {
         sketchView->getDocument()->abortCommand();
-        Base::Console().error("Failed to modify text constraint: %s\n", e.what());
+        Base::Console().error("Failed to modify text constraint: {}\n", e.what());
     }
 }

@@ -204,12 +204,12 @@ bool DrawSVGTemplate::getTemplateDocument(std::string sourceFile, QDomDocument& 
     }
     QFile templateFile(QString::fromStdString(sourceFile));
     if (!templateFile.open(QIODevice::ReadOnly)) {
-        Base::Console().error("DrawSVGTemplate::processTemplate cannot read embedded template %s!\n", PageResult.getValue());
+        Base::Console().error("DrawSVGTemplate::processTemplate cannot read embedded template {}!\n", PageResult.getValue());
         return false;
     }
 
     if (!templateDocument.setContent(&templateFile)) {
-        Base::Console().error("DrawSVGTemplate::processTemplate - failed to parse file: %s\n",
+        Base::Console().error("DrawSVGTemplate::processTemplate - failed to parse file: {}\n",
             PageResult.getValue());
         return false;
     }

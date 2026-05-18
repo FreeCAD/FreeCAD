@@ -807,7 +807,7 @@ QIcon MaterialsEditor::getIcon(const std::shared_ptr<Materials::Library>& librar
     if (library->hasIcon()) {
         QImage image;
         if (!image.loadFromData(library->getIcon())) {
-            Base::Console().log("Unable to load icon image for library '%s'\n",
+            Base::Console().log("Unable to load icon image for library '{}'\n",
                                 library->getName().toStdString().c_str());
             return QIcon();
         }
@@ -959,7 +959,7 @@ bool MaterialsEditor::updateTexturePreview() const
                     // Base::Console().log("Has 'TexturePath'\n");
                     auto filePath = property->getString();
                     if (!image.load(filePath)) {
-                        Base::Console().log("Unable to load image '%s'\n",
+                        Base::Console().log("Unable to load image '{}'\n",
                                             filePath.toStdString().c_str());
                         hasImage = false;
                     }
@@ -977,7 +977,7 @@ bool MaterialsEditor::updateTexturePreview() const
             auto property = _material->getAppearanceProperty(QStringLiteral("TextureScaling"));
             if (!property->isNull()) {
                 // scaling = property->getFloat();
-                //  Base::Console().log("Has 'TextureScaling' = %g\n", scaling);
+                //  Base::Console().log("Has 'TextureScaling' = {}\n", scaling);
             }
         }
         catch (const Materials::PropertyNotFound&) {
@@ -1287,7 +1287,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected,
         _material = std::make_shared<Materials::Material>(*getMaterialManager().getMaterial(uuid));
     }
     catch (Materials::ModelNotFound const&) {
-        Base::Console().log("*** Unable to load material '%s'\n", uuid.toStdString().c_str());
+        Base::Console().log("*** Unable to load material '{}'\n", uuid.toStdString());
         _material = std::make_shared<Materials::Material>();
     }
 

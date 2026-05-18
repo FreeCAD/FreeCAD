@@ -524,7 +524,7 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem* groupItem, const 
             = createPreferencePage(pageName, groupItem->data(GroupNameRole).toString().toStdString());
 
         if (!page) {
-            Base::Console().warning("%s is not a preference page\n", pageName.c_str());
+            Base::Console().warning("{} is not a preference page\n", pageName);
             return;
         }
 
@@ -550,11 +550,11 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem* groupItem, const 
         addSizeHint(page);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Base exception thrown for '%s'\n", pageName.c_str());
+        Base::Console().error("Base exception thrown for '{}'\n", pageName);
         e.reportException();
     }
     catch (const std::exception& e) {
-        Base::Console().error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
+        Base::Console().error("C++ exception thrown for '{}' ({})\n", pageName, e.what());
     }
 }
 

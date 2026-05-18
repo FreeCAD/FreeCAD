@@ -189,7 +189,7 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         // Note: this does not protect against the case where the proposed file does not exist yet
         //       and creation of the file will not be permitted (ex attempt to write to restricted
         //       directory).
-        Base::Console().error("File %s is not available for writing.\n", qPrintable(outputFile));
+        Base::Console().error("File {} is not available for writing.\n", qPrintable(outputFile));
         return;
     }
 
@@ -361,7 +361,7 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     if (fi.exists() && !fi.isWritable()) {
          // this guards against a no-write situation on Win (issue #25299)
          // See comment in printAllPdf re new file creaion
-        Base::Console().error("File %s is not available for writing.\n", file.c_str());
+        Base::Console().error("File {} is not available for writing.\n", file);
         return;
     }
 

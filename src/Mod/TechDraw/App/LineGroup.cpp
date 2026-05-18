@@ -91,12 +91,12 @@ void LineGroup::setWeight(std::string s, double weight)
 
 void LineGroup::dump(const char* title)
 {
-    Base::Console().message( "DUMP: %s\n", title);
-    Base::Console().message( "Name: %s\n", m_name.c_str());
-    Base::Console().message( "Thin: %.3f\n", m_thin);
-    Base::Console().message( "Graphic: %.3f\n", m_graphic);
-    Base::Console().message( "Thick: %.3f\n", m_thick);
-    Base::Console().message( "Extra: %.3f\n", m_extra);
+    Base::Console().message( "DUMP: {}\n", title);
+    Base::Console().message( "Name: {}\n", m_name);
+    Base::Console().message( "Thin: {:.3f}\n", m_thin);
+    Base::Console().message( "Graphic: {:.3f}\n", m_graphic);
+    Base::Console().message( "Thick: {:.3f}\n", m_thick);
+    Base::Console().message( "Extra: {:.3f}\n", m_extra);
 }
 
 //static support function: split comma separated string of values into vector of numbers
@@ -117,7 +117,7 @@ std::vector<double> LineGroup::split(std::string line)
             result.push_back(std::stod(cell));
         }
         catch (const std::invalid_argument& ia) {
-            Base::Console().warning("Invalid number in cell: %s (%s) \n", cell.c_str(), ia.what());
+            Base::Console().warning("Invalid number in cell: {} ({}) \n", cell, ia.what());
             result.push_back(0.0);
         }
     }
@@ -131,7 +131,7 @@ std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
     Base::FileInfo fi(parmFile);
     Base::ifstream inFile(fi, std::ifstream::in);
     if(!inFile.is_open()) {
-        Base::Console().message( "Cannot open LineGroup file: %s\n", parmFile.c_str());
+        Base::Console().message( "Cannot open LineGroup file: {}\n", parmFile);
         return record;
     }
     // parse file to get the groupNumber'th line
@@ -149,7 +149,7 @@ std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
         }
     }  //endwhile
     // nothing was found
-    Base::Console().error("LineGroup: the LineGroup file has only %s entries but entry number %s is set\n"
+    Base::Console().error("LineGroup: the LineGroup file has only {} entries but entry number {} is set\n"
         , std::to_string(counter).c_str()
         , std::to_string(groupNumber).c_str());
     return std::string(); // return an empty string
@@ -166,7 +166,7 @@ LineGroup* LineGroup::lineGroupFactory(int groupNumber)
 
     std::vector<double> values = LineGroup::split(lgRecord);
     if (values.size() < 4) {
-        Base::Console().error( "LineGroup::invalid entry in %s\n", lgFileName.c_str() );
+        Base::Console().error( "LineGroup::invalid entry in {}\n", lgFileName );
     } else {
         lg->setWeight("Thin", values[0]);
         lg->setWeight("Graphic", values[1]);
@@ -202,7 +202,7 @@ std::string LineGroup::getGroupNamesFromFile(std::string FileName)
     Base::FileInfo fi(FileName);
     Base::ifstream inFile(fi, std::ifstream::in);
     if (!inFile.is_open()) {
-        Base::Console().message("Cannot open LineGroup file: %s\n", FileName.c_str());
+        Base::Console().message("Cannot open LineGroup file: {}\n", FileName);
         return record;
     }
     // parse the file
@@ -221,7 +221,7 @@ std::string LineGroup::getGroupNamesFromFile(std::string FileName)
         }
     }  //endwhile
     if (record.empty()) {
-        Base::Console().message("LineGroup error: no group found in file %s\n", FileName.c_str());
+        Base::Console().message("LineGroup error: no group found in file {}\n", FileName);
     }
     return record;
 }

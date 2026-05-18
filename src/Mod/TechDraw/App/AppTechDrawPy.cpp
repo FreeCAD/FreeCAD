@@ -213,7 +213,7 @@ private:
             str += " ";
             if (msg) {str += msg;}
             else     {str += "No OCCT Exception Message";}
-            Base::Console().error("%s\n", str.c_str());
+            Base::Console().error("{}\n", str);
             throw Py::Exception(Part::PartExceptionOCCError, str);
         }
         catch (const Base::Exception &e) {
@@ -229,7 +229,7 @@ private:
             str += "C++ exception thrown (";
             str += e.what();
             str += ")";
-            Base::Console().error("%s\n", str.c_str());
+            Base::Console().error("{}\n", str);
             throw Py::RuntimeError(str);
         }
     }
@@ -437,7 +437,7 @@ private:
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
                 TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
                 if (!gObj) {
-                    Base::Console().message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+                    Base::Console().message("TechDraw: {} has no geometry object!\n", dvp->Label.getValue());
                     return Py::String();
                 }
                 TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
@@ -500,7 +500,7 @@ private:
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
                 TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
                 if (!gObj) {
-                    Base::Console().message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+                    Base::Console().message("TechDraw: {} has no geometry object!\n", dvp->Label.getValue());
                     return Py::String();
                 }
 
@@ -570,7 +570,7 @@ private:
         TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
         if (!gObj) {
             // this test might be redundant here since we already checked hasGeometry.
-            Base::Console().message("TechDraw: %s has no geometry object!\n", dvp->Label.getValue());
+            Base::Console().message("TechDraw: {} has no geometry object!\n", dvp->Label.getValue());
             return;
         }
         TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
@@ -1027,7 +1027,7 @@ private:
         }
         Base::FileInfo fi(patFile);
         if (!fi.isReadable()) {
-            Base::Console().error(".pat File: %s is not readable\n", patFile.c_str());
+            Base::Console().error(".pat File: {} is not readable\n", patFile);
             return Py::None();
         }
         std::vector<TechDraw::PATLineSpec> specs = TechDraw::DrawGeomHatch::getDecodedSpecsFromFile(patFile, patName);

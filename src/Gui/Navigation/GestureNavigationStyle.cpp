@@ -122,7 +122,7 @@ public:
             Base::Console().log("button3 release ");
         }
         if (isMouseButtonEvent()) {
-            Base::Console().log("%x", modifiers);
+            Base::Console().log("{:x}", modifiers);
         }
         if (isGestureEvent()) {
             Base::Console().log("Gesture ");
@@ -140,7 +140,7 @@ public:
                     Base::Console().log("??? ");
             }
 
-            Base::Console().log(inventor_event->getTypeId().getName().getString());
+            Base::Console().log("{}", inventor_event->getTypeId().getName().getString());
         }
         if (isMouseButtonEvent() || isGestureEvent()) {
             Base::Console().log(

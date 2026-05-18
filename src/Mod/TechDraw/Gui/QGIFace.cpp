@@ -186,7 +186,7 @@ void QGIFace::loadSvgHatch(std::string fileSpec)
     QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
     QFile file(qfs);
     if (!file.open(QFile::ReadOnly | QFile::Text))  {
-        Base::Console().error("QGIFace could not read %s\n", fileSpec.c_str());
+        Base::Console().error("QGIFace could not read {}\n", fileSpec);
         return;
     }
     m_svgXML = file.readAll();
@@ -273,7 +273,7 @@ void QGIFace::makeMark(double x, double y)  // NOLINT readability-identifier-len
 /// make an array of svg tiles to cover this face
 void QGIFace::buildSvgHatch()
 {
-//    Base::Console().message("QGIF::buildSvgHatch() - offset: %s\n", DrawUtil::formatVector(getHatchOffset()).c_str());
+//    Base::Console().message("QGIF::buildSvgHatch() - offset: {}\n", DrawUtil::formatVector(getHatchOffset()));
     double wTile = SVGSIZEW * m_fillScale;
     double hTile = SVGSIZEH * m_fillScale;
     double faceWidth = path().boundingRect().width();
@@ -306,7 +306,7 @@ void QGIFace::buildSvgHatch()
                          -overlayWidth + ih*hTile + getHatchOffset().y);
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().warning("SVG tile count exceeded: %ld. Change hatch scale or raise limit.\n", tileCount);
+                Base::Console().warning("SVG tile count exceeded: {}. Change hatch scale or raise limit.\n", tileCount);
                 break;
             }
         }
@@ -389,7 +389,7 @@ void QGIFace::buildPixHatch()
                                QRectF(0, 0, wTile, hTile));  //source rect
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().warning("Pixmap tile count exceeded: %ld\n",tileCount);
+                Base::Console().warning("Pixmap tile count exceeded: {}\n",tileCount);
                 break;
             }
         }
@@ -443,7 +443,7 @@ QPixmap QGIFace::textureFromBitmap(std::string fileSpec) const
     QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
     QFile file(qfs);
     if (!file.open(QFile::ReadOnly))  {
-        Base::Console().error("QGIFace could not read %s\n", fileSpec.c_str());
+        Base::Console().error("QGIFace could not read {}\n", fileSpec);
         return pix;
     }
     QByteArray bytes = file.readAll();

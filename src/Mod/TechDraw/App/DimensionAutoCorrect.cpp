@@ -327,7 +327,7 @@ bool DimensionAutoCorrect::findExactVertex3d(ReferenceEntry& refToFix,
 //! and return a reference pointing to the matching edge.
 bool DimensionAutoCorrect::findExactEdge3d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const
 {
-    // Base::Console().message("DAC::findExactEdge3d() - cache: %d\n", m_3dObjectCache.size());
+    // Base::Console().message("DAC::findExactEdge3d() - cache: {}\n", m_3dObjectCache.size());
     // first, try to find a match in the referenced object
     auto refObj = refToFix.getObject();
     if (refObj) {
@@ -401,7 +401,7 @@ bool DimensionAutoCorrect::findSimilarVertex3d(ReferenceEntry& refToFix,
 bool DimensionAutoCorrect::findSimilarEdge3d(ReferenceEntry& refToFix,
                                              const Part::TopoShape& refGeom) const
 {
-    // Base::Console().message("DAC::findSimilarEdge3d(%s)\n", refToFix.getObjectName().c_str());
+    // Base::Console().message("DAC::findSimilarEdge3d({})\n", refToFix.getObjectName());
     (void)refToFix;
     (void)refGeom;
     // Base::Console().message("DAC::findSimilarEdge3d is not implemented yet\n");
@@ -525,7 +525,7 @@ ReferenceEntry DimensionAutoCorrect::searchObjForEdge(App::DocumentObject* obj,
                                                       const Part::TopoShape& refEdge,
                                                       bool exact) const
 {
-    // Base::Console().message("DAC::searchObjForEdge(%s)\n", obj->Label.getValue());
+    // Base::Console().message("DAC::searchObjForEdge({})\n", obj->Label.getValue());
     (void)exact;
     auto shape3d = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     if (shape3d.IsNull()) {

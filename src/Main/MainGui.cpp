@@ -355,7 +355,7 @@ int main(int argc, char** argv)
         exit(1);
     }
     catch (const std::exception& e) {
-        Base::Console().error("Application unexpectedly terminated: %s\n", e.what());
+        Base::Console().error("Application unexpectedly terminated: {}\n", e.what());
         exit(1);
     }
     catch (...) {
@@ -368,12 +368,12 @@ int main(int argc, char** argv)
     std::cerr.rdbuf(oldcerr);
 
     // Destruction phase ===========================================================
-    Base::Console().log("%s terminating...\n", App::Application::getExecutableName().c_str());
+    Base::Console().log("{} terminating...\n", App::Application::getExecutableName());
 
     // cleans up
     App::Application::destruct();
 
-    Base::Console().log("%s completely terminated\n", App::Application::getExecutableName().c_str());
+    Base::Console().log("{} completely terminated\n", App::Application::getExecutableName());
 
     return 0;
 }
@@ -413,7 +413,7 @@ public:
     {}
     virtual void OnOutput(LPCSTR szText)
     {
-        Base::Console().log("Id: %ld: %s", threadId, szText);
+        Base::Console().log("Id: {}: {}", threadId, szText);
         // StackWalker::OnOutput(szText);
     }
 };
@@ -435,9 +435,9 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
     MyStackWalker sw;
     sw.ShowCallstack(GetCurrentThread(), pEx->ContextRecord);
     Base::Console().log("*** Unhandled Exception!\n");
-    Base::Console().log("   ExpCode: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionCode);
-    Base::Console().log("   ExpFlags: %d\n", pEx->ExceptionRecord->ExceptionFlags);
-    Base::Console().log("   ExpAddress: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionAddress);
+    Base::Console().log("   ExpCode: 0x{:08X}\n", pEx->ExceptionRecord->ExceptionCode);
+    Base::Console().log("   ExpFlags: {}\n", pEx->ExceptionRecord->ExceptionFlags);
+    Base::Console().log("   ExpAddress: 0x{:08X}\n", pEx->ExceptionRecord->ExceptionAddress);
 
     bool bFailed = true;
     HANDLE hFile;

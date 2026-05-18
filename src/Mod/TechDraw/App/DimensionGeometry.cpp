@@ -112,8 +112,8 @@ void pointPair::invertY()
 
 void pointPair::dump(const std::string& text) const
 {
-    Base::Console().message("pointPair - %s\n", text.c_str());
-    Base::Console().message("pointPair - first: %s  second: %s\n",
+    Base::Console().message("pointPair - {}\n", text);
+    Base::Console().message("pointPair - first: {}  second: {}\n",
                             DU::formatVector(first()).c_str(), DU::formatVector(second()).c_str());
 }
 
@@ -231,10 +231,10 @@ anglePoints anglePoints::toDisplayForm(DrawViewPart* dvp) const
 }
 void anglePoints::dump(const std::string& text) const
 {
-    Base::Console().message("anglePoints - %s\n", text.c_str());
-    Base::Console().message("anglePoints - ends - first: %s  second: %s\n",
+    Base::Console().message("anglePoints - {}\n", text);
+    Base::Console().message("anglePoints - ends - first: {}  second: {}\n",
                             DU::formatVector(first()).c_str(), DU::formatVector(second()).c_str());
-    Base::Console().message("anglePoints - vertex: %s\n", DU::formatVector(vertex()).c_str());
+    Base::Console().message("anglePoints - vertex: {}\n", DU::formatVector(vertex()));
 }
 
 arcPoints::arcPoints() :
@@ -348,17 +348,17 @@ arcPoints arcPoints::toCanonicalForm(DrawViewPart* dvp) const
 
 void arcPoints::dump(const std::string& text) const
 {
-    Base::Console().message("arcPoints - %s\n", text.c_str());
-    Base::Console().message("arcPoints - radius: %.3f center: %s\n", radius,
+    Base::Console().message("arcPoints - {}\n", text);
+    Base::Console().message("arcPoints - radius: {:.3f} center: {}\n", radius,
                             DrawUtil::formatVector(center).c_str());
-    Base::Console().message("arcPoints - isArc: %d arcCW: %d\n", isArc, arcCW);
-    Base::Console().message("arcPoints - onCurve: %s  %s\n",
+    Base::Console().message("arcPoints - isArc: {} arcCW: {}\n", isArc, arcCW);
+    Base::Console().message("arcPoints - onCurve: {}  {}\n",
                             DrawUtil::formatVector(onCurve.first()).c_str(),
                             DrawUtil::formatVector(onCurve.second()).c_str());
-    Base::Console().message("arcPoints - arcEnds: %s  %s\n",
+    Base::Console().message("arcPoints - arcEnds: {}  {}\n",
                             DrawUtil::formatVector(arcEnds.first()).c_str(),
                             DrawUtil::formatVector(arcEnds.second()).c_str());
-    Base::Console().message("arcPoints - midArc: %s\n", DrawUtil::formatVector(midArc).c_str());
+    Base::Console().message("arcPoints - midArc: {}\n", DrawUtil::formatVector(midArc));
 }
 
 
@@ -394,7 +394,7 @@ void areaPoint::invertY()
 
 void areaPoint::dump(const std::string& text) const
 {
-    Base::Console().message("areaPoint - %s\n", text.c_str());
-    Base::Console().message("areaPoint - area: %.3f center: %s\n", area,
+    Base::Console().message("areaPoint - {}\n", text);
+    Base::Console().message("areaPoint - area: {:.3f} center: {}\n", area,
         DrawUtil::formatVector(center).c_str());
 }

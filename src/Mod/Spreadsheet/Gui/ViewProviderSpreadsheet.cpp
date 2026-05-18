@@ -125,7 +125,7 @@ void ViewProviderSheet::exportAsFile()
                 sheet->exportToFile(fileName.toStdString(), delim, quote, escape);
             }
             else {
-                Base::Console().error(errMsg.c_str());
+                Base::Console().error("{}", errMsg);
             }
         }
     }

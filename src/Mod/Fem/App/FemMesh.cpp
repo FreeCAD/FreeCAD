@@ -580,7 +580,8 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
     TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
     ShapeAnalysis_ShapeTolerance analysis;
     double limit = analysis.Tolerance(solid, 1, shapetype);
-    Base::Console().log("The limit if a node is in or out: %.12lf in scientific: %.4e \n", limit, limit);
+    Base::Console()
+        .log("The limit if a node is in or out: {:.12f} in scientific: {:.4e} \n", limit, limit);
 
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
@@ -1413,7 +1414,7 @@ void FemMesh::readNastran(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readNastran95(const std::string& Filename)
@@ -1545,7 +1546,7 @@ void FemMesh::readNastran95(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readAbaqus(const std::string& FileName)
@@ -1585,7 +1586,7 @@ void FemMesh::readAbaqus(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readZ88(const std::string& FileName)
@@ -1625,7 +1626,7 @@ void FemMesh::readZ88(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::read(const char* FileName)

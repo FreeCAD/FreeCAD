@@ -212,7 +212,7 @@ void TaskLinkDim::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem
     Q_UNUSED(current);
     Q_UNUSED(previous);
 //    if (previous) {
-//        Base::Console().message("TRACE - TLD::onCurrent - text: %s data: %s is previous\n",
+//        Base::Console().message("TRACE - TLD::onCurrent - text: {} data: {} is previous\n",
 //                                qPrintable(previous->text(0)), qPrintable(previous->data(0, Qt::UserRole).toString()));
 //        if (previous->treeWidget() == ui->selector->selectedTreeWidget()) {
 //            Base::Console().message("TRACE - TLD::onCurrent - previous belongs to selected\n");
@@ -222,7 +222,7 @@ void TaskLinkDim::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem
 //        }
 //    }
 //    if (current) {
-//        Base::Console().message("TRACE - TLD::onCurrent - text: %s data: %s is current\n",
+//        Base::Console().message("TRACE - TLD::onCurrent - text: {} data: {} is current\n",
 //                                 qPrintable(current->text(0)), qPrintable(current->data(0, Qt::UserRole).toString()));
 //        if (current->treeWidget() == ui->selector->selectedTreeWidget()) {
 //            Base::Console().message("TRACE - TLD::onCurrent - current belongs to selected\n");

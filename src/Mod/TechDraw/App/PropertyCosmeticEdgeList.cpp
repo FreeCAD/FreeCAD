@@ -66,7 +66,7 @@ int PropertyCosmeticEdgeList::getSize() const
 //_lValueList is not const. so why do we pass a const parameter?
 void PropertyCosmeticEdgeList::setValue(CosmeticEdge* lValue)
 {
-//    Base::Console().message("PCEL::setValue() - current values: %d lValue: %s\n", _lValueList.size(), lValue ? "valid" : "null");
+//    Base::Console().message("PCEL::setValue() - current values: {} lValue: {}\n", _lValueList.size(), lValue ? "valid" : "null");
     if (lValue) {
         aboutToSetValue();
         _lValueList.resize(1);
@@ -77,7 +77,7 @@ void PropertyCosmeticEdgeList::setValue(CosmeticEdge* lValue)
 
 void PropertyCosmeticEdgeList::setValues(const std::vector<CosmeticEdge*>& lValue)
 {
-//    Base::Console().message("PCEL::seValues() - in values: %d current values: %d\n", lValue.size(), _lValueList.size());
+//    Base::Console().message("PCEL::seValues() - in values: {} current values: {}\n", lValue.size(), _lValueList.size());
     aboutToSetValue();
     _lValueList.resize(lValue.size());
     if (!lValue.empty()) {
@@ -160,7 +160,7 @@ void PropertyCosmeticEdgeList::Restore(Base::XMLReader &reader)
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
-            Base::Console().error("CosmeticEdge \"%s\" within a PropertyCosmeticEdgeList was subject to a partial restore.\n", reader.localName());
+            Base::Console().error("CosmeticEdge \"{}\" within a PropertyCosmeticEdgeList was subject to a partial restore.\n", reader.localName());
             if(isOrderRelevant()) {
                 // Pushes the best try by the CosmeticEdge class
                 values.push_back(newG);

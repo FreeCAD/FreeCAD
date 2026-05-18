@@ -734,7 +734,7 @@ bool TaskDialogPython::tryLoadUiFile()
             appendForm(form, QPixmap(icon));
         }
         else {
-            Base::Console().error("Failed to load UI file from '%s'\n", (const char*)fn.toUtf8());
+            Base::Console().error("Failed to load UI file from '{}'\n", fn.toStdString());
         }
 
         return true;

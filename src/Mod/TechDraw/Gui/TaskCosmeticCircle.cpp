@@ -287,7 +287,7 @@ bool TaskCosmeticCircle::accept()
 {
     if (ui->qsbRadius->value().getValue() <= 0.0) {
         // this won't work!
-        Base::Console().error("TaskCosmeticCircle - cannot create a circle with radius: %.3f\n",
+        Base::Console().error("TaskCosmeticCircle - cannot create a circle with radius: {:.3f}\n",
                                 ui->qsbRadius->value().getValue());
         return false;
     }

@@ -579,7 +579,7 @@ void ViewProviderMeasureAngle::redrawAnnotation()
         pcTransform->setMatrix(matrix);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n", e.what());
+        Base::Console().error("Error in ViewProviderMeasureAngle::redrawAnnotation: {}\n", e.what());
         return;
     }
 
@@ -646,7 +646,7 @@ void ViewProviderMeasureAngle::positionAnno([[maybe_unused]] const Measure::Meas
             invMatrix = getMatrix().inverse();
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("Error in ViewProviderMeasureAngle::positionAnno: %s\n", e.what());
+            Base::Console().error("Error in ViewProviderMeasureAngle::positionAnno: {}\n", e.what());
             return;
         }
         SbVec3f localLoc1;

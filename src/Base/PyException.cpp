@@ -137,7 +137,7 @@ void pyThrowWrappedStdException(const std::exception& e, bool report)
 {
     const auto what = fmt::format("FreeCAD exception thrown ({})", e.what());
     if (report) {
-        Base::Console().error("%s\n", what);
+        Base::Console().error("{}\n", what);
     }
     if (dynamic_cast<const std::logic_error*>(&e)) {
         if (dynamic_cast<const std::length_error*>(&e) || dynamic_cast<const std::out_of_range*>(&e)) {
@@ -174,7 +174,7 @@ void pyThrowWrappedUnknownException(bool report)
 #endif
     const auto what = fmt::format("Unknown C++ exception ({})", demangled);
     if (report) {
-        Base::Console().error("%s\n", what);
+        Base::Console().error("{}\n", what);
     }
     throw Py::RuntimeError(what);
 }

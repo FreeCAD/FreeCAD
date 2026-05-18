@@ -82,7 +82,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
     }
 
     if (formatSpecifier.isEmpty()) {
-        Base::Console().warning("Warning - no numeric format in Format Spec %s - %s\n",
+        Base::Console().warning("Warning - no numeric format in Format Spec {} - {}\n",
                                 qPrintable(qFormatSpec),
                                 m_dimension->getNameInDocument());
         return qFormatSpec.toStdString();
@@ -354,7 +354,7 @@ QStringList DimensionFormatter::getPrefixSuffixSpec(const QString& fSpec) const
         result.append(formatSuffix);
         result.append(match);
     } else {       //printf format not found!
-        Base::Console().warning("Warning - no numeric format in formatSpec %s - %s\n",
+        Base::Console().warning("Warning - no numeric format in formatSpec {} - {}\n",
                                 qPrintable(fSpec), m_dimension->getNameInDocument());
         result.append(QString());
         result.append(QString());

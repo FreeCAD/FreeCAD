@@ -263,7 +263,7 @@ void DisplayedFilesModel::processNewThumbnail(const QString& filePath, const QBy
 
     const std::size_t index = indexOfFile(_fileInfoCache, filePath.toStdString());
     if (index == _fileInfoCache.size()) {
-        Base::Console().log("Unrecognized path %s\n", filePath.toStdString());
+        Base::Console().log("Unrecognized path {}\n", filePath.toStdString());
         return;
     }
 

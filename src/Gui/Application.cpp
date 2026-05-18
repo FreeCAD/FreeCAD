@@ -180,7 +180,7 @@ void requireMainThread(const char* api)
         return;
     }
 
-    Base::Console().error("GUI API '%s' may only be used from the main thread.\n", api);
+    Base::Console().error("GUI API '{}' may only be used from the main thread.\n", api);
     throw Base::RuntimeError(
         std::string("GUI API '") + api + "' may only be used from the main thread"
     );
@@ -1139,7 +1139,7 @@ void Application::slotDeleteDocument(const App::Document& Doc)
 
     std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
     if (doc == d->documents.end()) {
-        Base::Console().log("GUI document '%s' already deleted\n", Doc.getName());
+        Base::Console().log("GUI document '{}' already deleted\n", Doc.getName());
         return;
     }
 
@@ -1672,7 +1672,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
         Base::Interpreter().runString(nameGui.c_str());
     }
     catch (const Base::Exception& e) {
-        Base::Console().warning(e.what());
+        Base::Console().warning("{}", e.what());
         return;
     }
 
@@ -1680,7 +1680,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     // May be useful for error detection
     if (d->activeDocument) {
         App::Document* doc = d->activeDocument->getDocument();
-        Base::Console().log("Active document is %s (at %p)\n", doc->getName(), static_cast<void*>(doc));
+        Base::Console().log("Active document is {} (at {})\n", doc->getName(), static_cast<void*>(doc));
     }
     else {
         Base::Console().log("No active document\n");
@@ -2021,12 +2021,12 @@ bool Application::activateWorkbench(const char* name)
             match = rx.match(msg);
         }
 
-        Base::Console().error("%s\n", (const char*)msg.toUtf8());
+        Base::Console().error("{}\n", msg.toStdString());
         if (!d->startingUp) {
-            Base::Console().error("%s\n", e.getStackTrace().c_str());
+            Base::Console().error("{}\n", e.getStackTrace());
         }
         else {
-            Base::Console().log("%s\n", e.getStackTrace().c_str());
+            Base::Console().log("{}\n", e.getStackTrace());
         }
 
         if (!d->startingUp) {
@@ -2318,20 +2318,20 @@ void messageHandler(QtMsgType type, const QMessageLogContext& context, const QSt
         case QtInfoMsg:
         case QtDebugMsg:
 #ifdef FC_DEBUG
-            Base::Console().message("%s\n", output.constData());
+            Base::Console().message("{}\n", output.toStdString());
 #else
             // do not stress user with Qt internals but write to log file if enabled
-            Base::Console().log("%s\n", output.constData());
+            Base::Console().log("{}\n", output.toStdString());
 #endif
             break;
         case QtWarningMsg:
-            Base::Console().warning("%s\n", output.constData());
+            Base::Console().warning("{}\n", output.toStdString());
             break;
         case QtCriticalMsg:
-            Base::Console().error("%s\n", output.constData());
+            Base::Console().error("{}\n", output.toStdString());
             break;
         case QtFatalMsg:
-            Base::Console().error("%s\n", output.constData());
+            Base::Console().error("{}\n", output.toStdString());
             abort();  // deliberately core dump
     }
 #ifdef FC_OS_WIN32
@@ -2349,13 +2349,13 @@ void messageHandlerCoin(const SoError* error, void* /*userdata*/)
         const char* msg = error->getDebugString().getString();
         switch (dbg->getSeverity()) {
             case SoDebugError::INFO:
-                Base::Console().message("%s\n", msg);
+                Base::Console().message("{}\n", msg);
                 break;
             case SoDebugError::WARNING:
-                Base::Console().warning("%s\n", msg);
+                Base::Console().warning("{}\n", msg);
                 break;
             default:  // error
-                Base::Console().error("%s\n", msg);
+                Base::Console().error("{}\n", msg);
                 break;
         }
 # ifdef FC_OS_WIN32
@@ -2366,7 +2366,7 @@ void messageHandlerCoin(const SoError* error, void* /*userdata*/)
     }
     else if (error) {
         const char* msg = error->getDebugString().getString();
-        Base::Console().log(msg);
+        Base::Console().log("{}", msg);
     }
 }
 
@@ -2613,7 +2613,7 @@ void runEventLoop(GUISingleApplication& mainApp)
     }
     catch (const std::exception& e) {
         // catching nasty stuff coming out of the event loop
-        Base::Console().error("Event loop left through unhandled exception: %s\n", e.what());
+        Base::Console().error("Event loop left through unhandled exception: {}\n", e.what());
         App::Application::destructObserver();
         throw;
     }

@@ -2938,7 +2938,7 @@ void CmdFemPostPipelineFromResult::activated(int)
         Fem::FemResultObject* result =
          static_cast<Fem::FemResultObject*>(ResultFilter.Result[0][0].getObject());
         //static_cast failed here
-        Base::Console().message("Debug: FemResultObject pointer = %p", result );
+        Base::Console().message("Debug: FemResultObject pointer = {}", result );
 
     */
 

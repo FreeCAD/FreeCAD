@@ -239,17 +239,17 @@ void MacroManager::open(MacroType eType, const char* sName)
 #endif
 
     macroFile.open(sName);
-    Base::Console().log("CmdM: Open macro: %s\n", sName);
+    Base::Console().log("CmdM: Open macro: {}\n", sName);
 }
 
 void MacroManager::commit()
 {
     QString macroName = macroFile.fileName();
     if (macroFile.commit()) {
-        Base::Console().log("Commit macro: %s\n", (const char*)macroName.toUtf8());
+        Base::Console().log("Commit macro: {}\n", macroName.toStdString());
     }
     else {
-        Base::Console().error("Cannot open file to write macro: %s\n", (const char*)macroName.toUtf8());
+        Base::Console().error("Cannot open file to write macro: {}\n", macroName.toStdString());
         cancel();
     }
 }
@@ -257,7 +257,7 @@ void MacroManager::commit()
 void MacroManager::cancel()
 {
     QString macroName = macroFile.fileName();
-    Base::Console().log("Cancel macro: %s\n", (const char*)macroName.toUtf8());
+    Base::Console().log("Cancel macro: {}\n", macroName.toStdString());
     macroFile.cancel();
 }
 

@@ -114,7 +114,7 @@ short DrawRichAnno::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawRichAnno::execute()
 {
-//    Base::Console().message("DRA::execute() - @ (%.3f, %.3f)\n", X.getValue(), Y.getValue());
+//    Base::Console().message("DRA::execute() - @ ({:.3f}, {:.3f})\n", X.getValue(), Y.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -124,7 +124,7 @@ App::DocumentObjectExecReturn *DrawRichAnno::execute()
 
 DrawView* DrawRichAnno::getBaseView() const
 {
-//    Base::Console().message("DRA::getBaseView() - %s\n", getNameInDocument());
+//    Base::Console().message("DRA::getBaseView() - {}\n", getNameInDocument());
     return freecad_cast<DrawView*>(AnnoParent.getValue());
 }
 

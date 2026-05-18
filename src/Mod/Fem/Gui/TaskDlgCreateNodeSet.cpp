@@ -80,7 +80,7 @@ bool TaskDlgCreateNodeSet::accept()
     }
     catch (const Base::Exception& e) {
         FemSetNodesObject->getDocument()->abortTransaction();
-        Base::Console().warning("TaskDlgCreateNodeSet::accept(): %s\n", e.what());
+        Base::Console().warning("TaskDlgCreateNodeSet::accept(): {}\n", e.what());
     }
 
     return false;

@@ -233,9 +233,10 @@ void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape, SoP
     }
     catch (Standard_Failure& e) {
         Base::Console().userTranslatedNotification(
+            "{}",
             tr("Failure while rendering preview: %1. That usually indicates an error with model.")
                 .arg(QString::fromUtf8(e.GetMessageString()))
-                .toUtf8()
+                .toStdString()
         );
 
         updatePreviewShape(preview, {});

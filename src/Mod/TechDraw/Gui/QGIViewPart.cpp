@@ -288,7 +288,7 @@ void QGIViewPart::drawViewPart()
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     if (!viewPart)
         return;
-    //    Base::Console().message("QGIVP::DVP() - %s / %s\n", viewPart->getNameInDocument(), viewPart->Label.getValue());
+    //    Base::Console().message("QGIVP::DVP() - {} / {}\n", viewPart->getNameInDocument(), viewPart->Label.getValue());
     if (!viewPart->hasGeometry()) {
         removePrimitives();//clean the slate
         removeDecorations();
@@ -431,7 +431,7 @@ void QGIViewPart::drawAllEdges()
             else {
                 // there are 3 source types (GEOMETRY, COSMETICEDGE, CENTERLINE). Something broke if we
                 // get here for for an edge that claims to be cosmetic.
-                Base::Console().warning("In %s, cosmetic edge: %d is neither COSMETICEDGE nor CENTERLINE - actual source type: %d\n",
+                Base::Console().warning("In {}, cosmetic edge: {} is neither COSMETICEDGE nor CENTERLINE - actual source type: {}\n",
                                         dvp->Label.getValue(), iEdge, static_cast<int>(source));
             }
         } else {
@@ -558,7 +558,7 @@ bool QGIViewPart::showThisEdge(BaseGeomPtr geom)
 
 bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
 {
-    //    Base::Console().message("QGIVP::formatGeomFromCosmetic(%s)\n", cTag.c_str());
+    //    Base::Console().message("QGIVP::formatGeomFromCosmetic({})\n", cTag);
     bool result = true;
     auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::CosmeticEdge* ce = partFeat ? partFeat->getCosmeticEdge(cTag) : nullptr;
@@ -595,7 +595,7 @@ bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
 
 QGIFace* QGIViewPart::drawFace(TechDraw::FacePtr f, int idx)
 {
-    //    Base::Console().message("QGIVP::drawFace - %d\n", idx);
+    //    Base::Console().message("QGIVP::drawFace - {}\n", idx);
     std::vector<TechDraw::Wire*> fWires = f->wires;
     QPainterPath facePath;
     for (std::vector<TechDraw::Wire*>::iterator wire = fWires.begin(); wire != fWires.end();
@@ -1188,7 +1188,7 @@ QGIViewPart::faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geom
 void QGIViewPart::dumpPath(const char* text, QPainterPath path)
 {
     QPainterPath::Element elem;
-    Base::Console().message(">>>%s has %d elements\n", text, path.elementCount());
+    Base::Console().message(">>>{} has {} elements\n", text, path.elementCount());
     const char* typeName;
     for (int iElem = 0; iElem < path.elementCount(); iElem++) {
         elem = path.elementAt(iElem);
@@ -1204,7 +1204,7 @@ void QGIViewPart::dumpPath(const char* text, QPainterPath path)
         else {
             typeName = "CurveData";
         }
-        Base::Console().message(">>>>> element %d: type:%d/%s pos(%.3f, %.3f) M:%d L:%d C:%d\n",
+        Base::Console().message(">>>>> element {}: type:{}/{} pos({:.3f}, {:.3f}) M:{} L:{} C:{}\n",
                                 iElem, static_cast<int>(elem.type), typeName, elem.x, elem.y, static_cast<int>(elem.isMoveTo()),
                                 static_cast<int>(elem.isLineTo()), static_cast<int>(elem.isCurveTo()));
     }

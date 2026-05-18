@@ -143,7 +143,7 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
     // Check for possible cyclic dependencies if we allowed to drop the object
     const auto& list = obj->getOutList();
     if (std::ranges::find(list, extobj) != list.end()) {
-        Base::Console().warning("Do not add cyclic dependency to %s\n", extobj->Label.getValue());
+        Base::Console().warning("Do not add cyclic dependency to {}\n", extobj->Label.getValue());
         return false;
     }
 

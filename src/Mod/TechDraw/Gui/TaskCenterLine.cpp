@@ -114,7 +114,7 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     } else if (geomType == "Vertex") {
         m_type = Type::VERTEX;
     } else {
-        Base::Console().error("TaskCenterLine - unknown geometry type: %s.  Cannot proceed.\n", geomType.c_str());
+        Base::Console().error("TaskCenterLine - unknown geometry type: {}.  Cannot proceed.\n", geomType);
         return;
     }
 

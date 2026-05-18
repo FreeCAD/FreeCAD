@@ -206,7 +206,7 @@ App::DocumentObjectExecReturn* SketchObject::execute()
     catch (const Base::Exception&) {
         // 9/16/24: We used to clear the constraints here, but we no longer want to do that
         // as missing reference geometry is not considered an error while we sort out sketcher UI.
-        // Base::Console().error("%s\nClear constraints to external geometry\n", e.what());
+        // Base::Console().error("{}\nClear constraints to external geometry\n", e.what());
         // we cannot trust the constraints of external geometries, so remove them
         //  delConstraintsToExternal();
     }
@@ -1053,10 +1053,14 @@ void SketchObject::onGeometryChanged()
         acceptGeometry();
     }
     else {
-        Base::Console().error(
+        Base::Console().send<
+            Base::LogStyle::Error,
+            Base::IntendedRecipient::All,
+            Base::ContentType::Untranslated>(
             this->getFullLabel() + " SketchObject::onChanged ",
+            "{}",
             QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
-                              "Property results in invalid constraint indices") "\n");
+                "Property results in invalid constraint indices") "\n");
     }
     Base::StateLocker lock(internaltransaction, true);
     setUpSketch();
@@ -1097,8 +1101,12 @@ void SketchObject::onConstraintsChanged()
         }
     }
     else {
-        Base::Console().error(
+        Base::Console().send<
+            Base::LogStyle::Error,
+            Base::IntendedRecipient::All,
+            Base::ContentType::Untranslated>(
             this->getFullLabel() + " SketchObject::onChanged ",
+            "{}",
             QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
                               "Property results in invalid constraint indices") "\n");
     }
@@ -1592,8 +1600,9 @@ void SketchObject::migrateSketch()
 
     Constraints.setValues(std::move(newConstraints));
 
-    Base::Console().critical(
+    Base::Console().send<Base::LogStyle::Critical>(
         this->getFullName(),
+        "{}",
         QT_TRANSLATE_NOOP(
             "Notifications",
             "Parabolas were migrated. Migrated files won't open in previous "

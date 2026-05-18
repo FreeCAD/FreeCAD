@@ -439,7 +439,7 @@ void Command::invoke(int i, TriggerSource trigger)
 
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
-    Base::Console().log("CmdG: %s\n", sName);
+    Base::Console().log("CmdG: {}\n", sName);
 #endif
 
     _invoke(i, bCanLog && !_busy);
@@ -518,14 +518,14 @@ void Command::_invoke(int id, bool disablelog)
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
     }
     catch (std::exception& e) {
-        Base::Console().error("C++ exception thrown (%s)\n", e.what());
+        Base::Console().error("C++ exception thrown ({})\n", e.what());
     }
     catch (const char* e) {
-        Base::Console().error("%s\n", e);
+        Base::Console().error("{}\n", e);
     }
 #ifndef FC_DEBUG
     catch (...) {
-        Base::Console().error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
+        Base::Console().error("Gui::Command::activated({}): Unknown C++ exception thrown\n", id);
     }
 #endif
 }
@@ -759,7 +759,7 @@ void Command::_doCommand(const char* file, int line, DoCmd_Type eType, const cha
     QByteArray format = cmd.toUtf8();
 
 #ifdef FC_LOGUSERACTION
-    Base::Console().log("CmdC: %s\n", format.constData());
+    Base::Console().log("CmdC: {}\n", format.toStdString());
 #endif
 
     _runCommand(file, line, eType, format.constData());
@@ -1485,11 +1485,11 @@ void PythonCommand::activated(int iMsg)
             }
         }
         catch (const Base::PyException& e) {
-            Base::Console().error("Running the Python command '%s' failed:", sName);
+            Base::Console().error("Running the Python command '{}' failed:", sName);
             e.reportException();
         }
         catch (const Base::Exception&) {
-            Base::Console().error("Running the Python command '%s' failed, try to resume", sName);
+            Base::Console().error("Running the Python command '{}' failed, try to resume", sName);
         }
     }
     else {
@@ -1562,7 +1562,7 @@ Action* PythonCommand::createAction()
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
     }
 
     return pcAction;
@@ -1734,7 +1734,7 @@ void PythonGroupCommand::activated(int iMsg)
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().error("Running the Python command '%s' failed:", sName);
+        Base::Console().error("Running the Python command '{}' failed:", sName);
         e.reportException();
     }
 }
@@ -1827,7 +1827,7 @@ Action* PythonGroupCommand::createAction()
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().error("createAction() of the Python command '%s' failed:", sName);
+        Base::Console().error("createAction() of the Python command '{}' failed:", sName);
         e.reportException();
     }
 
@@ -2111,7 +2111,7 @@ bool CommandManager::addTo(const char* Name, QWidget* pcWidget)
             Name
         );
 #else
-        Base::Console().warning("Unknown command '%s'\n", Name);
+        Base::Console().warning("Unknown command '{}'\n", Name);
 #endif
         return false;
     }

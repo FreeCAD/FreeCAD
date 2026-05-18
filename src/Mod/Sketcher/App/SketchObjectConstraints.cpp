@@ -136,8 +136,12 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     }
 
     if (lastHasMalformedConstraints) {
-        Base::Console().error(
+        Base::Console().send<
+            Base::LogStyle::Error,
+            Base::IntendedRecipient::All,
+            Base::ContentType::Untranslated>(
             this->getFullLabel(),
+            "{}",
             QT_TRANSLATE_NOOP("Notifications", "The Sketch has malformed constraints!") "\n");
     }
 
@@ -157,7 +161,10 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
             "\"%1\" has partially redundant constraint(s)."
         ).arg(ref);
 
-        Base::Console().warning(this->getFullLabel(), "%s\n", msg.toUtf8().constData());
+        Base::Console().send<Base::LogStyle::Warning>(
+            this->getFullLabel(),
+            "{}\n",
+            msg.toStdString());
     }
 
     lastSolveTime = solvedSketch.getSolveTime();
@@ -2578,13 +2585,13 @@ int SketchObject::changeConstraintsLocking(bool bLock)
                 cntSuccess++;
 
             newVals[i] = constNew;
-            Base::Console().log("Constraint%i will be affected\n", i + 1);
+            Base::Console().log("Constraint{} will be affected\n", i + 1);
         }
     }
 
     this->Constraints.setValues(std::move(newVals));
 
-    Base::Console().log("ChangeConstraintsLocking: affected %i of %i tangent/perp constraints\n",
+    Base::Console().log("ChangeConstraintsLocking: affected {} of {} tangent/perp constraints\n",
                         cntSuccess,
                         cntToBeAffected);
 
@@ -2671,13 +2678,13 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
         if (affected) {
             cntToBeAffected++;
             newVals[ic] = constNew;
-            Base::Console().log("Constraint%i will be affected\n", ic + 1);
+            Base::Console().log("Constraint{} will be affected\n", ic + 1);
         };
     }
 
     if (!justAnalyze) {
         this->Constraints.setValues(std::move(newVals));
-        Base::Console().log("Swapped start/end of reversed external arcs in %i constraints\n",
+        Base::Console().log("Swapped start/end of reversed external arcs in {} constraints\n",
                             cntToBeAffected);
     }
 
@@ -2782,7 +2789,7 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
     }
     catch (Base::Exception& e) {
         // failure to determine tangency type is not a big deal, so a warning.
-        Base::Console().warning("Error in AutoLockTangency. %s \n", e.what());
+        Base::Console().warning("Error in AutoLockTangency. {} \n", e.what());
         return false;
     }
     return true;

@@ -105,7 +105,7 @@ void QGITile::makeSymbol()
         return;
     }
     if (!m_qgSvg->load(&qba)) {
-        Base::Console().error("Error - Could not load SVG renderer with **%s**\n", qPrintable(m_svgPath));
+        Base::Console().error("Error - Could not load SVG renderer with **{}**\n", qPrintable(m_svgPath));
         return;
    }
    m_qgSvg->setScale(getSymbolFactor());

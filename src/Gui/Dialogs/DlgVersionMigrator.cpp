@@ -271,11 +271,11 @@ void PathMigrationWorker::run()
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Error migrating configuration data: %s\n", e.what());
+        Base::Console().error("Error migrating configuration data: {}\n", e.what());
         Q_EMIT(failed());
     }
     catch (const std::exception& e) {
-        Base::Console().error("Unrecognized error migrating configuration data: %s\n", e.what());
+        Base::Console().error("Unrecognized error migrating configuration data: {}\n", e.what());
         Q_EMIT(failed());
     }
     catch (...) {
@@ -308,7 +308,7 @@ void PathMigrationWorker::replaceOccurrencesInPreferences()
         newPrefFile << contents;
     }
     catch (const std::exception& e) {
-        Base::Console().error("Error reading preferences file: %s\n", e.what());
+        Base::Console().error("Error reading preferences file: {}\n", e.what());
     }
 }
 

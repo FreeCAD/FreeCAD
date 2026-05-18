@@ -84,7 +84,8 @@ void FeatureAddSub::updatePreviewShape()
     const auto notifyWarning = [](const QString& message) {
         Base::Console().translatedUserWarning(
             "Preview",
-            tr("Failure while computing removed volume preview: %1").arg(message).toUtf8()
+            "{}",
+            tr("Failure while computing removed volume preview: %1").arg(message).toStdString()
         );
     };
 

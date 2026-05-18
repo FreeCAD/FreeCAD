@@ -244,7 +244,7 @@ PyObject* DrawViewPartPy::makeCosmeticVertex(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     if (!dvp->hasGeometry()) {
-        Base::Console().error("%s has no geometry yet. Can not add cosmetic vertex.\n", dvp->Label.getValue());
+        Base::Console().error("{} has no geometry yet. Can not add cosmetic vertex.\n", dvp->Label.getValue());
         Py_Return;
     }
     Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
@@ -265,7 +265,7 @@ PyObject* DrawViewPartPy::makeCosmeticVertex3d(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     if (!dvp->hasGeometry()) {
-        Base::Console().error("%s has no geometry yet. Can not add cosmetic vertex.\n", dvp->Label.getValue());
+        Base::Console().error("{} has no geometry yet. Can not add cosmetic vertex.\n", dvp->Label.getValue());
         Py_Return;
     }
     Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
@@ -392,7 +392,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     if (!dvp->hasGeometry()) {
-        Base::Console().error("%s has no geometry yet. Can not add cosmetic line.\n", dvp->Label.getValue());
+        Base::Console().error("{} has no geometry yet. Can not add cosmetic line.\n", dvp->Label.getValue());
         Py_Return;
     }
 
@@ -435,7 +435,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     if (!dvp->hasGeometry()) {
-        Base::Console().error("%s has no geometry yet. Can not add cosmetic line.\n", dvp->Label.getValue());
+        Base::Console().error("{} has no geometry yet. Can not add cosmetic line.\n", dvp->Label.getValue());
         Py_Return;
     }
     Base::Vector3d centroid = dvp->getOriginalCentroid();
@@ -485,7 +485,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     if (!dvp->hasGeometry()) {
-        Base::Console().error("%s has no geometry yet. Can not add cosmetic circle.\n", dvp->Label.getValue());
+        Base::Console().error("{} has no geometry yet. Can not add cosmetic circle.\n", dvp->Label.getValue());
         Py_Return;
     }
 
@@ -532,7 +532,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     //from here on is almost duplicate of makeCosmeticCircle
     DrawViewPart* dvp = getDrawViewPartPtr();
     if (!dvp->hasGeometry()) {
-        Base::Console().error("%s has no geometry yet. Can not add cosmetic circle arc.\n", dvp->Label.getValue());
+        Base::Console().error("{} has no geometry yet. Can not add cosmetic circle arc.\n", dvp->Label.getValue());
         Py_Return;
     }
 
@@ -582,7 +582,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle3d(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     if (!dvp->hasGeometry()) {
-        Base::Console().error("%s has no geometry yet. Can not add cosmetic circle.\n", dvp->Label.getValue());
+        Base::Console().error("{} has no geometry yet. Can not add cosmetic circle.\n", dvp->Label.getValue());
         Py_Return;
     }
 
@@ -632,7 +632,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc3d(PyObject *args)
     //from here on is almost duplicate of makeCosmeticCircle
     DrawViewPart* dvp = getDrawViewPartPtr();
     if (!dvp->hasGeometry()) {
-        Base::Console().error("%s has no geometry yet. Can not add cosmetic circle arc.\n", dvp->Label.getValue());
+        Base::Console().error("{} has no geometry yet. Can not add cosmetic circle arc.\n", dvp->Label.getValue());
         Py_Return;
     }
 
@@ -730,7 +730,7 @@ PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     if (!dvp->hasGeometry()) {
-        Base::Console().error("%s has no geometry yet. Can not add center line.\n", dvp->Label.getValue());
+        Base::Console().error("{} has no geometry yet. Can not add center line.\n", dvp->Label.getValue());
         Py_Return;
     }
 
