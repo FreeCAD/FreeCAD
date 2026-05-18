@@ -271,12 +271,12 @@ Meerdere mappen kunnen worden toegevoegd met behulp van ";;" voor het scheiden v
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Created at:</source>
-      <translation type="unfinished">Created at:</translation>
+      <translation>Aangemaakt op:</translation>
     </message>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
       <source>Modified at:</source>
-      <translation type="unfinished">Modified at:</translation>
+      <translation>Gewijzigd op:</translation>
     </message>
   </context>
 </TS>

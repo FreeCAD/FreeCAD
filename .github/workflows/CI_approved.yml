@@ -48,11 +48,12 @@ on:
 
 permissions:
   contents: read
-  actions: write
 
 jobs:
   Gate:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     outputs:
       should-run: ${{ steps.check.outputs.should-run }}
     steps:
@@ -103,12 +104,16 @@ jobs:
               return;
             }
 
-            // For code changes and non-PR events, cancel older runs for the
-            // same branch so we do not waste resources on stale code.
-            const branch = isPR
-              ? context.payload.pull_request.head.ref
-              : context.ref.replace('refs/heads/', '');
+            // For non-PR events (basically just push to main/releases and workflow_dispatch), each commit
+            // gets its own run to help pinpoint any failures to a specific commit.
+            if (!isPR) {
+              core.setOutput('should-run', 'true');
+              return;
+            }
 
+            // For PR code changes (synchronize/opened/reopened), cancel older runs on the same head ref so we don't
+            // waste CI resources on stale code.
+            const branch = context.payload.pull_request.head.ref;
             for (const status of ['in_progress', 'queued']) {
               const { data: { workflow_runs: runs } } = await github.rest.actions.listWorkflowRuns({
                 owner: context.repo.owner,

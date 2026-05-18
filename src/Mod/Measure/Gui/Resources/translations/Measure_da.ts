@@ -43,12 +43,12 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="166"/>
       <source>Arrow Radius</source>
-      <translation type="unfinished">Arrow Radius</translation>
+      <translation>Pil Radius</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="198"/>
       <source>Arrow Height</source>
-      <translation type="unfinished">Arrow Height</translation>
+      <translation>Pil Højde</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="119"/>
       <source>Show Delta</source>
-      <translation type="unfinished">Show Delta</translation>
+      <translation>Vis Delta</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="125"/>
@@ -244,7 +244,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="197"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Tilstand</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="211"/>
@@ -269,12 +269,12 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="811"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 new measurement, %2 toggle auto-save</translation>
+      <translation>%1 ny måling, %2 skift automatisk gem</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="816"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 add to measurement, %2 toggle auto-save</translation>
+      <translation>%1 tilføj til målingen, %2 skift automatisk gem</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="247"/>
@@ -432,7 +432,7 @@
       <location filename="../../TaskMassProperties.ui" line="339"/>
       <location filename="../../TaskMassProperties.ui" line="472"/>
       <source>Create Datum Point</source>
-      <translation type="unfinished">Create Datum Point</translation>
+      <translation>Opret et Referencepunkt</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="503"/>
@@ -442,62 +442,62 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="531"/>
       <source>Jox</source>
-      <translation type="unfinished">Jox</translation>
+      <translation>Jox</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="545"/>
       <source>Jxy</source>
-      <translation type="unfinished">Jxy</translation>
+      <translation>Jxy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="559"/>
       <source>Jzx</source>
-      <translation type="unfinished">Jzx</translation>
+      <translation>Jzx</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="573"/>
       <source>Joy</source>
-      <translation type="unfinished">Joy</translation>
+      <translation>Joy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="587"/>
       <source>Jzy</source>
-      <translation type="unfinished">Jzy</translation>
+      <translation>Jzy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="601"/>
       <source>Joz</source>
-      <translation type="unfinished">Joz</translation>
+      <translation>Joz</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="625"/>
       <source>Principal Moments of Inertia</source>
-      <translation type="unfinished">Principal Moments of Inertia</translation>
+      <translation>Hovedinertimomenter</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
       <source>J1</source>
-      <translation type="unfinished">J1</translation>
+      <translation>J1</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="677"/>
       <source>J2</source>
-      <translation type="unfinished">J2</translation>
+      <translation>J2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="704"/>
       <source>J3</source>
-      <translation type="unfinished">J3</translation>
+      <translation>J3</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
       <source>Create Principal Axes LCS</source>
-      <translation type="unfinished">Create Principal Axes LCS</translation>
+      <translation>Opret et Lokalt Koordinatsystem for hovedakserne</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="790"/>
       <source>Inertia around axis</source>
-      <translation type="unfinished">Inertia around axis</translation>
+      <translation>Inertimoment om en akse</translation>
     </message>
   </context>
   <context>
@@ -520,7 +520,7 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="287"/>
       <source>Center of Volume</source>
-      <translation type="unfinished">Center of Volume</translation>
+      <translation>Center af Volumen</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="288"/>
@@ -545,7 +545,7 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
-      <translation type="unfinished"> (Average)</translation>
+      <translation> (Gennemsnit)</translation>
     </message>
   </context>
   <context>

@@ -221,7 +221,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="121"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Koelte Modus</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="131"/>
@@ -266,7 +266,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="166"/>
       <source>Extent</source>
-      <translation type="unfinished">Extent</translation>
+      <translation>Omvang</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="182"/>
@@ -933,7 +933,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
       <location filename="../panels/SetupGlobal.ui" line="255"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Koelte Modus</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="59"/>
@@ -1283,7 +1283,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
       <source>ToolController</source>
-      <translation type="unfinished">ToolController</translation>
+      <translation>GereedschapController</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="141"/>
@@ -1463,7 +1463,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
       <source>Cut Mode</source>
-      <translation type="unfinished">Cut Mode</translation>
+      <translation>Knip Modus</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
@@ -2227,7 +2227,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Snelle Snelheden</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="192"/>
@@ -4076,7 +4076,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1348"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Snelle Snelheden</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1357"/>
@@ -6591,7 +6591,7 @@ Should be identical for all base operations</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="102"/>
       <source>BaseBoundBox</source>
-      <translation type="unfinished">BaseBoundBox</translation>
+      <translation>BaseUitlijning</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="103"/>
@@ -7062,7 +7062,7 @@ or tangent edges.</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1634"/>
       <source>Lead In/Out</source>
-      <translation type="unfinished">Lead In/Out</translation>
+      <translation>In/Uit Leiden</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
@@ -7804,7 +7804,7 @@ or tangent edges.</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="114"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Koelte Modus</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="116"/>
@@ -8962,7 +8962,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="69"/>
       <source>Boundbox</source>
-      <translation type="unfinished">Boundbox</translation>
+      <translation>Uitlijning</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="70"/>
@@ -9270,7 +9270,7 @@ Allowed selection only from one model:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="436"/>
       <source>BaseBoundBox</source>
-      <translation type="unfinished">BaseBoundBox</translation>
+      <translation>BaseUitlijning</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="437"/>

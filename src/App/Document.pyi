@@ -4,7 +4,10 @@ from __future__ import annotations
 
 from PropertyContainer import PropertyContainer
 from DocumentObject import DocumentObject
-from typing import Final, Sequence
+from typing import TYPE_CHECKING, Final, Literal, Sequence, overload
+
+if TYPE_CHECKING:
+    from Part import Feature as _PartFeature
 
 
 class Document(PropertyContainer):
@@ -194,6 +197,28 @@ class Document(PropertyContainer):
         """
         ...
 
+    @overload
+    def addObject(
+        self,
+        type: Literal["Part::Feature"],
+        name: str = None,
+        objProxy: object = None,
+        viewProxy: object = None,
+        attach: bool = False,
+        viewType: str = None,
+    ) -> _PartFeature: ...
+
+    @overload
+    def addObject(
+        self,
+        type: str,
+        name: str = None,
+        objProxy: object = None,
+        viewProxy: object = None,
+        attach: bool = False,
+        viewType: str = None,
+    ) -> DocumentObject: ...
+
     def addObject(
         self,
         type: str,
@@ -263,13 +288,36 @@ class Document(PropertyContainer):
         """
         ...
 
+    @overload
+    def copyObject(
+        self,
+        object: Sequence[DocumentObject],
+        recursive: bool = False,
+        return_all: bool = False,
+    ) -> tuple[DocumentObject, ...]: ...
+
+    @overload
     def copyObject(
         self,
         object: DocumentObject,
-        *,
+        recursive: bool = False,
+        return_all: Literal[False] = False,
+    ) -> DocumentObject: ...
+
+    @overload
+    def copyObject(
+        self,
+        object: DocumentObject,
+        recursive: bool = False,
+        return_all: Literal[True] = True,
+    ) -> DocumentObject | tuple[DocumentObject, ...]: ...
+
+    def copyObject(
+        self,
+        object: DocumentObject | Sequence[DocumentObject],
         recursive: bool = False,
         return_all: bool = False,
-    ) -> tuple[DocumentObject, ...]:
+    ) -> DocumentObject | tuple[DocumentObject, ...]:
         """
         Copy an object or objects from another document to this document.
 

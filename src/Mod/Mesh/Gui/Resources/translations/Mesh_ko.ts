@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="1489"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1490"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="1544"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1545"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="994"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1380"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="172"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="173"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="1127"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1128"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="1308"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1309"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="1081"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1083"/>
@@ -168,12 +168,12 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Export Mesh…</source>
-      <translation>메쉬 내보내기…</translation>
+      <translation>메시 내보내기…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="403"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="1631"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1632"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="1576"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1577"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="1450"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1451"/>
@@ -240,12 +240,12 @@
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="483"/>
       <source>Mesh From Geometry</source>
-      <translation>형상에서 메쉬 생성</translation>
+      <translation>도형에서 메시 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="484"/>
@@ -258,12 +258,12 @@
     <message>
       <location filename="../../Command.cpp" line="555"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="556"/>
       <source>Mesh From Shape</source>
-      <translation>형상에서 메쉬 생성</translation>
+      <translation>형상에서 메시 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="557"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../Command.cpp" line="1411"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1412"/>
@@ -294,12 +294,12 @@
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
       <source>Import Mesh…</source>
-      <translation>메쉬 가져오기…</translation>
+      <translation>메시 가져오기…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
@@ -312,7 +312,7 @@
     <message>
       <location filename="../../Command.cpp" line="258"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="259"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../Command.cpp" line="1753"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1754"/>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../Command.cpp" line="802"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="803"/>
@@ -366,7 +366,7 @@
     <message>
       <location filename="../../Command.cpp" line="689"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="690"/>
@@ -384,7 +384,7 @@
     <message>
       <location filename="../../Command.cpp" line="1022"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1023"/>
@@ -402,7 +402,7 @@
     <message>
       <location filename="../../Command.cpp" line="869"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="870"/>
@@ -425,7 +425,7 @@
     <message>
       <location filename="../../Command.cpp" line="1224"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1225"/>
@@ -479,7 +479,7 @@
     <message>
       <location filename="../../Command.cpp" line="1848"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../Command.cpp" line="965"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="966"/>
@@ -515,7 +515,7 @@
     <message>
       <location filename="../../Command.cpp" line="1679"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1680"/>
@@ -533,7 +533,7 @@
     <message>
       <location filename="../../Command.cpp" line="1716"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1717"/>
@@ -551,7 +551,7 @@
     <message>
       <location filename="../../Command.cpp" line="1350"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1351"/>
@@ -561,7 +561,7 @@
     <message>
       <location filename="../../Command.cpp" line="1352"/>
       <source>Smoothes the selected meshes</source>
-      <translation>선택한 메쉬를 스무딩합니다.</translation>
+      <translation>선택한 메시를 스무딩</translation>
     </message>
   </context>
   <context>
@@ -569,7 +569,7 @@
     <message>
       <location filename="../../Command.cpp" line="1799"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1800"/>
@@ -587,7 +587,7 @@
     <message>
       <location filename="../../Command.cpp" line="936"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="937"/>
@@ -605,7 +605,7 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="87"/>
@@ -775,7 +775,7 @@
       <location filename="../../ViewProvider.cpp" line="955"/>
       <location filename="../../ViewProvider.cpp" line="1016"/>
       <source>Cut</source>
-      <translation>자르기</translation>
+      <translation>차집합</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="965"/>
@@ -1089,19 +1089,19 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
       <source>Duplicated Faces</source>
-      <translation type="unfinished">Duplicated Faces</translation>
+      <translation>중복된 면</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated Points</source>
-      <translation type="unfinished">Duplicated Points</translation>
+      <translation>중복된 점</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
       <source>Mesh Repair</source>
-      <translation type="unfinished">Mesh Repair</translation>
+      <translation>메시 복구</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
@@ -1367,7 +1367,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="73"/>
       <source>Default mesh color</source>
-      <translation>기본 메쉬 색상</translation>
+      <translation>기본 메시 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="80"/>
@@ -2377,7 +2377,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../../Init.py" line="19"/>
       <source>STL Mesh</source>
-      <translation type="unfinished">STL Mesh</translation>
+      <translation>STL 메시</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="20"/>
@@ -2394,7 +2394,7 @@ Visit https://openscad.org/ to install it.</source>
       <location filename="../../../Init.py" line="27"/>
       <source>Object File Format Mesh</source>
       <extracomment>Translation note: "Object File Format" is the official name and should not be translated</extracomment>
-      <translation type="unfinished">Object File Format Mesh</translation>
+      <translation>객체 파일 형식 메시</translation>
     </message>
   </context>
 </TS>

@@ -95,7 +95,7 @@ PyObject* TopoShapeCompSolidPy::add(PyObject* args)
                 builder.Add(comp, ts.getShape());
             }
             else {
-                Standard_Failure::Raise("Cannot empty shape to compound solid");
+                throw Standard_Failure("Cannot empty shape to compound solid");
             }
         }
         auto& self = *getTopoShapePtr();

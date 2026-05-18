@@ -8216,7 +8216,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../EditTextDialog.ui" line="14"/>
       <source>Edit Text</source>
-      <translation type="unfinished">Edit Text</translation>
+      <translation>Editar Texto</translation>
     </message>
     <message>
       <location filename="../../EditTextDialog.ui" line="22"/>

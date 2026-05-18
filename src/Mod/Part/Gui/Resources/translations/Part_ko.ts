@@ -1496,7 +1496,7 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Cut</source>
-      <translation>자르기</translation>
+      <translation>차집합</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>

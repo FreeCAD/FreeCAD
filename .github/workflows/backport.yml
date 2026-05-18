@@ -6,13 +6,15 @@ on:
     branches: [main, releases/*]
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   backport:
     name: Create backport pull request
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     # Run the action if a PR is merged with backport labels
     # OR

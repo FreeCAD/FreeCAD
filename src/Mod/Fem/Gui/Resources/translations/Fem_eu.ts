@@ -1663,8 +1663,8 @@ that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
-      <source>Succesive over-relaxation (SOR)</source>
-      <translation type="unfinished">Succesive over-relaxation (SOR)</translation>
+      <source>Successive over-relaxation (SOR)</source>
+      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
@@ -3891,12 +3891,12 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <location filename="../ui/MeshAdvanced.ui" line="583"/>
       <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
       <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</translation>
     </message>
@@ -3935,12 +3935,12 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshAdvanced.ui" line="840"/>
       <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
       <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</translation>
     </message>

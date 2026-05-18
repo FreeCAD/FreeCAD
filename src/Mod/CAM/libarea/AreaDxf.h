@@ -8,6 +8,9 @@
 
 #include "dxf.h"
 
+namespace heeks
+{
+
 class CSketch;
 class CArea;
 class CCurve;
@@ -30,3 +33,5 @@ public:
         bool /*hidden*/
     ) override;
 };
+
+}  // namespace heeks

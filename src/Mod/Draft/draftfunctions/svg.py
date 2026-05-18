@@ -37,6 +37,8 @@ import DraftVecUtils
 import WorkingPlane
 from draftfunctions import svgtext
 from draftfunctions.svgshapes import get_proj, get_circle, get_path
+
+# from draftgeoutils import fillets as geo_fillets
 from draftobjects import layer
 from draftutils import params
 from draftutils import utils
@@ -44,7 +46,6 @@ from draftutils.messages import _wrn, _err
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 
 ## \addtogroup draftfunctions
@@ -959,7 +960,7 @@ def get_svg(
         basewire = obj.Base.Shape.Wires[0].copy()
         # Not applying rounding because the results are not correct
         # if hasattr(obj, "Rounding") and obj.Rounding:
-        #     basewire = DraftGeomUtils.filletWire(
+        #     basewire = geo_fillets.filletWire(
         #         basewire, obj.Rounding * obj.Diameter.Value
         #     )
         wires = []
