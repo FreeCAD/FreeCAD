@@ -6453,7 +6453,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../Arch.py" line="1225"/>
       <source>Section</source>
-      <translation>Deel</translation>
+      <translation>Doorsnede</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="65"/>
@@ -7188,12 +7188,12 @@ The ladybug or pysolar Python module is required.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="732"/>
       <source>Vertical Sections</source>
-      <translation>Verticale Secties</translation>
+      <translation>Verticale Doorsnedes</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="733"/>
       <source>Horizontal Sections</source>
-      <translation>Horizontale Secties</translation>
+      <translation>Horizontale Doorsnedes</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="734"/>

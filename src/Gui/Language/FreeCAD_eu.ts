@@ -141,7 +141,7 @@
       <translation>Transformatu</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3190"/>
+      <location filename="../ViewProviderLink.cpp" line="3194"/>
       <source>Toggle array elements</source>
       <translation>Txandakatu matrize-elementuak</translation>
     </message>
@@ -543,13 +543,13 @@ The property of this object will refer to the property of the Variable Set.</tra
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="51"/>
-      <source>Press middle mouse button</source>
-      <translation>Sakatu saguaren erdiko botoia</translation>
+      <source>Press middle or ctrl+right mouse button</source>
+      <translation type="unfinished">Press middle or ctrl+right mouse button</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
-      <source>Press middle+left or middle+right mouse button</source>
-      <translation>Sakatu xaguaren erdiko+ezkerreko edo erdiko+eskuineko botoia</translation>
+      <source>Press middle+left, middle+right or shift+right mouse button</source>
+      <translation type="unfinished">Press middle+left, middle+right or shift+right mouse button</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
@@ -841,7 +841,7 @@ while doing a left or right click and move the mouse up or down</translation>
   <context>
     <name>Gui::Dialog::CommandModel</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="507"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="508"/>
       <source>Commands</source>
       <translation>Komandoak</translation>
     </message>
@@ -1549,27 +1549,27 @@ same time. The one with the highest priority will be triggered.</source>
   <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="743"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="744"/>
       <source>Spaceball Buttons</source>
       <translation>Spaceballen botoiak</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="749"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="750"/>
       <source>No Spaceball present</source>
       <translation type="unfinished">No Spaceball present</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="805"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="806"/>
       <source>Buttons</source>
       <translation>Botoiak</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="806"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="807"/>
       <source>Reset</source>
       <translation>Berrezarri</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="842"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="843"/>
       <source>Print Reference</source>
       <translation>Inprimaketa-erreferentzia</translation>
     </message>
@@ -5456,12 +5456,12 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::Dialog::PrintModel</name>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="721"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="722"/>
       <source>Button</source>
       <translation>Botoia</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="724"/>
+      <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="725"/>
       <source>Command</source>
       <translation>Komandoa</translation>
     </message>
@@ -5947,13 +5947,13 @@ Save all changes?</translation>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="550"/>
+      <location filename="../FileDialog.cpp" line="557"/>
       <source>Save As</source>
       <translation type="unfinished">Save As</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="682"/>
-      <location filename="../FileDialog.cpp" line="774"/>
+      <location filename="../FileDialog.cpp" line="692"/>
+      <location filename="../FileDialog.cpp" line="787"/>
       <source>Open</source>
       <translation>Ireki</translation>
     </message>
@@ -5961,12 +5961,12 @@ Save all changes?</translation>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="919"/>
+      <location filename="../FileDialog.cpp" line="935"/>
       <source>Extended</source>
       <translation>Hedatua</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="956"/>
+      <location filename="../FileDialog.cpp" line="972"/>
       <source>All files (*.*)</source>
       <translation>Fitxategi guztiak (*.*)</translation>
     </message>
@@ -6946,12 +6946,12 @@ Exit without saving all data?</translation>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1335"/>
+      <location filename="../FileDialog.cpp" line="1351"/>
       <source>Select Module</source>
       <translation type="unfinished">Select Module</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1337"/>
+      <location filename="../FileDialog.cpp" line="1353"/>
       <source>Open %1 as</source>
       <translation>Ireki %1 honela:</translation>
     </message>
@@ -7200,242 +7200,242 @@ Specify another directory?</translation>
   <context>
     <name>Gui::Translator</name>
     <message>
-      <location filename="Translator.cpp" line="212"/>
+      <location filename="Translator.cpp" line="211"/>
       <source>Afrikaans</source>
       <translation>Afrikaansa</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="213"/>
+      <location filename="Translator.cpp" line="212"/>
       <source>Arabic</source>
       <translation>Arabiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="214"/>
+      <location filename="Translator.cpp" line="213"/>
       <source>Basque</source>
       <translation>Euskara</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="215"/>
+      <location filename="Translator.cpp" line="214"/>
       <source>Belarusian</source>
       <translation>Bielorrusiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="216"/>
+      <location filename="Translator.cpp" line="215"/>
       <source>Bulgarian</source>
       <translation>Bulgariera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="217"/>
+      <location filename="Translator.cpp" line="216"/>
       <source>Catalan</source>
       <translation>Katalana</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="218"/>
+      <location filename="Translator.cpp" line="217"/>
       <source>Chinese (Simplified)</source>
       <oldsource>Chinese Simplified</oldsource>
       <translation type="unfinished">Chinese (Simplified)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="219"/>
+      <location filename="Translator.cpp" line="218"/>
       <source>Chinese (Traditional)</source>
       <oldsource>Chinese Traditional</oldsource>
       <translation type="unfinished">Chinese (Traditional)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="220"/>
+      <location filename="Translator.cpp" line="219"/>
       <source>Croatian</source>
       <translation>Kroaziera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="221"/>
+      <location filename="Translator.cpp" line="220"/>
       <source>Czech</source>
       <translation>Txekiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="223"/>
+      <location filename="Translator.cpp" line="222"/>
       <source>Dutch</source>
       <translation>Nederlandera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="224"/>
+      <location filename="Translator.cpp" line="223"/>
       <source>English</source>
       <translation>Ingelesa</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="225"/>
+      <location filename="Translator.cpp" line="224"/>
       <source>Filipino</source>
       <translation>Filipinera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="226"/>
+      <location filename="Translator.cpp" line="225"/>
       <source>Finnish</source>
       <translation>Finlandiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="227"/>
+      <location filename="Translator.cpp" line="226"/>
       <source>French</source>
       <translation>Frantsesa</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="228"/>
+      <location filename="Translator.cpp" line="227"/>
       <source>Galician</source>
       <translation>Galiziera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="230"/>
+      <location filename="Translator.cpp" line="229"/>
       <source>German</source>
       <translation>Alemana</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="231"/>
+      <location filename="Translator.cpp" line="230"/>
       <source>Greek</source>
       <translation>Greziera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="232"/>
+      <location filename="Translator.cpp" line="231"/>
       <source>Hungarian</source>
       <translation>Hungariera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="233"/>
+      <location filename="Translator.cpp" line="232"/>
       <source>Indonesian</source>
       <translation>Indonesiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="234"/>
+      <location filename="Translator.cpp" line="233"/>
       <source>Italian</source>
       <translation>Italiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="235"/>
+      <location filename="Translator.cpp" line="234"/>
       <source>Japanese</source>
       <translation>Japoniera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="236"/>
+      <location filename="Translator.cpp" line="235"/>
       <source>Kabyle</source>
       <translation>Kabiliera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="237"/>
+      <location filename="Translator.cpp" line="236"/>
       <source>Korean</source>
       <translation>Koreera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="238"/>
+      <location filename="Translator.cpp" line="237"/>
       <source>Lithuanian</source>
       <translation>Lituaniera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="239"/>
+      <location filename="Translator.cpp" line="238"/>
       <source>Norwegian</source>
       <translation>Norvegiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="240"/>
+      <location filename="Translator.cpp" line="239"/>
       <source>Polish</source>
       <translation>Poloniera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="241"/>
+      <location filename="Translator.cpp" line="240"/>
       <source>Portuguese (Brazilian)</source>
       <oldsource>Portuguese, Brazilian</oldsource>
       <translation type="unfinished">Portuguese (Brazilian)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="242"/>
+      <location filename="Translator.cpp" line="241"/>
       <source>Portuguese</source>
       <translation>Portugesa</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="243"/>
+      <location filename="Translator.cpp" line="242"/>
       <source>Romanian</source>
       <translation>Errumaniera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="244"/>
+      <location filename="Translator.cpp" line="243"/>
       <source>Russian</source>
       <translation>Errusiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="245"/>
+      <location filename="Translator.cpp" line="244"/>
       <source>Serbian</source>
       <translation>Serbiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="246"/>
+      <location filename="Translator.cpp" line="245"/>
       <source>Serbian (Latin)</source>
       <oldsource>Serbian, Latin</oldsource>
       <translation type="unfinished">Serbian (Latin)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="247"/>
+      <location filename="Translator.cpp" line="246"/>
       <source>Slovak</source>
       <translation>Eslovakiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="248"/>
+      <location filename="Translator.cpp" line="247"/>
       <source>Slovenian</source>
       <translation>Esloveniera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="249"/>
+      <location filename="Translator.cpp" line="248"/>
       <source>Spanish</source>
       <translation>Espainiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="250"/>
+      <location filename="Translator.cpp" line="249"/>
       <source>Spanish (Argentina)</source>
       <oldsource>Spanish, Argentina</oldsource>
       <translation type="unfinished">Spanish (Argentina)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="251"/>
+      <location filename="Translator.cpp" line="250"/>
       <source>Swedish</source>
       <translation>Suediera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="252"/>
+      <location filename="Translator.cpp" line="251"/>
       <source>Turkish</source>
       <translation>Turkiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="253"/>
+      <location filename="Translator.cpp" line="252"/>
       <source>Ukrainian</source>
       <translation>Ukrainiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="254"/>
+      <location filename="Translator.cpp" line="253"/>
       <source>Valencian</source>
       <translation>Valentziera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="255"/>
+      <location filename="Translator.cpp" line="254"/>
       <source>Vietnamese</source>
       <translation>Vietnamiera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="256"/>
+      <location filename="Translator.cpp" line="255"/>
       <source>Malay</source>
       <translation type="unfinished">Malay</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="257"/>
+      <location filename="Translator.cpp" line="256"/>
       <source>Tamil</source>
       <translation type="unfinished">Tamil</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="258"/>
+      <location filename="Translator.cpp" line="257"/>
       <source>Irish</source>
       <translation type="unfinished">Irish</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="222"/>
+      <location filename="Translator.cpp" line="221"/>
       <source>Danish</source>
       <translation>Daniera</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="229"/>
+      <location filename="Translator.cpp" line="228"/>
       <source>Georgian</source>
       <translation>Georgiera</translation>
     </message>
@@ -7458,7 +7458,7 @@ Specify another directory?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4174"/>
+      <location filename="../Tree.cpp" line="4176"/>
       <source>Search</source>
       <translation>Bilatu</translation>
     </message>
@@ -7466,234 +7466,234 @@ Specify another directory?</translation>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="1310"/>
+      <location filename="../Tree.cpp" line="1312"/>
       <source>Activate Document</source>
       <translation type="unfinished">Activate Document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1317"/>
+      <location filename="../Tree.cpp" line="1319"/>
       <source>Activates document %1</source>
       <translation type="unfinished">Activates document %1</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1332"/>
+      <location filename="../Tree.cpp" line="1334"/>
       <source>Tree Settings</source>
       <translation type="unfinished">Tree Settings</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1336"/>
+      <location filename="../Tree.cpp" line="1338"/>
       <source>Show Description</source>
       <translation type="unfinished">Show Description</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1337"/>
+      <location filename="../Tree.cpp" line="1339"/>
       <source>Show Internal Name</source>
       <translation type="unfinished">Show Internal Name</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1358"/>
+      <location filename="../Tree.cpp" line="1360"/>
       <source>Shows an internal name column for items.</source>
       <translation type="unfinished">Shows an internal name column for items.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1406"/>
+      <location filename="../Tree.cpp" line="1408"/>
       <source>Group</source>
       <translation>Taldea</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3324"/>
-      <location filename="../Tree.cpp" line="3345"/>
+      <location filename="../Tree.cpp" line="3326"/>
+      <location filename="../Tree.cpp" line="3347"/>
       <source>Error</source>
       <translation>Errorea</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3324"/>
+      <location filename="../Tree.cpp" line="3326"/>
       <source>File does not exist.</source>
       <translation type="unfinished">File does not exist.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3345"/>
+      <location filename="../Tree.cpp" line="3347"/>
       <source>Failed to open directory.</source>
       <translation type="unfinished">Failed to open directory.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3824"/>
+      <location filename="../Tree.cpp" line="3826"/>
       <source>Labels &amp; Attributes</source>
       <translation>Etiketak eta atributuak</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3825"/>
+      <location filename="../Tree.cpp" line="3827"/>
       <source>Description</source>
       <translation>Deskribapena</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3826"/>
+      <location filename="../Tree.cpp" line="3828"/>
       <source>Internal name</source>
       <translation type="unfinished">Internal name</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3828"/>
+      <location filename="../Tree.cpp" line="3830"/>
       <source>Show Items Hidden in Tree View</source>
       <translation type="unfinished">Show Items Hidden in Tree View</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3830"/>
+      <location filename="../Tree.cpp" line="3832"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation type="unfinished">Shows items that are marked as 'hidden' in the tree view</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3833"/>
+      <location filename="../Tree.cpp" line="3835"/>
       <source>Toggle Visibility in Tree View</source>
       <translation type="unfinished">Toggle Visibility in Tree View</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3838"/>
+      <location filename="../Tree.cpp" line="3840"/>
       <source>Create Group</source>
       <translation type="unfinished">Create Group</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3839"/>
+      <location filename="../Tree.cpp" line="3841"/>
       <source>Creates a group</source>
       <translation type="unfinished">Creates a group</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3842"/>
+      <location filename="../Tree.cpp" line="3844"/>
       <source>Renames object</source>
       <translation type="unfinished">Renames object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3844"/>
+      <location filename="../Tree.cpp" line="3846"/>
       <source>Finish Editing</source>
       <translation>Amaitu edizioa</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3845"/>
+      <location filename="../Tree.cpp" line="3847"/>
       <source>Finishes editing object</source>
       <translation type="unfinished">Finishes editing object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3847"/>
+      <location filename="../Tree.cpp" line="3849"/>
       <source>Add Dependent Objects to Selection</source>
       <translation type="unfinished">Add Dependent Objects to Selection</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3850"/>
+      <location filename="../Tree.cpp" line="3852"/>
       <source>Close Document</source>
       <translation type="unfinished">Close Document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3851"/>
+      <location filename="../Tree.cpp" line="3853"/>
       <source>Closes the document</source>
       <translation type="unfinished">Closes the document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3855"/>
+      <location filename="../Tree.cpp" line="3857"/>
       <source>Reveals the current file location in Finder</source>
       <translation type="unfinished">Reveals the current file location in Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3858"/>
+      <location filename="../Tree.cpp" line="3860"/>
       <source>Opens the current file location</source>
       <translation type="unfinished">Opens the current file location</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3861"/>
+      <location filename="../Tree.cpp" line="3863"/>
       <source>Reload Document</source>
       <translation type="unfinished">Reload Document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3862"/>
+      <location filename="../Tree.cpp" line="3864"/>
       <source>Reloads a partially loaded document</source>
       <translation type="unfinished">Reloads a partially loaded document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3864"/>
+      <location filename="../Tree.cpp" line="3866"/>
       <source>Skip Recomputes</source>
       <translation type="unfinished">Skip Recomputes</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3865"/>
+      <location filename="../Tree.cpp" line="3867"/>
       <source>Enables or disables the recomputations of document</source>
       <translation type="unfinished">Enables or disables the recomputations of document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3867"/>
+      <location filename="../Tree.cpp" line="3869"/>
       <source>Allow Partial Recomputes</source>
       <translation type="unfinished">Allow Partial Recomputes</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3868"/>
+      <location filename="../Tree.cpp" line="3870"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation type="unfinished">Enables or disables the recomputating editing object when 'skip recomputation' is enabled</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3872"/>
+      <location filename="../Tree.cpp" line="3874"/>
       <source>Mark to Recompute</source>
       <translation type="unfinished">Mark to Recompute</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3873"/>
+      <location filename="../Tree.cpp" line="3875"/>
       <source>Marks this object to be recomputed</source>
       <translation type="unfinished">Marks this object to be recomputed</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3876"/>
+      <location filename="../Tree.cpp" line="3878"/>
       <source>Recompute Object</source>
       <translation type="unfinished">Recompute Object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3877"/>
+      <location filename="../Tree.cpp" line="3879"/>
       <source>Recomputes the selected object</source>
       <translation type="unfinished">Recomputes the selected object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3835"/>
+      <location filename="../Tree.cpp" line="3837"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Aukeratutako elementuen ikuspena zuhaitz-bistan aldatzen du</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="655"/>
+      <location filename="../Tree.cpp" line="657"/>
       <source>Search Objects</source>
       <translation type="unfinished">Search Objects</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="656"/>
+      <location filename="../Tree.cpp" line="658"/>
       <source>Searches for objects in the tree</source>
       <translation type="unfinished">Searches for objects in the tree</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1339"/>
+      <location filename="../Tree.cpp" line="1341"/>
       <source>Shows a description column for items. An item's description can be set by editing the 'label2' property.</source>
       <translation type="unfinished">Shows a description column for items. An item's description can be set by editing the 'label2' property.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3841"/>
-      <location filename="../Tree.cpp" line="6440"/>
+      <location filename="../Tree.cpp" line="3843"/>
+      <location filename="../Tree.cpp" line="6508"/>
       <source>Rename</source>
       <translation>Aldatu izena</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3848"/>
+      <location filename="../Tree.cpp" line="3850"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Mendeko objektu guztiak hautapenari gehitzen dizkio</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3854"/>
+      <location filename="../Tree.cpp" line="3856"/>
       <source>Reveal in Finder</source>
       <translation type="unfinished">Reveal in Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3857"/>
+      <location filename="../Tree.cpp" line="3859"/>
       <source>Open File Location</source>
       <translation type="unfinished">Open File Location</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6408"/>
+      <location filename="../Tree.cpp" line="6476"/>
       <source> (but must be executed)</source>
       <translation> (baina exekutatu behar da)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6411"/>
+      <location filename="../Tree.cpp" line="6479"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, barne-izena: %2</translation>
     </message>
@@ -8770,7 +8770,7 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
       <translation>Ez da %1 fitxategia aurkitu ez %2 ez %3 tokietan</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2075"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2118"/>
       <source>Clarify Selection</source>
       <translation type="unfinished">Clarify Selection</translation>
     </message>
@@ -8894,59 +8894,59 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
       <translation>Huts egin du '%1' objektuari propietatea gehitzeak: %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2700"/>
-      <location filename="../Tree.cpp" line="3097"/>
+      <location filename="../Tree.cpp" line="2702"/>
+      <location filename="../Tree.cpp" line="3099"/>
       <source>Drag &amp; drop failed</source>
       <translation>Arrastatu eta jaregiteak huts egin du</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3022"/>
+      <location filename="../ViewProviderLink.cpp" line="3026"/>
       <location filename="../MainWindow.cpp" line="903"/>
       <source>Apply to all</source>
       <translation>Aplikatu guztiei</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2996"/>
+      <location filename="../ViewProviderLink.cpp" line="3000"/>
       <source>Setup Configurable Object</source>
       <translation type="unfinished">Setup Configurable Object</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2998"/>
+      <location filename="../ViewProviderLink.cpp" line="3002"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation type="unfinished">Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3020"/>
+      <location filename="../ViewProviderLink.cpp" line="3024"/>
       <source>Select which objects to copy when the configuration is changed</source>
       <translation type="unfinished">Select which objects to copy when the configuration is changed</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3023"/>
+      <location filename="../ViewProviderLink.cpp" line="3027"/>
       <source>Applies the setting to all links</source>
       <translation type="unfinished">Applies the setting to all links</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3084"/>
+      <location filename="../ViewProviderLink.cpp" line="3088"/>
       <source>Copy on Change</source>
       <translation type="unfinished">Copy on Change</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3085"/>
+      <location filename="../ViewProviderLink.cpp" line="3089"/>
       <source>Enable</source>
       <translation>Gaitu</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3087"/>
+      <location filename="../ViewProviderLink.cpp" line="3091"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>Gaitu estekatutako objektuaren kopiatze automatikoa bere konfigurazioa aldatzen denean</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3103"/>
+      <location filename="../ViewProviderLink.cpp" line="3107"/>
       <source>Tracking</source>
       <translation>Jarraipena</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3105"/>
+      <location filename="../ViewProviderLink.cpp" line="3109"/>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -8955,17 +8955,17 @@ Also auto redo the copy if the original linked object is changed.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3125"/>
+      <location filename="../ViewProviderLink.cpp" line="3129"/>
       <source>Disable Copy on Change</source>
       <translation type="unfinished">Disable Copy on Change</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3143"/>
+      <location filename="../ViewProviderLink.cpp" line="3147"/>
       <source>Refresh Configurable Object</source>
       <translation type="unfinished">Refresh Configurable Object</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3145"/>
+      <location filename="../ViewProviderLink.cpp" line="3149"/>
       <source>Synchronizes the original configurable source object by
 creating a new deep copy. Any changes made to
 the current copy will be lost.
@@ -8976,18 +8976,18 @@ the current copy will be lost.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3187"/>
+      <location filename="../ViewProviderLink.cpp" line="3191"/>
       <source>Toggle Array Elements</source>
       <translation type="unfinished">Toggle Array Elements</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3200"/>
+      <location filename="../ViewProviderLink.cpp" line="3204"/>
       <source>Changes whether to show each link array element as individual objects</source>
       <translation type="unfinished">Changes whether to show each link array element as individual objects</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3209"/>
-      <location filename="../ViewProviderLink.cpp" line="3215"/>
+      <location filename="../ViewProviderLink.cpp" line="3213"/>
+      <location filename="../ViewProviderLink.cpp" line="3219"/>
       <source>Override Colors</source>
       <translation type="unfinished">Override Colors</translation>
     </message>
@@ -9012,7 +9012,7 @@ the current copy will be lost.
       <translation>Txandakatu gainjartzea</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2562"/>
+      <location filename="../OverlayWidgets.cpp" line="2571"/>
       <location filename="../OverlayManager.cpp" line="1080"/>
       <source>Toggle floating window</source>
       <translation>Txandakatu leiho flotagarria</translation>
@@ -9207,12 +9207,12 @@ the current copy will be lost.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="887"/>
+      <location filename="../Selection/Selection.cpp" line="951"/>
       <source>Not allowed:</source>
       <translation>Ez dago onartuta:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1268"/>
+      <location filename="../Selection/Selection.cpp" line="1334"/>
       <source>Selection not allowed by filter</source>
       <translation>Iragazkiak ez du hautapena onartzen</translation>
     </message>
@@ -14466,13 +14466,13 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1222"/>
-      <location filename="../FileDialog.cpp" line="1232"/>
+      <location filename="../FileDialog.cpp" line="1238"/>
+      <location filename="../FileDialog.cpp" line="1248"/>
       <source>Select a File</source>
       <translation type="unfinished">Select a File</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1242"/>
+      <location filename="../FileDialog.cpp" line="1258"/>
       <source>Select a Directory</source>
       <translation type="unfinished">Select a Directory</translation>
     </message>
@@ -14488,7 +14488,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::OverlayTitleBar</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2202"/>
+      <location filename="../OverlayWidgets.cpp" line="2211"/>
       <source>Mouse pass through, Esc to stop</source>
       <translation type="unfinished">Mouse pass through, Esc to stop</translation>
     </message>
@@ -14504,7 +14504,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4246"/>
+      <location filename="../Tree.cpp" line="4248"/>
       <source>Tree View</source>
       <translation>Zuhaitz-bista</translation>
     </message>
@@ -14711,7 +14711,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1177"/>
+      <location filename="../Selection/SelectionView.cpp" line="1182"/>
       <source>Whole Object</source>
       <translation type="unfinished">Whole Object</translation>
     </message>

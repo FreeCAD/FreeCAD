@@ -172,7 +172,7 @@ PyObject* DocumentObjectPy::supportedProperties(PyObject* args)
         Base::BaseClass* data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it.getName()));
+            res.append(Base::toPyString(it.getName()));
         }
     }
     return Py::new_reference_to(res);

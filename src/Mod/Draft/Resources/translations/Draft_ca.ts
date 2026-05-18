@@ -8790,7 +8790,7 @@ de blocs no es preserven; la seva geometria passa a formar part de la forma de l
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="110"/>
       <source>Warning</source>
-      <translation>Avís</translation>
+      <translation>Advertència</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="136"/>

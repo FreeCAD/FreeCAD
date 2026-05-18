@@ -651,7 +651,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="43"/>
       <source>Import</source>
-      <translation type="unfinished">Import</translation>
+      <translation>Importér</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
@@ -3728,7 +3728,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="1022"/>
       <source>Order by</source>
-      <translation type="unfinished">Order by</translation>
+      <translation>Sortér efter</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1184"/>
@@ -11142,17 +11142,17 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="964"/>
       <source>Metric</source>
-      <translation type="unfinished">Metric</translation>
+      <translation>Metrisk</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="965"/>
       <source>Imperial</source>
-      <translation type="unfinished">Imperial</translation>
+      <translation>Imperial</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="967"/>
       <source>Units</source>
-      <translation type="unfinished">Units</translation>
+      <translation>Enheder</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="973"/>

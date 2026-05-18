@@ -3163,12 +3163,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="2093"/>
       <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
+      <translation>所选方向与标准方向的偏差在 %1 度以内。是否将所选方向替换为 %2？</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2098"/>
       <source>Direction is close to standard</source>
-      <translation type="unfinished">Direction is close to standard</translation>
+      <translation>方向接近标准方向</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="600"/>
@@ -3525,7 +3525,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="120"/>
       <source>Can not make hole circle for %1</source>
-      <translation type="unfinished">Can not make hole circle for %1</translation>
+      <translation>无法为 %1 生成孔圆</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="239"/>
@@ -3536,7 +3536,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="240"/>
       <location filename="../../CommandExtensionPack.cpp" line="1673"/>
       <source>Can not make centerlines for %1</source>
-      <translation type="unfinished">Can not make centerlines for %1</translation>
+      <translation>无法为 %1 生成中心线</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="898"/>
@@ -3561,7 +3561,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1672"/>
       <source>TechDraw extend/shorten line</source>
-      <translation type="unfinished">TechDraw extend/shorten line</translation>
+      <translation>TechDraw 延长/缩短线段</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1879"/>
@@ -3576,12 +3576,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2217"/>
       <source>TechDraw create thread circle</source>
-      <translation type="unfinished">TechDraw create thread circle</translation>
+      <translation>TechDraw 创建螺纹圆</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2218"/>
       <source>Can not make thread circle for %1</source>
-      <translation type="unfinished">Can not make thread circle for %1</translation>
+      <translation>无法为 %1 生成螺纹圆</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2235"/>

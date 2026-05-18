@@ -544,12 +544,12 @@ The property of this object will refer to the property of the Variable Set.</sou
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="51"/>
       <source>Press middle or ctrl+right mouse button</source>
-      <translation type="unfinished">Press middle or ctrl+right mouse button</translation>
+      <translation>按下鼠标中键或 Ctrl + 鼠标右键</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left, middle+right or shift+right mouse button</source>
-      <translation type="unfinished">Press middle+left, middle+right or shift+right mouse button</translation>
+      <translation>按下鼠标中键 + 左键、鼠标中键 + 右键或 Shift + 右键</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
@@ -8807,7 +8807,7 @@ Choose 'Abort' to abort</source>
     <message>
       <location filename="../Inventor/Draggers/SoPlanarDragger.cpp" line="282"/>
       <source>Translation XY:</source>
-      <translation>XY 平面轉移：</translation>
+      <translation>XY 平移：</translation>
     </message>
     <message>
       <location filename="../Inventor/Draggers/SoRotationDragger.cpp" line="265"/>
@@ -12412,7 +12412,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../TaskTransform.ui" line="252"/>
       <source>Translate</source>
-      <translation>翻译</translation>
+      <translation>平移</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="262"/>

@@ -2338,7 +2338,7 @@ Visitare https://openscad.org/ per installarlo.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Cutting</source>
-      <translation>Taglio</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>

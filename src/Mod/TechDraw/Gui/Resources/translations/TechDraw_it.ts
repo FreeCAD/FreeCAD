@@ -3163,12 +3163,12 @@ Se non è selezionato alcun oggetto, si apre un browser di file per selezionare 
     <message>
       <location filename="../../Command.cpp" line="2093"/>
       <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
+      <translation>La direzione selezionata si trova entro %1 gradi da una direzione standard. Sostituire la direzione selezionata con %2?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2098"/>
       <source>Direction is close to standard</source>
-      <translation type="unfinished">Direction is close to standard</translation>
+      <translation>La direzione è vicina allo standard</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="600"/>
@@ -3525,7 +3525,7 @@ Se non è selezionato alcun oggetto, si apre un browser di file per selezionare 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="120"/>
       <source>Can not make hole circle for %1</source>
-      <translation type="unfinished">Can not make hole circle for %1</translation>
+      <translation>Impossibile creare il cerchio del foro per %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="239"/>
@@ -3536,7 +3536,7 @@ Se non è selezionato alcun oggetto, si apre un browser di file per selezionare 
       <location filename="../../CommandExtensionPack.cpp" line="240"/>
       <location filename="../../CommandExtensionPack.cpp" line="1673"/>
       <source>Can not make centerlines for %1</source>
-      <translation type="unfinished">Can not make centerlines for %1</translation>
+      <translation>Impossibile creare le linee di centro per %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="898"/>
@@ -3561,7 +3561,7 @@ Se non è selezionato alcun oggetto, si apre un browser di file per selezionare 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1672"/>
       <source>TechDraw extend/shorten line</source>
-      <translation type="unfinished">TechDraw extend/shorten line</translation>
+      <translation>TechDraw estendi/accorcia linea</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1879"/>
@@ -3576,12 +3576,12 @@ Se non è selezionato alcun oggetto, si apre un browser di file per selezionare 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2217"/>
       <source>TechDraw create thread circle</source>
-      <translation type="unfinished">TechDraw create thread circle</translation>
+      <translation>TechDraw crea cerchio del filetto</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2218"/>
       <source>Can not make thread circle for %1</source>
-      <translation type="unfinished">Can not make thread circle for %1</translation>
+      <translation>Impossibile creare il cerchio del filetto per %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2235"/>
@@ -5938,7 +5938,7 @@ Le modifiche non hanno alcun effetto sulle quote esistenti.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="886"/>
       <source>View frames mode</source>
-      <translation>Visualizza modalità cornice</translation>
+      <translation>Modalità cornice vista</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>

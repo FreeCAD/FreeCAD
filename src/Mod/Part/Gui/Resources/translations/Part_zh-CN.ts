@@ -522,7 +522,7 @@
       <location filename="../../AttacherTexts.cpp" line="306"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>移动原点</translation>
+      <translation>平移原点</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="307"/>
@@ -731,7 +731,7 @@
       <location filename="../../AttacherTexts.cpp" line="64"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>移动原点</translation>
+      <translation>平移原点</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
@@ -7708,7 +7708,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="940"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>重置间距</translation>
     </message>
   </context>
   <context>

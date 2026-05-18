@@ -180,15 +180,13 @@
       <location filename="../../Command.cpp" line="1160"/>
       <source>Skipping external geometry #%1
 </source>
-      <translation type="unfinished">Skipping external geometry #%1
-</translation>
+      <translation>正在跳过外部几何体 #%1</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1203"/>
       <source>External geometry '%1' is out of scope:
 </source>
-      <translation type="unfinished">External geometry '%1' is out of scope:
-</translation>
+      <translation>外部几何体 '%1' 超出范围：</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1254"/>
@@ -214,15 +212,13 @@
       <location filename="../../Command.cpp" line="1360"/>
       <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
 </source>
-      <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
-</translation>
+      <translation>已从 '%3' 复制 %1/%2 个约束。部分约束已跳过。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1376"/>
       <source>Skipping constraint #%1 of '%2': references unmerged geometry.
 </source>
-      <translation type="unfinished">Skipping constraint #%1 of '%2': references unmerged geometry.
-</translation>
+      <translation>正在跳过 '%2' 的约束 #%1：引用了未合并的几何体。</translation>
     </message>
   </context>
   <context>

@@ -482,7 +482,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10668"/>
       <source>Add Group constraint</source>
-      <translation type="unfinished">Add Group constraint</translation>
+      <translation>Tilføj Gruppe relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="11092"/>
@@ -989,7 +989,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="131"/>
       <source>Add sketch Text</source>
-      <translation type="unfinished">Add sketch Text</translation>
+      <translation>Tilføj skitse Tekst</translation>
     </message>
   </context>
   <context>
@@ -1151,7 +1151,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
+      <translation>Ugyldigt Valg</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="179"/>
@@ -2067,7 +2067,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="245"/>
       <source>Text parameters</source>
-      <translation type="unfinished">Text parameters</translation>
+      <translation>Tekst parametre</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="726"/>
@@ -2417,7 +2417,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="177"/>
       <source>Alignment</source>
-      <translation type="unfinished">Alignment</translation>
+      <translation>Justering</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="186"/>
@@ -2690,7 +2690,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="88"/>
       <source>Group Constraint</source>
-      <translation type="unfinished">Group Constraint</translation>
+      <translation>Gruppe Relation</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="102"/>
@@ -2989,7 +2989,7 @@ således at en ændring i det oprindelige element afspejles i kopierne</translat
     <message>
       <location filename="../../SketcherSettings.ui" line="20"/>
       <source>Task Panel Widgets</source>
-      <translation type="unfinished">Task Panel Widgets</translation>
+      <translation>Opgave Panel Widgets</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="45"/>
@@ -4773,12 +4773,12 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="166"/>
       <source>Grid transparency</source>
-      <translation type="unfinished">Grid transparency</translation>
+      <translation>Gitter gennemsigtighed</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="173"/>
       <source>Sets the transparency of the grid lines (0 = opaque, 100 = fully transparent)</source>
-      <translation type="unfinished">Sets the transparency of the grid lines (0 = opaque, 100 = fully transparent)</translation>
+      <translation>Sætter gennemsigtigheden af gitterlinjerne (0 = uigennemsigtig, 100 = fuldstændig gennemsigtig)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="198"/>
@@ -4843,7 +4843,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
     <message>
       <location filename="../../../App/SketchObjectConstraints.cpp" line="155"/>
       <source>"%1" has partially redundant constraint(s).</source>
-      <translation type="unfinished">"%1" has partially redundant constraint(s).</translation>
+      <translation>"%1" har delvist overflødige begrænsning(er).</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="1058"/>
@@ -5138,7 +5138,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="183"/>
       <source>Failed to add text</source>
-      <translation type="unfinished">Failed to add text</translation>
+      <translation>Kunne ikke tilføje tekst</translation>
     </message>
   </context>
   <context>
@@ -5189,12 +5189,12 @@ Typen kan ændres med M-tasten.</translation>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="94"/>
       <source>Line edit 1</source>
-      <translation type="unfinished">Line edit 1</translation>
+      <translation>Linje redigering 1</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="108"/>
       <source>Line edit 2</source>
-      <translation type="unfinished">Line edit 2</translation>
+      <translation>Linje redigering 2</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="122"/>
@@ -8280,7 +8280,7 @@ Note: While the Text constraint is active, any constraints applied directly to t
     <message>
       <location filename="../../CommandConstraints.cpp" line="10601"/>
       <source>Group Constraint</source>
-      <translation type="unfinished">Group Constraint</translation>
+      <translation>Gruppe Begrænsing</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10602"/>

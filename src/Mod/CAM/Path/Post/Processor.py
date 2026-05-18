@@ -1556,6 +1556,31 @@ class PostProcessor:
         first_name, first_gcode = all_job_sections[0]
         all_job_sections[0] = (first_name, safety_gcode + first_gcode)
 
+    def _convert_job_sections(
+        self, postables, header_lines, preamble_lines, unit_command, pre_job_lines
+    ):
+        """Convert each section to output-code"""
+
+        job_sections = []
+        for section_name, sublist in postables:
+            gcode_lines = self._build_section_prefix(
+                header_lines, preamble_lines, unit_command, pre_job_lines
+            )
+
+            for item in sublist:
+                if self._emit_item_pre_block(item, gcode_lines):
+                    continue
+                self._convert_item_commands(item, gcode_lines)
+                self._emit_item_post_block(item, gcode_lines)
+
+            # ===== STAGE 4: G-CODE OPTIMIZATION =====
+            gcode_string = self._optimize_gcode(header_lines, gcode_lines)
+            if gcode_string:
+                gcode_string = self._append_trailing_lines(gcode_string)
+                job_sections.append((section_name, gcode_string))
+
+        return job_sections
+
     def export2(self) -> Union[None, GCodeSections]:
         """
         Process jobs through all postprocessing stages to produce final G-code.
@@ -1606,23 +1631,10 @@ class PostProcessor:
         unit_command = self._collect_unit_command()
         pre_job_lines = self._collect_pre_job_lines()
 
-        job_sections = []
-        for section_name, sublist in postables:
-            gcode_lines = self._build_section_prefix(
-                header_lines, preamble_lines, unit_command, pre_job_lines
-            )
-
-            for item in sublist:
-                if self._emit_item_pre_block(item, gcode_lines):
-                    continue
-                self._convert_item_commands(item, gcode_lines)
-                self._emit_item_post_block(item, gcode_lines)
-
-            # ===== STAGE 4: G-CODE OPTIMIZATION =====
-            gcode_string = self._optimize_gcode(header_lines, gcode_lines)
-            if gcode_string:
-                gcode_string = self._append_trailing_lines(gcode_string)
-                job_sections.append((section_name, gcode_string))
+        # convert postables to machine-specific gcode
+        job_sections = self._convert_job_sections(
+            postables, header_lines, preamble_lines, unit_command, pre_job_lines
+        )
 
         self._append_bcnc_postamble(job_sections)
         all_job_sections.extend(job_sections)
@@ -2067,6 +2079,16 @@ class PostProcessor:
         else:
             return f"{block_delete_string}{comment_symbol} {comment_text}"
 
+    def _convert_axis_param(self, value):
+        # Apply unit conversion based on machine units setting
+        is_imperial = self.values["OUTPUT_UNITS"] == OutputUnits.IMPERIAL
+
+        if is_imperial:
+            converted_value = value / 25.4  # Convert mm to inches
+        else:
+            converted_value = value  # Keep as mm
+        return converted_value
+
     def _convert_move(self, command: Path.Command) -> str:
         """
         Converts a rapid move command to gcode.
@@ -2094,14 +2116,8 @@ class PostProcessor:
 
         def format_axis_param(value):
             """Format axis parameter with unit conversion and precision."""
-            # Apply unit conversion based on machine units setting
-            is_imperial = self.values["OUTPUT_UNITS"] == OutputUnits.IMPERIAL
 
-            if is_imperial:
-                converted_value = value / 25.4  # Convert mm to inches
-            else:
-                converted_value = value  # Keep as mm
-
+            converted_value = self._convert_axis_param(value)
             precision = self.values["AXIS_PRECISION"]
             return f"{converted_value:.{precision}f}"
 
@@ -2109,13 +2125,7 @@ class PostProcessor:
             """Format feed parameter with speed precision and unit conversion."""
             # Convert from mm/sec to mm/min (multiply by 60)
             feed_value = value * 60.0
-
-            # Apply unit conversion if imperial
-            is_imperial = self.values["OUTPUT_UNITS"] == OutputUnits.IMPERIAL
-
-            if is_imperial:
-                feed_value = feed_value / 25.4  # Convert mm/min to in/min
-
+            feed_value = self._convert_axis_param(feed_value)
             precision = self.values["FEED_PRECISION"]
             return f"{feed_value:.{precision}f}"
 

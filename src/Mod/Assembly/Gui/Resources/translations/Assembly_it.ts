@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="55"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation>&lt;p&gt;Inserisce un componente nell'assieme attivo. Questo creerà collegamenti dinamici a parti, corpi, primitive e assiemi. Per inserire componenti esterni, assicurarsi che il file sia &lt;b&gt;aperto nella sessione corrente&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Inserirli facendo clic con il pulsante sinistro del mouse sugli elementi nell'elenco.&lt;/li&gt;&lt;li&gt;Rimuoverli facendo clic con il pulsante destro del mouse sugli elementi nell'elenco.&lt;/li&gt;&lt;li&gt;Tenere premuto Maiusc per aggiungere più istanze del componente mentre si fa clic sulla vista.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Inserisce un componente nell'assieme attivo. Questo creerà collegamenti dinamici a parti, corpi, primitive e assiemi. Per inserire componenti esterni, assicurarsi che il file sia &lt;b&gt;aperto nella sessione corrente&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Inserirli facendo clic con il pulsante sinistro del mouse sugli elementi nell'elenco.&lt;/li&gt;&lt;li&gt;Rimuoverli facendo clic con il pulsante destro del mouse sugli elementi nell'elenco.&lt;/li&gt;&lt;li&gt;Tenere premuto maiuscolo per aggiungere più istanze del componente mentre si fa clic sulla vista.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
@@ -562,7 +562,7 @@ SLOPE definisce la pendenza della transizione tra 0 e H1 e H2 a 0 al tempo = T1 
     <message>
       <location filename="../../../JointObject.py" line="184"/>
       <source>The type of the joint</source>
-      <translation>Il tipo di giunto</translation>
+      <translation>Il tipo del giunto</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="370"/>
@@ -1322,7 +1322,7 @@ I file sono denominati "runPreDrag. asmt" e "dragging.log" e si trovano nella di
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Se è attivo un assieme: crea un giunto che blocca staticamente due parti, impedendo qualsiasi movimento o rotazione.&lt;/p&gt;&lt;p&gt;2 - Se una parte è attiva: posiziona le sotto-parti in base ai sistemi di coordinate selezionati. Si muoverà la seconda parte selezionata.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1473,7 +1473,7 @@ I file sono denominati "runPreDrag. asmt" e "dragging.log" e si trovano nella di
     <message>
       <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Toggle Grounded</source>
-      <translation>Attiva/disattiva vincolo a terra</translation>
+      <translation>Attiva/disattiva fissaggio a terra</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="437"/>

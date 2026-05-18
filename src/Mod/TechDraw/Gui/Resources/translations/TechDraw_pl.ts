@@ -3201,12 +3201,12 @@ Praca bez zaznaczenia spowoduje otworzenie przeglądarki plików, aby wstawić p
     <message>
       <location filename="../../Command.cpp" line="2093"/>
       <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
+      <translation>Wybrany kierunek jest w zakresie %1 stopni standardowego kierunku. Zamienić wybrany kierunek na %2?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2098"/>
       <source>Direction is close to standard</source>
-      <translation type="unfinished">Direction is close to standard</translation>
+      <translation>Kierunek jest zbliżony do standardowego</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="600"/>
@@ -3568,7 +3568,7 @@ Kontynuować?</translation>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="120"/>
       <source>Can not make hole circle for %1</source>
-      <translation type="unfinished">Can not make hole circle for %1</translation>
+      <translation>Nie można utworzyć okręgu otworu dla %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="239"/>
@@ -3579,7 +3579,7 @@ Kontynuować?</translation>
       <location filename="../../CommandExtensionPack.cpp" line="240"/>
       <location filename="../../CommandExtensionPack.cpp" line="1673"/>
       <source>Can not make centerlines for %1</source>
-      <translation type="unfinished">Can not make centerlines for %1</translation>
+      <translation>Nie można utworzyć linii środkowych dla %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="898"/>
@@ -3604,7 +3604,7 @@ Kontynuować?</translation>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1672"/>
       <source>TechDraw extend/shorten line</source>
-      <translation type="unfinished">TechDraw extend/shorten line</translation>
+      <translation>Rysunek Techniczny Wydłuż / skróć linię</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1879"/>
@@ -3619,12 +3619,12 @@ Kontynuować?</translation>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2217"/>
       <source>TechDraw create thread circle</source>
-      <translation type="unfinished">TechDraw create thread circle</translation>
+      <translation>Wstawia symbol gwintu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2218"/>
       <source>Can not make thread circle for %1</source>
-      <translation type="unfinished">Can not make thread circle for %1</translation>
+      <translation>Nie można utworzyć symbolu gwintu dla %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2235"/>

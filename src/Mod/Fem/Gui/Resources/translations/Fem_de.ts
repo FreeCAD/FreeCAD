@@ -1658,12 +1658,12 @@ dass „MAXGS“ erhöht werden muss.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>Sukzessive Überentspannung (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
       <source>Shifted incomplete Cholesky (SIC)</source>
-      <translation type="unfinished">Shifted incomplete Cholesky (SIC)</translation>
+      <translation>Verschobene unvollständige Cholesky-Matrize (SIC)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="88"/>
@@ -3433,7 +3433,7 @@ harmonischem/oszillierendem Antriebsstrom verwendet</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="84"/>
       <source>Restrict</source>
-      <translation type="unfinished">Restrict</translation>
+      <translation>Beschränken</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="89"/>
@@ -3444,7 +3444,7 @@ harmonischem/oszillierendem Antriebsstrom verwendet</translation>
       <location filename="../ui/MeshManipulate.ui" line="94"/>
       <location filename="../ui/MeshManipulate.ui" line="609"/>
       <source>Mean</source>
-      <translation type="unfinished">Mean</translation>
+      <translation>Mittelwert</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="99"/>
@@ -3459,18 +3459,18 @@ harmonischem/oszillierendem Antriebsstrom verwendet</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="109"/>
       <source>Laplacian</source>
-      <translation type="unfinished">Laplacian</translation>
+      <translation>Laplace-Operator</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="138"/>
       <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation type="unfinished">Restrict the application of the child refinement to the selected reference elements.</translation>
+      <translation>Die Anwendung der untergeordneten Verfeinerung auf die ausgewählten Referenzelemente beschränken.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="160"/>
       <location filename="../ui/MeshManipulate.ui" line="173"/>
       <source>Include the boundary of the selected reference elements</source>
-      <translation type="unfinished">Include the boundary of the selected reference elements</translation>
+      <translation>Die Begrenzung der ausgewählten Referenzelemente einbeziehen</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="163"/>
@@ -3520,7 +3520,7 @@ harmonischem/oszillierendem Antriebsstrom verwendet</translation>
       <location filename="../ui/MeshAdvanced.ui" line="368"/>
       <location filename="../ui/MeshDistance.ui" line="219"/>
       <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
+      <translation>Entfernung, bis zu der die Maschenweite SizeMinimum beträgt</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="434"/>
@@ -3541,12 +3541,12 @@ harmonischem/oszillierendem Antriebsstrom verwendet</translation>
       <location filename="../ui/MeshManipulate.ui" line="462"/>
       <location filename="../ui/MeshDistance.ui" line="326"/>
       <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
+      <translation>Legt fest, ob die Interpolation der Maschenweite zwischen SizeMinimum und SizeMaximum als lineare oder als sigmoide Funktion erfolgen soll</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="472"/>
       <source>Stop at max input</source>
-      <translation type="unfinished">Stop at max input</translation>
+      <translation>Bei maximaler Eingabe anhalten</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="493"/>
@@ -3554,7 +3554,7 @@ harmonischem/oszillierendem Antriebsstrom verwendet</translation>
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </source>
-      <translation type="unfinished">Calculates the mean value of child refinement G:
+      <translation>Berechnet den Mittelwert der untergeordneten Verfeinerung G:
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </translation>
@@ -3573,7 +3573,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="708"/>
       <location filename="../ui/MeshManipulate.ui" line="780"/>
       <source>Delta in the aforementioned equation</source>
-      <translation type="unfinished">Delta in the aforementioned equation</translation>
+      <translation>Delta in der oben genannten Gleichung</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="565"/>
@@ -3581,7 +3581,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </source>
-      <translation type="unfinished">Compute the finite difference gradient of child refinement G:
+      <translation>Berechne den Finite-Differenzen-Gradienten der untergeordneten Verfeinerung G:
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </translation>
@@ -3888,11 +3888,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+      <translation>Verfügbar sind die drei Koordinaten x, y, z (Kleinbuchstaben) und die üblichen mathematischen
+Funktionen wie Sin, Log (Großbuchstaben). Zusätzlich können alle untergeordneten Verfeinerungen
+über die Variable F verwendet werden, z. B. F1, F2 usw. Unterstützte Operatoren sind +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Beispiel: „F2 + Sin(z)“</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3966,7 +3966,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="904"/>
       <source>Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</source>
-      <translation type="unfinished">Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</translation>
+      <translation>Berechne den Abstand zur ausgewählten Referenzgeometrie (Knoten, Kanten und Flächen). Aus Effizienzgründen werden Kurven und Flächen durch eine Punktmenge ersetzt</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
@@ -3976,7 +3976,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
       <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
+      <translation>Erzeugt ein strukturiertes Netz in einem Volumen, das sich an dessen transfiniten Flächen orientiert.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
@@ -3991,7 +3991,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
       <source>Mixed mesh elements</source>
-      <translation type="unfinished">Mixed mesh elements</translation>
+      <translation>Gemischte Netzelemente</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
@@ -4040,7 +4040,7 @@ Notes:
       <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
       <source>Recombine</source>
-      <translation type="unfinished">Recombine</translation>
+      <translation>Neu kombinieren</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="38"/>
@@ -4498,7 +4498,7 @@ Notes:
     <message>
       <location filename="../ui/ResultShow.ui" line="63"/>
       <source>von Mises stress</source>
-      <translation type="unfinished">von Mises stress</translation>
+      <translation>von-Mises Spannung</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="83"/>
@@ -4568,12 +4568,12 @@ Notes:
     <message>
       <location filename="../ui/ResultShow.ui" line="512"/>
       <source> Full cycle</source>
-      <translation type="unfinished"> Full cycle</translation>
+      <translation> Vollständiger Zyklus</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="528"/>
       <source>Half cycle</source>
-      <translation type="unfinished">Half cycle</translation>
+      <translation>Halber Zyklus</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="542"/>
@@ -6466,7 +6466,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="362"/>
       <source>von Mises stress</source>
-      <translation type="unfinished">von Mises stress</translation>
+      <translation>von-Mises Spannung</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="374"/>
