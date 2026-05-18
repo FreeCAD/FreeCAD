@@ -1348,7 +1348,10 @@ lors du recalcul. Les colonnes « Description » et personnalisées ne sont pas 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>1 - Si un assemblage est actif : crée une liaison à verrouillage statique reliant deux pièces entre elles, empêchant tout mouvement ou
+rotation.
+2 - Si une pièce est active : positionne les sous-pièces en alignant les systèmes de coordonnées sélectionnés. La deuxième pièce
+sélectionnée se déplacera.</translation>
     </message>
   </context>
   <context>

@@ -1651,7 +1651,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>연속적 과잉이완 (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
@@ -3879,11 +3879,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+      <translation>3개 좌표 x, y, z(소문자)와 Sin, Log(대문자)와 같은 일반 수학 함수를 사용할 수 있습니다.
+또한 모든 하위 세분화를 F 변수(예: F1, F2 등)로 사용할 수 있습니다.
+지원되는 연산자는 +, -, *, /, ^입니다.
 
-Example: "F2 + Sin(z)"</translation>
+예시: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3923,11 +3923,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
+      <translation>3개 좌표 x, y, z(소문자)와 Sin, Log(대문자)와 같은 일반 수학 함수를 사용할 수 있습니다.
+또한 모든 하위 세분화를 F 변수(예: F1, F2 등)로 사용할 수 있습니다.
+지원되는 연산자는 +, -, *, /, ^입니다.
 
-Example: "F2 + Sin(z)"</translation>
+예시: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>

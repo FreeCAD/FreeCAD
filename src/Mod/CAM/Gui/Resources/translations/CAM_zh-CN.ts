@@ -1065,7 +1065,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="287"/>
       <source>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</source>
-      <translation type="unfinished">The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</translation>
+      <translation>螺旋斜面切入的最大允许角度。设置为零以禁用坡度角限制。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="297"/>
@@ -4890,8 +4890,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../../../Path/Op/Adaptive.py" line="1671"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
-      <translation type="unfinished">The maximum allowable helix ramp entry angle (degrees)
-Set to zero to disable limitation by ramp angle</translation>
+      <translation>螺旋斜面切入的最大允许角度（度）
+设置为零则不限制斜切角度</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1681"/>
@@ -4933,7 +4933,7 @@ Set to zero to disable limitation by pitch</source>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1918"/>
       <source>The maximum allowable descent in a single revolution of the helixSet to zero to disable limitation by pitch</source>
-      <translation type="unfinished">The maximum allowable descent in a single revolution of the helixSet to zero to disable limitation by pitch</translation>
+      <translation>螺旋每旋转一周允许的最大下降深度。设置为零则不限制螺距</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1615"/>

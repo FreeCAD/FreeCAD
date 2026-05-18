@@ -4169,7 +4169,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="117"/>
       <source>Cutting</source>
-      <translation>Taglio</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="147"/>

@@ -228,7 +228,7 @@ Yerel IFC nesneleriyle çalışırken, 'Class:IfcWall' gibi FreeCAD özellik adl
     <message>
       <location filename="../ui/ArchSchedule.ui" line="136"/>
       <source>If this is enabled, additional rows will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional rows will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Etkinleştirildiğinde, dikkate alınan her nesne için ek satırlar doldurulur. Aksi halde yalnızca toplamlar gösterilir.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="149"/>
@@ -238,7 +238,7 @@ Yerel IFC nesneleriyle çalışırken, 'Class:IfcWall' gibi FreeCAD özellik adl
     <message>
       <location filename="../ui/ArchSchedule.ui" line="160"/>
       <source>Adds a row below the selected row/cell</source>
-      <translation type="unfinished">Adds a row below the selected row/cell</translation>
+      <translation>Seçili satır/hücrenin altına bir satır ekler</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="163"/>
@@ -248,7 +248,7 @@ Yerel IFC nesneleriyle çalışırken, 'Class:IfcWall' gibi FreeCAD özellik adl
     <message>
       <location filename="../ui/ArchSchedule.ui" line="174"/>
       <source>Deletes the selected row</source>
-      <translation type="unfinished">Deletes the selected row</translation>
+      <translation>Seçili satırı siler</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="205"/>
@@ -307,7 +307,7 @@ Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
       <translation>Bu işlemde dikkate alınacak nesne adlarının (etiketler
 değil, dahili adlar) isteğe bağlı noktalı virgül (;) ile ayrılmış bir
-listesi. Liste gruplar içeriyorsa, alt öğeler
+listesi. Liste gruplar içeriyorsa, alt ögeler
 eklenecektir.
 Belgedeki tüm nesneleri kullanmak için boş
 
@@ -404,11 +404,11 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
       <translation>FreeCAD oturumlarında, oturumumu açık tut</translation>
     </message>
     <message>
-      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogPhases.ui" line="14"/>
-      <location filename="../ui/dialogExport.ui" line="14"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
+      <location filename="../ui/dialogExport.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
+      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <source>Dialog</source>
       <translation>Pencere</translation>
     </message>
@@ -429,8 +429,8 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
-      <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
+      <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <source>Only visible BIM objects</source>
       <translation>Yalnızca görünür BIM nesneleri</translation>
     </message>
@@ -451,8 +451,8 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="53"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="53"/>
       <source>Select All</source>
       <translation>Tümünü Seç</translation>
     </message>
@@ -467,8 +467,8 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
       <translation>IFC Özellikleri</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <location filename="../ui/dialogIfcProperties.ui" line="182"/>
+      <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <source>Delete Selected Property/Property Set</source>
       <translation>Seçilen Özelliği/Özellik Kümesini Sil</translation>
     </message>
@@ -562,8 +562,8 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
       <translation>Yeni FreeCAD belgeleri oluşturulurken ek uyarıların görüntülenmesini engeller. Yeni belgeler otomatik olarak IFC'ye dönüştürülmez, ancak dönüştürme işlemi daha sonra Yardımcı Programlar → IFC Projesi Oluştur yoluyla yapılabilir.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
+      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <source>Do not ask again</source>
       <translation>Bir daha sorma</translation>
     </message>
@@ -738,9 +738,9 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
       <translation>Bu katmanı bir IFC projesine ekler</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLayersIFC.ui" line="46"/>
       <location filename="../ui/dialogPhases.ui" line="55"/>
       <location filename="../ui/dialogProjectManager.ui" line="679"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="46"/>
       <source>Delete</source>
       <translation>Sil</translation>
     </message>
@@ -770,17 +770,17 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
       <translation>Ata</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <location filename="../ui/dialogProjectManager.ui" line="728"/>
       <location filename="../ui/dialogProjectManager.ui" line="731"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <source>Cancel</source>
       <translation>İptal</translation>
     </message>
     <message>
-      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="104"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
       <location filename="../ui/dialogProjectManager.ui" line="717"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="104"/>
+      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
       <source>OK</source>
       <translation>Tamam</translation>
     </message>
@@ -841,9 +841,9 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
-      <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <location filename="../ui/dialogProjectManager.ui" line="246"/>
       <location filename="../ui/dialogProjectManager.ui" line="366"/>
+      <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <source>Name</source>
       <translation>Isim</translation>
     </message>
@@ -1286,10 +1286,10 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
       <translation>Mekân Bilgisi</translation>
     </message>
     <message>
-      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <location filename="../ui/dialogProjectManager.ui" line="457"/>
       <location filename="../ui/dialogProjectManager.ui" line="480"/>
       <location filename="../ui/dialogProjectManager.ui" line="493"/>
+      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
       <translation>0</translation>
     </message>
@@ -1706,9 +1706,9 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
       <translation>Sınıf</translation>
     </message>
     <message>
+      <location filename="../ui/dialogClasses.ui" line="39"/>
       <location filename="../ui/dialogWindows.ui" line="80"/>
       <location filename="../ui/dialogWindows.ui" line="182"/>
-      <location filename="../ui/dialogClasses.ui" line="39"/>
       <source>Material</source>
       <translation>Malzeme</translation>
     </message>
@@ -1807,7 +1807,7 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="219"/>
       <source>Show available alternative file formats for library items (STEP, IFC, etc.)</source>
-      <translation type="unfinished">Show available alternative file formats for library items (STEP, IFC, etc.)</translation>
+      <translation>Kütüphane ögeleri için mevcut alternatif dosya biçimlerini göster (STEP, IFC....)</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="14"/>
@@ -1982,7 +1982,7 @@ IFC varlıklarını almak için IFC projesinin adını kullanın.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="40"/>
       <source>Work On</source>
-      <translation type="unfinished">Work On</translation>
+      <translation>Üzerinde çalış</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="73"/>
@@ -2596,17 +2596,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="74"/>
       <source>If this is checked, when a BIM object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation type="unfinished">If this is checked, when a BIM object has a material, the object will take the color of the material. This can be overridden for each object.</translation>
+      <translation>Etkinleştirildiğinde, bir BIM nesnesine malzeme atanmışsa nesne malzemenin rengini alır. Bu durum her nesne için geçersiz kılınabilir.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="93"/>
       <source>If this is checked, when an object becomes subtraction or addition of a BIM object, it will receive the Draft construction color.</source>
-      <translation type="unfinished">If this is checked, when an object becomes subtraction or addition of a BIM object, it will receive the Draft construction color.</translation>
+      <translation>Etkinleştirildiğinde, bir nesne bir BIM nesnesine ekleme veya çıkarma olarak dahil olduğunda Taslak yapı rengini alır.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="109"/>
       <source>By default, new objects will have their "Move with host" property set to True, which means they will move when their host object is moved</source>
-      <translation type="unfinished">By default, new objects will have their "Move with host" property set to True, which means they will move when their host object is moved</translation>
+      <translation>Varsayılan olarak yeni nesnelerde “Ana nesneyle birlikte taşı” özelliği aktif olarak ayarlanır; bu, ana nesne taşındığında nesnelerin de onunla birlikte taşınacağı anlamına gelir</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="144"/>
@@ -2835,7 +2835,7 @@ desenler için ölçek katsayısı</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="541"/>
       <source>When clicking a view or level in the BIM Views Manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</source>
-      <translation type="unfinished">When clicking a view or level in the BIM Views Manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</translation>
+      <translation>BIM Görünümler Yöneticisinde bir görünüm veya seviye seçildiğinde, 2B görünüm etkinleştirildiğinde arka plan düz renge, seviye etkinleştirildiğinde ise katmanlı renge geçer</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="379"/>
@@ -2860,22 +2860,22 @@ desenler için ölçek katsayısı</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="321"/>
       <source>Wall baseline</source>
-      <translation type="unfinished">Wall baseline</translation>
+      <translation>Duvar referans çizgisi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="335"/>
       <source>No baseline</source>
-      <translation type="unfinished">No baseline</translation>
+      <translation>Referans çizgisi yok</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="340"/>
       <source>Draft line</source>
-      <translation type="unfinished">Draft line</translation>
+      <translation>Taslak çizgi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="345"/>
       <source>Sketch</source>
-      <translation type="unfinished">Sketch</translation>
+      <translation>Taslak</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="353"/>
@@ -3381,8 +3381,8 @@ Netgen kullanılır ise mevcut olduğundan emin ol.</translation>
       <translation>Mozaikleme</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
+      <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export Options</source>
       <translation>Dışa Aktarma Seçenekleri</translation>
@@ -3600,7 +3600,7 @@ Uyarı: IFC standardı her dosyada en az bir bina ister. Bu seçeneği kapatırs
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="392"/>
       <source>Export FreeCAD groups</source>
-      <translation type="unfinished">Export FreeCAD groups</translation>
+      <translation>FreeCAD gruplarını dışa aktar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="413"/>
@@ -3691,7 +3691,7 @@ Bir mevki zorunlu değildir, ancak dosyada en az bir tane olması yaygın bir uy
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="363"/>
       <source>IFC Standard Compliance</source>
-      <translation type="unfinished">IFC Standard Compliance</translation>
+      <translation>IFC standart uyumluluğu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="389"/>
@@ -3812,17 +3812,17 @@ konumu: &lt;FreeCAD kurulum dizini&gt;/Resources/Mod/BIM/templates/webgl_export_
     <message>
       <location filename="../../ArchStructure.py" line="446"/>
       <location filename="../../ArchCoveringGui.py" line="842"/>
-      <location filename="../../bimcommands/BimWindow.py" line="431"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
+      <location filename="../../bimcommands/BimWindow.py" line="431"/>
       <source>Preset</source>
       <translation>Ön ayar</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1839"/>
       <location filename="../../ArchPanel.py" line="576"/>
       <location filename="../../ArchStructure.py" line="455"/>
       <location filename="../../ArchStructure.py" line="1583"/>
+      <location filename="../../ArchWall.py" line="1839"/>
       <location filename="../../ArchCoveringGui.py" line="996"/>
       <location filename="../../ArchCoveringGui.py" line="1077"/>
       <location filename="../../ArchCommands.py" line="1360"/>
@@ -3833,13 +3833,13 @@ konumu: &lt;FreeCAD kurulum dizini&gt;/Resources/Mod/BIM/templates/webgl_export_
       <translation>Uzunluk</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1845"/>
       <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchStructure.py" line="462"/>
       <location filename="../../ArchStructure.py" line="1584"/>
+      <location filename="../../ArchWindow.py" line="1195"/>
+      <location filename="../../ArchWall.py" line="1845"/>
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <location filename="../../bimcommands/BimWall.py" line="494"/>
@@ -3847,11 +3847,11 @@ konumu: &lt;FreeCAD kurulum dizini&gt;/Resources/Mod/BIM/templates/webgl_export_
       <translation>Genişlik</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1851"/>
       <location filename="../../ArchStructure.py" line="469"/>
       <location filename="../../ArchStructure.py" line="1585"/>
       <location filename="../../ArchWindow.py" line="1198"/>
       <location filename="../../ArchRoof.py" line="1088"/>
+      <location filename="../../ArchWall.py" line="1851"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../bimcommands/BimWall.py" line="501"/>
       <source>Height</source>
@@ -3873,8 +3873,8 @@ konumu: &lt;FreeCAD kurulum dizini&gt;/Resources/Mod/BIM/templates/webgl_export_
       <translation>Değiştir Uzunluk/Genişlik</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="617"/>
       <location filename="../../ArchStructure.py" line="1049"/>
+      <location filename="../../ArchWall.py" line="617"/>
       <source>This mesh is an invalid solid</source>
       <translation>Bu kafes hatalı bir katıdır</translation>
     </message>
@@ -3922,22 +3922,22 @@ konumu: &lt;FreeCAD kurulum dizini&gt;/Resources/Mod/BIM/templates/webgl_export_
     <message>
       <location filename="../../ArchStructure.py" line="277"/>
       <source>First Point of Beam</source>
-      <translation type="unfinished">First Point of Beam</translation>
+      <translation>Kirişin ilk noktası</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="279"/>
       <source>Base Point of Column</source>
-      <translation type="unfinished">Base Point of Column</translation>
+      <translation>Kolonun taban noktası</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="308"/>
       <source>Next Point</source>
-      <translation type="unfinished">Next Point</translation>
+      <translation>Sonraki nokta</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="423"/>
       <source>Structure Options</source>
-      <translation type="unfinished">Structure Options</translation>
+      <translation>Yapı seçenekleri</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1021"/>
@@ -4061,7 +4061,7 @@ konumu: &lt;FreeCAD kurulum dizini&gt;/Resources/Mod/BIM/templates/webgl_export_
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="79"/>
       <source>Profile Settings</source>
-      <translation type="unfinished">Profile Settings</translation>
+      <translation>Profil ayarları</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="768"/>
@@ -4153,8 +4153,8 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>Kapı</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="566"/>
       <location filename="../../ArchWindow.py" line="1201"/>
+      <location filename="../../ArchWindowPresets.py" line="566"/>
       <source>Opening</source>
       <translation>Açılma</translation>
     </message>
@@ -4267,7 +4267,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchReference.py" line="991"/>
       <source>Choose Reference File</source>
-      <translation type="unfinished">Choose Reference File</translation>
+      <translation>Referans dosyası seç</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="911"/>
@@ -4333,12 +4333,12 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../importers/importSHP.py" line="70"/>
       <source>Shapes Elevation</source>
-      <translation type="unfinished">Shapes Elevation</translation>
+      <translation>Şekil yüksekliği</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="144"/>
       <source>Shapefile Module Not Found</source>
-      <translation type="unfinished">Shapefile Module Not Found</translation>
+      <translation>Shapefile modülü bulunamadı</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="148"/>
@@ -4428,7 +4428,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <location filename="../../ArchWindow.py" line="1190"/>
       <location filename="../../bimcommands/BimWindow.py" line="380"/>
       <source>Window Options</source>
-      <translation type="unfinished">Window Options</translation>
+      <translation>Pencere seçenekleri</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1504"/>
@@ -4444,7 +4444,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchWindow.py" line="1695"/>
       <source>Window Elements</source>
-      <translation type="unfinished">Window Elements</translation>
+      <translation>Pencere elemanları</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1696"/>
@@ -4479,7 +4479,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchWindow.py" line="1720"/>
       <source>Hinge/Track</source>
-      <translation type="unfinished">Hinge/Track</translation>
+      <translation>Menteşe/Ray</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1729"/>
@@ -4492,37 +4492,37 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>Bu işaretlenirse, pencerenin Ofset özelliği değeri burada girilen değere eklenir.</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchComponent.py" line="2429"/>
-      <location filename="../../ArchSectionPlane.py" line="1747"/>
-      <location filename="../../ArchAxis.py" line="969"/>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
+      <location filename="../../ArchComponent.py" line="2459"/>
+      <location filename="../../ArchAxis.py" line="985"/>
       <location filename="../../ArchWindow.py" line="1705"/>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
+      <location filename="../../ArchSectionPlane.py" line="1747"/>
+      <location filename="../../ArchSpace.py" line="954"/>
       <source>Remove</source>
       <translation>Kaldır</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="949"/>
-      <location filename="../../ArchComponent.py" line="2430"/>
-      <location filename="../../ArchAxis.py" line="970"/>
-      <location filename="../../ArchAxisSystem.py" line="339"/>
+      <location filename="../../ArchComponent.py" line="2460"/>
+      <location filename="../../ArchAxis.py" line="986"/>
       <location filename="../../ArchWindow.py" line="1706"/>
+      <location filename="../../ArchAxisSystem.py" line="339"/>
+      <location filename="../../ArchSpace.py" line="949"/>
       <source>Add</source>
       <translation>Ekle</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchGrid.py" line="384"/>
-      <location filename="../../ArchReference.py" line="717"/>
-      <location filename="../../ArchComponent.py" line="1938"/>
-      <location filename="../../ArchSectionPlane.py" line="1514"/>
-      <location filename="../../ArchSite.py" line="1588"/>
-      <location filename="../../ArchAxis.py" line="814"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
+      <location filename="../../ArchComponent.py" line="1968"/>
+      <location filename="../../ArchAxis.py" line="830"/>
       <location filename="../../ArchWindow.py" line="1707"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
+      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchReference.py" line="717"/>
+      <location filename="../../ArchSchedule.py" line="765"/>
+      <location filename="../../ArchGrid.py" line="384"/>
+      <location filename="../../ArchSectionPlane.py" line="1514"/>
+      <location filename="../../ArchSite.py" line="1588"/>
       <source>Edit</source>
       <translation>Düzenle</translation>
     </message>
@@ -4538,7 +4538,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>Teller</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2437"/>
+      <location filename="../../ArchComponent.py" line="2467"/>
       <location filename="../../ArchWindow.py" line="1713"/>
       <source>Components</source>
       <translation>Bileşenler</translation>
@@ -4551,9 +4551,9 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>Isim</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2505"/>
-      <location filename="../../ArchCommands.py" line="1729"/>
+      <location filename="../../ArchComponent.py" line="2535"/>
       <location filename="../../ArchWindow.py" line="1716"/>
+      <location filename="../../ArchCommands.py" line="1729"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>Türü</translation>
@@ -4561,10 +4561,10 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchStructure.py" line="1578"/>
-      <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchRoof.py" line="1086"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
+      <location filename="../../ArchRoof.py" line="1086"/>
+      <location filename="../../ArchCoveringGui.py" line="802"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
       <source>Thickness</source>
       <translation>Kalınlık</translation>
@@ -4622,9 +4622,9 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>En az bir eksen seçin</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="2466"/>
+      <location filename="../../ArchAxis.py" line="984"/>
       <location filename="../../Arch.py" line="101"/>
-      <location filename="../../ArchComponent.py" line="2436"/>
-      <location filename="../../ArchAxis.py" line="968"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
       <source>Axes</source>
       <translation>Eksenler</translation>
@@ -4635,10 +4635,10 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>Eksen sistemi bileşenleri</translation>
     </message>
     <message>
-      <location filename="../../importers/importWebGL.py" line="371"/>
-      <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="301"/>
       <location filename="../../importers/importOBJ.py" line="339"/>
+      <location filename="../../importers/importWebGL.py" line="371"/>
+      <location filename="../../importers/importJSON.py" line="62"/>
       <source>Successfully written</source>
       <translation>Başarıyla yazıldı</translation>
     </message>
@@ -4715,13 +4715,13 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../Arch.py" line="2421"/>
       <source>Report</source>
-      <translation type="unfinished">Report</translation>
+      <translation>Bildir</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="2434"/>
       <location filename="../../ArchReport.py" line="436"/>
       <source>New Statement</source>
-      <translation type="unfinished">New Statement</translation>
+      <translation>Yeni ifade</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="2499"/>
@@ -4731,7 +4731,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../Arch.py" line="2718"/>
       <source>Covering</source>
-      <translation type="unfinished">Covering</translation>
+      <translation>Kaplama</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="58"/>
@@ -4875,7 +4875,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchPrecast.py" line="1249"/>
       <source>Precast Elements</source>
-      <translation type="unfinished">Precast Elements</translation>
+      <translation>Prefabrik elemanlar</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1250"/>
@@ -4970,17 +4970,17 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchPrecast.py" line="1715"/>
       <source>Precast Options</source>
-      <translation type="unfinished">Precast Options</translation>
+      <translation>Prefabrik seçenekleri</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1717"/>
       <source>Add Dent</source>
-      <translation type="unfinished">Add Dent</translation>
+      <translation>Çentik ekle</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1718"/>
       <source>Remove Dent</source>
-      <translation type="unfinished">Remove Dent</translation>
+      <translation>Çentik kaldır</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1716"/>
@@ -5001,22 +5001,22 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchCoveringGui.py" line="524"/>
       <source>Solid Tiles</source>
-      <translation type="unfinished">Solid Tiles</translation>
+      <translation>Katı döşemeler</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="525"/>
       <source>Parametric Pattern</source>
-      <translation type="unfinished">Parametric Pattern</translation>
+      <translation>Parametrik model</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="526"/>
       <source>Monolithic</source>
-      <translation type="unfinished">Monolithic</translation>
+      <translation>Tek parça yapı</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="527"/>
       <source>Hatch Pattern</source>
-      <translation type="unfinished">Hatch Pattern</translation>
+      <translation>Tarama deseni</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="531"/>
@@ -5041,22 +5041,22 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchCoveringGui.py" line="537"/>
       <source>Stacked (None)</source>
-      <translation type="unfinished">Stacked (None)</translation>
+      <translation>Üst üste (Yok)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="538"/>
       <source>Half Bond (1/2)</source>
-      <translation type="unfinished">Half Bond (1/2)</translation>
+      <translation>Yarım bağ (1/2)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="539"/>
       <source>Third Bond (1/3)</source>
-      <translation type="unfinished">Third Bond (1/3)</translation>
+      <translation>Üçte bir bağ (1/3)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="540"/>
       <source>Quarter Bond (1/4)</source>
-      <translation type="unfinished">Quarter Bond (1/4)</translation>
+      <translation>Çeyrek bağ (1/4)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="541"/>
@@ -5067,12 +5067,12 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchCoveringGui.py" line="619"/>
       <source>Covering Definition</source>
-      <translation type="unfinished">Covering Definition</translation>
+      <translation>Kaplama tanımı</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="634"/>
       <source>Layout and Boundaries</source>
-      <translation type="unfinished">Layout and Boundaries</translation>
+      <translation>Yerleşim ve sınırlar</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="640"/>
@@ -5091,23 +5091,23 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <location filename="../../ArchCoveringGui.py" line="675"/>
       <location filename="../../ArchCoveringGui.py" line="731"/>
       <source>The object or face this covering is applied to:</source>
-      <translation type="unfinished">The object or face this covering is applied to:</translation>
+      <translation>Kaplamanın uygulandığı nesne veya yüz:</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="686"/>
       <location filename="../../ArchCoveringGui.py" line="746"/>
       <source>The object or face this covering is applied to</source>
-      <translation type="unfinished">The object or face this covering is applied to</translation>
+      <translation>Kaplamanın uygulandığı nesne veya yüz</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="718"/>
       <source>%1 (%2 faces)</source>
-      <translation type="unfinished">%1 (%2 faces)</translation>
+      <translation>%1 (%2 yüz)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="725"/>
       <source>%1 objects selected</source>
-      <translation type="unfinished">%1 objects selected</translation>
+      <translation>%1 nesne seçildi</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="748"/>
@@ -5118,12 +5118,12 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchCoveringGui.py" line="752"/>
       <source>Enable interactive face selection in the 3D view</source>
-      <translation type="unfinished">Enable interactive face selection in the 3D view</translation>
+      <translation>3B görünümde etkileşimli yüz seçimini aktifleştir</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="770"/>
       <source>Picking…</source>
-      <translation type="unfinished">Picking…</translation>
+      <translation>Seçiliyor…</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="779"/>
@@ -5137,11 +5137,11 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
 - Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
 - Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
 - Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</source>
-      <translation type="unfinished">How the finish is created and displayed:
-- Solid Tiles: Physical 3D tiles with real gaps. Best for accurate detail and counting.
-- Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
-- Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
-- Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</translation>
+      <translation>Kaplama nasıl oluşturulup ve görüntülenecek:
+- Katı karolar: Fiziksel 3B karolar ve gerçek boşluklar.
+- Parametrik desen: Tek bir döşeme üzerinde çizgi ızgarası. Gerçek karolara göre daha hızlı görüntülenir.
+- Kesintisiz: Tek ve pürüzsüz yüzey. Boya, sıva veya kesintisiz zemin için ideal.
+- Tarama deseni: Tek bir döşeme üzerinde teknik çizim sembolleri (tarama).</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="796"/>
@@ -5151,7 +5151,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchCoveringGui.py" line="801"/>
       <source>The thickness of the finish</source>
-      <translation type="unfinished">The thickness of the finish</translation>
+      <translation>Kaplama kalınlığı</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="817"/>
@@ -5161,47 +5161,47 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     <message>
       <location filename="../../ArchCoveringGui.py" line="824"/>
       <source>If checked, the dialog stays open after creating the covering, allowing to pick another face</source>
-      <translation type="unfinished">If checked, the dialog stays open after creating the covering, allowing to pick another face</translation>
+      <translation>Etkinleştirildiğinde, kaplama oluşturulduktan sonra iletişim kutusu açık kalır ve başka bir yüz seçmeye izin verir</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="847"/>
       <source>Use standard corner or center alignment relative to the boundary</source>
-      <translation type="unfinished">Use standard corner or center alignment relative to the boundary</translation>
+      <translation>Sınır referansına göre standart köşe veya merkez hizalamasını kullan</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="855"/>
       <source>Select which part of the usable boundary to anchor the pattern origin to</source>
-      <translation type="unfinished">Select which part of the usable boundary to anchor the pattern origin to</translation>
+      <translation>Desen başlangıç noktasının hangi kullanılabilir sınır kısmına sabitleneceğini seç</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="867"/>
       <source>Use a manually picked 3D point or match the current Working Plane</source>
-      <translation type="unfinished">Use a manually picked 3D point or match the current Working Plane</translation>
+      <translation>Manuel seçilen bir 3B noktayı kullan veya mevcut çalışma düzlemiyle eşleştir</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="868"/>
       <source>Interactive</source>
-      <translation type="unfinished">Interactive</translation>
+      <translation>Etkileşim modu</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="878"/>
       <source>Enter interactive mode to visually place the grid origin and rotate the grid. Click to finish and set the origin. Optionally press R / Shift+R to rotate the tile preview by the PickRotationStep angle (configurable in the View properties).</source>
-      <translation type="unfinished">Enter interactive mode to visually place the grid origin and rotate the grid. Click to finish and set the origin. Optionally press R / Shift+R to rotate the tile preview by the PickRotationStep angle (configurable in the View properties).</translation>
+      <translation>Izgara orijinini görsel olarak yerleştirmek ve ızgarayı döndürmek için etkileşimli moda gir. Bitirmek ve orijini ayarlamak için tıkla. İsteğe bağlı olarak R / Shift+R tuşlarına basarak karo önizlemesini (View özelliklerinde yapılandırılabilir PickRotationStep açısı kadar) döndür.</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="879"/>
       <source>Match Working Plane</source>
-      <translation type="unfinished">Match Working Plane</translation>
+      <translation>Çalışma düzlemiyle eşleştir</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="885"/>
       <source>Use the position and orientation of the active Working Plane for the covering</source>
-      <translation type="unfinished">Use the position and orientation of the active Working Plane for the covering</translation>
+      <translation>Kaplama için aktif çalışma düzleminin konumunu ve yönünü kullan</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="895"/>
       <source>Shift the grid along U</source>
-      <translation type="unfinished">Shift the grid along U</translation>
+      <translation>Izgarayı U yönünde kaydır</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="900"/>
@@ -5493,8 +5493,8 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>Giydirme Cephe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <location filename="../../bimcommands/BimTruss.py" line="61"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <source>Select only one base object or none</source>
       <translation>Yalnızca bir temel nesne seçin (ya da hiç seçmeyin)</translation>
     </message>
@@ -5645,16 +5645,1125 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>Bu dosya türü tanınamadı</translation>
     </message>
     <message>
+      <location filename="../../ArchCommands.py" line="1359"/>
+      <location filename="../../ArchReport.py" line="888"/>
+      <source>Description</source>
+      <translation>Açıklama</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1496"/>
+      <source>Object does not have settable IFC attributes</source>
+      <translation>Nesnenin ayarlanabilir IFC öznitelikleri yok</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2536"/>
+      <location filename="../../ArchSchedule.py" line="988"/>
+      <location filename="../../ArchSchedule.py" line="1013"/>
+      <location filename="../../ArchCommands.py" line="1730"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
+      <source>Value</source>
+      <translation>Değer</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="989"/>
+      <location filename="../../ArchSchedule.py" line="1015"/>
+      <location filename="../../ArchCommands.py" line="1731"/>
+      <source>Unit</source>
+      <translation>Birim</translation>
+    </message>
+    <message>
+      <location filename="../../Arch.py" line="1191"/>
+      <source>Schedule</source>
+      <translation>Çizelge</translation>
+    </message>
+    <message>
+      <location filename="../../ArchFloor.py" line="169"/>
+      <source>You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+
+Floor object is not allowed to accept Site, Building, or Floor objects.
+
+Site, Building, and Floor objects will be removed from the selection.
+
+You can change that in the preferences.</source>
+      <translation>Bir Kat nesnesinin içine, şu nesneler dışında her şeyi koyabilirsiniz: Saha, Bina ve
+
+Kat. Kat nesnesi Saha, Bina veya Kat nesnelerini kabul edemez.
+
+Saha, Bina ve Kat nesneleri seçimden kaldırılacaktır. Bu davranışı
+
+Tercihler'den değiştirebilirsiniz.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchFloor.py" line="179"/>
+      <source>There is no valid object in the selection.
+
+Floor creation aborted.</source>
+      <translation>Seçimde geçerli bir nesne yok. Döşeme
+
+oluşturma iptal edildi.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchFloor.py" line="187"/>
+      <source>Create Floor</source>
+      <translation>Kat oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimAxis.py" line="50"/>
+      <source>Create Axis</source>
+      <translation>Oluştur Eksen</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="991"/>
+      <source>Distances (mm) and angles (deg) between axes</source>
+      <translation>Eksenler arasındaki uzaklıklar (mm) ve açılar (derece)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="994"/>
+      <source>Axis</source>
+      <translation>Eksen</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="995"/>
+      <source>Distance</source>
+      <translation>Uzaklık</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="996"/>
+      <location filename="../../ArchRoof.py" line="1083"/>
+      <source>Angle</source>
+      <translation>Açı</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="997"/>
+      <source>Label</source>
+      <translation>Etiket</translation>
+    </message>
+    <message>
+      <location filename="../../importers/importOBJ.py" line="92"/>
+      <source>Found a shape containing curves, triangulating</source>
+      <translation>Eğriler içeren bir şekil bulundu; üçgenleme yapılıyor.</translation>
+    </message>
+    <message>
+      <location filename="../../importers/importOBJ.py" line="450"/>
+      <source>Successfully imported</source>
+      <translation>Başarıyla içe aktarıldı</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1129"/>
+      <source>Error computing the shape of this object</source>
+      <translation>Bu nesnenin şekli hesaplanırken hata oluştu</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1155"/>
+      <source>has no solid</source>
+      <translation>katısı yok</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1164"/>
+      <source>has an invalid shape</source>
+      <translation>geçersiz bir şekle sahip</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1168"/>
+      <location filename="../../ArchPrecast.py" line="192"/>
+      <location filename="../../ArchPrecast.py" line="324"/>
+      <location filename="../../ArchPrecast.py" line="444"/>
+      <location filename="../../ArchPrecast.py" line="605"/>
+      <location filename="../../ArchPrecast.py" line="773"/>
+      <location filename="../../ArchPrecast.py" line="894"/>
+      <source>has a null shape</source>
+      <translation>boş bir şekle sahip</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1562"/>
+      <source>Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
+</source>
+      <translation>{self.obj.Label} için alanlar hesaplanırken hata: {face.normalAt(0, 0)} normaline göre projeksiyon alınamadı veya yüzey oluşturulamadı. Alan değerleri 0'a sıfırlanacak.
+</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2461"/>
+      <source>Components of This Object</source>
+      <translation>Bu nesnenin bileşenleri</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2471"/>
+      <source>Edit IFC Properties</source>
+      <translation>Düzenle IFC Özellikler</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2472"/>
+      <source>Edit Standard Code</source>
+      <translation>Düzenle Standart Kod</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1307"/>
+      <source>Wrong base type</source>
+      <translation>Yanlış taban türü</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1975"/>
+      <location filename="../../ArchSite.py" line="1594"/>
+      <source>Toggle Subcomponents</source>
+      <translation>Alt bileşenleri Aç/Kapat</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2105"/>
+      <source>Closing Sketch edit</source>
+      <translation>Eskiz düzenlemeyi kapat</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2458"/>
+      <location filename="../../ArchCommands.py" line="315"/>
+      <source>Component</source>
+      <translation>Bileşen</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2129"/>
+      <source>Select a base object</source>
+      <translation>Bir temel nesne seçin</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1432"/>
+      <source>Could not project face{face_name} from {self.obj.Label}
+</source>
+      <translation type="unfinished">Could not project face{face_name} from {self.obj.Label}
+</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1445"/>
+      <source>Could not determine if face{face_name} from {self.obj.Label} is vertical: normalAt() failed
+</source>
+      <translation type="unfinished">Could not determine if face{face_name} from {self.obj.Label} is vertical: normalAt() failed
+</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1534"/>
+      <source>Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
+</source>
+      <translation>{self.obj.Label} için alan hesaplamasında hata oluştu: Delikli düzlemsel olmayan yüzeyleri yansıtmak mümkün değil. Alan değerleri sıfırlanacaktır.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1582"/>
+      <source>Error computing areas for {self.obj.Label}: unable to combine projected horizontal faces. Area values will be reset to 0.
+</source>
+      <translation type="unfinished">Error computing areas for {self.obj.Label}: unable to combine projected horizontal faces. Area values will be reset to 0.
+</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2462"/>
+      <source>Base component</source>
+      <translation>Temel bileşen</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2463"/>
+      <source>Additions</source>
+      <translation>Eklemeler</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2464"/>
+      <source>Subtractions</source>
+      <translation>Çıkarmalar</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2465"/>
+      <source>Objects</source>
+      <translation>Nesneler</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2468"/>
+      <source>Fixtures</source>
+      <translation>Armatürler</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2469"/>
+      <source>Group</source>
+      <translation>Grup</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2470"/>
+      <source>Hosts</source>
+      <translation>Sunucular</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2534"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
+      <source>Property</source>
+      <translation>Özellik</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2542"/>
+      <source>Add property</source>
+      <translation>Özellik ekle</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2546"/>
+      <source>Add property set</source>
+      <translation>Özellik seti ekle</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2547"/>
+      <source>New...</source>
+      <translation>Yeni...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2696"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
+      <source>New property</source>
+      <translation>Yeni özellik</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2733"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
+      <source>New property set</source>
+      <translation>Yeni özellik seti (PSet)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2813"/>
+      <source>Options</source>
+      <translation>Seçenekler</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2954"/>
+      <source>Error saving property</source>
+      <translation type="unfinished">Error saving property</translation>
+    </message>
+    <message>
+      <location filename="../../Arch.py" line="998"/>
+      <source>Rebar</source>
+      <translation>İnşaat demiri</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimRebar.py" line="72"/>
+      <location filename="../../bimcommands/BimRebar.py" line="106"/>
+      <source>Create Rebar</source>
+      <translation>Donatı oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimRebar.py" line="116"/>
+      <source>Select a base face on a structural object</source>
+      <translation>Bir taşıyıcı nesne üzerinde temel bir yüz seçin</translation>
+    </message>
+    <message>
+      <location filename="../../Arch.py" line="1225"/>
+      <source>Section</source>
+      <translation>Kesişim</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="65"/>
+      <source>Create Section Plane</source>
+      <translation>Kesit Düzlemi Oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1740"/>
+      <source>Scope</source>
+      <translation>Kapsam</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1743"/>
+      <source>Placement and Visuals</source>
+      <translation>Yerleşim ve Görseller</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1746"/>
+      <source>Objects seen by this section plane</source>
+      <translation>Bu kesit düzleminin gördüğü nesneler</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1752"/>
+      <source>Removes highlighted objects from the list above</source>
+      <translation>Yukarıdaki listeden vurgulanan nesneleri kaldırır</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1753"/>
+      <source>Add Selected</source>
+      <translation>Seçileni Ekle</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1758"/>
+      <source>Adds selected objects to the scope of this section plane</source>
+      <translation>Seçili nesneleri bu kesit düzleminin kapsamına ekler</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1759"/>
+      <source>Cut View</source>
+      <translation>Kesit görünümü</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1766"/>
+      <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
+      <translation>3B görünümde canlı bir kesit oluşturur; modelinizin içini görebilmeniz için düzlemin bir tarafındaki geometrileri gizler</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1767"/>
+      <source>Rotate by 90°</source>
+      <translation>90° döndür</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1771"/>
+      <source>Rotates the plane around its local X-axis</source>
+      <translation>Düzlemi yerel X ekseni etrafında döndürür</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1775"/>
+      <source>Rotates the plane around its local Y-axis</source>
+      <translation>Düzlemi yerel Y ekseni etrafında döndürür</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1779"/>
+      <source>Rotates the plane around its local Z-axis</source>
+      <translation>Düzlemi yerel Z ekseni etrafında döndürür</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1780"/>
+      <source>Resize to Fit</source>
+      <translation>Sığdıracak şekilde yeniden boyutlandır</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1786"/>
+      <source>Recenter Plane</source>
+      <translation>Düzlemi yeniden ortala</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1768"/>
+      <source>Rotate X</source>
+      <translation>X ekseninde döndür</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1519"/>
+      <source>Toggle Cut View</source>
+      <translation type="unfinished">Toggle Cut View</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1772"/>
+      <source>Rotate Y</source>
+      <translation>Y ekseninde döndür</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1776"/>
+      <source>Rotate Z</source>
+      <translation>Z ekseninde döndür</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1785"/>
+      <source>Resizes the plane to fit the objects in the list above</source>
+      <translation>Düzlemi, yukarıdaki listedeki nesnelere sığacak şekilde yeniden boyutlandırır</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1855"/>
+      <location filename="../../ArchCoveringGui.py" line="530"/>
+      <location filename="../../bimcommands/BimWall.py" line="510"/>
+      <source>Center</source>
+      <translation>Ortala</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1791"/>
+      <source>Centers the plane on the objects in the list above</source>
+      <translation>Düzlemi yukarıdaki listedeki nesnelerin üzerine ortalar</translation>
+    </message>
+    <message>
+      <location filename="../../Arch.py" line="231"/>
+      <location filename="../../ArchBuilding.py" line="214"/>
+      <source>Building</source>
+      <translation>İnşa ediliyor</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuilding.py" line="263"/>
+      <source>You can put anything but Site and Building objects in a Building object.
+
+Building object is not allowed to accept Site and Building objects.
+
+Site and Building objects will be removed from the selection.
+
+You can change that in the preferences.</source>
+      <translation>Bir Bina nesnesinin içine, Saha ve Bina nesneleri dışında her şeyi
+
+koyabilirsiniz. Bina nesnesi, Saha ve Bina nesnelerini kabul edemez.
+
+Saha ve Bina nesneleri seçimden kaldırılacaktır. Bu
+davranışı
+Tercihler'den değiştirebilirsiniz.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuilding.py" line="273"/>
+      <source>There is no valid object in the selection.
+
+Building creation aborted.</source>
+      <translation>Seçimde geçerli bir nesne yok. Bina
+
+oluşturma iptal edildi.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuilding.py" line="281"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="90"/>
+      <source>Create Building</source>
+      <translation>Oluştur Bina</translation>
+    </message>
+    <message>
+      <location filename="../../Arch.py" line="1328"/>
+      <source>Space</source>
+      <translation>Mekân</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSpace.py" line="59"/>
+      <source>Create Space</source>
+      <translation>Oluştur Mekân</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="920"/>
+      <source>Space Type</source>
+      <translation type="unfinished">Space Type</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="921"/>
+      <source>Text</source>
+      <translation>Metin</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="922"/>
+      <source>Finish Floor</source>
+      <translation type="unfinished">Finish Floor</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="923"/>
+      <source>Finish Walls</source>
+      <translation type="unfinished">Finish Walls</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="924"/>
+      <source>Finish Ceiling</source>
+      <translation type="unfinished">Finish Ceiling</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="932"/>
+      <source>Space Tools</source>
+      <translation type="unfinished">Space Tools</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="937"/>
+      <source>Set text position</source>
+      <translation>Metin konumunu ayarla</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="941"/>
+      <source>Space boundaries</source>
+      <translation>Mekân sınırları</translation>
+    </message>
+    <message>
+      <location filename="../../Arch.py" line="1716"/>
+      <source>Wall</source>
+      <translation>Duvar</translation>
+    </message>
+    <message>
+      <location filename="../../Arch.py" line="1727"/>
+      <source>Walls can only be based on Part or Mesh objects</source>
+      <translation>Duvarlar yalnızca Part veya ağ nesnelerini temel alabilir</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="110"/>
+      <location filename="../../bimcommands/BimWall.py" line="390"/>
+      <location filename="../../bimcommands/BimWall.py" line="638"/>
+      <source>Create Wall</source>
+      <translation>Oluştur Duvar</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="145"/>
+      <source>First Point of Wall</source>
+      <translation type="unfinished">First Point of Wall</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="466"/>
+      <source>Wall Presets</source>
+      <translation>Duvar ön ayarları</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="472"/>
+      <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
+      <translation>Bu liste, belgedeki tüm MultiMaterials nesnelerini gösterir. Duvar tiplerini tanımlamak için bazılarını oluşturun.</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="524"/>
+      <source>Baseline</source>
+      <translation type="unfinished">Baseline</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="530"/>
+      <source>No baseline</source>
+      <translation>Referans çizgisi yok</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="531"/>
+      <source>Draft line</source>
+      <translation>Taslak çizgi</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="532"/>
+      <source>Sketch</source>
+      <translation>Taslak</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1875"/>
+      <location filename="../../ArchCoveringGui.py" line="837"/>
+      <location filename="../../bimcommands/BimWall.py" line="508"/>
+      <source>Alignment</source>
+      <translation>Hizalama</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1854"/>
+      <location filename="../../bimcommands/BimWall.py" line="510"/>
+      <source>Left</source>
+      <translation>Sol</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="642"/>
+      <source>Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</source>
+      <translation type="unfinished">Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1830"/>
+      <location filename="../../bimcommands/BimWall.py" line="461"/>
+      <source>Wall Options</source>
+      <translation type="unfinished">Wall Options</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1856"/>
+      <location filename="../../bimcommands/BimWall.py" line="511"/>
+      <source>Right</source>
+      <translation>Sağ</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="578"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="603"/>
+      <source>Merge Walls</source>
+      <translation>Duvarları Birleştir</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1643"/>
+      <source>Cannot compute blocks for wall</source>
+      <translation>Duvar için bloklar hesaplanamıyor</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="749"/>
+      <source>Error: Unable to modify the base object of this wall</source>
+      <translation>Hata: Bu duvarın taban nesnesi değiştirilemedi</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="2097"/>
+      <source>Flip Direction</source>
+      <translation>Yönü Ters Çevir</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="521"/>
+      <source>Invalid cut plane</source>
+      <translation>Geçersiz kesit düzlemi</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="823"/>
+      <source>is not closed</source>
+      <translation>kapalı değil</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="825"/>
+      <source>is not valid</source>
+      <translation>geçerli değil</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="165"/>
+      <source>Cannot add {0} as it is already referenced by {1}.</source>
+      <translation>{0} eklenemiyor; çünkü zaten {1} tarafından referanslanıyor.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="246"/>
+      <source>{0} is mapped to {1}, removing the former's Attachment Support to avoid cyclic dependency.</source>
+      <translation>{0}, {1} ile eşlendi; döngüsel bağımlılığı önlemek için ilkinin "Bağlama Desteği" kaldırılıyor.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="827"/>
+      <source>does not contain any solid</source>
+      <translation>hiçbir katı gövde içermiyor</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="833"/>
+      <source>contains a non-closed solid</source>
+      <translation>Kapalı olmayan bir katı içerir</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="837"/>
+      <source>contains faces that are not part of any solid</source>
+      <translation>Herhangi bir katının parçası olmayan yüzeyler içerir</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1351"/>
+      <source>Survey</source>
+      <translation>Anket</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1353"/>
+      <source>Clear</source>
+      <translation>Temizle</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1356"/>
+      <source>Export CSV</source>
+      <translation>Dışa aktar CSV</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1361"/>
+      <source>Area</source>
+      <translation>Alan</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1408"/>
+      <source>Total</source>
+      <translation>Toplam</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1743"/>
+      <source>The object does not have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
+      <translation>Nesnede IfcProperties özniteliği yok. Şu nesne için elektronik tablo oluşturma iptal ediliyor:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1958"/>
+      <source>No closed wires found.</source>
+      <translation type="unfinished">No closed wires found.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1504"/>
+      <source>Disabling B-rep force flag of object</source>
+      <translation>Nesnenin BREP zorlama işareti devre dışı bırakılıyor</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1352"/>
+      <source>Set Description</source>
+      <translation>Açıklama ayarla</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1354"/>
+      <source>Copy Total Length</source>
+      <translation>Toplam uzunluğu kopyala</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1355"/>
+      <source>Copy Total Area</source>
+      <translation>Toplam alanı kopyala</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1512"/>
+      <location filename="../../ArchCommands.py" line="1519"/>
+      <source>Enabling B-rep force flag of object</source>
+      <translation>Nesnenin BREP zorlama işareti etkinleştiriliyor</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="58"/>
+      <source>Add space boundary</source>
+      <translation>Mekân sınırı ekle</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="76"/>
+      <source>Grouping</source>
+      <translation>Gruplama</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="115"/>
+      <source>Remove space boundary</source>
+      <translation>Mekân sınırını kaldır</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="133"/>
+      <source>Ungrouping</source>
+      <translation>Gruptan çıkarma</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="176"/>
+      <source>Split Mesh</source>
+      <translation>Ağı böl</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="224"/>
+      <source>Mesh to shape</source>
+      <translation>Ağı şekle dönüştür</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="337"/>
+      <source>No problems found!</source>
+      <translation>Sorun bulunamadı!</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="586"/>
+      <source>The selected wall contains no subwalls to merge</source>
+      <translation>Seçili duvar, birleştirilecek alt duvar içermiyor</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="589"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="593"/>
+      <source>Select only wall objects</source>
+      <translation>Yalnızca duvar nesneleri seçin</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="601"/>
+      <source>Walls with different 'Width', 'Height' and 'Align' properties cannot be merged</source>
+      <translation>‘Genişlik’, ‘Yükseklik’ ve ‘Hizalama’ özellikleri farklı olan duvarlar birleştirilemez</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="409"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="442"/>
+      <source>Create Component</source>
+      <translation>Bileşen Oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1728"/>
+      <source>Key</source>
+      <translation>Anahtar</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="476"/>
+      <source>Create IFC properties spreadsheet</source>
+      <translation>IFC özellikleri için hesap tablosu oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="60"/>
+      <source>Create Level</source>
+      <translation>Oluştur Kat</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimFence.py" line="63"/>
+      <source>Create Fence</source>
+      <translation>Çit Oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimBox.py" line="284"/>
+      <source>Create Box</source>
+      <translation>Kutu Oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimDrawingView.py" line="59"/>
+      <source>Create 2D View</source>
+      <translation>Oluştur 2B Görünüm</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1155"/>
+      <source>Active</source>
+      <translation>Etkin</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1166"/>
+      <source>Set Working Plane</source>
+      <translation>Çalışma Düzlemini Ayarla</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1176"/>
+      <source>Write Camera Position</source>
+      <translation>Kamera konumunu yaz</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <source>New Group</source>
+      <translation>Yeni Grup</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchMaterial.py" line="100"/>
+      <source>Reorder Children Alphabetically</source>
+      <translation>Alt öğeleri alfabetik olarak yeniden sırala</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1190"/>
+      <source>Clone Level Up</source>
+      <translation>Bir üst seviyeyi klonla</translation>
+    </message>
+    <message>
+      <location filename="../../ArchEquipment.py" line="64"/>
+      <source>Model</source>
+      <translation>Model</translation>
+    </message>
+    <message>
+      <location filename="../../ArchEquipment.py" line="65"/>
+      <source>Equipment Power</source>
+      <translation>Ekipman Gücü</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="414"/>
+      <source>Height Start</source>
+      <translation type="unfinished">Height Start</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="415"/>
+      <source>Height End</source>
+      <translation type="unfinished">Height End</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="416"/>
+      <source>Strut Height</source>
+      <translation type="unfinished">Strut Height</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="417"/>
+      <source>Strut Width</source>
+      <translation type="unfinished">Strut Width</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="418"/>
+      <source>Rod Sections</source>
+      <translation type="unfinished">Rod Sections</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="419"/>
+      <source>Rod Size</source>
+      <translation type="unfinished">Rod Size</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="420"/>
+      <source>Rod Mode</source>
+      <translation type="unfinished">Rod Mode</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="421"/>
+      <source>Rod Type</source>
+      <translation type="unfinished">Rod Type</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="732"/>
+      <source>Vertical Sections</source>
+      <translation type="unfinished">Vertical Sections</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="733"/>
+      <source>Horizontal Sections</source>
+      <translation type="unfinished">Horizontal Sections</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="734"/>
+      <source>Vertical Mullion Width</source>
+      <translation type="unfinished">Vertical Mullion Width</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="737"/>
+      <source>Vertical Mullion Height</source>
+      <translation type="unfinished">Vertical Mullion Height</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="741"/>
+      <source>Horizontal Mullion Width</source>
+      <translation type="unfinished">Horizontal Mullion Width</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="745"/>
+      <source>Horizontal Mullion Height</source>
+      <translation type="unfinished">Horizontal Mullion Height</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="747"/>
+      <source>Panel Thickness</source>
+      <translation type="unfinished">Panel Thickness</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="748"/>
+      <source>Refine</source>
+      <translation>İncelt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2255"/>
+      <location filename="../../ArchSql.py" line="2282"/>
+      <location filename="../../ArchSql.py" line="2304"/>
+      <location filename="../../ArchReport.py" line="1045"/>
+      <location filename="../../ArchReport.py" line="1867"/>
+      <source>Ready</source>
+      <translation>Hazır</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2312"/>
+      <source>Typing...</source>
+      <translation type="unfinished">Typing...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2320"/>
+      <source>Query is valid, but found 0 objects.</source>
+      <translation type="unfinished">Query is valid, but found 0 objects.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCovering.py" line="507"/>
+      <source>The specified tile size is too small to be modeled.</source>
+      <translation type="unfinished">The specified tile size is too small to be modeled.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCovering.py" line="514"/>
+      <source>The joint width is too small to model individual units.</source>
+      <translation type="unfinished">The joint width is too small to model individual units.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCovering.py" line="522"/>
+      <source>The number of tiles is too high for individual units to be modeled.</source>
+      <translation type="unfinished">The number of tiles is too high for individual units to be modeled.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCovering.py" line="530"/>
+      <source>The number of tiles is extremely high. Layout lines are hidden.</source>
+      <translation type="unfinished">The number of tiles is extremely high. Layout lines are hidden.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCovering.py" line="679"/>
+      <source>BorderSetback is too large and collapses the face. Setback ignored.</source>
+      <translation type="unfinished">BorderSetback is too large and collapses the face. Setback ignored.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCovering.py" line="719"/>
+      <source>A hole is larger than the shrunken area. Skipping this hole.</source>
+      <translation type="unfinished">A hole is larger than the shrunken area. Skipping this hole.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1053"/>
+      <source>Solar Diagrams</source>
+      <translation type="unfinished">Solar Diagrams</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1057"/>
+      <source>Location</source>
+      <translation>Yer</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1072"/>
+      <source>The latitude of this site in decimal degrees.
+Positive values are north of the Equator, negative values are south.</source>
+      <translation type="unfinished">The latitude of this site in decimal degrees.
+Positive values are north of the Equator, negative values are south.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1073"/>
+      <source>Latitude</source>
+      <translation>Enlem</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1087"/>
+      <source>The longitude of this site in decimal degrees.
+Positive values are east of the Prime Meridian, negative values are west.</source>
+      <translation type="unfinished">The longitude of this site in decimal degrees.
+Positive values are east of the Prime Meridian, negative values are west.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1088"/>
+      <source>Longitude</source>
+      <translation>Boylam</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1100"/>
+      <source>The UTC offset of the time zone where this site is located.
+Used when calculating the sun position.</source>
+      <translation type="unfinished">The UTC offset of the time zone where this site is located.
+Used when calculating the sun position.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1101"/>
+      <source>Time zone</source>
+      <translation type="unfinished">Time zone</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1118"/>
+      <source>The angle between the model's north and geographic north.
+Drives the compass orientation and the declination used to
+align the solar diagram and sun path.</source>
+      <translation type="unfinished">The angle between the model's north and geographic north.
+Drives the compass orientation and the declination used to
+align the solar diagram and sun path.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1119"/>
+      <source>North offset</source>
+      <translation type="unfinished">North offset</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1123"/>
+      <source>Diagrams</source>
+      <translation type="unfinished">Diagrams</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1126"/>
+      <source>Solar Diagram</source>
+      <translation type="unfinished">Solar Diagram</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1136"/>
+      <source>Shows a sun path arc diagram projected onto the site,
+computed from the site's latitude, longitude and north offset.</source>
+      <translation type="unfinished">Shows a sun path arc diagram projected onto the site,
+computed from the site's latitude, longitude and north offset.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1139"/>
+      <source>Compass</source>
+      <translation>Pusula</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1147"/>
+      <source>Shows a compass rose overlay on the site,
+oriented according to the north offset.</source>
+      <translation type="unfinished">Shows a compass rose overlay on the site,
+oriented according to the north offset.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1153"/>
+      <source>Sun Position</source>
+      <translation type="unfinished">Sun Position</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1164"/>
+      <source>Shows a sphere and ray indicating the sun position
+for the selected date and time.</source>
+      <translation type="unfinished">Shows a sphere and ray indicating the sun position
+for the selected date and time.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1184"/>
+      <source>The day and month for which the sun position is shown.
+The year is ignored.</source>
+      <translation type="unfinished">The day and month for which the sun position is shown.
+The year is ignored.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1185"/>
+      <source>Date</source>
+      <translation>Tarih</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1196"/>
+      <source>The time of day for which the sun position is shown,
+in 24-hour local time. Steps in half-hour increments.</source>
+      <translation type="unfinished">The time of day for which the sun position is shown,
+in 24-hour local time. Steps in half-hour increments.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1209"/>
+      <source>Hour</source>
+      <translation type="unfinished">Hour</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1214"/>
+      <source>Show Hour Labels</source>
+      <translation type="unfinished">Show Hour Labels</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1220"/>
+      <source>Shows text labels at key hours along the sun path arc</source>
+      <translation type="unfinished">Shows text labels at key hours along the sun path arc</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1233"/>
+      <source>Solar calculations require the ladybug or pysolar Python module,
+which was not found.</source>
+      <translation type="unfinished">Solar calculations require the ladybug or pysolar Python module,
+which was not found.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1243"/>
+      <source>Solar calculations unavailable.
+The ladybug or pysolar Python module is required.</source>
+      <translation type="unfinished">Solar calculations unavailable.
+The ladybug or pysolar Python module is required.</translation>
+    </message>
+    <message>
       <location filename="../../ArchReport.py" line="879"/>
       <location filename="../../ArchReport.py" line="1873"/>
       <source>Report Statements</source>
       <translation type="unfinished">Report Statements</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="888"/>
-      <location filename="../../ArchCommands.py" line="1359"/>
-      <source>Description</source>
-      <translation>Açıklama</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="890"/>
@@ -6165,1108 +7274,6 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <source>BIM SQL Cheatsheet</source>
       <translation type="unfinished">BIM SQL Cheatsheet</translation>
     </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1496"/>
-      <source>Object does not have settable IFC attributes</source>
-      <translation>Nesnenin ayarlanabilir IFC öznitelikleri yok</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="988"/>
-      <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../ArchComponent.py" line="2506"/>
-      <location filename="../../ArchCommands.py" line="1730"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
-      <source>Value</source>
-      <translation>Değer</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="989"/>
-      <location filename="../../ArchSchedule.py" line="1015"/>
-      <location filename="../../ArchCommands.py" line="1731"/>
-      <source>Unit</source>
-      <translation>Birim</translation>
-    </message>
-    <message>
-      <location filename="../../Arch.py" line="1191"/>
-      <source>Schedule</source>
-      <translation>Çizelge</translation>
-    </message>
-    <message>
-      <location filename="../../ArchFloor.py" line="169"/>
-      <source>You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
-
-Floor object is not allowed to accept Site, Building, or Floor objects.
-
-Site, Building, and Floor objects will be removed from the selection.
-
-You can change that in the preferences.</source>
-      <translation>Bir Kat nesnesinin içine, şu nesneler dışında her şeyi koyabilirsiniz: Saha, Bina ve
-
-Kat. Kat nesnesi Saha, Bina veya Kat nesnelerini kabul edemez.
-
-Saha, Bina ve Kat nesneleri seçimden kaldırılacaktır. Bu davranışı
-
-Tercihler'den değiştirebilirsiniz.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchFloor.py" line="179"/>
-      <source>There is no valid object in the selection.
-
-Floor creation aborted.</source>
-      <translation>Seçimde geçerli bir nesne yok. Döşeme
-
-oluşturma iptal edildi.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchFloor.py" line="187"/>
-      <source>Create Floor</source>
-      <translation>Kat oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimAxis.py" line="50"/>
-      <source>Create Axis</source>
-      <translation>Oluştur Eksen</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="975"/>
-      <source>Distances (mm) and angles (deg) between axes</source>
-      <translation>Eksenler arasındaki uzaklıklar (mm) ve açılar (derece)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="978"/>
-      <source>Axis</source>
-      <translation>Eksen</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="979"/>
-      <source>Distance</source>
-      <translation>Uzaklık</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="980"/>
-      <location filename="../../ArchRoof.py" line="1083"/>
-      <source>Angle</source>
-      <translation>Açı</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="981"/>
-      <source>Label</source>
-      <translation>Etiket</translation>
-    </message>
-    <message>
-      <location filename="../../importers/importOBJ.py" line="92"/>
-      <source>Found a shape containing curves, triangulating</source>
-      <translation>Eğriler içeren bir şekil bulundu; üçgenleme yapılıyor.</translation>
-    </message>
-    <message>
-      <location filename="../../importers/importOBJ.py" line="450"/>
-      <source>Successfully imported</source>
-      <translation>Başarıyla içe aktarıldı</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="1117"/>
-      <source>Error computing the shape of this object</source>
-      <translation>Bu nesnenin şekli hesaplanırken hata oluştu</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="1143"/>
-      <source>has no solid</source>
-      <translation>katısı yok</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="1152"/>
-      <source>has an invalid shape</source>
-      <translation>geçersiz bir şekle sahip</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="1156"/>
-      <location filename="../../ArchPrecast.py" line="192"/>
-      <location filename="../../ArchPrecast.py" line="324"/>
-      <location filename="../../ArchPrecast.py" line="444"/>
-      <location filename="../../ArchPrecast.py" line="605"/>
-      <location filename="../../ArchPrecast.py" line="773"/>
-      <location filename="../../ArchPrecast.py" line="894"/>
-      <source>has a null shape</source>
-      <translation>boş bir şekle sahip</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="1541"/>
-      <source>Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
-</source>
-      <translation>{self.obj.Label} için alanlar hesaplanırken hata: {face.normalAt(0, 0)} normaline göre projeksiyon alınamadı veya yüzey oluşturulamadı. Alan değerleri 0'a sıfırlanacak.
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2431"/>
-      <source>Components of This Object</source>
-      <translation>Bu nesnenin bileşenleri</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2441"/>
-      <source>Edit IFC Properties</source>
-      <translation>Düzenle IFC Özellikler</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2442"/>
-      <source>Edit Standard Code</source>
-      <translation>Düzenle Standart Kod</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="1295"/>
-      <source>Wrong base type</source>
-      <translation>Yanlış taban türü</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
-      <location filename="../../ArchSite.py" line="1594"/>
-      <source>Toggle Subcomponents</source>
-      <translation>Alt bileşenleri Aç/Kapat</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2075"/>
-      <source>Closing Sketch edit</source>
-      <translation>Eskiz düzenlemeyi kapat</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2428"/>
-      <location filename="../../ArchCommands.py" line="315"/>
-      <source>Component</source>
-      <translation>Bileşen</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2099"/>
-      <source>Select a base object</source>
-      <translation>Bir temel nesne seçin</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="1420"/>
-      <source>Could not project face{face_name} from {self.obj.Label}
-</source>
-      <translation type="unfinished">Could not project face{face_name} from {self.obj.Label}
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="1433"/>
-      <source>Could not determine if face{face_name} from {self.obj.Label} is vertical: normalAt() failed
-</source>
-      <translation type="unfinished">Could not determine if face{face_name} from {self.obj.Label} is vertical: normalAt() failed
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="1521"/>
-      <source>Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
-</source>
-      <translation>{self.obj.Label} için alan hesaplamasında hata oluştu: Delikli düzlemsel olmayan yüzeyleri yansıtmak mümkün değil. Alan değerleri sıfırlanacaktır.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2432"/>
-      <source>Base component</source>
-      <translation>Temel bileşen</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2433"/>
-      <source>Additions</source>
-      <translation>Eklemeler</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2434"/>
-      <source>Subtractions</source>
-      <translation>Çıkarmalar</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2435"/>
-      <source>Objects</source>
-      <translation>Nesneler</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2438"/>
-      <source>Fixtures</source>
-      <translation>Armatürler</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2439"/>
-      <source>Group</source>
-      <translation>Grup</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2440"/>
-      <source>Hosts</source>
-      <translation>Sunucular</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2504"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
-      <source>Property</source>
-      <translation>Özellik</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2512"/>
-      <source>Add property</source>
-      <translation>Özellik ekle</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2516"/>
-      <source>Add property set</source>
-      <translation>Özellik seti ekle</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2517"/>
-      <source>New...</source>
-      <translation>Yeni...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2666"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
-      <source>New property</source>
-      <translation>Yeni özellik</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2703"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
-      <source>New property set</source>
-      <translation>Yeni özellik seti (PSet)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2783"/>
-      <source>Options</source>
-      <translation>Seçenekler</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="2924"/>
-      <source>Error saving property</source>
-      <translation type="unfinished">Error saving property</translation>
-    </message>
-    <message>
-      <location filename="../../Arch.py" line="998"/>
-      <source>Rebar</source>
-      <translation>İnşaat demiri</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimRebar.py" line="72"/>
-      <location filename="../../bimcommands/BimRebar.py" line="106"/>
-      <source>Create Rebar</source>
-      <translation>Donatı oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimRebar.py" line="116"/>
-      <source>Select a base face on a structural object</source>
-      <translation>Bir taşıyıcı nesne üzerinde temel bir yüz seçin</translation>
-    </message>
-    <message>
-      <location filename="../../Arch.py" line="1225"/>
-      <source>Section</source>
-      <translation>Kesişim</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="65"/>
-      <source>Create Section Plane</source>
-      <translation>Kesit Düzlemi Oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1740"/>
-      <source>Scope</source>
-      <translation>Kapsam</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1743"/>
-      <source>Placement and Visuals</source>
-      <translation>Yerleşim ve Görseller</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1746"/>
-      <source>Objects seen by this section plane</source>
-      <translation>Bu kesit düzleminin gördüğü nesneler</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1752"/>
-      <source>Removes highlighted objects from the list above</source>
-      <translation>Yukarıdaki listeden vurgulanan nesneleri kaldırır</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1753"/>
-      <source>Add Selected</source>
-      <translation>Seçileni Ekle</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1758"/>
-      <source>Adds selected objects to the scope of this section plane</source>
-      <translation>Seçili nesneleri bu kesit düzleminin kapsamına ekler</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1759"/>
-      <source>Cut View</source>
-      <translation>Kesit görünümü</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1766"/>
-      <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
-      <translation>3B görünümde canlı bir kesit oluşturur; modelinizin içini görebilmeniz için düzlemin bir tarafındaki geometrileri gizler</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1767"/>
-      <source>Rotate by 90°</source>
-      <translation>90° döndür</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1771"/>
-      <source>Rotates the plane around its local X-axis</source>
-      <translation>Düzlemi yerel X ekseni etrafında döndürür</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1775"/>
-      <source>Rotates the plane around its local Y-axis</source>
-      <translation>Düzlemi yerel Y ekseni etrafında döndürür</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1779"/>
-      <source>Rotates the plane around its local Z-axis</source>
-      <translation>Düzlemi yerel Z ekseni etrafında döndürür</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1780"/>
-      <source>Resize to Fit</source>
-      <translation>Sığdıracak şekilde yeniden boyutlandır</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1786"/>
-      <source>Recenter Plane</source>
-      <translation>Düzlemi yeniden ortala</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1768"/>
-      <source>Rotate X</source>
-      <translation>X ekseninde döndür</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1519"/>
-      <source>Toggle Cut View</source>
-      <translation type="unfinished">Toggle Cut View</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1772"/>
-      <source>Rotate Y</source>
-      <translation>Y ekseninde döndür</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1776"/>
-      <source>Rotate Z</source>
-      <translation>Z ekseninde döndür</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1785"/>
-      <source>Resizes the plane to fit the objects in the list above</source>
-      <translation>Düzlemi, yukarıdaki listedeki nesnelere sığacak şekilde yeniden boyutlandırır</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1855"/>
-      <location filename="../../ArchCoveringGui.py" line="530"/>
-      <location filename="../../bimcommands/BimWall.py" line="510"/>
-      <source>Center</source>
-      <translation>Ortala</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1791"/>
-      <source>Centers the plane on the objects in the list above</source>
-      <translation>Düzlemi yukarıdaki listedeki nesnelerin üzerine ortalar</translation>
-    </message>
-    <message>
-      <location filename="../../Arch.py" line="231"/>
-      <location filename="../../ArchBuilding.py" line="214"/>
-      <source>Building</source>
-      <translation>İnşa ediliyor</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuilding.py" line="263"/>
-      <source>You can put anything but Site and Building objects in a Building object.
-
-Building object is not allowed to accept Site and Building objects.
-
-Site and Building objects will be removed from the selection.
-
-You can change that in the preferences.</source>
-      <translation>Bir Bina nesnesinin içine, Saha ve Bina nesneleri dışında her şeyi
-
-koyabilirsiniz. Bina nesnesi, Saha ve Bina nesnelerini kabul edemez.
-
-Saha ve Bina nesneleri seçimden kaldırılacaktır. Bu
-davranışı
-Tercihler'den değiştirebilirsiniz.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuilding.py" line="273"/>
-      <source>There is no valid object in the selection.
-
-Building creation aborted.</source>
-      <translation>Seçimde geçerli bir nesne yok. Bina
-
-oluşturma iptal edildi.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuilding.py" line="281"/>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="90"/>
-      <source>Create Building</source>
-      <translation>Oluştur Bina</translation>
-    </message>
-    <message>
-      <location filename="../../Arch.py" line="1328"/>
-      <source>Space</source>
-      <translation>Mekân</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimSpace.py" line="59"/>
-      <source>Create Space</source>
-      <translation>Oluştur Mekân</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="920"/>
-      <source>Space Type</source>
-      <translation type="unfinished">Space Type</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="921"/>
-      <source>Text</source>
-      <translation>Metin</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="922"/>
-      <source>Finish Floor</source>
-      <translation type="unfinished">Finish Floor</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="923"/>
-      <source>Finish Walls</source>
-      <translation type="unfinished">Finish Walls</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="924"/>
-      <source>Finish Ceiling</source>
-      <translation type="unfinished">Finish Ceiling</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="932"/>
-      <source>Space Tools</source>
-      <translation type="unfinished">Space Tools</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="937"/>
-      <source>Set text position</source>
-      <translation>Metin konumunu ayarla</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="941"/>
-      <source>Space boundaries</source>
-      <translation>Mekân sınırları</translation>
-    </message>
-    <message>
-      <location filename="../../Arch.py" line="1716"/>
-      <source>Wall</source>
-      <translation>Duvar</translation>
-    </message>
-    <message>
-      <location filename="../../Arch.py" line="1727"/>
-      <source>Walls can only be based on Part or Mesh objects</source>
-      <translation>Duvarlar yalnızca Part veya ağ nesnelerini temel alabilir</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimWall.py" line="110"/>
-      <location filename="../../bimcommands/BimWall.py" line="390"/>
-      <location filename="../../bimcommands/BimWall.py" line="638"/>
-      <source>Create Wall</source>
-      <translation>Oluştur Duvar</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimWall.py" line="145"/>
-      <source>First Point of Wall</source>
-      <translation type="unfinished">First Point of Wall</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimWall.py" line="466"/>
-      <source>Wall Presets</source>
-      <translation>Duvar ön ayarları</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimWall.py" line="472"/>
-      <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
-      <translation>Bu liste, belgedeki tüm MultiMaterials nesnelerini gösterir. Duvar tiplerini tanımlamak için bazılarını oluşturun.</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimWall.py" line="524"/>
-      <source>Baseline</source>
-      <translation type="unfinished">Baseline</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimWall.py" line="530"/>
-      <source>No baseline</source>
-      <translation type="unfinished">No baseline</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimWall.py" line="531"/>
-      <source>Draft line</source>
-      <translation type="unfinished">Draft line</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimWall.py" line="532"/>
-      <source>Sketch</source>
-      <translation type="unfinished">Sketch</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1875"/>
-      <location filename="../../ArchCoveringGui.py" line="837"/>
-      <location filename="../../bimcommands/BimWall.py" line="508"/>
-      <source>Alignment</source>
-      <translation>Hizalama</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1854"/>
-      <location filename="../../bimcommands/BimWall.py" line="510"/>
-      <source>Left</source>
-      <translation>Sol</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="642"/>
-      <source>Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</source>
-      <translation type="unfinished">Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1830"/>
-      <location filename="../../bimcommands/BimWall.py" line="461"/>
-      <source>Wall Options</source>
-      <translation type="unfinished">Wall Options</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1856"/>
-      <location filename="../../bimcommands/BimWall.py" line="511"/>
-      <source>Right</source>
-      <translation>Sağ</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="578"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="603"/>
-      <source>Merge Walls</source>
-      <translation>Duvarları Birleştir</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1643"/>
-      <source>Cannot compute blocks for wall</source>
-      <translation>Duvar için bloklar hesaplanamıyor</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="749"/>
-      <source>Error: Unable to modify the base object of this wall</source>
-      <translation>Hata: Bu duvarın taban nesnesi değiştirilemedi</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="2097"/>
-      <source>Flip Direction</source>
-      <translation>Yönü Ters Çevir</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="521"/>
-      <source>Invalid cut plane</source>
-      <translation>Geçersiz kesit düzlemi</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="823"/>
-      <source>is not closed</source>
-      <translation>kapalı değil</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="825"/>
-      <source>is not valid</source>
-      <translation>geçerli değil</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="165"/>
-      <source>Cannot add {0} as it is already referenced by {1}.</source>
-      <translation>{0} eklenemiyor; çünkü zaten {1} tarafından referanslanıyor.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="246"/>
-      <source>{0} is mapped to {1}, removing the former's Attachment Support to avoid cyclic dependency.</source>
-      <translation>{0}, {1} ile eşlendi; döngüsel bağımlılığı önlemek için ilkinin "Bağlama Desteği" kaldırılıyor.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="827"/>
-      <source>does not contain any solid</source>
-      <translation>hiçbir katı gövde içermiyor</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="833"/>
-      <source>contains a non-closed solid</source>
-      <translation>Kapalı olmayan bir katı içerir</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="837"/>
-      <source>contains faces that are not part of any solid</source>
-      <translation>Herhangi bir katının parçası olmayan yüzeyler içerir</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1351"/>
-      <source>Survey</source>
-      <translation>Anket</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1353"/>
-      <source>Clear</source>
-      <translation>Temizle</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1356"/>
-      <source>Export CSV</source>
-      <translation>Dışa aktar CSV</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1361"/>
-      <source>Area</source>
-      <translation>Alan</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1408"/>
-      <source>Total</source>
-      <translation>Toplam</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1743"/>
-      <source>The object does not have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
-      <translation>Nesnede IfcProperties özniteliği yok. Şu nesne için elektronik tablo oluşturma iptal ediliyor:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1958"/>
-      <source>No closed wires found.</source>
-      <translation type="unfinished">No closed wires found.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1504"/>
-      <source>Disabling B-rep force flag of object</source>
-      <translation>Nesnenin BREP zorlama işareti devre dışı bırakılıyor</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1352"/>
-      <source>Set Description</source>
-      <translation>Açıklama ayarla</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1354"/>
-      <source>Copy Total Length</source>
-      <translation>Toplam uzunluğu kopyala</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1355"/>
-      <source>Copy Total Area</source>
-      <translation>Toplam alanı kopyala</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1512"/>
-      <location filename="../../ArchCommands.py" line="1519"/>
-      <source>Enabling B-rep force flag of object</source>
-      <translation>Nesnenin BREP zorlama işareti etkinleştiriliyor</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="58"/>
-      <source>Add space boundary</source>
-      <translation>Mekân sınırı ekle</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="76"/>
-      <source>Grouping</source>
-      <translation>Gruplama</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="115"/>
-      <source>Remove space boundary</source>
-      <translation>Mekân sınırını kaldır</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="133"/>
-      <source>Ungrouping</source>
-      <translation>Gruptan çıkarma</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="176"/>
-      <source>Split Mesh</source>
-      <translation>Ağı böl</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="224"/>
-      <source>Mesh to shape</source>
-      <translation>Ağı şekle dönüştür</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="337"/>
-      <source>No problems found!</source>
-      <translation>Sorun bulunamadı!</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="586"/>
-      <source>The selected wall contains no subwalls to merge</source>
-      <translation>Seçili duvar, birleştirilecek alt duvar içermiyor</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="589"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="593"/>
-      <source>Select only wall objects</source>
-      <translation>Yalnızca duvar nesneleri seçin</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="601"/>
-      <source>Walls with different 'Width', 'Height' and 'Align' properties cannot be merged</source>
-      <translation>‘Genişlik’, ‘Yükseklik’ ve ‘Hizalama’ özellikleri farklı olan duvarlar birleştirilemez</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="409"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="442"/>
-      <source>Create Component</source>
-      <translation>Bileşen Oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1728"/>
-      <source>Key</source>
-      <translation>Anahtar</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="476"/>
-      <source>Create IFC properties spreadsheet</source>
-      <translation>IFC özellikleri için hesap tablosu oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="60"/>
-      <source>Create Level</source>
-      <translation>Oluştur Kat</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimFence.py" line="63"/>
-      <source>Create Fence</source>
-      <translation>Çit Oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimBox.py" line="284"/>
-      <source>Create Box</source>
-      <translation>Kutu Oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="59"/>
-      <source>Create 2D View</source>
-      <translation>Oluştur 2B Görünüm</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="1155"/>
-      <source>Active</source>
-      <translation>Etkin</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="1166"/>
-      <source>Set Working Plane</source>
-      <translation>Çalışma Düzlemini Ayarla</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="1176"/>
-      <source>Write Camera Position</source>
-      <translation>Kamera konumunu yaz</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
-      <source>New Group</source>
-      <translation>Yeni Grup</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
-      <location filename="../../ArchMaterial.py" line="100"/>
-      <source>Reorder Children Alphabetically</source>
-      <translation>Alt öğeleri alfabetik olarak yeniden sırala</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="1190"/>
-      <source>Clone Level Up</source>
-      <translation>Bir üst seviyeyi klonla</translation>
-    </message>
-    <message>
-      <location filename="../../ArchEquipment.py" line="64"/>
-      <source>Model</source>
-      <translation>Model</translation>
-    </message>
-    <message>
-      <location filename="../../ArchEquipment.py" line="65"/>
-      <source>Equipment Power</source>
-      <translation>Ekipman Gücü</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCovering.py" line="507"/>
-      <source>The specified tile size is too small to be modeled.</source>
-      <translation type="unfinished">The specified tile size is too small to be modeled.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCovering.py" line="514"/>
-      <source>The joint width is too small to model individual units.</source>
-      <translation type="unfinished">The joint width is too small to model individual units.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCovering.py" line="522"/>
-      <source>The number of tiles is too high for individual units to be modeled.</source>
-      <translation type="unfinished">The number of tiles is too high for individual units to be modeled.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCovering.py" line="530"/>
-      <source>The number of tiles is extremely high. Layout lines are hidden.</source>
-      <translation type="unfinished">The number of tiles is extremely high. Layout lines are hidden.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCovering.py" line="679"/>
-      <source>BorderSetback is too large and collapses the face. Setback ignored.</source>
-      <translation type="unfinished">BorderSetback is too large and collapses the face. Setback ignored.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCovering.py" line="719"/>
-      <source>A hole is larger than the shrunken area. Skipping this hole.</source>
-      <translation type="unfinished">A hole is larger than the shrunken area. Skipping this hole.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2255"/>
-      <location filename="../../ArchSql.py" line="2282"/>
-      <location filename="../../ArchSql.py" line="2304"/>
-      <location filename="../../ArchReport.py" line="1045"/>
-      <location filename="../../ArchReport.py" line="1867"/>
-      <source>Ready</source>
-      <translation>Hazır</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2312"/>
-      <source>Typing...</source>
-      <translation type="unfinished">Typing...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2320"/>
-      <source>Query is valid, but found 0 objects.</source>
-      <translation type="unfinished">Query is valid, but found 0 objects.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1053"/>
-      <source>Solar Diagrams</source>
-      <translation type="unfinished">Solar Diagrams</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1057"/>
-      <source>Location</source>
-      <translation>Yer</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1072"/>
-      <source>The latitude of this site in decimal degrees.
-Positive values are north of the Equator, negative values are south.</source>
-      <translation type="unfinished">The latitude of this site in decimal degrees.
-Positive values are north of the Equator, negative values are south.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1073"/>
-      <source>Latitude</source>
-      <translation>Enlem</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1087"/>
-      <source>The longitude of this site in decimal degrees.
-Positive values are east of the Prime Meridian, negative values are west.</source>
-      <translation type="unfinished">The longitude of this site in decimal degrees.
-Positive values are east of the Prime Meridian, negative values are west.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1088"/>
-      <source>Longitude</source>
-      <translation>Boylam</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1100"/>
-      <source>The UTC offset of the time zone where this site is located.
-Used when calculating the sun position.</source>
-      <translation type="unfinished">The UTC offset of the time zone where this site is located.
-Used when calculating the sun position.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1101"/>
-      <source>Time zone</source>
-      <translation type="unfinished">Time zone</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1118"/>
-      <source>The angle between the model's north and geographic north.
-Drives the compass orientation and the declination used to
-align the solar diagram and sun path.</source>
-      <translation type="unfinished">The angle between the model's north and geographic north.
-Drives the compass orientation and the declination used to
-align the solar diagram and sun path.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1119"/>
-      <source>North offset</source>
-      <translation type="unfinished">North offset</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1123"/>
-      <source>Diagrams</source>
-      <translation type="unfinished">Diagrams</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1126"/>
-      <source>Solar Diagram</source>
-      <translation type="unfinished">Solar Diagram</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1136"/>
-      <source>Shows a sun path arc diagram projected onto the site,
-computed from the site's latitude, longitude and north offset.</source>
-      <translation type="unfinished">Shows a sun path arc diagram projected onto the site,
-computed from the site's latitude, longitude and north offset.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1139"/>
-      <source>Compass</source>
-      <translation>Pusula</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1147"/>
-      <source>Shows a compass rose overlay on the site,
-oriented according to the north offset.</source>
-      <translation type="unfinished">Shows a compass rose overlay on the site,
-oriented according to the north offset.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1153"/>
-      <source>Sun Position</source>
-      <translation type="unfinished">Sun Position</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1164"/>
-      <source>Shows a sphere and ray indicating the sun position
-for the selected date and time.</source>
-      <translation type="unfinished">Shows a sphere and ray indicating the sun position
-for the selected date and time.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1184"/>
-      <source>The day and month for which the sun position is shown.
-The year is ignored.</source>
-      <translation type="unfinished">The day and month for which the sun position is shown.
-The year is ignored.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1185"/>
-      <source>Date</source>
-      <translation>Tarih</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1196"/>
-      <source>The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</source>
-      <translation type="unfinished">The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1209"/>
-      <source>Hour</source>
-      <translation type="unfinished">Hour</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1214"/>
-      <source>Show Hour Labels</source>
-      <translation type="unfinished">Show Hour Labels</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1220"/>
-      <source>Shows text labels at key hours along the sun path arc</source>
-      <translation type="unfinished">Shows text labels at key hours along the sun path arc</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1233"/>
-      <source>Solar calculations require the ladybug or pysolar Python module,
-which was not found.</source>
-      <translation type="unfinished">Solar calculations require the ladybug or pysolar Python module,
-which was not found.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1243"/>
-      <source>Solar calculations unavailable.
-The ladybug or pysolar Python module is required.</source>
-      <translation type="unfinished">Solar calculations unavailable.
-The ladybug or pysolar Python module is required.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="732"/>
-      <source>Vertical Sections</source>
-      <translation type="unfinished">Vertical Sections</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="733"/>
-      <source>Horizontal Sections</source>
-      <translation type="unfinished">Horizontal Sections</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="734"/>
-      <source>Vertical Mullion Width</source>
-      <translation type="unfinished">Vertical Mullion Width</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="737"/>
-      <source>Vertical Mullion Height</source>
-      <translation type="unfinished">Vertical Mullion Height</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="741"/>
-      <source>Horizontal Mullion Width</source>
-      <translation type="unfinished">Horizontal Mullion Width</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="745"/>
-      <source>Horizontal Mullion Height</source>
-      <translation type="unfinished">Horizontal Mullion Height</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="747"/>
-      <source>Panel Thickness</source>
-      <translation type="unfinished">Panel Thickness</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="748"/>
-      <source>Refine</source>
-      <translation>İncelt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="414"/>
-      <source>Height Start</source>
-      <translation type="unfinished">Height Start</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="415"/>
-      <source>Height End</source>
-      <translation type="unfinished">Height End</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="416"/>
-      <source>Strut Height</source>
-      <translation type="unfinished">Strut Height</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="417"/>
-      <source>Strut Width</source>
-      <translation type="unfinished">Strut Width</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="418"/>
-      <source>Rod Sections</source>
-      <translation type="unfinished">Rod Sections</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="419"/>
-      <source>Rod Size</source>
-      <translation type="unfinished">Rod Size</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="420"/>
-      <source>Rod Mode</source>
-      <translation type="unfinished">Rod Mode</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="421"/>
-      <source>Rod Type</source>
-      <translation type="unfinished">Rod Type</translation>
-    </message>
   </context>
   <context>
     <name>Arch_StructuresFromSelection</name>
@@ -7360,9 +7367,9 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Bu eleman. Otomatik için 0 bırakın için yükseklik veya ekstrüzyon derinliği</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="272"/>
       <location filename="../../ArchPanel.py" line="209"/>
       <location filename="../../ArchStructure.py" line="790"/>
+      <location filename="../../ArchWall.py" line="272"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Bu nesnenin normal ekstrüzyon yönü (otomatik normal için (0,0,0) bırakın)</translation>
     </message>
@@ -7395,8 +7402,8 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Bu BIM Yapısının şeklini oluşturmak için temel ArchSketch'in seçili kenarları (veya kenar grupları) (varsayılan olarak temel şeklin tüm kenarlarını kullanmak yerine). Girdi; kenarların veya grupların indeks numaralarıdır.</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="547"/>
       <location filename="../../ArchStructure.py" line="882"/>
+      <location filename="../../ArchStairs.py" line="547"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
       <translation>Aynı ArchSketch ile varyant şekil oluşturmak için kullanılacak Kullanıcı Tanımlı Özellik Setini seçin. </translation>
     </message>
@@ -7451,8 +7458,8 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Bu ekipman için URL ürün sayfa</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="113"/>
       <location filename="../../ArchMaterial.py" line="208"/>
+      <location filename="../../ArchEquipment.py" line="113"/>
       <source>A standard code (MasterFormat, OmniClass,…)</source>
       <translation>standart kod (MasterFormat, OmniClass,…)</translation>
     </message>
@@ -7474,8 +7481,8 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Bu bina için tür</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="236"/>
       <location filename="../../ArchBuildingPart.py" line="230"/>
+      <location filename="../../ArchFloor.py" line="236"/>
       <source>The height of this object</source>
       <translation>Bu nesne için yükseklik</translation>
     </message>
@@ -7490,26 +7497,26 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Bu seviyenin (0,0,0) noktasının kotu</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="244"/>
       <location filename="../../ArchBuildingPart.py" line="258"/>
+      <location filename="../../ArchFloor.py" line="244"/>
       <source>The computed floor area of this floor</source>
       <translation>Bu kat için hesaplanan kat alanı</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="238"/>
+      <location filename="../../ArchComponent.py" line="250"/>
       <location filename="../../ArchBuildingPart.py" line="266"/>
       <source>An optional description for this component</source>
       <translation>Bu bileşen için isteğe bağlı açıklama</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="246"/>
+      <location filename="../../ArchComponent.py" line="258"/>
       <location filename="../../ArchBuildingPart.py" line="274"/>
       <source>An optional tag for this component</source>
       <translation>Bu bileşen için isteğe bağlı etiket</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="970"/>
       <location filename="../../ArchBuildingPart.py" line="282"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <source>The shape of this object</source>
       <translation>Bu nesnenin şekli</translation>
     </message>
@@ -7529,8 +7536,8 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Malzeme adlarını, bu nesneye diğer dosyalardan referans verilirken kullanılacak katı indeksleriyle ilişkilendiren MaterialName:SolidIndexesList eşlemesi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1142"/>
       <location filename="../../ArchBuildingPart.py" line="547"/>
+      <location filename="../../ArchSectionPlane.py" line="1142"/>
       <source>The line width of this object</source>
       <translation>Bu nesne için çizgi genişlik</translation>
     </message>
@@ -7828,19 +7835,19 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Bu sahayı bir harita web sitesinde gösteren bir URL</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="220"/>
+      <location filename="../../ArchComponent.py" line="232"/>
       <location filename="../../ArchSite.py" line="656"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Bu nesneye eklenen diğer şekiller</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="230"/>
+      <location filename="../../ArchComponent.py" line="242"/>
       <location filename="../../ArchSite.py" line="666"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Bu nesneden çıkarılan diğer şekiller</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="325"/>
+      <location filename="../../ArchComponent.py" line="337"/>
       <location filename="../../ArchSite.py" line="676"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>Bu nesnenin XY düzlemine izdüşüm alanı</translation>
@@ -9083,8 +9090,8 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Doğruysa, sonuçlara her bir nesne için ek satırlar eklenir</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="253"/>
       <location filename="../../ArchSectionPlane.py" line="962"/>
+      <location filename="../../ArchFloor.py" line="253"/>
       <source>The placement of this object</source>
       <translation>Bu nesnenin yerleşimi</translation>
     </message>
@@ -9174,58 +9181,58 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Her etikete uygulanacak dönüşüm</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="204"/>
+      <location filename="../../ArchComponent.py" line="216"/>
       <source>The base object this component is built upon</source>
       <translation>Bu bileşenin üzerine inşa edildiği temel nesne</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="212"/>
+      <location filename="../../ArchComponent.py" line="224"/>
       <source>The object this component is cloning</source>
       <translation>Bu bileşenin kopyaladığı nesne</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="257"/>
+      <location filename="../../ArchComponent.py" line="269"/>
       <source>An optional standard (OmniClass, etc.) code for this component</source>
       <translation type="unfinished">An optional standard (OmniClass, etc.) code for this component</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="265"/>
-      <location filename="../../ArchComponent.py" line="276"/>
+      <location filename="../../ArchComponent.py" line="277"/>
+      <location filename="../../ArchComponent.py" line="288"/>
       <source>A material for this object</source>
       <translation>malzeme için bu nesne</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="293"/>
+      <location filename="../../ArchComponent.py" line="305"/>
       <source>Specifies if moving this object moves its base instead</source>
       <translation>Bu nesneyi taşımak, onun yerine tabanını mı taşısın belirler</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="305"/>
+      <location filename="../../ArchComponent.py" line="317"/>
       <source>Specifies if this object must move together when its host is moved</source>
       <translation>Bu nesnenin, barındırıcısı taşındığında birlikte hareket edip etmeyeceğini belirtir</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="314"/>
+      <location filename="../../ArchComponent.py" line="326"/>
       <source>The area of all vertical faces of this object</source>
       <translation>Bu nesnenin tüm düşey yüzeylerinin alanı</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="334"/>
+      <location filename="../../ArchComponent.py" line="346"/>
       <source>The perimeter length of the horizontal area</source>
       <translation>Yatay alanın çevre uzunluğu</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="345"/>
+      <location filename="../../ArchComponent.py" line="357"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
       <translation>Bu nesne için isteğe bağlı daha yüksek çözünürlüklü ağ veya şekil</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="356"/>
+      <location filename="../../ArchComponent.py" line="368"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
       <translation>Bu nesnenin çoğaltılacağı isteğe bağlı bir eksen veya eksen sistemi</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1598"/>
+      <location filename="../../ArchComponent.py" line="1628"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Mevcutsa, bu nesnenin şekil rengi olarak malzeme rengini kullan</translation>
     </message>
@@ -9371,14 +9378,14 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>3B görünümde etiketi göster</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="579"/>
       <location filename="../../ArchSectionPlane.py" line="1196"/>
+      <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>Yazı tipinin adı</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="597"/>
       <location filename="../../ArchSectionPlane.py" line="1205"/>
+      <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>Metin yazı tipi boyutu</translation>
     </message>
@@ -9598,15 +9605,20 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Aynı ArchSketch'i kullanan Arch Duvar'ın varyant şekil/katmanlarını oluştururken kullanılacak Kullanıcı Tanımlı Özellik Seti'ni seçin </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="381"/>
       <location filename="../../ArchStructure.py" line="841"/>
+      <location filename="../../ArchWall.py" line="381"/>
       <source>Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</source>
       <translation>Duvar özellikleri yerine (kullanılıyorsa) taban ArchSketch verilerini (örn. genişlikler, hizalar, ofsetler) kullan</translation>
     </message>
     <message>
+      <location filename="../../ArchCoveringGui.py" line="62"/>
+      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
+      <translation type="unfinished">Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</translation>
+    </message>
+    <message>
       <location filename="../../ArchCovering.py" line="104"/>
       <source>The object or face this covering is applied to</source>
-      <translation type="unfinished">The object or face this covering is applied to</translation>
+      <translation>Kaplamanın uygulandığı nesne veya yüz</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="129"/>
@@ -9615,11 +9627,11 @@ The ladybug or pysolar Python module is required.</translation>
 - Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
 - Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
 - Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</source>
-      <translation type="unfinished">How the finish is created and displayed:
-- Solid Tiles: Physical 3D tiles with real gaps. Best for accurate detail and counting.
-- Parametric Pattern: A grid of lines on a single slab. Faster to display than real tiles.
-- Monolithic: A single smooth surface. Ideal for paint, plaster, or seamless flooring.
-- Hatch Pattern: Technical drafting symbols (hatching) on a single slab.</translation>
+      <translation>Kaplama nasıl oluşturulup ve görüntülenecek:
+- Katı karolar: Fiziksel 3B karolar ve gerçek boşluklar.
+- Parametrik desen: Tek bir döşeme üzerinde çizgi ızgarası. Gerçek karolara göre daha hızlı görüntülenir.
+- Kesintisiz: Tek ve pürüzsüz yüzey. Boya, sıva veya kesintisiz zemin için ideal.
+- Tarama deseni: Tek bir döşeme üzerinde teknik çizim sembolleri (tarama).</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="136"/>
@@ -9770,11 +9782,6 @@ The ladybug or pysolar Python module is required.</translation>
       <location filename="../../ArchReport.py" line="530"/>
       <source>The name of the BIM Report that uses this spreadsheet</source>
       <translation type="unfinished">The name of the BIM Report that uses this spreadsheet</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="62"/>
-      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
-      <translation type="unfinished">Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</translation>
     </message>
   </context>
   <context>
@@ -10621,25 +10628,20 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Yakalama</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="153"/>
-      <source>Box Dimensions</source>
-      <translation type="unfinished">Box Dimensions</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimBox.py" line="156"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
+      <location filename="../../bimcommands/BimBox.py" line="156"/>
       <source>Length</source>
       <translation>Uzunluk</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="165"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
+      <location filename="../../bimcommands/BimBox.py" line="165"/>
       <source>Width</source>
       <translation>Genişlik</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="174"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
+      <location filename="../../bimcommands/BimBox.py" line="174"/>
       <source>Height</source>
       <translation>Yükseklik</translation>
     </message>
@@ -10731,15 +10733,15 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Oluştur yeni multi-malzeme</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
       <source>Label</source>
       <translation>Etiket</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
       <source>IFC type</source>
       <translation>IFC tipi</translation>
     </message>
@@ -10749,8 +10751,8 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Malzeme</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <location filename="../../nativeifc/__init__.py" line="42"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>IfcOpenShell bu sistemde bulunamadı. IFC desteği devre dışı.</translation>
     </message>
@@ -11446,8 +11448,8 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Şablon başarıyla mevcut belgeye yüklendi</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="438"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="438"/>
       <source>New Group</source>
       <translation>Yeni Grup</translation>
     </message>
@@ -11905,6 +11907,11 @@ FreeCAD kurulumunuzu kontrol edin veya Tercihler → İçe/Dışa Aktar → WebG
       <source>Select an object to link</source>
       <translation type="unfinished">Select an object to link</translation>
     </message>
+    <message>
+      <location filename="../../bimcommands/BimBox.py" line="153"/>
+      <source>Box Dimensions</source>
+      <translation type="unfinished">Box Dimensions</translation>
+    </message>
   </context>
   <context>
     <name>Arch_RebarTools</name>
@@ -12106,8 +12113,8 @@ FreeCAD kurulumunuzu kontrol edin veya Tercihler → İçe/Dışa Aktar → WebG
       <translation>Çöp kutusundan başka hiçbir nesne tarafından kullanılmayan tüm nesneleri siler</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="78"/>
       <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
+      <location filename="../../bimcommands/BimTrash.py" line="78"/>
       <source>Empty Trash</source>
       <translation>Çöpü Boşalt</translation>
     </message>
@@ -13454,8 +13461,8 @@ komutu çalıştırmadan önce hem görünümü hem de sayfayı seçin.</transla
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="212"/>
-      <source>XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</source>
-      <translation>Çeşitli sınıflandırma sistemlerine ait XML veya IFC dosyaları &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; adresinden indirilebilir ve %s konumuna yerleştirilebilir</translation>
+      <source>XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications"&gt;https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications&lt;/a&gt; and placed in %s</source>
+      <translation type="unfinished">XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications"&gt;https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications&lt;/a&gt; and placed in %s</translation>
     </message>
   </context>
   <context>
@@ -13464,100 +13471,6 @@ komutu çalıştırmadan önce hem görünümü hem de sayfayı seçin.</transla
       <location filename="../ui/dialogDiff.ui" line="14"/>
       <source>IFC Difference</source>
       <translation>IFC Farkı</translation>
-    </message>
-  </context>
-  <context>
-    <name>ArchComponent</name>
-    <message>
-      <location filename="../../ArchWall.py" line="1525"/>
-      <source>Unsupported Base</source>
-      <translation type="unfinished">Unsupported Base</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1530"/>
-      <source>The base of this wall is not a single straight line.</source>
-      <translation type="unfinished">The base of this wall is not a single straight line.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1537"/>
-      <source>Removing the base of this complex wall will alter its shape and reset its position.
-
-Do you want to proceed?</source>
-      <translation type="unfinished">Removing the base of this complex wall will alter its shape and reset its position.
-
-Do you want to proceed?</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_ArcTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="240"/>
-      <source>Arc Tools</source>
-      <translation>Yay Araçları</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_SplineTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="252"/>
-      <source>Spline Tools</source>
-      <translation type="unfinished">Spline Tools</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_AxisTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="264"/>
-      <source>Axis Tools</source>
-      <translation>Eksen Araçlar</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_OffsetTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="277"/>
-      <source>Offset Tools</source>
-      <translation type="unfinished">Offset Tools</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_ArrayTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="295"/>
-      <source>Array Tools</source>
-      <translation>Dizi Araçları</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_BooleanTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="308"/>
-      <source>Boolean Tools</source>
-      <translation>Boole Araçları</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_IfcManageTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="325"/>
-      <source>IFC Management</source>
-      <translation type="unfinished">IFC Management</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_ReportTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="337"/>
-      <source>Report Tools</source>
-      <translation type="unfinished">Report Tools</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_CloneTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="349"/>
-      <source>Cloning Tools</source>
-      <translation type="unfinished">Cloning Tools</translation>
     </message>
   </context>
   <context>
@@ -13661,6 +13574,28 @@ Do you want to proceed?</translation>
     </message>
   </context>
   <context>
+    <name>ArchComponent</name>
+    <message>
+      <location filename="../../ArchWall.py" line="1525"/>
+      <source>Unsupported Base</source>
+      <translation type="unfinished">Unsupported Base</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1530"/>
+      <source>The base of this wall is not a single straight line.</source>
+      <translation type="unfinished">The base of this wall is not a single straight line.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1537"/>
+      <source>Removing the base of this complex wall will alter its shape and reset its position.
+
+Do you want to proceed?</source>
+      <translation type="unfinished">Removing the base of this complex wall will alter its shape and reset its position.
+
+Do you want to proceed?</translation>
+    </message>
+  </context>
+  <context>
     <name>Command</name>
     <message>
       <location filename="../../ArchCoveringGui.py" line="128"/>
@@ -13675,24 +13610,75 @@ Do you want to proceed?</translation>
     </message>
   </context>
   <context>
-    <name>BimWall</name>
+    <name>BIM_ArcTools</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="289"/>
-      <source>Wall Trace</source>
-      <translation type="unfinished">Wall Trace</translation>
+      <location filename="../../InitGui.py" line="240"/>
+      <source>Arc Tools</source>
+      <translation>Yay Araçları</translation>
     </message>
   </context>
   <context>
-    <name>BIM_Covering</name>
+    <name>BIM_SplineTools</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="44"/>
-      <source>Covering</source>
-      <translation type="unfinished">Covering</translation>
+      <location filename="../../InitGui.py" line="252"/>
+      <source>Spline Tools</source>
+      <translation type="unfinished">Spline Tools</translation>
     </message>
+  </context>
+  <context>
+    <name>BIM_AxisTools</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="47"/>
-      <source>Creates a covering (floor finish, cladding) on a selected face</source>
-      <translation type="unfinished">Creates a covering (floor finish, cladding) on a selected face</translation>
+      <location filename="../../InitGui.py" line="264"/>
+      <source>Axis Tools</source>
+      <translation>Eksen Araçlar</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_OffsetTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="277"/>
+      <source>Offset Tools</source>
+      <translation type="unfinished">Offset Tools</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_ArrayTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="295"/>
+      <source>Array Tools</source>
+      <translation>Dizi Araçları</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_BooleanTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="308"/>
+      <source>Boolean Tools</source>
+      <translation>Boole Araçları</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_IfcManageTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="325"/>
+      <source>IFC Management</source>
+      <translation type="unfinished">IFC Management</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_ReportTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="337"/>
+      <source>Report Tools</source>
+      <translation type="unfinished">Report Tools</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_CloneTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="349"/>
+      <source>Cloning Tools</source>
+      <translation type="unfinished">Cloning Tools</translation>
     </message>
   </context>
   <context>
@@ -13709,6 +13695,19 @@ Do you want to proceed?</translation>
     </message>
   </context>
   <context>
+    <name>BIM_Covering</name>
+    <message>
+      <location filename="../../bimcommands/BimCovering.py" line="44"/>
+      <source>Covering</source>
+      <translation>Kaplama</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimCovering.py" line="47"/>
+      <source>Creates a covering (floor finish, cladding) on a selected face</source>
+      <translation type="unfinished">Creates a covering (floor finish, cladding) on a selected face</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_LinkMake</name>
     <message>
       <location filename="../../bimcommands/BimLink.py" line="14"/>
@@ -13719,6 +13718,14 @@ Do you want to proceed?</translation>
       <location filename="../../bimcommands/BimLink.py" line="18"/>
       <source>Creates a Link to the selected object and immediately enables moving it</source>
       <translation type="unfinished">Creates a Link to the selected object and immediately enables moving it</translation>
+    </message>
+  </context>
+  <context>
+    <name>BimWall</name>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="289"/>
+      <source>Wall Trace</source>
+      <translation type="unfinished">Wall Trace</translation>
     </message>
   </context>
 </TS>

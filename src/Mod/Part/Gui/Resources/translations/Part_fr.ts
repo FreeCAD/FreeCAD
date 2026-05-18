@@ -6861,7 +6861,7 @@ Si un deuxième objet est sélectionné, il sera utilisé comme référence, par
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="269"/>
       <source>Continue</source>
-      <translation>Continuer</translation>
+      <translation>Continu</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="354"/>
@@ -7291,7 +7291,7 @@ volumes se chevauchant seront supprimés.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="91"/>
       <source>Continue</source>
-      <translation>Continuer</translation>
+      <translation>Continu</translation>
     </message>
   </context>
   <context>
@@ -7764,7 +7764,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="940"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>Réinitialiser l'espacement</translation>
     </message>
   </context>
   <context>
@@ -7789,7 +7789,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
-      <translation>Générateur de BuildFace</translation>
+      <translation>Générateur de faces BuildFace</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>

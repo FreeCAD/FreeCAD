@@ -1657,7 +1657,7 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez le solveur de Cho
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>Relaxation excessive successive (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
@@ -3890,11 +3890,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+      <translation>Les trois coordonnées x, y, z (en minuscules) et les fonctions mathématiques habituelles telles que Sin, Log (en majuscules) sont
+disponibles. De plus, toutes les densifications des enfants sont accessibles via la variable F, par exemple F1, F2, etc. Les opérateurs pris
+en charge sont +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Exemple : F2 + Sin(z)</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3934,11 +3934,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
+      <translation>Les trois coordonnées x, y, z (en minuscules) et les fonctions mathématiques habituelles telles que Sin, Log (en majuscules) sont
+disponibles. De plus, toutes les densifications des enfants sont accessibles via la variable F, par exemple F1, F2, etc. Les opérateurs pris
+en charge sont +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Exemple : F2 + Sin(z)</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
@@ -4852,7 +4852,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
       <source>Pick</source>
-      <translation>Choisir</translation>
+      <translation>Sélectionner</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="87"/>
@@ -8522,7 +8522,7 @@ visualisation des données de sommets.</translation>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <source>Hatch pattern</source>
-      <translation>Motif des hachures</translation>
+      <translation>Motif de hachures</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="89"/>
@@ -8532,7 +8532,7 @@ visualisation des données de sommets.</translation>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="102"/>
       <source>Density of hatch pattern</source>
-      <translation>Densité du motif des hachures</translation>
+      <translation>Densité du motif de hachures</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="112"/>

@@ -2570,7 +2570,7 @@ Wenn der Radius größer ist als der Radius, den der Steg selbst unterstützt, w
     <message>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="148"/>
       <source>Step Over</source>
-      <translation type="unfinished">Step Over</translation>
+      <translation>Überspringen</translation>
     </message>
     <message>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="155"/>
@@ -5960,8 +5960,8 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <location filename="../../../Path/Op/Gui/Array.py" line="67"/>
       <source>The tool controller that will be used to calculate the toolpath
 Should be identical for all base operations</source>
-      <translation type="unfinished">The tool controller that will be used to calculate the toolpath
-Should be identical for all base operations</translation>
+      <translation>Die Werkzeugsteuerung, die zur Berechnung der Werkzeugbahn verwendet wird,
+sollte für alle Basisoperationen identisch sein</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="83"/>

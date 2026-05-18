@@ -2748,7 +2748,7 @@ Anzeigemodus für die Grundfläche verfügen</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="20"/>
       <source>Visual</source>
-      <translation>Ansicht</translation>
+      <translation>Visuell</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="26"/>
@@ -5032,17 +5032,17 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
     <message>
       <location filename="../../ArchCoveringGui.py" line="538"/>
       <source>Half Bond (1/2)</source>
-      <translation type="unfinished">Half Bond (1/2)</translation>
+      <translation>Halbe Bindung (1/2)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="539"/>
       <source>Third Bond (1/3)</source>
-      <translation type="unfinished">Third Bond (1/3)</translation>
+      <translation>Drittel Bindung (1/3)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="540"/>
       <source>Quarter Bond (1/4)</source>
-      <translation type="unfinished">Quarter Bond (1/4)</translation>
+      <translation>Viertel Bindung (1/4)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="541"/>
@@ -5083,7 +5083,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <location filename="../../ArchCoveringGui.py" line="686"/>
       <location filename="../../ArchCoveringGui.py" line="746"/>
       <source>The object or face this covering is applied to</source>
-      <translation type="unfinished">The object or face this covering is applied to</translation>
+      <translation>Der Gegenstand oder die Fläche, auf die diese Verkleidung aufgebracht wird</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="718"/>
@@ -5104,7 +5104,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
     <message>
       <location filename="../../ArchCoveringGui.py" line="752"/>
       <source>Enable interactive face selection in the 3D view</source>
-      <translation type="unfinished">Enable interactive face selection in the 3D view</translation>
+      <translation>Interaktive Flächenauswahl in der 3D-Ansicht aktivieren</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="770"/>
@@ -5137,7 +5137,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
     <message>
       <location filename="../../ArchCoveringGui.py" line="801"/>
       <source>The thickness of the finish</source>
-      <translation type="unfinished">The thickness of the finish</translation>
+      <translation>Die Dicke der Beschichtung</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="817"/>
@@ -5147,12 +5147,12 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
     <message>
       <location filename="../../ArchCoveringGui.py" line="824"/>
       <source>If checked, the dialog stays open after creating the covering, allowing to pick another face</source>
-      <translation type="unfinished">If checked, the dialog stays open after creating the covering, allowing to pick another face</translation>
+      <translation>Wenn dieses Kontrollkästchen aktiviert ist, bleibt das Dialogfeld nach dem Erstellen der Verkleidung geöffnet, sodass eine weitere Fläche ausgewählt werden kann</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="847"/>
       <source>Use standard corner or center alignment relative to the boundary</source>
-      <translation type="unfinished">Use standard corner or center alignment relative to the boundary</translation>
+      <translation>Die Standardausrichtung an den Ecken oder in der Mitte relativ zur Begrenzung verwenden</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="855"/>
@@ -5223,7 +5223,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
     <message>
       <location filename="../../ArchCoveringGui.py" line="930"/>
       <source>Distance to offset the covering inwards from the boundary</source>
-      <translation type="unfinished">Distance to offset the covering inwards from the boundary</translation>
+      <translation>Abstand, um die Verkleidung von der Begrenzung nach innen zu versetzen</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="932"/>
@@ -5329,12 +5329,12 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
     <message>
       <location filename="../../ArchCoveringGui.py" line="1111"/>
       <source>Horizontal texture multiplier</source>
-      <translation type="unfinished">Horizontal texture multiplier</translation>
+      <translation>Horizontaler Textur-Multiplikator</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1115"/>
       <source>Vertical texture multiplier</source>
-      <translation type="unfinished">Vertical texture multiplier</translation>
+      <translation>Vertikaler Textur-Multiplikator</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1118"/>
@@ -6981,7 +6981,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchCovering.py" line="514"/>
       <source>The joint width is too small to model individual units.</source>
-      <translation type="unfinished">The joint width is too small to model individual units.</translation>
+      <translation>Die Fugenbreite ist zu gering, um einzelne Einheiten darzustellen.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="522"/>
@@ -6991,7 +6991,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchCovering.py" line="530"/>
       <source>The number of tiles is extremely high. Layout lines are hidden.</source>
-      <translation type="unfinished">The number of tiles is extremely high. Layout lines are hidden.</translation>
+      <translation>Die Anzahl der Kacheln ist extrem hoch. Die Hilfslinien sind ausgeblendet.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="679"/>
@@ -9590,7 +9590,7 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
     <message>
       <location filename="../../ArchCovering.py" line="104"/>
       <source>The object or face this covering is applied to</source>
-      <translation type="unfinished">The object or face this covering is applied to</translation>
+      <translation>Der Gegenstand oder die Fläche, auf die diese Verkleidung aufgebracht wird</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="129"/>
@@ -9718,7 +9718,7 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
     <message>
       <location filename="../../ArchCovering.py" line="319"/>
       <source>The name of the pattern in the PAT file</source>
-      <translation type="unfinished">The name of the pattern in the PAT file</translation>
+      <translation>Der Name des Musters in der PAT-Datei</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="326"/>

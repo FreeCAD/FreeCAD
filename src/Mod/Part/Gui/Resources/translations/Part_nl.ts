@@ -7674,7 +7674,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="76"/>
       <source>Extent</source>
-      <translation type="unfinished">Extent</translation>
+      <translation>Omvang</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="81"/>

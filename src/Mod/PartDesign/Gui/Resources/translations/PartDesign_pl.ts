@@ -1472,12 +1472,12 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1051"/>
       <source>%1 fine dragging</source>
-      <translation type="unfinished">%1 fine dragging</translation>
+      <translation>%1 dokładne przeciąganie</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1054"/>
       <source>%1 coarse dragging</source>
-      <translation type="unfinished">%1 coarse dragging</translation>
+      <translation>%1 zgrubne przeciąganie</translation>
     </message>
   </context>
   <context>
@@ -5460,12 +5460,12 @@ Wybierz krawędź, płaszczyznę lub linię odniesienia.</translation>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
       <source>%1 fine dragging</source>
-      <translation type="unfinished">%1 fine dragging</translation>
+      <translation>%1 dokładne przeciąganie</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="141"/>
       <source>%1 coarse dragging</source>
-      <translation type="unfinished">%1 coarse dragging</translation>
+      <translation>%1 zgrubne przeciąganie</translation>
     </message>
   </context>
   <context>
