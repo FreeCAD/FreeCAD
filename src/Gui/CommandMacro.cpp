@@ -36,8 +36,6 @@
 
 
 using namespace Gui;
-
-
 //===========================================================================
 // Std_DlgMacroRecord
 //===========================================================================
@@ -192,18 +190,11 @@ StdCmdMacroStartDebug::StdCmdMacroStartDebug()
 void StdCmdMacroStartDebug::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PythonDebugger* dbg = Application::Instance->macroManager()->debugger();
-    if (!dbg->isRunning()) {
-        doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"StartDebug\")");
-    }
-    else {
-        dbg->stepRun();
-    }
 }
 
 bool StdCmdMacroStartDebug::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("StartDebug");
+    return false;
 }
 
 DEF_STD_CMD_A(StdCmdMacroStopDebug)
@@ -305,12 +296,11 @@ StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
 void StdCmdToggleBreakpoint::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ToggleBreakpoint\")");
 }
 
 bool StdCmdToggleBreakpoint::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("ToggleBreakpoint");
+    return false;
 }
 
 DEF_STD_CMD_A(StdCmdMacrosFolder)

@@ -67,7 +67,8 @@ class _CommandSelectLoop:
                 "\n\nSelect one edge: searching loop edges in horizontal plane"
                 "\nor wire which contain selected edge."
                 "\n\nSelect two edges: searching loop edges in wires of the shape"
-                "\nor tangent edges.",
+                "\nor tangent edges."
+                "\n\nWithout sub selection all edges of the shape will be selected",
             ),
             "CmdType": "ForEdit",
         }
@@ -75,9 +76,6 @@ class _CommandSelectLoop:
     def IsActive(self):
         selection = FreeCADGui.Selection.getSelectionEx()
         if not selection:
-            return False
-
-        if not selection[0].SubObjects:
             return False
 
         return True
@@ -88,16 +86,16 @@ class _CommandSelectLoop:
             return
 
         sel = selection[0]
-        if not sel.SubObjects:
-            return
-
         obj = sel.Object
         subs = sel.SubObjects
         subNames = sel.SubElementNames
         edges = None
         names = None
 
-        if isinstance(subs[0], Part.Face):
+        if not sel.SubObjects:
+            names = [f"Edge{i}" for i in range(1, len(obj.Shape.Edges) + 1)]
+
+        elif all(isinstance(sub, Part.Face) for sub in subs):
             # face(s) selected
             if all(Path.Geom.isVertical(face) for face in subs):
                 names = horizontalFaceLoop(obj, subs, subNames)
