@@ -2154,3 +2154,21 @@ class TestArchReport(TestArchBase.TestArchBase):
             custom_width,
             "Column width should be preserved after recompute.",
         )
+
+
+class TestArchReportSpreadsheetFormatting(TestArchBase.TestArchBase):
+
+    def test_cell_alignments_preserved_across_recompute(self):
+        """Cell alignments set by the user should survive a report recompute."""
+        report = Arch.makeReport()
+        report.Proxy.live_statements[0].query_string = "SELECT Label FROM document"
+        report.Proxy.commit_statements()
+        self.document.recompute()
+
+        sp = report.Target
+        sp.setAlignment("A1", "center")
+        sp.setAlignment("A2", "right")
+        self.document.recompute()
+
+        self.assertEqual(sp.getAlignment("A1"), {"center"})
+        self.assertEqual(sp.getAlignment("A2"), {"right"})

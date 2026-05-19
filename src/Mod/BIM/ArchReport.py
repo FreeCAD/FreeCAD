@@ -710,11 +710,16 @@ class _ArchReport:
         # Save column widths before clearing so user adjustments survive recomputes.
         used_range = sp.getUsedRange()
         saved_widths = {}
+        saved_alignments = {}
         if used_range:
             first_col = ord(used_range[0].rstrip("0123456789"))
             last_col = ord(used_range[1].rstrip("0123456789"))
             for col in range(first_col, last_col + 1):
                 saved_widths[chr(col)] = sp.getColumnWidth(chr(col))
+            for cell in sp.getUsedCells():
+                alignment = sp.getAlignment(cell)
+                if alignment:
+                    saved_alignments[cell] = alignment
             sp.clear(f"{used_range[0]}:{used_range[1]}")
 
         # Reset the row counter for a new report build.
@@ -739,6 +744,8 @@ class _ArchReport:
 
         for col, width in saved_widths.items():
             sp.setColumnWidth(col, width)
+        for cell, alignment in saved_alignments.items():
+            sp.setAlignment(cell, alignment)
         sp.recompute()
         sp.purgeTouched()
 
