@@ -444,7 +444,10 @@ set(Gui_RES_SRCS
     ${FreeCAD_TR_QRC}
 )
 
-qt_add_resources(Gui_QRC_SRCS ${Gui_RES_SRCS})
+qt_add_resources(Gui_QRC_SRCS
+    ${Gui_RES_SRCS}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SOURCE_GROUP("Uic" FILES ${Gui_UIC_HDRS})
 
