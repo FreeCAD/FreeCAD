@@ -635,7 +635,7 @@ bool Preferences::SnapDimensions()
     return getPreferenceGroup("Dimensions")->GetBool("SnapDimensions", true);
 }
 
-//! percentage of dimension text legth to use in deciding to snap dimension text
+//! percentage of dimension text length to use in deciding to snap dimension text
 double Preferences::SnapDimensionsTextFactor()
 {
     return getPreferenceGroup("Dimensions")->GetFloat("SnapDimensionsTextFactor", 0.4);
