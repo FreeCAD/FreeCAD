@@ -190,6 +190,25 @@ QVariant formatCellDisplay(QString value, const Cell* cell)
     }
     return QVariant(value);
 }
+
+bool columnContainsFloat(const Sheet* sheet, int column)
+{
+    // Keep mixed numeric table columns visually consistent without changing cell values.
+    for (const auto& cellName : sheet->getUsedCells()) {
+        const CellAddress address(cellName);
+        if (address.col() != column) {
+            continue;
+        }
+
+        const App::Property* prop = sheet->getPropertyByName(cellName.c_str());
+        if (prop && prop->isDerivedFrom<App::PropertyFloat>()
+            && !prop->isDerivedFrom<App::PropertyQuantity>()) {
+            return true;
+        }
+    }
+
+    return false;
+}
 }  // namespace
 
 QVariant SheetModel::data(const QModelIndex& index, int role) const
@@ -539,7 +558,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                     // QString number = QString::number(d / displayUnit.scaler);
                     v = number + QString::fromStdString(" " + displayUnit.stringRep);
                 }
-                else if (!isInteger) {
+                else if (!isInteger || columnContainsFloat(sheet, col)) {
                     v = QLocale::system().toString(d, 'f', Base::UnitsApi::getDecimals());
                     // v = QString::number(d);
                 }
