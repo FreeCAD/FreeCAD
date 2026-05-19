@@ -25,6 +25,7 @@
 #pragma once
 
 #include "fastsignals/connection.h"
+#include <map>
 #include <QAbstractTableModel>
 
 #include <App/Range.h>
@@ -72,6 +73,7 @@ private:
     QColor textFgColor;
     QColor positiveFgColor;
     QColor negativeFgColor;
+    mutable std::map<int, bool> columnsContainingFloat;
 };
 
 }  // namespace SpreadsheetGui

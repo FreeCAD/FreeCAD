@@ -191,9 +191,15 @@ QVariant formatCellDisplay(QString value, const Cell* cell)
     return QVariant(value);
 }
 
-bool columnContainsFloat(const Sheet* sheet, int column)
+bool columnContainsFloat(const Sheet* sheet, int column, std::map<int, bool>& cachedColumns)
 {
     // Keep mixed numeric table columns visually consistent without changing cell values.
+    const auto cachedColumn = cachedColumns.find(column);
+    if (cachedColumn != cachedColumns.end()) {
+        return cachedColumn->second;
+    }
+
+    bool hasFloat = false;
     for (const auto& cellName : sheet->getUsedCells()) {
         const CellAddress address(cellName);
         if (address.col() != column) {
@@ -203,11 +209,13 @@ bool columnContainsFloat(const Sheet* sheet, int column)
         const App::Property* prop = sheet->getPropertyByName(cellName.c_str());
         if (prop && prop->isDerivedFrom<App::PropertyFloat>()
             && !prop->isDerivedFrom<App::PropertyQuantity>()) {
-            return true;
+            hasFloat = true;
+            break;
         }
     }
 
-    return false;
+    cachedColumns.emplace(column, hasFloat);
+    return hasFloat;
 }
 }  // namespace
 
@@ -558,7 +566,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                     // QString number = QString::number(d / displayUnit.scaler);
                     v = number + QString::fromStdString(" " + displayUnit.stringRep);
                 }
-                else if (!isInteger || columnContainsFloat(sheet, col)) {
+                else if (!isInteger || columnContainsFloat(sheet, col, columnsContainingFloat)) {
                     v = QLocale::system().toString(d, 'f', Base::UnitsApi::getDecimals());
                     // v = QString::number(d);
                 }
@@ -712,6 +720,7 @@ void SheetModel::containSheetDataInView()
 
 void SheetModel::cellUpdated(CellAddress address)
 {
+    columnsContainingFloat.clear();
     containSheetDataInView();
     if (address.row() < rows && address.col() < cols) {
         QModelIndex i = index(address.row(), address.col());
@@ -721,6 +730,7 @@ void SheetModel::cellUpdated(CellAddress address)
 
 void SheetModel::rangeUpdated(const Range& range)
 {
+    columnsContainingFloat.clear();
     containSheetDataInView();
     if (range.from().row() < rows && range.from().col() < cols) {
         QModelIndex i = index(range.from().row(), range.from().col());
