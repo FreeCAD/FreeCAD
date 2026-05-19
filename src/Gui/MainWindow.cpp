@@ -193,6 +193,7 @@ class DimensionWidget: public QPushButton, WindowParameter
     Q_OBJECT
     int fixedWidthValue = 0;
     QMenu* unitMenu = nullptr;
+
 private:
     // Position the unit menu popup above the status-bar button (like the nav style popup).
     // Clamp horizontally to the current screen; if there is no room above, show it below instead.
