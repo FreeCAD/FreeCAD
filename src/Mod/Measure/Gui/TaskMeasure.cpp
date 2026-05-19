@@ -52,6 +52,7 @@ using enum Gui::InputHint::UserInput;
 #include <QSignalBlocker>
 
 #include <Base/Quantity.h>
+#include <Base/UnitsApi.h>
 #include <array>
 
 using namespace MeasureGui;
@@ -70,30 +71,63 @@ constexpr std::array
 
 constexpr std::array angleUnitLabels {"deg", "rad", "gon"};
 
-constexpr std::array areaUnitLabels {"mm²", "cm²", "m²", "km²", "in²", "ft²", "yd²", "mi²"};
+constexpr std::array areaUnitLabels {"mm^2", "cm^2", "m^2", "km^2", "in^2", "ft^2", "yd^2", "mi^2"};
 
 template<std::size_t N>
-QStringList toQStringList(const std::array<const char*, N>& strings)
+void populateUnitCombo(QComboBox* combo, const std::array<const char*, N>& labels)
 {
-    QStringList result;
-    result.reserve(N);
-    for (const char* s : strings) {
-        result.append(QString::fromUtf8(s));
+    for (const char* s : labels) {
+        QString display = QString::fromStdString(Base::UnitsApi::toUnicodeSuperscript(s));
+        // store (mm²,mm^2)
+        combo->addItem(display, QString::fromUtf8(s));
     }
-    return result;
 }
 
-QString extractUnitFromResultString(const QString& resultString)
+Base::Unit unitForMeasureType(const App::MeasureType* measureType)
 {
-    std::string str = resultString.toStdString();
-    auto lastSpace = str.find_last_of(' ');
-
-    if (lastSpace != std::string::npos && lastSpace < str.length() - 1) {
-        return QString::fromStdString(str.substr(lastSpace + 1));
+    if (!measureType) {
+        return Base::Unit();
     }
 
-    return QString();
+    const std::string& type = measureType->identifier;
+    if (type == "LENGTH" || type == "DISTANCE" || type == "DISTANCEFREE" || type == "RADIUS"
+        || type == "DIAMETER" || type == "POSITION" || type == "CENTEROFMASS") {
+        return Base::Unit::Length;
+    }
+    if (type == "ANGLE") {
+        return Base::Unit::Angle;
+    }
+    if (type == "AREA") {
+        return Base::Unit::Area;
+    }
+    return Base::Unit();
 }
+
+void addUnitLabels(QComboBox* combo, const Base::Unit& unit)
+{
+    if (unit == Base::Unit::Length) {
+        populateUnitCombo(combo, lengthUnitLabels);
+    }
+    else if (unit == Base::Unit::Area) {
+        populateUnitCombo(combo, areaUnitLabels);
+    }
+    else if (unit == Base::Unit::Angle) {
+        populateUnitCombo(combo, angleUnitLabels);
+    }
+}
+
+QString preferredUnitForMeasureType(const App::MeasureType* measureType)
+{
+    Base::Unit unit = unitForMeasureType(measureType);
+    if (unit == Base::Unit()) {
+        return QString();
+    }
+    double factor;
+    std::string unitString;
+    Base::UnitsApi::schemaTranslate(Base::Quantity(1.0, unit), factor, unitString);
+    return QString::fromStdString(unitString);
+}
+
 }  // namespace
 
 TaskMeasure::TaskMeasure()
@@ -360,7 +394,6 @@ void TaskMeasure::tryUpdate()
         QSignalBlocker unitSwitchBlocker(unitSwitch);
         unitSwitch->clear();
         unitSwitch->addItem(QLatin1String("-"));
-        mLastUnitSelection = QLatin1String("-");
 
         // Reset measure object
         if (!explicitMode) {
@@ -390,9 +423,8 @@ void TaskMeasure::tryUpdate()
         // Fill measure object's properties from selection
         _mMeasureObject->parseSelection(selection);
 
-        setUnitFromResultString();
-
-        updateResultWithUnit();
+        syncDisplayUnit();
+        refreshResult();
 
         // Initialite the measurement's viewprovider
         initViewObject(_mMeasureObject);
@@ -402,110 +434,52 @@ void TaskMeasure::tryUpdate()
 
 void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
 {
-    const QString previousUnit = unitSwitch->currentText();
-    QStringList units;
-
-    if (measureType->identifier == "LENGTH" || measureType->identifier == "DISTANCE"
-        || measureType->identifier == "DISTANCEFREE" || measureType->identifier == "RADIUS"
-        || measureType->identifier == "DIAMETER" || measureType->identifier == "POSITION"
-        || measureType->identifier == "CENTEROFMASS") {
-        units = toQStringList(lengthUnitLabels);
-    }
-    else if (measureType->identifier == "ANGLE") {
-        units = toQStringList(angleUnitLabels);
-    }
-    else if (measureType->identifier == "AREA") {
-        units = toQStringList(areaUnitLabels);
-    }
-    else {
-        units.clear();
-    }
+    const QString previousUnit = unitSwitch->currentData().toString();
+    const Base::Unit unit = unitForMeasureType(measureType);
+    const QString defaultUnit = preferredUnitForMeasureType(measureType);
 
     QSignalBlocker unitSwitchBlocker(unitSwitch);
 
     unitSwitch->clear();
-    if (!units.isEmpty()) {
-        unitSwitch->addItems(units);
-        // If unit from the same category was previously selected keep it
+    addUnitLabels(unitSwitch, unit);
+
+    if (unitSwitch->count() > 0) {
         if (!previousUnit.isEmpty()) {
-            int unitIndex = unitSwitch->findText(previousUnit);
+            int unitIndex = unitSwitch->findData(previousUnit);
             if (unitIndex >= 0) {
                 unitSwitch->setCurrentIndex(unitIndex);
+                return;
             }
         }
+
+        int unitIndex = unitSwitch->findData(defaultUnit);
+        if (unitIndex >= 0) {
+            unitSwitch->setCurrentIndex(unitIndex);
+        }
     }
 }
 
-void TaskMeasure::setUnitFromResultString()
+void TaskMeasure::syncDisplayUnit()
 {
     if (!_mMeasureObject) {
         return;
     }
 
-    // Only set default unit if user hasn't made a selection yet
-    if (mLastUnitSelection != QLatin1String("-") && !mLastUnitSelection.isEmpty()) {
-        return;
-    }
-
-    QString resultString = _mMeasureObject->getResultString();
-    QString unitFromResult = extractUnitFromResultString(resultString);
-
-    if (unitFromResult.isEmpty()) {
-        return;
-    }
-
-    int unitIndex = unitSwitch->findText(unitFromResult);
-    if (unitIndex >= 0) {
-        QSignalBlocker unitSwitchBlocker(unitSwitch);
-        unitSwitch->setCurrentIndex(unitIndex);
-
-        mLastUnitSelection = unitFromResult;
+    // get the raw parseable unit (^2)
+    const std::string unit = unitSwitch->currentData().toString().toStdString();
+    if (_mMeasureObject->DisplayUnit.getStrValue() != unit) {
+        _mMeasureObject->DisplayUnit.setValue(unit);
     }
 }
 
-void TaskMeasure::updateResultWithUnit()
+void TaskMeasure::refreshResult()
 {
     if (!_mMeasureObject) {
         return;
     }
-
-    QString resultString;
-    auto prop = _mMeasureObject->getResultProp();
-    auto qtyProp = dynamic_cast<App::PropertyQuantity*>(prop);
-
-    if (qtyProp) {
-        double value = qtyProp->getQuantityValue().getValue();
-        resultString = QString::number(value);
-    }
-    else {
-        resultString = _mMeasureObject->getResultString();
-    }
-
-    QString currentUnit = unitSwitch->currentText();
-
-    if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
-        Base::Quantity resultQty = Base::Quantity::parse(resultString.toStdString());
-        // Parse unit string like "1 mm" to get the target quantity
-        Base::Quantity targetUnit = Base::Quantity::parse(
-            (QLatin1String("1 ") + currentUnit).toStdString()
-        );
-        double convertedValue = resultQty.getValueAs(targetUnit);
-
-        QString formattedValue;
-        // 4 decimal places, if between -1 and 1: 4 significant digits
-        if (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) {
-            formattedValue = QString::number(convertedValue, 'g', 4);
-        }
-        else {
-            formattedValue = QString::number(convertedValue, 'f', 4);
-        }
-
-        QString formattedResult = formattedValue + QLatin1String(" ") + currentUnit;
-        valueResult->setText(formattedResult);
-    }
-    else {
-        valueResult->setText(resultString);
-    }
+    valueResult->setText(
+        QString::fromStdString(Base::UnitsApi::toUnicodeSuperscript(_mMeasureObject->getResultString()))
+    );
 }
 
 
@@ -753,14 +727,9 @@ void TaskMeasure::onModeChanged(int index)
 
 void TaskMeasure::onUnitChanged(int index)
 {
-    const QString currentUnit = unitSwitch->itemText(index);
-    const auto dash = QLatin1String("-");
-
-    if (currentUnit != mLastUnitSelection && (mLastUnitSelection != dash || currentUnit != dash)) {
-        updateResultWithUnit();
-    }
-
-    mLastUnitSelection = currentUnit;
+    Q_UNUSED(index);
+    syncDisplayUnit();
+    refreshResult();
 }
 
 void TaskMeasure::showDeltaChanged(int checkState)
