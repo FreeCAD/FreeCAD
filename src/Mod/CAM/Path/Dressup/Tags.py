@@ -707,12 +707,7 @@ class PathData:
             and Path.Geom.isRoughly(e.Vertexes[1].Point.z, minZ)
         ]
         self.bottomEdges = Part.sortEdges(bottom)
-        wires = []
-        for edgesSorted in self.bottomEdges:
-            wire = Part.Wire(edgesSorted)
-            if wire.isClosed():
-                wires.append(wire)
-        return wires
+        return [Part.Wire(se) for se in self.bottomEdges]
 
     def supportsTagGeneration(self):
         return self.baseWires is not None
