@@ -57,10 +57,12 @@ using namespace Gui::DockWnd;
 
 namespace
 {
-QString getSelectionName(const char* docName,
-                         const char* objName,
-                         const char* subName,
-                         App::DocumentObject* obj)
+QString getSelectionName(
+    const char* docName,
+    const char* objName,
+    const char* subName,
+    App::DocumentObject* obj
+)
 {
     QString selObject;
     QTextStream str(&selObject);
