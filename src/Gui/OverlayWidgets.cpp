@@ -476,6 +476,49 @@ OverlayTabWidget::OverlayTabWidget(QWidget* parent, Qt::DockWidgetArea pos)
     connect(_animator, &QAbstractAnimation::stateChanged, this, &OverlayTabWidget::onAnimationStateChanged);
 }
 
+OverlayTabWidget::~OverlayTabWidget()
+{
+    tabBar()->removeEventFilter(this);
+
+    timer.stop();
+    repaintTimer.stop();
+
+    if (_animator) {
+        disconnect(_animator, nullptr, this, nullptr);
+        _animator->stop();
+        _animator->setTargetObject(nullptr);
+    }
+
+    switch (dockArea) {
+        case Qt::LeftDockWidgetArea:
+            if (_LeftOverlay == this) {
+                _LeftOverlay = nullptr;
+            }
+            break;
+        case Qt::RightDockWidgetArea:
+            if (_RightOverlay == this) {
+                _RightOverlay = nullptr;
+            }
+            break;
+        case Qt::TopDockWidgetArea:
+            if (_TopOverlay == this) {
+                _TopOverlay = nullptr;
+            }
+            break;
+        case Qt::BottomDockWidgetArea:
+            if (_BottomOverlay == this) {
+                _BottomOverlay = nullptr;
+            }
+            break;
+        default:
+            break;
+    }
+
+    if (_Dragging == this || (_Dragging && isAncestorOf(_Dragging))) {
+        _Dragging = nullptr;
+    }
+}
+
 void OverlayTabWidget::refreshIcons()
 {
     auto curStyleSheet = App::GetApplication()
@@ -1605,7 +1648,7 @@ bool OverlayTabWidget::getAutoHideRect(QRect& rect) const
     switch (dockArea) {
         case Qt::LeftDockWidgetArea:
         case Qt::RightDockWidgetArea:
-            if (_TopOverlay->isVisible() && _TopOverlay->_state <= State::Normal) {
+            if (_TopOverlay && _TopOverlay->isVisible() && _TopOverlay->_state <= State::Normal) {
                 rect.setTop(std::max(rect.top(), _TopOverlay->rectOverlay.bottom()));
             }
             if (dockArea == Qt::RightDockWidgetArea) {
@@ -1617,7 +1660,7 @@ bool OverlayTabWidget::getAutoHideRect(QRect& rect) const
             break;
         case Qt::TopDockWidgetArea:
         case Qt::BottomDockWidgetArea:
-            if (_LeftOverlay->isVisible() && _LeftOverlay->_state <= State::Normal) {
+            if (_LeftOverlay && _LeftOverlay->isVisible() && _LeftOverlay->_state <= State::Normal) {
                 rect.setLeft(std::max(rect.left(), _LeftOverlay->rectOverlay.right()));
             }
             if (dockArea == Qt::TopDockWidgetArea) {
@@ -1625,7 +1668,8 @@ bool OverlayTabWidget::getAutoHideRect(QRect& rect) const
             }
             else {
                 rect.setTop(rect.top() + std::max(rect.height() - hintWidth, 0));
-                if (_RightOverlay->isVisible() && _RightOverlay->_state <= State::Normal) {
+                if (_RightOverlay && _RightOverlay->isVisible()
+                    && _RightOverlay->_state <= State::Normal) {
                     QPoint offset = getMainWindow()->getMdiArea()->pos();
                     rect.setRight(std::min(rect.right(), _RightOverlay->x() - offset.x()));
                 }
