@@ -267,13 +267,10 @@ public:
         unitChanged();
         getWindowParameter()->Attach(this);
 
-        Gui::Application::Instance->signalActiveDocument.connect([this](const Gui::Document&) {
-            unitChanged();
-        });
-
-        Gui::Application::Instance->signalDeleteDocument.connect([this](const Gui::Document&) {
-            unitChanged();
-        });
+        auto updateUnitLabel = [this](const Gui::Document&) { unitChanged(); };
+        
+        Gui::Application::Instance->signalActiveDocument.connect(updateUnitLabel);
+        Gui::Application::Instance->signalDeleteDocument.connect(updateUnitLabel);
         updateFixedWidth();
         setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     }
