@@ -193,6 +193,35 @@ class DimensionWidget: public QPushButton, WindowParameter
     Q_OBJECT
     int fixedWidthValue = 0;
     QMenu* unitMenu = nullptr;
+private:
+    // Position the unit menu popup above the status-bar button (like the nav style popup).
+    // Clamp horizontally to the current screen; if there is no room above, show it below instead.
+    void positionUnitMenuPopup()
+    {
+        if (!unitMenu) {
+            return;
+        }
+
+        const QSize menuSize = unitMenu->sizeHint();
+        QPoint menuPos = mapToGlobal(rect().topLeft());
+        menuPos.setY(menuPos.y() - menuSize.height());
+
+        QScreen* screen = QGuiApplication::screenAt(mapToGlobal(rect().center()));
+        if (!screen) {
+            screen = QGuiApplication::primaryScreen();
+        }
+        if (screen) {
+            const QRect available = screen->availableGeometry();
+            const int minX = available.left();
+            const int maxX = available.right() - menuSize.width() + 1;
+            menuPos.setX(std::clamp(menuPos.x(), minX, maxX));
+            if (menuPos.y() < available.top()) {
+                menuPos.setY(mapToGlobal(rect().bottomLeft()).y());
+            }
+        }
+
+        unitMenu->move(menuPos);
+    }
 
 public:
     explicit DimensionWidget(QWidget* parent)
@@ -227,30 +256,9 @@ public:
         });
 
         QObject::connect(unitMenu, &QMenu::aboutToShow, this, [this]() {
-            QTimer::singleShot(0, this, [this]() {
-                if (!unitMenu) {
-                    return;
-                }
-                const QSize menuSize = unitMenu->sizeHint();
-                QPoint menuPos = mapToGlobal(rect().topLeft());
-                menuPos.setY(menuPos.y() - menuSize.height());
-
-                QScreen* screen = QGuiApplication::screenAt(mapToGlobal(rect().center()));
-                if (!screen) {
-                    screen = QGuiApplication::primaryScreen();
-                }
-                if (screen) {
-                    const QRect available = screen->availableGeometry();
-                    const int minX = available.left();
-                    const int maxX = available.right() - menuSize.width() + 1;
-                    menuPos.setX(std::clamp(menuPos.x(), minX, maxX));
-                    if (menuPos.y() < available.top()) {
-                        menuPos.setY(mapToGlobal(rect().bottomLeft()).y());
-                    }
-                }
-
-                unitMenu->move(menuPos);
-            });
+            /* Defer repositioning until the next event loop iteration so Qt has already
+               calculated the final menu geometry/sizeHint for the current style/font.*/
+            QTimer::singleShot(0, this, [this]() { positionUnitMenuPopup(); });
         });
 
         setMenu(unitMenu);
