@@ -587,8 +587,7 @@ void SoNaviCube::rebuildButtonFaces() const
     addButtonFace(PickId::ArrowWest, SbVec3f(0, -1, 0));
     addButtonFace(PickId::ArrowLeft, SbVec3f(0, 0, 1));
     addButtonFace(PickId::ArrowRight, SbVec3f(0, 0, -1));
-    addButtonFace(PickId::Backside1, SbVec3f(0, 1, 0));
-    addButtonFace(PickId::Backside2, SbVec3f(0, 1, 0));
+    addButtonFace(PickId::Backside, SbVec3f(0, 1, 0));
     addButtonFace(PickId::Home);
     addButtonFace(PickId::ViewMenu);
 }
