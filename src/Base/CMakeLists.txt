@@ -87,6 +87,10 @@ endif()
 
 list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
 
+if(cpptrace_FOUND)
+    list(APPEND FreeCADBase_LIBS cpptrace::cpptrace)
+endif()
+
 if (BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND FreeCADBase_LIBS ${Python3_LIBRARIES})
 endif (BUILD_DYNAMIC_LINK_PYTHON)
