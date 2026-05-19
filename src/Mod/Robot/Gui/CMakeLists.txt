@@ -9,7 +9,11 @@ set (Robot_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Robot_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Robot_TR_QRC} ${QM_SRCS})
-qt_add_resources(RobotResource_SRCS Resources/Robot.qrc ${Robot_TR_QRC})
+qt_add_resources(RobotResource_SRCS
+    Resources/Robot.qrc
+    ${Robot_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 SOURCE_GROUP("Resources" FILES ${RobotResource_SRCS})
 
 set(RobotGui_UIC_SRCS

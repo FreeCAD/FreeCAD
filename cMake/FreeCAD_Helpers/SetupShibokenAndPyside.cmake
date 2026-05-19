@@ -232,7 +232,8 @@ function(PYSIDE_WRAP_RC)
             set(rccbin_relative "${rcpy_base}_rc.rcc")
             set(rccbin "${CMAKE_CURRENT_BINARY_DIR}/${rccbin_relative}")
             add_custom_command(OUTPUT "${rcpy}" "${rccbin}"
-                COMMAND "${PYSIDE_RCC_EXECUTABLE}" --binary "${infile}" -o "${rccbin}"
+                COMMAND "${PYSIDE_RCC_EXECUTABLE}" ${FREECAD_RCC_OPTIONS}
+                        --binary "${infile}" -o "${rccbin}"
                 COMMAND "${CMAKE_COMMAND}" -DOUT="${rcpy}" -DRCCBIN="${rccbin_relative}"
                         -DPYSIDE_MAJOR_VERSION="${PYSIDE_MAJOR_VERSION}"
                         -P "${CMAKE_BINARY_DIR}/cMake/FreeCAD_Helpers/PysideQtRccGen.cmake"
