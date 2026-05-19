@@ -589,10 +589,8 @@ void SoNaviCube::rebuildButtonFaces() const
     addButtonFace(PickId::ArrowRight, SbVec3f(0, 0, -1));
     addButtonFace(PickId::Backside1, SbVec3f(0, 1, 0));
     addButtonFace(PickId::Backside2, SbVec3f(0, 1, 0));
-    addButtonFace(PickId::Isometric);
     addButtonFace(PickId::Home);
     addButtonFace(PickId::ViewMenu);
-    addButtonFace(PickId::ViewMenuBorder);
 }
 
 void SoNaviCube::addButtonFace(PickId pickId, const SbVec3f& direction) const
@@ -640,36 +638,34 @@ void SoNaviCube::addButtonFace(PickId pickId, const SbVec3f& direction) const
         }
         case PickId::ViewMenu: {
             offx = 0.90F;
-            offy = 0.90F;
-            pointData = {0.0F, 0.0F, -13.0F, -12.0F, 13.0F, -12.0F, 0.0F, 0.0F};
-            break;
-        }
-        case PickId::ViewMenuBorder: {
-            offx = 0.90F;
-            offy = 0.87F;
+            offy = 0.95F;
 
-            float width = 19.0F;
-            float height = 13.0F;
-            float radius = 4.0F;
+            // 1. The small bar on top
+            std::vector<float> ptsBar = {-13.0F, -20.0F, 13.0F, -20.0F, 13.0F, -16.0F, -13.0F, -16.0F};
+            std::vector<SbVec3f> loopBar;
+            for (size_t i = 0; i < ptsBar.size(); i += 2) {
+                loopBar.push_back(transform(ptsBar[i], ptsBar[i + 1]));
+            }
+            face.lineLoops.push_back(loopBar);
 
-            pointData = {
-                -width,
-                -(height - radius),
-                -(width - radius),
-                -height,
-                width - radius,
-                -height,
-                width,
-                -(height - radius),
-                width,
-                height - radius,
-                width - radius,
-                height,
-                -(width - radius),
-                height,
-                -width,
-                height - radius
-            };
+            face.trianglesArray.push_back(loopBar[0]);
+            face.trianglesArray.push_back(loopBar[1]);
+            face.trianglesArray.push_back(loopBar[2]);
+            face.trianglesArray.push_back(loopBar[0]);
+            face.trianglesArray.push_back(loopBar[2]);
+            face.trianglesArray.push_back(loopBar[3]);
+
+            // 2. The triangle pointing down
+            std::vector<float> ptsTri = {-13.0F, -12.0F, 13.0F, -12.0F, 0.0F, 0.0F};
+            std::vector<SbVec3f> loopTri;
+            for (size_t i = 0; i < ptsTri.size(); i += 2) {
+                loopTri.push_back(transform(ptsTri[i], ptsTri[i + 1]));
+            }
+            face.lineLoops.push_back(loopTri);
+
+            face.trianglesArray.push_back(loopTri[0]);
+            face.trianglesArray.push_back(loopTri[1]);
+            face.trianglesArray.push_back(loopTri[2]);
             break;
         }
         case PickId::Isometric: {
