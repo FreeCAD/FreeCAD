@@ -119,19 +119,19 @@ DecodedMappedName MappedName::getDecodedMappedName(std::string mappedNameString)
                     case Data::SECTION_ITERATION_TAG_INDEX:
                         section.iterationTag = entryList.front();
                         break;
-                    case SECTION_OPCODE_INDEX:
+                    case Data::SECTION_OPCODE_INDEX:
                         section.opCode = entryList.front();
                         break;
-                    case SECTION_INDEX_NUM_INDEX:
+                    case Data::SECTION_INDEX_NUM_INDEX:
                         section.index = entryList.front();
                         break;
-                    case SECTION_ELEMENT_TYPE_INDEX:
+                    case Data::SECTION_ELEMENT_TYPE_INDEX:
                         section.elementType = entryList.front().front();
                         break;
-                    case SECTION_DUPLICATE_COUNT_INDEX:
+                    case Data::SECTION_DUPLICATE_COUNT_INDEX:
                         section.duplicateCount = entryList.front();
                         break;
-                    case SECTION_MAPPER_FLAGS_INDEX:
+                    case Data::SECTION_MAPPER_FLAGS_INDEX:
                         section.mapperFlags = entryList;
                         break;
                 }

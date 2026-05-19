@@ -2126,7 +2126,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                                                              op,
                                                                              modifiedI,
                                                                              (*info->shapetype),
-                                                                             0).c_str());
+                                                                             0,
+                                                                             {"MOD"}).c_str());
                             }
 
                             bool skipMap = false;
@@ -2276,7 +2277,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                                                                           op,
                                                                                           usedLinkedNames.count(linkedNames),
                                                                                           generatedShapeKey.second.masterName.toString()[0],
-                                                                                          0).c_str());
+                                                                                          0,
+                                                                                          {"GEN"}).c_str());
                 
                 usedLinkedNames.insert(linkedNames);
 
@@ -6472,27 +6474,43 @@ bool TopoShape::isSame(const Data::ComplexGeoData& _other) const
 
 long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) const
 {
-    long res = 0;
-    long tag = 0;
-    traceElement(_name, [&](const Data::MappedName& name, int offset, long tag2, long) {
-        (void)offset;
-        if (tag2 < 0) {
-            tag2 = -tag2;
-        }
-        if (tag && tag2 != tag) {
-            if (--depth < 1) {
+    App::HistoryAlgorithm historyAlgo = App::getSelectedHistoryAlgorithm();
+
+    if (historyAlgo == App::HistoryAlgorithm::V1) {
+        long res = 0;
+        long tag = 0;
+        traceElement(_name, [&](const Data::MappedName& name, int offset, long tag2, long) {
+            (void)offset;
+            if (tag2 < 0) {
+                tag2 = -tag2;
+            }
+            if (tag && tag2 != tag) {
+                if (--depth < 1) {
+                    return true;
+                }
+            }
+            tag = tag2;
+            if (depth == 1 && name.startsWith(genPostfix(), offset)) {
+                res = tag;
                 return true;
             }
-        }
-        tag = tag2;
-        if (depth == 1 && name.startsWith(genPostfix(), offset)) {
-            res = tag;
-            return true;
-        }
-        return false;
-    });
+            return false;
+        });
+        
+        return res;
+    } else if (historyAlgo == App::HistoryAlgorithm::V2) {
+        Data::DecodedMappedName _decodedName = _name.getDecodedMappedName();
 
-    return res;
+        if (_decodedName.size()) {
+            Data::DecodedMappedSection lastSection = _decodedName.back();
+
+            if (std::stol(lastSection.iterationTag) == Tag && lastSection.hasMapperFlag("GEN")) { // TODO: globablize mapper flag
+                return true;
+            }
+        }   
+    }
+
+    return false;
 }
 
 void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix, bool force)
@@ -6520,8 +6538,8 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
         for (Data::MappedElement &mappedElement : copiedElementMap) {
             Data::DecodedMappedName decodedName = mappedElement.name.getDecodedMappedName();
 
-            if (decodedName.size() && (decodedName.back().index == "0" || force)) {
-                decodedName.back().index = std::to_string(tag);
+            if (decodedName.size() && (decodedName.back().iterationTag == "0" || force)) {
+                decodedName.back().iterationTag = std::to_string(tag);
                 
                 mappedElement.name = Data::MappedName::fromDecodedMappedName(decodedName);
             }

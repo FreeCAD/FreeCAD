@@ -162,6 +162,13 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     try {
         TopoShape shape(0);
         Part::SignalException sig;
+
+        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            shape.Tag = getID(); // we want to avoid changing V1 names, as that algorithm
+            //                      will only be used for compatibility reasons, and we
+            //                      do not want to break any models made with it.
+        }
+
         shape.makeElementChamfer(
             TopShape,
             edges,
