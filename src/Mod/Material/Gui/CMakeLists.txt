@@ -23,7 +23,11 @@ set(Material_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Material_translation.q
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Material_TR_QRC} ${QM_SRCS})
-qt_add_resources(MatGui_QRC_SRCS Resources/Material.qrc ${Material_TR_QRC})
+qt_add_resources(MatGui_QRC_SRCS
+    Resources/Material.qrc
+    ${Material_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 generate_from_py(MaterialTreeWidget)
 
