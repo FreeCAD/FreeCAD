@@ -94,6 +94,14 @@ inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(
     vp.drawEdit(list);
 }
 
+inline void ViewProviderSketchDrawSketchHandlerAttorney::drawLineExtensionAutoConstraintHint(
+    ViewProviderSketch& vp,
+    const std::vector<Base::Vector2d>& HintCurve
+)
+{
+    vp.drawLineExtensionAutoConstraintHint(HintCurve);
+}
+
 inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(
     ViewProviderSketch& vp,
     const std::vector<Base::Vector2d>& EditMarkers,
@@ -332,6 +340,7 @@ void DrawSketchHandler::deactivate()
     // clear temporary Curve and Markers from the scenograph
     clearEdit();
     clearEditMarkers();
+    clearLineExtensionAutoConstraintHintDrawing();
     resetPositionText();
     setAngleSnapping(false);
 
@@ -551,6 +560,112 @@ void DrawSketchHandler::seekPreselectionAutoConstraint(
     }
 }
 
+double DrawSketchHandler::getAutoConstraintSearchDistance() const
+{
+    return 0.1 * sketchgui->getScaleFactor();
+}
+
+bool DrawSketchHandler::seekLineExtensionAutoConstraint(
+    std::vector<AutoConstraint>& suggestedConstraints,
+    const Base::Vector2d& Pos,
+    AutoConstraint::TargetType type
+)
+{
+    if (type != AutoConstraint::VERTEX && type != AutoConstraint::VERTEX_NO_TANGENCY) {
+        return false;
+    }
+
+    for (const auto& constraint : suggestedConstraints) {
+        if (constraint.Type == Sketcher::Coincident || constraint.Type == Sketcher::PointOnObject
+            || constraint.Type == Sketcher::Symmetric) {
+            return false;
+        }
+    }
+
+    SketchObject* obj = sketchgui->getSketchObject();
+    if (!obj) {
+        return false;
+    }
+
+    constexpr double segmentStartParameter = 0.0;
+    constexpr double segmentEndParameter = 1.0;
+
+    double bestDistance = getAutoConstraintSearchDistance();
+    int bestGeoId = GeoEnum::GeoUndef;
+    Base::Vector2d bestAnchor;
+    Base::Vector2d bestProjection;
+
+    for (int geoId = 0; geoId <= getHighestCurveIndex(); ++geoId) {
+        const Part::Geometry* geo = obj->getGeometry(geoId);
+        if (!geo || !geo->isDerivedFrom<Part::GeomLineSegment>()) {
+            continue;
+        }
+
+        auto* line = static_cast<const Part::GeomLineSegment*>(geo);
+        const Base::Vector2d startPoint = toVector2d(line->getStartPoint());
+        const Base::Vector2d endPoint = toVector2d(line->getEndPoint());
+        const Base::Vector2d lineDirection = endPoint - startPoint;
+        const double lineLengthSquared = lineDirection.Sqr();
+
+        if (lineLengthSquared <= Precision::SquareConfusion()) {
+            continue;
+        }
+
+        const Base::Vector2d cursorFromStart = Pos - startPoint;
+        const double parameter = (cursorFromStart.x * lineDirection.x
+                                  + cursorFromStart.y * lineDirection.y)
+            / lineLengthSquared;
+
+        if (parameter >= segmentStartParameter && parameter <= segmentEndParameter) {
+            continue;
+        }
+
+        const Base::Vector2d projection = startPoint + parameter * lineDirection;
+        const double distance = (Pos - projection).Length();
+        if (distance > bestDistance) {
+            continue;
+        }
+
+        bestDistance = distance;
+        bestGeoId = geoId;
+        bestAnchor = parameter < segmentStartParameter ? startPoint : endPoint;
+        bestProjection = projection;
+    }
+
+    if (bestGeoId == GeoEnum::GeoUndef) {
+        return false;
+    }
+
+    AutoConstraint constr;
+    constr.Type = Sketcher::PointOnObject;
+    constr.GeoId = bestGeoId;
+    constr.PosId = PointPos::none;
+    suggestedConstraints.push_back(constr);
+
+    lineExtensionAutoConstraintHint.isValid = true;
+    lineExtensionAutoConstraintHint.start = bestAnchor;
+    lineExtensionAutoConstraintHint.end = bestProjection;
+
+    return true;
+}
+
+void DrawSketchHandler::resetLineExtensionAutoConstraintHint()
+{
+    lineExtensionAutoConstraintHint = LineExtensionAutoConstraintHint();
+}
+
+void DrawSketchHandler::renderLineExtensionAutoConstraintHint() const
+{
+    if (!lineExtensionAutoConstraintHint.isValid) {
+        clearLineExtensionAutoConstraintHintDrawing();
+        return;
+    }
+
+    drawLineExtensionAutoConstraintHint(
+        {lineExtensionAutoConstraintHint.start, lineExtensionAutoConstraintHint.end}
+    );
+}
+
 bool DrawSketchHandler::seekAlignmentAutoConstraint(
     std::vector<AutoConstraint>& suggestedConstraints,
     const Base::Vector2d& Pos,
@@ -679,7 +794,7 @@ bool DrawSketchHandler::seekTangentAutoConstraint(
 
     // Do not consider if distance is more than that.
     // Decrease this value when a candidate is found.
-    double tangDeviation = 0.1 * sketchgui->getScaleFactor();
+    double tangDeviation = getAutoConstraintSearchDistance();
 
     // Get geometry list
     const std::vector<Part::Geometry*> geomlist = obj->getCompleteGeometry();
@@ -902,11 +1017,14 @@ int DrawSketchHandler::seekAutoConstraint(
 {
     suggestedConstraints.clear();
 
+    resetLineExtensionAutoConstraintHint();
+
     if (!sketchgui->Autoconstraints.getValue()) {
         return 0;  // If Autoconstraints property is not set quit
     }
 
     seekPreselectionAutoConstraint(suggestedConstraints, Pos, Dir, type);
+    seekLineExtensionAutoConstraint(suggestedConstraints, Pos, type);
 
     if (Dir.Length() > 1e-8 && type != AutoConstraint::CURVE) {
         bool tangentCreated = false;
@@ -1124,7 +1242,10 @@ int DrawSketchHandler::seekAndRenderAutoConstraint(
     AutoConstraint::TargetType type
 )
 {
-    if (seekAutoConstraint(suggestedConstraints, Pos, Dir, type)) {
+    const int constraintCount = seekAutoConstraint(suggestedConstraints, Pos, Dir, type);
+    renderLineExtensionAutoConstraintHint();
+
+    if (constraintCount) {
         renderSuggestConstraintsCursor(suggestedConstraints);
     }
     else {
@@ -1175,9 +1296,24 @@ void DrawSketchHandler::drawEdit(const std::vector<Part::Geometry*>& geometries)
     drawEdit(list);
 }
 
+void DrawSketchHandler::drawLineExtensionAutoConstraintHint(
+    const std::vector<Base::Vector2d>& HintCurve
+) const
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::drawLineExtensionAutoConstraintHint(
+        *sketchgui,
+        HintCurve
+    );
+}
+
 void DrawSketchHandler::clearEdit() const
 {
     drawEdit(std::vector<Base::Vector2d>());
+}
+
+void DrawSketchHandler::clearLineExtensionAutoConstraintHintDrawing() const
+{
+    drawLineExtensionAutoConstraintHint(std::vector<Base::Vector2d>());
 }
 
 void DrawSketchHandler::clearEditMarkers() const
