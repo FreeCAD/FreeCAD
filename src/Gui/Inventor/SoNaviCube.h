@@ -95,8 +95,7 @@ public:
         Backside,
         Home,
         Isometric,
-        ViewMenu,
-        ViewMenuBorder
+        ViewMenu
     };
 
     enum class FaceType
