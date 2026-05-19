@@ -280,15 +280,23 @@ class ObjectMillFacing(PathOp.ObjectOp):
             "target_position": None,
             "local_clearance": obj.SafeHeight.Value,
             "global_clearance": obj.ClearanceHeight.Value,
-            "solids": solids,
+            "solids": None,
             "tool_shape": None,
             "tool_diameter": None,
-            "safety_margin": obj.LinkingSafetyMargin.Value,
+            "collision_clearance": obj.CollisionClearance.Value,
         }
-        if obj.LinkingMode == "Safest":
-            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
-        elif obj.LinkingMode == "Compromise":
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linkingArgs["local_clearance"] = obj.ClearanceHeight.Value
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linkingArgs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linkingArgs["solids"] = solids
             linkingArgs["tool_diameter"] = tool_diameter
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
 
         # Determine the step-downs
         finish_step = 0.0  # No finish step for facing

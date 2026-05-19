@@ -1287,6 +1287,8 @@ SET(Workbench_SRCS
 SOURCE_GROUP("Workbench" FILES ${Workbench_SRCS})
 
 SET(Selection_SRCS
+    Selection/BoxSelection.cpp
+    Selection/BoxSelection.h
     Selection/SelectionObjectPyImp.cpp
     Selection/SelectionObject.h
     Selection/SelectionObject.cpp

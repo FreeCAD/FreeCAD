@@ -419,6 +419,7 @@ def Execute(op, obj):
             "keepToolDownRatio": keepToolDownRatio,
             "stockToLeave": float(obj.StockToLeave),
             "modelAwareExperiment": obj.ModelAwareExperiment,
+            "adaptiveGeneratorVersion": "1.0.1",
         }
 
         inputStateChanged = False
@@ -654,6 +655,7 @@ def ExecuteModelAware(op, obj):
             "zStockToLeave": obj.ZStockToLeave.Value,
             "orderCutsByRegion": obj.OrderCutsByRegion,
             "modelAwareExperiment": obj.ModelAwareExperiment,
+            "adaptiveGeneratorVersion": "1.0.1",
         }
 
         inputStateObject = [outsideInputStateObject, insideInputStateObject]

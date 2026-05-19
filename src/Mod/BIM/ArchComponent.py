@@ -66,6 +66,18 @@ else:
     # \endcond
 
 
+def _make_projected_horizontal_area_face(projected_faces):
+    """Build one transient XY face from projected coplanar analysis faces."""
+
+    if not projected_faces:
+        return None
+
+    fused_face = projected_faces[0].copy(noElementMap=True)
+    for face in projected_faces[1:]:
+        fused_face = fused_face.fuse(face, noElementMap=True)
+    return fused_face.removeSplitter()
+
+
 def addToComponent(compobject, addobject, prop):
     """Add an object to a component's property.
 
@@ -1482,9 +1494,10 @@ class AreaCalculator:
     def _computeHorizontalAreaAndPerimeter(self, horizontalAreaFaces):
         """Compute the horizontal area and perimeter length.
 
-        Projects the given faces onto the XY plane, fuses them, and calculates:
-        - The total horizontal area.
-        - The perimeter length of the fused horizontal area.
+        Projects the given faces onto the XY plane, combines the projected
+        areas into one transient union shape, and calculates:
+        - the total horizontal area
+        - the perimeter length of the combined horizontal outline
 
         Parameters
         ----------
@@ -1522,12 +1535,20 @@ class AreaCalculator:
                         self.resetAreas()
                         return
                     wire = TechDraw.findShapeOutline(face, 1, direction)
-                    projectedFace = Part.makeFace([wire], "Part::FaceMakerSimple")
+                    projectedFace = Part.makeFace(
+                        [wire],
+                        "Part::FaceMakerSimple",
+                        noElementMap=True,
+                    )
                 else:
                     edges = TechDraw.project(face, direction)[0].Edges
                     wires = DraftGeomUtils.findWires(edges)
                     # Using "Part::FaceMakerCheese" as the face can have holes
-                    projectedFace = Part.makeFace(wires, "Part::FaceMakerCheese")
+                    projectedFace = Part.makeFace(
+                        wires,
+                        "Part::FaceMakerCheese",
+                        noElementMap=True,
+                    )
                 # Part.show(projectedFace)
                 projectedFaces.append(projectedFace)
             except Part.OCCError:
@@ -1547,13 +1568,22 @@ class AreaCalculator:
         else:
             param_grp.SetBool("allowCrazyEdge", old_allow_crazy_edge)
 
+        fusedFace = None
         if projectedFaces:
-            fusedFace = projectedFaces.pop()
-            for face in projectedFaces:
-                fusedFace = fusedFace.fuse(face)
-            fusedFace = fusedFace.removeSplitter()
-            # Part.show(fusedFace)
+            try:
+                fusedFace = _make_projected_horizontal_area_face(projectedFaces)
+            except Part.OCCError:
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "Arch",
+                        f"Error computing areas for {self.obj.Label}: unable to combine "
+                        "projected horizontal faces. Area values will be reset to 0.\n",
+                    )
+                )
+                self.resetAreas()
+                return
 
+        if fusedFace:
             if self.obj.HorizontalArea.Value != fusedFace.Area:
                 self.obj.HorizontalArea = fusedFace.Area
 

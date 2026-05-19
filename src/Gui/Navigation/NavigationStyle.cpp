@@ -56,6 +56,7 @@
 #include "MouseSelection.h"
 #include "Navigation/NavigationAnimator.h"
 #include "Navigation/NavigationAnimation.h"
+#include "Selection.h"
 #include "SoFullPathHelper.h"
 #include "View3DInventorViewer.h"
 
@@ -1557,6 +1558,7 @@ void NavigationStyle::startSelection(AbstractMouseSelection* mouse)
     }
 
     mouseSelection = mouse;
+    clearSelectionStartPosition();
     mouseSelection->grabMouseModel(viewer);
 }
 
@@ -1591,12 +1593,14 @@ void NavigationStyle::startSelection(NavigationStyle::SelectionMode mode)
 
     if (mouseSelection) {
         mouseSelection->grabMouseModel(viewer);
+        clearSelectionStartPosition();
     }
 }
 
 void NavigationStyle::abortSelection()
 {
     pcPolygon.clear();
+    clearSelectionStartPosition();
     if (mouseSelection) {
         mouseSelection->releaseMouseModel(true);
         delete mouseSelection;
@@ -1607,6 +1611,7 @@ void NavigationStyle::abortSelection()
 void NavigationStyle::stopSelection()
 {
     pcPolygon.clear();
+    clearSelectionStartPosition();
     if (mouseSelection) {
         mouseSelection->releaseMouseModel();
         delete mouseSelection;
@@ -1631,6 +1636,74 @@ const std::vector<SbVec2s>& NavigationStyle::getPolygon(SelectionRole* role) con
         *role = this->selectedRole;
     }
     return pcPolygon;
+}
+
+void NavigationStyle::updateSelectionStartPosition(SbBool press, const SbVec2s& position)
+{
+    if (press) {
+        setSelectionStartPosition(position);
+    }
+    else {
+        clearSelectionStartPosition();
+    }
+}
+
+void NavigationStyle::setSelectionStartPosition(const SbVec2s& position)
+{
+    selectionStartPosition = position;
+}
+
+void NavigationStyle::clearSelectionStartPosition()
+{
+    selectionStartPosition.reset();
+}
+
+int NavigationStyle::selectionMoveThreshold() const
+{
+    return QApplication::startDragDistance();
+}
+
+bool NavigationStyle::tryStartBoxSelection(const SoLocation2Event* const ev, bool additiveSelection)
+{
+    if (!selectionStartPosition) {
+        return false;
+    }
+
+    return tryStartBoxSelection(*selectionStartPosition, ev, additiveSelection, false);
+}
+
+bool NavigationStyle::tryStartBoxSelection(
+    const SbVec2s& startPosition,
+    const SoLocation2Event* const ev,
+    bool additiveSelection,
+    bool selectElement
+)
+{
+    if (!ev || mouseSelection || !viewer || !viewer->isSelectionEnabled()) {
+        return false;
+    }
+    if (viewer->isEditing() || viewer->isEditingViewProvider()) {
+        return false;
+    }
+
+    const SbVec2s current = ev->getPosition();
+    const SbVec2f movedBy(current - startPosition);
+    if (movedBy.length() <= selectionMoveThreshold()) {
+        return false;
+    }
+
+    if (isDraggerUnderCursor(startPosition)) {
+        return false;
+    }
+
+    Gui::Selection().rmvPreselect();
+    mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
+    mouseDownConsumedEvent.setTime(ev->getTime());
+
+    auto* selection = new BoxSelectSelection(additiveSelection, selectElement);
+    selection->setAnchor(startPosition, current);
+    startSelection(selection);
+    return true;
 }
 
 bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
@@ -1811,6 +1884,17 @@ SbBool NavigationStyle::processEvent(const SoEvent* const ev)
             mouseSelection = nullptr;
             syncWithEvent(ev);
             return NavigationStyle::processSoEvent(ev);
+        }
+        else if (hd == AbstractMouseSelection::FinishAndConsume) {
+            pcPolygon = mouseSelection->getPositions();
+            selectedRole = mouseSelection->selectedRole();
+            delete mouseSelection;
+            mouseSelection = nullptr;
+            syncWithEvent(ev);
+            if (!button1down && !button2down && !button3down && currentmode != IDLE) {
+                setViewingMode(IDLE);
+            }
+            return true;
         }
         else if (hd == AbstractMouseSelection::Cancel) {
             pcPolygon.clear();

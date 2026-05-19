@@ -1082,7 +1082,7 @@ Szerokość skrawania 100% powoduje, że dwa różne cykle nie nakładają się 
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="287"/>
       <source>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</source>
-      <translation type="unfinished">The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</translation>
+      <translation>Maksymalny dopuszczalny kąt zagłębiania spiralnego. Ustaw zero, aby wyłączyć ograniczenie kąta wejścia.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="297"/>
@@ -4939,8 +4939,8 @@ Ta właściwość jest używana tylko wtedy, gdy włączony jest tryb Eksperymen
       <location filename="../../../Path/Op/Adaptive.py" line="1671"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
-      <translation type="unfinished">The maximum allowable helix ramp entry angle (degrees)
-Set to zero to disable limitation by ramp angle</translation>
+      <translation>Maksymalny dopuszczalny kąt wejścia po helisie (stopnie)
+Ustaw na zero, aby wyłączyć ograniczenie kąta wejścia po rampie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1681"/>
@@ -4983,7 +4983,7 @@ Ta właściwość jest używana tylko wtedy, gdy funkcja Eksperymentalny z uwzgl
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1918"/>
       <source>The maximum allowable descent in a single revolution of the helixSet to zero to disable limitation by pitch</source>
-      <translation type="unfinished">The maximum allowable descent in a single revolution of the helixSet to zero to disable limitation by pitch</translation>
+      <translation>Maksymalne dopuszczalne zagłębienie na jeden obrót helisy. Ustaw zero, aby wyłączyć ograniczenie skokiem helisy.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1615"/>

@@ -8,6 +8,7 @@ from Base.Rotation import Rotation as RotationPy
 from Geometry import Geometry
 from Part.App.BSplineCurve import BSplineCurve
 from Part.App.TrimmedCurve import TrimmedCurve
+from TopoShape import TopoShape
 from typing import Final, overload, List, Union, Optional, Tuple
 
 @export(
@@ -39,7 +40,7 @@ class GeometryCurve(Geometry):
     """Returns a rotation object to describe the orientation for curve that supports it"""
 
     @constmethod
-    def toShape(self) -> object:
+    def toShape(self) -> TopoShape:
         """
         Return the shape for the geometry.
         """

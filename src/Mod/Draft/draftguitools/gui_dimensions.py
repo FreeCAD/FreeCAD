@@ -46,15 +46,14 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import DraftVecUtils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-import draftutils.gui_utils as gui_utils
-
+from draftgeoutils import general as geo_general
+from draftgeoutils import intersections as geo_intersections
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import gui_utils
 from draftutils.translate import translate
 from draftutils.messages import _toolmsg, _msg
-
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -146,7 +145,7 @@ class Dimension(gui_base_original.Creator):
             n = int(sel_object.SubElementNames[0].lstrip("Edge")) - 1
             self.indices.append(n)
 
-            if DraftGeomUtils.geomType(edge) == "Line":
+            if geo_general.geomType(edge) == "Line":
                 self.node.extend([edge.Vertexes[0].Point, edge.Vertexes[1].Point])
 
                 # Iterate over the vertices of the parent `Object`;
@@ -162,7 +161,7 @@ class Dimension(gui_base_original.Creator):
 
                 if v1 is not None and v2 is not None:  # note that v1 or v2 can be zero
                     self.link = [sel_object.Object, v1, v2]
-            elif DraftGeomUtils.geomType(edge) == "Circle":
+            elif geo_general.geomType(edge) == "Circle":
                 self.node.extend([edge.Curve.Center, edge.Vertexes[0].Point])
                 self.edges = [edge]
                 self.arcmode = "diameter"
@@ -180,9 +179,7 @@ class Dimension(gui_base_original.Creator):
         super().finish()
 
     def angle_dimension_normal(self, edge1, edge2):
-        rot = App.Rotation(
-            DraftGeomUtils.vec(edge1), DraftGeomUtils.vec(edge2), self.wp.axis, "XYZ"
-        )
+        rot = App.Rotation(geo_general.vec(edge1), geo_general.vec(edge2), self.wp.axis, "XYZ")
         norm = rot.multVec(App.Vector(0, 0, 1))
         vnorm = gui_utils.get_3d_view().getViewDirection()
         if vnorm.getAngle(norm) < math.pi / 2:
@@ -374,7 +371,7 @@ class Dimension(gui_base_original.Creator):
                     r = self.point.sub(self.center)
                     self.arctrack.setRadius(r.Length)
                     a = self.arctrack.getAngle(self.point)
-                    pair = DraftGeomUtils.getBoundaryAngles(a, self.angles)
+                    pair = geo_general.getBoundaryAngles(a, self.angles)
                     if not (pair[0] < a < pair[1]):
                         self.angledata = [4 * math.pi - pair[0], 2 * math.pi - pair[1]]
                     else:
@@ -459,7 +456,7 @@ class Dimension(gui_base_original.Creator):
                                         self.node = [v1, v2]
                                         self.link = [ob, i1, i2]
                                         self.edges.append(ed)
-                                        if DraftGeomUtils.geomType(ed) == "Circle":
+                                        if geo_general.geomType(ed) == "Circle":
                                             # snapped edge is an arc
                                             self.arcmode = "diameter"
                                             self.link = [ob, num]
@@ -469,7 +466,7 @@ class Dimension(gui_base_original.Creator):
                                         self.edges.append(ed)
                                         # self.node now has the 4 endpoints
                                         self.node.extend([v1, v2])
-                                        c = DraftGeomUtils.findIntersection(
+                                        c = geo_intersections.findIntersection(
                                             self.node[0],
                                             self.node[1],
                                             self.node[2],

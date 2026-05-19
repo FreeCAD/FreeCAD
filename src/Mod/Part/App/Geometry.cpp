@@ -42,6 +42,9 @@
 #include <GC_MakeSegment.hxx>
 #include <GCE2d_MakeSegment.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
+#include <TColStd_Array1OfInteger.hxx>
+#include <TColgp_Array1OfPnt2d.hxx>
+#include <TColgp_Array1OfVec.hxx>
 #include <gce_ErrorType.hxx>
 #include <gce_MakeParab.hxx>
 #include <Geom_BezierCurve.hxx>
@@ -1726,7 +1729,7 @@ std::tuple<GeomBSplineCurvePtr, GeomBSplineCurvePtr> GeomBSplineCurve::split(dou
 void GeomBSplineCurve::interpolate(const std::vector<gp_Pnt>& p, Standard_Boolean periodic)
 {
     if (p.size() < 2) {
-        Standard_ConstructionError::Raise();
+        throw Standard_ConstructionError();
     }
 
     double tol3d = Precision::Approximation();
@@ -1743,10 +1746,10 @@ void GeomBSplineCurve::interpolate(const std::vector<gp_Pnt>& p, Standard_Boolea
 void GeomBSplineCurve::interpolate(const std::vector<gp_Pnt>& p, const std::vector<gp_Vec>& t)
 {
     if (p.size() < 2) {
-        Standard_ConstructionError::Raise();
+        throw Standard_ConstructionError();
     }
     if (p.size() != t.size()) {
-        Standard_ConstructionError::Raise();
+        throw Standard_ConstructionError();
     }
 
     double tol3d = Precision::Approximation();
@@ -1776,10 +1779,10 @@ void GeomBSplineCurve::getCardinalSplineTangents(
 {
     // https://de.wikipedia.org/wiki/Kubisch_Hermitescher_Spline#Cardinal_Spline
     if (p.size() < 2) {
-        Standard_ConstructionError::Raise();
+        throw Standard_ConstructionError();
     }
     if (p.size() != c.size()) {
-        Standard_ConstructionError::Raise();
+        throw Standard_ConstructionError();
     }
 
     t.resize(p.size());
@@ -1810,7 +1813,7 @@ void GeomBSplineCurve::getCardinalSplineTangents(
 {
     // https://de.wikipedia.org/wiki/Kubisch_Hermitescher_Spline#Cardinal_Spline
     if (p.size() < 2) {
-        Standard_ConstructionError::Raise();
+        throw Standard_ConstructionError();
     }
 
     t.resize(p.size());
@@ -2973,7 +2976,7 @@ void GeomArcOfCircle::setHandle(const Handle(Geom_TrimmedCurve) & c)
 {
     Handle(Geom_Circle) basis = Handle(Geom_Circle)::DownCast(c->BasisCurve());
     if (basis.IsNull()) {
-        Standard_Failure::Raise("Basis curve is not a circle");
+        throw Standard_Failure("Basis curve is not a circle");
     }
     this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
 }
@@ -3505,7 +3508,7 @@ void GeomArcOfEllipse::setHandle(const Handle(Geom_TrimmedCurve) & c)
 {
     Handle(Geom_Ellipse) basis = Handle(Geom_Ellipse)::DownCast(c->BasisCurve());
     if (basis.IsNull()) {
-        Standard_Failure::Raise("Basis curve is not an ellipse");
+        throw Standard_Failure("Basis curve is not an ellipse");
     }
     this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
 }
@@ -3978,7 +3981,7 @@ void GeomArcOfHyperbola::setHandle(const Handle(Geom_TrimmedCurve) & c)
 {
     Handle(Geom_Hyperbola) basis = Handle(Geom_Hyperbola)::DownCast(c->BasisCurve());
     if (basis.IsNull()) {
-        Standard_Failure::Raise("Basis curve is not an hyperbola");
+        throw Standard_Failure("Basis curve is not an hyperbola");
     }
     this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
 }
@@ -4416,7 +4419,7 @@ void GeomArcOfParabola::setHandle(const Handle(Geom_TrimmedCurve) & c)
 {
     Handle(Geom_Parabola) basis = Handle(Geom_Parabola)::DownCast(c->BasisCurve());
     if (basis.IsNull()) {
-        Standard_Failure::Raise("Basis curve is not a parabola");
+        throw Standard_Failure("Basis curve is not a parabola");
     }
     this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
 }
@@ -4750,7 +4753,7 @@ void GeomLineSegment::setHandle(const Handle(Geom_TrimmedCurve) & c)
 {
     Handle(Geom_Line) basis = Handle(Geom_Line)::DownCast(c->BasisCurve());
     if (basis.IsNull()) {
-        Standard_Failure::Raise("Basis curve is not a line");
+        throw Standard_Failure("Basis curve is not a line");
     }
     this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
 }

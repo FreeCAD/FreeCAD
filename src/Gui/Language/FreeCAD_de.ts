@@ -544,12 +544,12 @@ Die Eigenschaft dieses Objekts verweist auf die Eigenschaft des Variablensatzes.
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="51"/>
       <source>Press middle or ctrl+right mouse button</source>
-      <translation type="unfinished">Press middle or ctrl+right mouse button</translation>
+      <translation>Mittlere Maustaste oder Strg + rechte Maustaste drücken</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left, middle+right or shift+right mouse button</source>
-      <translation type="unfinished">Press middle+left, middle+right or shift+right mouse button</translation>
+      <translation>Mittlere + linke Maustaste, mittlere + rechte Maustaste oder Strg + rechte Maustaste drücken</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>

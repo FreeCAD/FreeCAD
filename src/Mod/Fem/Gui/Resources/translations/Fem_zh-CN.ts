@@ -1648,7 +1648,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>逐次超松弛法 (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
@@ -3876,11 +3876,9 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+      <translation>现有 x, y, z 三个坐标（小写）以及常用的数学函数，如 Sin, Log（大写）。此外，所有子细化项均可通过变量 F 使用，例如 F1, F2 等。支持的运算符包括 +、-、*、/、^。
 
-Example: "F2 + Sin(z)"</translation>
+示例："F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3920,11 +3918,9 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
+      <translation>现有 x, y, z 三个坐标（小写）以及常用的数学函数，如 Sin, Log（大写）。此外，所有子细化项均可通过变量 F 使用，例如 F1, F2 等。支持的运算符包括 +、-、*、/、^。
 
-Example: "F2 + Sin(z)"</translation>
+示例："F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>

@@ -544,12 +544,12 @@ Vlastnost tohoto objektu bude odkazovat na vlastnost Sady proměnných.</transla
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="51"/>
       <source>Press middle or ctrl+right mouse button</source>
-      <translation type="unfinished">Press middle or ctrl+right mouse button</translation>
+      <translation>Stiskněte prostřední nebo ctrl + pravé tlačítko myši</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left, middle+right or shift+right mouse button</source>
-      <translation type="unfinished">Press middle+left, middle+right or shift+right mouse button</translation>
+      <translation>Stiskněte prostřední + levé, prostřední + pravé nebo shift + pravé tlačítko myši</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>

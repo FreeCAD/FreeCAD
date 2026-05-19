@@ -16,17 +16,17 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
       <source>BIM Material</source>
-      <translation type="unfinished">BIM Material</translation>
+      <translation>BIM materiale</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
       <source>Choose preset</source>
-      <translation type="unfinished">Choose preset</translation>
+      <translation>Vælg forudindstilling</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="48"/>
       <source>Copy existing…</source>
-      <translation type="unfinished">Copy existing…</translation>
+      <translation>Kopier eksisterende…</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="139"/>
       <source>Section color</source>
-      <translation type="unfinished">Section color</translation>
+      <translation>Sektions farve</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="191"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="115"/>
       <source>Available revisions</source>
-      <translation type="unfinished">Available revisions</translation>
+      <translation>Tilgængelige revisioner</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="164"/>
@@ -150,17 +150,17 @@
       <location filename="../ui/BimServerTaskPanel.ui" line="14"/>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
       <source>BIM Server</source>
-      <translation type="unfinished">BIM Server</translation>
+      <translation>BIM Server</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="79"/>
       <source>Open in Browser</source>
-      <translation type="unfinished">Open in Browser</translation>
+      <translation>Åben i Browser</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
       <source>The list of projects present on the BIM Server</source>
-      <translation type="unfinished">The list of projects present on the BIM Server</translation>
+      <translation>Listen over tilgængelige projekter på BIM-serveren</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="109"/>
@@ -228,32 +228,32 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/ArchSchedule.ui" line="136"/>
       <source>If this is enabled, additional rows will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional rows will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Hvis dette er aktiveret, udfyldes yderligere rækker med hvert objekt. Hvis ikke, udfyldes kun totalerne.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="149"/>
       <source>Auto-update</source>
-      <translation type="unfinished">Auto-update</translation>
+      <translation>Auto-opdater</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="160"/>
       <source>Adds a row below the selected row/cell</source>
-      <translation type="unfinished">Adds a row below the selected row/cell</translation>
+      <translation>Tilføjer en række under den markerede række/celle</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="163"/>
       <source>Add Row</source>
-      <translation type="unfinished">Add Row</translation>
+      <translation>Tilføj Række</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="174"/>
       <source>Deletes the selected row</source>
-      <translation type="unfinished">Deletes the selected row</translation>
+      <translation>Sletter den valgte række</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="205"/>
       <source>Add Selection</source>
-      <translation type="unfinished">Add Selection</translation>
+      <translation>Tilføj Markering</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="90"/>
@@ -295,7 +295,7 @@ retrieved.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="85"/>
       <source>Optional unit for the result, e.g. m³, m^3, or m3</source>
-      <translation type="unfinished">Optional unit for the result, e.g. m³, m^3, or m3</translation>
+      <translation>Valgfri enhed for resultatet, f.eks. m3, m^3, eller m3</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="93"/>
@@ -392,12 +392,12 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
       <source>BIM server URL</source>
-      <translation type="unfinished">BIM server URL</translation>
+      <translation>BIM Server URL</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
       <source>Login (email)</source>
-      <translation type="unfinished">Login (email)</translation>
+      <translation>Login (email)</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
@@ -407,7 +407,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
       <source>Stay logged in across FreeCAD sessions</source>
-      <translation type="unfinished">Stay logged in across FreeCAD sessions</translation>
+      <translation>Forbliv logget ind på tværs af FreeCAD sessioner</translation>
     </message>
     <message>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
@@ -465,18 +465,18 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="150"/>
       <source>List of IFC properties for the selected objects. Double-click to edit. Drag and drop to reorganize.</source>
-      <translation type="unfinished">List of IFC properties for the selected objects. Double-click to edit. Drag and drop to reorganize.</translation>
+      <translation>Liste over IFC- egenskaber for de markerede objekter. Dobbeltklik for at redigere. Træk og slip for at omorganisere.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="170"/>
       <source>IFC Properties</source>
-      <translation type="unfinished">IFC Properties</translation>
+      <translation>IFC Egenskaber</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <location filename="../ui/dialogIfcProperties.ui" line="182"/>
       <source>Delete Selected Property/Property Set</source>
-      <translation type="unfinished">Delete Selected Property/Property Set</translation>
+      <translation>Slet Valgt Egenskab/Egenskabssæt</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="14"/>
@@ -486,12 +486,12 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="22"/>
       <source>IFC UUID</source>
-      <translation type="unfinished">IFC UUID</translation>
+      <translation>IFC UUID</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="38"/>
       <source>List of IFC properties for this object. Double-click to edit. Drag and drop to reorganize.</source>
-      <translation type="unfinished">List of IFC properties for this object. Double-click to edit. Drag and drop to reorganize.</translation>
+      <translation>Liste over IFC-egenskaber for dette objekt. Dobbeltklik for at redigere. Træk og slip for at omorganisere.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="76"/>
@@ -507,7 +507,7 @@ of that project, no matter if they are expanded or not.</translation>
       <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <location filename="../ui/dialogIfcElements.ui" line="39"/>
       <source>Order by</source>
-      <translation type="unfinished">Order by</translation>
+      <translation>Sortér efter</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="58"/>
@@ -540,12 +540,12 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="108"/>
       <source>Change material</source>
-      <translation type="unfinished">Change material</translation>
+      <translation>Ændre materiale</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="14"/>
       <source>Single IFC Document</source>
-      <translation type="unfinished">Single IFC Document</translation>
+      <translation>Enkelt IFC Dokument</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="20"/>
@@ -631,7 +631,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="14"/>
       <source>IFC Import Options</source>
-      <translation type="unfinished">IFC Import Options</translation>
+      <translation>IFC Importer Indstillinger</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="55"/>
@@ -671,7 +671,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="99"/>
       <source>No 3D representation</source>
-      <translation type="unfinished">No 3D representation</translation>
+      <translation>Ingen 3D repræsentation</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="119"/>
@@ -758,7 +758,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="60"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>Slå synlighed til/fra</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="67"/>
@@ -828,12 +828,12 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="222"/>
       <source>Elevation</source>
-      <translation type="unfinished">Elevation</translation>
+      <translation>Opstalt</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="229"/>
       <source>Declination</source>
-      <translation type="unfinished">Declination</translation>
+      <translation>Deklination</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="239"/>
@@ -843,7 +843,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="14"/>
       <source>Add standard IFC PSet</source>
-      <translation type="unfinished">Add standard IFC PSet</translation>
+      <translation>Tilføj standard IFC PSæt</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
@@ -861,7 +861,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="42"/>
       <source>Use preset</source>
-      <translation type="unfinished">Use preset</translation>
+      <translation>Brug forudindstilling</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="56"/>
@@ -876,12 +876,12 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="87"/>
       <source>Creates a new BIM project</source>
-      <translation type="unfinished">Creates a new BIM project</translation>
+      <translation>Opretter et nyt BIM- projekt</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="90"/>
       <source>Create a New BIM Project</source>
-      <translation type="unfinished">Create a New BIM Project</translation>
+      <translation>Opret et Nyt BIM-projekt</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="102"/>
@@ -896,7 +896,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="117"/>
       <source>Create a new document without IFC support</source>
-      <translation type="unfinished">Create a new document without IFC support</translation>
+      <translation>Opret et nyt dokument uden IFC-understøttelse</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="127"/>
@@ -991,12 +991,12 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="328"/>
       <source>Creates a new building</source>
-      <translation type="unfinished">Creates a new building</translation>
+      <translation>Opretter en ny bygning</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="331"/>
       <source>Create Building</source>
-      <translation type="unfinished">Create Building</translation>
+      <translation>Opret Bygning</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="340"/>
@@ -1011,32 +1011,32 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="427"/>
       <source>Number of vertical axes</source>
-      <translation type="unfinished">Number of vertical axes</translation>
+      <translation>Antal vertikale akser</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="437"/>
       <source>Primary function</source>
-      <translation type="unfinished">Primary function</translation>
+      <translation>Primær funktion</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="444"/>
       <source>Number of horizontal axes</source>
-      <translation type="unfinished">Number of horizontal axes</translation>
+      <translation>Antal horisontale akser</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="454"/>
       <source>An estimate building width. Keep the value as 0 to not specify this now.</source>
-      <translation type="unfinished">An estimate building width. Keep the value as 0 to not specify this now.</translation>
+      <translation>Et estimat af bygningsbredde. Behold værdien som 0 for ikke at angive dette nu.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="467"/>
       <source>The line width of axes</source>
-      <translation type="unfinished">The line width of axes</translation>
+      <translation>Linjebredden af akser</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="477"/>
       <source>Distance between vertical axes</source>
-      <translation type="unfinished">Distance between vertical axes</translation>
+      <translation>Afstand mellem vertikale akser</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="490"/>
@@ -1046,7 +1046,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="503"/>
       <source>Distance between horizontal axes</source>
-      <translation type="unfinished">Distance between horizontal axes</translation>
+      <translation>Afstand mellem horisontale akser</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="634"/>
@@ -1056,62 +1056,62 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="644"/>
       <source>A list of groups to add under each level</source>
-      <translation type="unfinished">A list of groups to add under each level</translation>
+      <translation>En liste over grupper der tilføjes under hvert niveau</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="662"/>
       <source>Add New Group</source>
-      <translation type="unfinished">Add New Group</translation>
+      <translation>Tilføj Ny Gruppe</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="676"/>
       <source>Delete a selected group</source>
-      <translation type="unfinished">Delete a selected group</translation>
+      <translation>Slet en valgt gruppe</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="714"/>
       <source>Accept the values of this form</source>
-      <translation type="unfinished">Accept the values of this form</translation>
+      <translation>Accepter værdierne af denne formular</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="352"/>
       <source>Gross building length</source>
-      <translation type="unfinished">Gross building length</translation>
+      <translation>Bruttobygningens længde</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="20"/>
       <source>This dialog assists in creating and configuring a new BIM project in FreeCAD</source>
-      <translation type="unfinished">This dialog assists in creating and configuring a new BIM project in FreeCAD</translation>
+      <translation>Denne dialog hjælper med at oprette og indstille et nyt BIM- projekt i FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="359"/>
       <source>Gross building width</source>
-      <translation type="unfinished">Gross building width</translation>
+      <translation>Bruttobygningens bredde</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="380"/>
       <source>Number of H axes</source>
-      <translation type="unfinished">Number of H axes</translation>
+      <translation>Antal H-akser</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="387"/>
       <source>Distance between H axes</source>
-      <translation type="unfinished">Distance between H axes</translation>
+      <translation>Afstand mellem H akser</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="394"/>
       <source>Number of V axes</source>
-      <translation type="unfinished">Number of V axes</translation>
+      <translation>Antal V akser</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="407"/>
       <source>The primary function of this building</source>
-      <translation type="unfinished">The primary function of this building</translation>
+      <translation>Den primære funktion af denne bygning</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="417"/>
       <source>Distance between V axes</source>
-      <translation type="unfinished">Distance between V axes</translation>
+      <translation>Afstand mellem V akser</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="506"/>
@@ -1127,7 +1127,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="523"/>
       <source>The color of axes</source>
-      <translation type="unfinished">The color of axes</translation>
+      <translation>Farven på akser</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="537"/>
@@ -1137,22 +1137,22 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="549"/>
       <source>Add a human figure to the document</source>
-      <translation type="unfinished">Add a human figure to the document</translation>
+      <translation>Tilføj en menneskelig figur til dokumentet</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="552"/>
       <source>Add Human Figure</source>
-      <translation type="unfinished">Add Human Figure</translation>
+      <translation>Tilføj Menneskelig Figur</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="561"/>
       <source>A human figure will be added to the document, which helps give a sense of scale</source>
-      <translation type="unfinished">A human figure will be added to the document, which helps give a sense of scale</translation>
+      <translation>En menneskelig figur vil blive tilføjet til dokumentet, som hjælper med at give en følelse af skala</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="574"/>
       <source>Levels</source>
-      <translation type="unfinished">Levels</translation>
+      <translation>Niveauer</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="580"/>
@@ -1162,22 +1162,22 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="592"/>
       <source>The number of levels to create</source>
-      <translation type="unfinished">The number of levels to create</translation>
+      <translation>Antal niveauer der oprettes</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="605"/>
       <source>Level height</source>
-      <translation type="unfinished">Level height</translation>
+      <translation>Niveau højde</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="612"/>
       <source>The vertical distance between each level</source>
-      <translation type="unfinished">The vertical distance between each level</translation>
+      <translation>Den vertikale afstand mellem hvert niveau</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="625"/>
       <source>Number of levels</source>
-      <translation type="unfinished">Number of levels</translation>
+      <translation>Antal niveauer</translation>
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="20"/>
@@ -1208,7 +1208,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="110"/>
       <source>object.Length</source>
-      <translation type="unfinished">object.Length</translation>
+      <translation>objekt.Længde</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="123"/>
@@ -1223,7 +1223,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="149"/>
       <source>count</source>
-      <translation type="unfinished">count</translation>
+      <translation>tæl</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="175"/>
@@ -1347,7 +1347,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="14"/>
       <source>Welcome</source>
-      <translation type="unfinished">Welcome</translation>
+      <translation>Velkommen</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="71"/>
@@ -1572,7 +1572,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing…</source>
-      <translation type="unfinished">Copy existing…</translation>
+      <translation>Kopier eksisterende…</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="49"/>
@@ -1593,22 +1593,22 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="75"/>
       <source>Up</source>
-      <translation type="unfinished">Up</translation>
+      <translation>Op</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="82"/>
       <source>Down</source>
-      <translation type="unfinished">Down</translation>
+      <translation>Ned</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="89"/>
       <source>Del</source>
-      <translation type="unfinished">Del</translation>
+      <translation>Slet</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="96"/>
       <source>Invert</source>
-      <translation type="unfinished">Invert</translation>
+      <translation>Inverter</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="14"/>
@@ -1618,7 +1618,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="20"/>
       <source>Container</source>
-      <translation type="unfinished">Container</translation>
+      <translation>Beholder</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="46"/>
@@ -1668,7 +1668,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="125"/>
       <source>Rotations</source>
-      <translation type="unfinished">Rotations</translation>
+      <translation>Rotationer</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="132"/>
@@ -1688,7 +1688,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Start</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="170"/>
@@ -1738,17 +1738,17 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="14"/>
       <source>Custom Properties</source>
-      <translation type="unfinished">Custom Properties</translation>
+      <translation>Brugerdefinerede Egenskaber</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="44"/>
       <source>A description of this property. Supports any language.</source>
-      <translation type="unfinished">A description of this property. Supports any language.</translation>
+      <translation>En beskrivelse af denne egenskab. Understøtter ethvert sprog.</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="51"/>
       <source>The property will be hidden in the interface, and can only be modified via Python scripting</source>
-      <translation type="unfinished">The property will be hidden in the interface, and can only be modified via Python scripting</translation>
+      <translation>Egenskaben vil blive skjult i grænsefladen, og kan kun ændres via Python scripting</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="54"/>
@@ -1758,7 +1758,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="61"/>
       <source>The property is visible but cannot be modified by the user</source>
-      <translation type="unfinished">The property is visible but cannot be modified by the user</translation>
+      <translation>Egenskaben er synlig, men kan ikke ændres af brugeren</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="64"/>
@@ -1773,17 +1773,17 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="29"/>
       <source>Inserts the selected object in the current document</source>
-      <translation type="unfinished">Inserts the selected object in the current document</translation>
+      <translation>Indsætter det markerede objekt i det aktuelle dokument</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="32"/>
       <source>Insert</source>
-      <translation type="unfinished">Insert</translation>
+      <translation>Indsæt</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="39"/>
       <source>or</source>
-      <translation type="unfinished">or</translation>
+      <translation>eller</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="52"/>
@@ -1793,7 +1793,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="79"/>
       <source>Search external websites</source>
-      <translation type="unfinished">Search external websites</translation>
+      <translation>Søg efter eksterne websteder</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="153"/>
@@ -1808,7 +1808,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="196"/>
       <source>Online mode</source>
-      <translation type="unfinished">Online mode</translation>
+      <translation>Online tilstand</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="219"/>
@@ -2169,7 +2169,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../ui/dialogTutorial.ui" line="59"/>
       <location filename="../ui/dialogTutorial.ui" line="76"/>
       <source>icon</source>
-      <translation type="unfinished">icon</translation>
+      <translation>ikon</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="69"/>
@@ -2194,17 +2194,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogViews.ui" line="69"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Niveau</translation>
     </message>
     <message>
       <location filename="../ui/dialogViews.ui" line="79"/>
       <source>2D Views</source>
-      <translation type="unfinished">2D Views</translation>
+      <translation>2D Visninger</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="40"/>
       <source>Do not group</source>
-      <translation type="unfinished">Do not group</translation>
+      <translation>Gruppér ikke</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="50"/>
@@ -2236,7 +2236,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="32"/>
       <source>Group by</source>
-      <translation type="unfinished">Group by</translation>
+      <translation>Gruppér efter</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="97"/>
@@ -2246,7 +2246,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="104"/>
       <source>Total number of windows</source>
-      <translation type="unfinished">Total number of windows</translation>
+      <translation>Antal vinduer i alt</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="111"/>
@@ -2283,7 +2283,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="20"/>
       <source>Import</source>
-      <translation type="unfinished">Import</translation>
+      <translation>Importér</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="28"/>
@@ -2328,7 +2328,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="14"/>
       <source>Native IFC</source>
-      <translation type="unfinished">Native IFC</translation>
+      <translation>Indbygget IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="70"/>
@@ -2338,7 +2338,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="93"/>
       <source>No 3D representation</source>
-      <translation type="unfinished">No 3D representation</translation>
+      <translation>Ingen 3D repræsentation</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="103"/>
@@ -2398,17 +2398,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="246"/>
       <source>New Document</source>
-      <translation type="unfinished">New Document</translation>
+      <translation>Nyt Dokument</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="284"/>
       <source>New Project</source>
-      <translation type="unfinished">New Project</translation>
+      <translation>Nyt Projekt</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="306"/>
       <source>Enables asking the above question every time a project is created</source>
-      <translation type="unfinished">Enables asking the above question every time a project is created</translation>
+      <translation>Aktiverer at stille ovenstående spørgsmål, hver gang et projekt oprettes</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="328"/>
@@ -2512,7 +2512,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="193"/>
       <source> seconds</source>
-      <translation type="unfinished"> seconds</translation>
+      <translation> sekunder</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="112"/>
@@ -2537,17 +2537,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="77"/>
       <source>Use material color as shape color</source>
-      <translation type="unfinished">Use material color as shape color</translation>
+      <translation>Brug materialefarve som formfarve</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="215"/>
       <source>IFC version</source>
-      <translation type="unfinished">IFC version</translation>
+      <translation>IFC version</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="222"/>
       <source>The IFC version will change which attributes and products are supported</source>
-      <translation type="unfinished">The IFC version will change which attributes and products are supported</translation>
+      <translation>IFC-versionen vil ændre hvilke attributter og produkter der understøttes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="232"/>
@@ -2715,7 +2715,7 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="515"/>
       <source>BIM Server</source>
-      <translation type="unfinished">BIM Server</translation>
+      <translation>BIM Server</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="549"/>
@@ -2755,7 +2755,7 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="20"/>
       <source>Visual</source>
-      <translation type="unfinished">Visual</translation>
+      <translation>Visuel</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="26"/>
@@ -3003,28 +3003,28 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="212"/>
       <source>Default floor color</source>
-      <translation type="unfinished">Default floor color</translation>
+      <translation>Standard gulvfarve</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="228"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="268"/>
       <source>This color might be used when a room does not define its own color</source>
-      <translation type="unfinished">This color might be used when a room does not define its own color</translation>
+      <translation>Denne farve kan bruges når et rum ikke definerer sin egen farve</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="252"/>
       <source>Default ceiling color</source>
-      <translation type="unfinished">Default ceiling color</translation>
+      <translation>Standard loftfarve</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="290"/>
       <source>Create a default IFC project with the newly created site</source>
-      <translation type="unfinished">Create a default IFC project with the newly created site</translation>
+      <translation>Opret et standard IFC-projekt med det nyoprettede websted</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="293"/>
       <source>Create IFC project</source>
-      <translation type="unfinished">Create IFC project</translation>
+      <translation>Opret IFC projekt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="306"/>
@@ -3039,17 +3039,17 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="327"/>
       <source>Default ground color</source>
-      <translation type="unfinished">Default ground color</translation>
+      <translation>Standard grundfarve</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="343"/>
       <source>This color might be used when the environment does not define a color for the ground</source>
-      <translation type="unfinished">This color might be used when the environment does not define a color for the ground</translation>
+      <translation>Denne farve kan bruges når miljøet ikke definerer en farve for jorden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="367"/>
       <source>Default sky color</source>
-      <translation type="unfinished">Default sky color</translation>
+      <translation>Standard himmelfarve</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="383"/>
@@ -3064,22 +3064,22 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="408"/>
       <source>Decorate surfaces</source>
-      <translation type="unfinished">Decorate surfaces</translation>
+      <translation>Dekorere overflader</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="426"/>
       <source>Default furniture color</source>
-      <translation type="unfinished">Default furniture color</translation>
+      <translation>Standard møbelfarve</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="442"/>
       <source>This color is used when a furniture does not define its own color</source>
-      <translation type="unfinished">This color is used when a furniture does not define its own color</translation>
+      <translation>Denne farve bruges, når et møbel ikke definerer sin egen farve</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="76"/>
       <source>Merge into existing document</source>
-      <translation type="unfinished">Merge into existing document</translation>
+      <translation>Flet ind i eksisterende dokument</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="32"/>
@@ -3091,7 +3091,7 @@ of IFC files in the Report view panel</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="36"/>
       <source>Show debug messages</source>
-      <translation type="unfinished">Show debug messages</translation>
+      <translation>Vis fejlfindingsbeskeder</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="49"/>
@@ -3146,7 +3146,7 @@ One object is the base object, the others are clones.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="14"/>
       <source>IFC Import</source>
-      <translation type="unfinished">IFC Import</translation>
+      <translation>IFC Import</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="77"/>
@@ -3172,17 +3172,17 @@ if crashes occur when multiple cores are set.</translation>
       <location filename="../ui/preferences-ifc.ui" line="135"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
       <source>Import Options</source>
-      <translation type="unfinished">Import Options</translation>
+      <translation>Importer Indstillinger</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="180"/>
       <source>Do not import BIM objects</source>
-      <translation type="unfinished">Do not import BIM objects</translation>
+      <translation>Importer ikke BIM objekter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="192"/>
       <source>Import structure IFC objects as</source>
-      <translation type="unfinished">Import structure IFC objects as</translation>
+      <translation>Importer struktur IFC objekter som</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="219"/>
@@ -3450,12 +3450,12 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="267"/>
       <source>Allows optimization</source>
-      <translation type="unfinished">Allows optimization</translation>
+      <translation>Tillader optimering</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="270"/>
       <source>Optimize</source>
-      <translation type="unfinished">Optimize</translation>
+      <translation>Optimér</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
@@ -3470,22 +3470,22 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="49"/>
       <source>Export type</source>
-      <translation type="unfinished">Export type</translation>
+      <translation>Eksport type</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="69"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>Standard model</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="74"/>
       <source>Structural analysis</source>
-      <translation type="unfinished">Structural analysis</translation>
+      <translation>Strukturel analyse</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="79"/>
       <source>Standard + structural</source>
-      <translation type="unfinished">Standard + structural</translation>
+      <translation>Standard + strukturel</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="106"/>
@@ -3555,7 +3555,7 @@ allowing to recreate a full parametric model on reimport.</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="220"/>
       <source>Reuse similar entities</source>
-      <translation type="unfinished">Reuse similar entities</translation>
+      <translation>Genbrug lignende enheder</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="242"/>
@@ -3724,22 +3724,22 @@ A building storey is not mandatory but a common practice to have at least one in
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="316"/>
       <source>IFC file units</source>
-      <translation type="unfinished">IFC file units</translation>
+      <translation>IFC filenheder</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="338"/>
       <source>Metric</source>
-      <translation type="unfinished">Metric</translation>
+      <translation>Metrisk</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="343"/>
       <source>Imperial</source>
-      <translation type="unfinished">Imperial</translation>
+      <translation>Imperial</translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="14"/>
       <source>WebGL</source>
-      <translation type="unfinished">WebGL</translation>
+      <translation>WebGL</translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="32"/>
@@ -3747,10 +3747,10 @@ A building storey is not mandatory but a common practice to have at least one in
 
 The default template is located at:
 &lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </source>
-      <translation type="unfinished">A custom WebGL HTML template is used for export. Otherwise, the default template will be used.
+      <translation>En brugerdefineret WebGL HTML-skabelon bruges til eksport. Ellers vil standardskabelonen blive brugt.
 
-The default template is located at:
-&lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </translation>
+Standardskabelonen er placeret på:
+&lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.htmll </translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="38"/>
@@ -3780,33 +3780,33 @@ The default template is located at:
       <location filename="../../Arch.py" line="2565"/>
       <location filename="../../ArchStructure.py" line="429"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Søjle</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="2614"/>
       <source>StructuralSystem</source>
-      <translation type="unfinished">StructuralSystem</translation>
+      <translation>StrukturelSystem</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="115"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Opret Strukturer Fra Valg</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="184"/>
       <source>Create Structural System</source>
-      <translation type="unfinished">Create Structural System</translation>
+      <translation>Opret Strukturel System</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="248"/>
       <location filename="../../ArchStructure.py" line="316"/>
       <source>Create Structure</source>
-      <translation type="unfinished">Create Structure</translation>
+      <translation>Opret Struktur</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="186"/>
       <source>Next point</source>
-      <translation type="unfinished">Next point</translation>
+      <translation>Næste punkt</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="439"/>
@@ -3822,7 +3822,7 @@ The default template is located at:
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
       <source>Preset</source>
-      <translation type="unfinished">Preset</translation>
+      <translation>Forudindstilling</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1839"/>
@@ -3866,17 +3866,17 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="427"/>
       <source>Parameters of the structure</source>
-      <translation type="unfinished">Parameters of the structure</translation>
+      <translation>Parametre for strukturen</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="476"/>
       <source>Switch Length/Height</source>
-      <translation type="unfinished">Switch Length/Height</translation>
+      <translation>Skift Længde/Højde</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="478"/>
       <source>Switch Length/Width</source>
-      <translation type="unfinished">Switch Length/Width</translation>
+      <translation>Skift Længde/Bredde</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="617"/>
@@ -3923,7 +3923,7 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="206"/>
       <source>Select at least an axis object</source>
-      <translation type="unfinished">Select at least an axis object</translation>
+      <translation>Vælg mindst et akse objekt</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="277"/>
@@ -3933,17 +3933,17 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="279"/>
       <source>Base Point of Column</source>
-      <translation type="unfinished">Base Point of Column</translation>
+      <translation>Basispunkt for Søjle</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="308"/>
       <source>Next Point</source>
-      <translation type="unfinished">Next Point</translation>
+      <translation>Næste Punkt</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="423"/>
       <source>Structure Options</source>
-      <translation type="unfinished">Structure Options</translation>
+      <translation>Struktur Indstillinger</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1021"/>
@@ -4162,7 +4162,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindowPresets.py" line="566"/>
       <location filename="../../ArchWindow.py" line="1201"/>
       <source>Opening</source>
-      <translation type="unfinished">Opening</translation>
+      <translation>Åbning</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="64"/>
@@ -4381,7 +4381,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../bimcommands/BimWindow.py" line="136"/>
       <location filename="../../bimcommands/BimWindow.py" line="193"/>
       <source>Create Window</source>
-      <translation type="unfinished">Create Window</translation>
+      <translation>Opret Vindue</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="153"/>
@@ -4391,17 +4391,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="243"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Vinduet er ikke baseret på skitse. Vinduet er ikke justeret eller skaleret.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="262"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>Ingen Bredde og/eller Højde begrænsning i vinduesskitse. Vinduet er ikke skaleret.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="265"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Intet vindue fundet. Kan ikke fortsætte.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="384"/>
@@ -4428,13 +4428,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1175"/>
       <source>This window has no defined opening</source>
-      <translation type="unfinished">This window has no defined opening</translation>
+      <translation>Dette vindue har ingen defineret åbning</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1190"/>
       <location filename="../../bimcommands/BimWindow.py" line="380"/>
       <source>Window Options</source>
-      <translation type="unfinished">Window Options</translation>
+      <translation>Vinduesindstillinger</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1504"/>
@@ -4620,12 +4620,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="90"/>
       <source>Create Axis System</source>
-      <translation type="unfinished">Create Axis System</translation>
+      <translation>Opret Akse System</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="95"/>
       <source>Select at least one axis</source>
-      <translation type="unfinished">Select at least one axis</translation>
+      <translation>Vælg mindst én akse</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="101"/>
@@ -4638,7 +4638,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchAxisSystem.py" line="340"/>
       <source>Axis system components</source>
-      <translation type="unfinished">Axis system components</translation>
+      <translation>Akse systemkomponenter</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="371"/>
@@ -4646,7 +4646,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importers/importOBJ.py" line="301"/>
       <location filename="../../importers/importOBJ.py" line="339"/>
       <source>Successfully written</source>
-      <translation type="unfinished">Successfully written</translation>
+      <translation>Succesfuldt skrevet</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="1648"/>
@@ -4661,7 +4661,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importers/importIFClegacy.py" line="160"/>
       <source>Could not locate IfcOpenShell</source>
-      <translation type="unfinished">Could not locate IfcOpenShell</translation>
+      <translation>Kunne ikke finde IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../../importers/importIFClegacy.py" line="479"/>
@@ -4671,17 +4671,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importers/importIFClegacy.py" line="488"/>
       <source>IFC Schema not found, IFC import disabled.</source>
-      <translation type="unfinished">IFC Schema not found, IFC import disabled.</translation>
+      <translation>IFC Schema ikke fundet, IFC import deaktiveret.</translation>
     </message>
     <message>
       <location filename="../../importers/importIFClegacy.py" line="1110"/>
       <source>Error: IfcOpenShell is not installed</source>
-      <translation type="unfinished">Error: IfcOpenShell is not installed</translation>
+      <translation>Fejl: IfcOpenShell er ikke installeret</translation>
     </message>
     <message>
       <location filename="../../importers/importIFClegacy.py" line="1119"/>
       <source>Error: your IfcOpenShell version is too old</source>
-      <translation type="unfinished">Error: your IfcOpenShell version is too old</translation>
+      <translation>Fejl: din IfcOpenShell version er for gammel</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="262"/>
@@ -4691,7 +4691,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="426"/>
       <source>Fence</source>
-      <translation type="unfinished">Fence</translation>
+      <translation>Hegn</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="592"/>
@@ -4701,7 +4701,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="686"/>
       <source>View of {panel.Label}</source>
-      <translation type="unfinished">View of {panel.Label}</translation>
+      <translation>Visning af {panel.Label}</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="911"/>
@@ -4716,12 +4716,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="1594"/>
       <source>Railing</source>
-      <translation type="unfinished">Railing</translation>
+      <translation>Gelænder</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="2421"/>
       <source>Report</source>
-      <translation type="unfinished">Report</translation>
+      <translation>Rapportér</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="2434"/>
@@ -4747,12 +4747,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="543"/>
       <source>Create material</source>
-      <translation type="unfinished">Create material</translation>
+      <translation>Opret materiale</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="576"/>
       <source>Create multi-material</source>
-      <translation type="unfinished">Create multi-material</translation>
+      <translation>Opret multimateriale</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="530"/>
@@ -4764,27 +4764,27 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="565"/>
       <source>MultiMaterial</source>
-      <translation type="unfinished">MultiMaterial</translation>
+      <translation>MultiMateriale</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="94"/>
       <source>Merge Duplicates</source>
-      <translation type="unfinished">Merge Duplicates</translation>
+      <translation>Sammenflet Duplikater</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="961"/>
       <source>New layer</source>
-      <translation type="unfinished">New layer</translation>
+      <translation>Nyt lag</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="1007"/>
       <source>Total thickness</source>
-      <translation type="unfinished">Total thickness</translation>
+      <translation>Samlet tykkelse</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="1014"/>
       <source>depends on the object</source>
-      <translation type="unfinished">depends on the object</translation>
+      <translation>afhænger af objektet</translation>
     </message>
     <message>
       <location filename="../../importers/importGBXML.py" line="54"/>
@@ -4800,7 +4800,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="117"/>
       <source>Create Grid</source>
-      <translation type="unfinished">Create Grid</translation>
+      <translation>Opret Gitter</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="194"/>
@@ -4825,7 +4825,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="491"/>
       <source>Add Row</source>
-      <translation type="unfinished">Add Row</translation>
+      <translation>Tilføj Række</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="492"/>
@@ -4861,22 +4861,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="489"/>
       <source>Total width</source>
-      <translation type="unfinished">Total width</translation>
+      <translation>Samlet bredde</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="490"/>
       <source>Total height</source>
-      <translation type="unfinished">Total height</translation>
+      <translation>Total højde</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="499"/>
       <source>Rows</source>
-      <translation type="unfinished">Rows</translation>
+      <translation>Rækker</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="503"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Kolonner</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1249"/>
@@ -5162,7 +5162,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="817"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsæt</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="824"/>
@@ -5319,7 +5319,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="1060"/>
       <source>Pattern scale</source>
-      <translation type="unfinished">Pattern scale</translation>
+      <translation>Mønster skala</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1072"/>
@@ -5344,7 +5344,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="1104"/>
       <source>Texture image</source>
-      <translation type="unfinished">Texture image</translation>
+      <translation>Tekstur- billede</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1111"/>
@@ -5364,12 +5364,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCoveringGui.py" line="1165"/>
       <source>Select Texture</source>
-      <translation type="unfinished">Select Texture</translation>
+      <translation>Vælg Tekstur</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1174"/>
       <source>Select Pattern</source>
-      <translation type="unfinished">Select Pattern</translation>
+      <translation>Vælg Mønster</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1390"/>
@@ -5409,23 +5409,23 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="648"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>Panel</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="714"/>
       <source>PanelSheet</source>
-      <translation type="unfinished">PanelSheet</translation>
+      <translation>PanelArk</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="87"/>
       <location filename="../../bimcommands/BimPanel.py" line="128"/>
       <source>Create Panel</source>
-      <translation type="unfinished">Create Panel</translation>
+      <translation>Opret Panel</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="180"/>
       <source>Panel Options</source>
-      <translation type="unfinished">Panel Options</translation>
+      <translation>Panel Indstillinger</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="217"/>
@@ -5440,23 +5440,23 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="334"/>
       <source>Create Panel Sheet</source>
-      <translation type="unfinished">Create Panel Sheet</translation>
+      <translation>Opret Panel Ark</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="532"/>
       <source>Error computing shape of</source>
-      <translation type="unfinished">Error computing shape of</translation>
+      <translation>Fejl ved beregning af form af</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="563"/>
       <location filename="../../ArchStructure.py" line="1967"/>
       <source>Could not compute a shape</source>
-      <translation type="unfinished">Could not compute a shape</translation>
+      <translation>Kunne ikke beregne en form</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="579"/>
       <source>Sheets</source>
-      <translation type="unfinished">Sheets</translation>
+      <translation>Ark</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="580"/>
@@ -5555,12 +5555,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="238"/>
       <source>Unable to build the profile</source>
-      <translation type="unfinished">Unable to build the profile</translation>
+      <translation>Kan ikke bygge profilen</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="280"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>Kan ikke bygge røret</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="301"/>
@@ -5580,12 +5580,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="331"/>
       <source>The profile is not a 2D Part</source>
-      <translation type="unfinished">The profile is not a 2D Part</translation>
+      <translation>Profilen er ikke en 2D del</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="334"/>
       <source>The profile is not closed</source>
-      <translation type="unfinished">The profile is not closed</translation>
+      <translation>Profilen er ikke lukket</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="484"/>
@@ -5711,17 +5711,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchReport.py" line="956"/>
       <location filename="../../ArchReport.py" line="1027"/>
       <source>Manage...</source>
-      <translation type="unfinished">Manage...</translation>
+      <translation>Administrér...</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="959"/>
       <source>Rename, delete, or edit saved report templates.</source>
-      <translation type="unfinished">Rename, delete, or edit saved report templates.</translation>
+      <translation>Omdøb, slet eller rediger gemte rapportskabeloner.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="960"/>
       <source>Save as Template...</source>
-      <translation type="unfinished">Save as Template...</translation>
+      <translation>Gem som Skabelon...</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="963"/>
@@ -5731,7 +5731,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="968"/>
       <source>Report Templates:</source>
-      <translation type="unfinished">Report Templates:</translation>
+      <translation>Rapportér Skabeloner:</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="974"/>
@@ -5746,7 +5746,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="980"/>
       <source>Remove Selected</source>
-      <translation type="unfinished">Remove Selected</translation>
+      <translation>Fjern Valgte</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="983"/>
@@ -5756,7 +5756,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="986"/>
       <source>Duplicate Selected</source>
-      <translation type="unfinished">Duplicate Selected</translation>
+      <translation>Dupliker Valgte</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="989"/>
@@ -5766,7 +5766,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="992"/>
       <source>Edit Selected</source>
-      <translation type="unfinished">Edit Selected</translation>
+      <translation>Rediger Valgte</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="995"/>
@@ -5781,7 +5781,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1017"/>
       <source>Description:</source>
-      <translation type="unfinished">Description:</translation>
+      <translation>Beskrivelse:</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1024"/>
@@ -5796,12 +5796,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1031"/>
       <source>Save...</source>
-      <translation type="unfinished">Save...</translation>
+      <translation>Gem...</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1034"/>
       <source>Save the current query as a new preset.</source>
-      <translation type="unfinished">Save the current query as a new preset.</translation>
+      <translation>Gem den aktuelle forespørgsel som en ny forudindstilling.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1038"/>
@@ -5887,7 +5887,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1147"/>
       <source>Add Empty Row After</source>
-      <translation type="unfinished">Add Empty Row After</translation>
+      <translation>Tilføj Tom Række Efter</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1150"/>
@@ -5897,17 +5897,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1153"/>
       <source>Print Results in Bold</source>
-      <translation type="unfinished">Print Results in Bold</translation>
+      <translation>Udskriv Resultater i Fed</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1156"/>
       <source>Render the result cells in bold font for emphasis.</source>
-      <translation type="unfinished">Render the result cells in bold font for emphasis.</translation>
+      <translation>Render resultatcellerne i fed skrifttype til understregning.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1166"/>
       <source>Save and Next</source>
-      <translation type="unfinished">Save and Next</translation>
+      <translation>Gem og Næste</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1172"/>
@@ -5927,7 +5927,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="1178"/>
       <source>Discard</source>
-      <translation type="unfinished">Discard</translation>
+      <translation>Kassér</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1182"/>
@@ -6092,7 +6092,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="2182"/>
       <source>Rename...</source>
-      <translation type="unfinished">Rename...</translation>
+      <translation>Omdøb...</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2183"/>
@@ -6102,7 +6102,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="2184"/>
       <source>Edit Source...</source>
-      <translation type="unfinished">Edit Source...</translation>
+      <translation>Redigér Kilde...</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2185"/>
@@ -6112,22 +6112,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="2247"/>
       <source>This action is only available for user-created presets.</source>
-      <translation type="unfinished">This action is only available for user-created presets.</translation>
+      <translation>Denne handling er kun tilgængelig for brugeroprettede forudindstillinger.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2262"/>
       <source>Rename Preset</source>
-      <translation type="unfinished">Rename Preset</translation>
+      <translation>Omdøb Forudindstilling</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2263"/>
       <source>New name:</source>
-      <translation type="unfinished">New name:</translation>
+      <translation>Nyt navn:</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2270"/>
       <source>Name Conflict</source>
-      <translation type="unfinished">Name Conflict</translation>
+      <translation>Navnekonflikt</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2274"/>
@@ -6137,29 +6137,29 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReport.py" line="2289"/>
       <source>Delete Preset</source>
-      <translation type="unfinished">Delete Preset</translation>
+      <translation>Slet Forudindstilling</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2292"/>
       <source>Are you sure you want to permanently delete the preset '{name}'?</source>
-      <translation type="unfinished">Are you sure you want to permanently delete the preset '{name}'?</translation>
+      <translation>Er du sikker på, at du vil slette det forudindstillede '{name}'?</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2311"/>
       <source>File Not Found</source>
-      <translation type="unfinished">File Not Found</translation>
+      <translation>Filen Blev Ikke Fundet</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2312"/>
       <source>Could not find the preset file at:
 {file_path}</source>
-      <translation type="unfinished">Could not find the preset file at:
+      <translation>Kunne ikke finde den forudindstillede fil på:
 {file_path}</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2321"/>
       <source>Could Not Open File</source>
-      <translation type="unfinished">Could Not Open File</translation>
+      <translation>Kunne Ikke Åbne Fil</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2325"/>
@@ -6219,24 +6219,24 @@ You can change that in the preferences.</translation>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Der er intet gyldigt objekt i markeringen.
 
-Floor creation aborted.</translation>
+Opretning af Gulv afbrudt.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="187"/>
       <source>Create Floor</source>
-      <translation type="unfinished">Create Floor</translation>
+      <translation>Opret Gulv</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="50"/>
       <source>Create Axis</source>
-      <translation type="unfinished">Create Axis</translation>
+      <translation>Opret Akse</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="975"/>
       <source>Distances (mm) and angles (deg) between axes</source>
-      <translation type="unfinished">Distances (mm) and angles (deg) between axes</translation>
+      <translation>Distance (mm) og vinkler (grad) mellem akser</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="978"/>
@@ -6305,12 +6305,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2431"/>
       <source>Components of This Object</source>
-      <translation type="unfinished">Components of This Object</translation>
+      <translation>Komponenter til Dette Objekt</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2441"/>
       <source>Edit IFC Properties</source>
-      <translation type="unfinished">Edit IFC Properties</translation>
+      <translation>Rediger IFC Egenskaber</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2442"/>
@@ -6472,7 +6472,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1740"/>
       <source>Scope</source>
-      <translation type="unfinished">Scope</translation>
+      <translation>Omfang</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1743"/>
@@ -6512,7 +6512,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1767"/>
       <source>Rotate by 90°</source>
-      <translation type="unfinished">Rotate by 90°</translation>
+      <translation>Rotér 90°</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1771"/>
@@ -6542,7 +6542,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1768"/>
       <source>Rotate X</source>
-      <translation type="unfinished">Rotate X</translation>
+      <translation>Rotér X</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1519"/>
@@ -6552,12 +6552,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1772"/>
       <source>Rotate Y</source>
-      <translation type="unfinished">Rotate Y</translation>
+      <translation>Rotér Y</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1776"/>
       <source>Rotate Z</source>
-      <translation type="unfinished">Rotate Z</translation>
+      <translation>Rotér Z</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1785"/>
@@ -6580,7 +6580,7 @@ Floor creation aborted.</translation>
       <location filename="../../Arch.py" line="231"/>
       <location filename="../../ArchBuilding.py" line="214"/>
       <source>Building</source>
-      <translation type="unfinished">Building</translation>
+      <translation>Bygning</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="263"/>
@@ -6604,15 +6604,15 @@ You can change that in the preferences.</translation>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Der er intet gyldigt objekt i markeringen.
 
-Building creation aborted.</translation>
+Opretning af Bygning afbrudt.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="281"/>
       <location filename="../../bimcommands/BimBuildingPart.py" line="90"/>
       <source>Create Building</source>
-      <translation type="unfinished">Create Building</translation>
+      <translation>Opret Bygning</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="1328"/>
@@ -6775,12 +6775,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="823"/>
       <source>is not closed</source>
-      <translation type="unfinished">is not closed</translation>
+      <translation>er ikke lukket</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="825"/>
       <source>is not valid</source>
-      <translation type="unfinished">is not valid</translation>
+      <translation>er ikke gyldig</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="165"/>
@@ -6810,7 +6810,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1351"/>
       <source>Survey</source>
-      <translation type="unfinished">Survey</translation>
+      <translation>Undersøgelse</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1353"/>
@@ -6901,7 +6901,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="337"/>
       <source>No problems found!</source>
-      <translation type="unfinished">No problems found!</translation>
+      <translation>Ingen problemer fundet!</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="586"/>
@@ -6912,7 +6912,7 @@ Building creation aborted.</translation>
       <location filename="../../bimcommands/BimArchUtils.py" line="589"/>
       <location filename="../../bimcommands/BimArchUtils.py" line="593"/>
       <source>Select only wall objects</source>
-      <translation type="unfinished">Select only wall objects</translation>
+      <translation>Vælg kun vægobjekter</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="601"/>
@@ -6928,12 +6928,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1728"/>
       <source>Key</source>
-      <translation type="unfinished">Key</translation>
+      <translation>Nøgle</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="476"/>
       <source>Create IFC properties spreadsheet</source>
-      <translation type="unfinished">Create IFC properties spreadsheet</translation>
+      <translation>Opret regneark for IFC-egenskaber</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="60"/>
@@ -6943,22 +6943,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimFence.py" line="63"/>
       <source>Create Fence</source>
-      <translation type="unfinished">Create Fence</translation>
+      <translation>Opret Hegn</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="284"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>Opret Boks</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="59"/>
       <source>Create 2D View</source>
-      <translation type="unfinished">Create 2D View</translation>
+      <translation>Opret 2D-Visning</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1155"/>
       <source>Active</source>
-      <translation type="unfinished">Active</translation>
+      <translation>Aktiv</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1166"/>
@@ -7048,12 +7048,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1053"/>
       <source>Solar Diagrams</source>
-      <translation type="unfinished">Solar Diagrams</translation>
+      <translation>Soldiagrammer</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1057"/>
       <source>Location</source>
-      <translation type="unfinished">Location</translation>
+      <translation>Lokation</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1072"/>
@@ -7065,7 +7065,7 @@ Positive values are north of the Equator, negative values are south.</translatio
     <message>
       <location filename="../../ArchSite.py" line="1073"/>
       <source>Latitude</source>
-      <translation type="unfinished">Latitude</translation>
+      <translation>Breddegrad</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1087"/>
@@ -7077,7 +7077,7 @@ Positive values are east of the Prime Meridian, negative values are west.</trans
     <message>
       <location filename="../../ArchSite.py" line="1088"/>
       <source>Longitude</source>
-      <translation type="unfinished">Longitude</translation>
+      <translation>Længdegrad</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1100"/>
@@ -7089,7 +7089,7 @@ Used when calculating the sun position.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1101"/>
       <source>Time zone</source>
-      <translation type="unfinished">Time zone</translation>
+      <translation>Tidszone</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1118"/>
@@ -7108,12 +7108,12 @@ align the solar diagram and sun path.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1123"/>
       <source>Diagrams</source>
-      <translation type="unfinished">Diagrams</translation>
+      <translation>Diagrammer</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1126"/>
       <source>Solar Diagram</source>
-      <translation type="unfinished">Solar Diagram</translation>
+      <translation>Solardiagram</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1136"/>
@@ -7125,7 +7125,7 @@ computed from the site's latitude, longitude and north offset.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1139"/>
       <source>Compass</source>
-      <translation type="unfinished">Compass</translation>
+      <translation>Kompas</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1147"/>
@@ -7137,7 +7137,7 @@ oriented according to the north offset.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1153"/>
       <source>Sun Position</source>
-      <translation type="unfinished">Sun Position</translation>
+      <translation>Sol Position</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1164"/>
@@ -7156,19 +7156,19 @@ The year is ignored.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1185"/>
       <source>Date</source>
-      <translation type="unfinished">Date</translation>
+      <translation>Dato</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1196"/>
       <source>The time of day for which the sun position is shown,
 in 24-hour local time. Steps in half-hour increments.</source>
-      <translation type="unfinished">The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</translation>
+      <translation>Tiden på dagen, hvor solen er vist,
+i 24-timers lokal tid. Trin er i halv time intervaller.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1209"/>
       <source>Hour</source>
-      <translation type="unfinished">Hour</translation>
+      <translation>Time</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1214"/>
@@ -7293,7 +7293,7 @@ The ladybug or pysolar Python module is required.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="166"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Strukturel System</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="170"/>
@@ -10390,7 +10390,7 @@ The ladybug or pysolar Python module is required.</translation>
       <location filename="../../ArchBuilding.py" line="229"/>
       <location filename="../../bimcommands/BimBuildingPart.py" line="78"/>
       <source>Building</source>
-      <translation type="unfinished">Building</translation>
+      <translation>Bygning</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="233"/>
@@ -10800,7 +10800,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="137"/>
       <source>Insert</source>
-      <translation type="unfinished">Insert</translation>
+      <translation>Indsæt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="143"/>
@@ -10996,7 +10996,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="341"/>
       <source>New Layer</source>
-      <translation type="unfinished">New Layer</translation>
+      <translation>Nyt Lag</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="52"/>
@@ -11161,7 +11161,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="148"/>
       <source>Merge Duplicates</source>
-      <translation type="unfinished">Merge Duplicates</translation>
+      <translation>Sammenflet Duplikater</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="157"/>
@@ -11556,7 +11556,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimViews.py" line="94"/>
       <source>Isolate</source>
-      <translation type="unfinished">Isolate</translation>
+      <translation>Isoler</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="120"/>
@@ -11576,7 +11576,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimViews.py" line="89"/>
       <source>Active</source>
-      <translation type="unfinished">Active</translation>
+      <translation>Aktiv</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="90"/>
@@ -11591,7 +11591,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimViews.py" line="93"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>Slå synlighed til/fra</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="95"/>
@@ -12009,7 +12009,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="49"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Søjle</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="50"/>
@@ -12696,7 +12696,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="64"/>
       <source>Number of decimals</source>
-      <translation type="unfinished">Number of decimals</translation>
+      <translation>Antal decimaler</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="71"/>

@@ -1659,7 +1659,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>Паслядоўная празмерная рэлаксацыя (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
@@ -3891,11 +3891,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+      <translation>Даступныя 3 каардынаты x, y, z (у ніжнім рэгістры) і звычайныя матэматычныя функцыі, такія як Sin, Log (у верхнім рэгістры).
+Акрамя таго, усе даччыныя ўдакладненні можна ўжываць з дапамогай зменнай F, напрыклад, F1, F2 і гэтак далей.
+Падтрымліваюцца аператары +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Напрыклад: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3935,11 +3935,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
+      <translation>Даступныя 3 каардынаты x, y, z (у ніжнім рэгістры) і звычайныя матэматычныя функцыі, такія як Sin, Log (у верхнім рэгістры).
+Акрамя таго, усе даччыныя ўдакладненні можна ўжываць з дапамогай зменнай F, напрыклад, F1, F2 і гэтак далей.
+Падтрымліваюцца аператары +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Напрыклад: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
