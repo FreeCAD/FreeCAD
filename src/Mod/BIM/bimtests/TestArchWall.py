@@ -95,6 +95,35 @@ class TestArchWall(TestArchBase.TestArchBase):
                     "Arch Wall with MultiMaterial and 3 alignments failed",
                 )
 
+    def testWallUsesExternalDefiningSketchGeometry(self):
+        operation = "Checking Arch Wall with external defining sketch geometry..."
+        self.printTestMessage(operation)
+
+        source = self.document.addObject("Sketcher::SketchObject", "SourceSketch")
+        source.addGeometry(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(1000, 0, 0)))
+        self.document.recompute()
+
+        target = self.document.addObject("Sketcher::SketchObject", "TargetSketch")
+        target.addGeometry(Part.LineSegment(App.Vector(1000, 0, 0), App.Vector(1000, 1000, 0)))
+        target.addExternal(source.Name, "Edge1", True)
+        self.document.recompute()
+
+        self.assertEqual(
+            len(target.Shape.Edges),
+            2,
+            "Test sketch should expose internal and external defining edges",
+        )
+
+        wall = Arch.makeWall(target, width=100, height=1000)
+        self.document.recompute()
+
+        self.assertAlmostEqual(
+            wall.Shape.Volume,
+            200000000,
+            delta=1e-7,
+            msg="Arch Wall should build from internal and external defining sketch geometry",
+        )
+
     def test_makeWall(self):
         """Test the makeWall function."""
         operation = "Testing makeWall function"

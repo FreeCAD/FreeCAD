@@ -1095,6 +1095,12 @@ class _Wall(ArchComponent.Component):
                         skGeom = obj.Base.GeometryFacadeList
                         skGeomEdges = []
                         skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
+                        supportedSketchGeometry = (
+                            Part.LineSegment,
+                            Part.Circle,
+                            Part.ArcOfCircle,
+                            Part.Ellipse,
+                        )
                         # Get ArchSketch edges to construct ArchWall
                         # No need to test obj.ArchSketchData ...
                         for ig, geom in enumerate(skGeom):
@@ -1107,12 +1113,18 @@ class _Wall(ArchComponent.Component):
                             ) in obj.ArchSketchEdges:
                                 # support Line, Arc, Circle, Ellipse for Sketch
                                 # as Base at the moment
-                                if isinstance(
-                                    geom.Geometry,
-                                    (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse),
-                                ):
+                                if isinstance(geom.Geometry, supportedSketchGeometry):
                                     skGeomEdgesI = geom.Geometry.toShape()
                                     skGeomEdges.append(skGeomEdgesI)
+                        if not obj.ArchSketchEdges and obj.Base.ExternalGeometry:
+                            import Sketcher
+
+                            for geom in obj.Base.ExternalGeo:
+                                extGeom = Sketcher.ExternalGeometryFacade(geom)
+                                if not extGeom.testFlag("Defining"):
+                                    continue
+                                if isinstance(geom, supportedSketchGeometry):
+                                    skGeomEdges.append(geom.toShape())
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
                             for edge in cluster:
