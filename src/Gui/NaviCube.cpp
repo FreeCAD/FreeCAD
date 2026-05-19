@@ -1018,7 +1018,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
         }
         else if (faceType == FaceType::Button) {
             // Handle the menu
-            if (pickId == PickId::ViewMenu || pickId == PickId::ViewMenuBorder) {
+            if (pickId == PickId::ViewMenu) {
                 resetClickState();
                 handleMenu();
                 return true;
