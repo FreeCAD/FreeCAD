@@ -347,21 +347,22 @@ private:
     {
         QFontMetrics fm(font());
         int maxTextWidth = 0;
-    
+
         const auto abbreviations = Base::UnitsApi::getAbbreviations();
         for (const auto& abbr : abbreviations) {
-            maxTextWidth = std::max(maxTextWidth,
-                                    fm.horizontalAdvance(QString::fromStdString(abbr)));
+            maxTextWidth = std::max(maxTextWidth, fm.horizontalAdvance(QString::fromStdString(abbr)));
         }
-    
+
         QStyleOptionButton opt;
         opt.initFrom(this);
         opt.text = text();
-    
+
         // Ask the style how wide a push button must be to fit this content.
-        fixedWidthValue = style()->sizeFromContents(
-            QStyle::CT_PushButton, &opt, QSize(maxTextWidth, fm.height()), this).width();
-    
+        fixedWidthValue
+            = style()
+                  ->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(maxTextWidth, fm.height()), this)
+                  .width();
+
         setMinimumWidth(fixedWidthValue);
         setMaximumWidth(fixedWidthValue);
     }
