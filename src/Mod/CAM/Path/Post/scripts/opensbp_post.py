@@ -123,6 +123,70 @@ class OpenSBPPost(PostProcessor):
     # What we should support
     GCodeSupported = GCodeKnown - GCodeDontUse - GCodeUnsupported
 
+    """
+    print(f"#== sbp native gcode {sorted(GCodeNative)}")
+    print(
+        f"#== sbp non-gcode {sorted(set(Constants.GCODE_SUPPORTED + Constants.MCODE_SUPPORTED + Constants.GCODE_NON_CONFORMING) - GCodeNative)}"
+    )
+    print(
+        f"#== sbp unsupported {sorted(set(Constants.GCODE_SUPPORTED + Constants.MCODE_SUPPORTED + Constants.GCODE_NON_CONFORMING) - GCodeKnown)}"
+    )
+    print(f"#== sbp don't use {sorted(GCodeDontUse)}")
+    print(f"#== sbp useable {sorted(GCodeKnown - GCodeDontUse)}")
+    """
+
+    # This list is specific to shopbot, not from Mod/CAM/Constants.py
+    # from https://shopbottools.com/wp-content/uploads/2024/01/SBG-00142-User-Guide-20150317.pdf
+    # We want to translate some of the natively-supported gcodes (e.g. M2), so we omit them here.
+    # It includes commands that Operations shouldn't generate (cf. Constants.GCODE_NON_CONFORMING)
+    # It may include commands that Post/Processor.py shouldn't generate (cf. Constants.GCODE_SUPPORTED and Constants.MCODE_SUPPORTED and Constants.GCODE_NON_CONFORMING)
+    # Compatible should just pass-through
+    GCodeNative = set(
+        # M10/M11 is clamp-on/clamp-off
+        "G0 G00 G1 G01 G4 G04 G20 G21 G28 G29 G38.2 G92 M0 M00 M1 M01 M03 M5 M05 M8 M08 M9 M09 M10 M11".split(
+            " "
+        )
+    )
+    # NB: these are the generated strings, e.g. if an M02 generates to "M2", it counts
+    GCodeLineNumberRequired = set("M2 M3 M4 M5".split(" "))
+    GCodeLineNumberRequiredParameters = set("Z".split(" "))  # if modal, the parameter is first
+
+    # Suppressed/Tolerated
+    # because G54 is a default Job value, but shopbot has no concept
+    # G98/G99/G80 should have been consumed by drillcycleexpander FIXME
+    GCodeSuppressed = set("G54".split(" "))
+
+    # Unsupported
+    GCodeUnsupported = set(
+        "G40 G41 G42 G43 "
+        "G55 G56 G57 G58 G59 G59.1 G59.2 G59.3 G59.4 G59.5 G59.6 G59.7 G59.8 G59.9 "  # work-offsets
+        "G74 "
+        "G93 G94 G95 "  # opensbp only does units/sec
+        "G96 G97 "  # spindle control?
+        "M4 ".rstrip().split(  # ccw speed. We could support this, requires spindle-control on the machine
+            " "
+        )
+    )
+
+    # Others require translation
+    # FIXME: is M2/M30 program-end supposed to be in GCODE_SUPPORTED?
+    GCodeTranslate = set(
+        "G2 G02 G3 G03 G73 G80 G81 G83 G98 G99 M2 M02 M3 M03 M5 M05 M6 M06 M30".split(" ")
+    )
+    GCodeKnown = GCodeTranslate | GCodeNative | GCodeSuppressed
+    if GCodeKnown & GCodeUnsupported:
+        raise Exception(
+            f"Internal: you screwed up and have a value in both GCodeKnown & GCodeUnsupported: {GCodeKnown & GCodeUnsupported}"
+        )
+
+    # gcodes that are supported but shouldn't be used by CAM or Post/Processing
+    GCodeDontUse = GCodeKnown - set(
+        Constants.GCODE_SUPPORTED + Constants.MCODE_SUPPORTED + Constants.GCODE_NON_CONFORMING
+    )
+
+    # What we should support
+    GCodeSupported = GCodeKnown - GCodeDontUse - GCodeUnsupported
+
     @classmethod
     def get_common_property_schema(cls):
         """Override .values common properties with OpenSBP-specific defaults.
