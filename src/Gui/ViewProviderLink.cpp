@@ -3930,13 +3930,14 @@ bool ViewProviderLink::applyColorsTo(ViewProviderDocumentObject* vp, bool prevOv
     }
 
     auto node = vp->getModeSwitch();
-    if (!node) {
+    auto root = vp->getRoot();
+    if (!node || !root) {
         return prevOverride;
     }
 
     SoSelectionElementAction action(SoSelectionElementAction::Color, true);
     // reset color and visibility first
-    action.apply(node);
+    action.apply(root);
 
     std::map<std::string, std::map<std::string, Base::Color>> colorMap;
     std::set<std::string> hideList;
@@ -3960,15 +3961,15 @@ bool ViewProviderLink::applyColorsTo(ViewProviderDocumentObject* vp, bool prevOv
     SoTempPath path(10);
     path.ref();
     for (auto& v : colorMap) {
-        action.swapColors(v.second);
+        action.setColors(v.second);
         if (v.first.empty()) {
             prevOverride = true;
-            action.apply(node);
+            action.apply(root);
             continue;
         }
         SoDetail* det = nullptr;
         path.truncate(0);
-        if (vp->getDetailPath(v.first.c_str(), &path, false, det)) {
+        if (vp->getDetailPath(v.first.c_str(), &path, true, det)) {
             prevOverride = true;
             action.apply(&path);
         }
@@ -3979,7 +3980,7 @@ bool ViewProviderLink::applyColorsTo(ViewProviderDocumentObject* vp, bool prevOv
     for (const auto& sub : hideList) {
         SoDetail* det = nullptr;
         path.truncate(0);
-        if (!sub.empty() && vp->getDetailPath(sub.c_str(), &path, false, det)) {
+        if (!sub.empty() && vp->getDetailPath(sub.c_str(), &path, true, det)) {
             prevOverride = true;
             action.apply(&path);
         }

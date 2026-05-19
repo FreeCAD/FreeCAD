@@ -391,3 +391,60 @@ class TestViewProviderLink(unittest.TestCase):
                 120.0,
                 f"{label} should stay visibly cyan through the link render path (got {rgb})",
             )
+
+    def test_link_face_element_override_renders_in_view(self):
+        box = self.doc.addObject("Part::Box", "Box")
+        link = self.doc.addObject("App::Link", "Link")
+        link.LinkedObject = box
+
+        self.doc.recompute()
+        self.FreeCADGui.updateGui()
+
+        box.ViewObject.Visibility = False
+        box.ViewObject.DiffuseColor = [
+            (1.0, 0.0, 0.0, 1.0),
+            (0.0, 1.0, 0.0, 1.0),
+            (0.0, 0.0, 1.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+            (1.0, 0.0, 1.0, 1.0),
+            (0.0, 1.0, 1.0, 1.0),
+        ]
+        self.FreeCADGui.updateGui()
+
+        view = self.FreeCADGui.getDocument(self.doc.Name).ActiveView
+        self.assertIsNotNone(view, "expected the GUI document to expose an active 3D view")
+
+        width = 512
+        height = 512
+        out_dir = Path(tempfile.gettempdir()) / "FreeCADTesting" / "ViewProviderLink"
+        base_path = out_dir / "link-face6-base.png"
+        override_path = out_dir / "link-face6-override.png"
+
+        _save_active_view_png(view, base_path, width, height, view_fn="viewTop")
+        br, bg, bb = _mean_rgb(base_path, width // 2, height // 2)
+        self.assertGreater(
+            bg,
+            br + 60.0,
+            f"expected the linked top face to start cyan/green-dominant: {(br, bg, bb)}",
+        )
+        self.assertGreater(
+            bb,
+            br + 60.0,
+            f"expected the linked top face to start cyan/blue-dominant: {(br, bg, bb)}",
+        )
+
+        link.ViewObject.setElementColors({"Face6": (1.0, 0.0, 0.0, 1.0)})
+        self.FreeCADGui.updateGui()
+
+        _save_active_view_png(view, override_path, width, height, view_fn="viewTop")
+        or_, og, ob = _mean_rgb(override_path, width // 2, height // 2)
+        self.assertGreater(
+            or_,
+            og + 80.0,
+            f"link Face6 override did not render red on the visible top face: {(or_, og, ob)}",
+        )
+        self.assertGreater(
+            or_,
+            ob + 80.0,
+            f"link Face6 override did not render red on the visible top face: {(or_, og, ob)}",
+        )
