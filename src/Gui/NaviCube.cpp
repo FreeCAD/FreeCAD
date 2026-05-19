@@ -1220,20 +1220,11 @@ QMenu* NaviCubeImplementation::createNaviCubeMenu()
     if (commands.empty()) {
         commands.emplace_back("Std_OrthographicCamera");
         commands.emplace_back("Std_PerspectiveCamera");
+        commands.emplace_back("Std_ViewIsometric");
         commands.emplace_back("Separator");
         commands.emplace_back("Std_ViewFitAll");
         commands.emplace_back("Std_ViewFitSelection");
         commands.emplace_back("Std_AlignToSelection");
-        commands.emplace_back("Separator");
-        commands.emplace_back("Std_ViewFront");
-        commands.emplace_back("Std_ViewTop");
-        commands.emplace_back("Std_ViewRight");
-        commands.emplace_back("Std_ViewRear");
-        commands.emplace_back("Std_ViewBottom");
-        commands.emplace_back("Std_ViewLeft");
-        commands.emplace_back("Separator");
-        commands.emplace_back("Std_DrawStyle");
-        commands.emplace_back("Std_ViewDockUndockFullscreen");
         commands.emplace_back("Separator");
         commands.emplace_back("NaviCubeDraggableCmd");
     }
