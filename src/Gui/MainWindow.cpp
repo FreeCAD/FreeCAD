@@ -1449,13 +1449,12 @@ void MainWindow::setActiveWindow(MDIView* view)
     // switching from a 3d view to a spreadsheet using the "Windows..." dialog or when docking a
     // spreadsheet that was in top-level/fullscreen mode. Why this could only be reproduced with a
     // spreadsheet remains a mystery.
-
-
-    // However, unconditionally stealing focus here also stomps focus that the user
-    // has placed on a dock widget (e.g. the tree view). Closing a modal popup
-    // triggers ActivationChange -> setActiveSubWindow -> setActiveWindow with the
-    // same view that is already active, which has no real reason to take focus.
-    // Only force focus to the view when the active view is actually changing.
+    //
+    // However, only do this when the active view is actually changing. Calling setFocus
+    // unconditionally also stomps focus that the user has placed on a dock widget (e.g. the
+    // tree view): closing a modal popup triggers ActivationChange -> setActiveSubWindow ->
+    // setActiveWindow with the same view that is already active, which has no real reason
+    // to take focus.
     // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
     if (view != d->activeView) {
         view->setFocus();

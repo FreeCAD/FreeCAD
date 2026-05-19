@@ -1499,6 +1499,17 @@ void StdCmdDelete::activated(int iMsg)
     int tid = 0;
     QPointer<QWidget> focusBefore;
 
+    // Restore focus to the widget the user was working in before the
+    // command opened any modal popup. Using a scope guard ensures the
+    // restore runs on every exit path: normal return, early return,
+    // and exception unwinding.
+    // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
+    auto focusGuard = qScopeGuard([&focusBefore]() {
+        if (focusBefore && focusBefore->isVisible() && focusBefore->isEnabled()) {
+            focusBefore->setFocus(Qt::OtherFocusReason);
+        }
+    });
+
     try {
         std::set<App::Document*> docs;
         std::vector<App::TransactionLocker> tlocks;
@@ -1676,16 +1687,6 @@ void StdCmdDelete::activated(int iMsg)
     App::GetApplication().commitTransaction(tid);
     Gui::getMainWindow()->setUpdatesEnabled(true);
     Gui::getMainWindow()->update();
-
-    // Restore focus to the widget the user was working in.
-    if (focusBefore) {
-        QPointer<QWidget> target = focusBefore;
-        QTimer::singleShot(0, target, [target]() {
-            if (target && target->isVisible() && target->isEnabled()) {
-                target->setFocus(Qt::OtherFocusReason);
-            }
-        });
-    }
 }
 
 bool StdCmdDelete::isActive()
