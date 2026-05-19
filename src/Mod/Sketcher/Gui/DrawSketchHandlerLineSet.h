@@ -927,9 +927,9 @@ public:
         , resetEdge(true)
         , fillet(false)
         , previousDirectionAngle(0.0)
+        , dirChangeAngle(0.0)
         , startAngle(0.0)
         , range(0.0)
-        , dirChangeAngle(0.0)
         , angleToPrevious(0.0)
         , pos(PointPos::end)
         , capturedDirection(0.0, 0.0) {};
