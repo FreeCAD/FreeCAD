@@ -1038,7 +1038,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
             // Handle the flat buttons
             resetClickState();
             SbRotation rotation = getFaceRotation(pickId);
-            if (pickId == PickId::Backside1 || pickId == PickId::Backside2) {
+            if (pickId == PickId::Backside) {
                 rotation.scaleAngle(pi);
             }
             else {
