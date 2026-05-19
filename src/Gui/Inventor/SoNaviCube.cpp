@@ -609,12 +609,14 @@ void SoNaviCube::addButtonFace(PickId pickId, const SbVec3f& direction) const
     auto transform = [&](float px, float py) {
         float x = px * scale + offx;
         float y = py * scale + offy;
-        if (pickId == PickId::ArrowNorth || pickId == PickId::ArrowWest || pickId == PickId::ArrowLeft) {
+        if (pickId == PickId::ArrowNorth || pickId == PickId::ArrowWest
+            || pickId == PickId::ArrowLeft) {
             x = 1.0F - x;
         }
         if (pickId == PickId::ArrowSouth || pickId == PickId::ArrowNorth) {
             return SbVec3f(y, x, 0.0F);
-        } else {
+        }
+        else {
             return SbVec3f(x, y, 0.0F);
         }
     };
@@ -753,7 +755,7 @@ void SoNaviCube::addButtonFace(PickId pickId, const SbVec3f& direction) const
             break;
         }
     }
-    
+
     if (!pointData.empty()) {
         int count = static_cast<int>(pointData.size()) / 2;
         face.vertexArray.reserve(count);
