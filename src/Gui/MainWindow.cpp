@@ -267,8 +267,10 @@ public:
         unitChanged();
         getWindowParameter()->Attach(this);
 
-        auto updateUnitLabel = [this](const Gui::Document&) { unitChanged(); };
-        
+        auto updateUnitLabel = [this](const Gui::Document&) {
+            unitChanged();
+        };
+
         Gui::Application::Instance->signalActiveDocument.connect(updateUnitLabel);
         Gui::Application::Instance->signalDeleteDocument.connect(updateUnitLabel);
         updateFixedWidth();
