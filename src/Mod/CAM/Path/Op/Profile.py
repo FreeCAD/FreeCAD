@@ -30,12 +30,14 @@ import Path.Op.Area as PathAreaOp
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 import math
+import numpy
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
+DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 translate = FreeCAD.Qt.translate
 
@@ -172,7 +174,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyIntegerConstraint",
+                "App::PropertyInteger",
                 "NumPasses",
                 "Profile",
                 QT_TRANSLATE_NOOP(
@@ -288,7 +290,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "processHoles": False,
             "processPerimeter": True,
             "Stepover": 0,
-            "NumPasses": (1, 1, 99999, 1),
+            "NumPasses": 1,
         }
 
     def areaOpApplyPropertyDefaults(self, obj, job, propList):
@@ -399,13 +401,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         params["ExtraPass"] = num_passes - 1
         params["Stepover"] = stepover
 
-        # Map JoinType string to AreaParams enum value
+        # Map JoinType string to AreaParams enum value.
+        # Clipper integer values: jtSquare=0, jtRound=1, jtMiter=2
+        # Path.ClipperJoinType* constants were added after FreeCAD 1.1 — use raw ints for compatibility.
         jointype_map = {
-            "Round": Path.ClipperJoinTypeRound,
-            "Square": Path.ClipperJoinTypeSquare,
-            "Miter": Path.ClipperJoinTypeMiter,
+            "Round": 1,
+            "Square": 0,
+            "Miter": 2,
         }
-        params["JoinType"] = jointype_map.get(obj.JoinType, Path.ClipperJoinTypeRound)
+        params["JoinType"] = jointype_map.get(obj.JoinType, 1)  # default: Round
 
         if obj.JoinType == "Miter":
             params["MiterLimit"] = obj.MiterLimit
@@ -460,6 +464,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         """areaOpShapes(obj) ... returns envelope for all base shapes or wires"""
 
         shapes = []
+        remainingObjBaseFeatures = []
         self.isDebug = True if Path.Log.getLevel(Path.Log.thisModule()) == 4 else False
         self.inaccessibleMsg = translate(
             "PathProfile",
@@ -468,7 +473,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         self.offsetExtra = obj.OffsetExtra.Value
 
         if self.isDebug:
-            for grpNm in ("tmpDebugGrp", "tmpDebugGrp001"):
+            for grpNm in ["tmpDebugGrp", "tmpDebugGrp001"]:
                 if hasattr(FreeCAD.ActiveDocument, grpNm):
                     for go in FreeCAD.ActiveDocument.getObject(grpNm).Group:
                         FreeCAD.ActiveDocument.removeObject(go.Name)
@@ -490,15 +495,95 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             self.ofstRadius = self.offsetExtra
             self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
-        if obj.Base:
-            # process selection
-            shapes.extend(self._processBase(obj))
+        # Pre-process Base Geometry to process edges
+        if (
+            obj.Base and len(obj.Base) > 0
+        ):  # The user has selected subobjects from the base.  Process each.
+            shapes.extend(self._processEdges(obj, remainingObjBaseFeatures))
             Path.Log.track("returned {} shapes".format(len(shapes)))
-        else:
-            # no base geometry selected, so treating operation like a exterior contour operation
+
+        Path.Log.track(remainingObjBaseFeatures)
+        if obj.Base and len(obj.Base) > 0 and not remainingObjBaseFeatures:
+            # Edges were already processed, or whole model targeted.
+            Path.Log.track("remainingObjBaseFeatures is False")
+        elif (
+            remainingObjBaseFeatures and len(remainingObjBaseFeatures) > 0
+        ):  # Process remaining features after edges processed above.
+            for base, subsList in remainingObjBaseFeatures:
+                holes = []
+                faces = []
+                faceDepths = []
+
+                for sub in subsList:
+                    shape = getattr(base.Shape, sub)
+                    # only process faces here
+                    if isinstance(shape, Part.Face):
+                        faces.append(shape)
+                        if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
+                            Path.Log.debug(abs(shape.normalAt(0, 0).z))
+                            for wire in shape.Wires:
+                                if wire.hashCode() == shape.OuterWire.hashCode():
+                                    continue
+                                holes.append((base.Shape, wire))
+
+                        # Add face depth to list
+                        faceDepths.append(shape.BoundBox.ZMin)
+                    else:
+                        Path.Log.track()
+                        ignoreSub = base.Name + "." + sub
+                        msg = "Found a selected object which is not a face. Ignoring:"
+                        Path.Log.warning(msg + " {}".format(ignoreSub))
+
+                for baseShape, wire in holes:
+                    cont = False
+                    f = Part.makeFace(wire, "Part::FaceMakerSimple")
+                    drillable = Drillable.isDrillable(baseShape, f, vector=None)
+                    Path.Log.debug(drillable)
+
+                    if obj.processCircles:
+                        if drillable:
+                            cont = True
+                    if obj.processHoles:
+                        if not drillable:
+                            cont = True
+
+                    if cont:
+                        shapeEnv = PathUtils.getEnvelope(
+                            baseShape, subshape=f, depthparams=self.depthparams
+                        )
+
+                        if shapeEnv:
+                            self._addDebugObject("HoleShapeEnvelope", shapeEnv)
+                            tup = shapeEnv, True, "pathProfile"
+                            shapes.append(tup)
+
+                if faces and obj.processPerimeter:
+                    for shape in faces:
+                        custDepthparams = self.depthparams
+                        try:
+                            shapeEnv = PathUtils.getEnvelope(shape, depthparams=custDepthparams)
+                        except Exception as ee:
+                            # PathUtils.getEnvelope() failed to return an object.
+                            msg = translate("PathProfile", "Unable to create path for face(s).")
+                            Path.Log.error(msg + "\n{}".format(ee))
+                            shapeEnv = None
+
+                        if shapeEnv:
+                            for shEnv in shapeEnv.Solids:
+                                self._addDebugObject("CutShapeEnv", shEnv)
+                                tup = shEnv, False, "pathProfile"
+                                shapes.append(tup)
+
+        else:  # Try to build targets from the job models
+            # No base geometry selected, so treating operation like a exterior contour operation
             Path.Log.track()
             self.opUpdateDepths(obj)
-            shapes.extend(self._processEachModel())
+
+            if 1 == len(self.model) and hasattr(self.model[0], "Proxy"):
+                Path.Log.debug("Single model processed.")
+                shapes.extend(self._processEachModel(obj))
+            else:
+                shapes.extend(self._processEachModel(obj))
 
         self.removalshapes = shapes
         Path.Log.debug("%d shapes" % len(shapes))
@@ -513,14 +598,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         return shapes
 
-    def _processEachModel(self, base=None):
-        """_processEachModel() ... returns envelope of shapes without sub selection"""
+    # Method to handle each model as a whole, when no faces are selected
+    def _processEachModel(self, obj):
         shapeTups = []
-        if base:
-            models = [base]
-        else:
-            models = self.model
-        for base in models:
+        for base in self.model:
             if not hasattr(base, "Shape"):
                 continue
             if isinstance(base.Shape, Part.Compound):
@@ -535,159 +616,204 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     shapeTups.append((env, False))
         return shapeTups
 
-    def _processBase(self, obj):
-        """_preprocessBase(obj) ... returns envelope of selected shapes"""
-        shapeTups = []
+    # Edges pre-processing
+    def _processEdges(self, obj, remainingObjBaseFeatures):
+        Path.Log.track("remainingObjBaseFeatures: {}".format(remainingObjBaseFeatures))
+        shapes = []
+        basewires = []
+        ezMin = None
+        self.cutOut = self.tool.Diameter
 
         for base, subsList in obj.Base:
-            if subsList == ("",):
-                shapeTups.extend(self._processEachModel(base))
-                continue
+            keepFaces = []
+            edgelist = []
 
-            basewires = []
-            edgeslist = []
-            horFacesList = []
-            horFaces = []
-            vertFaces = []
-            for subName in subsList:
-                sub = getattr(base.Shape, subName)
-                if isinstance(sub, Part.Edge):
+            # Detect if base object is a Sketch (2D, no solid faces to cut against).
+            # Try multiple methods for robustness across FreeCAD versions.
+            isSketch = False
+            try:
+                isSketch = base.isDerivedFrom("Sketcher::SketchObject")
+            except Exception:
+                pass
+            if not isSketch:
+                # Fallback: check by module/type name
+                typeName = getattr(base, "TypeId", "") or type(base).__name__
+                isSketch = "Sketch" in typeName
+            if not isSketch:
+                # Fallback: a sketch shape has no Faces (only Wires and Edges)
+                try:
+                    isSketch = len(base.Shape.Faces) == 0 and len(base.Shape.Wires) > 0
+                except Exception:
+                    pass
+
+            Path.Log.debug(
+                "_processEdges: base='{}' TypeId='{}' isSketch={}".format(
+                    base.Label,
+                    getattr(base, "TypeId", "?"),
+                    isSketch,
+                )
+            )
+
+            if isSketch and len(subsList) == 0:
+                # Whole sketch selected (no sub-element): use all its edges directly.
+                # This handles the closed-contour case (select sketch from tree).
+                edgelist = list(base.Shape.Edges)
+                Path.Log.debug(
+                    "Whole sketch '{}' selected: using {} edges.".format(base.Label, len(edgelist))
+                )
+            else:
+                for sub in subsList:
+                    shape = getattr(base.Shape, sub)
                     # extract and process edges
-                    edgeslist.append(sub)
-                elif isinstance(sub, Part.Face):
-                    if Path.Geom.isHorizontal(sub):
-                        # save horizontal faces for regular processing
-                        horFaces.append(sub)
-                    else:
-                        # save other faces for processing bottom edges
-                        vertFaces.append(sub)
+                    if isinstance(shape, Part.Edge):
+                        edgelist.append(getattr(base.Shape, sub))
+                    # save faces for regular processing (not applicable for sketches)
+                    elif isinstance(shape, Part.Face) and not isSketch:
+                        keepFaces.append(sub)
 
-            for es in Part.sortEdges(edgeslist):
-                basewires.append((base, Part.Wire(es)))
+            if len(edgelist) > 0:
+                basewires.append((base, DraftGeomUtils.findWires(edgelist), isSketch))
+                if ezMin is None or base.Shape.BoundBox.ZMin < ezMin:
+                    ezMin = base.Shape.BoundBox.ZMin
 
-            if horFaces:  # save faces for returning and processing
-                horFacesList.append((base, horFaces))
+            if len(keepFaces) > 0:  # save faces for returning and processing
+                remainingObjBaseFeatures.append((base, keepFaces))
 
-            # get bottom wire from not horizontal faces
-            if vertFaces:
-                bottomEdges = []
-                for f in vertFaces:
-                    fzMin = min(e.BoundBox.ZMin for e in f.Edges)
-                    bEs = [e for e in f.Edges if Path.Geom.isRoughly(e.BoundBox.ZMax, fzMin)]
-                    bottomEdges.extend(bEs)
-                for cluster in Part.getSortedClusters(bottomEdges):
-                    wire = Part.Wire(Part.__sortEdges__(cluster))
-                    edgeslist.extend(cluster)
-                    basewires.append((base, wire))
-
-            if basewires:
-                shapeTups.extend(self._processWires(obj, basewires, edgeslist))
-            if horFacesList:
-                shapeTups.extend(self._processHorFaces(obj, horFacesList))
-
-        return shapeTups
-
-    def _processHorFaces(self, obj, horFacesList):
-        """_processHorFaces(obj, horFacesList) ... returns envelope of horizontal faces"""
-        shapeTups = []
-        for base, facesList in horFacesList:
-            holes = []
-            faces = []
-
-            for face in facesList:
-                faces.append(face)
-                ohash = face.OuterWire.hashCode()
-                for wire in face.Wires:
-                    if wire.hashCode() == ohash:
-                        continue
-                    holes.append((base.Shape, wire))
-
-            for baseShape, wire in holes:
-                f = Part.makeFace(wire, "Part::FaceMakerSimple")
-                drillable = Drillable.isDrillable(baseShape, f, vector=None)
-                Path.Log.debug(drillable)
-                if (obj.processCircles and drillable) or (obj.processHoles and not drillable):
-                    shapeEnv = PathUtils.getEnvelope(
-                        baseShape, subshape=f, depthparams=self.depthparams
-                    )
-                    if shapeEnv:
-                        self._addDebugObject("HoleShapeEnvelope", shapeEnv)
-                        shapeTups.append((shapeEnv, True, "pathProfile"))
-
-            if faces and obj.processPerimeter:
-                for shape in faces:
-                    custDepthparams = self.depthparams
-                    try:
-                        shapeEnv = PathUtils.getEnvelope(shape, depthparams=custDepthparams)
-                    except Exception as ee:
-                        # PathUtils.getEnvelope() failed to return an object.
-                        msg = translate("PathProfile", "Unable to create path for face(s).")
-                        Path.Log.error(msg + "\n{}".format(ee))
-                        shapeEnv = None
-
-                    if shapeEnv:
-                        for shEnv in shapeEnv.Solids:
-                            # divide solids after for 'Individually'
-                            self._addDebugObject("CutShapeEnv", shEnv)
-                            shapeTups.append((shEnv, False, "pathProfile"))
-
-        return shapeTups
-
-    def _processWires(self, obj, basewires, edgeslist):
-        """_processWires(obj, basewires, edgelist) ... returns envelope of all selected edges"""
         Path.Log.track(basewires)
-        shapeTups = []
-        for base, wire in basewires:
-            if wire.isClosed():
-                origWire, flatWire = self._flattenWire(obj, wire, obj.FinalDepth.Value)
-                f = flatWire.Wires[0]
-                if f:
-                    shapeEnv = PathUtils.getEnvelope(Part.Face(f), depthparams=self.depthparams)
-                    if shapeEnv:
-                        shapeTups.append((shapeEnv, False, "pathProfile"))
-                else:
-                    Path.Log.error(self.inaccessibleMsg)
-            else:  # open wire
-                if self.JOB.GeometryTolerance.Value == 0.0:
-                    msg = self.JOB.Label + ".GeometryTolerance = 0.0. "
-                    msg += "Please set to an acceptable value greater than zero."
-                    Path.Log.error(msg)
-                else:
-                    flattened = self._flattenWire(obj, wire, wire.BoundBox.Center.z)
-                    if not flattened:
+        for base, wires, isSketch in basewires:
+            for wire in wires:
+                if wire.isClosed():
+                    # Attempt to profile a closed wire
+
+                    # f = Part.makeFace(wire, 'Part::FaceMakerSimple')
+                    # if planar error, Comment out previous line, uncomment the next two
+                    origWire, flatWire = self._flattenWire(obj, wire, obj.FinalDepth.Value)
+                    f = flatWire.Wires[0]
+                    if f:
+                        shapeEnv = PathUtils.getEnvelope(Part.Face(f), depthparams=self.depthparams)
+                        if shapeEnv:
+                            tup = shapeEnv, False, "pathProfile"
+                            shapes.append(tup)
+                    else:
                         Path.Log.error(self.inaccessibleMsg)
-                        continue
-                    origWire, flatWire = flattened
-                    diffDepth = self._getOpenProfileDiffDepth(base, edgeslist)
-                    # translate wire in Z to get correct cross-section with model
-                    flatWire.translate(FreeCAD.Vector(0, 0, diffDepth))
-                    self._addDebugObject("FlatWire", flatWire)
+                else:
+                    # Attempt open-edges profile
+                    if self.JOB.GeometryTolerance.Value == 0.0:
+                        msg = self.JOB.Label + ".GeometryTolerance = 0.0. "
+                        msg += "Please set to an acceptable value greater than zero."
+                        Path.Log.error(msg)
+                    else:
+                        flattened = self._flattenWire(obj, wire, wire.BoundBox.Center.z)
+                        if flattened:
+                            origWire, flatWire = flattened
 
-                    params = self.areaOpAreaParams(obj, False)
-                    passOffsets = [
-                        self.ofstRadius + i * abs(params["Stepover"])
-                        for i in range(params["ExtraPass"] + 1)
-                    ][::-1]
-                    openWires = []
-                    for po in passOffsets:
-                        cutWireObjs = False
-                        self.ofstRadius = po
-                        cutShp = self._getCutAreaCrossSection(obj, base, origWire, flatWire)
-                        if cutShp:
-                            cutWireObjs = self._extractPathWire(obj, base, flatWire, cutShp)
+                            if isSketch:
+                                # Sketches have no 3D faces, so _getOpenProfileDiffDepth()
+                                # cannot find a cross-section with the model.
+                                # Use diffDepth=0: the wire is already flat in its own plane.
+                                diffDepth = 0
+                                Path.Log.debug(
+                                    "Sketch base detected for open-edge profile: skipping diffDepth calculation."
+                                )
+                            else:
+                                diffDepth = self._getOpenProfileDiffDepth(base, edgelist)
 
-                        if cutWireObjs:
-                            for cW in cutWireObjs:
-                                openWires.append(cW)
+                            # translate wire in Z to get correct cross-section with model
+                            flatWire.translate(FreeCAD.Vector(0, 0, diffDepth))
+                            self._addDebugObject("FlatWire", flatWire)
+
+                            params = self.areaOpAreaParams(obj, False)
+                            passOffsets = [
+                                self.ofstRadius + i * abs(params["Stepover"])
+                                for i in range(params["ExtraPass"] + 1)
+                            ][::-1]
+                            openEdges = []
+                            for po in passOffsets:
+                                cutWireObjs = False
+                                self.ofstRadius = po
+
+                                if isSketch:
+                                    # For sketches, there is no solid to cut against.
+                                    # Generate the path directly from the flat wire.
+                                    cutWireObjs = self._extractPathWireFromSketch(obj, flatWire)
+                                else:
+                                    cutShp = self._getCutAreaCrossSection(
+                                        obj, base, origWire, flatWire
+                                    )
+                                    if cutShp:
+                                        cutWireObjs = self._extractPathWire(
+                                            obj, base, flatWire, cutShp
+                                        )
+
+                                if cutWireObjs:
+                                    for cW in cutWireObjs:
+                                        openEdges.append(cW)
+                                else:
+                                    Path.Log.error(self.inaccessibleMsg)
+
+                            if openEdges:
+                                tup = openEdges, False, "OpenEdge"
+                                shapes.append(tup)
+
                         else:
                             Path.Log.error(self.inaccessibleMsg)
-                    shapeTups.append((openWires[0], openWires, "OpenEdge"))
 
-        return shapeTups
+        return shapes
+
+    def _extractPathWireFromSketch(self, obj, flatWire):
+        """_extractPathWireFromSketch(obj, flatWire) ...
+        Generate a single path wire from a flat sketch wire (open edge profile),
+        offset to the correct side according to obj.Side and obj.UseComp.
+        Uses Part.Wire.makeOffset2D() which handles open wires natively.
+        Returns a list with one Part.Wire, or False on failure."""
+        Path.Log.debug("_extractPathWireFromSketch()")
+        try:
+            wire = flatWire.Wires[0]
+
+            # If no compensation, follow the wire directly (offset = 0)
+            if not obj.UseComp:
+                Path.Log.debug("_extractPathWireFromSketch: UseComp=False, returning wire as-is.")
+                return [wire]
+
+            # Signed offset: positive = left of travel (Outside), negative = right (Inside)
+            offset = self.ofstRadius
+            if obj.Side == "Inside":
+                offset = -offset
+
+            Path.Log.debug(
+                "_extractPathWireFromSketch: Side={} UseComp={} ofstRadius={} offset={}".format(
+                    obj.Side, obj.UseComp, self.ofstRadius, offset
+                )
+            )
+
+            # makeOffset2D(offset, joinType, fill, openResult, intersection)
+            # joinType 0 = Arc (Round) — matches default JoinType behaviour
+            # openResult=True keeps result as an open wire
+            offWire = wire.makeOffset2D(
+                offset,
+                0,  # joinType: Arc/Round
+                False,  # fill: wire only
+                True,  # openResult: keep open
+                False,  # intersection
+            )
+
+            if offWire and len(offWire.Edges) > 0:
+                Path.Log.debug("_extractPathWireFromSketch: offset wire produced OK.")
+                return [offWire]
+            else:
+                Path.Log.error(
+                    "_extractPathWireFromSketch: makeOffset2D returned empty wire "
+                    "(Side={}, offset={}).".format(obj.Side, offset)
+                )
+                return False
+
+        except Exception as e:
+            Path.Log.error("_extractPathWireFromSketch: {}".format(e))
+            return False
 
     def _getOpenProfileDiffDepth(self, base, edges):
         """_getOpenProfileDiffDepth(base, edges)...
-        Returns extra depth with sign to get correct cross-section with model for open profile"""
+        Return extra depth with sign to get correct cross-section with model for open profile"""
         tol = self.JOB.GeometryTolerance.Value
         diffDepth = 2 * tol
         offset = FreeCAD.Vector(0, 0, diffDepth)
@@ -699,14 +825,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if any(e.hashCode() == edgeHash for e in face.Edges):
                 if face.isInside(edgeMiddlePoint + offset, tol, True):
                     return diffDepth
-                if face.isInside(edgeMiddlePoint - offset, tol, True):
+                elif face.isInside(edgeMiddlePoint - offset, tol, True):
                     return -diffDepth
 
         Path.Log.warning("Can not define depth for open edges.")
         return 0
 
     def _flattenWire(self, obj, wire, trgtDep):
-        """_flattenWire(obj, wire)... Returns a flattened version of the wire"""
+        """_flattenWire(obj, wire)... Return a flattened version of the wire"""
         Path.Log.debug("_flattenWire()")
         wBB = wire.BoundBox
 
@@ -783,6 +909,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         extBndboxEXT = extBndbox.extrude(FreeCAD.Vector(0, 0, 1))
 
         # Cut model(selected edges) from extended edges boundbox
+        # Guard: a sketch (2D shape) has no Faces, cutting with it would give a Null shape.
+        if not base.Shape.Faces:
+            Path.Log.error(
+                "_getCutAreaCrossSection: base '{}' has no 3D faces (is it a Sketch?). "
+                "Cannot cut bounding box. Use isSketch path instead.".format(base.Label)
+            )
+            return False
         cutArea = extBndboxEXT.cut(base.Shape)
         cutArea.tessellate(tolerance)
         self._addDebugObject("CutArea", cutArea)
@@ -1090,17 +1223,30 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if isHole is False:
             offset = 0 - offset
 
-        # Map JoinType string to AreaParams enum value
+        # Clipper integer values: jtSquare=0, jtRound=1, jtMiter=2
         jointype_map = {
-            "Round": Path.ClipperJoinTypeRound,
-            "Square": Path.ClipperJoinTypeSquare,
-            "Miter": Path.ClipperJoinTypeMiter,
+            "Round": 1,
+            "Square": 0,
+            "Miter": 2,
         }
-        joinType = jointype_map.get(obj.JoinType, Path.ClipperJoinTypeRound)
+        joinType = jointype_map.get(obj.JoinType, 1)  # default: Round
 
-        return PathUtils.getOffsetArea(
-            fcShape, offset, plane=fcShape, tolerance=tolerance, joinType=joinType
-        )
+        # PathUtils.getOffsetArea gained the 'joinType' parameter after FreeCAD 1.1.
+        # Inspect the signature at runtime to stay compatible with older versions.
+        import inspect
+
+        try:
+            sig = inspect.signature(PathUtils.getOffsetArea)
+            accepts_jointype = "joinType" in sig.parameters
+        except (ValueError, TypeError):
+            accepts_jointype = False
+
+        if accepts_jointype:
+            return PathUtils.getOffsetArea(
+                fcShape, offset, plane=fcShape, tolerance=tolerance, joinType=joinType
+            )
+        else:
+            return PathUtils.getOffsetArea(fcShape, offset, plane=fcShape, tolerance=tolerance)
 
     def _findNearestVertex(self, shape, point):
         Path.Log.debug("_findNearestVertex()")
