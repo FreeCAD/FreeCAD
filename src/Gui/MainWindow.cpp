@@ -57,6 +57,7 @@
 #include <QWhatsThis>
 #include <QWindow>
 #include <QPushButton>
+#include <QStyleOptionButton>
 #include <string>
 
 
@@ -194,36 +195,6 @@ class DimensionWidget: public QPushButton, WindowParameter
     int fixedWidthValue = 0;
     QMenu* unitMenu = nullptr;
 
-private:
-    // Position the unit menu popup above the status-bar button (like the nav style popup).
-    // Clamp horizontally to the current screen; if there is no room above, show it below instead.
-    void positionUnitMenuPopup()
-    {
-        if (!unitMenu) {
-            return;
-        }
-
-        const QSize menuSize = unitMenu->sizeHint();
-        QPoint menuPos = mapToGlobal(rect().topLeft());
-        menuPos.setY(menuPos.y() - menuSize.height());
-
-        QScreen* screen = QGuiApplication::screenAt(mapToGlobal(rect().center()));
-        if (!screen) {
-            screen = QGuiApplication::primaryScreen();
-        }
-        if (screen) {
-            const QRect available = screen->availableGeometry();
-            const int minX = available.left();
-            const int maxX = available.right() - menuSize.width() + 1;
-            menuPos.setX(std::clamp(menuPos.x(), minX, maxX));
-            if (menuPos.y() < available.top()) {
-                menuPos.setY(mapToGlobal(rect().bottomLeft()).y());
-            }
-        }
-
-        unitMenu->move(menuPos);
-    }
-
 public:
     explicit DimensionWidget(QWidget* parent)
         : QPushButton(parent)
@@ -343,25 +314,54 @@ public:
     }
 
 private:
+    // Position the unit menu popup above the status-bar button (like the nav style popup).
+    // Clamp horizontally to the current screen; if there is no room above, show it below instead.
+    void positionUnitMenuPopup()
+    {
+        if (!unitMenu) {
+            return;
+        }
+
+        const QSize menuSize = unitMenu->sizeHint();
+        QPoint menuPos = mapToGlobal(rect().topLeft());
+        menuPos.setY(menuPos.y() - menuSize.height());
+
+        QScreen* screen = QGuiApplication::screenAt(mapToGlobal(rect().center()));
+        if (!screen) {
+            screen = QGuiApplication::primaryScreen();
+        }
+        if (screen) {
+            const QRect available = screen->availableGeometry();
+            const int minX = available.left();
+            const int maxX = available.right() - menuSize.width() + 1;
+            menuPos.setX(std::clamp(menuPos.x(), minX, maxX));
+            if (menuPos.y() < available.top()) {
+                menuPos.setY(mapToGlobal(rect().bottomLeft()).y());
+            }
+        }
+
+        unitMenu->move(menuPos);
+    }
+
     void updateFixedWidth()
     {
         QFontMetrics fm(font());
-        int maxWidth = 0;
+        int maxTextWidth = 0;
+    
         const auto abbreviations = Base::UnitsApi::getAbbreviations();
-        for (const auto& abbreviation : abbreviations) {
-            maxWidth = std::max(maxWidth, fm.horizontalAdvance(QString::fromStdString(abbreviation)));
+        for (const auto& abbr : abbreviations) {
+            maxTextWidth = std::max(maxTextWidth,
+                                    fm.horizontalAdvance(QString::fromStdString(abbr)));
         }
-
-        QStyleOptionComboBox opt;
+    
+        QStyleOptionButton opt;
         opt.initFrom(this);
-        opt.currentText = text();
-        opt.editable = false;
-        opt.frame = true;
-
-        fixedWidthValue
-            = style()
-                  ->sizeFromContents(QStyle::CT_ComboBox, &opt, QSize(maxWidth, fm.height()), this)
-                  .width();
+        opt.text = text();
+    
+        // Ask the style how wide a push button must be to fit this content.
+        fixedWidthValue = style()->sizeFromContents(
+            QStyle::CT_PushButton, &opt, QSize(maxTextWidth, fm.height()), this).width();
+    
         setMinimumWidth(fixedWidthValue);
         setMaximumWidth(fixedWidthValue);
     }
@@ -416,9 +416,10 @@ private:
         assert(actions.size() <= static_cast<qsizetype>(abbreviations.size()));
         assert(actions.size() <= static_cast<qsizetype>(descriptions.size()));
         for (qsizetype i = 0; i < actions.size(); ++i) {
-            actions[i]->setText(QString::fromStdString(descriptions[i]));
-            actions[i]->setToolTip(QString::fromStdString(descriptions[i]));
-            actions[i]->setStatusTip(QString::fromStdString(descriptions[i]));
+            const QString desc = QString::fromStdString(descriptions[i]);
+            actions[i]->setText(desc);
+            actions[i]->setToolTip(desc);
+            actions[i]->setStatusTip(desc);
             actions[i]->setProperty("abbreviation", QString::fromStdString(abbreviations[i]));
         }
         updateFixedWidth();
