@@ -230,6 +230,7 @@ macro(PrintFinalReport)
     if(BUILD_BIM)
         conditional(Lark LARK_FOUND "not found" "${LARK_VERSION}")
     endif()
+    conditional(cpptrace cpptrace_FOUND "not found" "${cpptrace_VERSION}")
 
     section_end()
 
