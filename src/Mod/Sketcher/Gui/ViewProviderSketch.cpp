@@ -3557,6 +3557,13 @@ void ViewProviderSketch::drawEdit(const std::list<std::vector<Base::Vector2d>>& 
     editCoinManager->drawEdit(list, currentGeometryCreationMode());
 }
 
+void ViewProviderSketch::drawLineExtensionAutoConstraintHint(
+    const std::vector<Base::Vector2d>& HintCurve
+)
+{
+    editCoinManager->drawLineExtensionAutoConstraintHint(HintCurve);
+}
+
 void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
                                          unsigned int augmentationlevel)
 {
