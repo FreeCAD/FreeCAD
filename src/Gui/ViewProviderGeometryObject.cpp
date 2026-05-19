@@ -94,6 +94,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     setCoinAppearance(mat);
     pcShapeMaterial->ref();
     pcShapeMaterial->setName("ShapeMaterial");
+    materialAppearance = mat;
 
     pcBoundingBox = new Gui::SoFCBoundingBox;
     pcBoundingBox->ref();
@@ -199,8 +200,8 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
                 && (ShapeAppearance[0] == defaultMaterial || ShapeAppearance[0] == materialAppearance)
                 && (material != defaultMaterial)) {
                 ShapeAppearance.setValue(material);
+                materialAppearance = material;
             }
-            materialAppearance = material;
         }
     }
 
