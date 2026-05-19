@@ -158,7 +158,7 @@ jobs:
 
       - uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11 # v0.9.6
         with:
-          pixi-version: v0.59.0
+          pixi-version: v0.68.1
           cache: false
 
       - name: Install the Apple certificate and provisioning profile
