@@ -1600,7 +1600,7 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
                                                   0,
                                                   'E',
                                                   0,
-                                                  "SRC");
+                                                  {"SRC"});
     }
     // Originally in ComplexGeoData::setElementName
     // LinkStable/src/App/ComplexGeoData.cpp#L1631
@@ -1631,7 +1631,7 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
                                                                     0,
                                                                     'V',
                                                                     0,
-                                                                    "SRC");
+                                                                    {"SRC"});
                 }
                 shape.setElementName(Data::IndexedName::fromConst("Vertex", i),
                                      builtVertexName,0L);

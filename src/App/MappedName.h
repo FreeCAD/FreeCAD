@@ -43,6 +43,37 @@ namespace Data
 
 // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
+class AppExport DecodedMappedSection {
+    public:
+        /// Definitions for these entries can be found in `ElementNamingUtils.h`
+        std::vector<std::string> referenceIDs;
+        std::vector<std::string> linkedNames;
+        std::string iterationTag = Data::EMPTY_VALUE;
+        std::string opCode = "";
+        std::string index = Data::EMPTY_VALUE;
+        char elementType = (*Data::EMPTY_VALUE);
+        std::string duplicateCount = Data::EMPTY_VALUE;
+        std::vector<std::string> mapperFlags;
+        // std::vector<std::string> connectedElements;
+    
+        inline bool hasMapperFlag(std::string flag) const {
+            return (std::find(mapperFlags.begin(), mapperFlags.end(), flag) != mapperFlags.end());
+        };
+
+        inline bool operator==(const DecodedMappedSection& other) const {
+            return (
+                referenceIDs == other.referenceIDs &&
+                linkedNames == other.linkedNames &&
+                iterationTag == other.iterationTag &&
+                opCode == other.opCode &&
+                index == other.index &&
+                elementType == other.elementType &&
+                duplicateCount == other.duplicateCount &&
+                mapperFlags == other.mapperFlags
+            );
+        };
+};
+
 /**
  * @brief A class for managing element map names.
  * @ingroup ElementMapping
@@ -53,9 +84,18 @@ namespace Data
  * (see the fromRawData() members). Despite storing data and postfix
  * separately, they can be accessed via calls to size(), operator[], etc. as
  * though they were a single array.
+ * 
+ * MappedNames can utilize either the V1 or the V2 Topological Naming system.
+ * If it uses the V1 system, it has no methods to simply and efficiently decode
+ * its contents into a datatype which is easy to use and
+ * understand in the FreeCAD codebase.
+ * 
+ * The V2 does include a method to do this: `getDecodedMappedName()`.
+ * This returns a `DecodedMappedName` (or a `std::vector<DecodedMappedSection>`).
+ * 
  */
 
-using MappedNameDataTree = std::vector<std::vector<std::vector<std::string>>>;
+using DecodedMappedName = std::vector<DecodedMappedSection>;
 
 class AppExport MappedName
 {
@@ -1149,24 +1189,36 @@ public:
         usedHistoryAlgorithm = newAlgorithm;
     };
 
-    std::vector<std::string> toSections() const;
+    // we use a static here for caching reasons.
+    static DecodedMappedName getDecodedMappedName(std::string mappedNameString);
 
-    MappedNameDataTree getNameDataTree() const;
+    DecodedMappedName getDecodedMappedName() const;
     
-    static MappedName fromNameDataTree(const MappedNameDataTree tree);
+    static MappedName fromDecodedMappedName(const DecodedMappedName tree);
 
-    static std::vector<std::string> splitToSections(const std::string data, const char deliminator = '|');
+    static std::vector<std::string> splitToSections(const std::string data, const char deliminator);
+
+    static std::vector<std::string> splitToSections(const std::string data, const char* deliminator);
 
     static std::string escapeString(const std::string stringToEscape);
 
     static std::string makeSection(std::vector<std::string> referenceIDs = { },
-                                   std::vector<MappedName> referenceNames = { },
+                                   std::vector<MappedName> linkedNames = { },
                                    int iterationTag = 0,
                                    const char* opCode = "MKR",
                                    int index = 0,
                                    char elementType = 'E',
                                    int duplicateCount = 0,
-                                   std::string mapperInfo = "_");
+                                   std::vector<std::string> mapperFlags = { });
+    
+    static std::string makeSection(std::vector<std::string> referenceIDs = { },
+                                   std::vector<MappedName> linkedNames = { },
+                                   std::string iterationTag = 0,
+                                   const char* opCode = "MKR",
+                                   std::string index = 0,
+                                   char elementType = 'E',
+                                   std::string duplicateCount = 0,
+                                   std::vector<std::string> mapperFlags = { });
     
 private:
     QByteArray data;

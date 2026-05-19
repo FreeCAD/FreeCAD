@@ -277,7 +277,7 @@ void SketchObject::buildShape()
                                                       0,
                                                       'V',
                                                       0,
-                                                      "SRC");
+                                                      {"SRC"});
         }
 
         vertex.setElementName(

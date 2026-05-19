@@ -113,7 +113,7 @@ constexpr const char* NAME_SECTION_DELIMINATOR          = "|";
 /// Escape character for mapped names in sub-sections
 constexpr const char* SUB_SECTION_ESCAPE_CHAR           = "^";
 
-// Placement indexes of data in sections of MappedNames used by the V2 Topological Naming Algorithm.
+// Placement indexes of data in sections of MappedNames used by the V2 Topological Naming System.
 // DO NOT CHANGE THESE VALUES EVER!!! Data should only be added to sections, not removed or otherwise altered.
 
 /// `Reference IDs` entry index.
@@ -130,10 +130,10 @@ constexpr const int   SECTION_INDEX_NUM_INDEX           = 4;
 constexpr const int   SECTION_ELEMENT_TYPE_INDEX        = 5;
 /// `Duplicate count` entry index.
 constexpr const int   SECTION_DUPLICATE_COUNT_INDEX     = 6;
-/// `Mapper Info` entry index.
-constexpr const int   SECTION_MAPPER_INFO_INDEX         = 7;
+/// `Mapper Flags` entry index.
+constexpr const int   SECTION_MAPPER_FLAGS_INDEX        = 7;
 
-/// Size of sections used in MappedNames by the V2 Topological Naming Algorithm
+/// Size of sections used in MappedNames by the V2 Topological Naming System
 constexpr const int   SECTION_SIZE                      = 8;
 
 /// @}

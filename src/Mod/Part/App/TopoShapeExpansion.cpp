@@ -2327,7 +2327,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                                                                                       usedPartnerNames.count(incomingShapeMapName),
                                                                                                       (*info->shapetype),
                                                                                                       0,
-                                                                                                      "PTN").c_str());
+                                                                                                      {"PTN"}).c_str());
                             
                             usedPartnerNames.insert(incomingShapeMapName);
 
@@ -2359,7 +2359,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                                                                                   usedAncestorNames.count(linkedAncestorNames),
                                                                                                   (*info->shapetype),
                                                                                                   0,
-                                                                                                  "ANC").c_str());
+                                                                                                  {"ANC"}).c_str());
                         
                         usedAncestorNames.insert(linkedAncestorNames);
                         ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
@@ -2406,7 +2406,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                                                                                   usedConnectedNames.count(linkedConnectedNames),
                                                                                                   (*info->shapetype),
                                                                                                   0,
-                                                                                                  "CON").c_str());
+                                                                                                  {"CON"}).c_str());
                         
                         usedConnectedNames.insert(linkedConnectedNames);
                         ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
@@ -6518,12 +6518,12 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
         std::vector<Data::MappedElement> copiedElementMap = tmp.ensureElementMap()->getAll();
 
         for (Data::MappedElement &mappedElement : copiedElementMap) {
-            Data::MappedNameDataTree tree = mappedElement.name.getNameDataTree();
+            Data::DecodedMappedName decodedName = mappedElement.name.getDecodedMappedName();
 
-            if (tree.size() && (tree[tree.size() - 1][2][0] == "0" || force)) {
-                tree[tree.size() - 1][2][0] = std::to_string(tag);
+            if (decodedName.size() && (decodedName.back().index == "0" || force)) {
+                decodedName.back().index = std::to_string(tag);
                 
-                mappedElement.name = Data::MappedName::fromNameDataTree(tree);
+                mappedElement.name = Data::MappedName::fromDecodedMappedName(decodedName);
             }
         }
 

@@ -277,16 +277,16 @@ void Part::FaceMaker::postBuild()
                     continue;
                 }
 
-                Data::MappedNameDataTree tree = name.getNameDataTree();
-                size_t treeSize = tree.size();
+                Data::DecodedMappedName decodedName = name.getDecodedMappedName();
+                size_t decodedNameSize = decodedName.size();
 
-                if (treeSize != 0 && tree[0][Data::SECTION_MAPPER_INFO_INDEX][0] == "SRC") {
-                    bool canMap = treeSize <= 2;
+                if (decodedNameSize != 0 && decodedName[0].hasMapperFlag("SRC")) {
+                    bool canMap = decodedNameSize <= 2;
                     std::string index = "_";
 
-                    if (treeSize == 2) {
-                        if (tree[0][Data::SECTION_ITERATION_TAG_INDEX][0] == tree[1][Data::SECTION_ITERATION_TAG_INDEX][0]) {
-                            index = tree[1][Data::SECTION_INDEX_NUM_INDEX][0];
+                    if (decodedNameSize == 2) {
+                        if (decodedName[0].iterationTag == decodedName[1].iterationTag) {
+                            index = decodedName[1].index;
                         }  else {
                             canMap = false;
                         }
@@ -295,11 +295,11 @@ void Part::FaceMaker::postBuild()
                     if (canMap) {
                         std::stringstream ss;
 
-                        for (const auto &id : tree[0][Data::SECTION_REFERENCE_ID_INDEX]) {
+                        for (const auto &id : decodedName[0].referenceIDs) {
                             if (id != "_") {
                                 ss << id;
                                 ss << ":";
-                                ss << tree[0][Data::SECTION_ITERATION_TAG_INDEX][0];
+                                ss << decodedName[0].iterationTag;
 
                                 if (index != "_") {
                                     ss << ":";
@@ -332,12 +332,11 @@ void Part::FaceMaker::postBuild()
 
             std::string faceString = Data::MappedName::makeSection(edgeIDs,
                                                                    edgeNames,
-                                                                   masterTag,
+                                                                   std::to_string(masterTag),
                                                                    op,
-                                                                   0,
+                                                                   "0",
                                                                    'F',
-                                                                   0,
-                                                                   "_");
+                                                                   "0");
             
             this->myTopoShape.setElementName(
                 Data::IndexedName::fromConst("Face", index),

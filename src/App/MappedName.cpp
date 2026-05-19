@@ -52,6 +52,14 @@ void MappedName::compact() const
     }
 }
 
+std::vector<std::string> MappedName::splitToSections(const std::string data, const char* deliminator) {
+    if (strlen(deliminator)) {
+        return MappedName::splitToSections(data, *deliminator);
+    }
+
+    return { };
+}
+
 std::vector<std::string> MappedName::splitToSections(const std::string data, const char deliminator) {
     std::stringstream ss;
     std::vector<std::string> sections { };
@@ -86,72 +94,85 @@ std::vector<std::string> MappedName::splitToSections(const std::string data, con
     return sections;
 }
 
-std::vector<std::string> MappedName::toSections() const {
-    return MappedName::splitToSections(toString(), '|');
-}
-
-MappedNameDataTree MappedName::getNameDataTree() const {
+DecodedMappedName MappedName::getDecodedMappedName(std::string mappedNameString) {
     // made up of triple nested string vectors
     // std::vector<std::vector<std::vector<std::string>>>
-    MappedNameDataTree tree;
-    std::vector<std::string> mainSections = toSections();
+    DecodedMappedName name = { };
+    std::vector<std::string> mainSections = MappedName::splitToSections(mappedNameString, Data::NAME_SECTION_DELIMINATOR);
 
     for (const auto &mainSection : mainSections) {
-        std::vector<std::string> sectionDataSplit = MappedName::splitToSections(mainSection, (*Data::SECTION_SUB_DELIMINATOR));
-        std::vector<std::vector<std::string>> addInfo;
-        int sectionsToAdd = Data::SECTION_SIZE;
-
-        for (const auto &subSection : sectionDataSplit) {
-            std::vector<std::string> sectionDataList;
-
-            if (boost::algorithm::contains(subSection, Data::SUB_SECTION_LIST_DELIMINATOR)) {
-                sectionDataList = MappedName::splitToSections(subSection, (*Data::SUB_SECTION_LIST_DELIMINATOR));
-            } else {
-                sectionDataList = { subSection };
+        std::vector<std::string> sectionDataSplit = MappedName::splitToSections(mainSection, Data::SECTION_SUB_DELIMINATOR);
+        DecodedMappedSection section = { };
+        std::vector<std::string> entryList; 
+    
+        for (size_t i = 0; i < sectionDataSplit.size(); i++) {
+            entryList = MappedName::splitToSections(sectionDataSplit[i], Data::SUB_SECTION_LIST_DELIMINATOR);
+            
+            if (entryList.size() && entryList.front() != "_") {
+                switch (i) {
+                    case Data::SECTION_REFERENCE_ID_INDEX:
+                        section.referenceIDs = entryList;
+                        break;
+                    case Data::SECTION_LINKED_NAME_INDEX:
+                        section.linkedNames = entryList;
+                        break;
+                    case Data::SECTION_ITERATION_TAG_INDEX:
+                        section.iterationTag = entryList.front();
+                        break;
+                    case SECTION_OPCODE_INDEX:
+                        section.opCode = entryList.front();
+                        break;
+                    case SECTION_INDEX_NUM_INDEX:
+                        section.index = entryList.front();
+                        break;
+                    case SECTION_ELEMENT_TYPE_INDEX:
+                        section.elementType = entryList.front().front();
+                        break;
+                    case SECTION_DUPLICATE_COUNT_INDEX:
+                        section.duplicateCount = entryList.front();
+                        break;
+                    case SECTION_MAPPER_FLAGS_INDEX:
+                        section.mapperFlags = entryList;
+                        break;
+                }
             }
-
-            sectionsToAdd--;
-            addInfo.push_back(sectionDataList);
         }
 
-        for (int i = 0; i < sectionsToAdd; i++) {
-            addInfo.push_back({ Data::EMPTY_VALUE });
-        }
-
-        tree.push_back(addInfo);
+        name.push_back(section);
     }
 
-    return tree;
+    return name;
 }
 
-MappedName MappedName::fromNameDataTree(const MappedNameDataTree tree) {
+DecodedMappedName MappedName::getDecodedMappedName() const {
+    return MappedName::getDecodedMappedName(toString());
+}
+
+MappedName MappedName::fromDecodedMappedName(const DecodedMappedName tree) {
     std::stringstream ss;
+    DecodedMappedSection section;
 
     for (size_t i = 0; i < tree.size(); ++i) {
-        const auto& mainSection = tree[i];
-        std::stringstream mainSectionStream;
+        section = tree[i];
+        std::vector<MappedName> formattedLinkedNames;
 
-        for (size_t j = 0; j < mainSection.size(); ++j) {
-            const auto& subSection = mainSection[j];
-            std::stringstream subSectionStream;
-
-            for (size_t k = 0; k < subSection.size(); ++k) {
-                subSectionStream << escapeString(subSection[k]);
-
-                if (k + 1 < subSection.size())
-                    subSectionStream << (*Data::SUB_SECTION_LIST_DELIMINATOR);
-            }
-
-            mainSectionStream << subSectionStream.str();
-
-            if (j + 1 < mainSection.size())
-                mainSectionStream << (*Data::SECTION_SUB_DELIMINATOR);
+        for (const std::string& linkedName : section.linkedNames) {
+            formattedLinkedNames.push_back(MappedName(linkedName));
         }
 
-        ss << mainSectionStream.str();
+        ss << MappedName::makeSection(
+            section.referenceIDs,
+            formattedLinkedNames,
+            section.iterationTag,
+            section.opCode.c_str(),
+            section.index,
+            section.elementType,
+            section.duplicateCount,
+            section.mapperFlags
+        );
 
         if ((i + 1) < tree.size())
-            ss << (*Data::NAME_SECTION_DELIMINATOR);
+            ss << Data::NAME_SECTION_DELIMINATOR;
     }
 
     return MappedName(ss.str());
@@ -182,13 +203,36 @@ std::string MappedName::escapeString(const std::string stringToEscape) {
 // IMPORTANT: make sure the placement of the sub-sections in the return
 // string matches what is described in ElementNamingUtils.h
 std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
-                                    std::vector<MappedName> referenceNames,
+                                    std::vector<MappedName> linkedNames,
                                     int iterationTag,
                                     const char* opCode,
                                     int index,
                                     char elementType,
                                     int duplicateCount,
-                                    std::string mapperInfo)
+                                    std::vector<std::string> mapperFlags) // TODO: switch to vector of individual flags
+{
+    return MappedName::makeSection(
+        referenceIDs,
+        linkedNames,
+        std::to_string(iterationTag),
+        opCode,
+        std::to_string(index),
+        elementType,
+        std::to_string(duplicateCount),
+        mapperFlags
+    );
+}
+
+// IMPORTANT: make sure the placement of the sub-sections in the return
+// string matches what is described in ElementNamingUtils.h
+std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
+                                    std::vector<MappedName> linkedNames,
+                                    std::string iterationTag,
+                                    const char* opCode,
+                                    std::string index,
+                                    char elementType,
+                                    std::string duplicateCount,
+                                    std::vector<std::string> mapperFlags) // TODO: switch to vector of individual flags
 {
     std::stringstream ss;
     std::string opCodeString = (opCode == nullptr || strlen(opCode) == 0) ? "MKR" : opCode;
@@ -207,14 +251,14 @@ std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
 
     ss << Data::SECTION_SUB_DELIMINATOR;
 
-    if (referenceNames.empty()) {
+    if (linkedNames.empty()) {
         ss << Data::EMPTY_VALUE;
     } else {
-        for (size_t i = 0; i < referenceNames.size(); i++) {
+        for (size_t i = 0; i < linkedNames.size(); i++) {
             if (i != 0)
                 ss << Data::SUB_SECTION_LIST_DELIMINATOR;
 
-            ss << MappedName::escapeString(referenceNames[i].toString());
+            ss << MappedName::escapeString(linkedNames[i].toString());
         }
     }
 
@@ -228,8 +272,19 @@ std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
        << elementType
        << Data::SECTION_SUB_DELIMINATOR
        << duplicateCount
-       << Data::SECTION_SUB_DELIMINATOR
-       << mapperInfo;
+       << Data::SECTION_SUB_DELIMINATOR;
+
+    if (mapperFlags.empty()) {
+        ss << Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < mapperFlags.size(); i++) {
+            if (i != 0) {
+                ss << Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            ss << mapperFlags[i];
+        }
+    }
     
     return ss.str();
 }

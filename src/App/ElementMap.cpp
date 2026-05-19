@@ -626,25 +626,31 @@ MappedName ElementMap::setElementName(const IndexedName& element,
             return res;
         }
 
-        Data::MappedNameDataTree nameTree = mappedName.getNameDataTree();
+        Data::DecodedMappedName decodedName(mappedName.getDecodedMappedName());
 
-        if (nameTree.size()) {
-            nameTree[nameTree.size() - 1][Data::SECTION_DUPLICATE_COUNT_INDEX][0] = "_";
+        if (decodedName.size()) {
+            decodedName[decodedName.size() - 1].duplicateCount = "_";
 
             for (auto &loopElement : getAll()) {
-                Data::MappedNameDataTree loopTree = loopElement.name.getNameDataTree();
+                Data::DecodedMappedName decodedLoopName(loopElement.name.getDecodedMappedName());
 
-                loopTree[loopTree.size() - 1][Data::SECTION_DUPLICATE_COUNT_INDEX][0] = "_";
+                decodedLoopName[decodedLoopName.size() - 1].duplicateCount = "_";
 
-                if (loopTree == nameTree) {
+                if (decodedName == decodedLoopName) {
                     duplicateIndex++;
                 }
             }
 
-            nameTree[nameTree.size() - 1][Data::SECTION_DUPLICATE_COUNT_INDEX][0] = std::to_string(duplicateIndex);
+            decodedName[decodedName.size() - 1].duplicateCount = duplicateIndex;
             
-            mappedName = MappedName::fromNameDataTree(nameTree);
-            res = this->addName(mappedName, element, *sid, overwrite, &existing);
+            mappedName = MappedName::fromDecodedMappedName(decodedName);
+            res = this->addName(
+                mappedName,
+                element,
+                *sid,
+                overwrite,
+                &existing
+            );
             
             return res ? res : name;
         }
