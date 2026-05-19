@@ -1506,8 +1506,6 @@ private:
                 angleToPrevious = std::round(angleToPrevious / (pi * 0.5)) * (pi * 0.5);
             }
 
-            Base::Vector2d Tangent = getCurrentInitialDirection();
-            double theta = Tangent.GetAngle(currentDir);
             double radius = getArcCenter(center, prevCursorPos);
 
             if (radius == 0.0) {
