@@ -65,7 +65,8 @@ public:
     );  // sets the center coordinates and the command name
     std::string toGCode(
         int precision = 6,
-        bool padzero = true
+        bool padzero = true,
+        bool includeAnnotations = true
     ) const;                                // returns a GCode string representation of the command
     void setFromGCode(const std::string&);  // sets the parameters from the contents of the given
                                             // GCode string

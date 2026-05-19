@@ -104,7 +104,7 @@ bool Command::has(const std::string& attr) const
     return Parameters.contains(a);
 }
 
-std::string Command::toGCode(int precision, bool padzero) const
+std::string Command::toGCode(int precision, bool padzero, bool includeAnnotations) const
 {
     std::stringstream str;
     str.fill('0');
@@ -149,7 +149,7 @@ std::string Command::toGCode(int precision, bool padzero) const
     }
 
     // Add annotations as a comment if they exist
-    if (!Annotations.empty()) {
+    if (includeAnnotations && !Annotations.empty()) {
         str << " ; ";
         bool first = true;
         for (const auto& pair : Annotations) {
@@ -184,7 +184,8 @@ void Command::setFromGCode(const std::string& str)
     auto comment_pos = str.find("; ");
     if (comment_pos != std::string::npos) {
         gcode_part = str.substr(0, comment_pos);
-        annotation_part = str.substr(comment_pos + 1);  // length of "; "
+        boost::trim_right(gcode_part);
+        annotation_part = str.substr(comment_pos + 2);  // length of "; "
     }
 
     std::string mode = "none";
@@ -479,7 +480,7 @@ unsigned int Command::getMemSize() const
 void Command::Save(Base::Writer& writer) const
 {
     // this will only get used if saved as XML (probably never)
-    writer.Stream() << writer.ind() << "<Command gcode=\"" << toGCode() << "\"";
+    writer.Stream() << writer.ind() << "<Command gcode=\"" << toGCode(6, true, false) << "\"";
 
     if (!Annotations.empty()) {
         writer.Stream() << " annotations=\"";

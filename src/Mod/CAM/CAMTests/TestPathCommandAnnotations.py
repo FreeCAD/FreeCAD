@@ -378,3 +378,22 @@ class TestPathCommandAnnotations(PathTestBase):
         self.assertEqual(c1.Parameters["Y"], 5.0)
         self.assertEqual(c1.Annotations["retract"], 15.5)
         self.assertEqual(c1.Annotations["angle"], 30.25)
+
+    def test21(self):
+        """Test comment command names are not padded when annotations round-trip."""
+        original = Path.Command("(xx)", {}, {"a": "x"})
+
+        content = original.dumpContent()
+        restored = Path.Command()
+        restored.restoreContent(content)
+
+        self.assertEqual(restored.Name, "(xx)")
+        self.assertEqual(restored.Annotations, {"a": "x"})
+
+    def test22(self):
+        """Test parsing annotation comments does not include the separator space in the name."""
+        command = Path.Command()
+        command.setFromGCode("(xx) ; a:'x'")
+
+        self.assertEqual(command.Name, "(xx)")
+        self.assertEqual(command.Annotations, {"a": "x"})
