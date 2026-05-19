@@ -28,6 +28,7 @@ import Path
 import Path.Base.Drillable as Drillable
 import Path.Op.Area as PathAreaOp
 import Path.Op.Base as PathOp
+import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -218,6 +219,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "Order processing of the shapes"
                     "\nAutomatic: uses nearest neighbour algorithm to sort shapes"
                     "\nManual: uses order of shapes selection",
+                ),
+            ),
+            (
+                "App::PropertyLength",
+                "ExtensionOffset",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Extension for working area limited by the model shape",
                 ),
             ),
         ]
@@ -539,6 +549,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         """_preprocessBase(obj) ... returns envelope of selected shapes"""
         shapeTups = []
 
+        self.solids = [base.Shape for base in self.model]
+        self.tol = self.job.GeometryTolerance.Value
+
         for base, subsList in obj.Base:
             if subsList == ("",):
                 shapeTups.extend(self._processEachModel(base))
@@ -616,6 +629,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
             if faces and obj.processPerimeter:
                 for shape in faces:
+                    if obj.ExtensionOffset:
+                        ext = PathOpUtil.getExtended(
+                            shape, obj.ExtensionOffset.Value, self.solids, self.tol
+                        )
+                        shape = Part.Compound(ext)
                     custDepthparams = self.depthparams
                     try:
                         shapeEnv = PathUtils.getEnvelope(shape, depthparams=custDepthparams)
@@ -642,7 +660,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 origWire, flatWire = self._flattenWire(obj, wire, obj.FinalDepth.Value)
                 f = flatWire.Wires[0]
                 if f:
-                    shapeEnv = PathUtils.getEnvelope(Part.Face(f), depthparams=self.depthparams)
+                    shape = Part.Face(f)
+                    if obj.ExtensionOffset:
+                        ext = PathOpUtil.getExtended(
+                            shape, obj.ExtensionOffset.Value, self.solids, self.tol
+                        )
+                        shape = Part.Compound(ext)
+                    shapeEnv = PathUtils.getEnvelope(shape, depthparams=self.depthparams)
                     if shapeEnv:
                         shapeTups.append((shapeEnv, False, "pathProfile"))
                 else:

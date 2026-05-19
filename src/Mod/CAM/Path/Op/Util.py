@@ -537,32 +537,26 @@ def getClearedAreas(currentOp, bbox):
     return clearedAreas
 
 
-def getExtensions(faces, offset, solids, tolerance=0.01):
-    """getExtension(faces, offset, solids)
-    Returns extensions for faces which not intersect with solids
+def getExtended(faces, offset, solids, tolerance=0.01):
+    """getExtended(faces, offset, solids)
+    Returns extended faces which not intersect with solids
     """
     extensions = []
+    if isinstance(faces, Part.Face):
+        faces = [faces]
     for face in faces:
-        # Part.show(face)
-        # oface = face.makeOffset2D(offset)
+        extensions.append(face)
+        if not offset:
+            continue
         plane = PathUtils.makeWorkplane(face)
         oface = PathUtils.getOffsetArea(face, offset, plane=plane, tolerance=tolerance)
-        # Part.show(oface)
-        if not Path.Geom.isRoughly(oface.Volume, 0):
-            print("Extension error: makeOffset2D() produced not flat shape.")
-            print("Attempt to create face from outer wire")
-            face = Part.Face(face.OuterWire)
-            # Part.show(face)
-            oface = face.makeOffset2D(offset)
-            # Part.show(oface)
-            if not Path.Geom.isRoughly(oface.Volume, 0):
-                print("Extension error: makeOffset2D() produced not flat shape")
-                continue
-        eface = oface.cut(solids)
-        # Part.show(eface)
-        if not eface.isNull():
-            extensions.append(eface)
+        if not oface:
+            Path.Log.warning("Extension error: getOffsetArea() failed")
+            continue
+        ext = oface.cut(solids)
+        if not ext.isNull():
+            extensions.extend(ext.Faces)  # ext can be a Face or Shell
         else:
-            print("Extension error: cut() produced empty shape")
+            Path.Log.warning("Extension error: cut() failed")
 
     return extensions

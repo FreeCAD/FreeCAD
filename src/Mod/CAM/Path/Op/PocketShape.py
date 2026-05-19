@@ -170,7 +170,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 "Pocket",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Offset for extension limited by the model shape",
+                    "Extension for working area limited by the model shape",
                 ),
             )
             if getattr(obj, "ExtensionFeature", None) and getattr(obj, "ExtensionLengthDefault", 0):
@@ -251,8 +251,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             if obj.ExtensionOffset:
                 solids = [base.Shape for base in self.model]
                 tol = self.job.GeometryTolerance.Value
-                ext = PathOpUtil.getExtensions(self.horiz, obj.ExtensionOffset.Value, solids, tol)
-                self.horiz.extend(ext)
+                ext = PathOpUtil.getExtended(self.horiz, obj.ExtensionOffset.Value, solids, tol)
+                self.horiz = ext
 
             # check all faces and see if they are touching/overlapping and combine and simplify
             keepOrder = getattr(obj, "SortingMode", None) == "Manual"

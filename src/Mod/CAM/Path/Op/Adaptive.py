@@ -1100,8 +1100,8 @@ def _workingEdgeHelperManual(op, obj, depths):
     if obj.ExtensionOffset:
         solids = [model.Shape for model in op.model]
         tol = op.job.GeometryTolerance.Value
-        ext = PathOpUtil.getExtensions(selectedRegions, obj.ExtensionOffset.Value, solids, tol)
-        selectedRegions.extend(ext)
+        ext = PathOpUtil.getExtended(selectedRegions, obj.ExtensionOffset.Value, solids, tol)
+        selectedRegions = ext
 
     # Multiple input solids can be selected- make a single part out of them,
     # will process each solid separately as appropriate
@@ -1259,8 +1259,8 @@ def _get_working_edges(op, obj):
     if obj.ExtensionOffset:
         solids = [model.Shape for model in op.model]
         tol = op.job.GeometryTolerance.Value
-        ext = PathOpUtil.getExtensions(all_regions, obj.ExtensionOffset.Value, solids, tol)
-        all_regions.extend(ext)
+        ext = PathOpUtil.getExtended(all_regions, obj.ExtensionOffset.Value, solids, tol)
+        all_regions = ext
 
     # Second face-combining method attempted
     horizontal = Path.Geom.combineHorizontalFaces(all_regions)
