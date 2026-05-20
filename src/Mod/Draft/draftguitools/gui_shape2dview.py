@@ -138,7 +138,10 @@ class UpdateShape2DView:
             "Pixmap": "TechDraw_TreePageUnsync",
             "Accel": "V,T",
             "MenuText": QT_TRANSLATE_NOOP("Draft_UpdateShape2DView", "Force 2D View Update"),
-            "ToolTip": QT_TRANSLATE_NOOP("Draft_UpdateShape2DView", "Forces an update of the selected 2D Views or all 2D Views in the document.\nThe AutoUpdate property of the views is ignored."),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_UpdateShape2DView",
+                "Forces an update of the selected 2D Views or all 2D Views in the document.\nThe AutoUpdate property of the views is ignored.",
+            ),
         }
 
     def IsActive(self):
