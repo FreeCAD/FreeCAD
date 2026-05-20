@@ -2026,20 +2026,17 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         std::unordered_map<TopoDS_Shape, ReverseMapBase> reverseGeneratedMap { };
         std::unordered_map<std::string, std::vector<TopoDS_Shape>> normalGeneratedMap { };
 
-        auto addToReverseMap = [](std::unordered_map<TopoDS_Shape, ReverseMapBase> &map,
-                                  TopoDS_Shape newShape,
+        auto addToReverseMap = [](std::unordered_map<TopoDS_Shape, ReverseMapBase>& map,
+                                  const TopoDS_Shape& newShape,
                                   Data::IndexedName newShapeIndexName,
                                   Data::IndexedName mapShapeIndexName,
-                                  TopoDS_Shape mapElementShape,
-                                  TopoShape incomingShape) mutable 
+                                  const TopoDS_Shape& mapElementShape,
+                                  const TopoShape& incomingShape) 
         {
-            if (map.find(newShape) == map.end()) {
-                ReverseMapBase newBase = ReverseMapBase();
+            std::pair<std::unordered_map<TopoDS_Shape, Part::ReverseMapBase>::iterator, bool> res = map.try_emplace(newShape);
 
-                newBase.mapElements = { };
-                newBase.masterName = newShapeIndexName;
-
-                map.insert({newShape, newBase});
+            if (res.second) {
+                res.first->second.masterName = newShapeIndexName;
             }
 
             ReverseMapValue newValue = ReverseMapValue();
@@ -2048,7 +2045,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             newValue.mapElementShape = mapElementShape;
             newValue.mapParentShape = incomingShape;
 
-            map[newShape].mapElements.push_back(newValue);
+            res.first->second.mapElements.push_back(newValue);
         };
 
         long masterTag = Tag;
@@ -2065,7 +2062,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         // These loops generate names with the Modified and Generated methods of the Maker class.
         // This will miss some shapes, so in the next stage we will find names with the IsPartner method.
 
-        std::set<Data::IndexedName> allGeneratedShapes { };
+        std::unordered_set<Data::IndexedName, Data::IndexedNameHasher> allGeneratedShapes { };
 
         for (auto& info : infos) {
             for (const auto& incomingShape : shapes) {
@@ -2209,16 +2206,19 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             continue;
                         }
 
-                        addToReverseMap(reverseGeneratedMap, generatedShape, element, incomingShapeIndexedName, otherElement, incomingShape);
+                        addToReverseMap(
+                            reverseGeneratedMap,
+                            generatedShape,
+                            element,
+                            incomingShapeIndexedName,
+                            otherElement,
+                            incomingShape
+                        );
                         
                         std::string otherElementMapName = incomingShape.getMappedName(incomingShapeIndexedName).toString();
 
                         if (otherElementMapName.size()) {
-                            if (normalGeneratedMap.find(otherElementMapName) == normalGeneratedMap.end()) {
-                                normalGeneratedMap.insert({otherElementMapName, {}});
-                            }
-
-                            normalGeneratedMap[otherElementMapName].push_back(generatedShape);
+                            normalGeneratedMap.try_emplace(otherElementMapName).first->second.push_back(generatedShape);
                         }
 
                         allGeneratedShapes.insert(element);
@@ -2227,8 +2227,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             }
         }
 
-        // Eventually this needs to be unordered to improve performance.
-        std::set<std::vector<Data::MappedName>> usedLinkedNames { };
+        std::unordered_set<std::vector<Data::MappedName>, Data::MappedNameHasher> usedLinkedNames { };
 
         for (auto &generatedShapeKey : reverseGeneratedMap) {
             if (getMappedName(generatedShapeKey.second.masterName)) {
@@ -2306,9 +2305,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         }
 
         const std::map<std::string, TopAbs_ShapeEnum> ancestorTypeMap {{"Edge", TopAbs_FACE}, {"Face", TopAbs_EDGE}, {"Vertex", TopAbs_FACE}};
-        std::set<std::vector<Data::MappedName>> usedAncestorNames { };
-        std::set<std::vector<Data::MappedName>> usedConnectedNames { };
-        std::set<Data::MappedName> usedPartnerNames { };
+        std::unordered_set<std::vector<Data::MappedName>, Data::MappedNameHasher> usedAncestorNames { };
+        std::unordered_set<std::vector<Data::MappedName>, Data::MappedNameHasher> usedConnectedNames { };
+        std::unordered_set<Data::MappedName, Data::MappedNameHasher> usedPartnerNames { };
         std::array<ShapeInfo*, 3> connectedElementInfos = {&faceInfo, &edgeInfo, &vertexInfo};
 
         // Now let's map any unmapped shapes with the IsPartner and ancestor method.

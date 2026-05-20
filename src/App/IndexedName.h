@@ -200,6 +200,12 @@ public:
         return result;
     }
 
+    /// Get a hash for this IndexedName
+    std::size_t hash() const
+    {
+        return qHash(type, qHash(index));
+    }
+
     /**
      * @brief Append this indexed name to an output stream.
      *
@@ -404,6 +410,22 @@ private:
     int index;
 };
 
+
+struct AppExport IndexedNameHasher {
+    std::size_t operator()(const IndexedName& name) const {
+        return name.hash();
+    };
+
+    std::size_t operator()(const std::vector<IndexedName>& names) const {
+        std::size_t seed = names.size();
+
+        for (const IndexedName& name : names) {
+            seed ^= name.hash() + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+
+        return seed;
+    };
+};
 
 /// A thin wrapper around a QByteArray providing the ability to force a copy of the data at any
 /// time, even if it isn't being written to. The standard assignment operator for this class *does*

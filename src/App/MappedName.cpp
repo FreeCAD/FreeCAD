@@ -95,53 +95,57 @@ std::vector<std::string> MappedName::splitToSections(const std::string data, con
 }
 
 DecodedMappedName MappedName::getDecodedMappedName(std::string mappedNameString) {
-    // made up of triple nested string vectors
-    // std::vector<std::vector<std::vector<std::string>>>
-    DecodedMappedName name = { };
-    std::vector<std::string> mainSections = MappedName::splitToSections(mappedNameString, Data::NAME_SECTION_DELIMINATOR);
+    if (decodedMappedNameCache.find(mappedNameString) == decodedMappedNameCache.end()) {
+        DecodedMappedName name = { };
+        std::vector<std::string> mainSections = MappedName::splitToSections(mappedNameString, Data::NAME_SECTION_DELIMINATOR);
 
-    for (const auto &mainSection : mainSections) {
-        std::vector<std::string> sectionDataSplit = MappedName::splitToSections(mainSection, Data::SECTION_SUB_DELIMINATOR);
-        DecodedMappedSection section = { };
-        std::vector<std::string> entryList; 
-    
-        for (size_t i = 0; i < sectionDataSplit.size(); i++) {
-            entryList = MappedName::splitToSections(sectionDataSplit[i], Data::SUB_SECTION_LIST_DELIMINATOR);
-            
-            if (entryList.size() && entryList.front() != "_") {
-                switch (i) {
-                    case Data::SECTION_REFERENCE_ID_INDEX:
-                        section.referenceIDs = entryList;
-                        break;
-                    case Data::SECTION_LINKED_NAME_INDEX:
-                        section.linkedNames = entryList;
-                        break;
-                    case Data::SECTION_ITERATION_TAG_INDEX:
-                        section.iterationTag = entryList.front();
-                        break;
-                    case Data::SECTION_OPCODE_INDEX:
-                        section.opCode = entryList.front();
-                        break;
-                    case Data::SECTION_INDEX_NUM_INDEX:
-                        section.index = entryList.front();
-                        break;
-                    case Data::SECTION_ELEMENT_TYPE_INDEX:
-                        section.elementType = entryList.front().front();
-                        break;
-                    case Data::SECTION_DUPLICATE_COUNT_INDEX:
-                        section.duplicateCount = entryList.front();
-                        break;
-                    case Data::SECTION_MAPPER_FLAGS_INDEX:
-                        section.mapperFlags = entryList;
-                        break;
+        for (const auto &mainSection : mainSections) {
+            std::vector<std::string> sectionDataSplit = MappedName::splitToSections(mainSection, Data::SECTION_SUB_DELIMINATOR);
+            DecodedMappedSection section = { };
+            std::vector<std::string> entryList; 
+        
+            for (size_t i = 0; i < sectionDataSplit.size(); i++) {
+                entryList = MappedName::splitToSections(sectionDataSplit[i], Data::SUB_SECTION_LIST_DELIMINATOR);
+                
+                if (entryList.size() && entryList.front() != "_") {
+                    switch (i) {
+                        case Data::SECTION_REFERENCE_ID_INDEX:
+                            section.referenceIDs = entryList;
+                            break;
+                        case Data::SECTION_LINKED_NAME_INDEX:
+                            section.linkedNames = entryList;
+                            break;
+                        case Data::SECTION_ITERATION_TAG_INDEX:
+                            section.iterationTag = entryList.front();
+                            break;
+                        case Data::SECTION_OPCODE_INDEX:
+                            section.opCode = entryList.front();
+                            break;
+                        case Data::SECTION_INDEX_NUM_INDEX:
+                            section.index = entryList.front();
+                            break;
+                        case Data::SECTION_ELEMENT_TYPE_INDEX:
+                            section.elementType = entryList.front().front();
+                            break;
+                        case Data::SECTION_DUPLICATE_COUNT_INDEX:
+                            section.duplicateCount = entryList.front();
+                            break;
+                        case Data::SECTION_MAPPER_FLAGS_INDEX:
+                            section.mapperFlags = entryList;
+                            break;
+                    }
                 }
             }
+
+            name.push_back(section);
         }
 
-        name.push_back(section);
-    }
+        decodedMappedNameCache[mappedNameString] = name;
 
-    return name;
+        return name;
+    } else {
+        return decodedMappedNameCache[mappedNameString];
+    }
 }
 
 DecodedMappedName MappedName::getDecodedMappedName() const {
