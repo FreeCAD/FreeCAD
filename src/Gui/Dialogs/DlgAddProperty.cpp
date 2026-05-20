@@ -182,7 +182,7 @@ int DlgAddProperty::findLabelRow(const char* labelName, QFormLayout* layout)
         }
 
         if (auto label = qobject_cast<QLabel*>(labelItem->widget())) {
-            if (label->objectName() == QString::fromLatin1(labelName)) {
+            if (label->objectName() == QString::fromStdString(labelName)) {
                 return row;
             }
         }
@@ -326,13 +326,13 @@ void DlgAddProperty::initializeTypes()
 
     const auto addTypes = [this, &lastType](const std::vector<Base::Type>& types) {
         for (const auto& type : types) {
-            ui->comboBoxType->addItem(QString::fromLatin1(type.getName()));
+            const auto name = type.getName();
+            ui->comboBoxType->addItem(QString::fromUtf8(name.data(), name.size()));
             if (type == lastType) {
                 ui->comboBoxType->setCurrentIndex(ui->comboBoxType->count() - 1);
             }
         }
     };
-
 
     const auto addSeparator = [this]() {
         ui->comboBoxType->addItem(QStringLiteral("──────────────────────"));
@@ -705,8 +705,8 @@ void DlgAddProperty::removeEditor()
 
 bool DlgAddProperty::isEnumPropertyItem() const
 {
-    return ui->comboBoxType->currentText()
-        == QString::fromLatin1(App::PropertyEnumeration::getClassTypeId().getName());
+    return ui->comboBoxType->currentText().toStdString()
+        == App::PropertyEnumeration::getClassTypeId().getName();
 }
 
 QVariant DlgAddProperty::getEditorData() const
@@ -983,7 +983,10 @@ App::Property* DlgAddProperty::createProperty()
         critical(
             QObject::tr("Add property"),
             QObject::tr("Failed to add property to '%1': %2")
-                .arg(QString::fromLatin1(container->getFullName().c_str()), QString::fromUtf8(e.what()))
+                .arg(
+                    QString::fromStdString(container->getFullName().c_str()),
+                    QString::fromUtf8(e.what())
+                )
         );
         return nullptr;
     }
