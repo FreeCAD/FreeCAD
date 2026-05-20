@@ -49,7 +49,7 @@ class BIM_ImagePlane:
         import draftguitools.gui_trackers as DraftTrackers
 
         self.doc = FreeCAD.ActiveDocument
-        (filename, _filter) = QtGui.QFileDialog.getOpenFileName(
+        filename, _filter = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             translate("BIM", "Select Image"),
             None,
