@@ -51,35 +51,44 @@ def add_femelement_geometry(commtxt, ele_name, ca_writer):
 
 def add_shell2D(commtxt, mat_objs, ele_name, ca_writer):
     """Adds a 2D element geometry type shell"""
-    # only use the first shellthickness object
-    shellth_obj = ca_writer.member.geos_shellthickness[0]["Object"]
-    thickness = shellth_obj.Thickness.getValueAs("mm").Value
-    lams = [mat_objs[0].Name]
-    geoms = []
+    lams = []
+    thicknesses = []
+    geomses = []
     i = 0
-    for (
-        ref
-    ) in (
-        shellth_obj.References
-    ):  # TODO: work out how to create group of all elements and apply to that in case where len(shellth_obj.References) == 0.
-        for geom in ref[1]:
-            geoms.append(geom)
+    for shellth in ca_writer.member.geos_shellthickness:
+        shellth_obj = shellth["Object"]
+        thickness = shellth_obj.Thickness.getValueAs("mm").Value
+        thicknesses.append(thickness)
+        geoms = []
+        if len(shellth_obj.References) == 0:
+            femmesh = ca_writer.mesh_object.FemMesh
+            for i in range(femmesh.GroupCount):
+                if femmesh.getGroupElementType(i) == "Face":
+                    geoms.append(femmesh.getGroupName(i))
+        else:
+            for ref in shellth_obj.References:
+                for geom in ref[1]:
+                    geoms.append(geom)
+        geomses.append(geoms)
 
         if "YoungsModulusX" in mat_objs[0].Material.keys():
             matname = mat_objs[0].Name + "LAYUP" + str(i)
-            lams = [matname]
+            lams.append(matname)
             i += 1
             commtxt += "# Orthotropic material detected, added to shell at default angle\n"
             commtxt += f"{matname} = DEFI_COMPOSITE(COUCHE=(_F(EPAIS={thickness},\n"
             commtxt += f"                               MATER={mat_objs[0].Name},\n"
             commtxt += "                               ORIENTATION = 0)))\n\n"
+        else:
+            lams = [mat_objs[0].Name]
 
-        commtxt += (
-            f"# Shell elements detected, thickness {thickness}mm on item {ref[0].Name,geom}\n"
-        )
-        commtxt += f"{ele_name} = AFFE_CARA_ELEM(COQUE=_F(EPAIS={thickness},\n"
-        commtxt += f"                                   GROUP_MA=({str(geoms)[1:-1]})),\n"
-        commtxt += "                          MODELE=model)\n\n"
+        commtxt += f"# Shell elements detected, thickness {thickness}mm on item {geoms}\n"
+    commtxt += f"{ele_name} = AFFE_CARA_ELEM(COQUE=(\n"
+    for geoms, thickness in zip(geomses, thicknesses):
+        commtxt += f"                                   _F(EPAIS={thickness},\n"
+        commtxt += f"                                      GROUP_MA=({str(geoms)[1:-1]})),\n"
+    commtxt += "                                  ),\n"
+    commtxt += "                          MODELE=model)\n\n"
 
     FreeCAD.Console.PrintMessage(f"Shell of thickness {thickness}mm added.\n")
     return commtxt, lams
@@ -87,7 +96,7 @@ def add_shell2D(commtxt, mat_objs, ele_name, ca_writer):
 
 def add_shell_laminate(commtxt, ele_name, mat_objs, ca_writer):
     """Adds a shell laminate type object"""
-    # only use the first shelllaminate object
+    # TODO: make it work with different thicknesses defined for different areas.
     shelllam_obj = ca_writer.member.geos_shelllaminate[0]["Object"]
     thicknesses = shelllam_obj.Thicknesses
     orientations = shelllam_obj.Orientations
@@ -95,14 +104,14 @@ def add_shell_laminate(commtxt, ele_name, mat_objs, ca_writer):
         orientations
     ), f"{len(thicknesses)} ply thicknesses given, {len(orientations)} orientation angles given, these should match (i.e provide one thickness and one angle for every ply"
     if len(shelllam_obj.Windall["elements"]) == 0:
-        commtxt, lams = apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs)
+        commtxt, lams = apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer)
     else:
         commtxt, lams = apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs)
 
     return commtxt, lams
 
 
-def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs):
+def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer):
     """Applies a constant layup over the whole part"""
     FreeCAD.Console.PrintMessage("Overwriting materials list\n")
     materials = []
@@ -136,22 +145,28 @@ def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs):
                 matnames.append(mat_objs[-1].Name)
     geoms = []
     i = 0
-    for ref in shelllam_obj.References:
-        # TODO: work out how to create group of all elements and apply to that in case where len(shelllam_obj.References) == 0.
-        for geom in ref[1]:
-            geoms.append(geom)
-        matname = "LAYUP" + str(i)
-        layup = {
-            "group": str(geoms)[1:-1],
-            "matnames": matnames,
-            "thicknesses": thicknesses,
-            "orientations": orientations,
-        }
-        i += 1
-        commtxt += add_layup(matname, layup)
-        lams = [matname]
-        ori_vec = shelllam_obj.Orientation
-        commtxt += add_laminate([layup], ele_name, ori_vec)
+    # TODO: make it work with different laminates defined for different areas.
+    if len(shelllam_obj.References) == 0:
+        femmesh = ca_writer.mesh_object.FemMesh
+        for i in range(femmesh.GroupCount):
+            if femmesh.getGroupElementType(i) == "Face":
+                geoms.append(femmesh.getGroupName(i))
+    else:
+        for ref in shelllam_obj.References:
+            for geom in ref[1]:
+                geoms.append(geom)
+    matname = "LAYUP" + str(i)
+    layup = {
+        "group": str(geoms)[1:-1],
+        "matnames": matnames,
+        "thicknesses": thicknesses,
+        "orientations": orientations,
+    }
+    # i += 1
+    commtxt += add_layup(matname, layup)
+    lams = [matname]
+    ori_vec = shelllam_obj.Orientation
+    commtxt += add_laminate([layup], ele_name, ori_vec)
     return commtxt, lams
 
 
