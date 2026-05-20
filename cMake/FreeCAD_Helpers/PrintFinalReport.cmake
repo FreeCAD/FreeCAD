@@ -129,7 +129,6 @@ macro(PrintFinalReport)
     value(BUILD_WEB)
     value(CMAKE_INSTALL_PREFIX)
     value(USE_CUDA)
-    value(USE_OPENCV)
     value(FREECAD_LIBPACK_USE)
 
     section_end()
@@ -161,7 +160,6 @@ macro(PrintFinalReport)
                 "not enabled"
                 "${NETGEN_VERSION_MAJOR}.${NETGEN_VERSION_MINOR}.${NETGEN_VERSION_PATCH} (${NETGEN_VERSION}) [${NETGEN_DEFINITIONS}] [${NETGEN_CXX_FLAGS}] [${NGLIB_INCLUDE_DIR}] [${NGLIB_LIBRARIES}] [${NETGEN_INCLUDE_DIRS}]"
     )
-    #simple(OpenCV ${OpenCV_VERSION})
     conditional(SWIG SWIG_FOUND "not found" ${SWIG_VERSION})
     conditional(Eigen3 EIGEN3_FOUND "not found" ${EIGEN3_VERSION})
     conditional(QtConcurrent BUILD_GUI "not needed" ${QtConcurrent_VERSION})
