@@ -45,6 +45,9 @@
 #include <Geom_Line.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <TColgp_Array1OfPnt.hxx>
+#include <TColStd_Array1OfInteger.hxx>
+#include <TColStd_Array1OfReal.hxx>
+#include <TColgp_HArray1OfPnt.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -1131,8 +1134,8 @@ Handle(Geom_BSplineCurve) getSplineFromPolesAndKnots(struct SplineData& sd)
     }
 
     Standard_Boolean periodic = sd.flag == 2;
-    Handle(Geom_BSplineCurve) geom
-        = new Geom_BSplineCurve(occpoles, occweights, occknots, occmults, sd.degree, periodic);
+    Handle(Geom_BSplineCurve)
+        geom = new Geom_BSplineCurve(occpoles, occweights, occknots, occmults, sd.degree, periodic);
     return geom;
 }
 
@@ -1574,9 +1577,11 @@ std::string ImpExpDxfRead::Deformat(const char* text)
                     longescape = false;
                 }
             }
-            else if ((ch == 'H') || (ch == 'h') || (ch == 'Q') || (ch == 'q') || (ch == 'W')
-                     || (ch == 'w') || (ch == 'F') || (ch == 'f') || (ch == 'A') || (ch == 'a')
-                     || (ch == 'C') || (ch == 'c') || (ch == 'T') || (ch == 't')) {
+            else if (
+                (ch == 'H') || (ch == 'h') || (ch == 'Q') || (ch == 'q') || (ch == 'W')
+                || (ch == 'w') || (ch == 'F') || (ch == 'f') || (ch == 'A') || (ch == 'a')
+                || (ch == 'C') || (ch == 'c') || (ch == 'T') || (ch == 't')
+            ) {
                 longescape = true;
             }
             else {

@@ -34,6 +34,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/InputHint.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
@@ -382,6 +383,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
  */
 TaskBoxPrimitives::~TaskBoxPrimitives()
 {
+    Gui::getMainWindow()->hideHints();
+
     // hide the parts coordinate system axis for selection
     try {
         auto obj = getObject();
@@ -1038,6 +1041,24 @@ void TaskBoxPrimitives::setupGizmos()
     }
 
     setGizmoPositions();
+
+    if (Gui::GizmoContainer::isCoarseSnapEnabled()) {
+        const Gui::InputHint::UserInput key = Gui::GizmoContainer::getFineSnapKey();
+        const bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
+
+        QString message;
+        if (coarseByDefault) {
+            message = tr("%1 fine dragging");
+        }
+        else {
+            message = tr("%1 coarse dragging");
+        }
+
+        Gui::getMainWindow()->showHints({{
+            .message = message,
+            .sequences = {{key}},
+        }});
+    }
 }
 
 void TaskBoxPrimitives::setGizmoPositions()
@@ -1108,7 +1129,8 @@ bool TaskDlgPrimitiveParameters::accept()
 bool TaskDlgPrimitiveParameters::reject()
 {
     // roll back the done things
-    Gui::Command::abortCommand();
+    // Gui::Command::abortCommand();
+    vp_prm->getDocument()->abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;

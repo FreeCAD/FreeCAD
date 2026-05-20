@@ -2456,6 +2456,21 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
 
         return ":/icons/Arch_Stairs_Tree.svg"
 
+    def onChanged(self, vobj, prop):
+        ArchComponent.ViewProviderComponent.onChanged(self, vobj, prop)
+
+        if prop != "Visibility":
+            return
+
+        obj = getattr(vobj, "Object", None)
+        if not obj:
+            return
+
+        for railing_name in ("RailingLeft", "RailingRight"):
+            railing = getattr(obj, railing_name, None)
+            if railing and hasattr(railing, "ViewObject"):
+                railing.ViewObject.Visibility = vobj.Visibility
+
     def claimChildren(self):
         "Define which objects will appear as children in the tree view"
 

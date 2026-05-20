@@ -207,6 +207,10 @@ public:
         Base::Vector3d& directionX,
         const char* subname
     ) const override;
+    bool getCameraAlignmentDirection(
+        Base::Vector3d& directionZ,
+        const std::vector<std::string>& subnames
+    ) const override;
 
     static void guessNewLink(std::string& replacementName, DocumentObject* base, const char* oldLink);
 
@@ -315,6 +319,12 @@ PartExport std::vector<cutTopoShapeFaces> findAllFacesCutBy(
     const TopoShape& shape,
     const TopoShape& face,
     const gp_Dir& dir
+);
+
+PartExport std::vector<cutTopoShapeFaces> findAllFacesCutBy(
+    const TopoShape& shape,
+    const TopoShape& face,
+    const gp_Ax1& axis
 );
 
 /**

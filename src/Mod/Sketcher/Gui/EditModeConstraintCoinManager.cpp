@@ -832,6 +832,7 @@ Restart:
                             points[j].setValue(0.0f, 0.0f, 0.0f);
                         }
                         coords->point.finishEditing();
+                        break;
                     }
 
                     // 1. Get the original min/max points and dimensions
@@ -1231,8 +1232,9 @@ Restart:
                                 pos = lineSeg->getStartPoint() + dir * length;
                                 relPos = norm * 1;  // TODO Huh?
                             }
-                            else if (geo2->is<Part::GeomEllipse>()
-                                     || geo2->is<Part::GeomArcOfEllipse>()) {
+                            else if (
+                                geo2->is<Part::GeomEllipse>() || geo2->is<Part::GeomArcOfEllipse>()
+                            ) {
 
                                 Base::Vector3d center;
                                 if (geo2->is<Part::GeomEllipse>()) {
@@ -1289,8 +1291,9 @@ Restart:
                             pos = circle->getCenter() + dir * circle->getRadius();
                             relPos = dir * 1;
                         }
-                        else if (geo1->is<Part::GeomArcOfCircle>()
-                                 && geo2->is<Part::GeomArcOfCircle>()) {
+                        else if (
+                            geo1->is<Part::GeomArcOfCircle>() && geo2->is<Part::GeomArcOfCircle>()
+                        ) {
                             const Part::GeomArcOfCircle* arc1
                                 = static_cast<const Part::GeomArcOfCircle*>(geo1);
                             const Part::GeomArcOfCircle* arc2
@@ -1995,6 +1998,9 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     ? ((*it)->isDriving ? drawingParameters.ConstrDimColor
                                         : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
+                if (!drawingParameters.labelFontName.isEmpty()) {
+                    text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
+                }
                 text->size.setValue(drawingParameters.labelFontSize);
                 text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
                 text->useAntialiasing = false;
@@ -2032,7 +2038,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 // For a group, we will draw a dashed rectangle.
                 // We need a Material, a DrawStyle, Coordinates, and a LineSet.
 
-                // 1. Material (for color, re-using the one already created)
+                // 1. Material (for color, reusing the one already created)
                 sep->addChild(mat);
 
                 // 2. DrawStyle (to make the line dashed)

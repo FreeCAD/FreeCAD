@@ -84,7 +84,6 @@ public:
     void closeEdit();
 
     double getLineWidth();
-    double getEdgeFuzz() const;
 
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;

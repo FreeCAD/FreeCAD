@@ -621,7 +621,7 @@ void DlgExpressionInput::acceptWithVarSet()
     std::string name = nameProp.toStdString();
     std::string group = nameGroup.toStdString();
     std::string type = getType();
-    auto prop = obj->addDynamicProperty(type.c_str(), name.c_str(), group.c_str());
+    auto prop = obj->addDynamicProperty(type, name.c_str(), group.c_str());
 
     // Set the value of the property in the VarSet
     //
@@ -697,7 +697,7 @@ static App::Document* getPreselectedDocument()
     }
 
     App::Document* doc = App::GetApplication().getDocument(lastDoc.c_str());
-    if (doc == nullptr) {
+    if (!doc) {
         return App::GetApplication().getActiveDocument();
     }
 
@@ -728,7 +728,7 @@ int DlgExpressionInput::getVarSetIndex(const App::Document* doc) const
 void DlgExpressionInput::preselectVarSet()
 {
     const App::Document* doc = getPreselectedDocument();
-    if (doc == nullptr) {
+    if (!doc) {
         FC_ERR("No active document found");
     }
     ui->comboBoxVarSet->setCurrentIndex(getVarSetIndex(doc));
@@ -763,7 +763,7 @@ static void addVarSetsVarSetComboBox(
         auto* vp = freecad_cast<Gui::ViewProviderDocumentObject*>(
             Gui::Application::Instance->getViewProvider(varSet)
         );
-        if (vp == nullptr) {
+        if (!vp) {
             FC_ERR("No ViewProvider found for VarSet: " << varSet->getNameInDocument());
             continue;
         }
@@ -842,7 +842,7 @@ void DlgExpressionInput::setupVarSets()
 
 std::string DlgExpressionInput::getType()
 {
-    return determineTypeVarSet().getName();
+    return std::string {determineTypeVarSet().getName()};
 }
 
 void DlgExpressionInput::onCheckVarSets(int state)
@@ -889,13 +889,13 @@ void DlgExpressionInput::onVarSetSelected(int /*index*/)
     }
 
     App::Document* doc = App::GetApplication().getDocument(docName.toUtf8());
-    if (doc == nullptr) {
+    if (!doc) {
         FC_ERR("Document not found: " << docName.toStdString());
         return;
     }
 
     App::DocumentObject* varSet = doc->getObject(varSetName.toUtf8());
-    if (varSet == nullptr) {
+    if (!varSet) {
         FC_ERR("Variable set not found: " << varSetName.toStdString());
         return;
     }

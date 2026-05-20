@@ -92,9 +92,8 @@ int SurfaceOfRevolutionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Object SurfaceOfRevolutionPy::getLocation() const
 {
-    Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast(
-        getGeometryPtr()->handle()
-    );
+    Handle(Geom_SurfaceOfRevolution)
+        curve = Handle(Geom_SurfaceOfRevolution)::DownCast(getGeometryPtr()->handle());
     const gp_Pnt& pnt = curve->Location();
     return Py::Vector(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
 }
@@ -104,16 +103,14 @@ void SurfaceOfRevolutionPy::setLocation(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d pnt = static_cast<Base::VectorPy*>(p)->value();
-        Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_SurfaceOfRevolution)
+            curve = Handle(Geom_SurfaceOfRevolution)::DownCast(getGeometryPtr()->handle());
         curve->SetLocation(gp_Pnt(pnt.x, pnt.y, pnt.z));
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d pnt = Base::getVectorFromTuple<double>(p);
-        Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_SurfaceOfRevolution)
+            curve = Handle(Geom_SurfaceOfRevolution)::DownCast(getGeometryPtr()->handle());
         curve->SetLocation(gp_Pnt(pnt.x, pnt.y, pnt.z));
     }
     else {
@@ -125,9 +122,8 @@ void SurfaceOfRevolutionPy::setLocation(Py::Object arg)
 
 Py::Object SurfaceOfRevolutionPy::getDirection() const
 {
-    Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast(
-        getGeometryPtr()->handle()
-    );
+    Handle(Geom_SurfaceOfRevolution)
+        curve = Handle(Geom_SurfaceOfRevolution)::DownCast(getGeometryPtr()->handle());
     const gp_Dir& dir = curve->Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
 }
@@ -137,16 +133,14 @@ void SurfaceOfRevolutionPy::setDirection(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d dir = static_cast<Base::VectorPy*>(p)->value();
-        Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_SurfaceOfRevolution)
+            curve = Handle(Geom_SurfaceOfRevolution)::DownCast(getGeometryPtr()->handle());
         curve->SetDirection(gp_Dir(dir.x, dir.y, dir.z));
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d dir = Base::getVectorFromTuple<double>(p);
-        Handle(Geom_SurfaceOfRevolution) curve = Handle(Geom_SurfaceOfRevolution)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_SurfaceOfRevolution)
+            curve = Handle(Geom_SurfaceOfRevolution)::DownCast(getGeometryPtr()->handle());
         curve->SetDirection(gp_Dir(dir.x, dir.y, dir.z));
     }
     else {
@@ -163,9 +157,8 @@ extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve) & c);
 
 Py::Object SurfaceOfRevolutionPy::getBasisCurve() const
 {
-    Handle(Geom_SurfaceOfRevolution) surf = Handle(Geom_SurfaceOfRevolution)::DownCast(
-        getGeometryPtr()->handle()
-    );
+    Handle(Geom_SurfaceOfRevolution)
+        surf = Handle(Geom_SurfaceOfRevolution)::DownCast(getGeometryPtr()->handle());
     Handle(Geom_Curve) curve = surf->BasisCurve();
     return makeGeometryCurvePy(curve);
 }
@@ -181,9 +174,8 @@ void SurfaceOfRevolutionPy::setBasisCurve(Py::Object arg)
         }
 
         try {
-            Handle(Geom_SurfaceOfRevolution) curve2 = Handle(Geom_SurfaceOfRevolution)::DownCast(
-                getGeometryPtr()->handle()
-            );
+            Handle(Geom_SurfaceOfRevolution)
+                curve2 = Handle(Geom_SurfaceOfRevolution)::DownCast(getGeometryPtr()->handle());
             curve2->SetBasisCurve(curve);
         }
         catch (Standard_Failure& e) {

@@ -92,11 +92,11 @@ bool ViewProvider::doubleClicked()
 {
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-        Gui::Command::openCommand(text.toUtf8());
+        getDocument()->openCommand(text.toUtf8());
         Gui::cmdSetEdit(pcObject, Gui::Application::Instance->getUserEditMode());
     }
     catch (const Base::Exception&) {
-        Gui::Command::abortCommand();
+        getDocument()->abortCommand();
     }
     return true;
 }
@@ -483,6 +483,21 @@ ViewProviderBody* ViewProvider::getBodyViewProvider()
     }
 
     return nullptr;
+}
+
+void ViewProvider::toggleVisibility()
+{
+    if (!PartDesign::Body::isSolidFeature(getObject())) {
+        Gui::ViewProvider::toggleVisibility();
+        return;
+    }
+    if (auto* bodyVp = getBodyViewProvider()) {
+        // When toggling via the global Std_ToggleVisibility shortcut (i.e. from
+        // the 3D view), always toggle the whole body
+        bodyVp->toggleVisibility();
+        return;
+    }
+    Gui::ViewProvider::toggleVisibility();
 }
 
 namespace Gui

@@ -156,9 +156,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *mesh << "FEM_MeshNetgenFromShape"
           << "FEM_MeshGmshFromShape"
           << "Separator"
-          << "FEM_MeshBoundaryLayer"
           << "FEM_MeshRegion"
           << "FEM_MeshGroup"
+          << "FEM_MeshGMSHRefinement"
           << "Separator"
           << "FEM_FEMMesh2Mesh";
 
@@ -236,7 +236,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* elec = new Gui::MenuItem;
     elec->setCommand("&Electromagnetic Boundary Conditions");
-    *elec << "FEM_ConstraintElectrostaticPotential"
+    *elec << "FEM_ConstraintElectromagnetic"
           << "FEM_ConstraintCurrentDensity"
           << "FEM_ConstraintMagnetization"
           << "FEM_ConstraintElectricChargeDensity";
@@ -306,10 +306,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *mesh << "FEM_MeshNetgenFromShape"
           << "FEM_MeshGmshFromShape"
           << "Separator"
-          << "FEM_MeshBoundaryLayer"
           << "FEM_MeshRegion"
           << "FEM_MeshGroup"
-          << "Separator"
+          << "FEM_MeshGMSHRefinement"
           // << "FEM_CreateNodesSet"
           << "FEM_CreateElementsSet"
           << "FEM_FEMMesh2Mesh";

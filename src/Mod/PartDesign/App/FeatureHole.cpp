@@ -545,6 +545,10 @@ const App::PropertyAngle::Constraints Hole::floatAngle = {
 const App::PropertyQuantityConstraint::Constraints diameterRange
     = {10 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0};
 
+// Custom clearance can be negative or positive to adjust for manufacturing
+const App::PropertyQuantityConstraint::Constraints clearanceRange
+    = {std::numeric_limits<float>::lowest(), std::numeric_limits<float>::max(), 0.1};
+
 Hole::Hole()
 {
     addSubType = FeatureAddSub::Subtractive;
@@ -554,6 +558,8 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(Threaded, (false), "Hole", App::Prop_None, "Threaded");
 
     ADD_PROPERTY_TYPE(ModelThread, (false), "Hole", App::Prop_None, "Model actual thread");
+
+    ADD_PROPERTY_TYPE(CosmeticThread, (true), "Hole", App::Prop_None, "Texture the thread");
 
     ADD_PROPERTY_TYPE(ThreadType, (0L), "Hole", App::Prop_None, "Thread type");
     ThreadType.setEnums(ThreadTypeEnums);
@@ -637,6 +643,7 @@ Hole::Hole()
         App::Prop_None,
         "Custom thread clearance (overrides ThreadClass)"
     );
+    CustomThreadClearance.setConstraints(&clearanceRange);
 
     // Defaults to circles & arcs so that older files are kept intact
     // while new file get points, circles and arcs set in setupObject()
@@ -1348,7 +1355,7 @@ void Hole::onChanged(const App::Property* prop)
         ThreadClass.setReadOnly(isNone || !isThreaded);
         ThreadDepthType.setReadOnly(isNone || !isThreaded);
         ThreadDepth.setReadOnly(isNone || !isThreaded);
-        ModelThread.setReadOnly(!isNone && isThreaded);
+        ModelThread.setReadOnly(isNone || !isThreaded);
         UseCustomThreadClearance.setReadOnly(isNone || !isThreaded || !ModelThread.getValue());
         CustomThreadClearance.setReadOnly(
             !UseCustomThreadClearance.getValue() || UseCustomThreadClearance.isReadOnly()
@@ -1409,6 +1416,7 @@ void Hole::onChanged(const App::Property* prop)
         // thread class and direction are only sensible if threaded
         // fit only sensible if not threaded
         if (Threaded.getValue()) {
+            CosmeticThread.setReadOnly(false);
             ThreadClass.setReadOnly(false);
             ThreadDirection.setReadOnly(false);
             ThreadFit.setReadOnly(true);
@@ -1422,6 +1430,8 @@ void Hole::onChanged(const App::Property* prop)
             }
         }
         else {
+            CosmeticThread.setValue(false);
+            CosmeticThread.setReadOnly(true);
             ThreadClass.setReadOnly(true);
             ThreadDirection.setReadOnly(true);
             if (type == "None") {
@@ -1444,6 +1454,14 @@ void Hole::onChanged(const App::Property* prop)
         // Diameter parameter depends on this
         updateDiameterParam();
         UseCustomThreadClearance.setReadOnly(!ModelThread.getValue());
+        if (CosmeticThread.getValue() && ModelThread.getValue()) {
+            CosmeticThread.setValue(false);
+        }
+    }
+    else if (prop == &CosmeticThread) {
+        if (CosmeticThread.getValue() && ModelThread.getValue()) {
+            ModelThread.setValue(false);
+        }
     }
     else if (prop == &DrillPoint) {
         if (DrillPoint.getValue() == 1) {
@@ -1730,6 +1748,11 @@ App::DocumentObjectExecReturn* Hole::execute()
     }
 
     try {
+        if (Diameter.getValue() < diameterRange.LowerBound) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Hole error: Diameter too small")
+            );
+        }
         std::string method(DepthType.getValueAsString());
         double length = 0.0;
 
@@ -2012,12 +2035,7 @@ App::DocumentObjectExecReturn* Hole::execute()
                 result = compound;
             }
             else {
-                result.makeElementBoolean(
-                    maker,
-                    {base, compound},
-                    getNameInDocument(),
-                    Precision::Confusion()
-                );
+                result.makeElementBoolean(maker, {base, compound}, nullptr, FuzzyTolerance.getValue());
             }
             result = getSolid(result);
             retry = false;
@@ -2039,12 +2057,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             for (auto& hole : holes) {
                 ++i;
                 try {
-                    result.makeElementBoolean(
-                        maker,
-                        {base, hole},
-                        getNameInDocument(),
-                        Precision::Confusion()
-                    );
+                    result.makeElementBoolean(maker, {base, hole}, nullptr, FuzzyTolerance.getValue());
                 }
                 catch (Standard_Failure&) {
                     std::string msg(

@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to start the edit mode of different objects."""
+
 ## @package gui_edit
 # \ingroup draftguitools
 # \brief Provides GUI tools to start the edit mode of different objects.
@@ -54,7 +55,6 @@ from draftguitools import gui_edit_part_objects as edit_part
 from draftguitools import gui_edit_sketcher_objects as edit_sketcher
 from draftguitools import gui_tool_utils
 from draftguitools import gui_trackers as trackers
-
 
 COLORS = {
     "default": utils.get_rgba_tuple(params.get_param("snapcolor"))[:3],
@@ -289,7 +289,10 @@ class Edit(gui_base_original.Modifier):
         self.pick_radius = params.get_param("DraftEditPickRadius")
 
         if Gui.Selection.getSelection():
-            self.proceed()
+            # Delay to avoid triggering `display_tracker_menu` with the
+            # "E" key up event after the "D, E" shortcut.
+            # https://github.com/FreeCAD/FreeCAD/issues/27308
+            QtCore.QTimer.singleShot(300, self.proceed)
         else:
             self.ui.selectUi(on_close_call=self.finish)
             App.Console.PrintMessage(translate("draft", "Select a Draft object to edit") + "\n")
@@ -313,6 +316,7 @@ class Edit(gui_base_original.Modifier):
         for obj in self.edited_objects:
             self.setTrackers(obj, self.getEditPoints(obj))
 
+        App.addDocumentObserver(self)
         self.register_editing_callbacks()
 
     def numericInput(self, numx, numy, numz):
@@ -324,8 +328,15 @@ class Edit(gui_base_original.Modifier):
         self.endEditing(self.obj, self.editing, App.Vector(numx, numy, numz))
         App.ActiveDocument.recompute()
 
+    def slotDeletedObject(self, obj):
+        """Document observer callback: exit edit mode if the edited object is deleted."""
+        if obj in self.edited_objects:
+            App.removeDocumentObserver(self)
+            QtCore.QTimer.singleShot(0, self.finish)
+
     def finish(self, cont=False):
         """Terminate Edit Tool."""
+        App.removeDocumentObserver(self)
         self.unregister_selection_callback()
         self.unregister_editing_callbacks()
         self.editing = None
@@ -426,16 +437,12 @@ class Edit(gui_base_original.Modifier):
         event = event_callback.getEvent()
         if event.getState() in (coin.SoKeyboardEvent.DOWN, coin.SoKeyboardEvent.UP):
             key = event.getKey()
-            # App.Console.PrintMessage("pressed key : "+str(key)+"\n")
-            if key == 65307:  # ESC
+            if key == coin.SoKeyboardEvent.ESCAPE:
                 self.finish()
-            if key == 101:  # "e"
+            if key == coin.SoKeyboardEvent.E:
                 self.display_tracker_menu(event)
-            if (
-                key == 65535 and Gui.Selection.getSelection() is None
-            ):  # BUG: delete key activate Std::Delete command at the same time!
-                print("DELETE PRESSED\n")
-                self.delPoint(event)
+            if key == coin.SoKeyboardEvent.DELETE:  # exit edit mode before Std_Delete fires
+                self.finish()
 
     def mousePressed(self, event_callback):
         """

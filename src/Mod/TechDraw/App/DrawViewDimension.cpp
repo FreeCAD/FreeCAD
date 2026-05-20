@@ -52,6 +52,7 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -186,6 +187,12 @@ DrawViewDimension::DrawViewDimension()
                       App::Prop_Output,
                       "The dimensional value is displayed inverted");
 
+    ADD_PROPERTY_TYPE(ShowSupplementary, 
+                      (false), 
+                      "", 
+                      App::Prop_Output, 
+                      "Toggle supplementary angle\nAngle displayed is dependent on selection order");
+
     ADD_PROPERTY_TYPE(AngleOverride,
                       (false),
                       "Override",
@@ -193,6 +200,11 @@ DrawViewDimension::DrawViewDimension()
                       "User specified angles");
     ADD_PROPERTY_TYPE(LineAngle, (0.0), "Override", App::Prop_Output, "Dimension line angle");
     ADD_PROPERTY_TYPE(ExtensionAngle, (0.0), "Override", App::Prop_Output, "Extension line angle");
+
+    ADD_PROPERTY_TYPE(UseAreaLeaderPoint, (false), "Area", App::Prop_None,
+                  "If true, the area leader end pt uses user clicked pt instead of face center.");
+    ADD_PROPERTY_TYPE(AreaLeaderPoint, (Base::Vector3d(0,0,0)), "Area", App::Prop_None,
+                  "Area leader end point");
 
     ADD_PROPERTY_TYPE(SavedGeometry,
                       (),
@@ -678,6 +690,11 @@ double DrawViewDimension::getDimValue()
     }
 
     result = fabs(result);
+
+    if (ShowSupplementary.getValue() && (Type.isValue("Angle") || Type.isValue("Angle3Pt"))) {
+        result = CircleDegrees/2.0 - result;
+    }
+
     if (Inverted.getValue()) {
         if (Type.isValue("Angle") || Type.isValue("Angle3Pt")) {
             result = CircleDegrees - result;

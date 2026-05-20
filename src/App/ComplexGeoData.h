@@ -183,6 +183,19 @@ public:
                                         std::vector<Line>& lines) const;
 
     /**
+     * @brief Get the first vertex from a segment.
+     *
+     * @param[in] segment The segment to get the vertex from.
+     *
+     * @param[in,out] Point The point used in the segment.
+     * @return true if point was found
+     */
+    virtual bool getFirstVertexFromSubElement(
+        const Data::Segment* segment,
+        Base::Vector3d& Point
+    ) const;
+
+    /**
      * @brief Get the faces from a segment.
      *
      * @param[in] segment The segment to get the faces from.

@@ -63,6 +63,13 @@ class TopoShape;
 class TopoShapeCache;
 using TopoShapeMap = std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher>;
 
+/** Controls whether shape-making operations preserve mapped element names. */
+enum class ElementMapPolicy
+{
+    Propagate,
+    Drop
+};
+
 /* A special sub-class to indicate null shapes
  */
 // NOLINTNEXTLINE cppcoreguidelines-special-member-functions
@@ -402,6 +409,8 @@ public:
         std::vector<Base::Vector3d>& Points,
         std::vector<Line>& lines
     ) const override;
+    /** Get vertices from segment */
+    bool getFirstVertexFromSubElement(const Data::Segment* element, Base::Vector3d& Point) const override;
     /** Get faces from segment */
     void getFacesFromSubElement(
         const Data::Segment* segment,
@@ -1583,7 +1592,8 @@ public:
     TopoShape& makeElementXor(
         const std::vector<TopoShape>& sources,
         const char* op = nullptr,
-        double tol = -1.0
+        double tol = -1.0,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
     /** Make a boolean xor of this shape with an input shape
      *
@@ -1594,9 +1604,14 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementXor(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
+    TopoShape makeElementXor(
+        const TopoShape& source,
+        const char* op = nullptr,
+        double tol = -1.0,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+    ) const
     {
-        return TopoShape(0, Hasher).makeElementXor({*this, source}, op, tol);
+        return TopoShape(0, Hasher).makeElementXor({*this, source}, op, tol, elementMapPolicy);
     }
 
     App::HistoryAlgorithm getHistoryAlgorithm() const {
@@ -1863,6 +1878,7 @@ public:
      * @param sources: list of source shapes.
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the given new shape. The function returns the TopoShape
@@ -1873,7 +1889,8 @@ public:
         const TopoDS_Shape& shape,
         const Mapper& mapper,
         const std::vector<TopoShape>& sources,
-        const char* op = nullptr
+        const char* op = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
     /**
      * When given a single shape to create a compound, two results are possible: either to simply
@@ -1891,6 +1908,7 @@ public:
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      * @param policy: set behavior when only a single shape is given
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new shape. The function returns the TopoShape itself as
@@ -1900,7 +1918,8 @@ public:
     TopoShape& makeElementCompound(
         const std::vector<TopoShape>& shapes,
         const char* op = nullptr,
-        SingleShapeCompoundCreationPolicy policy = SingleShapeCompoundCreationPolicy::forceCompound
+        SingleShapeCompoundCreationPolicy policy = SingleShapeCompoundCreationPolicy::forceCompound,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
 
 
@@ -1925,6 +1944,7 @@ public:
      *                Note that edges may be modified after adding to the wire,
      *                so the output edges may not be the same as the input
      *                ones.
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The function produces either a wire or a compound of wires. The
      *         original content of this TopoShape is discarded and replaced
@@ -1937,7 +1957,8 @@ public:
         const char* op = nullptr,
         double tol = 0.0,
         ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
-        TopoShapeMap* output = nullptr
+        TopoShapeMap* output = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
 
 
@@ -1956,6 +1977,7 @@ public:
      *                Note that edges may be modified after adding to the wire,
      *                so the output edges may not be the same as the input
      *                ones.
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The function produces either a wire or a compound of wires. The
      *         original content of this TopoShape is discarded and replaced
@@ -1968,7 +1990,8 @@ public:
         const char* op = nullptr,
         double tol = 0.0,
         ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
-        TopoShapeMap* output = nullptr
+        TopoShapeMap* output = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
 
     /** Make a compound of wires by connecting input edges in the given order
@@ -2011,6 +2034,7 @@ public:
      *                Note that edges may be modified after adding to the wire,
      *                so the output edges may not be the same as the input
      *                ones.
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      *
      * @return The function returns a new shape of either a single wire or a
@@ -2020,10 +2044,11 @@ public:
         const char* op = nullptr,
         double tol = 0.0,
         ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
-        TopoShapeMap* output = nullptr
+        TopoShapeMap* output = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     ) const
     {
-        return TopoShape(0, Hasher).makeElementWires(*this, op, tol, policy, output);
+        return TopoShape(0, Hasher).makeElementWires(*this, op, tol, policy, output, elementMapPolicy);
     }
 
     /** Make a new shape with transformation that may contain non-uniform scaling
@@ -2075,6 +2100,7 @@ public:
      *            the operation
      * @param copyGeom: whether to copy internal geometry of the shape
      * @param copyMesh: whether to copy internal meshes of the shape
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with a deep copy of the input shape. The function returns the
@@ -2085,7 +2111,8 @@ public:
         const TopoShape& source,
         const char* op = nullptr,
         bool copyGeom = true,
-        bool copyMesh = false
+        bool copyMesh = false,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
 
     /** Make a deep copy of the shape
@@ -2094,13 +2121,19 @@ public:
      *            the operation
      * @param copyGeom: whether to copy internal geometry of the shape
      * @param copyMesh: whether to copy internal meshes of the shape
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return Return a deep copy of the shape. The shape itself is not
      *         modified
      */
-    TopoShape makeElementCopy(const char* op = nullptr, bool copyGeom = true, bool copyMesh = false) const
+    TopoShape makeElementCopy(
+        const char* op = nullptr,
+        bool copyGeom = true,
+        bool copyMesh = false,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+    ) const
     {
-        return TopoShape(Tag, Hasher).makeElementCopy(*this, op, copyGeom, copyMesh);
+        return TopoShape(Tag, Hasher).makeElementCopy(*this, op, copyGeom, copyMesh, elementMapPolicy);
     }
 
 
@@ -2111,6 +2144,7 @@ public:
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      * @param tol: tolerance option available to some shape making algorithm
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new shape built by the shape maker. The function
@@ -2122,7 +2156,8 @@ public:
         const char* maker,
         const std::vector<TopoShape>& sources,
         const char* op = nullptr,
-        double tol = -1.0
+        double tol = -1.0,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
     /** Generalized shape making with mapped element name from shape history
      *
@@ -2131,6 +2166,7 @@ public:
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      * @param tol: tolerance option available to some shape making algorithm
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new shape built by the shape maker. The function
@@ -2142,7 +2178,8 @@ public:
         const char* maker,
         const TopoShape& source,
         const char* op = nullptr,
-        double tol = -1.0
+        double tol = -1.0,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
 
     /** Generalized shape making with mapped element name from shape history
@@ -2151,14 +2188,20 @@ public:
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      * @param tol: tolerance option available to some shape making algorithm
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return Returns the new shape with mappend element name generated from
      *         shape history using this shape as the source. The shape itself
      *         is not modified.
      */
-    TopoShape makeElementBoolean(const char* maker, const char* op = nullptr, double tol = -1.0) const
+    TopoShape makeElementBoolean(
+        const char* maker,
+        const char* op = nullptr,
+        double tol = -1.0,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+    ) const
     {
-        return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol);
+        return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol, elementMapPolicy);
     }
 
     /** Make a mirrored shape
@@ -2523,13 +2566,18 @@ public:
      * @param silent: whether to throw exception on failure
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new shape. The function returns the TopoShape itself as
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementShell(bool silent = true, const char* op = nullptr);
+    TopoShape& makeElementShell(
+        bool silent = true,
+        const char* op = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+    );
 
     /* Make a shell with input wires
      *
@@ -2537,6 +2585,7 @@ public:
      * @param silent: whether to throw exception on failure
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new shape. The function returns the TopoShape itself as
@@ -2546,7 +2595,8 @@ public:
     TopoShape& makeElementShellFromWires(
         const std::vector<TopoShape>& wires,
         bool silent = true,
-        const char* op = nullptr
+        const char* op = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
     /* Make a shell with input wires
      *
@@ -2554,12 +2604,17 @@ public:
      * @param silent: whether to throw exception on failure
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape& makeElementShellFromWires(bool silent = true, const char* op = nullptr)
+    TopoShape& makeElementShellFromWires(
+        bool silent = true,
+        const char* op = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+    )
     {
-        return makeElementShellFromWires(getSubTopoShapes(TopAbs_WIRE), silent, op);
+        return makeElementShellFromWires(getSubTopoShapes(TopAbs_WIRE), silent, op, elementMapPolicy);
     }
 
     /** Make a planar face with the input wires or edges
@@ -2571,6 +2626,7 @@ public:
      * @param maker: optional type name of the face maker. If not given,
      *               default to "Part::FaceMakerBullseye"
      * @param plane: optional plane of the face.
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The function creates a planar face. The original content of this
      *         TopoShape is discarded and replaced with the new shape. The
@@ -2582,7 +2638,8 @@ public:
         const std::vector<TopoShape>& shapes,
         const char* op = nullptr,
         const char* maker = nullptr,
-        const gp_Pln* plane = nullptr
+        const gp_Pln* plane = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
     /** Make a planar face with the input wire or edge
      *
@@ -2593,6 +2650,7 @@ public:
      * @param maker: optional type name of the face maker. If not given,
      *               default to "Part::FaceMakerBullseye"
      * @param plane: optional plane of the face.
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The function creates a planar face. The original content of this
      *         TopoShape is discarded and replaced with the new shape. The
@@ -2604,7 +2662,8 @@ public:
         const TopoShape& shape,
         const char* op = nullptr,
         const char* maker = nullptr,
-        const gp_Pln* plane = nullptr
+        const gp_Pln* plane = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
     /** Make a planar face using this shape
      *
@@ -2613,6 +2672,7 @@ public:
      * @param maker: optional type name of the face maker. If not given,
      *               default to "Part::FaceMakerBullseye"
      * @param plane: optional plane of the face.
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The function returns a new planar face made using the wire or edge
      *         inside this shape. The shape itself is not modified.
@@ -2620,10 +2680,11 @@ public:
     TopoShape makeElementFace(
         const char* op = nullptr,
         const char* maker = nullptr,
-        const gp_Pln* plane = nullptr
+        const gp_Pln* plane = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     ) const
     {
-        return TopoShape(0, Hasher).makeElementFace(*this, op, maker, plane);
+        return TopoShape(0, Hasher).makeElementFace(*this, op, maker, plane, elementMapPolicy);
     }
 
     /** Make a face with BSpline (or Bezier) surface
@@ -2787,6 +2848,7 @@ public:
      * @param sources: list of source shapes.
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new shape built by the shape maker. The function
@@ -2797,7 +2859,8 @@ public:
     TopoShape& makeElementShape(
         BRepBuilderAPI_MakeShape& mkShape,
         const std::vector<TopoShape>& sources,
-        const char* op = nullptr
+        const char* op = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
     /** Generic shape making with mapped element name from shape history
      *
@@ -2805,6 +2868,7 @@ public:
      * @param source: source shape.
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new shape built by the shape maker. The function
@@ -2815,21 +2879,27 @@ public:
     TopoShape& makeElementShape(
         BRepBuilderAPI_MakeShape& mkShape,
         const TopoShape& source,
-        const char* op = nullptr
+        const char* op = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
     /** Generic shape making with mapped element name from shape history
      *
      * @param mkShape: OCCT shape maker.
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
      *
      * @return Returns the new shape built by the shape maker with mappend element
      *         name generated using this shape as the source. The shape itself
      *         is not modified.
      */
-    TopoShape makeElementShape(BRepBuilderAPI_MakeShape& mkShape, const char* op = nullptr) const
+    TopoShape makeElementShape(
+        BRepBuilderAPI_MakeShape& mkShape,
+        const char* op = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+    ) const
     {
-        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
+        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op, elementMapPolicy);
     }
 
     /** Specialized shape making for BRepBuilderAPI_MakePrism with mapped element name
@@ -2852,7 +2922,7 @@ public:
         const char* op
     );
 
-    /* Toponaming migration, February 2014:
+    /* Toponaming migration, February 2024:
      * Note that the specialized versions of makeElementShape for operations that do not
      * inherit from BRepBuilderAPI_MakeShape  ( like BRepBuilderAPI_Sewing ) have been removed.
      * Rather than restore them, code that calls them should be changed to call
@@ -2863,9 +2933,12 @@ public:
      * the appropriate operation if so.
      */
 
+    friend class FaceMaker;
     friend class TopoShapeCache;
 
 private:
+    void dropElementNaming();
+
     // Cache storage
     mutable std::shared_ptr<TopoShapeCache> _parentCache;
     mutable std::shared_ptr<TopoShapeCache> _cache;
