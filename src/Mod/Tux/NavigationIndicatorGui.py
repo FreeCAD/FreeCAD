@@ -80,6 +80,7 @@ def RePopulateIcons():
     a10.setIcon(QtGui.QIcon(":/icons/NavigationSolidWorks_" + StyleSheetType + ".svg"))
     a11.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
     a12.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
+    a13.setIcon(QtGui.QIcon(":/icons/NavigationCAD_" + StyleSheetType + ".svg"))  # TODO update with correct vector graphics
 
 
 def retranslateUi():
@@ -95,6 +96,8 @@ def retranslateUi():
     text08 = translate("NavigationIndicator", "Rotation focus")
     text09 = translate("NavigationIndicator", "Middle mouse button or H key.")
     text10 = translate("NavigationIndicator", "Middle mouse button.")
+    text11 = translate("NavigationIndicator", "Pan Horizontal")
+    text12 = translate("NavigationIndicator", "Pan Vertical")
 
     global t0
     t0 = translate("NavigationIndicator", "Navigation style not recognized.")
@@ -650,6 +653,52 @@ def retranslateUi():
         + "</p>"
     )
 
+    global t13
+    t13 = (
+        "<p align='center'><b>Altium</b> "
+        + text06
+        + """</p>
+    <table>
+     <tr>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+      <th><small>"""
+        + text11
+        + """</small></th>
+      <th><small>"""
+        + text12
+        + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_CtrlScroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftRight.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Right.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftScroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+     </tr>
+    </table>
+    <b>"""
+        + text08
+        + ":</b> "
+        + text10
+        + "</small></p>"
+    )
+
     menuSettings.setTitle(translate("NavigationIndicator", "Settings"))
     menuOrbit.setTitle(translate("NavigationIndicator", "Orbit style"))
     aCompact.setText(translate("NavigationIndicator", "Compact"))
@@ -780,6 +829,11 @@ a12.setText("Touchpad  ")
 a12.setData("Gui::TouchpadNavigationStyle")
 a12.setObjectName("Indicator_NavigationTouchpad")
 
+a13 = QtGui.QAction(gStyle)
+a13.setText("Altium  ")
+a13.setData("Gui::TouchpadNavigationStyle")
+a13.setObjectName("Indicator_NavigationAltium")
+
 RePopulateIcons()
 
 menu.addMenu(menuSettings)
@@ -797,6 +851,7 @@ menu.addAction(a9)
 menu.addAction(a10)
 menu.addAction(a11)
 menu.addAction(a12)
+menu.addAction(a13)
 
 pView.Attach(indicator)
 
@@ -839,6 +894,7 @@ def onTooltip():
         a10.setToolTip(t10)
         a11.setToolTip(t11)
         a12.setToolTip(t12)
+        a13.setToolTip(t13)
         p.SetBool("Tooltip", 1)
     else:
         for i in gStyle.actions():

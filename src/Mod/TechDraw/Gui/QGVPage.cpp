@@ -215,6 +215,7 @@ void QGVPage::setNavigationStyle(std::string navParm)
     std::size_t foundOpenSCAD = navParm.find("OpenSCAD");
     std::size_t foundRevit = navParm.find("Revit");
     std::size_t foundSolidWorks = navParm.find("SolidWorks");
+    std::size_t foundAltium = navParm.find("Altium");
 
     if (foundBlender != std::string::npos) {
         m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleBlender(this));
@@ -248,6 +249,9 @@ void QGVPage::setNavigationStyle(std::string navParm)
     }
     else if (foundSolidWorks != std::string::npos) {
         m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleSolidWorks(this));
+    }
+    else if (foundAltium != std::string::npos) {
+        m_navStyle = new QGVNavStyle(this);  // TODO update this?
     }
     else {
         m_navStyle = new QGVNavStyle(this);
