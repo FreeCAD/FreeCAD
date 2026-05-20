@@ -108,9 +108,8 @@ class DraftTool:
 
         # The Part module is first initialized when using any Gui Command
         # for the first time.
-        global Part, DraftGeomUtils
+        global Part
         import Part
-        import DraftGeomUtils
 
         self.call = None
         self.commitList = []

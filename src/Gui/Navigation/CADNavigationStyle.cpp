@@ -115,6 +115,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent* const ev)
             case SoMouseButtonEvent::BUTTON1:
                 this->lockrecenter = true;
                 this->button1down = press;
+                updateSelectionStartPosition(press, pos);
                 if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
                     newmode = NavigationStyle::SEEK_MODE;
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
@@ -208,7 +209,11 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent* const ev)
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
         const auto* const event = (const SoLocation2Event*)ev;
-        if (this->currentmode == NavigationStyle::ZOOMING) {
+        if (this->currentmode == NavigationStyle::SELECTION && this->button1down
+            && tryStartBoxSelection(event, this->ctrldown)) {
+            processed = true;
+        }
+        else if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
         }
@@ -267,6 +272,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent* const ev)
             }
             break;
         case BUTTON1DOWN:
+        case CTRLDOWN | BUTTON1DOWN:
             // make sure not to change the selection when stopping spinning
             if (curmode == NavigationStyle::SPINNING
                 || (this->lockButton1 && curmode != NavigationStyle::SELECTION)) {
@@ -323,6 +329,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent* const ev)
     // Process when selection button is pressed together with other buttons that could trigger
     // different actions.
     if (this->button1down && (this->button2down || this->button3down)) {
+        clearSelectionStartPosition();
         this->lockButton1 = true;
         processed = true;
     }

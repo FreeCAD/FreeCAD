@@ -471,7 +471,8 @@ InteractiveScale::InteractiveScale(
     , viewProv(vp)
     , midPoint(SbVec3f(0, 0, 0))
 {
-    measureLabel = new EditableDatumLabel(viewer, placement, SbColor(1.0F, 0.149F, 0.0F));  // NOLINT
+    measureLabel = new EditableDatumLabel(viewer, placement);  // NOLINT
+    measureLabel->setActivatedColor();
 }
 
 InteractiveScale::~InteractiveScale()

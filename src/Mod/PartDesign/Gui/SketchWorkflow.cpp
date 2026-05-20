@@ -110,7 +110,8 @@ public:
                 msg.pDocName = faceSelection.getDocName();
                 msg.pObjectName = tip->getNameInDocument();
                 msg.pSubName = elements[0].c_str();
-                msg.pTypeName = tip->getTypeId().getName();
+                msg.TypeName = tip->getTypeId().getName();
+                msg.pTypeName = msg.TypeName.c_str();
 
                 faceSelection = Gui::SelectionObject {msg};
 

@@ -40,7 +40,7 @@ def check_collision(
     solids: Optional[List[Part.Shape]] = None,
     tool_shape: Optional[Part.Shape] = None,
     tool_diameter: Optional[float] = None,
-    safety_margin: float = 1,
+    collision_clearance: float = 1,
 ) -> bool:
     """
     Check if a direct move from start to target would collide with solids.
@@ -67,13 +67,13 @@ def check_collision(
     if not collision_model:
         return False
 
-    safety_margin = max(safety_margin, 0) or 1
+    collision_clearance = max(collision_clearance, 0) or 1
 
     # Create direct path wire
     wire = Part.Wire([Part.makeLine(start_position, target_position)])
 
     bbDistance = wire.BoundBox.ZMin - collision_model.BoundBox.ZMax
-    if bbDistance >= safety_margin or Path.Geom.isRoughly(bbDistance, safety_margin):
+    if bbDistance >= collision_clearance or Path.Geom.isRoughly(bbDistance, collision_clearance):
         # attempt to skip long time computation for simple model
         return False
 
@@ -86,7 +86,7 @@ def check_collision(
         distance = shape.distToShape(collision_model)[0]
     else:
         distance = wire.distToShape(collision_model)[0]
-    return distance < safety_margin and not Path.Geom.isRoughly(distance, safety_margin)
+    return distance < collision_clearance and not Path.Geom.isRoughly(distance, collision_clearance)
 
 
 def get_linking_moves(
@@ -99,7 +99,7 @@ def get_linking_moves(
     solids: Optional[List[Part.Shape]] = None,
     retract_height_offset: Optional[float] = None,
     skip_if_no_collision: bool = False,
-    safety_margin: float = 1,
+    collision_clearance: float = 1,
 ) -> list:
     """
     Generate linking moves from start to target position.
@@ -137,25 +137,20 @@ def get_linking_moves(
             collision_model = Part.makeCompound(solids)
 
     # Determine candidate heights
+    candidate_heights = {local_clearance, global_clearance}
     if retract_height_offset is not None:
-        if retract_height_offset > 0:
-            retract_height = max(start_position.z, target_position.z) + retract_height_offset
-            candidate_heights = {retract_height, local_clearance, global_clearance}
-        else:  # explicitly 0
-            retract_height = max(start_position.z, target_position.z)
-            candidate_heights = {retract_height, local_clearance, global_clearance}
-    else:
-        candidate_heights = {local_clearance, global_clearance}
+        retract_height = max(start_position.z, target_position.z) + retract_height_offset
+        candidate_heights.add(retract_height)
 
     heights = sorted(candidate_heights)
 
-    safety_margin = max(safety_margin, 0) or 1
+    collision_clearance = max(collision_clearance, 0) or 1
 
     # Try each height
     for height in heights:
         wire = make_linking_wire(start_position, target_position, height)
         if is_travel_collision_free(
-            wire, collision_model, tool_shape, tool_diameter, safety_margin
+            wire, collision_model, tool_shape, tool_diameter, collision_clearance
         ):
             cmds = Path.fromShape(wire).Commands
             # Ensure all commands have complete XYZ coordinates
@@ -204,7 +199,7 @@ def is_travel_collision_free(
     solid: Optional[Part.Shape],
     tool_shape: Optional[Part.Shape] = None,
     tool_diameter: Optional[float] = None,
-    safety_margin: float = 1,
+    collision_clearance: float = 1,
 ) -> bool:
     """
     Check if a horizontal edge of wire would not collide with solids.
@@ -213,10 +208,10 @@ def is_travel_collision_free(
     if not solid:
         return True
 
-    safety_margin = max(safety_margin, 0) or 1
+    collision_clearance = max(collision_clearance, 0) or 1
 
     bbDistance = wire.BoundBox.ZMax - solid.BoundBox.ZMax
-    if bbDistance >= safety_margin or Path.Geom.isRoughly(bbDistance, safety_margin):
+    if bbDistance >= collision_clearance or Path.Geom.isRoughly(bbDistance, collision_clearance):
         # attempt to skip long time computation for simple model
         return True
 
@@ -229,7 +224,7 @@ def is_travel_collision_free(
         distance = shape.distToShape(solid)[0]
     else:
         distance = wire.distToShape(solid)[0]
-    return distance >= safety_margin or Path.Geom.isRoughly(distance, safety_margin)
+    return distance >= collision_clearance or Path.Geom.isRoughly(distance, collision_clearance)
 
 
 def _create_horizontal_face(wire, width):

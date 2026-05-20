@@ -29,6 +29,8 @@
 #include <App/DocumentObserver.h>
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -115,6 +117,39 @@ TaskFeatureParameters::TaskFeatureParameters(
 {
     Gui::Document* doc = vp->getDocument();
     this->attachDocument(doc);
+}
+
+TaskFeatureParameters::~TaskFeatureParameters()
+{
+    hideDraggerHints();
+}
+
+void TaskFeatureParameters::showDraggerHints()
+{
+    if (!Gui::GizmoContainer::isEnabled() || !Gui::GizmoContainer::isCoarseSnapEnabled()) {
+        return;
+    }
+
+    const Gui::InputHint::UserInput key = Gui::GizmoContainer::getFineSnapKey();
+    const bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
+
+    QString message;
+    if (coarseByDefault) {
+        message = tr("%1 fine dragging");
+    }
+    else {
+        message = tr("%1 coarse dragging");
+    }
+
+    Gui::getMainWindow()->showHints({{
+        .message = message,
+        .sequences = {{key}},
+    }});
+}
+
+void TaskFeatureParameters::hideDraggerHints()
+{
+    Gui::getMainWindow()->hideHints();
 }
 
 void TaskFeatureParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)

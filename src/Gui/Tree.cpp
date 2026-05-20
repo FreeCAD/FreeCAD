@@ -487,8 +487,10 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem* option, const
     QSize size = option->icon.actualSize(QSize(0xffff, 0xffff));
 
     if (size.height() > 0) {
-        option->decorationSize
-            = QSize(size.width() * TreeWidget::iconSize() / size.height(), TreeWidget::iconSize());
+        option->decorationSize = QSize(
+            size.width() * TreeWidget::getIconSize() / size.height(),
+            TreeWidget::getIconSize()
+        );
     }
 
     if (isOnlyNameColumnDisplayed()) {
@@ -1639,7 +1641,7 @@ static int& treeIconSize()
     static int _treeIconSize = -1;
 
     if (_treeIconSize < 0) {
-        _treeIconSize = TreeParams::getIconSize();
+        _treeIconSize = static_cast<int>(TreeParams::getIconSize());
     }
     return _treeIconSize;
 }
@@ -1651,28 +1653,28 @@ int TreeWidget::iconHeight() const
 
 void TreeWidget::setIconHeight(int height)
 {
-    if (treeIconSize() == height) {
-        return;
-    }
-
     treeIconSize() = height;
     if (treeIconSize() <= 0) {
-        treeIconSize() = std::max(10, iconSize());
+        treeIconSize() = std::max(10, getIconSize());
     }
 
+    QSize newSize(treeIconSize(), treeIconSize());
     for (auto tree : Instances) {
-        tree->setIconSize(QSize(treeIconSize(), treeIconSize()));
+        if (tree->iconSize().width() != newSize.width()) {
+            tree->setIconSize(newSize);
+        }
     }
 }
 
-int TreeWidget::iconSize()
+int TreeWidget::getIconSize()
 {
     static int defaultSize;
     if (defaultSize == 0) {
         auto tree = instance();
         if (tree) {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-            defaultSize = tree->viewOptions().decorationSize.width();
+            QStyleOptionViewItem opt = tree->viewOptions();
+            defaultSize = opt.decorationSize.width();
 #else
             QStyleOptionViewItem opt;
             tree->initViewItemOption(&opt);
@@ -1891,6 +1893,15 @@ Qt::DropActions TreeWidget::supportedDropActions() const
 
 bool TreeWidget::event(QEvent* e)
 {
+    if (e->type() == QEvent::ShortcutOverride) {
+        auto ke = static_cast<QKeyEvent*>(e);
+        if (ke->key() == Qt::Key_Space && ke->modifiers() == Qt::NoModifier) {
+            // Claim the Space key so Qt does not fire the global
+            // Std_ToggleVisibility
+            ke->accept();
+            return true;
+        }
+    }
     return QTreeWidget::event(e);
 }
 
@@ -1975,6 +1986,29 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
         }
     }
 
+    else if (event->key() == Qt::Key_Space && event->modifiers() == Qt::NoModifier) {
+        // Toggle each selected feature's own visibility directly
+        for (auto* raw : selectedItems()) {
+            if (raw->type() != ObjectType) {
+                continue;
+            }
+            auto* vp = static_cast<DocumentObjectItem*>(raw)->object();
+            if (!vp || !vp->canToggleVisibility()) {
+                continue;
+            }
+            auto* appObj = vp->getObject();
+            vp->Gui::ViewProvider::toggleVisibility();
+            Selection().updateSelection(
+                vp->isShow(),
+                appObj->getDocument()->getName(),
+                appObj->getNameInDocument()
+            );
+        }
+        setFocus();
+        event->accept();
+        return;
+    }
+
     QTreeWidget::keyPressEvent(event);
 }
 
@@ -2005,7 +2039,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
             iconRect.adjust(margin, 0, 0, 0);
 
             // We are interested in the first icon (visibility icon)
-            iconRect.setWidth(iconSize());
+            iconRect.setWidth(getIconSize());
 
             // If the visibility icon was clicked, toggle the DocumentObject visibility
             if (iconRect.contains(mousePos)) {
@@ -2037,7 +2071,33 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
         }
     }
 
+    expandIndicatorPressed = false;
+    if (event->button() == Qt::LeftButton) {
+        QTreeWidgetItem* pressedItem = itemAt(event->pos());
+        if (pressedItem && pressedItem->childCount() > 0) {
+            auto itemRect = visualItemRect(pressedItem);
+            int x = event->pos().x();
+            if (x >= itemRect.left() - indentation() && x < itemRect.left()) {
+                expandIndicatorPressed = true;
+            }
+        }
+    }
+
     QTreeWidget::mousePressEvent(event);
+}
+
+void TreeWidget::mouseMoveEvent(QMouseEvent* event)
+{
+    if (expandIndicatorPressed) {
+        return;
+    }
+    QTreeWidget::mouseMoveEvent(event);
+}
+
+void TreeWidget::mouseReleaseEvent(QMouseEvent* event)
+{
+    expandIndicatorPressed = false;
+    QTreeWidget::mouseReleaseEvent(event);
 }
 
 void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
@@ -6301,7 +6361,8 @@ void DocumentObjectItem::generateIcon(int currentStatus, QIcon::Mode mode, QIcon
     QIcon icon_org = object()->getIcon();
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    int w = getTree()->viewOptions().decorationSize.width();
+    QStyleOptionViewItem opt = getTree()->viewOptions();
+    int w = opt.decorationSize.width();
 #else
     QStyleOptionViewItem opt;
     getTree()->initViewItemOption(&opt);
@@ -6467,7 +6528,10 @@ void DocumentObjectItem::displayStatusInfo()
 {
     App::DocumentObject* Obj = object()->getObject();
 
-    QString info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
+    QString info = QApplication::translate(
+        std::string {Obj->getTypeId().getName()}.c_str(),
+        Obj->getStatusString()
+    );
 
     if (Obj->mustExecute() == 1 && !Obj->isError()) {
         info += TreeWidget::tr(" (but must be executed)");

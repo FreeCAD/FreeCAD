@@ -592,6 +592,8 @@ SET(Part_SRCS
     MeasureInfo.h
     modelRefine.cpp
     modelRefine.h
+    PyException.cpp
+    PyException.h
     Tools.cpp
     Tools.h
     encodeFilename.h

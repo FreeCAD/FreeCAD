@@ -21,31 +21,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <algorithm>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <set>
-
 #include "UniqueNameManager.h"
 
-std::tuple<std::string, std::string, unsigned int, Base::UnlimitedUnsigned> Base::UniqueNameManager::decomposeName(
-    const std::string& name
-) const
+#include <algorithm>
+#include <string>
+#include <tuple>
+#include <vector>
+
+
+std::tuple<std::string_view, std::string_view, unsigned int, Base::UnlimitedUnsigned> Base::
+    UniqueNameManager::decomposeName(std::string_view name) const
 {
     auto suffixStart = getNameSuffixStartPosition(name);
     auto digitsStart = std::find_if_not(suffixStart, name.crend(), [](char c) {
         return std::isdigit(c);
     });
     unsigned int digitCount = digitsStart - suffixStart;
-    return std::tuple<std::string, std::string, unsigned int, UnlimitedUnsigned> {
+    return {
         name.substr(0, name.crend() - digitsStart),
         name.substr(name.crend() - suffixStart),
         digitCount,
         UnlimitedUnsigned::fromString(name.substr(name.crend() - digitsStart, digitCount))
     };
 }
-bool Base::UniqueNameManager::haveSameBaseName(const std::string& first, const std::string& second) const
+bool Base::UniqueNameManager::haveSameBaseName(std::string_view first, std::string_view second) const
 {
     auto firstSuffixStart = getNameSuffixStartPosition(first);
     auto secondSuffixStart = getNameSuffixStartPosition(second);
@@ -62,9 +61,10 @@ bool Base::UniqueNameManager::haveSameBaseName(const std::string& first, const s
     return std::equal(firstDigitsStart, first.crend(), secondDigitsStart, second.crend());
 }
 
-void Base::UniqueNameManager::addExactName(const std::string& name)
+void Base::UniqueNameManager::addExactName(std::string_view name)
 {
-    auto [baseName, nameSuffix, digitCount, digitsValue] = decomposeName(name);
+    const auto [namePrefix, nameSuffix, digitCount, digitsValue] = decomposeName(name);
+    std::string baseName {namePrefix};
     baseName += nameSuffix;
     auto baseNameEntry = uniqueSeeds.find(baseName);
     if (baseNameEntry == uniqueSeeds.end()) {
@@ -86,18 +86,16 @@ void Base::UniqueNameManager::addExactName(const std::string& name)
         // Increment the duplicateCounts entry for that name,
         // making one if none is present with an initial count of 1
         // representing the singleton element we already have.
-        duplicateCounts.try_emplace(name, 1U).first->second++;
+        duplicateCounts.try_emplace(std::string {name}, 1U).first->second++;
         return;
     }
     baseNameAndDigitCountEntry.add(digitsValue);
 }
-std::string Base::UniqueNameManager::makeUniqueName(
-    const std::string& modelName,
-    std::size_t minDigits
-) const
+std::string Base::UniqueNameManager::makeUniqueName(std::string_view modelName, std::size_t minDigits) const
 {
     auto [namePrefix, nameSuffix, digitCount, digitsValue] = decomposeName(modelName);
-    std::string baseName = namePrefix + nameSuffix;
+    std::string baseName {namePrefix};
+    baseName += nameSuffix;
     auto baseNameEntry = uniqueSeeds.find(baseName);
     if (baseNameEntry == uniqueSeeds.end()) {
         // First use of baseName, just return it with no unique digits
@@ -116,14 +114,15 @@ std::string Base::UniqueNameManager::makeUniqueName(
     else {
         digitsValue = baseNameEntry->second[digitCount].next();
     }
-    std::string digits = digitsValue.toString();
+    const std::string digits = digitsValue.toString();
+    std::string digitsPadding;
     if (digitCount > digits.size()) {
-        namePrefix += std::string(digitCount - digits.size(), '0');
+        digitsPadding.resize(digitCount - digits.size(), '0');
     }
-    return namePrefix + digits + nameSuffix;
+    return std::string {namePrefix}.append(digitsPadding).append(digits).append(nameSuffix);
 }
 
-void Base::UniqueNameManager::removeExactName(const std::string& name)
+void Base::UniqueNameManager::removeExactName(std::string_view name)
 {
     auto duplicateCountFound = duplicateCounts.find(name);
     if (duplicateCountFound != duplicateCounts.end()) {
@@ -135,7 +134,8 @@ void Base::UniqueNameManager::removeExactName(const std::string& name)
         }
         return;
     }
-    auto [baseName, nameSuffix, digitCount, digitsValue] = decomposeName(name);
+    const auto [namePrefix, nameSuffix, digitCount, digitsValue] = decomposeName(name);
+    std::string baseName {namePrefix};
     baseName += nameSuffix;
     auto baseNameEntry = uniqueSeeds.find(baseName);
     if (baseNameEntry == uniqueSeeds.end()) {
@@ -163,13 +163,14 @@ void Base::UniqueNameManager::removeExactName(const std::string& name)
     }
 }
 
-bool Base::UniqueNameManager::containsName(const std::string& name) const
+bool Base::UniqueNameManager::containsName(std::string_view name) const
 {
     if (duplicateCounts.find(name) != duplicateCounts.end()) {
         // There are at least two instances of the name
         return true;
     }
-    auto [baseName, nameSuffix, digitCount, digitsValue] = decomposeName(name);
+    const auto [namePrefix, nameSuffix, digitCount, digitsValue] = decomposeName(name);
+    std::string baseName {namePrefix};
     baseName += nameSuffix;
     auto baseNameEntry = uniqueSeeds.find(baseName);
     if (baseNameEntry == uniqueSeeds.end()) {

@@ -546,6 +546,9 @@ public:
 
     virtual PyObject* getPyObject();
 
+Q_SIGNALS:
+    void cameraChanged();
+
 protected:
     static GLenum getInternalTextureFormat();
     void renderScene();

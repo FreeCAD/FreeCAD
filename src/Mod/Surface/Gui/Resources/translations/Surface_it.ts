@@ -470,7 +470,7 @@ Questo comando funziona solo con un oggetto mesh.</translation>
       <location filename="../../TaskFillingEdge.cpp" line="408"/>
       <source>Edge has %n adjacent face(s)</source>
       <translation>
-        <numerusform>Il bordo ha %n faccia(e) adiacenti</numerusform>
+        <numerusform>Il bordo ha una faccia adiacente</numerusform>
         <numerusform>Il bordo ha una %n facce adiacenti</numerusform>
       </translation>
     </message>
@@ -525,7 +525,7 @@ Questo comando funziona solo con un oggetto mesh.</translation>
       <location filename="../../TaskFilling.cpp" line="616"/>
       <source>Edge has %n adjacent faces</source>
       <translation>
-        <numerusform>Il bordo ha %n facce adiacenti</numerusform>
+        <numerusform>Il bordo ha una faccia adiacente</numerusform>
         <numerusform>Il bordo ha %n facce adiacenti</numerusform>
       </translation>
     </message>

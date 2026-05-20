@@ -71,7 +71,7 @@ public:
     void selectLinkedObject(App::DocumentObject* linked);
     void selectAllLinks(App::DocumentObject* obj);
     void expandSelectedItems(TreeItemMode mode);
-    static int iconSize();
+    static int getIconSize();
 
     int iconHeight() const;
     void setIconHeight(int height);
@@ -190,6 +190,8 @@ protected:
     bool event(QEvent* e) override;
     void keyPressEvent(QKeyEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
     void mouseDoubleClickEvent(QMouseEvent* event) override;
 
     void showEvent(QShowEvent* ev) override;
@@ -296,6 +298,8 @@ private:
     // this timer is used to prevent double click event on visibility icon
     QTimer visibilityIconDoubleClickTimer;
 
+    bool expandIndicatorPressed = false;
+
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::unordered_map<const Gui::Document*, DocumentItem*> DocumentMap;
@@ -318,7 +322,7 @@ private:
     // State tracking for the two-stage "Select All" operation
     bool lastSelectAllParent = false;   // true if last select was group-level, used for double-tap
                                         // detection
-    bool inSelectAllOperation = false;  // prevents context from reseting when we change selection
+    bool inSelectAllOperation = false;  // prevents context from resetting when we change selection
                                         // in code
 
     friend class DocumentItem;

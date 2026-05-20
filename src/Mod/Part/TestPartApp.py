@@ -1233,3 +1233,60 @@ class PartExtrusionTests(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument("PartExtrusionTest")
+
+
+class PartFaceMakerBuildFaceTests(unittest.TestCase):
+    """Regression: a Sketch with MakeInternals=True containing two concentric
+    ellipses and two short line segments joining them on the right side fails
+    to build the internal face. The direct FaceMakerBuildFace call succeeds,
+    but SketchObject::buildInternals also calls Part::WireJoiner::getOpenWires,
+    which currently throws ('failed to close some wire in iteration N') and
+    leaves InternalShape null."""
+
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("FaceMakerBuildFaceTest")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("FaceMakerBuildFaceTest")
+
+    def _add_geometry(self, sk):
+        outer = Part.Ellipse(Base.Vector(0, 0, 0), 100, 60)
+        inner = Part.Ellipse(Base.Vector(0, 0, 0), 50, 30)
+        u1, u2 = -math.radians(15), math.radians(15)
+        sk.addGeometry(outer, False)
+        sk.addGeometry(inner, False)
+        sk.addGeometry(Part.LineSegment(outer.value(u1), inner.value(u1)), False)
+        sk.addGeometry(Part.LineSegment(outer.value(u2), inner.value(u2)), False)
+
+    def testBuildFaceDirectMakeFace(self):
+        """Direct FaceMakerBuildFace on the same wires must produce faces."""
+        outer = Part.Ellipse(Base.Vector(0, 0, 0), 100, 60)
+        inner = Part.Ellipse(Base.Vector(0, 0, 0), 50, 30)
+        u1, u2 = -math.radians(15), math.radians(15)
+        wires = [
+            Part.Wire([outer.toShape()]),
+            Part.Wire([inner.toShape()]),
+            Part.Wire([Part.LineSegment(outer.value(u1), inner.value(u1)).toShape()]),
+            Part.Wire([Part.LineSegment(outer.value(u2), inner.value(u2)).toShape()]),
+        ]
+        result = Part.makeFace(wires, "Part::FaceMakerBuildFace")
+        self.assertFalse(result.isNull())
+        self.assertGreaterEqual(len(result.Faces), 2)
+
+    def testSketchMakeInternalsBuildsFaces(self):
+        """The full SketchObject MakeInternals path must produce a non-null
+        InternalShape with at least two faces (the annulus regions split by
+        the two connecting line segments)."""
+        sk = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sk.MakeInternals = True
+        self._add_geometry(sk)
+        self.Doc.recompute()
+        self.assertFalse(
+            sk.InternalShape.isNull(),
+            "SketchObject.InternalShape is null - buildInternals failed",
+        )
+        self.assertGreaterEqual(
+            len(sk.InternalShape.Faces),
+            2,
+            f"Expected >=2 faces in InternalShape, got {len(sk.InternalShape.Faces)}",
+        )

@@ -38,6 +38,8 @@ from FreeCAD import Units
 
 import Path
 import Path.Post.Utils as PostUtils
+from Path.Base.MachineState import MachineState
+from Path.Post.DrillCycleExpander import DrillCycleExpander
 
 # Define some types that are used throughout this file
 CommandLine = List[str]
@@ -419,7 +421,6 @@ def drill_translate(
 
     This is a compatibility wrapper around DrillCycleExpander.
     """
-    from Path.Post.DrillCycleExpander import DrillCycleExpander
 
     if values["MOTION_MODE"] == "G91":
         # force absolute coordinates during cycles
@@ -446,11 +447,17 @@ def drill_translate(
         return
 
     # Create expander and expand the drill cycle
-    expander = DrillCycleExpander(
-        retract_mode=drill_retract_mode,
-        initial_position=initial_position,
-    )
+    expander = DrillCycleExpander(MachineState(initial_position))
+    expander.machine_state.addCommand(Path.Command(drill_retract_mode))
+
     expanded = expander.expand_command(Path.Command(command, drill_params))
+
+    # HACK: we have to strip F params if they are zero
+    # because we don't know the G0 F in here, and DrillCycleExpander always generates F
+    # The newer MBPP doesn't have this problem.
+    for pc in expanded:
+        if "F" in pc.Parameters and pc.Parameters["F"] == 0:
+            del pc.Parameters["F"]
 
     # Format expanded commands into gcode strings
     for ecmd in expanded:

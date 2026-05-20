@@ -5,7 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from TopoShape import TopoShape
-from typing import Final, Tuple, Dict, Optional, List
+from typing import Final, Tuple, Dict, Optional, List, Sequence, overload
 
 @export(
     Twin="TopoShape",
@@ -21,6 +21,15 @@ class TopoShapeFace(TopoShape):
     Author: Juergen Riegel (Juergen.Riegel@web.de)
     Licence: LGPL
     """
+
+    @overload
+    def __init__(self) -> None: ...
+    @overload
+    def __init__(self, shape: TopoShape, /) -> None: ...
+    @overload
+    def __init__(self, face: TopoShape, wire: TopoShape, /) -> None: ...
+    @overload
+    def __init__(self, wires: Sequence[TopoShape], /) -> None: ...
 
     Tolerance: float = ...
     """Set or get the tolerance of the vertex"""

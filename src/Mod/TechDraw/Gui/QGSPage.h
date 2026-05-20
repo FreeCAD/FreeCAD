@@ -119,7 +119,6 @@ public:
 
     std::vector<QGIView*> getViews() const;
 
-    int addQView(QGIView* view);
     int removeQView(QGIView* view);
     int removeQViewByName(const char* name);
     void removeQViewFromScene(QGIView* view);
