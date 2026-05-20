@@ -4946,7 +4946,10 @@ class DxfDraftPostProcessor:
                             dim.Direction = direction_vector
 
                 elif placeholder.DxfEntityType == "TEXT":
-                    text_obj = make_text.make_text(placeholder.Text)
+                    font_size = None
+                    if hasattr(placeholder, "DxfTextHeight"):
+                        font_size = placeholder.DxfTextHeight * TEXTSCALING
+                    text_obj = make_text.make_text(placeholder.Text, height=font_size)
                     text_obj.Placement = placeholder.Placement
                     if FreeCAD.GuiUp:
                         text_obj.addProperty("App::PropertyFloat", "DxfTextHeight", "Internal")

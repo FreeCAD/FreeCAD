@@ -35,6 +35,8 @@
 # @{
 
 import os
+import tempfile
+import unittest
 
 import FreeCAD as App
 import Draft
@@ -90,6 +92,58 @@ class DraftDXF(test_base.DraftTestCaseDoc):
             hGrp.SetInt("DxfImportMode", wasImportMode)
             hGrp.SetBool("dxfCreateSketch", wasCreateSketch)
             hGrp.SetBool("dxfstarblocks", wasImportAnonymousBlocks)
+            if doc:
+                App.closeDocument(doc.Name)
+
+    @unittest.skipUnless(App.GuiUp, "requires Draft Text view provider")
+    def test_cpp_import_text_uses_dxf_height_not_draft_preference(self):
+        """Verify C++ DXF text import ignores the active Draft text size preference."""
+
+        dxf_content = (
+            "0\nSECTION\n2\nENTITIES\n"
+            "0\nTEXT\n8\n0\n10\n0\n20\n0\n30\n0\n40\n1.0\n1\nSample\n"
+            "0\nENDSEC\n0\nEOF\n"
+        )
+
+        hGrp = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+
+        wasShowDialog = hGrp.GetBool("dxfShowDialog", True)
+        wasUseLegacyImporter = hGrp.GetBool("dxfUseLegacyImporter", False)
+        wasImportTexts = hGrp.GetBool("dxftext", False)
+        wasUseLayers = hGrp.GetBool("dxfUseDraftVisGroups", True)
+        wasImportMode = hGrp.GetInt("DxfImportMode", 2)
+        wasTextHeight = hGrp.GetFloat("textheight", 1.0)
+
+        doc = None
+        with tempfile.NamedTemporaryFile("w", suffix=".dxf", delete=False) as dxf_file:
+            dxf_file.write(dxf_content)
+            dxf_path = dxf_file.name
+
+        try:
+            hGrp.SetBool("dxfShowDialog", False)
+            hGrp.SetBool("dxfUseLegacyImporter", False)
+            hGrp.SetBool("dxftext", True)
+            hGrp.SetBool("dxfUseDraftVisGroups", True)
+            hGrp.SetInt("DxfImportMode", 2)
+            hGrp.SetFloat("textheight", 10.0)
+
+            doc = importDXF.open(dxf_path)
+            text_objects = [
+                obj
+                for obj in doc.Objects
+                if hasattr(obj, "Proxy") and obj.Proxy.__class__.__name__ == "Text"
+            ]
+
+            self.assertEqual(len(text_objects), 1)
+            self.assertAlmostEqual(text_objects[0].ViewObject.FontSize, importDXF.TEXTSCALING)
+        finally:
+            hGrp.SetBool("dxfShowDialog", wasShowDialog)
+            hGrp.SetBool("dxfUseLegacyImporter", wasUseLegacyImporter)
+            hGrp.SetBool("dxftext", wasImportTexts)
+            hGrp.SetBool("dxfUseDraftVisGroups", wasUseLayers)
+            hGrp.SetInt("DxfImportMode", wasImportMode)
+            hGrp.SetFloat("textheight", wasTextHeight)
+            os.unlink(dxf_path)
             if doc:
                 App.closeDocument(doc.Name)
 
