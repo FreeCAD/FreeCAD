@@ -2723,7 +2723,6 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         self.assertTrue(self.Sketch001.isValid())
 
-    @unittest.expectedFailure
     def testRectanglewithArcChangeinGlobalUpperRight(self):
         # Arrange
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
