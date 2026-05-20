@@ -131,7 +131,7 @@ Gui.addCommand("Draft_Shape2DView", Shape2DView())
 
 
 class UpdateShape2DView:
-    """Gui Command to force the update of Shape2DViews. It is used in context menus."""
+    """Gui Command to force the update of Shape2DViews."""
 
     def GetResources(self):
         return {
