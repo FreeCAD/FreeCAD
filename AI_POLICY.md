@@ -38,8 +38,7 @@ With AI contributions it is almost impossible to support these values and to ens
 
 ### Disclosure
 
-We request disclosure of the used technology with tags in the PR and in the commit messages:
-
+We request disclosure of the used technology in the PR description (in natural language) and with git trailers in the commit messages:
 ```
 Assisted-by: [Model-Family] ([Version/ID])
 ```
