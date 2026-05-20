@@ -5065,6 +5065,10 @@ TopoShape& TopoShape::makeElementPrismUntil(
                     FC_THROWM(Base::CADKernelError, "BRepFeat_MakePrism: extrusion failed");
                 }
 
+                if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+                    result.Tag = Tag;
+                }
+                
                 result.makeElementShape(PrismMaker, srcShapes, uptoface, op);
             }
             break;

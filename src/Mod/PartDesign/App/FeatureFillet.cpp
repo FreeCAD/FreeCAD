@@ -109,13 +109,7 @@ App::DocumentObjectExecReturn* Fillet::execute()
     this->positionByBaseFeature();
 
     try {
-        TopoShape shape(0);  //,getDocument()->getStringHasher());
-
-        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-            shape.Tag = getID(); // we want to avoid changing V1 names, as that algorithm
-            //                      will only be used for compatibility reasons, and we
-            //                      do not want to break any models made with it.
-        }
+        TopoShape shape(App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2 ? getID() : 0);  //,getDocument()->getStringHasher());
 
         // Add signal handler for segfault protection
 #if defined(__GNUC__) && defined(FC_OS_LINUX)
