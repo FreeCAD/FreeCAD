@@ -135,15 +135,18 @@ class UpdateShape2DView:
     def GetResources(self):
         return {
             "Pixmap": "TechDraw_TreePageUnsync",
-            "Accel": "",
-            "MenuText": QT_TRANSLATE_NOOP("Draft_UpdateShape2DView", "Force Update"),
-            "ToolTip": QT_TRANSLATE_NOOP("Draft_UpdateShape2DView", "Forces update of 2D Views"),
+            "Accel": "V,T",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_UpdateShape2DView", "Force 2D View Update"),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_UpdateShape2DView", "Forces an update of the selected 2D Views or all 2D Views in the document.\nThe AutoUpdate property of the views is ignored."),
         }
 
     def Activated(self):
         doc = App.ActiveDocument
+        sel = Gui.Selection.getSelection()
+        if not sel:
+            sel = doc.findObjects(Type="Part::Part2DObjectPython")
         doc.openTransaction(translate("draft", "Update"))
-        for obj in Gui.Selection.getSelection():
+        for obj in sel:
             if utils.get_type(obj) == "Shape2DView":
                 obj.Proxy.execute(obj, force_update=True)
                 obj.purgeTouched()
