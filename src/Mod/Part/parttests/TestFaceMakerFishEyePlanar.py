@@ -430,7 +430,7 @@ class TestDegenerateInput(unittest.TestCase):
     def test_single_open_line(self):
         """An open wire cannot form a face."""
         self.assertRaises(
-            RuntimeError,
+            ValueError,
             Part.makeFace,
             Part.Compound([line_wire((0, 0), (10, 0))]),
             "Part::FaceMakerFishEye",
@@ -439,7 +439,7 @@ class TestDegenerateInput(unittest.TestCase):
     def test_empty_compound(self):
         """An empty compound cannot form a face."""
         self.assertRaises(
-            RuntimeError,
+            ValueError,
             Part.makeFace,
             Part.Compound([]),
             "Part::FaceMakerFishEye",
