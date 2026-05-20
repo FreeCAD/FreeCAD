@@ -586,6 +586,8 @@ QGIViewClip* QGIView::getClipGroup()
 //! called from ViewProvider when feature properties change.
 void QGIView::updateView(bool forceUpdate)
 {
+    Q_UNUSED(forceUpdate);
+
     setMovableFlag();
 
     double appRotation = getViewObject()->Rotation.getValue();
