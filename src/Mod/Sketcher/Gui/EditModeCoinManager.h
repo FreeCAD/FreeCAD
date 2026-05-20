@@ -68,6 +68,7 @@ namespace SketcherGui
 class ViewProviderSketch;
 class EditModeConstraintCoinManager;
 class EditModeGeometryCoinManager;
+class LazyExternalGeometryLayer;
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
@@ -178,7 +179,8 @@ public:
         {
             InvalidPoint = -1,
             InvalidCurve = -1,
-            ExternalCurve = -3
+            ExternalCurve = -3,
+            InvalidLazyExternalId = InvalidPoint
         };
 
         enum class Axes
@@ -193,6 +195,8 @@ public:
         int GeoIndex = InvalidCurve;  // valid values are 0,1,2,... for normal geometry and
                                       // -3,-4,-5,... for external geometry
         Axes Cross = Axes::None;
+        int LazyExternalId = InvalidLazyExternalId;
+        bool LazyExternalVertex = false;
         std::set<int> ConstrIndices;
 
         inline void clear()
@@ -200,6 +204,8 @@ public:
             PointIndex = InvalidPoint;
             GeoIndex = InvalidCurve;
             Cross = Axes::None;
+            LazyExternalId = InvalidLazyExternalId;
+            LazyExternalVertex = false;
             ConstrIndices.clear();
         }
     };
@@ -233,6 +239,7 @@ public:
     );
 
     void updateVirtualSpace();
+    void drawLazyExternalGeometryLayer(LazyExternalGeometryLayer& layer);
 
     /// Draw all constraint icons
     /*! Except maybe the radius and lock ones? */

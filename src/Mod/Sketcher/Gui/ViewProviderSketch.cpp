@@ -28,7 +28,9 @@
 #include <Inventor/SbLine.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/nodes/SoCamera.h>
@@ -45,12 +47,18 @@
 #include <QToolTip>
 #include <QWindow>
 
+#include <algorithm>
+#include <cstring>
 #include <limits>
+#include <utility>
 
 #include <fmt/format.h>
 
+#include <App/Document.h>
+#include <App/IndexedName.h>
 #include <Base/Console.h>
 #include <Base/ServiceProvider.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -66,6 +74,7 @@
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
@@ -76,6 +85,7 @@
 #include "EditDatumDialog.h"
 #include "EditTextDialog.h"
 #include "EditModeCoinManager.h"
+#include "LazyExternalGeometryLayer.h"
 #include "SnapManager.h"
 #include "StyleParameters.h"
 #include "TaskDlgEditSketch.h"
@@ -94,6 +104,202 @@ FC_LOG_LEVEL_INIT("Sketch", true, true)
 using namespace SketcherGui;
 using namespace Sketcher;
 namespace sp = std::placeholders;
+
+namespace
+{
+constexpr float LazyExternalMinVisibleDepthTolerance = 1.0e-3F;
+constexpr float LazyExternalRelativeDepthTolerance = 1.0e-5F;
+
+bool parseLazyExternalSourceElement(const char* subName, bool& isVertex)
+{
+    if (Base::Tools::isNullOrEmpty(subName)) {
+        return false;
+    }
+
+    const char* lastPart = std::strrchr(subName, '.');
+    const Data::IndexedName element(lastPart ? lastPart + 1 : subName);
+    if (!element || element.getIndex() <= 0) {
+        return false;
+    }
+
+    if (std::strcmp(element.getType(), "Vertex") == 0) {
+        isVertex = true;
+        return true;
+    }
+    if (std::strcmp(element.getType(), "Edge") == 0) {
+        isVertex = false;
+        return true;
+    }
+
+    return false;
+}
+
+bool isAllowedLazyExternalSourceObject(Sketcher::SketchObject* sketch,
+                                        App::DocumentObject* object)
+{
+    return sketch && object && object != sketch && !object->isDerivedFrom<Sketcher::SketchObject>()
+        && sketch->isExternalAllowed(object->getDocument(), object);
+}
+
+bool isVisibleLazyExternalSourceObject(Sketcher::SketchObject* sketch,
+                                        App::DocumentObject* object)
+{
+    if (!isAllowedLazyExternalSourceObject(sketch, object) || !Gui::Application::Instance) {
+        return false;
+    }
+
+    auto* viewProvider = Gui::Application::Instance->getViewProvider(object);
+    return viewProvider && viewProvider->isVisible();
+}
+
+bool isForeignSketchSourceChange(const Gui::SelectionChanges& msg,
+                                 Sketcher::SketchObject* sketch)
+{
+    if (!sketch || !msg.pDocName || !msg.pObjectName || Base::Tools::isNullOrEmpty(msg.pSubName)) {
+        return false;
+    }
+
+    auto* document = sketch->getDocument();
+    if (!document || std::strcmp(msg.pDocName, document->getName()) != 0
+        || std::strcmp(msg.pObjectName, sketch->getNameInDocument()) == 0) {
+        return false;
+    }
+
+    bool sourceVertex = false;
+    if (!parseLazyExternalSourceElement(msg.pSubName, sourceVertex)) {
+        return false;
+    }
+
+    return isAllowedLazyExternalSourceObject(sketch, document->getObject(msg.pObjectName));
+}
+
+struct LazyExternalSourceHit
+{
+    App::DocumentObject* object = nullptr;
+    std::string subName;
+    float depth = std::numeric_limits<float>::max();
+    bool vertex = false;
+};
+
+float getLazyExternalPickDepth(const SoPickedPoint* pickedPoint, const SbVec3f& rayStart)
+{
+    if (!pickedPoint) {
+        return std::numeric_limits<float>::max();
+    }
+
+    const SbVec3f delta = pickedPoint->getPoint() - rayStart;
+    return delta.length();
+}
+
+bool getPickedLazyExternalSourceSubName(const SoPickedPoint* pickedPoint,
+                                        App::DocumentObject* object,
+                                        std::string& subName)
+{
+    auto* viewProvider = Gui::Application::Instance
+        ? Gui::Application::Instance->getViewProvider(object)
+        : nullptr;
+    auto* root = viewProvider ? viewProvider->getRoot() : nullptr;
+    if (!root || !pickedPoint || !pickedPoint->getPath()
+        || !pickedPoint->getPath()->containsNode(root)) {
+        return false;
+    }
+
+    return viewProvider->getElementPicked(pickedPoint, subName) && !subName.empty();
+}
+
+std::vector<LazyExternalSourceHit> collectLazyExternalSourceHits(
+    Sketcher::SketchObject* sketch,
+    App::Document* appDocument,
+    const SoPickedPointList& pickedPoints,
+    const SbVec3f& rayStart,
+    float& nearestHitDepth)
+{
+    std::vector<LazyExternalSourceHit> sourceHits;
+    sourceHits.reserve(static_cast<std::size_t>(pickedPoints.getLength()));
+
+    const auto sourceObjects = appDocument->getObjects();
+    for (int pickedIndex = 0; pickedIndex < pickedPoints.getLength(); ++pickedIndex) {
+        const SoPickedPoint* pickedPoint = pickedPoints[pickedIndex];
+        if (!pickedPoint) {
+            continue;
+        }
+
+        const float depth = getLazyExternalPickDepth(pickedPoint, rayStart);
+        nearestHitDepth = std::min(nearestHitDepth, depth);
+        for (auto* object : sourceObjects) {
+            if (!isVisibleLazyExternalSourceObject(sketch, object)) {
+                continue;
+            }
+
+            std::string subName;
+            bool sourceVertex = false;
+            if (getPickedLazyExternalSourceSubName(pickedPoint, object, subName)
+                && parseLazyExternalSourceElement(subName.c_str(), sourceVertex)) {
+                sourceHits.push_back({object, std::move(subName), depth, sourceVertex});
+            }
+        }
+    }
+
+    return sourceHits;
+}
+
+float getLazyExternalVisibleDepthTolerance(float nearestHitDepth)
+{
+    return std::max(LazyExternalMinVisibleDepthTolerance,
+                    nearestHitDepth * LazyExternalRelativeDepthTolerance);
+}
+
+float getLazyExternalPixelDepthTolerance(const SbLine& pickLine,
+                                        const SbLine& onePixelLine,
+                                        float nearestHitDepth,
+                                        float visibleDepthTolerance,
+                                        float pickRadius)
+{
+    SbVec3f rayDirection = pickLine.getDirection();
+    SbVec3f onePixelDirection = onePixelLine.getDirection();
+    rayDirection.normalize();
+    onePixelDirection.normalize();
+
+    const SbVec3f rayStart = pickLine.getPosition();
+    const SbVec3f pointAtDepth = rayStart + rayDirection * nearestHitDepth;
+    const SbVec3f onePixelPointAtDepth =
+        onePixelLine.getPosition() + onePixelDirection * nearestHitDepth;
+    return std::max(visibleDepthTolerance,
+                    (onePixelPointAtDepth - pointAtDepth).length() * pickRadius);
+}
+
+const LazyExternalSourceHit* findClosestLazyExternalHitWithinDepth(
+    const std::vector<LazyExternalSourceHit>& sourceHits,
+    float nearestHitDepth,
+    float depthTolerance,
+    bool vertex)
+{
+    const LazyExternalSourceHit* bestHit = nullptr;
+    for (const auto& hit : sourceHits) {
+        if (hit.vertex != vertex || hit.depth - nearestHitDepth > depthTolerance) {
+            continue;
+        }
+
+        if (!bestHit || hit.depth < bestHit->depth) {
+            bestHit = &hit;
+        }
+    }
+
+    return bestHit;
+}
+
+void restoreActiveViewCursor()
+{
+    const Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (!doc) {
+        return;
+    }
+
+    if (Gui::MDIView* mdi = doc->getActiveView()) {
+        mdi->restoreOverrideCursor();
+    }
+}
+}
 
 /************** ViewProviderSketch::ParameterObserver *********************/
 
@@ -227,6 +433,17 @@ void ViewProviderSketch::ParameterObserver::updateRecalculateInitialSolutionWhil
         hGrp2->GetBool("RecalculateInitialSolutionWhileDragging", true);
 }
 
+void ViewProviderSketch::ParameterObserver::updateLazyExternalGeometryEnabled(
+    const std::string& string, App::Property* property)
+{
+    (void)property;
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    Client.setLazyExternalGeometryPreferenceEnabled(hGrp->GetBool(string.c_str(), true));
+}
+
+
 void ViewProviderSketch::ParameterObserver::subscribeToParameters()
 {
     try {
@@ -332,6 +549,11 @@ void ViewProviderSketch::ParameterObserver::initParameters()
         {"RecalculateInitialSolutionWhileDragging",
          {[this](const std::string& string, App::Property* property) {
               updateRecalculateInitialSolutionWhileDragging(string, property);
+          },
+          nullptr}},
+        {"EnableLazyExternalGeometry",
+         {[this](const std::string& string, App::Property* property) {
+              updateLazyExternalGeometryEnabled(string, property);
           },
           nullptr}},
         {"GridSizePixelThreshold",
@@ -558,6 +780,8 @@ ViewProviderSketch::ViewProviderSketch()
     , pcSketchFacesToggle(new SoToggleSwitch)
     , listener(nullptr)
     , editCoinManager(nullptr)
+    , lazyExternalGeometryLayer(nullptr)
+    , lazyExternalGeometryLayerSuspendCount(0)
     , snapManager(nullptr)
     , pObserver(std::make_unique<ViewProviderSketch::ParameterObserver>(*this))
     , sketchHandler(nullptr)
@@ -841,7 +1065,7 @@ void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
 
         std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(screencoords, viewer));
 
-        if (detectAndShowPreselection(Point.get()) && sketchHandler) {
+        if (detectAndShowPreselection(Point.get(), &screencoords, viewer, false) && sketchHandler) {
             sketchHandler->applyCursor();
         }
     }
@@ -1044,6 +1268,11 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         setSketchMode(STATUS_SELECT_Cross);
                         done = true;
                     }
+                    else if (preselection.isLazyExternalPreselected()) {
+                        setSketchMode(preselection.isLazyExternalVertex() ? STATUS_SELECT_Point
+                                                                           : STATUS_SELECT_Edge);
+                        done = true;
+                    }
                     else if (!preselection.PreselectConstraintSet.empty()) {
                         setSketchMode(STATUS_SELECT_Constraint);
                         done = true;
@@ -1074,7 +1303,15 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         DoubleClick::prvCursorPos = cursorPos;
                         DoubleClick::newCursorPos = cursorPos;
                         if (!done) {
-                            setSketchMode(STATUS_SKETCH_StartRubberBand);
+                            if (isLazyExternalGeometryEnabled()
+                                && !getSelectedLazyExternalReferenceIds().empty()) {
+                                clearSelectedLazyExternalReferences();
+                                resetPreselectPoint();
+                                done = true;
+                            }
+                            else {
+                                setSketchMode(STATUS_SKETCH_StartRubberBand);
+                            }
                         }
                     }
 
@@ -1092,24 +1329,33 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_SELECT_Point:
-                    if (pp) {
+                    if (preselection.isLazyExternalVertex()) {
+                        selectLazyExternalReference(preselection.PreselectLazyExternalId, true);
+                        drag.resetIds();
+                    }
+                    else if (pp) {
                         //  Do selection
                         std::stringstream ss;
                         ss << "Vertex" << preselection.getPreselectionVertexIndex();
-
                         preselectToSelection(ss, pp, true);
                     }
                     setSketchMode(STATUS_NONE);
                     return true;
                 case STATUS_SELECT_Edge:
-                    if (pp) {
+                    if (preselection.isLazyExternalEdge()) {
+                        selectLazyExternalReference(preselection.PreselectLazyExternalId, true);
+                        drag.resetIds();
+                    }
+                    else if (pp) {
                         std::stringstream ss;
-                        if (preselection.isEdge())
+                        if (preselection.isEdge()) {
                             ss << "Edge" << preselection.getPreselectionEdgeIndex();
-                        else// external geometry
+                            preselectToSelection(ss, pp, true);
+                        }
+                        else { // external geometry
                             ss << "ExternalEdge" << preselection.getPreselectionExternalEdgeIndex();
-
-                        preselectToSelection(ss, pp, true);
+                            preselectToSelection(ss, pp, true);
+                        }
                     }
                     setSketchMode(STATUS_NONE);
                     return true;
@@ -1200,6 +1446,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                    // unless user hold control.
                     if (!(QApplication::keyboardModifiers() & Qt::ControlModifier)) {
                         Gui::Selection().clearSelection();
+                        clearSelectedLazyExternalReferences();
+                        resetPreselectPoint();
                     }
                     setSketchMode(STATUS_NONE);
                     return true;
@@ -1243,6 +1491,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     else if (preselection.isCrossPreselected()) {
                         setSketchMode(STATUS_SELECT_Cross);
                     }
+                    else if (preselection.isLazyExternalPreselected()) {
+                        setSketchMode(preselection.isLazyExternalVertex() ? STATUS_SELECT_Point
+                                                                           : STATUS_SELECT_Edge);
+                    }
                     else if (!preselection.PreselectConstraintSet.empty()) {
                         setSketchMode(STATUS_SELECT_Constraint);
                     }
@@ -1272,27 +1524,34 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     generateContextMenu();
                     return true;
                 case STATUS_SELECT_Point:
-                    if (pp) {
+                    if (preselection.isLazyExternalVertex()) {
+                        selectLazyExternalReference(preselection.PreselectLazyExternalId, false);
+                        drag.resetIds();
+                    }
+                    else if (pp) {
                         //  Do selection
                         std::stringstream ss;
                         ss << "Vertex" << preselection.getPreselectionVertexIndex();
-
                         preselectToSelection(ss, pp, false);
                     }
                     setSketchMode(STATUS_NONE);
                     generateContextMenu();
                     return true;
                 case STATUS_SELECT_Edge:
-                    if (pp) {
+                    if (preselection.isLazyExternalEdge()) {
+                        selectLazyExternalReference(preselection.PreselectLazyExternalId, false);
+                        drag.resetIds();
+                    }
+                    else if (pp) {
                         std::stringstream ss;
                         if (preselection.isEdge()) {
                             ss << "Edge" << preselection.getPreselectionEdgeIndex();
+                            preselectToSelection(ss, pp, false);
                         }
                         else {  // external geometry
                             ss << "ExternalEdge" << preselection.getPreselectionExternalEdgeIndex();
+                            preselectToSelection(ss, pp, false);
                         }
-
-                        preselectToSelection(ss, pp, false);
                     }
                     setSketchMode(STATUS_NONE);
                     generateContextMenu();
@@ -1579,7 +1838,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
 
         std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(cursorPos, viewer));
 
-        preselectChanged = detectAndShowPreselection(Point.get());
+        preselectChanged = detectAndShowPreselection(Point.get(), &cursorPos, viewer);
     }
 
     switch (Mode) {
@@ -2336,6 +2595,23 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
             return;
         }
 
+        const bool lazyExternalLayerHandlesSourceSelection =
+            isLazyExternalGeometryEnabled() && lazyExternalGeometryLayerSuspendCount == 0;
+        if (lazyExternalLayerHandlesSourceSelection
+            && (msg.Type == Gui::SelectionChanges::SetPreselect
+                || msg.Type == Gui::SelectionChanges::AddSelection)
+            && isForeignSketchSourceChange(msg, getSketchObject())) {
+            if (msg.Type == Gui::SelectionChanges::AddSelection) {
+                Gui::Selection().rmvSelection(msg.pDocName, msg.pObjectName, msg.pSubName);
+            }
+            else {
+                resetPreselectPoint();
+                Gui::Selection().rmvPreselect();
+                restoreActiveViewCursor();
+            }
+            return;
+        }
+
         std::string temp;
         if (msg.Type == Gui::SelectionChanges::ClrSelection) {
             // if something selected in this object?
@@ -2348,6 +2624,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                 editCoinManager->drawConstraintIcons();
                 updateColor();
             }
+            clearSelectedLazyExternalReferences();
         }
         else if (msg.Type == Gui::SelectionChanges::AddSelection) {
             // is it this object??
@@ -2462,24 +2739,29 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
             //}
         }
         else if (msg.Type == Gui::SelectionChanges::SetPreselect) {
-            if (strcmp(msg.pDocName, getSketchObject()->getDocument()->getName()) == 0
-                && strcmp(msg.pObjectName, getSketchObject()->getNameInDocument()) == 0) {
-                if (msg.pSubName) {
-                    std::string shapetype(msg.pSubName);
-                    if (shapetype.size() > 4 && shapetype.substr(0, 4) == "Edge") {
-                        int GeoId = std::atoi(&shapetype[4]) - 1;
-                        resetPreselectPoint();
-                        preselection.PreselectCurve = GeoId;
-                    }
-                    else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
-                        int GeoId = std::atoi(&shapetype[12]) - 1;
-                        GeoId = -GeoId - 3;
-                        resetPreselectPoint();
-                        preselection.PreselectCurve = GeoId;
-                    }
-                    else if (shapetype.size() > 6 && shapetype.substr(0, 6) == "Vertex") {
-                        int PtIndex = std::atoi(&shapetype[6]) - 1;
-                        setPreselectPoint(PtIndex);
+            auto* sketch = getSketchObject();
+            auto* document = sketch ? sketch->getDocument() : nullptr;
+            if (document && msg.pDocName && msg.pObjectName
+                && strcmp(msg.pDocName, document->getName()) == 0) {
+                if (strcmp(msg.pObjectName, sketch->getNameInDocument()) == 0) {
+                    if (msg.pSubName) {
+                        std::string shapetype(msg.pSubName);
+                        if (shapetype.size() > 4 && shapetype.substr(0, 4) == "Edge") {
+                            int GeoId = std::atoi(&shapetype[4]) - 1;
+                            resetPreselectPoint();
+                            preselection.PreselectCurve = GeoId;
+                        }
+                        else if (shapetype.size() > 12
+                                 && shapetype.substr(0, 12) == "ExternalEdge") {
+                            int GeoId = std::atoi(&shapetype[12]) - 1;
+                            GeoId = -GeoId - 3;
+                            resetPreselectPoint();
+                            preselection.PreselectCurve = GeoId;
+                        }
+                        else if (shapetype.size() > 6 && shapetype.substr(0, 6) == "Vertex") {
+                            int PtIndex = std::atoi(&shapetype[6]) - 1;
+                            setPreselectPoint(PtIndex);
+                        }
                     }
                 }
             }
@@ -2490,7 +2772,10 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
+bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point,
+                                                       const SbVec2s* cursorPos,
+                                                       const Gui::View3DInventorViewer* viewer,
+                                                       bool allowLazyExternalPreselectionAtCursor)
 {
     assert(isInEditMode());
 
@@ -2536,9 +2821,39 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         }
     };
 
-    if (Point) {
+    if (Point || (cursorPos && viewer)) {
 
-        EditModeCoinManager::PreselectionResult result = editCoinManager->detectPreselection(Point);
+        const bool handlerAllowsLazyExternalPreselection =
+            !sketchHandler || sketchHandler->allowLazyExternalPreselection();
+        const bool allowLazyExternalPreselection =
+            allowLazyExternalPreselectionAtCursor
+            && handlerAllowsLazyExternalPreselection;
+        if (!allowLazyExternalPreselection && lazyExternalGeometryLayer
+            && preselection.isLazyExternalPreselected()) {
+            resetPreselectPoint();
+        }
+        if (!handlerAllowsLazyExternalPreselection && lazyExternalGeometryLayer
+            && !getSelectedLazyExternalReferenceIds().empty()) {
+            clearSelectedLazyExternalReferences();
+        }
+
+        EditModeCoinManager::PreselectionResult result;
+        if (Point) {
+            result = editCoinManager->detectPreselection(Point);
+        }
+
+        if (result.PointIndex == -1 && result.GeoIndex == -1
+            && result.Cross == EditModeCoinManager::PreselectionResult::Axes::None
+            && result.ConstrIndices.empty()
+            && cursorPos && viewer
+            && allowLazyExternalPreselection) {
+            bool lazyExternalVertex = false;
+            const int lazyExternalId = preselectLazyExternalAtCursor(*cursorPos, viewer, lazyExternalVertex);
+            if (lazyExternalId >= 0) {
+                result.LazyExternalId = lazyExternalId;
+                result.LazyExternalVertex = lazyExternalVertex;
+            }
+        }
 
         if (result.PointIndex != -1
             && result.PointIndex != preselection.PreselectPoint) {// if a new point is hit
@@ -2622,6 +2937,14 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
                 return true;
             }
         }
+        else if (result.LazyExternalId != EditModeCoinManager::PreselectionResult::InvalidLazyExternalId
+                 && (result.LazyExternalId != preselection.PreselectLazyExternalId
+                     || result.LazyExternalVertex != preselection.PreselectLazyExternalVertex)) {
+            preselection.blockedPreselection = false;
+            setPreselectLazyExternal(result.LazyExternalId, result.LazyExternalVertex);
+            updateToolTip();
+            return true;
+        }
         else if (!result.ConstrIndices.empty()
                  && result.ConstrIndices
                      != preselection.PreselectConstraintSet) {// if a constraint is hit
@@ -2660,9 +2983,11 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
             }
         }
         else if ((result.PointIndex == -1 && result.GeoIndex == -1
+                  && result.LazyExternalId == EditModeCoinManager::PreselectionResult::InvalidLazyExternalId
                   && result.Cross == EditModeCoinManager::PreselectionResult::Axes::None
                   && result.ConstrIndices.empty())
                  && (preselection.isPreselectPointValid() || preselection.isPreselectCurveValid()
+                     || preselection.isLazyExternalPreselected()
                      || preselection.isCrossPreselected()
                      || !preselection.PreselectConstraintSet.empty()
                      || preselection.blockedPreselection)) {
@@ -2673,10 +2998,13 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
 
             return true;
         }
-        Gui::Selection().setPreselectCoord(
-            Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2]);
+        if (Point) {
+            Gui::Selection().setPreselectCoord(
+                Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2]);
+        }
     }
     else if (preselection.isPreselectCurveValid() || preselection.isPreselectPointValid()
+             || preselection.isLazyExternalPreselected()
              || !preselection.PreselectConstraintSet.empty() || preselection.isCrossPreselected()
              || preselection.blockedPreselection) {
         resetPreselectPoint();
@@ -3331,6 +3659,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationoverl
         editCoinManager->updateColor(geolistfacade);
     }
 
+    redrawLazyExternalGeometryLayer();
+
     Gui::MDIView* mdi = this->getActiveView();
     if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
         static_cast<Gui::View3DInventor*>(mdi)->getViewer()->redraw();
@@ -3469,6 +3799,19 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
     if (prop == &ShapeAppearance) {
         pcSketchFaces->color.setValue(Base::convertTo<SbColor>(ShapeAppearance.getDiffuseColor()));
         pcSketchFaces->transparency.setValue(ShapeAppearance.getTransparency());
+    }
+}
+
+void ViewProviderSketch::slotChangedViewProvider(const Gui::ViewProvider& /*vp*/,
+                                                 const App::Property& prop)
+{
+    if (!isInEditMode() || std::strcmp(prop.getName(), "Visibility") != 0) {
+        return;
+    }
+
+    if (lazyExternalGeometryLayer) {
+        lazyExternalGeometryLayer->clearPreselectedElement();
+        redrawLazyExternalGeometryLayer();
     }
 }
 
@@ -3680,7 +4023,11 @@ bool ViewProviderSketch::setEdit(int ModNum)
     assert(!isInEditMode());
     preselection.reset();
     selection.reset();
+    lazyExternalGeometryLayerSuspendCount = 0;
     editCoinManager = std::make_unique<EditModeCoinManager>(*this);
+    ensureLazyExternalGeometryLayer();
+    connectViewProviderChanged = Gui::Application::Instance->signalChangedObject.connect(
+        std::bind(&ViewProviderSketch::slotChangedViewProvider, this, sp::_1, sp::_2));
     snapManager = std::make_unique<SnapManager>(*this);
 
 
@@ -3985,6 +4332,8 @@ void ViewProviderSketch::unsetEdit(int ModNum)
             deactivateHandler();
         }
 
+        lazyExternalGeometryLayer = nullptr;
+        lazyExternalGeometryLayerSuspendCount = 0;
         editCoinManager = nullptr;
         snapManager = nullptr;
         preselection.reset();
@@ -4016,6 +4365,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     connectRedoDocument.disconnect();
     connectSolverUpdate.disconnect();
     connectConstraintAdded.disconnect();
+    connectViewProviderChanged.disconnect();
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
@@ -4260,6 +4610,207 @@ int ViewProviderSketch::getPreselectCross() const
     if (isInEditMode())
         return static_cast<int>(preselection.PreselectCross);
     return -1;
+}
+
+int ViewProviderSketch::getPreselectLazyExternalId() const
+{
+    if (isInEditMode() && isLazyExternalGeometryEnabled()) {
+        return preselection.PreselectLazyExternalId;
+    }
+    return Preselection::InvalidLazyExternalId;
+}
+
+bool ViewProviderSketch::isPreselectLazyExternalVertex() const
+{
+    return isInEditMode() && isLazyExternalGeometryEnabled()
+        && preselection.isLazyExternalVertex();
+}
+
+void ViewProviderSketch::redrawLazyExternalGeometryLayer()
+{
+    if (editCoinManager && lazyExternalGeometryLayer) {
+        editCoinManager->drawLazyExternalGeometryLayer(*lazyExternalGeometryLayer);
+    }
+}
+
+bool ViewProviderSketch::ensureLazyExternalGeometryLayer()
+{
+    if (!editCoinManager || !isLazyExternalGeometryEnabled()) {
+        return false;
+    }
+
+    if (!lazyExternalGeometryLayer) {
+        lazyExternalGeometryLayer = std::make_unique<LazyExternalGeometryLayer>();
+        lazyExternalGeometryLayer->setEnabled(lazyExternalGeometryLayerSuspendCount == 0);
+        editCoinManager->drawLazyExternalGeometryLayer(*lazyExternalGeometryLayer);
+    }
+
+    return true;
+}
+
+bool ViewProviderSketch::isLazyExternalGeometryEnabled() const
+{
+    return viewProviderParameters.lazyExternalGeometryEnabled;
+}
+
+void ViewProviderSketch::setLazyExternalGeometryPreferenceEnabled(bool enabled)
+{
+    if (viewProviderParameters.lazyExternalGeometryEnabled == enabled) {
+        return;
+    }
+
+    viewProviderParameters.lazyExternalGeometryEnabled = enabled;
+
+    if (!enabled) {
+        preselection.PreselectLazyExternalId = Preselection::InvalidLazyExternalId;
+        preselection.PreselectLazyExternalVertex = false;
+        lazyExternalGeometryLayer.reset();
+        return;
+    }
+
+    ensureLazyExternalGeometryLayer();
+}
+
+
+void ViewProviderSketch::suspendLazyExternalGeometryLayer()
+{
+    ++lazyExternalGeometryLayerSuspendCount;
+
+    if (!lazyExternalGeometryLayer || lazyExternalGeometryLayerSuspendCount != 1) {
+        return;
+    }
+
+    preselection.PreselectLazyExternalId = Preselection::InvalidLazyExternalId;
+    preselection.PreselectLazyExternalVertex = false;
+    lazyExternalGeometryLayer->setEnabled(false);
+    redrawLazyExternalGeometryLayer();
+}
+
+void ViewProviderSketch::resumeLazyExternalGeometryLayer()
+{
+    if (lazyExternalGeometryLayerSuspendCount <= 0) {
+        return;
+    }
+
+    --lazyExternalGeometryLayerSuspendCount;
+
+    if (!lazyExternalGeometryLayer || lazyExternalGeometryLayerSuspendCount != 0
+        || !isLazyExternalGeometryEnabled()) {
+        return;
+    }
+
+    lazyExternalGeometryLayer->setEnabled(true);
+    redrawLazyExternalGeometryLayer();
+}
+
+int ViewProviderSketch::materializeLazyExternalSourceReference(const std::string& sourceObjectName,
+                                                              const std::string& subName,
+                                                              bool intersection,
+                                                              bool defining)
+{
+    auto* sketch = getSketchObject();
+    auto* appDocument = sketch ? sketch->getDocument() : nullptr;
+    if (!sketch || !appDocument || sourceObjectName.empty() || subName.empty()) {
+        return Sketcher::GeoEnum::GeoUndef;
+    }
+
+    App::DocumentObject* sourceObject = appDocument->getObject(sourceObjectName.c_str());
+    if (!sourceObject) {
+        return Sketcher::GeoEnum::GeoUndef;
+    }
+
+    const auto existingMatch = findExternalMatch(sketch, sourceObject, subName, intersection);
+    if (existingMatch.isValid() && existingMatch.matchesType) {
+        return Sketcher::GeoEnum::RefExt - existingMatch.index;
+    }
+
+    const int externalCountBefore = sketch->getExternalGeometryCount();
+    const int extIndex = sketch->addExternal(sourceObject, subName.c_str(), defining, intersection);
+    if (extIndex < 0) {
+        return Sketcher::GeoEnum::GeoUndef;
+    }
+
+    const int resolvedIndex = resolveExternalGeometryIndex(sketch, sourceObject, subName, intersection);
+
+    if (resolvedIndex < 0) {
+        if (sketch->getExternalGeometryCount() > externalCountBefore) {
+            std::vector<int> externalsToRollback;
+            for (int extGeoId = sketch->getExternalGeometryCount() - 1;
+                 extGeoId >= externalCountBefore;
+                 --extGeoId) {
+                externalsToRollback.push_back(extGeoId);
+            }
+            sketch->delExternal(externalsToRollback);
+        }
+        return Sketcher::GeoEnum::GeoUndef;
+    }
+
+    return Sketcher::GeoEnum::RefExt - resolvedIndex;
+}
+
+Base::Type ViewProviderSketch::getLazyExternalGeometryType(int lazyExternalId) const
+{
+    if (!lazyExternalGeometryLayer || !isLazyExternalGeometryEnabled()) {
+        return Base::Type::BadType;
+    }
+
+    const Part::Geometry* geometry = lazyExternalGeometryLayer->getPreviewGeometry(lazyExternalId);
+    return geometry ? geometry->getTypeId() : Base::Type::BadType;
+}
+
+bool ViewProviderSketch::isLazyExternalReferenceVertex(int lazyExternalId) const
+{
+    return lazyExternalGeometryLayer && isLazyExternalGeometryEnabled()
+        && lazyExternalGeometryLayer->isElementVertex(lazyExternalId);
+}
+
+bool ViewProviderSketch::getLazyExternalSourceReference(int lazyExternalId,
+                                                       std::string& sourceObjectName,
+                                                       std::string& subName,
+                                                       bool& intersection,
+                                                       bool& vertex) const
+{
+    return lazyExternalGeometryLayer && isLazyExternalGeometryEnabled()
+        && lazyExternalGeometryLayer->getSourceReference(
+            lazyExternalId, sourceObjectName, subName, intersection, vertex);
+}
+
+bool ViewProviderSketch::selectLazyExternalReference(int lazyExternalId, bool toggle)
+{
+    if (!lazyExternalGeometryLayer || !isLazyExternalGeometryEnabled() || lazyExternalId < 0) {
+        return false;
+    }
+
+    const bool selected = !toggle || !lazyExternalGeometryLayer->isElementSelected(lazyExternalId);
+    const bool changed = lazyExternalGeometryLayer->selectElement(lazyExternalId, selected);
+    if (changed) {
+        redrawLazyExternalGeometryLayer();
+    }
+    return changed;
+}
+
+bool ViewProviderSketch::isLazyExternalReferenceSelected(int lazyExternalId) const
+{
+    return lazyExternalGeometryLayer && isLazyExternalGeometryEnabled()
+        && lazyExternalGeometryLayer->isElementSelected(lazyExternalId);
+}
+
+std::vector<int> ViewProviderSketch::getSelectedLazyExternalReferenceIds() const
+{
+    if (!lazyExternalGeometryLayer || !isLazyExternalGeometryEnabled()) {
+        return {};
+    }
+    return lazyExternalGeometryLayer->getSelectedElementIds();
+}
+
+void ViewProviderSketch::clearSelectedLazyExternalReferences()
+{
+    if (!lazyExternalGeometryLayer) {
+        return;
+    }
+
+    lazyExternalGeometryLayer->clearSelectedElements();
+    redrawLazyExternalGeometryLayer();
 }
 
 Sketcher::SketchObject* ViewProviderSketch::getSketchObject() const
@@ -4524,29 +5075,53 @@ void ViewProviderSketch::resetPositionText()
 
 void ViewProviderSketch::setPreselectPoint(int PreselectPoint)
 {
+    const bool hadLazyPreselection = preselection.isLazyExternalPreselected();
+
     preselection.PreselectPoint = PreselectPoint;
     preselection.PreselectCurve = Preselection::InvalidCurve;
+    preselection.PreselectLazyExternalId = Preselection::InvalidLazyExternalId;
+    preselection.PreselectLazyExternalVertex = false;
     preselection.PreselectCross = Preselection::Axes::None;
-    ;
     preselection.PreselectConstraintSet.clear();
+
+    clearLazyExternalPreselectionIfNeeded(hadLazyPreselection);
 }
 
 void ViewProviderSketch::setPreselectRootPoint()
 {
+    const bool hadLazyPreselection = preselection.isLazyExternalPreselected();
+
     preselection.PreselectPoint = Preselection::InvalidPoint;
     preselection.PreselectCurve = Preselection::InvalidCurve;
+    preselection.PreselectLazyExternalId = Preselection::InvalidLazyExternalId;
+    preselection.PreselectLazyExternalVertex = false;
     preselection.PreselectCross = Preselection::Axes::RootPoint;
     preselection.PreselectConstraintSet.clear();
+
+    clearLazyExternalPreselectionIfNeeded(hadLazyPreselection);
 }
 
 
 void ViewProviderSketch::resetPreselectPoint()
 {
+    const bool hadLazyPreselection = preselection.isLazyExternalPreselected();
+
     preselection.PreselectPoint = Preselection::InvalidPoint;
     preselection.PreselectCurve = Preselection::InvalidCurve;
+    preselection.PreselectLazyExternalId = Preselection::InvalidLazyExternalId;
+    preselection.PreselectLazyExternalVertex = false;
     preselection.PreselectCross = Preselection::Axes::None;
-    ;
     preselection.PreselectConstraintSet.clear();
+
+    clearLazyExternalPreselectionIfNeeded(hadLazyPreselection);
+}
+
+void ViewProviderSketch::clearLazyExternalPreselectionIfNeeded(bool hadLazyPreselection)
+{
+    if (hadLazyPreselection && lazyExternalGeometryLayer) {
+        lazyExternalGeometryLayer->clearPreselectedElement();
+        redrawLazyExternalGeometryLayer();
+    }
 }
 
 void ViewProviderSketch::addSelectPoint(int SelectPoint)
@@ -4650,11 +5225,119 @@ std::unique_ptr<SoRayPickAction> ViewProviderSketch::getRayPickAction() const
     assert(isInEditMode());
     Gui::MDIView* mdi =
         Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-    if (!(mdi && mdi->isDerivedFrom<Gui::View3DInventor>()))
+    if (!(mdi && mdi->isDerivedFrom<Gui::View3DInventor>())) {
         return nullptr;
+    }
     Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
 
     return std::make_unique<SoRayPickAction>(viewer->getSoRenderManager()->getViewportRegion());
+}
+
+void ViewProviderSketch::setPreselectLazyExternal(int lazyExternalId, bool vertex)
+{
+    preselection.blockedPreselection = false;
+    preselection.PreselectPoint = Preselection::InvalidPoint;
+    preselection.PreselectCurve = Preselection::InvalidCurve;
+    preselection.PreselectCross = Preselection::Axes::None;
+    preselection.PreselectConstraintSet.clear();
+    preselection.PreselectLazyExternalId = lazyExternalId;
+    preselection.PreselectLazyExternalVertex = vertex;
+    redrawLazyExternalGeometryLayer();
+}
+
+int ViewProviderSketch::preselectLazyExternalAtCursor(const SbVec2s& cursorPos,
+                                                       const Gui::View3DInventorViewer* viewer,
+                                                       bool& vertex)
+{
+    vertex = false;
+    if (!isLazyExternalGeometryEnabled() || !ensureLazyExternalGeometryLayer()
+        || !lazyExternalGeometryLayer->isEnabled() || !viewer) {
+        return Preselection::InvalidLazyExternalId;
+    }
+
+    auto clearPreselectionAndReturnInvalid = [&]() {
+        lazyExternalGeometryLayer->clearPreselectedElement();
+        return Preselection::InvalidLazyExternalId;
+    };
+
+    auto* sketch = getSketchObject();
+    auto* appDocument = sketch ? sketch->getDocument() : nullptr;
+    if (!sketch || !appDocument || !Gui::Application::Instance) {
+        return clearPreselectionAndReturnInvalid();
+    }
+
+    auto rayPickAction = getRayPickAction();
+    auto* sceneGraph = viewer->getSoRenderManager()->getSceneGraph();
+    if (!rayPickAction || !sceneGraph) {
+        return clearPreselectionAndReturnInvalid();
+    }
+
+    rayPickAction->setPoint(cursorPos);
+    rayPickAction->setRadius(viewer->getPickRadius());
+    rayPickAction->setPickAll(TRUE);
+    rayPickAction->apply(sceneGraph);
+
+    const SoPickedPointList& pickedPoints = rayPickAction->getPickedPointList();
+    if (pickedPoints.getLength() == 0) {
+        return clearPreselectionAndReturnInvalid();
+    }
+
+    SbLine pickLine;
+    getProjectingLine(cursorPos, viewer, pickLine);
+
+    float nearestHitDepth = std::numeric_limits<float>::max();
+    const auto sourceHits = collectLazyExternalSourceHits(
+        sketch, appDocument, pickedPoints, pickLine.getPosition(), nearestHitDepth);
+    if (sourceHits.empty()) {
+        return clearPreselectionAndReturnInvalid();
+    }
+
+    const float visibleDepthTolerance = getLazyExternalVisibleDepthTolerance(nearestHitDepth);
+
+    SbLine onePixelLine;
+    getProjectingLine(SbVec2s(cursorPos[0] + 1, cursorPos[1]), viewer, onePixelLine);
+    const float pixelDepthTolerance = getLazyExternalPixelDepthTolerance(
+        pickLine, onePixelLine, nearestHitDepth, visibleDepthTolerance, viewer->getPickRadius());
+
+    auto preselectHit = [&](const LazyExternalSourceHit* hit) -> int {
+        if (!hit || !hit->object) {
+            return Preselection::InvalidLazyExternalId;
+        }
+
+        const int lazyExternalId = lazyExternalGeometryLayer->preselectSourceReference(
+            sketch, hit->object, hit->subName);
+        if (lazyExternalId >= 0) {
+            vertex = hit->vertex;
+            return lazyExternalId;
+        }
+
+        return Preselection::InvalidLazyExternalId;
+    };
+
+    auto preselectWithinDepth = [&](float depthTolerance) -> int {
+        if (const int lazyExternalId = preselectHit(findClosestLazyExternalHitWithinDepth(
+                sourceHits, nearestHitDepth, depthTolerance, true));
+            lazyExternalId >= 0) {
+            return lazyExternalId;
+        }
+
+        return preselectHit(findClosestLazyExternalHitWithinDepth(
+            sourceHits, nearestHitDepth, depthTolerance, false));
+    };
+
+    if (const int lazyExternalId = preselectWithinDepth(visibleDepthTolerance);
+        lazyExternalId >= 0) {
+        return lazyExternalId;
+    }
+
+    if (pixelDepthTolerance > visibleDepthTolerance) {
+        if (const int lazyExternalId = preselectWithinDepth(pixelDepthTolerance);
+            lazyExternalId >= 0) {
+            return lazyExternalId;
+        }
+    }
+
+    return clearPreselectionAndReturnInvalid();
 }
 
 SbVec2f ViewProviderSketch::getScreenCoordinates(SbVec2f sketchcoordinates) const

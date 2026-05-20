@@ -52,6 +52,7 @@
 #include "EditModeGeometryCoinConverter.h"
 #include "EditModeGeometryCoinManager.h"
 #include "EditModeInformationOverlayCoinConverter.h"
+#include "LazyExternalGeometryLayer.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchCoinAttorney.h"
@@ -954,6 +955,11 @@ void EditModeCoinManager::createEditModeInventorNodes()
     // stuff for the EditCurves +++++++++++++++++++++++++++++++++++++++
     SoSeparator* editCurvesRoot = new SoSeparator;
     editModeScenegraphNodes.EditRoot->addChild(editCurvesRoot);
+
+    SoPickStyle* editCurvesPickStyle = new SoPickStyle;
+    editCurvesPickStyle->style.setValue(SoPickStyle::UNPICKABLE);
+    editCurvesRoot->addChild(editCurvesPickStyle);
+
     editModeScenegraphNodes.EditCurvesMaterials = new SoMaterial;
     editModeScenegraphNodes.EditCurvesMaterials->setName("EditCurvesMaterials");
     editCurvesRoot->addChild(editModeScenegraphNodes.EditCurvesMaterials);
@@ -1228,6 +1234,15 @@ void EditModeCoinManager::updateInventorColors()
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(0, drawingParameters.CrossColorH);
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(1, drawingParameters.CrossColorV);
     editModeScenegraphNodes.textMaterial->diffuseColor = drawingParameters.CursorTextColor;
+}
+
+void EditModeCoinManager::drawLazyExternalGeometryLayer(LazyExternalGeometryLayer& layer)
+{
+    layer.attachTo(editModeScenegraphNodes.EditRoot);
+    layer.draw(
+        drawingParameters,
+        ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
+    );
 }
 
 /************************ Edit node access ************************/

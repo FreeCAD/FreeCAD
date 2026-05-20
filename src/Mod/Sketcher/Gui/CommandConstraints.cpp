@@ -38,7 +38,6 @@
 
 #include <App/Application.h>
 #include <Base/Tools.h>
-#include <Base/Tools2D.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -54,6 +53,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
+#include "ConstraintLazySelection.h"
 #include "CommandConstraints.h"
 #include "DrawSketchHandler.h"
 #include "EditDatumDialog.h"
@@ -334,6 +334,12 @@ public:
                                const Base::Vector2d& position)
     {
         viewProvider.moveConstraint(constraintIndex, position);
+    }
+
+    static Base::Type getLazyExternalGeometryType(const ViewProviderSketch& viewProvider,
+                                                  int lazyExternalId)
+    {
+        return viewProvider.getLazyExternalGeometryType(lazyExternalId);
     }
 };
 }  // namespace SketcherGui
@@ -1052,12 +1058,6 @@ bool addConstraintSafely(SketchObject* obj, std::function<void()> constraintaddi
 namespace SketcherGui
 {
 
-struct SelIdPair
-{
-    int GeoId;
-    Sketcher::PointPos PosId;
-};
-
 struct SketchSelection
 {
     enum GeoType
@@ -1175,19 +1175,23 @@ public:
 
     bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName) override
     {
-        if (pObj != this->object) {
+        if (pObj != this->object || Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
-        if (Base::Tools::isNullOrEmpty(sSubName)) {
-            return false;
-        }
-        std::string element(sSubName);
+
+        const std::string element(sSubName);
+        const auto lazyExternal = parseLazyExternalSubelement(element);
+        const bool isLazyExternalVertex = lazyExternal && lazyExternal->vertex;
+        const bool isLazyExternalEdge = lazyExternal && !lazyExternal->vertex;
         if ((allowedSelTypes & SelRoot && element.substr(0, 9) == "RootPoint")
             || (allowedSelTypes & SelVertex && element.substr(0, 6) == "Vertex")
+            || (allowedSelTypes & SelVertex && isLazyExternalVertex)
             || (allowedSelTypes & SelEdge && element.substr(0, 4) == "Edge")
+            || (allowedSelTypes & SelEdge && isLazyExternalEdge)
             || (allowedSelTypes & SelHAxis && element.substr(0, 6) == "H_Axis")
             || (allowedSelTypes & SelVAxis && element.substr(0, 6) == "V_Axis")
-            || (allowedSelTypes & SelExternalEdge && element.substr(0, 12) == "ExternalEdge")) {
+            || (allowedSelTypes & SelExternalEdge && element.rfind("ExternalEdge", 0) == 0)
+            || (allowedSelTypes & SelExternalEdge && isLazyExternalEdge)) {
             return true;
         }
 
@@ -1228,6 +1232,35 @@ public:
         return "CmdSketcherConstraint";
     }
 
+    void openCommand(const char* name)
+    {
+        if (lazyExternalCommandActive) {
+            return;
+        }
+
+        Gui::Command::openCommand(name);
+    }
+
+    void commitCommand()
+    {
+        Gui::Command::commitCommand();
+        lazyExternalCommandActive = false;
+    }
+
+    void abortCommand()
+    {
+        Gui::Command::abortCommand();
+        lazyExternalCommandActive = false;
+    }
+
+    ActivatedLazySelection getActivatedLazySelection(bool includeLazyExternalVertices = false)
+    {
+        return ActivatedLazySelection(*this,
+                                  getActiveGuiDocument(),
+                                  includeLazyExternalVertices,
+                                  &lazyExternalCommandActive);
+    }
+
 protected:
     /**
      * @brief allowedSelSequences
@@ -1248,6 +1281,41 @@ protected:
     {
         return isCommandActive(getActiveGuiDocument());
     }
+
+    bool beginLazyExternalCommand(ViewProviderSketch* sketchgui,
+                          std::vector<SelIdPair>& selection)
+    {
+        if (!hasLazySelection(selection)) {
+            return true;
+        }
+
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add constraint"));
+        lazyExternalCommandActive = true;
+
+        if (!LazyExternalSelectionResolver::materializeLazyExternalSelectionPairs(sketchgui, selection)) {
+            abortCommand();
+            return false;
+        }
+
+        return true;
+    }
+
+    void abortLazyExternalCommand()
+    {
+        if (lazyExternalCommandActive) {
+            abortCommand();
+        }
+    }
+
+private:
+    static bool hasLazySelection(const std::vector<SelIdPair>& selection)
+    {
+        return std::any_of(selection.begin(), selection.end(), [](const SelIdPair& item) {
+            return item.IsLazyExternal;
+        });
+    }
+
+    bool lazyExternalCommandActive = false;
 };
 
 class DrawSketchHandlerGenConstraint: public DrawSketchHandler
@@ -1286,6 +1354,7 @@ public:
     {}
     ~DrawSketchHandlerGenConstraint() override
     {
+        LazyExternalSelectionResolver::clearPendingLazyExternalSelection(sketchgui);
         Gui::Selection().rmvSelectionGate();
     }
 
@@ -1296,6 +1365,26 @@ public:
     bool pressButton(Base::Vector2d /*onSketchPos*/) override
     {
         return true;
+    }
+
+    bool selectionIsVertex(const SelIdPair& item) const
+    {
+        return item.IsLazyExternal ? item.LazyExternalVertex : isVertex(item.GeoId, item.PosId);
+    }
+
+    bool currentSequencesAllow(SelType type) const
+    {
+        for (int token : ongoingSequences) {
+            if ((cmd->allowedSelSequences).at(token).at(seqIndex) & type) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    SelType lazyExternalEdgeSelectionType() const
+    {
+        return currentSequencesAllow(SelExternalEdge) ? SelExternalEdge : SelEdge;
     }
 
     bool releaseButton(Base::Vector2d onSketchPos) override
@@ -1310,6 +1399,8 @@ public:
         int VtId = getPreselectPoint();
         int CrvId = getPreselectCurve();
         int CrsId = getPreselectCross();
+        int lazyExternalId = getPreselectLazyExternalId();
+        bool lazyExternalVertex = isPreselectLazyExternalVertex();
         if (allowedSelTypes & SelRoot && CrsId == 0) {
             selIdPair.GeoId = Sketcher::GeoEnum::RtPnt;
             selIdPair.PosId = Sketcher::PointPos::start;
@@ -1320,6 +1411,14 @@ public:
             sketchgui->getSketchObject()->getGeoVertexIndex(VtId, selIdPair.GeoId, selIdPair.PosId);
             newSelType = SelVertex;
             ss << "Vertex" << VtId + 1;
+        }
+        else if (allowedSelTypes & SelVertex && lazyExternalId >= 0 && lazyExternalVertex) {
+            std::string lazyExternalSubName;
+            if (LazyExternalSelectionResolver::makeLazyExternalSelectionPair(
+                    sketchgui, lazyExternalId, true, selIdPair, &lazyExternalSubName)) {
+                newSelType = SelVertex;
+                ss << lazyExternalSubName;
+            }
         }
         else if (allowedSelTypes & SelEdge && CrvId >= 0) {
             selIdPair.GeoId = CrvId;
@@ -1342,22 +1441,37 @@ public:
             newSelType = SelExternalEdge;
             ss << "ExternalEdge" << Sketcher::GeoEnum::RefExt + 1 - CrvId;
         }
+        else if ((allowedSelTypes & (SelEdge | SelExternalEdge)) && lazyExternalId >= 0 && !lazyExternalVertex) {
+            std::string lazyExternalSubName;
+            if (LazyExternalSelectionResolver::makeLazyExternalSelectionPair(
+                    sketchgui, lazyExternalId, false, selIdPair, &lazyExternalSubName)) {
+                newSelType = lazyExternalEdgeSelectionType();
+                ss << lazyExternalSubName;
+            }
+        }
 
-        if (selIdPair.GeoId == GeoEnum::GeoUndef) {
+        if (selIdPair.GeoId == GeoEnum::GeoUndef && !selIdPair.IsLazyExternal) {
             // If mouse is released on "blank" space, start over
             selSeq.clear();
             resetOngoingSequences();
             Gui::Selection().clearSelection();
+            LazyExternalSelectionResolver::clearPendingLazyExternalSelection(sketchgui);
         }
         else {
             // If mouse is released on something allowed, select it and move forward
             selSeq.push_back(selIdPair);
-            Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
-                                          sketchgui->getSketchObject()->getNameInDocument(),
-                                          ss.str().c_str(),
-                                          onSketchPos.x,
-                                          onSketchPos.y,
-                                          0.f);
+            if (selIdPair.IsLazyExternal) {
+                LazyExternalSelectionResolver::setLazyExternalSelectionSelected(
+                    sketchgui, selIdPair, true);
+            }
+            else {
+                Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
+                                              sketchgui->getSketchObject()->getNameInDocument(),
+                                              ss.str().c_str(),
+                                              onSketchPos.x,
+                                              onSketchPos.y,
+                                              0.f);
+            }
             _tempOnSequences.clear();
             allowedSelTypes = 0;
             for (std::set<int>::iterator token = ongoingSequences.begin();
@@ -1366,7 +1480,17 @@ public:
                 if ((cmd->allowedSelSequences).at(*token).at(seqIndex) & newSelType) {
                     if (seqIndex == (cmd->allowedSelSequences).at(*token).size() - 1) {
                         // One of the sequences is completed. Pass to cmd->applyConstraint
+                        if (!cmd->beginLazyExternalCommand(sketchgui, selSeq)) {
+                            selSeq.clear();
+                            resetOngoingSequences();
+                            Gui::Selection().clearSelection();
+                            LazyExternalSelectionResolver::clearPendingLazyExternalSelection(sketchgui);
+                            updateHint();
+                            return true;
+                        }
+
                         cmd->applyConstraint(selSeq, *token);// replace arg 2 by ongoingToken
+                        cmd->abortLazyExternalCommand();
 
                         selSeq.clear();
                         resetOngoingSequences();
@@ -1401,7 +1525,7 @@ public:
         if (selectionStep == 0) {
             return {{QObject::tr(PICK_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
         } else if (selectionStep == 1 && !selSeq.empty()) {
-            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+            if (selectionIsVertex(selSeq[0])) {
                 return {{QObject::tr(PICK_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
             } else {
                 return {{QObject::tr(PICK_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
@@ -1414,7 +1538,7 @@ public:
         if (selectionStep == 0) {
             return {{QObject::tr(PICK_EDGE_OR_FIRST_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
         } else if (selectionStep == 1 && !selSeq.empty()) {
-            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+            if (selectionIsVertex(selSeq[0])) {
                 // Point + Edge + Edge workflow
                 return {{QObject::tr(PICK_FIRST_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
             } else {
@@ -1423,10 +1547,10 @@ public:
                 return {{QObject::tr(PICK_SECOND_LINE_OR_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             }
         } else if (selectionStep == 2 && !selSeq.empty()) {
-            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+            if (selectionIsVertex(selSeq[0])) {
                 // Point + Edge + Edge workflow
                 return {{QObject::tr(PICK_SECOND_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
-            } else if (isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
+            } else if (selectionIsVertex(selSeq[1])) {
                 // Edge + Point + Edge workflow
                 return {{QObject::tr(PICK_SECOND_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
             }
@@ -1438,7 +1562,7 @@ public:
         if (selectionStep == 0) {
             return {{QObject::tr(PICK_EDGE_OR_FIRST_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
         } else if (selectionStep == 1 && !selSeq.empty()) {
-            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+            if (selectionIsVertex(selSeq[0])) {
                 // Point + Edge + Edge workflow
                 return {{QObject::tr(PICK_FIRST_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
             } else {
@@ -1446,10 +1570,10 @@ public:
                 return {{QObject::tr(PICK_SECOND_EDGE_OR_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             }
         } else if (selectionStep == 2 && !selSeq.empty()) {
-            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+            if (selectionIsVertex(selSeq[0])) {
                 // Point + Edge + Edge workflow
                 return {{QObject::tr(PICK_SECOND_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
-            } else if (isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
+            } else if (selectionIsVertex(selSeq[1])) {
                 // Edge + Point + Edge workflow
                 return {{QObject::tr(PICK_SECOND_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
             }
@@ -1461,7 +1585,7 @@ public:
         if (selectionStep == 0) {
             return {{QObject::tr(PICK_EDGE_OR_FIRST_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
         } else if (selectionStep == 1 && !selSeq.empty()) {
-            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+            if (selectionIsVertex(selSeq[0])) {
                 // Point + Edge + Edge workflow
                 return {{QObject::tr(PICK_FIRST_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
             } else {
@@ -1469,10 +1593,10 @@ public:
                 return {{QObject::tr(PICK_SECOND_EDGE_OR_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             }
         } else if (selectionStep == 2 && !selSeq.empty()) {
-            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+            if (selectionIsVertex(selSeq[0])) {
                 // Point + Edge + Edge workflow
                 return {{QObject::tr(PICK_SECOND_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
-            } else if (isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
+            } else if (selectionIsVertex(selSeq[1])) {
                 // Edge + Point + Edge workflow
                 return {{QObject::tr(PICK_SECOND_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
             }
@@ -1484,7 +1608,7 @@ public:
         if (selectionStep == 0) {
             return {{QObject::tr(PICK_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
         } else if (selectionStep == 1 && !selSeq.empty()) {
-            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+            if (selectionIsVertex(selSeq[0])) {
                 // Point + Point workflow
                 return {{QObject::tr(PICK_SECOND_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             } else {
@@ -1499,7 +1623,7 @@ public:
         if (selectionStep == 0) {
             return {{QObject::tr(PICK_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
         } else if (selectionStep == 1 && !selSeq.empty()) {
-            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+            if (selectionIsVertex(selSeq[0])) {
                 // Point + Point workflow
                 return {{QObject::tr(PICK_SECOND_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             } else {
@@ -1514,7 +1638,7 @@ public:
         if (selectionStep == 0) {
             return {{QObject::tr(PICK_EDGE_OR_FIRST_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
         } else if (selectionStep == 1 && !selSeq.empty()) {
-            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+            if (selectionIsVertex(selSeq[0])) {
                 // Point + Edge + Point or Point + Point + Edge/Point workflow
                 return {{QObject::tr(PICK_EDGE_OR_SECOND_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             } else {
@@ -1522,10 +1646,10 @@ public:
                 return {{QObject::tr(PICK_SYMMETRY_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             }
         } else if (selectionStep == 2 && !selSeq.empty()) {
-            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId) && isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
+            if (selectionIsVertex(selSeq[0]) && selectionIsVertex(selSeq[1])) {
                 // Point + Point + Edge workflow
                 return {{QObject::tr(PICK_SYMMETRY_LINE_OR_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
-            } else if (isVertex(selSeq[0].GeoId, selSeq[0].PosId) && !isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
+            } else if (selectionIsVertex(selSeq[0]) && !selectionIsVertex(selSeq[1])) {
                 // Point + Edge + Point workflow
                 return {{QObject::tr(PICK_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             }
@@ -2010,6 +2134,7 @@ public:
     }
     ~DrawSketchHandlerDimension() override
     {
+        LazyExternalSelectionResolver::clearPendingLazyExternalSelection(sketchgui);
     }
 
     enum class AvailableConstraint {
@@ -2063,6 +2188,7 @@ public:
     void deactivated() override
     {
         abortCommand();
+        LazyExternalSelectionResolver::clearPendingLazyExternalSelection(sketchgui);
         if (availableConstraint != AvailableConstraint::FIRST) {
             Obj->solve();
         }
@@ -2142,7 +2268,6 @@ public:
 
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
-        Q_UNUSED(onSketchPos);
         availableConstraint = AvailableConstraint::FIRST;
         SelIdPair selIdPair;
         selIdPair.GeoId = GeoEnum::GeoUndef;
@@ -2153,7 +2278,8 @@ public:
         int VtId = getPreselectPoint();
         int CrvId = getPreselectCurve();
         int CrsId = getPreselectCross();
-
+        int lazyExternalId = getPreselectLazyExternalId();
+        bool lazyExternalVertex = isPreselectLazyExternalVertex();
         if (VtId >= 0) { //Vertex
             Obj->getGeoVertexIndex(VtId,
                 selIdPair.GeoId, selIdPair.PosId);
@@ -2176,9 +2302,20 @@ public:
             newselGeoType = Part::GeomLineSegment::getClassTypeId();
             ss << "V_Axis";
         }
+        else if (lazyExternalId >= 0) {
+            std::string lazyExternalSubName;
+            if (LazyExternalSelectionResolver::makeLazyExternalSelectionPair(
+                    sketchgui, lazyExternalId, lazyExternalVertex, selIdPair, &lazyExternalSubName, &newselGeoType)) {
+                ss << lazyExternalSubName;
+            }
+        }
         else if (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt) { //Curves
             selIdPair.GeoId = CrvId;
             const Part::Geometry* geo = Obj->getGeometry(CrvId);
+            if (!geo) {
+                updateHint();
+                return true;
+            }
 
             newselGeoType = geo->getTypeId();
 
@@ -2190,32 +2327,47 @@ public:
             }
         }
 
-        if (selIdPair.GeoId == GeoEnum::GeoUndef) {
+        if (selIdPair.GeoId == GeoEnum::GeoUndef && !selIdPair.IsLazyExternal) {
             // If mouse is released on "blank" space, finalize and start over
             finalizeCommand();
             return true;
         }
 
-        std::vector<SelIdPair>& selVector = getSelectionVector(newselGeoType);
+        if (newselGeoType == Base::Type::BadType) {
+            updateHint();
+            return true;
+        }
+
+
+        auto* selVector = getSelectionVector(newselGeoType);
+        if (!selVector) {
+            updateHint();
+            return true;
+        }
 
         if (notSelectedYet(selIdPair)) {
             //add the geometry to its type vector. Temporarily if not selAllowed
-            selVector.push_back(selIdPair);
+            selVector->push_back(selIdPair);
 
             bool selAllowed = makeAppropriateConstraint(onSketchPos);
 
             if (selAllowed) {
-                // If mouse is released on something allowed, select it
-                sketchgui->addSelection2(ss.str().c_str(), onSketchPos.x, onSketchPos.y, 0.f);
+                if (selIdPair.IsLazyExternal) {
+                    LazyExternalSelectionResolver::setLazyExternalSelectionSelected(
+                        sketchgui, selIdPair, true);
+                }
+                else {
+                    sketchgui->addSelection2(ss.str().c_str(), onSketchPos.x, onSketchPos.y, 0.f);
+                }
                 sketchgui->draw(false, false); // Redraw
             }
             else {
-                selVector.pop_back();
+                selVector->pop_back();
             }
         }
         else {
             //if it is already selected we unselect it.
-            selVector.pop_back();
+            selVector->pop_back();
             if (!selectionEmpty()) {
                 makeAppropriateConstraint(onSketchPos);
             }
@@ -2223,7 +2375,13 @@ public:
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
             }
 
-            sketchgui->rmvSelection(ss.str().c_str());
+            if (selIdPair.IsLazyExternal) {
+                LazyExternalSelectionResolver::setLazyExternalSelectionSelected(
+                    sketchgui, selIdPair, false);
+            }
+            else {
+                sketchgui->rmvSelection(ss.str().c_str());
+            }
             sketchgui->draw(false, false); // Redraw
         }
 
@@ -2284,9 +2442,11 @@ protected:
     std::vector<int> cstrIndexes;
 
     Sketcher::SketchObject* Obj;
+    bool lazyExternalMaterializationFailed = false;
 
     void clearRefVectors()
     {
+        LazyExternalSelectionResolver::clearPendingLazyExternalSelection(sketchgui);
         selPoints.clear();
         selLine.clear();
         selCircleArc.clear();
@@ -2296,30 +2456,43 @@ protected:
 
     void handleInitialSelection()
     {
-        if (initialSelection.size() == 0) {
-            return;
-        }
-
         availableConstraint = AvailableConstraint::FIRST;
 
         // Add the selected elements to their corresponding selection vectors
         for (auto& selElement : initialSelection) {
             SelIdPair selIdPair;
+            Base::Type newselGeoType = Base::Type::BadType;
+
             getIdsFromName(selElement, Obj, selIdPair.GeoId, selIdPair.PosId);
 
-            Base::Type newselGeoType = Base::Type::BadType;
             if (isEdge(selIdPair.GeoId, selIdPair.PosId)) {
                 const Part::Geometry* geo = Obj->getGeometry(selIdPair.GeoId);
+                if (!geo) {
+                    continue;
+                }
                 newselGeoType = geo->getTypeId();
             }
             else if (isVertex(selIdPair.GeoId, selIdPair.PosId)) {
                 newselGeoType = Part::GeomPoint::getClassTypeId();
             }
 
-            std::vector<SelIdPair>& selVector = getSelectionVector(newselGeoType);
+            if (newselGeoType == Base::Type::BadType) {
+                continue;
+            }
+
+            auto* selVector = getSelectionVector(newselGeoType);
+            if (!selVector) {
+                continue;
+            }
 
             //add the geometry to its type vector. Temporarily if not selAllowed
-            selVector.push_back(selIdPair);
+            selVector->push_back(selIdPair);
+        }
+
+        LazyExternalSelectionResolver::appendPendingLazyExternalSelectionPairs(sketchgui, selPoints, selLine);
+        if (selPoints.empty() && selLine.empty() && selCircleArc.empty() && selEllipseAndCo.empty()
+            && selSplineAndCo.empty()) {
+            return;
         }
 
         // Remove redundant coincident points from the selection
@@ -2345,7 +2518,8 @@ protected:
         for (const auto& p : selPoints) {
             bool isRedundant = false;
             for (const auto& kept : filteredPoints) {
-                if (Obj->arePointsCoincident(p.GeoId, p.PosId, kept.GeoId, kept.PosId)) {
+                if (!p.IsLazyExternal && !kept.IsLazyExternal
+                    && Obj->arePointsCoincident(p.GeoId, p.PosId, kept.GeoId, kept.PosId)) {
                     isRedundant = true;
                     break;
                 }
@@ -2372,12 +2546,14 @@ protected:
         const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
 
         bool commandHandledInEditDatum = false;
+        bool commandAccepted = true;
         for (int index : cstrIndexes | boost::adaptors::reversed) {
             if (show && ConStr[index]->isDimensional() && ConStr[index]->isDriving) {
                 commandHandledInEditDatum = true;
                 EditDatumDialog editDatumDialog(currentTransactionID, sketchgui, index);
                 editDatumDialog.exec();
                 if (!editDatumDialog.isSuccess()) {
+                    commandAccepted = false;
                     break;
                 }
             }
@@ -2386,6 +2562,11 @@ protected:
         if (!commandHandledInEditDatum) {
             commitCommand();
         }
+        else if (!commandAccepted) {
+            abortCommand();
+        }
+
+        LazyExternalSelectionResolver::clearPendingLazyExternalSelection(sketchgui);
 
         // This code enables the continuous creation mode.
         bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
@@ -2397,56 +2578,74 @@ protected:
         }
     }
 
-    std::vector<SelIdPair>& getSelectionVector(Base::Type selGeoType)
+    Base::Type getSelectionGeometryType(const SelIdPair& item) const
     {
-        if (selGeoType == Part::GeomPoint::getClassTypeId()) {
-            return selPoints;
-        }
-        else if (selGeoType == Part::GeomLineSegment::getClassTypeId()) {
-            return selLine;
-        }
-        else if (selGeoType == Part::GeomArcOfCircle::getClassTypeId() ||
-            selGeoType == Part::GeomCircle::getClassTypeId()) {
-            return selCircleArc;
-        }
-        else if (selGeoType == Part::GeomEllipse::getClassTypeId() ||
-            selGeoType == Part::GeomArcOfEllipse::getClassTypeId() ||
-            selGeoType == Part::GeomArcOfHyperbola::getClassTypeId() ||
-            selGeoType == Part::GeomArcOfParabola::getClassTypeId()) {
-            return selEllipseAndCo;
-        }
-        else if (selGeoType == Part::GeomBSplineCurve::getClassTypeId()) {
-            return selSplineAndCo;
+        if (item.GeoId != Sketcher::GeoEnum::GeoUndef) {
+            const Part::Geometry* geo = Obj->getGeometry(item.GeoId);
+            if (geo) {
+                return geo->getTypeId();
+            }
         }
 
-        static std::vector<SelIdPair> emptyVector;
-        return emptyVector;
+        if (item.IsLazyExternal && sketchgui) {
+            return ViewProviderSketchCommandConstraintsAttorney::getLazyExternalGeometryType(
+        *sketchgui, item.LazyExternalId);
+        }
+
+        return Base::Type::BadType;
     }
 
-    bool notSelectedYet(const SelIdPair& elem)
+    std::vector<SelIdPair>* getSelectionVector(Base::Type selGeoType)
     {
-        auto contains = [&](const std::vector<SelIdPair>& vec, const SelIdPair& elem) {
-            for (const auto& x : vec)
-            {
-                if (x.GeoId == elem.GeoId && x.PosId == elem.PosId)
-                    return true;
-            }
-            return false;
-        };
+        if (selGeoType == Part::GeomPoint::getClassTypeId()) {
+            return &selPoints;
+        }
+        if (selGeoType == Part::GeomLineSegment::getClassTypeId()) {
+            return &selLine;
+        }
+        if (selGeoType == Part::GeomArcOfCircle::getClassTypeId()
+            || selGeoType == Part::GeomCircle::getClassTypeId()) {
+            return &selCircleArc;
+        }
+        if (selGeoType == Part::GeomEllipse::getClassTypeId()
+            || selGeoType == Part::GeomArcOfEllipse::getClassTypeId()
+            || selGeoType == Part::GeomArcOfHyperbola::getClassTypeId()
+            || selGeoType == Part::GeomArcOfParabola::getClassTypeId()) {
+            return &selEllipseAndCo;
+        }
+        if (selGeoType == Part::GeomBSplineCurve::getClassTypeId()) {
+            return &selSplineAndCo;
+        }
 
-        return !contains(selPoints, elem)
-            && !contains(selLine, elem)
-            && !contains(selCircleArc, elem)
-            && !contains(selEllipseAndCo, elem);
+        return nullptr;
+    }
+
+    static bool containsSelectionPair(const std::vector<SelIdPair>& selection,
+                                      const SelIdPair& item)
+    {
+        return std::any_of(selection.begin(), selection.end(), [&](const SelIdPair& existing) {
+            return selectionPairsEqual(existing, item);
+        });
+    }
+
+    bool notSelectedYet(const SelIdPair& elem) const
+    {
+        return !containsSelectionPair(selPoints, elem)
+            && !containsSelectionPair(selLine, elem)
+            && !containsSelectionPair(selCircleArc, elem)
+            && !containsSelectionPair(selEllipseAndCo, elem)
+            && !containsSelectionPair(selSplineAndCo, elem);
     }
 
     bool selectionEmpty() const
     {
-        return selPoints.empty() && selLine.empty() && selCircleArc.empty() && selEllipseAndCo.empty();
+        return selPoints.empty() && selLine.empty() && selCircleArc.empty() && selEllipseAndCo.empty()
+            && selSplineAndCo.empty();
     }
 
     bool makeAppropriateConstraint(Base::Vector2d onSketchPos) {
         bool selAllowed = false;
+        lazyExternalMaterializationFailed = false;
 
         GeomSelectionSizes selection(selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseAndCo.size(), selSplineAndCo.size());
 
@@ -2480,7 +2679,7 @@ protected:
             if (selection.has1Ellipse()) { makeCts_1Ellipse(selAllowed); }
             else if (selection.has2MoreEllipses()) { makeCts_2MoreEllipse(selAllowed, selection.s_ell); }
         }
-        return selAllowed;
+        return !lazyExternalMaterializationFailed && selAllowed;
     }
 
     void makeCts_1Point(bool& selAllowed, Base::Vector2d onSketchPos)
@@ -2746,50 +2945,52 @@ protected:
 
     void makeCts_1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
-        int geoId = selCircleArc[0].GeoId;
-        bool reverseOrder = isRadiusDoF(geoId);
+        const bool reverseOrder = !selCircleArc[0].IsLazyExternal
+            && isRadiusDoF(selCircleArc[0].GeoId);
 
         if (reverseOrder) {
             if (availableConstraint == AvailableConstraint::FIRST) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc angle constraint"));
-                createArcAngleConstrain(geoId, onSketchPos);
+                createArcAngleConstrain(selCircleArc[0].GeoId, onSketchPos);
                 selAllowed = true;
             }
             if (availableConstraint == AvailableConstraint::SECOND) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc length constraint"));
-                createArcLengthConstrain(geoId, onSketchPos);
+                createArcLengthConstrain(selCircleArc[0].GeoId, onSketchPos);
             }
             if (availableConstraint == AvailableConstraint::THIRD) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
-                createRadiusDiameterConstrain(geoId, onSketchPos, true);
+                createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos, true);
             }
             if (availableConstraint == AvailableConstraint::FOURTH) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
-                createRadiusDiameterConstrain(geoId, onSketchPos, false);
+                createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos, false);
                 availableConstraint = AvailableConstraint::RESET;
             }
         }
         else {
             if (availableConstraint == AvailableConstraint::FIRST) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
-                createRadiusDiameterConstrain(geoId, onSketchPos, true);
+                createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos, true);
                 selAllowed = true;
             }
             if (availableConstraint == AvailableConstraint::SECOND) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
-                createRadiusDiameterConstrain(geoId, onSketchPos, false);
-                if (!isArcOfCircle(*Obj->getGeometry(geoId))) {
-                    //This way if key is pressed again it goes back to FIRST
+                createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos, false);
+                if (lazyExternalMaterializationFailed) {
+                    return;
+                }
+                if (!isArcOfCircle(*Obj->getGeometry(selCircleArc[0].GeoId))) {
                     availableConstraint = AvailableConstraint::RESET;
                 }
             }
             if (availableConstraint == AvailableConstraint::THIRD) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc angle constraint"));
-                createArcAngleConstrain(geoId, onSketchPos);
+                createArcAngleConstrain(selCircleArc[0].GeoId, onSketchPos);
             }
             if (availableConstraint == AvailableConstraint::FOURTH) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc length constraint"));
-                createArcLengthConstrain(geoId, onSketchPos);
+                createArcLengthConstrain(selCircleArc[0].GeoId, onSketchPos);
                 availableConstraint = AvailableConstraint::RESET;
             }
         }
@@ -2807,6 +3008,9 @@ protected:
         if (availableConstraint == AvailableConstraint::SECOND) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add concentric and length constraint"));
             bool created = createCoincidenceConstrain(selCircleArc[0].GeoId, Sketcher::PointPos::mid, selCircleArc[1].GeoId, Sketcher::PointPos::mid);
+            if (lazyExternalMaterializationFailed) {
+                return;
+            }
             if (!created) { //Already concentric, so skip to next
                 availableConstraint = AvailableConstraint::THIRD;
             }
@@ -2854,11 +3058,14 @@ protected:
     {
         //only ellipse or arc of of same kind, then equality of all radius.
         bool allTheSame = 1;
-        const Part::Geometry* geom = Obj->getGeometry(selEllipseAndCo[0].GeoId);
-        Base::Type typeOf = geom->getTypeId();
+        const Base::Type typeOf = getSelectionGeometryType(selEllipseAndCo[0]);
+        if (typeOf == Base::Type::BadType) {
+            return;
+        }
+
         for (size_t i = 1; i < s_ell; i++) {
-            const Part::Geometry* geomi = Obj->getGeometry(selEllipseAndCo[i].GeoId);
-            if (typeOf != geomi->getTypeId()) {
+            const Base::Type typeOfi = getSelectionGeometryType(selEllipseAndCo[i]);
+            if (typeOf != typeOfi) {
                 allTheSame = 0;
             }
         }
@@ -2872,6 +3079,10 @@ protected:
     }
 
     void createDistanceConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2, Base::Vector2d onSketchPos) {
+        if (lazyExternalMaterializationFailed) {
+            return;
+        }
+
         // If there's a point, it must be GeoId1. We could add a swap to make sure but as it's hardcoded it's not necessary.
 
         if (GeoId1 == GeoId2 || (PosId1 != Sketcher::PointPos::none && PosId2 != Sketcher::PointPos::none)) {
@@ -2994,6 +3205,10 @@ protected:
     }
 
     void createDistanceXYConstrain(Sketcher::ConstraintType type, int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2, Base::Vector2d onSketchPos) {
+        if (lazyExternalMaterializationFailed) {
+            return;
+        }
+
         Base::Vector3d pnt1 = Obj->getPoint(GeoId1, PosId1);
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2, PosId2);
         double ActLength = pnt2.x - pnt1.x;
@@ -3023,6 +3238,10 @@ protected:
     }
 
     void createRadiusDiameterConstrain(int GeoId, Base::Vector2d onSketchPos, bool firstCstr) {
+        if (lazyExternalMaterializationFailed) {
+            return;
+        }
+
         double radius = 0.0;
         bool isCircleGeom = true;
 
@@ -3067,6 +3286,10 @@ protected:
     }
 
     bool createCoincidenceConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2) {
+        if (lazyExternalMaterializationFailed) {
+            return false;
+        }
+
         // check if the edge already has a Block constraint
         if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2)) {
             return false;
@@ -3085,6 +3308,10 @@ protected:
     }
 
     void createEqualityConstrain(int GeoId1, int GeoId2) {
+        if (lazyExternalMaterializationFailed) {
+            return;
+        }
+
         // check if the edge already has a Block constraint
         if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2)) {
             return;
@@ -3112,6 +3339,10 @@ protected:
     }
 
     void createAngleConstrain(int GeoId1, int GeoId2, Base::Vector2d onSketchPos) {
+        if (lazyExternalMaterializationFailed) {
+            return;
+        }
+
         Sketcher::PointPos PosId1 = Sketcher::PointPos::none;
         Sketcher::PointPos PosId2 = Sketcher::PointPos::none;
         double ActAngle;
@@ -3134,6 +3365,10 @@ protected:
     }
 
     void createArcLengthConstrain(int GeoId, Base::Vector2d onSketchPos) {
+        if (lazyExternalMaterializationFailed) {
+            return;
+        }
+
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
         if (!isArcOfCircle(*geom)) {
             return;
@@ -3149,6 +3384,10 @@ protected:
     }
 
     void createArcAngleConstrain(int GeoId, Base::Vector2d onSketchPos) {
+        if (lazyExternalMaterializationFailed) {
+            return;
+        }
+
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
         if (!isArcOfCircle(*geom)) {
             return;
@@ -3164,6 +3403,10 @@ protected:
     }
 
     void createVerticalConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2) {
+        if (lazyExternalMaterializationFailed) {
+            return;
+        }
+
         if (selLine.size() == 1) {
             // If the line is horizontal (should be without constraint if we're here), then we need to modify
             // its point or we'll get a null line.
@@ -3192,6 +3435,10 @@ protected:
         tryAutoRecompute(Obj);
     }
     void createHorizontalConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2) {
+        if (lazyExternalMaterializationFailed) {
+            return;
+        }
+
         if (selLine.size() == 1) {
             // If the line is vertical (should be without constraint if we're here), then we need to modify
             // its point or we'll get a null line.
@@ -3221,6 +3468,10 @@ protected:
     }
 
     void createBlockConstrain(int GeoId) {
+        if (lazyExternalMaterializationFailed) {
+            return;
+        }
+
         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Block',%d)) ", GeoId);
 
         addConstraintIndex();
@@ -3241,6 +3492,10 @@ protected:
     }
 
     void createSymmetryConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2, int GeoId3, Sketcher::PointPos PosId3) {
+        if (lazyExternalMaterializationFailed) {
+            return;
+        }
+
         if (selPoints.size() == 2 && selLine.size() == 1) {
             if (isEdge(GeoId1, PosId1) && isVertex(GeoId3, PosId3)) {
                 std::swap(GeoId1, GeoId3);
@@ -3427,6 +3682,19 @@ protected:
         return false;
     }
 
+    bool materializeLazyExternalSelectionsForCurrentCommand()
+    {
+        std::vector<SelIdPair>* selections[] = {
+            &selPoints, &selLine, &selCircleArc, &selEllipseAndCo, &selSplineAndCo};
+
+        for (auto* selection : selections) {
+            if (!LazyExternalSelectionResolver::materializeLazyExternalSelectionPairs(sketchgui, *selection, true)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     void restartCommand(const char* cstrName) {
         specialConstraint = SpecialConstraint::None;
         abortCommand();
@@ -3435,6 +3703,7 @@ protected:
         openCommand(cstrName);
 
         cstrIndexes.clear();
+        lazyExternalMaterializationFailed = !materializeLazyExternalSelectionsForCurrentCommand();
     }
 
     void resetTool()
@@ -3444,6 +3713,7 @@ protected:
         openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
         cstrIndexes.clear();
         specialConstraint = SpecialConstraint::None;
+        lazyExternalMaterializationFailed = false;
         previousOnSketchPos = Base::Vector2d(0.f, 0.f);
         clearRefVectors();
     }
@@ -3574,7 +3844,8 @@ bool canHorVerBlock(Sketcher::SketchObject* Obj, int geoId)
 void horVerActivated(CmdSketcherConstraint* cmd, std::string type)
 {
     // get the selection
-    std::vector<Gui::SelectionObject> selection = Gui::Command::getSelection().getSelectionEx();
+    auto activatedSelection = cmd->getActivatedLazySelection(true);
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -3981,7 +4252,8 @@ void CmdSketcherConstrainLock::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection(true);
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -4267,7 +4539,8 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection();
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -4600,11 +4873,19 @@ void CmdSketcherConstrainCoincidentUnified::onActivated(CoincicenceType type)
     }
 
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection();
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
+
+    auto* sketchgui = getActiveSketchGui(getActiveGuiDocument());
+
+    const bool hasOnlyPendingLazyVertices =
+        selection.empty()
+        && LazyExternalSelectionResolver::hasPendingLazyExternalSelection(sketchgui, false, true);
 
     // only one sketch with its subelements are allowed to be selected
-    if (selection.size() != 1
-        || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
+    if (!hasOnlyPendingLazyVertices
+        && (selection.size() != 1
+            || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId()))) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher");
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
@@ -4620,8 +4901,17 @@ void CmdSketcherConstrainCoincidentUnified::onActivated(CoincicenceType type)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> emptySubNames;
+    const std::vector<std::string>& SubNames = hasOnlyPendingLazyVertices
+        ? emptySubNames
+        : selection[0].getSubNames();
+    auto* Obj = hasOnlyPendingLazyVertices
+        ? (sketchgui ? sketchgui->getSketchObject() : nullptr)
+        : static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    if (!Obj) {
+        Gui::TranslatedUserWarning(getActiveGuiDocument(), QObject::tr("Wrong selection"), errorMess);
+        return;
+    }
 
     // count curves and points
     std::vector<SelIdPair> points;
@@ -4637,6 +4927,8 @@ void CmdSketcherConstrainCoincidentUnified::onActivated(CoincicenceType type)
         }
     }
 
+    LazyExternalSelectionResolver::appendPendingLazyExternalSelectionPairs(sketchgui, points, curves, false, true);
+
     if (type != CoincicenceType::Coincident && ((points.size() == 1 && !curves.empty()) || (!points.empty() && curves.size() == 1))) {
         activatedPointOnObject(Obj, points, curves);
     }
@@ -4650,7 +4942,16 @@ void CmdSketcherConstrainCoincidentUnified::onActivated(CoincicenceType type)
 
 void CmdSketcherConstrainCoincidentUnified::activatedPointOnObject(SketchObject* obj, std::vector<SelIdPair> points, std::vector<SelIdPair> curves)
 {
+    auto* sketchgui = getActiveSketchGui(getActiveGuiDocument());
+
     openCommand(QT_TRANSLATE_NOOP("Command", "Add point on object constraint"));
+    if (!LazyExternalSelectionResolver::materializeLazyExternalSelectionPairs(sketchgui, points)
+        || !LazyExternalSelectionResolver::materializeLazyExternalSelectionPairs(sketchgui, curves)) {
+        abortCommand();
+        Gui::TranslatedUserWarning(obj, QObject::tr("Wrong selection"), QObject::tr("Could not add external geometry for the selected item."));
+        return;
+    }
+
     int cnt = 0;
     for (std::size_t iPnt = 0; iPnt < points.size(); iPnt++) {
         for (std::size_t iCrv = 0; iCrv < curves.size(); iCrv++) {
@@ -4704,6 +5005,16 @@ void CmdSketcherConstrainCoincidentUnified::activatedPointOnObject(SketchObject*
 
 void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* obj, std::vector<SelIdPair> points, std::vector<SelIdPair> curves)
 {
+    auto* sketchgui = getActiveSketchGui(getActiveGuiDocument());
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
+    if (!LazyExternalSelectionResolver::materializeLazyExternalSelectionPairs(sketchgui, points)
+        || !LazyExternalSelectionResolver::materializeLazyExternalSelectionPairs(sketchgui, curves)) {
+        abortCommand();
+        Gui::TranslatedUserWarning(obj, QObject::tr("Wrong selection"), QObject::tr("Could not add external geometry for the selected item."));
+        return;
+    }
+
     bool allConicsEdges = true;// If user selects only conics (circle, ellipse, arc, arcOfEllipse)
                                // then we make concentric constraint.
     for (auto& curve : curves) {
@@ -4712,6 +5023,7 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
         }
 
         if (!allConicsEdges) {
+            abortCommand();
             Gui::TranslatedUserWarning(
                 obj,
                 QObject::tr("Wrong selection"),
@@ -4728,9 +5040,7 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
     int GeoId1 = vecOfSelIdToUse[0].GeoId;
     Sketcher::PointPos PosId1 = vecOfSelIdToUse[0].PosId;
 
-    // undo command open
     bool constraintsAdded = false;
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
 
     for (std::size_t i = 1; i < vecOfSelIdToUse.size(); i++) {
         int GeoId2 = vecOfSelIdToUse[i].GeoId;
@@ -4739,6 +5049,7 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
         // check if the edge already has a Block constraint
         if (areBothPointsOrSegmentsFixed(obj, GeoId1, GeoId2)) {
             showNoConstraintBetweenFixedGeometry(obj);
+            abortCommand();
             return;
         }
 
@@ -5090,11 +5401,20 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection(true);
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
+
+    // get the needed lists and objects
+    Sketcher::SketchObject* Obj = nullptr;
+    std::vector<std::string> SubNames;
 
     // only one sketch with its subelements are allowed to be selected
-    if (selection.size() != 1
-        || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
+    if (selection.size() == 1
+        && selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
+        Obj = freecad_cast<Sketcher::SketchObject*>(selection[0].getObject());
+        SubNames = selection[0].getSubNames();
+    }
+    else {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher");
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
@@ -5111,10 +5431,6 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         }
         return;
     }
-
-    // get the needed lists and objects
-    const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty() || SubNames.size() > 2) {
         Gui::TranslatedUserWarning(Obj,
@@ -5150,7 +5466,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
             openCommand(
                 QT_TRANSLATE_NOOP("Command", "Add distance from horizontal axis constraint"));
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
+            Gui::cmdAppObjectArgs(Obj,
                 "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f))",
                 GeoId1,
                 static_cast<int>(PosId1),
@@ -5162,7 +5478,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             PosId1 = Sketcher::PointPos::start;
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add distance from vertical axis constraint"));
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
+            Gui::cmdAppObjectArgs(Obj,
                 "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f))",
                 GeoId1,
                 static_cast<int>(PosId1),
@@ -5174,7 +5490,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             Base::Vector3d pnt1 = Obj->getPoint(GeoId1, PosId1);
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point distance constraint"));
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
+            Gui::cmdAppObjectArgs(Obj,
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f))",
                 GeoId1,
                 static_cast<int>(PosId1),
@@ -5187,7 +5503,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
 
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
+            Gui::cmdAppObjectArgs(Obj,
                 "setDriving(%d,%s)",
                 ConStr.size() - 1,
                 "False");
@@ -5217,7 +5533,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 / d.Length();
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add point to line distance constraint"));
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
+            Gui::cmdAppObjectArgs(Obj,
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f))",
                 GeoId1,
                 static_cast<int>(PosId1),
@@ -5229,7 +5545,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 == Reference) {// it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                Gui::cmdAppObjectArgs(Obj,
                     "setDriving(%d,%s)",
                     ConStr.size() - 1,
                     "False");
@@ -5247,7 +5563,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             double ActDist = std::abs(d.Length() - radius);
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add point to circle distance constraint"));
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
+            Gui::cmdAppObjectArgs(Obj,
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f))",
                 GeoId1,
                 static_cast<int>(PosId1),
@@ -5259,7 +5575,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 == Reference) {// it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                Gui::cmdAppObjectArgs(Obj,
                     "setDriving(%d,%s)",
                     ConStr.size() - 1,
                     "False");
@@ -5298,7 +5614,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             }
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle distance constraint"));
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
+            Gui::cmdAppObjectArgs(Obj,
                                   "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f))",
                                   GeoId1,
                                   GeoId2,
@@ -5309,7 +5625,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                     == Reference) {// it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                Gui::cmdAppObjectArgs(Obj,
                                       "setDriving(%d,%s)",
                                       ConStr.size() - 1,
                                       "False");
@@ -5341,7 +5657,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 - radius;
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to line distance constraint"));
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
+            Gui::cmdAppObjectArgs(Obj,
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f)) ",
                 GeoId1,
                 GeoId2,
@@ -5352,7 +5668,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 == Reference) {// it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                Gui::cmdAppObjectArgs(Obj,
                     "setDriving(%i,%s)",
                     ConStr.size() - 1,
                     "False");
@@ -5389,7 +5705,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             double ActLength = (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Length();
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
+            Gui::cmdAppObjectArgs(Obj,
                 "addConstraint(Sketcher.Constraint('Distance',%d,%f))",
                 GeoId1,
                 ActLength);
@@ -5399,7 +5715,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 || constraintCreationMode == Reference) {
                 const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                Gui::cmdAppObjectArgs(Obj,
                     "setDriving(%d,%s)",
                     ConStr.size() - 1,
                     "False");
@@ -5416,7 +5732,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             double ActLength = arc->getAngle(false) * arc->getRadius();
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
+            Gui::cmdAppObjectArgs(Obj,
                 "addConstraint(Sketcher.Constraint('Distance',%d,%f))",
                 GeoId1,
                 ActLength);
@@ -5426,7 +5742,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 || constraintCreationMode == Reference) {
                 const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
 
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                Gui::cmdAppObjectArgs(Obj,
                     "setDriving(%d,%s)",
                     ConStr.size() - 1,
                     "False");
@@ -5741,7 +6057,8 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection(true);
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -6042,7 +6359,8 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection(true);
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -6338,7 +6656,8 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection();
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -6394,6 +6713,19 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
             return;
         }
         ids.push_back(GeoId);
+    }
+
+    std::sort(ids.begin(), ids.end());
+    ids.erase(std::unique(ids.begin(), ids.end()), ids.end());
+
+    for (int geoId : ids) {
+        const Part::Geometry* geo = Obj->getGeometry(geoId);
+        if (!geo || !isLineSegment(*geo)) {
+            Gui::TranslatedUserWarning(Obj,
+                QObject::tr("Wrong selection"),
+                QObject::tr("One selected edge is not a valid line."));
+            return;
+        }
     }
 
     if (ids.size() < 2) {
@@ -6511,7 +6843,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection(true);
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -7367,7 +7700,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection(true);
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -8194,7 +8528,8 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection();
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -8557,7 +8892,8 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection();
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -8875,7 +9211,8 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection();
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -9418,7 +9755,8 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     Q_UNUSED(iMsg);
     // TODO: comprehensive messages, like in CmdSketcherConstrainTangent
     //  get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection(true);
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -9859,7 +10197,8 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection();
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -10118,7 +10457,8 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto activatedSelection = getActivatedLazySelection(true);
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -10567,7 +10907,8 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    SketcherGui::ActivatedLazySelection activatedSelection(*this, getActiveGuiDocument(), true);
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -10686,7 +11027,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     n2divn1 = newQuant.getValue();
 
     // add constraint
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add Snell's law constraint"));
+    activatedSelection.openCommand(QT_TRANSLATE_NOOP("Command", "Add Snell's law constraint"));
 
     bool safe = addConstraintSafely(Obj, [&]() {
         if (!IsPointAlreadyOnCurve(GeoId2, GeoId1, PosId1, Obj)) {
@@ -10726,10 +11067,10 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     });
 
     if (!safe) {
-        abortCommand();
+        activatedSelection.abortCommand();
         return;
     }
-    commitCommand();
+    activatedSelection.commitCommand();
     tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
@@ -10766,7 +11107,8 @@ void CmdSketcherConstrainGroup::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    SketcherGui::ActivatedLazySelection activatedSelection(*this, getActiveGuiDocument());
+    std::vector<Gui::SelectionObject> selection = activatedSelection.getSelection();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -10817,16 +11159,16 @@ void CmdSketcherConstrainGroup::activated(int iMsg)
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add Group constraint"));
+    activatedSelection.openCommand(QT_TRANSLATE_NOOP("Command", "Add Group constraint"));
 
     if (!addListConstraint(Obj, elts, "Group")) {
-        abortCommand();
+        activatedSelection.abortCommand();
         return;
     }
 
     tryAutoRecompute(Obj);
 
-    commitCommand();
+    activatedSelection.commitCommand();
 
     getSelection().clearSelection();
 }

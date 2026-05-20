@@ -70,6 +70,8 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerScale.h
     DrawSketchHandlerSymmetry.h
     CommandCreateGeo.cpp
+    ConstraintLazySelection.h
+    ConstraintLazySelection.cpp
     CommandConstraints.h
     CommandConstraints.cpp
     CommandSketcherTools.h
@@ -122,6 +124,8 @@ SET(SketcherGui_SRCS
     EditModeGeometryCoinManager.h
     EditModeConstraintCoinManager.cpp
     EditModeConstraintCoinManager.h
+    LazyExternalGeometryLayer.cpp
+    LazyExternalGeometryLayer.h
     ViewProviderSketchCoinAttorney.cpp
     ViewProviderSketchCoinAttorney.h
     ViewProviderSketch.cpp
