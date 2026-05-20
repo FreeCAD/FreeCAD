@@ -51,6 +51,9 @@ macro(SetupSalomeSMESH)
                     endif()
                 endforeach()
             endif()
+            # VTK's HDF5 component was requested, it might have imported HDF5 and added
+            # _FORTIFY_SOURCE defines to the build.
+            hdf5_clean_fortify_source()
         endif()
 
         # don't check VERSION 6 as this would exclude VERSION 7
@@ -91,82 +94,6 @@ macro(SetupSalomeSMESH)
 
         if(NOT FREECAD_USE_EXTERNAL_SMESH)
             find_package(MEDFile REQUIRED)
-            # See https://www.hdfgroup.org/HDF5/release/cmakebuild.html
-            if(MSVC)
-                find_package(HDF5 COMPONENTS NO_MODULE REQUIRED static)
-            else()
-                # Try FindHDF5.cmake first, as it is the one VTK might use,
-                # and the pkg-config version could clash with it.
-                find_package(HDF5)
-            endif()
-            if(NOT HDF5_FOUND)
-                # Should only get here on non-MSVC targets as it is marked REQUIRED for those.
-                # Try pkg-config instead.
-                find_package(PkgConfig)
-                file(READ ${meddotH} TMPTXT)
-                string(FIND "${TMPTXT}" "#define MED_HAVE_MPI" matchres)
-                if(${matchres} EQUAL -1)
-                    message(STATUS "We guess that libmed was built using hdf5-serial version")
-                    set(HDF5_VARIANT "hdf5-serial")
-                else()
-                    message(STATUS "We guess that libmed was built using hdf5-openmpi version")
-                    set(HDF5_VARIANT "hdf5-openmpi;hdf5_openmpi")
-                    set(HDF5_PREFER_PARALLEL TRUE) # if pkg-config fails, find_package(HDF5) needs this
-                endif()
-                pkg_search_module(PCHDF5 REQUIRED ${HDF5_VARIANT})
-
-                add_library(hdf5::hdf5 INTERFACE IMPORTED)
-                set_target_properties(hdf5::hdf5 PROPERTIES
-                    INTERFACE_INCLUDE_DIRECTORIES "${PCHDF5_LIBRARY_DIRS}"
-                    INTERFACE_COMPILE_DEFINITIONS "${PCHDF5_CFLAGS}")
-                target_link_libraries(hdf5::hdf5 INTERFACE ${PCHDF5_LIBRARIES})
-
-                # workaround to define include dir from PCHDF5_CFLAGS (pkg-config PCHDF5_INCLUDEDIR is only filled since hdf5 1.14.6)
-                set(hdf5_include_path "")
-                foreach(flag IN LISTS PCHDF5_CFLAGS)
-                    if(flag MATCHES "^-I")
-                        string(REGEX REPLACE "^-I[ ]*" "" flag "${flag}")
-                        list(APPEND hdf5_include_path "${flag}")
-                    endif()
-                endforeach()
-
-                set(_save_INC CMAKE_REQUIRED_INCLUDES)
-                set(CMAKE_REQUIRED_INCLUDES ${hdf5_include_path})
-                check_include_file_cxx(hdf5.h HDF5_HEAD_FOUND)
-                set(CMAKE_REQUIRED_INCLUDES ${_save_INC})
-                if(NOT HDF5_HEAD_FOUND)
-                    message( FATAL_ERROR "hdf5.h was not found (tested pkg-config ${HDF5_VARIANT}, suggested header location was '${hdf5_include_path}').")
-                endif()
-            endif()
-
-            if(NOT MSVC)
-                # Med Fichier can require MPI
-                pkg_search_module(OPENMPI ompi-cxx)
-                add_compile_options(${OPENMPI_CFLAGS})
-                link_directories(${OPENMPI_LIBRARY_DIRS})
-                link_libraries(${OPENMPI_LIBRARIES})
-                if(NOT OPENMPI_FOUND)
-                    message( WARNING "ompi-cxx was not found. Check for error above.")
-                endif()
-            endif()
-
-            if(NOT TARGET hdf5::hdf5)
-                message(FATAL_ERROR "Imported HDF5 but no hdf5::hdf5 target exists")
-            endif()
-            # Remove any _FORTIFY_SOURCE defines inherited from HDF5 when building in Debug mode,
-            # as this makes compilers emit loads of warnings since _FORTIFY_SOURCE is not
-            # usable without optimization.
-            if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-                foreach(_target IN ITEMS
-                        HDF5::HDF5 hdf5::hdf5 hdf5::hdf5_cpp hdf5::hdf5_fortran
-                        hdf5::hdf5_hl hdf5::hdf5_hl_cpp hdf5::hdf5_hl_fortran)
-                    if(TARGET "${_target}")
-                        get_target_property(_hdf5_compile_defs "${_target}" INTERFACE_COMPILE_DEFINITIONS)
-                        list(REMOVE_ITEM _hdf5_compile_defs "_FORTIFY_SOURCE=1" "_FORTIFY_SOURCE=2" "_FORTIFY_SOURCE=3")
-                        set_target_properties("${_target}" PROPERTIES INTERFACE_COMPILE_DEFINITIONS "${_hdf5_compile_defs}")
-                    endif()
-                endforeach()
-            endif()
 
             set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
 
