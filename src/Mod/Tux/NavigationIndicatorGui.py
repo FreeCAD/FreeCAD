@@ -96,8 +96,9 @@ def retranslateUi():
     text08 = translate("NavigationIndicator", "Rotation focus")
     text09 = translate("NavigationIndicator", "Middle mouse button or H key.")
     text10 = translate("NavigationIndicator", "Middle mouse button.")
-    text11 = translate("NavigationIndicator", "Pan Horizontal")
-    text12 = translate("NavigationIndicator", "Pan Vertical")
+    text11 = translate("NavigationIndicator", "Pan horizontal")
+    text12 = translate("NavigationIndicator", "Pan vertical")
+    text13 = translate("NavigationIndicator", "Shift and Left Mouse button.")
 
     global t0
     t0 = translate("NavigationIndicator", "Navigation style not recognized.")
@@ -695,7 +696,7 @@ def retranslateUi():
     <b>"""
         + text08
         + ":</b> "
-        + text10
+        + text13
         + "</small></p>"
     )
 

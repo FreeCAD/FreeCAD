@@ -4,6 +4,8 @@
 #include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"
 
+#include <Base/Console.h>
+
 using namespace Gui;
 
 // Register the class to FreeCAD's type system
@@ -94,7 +96,8 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
-        // SoDebugError::postInfo("processSoEvent", "button = %d", button);
+        Base::Console().message("button = %d\n", button);  // TODO delete
+
         switch (button) {
             case SoMouseButtonEvent::BUTTON1:
                 this->lockrecenter = true;
