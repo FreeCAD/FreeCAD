@@ -307,20 +307,12 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
                         }
                     }
                     if (!shape.isNull()) {
-                        gp_Pln sketchPlane;
-                        const gp_Pln* plnPtr = nullptr;
-                        if (obj->isDerivedFrom<Part::Part2DObject>()) {
-                            Base::Placement SketchPlm = getVerifiedSketch()->Placement.getValue();
-                            Base::Vector3d SketchNormal(0, 0, 1);
-                            SketchPlm.getRotation().multVec(SketchNormal, SketchNormal);
-                            Base::Vector3d SketchPos = SketchPlm.getPosition();
-                            sketchPlane = gp_Pln(
-                                gp_Pnt(SketchPos.x, SketchPos.y, SketchPos.z),
-                                gp_Dir(SketchNormal.x, SketchNormal.y, SketchNormal.z)
-                            );
-                            plnPtr = &sketchPlane;
+                        if (AllowMultiFace.getValue()) {
+                            shape = shape.makeElementFace();  // default to use FaceMakerBullseye
                         }
-                        shape = shape.makeElementFace(nullptr, "Part::FaceMakerFishEye", plnPtr);
+                        else {
+                            shape = shape.makeElementFace(nullptr, "Part::FaceMakerCheese");
+                        }
                     }
                 }
             }
@@ -399,7 +391,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const
                         shape = shape.makeWires();
                     }
                     if (shape.hasSubShape(TopAbs_WIRE)) {
-                        shape = shape.makeFace(nullptr, "Part::FaceMakerFishEye");
+                        shape = shape.makeFace(nullptr, "Part::FaceMakerBullseye");
                     }
                     else {
                         err = "Cannot make face from profile";
