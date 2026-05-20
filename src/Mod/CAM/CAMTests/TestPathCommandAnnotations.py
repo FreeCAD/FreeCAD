@@ -254,31 +254,41 @@ class TestPathCommandAnnotations(PathTestBase):
 
         # Verify GCode parameters were also restored correctly
         self.assertEqual(restored.Name, "G1")
-        self.assertEqual(restored.Parameters["X"], 10.0, "as float") # ensures it wasn't string'ified etc.
+        self.assertEqual(
+            restored.Parameters["X"], 10.0, "as float"
+        )  # ensures it wasn't string'ified etc.
         # Note: Parameters are restored via GCode parsing
 
     def test11_comment_roundtrip(self):
         """Test that comments w/annotations make round-trip
-            Comments are handled slightly differently than G/M codes.
+        Comments are handled slightly differently than G/M codes.
         """
-        for comment_text, annotation in [ 
+        for comment_text, annotation in [
             # (gcode, annotation)
-            ("(A Comment)",None),
-            ("(A Comment)",{}),
+            ("(A Comment)", None),
+            ("(A Comment)", {}),
             # Comments and actual G/M codes seem to be handled differently
-            ("(A Comment)",{"annotkey":"somevalue"}),
-            ("G1", {"annotkey":"somevalue"}),
+            ("(A Comment)", {"annotkey": "somevalue"}),
+            ("G1", {"annotkey": "somevalue"}),
         ]:
-            comment = Path.Command(comment_text) if annotation is None else Path.Command(comment_text, {}, annotation)
+            comment = (
+                Path.Command(comment_text)
+                if annotation is None
+                else Path.Command(comment_text, {}, annotation)
+            )
 
             dumped = comment.dumpContent()
             restored = Path.Command()
-            restored.restoreContent( dumped )
-            self.assertEqual( comment.Name, restored.Name, f"for dumpContent() round trip: {comment.toGCode()}" )
+            restored.restoreContent(dumped)
+            self.assertEqual(
+                comment.Name, restored.Name, f"for dumpContent() round trip: {comment.toGCode()}"
+            )
 
             gcode = comment.toGCode()
             parsed = Path.Command(gcode)
-            self.assertEqual( comment.Name, parsed.Name, f"for toGCode() round trip: {comment.toGCode()}" )
+            self.assertEqual(
+                comment.Name, parsed.Name, f"for toGCode() round trip: {comment.toGCode()}"
+            )
 
     def test12(self):
         """Test save/restore with empty annotations (in-memory)."""
