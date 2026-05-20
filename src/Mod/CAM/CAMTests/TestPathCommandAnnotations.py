@@ -256,6 +256,18 @@ class TestPathCommandAnnotations(PathTestBase):
         self.assertEqual(restored.Name, "G1")
         # Note: Parameters are restored via GCode parsing
 
+    def test_comment_command_annotations_do_not_pad_name(self):
+        """Test comment command names do not gain spaces with annotations."""
+        original = Path.Command("(xx)", {}, {"a": "x"})
+
+        self.assertEqual(original.toGCode(), "(xx); a:'x'")
+
+        restored = Path.Command()
+        restored.restoreContent(original.dumpContent())
+
+        self.assertEqual(restored.Name, "(xx)")
+        self.assertEqual(restored.Annotations, {"a": "x"})
+
     def test12(self):
         """Test save/restore with empty annotations (in-memory)."""
         # Test empty annotations (should work and use compact format)
