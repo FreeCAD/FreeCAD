@@ -22,50 +22,55 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 
-#ifndef SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H
-#define SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H
+#include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
-#include <vector>
+#include "SnapManager3D.h"
+#include "ViewProviderSketch3D.h"
 
-#include "DrawSketchHandler3D.h"
 
-class SoCoordinate3;
-class SoSwitch;
+using namespace Sketcher3DGui;
 
-namespace Sketcher3DGui
+
+SnapManager3D::SnapManager3D(ViewProviderSketch3D& vp)
+    : viewProvider(vp)
+{}
+
+SnapManager3D::~SnapManager3D() = default;
+
+Base::Vector3d
+SnapManager3D::snap(const Base::Vector3d& rawProjected,
+                    const std::string& pickedSubName,
+                    Sketcher3D::GeoElementId3D& target) const
 {
+    target = {};
 
-class Sketcher3DGuiExport DrawSketchHandlerPolyline3D: public DrawSketchHandler3D
+    Base::Vector3d snapped;
+    if (snapToPickedObject(pickedSubName, snapped, target)) {
+        return snapped;
+    }
+    return rawProjected;
+}
+
+bool SnapManager3D::snapToPickedObject(const std::string& pickedSubName,
+                                       Base::Vector3d& snapPos,
+                                       Sketcher3D::GeoElementId3D& target) const
 {
-public:
-    DrawSketchHandlerPolyline3D();
-    ~DrawSketchHandlerPolyline3D() override;
+    const Sketcher3D::Sketch3DObject* sketch = viewProvider.getSketch3DObject();
+    if (!sketch || pickedSubName.empty()) {
+        return false;
+    }
 
-    bool pressButton(const Base::Vector3d& pos) override;
-    bool mouseMove(const Base::Vector3d& pos) override;
-    bool keyPressed(int key) override;
+    const Sketcher3D::GeoElementId3D picked = sketch->resolveSubName(pickedSubName);
+    if (!picked.isValid()) {
+        return false;
+    }
 
-protected:
-    void onActivated() override;
+    if (!sketch->getPointAt(picked, snapPos)) {
+        return false;
+    }
 
-private:
-    enum class State
-    {
-        PickFirst,
-        PickNext,
-    };
-
-    State state {State::PickFirst};
-    Base::Vector3d lastPos {0.0, 0.0, 0.0};
-
-    int prevSegGeoId {-1};
-    std::vector<AutoConstraint3D> sugConstr1;
-
-    SoCoordinate3* rubberCoords {nullptr};
-    SoSwitch* rubberSwitch {nullptr};
-};
-
-}  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H
+    target = picked;
+    return true;
+}

@@ -22,50 +22,44 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef SKETCHER3DGUI_SNAPMANAGER3D_H
+#define SKETCHER3DGUI_SNAPMANAGER3D_H
 
-#ifndef SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H
-#define SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H
+#include <string>
 
-#include <vector>
-
-#include "DrawSketchHandler3D.h"
-
-class SoCoordinate3;
-class SoSwitch;
+#include <Base/Vector3D.h>
+#include <Mod/Sketcher3D/App/GeoEnum3D.h>
 
 namespace Sketcher3DGui
 {
 
-class Sketcher3DGuiExport DrawSketchHandlerPolyline3D: public DrawSketchHandler3D
+class ViewProviderSketch3D;
+
+class SnapManager3D
 {
 public:
-    DrawSketchHandlerPolyline3D();
-    ~DrawSketchHandlerPolyline3D() override;
+    explicit SnapManager3D(ViewProviderSketch3D& vp);
+    ~SnapManager3D();
 
-    bool pressButton(const Base::Vector3d& pos) override;
-    bool mouseMove(const Base::Vector3d& pos) override;
-    bool keyPressed(int key) override;
+    SnapManager3D(const SnapManager3D&) = delete;
+    SnapManager3D& operator=(const SnapManager3D&) = delete;
 
-protected:
-    void onActivated() override;
+    Base::Vector3d snap(
+        const Base::Vector3d& rawProjected,
+        const std::string& pickedSubName,
+        Sketcher3D::GeoElementId3D& target
+    ) const;
 
 private:
-    enum class State
-    {
-        PickFirst,
-        PickNext,
-    };
+    bool snapToPickedObject(
+        const std::string& pickedSubName,
+        Base::Vector3d& snapPos,
+        Sketcher3D::GeoElementId3D& target
+    ) const;
 
-    State state {State::PickFirst};
-    Base::Vector3d lastPos {0.0, 0.0, 0.0};
-
-    int prevSegGeoId {-1};
-    std::vector<AutoConstraint3D> sugConstr1;
-
-    SoCoordinate3* rubberCoords {nullptr};
-    SoSwitch* rubberSwitch {nullptr};
+    ViewProviderSketch3D& viewProvider;
 };
 
 }  // namespace Sketcher3DGui
 
-#endif  // SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H
+#endif  // SKETCHER3DGUI_SNAPMANAGER3D_H

@@ -26,6 +26,8 @@
 #ifndef SKETCHER3DGUI_DRAWSKETCHHANDLERLINE3D_H
 #define SKETCHER3DGUI_DRAWSKETCHHANDLERLINE3D_H
 
+#include <vector>
+
 #include "DrawSketchHandler3D.h"
 
 class SoCoordinate3;
@@ -59,6 +61,7 @@ private:
 
     State state {State::PickFirst};
     Base::Vector3d startPos {0.0, 0.0, 0.0};
+    std::vector<AutoConstraint3D> sugConstr1;
 
     SoCoordinate3* rubberCoords {nullptr};
     SoSwitch* rubberSwitch {nullptr};

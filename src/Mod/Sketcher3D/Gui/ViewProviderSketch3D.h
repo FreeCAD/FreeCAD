@@ -26,10 +26,13 @@
 #ifndef SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
 #define SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
 
+#include <string>
+
 #include <QCoreApplication>
 
 #include <Base/Vector3D.h>
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Sketcher3D/App/GeoEnum3D.h>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
 class QMenu;
@@ -41,10 +44,15 @@ namespace Sketcher3D
 class Sketch3DObject;
 }
 
+class SoCoordinate3;
+class SoSwitch;
+class SoTranslation;
+
 namespace Sketcher3DGui
 {
 
 class DrawSketchHandler3D;
+class SnapManager3D;
 class TaskSketcher3DTool;
 
 
@@ -116,6 +124,11 @@ public:
     bool mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer) override;
     bool keyPressed(bool pressed, int key) override;
 
+    const Sketcher3D::GeoElementId3D& getSnapTarget() const
+    {
+        return snapTarget;
+    }
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
@@ -127,10 +140,15 @@ private:
         const SbVec2s& cursorPx,
         const Gui::View3DInventorViewer* viewer
     ) const;
+    std::string getPickedSubName(const SbVec2s& cursorPx, const Gui::View3DInventorViewer* viewer) const;
 
-    /// Rebuild the translucent quad showing the current active plane.
-    /// Removes any previous overlay, attaches fresh nodes to pcRoot.
-    void rebuildPlaneOverlay();
+
+    void ensurePlaneOverlay();
+    void updatePlaneOverlay();
+
+
+    void ensureSnapMarker();
+    void updateSnapMarker(bool visible, const Base::Vector3d& pos);
 
     std::unique_ptr<DrawSketchHandler3D> handler;
     TaskSketcher3DTool* taskPanel {nullptr};
@@ -138,6 +156,13 @@ private:
     ActivePlane activePlane {ActivePlane::XY};
     Base::Vector3d planeBase {0.0, 0.0, 0.0};
     SoSeparator* planeOverlay {nullptr};
+    SoCoordinate3* planeOverlayCoords {nullptr};
+
+    std::unique_ptr<SnapManager3D> snapManager;
+    SoSeparator* snapMarker {nullptr};
+    SoSwitch* snapMarkerSwitch {nullptr};
+    SoTranslation* snapMarkerXf {nullptr};
+    Sketcher3D::GeoElementId3D snapTarget {};
 
     /// Workbench name from before setEdit.same as partdesign
     std::string oldWb;

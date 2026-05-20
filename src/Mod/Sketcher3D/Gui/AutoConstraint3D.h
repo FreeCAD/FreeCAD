@@ -22,50 +22,30 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef SKETCHER3DGUI_AUTOCONSTRAINT3D_H
+#define SKETCHER3DGUI_AUTOCONSTRAINT3D_H
 
-#ifndef SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H
-#define SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H
-
-#include <vector>
-
-#include "DrawSketchHandler3D.h"
-
-class SoCoordinate3;
-class SoSwitch;
+#include <Mod/Sketcher3D/App/Constraint3D.h>
+#include <Mod/Sketcher3D/App/GeoEnum3D.h>
 
 namespace Sketcher3DGui
 {
 
-class Sketcher3DGuiExport DrawSketchHandlerPolyline3D: public DrawSketchHandler3D
+struct AutoConstraint3D
 {
-public:
-    DrawSketchHandlerPolyline3D();
-    ~DrawSketchHandlerPolyline3D() override;
-
-    bool pressButton(const Base::Vector3d& pos) override;
-    bool mouseMove(const Base::Vector3d& pos) override;
-    bool keyPressed(int key) override;
-
-protected:
-    void onActivated() override;
-
-private:
-    enum class State
+    enum TargetType
     {
-        PickFirst,
-        PickNext,
+        VERTEX,
+        CURVE,
+        VERTEX_NO_TANGENCY
     };
 
-    State state {State::PickFirst};
-    Base::Vector3d lastPos {0.0, 0.0, 0.0};
-
-    int prevSegGeoId {-1};
-    std::vector<AutoConstraint3D> sugConstr1;
-
-    SoCoordinate3* rubberCoords {nullptr};
-    SoSwitch* rubberSwitch {nullptr};
+    Sketcher3D::Constraint3D::Constraint3DType Type;
+    int GeoId;
+    Sketcher3D::PointPos PosId;
+    Sketcher3D::GeoKind Kind;
 };
 
 }  // namespace Sketcher3DGui
 
-#endif  // SKETCHER3DGUI_DRAWSKETCHHANDLERPOLYLINE3D_H
+#endif  // SKETCHER3DGUI_AUTOCONSTRAINT3D_H

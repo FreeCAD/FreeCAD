@@ -105,6 +105,8 @@ bool DrawSketchHandlerPolyline3D::pressButton(const Base::Vector3d& pos)
     }
 
     if (state == State::PickFirst) {
+        seekAutoConstraint(sugConstr1, pos, Base::Vector3d());
+
         lastPos = pos;
         state = State::PickNext;
         if (rubberCoords) {
@@ -136,6 +138,9 @@ bool DrawSketchHandlerPolyline3D::pressButton(const Base::Vector3d& pos)
         return true;
     }
 
+    std::vector<AutoConstraint3D> sugConstr2;
+    seekAutoConstraint(sugConstr2, pos, pos - lastPos);
+
     int tid = Gui::Command::openActiveDocumentCommand(
         QT_TRANSLATE_NOOP("Command", "Create 3D polyline segment")
     );
@@ -153,6 +158,19 @@ bool DrawSketchHandlerPolyline3D::pressButton(const Base::Vector3d& pos)
             Sketcher3D::GeoElementId3D(newGeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line),
         });
         sketch->addConstraint(c);
+    }
+
+    if (newGeoId >= 0) {
+        if (!sugConstr1.empty()) {
+            createAutoConstraints(
+                sugConstr1,
+                newGeoId,
+                Sketcher3D::PointPos::start,
+                Sketcher3D::GeoKind::Line
+            );
+            sugConstr1.clear();
+        }
+        createAutoConstraints(sugConstr2, newGeoId, Sketcher3D::PointPos::end, Sketcher3D::GeoKind::Line);
     }
 
     sketch->recomputeFeature();
@@ -177,6 +195,7 @@ bool DrawSketchHandlerPolyline3D::pressButton(const Base::Vector3d& pos)
 bool DrawSketchHandlerPolyline3D::keyPressed(int key)
 {
     if (key == SoKeyboardEvent::ESCAPE) {
+        sugConstr1.clear();
         // end the polyline.
         return DrawSketchHandler3D::keyPressed(key);
     }

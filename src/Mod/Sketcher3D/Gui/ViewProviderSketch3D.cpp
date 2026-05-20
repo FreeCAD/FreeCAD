@@ -26,9 +26,11 @@
 #include "PreCompiled.h"
 
 #include <cmath>
+#include <memory>
 
 #include <QMenu>
 
+#include <Inventor/SoPickedPoint.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/events/SoKeyboardEvent.h>
@@ -39,6 +41,9 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTranslation.h>
 
 #include <Standard_Failure.hxx>
 #include <TopAbs_ShapeEnum.hxx>
@@ -55,6 +60,7 @@
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "DrawSketchHandler3D.h"
+#include "SnapManager3D.h"
 #include "TaskDlgEditSketch3D.h"
 #include "TaskSketcher3DTool.h"
 #include "ViewProviderSketch3D.h"
@@ -96,30 +102,14 @@ SbVec3f planeNormal(ViewProviderSketch3D::ActivePlane p)
     }
 }
 
-SoSeparator* buildPlaneQuad(ViewProviderSketch3D::ActivePlane p, const Base::Vector3d& base)
+void writePlaneQuadCoords(SoCoordinate3* coords,
+                          ViewProviderSketch3D::ActivePlane p,
+                          const Base::Vector3d& base)
 {
-    auto* sep = new SoSeparator();
-    sep->setName("Sketcher3DPlaneOverlay");
-
-    // Clicks should pass through the plane hint to pick actual geometry.
-    auto* pick = new SoPickStyle();
-    pick->style.setValue(SoPickStyle::UNPICKABLE);
-    sep->addChild(pick);
-
-    auto* material = new SoMaterial();
-    material->diffuseColor.setValue(0.25F, 0.45F, 0.90F);
-    material->transparency.setValue(kPlaneTransparency);
-    sep->addChild(material);
-
-    auto* style = new SoDrawStyle();
-    style->style.setValue(SoDrawStyle::FILLED);
-    sep->addChild(style);
-
     const float s = kPlaneHalfSize;
     const float bx = static_cast<float>(base.x);
     const float by = static_cast<float>(base.y);
     const float bz = static_cast<float>(base.z);
-    auto* coords = new SoCoordinate3();
     coords->point.setNum(4);
     SbVec3f* pts = coords->point.startEditing();
     switch (p) {
@@ -144,14 +134,6 @@ SoSeparator* buildPlaneQuad(ViewProviderSketch3D::ActivePlane p, const Base::Vec
             break;
     }
     coords->point.finishEditing();
-    sep->addChild(coords);
-
-    auto* face = new SoFaceSet();
-    face->numVertices.setNum(1);
-    face->numVertices.set1Value(0, 4);
-    sep->addChild(face);
-
-    return sep;
 }
 
 const char* planeLabel(ViewProviderSketch3D::ActivePlane p)
@@ -234,7 +216,9 @@ bool ViewProviderSketch3D::setEdit(int ModNum)
         Gui::ToolBarManager::State::ForceHidden
     );
 
-    rebuildPlaneOverlay();
+    ensurePlaneOverlay();
+    ensureSnapMarker();
+    snapManager = std::make_unique<SnapManager3D>(*this);
 
     auto* dlg = new TaskDlgEditSketch3D(this);
     Gui::Control().showDialog(dlg);
@@ -250,11 +234,21 @@ void ViewProviderSketch3D::unsetEdit(int ModNum)
     }
 
     purgeHandler();
+    snapManager.reset();
+
+    if (snapMarker) {
+        pcRoot->removeChild(snapMarker);
+        snapMarker->unref();
+        snapMarker = nullptr;
+        snapMarkerSwitch = nullptr;
+        snapMarkerXf = nullptr;
+    }
 
     if (planeOverlay) {
         pcRoot->removeChild(planeOverlay);
         planeOverlay->unref();
         planeOverlay = nullptr;
+        planeOverlayCoords = nullptr;
     }
 
     Gui::ToolBarManager::getInstance()->setState(
@@ -304,7 +298,14 @@ bool ViewProviderSketch3D::mouseButtonPressed(
     }
 
     if (button == SoMouseButtonEvent::BUTTON1) {
-        Base::Vector3d p = projectToSketchPlane(cursorPos, viewer);
+        const Base::Vector3d raw = projectToSketchPlane(cursorPos, viewer);
+        Base::Vector3d p = raw;
+        snapTarget = {};
+        if (snapManager) {
+            const std::string pickedSubName = getPickedSubName(cursorPos, viewer);
+            p = snapManager->snap(raw, pickedSubName, snapTarget);
+        }
+        updateSnapMarker(false, p);  // hide on click; next move will re-show
         return handler->pressButton(p);
     }
 
@@ -316,7 +317,16 @@ bool ViewProviderSketch3D::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
     if (!handler) {
         return false;
     }
-    Base::Vector3d p = projectToSketchPlane(cursorPos, viewer);
+    const Base::Vector3d raw = projectToSketchPlane(cursorPos, viewer);
+    Base::Vector3d p = raw;
+    bool showMarker = false;
+    snapTarget = {};
+    if (snapManager) {
+        const std::string pickedSubName = getPickedSubName(cursorPos, viewer);
+        p = snapManager->snap(raw, pickedSubName, snapTarget);
+        showMarker = snapTarget.isValid();
+    }
+    updateSnapMarker(showMarker, p);
     return handler->mouseMove(p);
 }
 
@@ -349,7 +359,7 @@ void ViewProviderSketch3D::cyclePlane()
 {
     const int next = (static_cast<int>(activePlane) + 1) % 3;
     activePlane = static_cast<ActivePlane>(next);
-    rebuildPlaneOverlay();
+    updatePlaneOverlay();
     if (taskPanel) {
         taskPanel->refresh();
     }
@@ -359,22 +369,55 @@ void ViewProviderSketch3D::cyclePlane()
 void ViewProviderSketch3D::setPlaneBase(const Base::Vector3d& base)
 {
     planeBase = base;
-    rebuildPlaneOverlay();
+    updatePlaneOverlay();
     if (taskPanel) {
         taskPanel->refresh();
     }
 }
 
-void ViewProviderSketch3D::rebuildPlaneOverlay()
+void ViewProviderSketch3D::ensurePlaneOverlay()
 {
     if (planeOverlay) {
-        pcRoot->removeChild(planeOverlay);
-        planeOverlay->unref();
-        planeOverlay = nullptr;
+        updatePlaneOverlay();
+        return;
     }
-    planeOverlay = buildPlaneQuad(activePlane, planeBase);
+
+    planeOverlay = new SoSeparator();
+    planeOverlay->setName("Sketcher3DPlaneOverlay");
     planeOverlay->ref();
+
+    auto* pick = new SoPickStyle();
+    pick->style.setValue(SoPickStyle::UNPICKABLE);
+    planeOverlay->addChild(pick);
+
+    auto* material = new SoMaterial();
+    material->diffuseColor.setValue(0.25F, 0.45F, 0.90F);
+    material->transparency.setValue(kPlaneTransparency);
+    planeOverlay->addChild(material);
+
+    auto* style = new SoDrawStyle();
+    style->style.setValue(SoDrawStyle::FILLED);
+    planeOverlay->addChild(style);
+
+    planeOverlayCoords = new SoCoordinate3();
+    writePlaneQuadCoords(planeOverlayCoords, activePlane, planeBase);
+    planeOverlay->addChild(planeOverlayCoords);
+
+    auto* face = new SoFaceSet();
+    face->numVertices.setNum(1);
+    face->numVertices.set1Value(0, 4);
+    planeOverlay->addChild(face);
+
     pcRoot->addChild(planeOverlay);
+}
+
+void ViewProviderSketch3D::updatePlaneOverlay()
+{
+    if (!planeOverlayCoords) {
+        ensurePlaneOverlay();
+        return;
+    }
+    writePlaneQuadCoords(planeOverlayCoords, activePlane, planeBase);
 }
 
 Base::Vector3d ViewProviderSketch3D::projectToSketchPlane(
@@ -401,4 +444,81 @@ Base::Vector3d ViewProviderSketch3D::projectToSketchPlane(
     const float t = (base - near).dot(n) / denom;
     const SbVec3f p = near + dir * t;
     return Base::Vector3d(p[0], p[1], p[2]);
+}
+
+std::string ViewProviderSketch3D::getPickedSubName(
+    const SbVec2s& cursorPx,
+    const Gui::View3DInventorViewer* viewer
+) const
+{
+    if (!viewer) {
+        return {};
+    }
+
+    std::unique_ptr<SoPickedPoint> point(getPointOnRay(cursorPx, viewer));
+    if (!point) {
+        return {};
+    }
+
+    std::string subName;
+    if (!getElementPicked(point.get(), subName)) {
+        return {};
+    }
+    return subName;
+}
+
+void ViewProviderSketch3D::ensureSnapMarker()
+{
+    if (snapMarker) {
+        return;
+    }
+    snapMarker = new SoSeparator();
+    snapMarker->setName("Sketcher3DSnapMarker");
+    snapMarker->ref();
+    snapMarker->renderCaching = SoSeparator::OFF;
+
+    snapMarkerSwitch = new SoSwitch();
+    snapMarkerSwitch->whichChild = SO_SWITCH_NONE;
+    snapMarker->addChild(snapMarkerSwitch);
+
+    auto* content = new SoSeparator();
+
+    auto* pick = new SoPickStyle();
+    pick->style.setValue(SoPickStyle::UNPICKABLE);
+    content->addChild(pick);
+
+    auto* material = new SoMaterial();
+    material->diffuseColor.setValue(1.0F, 0.55F, 0.0F);
+    material->emissiveColor.setValue(0.6F, 0.3F, 0.0F);
+    content->addChild(material);
+
+    snapMarkerXf = new SoTranslation();
+    snapMarkerXf->translation.setValue(0.0F, 0.0F, 0.0F);
+    content->addChild(snapMarkerXf);
+
+    auto* sphere = new SoSphere();
+    sphere->radius.setValue(0.6F);
+    content->addChild(sphere);
+
+    snapMarkerSwitch->addChild(content);
+
+    pcRoot->addChild(snapMarker);
+}
+
+void ViewProviderSketch3D::updateSnapMarker(bool visible, const Base::Vector3d& pos)
+{
+    if (!snapMarkerSwitch || !snapMarkerXf) {
+        return;
+    }
+    if (visible) {
+        snapMarkerXf->translation.setValue(
+            static_cast<float>(pos.x),
+            static_cast<float>(pos.y),
+            static_cast<float>(pos.z)
+        );
+        snapMarkerSwitch->whichChild = 0;
+    }
+    else {
+        snapMarkerSwitch->whichChild = SO_SWITCH_NONE;
+    }
 }

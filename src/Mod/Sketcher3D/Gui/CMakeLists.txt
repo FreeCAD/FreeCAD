@@ -8,6 +8,7 @@ set(Sketcher3DGui_LIBS
 
 SET(Sketcher3DGui_SRCS
     AppSketcher3DGui.cpp
+    AutoConstraint3D.h
     Command.cpp
     DlgEditConstraintValue.cpp
     DlgEditConstraintValue.h
@@ -20,6 +21,8 @@ SET(Sketcher3DGui_SRCS
     DrawSketchHandlerPolyline3D.cpp
     DrawSketchHandlerPolyline3D.h
     PreCompiled.h
+    SnapManager3D.cpp
+    SnapManager3D.h
     TaskDlgEditSketch3D.cpp
     TaskDlgEditSketch3D.h
     TaskSketcher3DTool.cpp

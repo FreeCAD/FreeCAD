@@ -78,6 +78,9 @@ public:
     /// sketch geometry. Uses stable element map names so references survives
     GeoElementId3D resolveSubName(const std::string& subname) const;
 
+    /// Write the world position of target to point.
+    bool getPointAt(const GeoElementId3D& target, Base::Vector3d& point) const;
+
     /// Return true when two points are already connected by Coincident3D
     /// constraints, directly or through other coincident points.
     bool arePointsCoincident3D(const GeoElementId3D& a, const GeoElementId3D& b) const;

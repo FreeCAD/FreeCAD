@@ -91,10 +91,13 @@ bool DrawSketchHandlerPoint3D::pressButton(const Base::Vector3d& pos)
         return false;
     }
 
-    int tid = Gui::Command::openActiveDocumentCommand(
-        QT_TRANSLATE_NOOP("Command", "Create 3D point")
-    );
-    sketch->addGeometry(std::make_unique<Part::GeomPoint>(pos));
+    std::vector<AutoConstraint3D> sugConstr;
+    seekAutoConstraint(sugConstr, pos, Base::Vector3d());
+
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create 3D point"));
+    const int newGeoId = sketch->addGeometry(std::make_unique<Part::GeomPoint>(pos));
+    createAutoConstraints(sugConstr, newGeoId, Sketcher3D::PointPos::none, Sketcher3D::GeoKind::Point);
+
     sketch->recomputeFeature();
     Gui::Command::commitCommand(tid);
 

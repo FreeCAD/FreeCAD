@@ -26,8 +26,12 @@
 #ifndef SKETCHER3DGUI_DRAWSKETCHHANDLER3D_H
 #define SKETCHER3DGUI_DRAWSKETCHHANDLER3D_H
 
+#include <vector>
+
 #include <Base/Vector3D.h>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
+
+#include "AutoConstraint3D.h"
 
 class SoSeparator;
 
@@ -79,6 +83,37 @@ protected:
     {
         return preview;
     }
+
+    struct PreselectionData
+    {
+        int geoId {Sketcher3D::GeoEnum3D::GeoUndef};
+        Sketcher3D::PointPos posId {Sketcher3D::PointPos::none};
+        Sketcher3D::GeoKind kind {Sketcher3D::GeoKind::Unknown};
+        Base::Vector3d hitShapeDir {0.0, 0.0, 0.0};
+        bool isLine {false};
+    };
+    PreselectionData getPreselectionData() const;
+
+    int seekAutoConstraint(
+        std::vector<AutoConstraint3D>& suggestedConstraints,
+        const Base::Vector3d& Pos,
+        const Base::Vector3d& Dir,
+        AutoConstraint3D::TargetType type = AutoConstraint3D::VERTEX
+    ) const;
+
+    void seekPreselectionAutoConstraint(
+        std::vector<AutoConstraint3D>& suggestedConstraints,
+        const Base::Vector3d& Pos,
+        const Base::Vector3d& Dir,
+        AutoConstraint3D::TargetType type
+    ) const;
+
+    void createAutoConstraints(
+        const std::vector<AutoConstraint3D>& autoConstrs,
+        int geoId1,
+        Sketcher3D::PointPos posId1 = Sketcher3D::PointPos::none,
+        Sketcher3D::GeoKind geoKind1 = Sketcher3D::GeoKind::Unknown
+    ) const;
 
 private:
     ViewProviderSketch3D* vp {nullptr};

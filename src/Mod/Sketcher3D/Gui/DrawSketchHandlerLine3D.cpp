@@ -103,6 +103,8 @@ bool DrawSketchHandlerLine3D::pressButton(const Base::Vector3d& pos)
     }
 
     if (state == State::PickFirst) {
+        seekAutoConstraint(sugConstr1, pos, Base::Vector3d());
+
         startPos = pos;
         state = State::PickSecond;
         if (rubberCoords) {
@@ -133,12 +135,18 @@ bool DrawSketchHandlerLine3D::pressButton(const Base::Vector3d& pos)
         return true;
     }
 
-    int tid = Gui::Command::openActiveDocumentCommand(
-        QT_TRANSLATE_NOOP("Command", "Create 3D line")
-    );
+    std::vector<AutoConstraint3D> sugConstr2;
+    seekAutoConstraint(sugConstr2, pos, pos - startPos);
+
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create 3D line"));
     auto seg = std::make_unique<Part::GeomLineSegment>();
     seg->setPoints(startPos, pos);
-    sketch->addGeometry(std::move(seg));
+    const int newGeoId = sketch->addGeometry(std::move(seg));
+    if (newGeoId >= 0) {
+        createAutoConstraints(sugConstr1, newGeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line);
+        createAutoConstraints(sugConstr2, newGeoId, Sketcher3D::PointPos::end, Sketcher3D::GeoKind::Line);
+    }
+    sugConstr1.clear();
     sketch->recomputeFeature();
     Gui::Command::commitCommand(tid);
 
@@ -164,6 +172,7 @@ bool DrawSketchHandlerLine3D::keyPressed(int key)
 void DrawSketchHandlerLine3D::resetToPickFirst()
 {
     state = State::PickFirst;
+    sugConstr1.clear();
     if (rubberSwitch) {
         rubberSwitch->whichChild = SO_SWITCH_NONE;
     }

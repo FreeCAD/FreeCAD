@@ -165,6 +165,42 @@ GeoElementId3D Sketch3DObject::resolveSubName(const std::string& subname) const
     return {geoId, pos, kindFromGeometry(geos[geoId])};
 }
 
+bool Sketch3DObject::getPointAt(const GeoElementId3D& target, Base::Vector3d& point) const
+{
+    const auto& geos = Geometry.getValues();
+    if (target.GeoId < 0 || target.GeoId >= static_cast<int>(geos.size())) {
+        return false;
+    }
+
+    const Part::Geometry* geo = geos[target.GeoId];
+    if (!geo) {
+        return false;
+    }
+
+    if (const auto* pt = dynamic_cast<const Part::GeomPoint*>(geo)) {
+        if (target.Pos != PointPos::none) {
+            return false;
+        }
+        point = pt->getPoint();
+        return true;
+    }
+
+    if (const auto* seg = dynamic_cast<const Part::GeomLineSegment*>(geo)) {
+        switch (target.Pos) {
+            case PointPos::start:
+                point = seg->getStartPoint();
+                return true;
+            case PointPos::end:
+                point = seg->getEndPoint();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    return false;
+}
+
 bool Sketch3DObject::arePointsCoincident3D(const GeoElementId3D& a, const GeoElementId3D& b) const
 {
     if (!a.isValid() || !b.isValid()) {
