@@ -350,7 +350,7 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
     TopoDS_Face face;
     // This is where the label is placed
     // For now not necessarily on the curve as the name implies
-    // But in the future when https://github.com/FreeCAD/FreeCAD/issues/28937 
+    // But in the future when https://github.com/FreeCAD/FreeCAD/issues/28937
     // gets implemented it should be.
     gp_Pnt pointOnCurve;
     double radius = 0.0;
@@ -421,7 +421,7 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
         return invalidRes;
     }
 
-    // Currently not in use but useful for future implementation of 
+    // Currently not in use but useful for future implementation of
     // https://github.com/FreeCAD/FreeCAD/issues/28937
     gp_Pnt center = gprops.CentreOfMass();
 

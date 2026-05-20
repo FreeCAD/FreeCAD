@@ -166,7 +166,7 @@ public:
     // Currently not in use but useful for the future
     Base::Vector3d center;
     // These things should be fixed when this is implemented:
-    // https://github.com/FreeCAD/FreeCAD/issues/28937, 
+    // https://github.com/FreeCAD/FreeCAD/issues/28937,
     // annotation arrows for radius and diameter measurement.
 };
 
