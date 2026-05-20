@@ -150,7 +150,7 @@ std::string Command::toGCode(int precision, bool padzero) const
 
     // Add annotations as a comment if they exist
     if (!Annotations.empty()) {
-        str << " ; ";
+        str << "; ";
         bool first = true;
         for (const auto& pair : Annotations) {
             if (!first) {
