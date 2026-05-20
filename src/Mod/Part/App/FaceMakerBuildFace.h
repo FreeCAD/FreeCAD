@@ -66,8 +66,7 @@ protected:
 
     /// Run BOPAlgo_BuilderFace on `edges` against a large base face in `plane`
     /// and return the bounded inner faces (outer/degenerate areas filtered).
-    std::vector<TopoDS_Face> collectBoundedFaces(const TopTools_ListOfShape& edges,
-                                                  const gp_Pln& plane);
+    std::vector<TopoDS_Face> collectBoundedFaces(const TopTools_ListOfShape& edges, const gp_Pln& plane);
 
     gp_Pln myPlane;
     bool planeSupplied = false;
