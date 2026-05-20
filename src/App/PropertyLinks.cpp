@@ -1585,7 +1585,7 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
         return false;
     }
     bool touched = false;
-    std::vector<Data::MappedElement> *extraMatchedNames = new std::vector<Data::MappedElement>();
+    std::vector<Data::MappedElement> extraMatchedNames;
     std::ostringstream ss;
 
     std::vector<std::string> newSubs = { };
@@ -1598,38 +1598,37 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
                                           shadows[i],
                                           reverse,
                                           notify && !touched,
-                                          extraMatchedNames))
+                                          &extraMatchedNames))
         {
             // let's do the name matching here
-            if (extraMatchedNames->size() > 1 && prop->canUseMultipleMatchedNames()) {
-                extraMatchedNames->erase(extraMatchedNames->begin());
+            if (extraMatchedNames.size() > 1 && prop->canUseMultipleMatchedNames()) {
+                extraMatchedNames.erase(extraMatchedNames.begin());
 
-                for (const Data::MappedElement &mappedElement : *extraMatchedNames) {
+                for (const Data::MappedElement &mappedElement : extraMatchedNames) {
                     std::string name = mappedElement.name.toString();
                     std::string index = mappedElement.index.toString();
 
-                    if (std::find(newSubs.begin(), newSubs.end(), index) == newSubs.end()) {
-                        ss << Data::ComplexGeoData::elementMapPrefix() << name << '.' << index;
+                    ss << Data::ComplexGeoData::elementMapPrefix() << name << '.' << index;
 
-                        shadows.emplace_back(ss.str(), index);
-                        subs.push_back(index);
-                        
-                        ss.str("");
+                    if (prop->canHaveDuplicateLinks() || std::find(newSubs.begin(), newSubs.end(), index) == newSubs.end()) {
+                        newShadows.emplace_back(ss.str(), index);
+                        newSubs.push_back(index);
                     }
+                    
+                    ss.str("");
                 }
             }
 
-            extraMatchedNames->clear();
+            extraMatchedNames.clear();
 
             touched = true;
         }
 
-        if (std::find(newSubs.begin(), newSubs.end(), subs[i]) == newSubs.end()) {
+        if (prop->canHaveDuplicateLinks() || std::find(newSubs.begin(), newSubs.end(), subs[i]) == newSubs.end()) {
             newShadows.push_back(shadows[i]);
             newSubs.push_back(subs[i]);
         }
     }
-    delete extraMatchedNames;
     if (!touched) {
         return false;
     }

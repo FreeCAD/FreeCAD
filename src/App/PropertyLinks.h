@@ -640,8 +640,16 @@ public:
         allowMultipleMatchedNames = allow;
     };
 
+    virtual void allowDuplicateLinks(bool allow) {
+        allowForDuplicateLinks = allow;
+    };
+
     virtual bool canUseMultipleMatchedNames() {
         return allowMultipleMatchedNames;
+    };
+
+    virtual bool canHaveDuplicateLinks() {
+        return allowForDuplicateLinks;
     };
 
 protected:
@@ -662,6 +670,7 @@ protected:
 
 private:
     bool allowMultipleMatchedNames = false;
+    bool allowForDuplicateLinks = true;
     std::set<std::string> _LabelRefs;
     std::set<App::DocumentObject*> _ElementRefs;
 };

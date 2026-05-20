@@ -641,7 +641,7 @@ MappedName ElementMap::setElementName(const IndexedName& element,
                 }
             }
 
-            decodedName[decodedName.size() - 1].duplicateCount = duplicateIndex;
+            decodedName[decodedName.size() - 1].duplicateCount = std::to_string(duplicateIndex);
             
             mappedName = MappedName::fromDecodedMappedName(decodedName);
             res = this->addName(
