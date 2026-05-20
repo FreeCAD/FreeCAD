@@ -56,7 +56,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="102"/>
       <source>Navigation style not recognized.</source>
-      <translation>Navigationstype er ikke genkendt.</translation>
+      <translation>Navigationstype ikke genkendt.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="653"/>
@@ -110,7 +110,7 @@
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="674"/>
-      <source>Navigation indicator</source>
+      <source>Navigation Indicator</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
       <translation>Navigationsindikator</translation>
     </message>

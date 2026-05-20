@@ -651,7 +651,7 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
 
     // This does the same as a double-click and thus it should be the first action and with bold
     // text
-    QAction* change = menu.addAction(tr("Change Value"), this, &ConstraintView::modifyCurrentItem);
+    QAction* change = menu.addAction(tr("Edit Value"), this, &ConstraintView::modifyCurrentItem);
     change->setEnabled(isQuantity);
     menu.setDefaultAction(change);
 
@@ -1602,7 +1602,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemSelectionChanged()
     this->blockSelection(block);
 
     // it seems that addSelections gives back the focus to the view, and not immediately.
-    QTimer::singleShot(200, [this]() {
+    QTimer::singleShot(200, this, [this]() {
         QWidget* fw = QApplication::focusWidget();
         if (fw && ui->listWidgetConstraints->viewport()->isAncestorOf(fw)) {
             return; // Do NOT steal focus if the editor is active

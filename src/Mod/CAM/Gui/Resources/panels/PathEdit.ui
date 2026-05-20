@@ -58,6 +58,9 @@
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="toolTip">
+                <string>Sets the stock creation method: box (explicit dimensions), cylinder, bounding box extension of the model (default), or an existing solid from the document.</string>
+               </property>
                <property name="currentIndex">
                 <number>2</number>
                </property>
@@ -88,25 +91,8 @@
                <property name="text">
                 <string>Refresh</string>
                </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btnMaterial">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
                <property name="toolTip">
-                <string>Assign stock material</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../../../Material/Gui/Resources/Material.qrc">
-                 <normaloff>:/icons/MaterialWorkbench.svg</normaloff>:/icons/MaterialWorkbench.svg</iconset>
+                <string>Recreates the stock from the current settings. Useful after changing the model bounding box or stock parameters.</string>
                </property>
               </widget>
              </item>
@@ -140,6 +126,9 @@
            <item>
             <widget class="QFrame" name="stockFromBase">
              <layout class="QGridLayout" name="gridLayout_9">
+              <property name="columnStretch">
+               <string>0,0,1,1</string>
+              </property>
               <item row="0" column="1">
                <widget class="QLabel" name="stockExtXLabel">
                 <property name="text">
@@ -148,10 +137,17 @@
                </widget>
               </item>
               <item row="0" column="2">
-               <widget class="Gui::InputField" name="stockExtXneg"/>
+               <widget class="Gui::QuantitySpinBox" name="stockExtXneg">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
               </item>
               <item row="0" column="3">
-               <widget class="Gui::InputField" name="stockExtXpos">
+               <widget class="Gui::QuantitySpinBox" name="stockExtXpos">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -168,10 +164,24 @@
                </widget>
               </item>
               <item row="1" column="2">
-               <widget class="Gui::InputField" name="stockExtYneg"/>
+               <widget class="Gui::QuantitySpinBox" name="stockExtYneg">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
               </item>
               <item row="1" column="3">
-               <widget class="Gui::InputField" name="stockExtYpos"/>
+               <widget class="Gui::QuantitySpinBox" name="stockExtYpos">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
               </item>
               <item row="2" column="1">
                <widget class="QLabel" name="stockExtZLabel">
@@ -181,10 +191,24 @@
                </widget>
               </item>
               <item row="2" column="2">
-               <widget class="Gui::InputField" name="stockExtZneg"/>
+               <widget class="Gui::QuantitySpinBox" name="stockExtZneg">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
               </item>
               <item row="2" column="3">
-               <widget class="Gui::InputField" name="stockExtZpos"/>
+               <widget class="Gui::QuantitySpinBox" name="stockExtZpos">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -200,7 +224,7 @@
                </widget>
               </item>
               <item row="0" column="2">
-               <widget class="Gui::InputField" name="stockCylinderRadius"/>
+               <widget class="Gui::QuantitySpinBox" name="stockCylinderRadius"/>
               </item>
               <item row="1" column="1">
                <widget class="QLabel" name="stockCylinderHeightLabel">
@@ -210,7 +234,7 @@
                </widget>
               </item>
               <item row="1" column="2">
-               <widget class="Gui::InputField" name="stockCylinderHeight"/>
+               <widget class="Gui::QuantitySpinBox" name="stockCylinderHeight"/>
               </item>
              </layout>
             </widget>
@@ -226,7 +250,7 @@
                </widget>
               </item>
               <item row="0" column="2">
-               <widget class="Gui::InputField" name="stockBoxLength"/>
+               <widget class="Gui::QuantitySpinBox" name="stockBoxLength"/>
               </item>
               <item row="1" column="1">
                <widget class="QLabel" name="stockBoxWidthLabel">
@@ -236,7 +260,7 @@
                </widget>
               </item>
               <item row="1" column="2">
-               <widget class="Gui::InputField" name="stockBoxWidth"/>
+               <widget class="Gui::QuantitySpinBox" name="stockBoxWidth"/>
               </item>
               <item row="2" column="1">
                <widget class="QLabel" name="stockBoxHeightLabel">
@@ -246,10 +270,53 @@
                </widget>
               </item>
               <item row="2" column="2">
-               <widget class="Gui::InputField" name="stockBoxHeight"/>
+               <widget class="Gui::QuantitySpinBox" name="stockBoxHeight"/>
               </item>
              </layout>
             </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="materialRowLayout">
+             <item>
+              <widget class="QPushButton" name="btnMaterial">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>Assign stock material</string>
+               </property>
+               <property name="text">
+                <string>Assign Material</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../../../../Material/Gui/Resources/Material.qrc">
+                 <normaloff>:/icons/MaterialWorkbench.svg</normaloff>:/icons/MaterialWorkbench.svg</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="materialLabel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>1</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>Stock material currently assigned. Click the material button to change.</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -271,6 +338,25 @@
             <widget class="QPushButton" name="setOrigin">
              <property name="text">
               <string>Set Origin</string>
+             </property>
+             <property name="toolTip">
+              <string>Sets the model origin to a selected point, either a vertex or the center of the selected face. The picking button controls whether selection targets the stock or the model.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QPushButton" name="pickTargetToggle">
+             <property name="text">
+              <string>Picking: Model</string>
+             </property>
+             <property name="toolTip">
+              <string>Toggle whether origin/axis picks target the Model (default) or the Stock. Useful when Stock and Model overlap and the desired vertex is hidden.</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -294,13 +380,19 @@
         <item>
          <widget class="QGroupBox" name="modelSetGroup">
           <property name="title">
-           <string>Set</string>
+           <string>Origin &amp;&amp; Orientation</string>
+          </property>
+          <property name="toolTip">
+           <string>Positions the model so a picked edge defines an axis and a picked vertex zeros the model on that axis. The G54-G59 fixture is set on the output tab.</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
            <item row="0" column="0">
             <widget class="QPushButton" name="modelSetXAxis">
              <property name="text">
               <string>X-Axis</string>
+             </property>
+             <property name="toolTip">
+              <string>Rotates the model so a picked edge becomes the X-axis</string>
              </property>
             </widget>
            </item>
@@ -309,12 +401,18 @@
              <property name="text">
               <string>Y-Axis</string>
              </property>
+             <property name="toolTip">
+              <string>Rotates the model so a picked edge becomes the Y-axis</string>
+             </property>
             </widget>
            </item>
            <item row="0" column="2">
             <widget class="QPushButton" name="modelSetZAxis">
              <property name="text">
               <string>Z-Axis</string>
+             </property>
+             <property name="toolTip">
+              <string>Rotates the model so a picked edge becomes the Z-axis</string>
              </property>
             </widget>
            </item>
@@ -323,12 +421,18 @@
              <property name="text">
               <string>X=0</string>
              </property>
+             <property name="toolTip">
+              <string>Translates the model so the picked vertex has X = 0</string>
+             </property>
             </widget>
            </item>
            <item row="1" column="1">
             <widget class="QPushButton" name="modelSetY0">
              <property name="text">
               <string>Y=0</string>
+             </property>
+             <property name="toolTip">
+              <string>Translates the model so the picked vertex has Y = 0</string>
              </property>
             </widget>
            </item>
@@ -337,12 +441,18 @@
              <property name="text">
               <string>Z=0</string>
              </property>
+             <property name="toolTip">
+              <string>Translates the model so the picked vertex has Z = 0</string>
+             </property>
             </widget>
            </item>
            <item row="2" column="0">
             <widget class="QCheckBox" name="linkStockAndModel">
              <property name="text">
               <string>Link stock and model</string>
+             </property>
+             <property name="toolTip">
+              <string>When checked, stock follows model translations and rotations performed in this dialog. When unchecked, stock can be positioned independently of the model.</string>
              </property>
             </widget>
            </item>
@@ -510,7 +620,10 @@
         <item>
          <widget class="QGroupBox" name="modelRotateGroup">
           <property name="title">
-           <string>Rotate - XY</string>
+           <string>Rotate around Z</string>
+          </property>
+          <property name="toolTip">
+           <string>Rotates the model about the Z-axis. When the compound checkbox is enabled, rotations stack cumulatively.</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_6">
            <item row="0" column="0">
@@ -567,6 +680,9 @@
               <widget class="QCheckBox" name="modelRotateCompound">
                <property name="text">
                 <string>Compound</string>
+               </property>
+               <property name="toolTip">
+                <string>When checked, rotations stack: each press rotates by the value above relative to the current orientation. When unchecked, each press resets and rotates from the original orientation.</string>
                </property>
                <property name="checked">
                 <bool>true</bool>
@@ -890,21 +1006,39 @@ Default: &quot;5mm&quot;</string>
           </layout>
          </widget>
         </item>
+        <item>
+         <widget class="QGroupBox" name="machineGroup">
+          <property name="title">
+           <string>Machine</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_machine">
+           <item>
+            <widget class="QComboBox" name="jobMachine">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Machine configuration for this job, drawn from machines available in the asset path. New machines can be added with the New Machine button.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="jobMachineNew">
+             <property name="text">
+              <string>New Machine</string>
+             </property>
+             <property name="toolTip">
+              <string>Opens the Machine Editor to create a new machine. The new machine will be available for selection once saved.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="templateExport">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>100</width>
-         <height>30</height>
-        </rect>
-       </property>
-       <attribute name="label">
-        <string>Template export</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_13"/>
       </widget>
      </widget>
     </item>
@@ -1549,23 +1683,32 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="tabOpDefaults">
+  <widget class="QWidget" name="tabAdvanced">
    <attribute name="title">
-    <string>Op Defaults</string>
+    <string>Advanced</string>
    </attribute>
-   <layout class="QVBoxLayout" name="verticalLayout_11">
+   <layout class="QVBoxLayout" name="verticalLayout_advanced">
     <item>
-     <widget class="QComboBox" name="opDefaultOp"/>
+     <widget class="QTabWidget" name="advancedSubTabs">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tabOpDefaults">
+       <attribute name="title">
+        <string>Operation Defaults</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_11">
+        <item>
+         <widget class="QComboBox" name="opDefaultOp"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
-  </customwidget>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>

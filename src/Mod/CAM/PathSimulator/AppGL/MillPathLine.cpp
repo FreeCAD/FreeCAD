@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include "MillPathLine.h"
-#include "OpenGlWrapper.h"
-#include "GlUtils.h"
+
 #include "Shader.h"
 
-namespace MillSim
+// include this last as the defines can mess up other includes
+#include "OpenGlWrapper.h"
+
+namespace CAMSimulator
 {
 
 void MillPathLine::GenerateModel()
@@ -59,4 +61,4 @@ void MillPathLine::Render()
     glDrawArrays(GL_LINE_STRIP, 0, mNumVerts);
 }
 
-}  // namespace MillSim
+}  // namespace CAMSimulator

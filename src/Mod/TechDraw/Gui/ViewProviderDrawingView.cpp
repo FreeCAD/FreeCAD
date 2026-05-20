@@ -59,7 +59,6 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 ViewProviderDrawingView::ViewProviderDrawingView() :
     m_myName(std::string())
 {
-//    Base::Console().message("VPDV::VPDV\n");
     initExtension(this);
 
     sPixmap = "TechDraw_TreeView";
@@ -186,10 +185,38 @@ QGIView* ViewProviderDrawingView::getQView()
 
     QGSPage* page = vpp->getQGSPage();
     if (page) {
-        return dynamic_cast<QGIView *>(page->findQViewForDocObj(getViewObject()));
+        return page->findQViewForDocObj(getViewObject());
     }
 
     return nullptr;
+}
+
+//! Returns the parent graphics item of the passed item or nullptr if the passed item has no parent item.  The parent/child
+//! relationship is based on TD features, not the QGraphicsScene.
+//! this is just qgiv->parentItem() with extra steps??
+QGIView* ViewProviderDrawingView::getOwnerQView(const QGIView* qgiv)
+{
+    auto page = dynamic_cast<QGSPage *>(qgiv->scene());
+    if (!page) {
+        return nullptr;
+    }
+
+    TechDraw::DrawView* obj = qgiv->getViewObject();
+    if (!obj) {
+        return nullptr;
+    }
+
+    App::PropertyLink* ownerProp = obj->getOwnerProperty();
+    if (!ownerProp) {
+        return nullptr;
+    }
+
+    auto* owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
+    if (!owner) {
+        return nullptr;
+    }
+
+    return page->getQGIVByName(owner->getNameInDocument());
 }
 
 bool ViewProviderDrawingView::isShow() const
@@ -216,46 +243,44 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
-    TechDraw::DrawView *obj = getViewObject();
-    App::PropertyLink *ownerProp = obj->getOwnerProperty();
+    QGIView* qgiv = getQView();
+    if (!qgiv)  {
+        return;
+    }
+
+    TechDraw::DrawView* obj = getViewObject();
+    if (!obj) {
+        return;
+    }
+
+    App::PropertyLink* ownerProp = obj->getOwnerProperty();
 
     //only move the view on X, Y change
-    if (prop == &obj->X
-        || prop == &obj->Y) {
-        QGIView* qgiv = getQView();
-        if (qgiv && !qgiv->isSnapping()) {
-            qgiv->QGIView::updateView(true);
+    if (prop == &obj->X ||
+        prop == &obj->Y) {
 
-            // Update also the owner/parent view, if there is any
-            if (ownerProp) {
-                auto owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
-                if (owner) {
-                    auto page = dynamic_cast<QGSPage *>(qgiv->scene());
-                    if (page) {
-                        QGIView *ownerView = page->getQGIVByName(owner->getNameInDocument());
-                        if (ownerView) {
-                            ownerView->updateView();
-                        }
-                    }
-                }
-            }
+        if (qgiv->isSnapping() ||
+            obj->LockPosition.getValue()) {
+            Gui::ViewProviderDocumentObject::updateData(prop);
+            return;
         }
+
+        qgiv->updatePositionFromFeatureXY();
+
+        // Update also the owner/parent view, if there is any
+        QGIView* ownerView = getOwnerQView(qgiv);
+        if (ownerView) {
+            ownerView->updateView();
+        }
+
+        Gui::ViewProviderDocumentObject::updateData(prop);
+        return;
     }
-    else if (ownerProp && prop == ownerProp) {
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            QGIView *ownerView = nullptr;
-            auto owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
-            if (owner) {
-                auto page = dynamic_cast<QGSPage *>(qgiv->scene());
-                if (page) {
-                    ownerView = page->getQGIVByName(owner->getNameInDocument());
-                }
-            }
 
-            qgiv->switchParentItem(ownerView);
-            qgiv->updateView();
-        }
+    if (ownerProp && prop == ownerProp) {
+        QGIView* ownerView = getOwnerQView(qgiv);  // ownerView is allowed to be null here
+        qgiv->switchParentItem(ownerView);
+        qgiv->updateView();
     }
 
     Gui::ViewProviderDocumentObject::updateData(prop);

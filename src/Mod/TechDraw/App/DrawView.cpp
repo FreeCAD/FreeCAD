@@ -583,7 +583,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
 {
     if (prop == &Scale) {
         App::PropertyFloat tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {                   //property in file is Float
+        if (tmp.getTypeId().getName() == TypeName) {  // property in file is Float
             tmp.setContainer(this);
             tmp.Restore(reader);
             double tmpValue = tmp.getValue();
@@ -598,7 +598,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
         && strcmp(prop->getName(), "Source") == 0) {
         App::PropertyLinkGlobal glink;
         App::PropertyLink link;
-        if (strcmp(glink.getTypeId().getName(), TypeName) == 0) {            //property in file is plg
+        if (glink.getTypeId().getName() == TypeName) {  // property in file is plg
             glink.setContainer(this);
             glink.Restore(reader);
             if (glink.getValue()) {
@@ -606,7 +606,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
                 static_cast<App::PropertyLinkList*>(prop)->setValue(glink.getValue());
             }
         }
-        else if (strcmp(link.getTypeId().getName(), TypeName) == 0) {            //property in file is pl
+        else if (link.getTypeId().getName() == TypeName) {  // property in file is pl
             link.setContainer(this);
             link.Restore(reader);
             if (link.getValue()) {

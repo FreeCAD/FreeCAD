@@ -125,6 +125,7 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this](const std::string& param) { updateConstraintPresentationParameters(param); }},
         {"ViewScalingFactor", [this](const std::string&) { Client.updateElementSizeParameters(); }},
         {"MarkerSize", [this](const std::string&) { Client.updateElementSizeParameters(); }},
+        {"EditSketcherFontName", [this](const std::string&) { Client.updateElementSizeParameters(); }},
         {"EditSketcherFontSize", [this](const std::string&) { Client.updateElementSizeParameters(); }},
         {"EdgeWidth",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -316,16 +317,16 @@ void EditModeCoinManager::ParameterObserver::updateOverlayVisibilityParameter(
     if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineDegree) {
         Client.overlayParameters.bSplineDegreeVisible = hGrpsk->GetBool(parametername.c_str(), true);
     }
-    else if constexpr (visibilityparameter
-                       == OverlayVisibilityParameter::BSplineControlPolygonVisible) {
+    else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineControlPolygonVisible) {
         Client.overlayParameters.bSplineControlPolygonVisible
             = hGrpsk->GetBool(parametername.c_str(), true);
     }
     else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineCombVisible) {
         Client.overlayParameters.bSplineCombVisible = hGrpsk->GetBool(parametername.c_str(), true);
     }
-    else if constexpr (visibilityparameter
-                       == OverlayVisibilityParameter::BSplineKnotMultiplicityVisible) {
+    else if constexpr (
+        visibilityparameter == OverlayVisibilityParameter::BSplineKnotMultiplicityVisible
+    ) {
         Client.overlayParameters.bSplineKnotMultiplicityVisible
             = hGrpsk->GetBool(parametername.c_str(), true);
     }
@@ -1078,6 +1079,10 @@ void EditModeCoinManager::updateElementSizeParameters()
     viewScalingFactor = std::clamp<double>(viewScalingFactor, 0.5, 5.0);
 
     int markerSize = hGrp->GetInt("MarkerSize", 7);
+
+    drawingParameters.labelFontName = QString::fromStdString(
+        hGrp->GetASCII("EditSketcherFontName", "")
+    );
 
     int defaultFontSizePixels = defaultApplicationFontSizePixels();  // returns height in pixels,
                                                                      // not points

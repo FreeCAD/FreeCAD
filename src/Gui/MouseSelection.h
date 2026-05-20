@@ -62,7 +62,8 @@ public:
         Restart = 1,
         Finish = 2,
         Cancel = 3,
-        Ignore = 4
+        Ignore = 4,
+        FinishAndConsume = 5
     };
 
     AbstractMouseSelection();
@@ -266,6 +267,39 @@ public:
     BoxZoomSelection();
     ~BoxZoomSelection() override;
     void terminate(bool abort = false) override;
+};
+
+/**
+ * Rubberband selection model used by delayed drag box selection in the 3D view.
+ * Unlike RectangleSelection, it starts from an externally supplied anchor after
+ * the initial press event and consumes the release event to avoid click selection.
+ */
+class GuiExport BoxSelectSelection: public RubberbandSelection
+{
+public:
+    explicit BoxSelectSelection(bool additiveSelection = false, bool selectElement = false);
+    ~BoxSelectSelection() override;
+
+    /// Initialize the delayed drag-select anchor when the rubberband starts after press.
+    void setAnchor(const SbVec2s& startPosition, const SbVec2s& currentPosition);
+
+    void initialize() override;
+    void terminate(bool abort = false) override;
+
+protected:
+    int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos) override;
+    int locationEvent(const SoLocation2Event* const e, const QPoint& pos) override;
+    int keyboardEvent(const SoKeyboardEvent* const e) override;
+
+private:
+    QPoint toWidgetPoint(const SbVec2s& position) const;
+
+private:
+    SbVec2s startPosition;
+    SbVec2s currentPosition;
+    bool additiveSelection;
+    bool selectElement;
+    bool selectionEnabled {true};
 };
 
 }  // namespace Gui

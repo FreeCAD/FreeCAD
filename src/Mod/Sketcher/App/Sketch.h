@@ -341,7 +341,14 @@ public:
      *   constraint value and already inserted into either the FixParameters or
      *   Parameters array, as the case may be.
      */
-    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double* value, bool driving = true);
+    int addDistanceConstraint(
+        int geoId1,
+        PointPos pos1,
+        int geoId2,
+        double* value,
+        ConstraintOrientation orientation,
+        bool driving = true
+    );
     /**
      *   add a length or distance constraint
      *
@@ -364,7 +371,13 @@ public:
      *   constraint value and already inserted into either the FixParameters or
      *   Parameters array, as the case may be.
      */
-    int addDistanceConstraint(int geoId1, int geoId2, double* value, bool driving = true);
+    int addDistanceConstraint(
+        int geoId1,
+        int geoId2,
+        double* value,
+        ConstraintOrientation orientation,
+        bool driving = true
+    );
 
     /// add a parallel constraint between two lines
     int addParallelConstraint(int geoId1, int geoId2);
@@ -373,7 +386,7 @@ public:
     /// add a perpendicular constraint between two points and a line
     int addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3);
     /// add a tangency constraint between two geometries
-    int addTangentConstraint(int geoId1, int geoId2);
+    int addTangentConstraint(int geoId1, int geoId2, ConstraintOrientation orientation);
     int addTangentLineAtBSplineKnotConstraint(
         int checkedlinegeoId,
         int checkedbsplinegeoId,

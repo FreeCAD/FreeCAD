@@ -71,18 +71,16 @@ void ArcOfConic2dPy::setLocation(Py::Object arg)
 
 Py::Float ArcOfConic2dPy::getEccentricity() const
 {
-    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(
-        getGeom2dArcOfConicPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     return Py::Float(conic->Eccentricity());
 }
 
 Py::Object ArcOfConic2dPy::getXAxis() const
 {
-    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(
-        getGeom2dArcOfConicPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     gp_Dir2d xdir = conic->XAxis().Direction();
     return Base::Vector2dPy::create(xdir.X(), xdir.Y());
@@ -90,9 +88,8 @@ Py::Object ArcOfConic2dPy::getXAxis() const
 
 void ArcOfConic2dPy::setXAxis(Py::Object arg)
 {
-    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(
-        getGeom2dArcOfConicPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     Base::Vector2d dir = Py::toVector2d(arg.ptr());
     gp_Ax2d xaxis = conic->XAxis();
@@ -102,9 +99,8 @@ void ArcOfConic2dPy::setXAxis(Py::Object arg)
 
 Py::Object ArcOfConic2dPy::getYAxis() const
 {
-    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(
-        getGeom2dArcOfConicPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     gp_Dir2d ydir = conic->YAxis().Direction();
     return Base::Vector2dPy::create(ydir.X(), ydir.Y());
@@ -112,9 +108,8 @@ Py::Object ArcOfConic2dPy::getYAxis() const
 
 void ArcOfConic2dPy::setYAxis(Py::Object arg)
 {
-    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(
-        getGeom2dArcOfConicPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     Base::Vector2d dir = Py::toVector2d(arg.ptr());
     gp_Ax2d yaxis = conic->YAxis();

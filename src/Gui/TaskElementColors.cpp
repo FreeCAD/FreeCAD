@@ -78,7 +78,7 @@ public:
         , vpDoc(vp->getDocument())
         , editElement(element)
     {
-        if (auto editDoc = Application::Instance->editDocument([this, &vp](Gui::Document* editDoc) {
+        if (Application::Instance->editDocument([this, &vp](Gui::Document* editDoc) {
                 return editDoc->getInEdit(&vpParent, &editSub) == vp;
             })) {
 

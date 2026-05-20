@@ -251,7 +251,7 @@ protected:
     bool restoreWidth = false;
     int currentWidth = 0;
     ParameterGrp::handle hGrp;
-    bool showTaskWatcher;
+    bool showTaskWatcher = false;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;

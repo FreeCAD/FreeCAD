@@ -26,6 +26,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <QApplication>
@@ -206,6 +207,11 @@ SoFCColorBar::SoFCColorBar()
     //  SoEventCallback * cb = new SoEventCallback;
     //  cb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), eventCallback, this);
     //  insertChild(cb, 0);
+
+    // Color bars are overlay widgets and should not depend on scene lighting.
+    auto lightModel = new SoLightModel;
+    lightModel->model = SoLightModel::BASE_COLOR;
+    addChild(lightModel);
 
     pColorMode = new SoSwitch;
     addChild(pColorMode);

@@ -80,6 +80,7 @@
 #include "Inventor/SoDrawingGrid.h"
 #include "Inventor/SoFCBackgroundGradient.h"
 #include "Inventor/SoFCBoundingBox.h"
+#include "Inventor/SoNaviCube.h"
 #include "Inventor/SoMouseWheelEvent.h"
 #include "Inventor/SoFCTransform.h"
 #include "Inventor/SoToggleSwitch.h"
@@ -146,6 +147,7 @@ void Gui::SoFCDB::init()
     SoAxisCrossKit ::initClass();
     SoRegPoint ::initClass();
     SoDrawingGrid ::initClass();
+    SoNaviCube ::initClass();
     SoFCTransform ::initClass();
     SoAutoZoomTranslation ::initClass();
     MarkerBitmaps ::initClass();
@@ -517,7 +519,7 @@ void Gui::SoFCDB::writeX3DFields(
         SbName name = node->getName();
         std::stringstream str;
         if (name.getLength() == 0) {
-            str << "o" << numDEF++;
+            str << type << '_' << numDEF++;
         }
         else {
             str << name.getString();

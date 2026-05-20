@@ -34,6 +34,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
+#include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -69,19 +70,23 @@ SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
     , blockedSelection(false)
 {
     if (auto doc = App::GetApplication().getActiveDocument()) {
-        pDocumentScopeName = doc->getName();
+        documentScopeName = doc->getName();
     }
     if (attach) {
         attachSelection();
     }
 }
 
-SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool attach, ResolveMode resolve)
+SelectionObserver::SelectionObserver(
+    const ViewProviderDocumentObject* /*vp*/,
+    bool attach,
+    ResolveMode resolve
+)
     : resolve(resolve)
     , blockedSelection(false)
 {
     if (auto doc = App::GetApplication().getActiveDocument()) {
-        pDocumentScopeName = doc->getName();
+        documentScopeName = doc->getName();
     }
     if (attach) {
         attachSelection();
@@ -131,7 +136,7 @@ void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg)
 {
     try {
         if (blockedSelection
-            || (pDocumentScopeName && msg.pDocName && strcmp(pDocumentScopeName, msg.pDocName) != 0)) {
+            || (!documentScopeName.empty() && msg.pDocName && documentScopeName != msg.pDocName)) {
             return;
         }
         onSelectionChanged(msg);
@@ -522,6 +527,31 @@ bool SelectionSingleton::needPickedList(const char* pDocName) const
     return context.info->needPickedList;
 }
 
+SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(
+    const SelectionSingleton::SelectionContext& context,
+    const SelectionDescription& sel
+)
+{
+    if (!context.info || !context.info->gate) {
+        return {.allowed = true, .reason = ""};
+    }
+    const char* subelement = nullptr;
+    auto pObject = getObjectOfType(
+        sel,
+        App::DocumentObject::getClassTypeId(),
+        context.info->resolveMode,
+        &subelement
+    );
+
+
+    if (!context.info->gate->allow(pObject ? pObject->getDocument() : sel.pDoc, pObject, subelement)) {
+        std::string copyNotAllowedReason = context.info->gate->notAllowedReason;
+        context.info->gate->notAllowedReason.clear();
+        return {.allowed = false, .reason = copyNotAllowedReason};
+    }
+    return {.allowed = true, .reason = ""};
+}
+
 void SelectionSingleton::enablePickedList(bool enable, const char* pDocName)
 {
     auto context = getSelectionContext(pDocName);
@@ -795,6 +825,69 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
     }
 }
 
+bool SelectionSingleton::testSelection(
+    App::Document* pDoc,
+    App::DocumentObject* pObject,
+    const char* pSubName
+) const
+{
+    if (!pObject) {
+        return false;
+    }
+
+    if (!pDoc) {
+        pDoc = pObject->getDocument();
+    }
+    if (!pDoc) {
+        return false;
+    }
+
+    auto foundContext = docSelectionContext.find(pDoc);
+    if (foundContext == docSelectionContext.end() || !foundContext->second.gate) {
+        return true;
+    }
+    const auto& info = foundContext->second;
+
+    const char* objectName = pObject->getNameInDocument();
+    if (!objectName) {
+        return false;
+    }
+
+    SelectionDescription temp;
+    int ret = checkSelection(
+        pDoc->getName(),
+        objectName,
+        pSubName,
+        ResolveMode::NoResolve,
+        temp,
+        &info.selList
+    );
+    if (ret < 0) {
+        return false;
+    }
+
+    const char* subelement = nullptr;
+    auto gateObject
+        = getObjectOfType(temp, App::DocumentObject::getClassTypeId(), info.resolveMode, &subelement);
+
+    auto* gate = info.gate;
+    std::string notAllowedReason = gate->notAllowedReason;
+    bool allowed
+        = gate->allow(gateObject ? gateObject->getDocument() : temp.pDoc, gateObject, subelement);
+    gate->notAllowedReason = notAllowedReason;
+    return allowed;
+}
+
+bool SelectionSingleton::hasSelectionGate(App::Document* pDoc) const
+{
+    if (!pDoc) {
+        return false;
+    }
+
+    auto foundContext = docSelectionContext.find(pDoc);
+    return foundContext != docSelectionContext.end() && foundContext->second.gate;
+}
+
 int SelectionSingleton::setPreselect(
     const char* pDocName,
     const char* pObjectName,
@@ -815,7 +908,7 @@ int SelectionSingleton::setPreselect(
     }
 
     if (DocName == pDocName && FeatName == pObjectName && SubName == pSubName) {
-        return -1;  // Already pre-selected
+        return -1;  // Already preselected
     }
 
     rmvPreselect();
@@ -1072,6 +1165,18 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode 
     context.info->gate = gate;
 }
 
+const Gui::SelectionGate* SelectionSingleton::getSelectionGate(const App::Document* doc) const
+{
+    if (doc == nullptr) {
+        return nullptr;
+    }
+    auto context = getSelectionContext(doc->getName());
+    if (!context.info) {
+        return nullptr;
+    }
+    return context.info->gate;
+}
+
 // remove the active SelectionGate
 void SelectionSingleton::rmvSelectionGate(App::Document* doc)
 {
@@ -1081,9 +1186,11 @@ void SelectionSingleton::rmvSelectionGate(App::Document* doc)
         foundContext->second.gate = nullptr;
 
         // if a document is about to be closed it has no MDI view any more
-        if (Gui::Document* guiDoc = Gui::Application::Instance->getDocument(doc)) {
-            if (Gui::MDIView* mdi = guiDoc->getActiveView()) {
-                mdi->restoreOverrideCursor();
+        if (Gui::Application::Instance && Gui::getMainWindow()) {
+            if (Gui::Document* guiDoc = Gui::Application::Instance->getDocument(doc)) {
+                if (Gui::MDIView* mdi = guiDoc->getActiveView()) {
+                    mdi->restoreOverrideCursor();
+                }
             }
         }
     }
@@ -1215,35 +1322,23 @@ bool SelectionSingleton::addSelection(
 
 
     // check for a Selection Gate
-    if (context.info->gate) {
-        const char* subelement = nullptr;
-        auto pObject = getObjectOfType(
-            temp,
-            App::DocumentObject::getClassTypeId(),
-            context.info->resolveMode,
-            &subelement
-        );
-        if (!context.info->gate
-                 ->allow(pObject ? pObject->getDocument() : temp.pDoc, pObject, subelement)) {
-            if (getMainWindow()) {
-                QString msg;
-                if (context.info->gate->notAllowedReason.length() > 0) {
-                    msg = QObject::tr(context.info->gate->notAllowedReason.c_str());
-                }
-                else {
-                    msg = QCoreApplication::translate(
-                        "SelectionFilter",
-                        "Selection not allowed by filter"
-                    );
-                }
-                getMainWindow()->showMessage(msg);
-                Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                mdi->setOverrideCursor(Qt::ForbiddenCursor);
+
+    const auto& selectionAllowance = isSelectionAllowed(context, temp);
+    if (!selectionAllowance.allowed) {
+        if (getMainWindow()) {
+            QString msg;
+            if (selectionAllowance.reason.length() > 0) {
+                msg = QObject::tr(selectionAllowance.reason.c_str());
             }
-            context.info->gate->notAllowedReason.clear();
-            QApplication::beep();
-            return false;
+            else {
+                msg = QCoreApplication::translate("SelectionFilter", "Selection not allowed by filter");
+            }
+            getMainWindow()->showMessage(msg);
+            Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+            mdi->setOverrideCursor(Qt::ForbiddenCursor);
         }
+        QApplication::beep();
+        return false;
     }
 
     if (!logDisabled) {
@@ -1492,6 +1587,10 @@ bool SelectionSingleton::addSelections(
         temp.x = 0;
         temp.y = 0;
         temp.z = 0;
+
+        if (!isSelectionAllowed(context, temp).allowed) {
+            continue;
+        }
 
         if (!logDisabled && !temp.SubName.empty()) {
             temp.logged = true;
@@ -1810,31 +1909,42 @@ void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
         auto vp = Application::Instance->getViewProvider(obj);
 
         if (vp) {
-            bool visObject;
-            if (visible >= 0) {
-                visObject = visible ? true : false;
-            }
-            else {
-                visObject = !vp->isShow();
-            }
-
-            if (visObject) {
-                vp->show();
+            if (visible < 0) {
+                // Toggle link instead of the original object
+                ViewProvider* toggleVp = vp;
+                if (parent
+                    && parent->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId(), true)) {
+                    if (auto* parentVp = Application::Instance->getViewProvider(parent)) {
+                        toggleVp = parentVp;
+                    }
+                }
+                toggleVp->toggleVisibility();
                 updateSelection(
-                    visObject,
+                    toggleVp->isShow(),
                     sel.DocName.c_str(),
                     sel.FeatName.c_str(),
                     sel.SubName.c_str()
                 );
             }
             else {
-                updateSelection(
-                    visObject,
-                    sel.DocName.c_str(),
-                    sel.FeatName.c_str(),
-                    sel.SubName.c_str()
-                );
-                vp->hide();
+                if (visible) {
+                    vp->show();
+                    updateSelection(
+                        visible,
+                        sel.DocName.c_str(),
+                        sel.FeatName.c_str(),
+                        sel.SubName.c_str()
+                    );
+                }
+                else {
+                    updateSelection(
+                        visible,
+                        sel.DocName.c_str(),
+                        sel.FeatName.c_str(),
+                        sel.SubName.c_str()
+                    );
+                    vp->hide();
+                }
             }
         }
     }
@@ -2620,7 +2730,9 @@ PyObject* SelectionSingleton::sAddSelection(PyObject* /*self*/, PyObject* args)
     char* docname;
     char* subname = nullptr;
     float x = 0, y = 0, z = 0;
-    if (PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname, &subname, &x, &y, &z, &PyBool_Type, &clearPreselect)) {
+    if (
+        PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname, &subname, &x, &y, &z, &PyBool_Type, &clearPreselect)
+    ) {
         Selection()
             .addSelection(docname, objname, subname, x, y, z, nullptr, Base::asBoolean(clearPreselect));
         Py_Return;
@@ -2714,15 +2826,9 @@ PyObject* SelectionSingleton::sUpdateSelection(PyObject* /*self*/, PyObject* arg
     PyObject* show;
     PyObject* object;
     char* subname = nullptr;
-    if (!PyArg_ParseTuple(
-            args,
-            "O!O!|s",
-            &PyBool_Type,
-            &show,
-            &(App::DocumentObjectPy::Type),
-            &object,
-            &subname
-        )) {
+    if (
+        !PyArg_ParseTuple(args, "O!O!|s", &PyBool_Type, &show, &(App::DocumentObjectPy::Type), &object, &subname)
+    ) {
         return nullptr;
     }
 

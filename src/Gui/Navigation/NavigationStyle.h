@@ -201,6 +201,7 @@ public:
     void startSelection(SelectionMode = Lasso);
     void abortSelection();
     void stopSelection();
+    void resetButtonState();
     SbBool isSelecting() const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role = nullptr) const;
 
@@ -210,6 +211,7 @@ public:
     {
         return ClarifySelectionMode::Default;
     }
+
 
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
@@ -270,12 +272,24 @@ protected:
 private:
     void spinInternal(const SbVec2f& pointerpos, const SbVec2f& lastpos);
     void spinSimplifiedInternal(const SbVec2f curpos, const SbVec2f prevpos);
+    bool getObjectBoundingBoxCenter(SbVec3f& center) const;
 
 protected:
     void clearLog();
     void addToLog(const SbVec2s pos, const SbTime time);
 
     void syncModifierKeys(const SoEvent* const ev);
+    virtual int selectionMoveThreshold() const;
+    void updateSelectionStartPosition(SbBool press, const SbVec2s& position);
+    void setSelectionStartPosition(const SbVec2s& position);
+    void clearSelectionStartPosition();
+    bool tryStartBoxSelection(const SoLocation2Event* const ev, bool additiveSelection = false);
+    bool tryStartBoxSelection(
+        const SbVec2s& startPosition,
+        const SoLocation2Event* const ev,
+        bool additiveSelection = false,
+        bool selectElement = false
+    );
 
 protected:
     struct
@@ -312,6 +326,7 @@ protected:
     AbstractMouseSelection* mouseSelection {nullptr};
     std::vector<SbVec2s> pcPolygon;
     SelectionRole selectedRole;
+    std::optional<SbVec2s> selectionStartPosition;
     //@}
 
     /** @name Spinning data */
@@ -469,6 +484,7 @@ public:
 
 protected:
     void zoomByCursor(const SbVec2f& thispos, const SbVec2f& prevpos) override;
+    int selectionMoveThreshold() const override;
 
     SbBool processSoEvent(const SoEvent* const ev) override;
 

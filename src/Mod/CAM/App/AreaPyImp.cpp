@@ -80,7 +80,7 @@ static PyObject* areaSetParams(PyObject*, PyObject* args, PyObject* kwd)
     }
 
 #define AREA_GET(_param) \
-    params.PARAM_FNAME(_param) = PARAM_TYPED(PARAM_CAST_PY_, _param)(PARAM_FNAME(_param));
+    params.PARAM_FNAME(_param) = PARAM_TYPED(PARAM_CAST_PY_, _param)(PARAM_FNAME(_param), _param);
     // populate 'params' with the CONF variables
     PARAM_FOREACH(AREA_GET, AREA_PARAMS_STATIC_CONF)
 
@@ -318,7 +318,9 @@ PyObject* AreaPy::getShape(PyObject* args, PyObject* keywds)
     PyObject* pcObj = Py_False;
     short index = -1;
     static const std::array<const char*, 3> kwlist {"index", "rebuild", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, keywds, "|hO!", kwlist, &index, &PyBool_Type, &pcObj)) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, keywds, "|hO!", kwlist, &index, &PyBool_Type, &pcObj)
+    ) {
         return nullptr;
     }
 
@@ -364,8 +366,9 @@ PyObject* AreaPy::add(PyObject* args, PyObject* keywds)
             Py_INCREF(this);
             return this;
         }
-        else if (PyObject_TypeCheck(pcObj, &(PyList_Type))
-                 || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        else if (
+            PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))
+        ) {
             Py::Sequence shapeSeq(pcObj);
             for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
                 PyObject* item = (*it).ptr();
@@ -490,8 +493,10 @@ PyObject* AreaPy::makeSections(PyObject* args, PyObject* keywds)
             if (PyObject_TypeCheck(heights, &(PyFloat_Type))) {
                 h.push_back(PyFloat_AsDouble(heights));
             }
-            else if (PyObject_TypeCheck(heights, &(PyList_Type))
-                     || PyObject_TypeCheck(heights, &(PyTuple_Type))) {
+            else if (
+                PyObject_TypeCheck(heights, &(PyList_Type))
+                || PyObject_TypeCheck(heights, &(PyTuple_Type))
+            ) {
                 Py::Sequence shapeSeq(heights);
                 h.reserve(shapeSeq.size());
                 for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {

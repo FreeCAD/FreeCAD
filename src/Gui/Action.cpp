@@ -26,12 +26,14 @@
 #include <QEvent>
 #include <QFileInfo>
 #include <QMenu>
+#include <QMessageBox>
 #include <QRegularExpression>
 #include <QScreen>
 #include <QTimer>
 #include <QToolBar>
 #include <QToolButton>
 #include <QToolTip>
+#include <QRegularExpression>
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -582,16 +584,27 @@ void ActionGroup::onToggled(bool check)
  */
 void ActionGroup::onActivated(QAction* act)
 {
+    int index = groupAction()->actions().indexOf(act);
+    this->setIcon(act->icon());
     if (_rememberLast) {
-        int index = groupAction()->actions().indexOf(act);
-
-        this->setIcon(act->icon());
         if (!this->_isMode) {
             this->action()->setToolTip(act->toolTip());
         }
         this->setProperty("defaultAction", QVariant(index));
-        command()->invoke(index, Command::TriggerChildAction);
     }
+    else {
+        // for Std_RecentMacros and Std_RecentFiles
+        if (!this->_isMode) {
+            QString str = act->text();
+            // remove index from toolTip text
+            static const QRegularExpression regex(QString::fromUtf8("^&?[0-9]+ "));
+            str = str.remove(regex);
+            this->setToolTip(act->toolTip(), str);
+        }
+        // recent index is always 0
+        this->setProperty("defaultAction", QVariant(0));
+    }
+    command()->invoke(index, Command::TriggerChildAction);
 }
 
 /**
@@ -608,8 +621,16 @@ void ActionGroup::onHovered(QAction* act)
     // crash if called during widget destruction when synthetic enter/leave
     // events are processed.
     QMenu* foundMenu = nullptr;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    // Use associatedObjects() which includes non-widget associated objects.
     const auto associatedObjects = act->associatedObjects();
     for (QObject* obj : associatedObjects) {
+#else
+    // Use associatedWidgets() for Qt < 6.0 (associatedObjects() requires Qt 6.0+).
+    const auto associatedWidgets = act->associatedWidgets();
+    for (QWidget* obj : associatedWidgets) {
+#endif
         if (auto* menu = qobject_cast<QMenu*>(obj)) {
             if (menu->isVisible()) {
                 foundMenu = menu;
@@ -864,6 +885,19 @@ RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent)
     this->groupAction()->addAction(&clearRecentFilesListAction);
 
     auto clearFun = [this, hGrp = _pimpl->handle]() {
+        // prompt user before clearing the recent files list
+        QMessageBox::StandardButton reply = QMessageBox::question(
+            getMainWindow(),
+            tr("Clear Recent Files"),
+            tr("Clear the list of recent files?"),
+            QMessageBox::Yes | QMessageBox::No,
+            QMessageBox::No
+        );
+
+        if (reply != QMessageBox::Yes) {
+            return;
+        }
+
         const size_t recentFilesListSize = hGrp->GetASCIIs("MRU").size();
         for (size_t i = 0; i < recentFilesListSize; i++) {
             const QByteArray key = QStringLiteral("MRU%1").arg(i).toLocal8Bit();

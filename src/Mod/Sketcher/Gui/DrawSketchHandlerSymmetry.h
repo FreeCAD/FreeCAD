@@ -77,7 +77,7 @@ public:
         , refGeoId(Sketcher::GeoEnum::GeoUndef)
         , refPosId(Sketcher::PointPos::none)
         , deleteOriginal(false)
-        , createSymConstraints(false)
+        , createSymConstraints(true)
     {}
 
     DrawSketchHandlerSymmetry(const DrawSketchHandlerSymmetry&) = delete;
@@ -114,8 +114,10 @@ private:
                     refGeoId = Sketcher::GeoEnum::VAxis;
                     refPosId = Sketcher::PointPos::none;
                 }
-                else if ((CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt)
-                         && isLineSegment(*obj->getGeometry(CrvId))) {  // Curves
+                else if (
+                    (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt)
+                    && isLineSegment(*obj->getGeometry(CrvId))
+                ) {  // Curves
                     refGeoId = CrvId;
                     refPosId = Sketcher::PointPos::none;
                 }
@@ -300,6 +302,8 @@ void DSHSymmetryController::configureToolWidget()
             )
         );
     }
+
+    syncCheckboxToHandler(WCheckbox::SecondBox, handler->createSymConstraints);
 }
 
 template<>

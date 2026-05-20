@@ -58,6 +58,7 @@
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
+#include "Constraint.h"
 #include "SketchObjectPy.h"
 #include "ExternalGeometryFacade.h"
 
@@ -119,11 +120,6 @@ SketchObject::SketchObject() : geoLastId(0)
                       "Internal Geometry",
                       App::Prop_None,
                       "Enables selection of closed profiles within a sketch as input for operations");
-    ADD_PROPERTY_TYPE(_ExternalGeoVersion,
-                      (0),
-                      "Compatibility",
-                      (App::PropertyType)(App::Prop_Hidden | App::Prop_ReadOnly),
-                      "Version of external geometry projection algorithm");
 
     Geometry.setOrderRelevant(true);
 
@@ -174,7 +170,6 @@ void SketchObject::setupObject()
             "User parameter:BaseApp/Preferences/Mod/Sketcher");
     ArcFitTolerance.setValue(hGrpp->GetFloat("ArcFitTolerance", Precision::Confusion()*10.0));
     MakeInternals.setValue(hGrpp->GetBool("MakeInternals", true));
-    _ExternalGeoVersion.setValue(1);
     inherited::setupObject();
 }
 
@@ -1465,6 +1460,16 @@ void SketchObject::migrateSketch()
 
             g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
         }
+    }
+
+    {
+        // Migrate point-line, circle-circle and circle-line distance from abs to signed
+        auto constraints = Constraints.getValues();
+        for (auto& constr : constraints) {
+            setOrientation(constr, false);
+        }
+
+        Constraints.setValues(std::move(constraints));
     }
 
     /* parabola axis as internal geometry */
