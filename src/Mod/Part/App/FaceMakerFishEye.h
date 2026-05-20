@@ -24,11 +24,7 @@
 
 #pragma once
 
-#include "FaceMaker.h"
-
-#include <gp_Pln.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopoDS_Wire.hxx>
+#include "FaceMakerBuildFace.h"
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -36,38 +32,25 @@ namespace Part
 {
 
 /**
- * @brief Unified face maker that handles all face cases.
+ * @brief Face maker that extends FaceMakerBuildFace with overlap-aware
+ * classification and a non-planar fallback.
  *
- * Handles:
- * - Nested wires (outer with holes with islands)
- * - Overlapping/crossing wires (fuses them into union outlines)
- * - Curved surfaces (non-planar wire fallback)
- *
- * Algorithm:
- * 1. Detect partially overlapping wires, fuse each group
- * 2. Planar path: split edges at intersections, BOPAlgo_BuilderFace
- * 3. Non-planar fallback: BRepFill_Filling (N-sided BSpline patch)
+ * Adds on top of the BuildFace pipeline:
+ * - Partially overlapping wires are fused (union outline) while fully
+ *   nested wires still create holes via even-odd classification.
+ * - When no plane can be found, falls back to BRepFill_Filling
+ *   (N-sided BSpline patch) for each closed wire individually.
  */
-class PartExport FaceMakerFishEye: public FaceMakerPublic
+class PartExport FaceMakerFishEye: public FaceMakerBuildFace
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    void setPlane(const gp_Pln& plane) override;
-
     std::string getUserFriendlyName() const override;
     std::string getBriefExplanation() const override;
 
 protected:
     void Build_Essence() override;
-
-private:
-    gp_Pln myPlane;
-    bool planeSupplied {false};
-
-    bool findPlane(const std::vector<TopoDS_Wire>& wires, gp_Pln& plane) const;
-    TopTools_ListOfShape splitSelfIntersecting(const TopTools_ListOfShape& edges, const gp_Pln& plane);
-    void buildPlanar(const TopTools_ListOfShape& edges, const gp_Pln& plane);
 };
 
 }  // namespace Part
