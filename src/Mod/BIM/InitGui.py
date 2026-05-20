@@ -376,7 +376,7 @@ class BIMWorkbench(Workbench):
         # create 2D views command
         class BIM_Create2DViews:
             def GetCommands(self):
-                return ("BIM_DrawingView", "BIM_Shape2DView", "BIM_Shape2DCut")
+                return ("BIM_DrawingView", "BIM_Shape2DView", "BIM_Shape2DCut", "Draft_UpdateShape2DView")
 
             def GetResources(self):
                 t = QT_TRANSLATE_NOOP("BIM_Create2DViews", "Create 2D Views")
