@@ -92,7 +92,11 @@ class Tracker:
         """Finish the command by removing the switch.
         Also called by ghostTracker.remove.
         """
-        ToDo.delay(self._removeSwitch, self.switch)
+        switch = self.switch
+        if switch is None:
+            return
+        self.off()
+        ToDo.delay(self._removeSwitch, switch)
         self.switch = None
 
     def get_scene_graph(self):

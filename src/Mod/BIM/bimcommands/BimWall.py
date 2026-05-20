@@ -51,6 +51,10 @@ class Arch_Wall:
     https://wiki.freecad.org/Arch_Wall
     """
 
+    def __init__(self):
+        self.tracker = None
+        self._reset_interactive_buffers()
+
     def GetResources(self):
         """Returns a dictionary with the visual aspects of the Arch Wall tool."""
 
@@ -68,6 +72,44 @@ class Arch_Wall:
 
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
+
+    def _reset_interactive_buffers(self):
+        """Clear Arch Wall's local interactive buffers."""
+        self.points = []
+        self.existing = []
+        self.Length = None
+
+    def _teardown_interactive_session(self):
+        """Tear down the active interactive wall session."""
+        tracker = self.tracker
+        self.tracker = None
+        if tracker is not None:
+            tracker.finalize()
+
+        # Clear the active Draft command before Snapper teardown, because
+        # cancelPointRequest() can close the Draft UI and reset edit mode.
+        # If Draft still sees this command as active, that cleanup path can
+        # re-enter finish() while teardown is already in progress.
+        FreeCAD.activeDraftCommand = None
+
+        snapper = getattr(FreeCADGui, "Snapper", None)
+        if snapper is not None:
+            snapper.cancelPointRequest()
+
+        self._reset_interactive_buffers()
+
+    def cancel_interactive(self):
+        """Cancel the current interactive wall creation session."""
+        self._teardown_interactive_session()
+
+    def finish(self, cont=False, closed=False):
+        """Finish the interactive wall command.
+
+        The Draft task toolbar passes `cont` and `closed` to line-like commands.
+        Arch_Wall only needs a consistent teardown hook, so both arguments are
+        accepted for compatibility and intentionally ignored.
+        """
+        self.cancel_interactive()
 
     def Activated(self):
         """Executed when Arch Wall is called.
@@ -101,7 +143,7 @@ class Arch_Wall:
             self.baseline_mode = WallBaselineMode.NONE
         self.AUTOJOIN = params.get_param_arch("autoJoinWalls")
         sel = FreeCADGui.Selection.getSelectionEx()
-        self.existing = []
+        self._reset_interactive_buffers()
         self.wp = None
 
         if sel:
@@ -136,7 +178,6 @@ class Arch_Wall:
         # interactive mode
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
-        self.points = []
         self.wp = WorkingPlane.get_working_plane()
         self.tracker = DraftTrackers.boxTracker()
         FreeCADGui.Snapper.getPoint(
@@ -161,17 +202,11 @@ class Arch_Wall:
         """
 
         import Draft
-        import ArchWall
-        from draftutils import gui_utils
 
-        if obj:
-            if Draft.getType(obj) == "Wall":
-                if not obj in self.existing:
-                    self.existing.append(obj)
+        if obj and Draft.getType(obj) == "Wall" and obj not in self.existing:
+            self.existing.append(obj)
         if point is None:
-            FreeCAD.activeDraftCommand = None
-            FreeCADGui.Snapper.off()
-            self.tracker.finalize()
+            self.cancel_interactive()
             return
         self.points.append(point)
         if len(self.points) == 1:
@@ -383,10 +418,6 @@ class Arch_Wall:
         p0 = self.wp.get_local_coords(self.points[0])
         p1 = self.wp.get_local_coords(self.points[1])
 
-        self.tracker.off()
-        FreeCAD.activeDraftCommand = None
-        FreeCADGui.Snapper.off()
-
         self.doc.openTransaction(translate("Arch", "Create Wall"))
 
         # Ensure baseline_mode is initialized (some tests call create_wall()
@@ -409,8 +440,9 @@ class Arch_Wall:
         # Finalization
         self.doc.commitTransaction()
         self.doc.recompute()
-        self.tracker.finalize()
-        if FreeCADGui.draftToolBar.continueMode:
+        continue_mode = FreeCADGui.draftToolBar.continueMode
+        self._teardown_interactive_session()
+        if continue_mode:
             self.Activated()
 
     def update(self, point, info):
