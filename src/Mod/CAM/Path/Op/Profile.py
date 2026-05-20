@@ -659,9 +659,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 # This handles the closed-contour case (select sketch from tree).
                 edgelist = list(base.Shape.Edges)
                 Path.Log.debug(
-                    "Whole sketch '{}' selected: using {} edges.".format(
-                        base.Label, len(edgelist)
-                    )
+                    "Whole sketch '{}' selected: using {} edges.".format(base.Label, len(edgelist))
                 )
             else:
                 for sub in subsList:
@@ -737,9 +735,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 if isSketch:
                                     # For sketches, there is no solid to cut against.
                                     # Generate the path directly from the flat wire.
-                                    cutWireObjs = self._extractPathWireFromSketch(
-                                        obj, flatWire
-                                    )
+                                    cutWireObjs = self._extractPathWireFromSketch(obj, flatWire)
                                 else:
                                     cutShp = self._getCutAreaCrossSection(
                                         obj, base, origWire, flatWire
@@ -848,9 +844,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             # the user configured in the operation), then fall back through the
             # remaining modes so a geometry-induced failure is recovered silently.
             occ_join_map = {
-                "Round":  0,   # GeomAbs_Arc          — arc on outside corners
-                "Square": 2,   # GeomAbs_Intersection — square via intersection
-                "Miter":  2,   # GeomAbs_Intersection — miter also uses intersection in OCC
+                "Round": 0,  # GeomAbs_Arc          — arc on outside corners
+                "Square": 2,  # GeomAbs_Intersection — square via intersection
+                "Miter": 2,  # GeomAbs_Intersection — miter also uses intersection in OCC
             }
             preferred = occ_join_map.get(obj.JoinType, 2)
             # preferred first, then the remaining modes in stable order
@@ -861,9 +857,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     result = wire.makeOffset2D(
                         offset,
                         join_mode,  # joinType
-                        False,      # fill: wire only, not face
-                        True,       # openResult: keep as open wire
-                        False,      # intersection
+                        False,  # fill: wire only, not face
+                        True,  # openResult: keep as open wire
+                        False,  # intersection
                     )
                 except Exception as mode_err:
                     Path.Log.debug(
@@ -1345,6 +1341,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         # PathUtils.getOffsetArea gained the 'joinType' parameter after FreeCAD 1.1.
         # Inspect the signature at runtime to stay compatible with older versions.
         import inspect
+
         try:
             sig = inspect.signature(PathUtils.getOffsetArea)
             accepts_jointype = "joinType" in sig.parameters
@@ -1356,9 +1353,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 fcShape, offset, plane=fcShape, tolerance=tolerance, joinType=joinType
             )
         else:
-            return PathUtils.getOffsetArea(
-                fcShape, offset, plane=fcShape, tolerance=tolerance
-            )
+            return PathUtils.getOffsetArea(fcShape, offset, plane=fcShape, tolerance=tolerance)
 
     def _findNearestVertex(self, shape, point):
         Path.Log.debug("_findNearestVertex()")
