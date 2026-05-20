@@ -659,7 +659,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 # This handles the closed-contour case (select sketch from tree).
                 edgelist = list(base.Shape.Edges)
                 Path.Log.debug(
-                    "Whole sketch '{}' selected: using {} edges.".format(base.Label, len(edgelist))
+                    "Whole sketch '{}' selected: using {} edges.".format(
+                        base.Label, len(edgelist)
+                    )
                 )
             else:
                 for sub in subsList:
@@ -735,7 +737,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 if isSketch:
                                     # For sketches, there is no solid to cut against.
                                     # Generate the path directly from the flat wire.
-                                    cutWireObjs = self._extractPathWireFromSketch(obj, flatWire)
+                                    cutWireObjs = self._extractPathWireFromSketch(
+                                        obj, flatWire
+                                    )
                                 else:
                                     cutShp = self._getCutAreaCrossSection(
                                         obj, base, origWire, flatWire
@@ -765,7 +769,18 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         Generate a single path wire from a flat sketch wire (open edge profile),
         offset to the correct side according to obj.Side and obj.UseComp.
         Uses Part.Wire.makeOffset2D() which handles open wires natively.
-        Returns a list with one Part.Wire, or False on failure."""
+
+        Robustness strategy (addresses three known failure modes in TopoShape.cpp):
+          1. B-Spline pre-simplification: high-degree or many-pole B-Splines cause
+             BRepOffsetAPI_MakeOffset and mkOffset.Replace() to return null shapes.
+             Detected and discretised to polyline before the offset call.
+          2. Join-mode retry: if the requested mode fails (e.g. Arc on a near-parallel
+             segment), Tangent and Intersection are tried in sequence.
+          3. Compound unwrapping: makeOffset2D may return a Compound instead of a Wire
+             on some geometries; the longest sub-wire is extracted.
+
+        Returns a list with one Part.Wire, or False on failure.
+        """
         Path.Log.debug("_extractPathWireFromSketch()")
         try:
             wire = flatWire.Wires[0]
@@ -786,26 +801,122 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 )
             )
 
-            # makeOffset2D(offset, joinType, fill, openResult, intersection)
-            # joinType 0 = Arc (Round) — matches default JoinType behaviour
-            # openResult=True keeps result as an open wire
-            offWire = wire.makeOffset2D(
-                offset,
-                0,  # joinType: Arc/Round
-                False,  # fill: wire only
-                True,  # openResult: keep open
-                False,  # intersection
-            )
+            # ── Pre-treatment: detect complex B-Splines ───────────────────────
+            # BRepOffsetAPI_MakeOffset (called inside makeOffset2D) and the
+            # subsequent Replace(GeomAbs_OffsetCurve) call in TopoShape.cpp both
+            # return null shapes on B-Splines with degree > 3 or many poles.
+            # We discretise to a polyline to avoid this failure mode entirely.
+            needs_simplification = False
+            for edge in wire.Edges:
+                curve = edge.Curve
+                if hasattr(curve, "Degree") and curve.Degree > 3:
+                    needs_simplification = True
+                    break
+                if hasattr(curve, "NbPoles") and curve.NbPoles > 20:
+                    needs_simplification = True
+                    break
 
-            if offWire and len(offWire.Edges) > 0:
-                Path.Log.debug("_extractPathWireFromSketch: offset wire produced OK.")
-                return [offWire]
-            else:
-                Path.Log.error(
-                    "_extractPathWireFromSketch: makeOffset2D returned empty wire "
-                    "(Side={}, offset={}).".format(obj.Side, offset)
+            if needs_simplification:
+                Path.Log.debug(
+                    "_extractPathWireFromSketch: complex B-Spline detected, discretising to polyline."
                 )
-                return False
+                tol = self.JOB.GeometryTolerance.Value
+                pts = wire.discretize(Deflection=tol)
+                seg_edges = [
+                    Part.makeLine(pts[i], pts[i + 1])
+                    for i in range(len(pts) - 1)
+                    if (pts[i + 1] - pts[i]).Length > 1e-9
+                ]
+                if seg_edges:
+                    try:
+                        wire = Part.Wire(seg_edges)
+                    except Exception as disc_err:
+                        Path.Log.debug(
+                            "_extractPathWireFromSketch: discretised wire assembly failed ({}), "
+                            "keeping original.".format(disc_err)
+                        )
+
+            # ── Try makeOffset2D with join-mode fallback ──────────────────────
+            # OCC GeomAbs_JoinType constants (TopoShape.cpp):
+            #   0 = Arc (Round)     — smooth arc on outside corners
+            #   1 = Tangent         — tangent extension, can be unstable
+            #   2 = Intersection    — sharp corner via line intersection (Square/Miter)
+            #
+            # These are DIFFERENT from Clipper's jtSquare/jtRound/jtMiter integers.
+            #
+            # Strategy: honour obj.JoinType as the first attempt (matches what
+            # the user configured in the operation), then fall back through the
+            # remaining modes so a geometry-induced failure is recovered silently.
+            occ_join_map = {
+                "Round":  0,   # GeomAbs_Arc          — arc on outside corners
+                "Square": 2,   # GeomAbs_Intersection — square via intersection
+                "Miter":  2,   # GeomAbs_Intersection — miter also uses intersection in OCC
+            }
+            preferred = occ_join_map.get(obj.JoinType, 2)
+            # preferred first, then the remaining modes in stable order
+            join_modes = [preferred] + [m for m in [0, 2, 1] if m != preferred]
+
+            for join_mode in join_modes:
+                try:
+                    result = wire.makeOffset2D(
+                        offset,
+                        join_mode,  # joinType
+                        False,      # fill: wire only, not face
+                        True,       # openResult: keep as open wire
+                        False,      # intersection
+                    )
+                except Exception as mode_err:
+                    Path.Log.debug(
+                        "_extractPathWireFromSketch: join_mode={} raised: {}".format(
+                            join_mode, mode_err
+                        )
+                    )
+                    continue
+
+                if result is None:
+                    continue
+
+                # ── Unwrap result (Wire, Compound, or bare Edges) ─────────────
+                shape_type = result.ShapeType
+                if shape_type == "Wire" and result.Edges:
+                    Path.Log.debug(
+                        "_extractPathWireFromSketch: OK with join_mode={}.".format(join_mode)
+                    )
+                    return [result]
+
+                if shape_type == "Compound":
+                    sub_wires = result.Wires
+                    if sub_wires:
+                        best = max(sub_wires, key=lambda w: w.Length)
+                        Path.Log.debug(
+                            "_extractPathWireFromSketch: Compound unwrapped, "
+                            "{} sub-wires, join_mode={}.".format(len(sub_wires), join_mode)
+                        )
+                        return [best]
+
+                # Fallback: reconstruct from raw edges
+                raw_edges = result.Edges
+                if raw_edges:
+                    try:
+                        rebuilt = Part.Wire(Part.__sortEdges__(raw_edges))
+                        Path.Log.debug(
+                            "_extractPathWireFromSketch: rebuilt from edges, join_mode={}.".format(
+                                join_mode
+                            )
+                        )
+                        return [rebuilt]
+                    except Exception as rebuild_err:
+                        Path.Log.debug(
+                            "_extractPathWireFromSketch: edge rebuild failed ({}), "
+                            "continuing.".format(rebuild_err)
+                        )
+                        continue
+
+            Path.Log.error(
+                "_extractPathWireFromSketch: makeOffset2D failed on all join modes "
+                "(Side={}, offset={}).".format(obj.Side, offset)
+            )
+            return False
 
         except Exception as e:
             Path.Log.error("_extractPathWireFromSketch: {}".format(e))
@@ -1234,7 +1345,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         # PathUtils.getOffsetArea gained the 'joinType' parameter after FreeCAD 1.1.
         # Inspect the signature at runtime to stay compatible with older versions.
         import inspect
-
         try:
             sig = inspect.signature(PathUtils.getOffsetArea)
             accepts_jointype = "joinType" in sig.parameters
@@ -1246,7 +1356,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 fcShape, offset, plane=fcShape, tolerance=tolerance, joinType=joinType
             )
         else:
-            return PathUtils.getOffsetArea(fcShape, offset, plane=fcShape, tolerance=tolerance)
+            return PathUtils.getOffsetArea(
+                fcShape, offset, plane=fcShape, tolerance=tolerance
+            )
 
     def _findNearestVertex(self, shape, point):
         Path.Log.debug("_findNearestVertex()")
