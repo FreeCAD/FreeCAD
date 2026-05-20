@@ -1556,7 +1556,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandDecorate.cpp" line="271"/>
       <source>Applies a geometric hatch pattern to the selected faces</source>
-      <translation>Applique un motif de hachure géométrique aux faces sélectionnées.</translation>
+      <translation>Applique un motif de hachures géométriques aux faces sélectionnées.</translation>
     </message>
   </context>
   <context>
@@ -1790,7 +1790,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandAnnotate.cpp" line="487"/>
       <source>Quadrant Vertices</source>
-      <translation>Ajouter des sommets quadrants</translation>
+      <translation>Sommets quadrants</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="488"/>
@@ -2108,7 +2108,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2086"/>
       <source>Vertical Extent Dimension</source>
-      <translation>Insérer une cote étendue verticale</translation>
+      <translation>Cote étendue verticale</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2087"/>
@@ -2234,7 +2234,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../CommandAnnotate.cpp" line="360"/>
       <source>Add Quadrant vertices</source>
-      <translation>Ajoute des sommets quadrants</translation>
+      <translation>Ajoute des sommets quadrants.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="543"/>
@@ -3191,12 +3191,12 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../Command.cpp" line="2093"/>
       <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
+      <translation>La direction sélectionnée se trouve à moins de %1 degrés d'une direction standard. Faut-il remplacer la direction sélectionnée par %2 ?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2098"/>
       <source>Direction is close to standard</source>
-      <translation type="unfinished">Direction is close to standard</translation>
+      <translation>La direction est proche du standard.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="600"/>
@@ -3552,7 +3552,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="120"/>
       <source>Can not make hole circle for %1</source>
-      <translation type="unfinished">Can not make hole circle for %1</translation>
+      <translation>Il est impossible de créer un cercle de trous pour %1.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="239"/>
@@ -3563,7 +3563,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <location filename="../../CommandExtensionPack.cpp" line="240"/>
       <location filename="../../CommandExtensionPack.cpp" line="1673"/>
       <source>Can not make centerlines for %1</source>
-      <translation type="unfinished">Can not make centerlines for %1</translation>
+      <translation>Il est impossible de créer les lignes centrales pour %1.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="898"/>
@@ -3588,7 +3588,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1672"/>
       <source>TechDraw extend/shorten line</source>
-      <translation type="unfinished">TechDraw extend/shorten line</translation>
+      <translation>TechDraw prolonger/raccourcir une ligne</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1879"/>
@@ -3603,12 +3603,12 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2217"/>
       <source>TechDraw create thread circle</source>
-      <translation type="unfinished">TechDraw create thread circle</translation>
+      <translation>TechDraw créer un cercle pour le filetage</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2218"/>
       <source>Can not make thread circle for %1</source>
-      <translation type="unfinished">Can not make thread circle for %1</translation>
+      <translation>Il est impossible de créer un cercle pour le filetage pour %1.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2235"/>
@@ -5361,7 +5361,7 @@ paramètres régionaux en cours.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="367"/>
       <source>Geometric hatch pattern color</source>
-      <translation>Couleur du motif des hachures géométriques</translation>
+      <translation>Couleur du motif de hachures géométriques</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="177"/>
@@ -5862,7 +5862,8 @@ Les modifications n'ont aucun effet sur les cotes existantes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="457"/>
       <source>Preferred SVG or bitmap file for hatching. This value will also control the initial directory for choosing hatch patterns. You can use this to get hatch files from a local directory.</source>
-      <translation>Les fichiers SVG ou bitmap sont préférables pour le hachurage. Cette valeur contrôle également le répertoire où choisir les motifs de hachurage. Vous pouvez l'utiliser pour obtenir des fichiers de hachurage à partir d'un répertoire local.</translation>
+      <translation>Les fichiers SVG ou bitmap sont préférables pour le hachurage. Cette valeur contrôle également le répertoire où choisir les motifs de
+hachures. Vous pouvez l'utiliser pour obtenir des fichiers de hachurage à partir d'un répertoire local.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="513"/>
@@ -5887,7 +5888,7 @@ Les modifications n'ont aucun effet sur les cotes existantes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="608"/>
       <source>Hatch pattern file</source>
-      <translation>Répertoire des fichiers à motif hachuré</translation>
+      <translation>Répertoire des fichiers de motif de hachures</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="615"/>
@@ -7578,7 +7579,7 @@ Utilise les angles par défaut si cette option n'est pas cochée.</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="26"/>
       <source>Geometric Hatch</source>
-      <translation>Appliquer un motif de hachures géométriques</translation>
+      <translation>Motif de hachures géométriques</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="38"/>
@@ -8305,7 +8306,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="56"/>
       <source>Cosmetic</source>
-      <translation>Cosmétique</translation>
+      <translation>Lignes cosmétiques</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="73"/>
@@ -10241,7 +10242,7 @@ direction et la mesure.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="283"/>
       <source>Quadrant Vertices</source>
-      <translation>Ajouter des sommets quadrants</translation>
+      <translation>Sommets quadrants</translation>
     </message>
   </context>
   <context>

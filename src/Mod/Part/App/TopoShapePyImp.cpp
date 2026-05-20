@@ -63,8 +63,10 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Iterator.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
+#include <BRepExtrema_MapOfIntegerPackedMapOfInteger.hxx>
 
 #include <App/PropertyStandard.h>
 #include <App/StringHasherPy.h>
@@ -775,7 +777,9 @@ static PyObject* makeShape(const char* op, const TopoShape& shape, PyObject* arg
         std::vector<TopoShape> shapes;
         shapes.push_back(shape);
         getPyShapes(pcObj, shapes);
-        return Py::new_reference_to(shape2pyshape(TopoShape().makeElementBoolean(op, shapes, 0, tol)));
+        return Py::new_reference_to(
+            shape2pyshape(TopoShape().makeElementBoolean(op, shapes, nullptr, tol))
+        );
     }
     PY_CATCH_OCC
 }
@@ -1091,17 +1095,9 @@ PyObject* TopoShapePy::transformShape(PyObject* args)
     }
 
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
-    bool doCopy = Base::asBoolean(copy);
-    bool doCheckScale = Base::asBoolean(checkScale);
     PY_TRY
     {
-        if (doCopy) {
-            TopoShape s(*getTopoShapePtr());
-            s.transformShape(mat, false, doCheckScale);
-            return Py::new_reference_to(shape2pyshape(s));
-        }
-
-        this->getTopoShapePtr()->transformShape(mat, false, doCheckScale);
+        this->getTopoShapePtr()->transformShape(mat, Base::asBoolean(copy), Base::asBoolean(checkScale));
         return IncRef();
     }
     PY_CATCH_OCC
@@ -1598,7 +1594,7 @@ PyObject* TopoShapePy::isClosed(PyObject* args) const
 
     try {
         if (getTopoShapePtr()->getShape().IsNull()) {
-            Standard_Failure::Raise("Cannot determine the 'Closed'' flag of an empty shape");
+            throw Standard_Failure("Cannot determine the 'Closed'' flag of an empty shape");
         }
         return Py_BuildValue("O", (getTopoShapePtr()->isClosed() ? Py_True : Py_False));
     }

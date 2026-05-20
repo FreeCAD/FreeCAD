@@ -544,12 +544,12 @@ Tagróidh maoin an réada seo do mhaoin an Tacair Athróg.</translation>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="51"/>
       <source>Press middle or ctrl+right mouse button</source>
-      <translation type="unfinished">Press middle or ctrl+right mouse button</translation>
+      <translation>Brúigh an cnaipe luiche lár nó ctrl+deas</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left, middle+right or shift+right mouse button</source>
-      <translation type="unfinished">Press middle+left, middle+right or shift+right mouse button</translation>
+      <translation>Brúigh cnaipe luiche lár+clé, lár+deas nó shift+deas</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>

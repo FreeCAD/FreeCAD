@@ -9,12 +9,12 @@
 #include <numbers>
 #include <stdexcept>
 
-#include <PyCXX/CXX/Exception.hxx>
+#include <CXX/Exception.hxx>
 
 #include "Base/Exception.h"
 #include "Base/PyException.h"
 
-#include "CXX/Python3/Objects.hxx"
+#include "CXX/Objects.hxx"
 
 /**
  * @brief Test fixture for Base::pyWrapCppExceptions and the pyThrowWrapped* helpers.

@@ -41,7 +41,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="146"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Acceptér</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="184"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Acceptér</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
@@ -464,7 +464,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="330"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Ugyldigt objekt</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFillingEdge.cpp" line="408"/>
@@ -550,7 +550,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="424"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Ugyldigt objekt</translation>
     </message>
   </context>
 </TS>

@@ -1664,7 +1664,7 @@ go gcaithfear "MAXGS" a mhéadú.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>Ró-scíth a ligean de réir a chéile (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
@@ -3894,11 +3894,9 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+      <translation>Tá na 3 chomhordanáid x,y,z (cás íochtarach) agus na feidhmeanna matamaiticiúla is gnách ar nós Sin, Log (cás uachtarach) ar fáil. Ina theannta sin, is féidir gach mionchoigeartú linbh a úsáid tríd an athróg F, m.sh. F1, F2 etc. Is iad na hoibreoirí a dtacaítear leo ná +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Sampla: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3938,11 +3936,9 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
+      <translation>Tá na 3 chomhordanáid x,y,z (cás íochtarach) agus na feidhmeanna matamaiticiúla is gnách ar nós Sin, Log (cás uachtarach) ar fáil. Ina theannta sin, is féidir gach mionchoigeartú linbh a úsáid tríd an athróg F, m.sh. F1, F2 etc. Is iad na hoibreoirí a dtacaítear leo ná +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Sampla: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>

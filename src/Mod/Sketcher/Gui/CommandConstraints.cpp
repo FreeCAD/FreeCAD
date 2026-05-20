@@ -24,6 +24,7 @@
 
 #include <limits>
 #include <cmath>
+#include <optional>
 
 #include <Precision.hxx>
 #include <Bnd_Box.hxx>
@@ -179,6 +180,150 @@ namespace SketcherGui::LinearDatumLabelPlacement
 }
 }  // namespace SketcherGui::LinearDatumLabelPlacement
 
+namespace SketcherGui::AngularDatumLabelPlacement
+{
+[[nodiscard]] std::optional<Base::Vector2d> computeLabelPosition(const Sketcher::SketchObject* sketch,
+                                                                   const Sketcher::Constraint* constraint)
+{
+    if (constraint->Type != Sketcher::Angle) {
+        return std::nullopt;
+    }
+
+    const bool firstIsAxis = constraint->First == Sketcher::GeoEnum::HAxis
+        || constraint->First == Sketcher::GeoEnum::VAxis;
+    const bool secondIsAxis = constraint->Second == Sketcher::GeoEnum::HAxis
+        || constraint->Second == Sketcher::GeoEnum::VAxis;
+
+    Base::Vector2d vertex;
+    Base::Vector2d rayPoint1;
+    Base::Vector2d rayPoint2;
+    double radius = 0.0;
+
+    const auto vertexOnSegment = [](const Base::Vector2d& segmentStart,
+                                    const Base::Vector2d& segmentSpan,
+                                    const Base::Vector2d& point) {
+        const double tolerance = Precision::Confusion();
+        const Base::Vector2d segmentToPoint = point - segmentStart;
+
+        const double crossProduct = segmentSpan.x * segmentToPoint.y
+            - segmentSpan.y * segmentToPoint.x;
+        const double dotProduct = segmentToPoint.x * segmentSpan.x
+            + segmentToPoint.y * segmentSpan.y;
+        const double segmentLengthSquared = segmentSpan.Sqr();
+
+        const bool pointIsOnLine = std::abs(crossProduct) <= tolerance;
+        const bool pointIsAfterSegmentStart = dotProduct >= -tolerance;
+        const bool pointIsBeforeSegmentEnd = dotProduct <= segmentLengthSquared + tolerance;
+
+        return pointIsOnLine && pointIsAfterSegmentStart && pointIsBeforeSegmentEnd;
+    };
+
+    if (constraint->Second == Sketcher::GeoEnum::GeoUndef) {
+        const auto* arc = freecad_cast<const Part::GeomArcOfCircle*>(
+            sketch->getGeometry(constraint->First));
+
+        if (!arc) {
+            return std::nullopt;
+        }
+
+        double startAngle = 0.0;
+        double endAngle = 0.0;
+        arc->getRange(startAngle, endAngle, true);
+
+        const Base::Vector2d center(arc->getCenter().x, arc->getCenter().y);
+        const double radius = arc->getRadius();
+        const double middleAngle = 0.5 * (startAngle + endAngle);
+        return center + Base::Vector2d(std::cos(middleAngle), std::sin(middleAngle))
+                * (radius + constraint->LabelDistance);
+    }
+    else if (firstIsAxis != secondIsAxis) {
+        const int axisGeoId = firstIsAxis ? constraint->First : constraint->Second;
+        const auto* lineSegment = freecad_cast<const Part::GeomLineSegment*>(
+            sketch->getGeometry(firstIsAxis ? constraint->Second : constraint->First));
+        if (!lineSegment) {
+            return std::nullopt;
+        }
+
+        const Base::Vector2d startPoint(lineSegment->getStartPoint().x, lineSegment->getStartPoint().y);
+        const Base::Vector2d endPoint(lineSegment->getEndPoint().x, lineSegment->getEndPoint().y);
+        const Base::Vector2d lineSpan = endPoint - startPoint;
+        if (!Base::Line2d(startPoint, endPoint)
+                 .Intersect(Base::Line2d(Base::Vector2d(0.0, 0.0),
+                                         axisGeoId == Sketcher::GeoEnum::HAxis
+                                             ? Base::Vector2d(1.0, 0.0)
+                                             : Base::Vector2d(0.0, 1.0)),
+                            vertex)) {
+            return std::nullopt;
+        }
+
+        if (vertexOnSegment(startPoint, lineSpan, vertex)) {
+            return std::nullopt;
+        }
+
+        rayPoint2 = (startPoint - vertex).Sqr() <= (endPoint - vertex).Sqr() ? startPoint : endPoint;
+
+        radius = (rayPoint2 - vertex).Length();
+        if (radius <= Precision::Confusion()) {
+            return std::nullopt;
+        }
+
+        rayPoint1 = axisGeoId == Sketcher::GeoEnum::HAxis
+            ? vertex + Base::Vector2d((rayPoint2 - vertex).x >= 0.0 ? radius : -radius, 0.0)
+            : vertex + Base::Vector2d(0.0, (rayPoint2 - vertex).y >= 0.0 ? radius : -radius);
+    }
+    else {
+        const auto* firstLine =
+            freecad_cast<const Part::GeomLineSegment*>(sketch->getGeometry(constraint->First));
+        const auto* secondLine =
+            freecad_cast<const Part::GeomLineSegment*>(sketch->getGeometry(constraint->Second));
+        if (!firstLine || !secondLine) {
+            return std::nullopt;
+        }
+
+        const Base::Vector2d firstStart(firstLine->getStartPoint().x, firstLine->getStartPoint().y);
+        const Base::Vector2d firstEnd(firstLine->getEndPoint().x, firstLine->getEndPoint().y);
+        const Base::Vector2d secondStart(secondLine->getStartPoint().x, secondLine->getStartPoint().y);
+        const Base::Vector2d secondEnd(secondLine->getEndPoint().x, secondLine->getEndPoint().y);
+        const Base::Vector2d firstSpan = firstEnd - firstStart;
+        const Base::Vector2d secondSpan = secondEnd - secondStart;
+        if (!Base::Line2d(firstStart, firstEnd).Intersect(Base::Line2d(secondStart, secondEnd), vertex)) {
+            return std::nullopt;
+        }
+
+        if (vertexOnSegment(firstStart, firstSpan, vertex)
+            && vertexOnSegment(secondStart, secondSpan, vertex)) {
+            return std::nullopt;
+        }
+
+        rayPoint1 = (firstStart - vertex).Sqr() <= (firstEnd - vertex).Sqr() ? firstStart : firstEnd;
+        rayPoint2 = (secondStart - vertex).Sqr() <= (secondEnd - vertex).Sqr() ? secondStart : secondEnd;
+        radius = std::min((rayPoint1 - vertex).Length(), (rayPoint2 - vertex).Length());
+        if (radius <= Precision::Confusion()) {
+            return std::nullopt;
+        }
+    }
+
+    Base::Vector2d firstDirection = rayPoint1 - vertex;
+    Base::Vector2d secondDirection = rayPoint2 - vertex;
+    if (firstDirection.Length() <= Precision::Confusion()
+        || secondDirection.Length() <= Precision::Confusion()) {
+        return std::nullopt;
+    }
+
+    firstDirection.Normalize();
+    secondDirection.Normalize();
+    Base::Vector2d position = firstDirection + secondDirection;
+    if (position.Length() <= Precision::Confusion()) {
+        position = firstDirection.Perpendicular(false);
+    }
+    else {
+        position.Normalize();
+    }
+
+    return vertex + position * (radius + constraint->LabelDistance);
+}
+}  // namespace SketcherGui::AngularDatumLabelPlacement
+
 namespace SketcherGui
 {
 class ViewProviderSketchCommandConstraintsAttorney
@@ -258,6 +403,13 @@ void finishDatumConstraint(Gui::Command* cmd,
 
                 if (geo && isCircle(*geo)) {
                     ConStr[i]->LabelPosition = labelPosition;
+                }
+            }
+            else if (lastConstraintType == Angle) {
+                if (auto labelPosition = AngularDatumLabelPlacement::computeLabelPosition(
+                        sketch, ConStr[i])) {
+                    ViewProviderSketchCommandConstraintsAttorney::moveConstraint(
+                        *vp, i, *labelPosition);
                 }
             }
             else {

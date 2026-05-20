@@ -220,6 +220,38 @@ bool CmdSketcherCreateLine::isActive()
     return isCommandActive(getActiveGuiDocument());
 }
 
+// Polyline old tool ======================================================
+
+DEF_STD_CMD_AU(CmdSketcherCreatePolylineLegacy)
+
+CmdSketcherCreatePolylineLegacy::CmdSketcherCreatePolylineLegacy()
+    : Command("Sketcher_CreatePolylineLegacy")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Polyline");
+    sToolTipText = QT_TR_NOOP(
+        "Creates a continuous polyline. Press the 'M' key to switch segment modes"
+    );
+    sWhatsThis = "Sketcher_CreatePolylineLegacy";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreatePolyline";
+    sAccel = "G, M";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolylineLegacy, "Sketcher_CreatePolylineLegacy")
+
+void CmdSketcherCreatePolylineLegacy::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerLineSet>());
+}
+
+bool CmdSketcherCreatePolylineLegacy::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
 // Polyline ================================================================
 
 DEF_STD_CMD_AU(CmdSketcherCreatePolyline)
@@ -230,13 +262,11 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Polyline");
-    sToolTipText = QT_TR_NOOP(
-        "Creates a continuous polyline. Press the 'M' key to switch segment modes"
-    );
+    sToolTipText = QT_TR_NOOP("Creates a polyline in the sketch. M key cycles through segment modes.");
     sWhatsThis = "Sketcher_CreatePolyline";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePolyline";
-    sAccel = "G, M";
+    sAccel = "L";
     eType = ForEdit;
 }
 
@@ -245,7 +275,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolyline, "Sketcher_CreatePolyline")
 void CmdSketcherCreatePolyline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerLineSet>());
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolyLine>());
 }
 
 bool CmdSketcherCreatePolyline::isActive()
@@ -1962,6 +1992,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreatePeriodicBSplineByInterpolation());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePolylineLegacy());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangleCenter());
     rcCmdMgr.addCommand(new CmdSketcherCreateOblong());

@@ -1663,7 +1663,7 @@ messaggio di errore che "MAXGS" deve essere aumentato.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>Metodo del sovrarilassamento (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>

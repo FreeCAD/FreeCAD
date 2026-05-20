@@ -7740,7 +7740,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="940"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>Скінуць інтэрвал</translation>
     </message>
   </context>
   <context>

@@ -29,7 +29,6 @@ import Materials
 import PartDesignGui
 import PathApp
 import QtUnitGui
-import Sandbox
 import SpreadsheetGui
 import TechDrawGui
 from FreeCAD import DocumentObject
@@ -169,7 +168,6 @@ def exercise(
     selection_ex = GuiSelection.getSelectionEx()
     selection_object = GuiSelection.getSelectionObject("Document", "Object", "Edge1")
     stacked_selection = GuiSelection.getSelectionFromStack()
-    protector = cast(Sandbox._DocumentProtector, object())
     unit_test = cast(QtUnitGui._UnitTest, object())
     sheet_view = cast(SpreadsheetGui._SheetView, object())
     page_view = cast(TechDrawGui._MDIViewPage, object())
@@ -501,7 +499,6 @@ def exercise(
     assert_type(viewer.getPickRadius(), float)
     assert_type(viewer.isRedirectedToSceneGraph(), bool)
     assert_type(viewer.isEnabledNaviCube(), bool)
-    protector.recompute()
     unit_test.getUnitTest()
     unit_test.clearErrorList()
     unit_test.insertError("failure", "details")
@@ -561,7 +558,6 @@ def exercise(
     reveal_type(resource)
     reveal_type(selection_filter)
     reveal_type(selection_object)
-    reveal_type(protector)
     reveal_type(unit_test)
     reveal_type(sheet_view)
     reveal_type(page_view)

@@ -180,14 +180,14 @@
       <location filename="../../Command.cpp" line="1160"/>
       <source>Skipping external geometry #%1
 </source>
-      <translation type="unfinished">Skipping external geometry #%1
+      <translation>Pomijanie geometrii zewnętrznej #%1
 </translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1203"/>
       <source>External geometry '%1' is out of scope:
 </source>
-      <translation type="unfinished">External geometry '%1' is out of scope:
+      <translation>Geometria zewnętrzna '%1' jest poza zakresem:
 </translation>
     </message>
     <message>
@@ -214,14 +214,14 @@
       <location filename="../../Command.cpp" line="1360"/>
       <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
 </source>
-      <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
+      <translation>Skopiowano wiązania %1 z %2 z '%3. Niektóre zostały pominięte.
 </translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1376"/>
       <source>Skipping constraint #%1 of '%2': references unmerged geometry.
 </source>
-      <translation type="unfinished">Skipping constraint #%1 of '%2': references unmerged geometry.
+      <translation>Pomijanie wiązania #%1 z '%2': odwołuje się do niezłączonej geometrii.
 </translation>
     </message>
   </context>

@@ -3856,7 +3856,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="469"/>
       <location filename="../../ArchStructure.py" line="1585"/>
       <location filename="../../ArchWindow.py" line="1198"/>
-      <location filename="../../ArchRoof.py" line="1084"/>
+      <location filename="../../ArchRoof.py" line="1088"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../bimcommands/BimWall.py" line="501"/>
       <source>Height</source>
@@ -4090,13 +4090,13 @@ The default template is located at:
       <translation>Sortu teilatua</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="825"/>
+      <location filename="../../ArchRoof.py" line="829"/>
       <location filename="../../bimcommands/BimRoof.py" line="91"/>
       <source>Unable to create a roof</source>
       <translation>Ezin da teilatua sortu</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1075"/>
+      <location filename="../../ArchRoof.py" line="1079"/>
       <source>Parameters of the roof profiles:
 * Angle: slope in degrees relative to the horizontal.
 * Run: horizontal distance between the wall and the ridge.
@@ -4121,12 +4121,12 @@ If Angle = 0 then the angle is calculated so that the height is the same as the 
 If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1080"/>
+      <location filename="../../ArchRoof.py" line="1084"/>
       <source>Run</source>
       <translation>distantzia</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1083"/>
+      <location filename="../../ArchRoof.py" line="1087"/>
       <source>Overhang</source>
       <translation>Hegala</translation>
     </message>
@@ -4138,17 +4138,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../Arch.py" line="1140"/>
-      <location filename="../../ArchRoof.py" line="1068"/>
+      <location filename="../../ArchRoof.py" line="1072"/>
       <source>Roof</source>
       <translation>Teilatua</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1078"/>
+      <location filename="../../ArchRoof.py" line="1082"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1081"/>
+      <location filename="../../ArchRoof.py" line="1085"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -4500,7 +4500,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchComponent.py" line="2429"/>
       <location filename="../../ArchSectionPlane.py" line="1747"/>
-      <location filename="../../ArchAxis.py" line="981"/>
+      <location filename="../../ArchAxis.py" line="969"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchWindow.py" line="1705"/>
       <source>Remove</source>
@@ -4509,7 +4509,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSpace.py" line="949"/>
       <location filename="../../ArchComponent.py" line="2430"/>
-      <location filename="../../ArchAxis.py" line="982"/>
+      <location filename="../../ArchAxis.py" line="970"/>
       <location filename="../../ArchAxisSystem.py" line="339"/>
       <location filename="../../ArchWindow.py" line="1706"/>
       <source>Add</source>
@@ -4567,7 +4567,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchStructure.py" line="1578"/>
       <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchRoof.py" line="1082"/>
+      <location filename="../../ArchRoof.py" line="1086"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
@@ -4629,7 +4629,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="101"/>
       <location filename="../../ArchComponent.py" line="2436"/>
-      <location filename="../../ArchAxis.py" line="980"/>
+      <location filename="../../ArchAxis.py" line="968"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
       <source>Axes</source>
       <translation>Ardatzak</translation>
@@ -6233,28 +6233,28 @@ Solairuaren sorrera utzi egin da.</translation>
       <translation>Sortu ardatza</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="987"/>
+      <location filename="../../ArchAxis.py" line="975"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Ardatzen arteko distantziak (mm) eta angeluak (deg)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="990"/>
+      <location filename="../../ArchAxis.py" line="978"/>
       <source>Axis</source>
       <translation>Ardatza</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="991"/>
+      <location filename="../../ArchAxis.py" line="979"/>
       <source>Distance</source>
       <translation>Distantzia</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="992"/>
-      <location filename="../../ArchRoof.py" line="1079"/>
+      <location filename="../../ArchAxis.py" line="980"/>
+      <location filename="../../ArchRoof.py" line="1083"/>
       <source>Angle</source>
       <translation>Angelua</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="993"/>
+      <location filename="../../ArchAxis.py" line="981"/>
       <source>Label</source>
       <translation>Etiketa</translation>
     </message>
@@ -7978,72 +7978,72 @@ The ladybug or pysolar Python module is required.</translation>
       <translation type="unfinished">Show text labels for key hours on the sun path</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2369"/>
+      <location filename="../../ArchSite.py" line="2357"/>
       <source>The altitude of the sun above the horizon</source>
       <translation type="unfinished">The altitude of the sun above the horizon</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2379"/>
+      <location filename="../../ArchSite.py" line="2367"/>
       <source>The compass direction of the sun (0° is North)</source>
       <translation type="unfinished">The compass direction of the sun (0° is North)</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2387"/>
+      <location filename="../../ArchSite.py" line="2375"/>
       <source>The date and time for this sun position</source>
       <translation type="unfinished">The date and time for this sun position</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="174"/>
+      <location filename="../../ArchRoof.py" line="176"/>
       <source>The list of angles of the roof segments</source>
       <translation>Teilatu segmentuen angeluen zerrenda</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="185"/>
+      <location filename="../../ArchRoof.py" line="187"/>
       <source>The list of horizontal length projections of the roof segments</source>
       <translation>Teilatu segmentuen luzera-proiekzio horizontalen zerrenda</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="195"/>
+      <location filename="../../ArchRoof.py" line="197"/>
       <source>The list of IDs of the relative profiles of the roof segments</source>
       <translation>Teilatu segmentuen profil erlatiboen IDen zerrenda</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="203"/>
+      <location filename="../../ArchRoof.py" line="205"/>
       <source>The list of thicknesses of the roof segments</source>
       <translation>Teilatu segmentuen lodieren zerrenda</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="211"/>
+      <location filename="../../ArchRoof.py" line="213"/>
       <source>The list of overhangs of the roof segments</source>
       <translation>Teilatu segmentuen hegalen zerrenda</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="221"/>
+      <location filename="../../ArchRoof.py" line="223"/>
       <source>The list of calculated heights of the roof segments</source>
       <translation>Teilatu segmentuen altuera kalkulatuen zerrenda</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="231"/>
+      <location filename="../../ArchRoof.py" line="233"/>
       <source>The face number of the base object used to build the roof</source>
       <translation>Teilatua eraikitzeko erabili den oinarri-objektuaren aurpegi kopurua</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="241"/>
+      <location filename="../../ArchRoof.py" line="243"/>
       <source>The total length of the ridges and hips of the roof</source>
       <translation>Teilatuaren gailurren eta isurkien luzera totala</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="250"/>
+      <location filename="../../ArchRoof.py" line="252"/>
       <source>The total length of the borders of the roof</source>
       <translation>Teilatuaren ertzen luzera totala</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="261"/>
+      <location filename="../../ArchRoof.py" line="263"/>
       <source>Specifies if the direction of the roof should be flipped</source>
       <translation>Teilatuaren norabidea irauli behar den ala ez zehazten du</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="272"/>
+      <location filename="../../ArchRoof.py" line="274"/>
       <source>An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</source>
       <translation type="unfinished">An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</translation>
     </message>
@@ -10556,27 +10556,6 @@ The ladybug or pysolar Python module is required.</translation>
       <location filename="../../bimcommands/BimArchUtils.py" line="500"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Objektu honen azpiosagaiak erakusten edo ezkutatzen ditu</translation>
-    </message>
-  </context>
-  <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../ArchIFCView.py" line="73"/>
-      <location filename="../../ArchSite.py" line="1608"/>
-      <location filename="../../ArchAxis.py" line="824"/>
-      <source>Transform</source>
-      <translation>Transformatu</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="128"/>
-      <source>Edit Covering</source>
-      <translation type="unfinished">Edit Covering</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="1757"/>
-      <location filename="../../bimcommands/BimCovering.py" line="83"/>
-      <source>Create Covering</source>
-      <translation type="unfinished">Create Covering</translation>
     </message>
   </context>
   <context>
@@ -13685,6 +13664,20 @@ Do you want to proceed?</translation>
       <location filename="../../ArchSql.py" line="926"/>
       <source>Returns the immediate, architecturally significant parent of an object.</source>
       <translation type="unfinished">Returns the immediate, architecturally significant parent of an object.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="128"/>
+      <source>Edit Covering</source>
+      <translation type="unfinished">Edit Covering</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="1757"/>
+      <location filename="../../bimcommands/BimCovering.py" line="83"/>
+      <source>Create Covering</source>
+      <translation type="unfinished">Create Covering</translation>
     </message>
   </context>
   <context>

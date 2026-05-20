@@ -56,6 +56,8 @@ public:
     QGCustomRect* getFrame() {return m_frame;}
     QGCustomClip* getClipArea() {return m_cliparea;}
 
+    void setPositionInClip(QGIView* qgiv, qreal xPos, qreal yPos);
+
 protected:
     void drawClip();
 

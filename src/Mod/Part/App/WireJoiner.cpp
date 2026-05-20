@@ -53,6 +53,9 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
+#include <IntRes2d_SequenceOfIntersectionPoint.hxx>
+#include <TColStd_SequenceOfReal.hxx>
+#include <TColgp_SequenceOfPnt.hxx>
 
 #include <BRepTools_History.hxx>
 #include <ShapeBuild_ReShape.hxx>

@@ -2809,7 +2809,7 @@ fichiers ODA est utilisé, ou l'utilitaire « dwg2dwg » si la version pro de QC
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="393"/>
       <source>Continue</source>
-      <translation>Continuer</translation>
+      <translation>Continu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="335"/>
@@ -3059,7 +3059,7 @@ des commandes.</translation>
       <location filename="../../DraftGui.py" line="640"/>
       <location filename="../../DraftGui.py" line="997"/>
       <source>Continue</source>
-      <translation>Continuer</translation>
+      <translation>Continu</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="648"/>
@@ -7984,7 +7984,7 @@ beyond the dimension line</source>
     <message>
       <location filename="../../draftviewproviders/view_rectangle.py" line="46"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
-      <translation>Définir une image de texture (écrase les motifs des hachures)</translation>
+      <translation>Définit une image de texture (écrase les motifs de hachures).</translation>
     </message>
   </context>
   <context>

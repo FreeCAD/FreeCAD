@@ -1469,12 +1469,12 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1051"/>
       <source>%1 fine dragging</source>
-      <translation type="unfinished">%1 fine dragging</translation>
+      <translation>%1 精细拖动</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1054"/>
       <source>%1 coarse dragging</source>
-      <translation type="unfinished">%1 coarse dragging</translation>
+      <translation>%1 粗略拖动</translation>
     </message>
   </context>
   <context>
@@ -5447,12 +5447,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
       <source>%1 fine dragging</source>
-      <translation type="unfinished">%1 fine dragging</translation>
+      <translation>%1 精细拖动</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="141"/>
       <source>%1 coarse dragging</source>
-      <translation type="unfinished">%1 coarse dragging</translation>
+      <translation>%1 粗略拖动</translation>
     </message>
   </context>
   <context>

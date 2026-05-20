@@ -109,13 +109,18 @@ def loopdetect(obj, edge1, edge2):
         return None
 
 
-def wiredetect(obj, edge):
-    """Returns all edges from first wire which includes the edge."""
+def wiresdetect(obj, edges):
+    """Returns all edges from all horizontal wires which includes the edges."""
 
-    ehash = edge.hashCode()
+    ehashList = [e.hashCode() for e in edges]
+    wires = []
     for wire in obj.Shape.Wires:
-        if any(e.hashCode() == ehash for e in wire.Edges):
-            return wire.Edges
+        if not Path.Geom.isRoughly(wire.BoundBox.ZLength, 0):
+            continue
+        if any(e.hashCode() in ehashList for e in wire.Edges):
+            wires.append(wire)
+    if wires:
+        return [e for w in wires for e in w.Edges]
 
     return None
 

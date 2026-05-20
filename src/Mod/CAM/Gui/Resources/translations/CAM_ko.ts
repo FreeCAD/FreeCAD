@@ -1066,7 +1066,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="287"/>
       <source>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</source>
-      <translation type="unfinished">The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</translation>
+      <translation>최대 허용 램프 진입 각도입니다. 0으로 지정하면 램프 각도 제한이 비활성화됩니다.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="297"/>
@@ -4891,8 +4891,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../../../Path/Op/Adaptive.py" line="1671"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
-      <translation type="unfinished">The maximum allowable helix ramp entry angle (degrees)
-Set to zero to disable limitation by ramp angle</translation>
+      <translation>최대 허용 램프 진입 각도입니다.
+0으로 지정하면 램프 각도 제한을 비활성화합니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1681"/>
@@ -4934,7 +4934,7 @@ Set to zero to disable limitation by pitch</source>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1918"/>
       <source>The maximum allowable descent in a single revolution of the helixSet to zero to disable limitation by pitch</source>
-      <translation type="unfinished">The maximum allowable descent in a single revolution of the helixSet to zero to disable limitation by pitch</translation>
+      <translation>나선의 한 회전에서 허용되는 최대 하강량입니다. 0으로 지정하면 피치 제한이 비활성화됩니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1615"/>

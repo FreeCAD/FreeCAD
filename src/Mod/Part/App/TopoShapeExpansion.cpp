@@ -36,6 +36,7 @@
 # include <BRepAdaptor_HCompCurve.hxx>
 #endif
 
+#include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepFill.hxx>
@@ -4468,6 +4469,49 @@ TopoShape& TopoShape::makeElementLoft(
     const char* op
 )
 {
+    auto checkProfiles = [](const TopoShape& sh1, const TopoShape& sh2) {
+        // The same TShape is used but the locations might be different
+        // even if they result into the same transformation matrix.
+        // Therefore compare the matrices.
+        if (sh1.getShape().IsPartner(sh2.getShape())) {
+            TopLoc_Location loc1 = sh1.getShape().Location();
+            TopLoc_Location loc2 = sh2.getShape().Location();
+            Base::Matrix4D mat1 = TopoShape::convert(loc1.Transformation());
+            Base::Matrix4D mat2 = TopoShape::convert(loc2.Transformation());
+            return (mat1 != mat2);
+        }
+
+        // For different shapes compare their bounding boxes
+        try {
+            Bnd_Box bounds1;
+            Bnd_Box bounds2;
+            BRepBndLib::Add(sh1.getShape(), bounds1);
+            BRepBndLib::Add(sh2.getShape(), bounds2);
+
+            // If bounding boxes are different the shapes must be different, too
+            if (!bounds1.CornerMin().IsEqual(bounds2.CornerMin(), Precision::Confusion())) {
+                return true;
+            }
+            if (!bounds1.CornerMax().IsEqual(bounds2.CornerMax(), Precision::Confusion())) {
+                return true;
+            }
+        }
+        catch (const Standard_Failure&) {
+            return false;
+        }
+
+        Base::Vector3d center1;
+        Base::Vector3d center2;
+        if (!sh1.getCenterOfGravity(center1)) {
+            return true;
+        }
+        if (!sh2.getCenterOfGravity(center2)) {
+            return true;
+        }
+
+        return !center1.IsEqual(center2, Precision::Confusion());
+    };
+
     if (!op) {
         op = Part::OpCodes::Loft;
     }
@@ -4482,15 +4526,10 @@ TopoShape& TopoShape::makeElementLoft(
     }
 
     int i = 0;
-    Base::Vector3d center1, center2;
     for (auto& sh : profiles) {
         if (i > 0) {
-            if (sh.getCenterOfGravity(center1) && profiles[i - 1].getCenterOfGravity(center2)
-                && center1.IsEqual(center2, Precision::Confusion())) {
-                FC_THROWM(
-                    Base::CADKernelError,
-                    "Segments of a Loft/Pad do not have sufficient separation"
-                );
+            if (!checkProfiles(sh, profiles[i - 1])) {
+                FC_THROWM(Base::CADKernelError, "Segments of a loft do not have sufficient separation");
             }
         }
         const auto& shape = sh.getShape();
@@ -5103,9 +5142,17 @@ TopoShape& TopoShape::makeElementBSplineFace(
         auto e4 = mk4.Edge();
 
         ShapeMapper mapper;
-        mapper.populate(MappingStatus::Modified, e, {e1, e2, e3, e4});
-        mapper.populate(MappingStatus::Generated, v, {TopExp::FirstVertex(e1)});
-        mapper.populate(MappingStatus::Generated, v, {TopExp::LastVertex(e4)});
+        mapper.populate(MappingStatus::Modified, e, std::vector<Part::TopoShape> {e1, e2, e3, e4});
+        mapper.populate(
+            MappingStatus::Generated,
+            v,
+            std::vector<Part::TopoShape> {TopExp::FirstVertex(e1)}
+        );
+        mapper.populate(
+            MappingStatus::Generated,
+            v,
+            std::vector<Part::TopoShape> {TopExp::LastVertex(e4)}
+        );
 
         BRep_Builder builder;
         TopoDS_Compound comp;
@@ -5210,7 +5257,7 @@ TopoShape& TopoShape::makeElementBSplineFace(
                     Handle(Geom_BSplineCurve)
                         spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
                     if (spline.IsNull()) {
-                        Standard_Failure::Raise(
+                        throw Standard_Failure(
                             "A curve was not a B-spline and could not be converted into one."
                         );
                     }

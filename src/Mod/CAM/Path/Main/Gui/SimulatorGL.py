@@ -217,6 +217,12 @@ class CAMSimulation:
         self.Connect(form.toolButtonPlay, self.SimPlay)
         form.sliderAccuracy.valueChanged.connect(self.onAccuracyBarChange)
         self.onAccuracyBarChange()
+
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        if prefs.GetBool("SimulatorFollowsVisibility"):
+            form.followsVisibility.setCheckState(QtCore.Qt.CheckState.Checked)
+        form.followsVisibility.clicked.connect(self.followsVisibilityChange)
+
         self._populateJobSelection(form)
         form.comboJobs.currentIndexChanged.connect(self.onJobChange)
         self.onJobChange()
@@ -276,16 +282,24 @@ class CAMSimulation:
 
     def onJobChange(self):
         """When a new job is selected from the drop-down, update job operation list"""
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        followsVisibility = prefs.GetBool("SimulatorFollowsVisibility")
         form = self.taskForm.form
         j = self.jobs[form.comboJobs.currentIndex()]
         self.job = j
         form.listOperations.clear()
         self.operations = []
+        allhidden = all(
+            not op.Visibility for op in j.Operations.OutList if PathUtil.opProperty(op, "Active")
+        )
         for op in j.Operations.OutList:
             if PathUtil.opProperty(op, "Active"):
                 listItem = QtGui.QListWidgetItem(op.ViewObject.Icon, op.Label)
                 listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsUserCheckable)
-                listItem.setCheckState(QtCore.Qt.CheckState.Checked)
+                if followsVisibility and not op.Visibility and not allhidden:
+                    listItem.setCheckState(QtCore.Qt.CheckState.Unchecked)
+                else:
+                    listItem.setCheckState(QtCore.Qt.CheckState.Checked)
                 self.operations.append(op)
                 form.listOperations.addItem(listItem)
         if len(j.Model.OutList) > 0:
@@ -303,6 +317,14 @@ class CAMSimulation:
         elif self.quality < 9:
             qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Medium")
         form.labelAccuracy.setText(qualText)
+
+    def followsVisibilityChange(self):
+        """Update job list in accordance with operations visibility"""
+        form = self.taskForm.form
+        state = form.followsVisibility.isChecked()
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        prefs.SetBool("SimulatorFollowsVisibility", state)
+        self.onJobChange()
 
     def onOperationItemChange(self, _item):
         """Check if at least one operation is selected to enable the Play button"""

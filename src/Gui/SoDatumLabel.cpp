@@ -174,7 +174,7 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(norm, (SbVec3f(.0F, .0F, 1.F)));
     SO_NODE_ADD_FIELD(strikethrough, (false));
 
-    SO_NODE_ADD_FIELD(name, ("Helvetica"));
+    SO_NODE_ADD_FIELD(name, ("osifont"));
     SO_NODE_ADD_FIELD(size, (10.F));
     SO_NODE_ADD_FIELD(lineWidth, (2.F));
     SO_NODE_ADD_FIELD(sampling, (2.F));

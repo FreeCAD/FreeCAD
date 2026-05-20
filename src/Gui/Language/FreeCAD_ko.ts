@@ -544,12 +544,12 @@ The property of this object will refer to the property of the Variable Set.</sou
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="51"/>
       <source>Press middle or ctrl+right mouse button</source>
-      <translation type="unfinished">Press middle or ctrl+right mouse button</translation>
+      <translation>마우스 가운데 버튼 또는 Ctrl+오른쪽 마우스 버튼 누루기</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left, middle+right or shift+right mouse button</source>
-      <translation type="unfinished">Press middle+left, middle+right or shift+right mouse button</translation>
+      <translation>마우스 가운데+왼쪽 버튼, 가운데+오른쪽 버튼 또는 Shift+오른쪽 버튼 동시에 누르기</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
