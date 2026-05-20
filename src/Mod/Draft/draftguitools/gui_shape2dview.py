@@ -46,6 +46,7 @@ import Draft_rc
 import TechDrawGui  # For TechDraw_TreePageUnsync.svg
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
+from draftutils import gui_utils
 from draftutils import utils
 from draftutils.messages import _msg
 from draftutils.translate import translate
@@ -137,11 +138,12 @@ class UpdateShape2DView:
             "Pixmap": "TechDraw_TreePageUnsync",
             "Accel": "V,T",
             "MenuText": QT_TRANSLATE_NOOP("Draft_UpdateShape2DView", "Force 2D View Update"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "Draft_UpdateShape2DView",
-                "Forces an update of the selected 2D Views or all 2D Views in the document.\nThe AutoUpdate property of the views is ignored.",
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_UpdateShape2DView", "Forces an update of the selected 2D Views or all 2D Views in the document.\nThe AutoUpdate property of the views is ignored."),
         }
+
+    def IsActive(self):
+        """Return True when this command should be available."""
+        return bool(gui_utils.get_3d_view())
 
     def Activated(self):
         doc = App.ActiveDocument
