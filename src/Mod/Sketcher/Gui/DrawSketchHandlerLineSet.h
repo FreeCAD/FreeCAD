@@ -1056,7 +1056,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Polyline parameters"));
+        return QString(QObject::tr("Polyline Parameters"));
     }
 
     bool canGoToNextMode() override
@@ -1695,11 +1695,6 @@ template<>
 void DSHPolyLineController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        toolWidget->setNoticeVisible(true);
-        toolWidget->setNoticeText(
-            QApplication::translate("TaskSketcherTool_c1_PolyLine", "R undoes the last point")
-        );
-
         QStringList names = {
             QApplication::translate("Sketcher_CreatePolyline", "Line"),
             QApplication::translate("Sketcher_CreatePolyline", "Arc")
