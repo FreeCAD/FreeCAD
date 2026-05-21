@@ -504,16 +504,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     statusBar()->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(statusBar(), &QWidget::customContextMenuRequested, this, [this](const QPoint& pos) {
         QMenu menu(statusBar());
-        for (QObject* child : statusBar()->children()) {
-            auto* widget = qobject_cast<QWidget*>(child);
-            if (!widget || widget->windowTitle().isEmpty()) {
-                continue;
-            }
-            QAction* action = menu.addAction(widget->windowTitle());
-            action->setCheckable(true);
-            action->setChecked(widget->isVisible());
-            QObject::connect(action, &QAction::toggled, widget, &QWidget::setVisible);
-        }
+        StatusBarLabel::buildToggleMenu(menu, qobject_cast<QStatusBar*>(statusBar()));
         menu.exec(statusBar()->mapToGlobal(pos));
     });
 
