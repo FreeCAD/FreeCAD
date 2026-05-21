@@ -51,27 +51,40 @@ StatusBarLabel::StatusBarLabel(QWidget* parent, const std::string& parameterName
     }
 }
 
+// static
+void StatusBarLabel::buildToggleMenu(QMenu& menu, QStatusBar* statusBar)
+{
+    for (QObject* child : statusBar->children()) {
+        auto* widget = qobject_cast<QWidget*>(child);
+        if (!widget || widget->windowTitle().isEmpty()) {
+            continue;
+        }
+        QAction* action = menu.addAction(widget->windowTitle());
+        action->setCheckable(true);
+
+        // Widgets such as the progress bar manage their own show/hide lifecycle and
+        // expose a userEnabled Q_PROPERTY so the checked state reflects the user's
+        // preference rather than the transient isVisible() state.
+        QVariant userEnabled = widget->property("userEnabled");
+        if (userEnabled.isValid()) {
+            action->setChecked(userEnabled.toBool());
+            QObject::connect(action, &QAction::toggled, widget, [widget](bool checked) {
+                widget->setProperty("userEnabled", checked);
+            });
+        }
+        else {
+            action->setChecked(widget->isVisible());
+            QObject::connect(action, &QAction::toggled, widget, &QWidget::setVisible);
+        }
+    }
+}
+
 void StatusBarLabel::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu menu(this);
 
-    // Reproduce standard status bar widget menu
     if (auto* statusBar = qobject_cast<QStatusBar*>(parentWidget())) {
-        for (QObject* child : statusBar->children()) {
-            QWidget* widget = qobject_cast<QWidget*>(child);
-            if (!widget) {
-                continue;
-            }
-            auto title = widget->windowTitle();
-            if (title.isEmpty()) {
-                continue;
-            }
-
-            QAction* action = menu.addAction(title);
-            action->setCheckable(true);
-            action->setChecked(widget->isVisible());
-            QObject::connect(action, &QAction::toggled, widget, &QWidget::setVisible);
-        }
+        buildToggleMenu(menu, statusBar);
     }
 
     if (textInteractionFlags() & Qt::TextSelectableByMouse) {
