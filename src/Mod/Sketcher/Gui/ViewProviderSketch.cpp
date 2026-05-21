@@ -3572,7 +3572,7 @@ std::vector<std::pair<std::string, std::string>> ViewProviderSketch::getRelatedE
 {
     std::vector<std::pair<std::string, std::string>> result;
 
-    if (!boost::starts_with(subname, "Edge") && !boost::starts_with(subname, "InternalEdge")) {
+    if (!subname.starts_with("Edge") && !subname.starts_with("InternalEdge")) {
         return result;
     }
 
