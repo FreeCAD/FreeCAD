@@ -193,10 +193,18 @@ public:
     explicit DimensionWidget(QWidget* parent)
         : QPushButton(parent)
         , WindowParameter("Units")
+        , hGrpMainWindow(
+              App::GetApplication().GetParameterGroupByPath(
+                  "User parameter:BaseApp/Preferences/MainWindow"
+              )
+          )
     {
         setFlat(true);
         setText(qApp->translate("Gui::MainWindow", "Dimension"));
         setMinimumWidth(120);
+        //: A context menu action used to show or hide the unit system chooser in the status bar
+        setWindowTitle(qApp->translate("Gui::MainWindow", "Unit System"));
+        QPushButton::setVisible(hGrpMainWindow->GetBool("DimensionWidgetEnabled", true));
 
         // create the action buttons
         auto* menu = new QMenu(this);
@@ -251,6 +259,12 @@ public:
         }
     }
 
+    void setVisible(bool visible) override
+    {
+        hGrpMainWindow->SetBool("DimensionWidgetEnabled", visible);
+        QPushButton::setVisible(visible);
+    }
+
     void setUserSchema(int userSchema)
     {
         App::Document* doc = App::GetApplication().getActiveDocument();
@@ -270,6 +284,8 @@ public:
     }
 
 private:
+    ParameterGrp::handle hGrpMainWindow;
+
     void unitChanged()
     {
         ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath(
