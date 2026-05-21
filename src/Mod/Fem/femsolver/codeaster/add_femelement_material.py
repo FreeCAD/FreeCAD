@@ -128,18 +128,21 @@ def define_femelement_material(commtxt, ca_writer):
     return commtxt
 
 
-def assign_femelement_material(commtxt, lams, ca_writer):
-    if len(lams) > 1:
+def assign_femelement_material(commtxt, layups, ca_writer):
+    if len(layups) > 1:
         commtxt += "# Assigning multi lay ups to areas\n"
         commtxt += "fieldmat = AFFE_MATERIAU(AFFE=(\n"
-        for l in lams:
-            commtxt += "                               _F(MATER=({}, ),\n".format(l)
-            commtxt += "                                  GROUP_MA=('{}', )),\n".format(l)
+        for lay in layups:
+            name = lay["name"]
+            grp = lay["group"]
+            commtxt += f"                               _F(MATER=({name}),\n"
+            commtxt += f"                                  GROUP_MA=({grp})),\n"
         commtxt += "                              ),\n"
         commtxt += "                              MODELE=model)\n\n"
     else:
         commtxt += "# Assigning single material/layup to all areas\n"
-        commtxt += "fieldmat = AFFE_MATERIAU(AFFE=_F(MATER=({}, ),\n".format(lams[0])
+        name = layups[0]["name"]
+        commtxt += f"fieldmat = AFFE_MATERIAU(AFFE=_F(MATER=({name}, ),\n"
         commtxt += "                                 TOUT='OUI'),\n"
         commtxt += "                         MAILLAGE=mesh)\n\n"
 

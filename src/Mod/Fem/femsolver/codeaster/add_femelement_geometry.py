@@ -35,25 +35,25 @@ def add_femelement_geometry(commtxt, ele_name, ca_writer):
     """Function to add elements to Code Aster input file, currently only supports shell elements"""
     mat_objs = ca_writer.mat_objs
     # matname = mat_objs[0].Name  # Set default material name for cases where no layup is specified
-    lams = []
+    layups = []
     commtxt += "# Geometric properties of element\n"
     if ca_writer.member.geos_beamsection:
         FreeCAD.Console.PrintError("Beams not yet supported for Code Aster\n")
 
     elif ca_writer.member.geos_shelllaminate:
-        commtxt, lams = add_shell_laminate(commtxt, ele_name, mat_objs, ca_writer)
+        commtxt, layups = add_shell_laminate(commtxt, ele_name, mat_objs, ca_writer)
 
     elif ca_writer.member.geos_shellthickness:
-        commtxt, lams = add_shell2D(commtxt, mat_objs, ele_name, ca_writer)
+        commtxt, layups = add_shell2D(commtxt, mat_objs, ele_name, ca_writer)
 
-    return commtxt, lams
+    return commtxt, layups
 
 
 def add_shell2D(commtxt, mat_objs, ele_name, ca_writer):
     """Adds a 2D element geometry type shell"""
-    lams = []
     thicknesses = []
     geomses = []
+    layups = []
     i = 0
     for shellth in ca_writer.member.geos_shellthickness:
         shellth_obj = shellth["Object"]
@@ -72,15 +72,28 @@ def add_shell2D(commtxt, mat_objs, ele_name, ca_writer):
         geomses.append(geoms)
 
         if "YoungsModulusX" in mat_objs[0].Material.keys():
-            matname = mat_objs[0].Name + "LAYUP" + str(i)
-            lams.append(matname)
+            LUname = mat_objs[0].Name + "LAYUP" + str(i)
             i += 1
-            commtxt += "# Orthotropic material detected, added to shell at default angle\n"
-            commtxt += f"{matname} = DEFI_COMPOSITE(COUCHE=(_F(EPAIS={thickness},\n"
-            commtxt += f"                               MATER={mat_objs[0].Name},\n"
-            commtxt += "                               ORIENTATION = 0)))\n\n"
+            layup = {
+                "name": LUname,
+                "group": str(geoms)[1:-1],
+                "matnames": [mat_objs[0].Name],
+                "thicknesses": [thickness],
+                "orientations": [0],
+            }
+            layups.append(layup)
+            commtxt += add_layup(layup)
+
         else:
-            lams = [mat_objs[0].Name]
+            layups = [
+                {
+                    "name": mat_objs[0].Name,
+                    "group": str(geoms)[1:-1],
+                    "matnames": [mat_objs[0].Name],
+                    "thicknesses": [thickness],
+                    "orientations": [0],
+                }
+            ]
 
         commtxt += f"# Shell elements detected, thickness {thickness}mm on item {geoms}\n"
     commtxt += f"{ele_name} = AFFE_CARA_ELEM(COQUE=(\n"
@@ -91,7 +104,7 @@ def add_shell2D(commtxt, mat_objs, ele_name, ca_writer):
     commtxt += "                          MODELE=model)\n\n"
 
     FreeCAD.Console.PrintMessage(f"Shell of thickness {thickness}mm added.\n")
-    return commtxt, lams
+    return commtxt, layups
 
 
 def add_shell_laminate(commtxt, ele_name, mat_objs, ca_writer):
@@ -231,18 +244,19 @@ def add_grps(layups):
     return commtxt
 
 
-def add_layup(LUname, layup):
+def add_layup(layup):
     thicknesses, orientations, matnames = (
         layup["thicknesses"],
         layup["orientations"],
         layup["matnames"],
     )
     commtxt = "# Composite layup detected, added to shell\n"
-    commtxt += f"{LUname} = DEFI_COMPOSITE(COUCHE=(\n"
-    for j in range(len(thicknesses)):
-        commtxt += f"                               _F(EPAIS={thicknesses[j]},\n"
-        commtxt += f"                                MATER={matnames[j]},\n"
-        commtxt += f"                                ORIENTATION = {orientations[j]}),\n"
+    name = layup["name"]
+    commtxt += f"{name} = DEFI_COMPOSITE(COUCHE=(\n"
+    for th, o, mn in zip(thicknesses, orientations, matnames):
+        commtxt += f"                               _F(EPAIS={th},\n"
+        commtxt += f"                                MATER={mn},\n"
+        commtxt += f"                                ORIENTATION = {o}),\n"
     commtxt += "                                ))\n\n"
     return commtxt
 

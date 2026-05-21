@@ -95,9 +95,8 @@ class FemInputWriterCodeAster(writerbase.FemInputWriter):
         commtxt = add_mesh.add_mesh(commtxt, self)
         commtxt = elasticity_writer.assign_elasticity_model(commtxt, self)
         commtxt = add_femelement_material.define_femelement_material(commtxt, self)
-        commtxt, matnames = add_femelement_geometry.add_femelement_geometry(commtxt, ele_name, self)
-        commtxt = add_femelement_material.assign_femelement_material(commtxt, matnames, self)
-
+        commtxt, layups = add_femelement_geometry.add_femelement_geometry(commtxt, ele_name, self)
+        commtxt = add_femelement_material.assign_femelement_material(commtxt, layups, self)
         commtxt = add_con_fixed.add_con_fixed(commtxt, self)
         commtxt = add_con_force.add_con_force(commtxt, self)
         commtxt += f"{result_name} = MECA_STATIQUE(CARA_ELEM=elemprop,\n"
