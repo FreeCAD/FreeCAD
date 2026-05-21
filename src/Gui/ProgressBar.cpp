@@ -460,10 +460,16 @@ bool ProgressBar::isUserEnabled() const
 
 void ProgressBar::setUserEnabled(bool enabled)
 {
+    if (d->userEnabled == enabled) {
+        return;
+    }
     d->userEnabled = enabled;
     d->hGrp->SetBool("ProgressBarEnabled", enabled);
     if (!enabled) {
         QProgressBar::setVisible(false);
+    }
+    else if (sequencer->isRunning() && !sequencer->wasCanceled()) {
+        QProgressBar::setVisible(true);
     }
 }
 

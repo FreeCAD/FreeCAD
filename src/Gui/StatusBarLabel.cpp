@@ -25,10 +25,13 @@
 #include <QClipboard>
 #include <QApplication>
 #include <QHash>
+#include <QSet>
 #include <QStatusBar>
 #include <QAction>
 #include <QContextMenuEvent>
 #include <QHideEvent>
+#include <QPointer>
+#include <QTimer>
 
 #include <utility>
 
@@ -78,62 +81,97 @@ static void addToggleAction(QMenu& menu, QWidget* widget)
 // static
 void StatusBarLabel::buildToggleMenu(QMenu& menu, QStatusBar* statusBar)
 {
-    // Desired display order in the context menu, identified by object name.
-    // Any titled widget not listed here is appended after these entries.
+    // Explicit display order for known widgets.  Workbench-added widgets (Draft,
+    // BIM, etc.) keep their position in the actual status-bar layout: each one is
+    // emitted just before the first known widget that follows it on the bar.
     static const QStringList order = {
         QStringLiteral("actionLabel"),
         QStringLiteral("hintLabel"),
-        QStringLiteral("rightSideLabel"),
         QStringLiteral("progressBar"),
+        QStringLiteral("rightSideLabel"),
         QStringLiteral("toggleBottomPanelsButton"),
         QStringLiteral("notificationArea"),
         QStringLiteral("NavigationIndicator"),
         QStringLiteral("sizeLabel"),
     };
 
-    // Collect all titled children keyed by object name for O(1) lookup.
-    QHash<QString, QWidget*> byName;
+    // Collect titled widgets in actual status-bar layout order.  QStatusBar
+    // doesn't expose a QLayout, so use widget x-position to get visual order.
+    QList<QWidget*> layoutOrder;
     for (QObject* child : statusBar->children()) {
         auto* widget = qobject_cast<QWidget*>(child);
         if (widget && !widget->windowTitle().isEmpty()) {
-            byName.insert(widget->objectName(), widget);
+            layoutOrder.append(widget);
         }
     }
+    std::stable_sort(layoutOrder.begin(), layoutOrder.end(), [](QWidget* a, QWidget* b) {
+        return a->x() < b->x();
+    });
 
-    // Emit entries in the declared order first.
+    auto isKnown = [&](QWidget* w) {
+        return order.contains(w->objectName());
+    };
+
+    QHash<QString, QWidget*> byName;
+    for (QWidget* w : layoutOrder) {
+        byName.insert(w->objectName(), w);
+    }
+
+    QSet<QWidget*> emitted;
     for (const QString& name : order) {
-        auto it = byName.find(name);
-        if (it != byName.end()) {
-            addToggleAction(menu, it.value());
-            byName.erase(it);
+        QWidget* known = byName.value(name);
+        if (!known) {
+            continue;
         }
+        const int idx = layoutOrder.indexOf(known);
+        for (int i = 0; i < idx; ++i) {
+            QWidget* w = layoutOrder[i];
+            if (!isKnown(w) && !emitted.contains(w)) {
+                addToggleAction(menu, w);
+                emitted.insert(w);
+            }
+        }
+        addToggleAction(menu, known);
+        emitted.insert(known);
     }
 
-    // Append any remaining titled widgets not covered by the order list.
-    for (auto* widget : std::as_const(byName)) {
-        addToggleAction(menu, widget);
+    // Unknown widgets that sit after every known one (or when no layout was found).
+    for (QWidget* w : layoutOrder) {
+        if (!emitted.contains(w)) {
+            addToggleAction(menu, w);
+        }
     }
 }
 
 void StatusBarLabel::contextMenuEvent(QContextMenuEvent* event)
 {
-    QMenu menu(this);
+    event->accept();
 
-    if (auto* statusBar = qobject_cast<QStatusBar*>(parentWidget())) {
-        buildToggleMenu(menu, statusBar);
-    }
-
-    if (textInteractionFlags() & Qt::TextSelectableByMouse) {
-        menu.addSeparator();  // ----------
-
-        // Copy + Select All
-        menu.addAction(tr("Copy"), [this]() {
-            QApplication::clipboard()->setText(this->selectedText());
-        });
-        menu.addAction(tr("Select All"), [this]() { this->setSelection(0, this->text().length()); });
-    }
-
-    menu.exec(event->globalPos());
+    const QPoint globalPos = event->globalPos();
+    QPointer<StatusBarLabel> self(this);
+    QTimer::singleShot(0, this, [self, globalPos]() {
+        if (!self) {
+            return;
+        }
+        QMenu menu(self);
+        if (auto* statusBar = qobject_cast<QStatusBar*>(self->parentWidget())) {
+            buildToggleMenu(menu, statusBar);
+        }
+        if (self->textInteractionFlags() & Qt::TextSelectableByMouse) {
+            menu.addSeparator();
+            menu.addAction(tr("Copy"), [self]() {
+                if (self) {
+                    QApplication::clipboard()->setText(self->selectedText());
+                }
+            });
+            menu.addAction(tr("Select All"), [self]() {
+                if (self) {
+                    self->setSelection(0, self->text().length());
+                }
+            });
+        }
+        menu.exec(globalPos);
+    });
 }
 
 void StatusBarLabel::setVisible(bool visible)

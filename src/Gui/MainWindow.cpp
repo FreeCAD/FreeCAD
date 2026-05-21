@@ -445,6 +445,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
     statusBar()->addWidget(d->actionLabel, 1);
 
+    // Progress bar must be a permanent widget: non-permanent widgets are
+    // temporarily hidden by QStatusBar when showMessage() displays status text,
+    // which would make the indicator vanish mid-operation.
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     progressBar->setObjectName(QStringLiteral("progressBar"));
     statusBar()->addPermanentWidget(progressBar, 0);
@@ -496,7 +499,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
         NotificationArea* notificationArea = new NotificationArea(statusBar());
         notificationArea->setObjectName(QStringLiteral("notificationArea"));
         //: A context menu action used to show or hide the 'notificationArea' toolbar widget
-        notificationArea->setWindowTitle(tr("Notification Area"));
+        notificationArea->setWindowTitle(tr("Notifications"));
         notificationArea->setStyleSheet(QStringLiteral("text-align:center;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
@@ -505,9 +508,12 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     // widgets are hidden — right-clicking the status bar background also shows it.
     statusBar()->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(statusBar(), &QWidget::customContextMenuRequested, this, [this](const QPoint& pos) {
-        QMenu menu(statusBar());
-        StatusBarLabel::buildToggleMenu(menu, qobject_cast<QStatusBar*>(statusBar()));
-        menu.exec(statusBar()->mapToGlobal(pos));
+        const QPoint globalPos = statusBar()->mapToGlobal(pos);
+        QTimer::singleShot(0, this, [this, globalPos]() {
+            QMenu menu(statusBar());
+            StatusBarLabel::buildToggleMenu(menu, qobject_cast<QStatusBar*>(statusBar()));
+            menu.exec(globalPos);
+        });
     });
 
     // clears the action label
