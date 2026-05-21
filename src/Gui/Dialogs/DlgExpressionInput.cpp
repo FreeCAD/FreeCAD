@@ -878,7 +878,7 @@ void DlgExpressionInput::setupVarSets()
 
 std::string DlgExpressionInput::getType()
 {
-    return std::string{determineTypeVarSet().getName()};
+    return std::string {determineTypeVarSet().getName()};
 }
 
 void DlgExpressionInput::onCheckVarSets(int state)
