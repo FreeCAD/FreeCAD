@@ -4336,7 +4336,9 @@ void StdCmdClarifySelection::activated(int iMsg)
 
         selections.push_back(pickData);
 
-        // Resolve sub-object view provider for virtual dispatch (e.g. Body -> Sketch)
+        // subName may be a dotted path into a container (e.g. "Body.Pad.Face1"); split it
+        // into the leading path and the picked element so getRelatedElements runs on the
+        // leaf object's view provider, not the outer container's.
         std::string subObjPath;
         std::string pickedElement = pickData.subName;
         auto lastDot = pickData.subName.find_last_of('.');
