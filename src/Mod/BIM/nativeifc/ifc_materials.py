@@ -72,7 +72,13 @@ def show_material(obj):
     if not material:
         return
     if not hasattr(obj, "Material"):
-        obj.addProperty("App::PropertyLink", "Material", "IFC", locked=True)
+        obj.addProperty("App::PropertyLinkGlobal", "Material", "IFC", locked=True)
+    elif obj.getTypeIdOfProperty("Material") == "App::PropertyLink":
+        mat = obj.Material
+        obj.setPropertyStatus("Material", "-LockDynamic")
+        obj.removeProperty("Material")
+        obj.addProperty("App::PropertyLinkGlobal", "Material", "IFC", locked=True)
+        obj.Material = mat
     project = ifc_tools.get_project(obj)
     matobj = create_material(material, project, recursive=True)
     obj.Material = matobj

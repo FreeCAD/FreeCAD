@@ -378,8 +378,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             elif default[key][0] == "int":
                 control.setValue(value)
             elif default[key][0] == "float":
-                if hasattr(control, "setText"):
-                    control.setText(App.Units.Quantity(value, App.Units.Length).UserString)
+                if control.metaObject().indexOfProperty("rawValue") != -1:
+                    control.setProperty("rawValue", value)
                 else:
                     control.setValue(value)
             elif default[key][0] == "bool":
@@ -408,8 +408,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             elif default[key][0] == "int":
                 values[key] = control.value()
             elif default[key][0] == "float":
-                if hasattr(control, "setText"):
-                    values[key] = App.Units.Quantity(control.text()).Value
+                if control.metaObject().indexOfProperty("rawValue") != -1:
+                    values[key] = control.property("rawValue")
                 else:
                     values[key] = control.value()
             elif default[key][0] == "bool":

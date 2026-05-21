@@ -1142,7 +1142,16 @@ class _Wall(ArchComponent.Component):
                         #
                         # Now, adopt approach same as for Sketch
                         self.basewires = []
-                        clusters = Part.getSortedClusters(obj.Base.Shape.Edges)
+                        shpEdges = obj.Base.Shape.Edges
+                        baseEdges = []
+                        for edge in shpEdges:
+                            if (
+                                isinstance(edge.Curve, (Part.Line, Part.Circle))
+                                or isinstance(edge.Curve, Part.Ellipse)
+                                and edge.isClosed()
+                            ):
+                                baseEdges.append(edge)
+                        clusters = Part.getSortedClusters(baseEdges)
                         self.basewires = clusters
                         # Previously :
                         # Found case that after sorting below, direction of
@@ -1455,6 +1464,15 @@ class _Wall(ArchComponent.Component):
 
                         if baseface:
                             base, placement = self.rebase(baseface)
+
+                    else:  # if not self.basewires:
+                        FreeCAD.Console.PrintWarning(
+                            translate(
+                                "Arch",
+                                f"No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)",
+                            )
+                            + "\n"
+                        )
 
         # Build Wall from scratch if there is no obj.Base or even obj.Base is not valid
         else:
@@ -1772,6 +1790,7 @@ class _Wall(ArchComponent.Component):
         layers = self.get_layers(obj)
         width = self.get_width(obj, widths=False)
         align = obj.Align
+        wall_offset = obj.Offset.Value
 
         # Use a small default for zero dimensions to ensure a valid shape can be created.
         safe_length = obj.Length.Value or 0.5
@@ -1792,7 +1811,9 @@ class _Wall(ArchComponent.Component):
             offset = -totalwidth / 2
         elif align == "Left":
             # Per convention, 'Left' is on the geometric right (-Y direction).
-            offset = -totalwidth
+            offset = -totalwidth - wall_offset
+        elif align == "Right":
+            offset = wall_offset
 
         # Loop through all layers and create a face for each.
         for layer in layers:

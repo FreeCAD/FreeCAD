@@ -49,18 +49,19 @@ class WriterPressure(WriterList):
                     match el_type:
                         case 1 | 10:
                             # hexa8, hexa20
-                            load = f"{pressure} 0. 0."
+                            load = f"{pressure:E} 0. 0."
                         case 16 | 17:
                             # tetra10, tetra4
-                            load = f"{pressure}"
+                            load = f"{pressure:E}"
                         case 7 | 14:
-                            # quad8, tria6 plane stress
-                            load = f"{pressure} 0."
+                            # quad8, tria6 plane stress, multiply pressure by thickness
+                            thickness = self._get_thickness(el_index + 1)
+                            load = f"{pressure * thickness:E} 0."
                         case 8 | 15:
                             # quad8, tria6 axisymmetric, multiply pressure by 2*pi*R
-                            n_index = self.writer.node_id_map[nodes_array[mask][2]]
-                            y_coord = self.writer.nodes["coords"][n_index][0]
-                            load = f"{pressure*2*np.pi*y_coord} 0."
+                            n_index = self.writer.node_id_map(nodes_array[mask][2])
+                            x_coord = self.writer.nodes["coords"][n_index][0]
+                            load = f"{pressure*2*np.pi*x_coord:E} 0."
                         case _:
                             raise RuntimeError(
                                 f"{obj.Name} load not supported on {feat[0].Name}.{feat[1][0]}"
@@ -78,7 +79,7 @@ class WriterPressure(WriterList):
                         case 18 | 20 | 23 | 24:
                             # tria6, quad8 shell, plate
                             # pressure must be reversed for shell elements
-                            load = f"{-1*pressure}"
+                            load = f"{-1*pressure:E}"
                         case _:
                             raise RuntimeError(
                                 f"{obj.Name} load not supported on {feat[0].Name}.{feat[1][0]}"
@@ -86,3 +87,10 @@ class WriterPressure(WriterList):
 
                     nodes = " ".join(map(str, nodes_array))
                     self.writer.z88i5_rows.append(f"{el_index + 1} {load} {nodes}\n")
+
+    def _get_thickness(self, elem):
+        """Get thickness for 2D elements by search in z88elp data"""
+        for start, end, thick in self.writer.z88elp_rows:
+            if start <= elem and elem <= end:
+                return thick
+        return 0.0

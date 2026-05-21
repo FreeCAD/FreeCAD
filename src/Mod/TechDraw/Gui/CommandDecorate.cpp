@@ -355,11 +355,12 @@ void CmdTechDrawImage::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // Reading an image
-    QStringList filterList;
-    filterList << QString::fromUtf8(QT_TR_NOOP("Image files (*.jpg *.jpeg *.png *.bmp)"));
-    filterList << QString::fromUtf8(QT_TR_NOOP("All files (*)"));
+    const Gui::FileDialog::FilterList filterList {
+        {QObject::tr("Image files"), {"*.jpg", "*.jpeg", "*.png", "*.bmp"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
-        QString::fromUtf8(QT_TR_NOOP("Select an image file")),
+        QObject::tr("Select an image file"),
         Preferences::defaultSymbolDir(),
         filterList);
     if (fileName.isEmpty()) {
@@ -414,21 +415,21 @@ void CreateTechDrawCommandsDecorate()
 bool _checkSelectionHatch(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("Select a face first"));
         return false;
     }
 
     TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
     if(!objFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("No TechDraw object in selection"));
         return false;
     }
 
     std::vector<App::DocumentObject*> pages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (pages.empty()){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
             QObject::tr("Create a page to insert"));
         return false;
     }

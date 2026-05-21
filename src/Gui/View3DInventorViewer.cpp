@@ -191,6 +191,13 @@ public:
 private:
     void triggerClarifySelection()
     {
+        // reset navigation state so button1down doesn't stay stuck ie. gh issue #29090
+        // (the blocking QMenu::exec in ClarifySelection steals the LMB release)
+        if (currentViewer) {
+            if (auto* nav = currentViewer->navigationStyle()) {
+                nav->resetButtonState();
+            }
+        }
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Std_ClarifySelection')");
     }
 
@@ -535,11 +542,17 @@ void View3DInventorViewer::init()
     naviCubeAnnotation->ref();
     naviCubeAnnotation->setName("naviCubeAnnotation");
 
-    auto lm = new SoLightModel;
-    lm->model = SoLightModel::BASE_COLOR;
+    auto decorationLightModel = new SoLightModel;
+    decorationLightModel->model = SoLightModel::BASE_COLOR;
 
-    auto bc = new SoBaseColor;
-    bc->rgb = SbColor(1, 1, 0);
+    auto decorationBaseColor = new SoBaseColor;
+    decorationBaseColor->rgb = SbColor(1, 1, 0);
+
+    auto foregroundLightModel = new SoLightModel;
+    foregroundLightModel->model = SoLightModel::BASE_COLOR;
+
+    auto foregroundBaseColor = new SoBaseColor;
+    foregroundBaseColor->rgb = SbColor(1, 1, 0);
 
     // NOLINTBEGIN
     cam = new SoOrthographicCamera;
@@ -554,8 +567,8 @@ void View3DInventorViewer::init()
     lightRotation->rotation.connectFrom(&cam->orientation);
 
     this->decorationroot->addChild(cam);
-    this->decorationroot->addChild(lm);
-    this->decorationroot->addChild(bc);
+    this->decorationroot->addChild(decorationLightModel);
+    this->decorationroot->addChild(decorationBaseColor);
     this->decorationroot->addChild(naviCubeAnnotation);
 
     auto threePointLightingSeparator = new SoTransformSeparator;
@@ -563,6 +576,8 @@ void View3DInventorViewer::init()
     threePointLightingSeparator->addChild(this->fillLight);
 
     this->foregroundroot->addChild(cam);
+    this->foregroundroot->addChild(foregroundLightModel);
+    this->foregroundroot->addChild(foregroundBaseColor);
 
     // NOTE: For every mouse click event the SoFCUnifiedSelection searches for the picked
     // point which causes a certain slow-down because for all objects the primitives
@@ -800,7 +815,6 @@ View3DInventorViewer::~View3DInventorViewer()
 
     if (_viewerPy) {
         static_cast<View3DInventorViewerPy*>(_viewerPy)->_viewer = nullptr;
-        Py_DECREF(_viewerPy);
     }
 
     // In the init() function we have overridden the default SoGLRenderAction with our
@@ -1102,33 +1116,10 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks)
             ViewProviderLink::updateLinks(editViewProvider);
         }
     }
-    catch (const Py::Exception& e) {
-        /* coverity[UNCAUGHT_EXCEPT] Uncaught exception */
-        // Coverity created several reports when removeViewProvider()
-        // is used somewhere in a destructor which indirectly invokes
-        // resetEditingRoot().
-        // Now theoretically Py::type can throw an exception which nowhere
-        // will be handled and thus terminates the application. So, add an
-        // extra try/catch block here.
-        try {
-            Py::Object py = Py::type(e);
-            if (py.isString()) {
-                Py::String str(py);
-                Base::Console().warning("%s\n", str.as_std_string("utf-8").c_str());
-            }
-            else {
-                Py::String str(py.repr());
-                Base::Console().warning("%s\n", str.as_std_string("utf-8").c_str());
-            }
-            // Prints message to console window if we are in interactive mode
-            PyErr_Print();
-        }
-        catch (Py::Exception& e) {
-            e.clear();
-            Base::Console().error(
-                "Unexpected exception raised in View3DInventorViewer::resetEditingRoot\n"
-            );
-        }
+    catch (const Py::Exception&) {
+        // resetEditingRoot() can be reached while tearing down view providers,
+        // so keep Python callback failures confined to traceback reporting.
+        PyErr_Print();
     }
 }
 
@@ -3512,6 +3503,64 @@ void View3DInventorViewer::setCameraType(SoType type)
     }
 
     lightRotation->rotation.connectFrom(&cam->orientation);
+
+    Q_EMIT cameraChanged();
+}
+
+bool View3DInventorViewer::setCamera(const char* pCamera)
+{
+    SoCamera* CamViewer = getSoRenderManager()->getCamera();
+    if (!CamViewer) {
+        throw Base::RuntimeError("No camera set so far…");
+    }
+
+    SoInput in;
+    in.setBuffer(pCamera, std::strlen(pCamera));
+
+    SoNode* Cam;
+    SoDB::read(&in, Cam);
+
+    if (!Cam || !Cam->isOfType(SoCamera::getClassTypeId())) {
+        throw Base::RuntimeError("Camera settings failed to read");
+    }
+
+    // this is to make sure to reliably delete the node
+    CoinPtr<SoNode> camPtr {Cam};
+
+    // toggle between perspective and orthographic camera
+    if (Cam->getTypeId() != CamViewer->getTypeId()) {
+        setCameraType(Cam->getTypeId());
+        CamViewer = getSoRenderManager()->getCamera();
+
+        assert(Cam->getTypeId() == CamViewer->getTypeId());
+    }
+
+    // we just made sure the cameras are the same type, now we can safely downcast
+    if (Cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+        auto CamViewerP = static_cast<SoPerspectiveCamera*>(CamViewer);
+        auto CamP = static_cast<SoPerspectiveCamera*>(Cam);
+
+        CamViewerP->position = CamP->position;
+        CamViewerP->orientation = CamP->orientation;
+        CamViewerP->nearDistance = CamP->nearDistance;
+        CamViewerP->farDistance = CamP->farDistance;
+        CamViewerP->focalDistance = CamP->focalDistance;
+    }
+    else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        auto CamViewerO = static_cast<SoOrthographicCamera*>(CamViewer);
+        auto CamO = static_cast<SoOrthographicCamera*>(Cam);
+
+        CamViewerO->viewportMapping = CamO->viewportMapping;
+        CamViewerO->position = CamO->position;
+        CamViewerO->orientation = CamO->orientation;
+        CamViewerO->nearDistance = CamO->nearDistance;
+        CamViewerO->farDistance = CamO->farDistance;
+        CamViewerO->focalDistance = CamO->focalDistance;
+        CamViewerO->aspectRatio = CamO->aspectRatio;
+        CamViewerO->height = CamO->height;
+    }
+
+    return true;
 }
 
 void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration)
@@ -3798,55 +3847,115 @@ void View3DInventorViewer::alignToSelection()
 
     const auto selection = Selection().getSelection(nullptr, ResolveMode::NoResolve);
 
-    // Empty selection
     if (selection.empty()) {
         return;
     }
 
-    // Too much selections
-    if (selection.size() > 1) {
-        return;
-    }
-
-    // Get the geo feature
-    App::GeoFeature* geoFeature = nullptr;
-    App::ElementNamePair elementName;
-    App::GeoFeature::resolveElement(
-        selection[0].pObject,
-        selection[0].SubName,
-        elementName,
-        true,
-        App::GeoFeature::ElementNameType::Normal,
-        nullptr,
-        nullptr,
-        &geoFeature
-    );
-    if (!geoFeature) {
-        return;
-    }
-
-    const auto globalPlacement = App::GeoFeature::getGlobalPlacement(
-        selection[0].pResolvedObject,
-        selection[0].pObject,
-        elementName.oldName
-    );
-    const auto globalRotation = globalPlacement.getRotation()
-        * geoFeature->Placement.getValue().getRotation().inverse();
-    const auto splitSubName = Base::Tools::splitSubName(elementName.oldName);
-    const auto geoFeatureSubName = !splitSubName.empty() ? splitSubName.back() : "";
-
-    Base::Vector3d alignmentZ;
+    Base::Vector3d alignmentZ(0, 0, 0);
     Base::Vector3d alignmentX(0, 0, 0);
-    if (geoFeature->getCameraAlignmentDirection(alignmentZ, alignmentX, geoFeatureSubName.c_str())) {
+    bool aligned = false;
 
-        // Find a x alignment if the geoFeature did not suggest any
-        if (alignmentX == Base::Vector3d(0, 0, 0)) {
-            Base::Rotation(-Base::Vector3d::UnitZ, alignmentZ).multVec(Base::Vector3d::UnitX, alignmentX);
+    if (selection.size() == 1) {
+        App::GeoFeature* geoFeature = nullptr;
+        App::ElementNamePair elementName;
+        App::GeoFeature::resolveElement(
+            selection[0].pObject,
+            selection[0].SubName,
+            elementName,
+            true,
+            App::GeoFeature::ElementNameType::Normal,
+            nullptr,
+            nullptr,
+            &geoFeature
+        );
+        if (!geoFeature) {
+            return;
         }
 
-        // Convert to global coordinates
-        globalRotation.multVec(alignmentZ, alignmentZ);
-        globalRotation.multVec(alignmentX, alignmentX);
+        const auto globalPlacement = App::GeoFeature::getGlobalPlacement(
+            selection[0].pResolvedObject,
+            selection[0].pObject,
+            elementName.oldName
+        );
+        const auto globalRotation = globalPlacement.getRotation()
+            * geoFeature->Placement.getValue().getRotation().inverse();
+        const auto splitSubName = Base::Tools::splitSubName(elementName.oldName);
+        const auto geoFeatureSubName = !splitSubName.empty() ? splitSubName.back() : "";
+
+        if (geoFeature->getCameraAlignmentDirection(alignmentZ, alignmentX, geoFeatureSubName.c_str())) {
+            if (alignmentX == Base::Vector3d(0, 0, 0)) {
+                Base::Rotation(-Base::Vector3d::UnitZ, alignmentZ)
+                    .multVec(Base::Vector3d::UnitX, alignmentX);
+            }
+            globalRotation.multVec(alignmentZ, alignmentZ);
+            globalRotation.multVec(alignmentX, alignmentX);
+            aligned = true;
+        }
+    }
+    else {
+        struct FeatureGroup
+        {
+            App::GeoFeature* feature = nullptr;
+            Base::Rotation globalRotation;
+            std::vector<std::string> subnames;
+        };
+        std::map<App::GeoFeature*, FeatureGroup> groups;
+
+        for (const auto& sel : selection) {
+            App::GeoFeature* gf = nullptr;
+            App::ElementNamePair elementName;
+            App::GeoFeature::resolveElement(
+                sel.pObject,
+                sel.SubName,
+                elementName,
+                true,
+                App::GeoFeature::ElementNameType::Normal,
+                nullptr,
+                nullptr,
+                &gf
+            );
+            if (!gf) {
+                continue;
+            }
+
+            auto& grp = groups[gf];
+            if (!grp.feature) {
+                grp.feature = gf;
+                const auto gp = App::GeoFeature::getGlobalPlacement(
+                    sel.pResolvedObject,
+                    sel.pObject,
+                    elementName.oldName
+                );
+                grp.globalRotation = gp.getRotation()
+                    * gf->Placement.getValue().getRotation().inverse();
+            }
+            const auto split = Base::Tools::splitSubName(elementName.oldName);
+            grp.subnames.push_back(!split.empty() ? split.back() : "");
+        }
+
+        Base::Vector3d sumZ(0, 0, 0);
+        int validCount = 0;
+        for (auto& [gf, grp] : groups) {
+            Base::Vector3d groupZ;
+            bool ok = (grp.subnames.size() == 1)
+                ? gf->getCameraAlignmentDirection(groupZ, alignmentX, grp.subnames[0].c_str())
+                : gf->getCameraAlignmentDirection(groupZ, grp.subnames);
+            if (ok) {
+                grp.globalRotation.multVec(groupZ, groupZ);
+                sumZ += groupZ;
+                ++validCount;
+            }
+        }
+
+        if (validCount == 0) {
+            return;
+        }
+        alignmentZ = sumZ.Normalize();
+        Base::Rotation(-Base::Vector3d::UnitZ, alignmentZ).multVec(Base::Vector3d::UnitX, alignmentX);
+        aligned = true;
+    }
+
+    if (aligned) {
 
         const auto cameraOrientation = getCameraOrientation();
 

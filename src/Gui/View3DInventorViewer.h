@@ -473,6 +473,7 @@ public:
         bool moveToCenter = false
     ) const;
     void setCameraType(SoType type) override;
+    bool setCamera(const char* pCamera);
     void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**
      * Zooms the viewport to the size of the bounding box.
@@ -544,6 +545,9 @@ public:
     Gui::Document* getDocument();
 
     virtual PyObject* getPyObject();
+
+Q_SIGNALS:
+    void cameraChanged();
 
 protected:
     static GLenum getInternalTextureFormat();

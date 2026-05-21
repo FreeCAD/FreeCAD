@@ -2,10 +2,13 @@
 
 #include <src/App/InitApplication.h>
 #include <App/Document.h>
+#include <App/MeasureManager.h>
 #include <Mod/Measure/App/MeasureDistance.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <gtest/gtest.h>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepPrimAPI_MakeBox.hxx>
+#include <BRepPrimAPI_MakeSphere.hxx>
 #include <gp_Circ.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
@@ -47,6 +50,45 @@ private:
 };
 
 // NOLINTBEGIN
+TEST_F(MeasureDistance, testCurvedFaceValidSelection)
+{
+    // Regression: https://github.com/FreeCAD/FreeCAD/issues/29235
+    App::Document* doc = getDocument();
+
+    auto sphere = doc->addObject<Part::Feature>("Sphere");
+    sphere->Shape.setValue(BRepPrimAPI_MakeSphere(5.0).Solid());
+
+    auto box = doc->addObject<Part::Feature>("Box");
+    box->Shape.setValue(BRepPrimAPI_MakeBox(gp_Pnt(20.0, 0.0, 0.0), 10.0, 10.0, 10.0).Solid());
+
+    doc->recompute();
+
+    App::MeasureSelectionItem item1 {App::SubObjectT {sphere, "Face1"}, Base::Vector3d {}};
+    App::MeasureSelectionItem item2 {App::SubObjectT {box, "Face1"}, Base::Vector3d {}};
+
+    EXPECT_TRUE(Measure::MeasureDistance::isValidSelection({item1, item2}));
+}
+
+TEST_F(MeasureDistance, testCurvedFaceDistance)
+{
+    // Regression: https://github.com/FreeCAD/FreeCAD/issues/29235
+    App::Document* doc = getDocument();
+
+    auto sphere = doc->addObject<Part::Feature>("Sphere");
+    sphere->Shape.setValue(BRepPrimAPI_MakeSphere(5.0).Solid());
+
+    auto box = doc->addObject<Part::Feature>("Box");
+    box->Shape.setValue(BRepPrimAPI_MakeBox(gp_Pnt(20.0, 0.0, 0.0), 10.0, 10.0, 10.0).Solid());
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(sphere, {"Face1"});
+    md->Element2.setValue(box, {"Face1"});
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 15.0, 1e-6);
+}
+
 TEST_F(MeasureDistance, testCircleCircle)
 {
     App::Document* doc = getDocument();

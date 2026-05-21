@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from TopoShape import TopoShape
-from typing import Dict, List, Final, overload, Optional
+from typing import Dict, List, Final, overload, Optional, Sequence
 
 @export(
     Twin="TopoShape",
@@ -21,6 +21,13 @@ class TopoShapeWire(TopoShape):
     Licence: LGPL
     DeveloperDocu: TopoShapeWire is the OpenCasCade topological wire wrapper
     """
+
+    @overload
+    def __init__(self) -> None: ...
+    @overload
+    def __init__(self, shape: TopoShape, /) -> None: ...
+    @overload
+    def __init__(self, shapes: Sequence[TopoShape], /) -> None: ...
 
     Mass: Final[object] = ...
     """Returns the mass of the current system."""
