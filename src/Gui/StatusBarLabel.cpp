@@ -24,10 +24,13 @@
 #include <QMenu>
 #include <QClipboard>
 #include <QApplication>
+#include <QHash>
 #include <QStatusBar>
 #include <QAction>
 #include <QContextMenuEvent>
 #include <QHideEvent>
+
+#include <utility>
 
 #include "StatusBarLabel.h"
 #include <App/Application.h>
@@ -51,31 +54,64 @@ StatusBarLabel::StatusBarLabel(QWidget* parent, const std::string& parameterName
     }
 }
 
+static void addToggleAction(QMenu& menu, QWidget* widget)
+{
+    QAction* action = menu.addAction(widget->windowTitle());
+    action->setCheckable(true);
+
+    // Widgets such as the progress bar manage their own show/hide lifecycle and
+    // expose a userEnabled Q_PROPERTY so the checked state reflects the user's
+    // preference rather than the transient isVisible() state.
+    QVariant userEnabled = widget->property("userEnabled");
+    if (userEnabled.isValid()) {
+        action->setChecked(userEnabled.toBool());
+        QObject::connect(action, &QAction::toggled, widget, [widget](bool checked) {
+            widget->setProperty("userEnabled", checked);
+        });
+    }
+    else {
+        action->setChecked(widget->isVisible());
+        QObject::connect(action, &QAction::toggled, widget, &QWidget::setVisible);
+    }
+}
+
 // static
 void StatusBarLabel::buildToggleMenu(QMenu& menu, QStatusBar* statusBar)
 {
+    // Desired display order in the context menu, identified by object name.
+    // Any titled widget not listed here is appended after these entries.
+    static const QStringList order = {
+        QStringLiteral("actionLabel"),
+        QStringLiteral("hintLabel"),
+        QStringLiteral("rightSideLabel"),
+        QStringLiteral("progressBar"),
+        QStringLiteral("toggleBottomPanelsButton"),
+        QStringLiteral("notificationArea"),
+        QStringLiteral("NavigationIndicator"),
+        QStringLiteral("sizeLabel"),
+    };
+
+    // Collect all titled children keyed by object name for O(1) lookup.
+    QHash<QString, QWidget*> byName;
     for (QObject* child : statusBar->children()) {
         auto* widget = qobject_cast<QWidget*>(child);
-        if (!widget || widget->windowTitle().isEmpty()) {
-            continue;
+        if (widget && !widget->windowTitle().isEmpty()) {
+            byName.insert(widget->objectName(), widget);
         }
-        QAction* action = menu.addAction(widget->windowTitle());
-        action->setCheckable(true);
+    }
 
-        // Widgets such as the progress bar manage their own show/hide lifecycle and
-        // expose a userEnabled Q_PROPERTY so the checked state reflects the user's
-        // preference rather than the transient isVisible() state.
-        QVariant userEnabled = widget->property("userEnabled");
-        if (userEnabled.isValid()) {
-            action->setChecked(userEnabled.toBool());
-            QObject::connect(action, &QAction::toggled, widget, [widget](bool checked) {
-                widget->setProperty("userEnabled", checked);
-            });
+    // Emit entries in the declared order first.
+    for (const QString& name : order) {
+        auto it = byName.find(name);
+        if (it != byName.end()) {
+            addToggleAction(menu, it.value());
+            byName.erase(it);
         }
-        else {
-            action->setChecked(widget->isVisible());
-            QObject::connect(action, &QAction::toggled, widget, &QWidget::setVisible);
-        }
+    }
+
+    // Append any remaining titled widgets not covered by the order list.
+    for (auto* widget : std::as_const(byName)) {
+        addToggleAction(menu, widget);
     }
 }
 

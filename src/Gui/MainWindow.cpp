@@ -436,14 +436,17 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     // labels and progressbar
     d->status = new StatusBarObserver();
     d->actionLabel = new StatusBarLabel(statusBar(), "PreselectionEnabled");
+    d->actionLabel->setObjectName(QStringLiteral("actionLabel"));
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     //: A context menu action used to show or hide the preselection info in the status bar
     d->actionLabel->setWindowTitle(tr("Preselection"));
     d->sizeLabel = new DimensionWidget(statusBar());
+    d->sizeLabel->setObjectName(QStringLiteral("sizeLabel"));
 
     statusBar()->addWidget(d->actionLabel, 1);
 
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
+    progressBar->setObjectName(QStringLiteral("progressBar"));
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
 
