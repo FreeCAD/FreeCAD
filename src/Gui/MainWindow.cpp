@@ -419,8 +419,10 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
     // labels and progressbar
     d->status = new StatusBarObserver();
-    d->actionLabel = new StatusBarLabel(statusBar());
+    d->actionLabel = new StatusBarLabel(statusBar(), "PreselectionEnabled");
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    //: A context menu action used to show or hide the preselection info in the status bar
+    d->actionLabel->setWindowTitle(tr("Preselection"));
     d->sizeLabel = new DimensionWidget(statusBar());
 
     statusBar()->addWidget(d->actionLabel, 1);
@@ -480,6 +482,24 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
         notificationArea->setStyleSheet(QStringLiteral("text-align:center;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
+
+    // Ensure the widget toggle context menu is reachable even when all StatusBarLabel
+    // widgets are hidden — right-clicking the status bar background also shows it.
+    statusBar()->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(statusBar(), &QWidget::customContextMenuRequested, this, [this](const QPoint& pos) {
+        QMenu menu(statusBar());
+        for (QObject* child : statusBar()->children()) {
+            auto* widget = qobject_cast<QWidget*>(child);
+            if (!widget || widget->windowTitle().isEmpty()) {
+                continue;
+            }
+            QAction* action = menu.addAction(widget->windowTitle());
+            action->setCheckable(true);
+            action->setChecked(widget->isVisible());
+            QObject::connect(action, &QAction::toggled, widget, &QWidget::setVisible);
+        }
+        menu.exec(statusBar()->mapToGlobal(pos));
+    });
 
     // clears the action label
     d->actionTimer = new QTimer(this);
