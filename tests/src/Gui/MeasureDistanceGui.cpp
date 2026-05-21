@@ -40,6 +40,13 @@ protected:
     {
         tests::initApplication();
 
+        // Use offscreen platform when no display is available (e.g. CI).
+        // Qt aborts with SIGABRT if QApplication is created without a display
+        // and QT_QPA_PLATFORM is unset.
+        if (!qEnvironmentVariableIsSet("QT_QPA_PLATFORM")) {
+            qputenv("QT_QPA_PLATFORM", "offscreen");
+        }
+
         static int argc = 1;
         static char programName[] = "Gui_tests_run";
         static char* argv[] = {programName};
