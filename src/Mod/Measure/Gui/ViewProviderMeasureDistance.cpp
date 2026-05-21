@@ -636,7 +636,7 @@ void ViewProviderMeasureDistance::redrawAnnotation()
 
     auto* propDistance = dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
     if (propDistance) {
-        setLabelValue(QString::fromStdString(propDistance->getQuantityValue().getUserString()));
+        setLabelValue(propDistance->getQuantityValue());
     }
 
     auto* propDistanceX = dynamic_cast<App::PropertyDistance*>(
