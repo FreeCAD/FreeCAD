@@ -916,6 +916,8 @@ using DrawSketchHandlerPolyLineBase = DrawSketchControllableHandler<DSHPolyLineC
 
 class DrawSketchHandlerPolyLine: public DrawSketchHandlerPolyLineBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerPolyLine)
+
     friend DSHPolyLineController;
     friend DSHPolyLineControllerBase;
 
@@ -1003,6 +1005,38 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         return QStringLiteral("Sketcher_Pointer_Create_Lineset");
+    }
+
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        const Gui::InputHint switchModeHint {
+            constructionMethod() == ConstructionMethod::Line ? tr("%1 switch to arc")
+                                                             : tr("%1 switch to line"),
+            {KeyM}
+        };
+        const Gui::InputHint filletHint {tr("%1 toggle fillet"), {KeyF}};
+        const Gui::InputHint undoHint {tr("%1 undo last point"), {KeyR}};
+
+        return Gui::lookupHints<SelectMode>(
+            state(),
+            {
+                {.state = SelectMode::SeekFirst,
+                 .hints =
+                     {
+                         {tr("%1 pick first point"), {MouseLeft}},
+                     }},
+                {.state = SelectMode::SeekSecond,
+                 .hints =
+                     {
+                         {tr("%1 pick next point"), {MouseLeft}},
+                         {tr("%1 finish"), {MouseRight}},
+                         switchModeHint,
+                         filletHint,
+                         undoHint,
+                     }},
+            });
     }
 
     std::unique_ptr<QWidget> createWidget() const override
