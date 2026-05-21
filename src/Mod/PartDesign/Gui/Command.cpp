@@ -548,6 +548,13 @@ void CmdPartDesignClone::activated(int iMsg)
         Gui::cmdAppObject(cloneObj, std::stringstream() << "Placement = " << objCmd << ".Placement");
         Gui::cmdAppObject(cloneObj, std::stringstream() << "setEditorMode('Placement', 0)");
 
+        if (auto* activePart = PartDesignGui::getActivePart()) {
+            Gui::cmdAppObject(
+                activePart,
+                std::stringstream() << "addObject(" << getObjectCmd(bodyObj) << ")"
+            );
+        }
+
         updateActive();
         copyVisual(cloneObj, "ShapeAppearance", obj);
         copyVisual(cloneObj, "LineColor", obj);

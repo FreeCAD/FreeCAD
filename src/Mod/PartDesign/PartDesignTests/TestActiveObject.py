@@ -61,5 +61,27 @@ class TestActiveObject(unittest.TestCase):
 
         FreeCADGui.updateGui()
 
+    def testPartDesignCloneUsesActivePart(self):
+        part = self.doc.addObject("App::Part", "Part")
+        FreeCADGui.activateView("Gui::View3DInventor", True)
+        FreeCADGui.activeView().setActiveObject("part", part)
+
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        part.addObject(body)
+
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(body)
+        FreeCADGui.runCommand("PartDesign_Clone")
+        self.doc.recompute()
+        FreeCADGui.updateGui()
+
+        clone_bodies = [
+            obj
+            for obj in self.doc.Objects
+            if obj.TypeId == "PartDesign::Body" and obj.Name != body.Name
+        ]
+        self.assertEqual(len(clone_bodies), 1)
+        self.assertIn(clone_bodies[0], part.Group)
+
     def tearDown(self):
         FreeCAD.closeDocument("PartDesignTestSketch")
