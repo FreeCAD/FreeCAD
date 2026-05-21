@@ -447,8 +447,23 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
 
-    // Toggle bottom panels button. Must be added after progressBar and sizeLabel so it appears as
-    // the rightmost permanent widget.
+    // hint label
+    d->hintLabel = new InputHintWidget(statusBar());
+    d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
+    //: A context menu action used to show or hide the input hints in the status bar
+    d->hintLabel->setWindowTitle(tr("Input Hints"));
+
+    statusBar()->addWidget(d->hintLabel);
+
+    // right side label
+    d->rightSideLabel = new StatusBarLabel(statusBar(), "QuickMeasureEnabled");
+    d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    statusBar()->addPermanentWidget(d->rightSideLabel);
+    d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
+    //: A context menu action used to enable or disable quick measure in the status bar
+    d->rightSideLabel->setWindowTitle(tr("Quick Measure"));
+
+    // Toggle bottom panels button. Added after Quick Measure so it sits to its right.
     auto* toggleBottomPanelsButton = new QToolButton(statusBar());
     toggleBottomPanelsButton->setObjectName(QStringLiteral("toggleBottomPanelsButton"));
     //: A context menu action used to show or hide the Toggle Bottom Panels button in the status bar
@@ -467,22 +482,6 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
         Application::Instance->commandManager().runCommandByName("Std_ToggleBottomPanels");
     });
     statusBar()->addPermanentWidget(toggleBottomPanelsButton);
-
-    // hint label
-    d->hintLabel = new InputHintWidget(statusBar());
-    d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
-    //: A context menu action used to show or hide the input hints in the status bar
-    d->hintLabel->setWindowTitle(tr("Input Hints"));
-
-    statusBar()->addWidget(d->hintLabel);
-
-    // right side label
-    d->rightSideLabel = new StatusBarLabel(statusBar(), "QuickMeasureEnabled");
-    d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    statusBar()->addPermanentWidget(d->rightSideLabel);
-    d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
-    //: A context menu action used to enable or disable quick measure in the status bar
-    d->rightSideLabel->setWindowTitle(tr("Quick Measure"));
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NotificationArea"
