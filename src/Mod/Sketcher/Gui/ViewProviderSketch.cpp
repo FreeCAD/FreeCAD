@@ -3589,9 +3589,8 @@ std::vector<std::pair<std::string, std::string>> ViewProviderSketch::getRelatedE
     TopTools_IndexedMapOfShape faceMap;
     TopExp::MapShapes(shape, TopAbs_FACE, faceMap);
 
-    // Find the internal edge nearest to the pick point.
-    // The picked element may be a full unsplit edge from the main Shape,
-    // but we want only the split segment closest to where the user clicked.
+    // The picked name may refer to an unsplit edge in the main Shape; use the pick
+    // point to select the specific split segment the user actually clicked.
     gp_Pnt pickPt(pickPoint[0], pickPoint[1], pickPoint[2]);
     TopoDS_Vertex pickVertex;
     BRep_Builder().MakeVertex(pickVertex, pickPt, Precision::Confusion());
