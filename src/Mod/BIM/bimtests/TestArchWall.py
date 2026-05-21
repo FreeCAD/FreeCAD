@@ -567,3 +567,36 @@ class TestArchWall(TestArchBase.TestArchBase):
         # Final verification that the wall itself was correctly debased
         self.assertIsNone(wall.Base, "Wall was not successfully debased (Base still exists).")
         self.assertAlmostEqual(wall.Placement.Base.x, 6000.0, places=3)
+
+    def test_baseless_wall_offset(self):
+        """Test that the Offset property shifts the geometry of a baseless wall.
+
+        Regression test for https://github.com/FreeCAD/FreeCAD/issues/29256.
+        """
+        self.printTestMessage("Checking baseless wall Offset property...")
+
+        length, width, height, offset = 2000.0, 200.0, 3000.0, 1000.0
+
+        # Left alignment: wall body is in -Y direction. Offset shifts it further in -Y.
+        wall_left = Arch.makeWall(
+            length=length, width=width, height=height, align="Left", offset=offset
+        )
+        self.assertIsNone(wall_left.Base, "Left: wall should be baseless")
+        self.document.recompute()
+        bb = wall_left.Shape.BoundBox
+        self.assertAlmostEqual(bb.YMax, -offset, delta=1e-6, msg="Left: YMax should be -offset")
+        self.assertAlmostEqual(
+            bb.YMin, -width - offset, delta=1e-6, msg="Left: YMin should be -(width+offset)"
+        )
+
+        # Right alignment: wall body is in +Y direction. Offset shifts it further in +Y.
+        wall_right = Arch.makeWall(
+            length=length, width=width, height=height, align="Right", offset=offset
+        )
+        self.assertIsNone(wall_right.Base, "Right: wall should be baseless")
+        self.document.recompute()
+        bb = wall_right.Shape.BoundBox
+        self.assertAlmostEqual(bb.YMin, offset, delta=1e-6, msg="Right: YMin should be offset")
+        self.assertAlmostEqual(
+            bb.YMax, width + offset, delta=1e-6, msg="Right: YMax should be width+offset"
+        )

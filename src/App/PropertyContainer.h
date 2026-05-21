@@ -493,7 +493,7 @@ public:
    * as when the name is invalid.
    */
   virtual App::Property* addDynamicProperty(
-        const char* type, const char* name=nullptr,
+        std::string_view type, const char* name=nullptr,
         const char* group=nullptr, const char* doc=nullptr,
         short attr=0, bool ro=false, bool hidden=false);
 

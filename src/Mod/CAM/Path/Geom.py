@@ -307,7 +307,9 @@ def cmdsForEdge(edge, flip=False, approximation=False, hSpeed=0, vSpeed=0, tol=0
 
         if isinstance(edge.Curve, Part.BSplineCurve):
             # convert B-Spline to arcs and lines
-            curves = edge.Curve.toBiArcs(tol)
+            curve = edge.Curve
+            trimmed_curve = curve.trim(*edge.ParameterRange)
+            curves = trimmed_curve.toBiArcs(tol)
             for curve in curves:
                 edge = curve.toShape()
                 if isinstance(edge.Curve, Part.Circle) and not isVertical(edge.Curve.Axis):
@@ -688,7 +690,9 @@ def flipEdge(edge):
             Part.Line(edge.valueAt(edge.LastParameter), edge.valueAt(edge.FirstParameter))
         )
     elif isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
-        return Part.Edge(Part.LineSegment(edge.Vertexes[-1].Point, edge.Vertexes[0].Point))
+        return Part.Edge(
+            Part.LineSegment(edge.valueAt(edge.LastParameter), edge.valueAt(edge.FirstParameter))
+        )
     elif isinstance(edge.Curve, Part.Circle):
         # Create an inverted circle
         circle = Part.Circle(edge.Curve.Center, -edge.Curve.Axis, edge.Curve.Radius)

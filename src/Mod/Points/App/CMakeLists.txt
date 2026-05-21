@@ -29,6 +29,8 @@ if (NOT FREECAD_USE_EXTERNAL_E57FORMAT)
         ${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format
         ${CMAKE_SOURCE_DIR}/src/3rdParty/libE57Format/include
     )
+else()
+  find_package(E57Format REQUIRED)
 endif()
 
 set(Points_LIBS

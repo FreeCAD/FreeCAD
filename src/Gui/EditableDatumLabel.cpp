@@ -27,6 +27,11 @@
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/SoPath.h>
 
 #include <QEvent>
 #include <QFontMetrics>
@@ -36,6 +41,7 @@
 #include <QLineEdit>
 #include <QHBoxLayout>
 #include <QString>
+#include <QTimer>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -58,7 +64,6 @@ struct NodeData
 EditableDatumLabel::EditableDatumLabel(
     View3DInventorViewer* view,
     const Base::Placement& plc,
-    SbColor color,
     bool autoDistance,
     bool avoidMouseCursor
 )
@@ -72,9 +77,13 @@ EditableDatumLabel::EditableDatumLabel(
     , spinBox(nullptr)
     , lockIconLabel(nullptr)
     , cameraSensor(nullptr)
+    , pickStyle(nullptr)
     , function(Function::Positioning)
+    , editStartValue(0.0)
 {
     // NOLINTBEGIN
+    initColors();
+
     root = new SoSwitch;
     root->ref();
 
@@ -87,10 +96,19 @@ EditableDatumLabel::EditableDatumLabel(
     transform->ref();
     annotation->addChild(transform);
 
+    eventCallback = new SoEventCallback;
+    eventCallback->ref();
+    eventCallback->addEventCallback(SoMouseButtonEvent::getClassTypeId(), eventCallbackF, this);
+    annotation->addChild(eventCallback);
+    pickStyle = new SoPickStyle;
+    pickStyle->ref();
+    pickStyle->style = SoPickStyle::UNPICKABLE;
+    annotation->addChild(pickStyle);
+
     label = new SoDatumLabel();
     label->ref();
     label->string = " ";
-    label->textColor = color;
+    setDeactivatedColor();
     label->size.setValue(17);
     label->lineWidth = 2.0;
     label->useAntialiasing = false;
@@ -107,6 +125,27 @@ EditableDatumLabel::EditableDatumLabel(
     // NOLINTEND
 
     static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root);  // NOLINT
+
+    if (view) {
+        connect(view, &View3DInventorViewer::cameraChanged, this, [this]() {
+            if (this->label) {
+                // 1. Re-attach the sensor to the NEW camera object
+                if (this->cameraSensor && this->viewer && this->viewer->getCamera()) {
+                    this->cameraSensor->detach();
+                    this->cameraSensor->attach(this->viewer->getCamera());
+                }
+
+                if (this->autoDistance) {
+                    this->setLabelRecommendedDistance();
+                }
+                this->label->touch();
+
+                if (this->isInEdit()) {
+                    this->positionSpinbox();
+                }
+            }
+        });
+    }
 }
 
 EditableDatumLabel::~EditableDatumLabel()
@@ -114,6 +153,8 @@ EditableDatumLabel::~EditableDatumLabel()
     deactivate();
     transform->unref();
     annotation->unref();
+    eventCallback->unref();
+    pickStyle->unref();
     root->unref();
     label->unref();
 }
@@ -181,6 +222,21 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->installEventFilter(this);
     spinBox->setAutoAdjustWidth(true);
     spinBox->setMaxExpectedDigits(16);
+    spinBox->setValue(Base::Quantity(val, Base::Unit::Length));
+    value = val;
+    editStartValue = val;
+
+    lockIconLabel = new QLabel(spinBox);
+    lockIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+
+    // load icon and scale it to fit in spinbox
+    QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
+    const QFontMetrics fm(spinBox->fontMetrics());
+    int iconSize = fm.height();
+    QPixmap scaledIcon
+        = lockIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    lockIconLabel->setPixmap(scaledIcon);
+    lockIconLabel->setVisible(false);
 
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
@@ -191,37 +247,58 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     }
 
     spinBox->show();
-    updateGeometry();
+    if (auto* edit = spinBox->findChild<QLineEdit*>()) {
+        updateGeometry(edit);
+        positionSpinbox();
+    }
     setFocusToSpinbox();
-
-    const auto validateAndFinish = [this]() {
-        // this event can be fired after spinBox was already disposed
-        // in such case we need to skip processing that event
+    QTimer::singleShot(0, this, [this]() {
         if (!spinBox) {
             return;
         }
+        positionSpinbox();
+        setFocusToSpinbox();
+    });
 
-        if (!spinBox->hasValidInput()) {
-            // unset parameters in DrawSketchController, this is needed in a case
-            // when user removes values we reset state of the OVP
-            Q_EMIT this->parameterUnset();
-            return;
-        }
-
-        value = spinBox->rawValue();
-
-        isSet = true;
-
-        if (this->hasFinishedEditing) {
-            this->setLockedAppearance(true);
-        }
-
-        Q_EMIT this->valueChanged(value);
-    };
-
-    connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, validateAndFinish);
+    connect(
+        spinBox,
+        qOverload<double>(&QuantitySpinBox::valueChanged),
+        this,
+        &EditableDatumLabel::handleSpinBoxValueChanged
+    );
     if (auto* edit = spinBox->findChild<QLineEdit*>()) {
-        connect(edit, &QLineEdit::textChanged, this, &EditableDatumLabel::updateGeometry);
+        connect(edit, &QLineEdit::textChanged, this, [this, edit]() { this->updateGeometry(edit); });
+    }
+}
+
+bool EditableDatumLabel::syncValueFromSpinBox(bool emitParameterUnset)
+{
+    if (!spinBox) {
+        return false;
+    }
+
+    if (!spinBox->hasValidInput()) {
+        if (emitParameterUnset) {
+            resetLockedState();
+            Q_EMIT parameterUnset();
+        }
+        return false;
+    }
+
+    value = spinBox->rawValue();
+    isSet = true;
+
+    if (hasFinishedEditing) {
+        setLockedAppearance(true);
+    }
+
+    return true;
+}
+
+void EditableDatumLabel::handleSpinBoxValueChanged()
+{
+    if (syncValueFromSpinBox()) {
+        Q_EMIT valueChanged(value);
     }
 }
 
@@ -229,15 +306,27 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
 {
     if (event->type() == QEvent::KeyPress) {
         auto* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_Escape) {
+            if (qobject_cast<QAbstractSpinBox*>(watched)) {
+                this->value = this->editStartValue;
+                this->isSet = false;
+                this->hasFinishedEditing = false;
+                this->setLockedAppearance(false);
+                this->setSpinboxValue(this->editStartValue);
+                this->stopEdit();
+                Q_EMIT this->editingCanceled(this->value);
+                return true;
+            }
+        }
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter
             || keyEvent->key() == Qt::Key_Tab) {
 
-            if (auto* spinBox = qobject_cast<QAbstractSpinBox*>(watched)) {
+            if (qobject_cast<QAbstractSpinBox*>(watched)) {
                 // if tab has been pressed and user did not type anything previously,
                 // then just cycle but don't lock anything, otherwise we lock the label
                 if (keyEvent->key() == Qt::Key_Tab && !this->isSet) {
                     if (!this->spinBox->hasValidInput()) {
-                        Q_EMIT this->spinBox->valueChanged(this->value);
+                        syncValueFromSpinBox();
                         return true;
                     }
                     return false;
@@ -249,33 +338,47 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
                     return true;
                 }
                 else {
-                    // regular enter
+                    // regular enter or tab with edited input accepts the current value.
                     this->hasFinishedEditing = true;
-                    Q_EMIT this->spinBox->valueChanged(this->value);
+
+                    if (!syncValueFromSpinBox()) {
+                        return true;
+                    }
+
+                    const double finishedValue = value;
+                    Q_EMIT this->editingFinished(finishedValue);
                     return true;
                 }
             }
         }
         else if (this->hasFinishedEditing && keyEvent->key() != Qt::Key_Tab) {
-            this->setLockedAppearance(false);
+            this->resetLockedState();
             return false;
+        }
+    }
+    else if (event->type() == QEvent::FocusOut) {
+        if (watched == spinBox) {
+            Q_EMIT focusLost();
+            return true;
         }
     }
 
     return QObject::eventFilter(watched, event);
 }
 
-void EditableDatumLabel::stopEdit()
+void EditableDatumLabel::stopEdit(bool writeChanges)
 {
     if (spinBox) {
-        // write the spinbox value in the label.
-        Base::Quantity quantity = spinBox->value();
-
-        double factor {};
-        std::string unitStr;
-        std::string valueStr;
-        valueStr = quantity.getUserString(factor, unitStr);
-        label->string = SbString(valueStr.c_str());
+        if (writeChanges) {
+            // write the spinbox value in the label.
+            Base::Quantity quantity = spinBox->value();
+            std::string valueStr = quantity.getUserString();
+            label->string = SbString(valueStr.c_str());
+        }
+        else {
+            Base::Quantity quantity(editStartValue, spinBox->unit());
+            label->string = quantity.getUserString().c_str();
+        }
 
         spinBox->deleteLater();
         spinBox = nullptr;
@@ -304,17 +407,19 @@ double EditableDatumLabel::getValue() const
 
 void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 {
+    value = val;
+
     if (!spinBox) {
-        Base::Console().developerWarning(
-            "EditableDatumLabel::setSpinboxValue",
-            "Spinbox doesn't exist in"
-        );
+        Base::Quantity quantity(val, unit);
+        double factor {};
+        std::string unitStr;
+        std::string valueStr = quantity.getUserString(factor, unitStr);
+        label->string = SbString(valueStr.c_str());
         return;
     }
 
     QSignalBlocker block(spinBox);
     spinBox->setValue(Base::Quantity(val, unit));
-    value = val;
     positionSpinbox();
 
     if (spinBox->hasFocus()) {
@@ -325,15 +430,22 @@ void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 void EditableDatumLabel::setFocusToSpinbox()
 {
     if (!spinBox) {
-        Base::Console().developerWarning(
-            "EditableDatumLabel::setFocusToSpinbox",
-            "Spinbox doesn't exist in"
-        );
         return;
     }
     if (!spinBox->hasFocus()) {
         spinBox->setFocus();
         spinBox->selectNumber();
+    }
+}
+
+void EditableDatumLabel::clearSelection()
+{
+    if (!spinBox) {
+        return;
+    }
+
+    if (auto* edit = spinBox->findChild<QLineEdit*>()) {
+        edit->deselect();
     }
 }
 
@@ -348,8 +460,12 @@ void EditableDatumLabel::positionSpinbox()
     }
 
     QSize wSize = spinBox->size();
-    QSize vSize = viewer->size();
+    QWidget* parent = spinBox->parentWidget();
+    QSize vSize = parent ? parent->size() : viewer->size();
     QPoint pxCoord = viewer->toQPoint(viewer->getPointOnViewport(getTextCenterPoint()));
+    if (parent && parent != viewer) {
+        pxCoord = viewer->mapTo(parent, pxCoord);
+    }
 
     int posX = std::min(std::max(pxCoord.x() - wSize.width() / 2, 0), vSize.width() - wSize.width());
     int posY = std::min(std::max(pxCoord.y() - wSize.height() / 2, 0), vSize.height() - wSize.height());
@@ -367,20 +483,6 @@ void EditableDatumLabel::positionSpinbox()
     pxCoord.setX(posX);
     pxCoord.setY(posY);
     spinBox->move(pxCoord);
-
-    // Update lock icon position inside the spinbox if it exists and is visible
-    if (lockIconLabel && lockIconLabel->isVisible()) {
-        const QFontMetrics fm(spinBox->fontMetrics());
-        int iconSize = fm.height();
-        int padding = spinBox->getMargin();
-        QSize spinboxSize = spinBox->size();
-        lockIconLabel->setGeometry(
-            spinboxSize.width() - iconSize - padding,
-            (spinboxSize.height() - iconSize) / 2,
-            iconSize,
-            iconSize
-        );
-    }
 }
 
 SbVec3f EditableDatumLabel::getTextCenterPoint() const
@@ -436,13 +538,98 @@ void EditableDatumLabel::updateGeometry()
     if (!spinBox) {
         return;
     }
+    updateGeometry(spinBox->findChild<QLineEdit*>());
+}
+
+void EditableDatumLabel::updateGeometry(QLineEdit* edit)
+{
+    if (!spinBox || !edit) {
+        return;
+    }
+    // Workaround: adjustSize() causes the cursor to jump to the end and selections to clear
+    // Save the state beforehand and restore it after the geometry update
+    int pos = edit->cursorPosition();
+    int selStart = edit->selectionStart();
+    int selEnd = edit->selectionEnd();
     spinBox->adjustSize();
+    edit->setCursorPosition(pos);
+    if (selStart != -1 && selEnd != -1) {
+        edit->setSelection(selStart, selEnd - selStart);
+    }
 }
 
 // NOLINTNEXTLINE
 void EditableDatumLabel::setColor(SbColor color)
 {
     label->textColor = color;
+}
+
+void EditableDatumLabel::setActivatedColor()
+{
+    label->textColor = dimConstrColor;
+}
+
+void EditableDatumLabel::setDeactivatedColor()
+{
+    label->textColor = dimConstrDeactivatedColor;
+}
+
+void EditableDatumLabel::initColors()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+
+    dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
+    dimConstrDeactivatedColor = SbColor(0.5f, 0.5f, 0.5f);  // NOLINT
+
+    float transparency = 0.f;
+    unsigned long color = (unsigned long)(dimConstrColor.getPackedValue());
+    color = hGrp->GetUnsigned("ConstrainedDimColor", color);
+    dimConstrColor.setPackedValue((uint32_t)color, transparency);
+
+    color = (unsigned long)(dimConstrDeactivatedColor.getPackedValue());
+    color = hGrp->GetUnsigned("DeactivatedConstrDimColor", color);
+    dimConstrDeactivatedColor.setPackedValue((uint32_t)color, transparency);
+}
+
+void EditableDatumLabel::eventCallbackF(void* userData, SoEventCallback* cb)
+{
+    auto* self = static_cast<EditableDatumLabel*>(userData);
+    self->handleEvent(cb);
+}
+
+void EditableDatumLabel::handleEvent(SoEventCallback* cb)
+{
+    const auto* event = cb->getEvent();
+    if (!event->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        return;
+    }
+
+    const auto* mouseEvent = static_cast<const SoMouseButtonEvent*>(event);
+
+    const SoPickedPoint* pickedPoint = cb->getPickedPoint();
+    if (!pickedPoint || !pickedPoint->getPath()->containsNode(this->annotation)) {
+        return;
+    }
+
+    if (mouseEvent->getButton() == SoMouseButtonEvent::BUTTON1) {
+        if (mouseEvent->getState() == SoMouseButtonEvent::UP) {
+            cb->setHandled();
+            Q_EMIT clicked(this);
+        }
+    }
+    else if (mouseEvent->getButton() == SoMouseButtonEvent::BUTTON2) {
+        cb->setHandled();
+        if (mouseEvent->getState() == SoMouseButtonEvent::UP) {
+            Q_EMIT rightClicked(this, QCursor::pos());
+        }
+    }
+}
+
+void EditableDatumLabel::setPickable(bool val)
+{
+    pickStyle->style = val ? SoPickStyle::SHAPE_ON_TOP : SoPickStyle::UNPICKABLE;
 }
 
 void EditableDatumLabel::setFocus()
@@ -520,54 +707,33 @@ void EditableDatumLabel::setLabelAutoDistanceReverse(bool val)
 
 void EditableDatumLabel::setSpinboxVisibleToMouse(bool val)
 {
+    if (!spinBox) {
+        return;
+    }
     spinBox->setAttribute(Qt::WA_TransparentForMouseEvents, !val);
 }
 
 void EditableDatumLabel::setLockedAppearance(bool locked)
 {
-    if (!locked) {
-        this->hasFinishedEditing = false;
-    }
-    if (!spinBox) {
+    if (!spinBox || !lockIconLabel) {
         return;
+    }
+    spinBox->addIconSpace(locked);
+    lockIconLabel->setVisible(locked);
+    if (auto* edit = spinBox->findChild<QLineEdit*>()) {
+        updateGeometry(edit);
     }
     const QFontMetrics fm(spinBox->fontMetrics());
     int iconSize = fm.height();
     int padding = spinBox->getMargin();
-    if (locked) {
-        spinBox->addIconSpace(true);
-        spinBox->adjustSize();
-        // create lock icon label it it doesn't exist, if it does - show it
-        if (!lockIconLabel) {
-            lockIconLabel = new QLabel(spinBox);
-            lockIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-            lockIconLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-
-            // load icon and scale it to fit in spinbox
-            QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
-            QPixmap scaledIcon
-                = lockIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            lockIconLabel->setPixmap(scaledIcon);
-
-            // position lock icon inside the spinbox
-            QSize spinboxSize = spinBox->size();
-            lockIconLabel->setGeometry(
-                spinboxSize.width() - iconSize - padding,
-                (spinboxSize.height() - iconSize) / 2,
-                iconSize,
-                iconSize
-            );
-        }
-        lockIconLabel->show();
-    }
-    else {
-        // hide lock icon if it exists for later reuse
-        if (lockIconLabel) {
-            lockIconLabel->hide();
-            spinBox->addIconSpace(false);
-            spinBox->adjustSize();
-        }
-    }
+    // position lock icon inside the spinbox
+    QSize spinboxSize = spinBox->size();
+    lockIconLabel->setGeometry(
+        spinboxSize.width() - iconSize - padding,
+        (spinboxSize.height() - iconSize) / 2,
+        iconSize,
+        iconSize
+    );
 }
 
 void EditableDatumLabel::resetLockedState()

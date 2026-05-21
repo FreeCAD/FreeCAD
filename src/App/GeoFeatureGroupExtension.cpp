@@ -24,6 +24,7 @@
  ***************************************************************************/
 
 #include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 #include <Base/Tools.h>
 
 #include "GeoFeatureGroupExtension.h"
@@ -494,6 +495,10 @@ bool GeoFeatureGroupExtension::isLinkValid(App::Property* prop)
     // no cross CS link for local links.
     auto result = getScopedObjectsFromLink(prop, LinkScope::Local);
     auto group = getGroupOfObject(obj);
+    if (!group && obj->isDerivedFrom<App::DocumentObjectGroup>()) {
+        return true; // this prop comes from Std_Group, scopes also are meaningless
+    }
+
     for (auto link : result) {
         if (getGroupOfObject(link) != group) {
             return false;

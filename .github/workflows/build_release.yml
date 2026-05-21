@@ -7,8 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  actions: write
+  contents: read
 
 concurrency:
   group: build-release-${{ github.event_name }}
@@ -17,11 +16,15 @@ concurrency:
 jobs:
   upload_src:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'FreeCAD'
+    permissions:
+      contents: write
+      actions: write
     outputs:
       build_tag: ${{ steps.get_tag.outputs.build_tag }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
         with:
           egress-policy: audit
 
@@ -61,7 +64,7 @@ jobs:
 
       - name: Trigger notes updater workflow (only for weekly)
         if: startsWith(steps.get_tag.outputs.build_tag, 'weekly-')
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd  # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3  # v9.0.0
         env:
           WEEKLY_TAG: ${{ steps.get_tag.outputs.build_tag }}
         with:
@@ -105,6 +108,8 @@ jobs:
 
   build:
     needs: upload_src
+    permissions:
+      contents: write
     strategy:
       matrix:
         include:
@@ -120,7 +125,7 @@ jobs:
     environment: weekly-build
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
         with:
           egress-policy: audit
 
@@ -228,7 +233,7 @@ jobs:
           fi
           python3 package/scripts/write_version_info.py ../freecad_version.txt
           cd package/rattler-build
-          pixi install
+          pixi install --frozen
 
       - name: Azure login for Windows build code signing
         id: azure_login

@@ -621,7 +621,7 @@ void DlgExpressionInput::acceptWithVarSet()
     std::string name = nameProp.toStdString();
     std::string group = nameGroup.toStdString();
     std::string type = getType();
-    auto prop = obj->addDynamicProperty(type.c_str(), name.c_str(), group.c_str());
+    auto prop = obj->addDynamicProperty(type, name.c_str(), group.c_str());
 
     // Set the value of the property in the VarSet
     //
@@ -842,7 +842,7 @@ void DlgExpressionInput::setupVarSets()
 
 std::string DlgExpressionInput::getType()
 {
-    return determineTypeVarSet().getName();
+    return std::string {determineTypeVarSet().getName()};
 }
 
 void DlgExpressionInput::onCheckVarSets(int state)
