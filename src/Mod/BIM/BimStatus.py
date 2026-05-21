@@ -83,6 +83,36 @@ def setStatusIcons(show=True):
             utext = form.inputField.text()
         action.parent().parent().parent().setText(utext)
 
+    def _insert_before_toggle(st, mw, widget):
+        """Place widget into the permanent area, immediately before
+        toggleBottomPanelsButton. Falls back to appending if the toggle is
+        missing or insertion-by-index produces 'Index out of range' (which can
+        happen when permanent widgets are still being added). Implementation
+        removes every titled status-bar widget at or after the toggle and re-adds
+        them, sandwiching our widget in the right place."""
+        toggle = mw.findChild(QtGui.QToolButton, "toggleBottomPanelsButton")
+        if not toggle:
+            st.addPermanentWidget(widget)
+            return
+        siblings = [c for c in st.children() if isinstance(c, QtGui.QWidget) and c is not widget]
+        siblings.sort(key=lambda w: w.x())
+        try:
+            anchor = siblings.index(toggle)
+        except ValueError:
+            st.addPermanentWidget(widget)
+            return
+        after = siblings[anchor:]
+        # Preserve each widget's visibility: removeWidget() hides it and
+        # addPermanentWidget() would otherwise reveal user-hidden widgets (and,
+        # for widgets that persist visibility, write the preference back to true).
+        visibilities = [w.isVisible() for w in after]
+        for w in after:
+            st.removeWidget(w)
+        st.addPermanentWidget(widget)
+        for w, was_visible in zip(after, visibilities):
+            st.addPermanentWidget(w)
+            w.setVisible(was_visible)
+
     # main code
 
     mw = FreeCADGui.getMainWindow()
@@ -91,6 +121,8 @@ def setStatusIcons(show=True):
         statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
         if show:
             if statuswidget:
+                st.removeWidget(statuswidget)
+                _insert_before_toggle(st, mw, statuswidget)
                 statuswidget.show()
                 if hasattr(statuswidget, "propertybuttons"):
                     statuswidget.propertybuttons.show()
@@ -103,11 +135,8 @@ def setStatusIcons(show=True):
                     "A context menu action used to show or hide this toolbar widget",
                 )
                 statuswidget.setWindowTitle(text)
-                s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt(
-                    "ToolbarIconSize", 24
-                )
-                statuswidget.setIconSize(QtCore.QSize(s, s))
-                st.insertPermanentWidget(2, statuswidget)
+                statuswidget.setIconSize(QtCore.QSize(16, 16))
+                _insert_before_toggle(st, mw, statuswidget)
 
                 # bim views widget toggle button
                 from bimcommands import BimViews
