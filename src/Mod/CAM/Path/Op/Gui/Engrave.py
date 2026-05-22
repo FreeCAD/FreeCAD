@@ -57,7 +57,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         if (
             not sel.HasSubObjects
             and sel.Object.isDerivedFrom("Part::Feature")
-            and sel.Object.Shape.Volume == 0
+            and Path.Geom.isRoughly(sel.Object.Shape.Volume, 0)
         ):
             return True
 
@@ -82,7 +82,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     % (sel.Object.Label)
                 )
                 continue
-            if base.isDerivedFrom("Part::Feature") and base.Shape.Volume == 0:
+            if base.isDerivedFrom("Part::Feature") and Path.Geom.isRoughly(base.Shape.Volume, 0):
                 if sel.HasSubObjects:
                     # selectively add some elements of the drawing to the Base
                     for sub in sel.SubElementNames:

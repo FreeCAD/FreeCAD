@@ -325,7 +325,7 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
     }
 }
 
-SoSeparator* ViewProvider::getAnnotation()
+SoSeparator* ViewProvider::getOrCreateAnnotation()
 {
     if (!pcAnnotation) {
         pcAnnotation = new SoSeparator();
@@ -1115,6 +1115,16 @@ void ViewProvider::setRenderCacheMode(int mode)
 {
     pcRoot->renderCaching = mode == 0 ? SoSeparator::AUTO
                                       : (mode == 1 ? SoSeparator::ON : SoSeparator::OFF);
+}
+
+void ViewProvider::toggleVisibility()
+{
+    if (isShow()) {
+        hide();
+    }
+    else {
+        show();
+    }
 }
 
 Base::BoundBox3d ViewProvider::getBoundingBox(const char* subname, bool transform, MDIView* view) const

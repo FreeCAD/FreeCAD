@@ -38,6 +38,7 @@
 #include <GProp_GProps.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopExp_Explorer.hxx>
 
 
 #include <Base/Console.h>
@@ -121,6 +122,7 @@ MeasureType Measurement::findType()
     int cones = 0;
     int torus = 0;
     int spheres = 0;
+    int discs = 0;
     int vols = 0;
     int other = 0;
 
@@ -172,7 +174,24 @@ MeasureType Measurement::findType()
                 BRepAdaptor_Surface sf(face);
 
                 if (sf.GetType() == GeomAbs_Plane) {
-                    planes++;
+                    TopExp_Explorer edges(face, TopAbs_EDGE);
+                    if (!edges.More()) {
+                        planes++;
+                        break;
+                    }
+                    TopoDS_Edge edge = TopoDS::Edge(edges.Current());
+                    edges.Next();
+                    if (edges.More()) {
+                        planes++;
+                        break;
+                    }
+                    BRepAdaptor_Curve adapt(edge);
+                    if (adapt.GetType() != GeomAbs_Circle) {
+                        planes++;
+                        break;
+                    }
+
+                    discs++;
                 }
                 else if (sf.GetType() == GeomAbs_Cylinder) {
                     if (sf.IsUClosed() || sf.IsVClosed()) {
@@ -262,6 +281,9 @@ MeasureType Measurement::findType()
             }
             else if (torus == 1 && faces == 1) {
                 mode = MeasureType::Torus;
+            }
+            else if (discs == 1 && faces == 1) {
+                mode = MeasureType::Disc;
             }
             else {
                 mode = MeasureType::Surfaces;
@@ -778,6 +800,7 @@ double Measurement::radius() const
     else if (
         measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
         || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
+        || measureType == MeasureType::Disc
     ) {
         TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_FACE);
         TopoDS_Face face = TopoDS::Face(shape);
@@ -792,36 +815,28 @@ double Measurement::radius() const
         else if (sf.GetType() == GeomAbs_Torus) {
             return sf.Torus().MinorRadius();
         }
+        else if (sf.GetType() == GeomAbs_Plane) {
+            return BRepAdaptor_Curve(TopoDS::Edge(TopExp_Explorer(face, TopAbs_EDGE).Current()))
+                .Circle()
+                .Radius();
+        }
     }
+
     Base::Console().error("Measurement::radius - Invalid References3D Provided\n");
     return 0.0;
 }
 double Measurement::diameter() const
 {
-    const std::vector<App::DocumentObject*>& objects = References3D.getValues();
-    const std::vector<std::string>& subElements = References3D.getSubValues();
-
     int numRefs = References3D.getSize();
     if (numRefs == 0) {
         Base::Console().error("Measurement::diameter - No 3D references available\n");
     }
-    else if (measureType == MeasureType::Circle) {
-        TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
-        const TopoDS_Edge& edge = TopoDS::Edge(shape);
-
-        BRepAdaptor_Curve curve(edge);
-        if (curve.GetType() == GeomAbs_Circle) {
-            return (double)curve.Circle().Radius() * 2.0;
-        }
-    }
-    else if (measureType == MeasureType::Cylinder) {
-        TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_FACE);
-        TopoDS_Face face = TopoDS::Face(shape);
-
-        BRepAdaptor_Surface sf(face);
-        if (sf.GetType() == GeomAbs_Cylinder) {
-            return sf.Cylinder().Radius() * 2.0;
-        }
+    else if (
+        measureType == MeasureType::Circle || measureType == MeasureType::Cylinder
+        || measureType == MeasureType::Disc || measureType == MeasureType::Sphere
+        || measureType == MeasureType::Torus
+    ) {
+        return radius() * 2;
     }
     Base::Console().error("Measurement::diameter - Invalid References3D Provided\n");
     return 0.0;
@@ -959,7 +974,7 @@ double Measurement::area() const
         || measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
         || measureType == MeasureType::TwoCylinders || measureType == MeasureType::Cone
         || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
-        || measureType == MeasureType::Plane
+        || measureType == MeasureType::Plane || measureType == MeasureType::Disc
     ) {
 
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();

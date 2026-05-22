@@ -36,7 +36,7 @@ from femtools import femutils as utils
 
 
 def find_parent_gmsh(obj):
-    # searches uptream for the parent gmsh mesh object
+    # searches uptsream for the parent gmsh mesh object
     for parent in obj.InList:
         if utils.is_of_type(parent, "Fem::FemMeshGmsh"):
             return parent
@@ -75,7 +75,7 @@ class VPMeshManipulate(view_base_femmeshelement.VPBaseFemMeshElement):
 
         if self.Object.Refinement:
 
-            # wee need to pass the old refinement to the gmsh object we are in
+            # we need to pass the old refinement to the gmsh object we are in
             gmsh = find_parent_gmsh(self.Object)
             if not gmsh:
                 raise FreeCAD.FreeCADError("Manipulate object not within GMSH mesh object")

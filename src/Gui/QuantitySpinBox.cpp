@@ -499,17 +499,26 @@ void QuantitySpinBox::updateText(const Quantity& quant)
 void QuantitySpinBox::updateEdit(const QString& text)
 {
     Q_D(QuantitySpinBox);
-
     QLineEdit* edit = lineEdit();
 
     int cursor = edit->cursorPosition();
-    int selsize = edit->selectedText().size();
+    int selStart = edit->selectionStart();
+    int selLen = edit->selectionLength();
 
+    // setText resets cursor/selection so save it and restore it
     edit->setText(text);
 
-    cursor = qBound(0, cursor, qMax(0, edit->displayText().size() - d->unitStr.size()));
-    if (selsize > 0) {
-        edit->setSelection(0, cursor);
+    int maxPos = qMax(0, edit->displayText().size() - d->unitStr.size());
+
+    int newCursor = qBound(0, cursor, maxPos);
+
+    if (selLen > 0) {
+        int newStart = qBound(0, selStart, maxPos);
+        int newLen = qBound(0, selLen, maxPos - newStart);
+        edit->setSelection(newStart, newLen);
+    }
+    else {
+        edit->setCursorPosition(newCursor);
     }
 }
 

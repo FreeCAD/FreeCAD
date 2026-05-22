@@ -1,6 +1,17 @@
 # -------------------------------- Qt --------------------------------
 
 set(FREECAD_QT_COMPONENTS Core Concurrent Network Xml)
+
+if (FREECAD_QT_MAJOR_VERSION EQUAL 5)
+    message(WARNING [[
+
+     ******************************************************************
+        Qt5 support is deprecated: please update your builds to Qt6.
+                  Support will be removed in August 2026.
+     ******************************************************************
+    ]])
+endif()
+
 if (FREECAD_QT_MAJOR_VERSION EQUAL 6)
     set (Qt6Core_MOC_EXECUTABLE Qt6::moc)
 endif()

@@ -36,7 +36,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
       <source>Ctrl+C</source>
-      <translation type="unfinished">Ctrl+C</translation>
+      <translation>Ctrl+C</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="141"/>
@@ -144,7 +144,7 @@ FreeCAD UnitTest는 FreeCAD의 일부이며, 자신의 모듈에 대한 단위 �
     <message>
       <location filename="../../UnitTestImp.cpp" line="206"/>
       <source>Errors copied to clipboard</source>
-      <translation type="unfinished">Errors copied to clipboard</translation>
+      <translation>오류가 클립보드에 복사되었습니다</translation>
     </message>
   </context>
 </TS>
