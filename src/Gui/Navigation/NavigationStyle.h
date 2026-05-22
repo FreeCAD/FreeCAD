@@ -539,6 +539,8 @@ protected:
 
 private:
     SbBool lockButton1 {false};
+    SbBool lockDrag {false};
+    SbVec2f posn_drag;  // saves mouse position when shift was pressed
 };
 
 class GuiExport OpenSCADNavigationStyle: public UserNavigationStyle

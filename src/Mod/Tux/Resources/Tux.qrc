@@ -14,6 +14,7 @@
         <file>icons/Navigation_Mouse_CtrlLeft.svg</file>
         <file>icons/Navigation_Mouse_CtrlMiddle.svg</file>
         <file>icons/Navigation_Mouse_CtrlRight.svg</file>
+		<file>icons/Navigation_Mouse_CtrlScroll.svg</file>
         <file>icons/Navigation_Mouse_Left.svg</file>
         <file>icons/Navigation_Mouse_LeftMove.svg</file>
         <file>icons/Navigation_Mouse_LeftRight.svg</file>
@@ -26,6 +27,8 @@
         <file>icons/Navigation_Mouse_ShiftLeft.svg</file>
         <file>icons/Navigation_Mouse_ShiftMiddle.svg</file>
         <file>icons/Navigation_Mouse_ShiftMove.svg</file>
+		<file>icons/Navigation_Mouse_ShiftRight.svg</file>
+		<file>icons/Navigation_Mouse_ShiftScroll.svg</file>
         <file>icons/Navigation_Touchpad_AltTouch.svg</file>
         <file>icons/Navigation_Touchpad_Left.svg</file>
         <file>icons/Navigation_Touchpad_ShiftCtrlTouch.svg</file>

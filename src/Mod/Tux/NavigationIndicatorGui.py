@@ -832,7 +832,7 @@ a12.setObjectName("Indicator_NavigationTouchpad")
 
 a13 = QtGui.QAction(gStyle)
 a13.setText("Altium  ")
-a13.setData("Gui::TouchpadNavigationStyle")
+a13.setData("Gui::AltiumNavigationStyle")
 a13.setObjectName("Indicator_NavigationAltium")
 
 RePopulateIcons()

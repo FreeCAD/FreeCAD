@@ -16,6 +16,7 @@ AltiumNavigationStyle::AltiumNavigationStyle()
 {
     //lockButton1(false);
     this->setZoomAtCursor(true);
+    lockDrag = false;
 }
 
 AltiumNavigationStyle::~AltiumNavigationStyle() = default;
@@ -38,6 +39,7 @@ const char* AltiumNavigationStyle::mouseButtons(ViewerMode mode)
 
 SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
 {
+    // Base::Console().message("test");  // TODO delete
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
@@ -54,9 +56,8 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
     const SbVec2s pos(ev->getPosition());
     const SbVec2f posn = normalizePixelPos(pos);
-    SbVec2f posn_drag;      // saves mouse position when shift was pressed
+    
     auto drag_event = (const SoLocation2Event*)ev;  // saves the drag point when shift was pressed
-    bool drag_location_lock = false;
 
     // posn & lastmouseposition is latest mouse position
     // lastmouseposition used within NavigationStyle?
@@ -96,7 +97,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
-        Base::Console().message("button = %d\n", button);  // TODO delete
+        Base::Console().message("mouse button = %d\n", button);  // TODO delete
 
         switch (button) {
             case SoMouseButtonEvent::BUTTON1:
@@ -111,7 +112,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
                     processed = processClickEvent(event);
                 }
                 break;
-            //button2 may be pressed for panning or dragging/rotating
+            //button2 may be pressed for panning or dragging/rotating, or context menu
             case SoMouseButtonEvent::BUTTON2:
                 // If we are in edit mode then simply ignore the RMB events
                 // to pass the event to the base class.
@@ -123,15 +124,20 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
                     processed = true;
                 }
-                // !press means all buttons are up
+                // !press means all buttons are up (has been released)
                 // Don't show the context menu after dragging, panning or zooming
                 // Only panning and dragging are important here since zooming is not done with button2
+                Base::Console().message("hasDragged %d\n", hasDragged);  // TODO delete
+                Base::Console().message("hasPanned %d\n", hasPanned);     // TODO delete
+                Base::Console().message("hasZoomed %d\n", hasZoomed);   // TODO delete
+                Base::Console().message("press %u\n", static_cast<int>(press));
+                Base::Console().message("curmode %u\n", static_cast<int>(curmode));
+
                 if (!press && (hasDragged || hasPanned || hasZoomed)) {
                     processed = true;
                 }
                 else if (!press && !viewer->isEditing()) {
                     if (curmode != NavigationStyle::ZOOMING
-                        && curmode != NavigationStyle::PANNING
                         && curmode != NavigationStyle::DRAGGING) {
                         if (this->isPopupMenuEnabled()) {
                             this->openPopupMenu(event->getPosition());
@@ -163,6 +169,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
         const auto event = (const SoLocation2Event*)ev;
+        Base::Console().message("mouse movement curmode %u\n", static_cast<int>(curmode));
         if (curmode == NavigationStyle::ZOOMING) {
             this->setZoomAtCursor(true);
             this->zoomByCursor(posn, prevnormalized);
@@ -180,9 +187,17 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             processed = true;
         }
         else if (curmode == NavigationStyle::DRAGGING) {
+            // change the rotationcenter location only if starting a drag
+            // shift down only locks and displays cursor position. need to also right click
+            // to actually drag
+            if (!this->lockDrag) {
+                this->lockDrag = true;
+                this->posn_drag = posn;
+            }
+
             this->addToLog(event->getPosition(), event->getTime());
-            this->spin(posn);
-            //moveCursorPosition();
+            this->spin(posn_drag); // this performs the spin
+            moveCursorPosition();
             processed = true;
         }
     }
@@ -208,10 +223,12 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         | (this->button2down ? BUTTON2DOWN : 0) | (this->button3down ? BUTTON3DOWN : 0)
         | (this->ctrldown ? CTRLDOWN : 0) | (this->shiftdown ? SHIFTDOWN : 0);
 
+    Base::Console().message("lockDrag %u\n", this->lockDrag);
+
     switch (combo) {
         case 0: // no button pressed
             viewer->showRotationCenter(false);
-            drag_location_lock = false;
+            this->lockDrag = false;
             newmode = NavigationStyle::IDLE;
             // The left mouse button has been released right now so unlock the flag
             if (this->lockButton1) {
@@ -236,51 +253,35 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             break;
 
         // BUTTON2 KEY COMBINATIONS
-        case BUTTON2DOWN: //changed from BUTTON3DOWN
+        case BUTTON2DOWN:
             newmode = NavigationStyle::PANNING;
             processed = true;
             break;
 
         case BUTTON2DOWN | SHIFTDOWN:
-            // Switching from other states to dragging/rotating, so save location
-            if (curmode != NavigationStyle::DRAGGING) {
-                newmode = NavigationStyle::DRAGGING;
-            }
-            if (drag_location_lock == false) {
-                drag_location_lock = true;
-                posn_drag = posn;
-                saveCursorPosition(ev);
-                viewer->showRotationCenter(true);
-            }
-            // if already dragging, keep dragging, dont do anything new
+            newmode = NavigationStyle::DRAGGING;
             processed = true;
             break;
 
         case BUTTON2DOWN | CTRLDOWN | SHIFTDOWN: //zoom
         case BUTTON2DOWN | CTRLDOWN: //zoom
             newmode = NavigationStyle::ZOOMING;
-            saveCursorPosition(ev);
-            // show zoom location like in altium
-            viewer->showRotationCenter(true);
-            this->centerTime = ev->getTime();
             processed = true;
             break;
 
         // BUTTON3 KEY COMBINATIONS not here since all combos result in zooming
 
         // KEYBOARD KEYS ONLY
-        case SHIFTDOWN:
+        case SHIFTDOWN: //start of a drag, shift was pressed first
 
             // change the rotationcenter location only if starting a drag
             // shift down only locks and displays cursor position. need to also right click
             // to actually drag
-            if (drag_location_lock == false) {
-                drag_location_lock = true;
-                //drag_event = (const SoLocation2Event*)ev;
-                posn_drag = posn;
-                saveCursorPosition(ev);
-                viewer->showRotationCenter(true); 
+            if (!this->lockDrag) {
+                this->lockDrag = true;
+                this->posn_drag = posn;
             }
+
             newmode = NavigationStyle::IDLE;
             processed = true;
             break;
@@ -289,6 +290,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             if (curmode == NavigationStyle::ZOOMING) {
                 newmode = NavigationStyle::IDLE;
             }
+            // Not processed as ctrl is also used for multi-select
             break;
         default:
             break;
