@@ -568,7 +568,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("Strategy")
     setup.append("PeckDepth")
     setup.append("PeckEnabled")
@@ -577,8 +577,6 @@ def SetupProperties():
     setup.append("AddTipLength")
     setup.append("ExtraOffset")
     setup.append("KeepToolDown")
-    setup.append("CollisionAvoidanceStrategy")
-    setup.append("CollisionClearance")
     return setup
 
 

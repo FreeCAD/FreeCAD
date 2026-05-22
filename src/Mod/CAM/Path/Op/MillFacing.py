@@ -713,7 +713,7 @@ def Create(name, obj=None, parentJob=None):
 
 def SetupProperties():
     """SetupProperties() ... Return list of properties required for the operation."""
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("CutMode")
     setup.append("ClearingPattern")
     setup.append("Angle")

@@ -198,7 +198,9 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
 
 def SetupProperties():
-    return ["StartVertex", "CollisionAvoidanceStrategy", "CollisionClearance"]
+    setup = PathOp.SetupPropertiesLinking()
+    setup.append("StartVertex")
+    return setup
 
 
 def Create(name, obj=None, parentJob=None):

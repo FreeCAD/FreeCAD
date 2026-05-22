@@ -427,11 +427,9 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("Width")
     setup.append("ExtraDepth")
-    setup.append("CollisionAvoidanceStrategy")
-    setup.append("CollisionClearance")
     return setup
 
 

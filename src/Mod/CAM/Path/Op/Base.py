@@ -1217,3 +1217,10 @@ def getCycleTimeEstimate(obj):
     cycleTime = time.strftime("%H:%M:%S", time.gmtime(seconds))
 
     return cycleTime
+
+
+def SetupPropertiesLinking():
+    setup = []
+    setup.append("CollisionAvoidanceStrategy")
+    setup.append("CollisionClearance")
+    return setup
