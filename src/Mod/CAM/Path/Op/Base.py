@@ -679,6 +679,7 @@ class ObjectOp(object):
 
         if FeatureLinking & features:
             obj.CollisionAvoidanceStrategy = job.SetupSheet.CollisionAvoidanceStrategy
+            self.applyExpression(obj, "CollisionClearance", "OpToolDiameter")
 
         self.opSetDefaultValues(obj, job)
         return job

@@ -395,6 +395,7 @@ class SetupSheet:
             for prop in op.properties():
                 propName = OpPropertyName(opName, prop)
                 if hasattr(self.obj, propName):
+                    obj.setExpression(prop, None)  # clear any bound expression first
                     setattr(obj, prop, getattr(self.obj, propName))
         except Exception:
             Path.Log.info("SetupSheet has no support for {}".format(opName))
