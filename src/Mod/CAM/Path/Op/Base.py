@@ -61,7 +61,7 @@ FeatureLinking = 0x0080  # Linking
 FeatureBaseVertexes = 0x0100  # Base
 FeatureBaseEdges = 0x0200  # Base
 FeatureBaseFaces = 0x0400  # Base
-FeatureBasePanels = 0x0800  # Base
+FeatureBaseModels = 0x0800  # Base
 FeatureLocations = 0x1000  # Locations
 FeatureCoolant = 0x2000  # Coolant
 FeatureDiameters = 0x4000  # Turning Diameters
@@ -98,6 +98,7 @@ class ObjectOp(object):
         FeatureBaseVertexes  ... Base geometry support for vertexes
         FeatureBaseEdges     ... Base geometry support for edges
         FeatureBaseFaces     ... Base geometry support for faces
+        FeatureBaseModels    ... Base geometry support for whole shape
         FeatureLocations     ... Base location support
         FeatureCoolant       ... Support for operation coolant
         FeatureDiameters     ... Support for turning operation diameters
