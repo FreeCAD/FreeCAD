@@ -520,6 +520,10 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&OriginGroupExtensionPy::Type, pAppModule, "OriginGroupExtension");
     Base::InterpreterSingleton::addType(&LinkBaseExtensionPy::Type, pAppModule, "LinkBaseExtension");
 
+    Base::ParameterGrpPy::init_type();
+    Base::InterpreterSingleton::addType(Base::ParameterGrpPy::type_object(),
+        pAppModule, "ParameterGrp");
+
     //insert Base and Console
     Py_INCREF(pBaseModule);
     PyModule_AddObject(pAppModule, "Base", pBaseModule);
@@ -553,10 +557,6 @@ void Application::setupPythonTypes()
     Base::Vector2dPy::init_type();
     Base::InterpreterSingleton::addType(Base::Vector2dPy::type_object(),
         pBaseModule,"Vector2d");
-
-    Base::ParameterGrpPy::init_type();
-    Base::InterpreterSingleton::addType(Base::ParameterGrpPy::type_object(),
-        pBaseModule, "ParameterGrp");
 
     // clang-format on
 }
