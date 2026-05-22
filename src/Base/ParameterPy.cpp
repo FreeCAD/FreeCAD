@@ -868,6 +868,11 @@ Py::Object ParameterGrpPy::getContents(const Py::Tuple& args)
     return list;  // NOLINT
 }
 
+PyTypeObject* ParameterGrpPy::type_object()
+{
+    return Py::PythonExtension<ParameterGrpPy>::type_object();
+}
+
 }  // namespace Base
 
 /** python wrapper function

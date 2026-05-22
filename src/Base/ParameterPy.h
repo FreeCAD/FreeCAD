@@ -39,6 +39,7 @@ class ParameterGrpPy: public Py::PythonExtension<ParameterGrpPy>  // NOLINT
 {
 public:
     static void init_type();  // announce properties and methods
+    static PyTypeObject* type_object();
 
     explicit ParameterGrpPy(const Base::Reference<ParameterGrp>& rcParamGrp);
     ~ParameterGrpPy() override;
