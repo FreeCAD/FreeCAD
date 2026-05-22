@@ -53,6 +53,7 @@ class DeformExpr
 
 public:
     DeformExpr(const std::string& xFunc, const std::string& yFunc, const std::string& zFunc);
+    void setExpr(const std::string& xFunc, const std::string& yFunc, const std::string& zFunc);
     double x(double vx, double vy, double vz);
     double y(double vx, double vy, double vz);
     double z(double vx, double vy, double vz);
@@ -102,7 +103,7 @@ public:
         BRepAdaptor_Curve curve;
         double factor {1.};
         gp_Ax3 coord;
-        DeformExpr funcExpr {"x", "y", "z"};
+        DeformExpr* funcExpr = new DeformExpr("x", "y", "z");
     };
 
     /** @name methods override feature */
@@ -115,6 +116,8 @@ public:
     {
         return "PartGui::ViewProviderFlex";
     }
+
+    void onChanged(const App::Property* prop) override;
     //@}
 
     bool fetchCurveLink(const App::PropertyLinkSub& curveLink, BRepAdaptor_Curve& curve) const;

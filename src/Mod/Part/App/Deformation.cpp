@@ -30,6 +30,8 @@
 
 using namespace Part;
 
+// NOLINTBEGIN(readability-math-missing-parentheses)
+
 gp_Pnt Deformation::twist(gp_Pnt from, double pitch, gp_Vec direction, gp_Pnt origin)
 {
     if (std::abs(pitch) <= Precision::Confusion()) {
@@ -94,6 +96,19 @@ gp_Pnt Deformation::twistAlongZ(gp_Pnt from, double pitch, gp_Pnt origin)
     const auto z = from.Z();
 
     return {x + origin.X(), y + origin.Y(), z};
+}
+
+gp_Pnt Deformation::bendAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, double factor, gp_Vec direction)
+{
+    direction.Normalize();
+    gp_Trsf trsf;
+    trsf.SetRotation(gp_Quaternion(direction, gp_Vec(1., 0., 0.)));
+
+    from.Transform(trsf);
+
+    gp_Pnt result;
+    result = bendXAlongCurve(from, curve, factor);
+    return result.Transformed(trsf.Inverted());
 }
 
 gp_Pnt Deformation::bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, double factor)
@@ -418,3 +433,5 @@ TopoDS_Shape Deformation::deform(
     tolFixer.SetTolerance(result, Precision::Approximation(), TopAbs_SHAPE);
     return result;
 }
+
+// NOLINTEND(readability-math-missing-parentheses)

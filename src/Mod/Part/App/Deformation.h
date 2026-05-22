@@ -71,6 +71,12 @@ public:
     static gp_Pnt twistAlongY(gp_Pnt from, double pitch, gp_Pnt origin);
     static gp_Pnt twistAlongZ(gp_Pnt from, double pitch, gp_Pnt origin);
 
+    static gp_Pnt bendAlongCurve(
+        gp_Pnt from,
+        const BRepAdaptor_Curve& curve,
+        double factor,
+        gp_Vec direction
+    );
     static gp_Pnt bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, double factor);
 
     static TopoDS_Edge deform(
