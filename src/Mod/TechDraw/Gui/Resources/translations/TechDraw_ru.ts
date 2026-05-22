@@ -7327,7 +7327,7 @@ Custom: custom scale factor is used</source>
     <message>
       <location filename="../../TaskDimension.ui" line="298"/>
       <source>Standard and style according to which dimension is drawn</source>
-      <translation>Стандарт и стиль в согласно которому отображаются размеры на чертеже (https://wiki.freecadweb.org/File:TechDraw_Dimension_standardization.png)</translation>
+      <translation>Стандарт и стиль в согласно которому отображаются размеры на чертеже (https://wiki.freecad.org/File:TechDraw_Dimension_standardization.png)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="136"/>

@@ -11436,7 +11436,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     </message>
     <message>
         <location filename="../ui/dialogSetup.ui" line="636"/>
-        <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href=&quot;https://www.freecadweb.org/wiki/Arch_IFC&quot;&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href=&quot;#install&quot;&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
+        <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href=&quot;https://www.freecad.org/wiki/Arch_IFC&quot;&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href=&quot;#install&quot;&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
