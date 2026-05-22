@@ -528,7 +528,6 @@ class Dimension(gui_base_original.Creator):
                         self.node.append(self.point)
                         self.createObject()
                         self.finish(cont=None)
-                        self.finish()
                     self.update_hints()
 
     def numericInput(self, numx, numy, numz):
@@ -546,7 +545,6 @@ class Dimension(gui_base_original.Creator):
             self.createObject()
             if not self.chain:
                 self.finish(cont=None)
-                self.finish()
         self.update_hints()
 
     def set_constraint_node(self):
