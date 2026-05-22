@@ -242,6 +242,7 @@ public:
     void drawConstraintIcons(const GeoListFacade& geolistfacade);
 
     void updateGeometryLayersConfiguration();
+    void updateEditRootType();
     //@}
 
     /** @name coin node access*/

@@ -401,6 +401,8 @@ struct EditModeScenegraphNodes
     /** @name Point nodes*/
     //@{
     SoSeparator* EditRoot;
+    SoGroup* ModeRoot;
+    SoSeparator* ContentRoot;
     SmSwitchboard* PointsGroup;
     std::vector<SoMaterial*> PointsMaterials;
     std::vector<SoCoordinate3*> PointsCoordinate;
