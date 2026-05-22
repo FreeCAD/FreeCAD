@@ -16,7 +16,7 @@
 
 Name:           freecad
 Epoch:          1
-Version:        1.1.0~dev
+Version:        1.2.0~dev
 Release:        1%{?dist}
 
 Summary:        A general purpose 3D CAD modeler
@@ -155,8 +155,7 @@ Development file for OndselSolver
         -DOpenGL_GL_PREFERENCE=GLVND \
         -DUSE_OCC=TRUE \
     %if %{without bundled_pycxx}
-        -DPYCXX_INCLUDE_DIR=$(pkg-config --variable=includedir PyCXX) \
-        -DPYCXX_SOURCE_DIR=$(pkg-config --variable=srcdir PyCXX) \
+        -DFREECAD_USE_EXTERNAL_PYCXX=TRUE \
     %endif
     %if %{without bundled_smesh}
         -DFREECAD_USE_EXTERNAL_SMESH=TRUE \

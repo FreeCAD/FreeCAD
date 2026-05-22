@@ -145,7 +145,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
         }
 
         try {
-            result.makeElementBoolean(op, shapes);
+            result.makeElementBoolean(op, shapes, nullptr, FuzzyTolerance.getValue());
         }
         catch (Standard_Failure& e) {
             FC_ERR("Boolean operation failed: " << e.GetMessageString());

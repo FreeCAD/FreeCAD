@@ -33,13 +33,11 @@ import lazy_loader.lazy_loader as lz
 import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
-import draftutils.utils as utils
-
+from draftutils import utils
 from draftutils.messages import _wrn
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 TechDraw = lz.LazyLoader("TechDraw", globals(), "TechDraw")
 
 

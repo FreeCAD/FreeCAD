@@ -453,22 +453,6 @@ void QuantitySpinBox::resizeEvent(QResizeEvent* event)
 {
     QAbstractSpinBox::resizeEvent(event);
     resizeWidget();
-    clampCursorBeforeUnit();
-}
-
-void QuantitySpinBox::clampCursorBeforeUnit()
-{
-    Q_D(QuantitySpinBox);
-    if (!d->adjustableWidth) {
-        return;
-    }
-    QLineEdit* edit = lineEdit();
-    int cursor = edit->cursorPosition();
-    const int maxCursor = qMax(0, edit->displayText().size() - 1 /*space*/ - d->unitStr.size());
-
-    if (cursor > maxCursor) {
-        edit->setCursorPosition(maxCursor);
-    }
 }
 
 void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
@@ -491,9 +475,6 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
 
     if (isEnter) {
         returnPressed();
-    }
-    else {
-        clampCursorBeforeUnit();
     }
 }
 
@@ -518,21 +499,26 @@ void QuantitySpinBox::updateText(const Quantity& quant)
 void QuantitySpinBox::updateEdit(const QString& text)
 {
     Q_D(QuantitySpinBox);
-
     QLineEdit* edit = lineEdit();
 
-    bool empty = edit->text().isEmpty();
     int cursor = edit->cursorPosition();
-    int selsize = edit->selectedText().size();
+    int selStart = edit->selectionStart();
+    int selLen = edit->selectionLength();
 
+    // setText resets cursor/selection so save it and restore it
     edit->setText(text);
 
-    cursor = qBound(0, cursor, qMax(0, edit->displayText().size() - d->unitStr.size()));
-    if (selsize > 0) {
-        edit->setSelection(0, cursor);
+    int maxPos = qMax(0, edit->displayText().size() - d->unitStr.size());
+
+    int newCursor = qBound(0, cursor, maxPos);
+
+    if (selLen > 0) {
+        int newStart = qBound(0, selStart, maxPos);
+        int newLen = qBound(0, selLen, maxPos - newStart);
+        edit->setSelection(newStart, newLen);
     }
     else {
-        clampCursorBeforeUnit();
+        edit->setCursorPosition(newCursor);
     }
 }
 

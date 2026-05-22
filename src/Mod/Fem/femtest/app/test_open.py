@@ -267,9 +267,9 @@ class TestObjectOpen(unittest.TestCase):
 
         self.assertEqual(SolverElmer, doc.SolverElmer.Proxy.__class__)
 
-        from femsolver.z88.solver import Proxy
+        from femobjects.solver_z88 import SolverZ88
 
-        self.assertEqual(Proxy, doc.SolverZ88.Proxy.__class__)
+        self.assertEqual(SolverZ88, doc.SolverZ88.Proxy.__class__)
 
         from femsolver.elmer.equations.elasticity import Proxy
 

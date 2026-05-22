@@ -5,11 +5,14 @@ add_executable(PartDesign_tests_run
         DatumPlane.cpp
         ShapeBinder.cpp
         Pad.cpp
+        GeoFeatureGroupExtension.cpp
 )
 
 set(PartDesignTestData_Files
         TestModels/ModelFromV021.FCStd
         TestModels/TwoLengthsPadWithExpression.FCStd
+        TestModels/TwoLengthsPadCyclicExpr.FCStd
+        TestModels/TwoLengthsPadCrossObjectRef.FCStd
 )
 
 ADD_CUSTOM_TARGET(PartDesignTestData ALL

@@ -104,7 +104,8 @@ void FileCardDelegate::paint(
     if (!image.isEmpty()) {
         pixmap.loadFromData(image);
     }
-    else {
+    // Check for null in case no data is available yet or the above loadFromData() failed
+    if (pixmap.isNull()) {
         pixmap = generateThumbnail(path);
     }
 
