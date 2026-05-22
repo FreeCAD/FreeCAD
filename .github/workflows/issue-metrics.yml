@@ -12,7 +12,7 @@ jobs:
   build:
     name: issue metrics
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'FreeCAD'
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
 
     steps:
 

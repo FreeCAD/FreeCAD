@@ -21,7 +21,7 @@ jobs:
   analysis:
     name: Scorecard analysis
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'FreeCAD'
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
     permissions:
       # Needed to upload the results to code-scanning dashboard.
       security-events: write
