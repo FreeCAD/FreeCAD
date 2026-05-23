@@ -408,9 +408,10 @@ void GroupExtension::extensionOnChanged(const Property* p)
 
 void GroupExtension::slotChildChanged(const DocumentObject& obj, const Property& prop)
 {
-    if (&prop == &obj.Visibility) {
-        _GroupTouched.touch();
-    }
+    // Child visibility is a view-state sync, not a model dependency change.
+    // Touching the parent here makes simple eye toggles look like recompute work.
+    (void)obj;
+    (void)prop;
 }
 
 bool GroupExtension::extensionGetSubObject(DocumentObject*& ret,
