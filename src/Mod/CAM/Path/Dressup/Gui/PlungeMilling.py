@@ -38,7 +38,7 @@ translate = FreeCAD.Qt.translate
 
 
 class ObjectDressup:
-    def __init__(self, obj):
+    def __init__(self, obj, base):
         obj.addProperty(
             "App::PropertyLink",
             "Base",
@@ -55,6 +55,7 @@ class ObjectDressup:
         )
         obj.StepOver = 20
         obj.Proxy = self
+        obj.Base = base
 
     def dumps(self):
         return
@@ -155,34 +156,34 @@ class ObjectDressup:
 
 class ViewProviderDressup:
     def __init__(self, vobj):
-        self.attach(vobj)
+        self.obj = vobj.Object
         vobj.Proxy = self
 
     def attach(self, vobj):
-        self.vobj = vobj
         self.obj = vobj.Object
+        self.panel = None
 
-    def dumps(self):
-        return
-
-    def loads(self, state):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
+        if self.obj and self.obj.Base:
+            for i in self.obj.Base.InList:
+                if hasattr(i, "Group") and self.obj.Base.Name in [o.Name for o in i.Group]:
+                    i.Group = [o for o in i.Group if o.Name != self.obj.Base.Name]
+            if self.obj.Base.ViewObject:
+                self.obj.Base.ViewObject.Visibility = False
 
     def claimChildren(self):
-        if hasattr(self.obj.Base, "InList"):
-            for i in self.obj.Base.InList:
-                if hasattr(i, "Group"):
-                    group = i.Group
-                    for g in group:
-                        if g.Name == self.obj.Base.Name:
-                            group.remove(g)
-                    i.Group = group
         return [self.obj.Base]
 
+    def setEdit(self, vobj, mode=0):
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+        return True
+
+    def unsetEdit(self, vobj, mode=0):
+        pass
+
     def onDelete(self, arg1=None, arg2=None):
+        """this makes sure that the base operation is added back to the project and visible"""
+        Path.Log.debug("Deleting Dressup")
         if arg1.Object and arg1.Object.Base:
             FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
             job = PathUtils.findParentJob(self.obj)
@@ -191,10 +192,14 @@ class ViewProviderDressup:
             arg1.Object.Base = None
         return True
 
-    def setEdit(self, vobj, mode=0):
-        if mode == 1:
-            FreeCADGui.runCommand("Std_TransformManip")
-        return True
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def clearTaskPanel(self):
+        pass
 
     def getIcon(self):
         if getattr(PathDressup.baseOp(self.obj), "Active", True):
@@ -208,10 +213,9 @@ class CommandPathDressup:
         return {
             "Pixmap": "CAM_Dressup",
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupPlungeMilling", "Plunge Milling"),
-            "Accel": "",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupPlungeMilling",
-                "Creates plunge milling of a selected path",
+                "Creates plunge milling for a selected path",
             ),
         }
 
@@ -225,21 +229,43 @@ class CommandPathDressup:
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction("Create Dress-up")
+        FreeCAD.ActiveDocument.openTransaction("Create PlungeMilling Dressup")
         FreeCADGui.addModule("Path.Dressup.Gui.PlungeMilling")
-        FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
-            'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "PlungeMillingDressup")'
+            "Path.Dressup.Gui.PlungeMilling.Create(App.ActiveDocument.%s)" % op.Name
         )
-        FreeCADGui.doCommand("Path.Dressup.Gui.PlungeMilling.ObjectDressup(obj)")
-        FreeCADGui.doCommand("baseOp = FreeCAD.ActiveDocument." + op.Name)
-        FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(baseOp)")
-        FreeCADGui.doCommand("obj.Base = baseOp")
-        FreeCADGui.doCommand("job.Proxy.addOperation(obj, baseOp)")
-        FreeCADGui.doCommand("Path.Dressup.Gui.PlungeMilling.ViewProviderDressup(obj.ViewObject)")
-        FreeCADGui.doCommand("baseOp.Visibility = False")
-        FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()`
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+
+
+def Create(baseObject, name="DressupPlungeMilling", mode=0):
+    """
+    Create(basePath, name='DressupPlungeMilling') … create Plunge Milling dressup object for the given base path.
+
+    import Path.Dressup.Gui.PlungeMilling as plunge
+    plunge.Create(basePath)  # to show Task panel
+    plunge.Create(basePath, 2)  # to skip Task panel
+    """
+    if not baseObject.isDerivedFrom("Path::Feature"):
+        Path.Log.error(
+            translate("CAM_DressupPlungeMilling", "The selected object is not a path") + "\n"
+        )
+        return None
+
+    if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
+        Path.Log.error(translate("CAM_DressupPlungeMilling", "Select a profile object"))
+        return None
+
+    FreeCAD.ActiveDocument.openTransaction("Create a DressupPlungeMilling")
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    ObjectDressup(obj, baseObject)
+    job = PathUtils.findParentJob(baseObject)
+    job.Proxy.addOperation(obj, baseObject)
+    ViewProviderDressup(obj.ViewObject)
+    FreeCAD.ActiveDocument.commitTransaction()
+    obj.ViewObject.Document.setEdit(obj.ViewObject, mode)
+
+    return obj
 
 
 if FreeCAD.GuiUp:
