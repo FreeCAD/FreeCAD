@@ -140,6 +140,10 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent* const ev)
                 else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
                     processed = true;
                 }
+                // Suppress click processing after navigation combo (pan/zoom/drag)
+                else if (this->lockButton1) {
+                    processed = true;
+                }
                 else {
                     processed = processClickEvent(event);
                 }
