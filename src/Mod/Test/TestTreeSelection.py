@@ -37,7 +37,6 @@ from FreeCADGui import Selection
 
 import Draft
 import Part
-import Sketcher
 
 from PySide6 import QtWidgets
 from PySide6.QtCore import QModelIndex, QItemSelectionModel
