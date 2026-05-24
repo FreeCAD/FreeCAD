@@ -798,6 +798,9 @@ std::vector<TSPPair> TSPSolver::solvePairs(
         );
     }
     else {
+        // No start point specified; use the machine origin (0,0,0) as a neutral
+        // reference so the nearest-neighbour pass still has a valid starting
+        // position without biasing the route toward any particular area of the job.
         pairs.insert(pairs.begin(), TSPPair(0.0, 0.0, 0.0, 0.0));
     }
 
@@ -850,8 +853,6 @@ std::vector<TSPPair> TSPSolver::solvePairs(
     }
 
     // STEP 4: Additional improvement of the route
-    // Note: 10e-6 == 1e-5 (matches Python source exactly)
-    constexpr double epsilon = 10e-6;
     size_t limitReorderI = route.size() - 2;
     if (routeEndPoint) {
         limitReorderI -= 1;
@@ -874,6 +875,9 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                 double subRouteLengthCurrentPart = std::sqrt(
                     std::pow(route[i].x - route[i + 1].x, 2) + std::pow(route[i].y - route[i + 1].y, 2)
                 );
+                if (i + 3 >= limitReorderJ) {
+                    continue;  // No valid j for this i; route[i+3] would be out of bounds
+                }
                 for (size_t j = i + 3; j < limitReorderJ; ++j) {
                     double subRouteLengthCurrent = subRouteLengthCurrentPart
                         + std::sqrt(std::pow(route[j - 1].x - route[j].x, 2)
@@ -886,7 +890,7 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                         std::pow(route[i].x - route[j - 1].x, 2)
                         + std::pow(route[i].y - route[j - 1].y, 2)
                     );
-                    subRouteLengthNew += epsilon;
+                    subRouteLengthNew += Base::Precision::Confusion();
                     if (subRouteLengthNew < subRouteLengthCurrent) {
                         // Reverse the order of pairs between i-th and j-th pair
                         std::reverse(route.begin() + i + 1, route.begin() + j);
@@ -908,7 +912,7 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                         std::pow(route[i].x - route[limitReorderJ - 1].x, 2)
                         + std::pow(route[i].y - route[limitReorderJ - 1].y, 2)
                     );
-                    subRouteLengthNew += epsilon;
+                    subRouteLengthNew += Base::Precision::Confusion();
                     if (subRouteLengthNew < subRouteLengthCurrent) {
                         // Reverse the order of pairs after i-th to the last pair
                         std::reverse(route.begin() + i + 1, route.begin() + limitReorderJ);
@@ -937,7 +941,7 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                     std::pow(route[i - 1].x - route[i + 1].x, 2)
                     + std::pow(route[i - 1].y - route[i + 1].y, 2)
                 );
-                subRouteLengthNewPart += epsilon;
+                subRouteLengthNewPart += Base::Precision::Confusion();
 
                 // Relocate backward
                 for (size_t j = 0; j + 2 < i; ++j) {
@@ -964,7 +968,7 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                             std::pow(route[i - 1].x - route[i + 1].x, 2)
                             + std::pow(route[i - 1].y - route[i + 1].y, 2)
                         );
-                        subRouteLengthNewPart += epsilon;
+                        subRouteLengthNewPart += Base::Precision::Confusion();
                         improvementFound = true;
                         lastImprovementAtStep = 2;
                     }
@@ -995,7 +999,7 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                             std::pow(route[i - 1].x - route[i + 1].x, 2)
                             + std::pow(route[i - 1].y - route[i + 1].y, 2)
                         );
-                        subRouteLengthNewPart += epsilon;
+                        subRouteLengthNewPart += Base::Precision::Confusion();
                         improvementFound = true;
                         lastImprovementAtStep = 2;
                     }
@@ -1020,7 +1024,7 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                         std::pow(route[route.size() - 1].x - route[j + 1].x, 2)
                         + std::pow(route[route.size() - 1].y - route[j + 1].y, 2)
                     );
-                    subRouteLengthNew += epsilon;
+                    subRouteLengthNew += Base::Precision::Confusion();
                     if (subRouteLengthNew < subRouteLengthCurrent) {
                         // Relocate the last pair after j-th pair
                         std::rotate(route.begin() + j + 1, route.end() - 1, route.end());
@@ -1053,7 +1057,7 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                     std::pow(route[i - 1].x - route[i + 1].x, 2)
                     + std::pow(route[i - 1].y - route[i + 1].y, 2)
                 );
-                subRouteLengthNewPart += epsilon;
+                subRouteLengthNewPart += Base::Precision::Confusion();
 
                 // Relocate backward with alternative point
                 for (size_t j = 0; j + 2 < i; ++j) {
@@ -1083,7 +1087,7 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                             std::pow(route[i - 1].x - route[i + 1].x, 2)
                             + std::pow(route[i - 1].y - route[i + 1].y, 2)
                         );
-                        subRouteLengthNewPart += epsilon;
+                        subRouteLengthNewPart += Base::Precision::Confusion();
                         improvementFound = true;
                         lastImprovementAtStep = 3;
                     }
@@ -1116,7 +1120,7 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                             std::pow(route[i - 1].x - route[i + 1].x, 2)
                             + std::pow(route[i - 1].y - route[i + 1].y, 2)
                         );
-                        subRouteLengthNewPart += epsilon;
+                        subRouteLengthNewPart += Base::Precision::Confusion();
                         improvementFound = true;
                         lastImprovementAtStep = 3;
                     }
@@ -1150,7 +1154,7 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                             std::pow(route[i - 1].x - route[i + 1].x, 2)
                             + std::pow(route[i - 1].y - route[i + 1].y, 2)
                         );
-                        subRouteLengthNewPart += epsilon;
+                        subRouteLengthNewPart += Base::Precision::Confusion();
                         improvementFound = true;
                         lastImprovementAtStep = 3;
                     }
@@ -1175,7 +1179,7 @@ std::vector<TSPPair> TSPSolver::solvePairs(
                         std::pow(route[route.size() - 1].xAlt - route[j + 1].x, 2)
                         + std::pow(route[route.size() - 1].yAlt - route[j + 1].y, 2)
                     );
-                    subRouteLengthNew += epsilon;
+                    subRouteLengthNew += Base::Precision::Confusion();
                     if (subRouteLengthNew < subRouteLengthCurrent) {
                         route.back().flipped = !route.back().flipped;
                         std::swap(route.back().x, route.back().xAlt);
