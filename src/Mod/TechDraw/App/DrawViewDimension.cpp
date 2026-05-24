@@ -957,29 +957,26 @@ pointPair DrawViewDimension::getPointsTwoCircles(const TopoDS_Edge& edge0, const
     gp_Dir centerDir = center1Local.XYZ() - center0Local.XYZ();
     double dot = centerDir.Dot(alignmentDir);
 
+    if (dot == 0) {
+        // dot == 0 means alignmentDir and centerDir are at 90* and the separation of the two circles along aligmentDir will
+        // be zero.  Dimension will have zero value until user changes DistanceX to DistanY, or vv.
+        Base::Console().log("DVD::getPointsTwoCircles - %s dot is zero\n", Label.getValue());
+        return closestPoints(edge0, edge1);
+    }
+
     if (dot > 0) {
         point0 = point0.XYZ() + shift0.XYZ();
         point1 = point1.XYZ() - shift1.XYZ();
-        auto point0Out = Base::convertTo<Base::Vector3d>(point0);
-        auto point1Out = Base::convertTo<Base::Vector3d>(point1);
-        return {point0Out, point1Out};
     }
 
     if (dot < 0) {
         point0 = point0.XYZ() - shift0.XYZ();
         point1 = point1.XYZ() + shift1.XYZ();
-        auto point0Out = Base::convertTo<Base::Vector3d>(point0);
-        auto point1Out = Base::convertTo<Base::Vector3d>(point1);
-        return {point0Out, point1Out};
     }
 
-    // dot == 0 means alignmentDir and centerDir are at 90* and the separation of the two circles along aligmentDir will
-    // be zero.  Dimension will have zero value until user changes DistanceX to DistanY, or vv.
-    if (dot == 0) {
-        Base::Console().log("DVD::getPointsTwoCircles - %s dot is zero\n", Label.getValue());
-    }
-
-    return closestPoints(edge0, edge1);
+    auto point0Out = Base::convertTo<Base::Vector3d>(point0);
+    auto point1Out = Base::convertTo<Base::Vector3d>(point1);
+    return {point0Out, point1Out};
 }
 
 
