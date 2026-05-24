@@ -173,7 +173,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     "Extension for working area limited by the model shape",
                 ),
             )
-            if getattr(obj, "ExtensionFeature", None) and getattr(obj, "ExtensionLengthDefault", 0):
+            if getattr(obj, "ExtensionFeature", None):
                 obj.ExtensionOffset = obj.ExtensionLengthDefault
 
     def areaOpOnDocumentRestored(self, obj):

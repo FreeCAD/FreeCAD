@@ -1929,7 +1929,7 @@ class PathAdaptive(PathOp.ObjectOp):
                     "Offset for extension limited by the model shape",
                 ),
             )
-            if getattr(obj, "ExtensionFeature", None) and getattr(obj, "ExtensionLengthDefault", 0):
+            if getattr(obj, "ExtensionFeature", None):
                 obj.ExtensionOffset = obj.ExtensionLengthDefault
 
 
