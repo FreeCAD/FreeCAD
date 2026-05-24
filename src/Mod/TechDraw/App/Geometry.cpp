@@ -1687,7 +1687,7 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
         lenTotal += (v2-v1).Length();
     }
 
-    return DrawUtil::fpCompare(lenTotal, endPointLength, tolerance);
+    return DrawUtil::fpCompare(lenTotal, endPointLength, EWTOLERANCE);
 }
 
 
