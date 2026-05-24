@@ -25,12 +25,11 @@
 
 #include "PreCompiled.h"
 
-#include <cmath>
-#include <memory>
-
 #include <QMenu>
 
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/SbLine.h>
+#include <Inventor/SbPlane.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/events/SoKeyboardEvent.h>
@@ -38,6 +37,7 @@
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -45,17 +45,15 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTranslation.h>
 
-#include <Standard_Failure.hxx>
-#include <TopAbs_ShapeEnum.hxx>
-#include <TopoDS_Shape.hxx>
+#include <Precision.hxx>
 
 #include <Base/Console.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/Inventor/SoAutoZoomTranslation.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Sketcher3D/App/GeoEnum3D.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
@@ -85,9 +83,78 @@ inline QStringList nonEditModeToolbarNames()
     };
 }
 
-constexpr float kPlaneHalfSize = 50.0F;
-constexpr float kPlaneTransparency = 0.75F;
 constexpr const char* kEditingWorkbench = "SketcherWorkbench";
+
+void setDiffuseColor(SoMaterial* material, const Color3f& color)
+{
+    material->diffuseColor.setValue(color[0], color[1], color[2]);
+}
+
+void setEmissiveColor(SoMaterial* material, const Color3f& color, float scale = 1.0F)
+{
+    material->emissiveColor.setValue(color[0] * scale, color[1] * scale, color[2] * scale);
+}
+
+SoSeparator* buildAxisHandle(std::array<SoMaterial*, 3>& axisMaterials)
+{
+    struct AxisDef
+    {
+        SbVec3f dir;
+        SbVec3f side;
+        const char* name;
+    };
+    const AxisDef axes[3] = {
+        {{1.0F, 0.0F, 0.0F}, {0.0F, 1.0F, 0.0F}, "Sketcher3DAxisHandleX"},
+        {{0.0F, 1.0F, 0.0F}, {1.0F, 0.0F, 0.0F}, "Sketcher3DAxisHandleY"},
+        {{0.0F, 0.0F, 1.0F}, {1.0F, 0.0F, 0.0F}, "Sketcher3DAxisHandleZ"},
+    };
+
+    const int kSegments = 3;
+
+    auto* handle = new SoSeparator();
+    handle->setName("Sketcher3DAxisHandle");
+
+    for (std::size_t i = 0; i < 3; ++i) {
+        auto* axisSep = new SoSeparator();
+        axisSep->setName(axes[i].name);
+
+        auto* material = new SoMaterial();
+        setDiffuseColor(material, kInactiveAxisHandleColor);
+        setEmissiveColor(material, kInactiveAxisHandleColor, kInactiveAxisHandleEmissiveScale);
+        material->transparency.setValue(kAxisHandleTransparency);
+        axisSep->addChild(material);
+        axisMaterials[i] = material;
+
+        auto* style = new SoDrawStyle();
+        style->lineWidth.setValue(kAxisHandleLineWidth);
+        axisSep->addChild(style);
+
+        SbVec3f end       = axes[i].dir * kAxisHandleLength;
+        SbVec3f arrowBase = end - axes[i].dir * kAxisHandleArrowLength;
+        SbVec3f sideVec   = axes[i].side * (kAxisHandleArrowLength * kArrowHeadHalfWidthFactor);
+
+        auto* coords = new SoCoordinate3();
+        coords->point.setNum(6);
+        coords->point.set1Value(0, SbVec3f(0.0F, 0.0F, 0.0F));
+        coords->point.set1Value(1, end);
+        coords->point.set1Value(2, end);
+        coords->point.set1Value(3, arrowBase + sideVec);
+        coords->point.set1Value(4, end);
+        coords->point.set1Value(5, arrowBase - sideVec);
+        axisSep->addChild(coords);
+
+        auto* lineSet = new SoLineSet();
+        lineSet->numVertices.setNum(kSegments);
+        for (int s = 0; s < kSegments; ++s) {
+            lineSet->numVertices.set1Value(s, 2);
+        }
+        axisSep->addChild(lineSet);
+
+        handle->addChild(axisSep);
+    }
+
+    return handle;
+}
 
 SbVec3f planeNormal(ViewProviderSketch3D::ActivePlane p)
 {
@@ -102,52 +169,61 @@ SbVec3f planeNormal(ViewProviderSketch3D::ActivePlane p)
     }
 }
 
-void writePlaneQuadCoords(SoCoordinate3* coords,
-                          ViewProviderSketch3D::ActivePlane p,
-                          const Base::Vector3d& base)
+float planeSizeFromCursor(ViewProviderSketch3D::ActivePlane plane,
+                          const Base::Vector3d& base,
+                          const Base::Vector3d& cursor)
 {
-    const float s = kPlaneHalfSize;
-    const float bx = static_cast<float>(base.x);
-    const float by = static_cast<float>(base.y);
-    const float bz = static_cast<float>(base.z);
-    coords->point.setNum(4);
-    SbVec3f* pts = coords->point.startEditing();
-    switch (p) {
+    double dx = std::abs(cursor.x - base.x);
+    double dy = std::abs(cursor.y - base.y);
+    double dz = std::abs(cursor.z - base.z);
+
+    double mouseSize = 0.0;
+    switch (plane) {
         case ViewProviderSketch3D::ActivePlane::YZ:
-            pts[0] = {bx, by - s, bz - s};
-            pts[1] = {bx, by + s, bz - s};
-            pts[2] = {bx, by + s, bz + s};
-            pts[3] = {bx, by - s, bz + s};
+            mouseSize = std::max(dy, dz);
             break;
         case ViewProviderSketch3D::ActivePlane::ZX:
-            pts[0] = {bx - s, by, bz - s};
-            pts[1] = {bx + s, by, bz - s};
-            pts[2] = {bx + s, by, bz + s};
-            pts[3] = {bx - s, by, bz + s};
+            mouseSize = std::max(dx, dz);
             break;
         case ViewProviderSketch3D::ActivePlane::XY:
         default:
-            pts[0] = {bx - s, by - s, bz};
-            pts[1] = {bx + s, by - s, bz};
-            pts[2] = {bx + s, by + s, bz};
-            pts[3] = {bx - s, by + s, bz};
+            mouseSize = std::max(dx, dy);
+            break;
+    }
+
+    return std::max(kAxisHandleLength, (float)mouseSize);
+}
+
+void writePlaneQuadCoords(SoCoordinate3* coords,
+                          ViewProviderSketch3D::ActivePlane p,
+                          float size)
+{
+    coords->point.setNum(kPlaneQuadVertexCount);
+    SbVec3f* pts = coords->point.startEditing();
+    switch (p) {
+        case ViewProviderSketch3D::ActivePlane::YZ:
+            pts[0] = {0.0F, -size, -size};
+            pts[1] = {0.0F,  size, -size};
+            pts[2] = {0.0F,  size,  size};
+            pts[3] = {0.0F, -size,  size};
+            break;
+        case ViewProviderSketch3D::ActivePlane::ZX:
+            pts[0] = {-size, 0.0F, -size};
+            pts[1] = { size, 0.0F, -size};
+            pts[2] = { size, 0.0F,  size};
+            pts[3] = {-size, 0.0F,  size};
+            break;
+        case ViewProviderSketch3D::ActivePlane::XY:
+        default:
+            pts[0] = {-size, -size, 0.0F};
+            pts[1] = { size, -size, 0.0F};
+            pts[2] = { size,  size, 0.0F};
+            pts[3] = {-size,  size, 0.0F};
             break;
     }
     coords->point.finishEditing();
 }
 
-const char* planeLabel(ViewProviderSketch3D::ActivePlane p)
-{
-    switch (p) {
-        case ViewProviderSketch3D::ActivePlane::YZ:
-            return "YZ";
-        case ViewProviderSketch3D::ActivePlane::ZX:
-            return "ZX";
-        case ViewProviderSketch3D::ActivePlane::XY:
-        default:
-            return "XY";
-    }
-}
 }  // namespace
 
 ViewProviderSketch3D::ViewProviderSketch3D()
@@ -248,7 +324,10 @@ void ViewProviderSketch3D::unsetEdit(int ModNum)
         pcRoot->removeChild(planeOverlay);
         planeOverlay->unref();
         planeOverlay = nullptr;
+        planeOverlayTranslation = nullptr;
         planeOverlayCoords = nullptr;
+        axisHandleMaterials = {};
+        planeOverlaySize = kPlaneOverlaySize;
     }
 
     Gui::ToolBarManager::getInstance()->setState(
@@ -298,14 +377,9 @@ bool ViewProviderSketch3D::mouseButtonPressed(
     }
 
     if (button == SoMouseButtonEvent::BUTTON1) {
-        const Base::Vector3d raw = projectToSketchPlane(cursorPos, viewer);
-        Base::Vector3d p = raw;
-        snapTarget = {};
-        if (snapManager) {
-            const std::string pickedSubName = getPickedSubName(cursorPos, viewer);
-            p = snapManager->snap(raw, pickedSubName, snapTarget);
-        }
-        updateSnapMarker(false, p);  // hide on click; next move will re-show
+        Base::Vector3d raw = projectToSketchPlane(cursorPos, viewer);
+        Base::Vector3d p = applySnap(raw, cursorPos, viewer);
+        hideSnapMarker();
         return handler->pressButton(p);
     }
 
@@ -317,16 +391,15 @@ bool ViewProviderSketch3D::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
     if (!handler) {
         return false;
     }
-    const Base::Vector3d raw = projectToSketchPlane(cursorPos, viewer);
-    Base::Vector3d p = raw;
-    bool showMarker = false;
-    snapTarget = {};
-    if (snapManager) {
-        const std::string pickedSubName = getPickedSubName(cursorPos, viewer);
-        p = snapManager->snap(raw, pickedSubName, snapTarget);
-        showMarker = snapTarget.isValid();
+    Base::Vector3d raw = projectToSketchPlane(cursorPos, viewer);
+    updatePlaneOverlaySize(raw);
+    Base::Vector3d p = applySnap(raw, cursorPos, viewer);
+    if (snapTarget.isValid()) {
+        showSnapMarker(p);
     }
-    updateSnapMarker(showMarker, p);
+    else {
+        hideSnapMarker();
+    }
     return handler->mouseMove(p);
 }
 
@@ -357,19 +430,18 @@ bool ViewProviderSketch3D::keyPressed(bool pressed, int key)
 
 void ViewProviderSketch3D::cyclePlane()
 {
-    const int next = (static_cast<int>(activePlane) + 1) % 3;
-    activePlane = static_cast<ActivePlane>(next);
-    updatePlaneOverlay();
+    activePlane = static_cast<ActivePlane>((static_cast<int>(activePlane) + 1) % 3);
+    redrawPlaneQuad();
+    updateAxisHandleColors();
     if (taskPanel) {
         taskPanel->refresh();
     }
-    Base::Console().message("Sketcher3D: active plane = %s\n", planeLabel(activePlane));
 }
 
 void ViewProviderSketch3D::setPlaneBase(const Base::Vector3d& base)
 {
     planeBase = base;
-    updatePlaneOverlay();
+    updatePlaneOverlayTranslation();
     if (taskPanel) {
         taskPanel->refresh();
     }
@@ -385,39 +457,102 @@ void ViewProviderSketch3D::ensurePlaneOverlay()
     planeOverlay = new SoSeparator();
     planeOverlay->setName("Sketcher3DPlaneOverlay");
     planeOverlay->ref();
+    planeOverlay->renderCaching = SoSeparator::OFF;
 
     auto* pick = new SoPickStyle();
     pick->style.setValue(SoPickStyle::UNPICKABLE);
     planeOverlay->addChild(pick);
 
+    planeOverlayTranslation = new SoTranslation();
+    planeOverlay->addChild(planeOverlayTranslation);
+
+    auto* quadSep = new SoSeparator();
+    quadSep->setName("Sketcher3DPlaneQuad");
+
     auto* material = new SoMaterial();
-    material->diffuseColor.setValue(0.25F, 0.45F, 0.90F);
+    setDiffuseColor(material, kPlaneOverlayColor);
     material->transparency.setValue(kPlaneTransparency);
-    planeOverlay->addChild(material);
+    quadSep->addChild(material);
 
     auto* style = new SoDrawStyle();
     style->style.setValue(SoDrawStyle::FILLED);
-    planeOverlay->addChild(style);
+    quadSep->addChild(style);
 
     planeOverlayCoords = new SoCoordinate3();
-    writePlaneQuadCoords(planeOverlayCoords, activePlane, planeBase);
-    planeOverlay->addChild(planeOverlayCoords);
+    quadSep->addChild(planeOverlayCoords);
 
     auto* face = new SoFaceSet();
     face->numVertices.setNum(1);
-    face->numVertices.set1Value(0, 4);
-    planeOverlay->addChild(face);
+    face->numVertices.set1Value(0, kPlaneQuadVertexCount);
+    quadSep->addChild(face);
+
+    planeOverlay->addChild(quadSep);
+
+    auto* handleSep = new SoSeparator();
+    handleSep->setName("Sketcher3DAxisHandleAutoZoom");
+    handleSep->addChild(new Gui::SoAutoZoomTranslation());
+
+    handleSep->addChild(buildAxisHandle(axisHandleMaterials));
+
+    planeOverlay->addChild(handleSep);
 
     pcRoot->addChild(planeOverlay);
+    updatePlaneOverlay();
 }
 
 void ViewProviderSketch3D::updatePlaneOverlay()
 {
-    if (!planeOverlayCoords) {
-        ensurePlaneOverlay();
+    if (!planeOverlay) {
         return;
     }
-    writePlaneQuadCoords(planeOverlayCoords, activePlane, planeBase);
+    redrawPlaneQuad();
+    updatePlaneOverlayTranslation();
+    updateAxisHandleColors();
+}
+
+void ViewProviderSketch3D::redrawPlaneQuad()
+{
+    if (!planeOverlayCoords) {
+        return;
+    }
+    writePlaneQuadCoords(planeOverlayCoords, activePlane, planeOverlaySize);
+}
+
+void ViewProviderSketch3D::updatePlaneOverlayTranslation()
+{
+    if (!planeOverlayTranslation) {
+        return;
+    }
+    planeOverlayTranslation->translation.setValue(planeBase.x, planeBase.y, planeBase.z);
+}
+
+void ViewProviderSketch3D::updatePlaneOverlaySize(const Base::Vector3d& cursorPos)
+{
+    float updatedSize = planeSizeFromCursor(activePlane, planeBase, cursorPos);
+    if (std::abs(planeOverlaySize - updatedSize) <= Precision::Confusion()) {
+        return;
+    }
+
+    planeOverlaySize = updatedSize;
+    redrawPlaneQuad();
+}
+
+void ViewProviderSketch3D::updateAxisHandleColors()
+{
+    int normalAxisIdx = (static_cast<int>(activePlane) + 2) % 3;
+
+    for (int i = 0; i < 3; ++i) {
+        SoMaterial* m = axisHandleMaterials[i];
+        if (!m) {
+            continue;
+        }
+        bool active = (i != normalAxisIdx);
+        const Color3f& c = active ? kActiveAxisHandleColor : kInactiveAxisHandleColor;
+        float em = active ? kActiveAxisHandleEmissiveScale : kInactiveAxisHandleEmissiveScale;
+        setDiffuseColor(m, c);
+        setEmissiveColor(m, c, em);
+        m->transparency.setValue(kAxisHandleTransparency);
+    }
 }
 
 Base::Vector3d ViewProviderSketch3D::projectToSketchPlane(
@@ -425,25 +560,36 @@ Base::Vector3d ViewProviderSketch3D::projectToSketchPlane(
     const Gui::View3DInventorViewer* viewer
 ) const
 {
-    SbVec3f near;
-    SbVec3f far;
-    viewer->projectPointToLine(cursorPx, near, far);
+    SbVec3f rayStart;
+    SbVec3f rayEnd;
+    viewer->projectPointToLine(cursorPx, rayStart, rayEnd);
 
-    const SbVec3f n = planeNormal(activePlane);
-    const SbVec3f base(
-        static_cast<float>(planeBase.x),
-        static_cast<float>(planeBase.y),
-        static_cast<float>(planeBase.z)
+    SbPlane plane(
+        planeNormal(activePlane),
+        SbVec3f(planeBase.x, planeBase.y, planeBase.z)
     );
-    const SbVec3f dir = far - near;
-    const float denom = dir.dot(n);
-    if (std::abs(denom) < 1e-9F) {
+
+    SbVec3f hit;
+    if (!plane.intersect(SbLine(rayStart, rayEnd), hit)) {
+        // Camera ray is parallel to the workplane.
         SbVec3f fp = viewer->getPointOnFocalPlane(cursorPx);
         return Base::Vector3d(fp[0], fp[1], fp[2]);
     }
-    const float t = (base - near).dot(n) / denom;
-    const SbVec3f p = near + dir * t;
-    return Base::Vector3d(p[0], p[1], p[2]);
+    return Base::Vector3d(hit[0], hit[1], hit[2]);
+}
+
+Base::Vector3d ViewProviderSketch3D::applySnap(
+    const Base::Vector3d& raw,
+    const SbVec2s& cursorPos,
+    const Gui::View3DInventorViewer* viewer
+)
+{
+    if (!snapManager) {
+        snapTarget = {};
+        return raw;
+    }
+    std::string pickedSubName = getPickedSubName(cursorPos, viewer);
+    return snapManager->snap(raw, pickedSubName, snapTarget);
 }
 
 std::string ViewProviderSketch3D::getPickedSubName(
@@ -488,16 +634,15 @@ void ViewProviderSketch3D::ensureSnapMarker()
     content->addChild(pick);
 
     auto* material = new SoMaterial();
-    material->diffuseColor.setValue(1.0F, 0.55F, 0.0F);
-    material->emissiveColor.setValue(0.6F, 0.3F, 0.0F);
+    setDiffuseColor(material, kSnapMarkerDiffuseColor);
+    setEmissiveColor(material, kSnapMarkerEmissiveColor);
     content->addChild(material);
 
     snapMarkerXf = new SoTranslation();
-    snapMarkerXf->translation.setValue(0.0F, 0.0F, 0.0F);
     content->addChild(snapMarkerXf);
 
     auto* sphere = new SoSphere();
-    sphere->radius.setValue(0.6F);
+    sphere->radius.setValue(kSnapMarkerRadius);
     content->addChild(sphere);
 
     snapMarkerSwitch->addChild(content);
@@ -505,20 +650,18 @@ void ViewProviderSketch3D::ensureSnapMarker()
     pcRoot->addChild(snapMarker);
 }
 
-void ViewProviderSketch3D::updateSnapMarker(bool visible, const Base::Vector3d& pos)
+void ViewProviderSketch3D::hideSnapMarker()
+{
+    if (snapMarkerSwitch) {
+        snapMarkerSwitch->whichChild = SO_SWITCH_NONE;
+    }
+}
+
+void ViewProviderSketch3D::showSnapMarker(const Base::Vector3d& pos)
 {
     if (!snapMarkerSwitch || !snapMarkerXf) {
         return;
     }
-    if (visible) {
-        snapMarkerXf->translation.setValue(
-            static_cast<float>(pos.x),
-            static_cast<float>(pos.y),
-            static_cast<float>(pos.z)
-        );
-        snapMarkerSwitch->whichChild = 0;
-    }
-    else {
-        snapMarkerSwitch->whichChild = SO_SWITCH_NONE;
-    }
+    snapMarkerXf->translation.setValue(pos.x, pos.y, pos.z);
+    snapMarkerSwitch->whichChild = 0;
 }

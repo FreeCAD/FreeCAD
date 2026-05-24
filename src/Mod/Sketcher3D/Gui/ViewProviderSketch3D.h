@@ -26,6 +26,8 @@
 #ifndef SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
 #define SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
 
+#include <array>
+#include <memory>
 #include <string>
 
 #include <QCoreApplication>
@@ -37,16 +39,16 @@
 
 class QMenu;
 class SbVec2s;
+class SoCoordinate3;
+class SoMaterial;
 class SoSeparator;
+class SoSwitch;
+class SoTranslation;
 
 namespace Sketcher3D
 {
 class Sketch3DObject;
 }
-
-class SoCoordinate3;
-class SoSwitch;
-class SoTranslation;
 
 namespace Sketcher3DGui
 {
@@ -55,6 +57,25 @@ class DrawSketchHandler3D;
 class SnapManager3D;
 class TaskSketcher3DTool;
 
+using Color3f = std::array<float, 3>;
+
+constexpr float kAxisHandleLength = 10.0F;
+constexpr float kPlaneOverlaySize = kAxisHandleLength;
+constexpr float kPlaneTransparency = 0.88F;
+constexpr float kAxisHandleArrowLength = 1.8F;
+constexpr float kAxisHandleLineWidth = 1.6F;
+constexpr float kAxisHandleTransparency = 0.35F;
+constexpr float kArrowHeadHalfWidthFactor = 0.55F;
+constexpr float kActiveAxisHandleEmissiveScale = 0.18F;
+constexpr float kInactiveAxisHandleEmissiveScale = 0.06F;
+constexpr int kPlaneQuadVertexCount = 4;
+constexpr float kSnapMarkerRadius = 0.6F;
+
+constexpr Color3f kActiveAxisHandleColor {1.0F, 0.05F, 0.05F};
+constexpr Color3f kInactiveAxisHandleColor {0.36F, 0.40F, 0.48F};
+constexpr Color3f kPlaneOverlayColor {0.25F, 0.45F, 0.90F};
+constexpr Color3f kSnapMarkerDiffuseColor {1.0F, 0.55F, 0.0F};
+constexpr Color3f kSnapMarkerEmissiveColor {0.6F, 0.3F, 0.0F};
 
 class Sketcher3DGuiExport ViewProviderSketch3D: public PartGui::ViewProviderPart
 {
@@ -134,21 +155,32 @@ protected:
     void unsetEdit(int ModNum) override;
 
 private:
-    /// Project screen space cursor onto the sketch's XY plane (z=0).
-    /// Falls back to the focal plane if the camera ray is parallel to z=0.
+    /// Project screen space cursor onto the active sketch workplane.
+    /// Falls back to the focal plane if the camera ray is parallel to the workplane.
     Base::Vector3d projectToSketchPlane(
         const SbVec2s& cursorPx,
         const Gui::View3DInventorViewer* viewer
     ) const;
     std::string getPickedSubName(const SbVec2s& cursorPx, const Gui::View3DInventorViewer* viewer) const;
 
+    /// Resolve a snap target for the given cursor position. Updates snapTarget
+    /// and returns the (possibly snapped) world position.
+    Base::Vector3d applySnap(
+        const Base::Vector3d& raw,
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer
+    );
 
     void ensurePlaneOverlay();
     void updatePlaneOverlay();
-
+    void redrawPlaneQuad();
+    void updatePlaneOverlayTranslation();
+    void updatePlaneOverlaySize(const Base::Vector3d& cursorPos);
+    void updateAxisHandleColors();
 
     void ensureSnapMarker();
-    void updateSnapMarker(bool visible, const Base::Vector3d& pos);
+    void hideSnapMarker();
+    void showSnapMarker(const Base::Vector3d& pos);
 
     std::unique_ptr<DrawSketchHandler3D> handler;
     TaskSketcher3DTool* taskPanel {nullptr};
@@ -156,7 +188,10 @@ private:
     ActivePlane activePlane {ActivePlane::XY};
     Base::Vector3d planeBase {0.0, 0.0, 0.0};
     SoSeparator* planeOverlay {nullptr};
+    SoTranslation* planeOverlayTranslation {nullptr};
     SoCoordinate3* planeOverlayCoords {nullptr};
+    float planeOverlaySize {0.0F};
+    std::array<SoMaterial*, 3> axisHandleMaterials {};
 
     std::unique_ptr<SnapManager3D> snapManager;
     SoSeparator* snapMarker {nullptr};
