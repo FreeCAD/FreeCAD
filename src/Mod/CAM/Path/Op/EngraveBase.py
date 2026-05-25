@@ -76,15 +76,14 @@ class ObjectOp(PathOp.ObjectOp):
         linking_kwargs = {
             "start_position": None,
             "target_position": None,
-            "local_clearance": obj.SafeHeight.Value,
-            "global_clearance": obj.ClearanceHeight.Value,
+            "heights_clearance": (obj.SafeHeight.Value, obj.ClearanceHeight.Value),
             "solids": None,
             "tool_shape": None,
             "tool_diameter": None,
             "collision_clearance": obj.CollisionClearance.Value,
         }
         if obj.CollisionAvoidanceStrategy == "Clearance Height":
-            linking_kwargs["local_clearance"] = obj.ClearanceHeight.Value
+            linking_kwargs["heights_clearance"] = obj.ClearanceHeight.Value
         elif obj.CollisionAvoidanceStrategy == "Retract Height":
             pass
         elif obj.CollisionAvoidanceStrategy == "Line of Sight":
@@ -169,10 +168,8 @@ class ObjectOp(PathOp.ObjectOp):
                         # Add gcode for edge
                         self.appendCommand(cmd, z, relZ, self.horizFeed)
 
-                # Track tool position for the next entry move.
-                # Use SafeHeight so the linking check only evaluates the horizontal
-                # traverse, not the retract from cutting depth through the stock.
-                tool_pos = FreeCAD.Vector(lastPoint.x, lastPoint.y, obj.SafeHeight.Value)
+                # Track tool position for the next entry move
+                tool_pos = FreeCAD.Vector(lastPoint.x, lastPoint.y, z)
 
                 if biDir and not wire.isClosed():
                     reverseDir = not reverseDir
