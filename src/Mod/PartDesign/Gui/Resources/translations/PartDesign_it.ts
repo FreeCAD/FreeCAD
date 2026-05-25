@@ -910,18 +910,18 @@ in modo da evitare l'intersezione automatica.</translation>
       <translation>Converti in operazione di trasformazione multipla</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="265"/>
+      <location filename="../../SketchWorkflow.cpp" line="266"/>
       <source>Sketch on Face</source>
       <translation>Schizzo su faccia</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="326"/>
+      <location filename="../../SketchWorkflow.cpp" line="327"/>
       <source>Make copy</source>
       <translation>Fà una copia</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="528"/>
-      <location filename="../../SketchWorkflow.cpp" line="804"/>
+      <location filename="../../SketchWorkflow.cpp" line="529"/>
+      <location filename="../../SketchWorkflow.cpp" line="805"/>
       <source>New Sketch</source>
       <translation>Nuovo schizzo</translation>
     </message>
@@ -2906,7 +2906,7 @@ misurata lungo la direzione specificata</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="204"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="210"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>
@@ -3135,51 +3135,51 @@ misurata lungo la direzione specificata</translation>
       <translation>Errore</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="841"/>
+      <location filename="../../SketchWorkflow.cpp" line="842"/>
       <source>Several sub-elements selected</source>
       <translation>Diversi sottoelementi selezionati</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="842"/>
+      <location filename="../../SketchWorkflow.cpp" line="843"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>Selezionare una singola faccia come supporto per uno schizzo!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="849"/>
+      <location filename="../../SketchWorkflow.cpp" line="850"/>
       <source>Select a face as support for a sketch!</source>
       <translation>Seleziona una faccia come supporto per uno schizzo!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="856"/>
+      <location filename="../../SketchWorkflow.cpp" line="857"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>È necessaria una faccia planare come supporto per uno schizzo!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="863"/>
+      <location filename="../../SketchWorkflow.cpp" line="864"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Prima creare un piano o selezionare una faccia su cui disegnare lo schizzo</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="848"/>
+      <location filename="../../SketchWorkflow.cpp" line="849"/>
       <source>No support face selected</source>
       <translation>Nessuna faccia di supporto selezionata</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="855"/>
+      <location filename="../../SketchWorkflow.cpp" line="856"/>
       <source>No planar support</source>
       <translation>Nessun supporto planare</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="862"/>
+      <location filename="../../SketchWorkflow.cpp" line="863"/>
       <source>No valid planes in this document</source>
       <translation>In questo documento non c'è nessun piano valido</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="760"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
@@ -3219,11 +3219,11 @@ misurata lungo la direzione specificata</translation>
       <translation>Nel documento non è disponibile nessuno schizzo</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="761"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../SketchWorkflow.cpp" line="762"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>Close this dialog?</source>
       <translation>Chiudere questa finestra di dialogo?</translation>
     </message>
@@ -3517,9 +3517,9 @@ Per i documenti legacy con oggetti Part Design privi di corpo, utilizzare la fun
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
     </message>
@@ -4455,22 +4455,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>Impossibile eseguire l'operazione booleana con una forma di base non valida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="482"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="531"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Il risultato ha più solidi: abilita 'Consenti Composta' nel corpo attivo.</translation>
     </message>
@@ -4507,7 +4508,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="523"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forma risultante non è un solido</translation>
@@ -4585,8 +4586,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>Creazione fallita perché la direzione è ortogonale al vettore normale dello schizzo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <source>Creating a face from sketch failed</source>
       <translation>Creazione di una faccia dallo schizzo fallita</translation>
     </message>
@@ -4651,9 +4652,9 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Errore: la faccia deve essere planare</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>Errore: il risultato non è un solido</translation>
     </message>
@@ -4807,7 +4808,7 @@ Non è consentito intersecare entità schizzo o più facce in uno schizzo per cr
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="303"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="446"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <source>Loft: Failed to create shell</source>
       <translation>Loft: Creazione della shell non riuscita</translation>
     </message>
@@ -4819,97 +4820,92 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="205"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Could not obtain profile shape</source>
       <translation>Pipe: impossibile ottenere la forma del profilo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="212"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="218"/>
       <source>No spine linked</source>
       <translation>Nessuna dorsale collegata</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="227"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="233"/>
       <source>No auxiliary spine linked.</source>
       <translation>Nessuna dorsale ausiliaria collegata.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="250"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
       <translation>Pipe: è necessario un solo punto isolato se si utilizza uno schizzo con punti isolati per la sezione</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="259"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="264"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
       <translation>Pipe: è necessaria almeno una sezione quando si utilizza un singolo punto per il profilo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="277"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: All sections need to be Part features</source>
       <translation>Pipe: tutte le sezioni devono essere feature della parte</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="285"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="290"/>
       <source>Pipe: Could not obtain section shape</source>
       <translation>Pipe: impossibile generare la forma della sezione</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="295"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="298"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
       <translation>Pipe: solo il profilo e l'ultima sezione possono essere vertici</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="308"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="311"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
       <translation>Le multisezioni devono avere la stessa quantità di fili interni della sezione base</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="341"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="344"/>
       <source>Path must not be a null shape</source>
       <translation>Il percorso non deve essere una forma nulla</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="381"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="384"/>
       <source>Pipe could not be built</source>
       <translation>Il tubo non può essere costruito</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="438"/>
-      <source>Result is not a solid</source>
-      <translation>Il risultato non è un solido</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="477"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="532"/>
       <source>Pipe: There is nothing to subtract from</source>
       <translation>Tubo: Non c'è nulla da sottrarre</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="545"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="584"/>
+      <source>Pipe: Invalid Boolean Type</source>
+      <translation>Pipe: tipo booleano non valido</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="614"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>Si è verificato un errore fatale durante la realizzazione del tubo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="674"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="741"/>
       <source>Invalid element in spine.</source>
       <translation>Elemento non valido nella dorsale.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="679"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="746"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>Elemento nella dorsale non è né un bordo né un filo.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="700"/>
-      <source>Spine is not connected.</source>
-      <translation>La dorsale non è connessa.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="706"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="759"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>La dorsale non è né un bordo né un filo.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="711"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="764"/>
       <source>Invalid spine.</source>
       <translation>Dorsale non valida.</translation>
     </message>
@@ -4920,14 +4916,12 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="507"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <source>Unknown operation type</source>
       <translation>Tipo di operazione sconosciuto</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="515"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Failed to perform boolean operation</source>
       <translation>Esecuzione dell'operazione booleana non riuscita</translation>
@@ -5432,14 +5426,6 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Errore di input</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -5462,6 +5448,14 @@ Please adjust the parameters and try again.</source>
       <translation>Impossibile eseguire questa operazione con i parametri specificati.
 La geometria potrebbe non essere valida o i parametri potrebbero essere incompatibili.
 Reimpostare i parametri e riprovare.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Errore di input</translation>
     </message>
   </context>
 </TS>

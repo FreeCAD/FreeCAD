@@ -410,11 +410,11 @@ of that project, no matter if they are expanded or not.</translation>
       <translation>დამტოვე შესული FreeCAD-ის სესიებს შორის</translation>
     </message>
     <message>
-      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogPhases.ui" line="14"/>
-      <location filename="../ui/dialogExport.ui" line="14"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
+      <location filename="../ui/dialogExport.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
+      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <source>Dialog</source>
       <translation>ფანჯარა</translation>
     </message>
@@ -435,8 +435,8 @@ of that project, no matter if they are expanded or not.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
-      <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
+      <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <source>Only visible BIM objects</source>
       <translation>მხოლოდ ხილული BIM ობიექტები</translation>
     </message>
@@ -457,8 +457,8 @@ of that project, no matter if they are expanded or not.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="53"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="53"/>
       <source>Select All</source>
       <translation>ყველაფრის მონიშვნა</translation>
     </message>
@@ -473,8 +473,8 @@ of that project, no matter if they are expanded or not.</translation>
       <translation>IFC-ის თვისებები</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <location filename="../ui/dialogIfcProperties.ui" line="182"/>
+      <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <source>Delete Selected Property/Property Set</source>
       <translation>მონიშნული თვისების/თვისებების ნაკრების წაშლა</translation>
     </message>
@@ -568,8 +568,8 @@ of that project, no matter if they are expanded or not.</translation>
       <translation type="unfinished">Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Create IFC Project.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
+      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <source>Do not ask again</source>
       <translation>აღარ მკითხო</translation>
     </message>
@@ -744,9 +744,9 @@ of that project, no matter if they are expanded or not.</translation>
       <translation>ამ ფენის დამატება IFC პროექტისთვის</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLayersIFC.ui" line="46"/>
       <location filename="../ui/dialogPhases.ui" line="55"/>
       <location filename="../ui/dialogProjectManager.ui" line="679"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="46"/>
       <source>Delete</source>
       <translation>წაშლა</translation>
     </message>
@@ -776,17 +776,17 @@ of that project, no matter if they are expanded or not.</translation>
       <translation>მინიჭება</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <location filename="../ui/dialogProjectManager.ui" line="728"/>
       <location filename="../ui/dialogProjectManager.ui" line="731"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <source>Cancel</source>
       <translation>გაუქმება</translation>
     </message>
     <message>
-      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="104"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
       <location filename="../ui/dialogProjectManager.ui" line="717"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="104"/>
+      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
       <source>OK</source>
       <translation>&amp;დიახ</translation>
     </message>
@@ -847,9 +847,9 @@ of that project, no matter if they are expanded or not.</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
-      <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <location filename="../ui/dialogProjectManager.ui" line="246"/>
       <location filename="../ui/dialogProjectManager.ui" line="366"/>
+      <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <source>Name</source>
       <translation>სახელი</translation>
     </message>
@@ -1292,10 +1292,10 @@ of that project, no matter if they are expanded or not.</translation>
       <translation>ინფორმაცია სივრცის შესახებ</translation>
     </message>
     <message>
-      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <location filename="../ui/dialogProjectManager.ui" line="457"/>
       <location filename="../ui/dialogProjectManager.ui" line="480"/>
       <location filename="../ui/dialogProjectManager.ui" line="493"/>
+      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
       <translation>0</translation>
     </message>
@@ -1712,9 +1712,9 @@ of that project, no matter if they are expanded or not.</translation>
       <translation>დაშვების ველი</translation>
     </message>
     <message>
+      <location filename="../ui/dialogClasses.ui" line="39"/>
       <location filename="../ui/dialogWindows.ui" line="80"/>
       <location filename="../ui/dialogWindows.ui" line="182"/>
-      <location filename="../ui/dialogClasses.ui" line="39"/>
       <source>Material</source>
       <translation>მასალა</translation>
     </message>
@@ -3383,8 +3383,8 @@ If using Netgen, make sure that it is available.</source>
       <translation>ტესელაცია</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
+      <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export Options</source>
       <translation>გატანის მორგება</translation>
@@ -3811,17 +3811,17 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="446"/>
       <location filename="../../ArchCoveringGui.py" line="842"/>
-      <location filename="../../bimcommands/BimWindow.py" line="431"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
+      <location filename="../../bimcommands/BimWindow.py" line="431"/>
       <source>Preset</source>
       <translation>პრესეტი</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1839"/>
       <location filename="../../ArchPanel.py" line="576"/>
       <location filename="../../ArchStructure.py" line="455"/>
       <location filename="../../ArchStructure.py" line="1583"/>
+      <location filename="../../ArchWall.py" line="1839"/>
       <location filename="../../ArchCoveringGui.py" line="996"/>
       <location filename="../../ArchCoveringGui.py" line="1077"/>
       <location filename="../../ArchCommands.py" line="1360"/>
@@ -3832,13 +3832,13 @@ The default template is located at:
       <translation>სიგრძე</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1845"/>
       <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchStructure.py" line="462"/>
       <location filename="../../ArchStructure.py" line="1584"/>
+      <location filename="../../ArchWindow.py" line="1195"/>
+      <location filename="../../ArchWall.py" line="1845"/>
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <location filename="../../bimcommands/BimWall.py" line="494"/>
@@ -3846,11 +3846,11 @@ The default template is located at:
       <translation>სიგანე</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1851"/>
       <location filename="../../ArchStructure.py" line="469"/>
       <location filename="../../ArchStructure.py" line="1585"/>
       <location filename="../../ArchWindow.py" line="1198"/>
       <location filename="../../ArchRoof.py" line="1088"/>
+      <location filename="../../ArchWall.py" line="1851"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../bimcommands/BimWall.py" line="501"/>
       <source>Height</source>
@@ -3872,8 +3872,8 @@ The default template is located at:
       <translation>სიგრძის/სიგანის მიმოცვლა</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="617"/>
       <location filename="../../ArchStructure.py" line="1049"/>
+      <location filename="../../ArchWall.py" line="617"/>
       <source>This mesh is an invalid solid</source>
       <translation>ეს პოლიხაზი არ წარმოადგენს შეკრულ სხეულს</translation>
     </message>
@@ -4152,8 +4152,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>კარი</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="566"/>
       <location filename="../../ArchWindow.py" line="1201"/>
+      <location filename="../../ArchWindowPresets.py" line="566"/>
       <source>Opening</source>
       <translation>ღიობი</translation>
     </message>
@@ -4491,37 +4491,37 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">If this is checked, the window's Offset property value will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchComponent.py" line="2429"/>
-      <location filename="../../ArchSectionPlane.py" line="1747"/>
-      <location filename="../../ArchAxis.py" line="969"/>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
+      <location filename="../../ArchComponent.py" line="2459"/>
+      <location filename="../../ArchAxis.py" line="985"/>
       <location filename="../../ArchWindow.py" line="1705"/>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
+      <location filename="../../ArchSectionPlane.py" line="1747"/>
+      <location filename="../../ArchSpace.py" line="954"/>
       <source>Remove</source>
       <translation>წაშლა</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="949"/>
-      <location filename="../../ArchComponent.py" line="2430"/>
-      <location filename="../../ArchAxis.py" line="970"/>
-      <location filename="../../ArchAxisSystem.py" line="339"/>
+      <location filename="../../ArchComponent.py" line="2460"/>
+      <location filename="../../ArchAxis.py" line="986"/>
       <location filename="../../ArchWindow.py" line="1706"/>
+      <location filename="../../ArchAxisSystem.py" line="339"/>
+      <location filename="../../ArchSpace.py" line="949"/>
       <source>Add</source>
       <translation>დამატება</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchGrid.py" line="384"/>
-      <location filename="../../ArchReference.py" line="717"/>
-      <location filename="../../ArchComponent.py" line="1938"/>
-      <location filename="../../ArchSectionPlane.py" line="1514"/>
-      <location filename="../../ArchSite.py" line="1588"/>
-      <location filename="../../ArchAxis.py" line="814"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
+      <location filename="../../ArchComponent.py" line="1968"/>
+      <location filename="../../ArchAxis.py" line="830"/>
       <location filename="../../ArchWindow.py" line="1707"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
+      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchReference.py" line="717"/>
+      <location filename="../../ArchSchedule.py" line="765"/>
+      <location filename="../../ArchGrid.py" line="384"/>
+      <location filename="../../ArchSectionPlane.py" line="1514"/>
+      <location filename="../../ArchSite.py" line="1588"/>
       <source>Edit</source>
       <translation>ჩასწორება</translation>
     </message>
@@ -4537,7 +4537,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>პოლიხაზები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2437"/>
+      <location filename="../../ArchComponent.py" line="2467"/>
       <location filename="../../ArchWindow.py" line="1713"/>
       <source>Components</source>
       <translation>კომპონენტები</translation>
@@ -4550,9 +4550,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>სახელი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2505"/>
-      <location filename="../../ArchCommands.py" line="1729"/>
+      <location filename="../../ArchComponent.py" line="2535"/>
       <location filename="../../ArchWindow.py" line="1716"/>
+      <location filename="../../ArchCommands.py" line="1729"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>ტიპი</translation>
@@ -4560,10 +4560,10 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchStructure.py" line="1578"/>
-      <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchRoof.py" line="1086"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
+      <location filename="../../ArchRoof.py" line="1086"/>
+      <location filename="../../ArchCoveringGui.py" line="802"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
       <source>Thickness</source>
       <translation>სისქე</translation>
@@ -4621,9 +4621,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>მონიშნეთ ერთი ღერძი მაინც</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="2466"/>
+      <location filename="../../ArchAxis.py" line="984"/>
       <location filename="../../Arch.py" line="101"/>
-      <location filename="../../ArchComponent.py" line="2436"/>
-      <location filename="../../ArchAxis.py" line="968"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
       <source>Axes</source>
       <translation>ღერძები</translation>
@@ -4634,10 +4634,10 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ღერძის სისტემური კომპონენტები</translation>
     </message>
     <message>
-      <location filename="../../importers/importWebGL.py" line="371"/>
-      <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="301"/>
       <location filename="../../importers/importOBJ.py" line="339"/>
+      <location filename="../../importers/importWebGL.py" line="371"/>
+      <location filename="../../importers/importJSON.py" line="62"/>
       <source>Successfully written</source>
       <translation>წარმატებით ჩაიწერა</translation>
     </message>
@@ -5492,8 +5492,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>გამჭვირვალე ფასადი</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <location filename="../../bimcommands/BimTruss.py" line="61"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <source>Select only one base object or none</source>
       <translation>მონიშნეთ, მხოლოდ, ერთი საბაზისო ობიექტი, ან არცერთი</translation>
     </message>
@@ -5644,525 +5644,10 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>უცნობი ფაილის ტიპი</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="879"/>
-      <location filename="../../ArchReport.py" line="1873"/>
-      <source>Report Statements</source>
-      <translation>ანგარიში ამონაწერებზე</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="888"/>
       <location filename="../../ArchCommands.py" line="1359"/>
+      <location filename="../../ArchReport.py" line="888"/>
       <source>Description</source>
       <translation>აღწერა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="890"/>
-      <source>Header</source>
-      <translation>თავსართი</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="891"/>
-      <source>Cols</source>
-      <translation>სვეტები</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="892"/>
-      <source>Status</source>
-      <translation>სტატუსი</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="899"/>
-      <source>A user-defined description for this statement.</source>
-      <translation type="unfinished">A user-defined description for this statement.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="905"/>
-      <source>If checked, this statement will use the results of the previous statement as its data source.</source>
-      <translation type="unfinished">If checked, this statement will use the results of the previous statement as its data source.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="911"/>
-      <source>If checked, the Description will be used as a section header in the report.</source>
-      <translation type="unfinished">If checked, the Description will be used as a section header in the report.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="917"/>
-      <source>If checked, the column names (e.g., 'Label', 'Area') will be included in the report.</source>
-      <translation type="unfinished">If checked, the column names (e.g., 'Label', 'Area') will be included in the report.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="920"/>
-      <source>Indicates the status of the SQL query.</source>
-      <translation type="unfinished">Indicates the status of the SQL query.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="953"/>
-      <source>Load a full report template, replacing all current statements.</source>
-      <translation type="unfinished">Load a full report template, replacing all current statements.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="956"/>
-      <location filename="../../ArchReport.py" line="1027"/>
-      <source>Manage...</source>
-      <translation>მართვა...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="959"/>
-      <source>Rename, delete, or edit saved report templates.</source>
-      <translation type="unfinished">Rename, delete, or edit saved report templates.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="960"/>
-      <source>Save as Template...</source>
-      <translation>შენახვა შაბლონის სახით...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="963"/>
-      <source>Save the current set of statements as a new report template.</source>
-      <translation type="unfinished">Save the current set of statements as a new report template.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="968"/>
-      <source>Report Templates:</source>
-      <translation>ანგარიშის შაბლონები:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="974"/>
-      <source>Add Statement</source>
-      <translation>ამონაწერის დამატება</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="977"/>
-      <source>Add a new blank statement to the report.</source>
-      <translation type="unfinished">Add a new blank statement to the report.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="980"/>
-      <source>Remove Selected</source>
-      <translation>მონიშნულის წაშლა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="983"/>
-      <source>Remove the selected statement from the report.</source>
-      <translation type="unfinished">Remove the selected statement from the report.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="986"/>
-      <source>Duplicate Selected</source>
-      <translation>მონიშნულის დუბლირება</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="989"/>
-      <source>Create a copy of the selected statement.</source>
-      <translation type="unfinished">Create a copy of the selected statement.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="992"/>
-      <source>Edit Selected</source>
-      <translation>მონიშნულის ჩასწორება</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="995"/>
-      <source>Load the selected statement into the editor below.</source>
-      <translation type="unfinished">Load the selected statement into the editor below.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1006"/>
-      <source>Statement Editor</source>
-      <translation>ამონაწერის რედაქტორი</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1017"/>
-      <source>Description:</source>
-      <translation>აღწერა:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1024"/>
-      <source>Load a saved query preset into the editor.</source>
-      <translation type="unfinished">Load a saved query preset into the editor.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1030"/>
-      <source>Rename, delete, or edit your saved query presets.</source>
-      <translation type="unfinished">Rename, delete, or edit your saved query presets.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1031"/>
-      <source>Save...</source>
-      <translation>შენახვა...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1034"/>
-      <source>Save the current query as a new preset.</source>
-      <translation type="unfinished">Save the current query as a new preset.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1038"/>
-      <source>Query Presets:</source>
-      <translation>მოთხოვნის პრესეტები:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1043"/>
-      <source>SQL Query:</source>
-      <translation>SQL მოთხოვნა:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1073"/>
-      <location filename="../../ArchReport.py" line="2042"/>
-      <source>Show Preview</source>
-      <translation>მინიატურის ჩვენება</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1077"/>
-      <source>Show a preview pane to test the current query in isolation.</source>
-      <translation type="unfinished">Show a preview pane to test the current query in isolation.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1080"/>
-      <source>SQL Cheatsheet</source>
-      <translation>SQL-ის შპარგალკა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1084"/>
-      <source>Show a cheatsheet of the supported SQL syntax.</source>
-      <translation type="unfinished">Show a cheatsheet of the supported SQL syntax.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1097"/>
-      <source>Refresh</source>
-      <translation>განახლება</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1101"/>
-      <source>Re-run the query and update the preview table.</source>
-      <translation type="unfinished">Re-run the query and update the preview table.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1103"/>
-      <source>&lt;b&gt;Query Results Preview&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Query Results Preview&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1119"/>
-      <source>Display Options</source>
-      <translation>ჩვენების მორგება</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1122"/>
-      <source>Use as Pipeline Step</source>
-      <translation>ფაიფლაინის ნაბიჯად გამოყენება</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1128"/>
-      <source>When checked, this statement will use the results of the previous statement as its data source.</source>
-      <translation type="unfinished">When checked, this statement will use the results of the previous statement as its data source.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1131"/>
-      <source>Use Description as Section Header</source>
-      <translation type="unfinished">Use Description as Section Header</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1137"/>
-      <source>When checked, the statement's description will be written as a merged header row before its results.</source>
-      <translation type="unfinished">When checked, the statement's description will be written as a merged header row before its results.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1140"/>
-      <source>Include Column Names as Headers</source>
-      <translation type="unfinished">Include Column Names as Headers</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1146"/>
-      <source>Include the column headers (Label, IfcType, ...) in the spreadsheet output.</source>
-      <translation type="unfinished">Include the column headers (Label, IfcType, ...) in the spreadsheet output.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1147"/>
-      <source>Add Empty Row After</source>
-      <translation>ცარიელი მწკრივის დამატება შემდეგ</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1150"/>
-      <source>Insert one empty row after this statement's results.</source>
-      <translation type="unfinished">Insert one empty row after this statement's results.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1153"/>
-      <source>Print Results in Bold</source>
-      <translation>შედეგების სქელი ფონტით გამოტანა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1156"/>
-      <source>Render the result cells in bold font for emphasis.</source>
-      <translation type="unfinished">Render the result cells in bold font for emphasis.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1166"/>
-      <source>Save and Next</source>
-      <translation>შენახვა და შემდეგი</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1172"/>
-      <source>If checked, clicking 'Save' will automatically load the next statement for editing.</source>
-      <translation type="unfinished">If checked, clicking 'Save' will automatically load the next statement for editing.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1173"/>
-      <source>Save</source>
-      <translation>შენახვა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1177"/>
-      <source>Save changes to this statement and close the statement editor.</source>
-      <translation type="unfinished">Save changes to this statement and close the statement editor.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1178"/>
-      <source>Discard</source>
-      <translation>მოცილება</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1182"/>
-      <source>Discard all changes made in the statement editor.</source>
-      <translation type="unfinished">Discard all changes made in the statement editor.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1288"/>
-      <source>--- Select a Query Preset ---</source>
-      <translation type="unfinished">--- Select a Query Preset ---</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1291"/>
-      <source>--- Load a Report Template ---</source>
-      <translation type="unfinished">--- Load a Report Template ---</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1327"/>
-      <source>Double-click to edit description in place.</source>
-      <translation type="unfinished">Double-click to edit description in place.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1342"/>
-      <source>The first statement cannot be pipelined.</source>
-      <translation type="unfinished">The first statement cannot be pipelined.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1348"/>
-      <source>Toggles whether to use the previous statement's results as input</source>
-      <translation type="unfinished">Toggles whether to use the previous statement's results as input</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1364"/>
-      <source>Toggles whether to use this statement's Description as a section header</source>
-      <translation type="unfinished">Toggles whether to use this statement's Description as a section header</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1380"/>
-      <source>Toggles whether to include this statement's column names in the report</source>
-      <translation type="unfinished">Toggles whether to include this statement's column names in the report</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1490"/>
-      <source>New Statement {len(self.obj.Proxy.live_statements) + 1}</source>
-      <translation type="unfinished">New Statement {len(self.obj.Proxy.live_statements) + 1}</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1518"/>
-      <source>Remove Statement</source>
-      <translation>ამონაწერის წაშლა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1521"/>
-      <source>Are you sure you want to remove statement '{description_to_remove}'?</source>
-      <translation type="unfinished">Are you sure you want to remove statement '{description_to_remove}'?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1544"/>
-      <source>Copy of {original.description}</source>
-      <translation type="unfinished">Copy of {original.description}</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1601"/>
-      <source>&lt;i&gt;Typing...&lt;/i&gt;</source>
-      <translation>&lt;i&gt;კრეფს...&lt;/i&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1635"/>
-      <source>Overwrite Query?</source>
-      <translation>გადავაწერო თავზე მოთხოვნას?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1639"/>
-      <source>Loading a preset will overwrite the current text in the query editor. Continue?</source>
-      <translation type="unfinished">Loading a preset will overwrite the current text in the query editor. Continue?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1660"/>
-      <source>Empty Query</source>
-      <translation>ცარიელი მოთხოვნა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1661"/>
-      <source>Cannot save an empty query as a preset.</source>
-      <translation type="unfinished">Cannot save an empty query as a preset.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1666"/>
-      <source>Save Query Preset</source>
-      <translation>მოთხოვნის პრესეტის შენახვა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1667"/>
-      <source>Preset Name:</source>
-      <translation>პრესეტის სახელი:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1693"/>
-      <source>Overwrite Report?</source>
-      <translation>გადავაწერო თავზე ანგარიშს?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1697"/>
-      <source>Loading a template will replace all current statements in this report. Continue?</source>
-      <translation type="unfinished">Loading a template will replace all current statements in this report. Continue?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1729"/>
-      <source>Empty Report</source>
-      <translation>ცარიელი ანგარიში</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1730"/>
-      <source>Cannot save an empty report as a template.</source>
-      <translation type="unfinished">Cannot save an empty report as a template.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1735"/>
-      <source>Save Report Template</source>
-      <translation>ანგარიშის შაბლონის შენახვა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1736"/>
-      <source>Template Name:</source>
-      <translation>ნიმუშის სახელი:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1773"/>
-      <source> (from {input_count} in pipeline)</source>
-      <translation type="unfinished"> (from {input_count} in pipeline)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1788"/>
-      <source>Query is incomplete</source>
-      <translation>მოთხოვნა დაუსრულებელია</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1865"/>
-      <source>Query incomplete or typing...</source>
-      <translation type="unfinished">Query incomplete or typing...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2036"/>
-      <source>Hide Preview</source>
-      <translation>მინიატურის დამალვა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2111"/>
-      <source>Unsaved Changes</source>
-      <translation>შეუნახავი ცვლილებები</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2115"/>
-      <source>You have unsaved changes in the statement editor. Do you want to save them before closing?</source>
-      <translation type="unfinished">You have unsaved changes in the statement editor. Do you want to save them before closing?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2172"/>
-      <source>Manage {mode.capitalize()} Presets</source>
-      <translation type="unfinished">Manage {mode.capitalize()} Presets</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2182"/>
-      <source>Rename...</source>
-      <translation>სახელის გადარქმევა...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2183"/>
-      <source>Delete</source>
-      <translation>წაშლა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2184"/>
-      <source>Edit Source...</source>
-      <translation>წყაროს ჩასწორება...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2185"/>
-      <source>Close</source>
-      <translation>დახურვა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2247"/>
-      <source>This action is only available for user-created presets.</source>
-      <translation type="unfinished">This action is only available for user-created presets.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2262"/>
-      <source>Rename Preset</source>
-      <translation>პრესეტის სახელის გადარქმევა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2263"/>
-      <source>New name:</source>
-      <translation>ახალი სახელი:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2270"/>
-      <source>Name Conflict</source>
-      <translation>სახელის კონფლიქტი</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2274"/>
-      <source>A preset with this name already exists. Please choose a different name.</source>
-      <translation type="unfinished">A preset with this name already exists. Please choose a different name.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2289"/>
-      <source>Delete Preset</source>
-      <translation>პრესეტის წაშლა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2292"/>
-      <source>Are you sure you want to permanently delete the preset '{name}'?</source>
-      <translation type="unfinished">Are you sure you want to permanently delete the preset '{name}'?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2311"/>
-      <source>File Not Found</source>
-      <translation>ფაილი აღმოჩენილი არაა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2312"/>
-      <source>Could not find the preset file at:
-{file_path}</source>
-      <translation type="unfinished">Could not find the preset file at:
-{file_path}</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2321"/>
-      <source>Could Not Open File</source>
-      <translation>ფაილის გახსნა შეუძლებელია</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2325"/>
-      <source>FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system.</source>
-      <translation type="unfinished">FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2470"/>
-      <source>BIM SQL Cheatsheet</source>
-      <translation>BIM SQL-ის შპარგალკა</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1496"/>
@@ -6170,9 +5655,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ობიექტს არ აქვს დაყენებადი IFC ატრიბუტები</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="2536"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../ArchComponent.py" line="2506"/>
       <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
@@ -6227,28 +5712,28 @@ Floor creation aborted.</source>
       <translation>ღერძის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="975"/>
+      <location filename="../../ArchAxis.py" line="991"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>ღერძებს შორის მანძილი (მმ) და კუთხეები (გრად)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="978"/>
+      <location filename="../../ArchAxis.py" line="994"/>
       <source>Axis</source>
       <translation>ღერძი</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="979"/>
+      <location filename="../../ArchAxis.py" line="995"/>
       <source>Distance</source>
       <translation>დაშორება</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="980"/>
+      <location filename="../../ArchAxis.py" line="996"/>
       <location filename="../../ArchRoof.py" line="1083"/>
       <source>Angle</source>
       <translation>კუთხე</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="981"/>
+      <location filename="../../ArchAxis.py" line="997"/>
       <source>Label</source>
       <translation>ჭდე</translation>
     </message>
@@ -6263,22 +5748,22 @@ Floor creation aborted.</source>
       <translation>შემოტანა წარმატებით დასრულდა</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1117"/>
+      <location filename="../../ArchComponent.py" line="1129"/>
       <source>Error computing the shape of this object</source>
       <translation>შეცდომა ამ ობიექტის ფორმის გამოთვლისას</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1143"/>
+      <location filename="../../ArchComponent.py" line="1155"/>
       <source>has no solid</source>
       <translation>არ გააჩნია დახურული ფორმა</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1152"/>
+      <location filename="../../ArchComponent.py" line="1164"/>
       <source>has an invalid shape</source>
       <translation>აქვს არასწორი ფორმა</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1156"/>
+      <location filename="../../ArchComponent.py" line="1168"/>
       <location filename="../../ArchPrecast.py" line="192"/>
       <location filename="../../ArchPrecast.py" line="324"/>
       <location filename="../../ArchPrecast.py" line="444"/>
@@ -6289,150 +5774,157 @@ Floor creation aborted.</source>
       <translation>აქვს ცარიელი ფორმა</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1541"/>
+      <location filename="../../ArchComponent.py" line="1562"/>
       <source>Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
 </source>
       <translation type="unfinished">Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2431"/>
+      <location filename="../../ArchComponent.py" line="2461"/>
       <source>Components of This Object</source>
       <translation>ამ ობიექტის კომპონენტები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2441"/>
+      <location filename="../../ArchComponent.py" line="2471"/>
       <source>Edit IFC Properties</source>
       <translation>IFC თვისებების ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2442"/>
+      <location filename="../../ArchComponent.py" line="2472"/>
       <source>Edit Standard Code</source>
       <translation>სტანდარტული კოდის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1295"/>
+      <location filename="../../ArchComponent.py" line="1307"/>
       <source>Wrong base type</source>
       <translation>არასწორი ფუძის ტიპი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1975"/>
       <location filename="../../ArchSite.py" line="1594"/>
       <source>Toggle Subcomponents</source>
       <translation>ქვეკომპონენტების გადართვა</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2075"/>
+      <location filename="../../ArchComponent.py" line="2105"/>
       <source>Closing Sketch edit</source>
       <translation>ესკიზის ჩასწორების დახურვა</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2428"/>
+      <location filename="../../ArchComponent.py" line="2458"/>
       <location filename="../../ArchCommands.py" line="315"/>
       <source>Component</source>
       <translation>კომპონენტი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2099"/>
+      <location filename="../../ArchComponent.py" line="2129"/>
       <source>Select a base object</source>
       <translation>აირჩიეთ ძირითადი ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1420"/>
+      <location filename="../../ArchComponent.py" line="1432"/>
       <source>Could not project face{face_name} from {self.obj.Label}
 </source>
       <translation type="unfinished">Could not project face{face_name} from {self.obj.Label}
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1433"/>
+      <location filename="../../ArchComponent.py" line="1445"/>
       <source>Could not determine if face{face_name} from {self.obj.Label} is vertical: normalAt() failed
 </source>
       <translation type="unfinished">Could not determine if face{face_name} from {self.obj.Label} is vertical: normalAt() failed
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1521"/>
+      <location filename="../../ArchComponent.py" line="1534"/>
       <source>Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
 </source>
       <translation type="unfinished">Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2432"/>
+      <location filename="../../ArchComponent.py" line="1582"/>
+      <source>Error computing areas for {self.obj.Label}: unable to combine projected horizontal faces. Area values will be reset to 0.
+</source>
+      <translation type="unfinished">Error computing areas for {self.obj.Label}: unable to combine projected horizontal faces. Area values will be reset to 0.
+</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2462"/>
       <source>Base component</source>
       <translation>საბაზისო კომპონენტი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2433"/>
+      <location filename="../../ArchComponent.py" line="2463"/>
       <source>Additions</source>
       <translation>დამატებები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2434"/>
+      <location filename="../../ArchComponent.py" line="2464"/>
       <source>Subtractions</source>
       <translation>გამოკლებები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2435"/>
+      <location filename="../../ArchComponent.py" line="2465"/>
       <source>Objects</source>
       <translation>ობიექტები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2438"/>
+      <location filename="../../ArchComponent.py" line="2468"/>
       <source>Fixtures</source>
       <translation>არმატურები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2439"/>
+      <location filename="../../ArchComponent.py" line="2469"/>
       <source>Group</source>
       <translation>ჯგუფი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2440"/>
+      <location filename="../../ArchComponent.py" line="2470"/>
       <source>Hosts</source>
       <translation>ჰოსტები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2504"/>
+      <location filename="../../ArchComponent.py" line="2534"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Property</source>
       <translation>პარამეტრი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2512"/>
+      <location filename="../../ArchComponent.py" line="2542"/>
       <source>Add property</source>
       <translation>თვისების დამატება</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2516"/>
+      <location filename="../../ArchComponent.py" line="2546"/>
       <source>Add property set</source>
       <translation>თვისებების სეტის დამატება</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2517"/>
+      <location filename="../../ArchComponent.py" line="2547"/>
       <source>New...</source>
       <translation>ახალი...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2666"/>
+      <location filename="../../ArchComponent.py" line="2696"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
       <source>New property</source>
       <translation>ახალი თვისება</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2703"/>
+      <location filename="../../ArchComponent.py" line="2733"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New property set</source>
       <translation>ახალი თვისებების ჯგუფი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2783"/>
+      <location filename="../../ArchComponent.py" line="2813"/>
       <source>Options</source>
       <translation>პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2924"/>
+      <location filename="../../ArchComponent.py" line="2954"/>
       <source>Error saving property</source>
       <translation>თვისების შენახვის შეცდომა</translation>
     </message>
@@ -6990,6 +6482,105 @@ Building creation aborted.</source>
       <translation>დანადგარის სიმძლავრე</translation>
     </message>
     <message>
+      <location filename="../../ArchTruss.py" line="414"/>
+      <source>Height Start</source>
+      <translation>სიმაღლის დასაწყისი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="415"/>
+      <source>Height End</source>
+      <translation>სიმაღლის დასასრული</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="416"/>
+      <source>Strut Height</source>
+      <translation>კრონშტეინის სიმაღლე</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="417"/>
+      <source>Strut Width</source>
+      <translation>კრონშტეინის სიგანე</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="418"/>
+      <source>Rod Sections</source>
+      <translation>ღეროს სექციები</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="419"/>
+      <source>Rod Size</source>
+      <translation>ღეროს ზომა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="420"/>
+      <source>Rod Mode</source>
+      <translation>ღეროს რეჟიმი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="421"/>
+      <source>Rod Type</source>
+      <translation>ღეროს ტიპი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="732"/>
+      <source>Vertical Sections</source>
+      <translation>ვერტიკალური სექციები</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="733"/>
+      <source>Horizontal Sections</source>
+      <translation>ჰორიზონტალური სექციები</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="734"/>
+      <source>Vertical Mullion Width</source>
+      <translation>ვერტიკალური წოლანას სიგანე</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="737"/>
+      <source>Vertical Mullion Height</source>
+      <translation>ვერტიკალური წოლანას სიმაღლე</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="741"/>
+      <source>Horizontal Mullion Width</source>
+      <translation>ჰორიზონტალური წოლანას სიგანე</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="745"/>
+      <source>Horizontal Mullion Height</source>
+      <translation>ჰორიზონტალური წოლანას სიმაღლე</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="747"/>
+      <source>Panel Thickness</source>
+      <translation>პანელის სისქე</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="748"/>
+      <source>Refine</source>
+      <translation>გაუმჯობესება</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2255"/>
+      <location filename="../../ArchSql.py" line="2282"/>
+      <location filename="../../ArchSql.py" line="2304"/>
+      <location filename="../../ArchReport.py" line="1045"/>
+      <location filename="../../ArchReport.py" line="1867"/>
+      <source>Ready</source>
+      <translation>მზადაა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2312"/>
+      <source>Typing...</source>
+      <translation>კრეფს...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2320"/>
+      <source>Query is valid, but found 0 objects.</source>
+      <translation type="unfinished">Query is valid, but found 0 objects.</translation>
+    </message>
+    <message>
       <location filename="../../ArchCovering.py" line="507"/>
       <source>The specified tile size is too small to be modeled.</source>
       <translation type="unfinished">The specified tile size is too small to be modeled.</translation>
@@ -7018,25 +6609,6 @@ Building creation aborted.</source>
       <location filename="../../ArchCovering.py" line="719"/>
       <source>A hole is larger than the shrunken area. Skipping this hole.</source>
       <translation type="unfinished">A hole is larger than the shrunken area. Skipping this hole.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2255"/>
-      <location filename="../../ArchSql.py" line="2282"/>
-      <location filename="../../ArchSql.py" line="2304"/>
-      <location filename="../../ArchReport.py" line="1045"/>
-      <location filename="../../ArchReport.py" line="1867"/>
-      <source>Ready</source>
-      <translation>მზადაა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2312"/>
-      <source>Typing...</source>
-      <translation>კრეფს...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2320"/>
-      <source>Query is valid, but found 0 objects.</source>
-      <translation type="unfinished">Query is valid, but found 0 objects.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1053"/>
@@ -7188,84 +6760,519 @@ The ladybug or pysolar Python module is required.</source>
 The ladybug or pysolar Python module is required.</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="732"/>
-      <source>Vertical Sections</source>
-      <translation>ვერტიკალური სექციები</translation>
+      <location filename="../../ArchReport.py" line="879"/>
+      <location filename="../../ArchReport.py" line="1873"/>
+      <source>Report Statements</source>
+      <translation>ანგარიში ამონაწერებზე</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="733"/>
-      <source>Horizontal Sections</source>
-      <translation>ჰორიზონტალური სექციები</translation>
+      <location filename="../../ArchReport.py" line="890"/>
+      <source>Header</source>
+      <translation>თავსართი</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="734"/>
-      <source>Vertical Mullion Width</source>
-      <translation>ვერტიკალური წოლანას სიგანე</translation>
+      <location filename="../../ArchReport.py" line="891"/>
+      <source>Cols</source>
+      <translation>სვეტები</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="737"/>
-      <source>Vertical Mullion Height</source>
-      <translation>ვერტიკალური წოლანას სიმაღლე</translation>
+      <location filename="../../ArchReport.py" line="892"/>
+      <source>Status</source>
+      <translation>სტატუსი</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="741"/>
-      <source>Horizontal Mullion Width</source>
-      <translation>ჰორიზონტალური წოლანას სიგანე</translation>
+      <location filename="../../ArchReport.py" line="899"/>
+      <source>A user-defined description for this statement.</source>
+      <translation type="unfinished">A user-defined description for this statement.</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="745"/>
-      <source>Horizontal Mullion Height</source>
-      <translation>ჰორიზონტალური წოლანას სიმაღლე</translation>
+      <location filename="../../ArchReport.py" line="905"/>
+      <source>If checked, this statement will use the results of the previous statement as its data source.</source>
+      <translation type="unfinished">If checked, this statement will use the results of the previous statement as its data source.</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="747"/>
-      <source>Panel Thickness</source>
-      <translation>პანელის სისქე</translation>
+      <location filename="../../ArchReport.py" line="911"/>
+      <source>If checked, the Description will be used as a section header in the report.</source>
+      <translation type="unfinished">If checked, the Description will be used as a section header in the report.</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="748"/>
-      <source>Refine</source>
-      <translation>გაუმჯობესება</translation>
+      <location filename="../../ArchReport.py" line="917"/>
+      <source>If checked, the column names (e.g., 'Label', 'Area') will be included in the report.</source>
+      <translation type="unfinished">If checked, the column names (e.g., 'Label', 'Area') will be included in the report.</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="414"/>
-      <source>Height Start</source>
-      <translation>სიმაღლის დასაწყისი</translation>
+      <location filename="../../ArchReport.py" line="920"/>
+      <source>Indicates the status of the SQL query.</source>
+      <translation type="unfinished">Indicates the status of the SQL query.</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="415"/>
-      <source>Height End</source>
-      <translation>სიმაღლის დასასრული</translation>
+      <location filename="../../ArchReport.py" line="953"/>
+      <source>Load a full report template, replacing all current statements.</source>
+      <translation type="unfinished">Load a full report template, replacing all current statements.</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="416"/>
-      <source>Strut Height</source>
-      <translation>კრონშტეინის სიმაღლე</translation>
+      <location filename="../../ArchReport.py" line="956"/>
+      <location filename="../../ArchReport.py" line="1027"/>
+      <source>Manage...</source>
+      <translation>მართვა...</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="417"/>
-      <source>Strut Width</source>
-      <translation>კრონშტეინის სიგანე</translation>
+      <location filename="../../ArchReport.py" line="959"/>
+      <source>Rename, delete, or edit saved report templates.</source>
+      <translation type="unfinished">Rename, delete, or edit saved report templates.</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="418"/>
-      <source>Rod Sections</source>
-      <translation>ღეროს სექციები</translation>
+      <location filename="../../ArchReport.py" line="960"/>
+      <source>Save as Template...</source>
+      <translation>შენახვა შაბლონის სახით...</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="419"/>
-      <source>Rod Size</source>
-      <translation>ღეროს ზომა</translation>
+      <location filename="../../ArchReport.py" line="963"/>
+      <source>Save the current set of statements as a new report template.</source>
+      <translation type="unfinished">Save the current set of statements as a new report template.</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="420"/>
-      <source>Rod Mode</source>
-      <translation>ღეროს რეჟიმი</translation>
+      <location filename="../../ArchReport.py" line="968"/>
+      <source>Report Templates:</source>
+      <translation>ანგარიშის შაბლონები:</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="421"/>
-      <source>Rod Type</source>
-      <translation>ღეროს ტიპი</translation>
+      <location filename="../../ArchReport.py" line="974"/>
+      <source>Add Statement</source>
+      <translation>ამონაწერის დამატება</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="977"/>
+      <source>Add a new blank statement to the report.</source>
+      <translation type="unfinished">Add a new blank statement to the report.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="980"/>
+      <source>Remove Selected</source>
+      <translation>მონიშნულის წაშლა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="983"/>
+      <source>Remove the selected statement from the report.</source>
+      <translation type="unfinished">Remove the selected statement from the report.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="986"/>
+      <source>Duplicate Selected</source>
+      <translation>მონიშნულის დუბლირება</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="989"/>
+      <source>Create a copy of the selected statement.</source>
+      <translation type="unfinished">Create a copy of the selected statement.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="992"/>
+      <source>Edit Selected</source>
+      <translation>მონიშნულის ჩასწორება</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="995"/>
+      <source>Load the selected statement into the editor below.</source>
+      <translation type="unfinished">Load the selected statement into the editor below.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1006"/>
+      <source>Statement Editor</source>
+      <translation>ამონაწერის რედაქტორი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1017"/>
+      <source>Description:</source>
+      <translation>აღწერა:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1024"/>
+      <source>Load a saved query preset into the editor.</source>
+      <translation type="unfinished">Load a saved query preset into the editor.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1030"/>
+      <source>Rename, delete, or edit your saved query presets.</source>
+      <translation type="unfinished">Rename, delete, or edit your saved query presets.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1031"/>
+      <source>Save...</source>
+      <translation>შენახვა...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1034"/>
+      <source>Save the current query as a new preset.</source>
+      <translation type="unfinished">Save the current query as a new preset.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1038"/>
+      <source>Query Presets:</source>
+      <translation>მოთხოვნის პრესეტები:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1043"/>
+      <source>SQL Query:</source>
+      <translation>SQL მოთხოვნა:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1073"/>
+      <location filename="../../ArchReport.py" line="2042"/>
+      <source>Show Preview</source>
+      <translation>მინიატურის ჩვენება</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1077"/>
+      <source>Show a preview pane to test the current query in isolation.</source>
+      <translation type="unfinished">Show a preview pane to test the current query in isolation.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1080"/>
+      <source>SQL Cheatsheet</source>
+      <translation>SQL-ის შპარგალკა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1084"/>
+      <source>Show a cheatsheet of the supported SQL syntax.</source>
+      <translation type="unfinished">Show a cheatsheet of the supported SQL syntax.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1097"/>
+      <source>Refresh</source>
+      <translation>განახლება</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1101"/>
+      <source>Re-run the query and update the preview table.</source>
+      <translation type="unfinished">Re-run the query and update the preview table.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1103"/>
+      <source>&lt;b&gt;Query Results Preview&lt;/b&gt;</source>
+      <translation type="unfinished">&lt;b&gt;Query Results Preview&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1119"/>
+      <source>Display Options</source>
+      <translation>ჩვენების მორგება</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1122"/>
+      <source>Use as Pipeline Step</source>
+      <translation>ფაიფლაინის ნაბიჯად გამოყენება</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1128"/>
+      <source>When checked, this statement will use the results of the previous statement as its data source.</source>
+      <translation type="unfinished">When checked, this statement will use the results of the previous statement as its data source.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1131"/>
+      <source>Use Description as Section Header</source>
+      <translation type="unfinished">Use Description as Section Header</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1137"/>
+      <source>When checked, the statement's description will be written as a merged header row before its results.</source>
+      <translation type="unfinished">When checked, the statement's description will be written as a merged header row before its results.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1140"/>
+      <source>Include Column Names as Headers</source>
+      <translation type="unfinished">Include Column Names as Headers</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1146"/>
+      <source>Include the column headers (Label, IfcType, ...) in the spreadsheet output.</source>
+      <translation type="unfinished">Include the column headers (Label, IfcType, ...) in the spreadsheet output.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1147"/>
+      <source>Add Empty Row After</source>
+      <translation>ცარიელი მწკრივის დამატება შემდეგ</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1150"/>
+      <source>Insert one empty row after this statement's results.</source>
+      <translation type="unfinished">Insert one empty row after this statement's results.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1153"/>
+      <source>Print Results in Bold</source>
+      <translation>შედეგების სქელი ფონტით გამოტანა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1156"/>
+      <source>Render the result cells in bold font for emphasis.</source>
+      <translation type="unfinished">Render the result cells in bold font for emphasis.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1166"/>
+      <source>Save and Next</source>
+      <translation>შენახვა და შემდეგი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1172"/>
+      <source>If checked, clicking 'Save' will automatically load the next statement for editing.</source>
+      <translation type="unfinished">If checked, clicking 'Save' will automatically load the next statement for editing.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1173"/>
+      <source>Save</source>
+      <translation>შენახვა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1177"/>
+      <source>Save changes to this statement and close the statement editor.</source>
+      <translation type="unfinished">Save changes to this statement and close the statement editor.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1178"/>
+      <source>Discard</source>
+      <translation>მოცილება</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1182"/>
+      <source>Discard all changes made in the statement editor.</source>
+      <translation type="unfinished">Discard all changes made in the statement editor.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1288"/>
+      <source>--- Select a Query Preset ---</source>
+      <translation type="unfinished">--- Select a Query Preset ---</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1291"/>
+      <source>--- Load a Report Template ---</source>
+      <translation type="unfinished">--- Load a Report Template ---</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1327"/>
+      <source>Double-click to edit description in place.</source>
+      <translation type="unfinished">Double-click to edit description in place.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1342"/>
+      <source>The first statement cannot be pipelined.</source>
+      <translation type="unfinished">The first statement cannot be pipelined.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1348"/>
+      <source>Toggles whether to use the previous statement's results as input</source>
+      <translation type="unfinished">Toggles whether to use the previous statement's results as input</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1364"/>
+      <source>Toggles whether to use this statement's Description as a section header</source>
+      <translation type="unfinished">Toggles whether to use this statement's Description as a section header</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1380"/>
+      <source>Toggles whether to include this statement's column names in the report</source>
+      <translation type="unfinished">Toggles whether to include this statement's column names in the report</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1490"/>
+      <source>New Statement {len(self.obj.Proxy.live_statements) + 1}</source>
+      <translation type="unfinished">New Statement {len(self.obj.Proxy.live_statements) + 1}</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1518"/>
+      <source>Remove Statement</source>
+      <translation>ამონაწერის წაშლა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1521"/>
+      <source>Are you sure you want to remove statement '{description_to_remove}'?</source>
+      <translation type="unfinished">Are you sure you want to remove statement '{description_to_remove}'?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1544"/>
+      <source>Copy of {original.description}</source>
+      <translation type="unfinished">Copy of {original.description}</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1601"/>
+      <source>&lt;i&gt;Typing...&lt;/i&gt;</source>
+      <translation>&lt;i&gt;კრეფს...&lt;/i&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1635"/>
+      <source>Overwrite Query?</source>
+      <translation>გადავაწერო თავზე მოთხოვნას?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1639"/>
+      <source>Loading a preset will overwrite the current text in the query editor. Continue?</source>
+      <translation type="unfinished">Loading a preset will overwrite the current text in the query editor. Continue?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1660"/>
+      <source>Empty Query</source>
+      <translation>ცარიელი მოთხოვნა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1661"/>
+      <source>Cannot save an empty query as a preset.</source>
+      <translation type="unfinished">Cannot save an empty query as a preset.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1666"/>
+      <source>Save Query Preset</source>
+      <translation>მოთხოვნის პრესეტის შენახვა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1667"/>
+      <source>Preset Name:</source>
+      <translation>პრესეტის სახელი:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1693"/>
+      <source>Overwrite Report?</source>
+      <translation>გადავაწერო თავზე ანგარიშს?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1697"/>
+      <source>Loading a template will replace all current statements in this report. Continue?</source>
+      <translation type="unfinished">Loading a template will replace all current statements in this report. Continue?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1729"/>
+      <source>Empty Report</source>
+      <translation>ცარიელი ანგარიში</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1730"/>
+      <source>Cannot save an empty report as a template.</source>
+      <translation type="unfinished">Cannot save an empty report as a template.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1735"/>
+      <source>Save Report Template</source>
+      <translation>ანგარიშის შაბლონის შენახვა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1736"/>
+      <source>Template Name:</source>
+      <translation>ნიმუშის სახელი:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1773"/>
+      <source> (from {input_count} in pipeline)</source>
+      <translation type="unfinished"> (from {input_count} in pipeline)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1788"/>
+      <source>Query is incomplete</source>
+      <translation>მოთხოვნა დაუსრულებელია</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1865"/>
+      <source>Query incomplete or typing...</source>
+      <translation type="unfinished">Query incomplete or typing...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2036"/>
+      <source>Hide Preview</source>
+      <translation>მინიატურის დამალვა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2111"/>
+      <source>Unsaved Changes</source>
+      <translation>შეუნახავი ცვლილებები</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2115"/>
+      <source>You have unsaved changes in the statement editor. Do you want to save them before closing?</source>
+      <translation type="unfinished">You have unsaved changes in the statement editor. Do you want to save them before closing?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2172"/>
+      <source>Manage {mode.capitalize()} Presets</source>
+      <translation type="unfinished">Manage {mode.capitalize()} Presets</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2182"/>
+      <source>Rename...</source>
+      <translation>სახელის გადარქმევა...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2183"/>
+      <source>Delete</source>
+      <translation>წაშლა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2184"/>
+      <source>Edit Source...</source>
+      <translation>წყაროს ჩასწორება...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2185"/>
+      <source>Close</source>
+      <translation>დახურვა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2247"/>
+      <source>This action is only available for user-created presets.</source>
+      <translation type="unfinished">This action is only available for user-created presets.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2262"/>
+      <source>Rename Preset</source>
+      <translation>პრესეტის სახელის გადარქმევა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2263"/>
+      <source>New name:</source>
+      <translation>ახალი სახელი:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2270"/>
+      <source>Name Conflict</source>
+      <translation>სახელის კონფლიქტი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2274"/>
+      <source>A preset with this name already exists. Please choose a different name.</source>
+      <translation type="unfinished">A preset with this name already exists. Please choose a different name.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2289"/>
+      <source>Delete Preset</source>
+      <translation>პრესეტის წაშლა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2292"/>
+      <source>Are you sure you want to permanently delete the preset '{name}'?</source>
+      <translation type="unfinished">Are you sure you want to permanently delete the preset '{name}'?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2311"/>
+      <source>File Not Found</source>
+      <translation>ფაილი აღმოჩენილი არაა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2312"/>
+      <source>Could not find the preset file at:
+{file_path}</source>
+      <translation type="unfinished">Could not find the preset file at:
+{file_path}</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2321"/>
+      <source>Could Not Open File</source>
+      <translation>ფაილის გახსნა შეუძლებელია</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2325"/>
+      <source>FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system.</source>
+      <translation type="unfinished">FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2470"/>
+      <source>BIM SQL Cheatsheet</source>
+      <translation>BIM SQL-ის შპარგალკა</translation>
     </message>
   </context>
   <context>
@@ -7360,9 +7367,9 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>ამ ელემენტის სიმაღლე ან გამოწნევის სიღრმე. ავტომატური მნიშვნელობისთვის დატოვეთ 0</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="272"/>
       <location filename="../../ArchPanel.py" line="209"/>
       <location filename="../../ArchStructure.py" line="790"/>
+      <location filename="../../ArchWall.py" line="272"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>ამ ობიექტის ნორმალის გამოწნეხვის მიმართულება (ავტომატური ნორმალისთვის დატოვეთ (0,0,0))</translation>
     </message>
@@ -7395,8 +7402,8 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>ArchSketch-ს ბაზის მონიშნული წიბოები (ან წიბოების ჯგუფები) ამ BIM სტრუქტურის მონახაზის შექმნისას გამოსაყენებლად (ნაგულისხმევად ყველა საბაზისო მონახაზის წიბოს მაგიერ). საჭიროებს წიბოების ან ჯგუფების ინდექსის ნომრებს.</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="547"/>
       <location filename="../../ArchStructure.py" line="882"/>
+      <location filename="../../ArchStairs.py" line="547"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
       <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </translation>
     </message>
@@ -7451,8 +7458,8 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>აპარატურის ვებგვერდის მისამართი</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="113"/>
       <location filename="../../ArchMaterial.py" line="208"/>
+      <location filename="../../ArchEquipment.py" line="113"/>
       <source>A standard code (MasterFormat, OmniClass,…)</source>
       <translation>სტანდარტული კოდი (MasterFormat, OmniClass…)</translation>
     </message>
@@ -7474,8 +7481,8 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>შენობის ტიპი</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="236"/>
       <location filename="../../ArchBuildingPart.py" line="230"/>
+      <location filename="../../ArchFloor.py" line="236"/>
       <source>The height of this object</source>
       <translation>ობიექტის სიმაღლე</translation>
     </message>
@@ -7490,26 +7497,26 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>ამ დონის (0,0,0) წერტილის დონე</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="244"/>
       <location filename="../../ArchBuildingPart.py" line="258"/>
+      <location filename="../../ArchFloor.py" line="244"/>
       <source>The computed floor area of this floor</source>
       <translation>სართულის გამოთვლილი ფართობი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="238"/>
+      <location filename="../../ArchComponent.py" line="250"/>
       <location filename="../../ArchBuildingPart.py" line="266"/>
       <source>An optional description for this component</source>
       <translation>კომპონენტის არასავალდებულო აღწერა</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="246"/>
+      <location filename="../../ArchComponent.py" line="258"/>
       <location filename="../../ArchBuildingPart.py" line="274"/>
       <source>An optional tag for this component</source>
       <translation>კომპონენტის არააუცილებელი ჭდე</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="970"/>
       <location filename="../../ArchBuildingPart.py" line="282"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <source>The shape of this object</source>
       <translation>ამ ობიექტის ფორმა</translation>
     </message>
@@ -7529,8 +7536,8 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>MaterialName:SolidIndexesList რუკა, რომელიც აკავშირებს მასალის სახელებს მყარ ინდექსებთან, რომლებიც გამოყენებული იქნება ამ ობიექტზე სხვა ფაილებიდან მიბმისას</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1142"/>
       <location filename="../../ArchBuildingPart.py" line="547"/>
+      <location filename="../../ArchSectionPlane.py" line="1142"/>
       <source>The line width of this object</source>
       <translation>ამ ობიექტის ხაზის სიგანე</translation>
     </message>
@@ -7828,19 +7835,19 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>URL, რომელიც ამ ადგილს რუკის ვებგვერდზე აჩვენებს</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="220"/>
+      <location filename="../../ArchComponent.py" line="232"/>
       <location filename="../../ArchSite.py" line="656"/>
       <source>Other shapes that are appended to this object</source>
       <translation>სხვა ფორმები, რომლებიც დართულია ამ ობიექტზე</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="230"/>
+      <location filename="../../ArchComponent.py" line="242"/>
       <location filename="../../ArchSite.py" line="666"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>სხვა ფორმები, რომლებიც გამოაკლდა ამ ობიექტს</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="325"/>
+      <location filename="../../ArchComponent.py" line="337"/>
       <location filename="../../ArchSite.py" line="676"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>ამ ობიექტის პროექციის ფართობი XY სიბრტყეზე</translation>
@@ -9089,8 +9096,8 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>თუ ჩართულია, შედეგებს თითოეულ ცალკეულ ობიექტთან ერთად დამატებითი ხაზები ემატება</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="253"/>
       <location filename="../../ArchSectionPlane.py" line="962"/>
+      <location filename="../../ArchFloor.py" line="253"/>
       <source>The placement of this object</source>
       <translation>ობიექტის განლაგება</translation>
     </message>
@@ -9180,58 +9187,58 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>თითოეულ ჭდეზე გადასატარებელი გარდაქმნის არჩევა</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="204"/>
+      <location filename="../../ArchComponent.py" line="216"/>
       <source>The base object this component is built upon</source>
       <translation>ძირითადი ობიექტი, რომელზეც ეს კომპონენტია აგებული</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="212"/>
+      <location filename="../../ArchComponent.py" line="224"/>
       <source>The object this component is cloning</source>
       <translation>ობიექტი, რომლის ასლითაც იქნება ეს კომპონენტი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="257"/>
+      <location filename="../../ArchComponent.py" line="269"/>
       <source>An optional standard (OmniClass, etc.) code for this component</source>
       <translation type="unfinished">An optional standard (OmniClass, etc.) code for this component</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="265"/>
-      <location filename="../../ArchComponent.py" line="276"/>
+      <location filename="../../ArchComponent.py" line="277"/>
+      <location filename="../../ArchComponent.py" line="288"/>
       <source>A material for this object</source>
       <translation>ობიექტის მასალა</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="293"/>
+      <location filename="../../ArchComponent.py" line="305"/>
       <source>Specifies if moving this object moves its base instead</source>
       <translation>განსაზღვრავს, გაგადაადგილდება თუ არა ობიექტის ფუძე მის მაგიერ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="305"/>
+      <location filename="../../ArchComponent.py" line="317"/>
       <source>Specifies if this object must move together when its host is moved</source>
       <translation>განსაზღვრავს, უნდა მოძრაობდეს თუ არა ეს ობიექტი ერთად, როდესაც მისი ჰოსტი გადაადგილდება</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="314"/>
+      <location filename="../../ArchComponent.py" line="326"/>
       <source>The area of all vertical faces of this object</source>
       <translation>ამ ობიექტის ყველა ვერტიკალური სიბრტყის ფართობი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="334"/>
+      <location filename="../../ArchComponent.py" line="346"/>
       <source>The perimeter length of the horizontal area</source>
       <translation>ჰორიზონტალური ფართობის პერიმეტრის სიგრძე</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="345"/>
+      <location filename="../../ArchComponent.py" line="357"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
       <translation>ამ ობიექტის არასავალდებულო უფრო მაღალი გარჩევადობის ბადე ან მოხაზულობა</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="356"/>
+      <location filename="../../ArchComponent.py" line="368"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
       <translation>არასავალდებულო ღერძი ან ღერძების სისტემა რომელზეც ეს ობიექტი დადუბლირდება</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1598"/>
+      <location filename="../../ArchComponent.py" line="1628"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>ხელმისაწვდომობის შემთხვევაში ობიექტის მონახაზის ფერად მასალის ფერის გამოყენება</translation>
     </message>
@@ -9377,14 +9384,14 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>ჭდის 3D ხედში ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="579"/>
       <location filename="../../ArchSectionPlane.py" line="1196"/>
+      <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>ფონტის სახელი</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="597"/>
       <location filename="../../ArchSectionPlane.py" line="1205"/>
+      <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>ფონტის ზომა</translation>
     </message>
@@ -9604,10 +9611,15 @@ The ladybug or pysolar Python module is required.</translation>
       <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="381"/>
       <location filename="../../ArchStructure.py" line="841"/>
+      <location filename="../../ArchWall.py" line="381"/>
       <source>Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</source>
       <translation type="unfinished">Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="62"/>
+      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
+      <translation type="unfinished">Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="104"/>
@@ -9776,11 +9788,6 @@ The ladybug or pysolar Python module is required.</translation>
       <location filename="../../ArchReport.py" line="530"/>
       <source>The name of the BIM Report that uses this spreadsheet</source>
       <translation type="unfinished">The name of the BIM Report that uses this spreadsheet</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="62"/>
-      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
-      <translation type="unfinished">Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</translation>
     </message>
   </context>
   <context>
@@ -10627,25 +10634,20 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>მიმაგრება</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="153"/>
-      <source>Box Dimensions</source>
-      <translation>ყუთის ზომები</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimBox.py" line="156"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
+      <location filename="../../bimcommands/BimBox.py" line="156"/>
       <source>Length</source>
       <translation>სიგრძე</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="165"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
+      <location filename="../../bimcommands/BimBox.py" line="165"/>
       <source>Width</source>
       <translation>სიგანე</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="174"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
+      <location filename="../../bimcommands/BimBox.py" line="174"/>
       <source>Height</source>
       <translation>სიმაღლე</translation>
     </message>
@@ -10737,15 +10739,15 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>ახალი მრავალკომპონენტიანი მასალის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
       <source>Label</source>
       <translation>ჭდე</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
       <source>IFC type</source>
       <translation>IFC ტიპი</translation>
     </message>
@@ -10755,8 +10757,8 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>მასალა</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <location filename="../../nativeifc/__init__.py" line="42"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>თქვენს სისტემაში IfcOpenShell აღმოჩენილი არაა. IFC-ის მხარდაჭერა გათიშულია</translation>
     </message>
@@ -11452,8 +11454,8 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>შაბლონის ჩატვირთვა მიმდინარე დოკუმენტში წარმატებით დასრულდა</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="438"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="438"/>
       <source>New Group</source>
       <translation>ახალი ჯგუფი</translation>
     </message>
@@ -11911,6 +11913,11 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <source>Select an object to link</source>
       <translation>აირჩიეთ ობიექტი დასაკავშირებლად</translation>
     </message>
+    <message>
+      <location filename="../../bimcommands/BimBox.py" line="153"/>
+      <source>Box Dimensions</source>
+      <translation>ყუთის ზომები</translation>
+    </message>
   </context>
   <context>
     <name>Arch_RebarTools</name>
@@ -12112,8 +12119,8 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <translation>წაშლის ნაგვის ყუთიდან ყველა ობიექტს, რომლებსაც არავინ იყენებს</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="78"/>
       <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
+      <location filename="../../bimcommands/BimTrash.py" line="78"/>
       <source>Empty Trash</source>
       <translation>ურნის გასუფთავება</translation>
     </message>
@@ -13460,8 +13467,8 @@ select both the view and the page before executing the command.</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="212"/>
-      <source>XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</source>
-      <translation type="unfinished">XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</translation>
+      <source>XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications"&gt;https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications&lt;/a&gt; and placed in %s</source>
+      <translation type="unfinished">XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications"&gt;https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications&lt;/a&gt; and placed in %s</translation>
     </message>
   </context>
   <context>
@@ -13470,100 +13477,6 @@ select both the view and the page before executing the command.</translation>
       <location filename="../ui/dialogDiff.ui" line="14"/>
       <source>IFC Difference</source>
       <translation>IFC სხვაობა</translation>
-    </message>
-  </context>
-  <context>
-    <name>ArchComponent</name>
-    <message>
-      <location filename="../../ArchWall.py" line="1525"/>
-      <source>Unsupported Base</source>
-      <translation>მხარდაუჭერელი ფუძე</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1530"/>
-      <source>The base of this wall is not a single straight line.</source>
-      <translation type="unfinished">The base of this wall is not a single straight line.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1537"/>
-      <source>Removing the base of this complex wall will alter its shape and reset its position.
-
-Do you want to proceed?</source>
-      <translation type="unfinished">Removing the base of this complex wall will alter its shape and reset its position.
-
-Do you want to proceed?</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_ArcTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="240"/>
-      <source>Arc Tools</source>
-      <translation>რკალის ხელსაწყოები</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_SplineTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="252"/>
-      <source>Spline Tools</source>
-      <translation>სპლაინის ხელსაწყოები</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_AxisTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="264"/>
-      <source>Axis Tools</source>
-      <translation>ღერძის ხელსაწყოები</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_OffsetTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="277"/>
-      <source>Offset Tools</source>
-      <translation>წანაცვლების ხელსაწყოები</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_ArrayTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="295"/>
-      <source>Array Tools</source>
-      <translation>მასივის ხელსაწყოები</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_BooleanTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="308"/>
-      <source>Boolean Tools</source>
-      <translation>ლოგიკური ხელსაწყოები</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_IfcManageTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="325"/>
-      <source>IFC Management</source>
-      <translation>IFC-ის მართვა</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_ReportTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="337"/>
-      <source>Report Tools</source>
-      <translation>ანგარიშის ხელსაწყოები</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_CloneTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="349"/>
-      <source>Cloning Tools</source>
-      <translation>კლონირების ხელსაწყოები</translation>
     </message>
   </context>
   <context>
@@ -13667,6 +13580,28 @@ Do you want to proceed?</translation>
     </message>
   </context>
   <context>
+    <name>ArchComponent</name>
+    <message>
+      <location filename="../../ArchWall.py" line="1525"/>
+      <source>Unsupported Base</source>
+      <translation>მხარდაუჭერელი ფუძე</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1530"/>
+      <source>The base of this wall is not a single straight line.</source>
+      <translation type="unfinished">The base of this wall is not a single straight line.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1537"/>
+      <source>Removing the base of this complex wall will alter its shape and reset its position.
+
+Do you want to proceed?</source>
+      <translation type="unfinished">Removing the base of this complex wall will alter its shape and reset its position.
+
+Do you want to proceed?</translation>
+    </message>
+  </context>
+  <context>
     <name>Command</name>
     <message>
       <location filename="../../ArchCoveringGui.py" line="128"/>
@@ -13681,24 +13616,75 @@ Do you want to proceed?</translation>
     </message>
   </context>
   <context>
-    <name>BimWall</name>
+    <name>BIM_ArcTools</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="289"/>
-      <source>Wall Trace</source>
-      <translation>კედლის კვალი</translation>
+      <location filename="../../InitGui.py" line="240"/>
+      <source>Arc Tools</source>
+      <translation>რკალის ხელსაწყოები</translation>
     </message>
   </context>
   <context>
-    <name>BIM_Covering</name>
+    <name>BIM_SplineTools</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="44"/>
-      <source>Covering</source>
-      <translation type="unfinished">Covering</translation>
+      <location filename="../../InitGui.py" line="252"/>
+      <source>Spline Tools</source>
+      <translation>სპლაინის ხელსაწყოები</translation>
     </message>
+  </context>
+  <context>
+    <name>BIM_AxisTools</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="47"/>
-      <source>Creates a covering (floor finish, cladding) on a selected face</source>
-      <translation type="unfinished">Creates a covering (floor finish, cladding) on a selected face</translation>
+      <location filename="../../InitGui.py" line="264"/>
+      <source>Axis Tools</source>
+      <translation>ღერძის ხელსაწყოები</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_OffsetTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="277"/>
+      <source>Offset Tools</source>
+      <translation>წანაცვლების ხელსაწყოები</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_ArrayTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="295"/>
+      <source>Array Tools</source>
+      <translation>მასივის ხელსაწყოები</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_BooleanTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="308"/>
+      <source>Boolean Tools</source>
+      <translation>ლოგიკური ხელსაწყოები</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_IfcManageTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="325"/>
+      <source>IFC Management</source>
+      <translation>IFC-ის მართვა</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_ReportTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="337"/>
+      <source>Report Tools</source>
+      <translation>ანგარიშის ხელსაწყოები</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_CloneTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="349"/>
+      <source>Cloning Tools</source>
+      <translation>კლონირების ხელსაწყოები</translation>
     </message>
   </context>
   <context>
@@ -13715,6 +13701,19 @@ Do you want to proceed?</translation>
     </message>
   </context>
   <context>
+    <name>BIM_Covering</name>
+    <message>
+      <location filename="../../bimcommands/BimCovering.py" line="44"/>
+      <source>Covering</source>
+      <translation type="unfinished">Covering</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimCovering.py" line="47"/>
+      <source>Creates a covering (floor finish, cladding) on a selected face</source>
+      <translation type="unfinished">Creates a covering (floor finish, cladding) on a selected face</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_LinkMake</name>
     <message>
       <location filename="../../bimcommands/BimLink.py" line="14"/>
@@ -13725,6 +13724,14 @@ Do you want to proceed?</translation>
       <location filename="../../bimcommands/BimLink.py" line="18"/>
       <source>Creates a Link to the selected object and immediately enables moving it</source>
       <translation type="unfinished">Creates a Link to the selected object and immediately enables moving it</translation>
+    </message>
+  </context>
+  <context>
+    <name>BimWall</name>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="289"/>
+      <source>Wall Trace</source>
+      <translation>კედლის კვალი</translation>
     </message>
   </context>
 </TS>

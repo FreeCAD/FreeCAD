@@ -23,8 +23,8 @@
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <source>Insert Component</source>
+      <translation>Kokoonpano_LisääLinkki['Lisää Komponentti']</translation>
     </message>
   </context>
   <context>

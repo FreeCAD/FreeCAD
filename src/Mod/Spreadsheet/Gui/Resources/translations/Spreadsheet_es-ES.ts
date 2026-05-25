@@ -413,16 +413,6 @@
       <translation>Limpiar celdas</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="204"/>
-      <source>Setup conf table</source>
-      <translation>Configurar tabla de config.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="309"/>
-      <source>Unsetup conf table</source>
-      <translation>Desconfigurar tabla de config.</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
       <translation>Enlazar celdas</translation>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>Desvincular celdas</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <source>Setup conf table</source>
+      <translation>Configurar tabla de config.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <source>Unsetup conf table</source>
+      <translation>Desconfigurar tabla de config.</translation>
     </message>
   </context>
   <context>

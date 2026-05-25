@@ -405,11 +405,11 @@ Utilice el nombre del proyecto IFC para obtener todas las entidades IFC de ese p
       <translation>Mantener la sesión iniciada en FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogPhases.ui" line="14"/>
-      <location filename="../ui/dialogExport.ui" line="14"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
+      <location filename="../ui/dialogExport.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
+      <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <source>Dialog</source>
       <translation>Diálogo</translation>
     </message>
@@ -430,8 +430,8 @@ Utilice el nombre del proyecto IFC para obtener todas las entidades IFC de ese p
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
-      <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
+      <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <source>Only visible BIM objects</source>
       <translation>Solo objetos BIM visibles</translation>
     </message>
@@ -452,8 +452,8 @@ Utilice el nombre del proyecto IFC para obtener todas las entidades IFC de ese p
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="53"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="53"/>
       <source>Select All</source>
       <translation>Seleccionar todo</translation>
     </message>
@@ -468,8 +468,8 @@ Utilice el nombre del proyecto IFC para obtener todas las entidades IFC de ese p
       <translation>Propiedades IFC</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <location filename="../ui/dialogIfcProperties.ui" line="182"/>
+      <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <source>Delete Selected Property/Property Set</source>
       <translation>Eliminar propiedad/conjunto de propiedad seleccionado</translation>
     </message>
@@ -563,8 +563,8 @@ Utilice el nombre del proyecto IFC para obtener todas las entidades IFC de ese p
       <translation>Evita avisos al crear nuevos documentos de FreeCAD. No se convertirán automáticamente a IFC, pero la conversión sigue disponible en Utilidades → Crear proyecto IFC.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
+      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <source>Do not ask again</source>
       <translation>No volver a preguntar</translation>
     </message>
@@ -739,9 +739,9 @@ Utilice el nombre del proyecto IFC para obtener todas las entidades IFC de ese p
       <translation>Añade esta capa a un proyecto IFC</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLayersIFC.ui" line="46"/>
       <location filename="../ui/dialogPhases.ui" line="55"/>
       <location filename="../ui/dialogProjectManager.ui" line="679"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="46"/>
       <source>Delete</source>
       <translation>Eliminar</translation>
     </message>
@@ -771,17 +771,17 @@ Utilice el nombre del proyecto IFC para obtener todas las entidades IFC de ese p
       <translation>Asignar</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <location filename="../ui/dialogProjectManager.ui" line="728"/>
       <location filename="../ui/dialogProjectManager.ui" line="731"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <source>Cancel</source>
       <translation>Cancelar</translation>
     </message>
     <message>
-      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="104"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
       <location filename="../ui/dialogProjectManager.ui" line="717"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="104"/>
+      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
       <source>OK</source>
       <translation>Aceptar</translation>
     </message>
@@ -842,9 +842,9 @@ Utilice el nombre del proyecto IFC para obtener todas las entidades IFC de ese p
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
-      <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <location filename="../ui/dialogProjectManager.ui" line="246"/>
       <location filename="../ui/dialogProjectManager.ui" line="366"/>
+      <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <source>Name</source>
       <translation>Nombre</translation>
     </message>
@@ -1287,10 +1287,10 @@ Utilice el nombre del proyecto IFC para obtener todas las entidades IFC de ese p
       <translation>Información del espacio</translation>
     </message>
     <message>
-      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <location filename="../ui/dialogProjectManager.ui" line="457"/>
       <location filename="../ui/dialogProjectManager.ui" line="480"/>
       <location filename="../ui/dialogProjectManager.ui" line="493"/>
+      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
       <translation>0</translation>
     </message>
@@ -1707,9 +1707,9 @@ Utilice el nombre del proyecto IFC para obtener todas las entidades IFC de ese p
       <translation>Clase</translation>
     </message>
     <message>
+      <location filename="../ui/dialogClasses.ui" line="39"/>
       <location filename="../ui/dialogWindows.ui" line="80"/>
       <location filename="../ui/dialogWindows.ui" line="182"/>
-      <location filename="../ui/dialogClasses.ui" line="39"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
@@ -3379,8 +3379,8 @@ Si utiliza Netgen, asegúrese de que está disponible.</translation>
       <translation>Teselado</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
+      <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export Options</source>
       <translation>Opciones de exportación</translation>
@@ -3803,17 +3803,17 @@ La plantilla predeterminada se encuentra en:
     <message>
       <location filename="../../ArchStructure.py" line="446"/>
       <location filename="../../ArchCoveringGui.py" line="842"/>
-      <location filename="../../bimcommands/BimWindow.py" line="431"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
+      <location filename="../../bimcommands/BimWindow.py" line="431"/>
       <source>Preset</source>
       <translation>Preconfiguración</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1839"/>
       <location filename="../../ArchPanel.py" line="576"/>
       <location filename="../../ArchStructure.py" line="455"/>
       <location filename="../../ArchStructure.py" line="1583"/>
+      <location filename="../../ArchWall.py" line="1839"/>
       <location filename="../../ArchCoveringGui.py" line="996"/>
       <location filename="../../ArchCoveringGui.py" line="1077"/>
       <location filename="../../ArchCommands.py" line="1360"/>
@@ -3824,13 +3824,13 @@ La plantilla predeterminada se encuentra en:
       <translation>Longitud</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1845"/>
       <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchStructure.py" line="462"/>
       <location filename="../../ArchStructure.py" line="1584"/>
+      <location filename="../../ArchWindow.py" line="1195"/>
+      <location filename="../../ArchWall.py" line="1845"/>
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <location filename="../../bimcommands/BimWall.py" line="494"/>
@@ -3838,11 +3838,11 @@ La plantilla predeterminada se encuentra en:
       <translation>Ancho</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1851"/>
       <location filename="../../ArchStructure.py" line="469"/>
       <location filename="../../ArchStructure.py" line="1585"/>
       <location filename="../../ArchWindow.py" line="1198"/>
       <location filename="../../ArchRoof.py" line="1088"/>
+      <location filename="../../ArchWall.py" line="1851"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../bimcommands/BimWall.py" line="501"/>
       <source>Height</source>
@@ -3864,8 +3864,8 @@ La plantilla predeterminada se encuentra en:
       <translation>Cambiar longitud/ancho</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="617"/>
       <location filename="../../ArchStructure.py" line="1049"/>
+      <location filename="../../ArchWall.py" line="617"/>
       <source>This mesh is an invalid solid</source>
       <translation>Esta malla es un sólido no válido</translation>
     </message>
@@ -4144,8 +4144,8 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Puerta</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="566"/>
       <location filename="../../ArchWindow.py" line="1201"/>
+      <location filename="../../ArchWindowPresets.py" line="566"/>
       <source>Opening</source>
       <translation>Abriendo</translation>
     </message>
@@ -4483,37 +4483,37 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Si se marca esta opción, el valor predeterminado de Offset de esta ventana se agregará al valor ingresado aquí</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchComponent.py" line="2429"/>
-      <location filename="../../ArchSectionPlane.py" line="1747"/>
-      <location filename="../../ArchAxis.py" line="969"/>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
+      <location filename="../../ArchComponent.py" line="2459"/>
+      <location filename="../../ArchAxis.py" line="985"/>
       <location filename="../../ArchWindow.py" line="1705"/>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
+      <location filename="../../ArchSectionPlane.py" line="1747"/>
+      <location filename="../../ArchSpace.py" line="954"/>
       <source>Remove</source>
       <translation>Quitar</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="949"/>
-      <location filename="../../ArchComponent.py" line="2430"/>
-      <location filename="../../ArchAxis.py" line="970"/>
-      <location filename="../../ArchAxisSystem.py" line="339"/>
+      <location filename="../../ArchComponent.py" line="2460"/>
+      <location filename="../../ArchAxis.py" line="986"/>
       <location filename="../../ArchWindow.py" line="1706"/>
+      <location filename="../../ArchAxisSystem.py" line="339"/>
+      <location filename="../../ArchSpace.py" line="949"/>
       <source>Add</source>
       <translation>Añadir</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchGrid.py" line="384"/>
-      <location filename="../../ArchReference.py" line="717"/>
-      <location filename="../../ArchComponent.py" line="1938"/>
-      <location filename="../../ArchSectionPlane.py" line="1514"/>
-      <location filename="../../ArchSite.py" line="1588"/>
-      <location filename="../../ArchAxis.py" line="814"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
+      <location filename="../../ArchComponent.py" line="1968"/>
+      <location filename="../../ArchAxis.py" line="830"/>
       <location filename="../../ArchWindow.py" line="1707"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
+      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchReference.py" line="717"/>
+      <location filename="../../ArchSchedule.py" line="765"/>
+      <location filename="../../ArchGrid.py" line="384"/>
+      <location filename="../../ArchSectionPlane.py" line="1514"/>
+      <location filename="../../ArchSite.py" line="1588"/>
       <source>Edit</source>
       <translation>Editar</translation>
     </message>
@@ -4529,7 +4529,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Alambres</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2437"/>
+      <location filename="../../ArchComponent.py" line="2467"/>
       <location filename="../../ArchWindow.py" line="1713"/>
       <source>Components</source>
       <translation>Componentes</translation>
@@ -4542,9 +4542,9 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Nombre</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2505"/>
-      <location filename="../../ArchCommands.py" line="1729"/>
+      <location filename="../../ArchComponent.py" line="2535"/>
       <location filename="../../ArchWindow.py" line="1716"/>
+      <location filename="../../ArchCommands.py" line="1729"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>Tipo</translation>
@@ -4552,10 +4552,10 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     <message>
       <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchStructure.py" line="1578"/>
-      <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchRoof.py" line="1086"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
+      <location filename="../../ArchRoof.py" line="1086"/>
+      <location filename="../../ArchCoveringGui.py" line="802"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
       <source>Thickness</source>
       <translation>Espesor</translation>
@@ -4613,9 +4613,9 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Seleccione al menos un eje</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="2466"/>
+      <location filename="../../ArchAxis.py" line="984"/>
       <location filename="../../Arch.py" line="101"/>
-      <location filename="../../ArchComponent.py" line="2436"/>
-      <location filename="../../ArchAxis.py" line="968"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
       <source>Axes</source>
       <translation>Ejes</translation>
@@ -4626,10 +4626,10 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Componentes del sistema de ejes</translation>
     </message>
     <message>
-      <location filename="../../importers/importWebGL.py" line="371"/>
-      <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="301"/>
       <location filename="../../importers/importOBJ.py" line="339"/>
+      <location filename="../../importers/importWebGL.py" line="371"/>
+      <location filename="../../importers/importJSON.py" line="62"/>
       <source>Successfully written</source>
       <translation>Escrito correctamente</translation>
     </message>
@@ -5484,8 +5484,8 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Muro cortina</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <location filename="../../bimcommands/BimTruss.py" line="61"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <source>Select only one base object or none</source>
       <translation>Seleccione solo un objeto base o ninguno</translation>
     </message>
@@ -5636,525 +5636,10 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>No se puede reconocer ese tipo de archivo</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="879"/>
-      <location filename="../../ArchReport.py" line="1873"/>
-      <source>Report Statements</source>
-      <translation>Informes</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="888"/>
       <location filename="../../ArchCommands.py" line="1359"/>
+      <location filename="../../ArchReport.py" line="888"/>
       <source>Description</source>
       <translation>Descripción</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="890"/>
-      <source>Header</source>
-      <translation>Título</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="891"/>
-      <source>Cols</source>
-      <translation>Columnas</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="892"/>
-      <source>Status</source>
-      <translation>Estado</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="899"/>
-      <source>A user-defined description for this statement.</source>
-      <translation>Una descripción definida por el usuario para esta declaración.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="905"/>
-      <source>If checked, this statement will use the results of the previous statement as its data source.</source>
-      <translation>Si está marcado, este comando utilizará los resultados del comando anterior como su fuente de datos.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="911"/>
-      <source>If checked, the Description will be used as a section header in the report.</source>
-      <translation>Si está marcada, la descripción se utilizará como un encabezado de sección en el informe.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="917"/>
-      <source>If checked, the column names (e.g., 'Label', 'Area') will be included in the report.</source>
-      <translation>Si está marcado, los nombres de las columnas (por ejemplo, 'Etiqueta', 'Área') se incluirán en el informe.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="920"/>
-      <source>Indicates the status of the SQL query.</source>
-      <translation>Indica el estado de la consulta SQL.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="953"/>
-      <source>Load a full report template, replacing all current statements.</source>
-      <translation>Cargar una plantilla de informe completa, reemplazando todas las sentencias actuales.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="956"/>
-      <location filename="../../ArchReport.py" line="1027"/>
-      <source>Manage...</source>
-      <translation>Administrar...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="959"/>
-      <source>Rename, delete, or edit saved report templates.</source>
-      <translation>Renombrar, eliminar o editar plantillas de informe guardadas.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="960"/>
-      <source>Save as Template...</source>
-      <translation>Guardar como plantilla...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="963"/>
-      <source>Save the current set of statements as a new report template.</source>
-      <translation>Guardar el conjunto actual de sentencias como una nueva plantilla de informe.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="968"/>
-      <source>Report Templates:</source>
-      <translation>Plantillas de Reportes:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="974"/>
-      <source>Add Statement</source>
-      <translation>Añadir declaración</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="977"/>
-      <source>Add a new blank statement to the report.</source>
-      <translation>Añadir una nueva declaración en blanco al informe.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="980"/>
-      <source>Remove Selected</source>
-      <translation>Eliminar selección</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="983"/>
-      <source>Remove the selected statement from the report.</source>
-      <translation>Eliminar la declaración seleccionada del informe.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="986"/>
-      <source>Duplicate Selected</source>
-      <translation>Duplicar selección</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="989"/>
-      <source>Create a copy of the selected statement.</source>
-      <translation>Crea un clon de los objetos seleccionados.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="992"/>
-      <source>Edit Selected</source>
-      <translation>Editar selección</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="995"/>
-      <source>Load the selected statement into the editor below.</source>
-      <translation>Carga la instrucción seleccionada en el editor de abajo.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1006"/>
-      <source>Statement Editor</source>
-      <translation>Editor de adjuntos</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1017"/>
-      <source>Description:</source>
-      <translation>Descripción:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1024"/>
-      <source>Load a saved query preset into the editor.</source>
-      <translation>Carga un conjunto de consultas guardado en el editor.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1030"/>
-      <source>Rename, delete, or edit your saved query presets.</source>
-      <translation>Cambie el nombre, elimine o edite los preajustes de consultas guardados.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1031"/>
-      <source>Save...</source>
-      <translation>Guardar...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1034"/>
-      <source>Save the current query as a new preset.</source>
-      <translation>Guardar el estilo actual como pre ajuste.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1038"/>
-      <source>Query Presets:</source>
-      <translation>Preajustes de consulta:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1043"/>
-      <source>SQL Query:</source>
-      <translation>Consulta SQL:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1073"/>
-      <location filename="../../ArchReport.py" line="2042"/>
-      <source>Show Preview</source>
-      <translation>Mostrar Vista Previa</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1077"/>
-      <source>Show a preview pane to test the current query in isolation.</source>
-      <translation>Mostrar un panel de vista previa para probar la consulta actual de forma aislada.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1080"/>
-      <source>SQL Cheatsheet</source>
-      <translation>Cheatsheet SQL</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1084"/>
-      <source>Show a cheatsheet of the supported SQL syntax.</source>
-      <translation>Mostrar una hoja de trampa de la sintaxis SQL soportada.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1097"/>
-      <source>Refresh</source>
-      <translation>Actualizar pantalla</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1101"/>
-      <source>Re-run the query and update the preview table.</source>
-      <translation>Vuelva a ejecutar la consulta y actualice la tabla de vista previa.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1103"/>
-      <source>&lt;b&gt;Query Results Preview&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Vista previa de resultados&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1119"/>
-      <source>Display Options</source>
-      <translation>Opciones de visualización</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1122"/>
-      <source>Use as Pipeline Step</source>
-      <translation>Usar como paso de tubería</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1128"/>
-      <source>When checked, this statement will use the results of the previous statement as its data source.</source>
-      <translation>Si está marcado, este comando utilizará los resultados del comando anterior como su fuente de datos.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1131"/>
-      <source>Use Description as Section Header</source>
-      <translation>Usar descripción como cabecera de sección</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1137"/>
-      <source>When checked, the statement's description will be written as a merged header row before its results.</source>
-      <translation>Cuando se selecciona, la descripción de la sentencia se escribirá como una fila de cabecera fusionada antes de sus resultados.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1140"/>
-      <source>Include Column Names as Headers</source>
-      <translation>Incluye nombres de columna como cabeceras</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1146"/>
-      <source>Include the column headers (Label, IfcType, ...) in the spreadsheet output.</source>
-      <translation>Incluye las cabeceras de columna (Label, IfcType, ...) en la salida de la hoja de cálculo.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1147"/>
-      <source>Add Empty Row After</source>
-      <translation>Añadir fila vacía después de</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1150"/>
-      <source>Insert one empty row after this statement's results.</source>
-      <translation>Insertar una fila vacía después de los resultados de esta declaración.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1153"/>
-      <source>Print Results in Bold</source>
-      <translation>Imprimir resultados en negrita</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1156"/>
-      <source>Render the result cells in bold font for emphasis.</source>
-      <translation>Procesa las celdas resultantes en negrita para que el énfasis.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1166"/>
-      <source>Save and Next</source>
-      <translation>Guardar y Siguiente</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1172"/>
-      <source>If checked, clicking 'Save' will automatically load the next statement for editing.</source>
-      <translation>Si está marcado, al hacer clic en 'Guardar' se cargará automáticamente el siguiente comando para editar.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1173"/>
-      <source>Save</source>
-      <translation>Guardar</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1177"/>
-      <source>Save changes to this statement and close the statement editor.</source>
-      <translation>Guardar cambios en este comando y cerrar el editor de sentencias.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1178"/>
-      <source>Discard</source>
-      <translation>Descartar</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1182"/>
-      <source>Discard all changes made in the statement editor.</source>
-      <translation>Descartar todos los cambios realizados en el editor de sentencias.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1288"/>
-      <source>--- Select a Query Preset ---</source>
-      <translation>--- Seleccione un ajuste de consulta ---</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1291"/>
-      <source>--- Load a Report Template ---</source>
-      <translation>--- Cargar una plantilla de informe ---</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1327"/>
-      <source>Double-click to edit description in place.</source>
-      <translation>Haga doble clic para editar la descripción en su lugar.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1342"/>
-      <source>The first statement cannot be pipelined.</source>
-      <translation>La primera declaración no puede ser pipelined.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1348"/>
-      <source>Toggles whether to use the previous statement's results as input</source>
-      <translation>Cambia si usar los resultados de la sentencia anterior como entrada</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1364"/>
-      <source>Toggles whether to use this statement's Description as a section header</source>
-      <translation>Cambia si quieres usar la descripción de esta declaración como un encabezado de sección</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1380"/>
-      <source>Toggles whether to include this statement's column names in the report</source>
-      <translation>Cambia si incluir los nombres de columnas de esta declaración en el informe</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1490"/>
-      <source>New Statement {len(self.obj.Proxy.live_statements) + 1}</source>
-      <translation>Nueva declaración {len(self.obj.Proxy.live_statements) + 1}</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1518"/>
-      <source>Remove Statement</source>
-      <translation>Eliminar declaración</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1521"/>
-      <source>Are you sure you want to remove statement '{description_to_remove}'?</source>
-      <translation>¿Está seguro que desea eliminar {description_to_remove}?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1544"/>
-      <source>Copy of {original.description}</source>
-      <translation>Copia de {original.description}</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1601"/>
-      <source>&lt;i&gt;Typing...&lt;/i&gt;</source>
-      <translation>&lt;i&gt;Escribiendo...&lt;/i&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1635"/>
-      <source>Overwrite Query?</source>
-      <translation>¿Sobrescribir consulta?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1639"/>
-      <source>Loading a preset will overwrite the current text in the query editor. Continue?</source>
-      <translation>Cargando un preset sobrescribirá el texto actual en el editor de consultas. ¿Continuar?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1660"/>
-      <source>Empty Query</source>
-      <translation>Consulta vacía</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1661"/>
-      <source>Cannot save an empty query as a preset.</source>
-      <translation>No se puede guardar una consulta vacía como predefinida.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1666"/>
-      <source>Save Query Preset</source>
-      <translation>Seleccione un ajuste de consulta</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1667"/>
-      <source>Preset Name:</source>
-      <translation>Nombre de preconfiguración:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1693"/>
-      <source>Overwrite Report?</source>
-      <translation>¿Sobrescribir Reporte?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1697"/>
-      <source>Loading a template will replace all current statements in this report. Continue?</source>
-      <translation>Cargar una plantilla reemplazará todas las sentencias actuales de este informe. ¿Continuar?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1729"/>
-      <source>Empty Report</source>
-      <translation>Informe vacío</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1730"/>
-      <source>Cannot save an empty report as a template.</source>
-      <translation>No se puede guardar una consulta vacía como predefinida.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1735"/>
-      <source>Save Report Template</source>
-      <translation>Cargar una plantilla de informe</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1736"/>
-      <source>Template Name:</source>
-      <translation>Nombre de la plantilla:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1773"/>
-      <source> (from {input_count} in pipeline)</source>
-      <translation> (de {input_count} en el flujo de procesamiento)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1788"/>
-      <source>Query is incomplete</source>
-      <translation>La consulta está incompleta</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1865"/>
-      <source>Query incomplete or typing...</source>
-      <translation>Consulta incompleta o escribiendo...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2036"/>
-      <source>Hide Preview</source>
-      <translation>Ocultar vista previa</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2111"/>
-      <source>Unsaved Changes</source>
-      <translation>Cambios no guardados</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2115"/>
-      <source>You have unsaved changes in the statement editor. Do you want to save them before closing?</source>
-      <translation>Tiene cambios sin guardar en el editor de sentencias. ¿Desea guardarlos antes de cerrarlo?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2172"/>
-      <source>Manage {mode.capitalize()} Presets</source>
-      <translation>Administrar ajustes {mode.capitalize()}</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2182"/>
-      <source>Rename...</source>
-      <translation>Renombrar...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2183"/>
-      <source>Delete</source>
-      <translation>Borrar</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2184"/>
-      <source>Edit Source...</source>
-      <translation>Editar origen...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2185"/>
-      <source>Close</source>
-      <translation>Cerrar</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2247"/>
-      <source>This action is only available for user-created presets.</source>
-      <translation>Esta acción sólo está disponible para los presets creados por el usuario.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2262"/>
-      <source>Rename Preset</source>
-      <translation>Renombrar ajuste preestablecido</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2263"/>
-      <source>New name:</source>
-      <translation>Nuevo nombre:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2270"/>
-      <source>Name Conflict</source>
-      <translation>Conflicto de nombres</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2274"/>
-      <source>A preset with this name already exists. Please choose a different name.</source>
-      <translation>Ya existe un preset con este nombre. Por favor, elija un nombre diferente.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2289"/>
-      <source>Delete Preset</source>
-      <translation>Eliminar ajuste preestablecido</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2292"/>
-      <source>Are you sure you want to permanently delete the preset '{name}'?</source>
-      <translation>¿Está seguro que desea eliminar permanentemente el preset '{name}'?</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2311"/>
-      <source>File Not Found</source>
-      <translation>Archivo no encontrado</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2312"/>
-      <source>Could not find the preset file at:
-{file_path}</source>
-      <translation>No se pudo encontrar el archivo preestablecido en:
-{file_path}</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2321"/>
-      <source>Could Not Open File</source>
-      <translation>No se pudo abrir el archivo</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2325"/>
-      <source>FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system.</source>
-      <translation>FreeCAD no pudo abrir el archivo. Por favor, compruebe si tiene un editor de texto predeterminado configurado en su sistema operativo.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="2470"/>
-      <source>BIM SQL Cheatsheet</source>
-      <translation>Cheatsheet BIM SQL</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1496"/>
@@ -6162,9 +5647,9 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Objeto no tiene atributos configurables de IFC</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="2536"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../ArchComponent.py" line="2506"/>
       <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
@@ -6219,28 +5704,28 @@ Creación de planta cancelada.</translation>
       <translation>Crear eje</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="975"/>
+      <location filename="../../ArchAxis.py" line="991"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Distancias (mm) y ángulos (grados) entre ejes</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="978"/>
+      <location filename="../../ArchAxis.py" line="994"/>
       <source>Axis</source>
       <translation>Eje</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="979"/>
+      <location filename="../../ArchAxis.py" line="995"/>
       <source>Distance</source>
       <translation>Distancia</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="980"/>
+      <location filename="../../ArchAxis.py" line="996"/>
       <location filename="../../ArchRoof.py" line="1083"/>
       <source>Angle</source>
       <translation>Ángulo</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="981"/>
+      <location filename="../../ArchAxis.py" line="997"/>
       <source>Label</source>
       <translation>Etiqueta</translation>
     </message>
@@ -6255,22 +5740,22 @@ Creación de planta cancelada.</translation>
       <translation>Importado con éxito</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1117"/>
+      <location filename="../../ArchComponent.py" line="1129"/>
       <source>Error computing the shape of this object</source>
       <translation>Error al calcular la forma del objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1143"/>
+      <location filename="../../ArchComponent.py" line="1155"/>
       <source>has no solid</source>
       <translation>No tiene ningún sólido</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1152"/>
+      <location filename="../../ArchComponent.py" line="1164"/>
       <source>has an invalid shape</source>
       <translation>Tiene una forma no válida</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1156"/>
+      <location filename="../../ArchComponent.py" line="1168"/>
       <location filename="../../ArchPrecast.py" line="192"/>
       <location filename="../../ArchPrecast.py" line="324"/>
       <location filename="../../ArchPrecast.py" line="444"/>
@@ -6281,150 +5766,157 @@ Creación de planta cancelada.</translation>
       <translation>Tiene una forma nula</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1541"/>
+      <location filename="../../ArchComponent.py" line="1562"/>
       <source>Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
 </source>
       <translation>Error calculando áreas para {self.obj.Label}: no se puede proyectar o hacer cara con {face.normalAt(0, 0)}. Los valores de área se restablecerán a 0.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2431"/>
+      <location filename="../../ArchComponent.py" line="2461"/>
       <source>Components of This Object</source>
       <translation>Componentes de este objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2441"/>
+      <location filename="../../ArchComponent.py" line="2471"/>
       <source>Edit IFC Properties</source>
       <translation>Editar propiedades IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2442"/>
+      <location filename="../../ArchComponent.py" line="2472"/>
       <source>Edit Standard Code</source>
       <translation>Editar código estándar</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1295"/>
+      <location filename="../../ArchComponent.py" line="1307"/>
       <source>Wrong base type</source>
       <translation>Tipo de base incorrecto</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1975"/>
       <location filename="../../ArchSite.py" line="1594"/>
       <source>Toggle Subcomponents</source>
       <translation>Alternar subcomponentes</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2075"/>
+      <location filename="../../ArchComponent.py" line="2105"/>
       <source>Closing Sketch edit</source>
       <translation>Cerrando edición del sketch</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2428"/>
+      <location filename="../../ArchComponent.py" line="2458"/>
       <location filename="../../ArchCommands.py" line="315"/>
       <source>Component</source>
       <translation>Componente</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2099"/>
+      <location filename="../../ArchComponent.py" line="2129"/>
       <source>Select a base object</source>
       <translation>Seleccione un objeto base</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1420"/>
+      <location filename="../../ArchComponent.py" line="1432"/>
       <source>Could not project face{face_name} from {self.obj.Label}
 </source>
       <translation>No se pudo proyectar la cara{face_name} de {self.obj.Label}
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1433"/>
+      <location filename="../../ArchComponent.py" line="1445"/>
       <source>Could not determine if face{face_name} from {self.obj.Label} is vertical: normalAt() failed
 </source>
       <translation>No se pudo determinar si la cara{face_name} de {self.obj.Label} es vertical: normalAt() falló
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1521"/>
+      <location filename="../../ArchComponent.py" line="1534"/>
       <source>Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
 </source>
       <translation>Error calculando áreas para {self.obj.Label}: no se puede proyectar o hacer cara con {,)}. Los valores de área se restablecerán a 0.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2432"/>
+      <location filename="../../ArchComponent.py" line="1582"/>
+      <source>Error computing areas for {self.obj.Label}: unable to combine projected horizontal faces. Area values will be reset to 0.
+</source>
+      <translation type="unfinished">Error computing areas for {self.obj.Label}: unable to combine projected horizontal faces. Area values will be reset to 0.
+</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2462"/>
       <source>Base component</source>
       <translation>Componente de base</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2433"/>
+      <location filename="../../ArchComponent.py" line="2463"/>
       <source>Additions</source>
       <translation>Adiciones</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2434"/>
+      <location filename="../../ArchComponent.py" line="2464"/>
       <source>Subtractions</source>
       <translation>Sustracciones</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2435"/>
+      <location filename="../../ArchComponent.py" line="2465"/>
       <source>Objects</source>
       <translation>Objetos</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2438"/>
+      <location filename="../../ArchComponent.py" line="2468"/>
       <source>Fixtures</source>
       <translation>Fijaciones</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2439"/>
+      <location filename="../../ArchComponent.py" line="2469"/>
       <source>Group</source>
       <translation>Grupo</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2440"/>
+      <location filename="../../ArchComponent.py" line="2470"/>
       <source>Hosts</source>
       <translation>Hosts</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2504"/>
+      <location filename="../../ArchComponent.py" line="2534"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Property</source>
       <translation>Propiedad</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2512"/>
+      <location filename="../../ArchComponent.py" line="2542"/>
       <source>Add property</source>
       <translation>Añadir propiedad</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2516"/>
+      <location filename="../../ArchComponent.py" line="2546"/>
       <source>Add property set</source>
       <translation>Añadir conjunto de propiedades</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2517"/>
+      <location filename="../../ArchComponent.py" line="2547"/>
       <source>New...</source>
       <translation>Nuevo...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2666"/>
+      <location filename="../../ArchComponent.py" line="2696"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
       <source>New property</source>
       <translation>Nueva propiedad</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2703"/>
+      <location filename="../../ArchComponent.py" line="2733"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New property set</source>
       <translation>Nuevo conjunto de propiedades</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2783"/>
+      <location filename="../../ArchComponent.py" line="2813"/>
       <source>Options</source>
       <translation>Opciones</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2924"/>
+      <location filename="../../ArchComponent.py" line="2954"/>
       <source>Error saving property</source>
       <translation>Error al guardar la propiedad</translation>
     </message>
@@ -6982,6 +6474,105 @@ Creación de Edificio cancelada.</translation>
       <translation>Equipamiento de Energía</translation>
     </message>
     <message>
+      <location filename="../../ArchTruss.py" line="414"/>
+      <source>Height Start</source>
+      <translation>Altura inicial</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="415"/>
+      <source>Height End</source>
+      <translation>Altura final</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="416"/>
+      <source>Strut Height</source>
+      <translation>Altura de corte</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="417"/>
+      <source>Strut Width</source>
+      <translation>Ancho de corte</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="418"/>
+      <source>Rod Sections</source>
+      <translation>Secciones de Barra</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="419"/>
+      <source>Rod Size</source>
+      <translation>Tamaño de Barra</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="420"/>
+      <source>Rod Mode</source>
+      <translation>Modo de Barra</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="421"/>
+      <source>Rod Type</source>
+      <translation>Tipo de Barra</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="732"/>
+      <source>Vertical Sections</source>
+      <translation>Secciones verticales</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="733"/>
+      <source>Horizontal Sections</source>
+      <translation>Secciones horizontales</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="734"/>
+      <source>Vertical Mullion Width</source>
+      <translation>Ancho de Mullion vertical</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="737"/>
+      <source>Vertical Mullion Height</source>
+      <translation>Altura vertical de Mullion</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="741"/>
+      <source>Horizontal Mullion Width</source>
+      <translation>Ancho de Mullion horizontal</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="745"/>
+      <source>Horizontal Mullion Height</source>
+      <translation>Altura horizontal de Mullion</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="747"/>
+      <source>Panel Thickness</source>
+      <translation>Grosor del panel</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="748"/>
+      <source>Refine</source>
+      <translation>Refinar</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2255"/>
+      <location filename="../../ArchSql.py" line="2282"/>
+      <location filename="../../ArchSql.py" line="2304"/>
+      <location filename="../../ArchReport.py" line="1045"/>
+      <location filename="../../ArchReport.py" line="1867"/>
+      <source>Ready</source>
+      <translation>Preparado</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2312"/>
+      <source>Typing...</source>
+      <translation>Escribiendo...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSql.py" line="2320"/>
+      <source>Query is valid, but found 0 objects.</source>
+      <translation>La consulta es válida, pero se encontraron 0 objetos.</translation>
+    </message>
+    <message>
       <location filename="../../ArchCovering.py" line="507"/>
       <source>The specified tile size is too small to be modeled.</source>
       <translation>El tamaño de la baldosa especificado es demasiado pequeño para poder ser modelado.</translation>
@@ -7010,25 +6601,6 @@ Creación de Edificio cancelada.</translation>
       <location filename="../../ArchCovering.py" line="719"/>
       <source>A hole is larger than the shrunken area. Skipping this hole.</source>
       <translation>El agujero es más grande que el área encogida. Se omite este agujero.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2255"/>
-      <location filename="../../ArchSql.py" line="2282"/>
-      <location filename="../../ArchSql.py" line="2304"/>
-      <location filename="../../ArchReport.py" line="1045"/>
-      <location filename="../../ArchReport.py" line="1867"/>
-      <source>Ready</source>
-      <translation>Preparado</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2312"/>
-      <source>Typing...</source>
-      <translation>Escribiendo...</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSql.py" line="2320"/>
-      <source>Query is valid, but found 0 objects.</source>
-      <translation>La consulta es válida, pero se encontraron 0 objetos.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1053"/>
@@ -7179,84 +6751,519 @@ The ladybug or pysolar Python module is required.</source>
 Se requiere el módulo Python Pybug o pysolar.</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="732"/>
-      <source>Vertical Sections</source>
-      <translation>Secciones verticales</translation>
+      <location filename="../../ArchReport.py" line="879"/>
+      <location filename="../../ArchReport.py" line="1873"/>
+      <source>Report Statements</source>
+      <translation>Informes</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="733"/>
-      <source>Horizontal Sections</source>
-      <translation>Secciones horizontales</translation>
+      <location filename="../../ArchReport.py" line="890"/>
+      <source>Header</source>
+      <translation>Título</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="734"/>
-      <source>Vertical Mullion Width</source>
-      <translation>Ancho de Mullion vertical</translation>
+      <location filename="../../ArchReport.py" line="891"/>
+      <source>Cols</source>
+      <translation>Columnas</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="737"/>
-      <source>Vertical Mullion Height</source>
-      <translation>Altura vertical de Mullion</translation>
+      <location filename="../../ArchReport.py" line="892"/>
+      <source>Status</source>
+      <translation>Estado</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="741"/>
-      <source>Horizontal Mullion Width</source>
-      <translation>Ancho de Mullion horizontal</translation>
+      <location filename="../../ArchReport.py" line="899"/>
+      <source>A user-defined description for this statement.</source>
+      <translation>Una descripción definida por el usuario para esta declaración.</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="745"/>
-      <source>Horizontal Mullion Height</source>
-      <translation>Altura horizontal de Mullion</translation>
+      <location filename="../../ArchReport.py" line="905"/>
+      <source>If checked, this statement will use the results of the previous statement as its data source.</source>
+      <translation>Si está marcado, este comando utilizará los resultados del comando anterior como su fuente de datos.</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="747"/>
-      <source>Panel Thickness</source>
-      <translation>Grosor del panel</translation>
+      <location filename="../../ArchReport.py" line="911"/>
+      <source>If checked, the Description will be used as a section header in the report.</source>
+      <translation>Si está marcada, la descripción se utilizará como un encabezado de sección en el informe.</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="748"/>
-      <source>Refine</source>
-      <translation>Refinar</translation>
+      <location filename="../../ArchReport.py" line="917"/>
+      <source>If checked, the column names (e.g., 'Label', 'Area') will be included in the report.</source>
+      <translation>Si está marcado, los nombres de las columnas (por ejemplo, 'Etiqueta', 'Área') se incluirán en el informe.</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="414"/>
-      <source>Height Start</source>
-      <translation>Altura inicial</translation>
+      <location filename="../../ArchReport.py" line="920"/>
+      <source>Indicates the status of the SQL query.</source>
+      <translation>Indica el estado de la consulta SQL.</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="415"/>
-      <source>Height End</source>
-      <translation>Altura final</translation>
+      <location filename="../../ArchReport.py" line="953"/>
+      <source>Load a full report template, replacing all current statements.</source>
+      <translation>Cargar una plantilla de informe completa, reemplazando todas las sentencias actuales.</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="416"/>
-      <source>Strut Height</source>
-      <translation>Altura de corte</translation>
+      <location filename="../../ArchReport.py" line="956"/>
+      <location filename="../../ArchReport.py" line="1027"/>
+      <source>Manage...</source>
+      <translation>Administrar...</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="417"/>
-      <source>Strut Width</source>
-      <translation>Ancho de corte</translation>
+      <location filename="../../ArchReport.py" line="959"/>
+      <source>Rename, delete, or edit saved report templates.</source>
+      <translation>Renombrar, eliminar o editar plantillas de informe guardadas.</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="418"/>
-      <source>Rod Sections</source>
-      <translation>Secciones de Barra</translation>
+      <location filename="../../ArchReport.py" line="960"/>
+      <source>Save as Template...</source>
+      <translation>Guardar como plantilla...</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="419"/>
-      <source>Rod Size</source>
-      <translation>Tamaño de Barra</translation>
+      <location filename="../../ArchReport.py" line="963"/>
+      <source>Save the current set of statements as a new report template.</source>
+      <translation>Guardar el conjunto actual de sentencias como una nueva plantilla de informe.</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="420"/>
-      <source>Rod Mode</source>
-      <translation>Modo de Barra</translation>
+      <location filename="../../ArchReport.py" line="968"/>
+      <source>Report Templates:</source>
+      <translation>Plantillas de Reportes:</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="421"/>
-      <source>Rod Type</source>
-      <translation>Tipo de Barra</translation>
+      <location filename="../../ArchReport.py" line="974"/>
+      <source>Add Statement</source>
+      <translation>Añadir declaración</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="977"/>
+      <source>Add a new blank statement to the report.</source>
+      <translation>Añadir una nueva declaración en blanco al informe.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="980"/>
+      <source>Remove Selected</source>
+      <translation>Eliminar selección</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="983"/>
+      <source>Remove the selected statement from the report.</source>
+      <translation>Eliminar la declaración seleccionada del informe.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="986"/>
+      <source>Duplicate Selected</source>
+      <translation>Duplicar selección</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="989"/>
+      <source>Create a copy of the selected statement.</source>
+      <translation>Crea un clon de los objetos seleccionados.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="992"/>
+      <source>Edit Selected</source>
+      <translation>Editar selección</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="995"/>
+      <source>Load the selected statement into the editor below.</source>
+      <translation>Carga la instrucción seleccionada en el editor de abajo.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1006"/>
+      <source>Statement Editor</source>
+      <translation>Editor de adjuntos</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1017"/>
+      <source>Description:</source>
+      <translation>Descripción:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1024"/>
+      <source>Load a saved query preset into the editor.</source>
+      <translation>Carga un conjunto de consultas guardado en el editor.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1030"/>
+      <source>Rename, delete, or edit your saved query presets.</source>
+      <translation>Cambie el nombre, elimine o edite los preajustes de consultas guardados.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1031"/>
+      <source>Save...</source>
+      <translation>Guardar...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1034"/>
+      <source>Save the current query as a new preset.</source>
+      <translation>Guardar el estilo actual como pre ajuste.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1038"/>
+      <source>Query Presets:</source>
+      <translation>Preajustes de consulta:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1043"/>
+      <source>SQL Query:</source>
+      <translation>Consulta SQL:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1073"/>
+      <location filename="../../ArchReport.py" line="2042"/>
+      <source>Show Preview</source>
+      <translation>Mostrar Vista Previa</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1077"/>
+      <source>Show a preview pane to test the current query in isolation.</source>
+      <translation>Mostrar un panel de vista previa para probar la consulta actual de forma aislada.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1080"/>
+      <source>SQL Cheatsheet</source>
+      <translation>Cheatsheet SQL</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1084"/>
+      <source>Show a cheatsheet of the supported SQL syntax.</source>
+      <translation>Mostrar una hoja de trampa de la sintaxis SQL soportada.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1097"/>
+      <source>Refresh</source>
+      <translation>Actualizar pantalla</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1101"/>
+      <source>Re-run the query and update the preview table.</source>
+      <translation>Vuelva a ejecutar la consulta y actualice la tabla de vista previa.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1103"/>
+      <source>&lt;b&gt;Query Results Preview&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Vista previa de resultados&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1119"/>
+      <source>Display Options</source>
+      <translation>Opciones de visualización</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1122"/>
+      <source>Use as Pipeline Step</source>
+      <translation>Usar como paso de tubería</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1128"/>
+      <source>When checked, this statement will use the results of the previous statement as its data source.</source>
+      <translation>Si está marcado, este comando utilizará los resultados del comando anterior como su fuente de datos.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1131"/>
+      <source>Use Description as Section Header</source>
+      <translation>Usar descripción como cabecera de sección</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1137"/>
+      <source>When checked, the statement's description will be written as a merged header row before its results.</source>
+      <translation>Cuando se selecciona, la descripción de la sentencia se escribirá como una fila de cabecera fusionada antes de sus resultados.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1140"/>
+      <source>Include Column Names as Headers</source>
+      <translation>Incluye nombres de columna como cabeceras</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1146"/>
+      <source>Include the column headers (Label, IfcType, ...) in the spreadsheet output.</source>
+      <translation>Incluye las cabeceras de columna (Label, IfcType, ...) en la salida de la hoja de cálculo.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1147"/>
+      <source>Add Empty Row After</source>
+      <translation>Añadir fila vacía después de</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1150"/>
+      <source>Insert one empty row after this statement's results.</source>
+      <translation>Insertar una fila vacía después de los resultados de esta declaración.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1153"/>
+      <source>Print Results in Bold</source>
+      <translation>Imprimir resultados en negrita</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1156"/>
+      <source>Render the result cells in bold font for emphasis.</source>
+      <translation>Procesa las celdas resultantes en negrita para que el énfasis.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1166"/>
+      <source>Save and Next</source>
+      <translation>Guardar y Siguiente</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1172"/>
+      <source>If checked, clicking 'Save' will automatically load the next statement for editing.</source>
+      <translation>Si está marcado, al hacer clic en 'Guardar' se cargará automáticamente el siguiente comando para editar.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1173"/>
+      <source>Save</source>
+      <translation>Guardar</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1177"/>
+      <source>Save changes to this statement and close the statement editor.</source>
+      <translation>Guardar cambios en este comando y cerrar el editor de sentencias.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1178"/>
+      <source>Discard</source>
+      <translation>Descartar</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1182"/>
+      <source>Discard all changes made in the statement editor.</source>
+      <translation>Descartar todos los cambios realizados en el editor de sentencias.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1288"/>
+      <source>--- Select a Query Preset ---</source>
+      <translation>--- Seleccione un ajuste de consulta ---</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1291"/>
+      <source>--- Load a Report Template ---</source>
+      <translation>--- Cargar una plantilla de informe ---</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1327"/>
+      <source>Double-click to edit description in place.</source>
+      <translation>Haga doble clic para editar la descripción en su lugar.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1342"/>
+      <source>The first statement cannot be pipelined.</source>
+      <translation>La primera declaración no puede ser pipelined.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1348"/>
+      <source>Toggles whether to use the previous statement's results as input</source>
+      <translation>Cambia si usar los resultados de la sentencia anterior como entrada</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1364"/>
+      <source>Toggles whether to use this statement's Description as a section header</source>
+      <translation>Cambia si quieres usar la descripción de esta declaración como un encabezado de sección</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1380"/>
+      <source>Toggles whether to include this statement's column names in the report</source>
+      <translation>Cambia si incluir los nombres de columnas de esta declaración en el informe</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1490"/>
+      <source>New Statement {len(self.obj.Proxy.live_statements) + 1}</source>
+      <translation>Nueva declaración {len(self.obj.Proxy.live_statements) + 1}</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1518"/>
+      <source>Remove Statement</source>
+      <translation>Eliminar declaración</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1521"/>
+      <source>Are you sure you want to remove statement '{description_to_remove}'?</source>
+      <translation>¿Está seguro que desea eliminar {description_to_remove}?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1544"/>
+      <source>Copy of {original.description}</source>
+      <translation>Copia de {original.description}</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1601"/>
+      <source>&lt;i&gt;Typing...&lt;/i&gt;</source>
+      <translation>&lt;i&gt;Escribiendo...&lt;/i&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1635"/>
+      <source>Overwrite Query?</source>
+      <translation>¿Sobrescribir consulta?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1639"/>
+      <source>Loading a preset will overwrite the current text in the query editor. Continue?</source>
+      <translation>Cargando un preset sobrescribirá el texto actual en el editor de consultas. ¿Continuar?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1660"/>
+      <source>Empty Query</source>
+      <translation>Consulta vacía</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1661"/>
+      <source>Cannot save an empty query as a preset.</source>
+      <translation>No se puede guardar una consulta vacía como predefinida.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1666"/>
+      <source>Save Query Preset</source>
+      <translation>Seleccione un ajuste de consulta</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1667"/>
+      <source>Preset Name:</source>
+      <translation>Nombre de preconfiguración:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1693"/>
+      <source>Overwrite Report?</source>
+      <translation>¿Sobrescribir Reporte?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1697"/>
+      <source>Loading a template will replace all current statements in this report. Continue?</source>
+      <translation>Cargar una plantilla reemplazará todas las sentencias actuales de este informe. ¿Continuar?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1729"/>
+      <source>Empty Report</source>
+      <translation>Informe vacío</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1730"/>
+      <source>Cannot save an empty report as a template.</source>
+      <translation>No se puede guardar una consulta vacía como predefinida.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1735"/>
+      <source>Save Report Template</source>
+      <translation>Cargar una plantilla de informe</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1736"/>
+      <source>Template Name:</source>
+      <translation>Nombre de la plantilla:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1773"/>
+      <source> (from {input_count} in pipeline)</source>
+      <translation> (de {input_count} en el flujo de procesamiento)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1788"/>
+      <source>Query is incomplete</source>
+      <translation>La consulta está incompleta</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1865"/>
+      <source>Query incomplete or typing...</source>
+      <translation>Consulta incompleta o escribiendo...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2036"/>
+      <source>Hide Preview</source>
+      <translation>Ocultar vista previa</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2111"/>
+      <source>Unsaved Changes</source>
+      <translation>Cambios no guardados</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2115"/>
+      <source>You have unsaved changes in the statement editor. Do you want to save them before closing?</source>
+      <translation>Tiene cambios sin guardar en el editor de sentencias. ¿Desea guardarlos antes de cerrarlo?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2172"/>
+      <source>Manage {mode.capitalize()} Presets</source>
+      <translation>Administrar ajustes {mode.capitalize()}</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2182"/>
+      <source>Rename...</source>
+      <translation>Renombrar...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2183"/>
+      <source>Delete</source>
+      <translation>Borrar</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2184"/>
+      <source>Edit Source...</source>
+      <translation>Editar origen...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2185"/>
+      <source>Close</source>
+      <translation>Cerrar</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2247"/>
+      <source>This action is only available for user-created presets.</source>
+      <translation>Esta acción sólo está disponible para los presets creados por el usuario.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2262"/>
+      <source>Rename Preset</source>
+      <translation>Renombrar ajuste preestablecido</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2263"/>
+      <source>New name:</source>
+      <translation>Nuevo nombre:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2270"/>
+      <source>Name Conflict</source>
+      <translation>Conflicto de nombres</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2274"/>
+      <source>A preset with this name already exists. Please choose a different name.</source>
+      <translation>Ya existe un preset con este nombre. Por favor, elija un nombre diferente.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2289"/>
+      <source>Delete Preset</source>
+      <translation>Eliminar ajuste preestablecido</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2292"/>
+      <source>Are you sure you want to permanently delete the preset '{name}'?</source>
+      <translation>¿Está seguro que desea eliminar permanentemente el preset '{name}'?</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2311"/>
+      <source>File Not Found</source>
+      <translation>Archivo no encontrado</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2312"/>
+      <source>Could not find the preset file at:
+{file_path}</source>
+      <translation>No se pudo encontrar el archivo preestablecido en:
+{file_path}</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2321"/>
+      <source>Could Not Open File</source>
+      <translation>No se pudo abrir el archivo</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2325"/>
+      <source>FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system.</source>
+      <translation>FreeCAD no pudo abrir el archivo. Por favor, compruebe si tiene un editor de texto predeterminado configurado en su sistema operativo.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="2470"/>
+      <source>BIM SQL Cheatsheet</source>
+      <translation>Cheatsheet BIM SQL</translation>
     </message>
   </context>
   <context>
@@ -7351,9 +7358,9 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>La altura o profundidad de extrusión de este elemento. Mantener 0 para automático</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="272"/>
       <location filename="../../ArchPanel.py" line="209"/>
       <location filename="../../ArchStructure.py" line="790"/>
+      <location filename="../../ArchWall.py" line="272"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Dirección de extrusión normal de este objeto (mantener (0,0,0) para normal automática)</translation>
     </message>
@@ -7386,8 +7393,8 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>Aristas (o grupo de aristas) seleccionadas del ArchSketch base, para usar en la creación de la forma de esta Estructura BIM (en lugar de usar todas las aristas de la forma base por defecto). La entrada son números de índice de aristas o grupos.</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="547"/>
       <location filename="../../ArchStructure.py" line="882"/>
+      <location filename="../../ArchStairs.py" line="547"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
       <translation>Seleccione el conjunto de propiedades definido por el usuario a utilizar para crear la forma de variante, capas de la pared de Arch con el mismo dibujo de arquitectura </translation>
     </message>
@@ -7442,8 +7449,8 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>La URL de la página del producto de este equipo</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="113"/>
       <location filename="../../ArchMaterial.py" line="208"/>
+      <location filename="../../ArchEquipment.py" line="113"/>
       <source>A standard code (MasterFormat, OmniClass,…)</source>
       <translation>Un código estándar (MasterFormat, OmniClass,…)</translation>
     </message>
@@ -7465,8 +7472,8 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>Tipo de este edificio</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="236"/>
       <location filename="../../ArchBuildingPart.py" line="230"/>
+      <location filename="../../ArchFloor.py" line="236"/>
       <source>The height of this object</source>
       <translation>La altura de este objeto</translation>
     </message>
@@ -7481,26 +7488,26 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>El nivel del punto (0,0,0) de este nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="244"/>
       <location filename="../../ArchBuildingPart.py" line="258"/>
+      <location filename="../../ArchFloor.py" line="244"/>
       <source>The computed floor area of this floor</source>
       <translation>El área calculada de esta planta</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="238"/>
+      <location filename="../../ArchComponent.py" line="250"/>
       <location filename="../../ArchBuildingPart.py" line="266"/>
       <source>An optional description for this component</source>
       <translation>Una descripción opcional para este componente</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="246"/>
+      <location filename="../../ArchComponent.py" line="258"/>
       <location filename="../../ArchBuildingPart.py" line="274"/>
       <source>An optional tag for this component</source>
       <translation>Una etiqueta opcional para este componente</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="970"/>
       <location filename="../../ArchBuildingPart.py" line="282"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <source>The shape of this object</source>
       <translation>La forma de este objeto</translation>
     </message>
@@ -7520,8 +7527,8 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>Un mapa MaterialName:SolidIndexesList que relaciona nombres de materiales con índices de sólido a ser usado al referenciar este objeto desde otros archivos</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1142"/>
       <location filename="../../ArchBuildingPart.py" line="547"/>
+      <location filename="../../ArchSectionPlane.py" line="1142"/>
       <source>The line width of this object</source>
       <translation>El ancho de línea de este objeto</translation>
     </message>
@@ -7819,19 +7826,19 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>Una URL que muestra este sitio en un sitio web de mapeo</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="220"/>
+      <location filename="../../ArchComponent.py" line="232"/>
       <location filename="../../ArchSite.py" line="656"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Otras formas que están anexadas a este objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="230"/>
+      <location filename="../../ArchComponent.py" line="242"/>
       <location filename="../../ArchSite.py" line="666"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Otras formas que están extraídas de este objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="325"/>
+      <location filename="../../ArchComponent.py" line="337"/>
       <location filename="../../ArchSite.py" line="676"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>El área de la proyección de este objeto sobre el plano XY</translation>
@@ -9074,8 +9081,8 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>Si es verdadero, se añaden líneas adicionales con cada objeto individual a los resultados</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="253"/>
       <location filename="../../ArchSectionPlane.py" line="962"/>
+      <location filename="../../ArchFloor.py" line="253"/>
       <source>The placement of this object</source>
       <translation>La posición de este objeto</translation>
     </message>
@@ -9165,58 +9172,58 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>Una transformación para aplicar a cada etiqueta</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="204"/>
+      <location filename="../../ArchComponent.py" line="216"/>
       <source>The base object this component is built upon</source>
       <translation>El objeto base sobre el que se construye este componente</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="212"/>
+      <location filename="../../ArchComponent.py" line="224"/>
       <source>The object this component is cloning</source>
       <translation>El objeto de este componente se está clonando</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="257"/>
+      <location filename="../../ArchComponent.py" line="269"/>
       <source>An optional standard (OmniClass, etc.) code for this component</source>
       <translation>Un código estándar opcional (OmniClass, etc...) para este componente</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="265"/>
-      <location filename="../../ArchComponent.py" line="276"/>
+      <location filename="../../ArchComponent.py" line="277"/>
+      <location filename="../../ArchComponent.py" line="288"/>
       <source>A material for this object</source>
       <translation>Un material para este objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="293"/>
+      <location filename="../../ArchComponent.py" line="305"/>
       <source>Specifies if moving this object moves its base instead</source>
       <translation>Especifica si mover este objeto mueve su base en su lugar</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="305"/>
+      <location filename="../../ArchComponent.py" line="317"/>
       <source>Specifies if this object must move together when its host is moved</source>
       <translation>Especifica si este objeto tiene que moverse junto, cuando su huésped es movido</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="314"/>
+      <location filename="../../ArchComponent.py" line="326"/>
       <source>The area of all vertical faces of this object</source>
       <translation>El área de todas caras verticales de este objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="334"/>
+      <location filename="../../ArchComponent.py" line="346"/>
       <source>The perimeter length of the horizontal area</source>
       <translation>La longitud del perímetro del área horizontal</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="345"/>
+      <location filename="../../ArchComponent.py" line="357"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
       <translation>Una malla de alta resolución o forma opcional para este objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="356"/>
+      <location filename="../../ArchComponent.py" line="368"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
       <translation>Un eje o sistemas de ejes opcional en el cual este objeto se debe duplicar</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1598"/>
+      <location filename="../../ArchComponent.py" line="1628"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Usa el color del material como color de forma de este objeto, si está disponible</translation>
     </message>
@@ -9362,14 +9369,14 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>Mostrar la etiqueta en la vista 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="579"/>
       <location filename="../../ArchSectionPlane.py" line="1196"/>
+      <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>El nombre de la fuente</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="597"/>
       <location filename="../../ArchSectionPlane.py" line="1205"/>
+      <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>El tamaño de la fuente de texto</translation>
     </message>
@@ -9589,10 +9596,15 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>Seleccione el conjunto de propiedades definido por el usuario a utilizar para crear la forma de variante, capas de la pared de Arch con el mismo dibujo de arquitectura </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="381"/>
       <location filename="../../ArchStructure.py" line="841"/>
+      <location filename="../../ArchWall.py" line="381"/>
       <source>Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</source>
       <translation>Usar los datos Base ArchSketch (si se utiliza) como (anchuras, alineaciones, desfases) en lugar de las propiedades del muro</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="62"/>
+      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
+      <translation type="unfinished">Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="104"/>
@@ -9761,11 +9773,6 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <location filename="../../ArchReport.py" line="530"/>
       <source>The name of the BIM Report that uses this spreadsheet</source>
       <translation>El nombre del informe BIM que utiliza esta hoja de cálculo</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="62"/>
-      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
-      <translation type="unfinished">Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</translation>
     </message>
   </context>
   <context>
@@ -10616,25 +10623,20 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
       <translation>Ajuste</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="153"/>
-      <source>Box Dimensions</source>
-      <translation>Dimensiones de la caja</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimBox.py" line="156"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
+      <location filename="../../bimcommands/BimBox.py" line="156"/>
       <source>Length</source>
       <translation>Longitud</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="165"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
+      <location filename="../../bimcommands/BimBox.py" line="165"/>
       <source>Width</source>
       <translation>Ancho</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="174"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
+      <location filename="../../bimcommands/BimBox.py" line="174"/>
       <source>Height</source>
       <translation>Altura</translation>
     </message>
@@ -10726,15 +10728,15 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
       <translation>Crear nuevo multi-material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
       <source>Label</source>
       <translation>Etiqueta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
       <source>IFC type</source>
       <translation>Tipo IFC</translation>
     </message>
@@ -10744,8 +10746,8 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <location filename="../../nativeifc/__init__.py" line="42"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>No se encontró IfcOpenShell en este sistema. El soporte IFC está desactivado</translation>
     </message>
@@ -11441,8 +11443,8 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
       <translation>Plantilla cargada exitosamente en el documento actual</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="438"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="438"/>
       <source>New Group</source>
       <translation>Nuevo grupo</translation>
     </message>
@@ -11900,6 +11902,11 @@ Por favor, compruebe su instalación de FreeCAD o proporcione una plantilla pers
       <source>Select an object to link</source>
       <translation>Seleccione un objeto a clonar</translation>
     </message>
+    <message>
+      <location filename="../../bimcommands/BimBox.py" line="153"/>
+      <source>Box Dimensions</source>
+      <translation>Dimensiones de la caja</translation>
+    </message>
   </context>
   <context>
     <name>Arch_RebarTools</name>
@@ -12101,8 +12108,8 @@ Por favor, compruebe su instalación de FreeCAD o proporcione una plantilla pers
       <translation>Elimina de la papelera todos los objetos que no son usados por ningún otro</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="78"/>
       <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
+      <location filename="../../bimcommands/BimTrash.py" line="78"/>
       <source>Empty Trash</source>
       <translation>Vaciar papelera</translation>
     </message>
@@ -13448,8 +13455,8 @@ Para elegir dónde insertar la vista cuando hay varias páginas disponibles,
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="212"/>
-      <source>XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</source>
-      <translation>Los archivos XML o IFC de varios sistemas de clasificación se pueden descargar desde &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; e instalar en %s</translation>
+      <source>XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications"&gt;https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications&lt;/a&gt; and placed in %s</source>
+      <translation type="unfinished">XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications"&gt;https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications&lt;/a&gt; and placed in %s</translation>
     </message>
   </context>
   <context>
@@ -13458,100 +13465,6 @@ Para elegir dónde insertar la vista cuando hay varias páginas disponibles,
       <location filename="../ui/dialogDiff.ui" line="14"/>
       <source>IFC Difference</source>
       <translation>Diferencia IFC</translation>
-    </message>
-  </context>
-  <context>
-    <name>ArchComponent</name>
-    <message>
-      <location filename="../../ArchWall.py" line="1525"/>
-      <source>Unsupported Base</source>
-      <translation>Base no soportada</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1530"/>
-      <source>The base of this wall is not a single straight line.</source>
-      <translation>La base de esta pared no es una sola línea recta.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1537"/>
-      <source>Removing the base of this complex wall will alter its shape and reset its position.
-
-Do you want to proceed?</source>
-      <translation>Eliminar la base de esta pared compleja alterará su forma y reiniciará su posición.
-
-¿Desea continuar?</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_ArcTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="240"/>
-      <source>Arc Tools</source>
-      <translation>Herramientas de arco</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_SplineTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="252"/>
-      <source>Spline Tools</source>
-      <translation>Herramientas Spline</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_AxisTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="264"/>
-      <source>Axis Tools</source>
-      <translation>Herramientas de ejes</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_OffsetTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="277"/>
-      <source>Offset Tools</source>
-      <translation>Desplazar herramientas</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_ArrayTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="295"/>
-      <source>Array Tools</source>
-      <translation>Herramientas de matriz</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_BooleanTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="308"/>
-      <source>Boolean Tools</source>
-      <translation>Herramientas booleanas</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_IfcManageTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="325"/>
-      <source>IFC Management</source>
-      <translation>Gestión IFC</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_ReportTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="337"/>
-      <source>Report Tools</source>
-      <translation>Herramientas de informe</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_CloneTools</name>
-    <message>
-      <location filename="../../InitGui.py" line="349"/>
-      <source>Cloning Tools</source>
-      <translation>Herramientas de clonación</translation>
     </message>
   </context>
   <context>
@@ -13655,6 +13568,28 @@ Do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>ArchComponent</name>
+    <message>
+      <location filename="../../ArchWall.py" line="1525"/>
+      <source>Unsupported Base</source>
+      <translation>Base no soportada</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1530"/>
+      <source>The base of this wall is not a single straight line.</source>
+      <translation>La base de esta pared no es una sola línea recta.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1537"/>
+      <source>Removing the base of this complex wall will alter its shape and reset its position.
+
+Do you want to proceed?</source>
+      <translation>Eliminar la base de esta pared compleja alterará su forma y reiniciará su posición.
+
+¿Desea continuar?</translation>
+    </message>
+  </context>
+  <context>
     <name>Command</name>
     <message>
       <location filename="../../ArchCoveringGui.py" line="128"/>
@@ -13669,24 +13604,75 @@ Do you want to proceed?</source>
     </message>
   </context>
   <context>
-    <name>BimWall</name>
+    <name>BIM_ArcTools</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="289"/>
-      <source>Wall Trace</source>
-      <translation>Traza de pared</translation>
+      <location filename="../../InitGui.py" line="240"/>
+      <source>Arc Tools</source>
+      <translation>Herramientas de arco</translation>
     </message>
   </context>
   <context>
-    <name>BIM_Covering</name>
+    <name>BIM_SplineTools</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="44"/>
-      <source>Covering</source>
-      <translation>Cubierta</translation>
+      <location filename="../../InitGui.py" line="252"/>
+      <source>Spline Tools</source>
+      <translation>Herramientas Spline</translation>
     </message>
+  </context>
+  <context>
+    <name>BIM_AxisTools</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="47"/>
-      <source>Creates a covering (floor finish, cladding) on a selected face</source>
-      <translation>Crea un revestimiento (acabado de suelo, revestimiento) en una cara seleccionada</translation>
+      <location filename="../../InitGui.py" line="264"/>
+      <source>Axis Tools</source>
+      <translation>Herramientas de ejes</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_OffsetTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="277"/>
+      <source>Offset Tools</source>
+      <translation>Desplazar herramientas</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_ArrayTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="295"/>
+      <source>Array Tools</source>
+      <translation>Herramientas de matriz</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_BooleanTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="308"/>
+      <source>Boolean Tools</source>
+      <translation>Herramientas booleanas</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_IfcManageTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="325"/>
+      <source>IFC Management</source>
+      <translation>Gestión IFC</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_ReportTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="337"/>
+      <source>Report Tools</source>
+      <translation>Herramientas de informe</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_CloneTools</name>
+    <message>
+      <location filename="../../InitGui.py" line="349"/>
+      <source>Cloning Tools</source>
+      <translation>Herramientas de clonación</translation>
     </message>
   </context>
   <context>
@@ -13703,6 +13689,19 @@ Do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>BIM_Covering</name>
+    <message>
+      <location filename="../../bimcommands/BimCovering.py" line="44"/>
+      <source>Covering</source>
+      <translation>Cubierta</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimCovering.py" line="47"/>
+      <source>Creates a covering (floor finish, cladding) on a selected face</source>
+      <translation>Crea un revestimiento (acabado de suelo, revestimiento) en una cara seleccionada</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_LinkMake</name>
     <message>
       <location filename="../../bimcommands/BimLink.py" line="14"/>
@@ -13713,6 +13712,14 @@ Do you want to proceed?</source>
       <location filename="../../bimcommands/BimLink.py" line="18"/>
       <source>Creates a Link to the selected object and immediately enables moving it</source>
       <translation>Crea un enlace al objeto seleccionado e inmediatamente permite moverlo</translation>
+    </message>
+  </context>
+  <context>
+    <name>BimWall</name>
+    <message>
+      <location filename="../../bimcommands/BimWall.py" line="289"/>
+      <source>Wall Trace</source>
+      <translation>Traza de pared</translation>
     </message>
   </context>
 </TS>

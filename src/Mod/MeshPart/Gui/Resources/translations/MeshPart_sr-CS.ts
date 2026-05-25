@@ -254,7 +254,7 @@ Ova komanda radi samo sa objektom koji je mreža, a ne sa običnom stranicom ili
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
-      <translation>Kontinualnost</translation>
+      <translation>Kontinuitet</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="136"/>

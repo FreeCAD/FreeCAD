@@ -907,9 +907,9 @@ invalid constraints, and degenerate geometry</source>
       <translation>Kényszer húzása</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1276"/>
       <location filename="../../CommandConstraints.cpp" line="10870"/>
       <location filename="../../ViewProviderSketch.cpp" line="1412"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1276"/>
       <source>Modify sketch constraints</source>
       <translation>Vázlat kényszer módosítása</translation>
     </message>
@@ -919,7 +919,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>Egy új másolat létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="430"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="431"/>
       <source>Offset</source>
       <translation>Eltolás</translation>
     </message>
@@ -969,8 +969,8 @@ invalid constraints, and degenerate geometry</source>
       <translation>Építési geometria átkapcsolása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="922"/>
       <location filename="../../DrawSketchHandler.cpp" line="799"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="922"/>
       <source>Add Auto-Constraints</source>
       <translation>Automatikus kényszer hozzáadása</translation>
     </message>
@@ -1175,27 +1175,6 @@ invalid constraints, and degenerate geometry</source>
       <translation>Ne csatolja</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="393"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1037"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1366"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1376"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1438"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1970"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1980"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2044"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2254"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2264"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2311"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2376"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
       <location filename="../../CommandConstraints.cpp" line="297"/>
       <location filename="../../CommandConstraints.cpp" line="304"/>
       <location filename="../../CommandConstraints.cpp" line="2952"/>
@@ -1324,11 +1303,32 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="10999"/>
       <location filename="../../CommandConstraints.cpp" line="11074"/>
       <location filename="../../CommandConstraints.cpp" line="11086"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="176"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="176"/>
+      <location filename="../../CommandSketcherTools.cpp" line="393"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1037"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1366"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1376"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1438"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1970"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1980"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2044"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2254"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2264"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2311"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2376"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
@@ -1504,9 +1504,9 @@ invalid constraints, and degenerate geometry</source>
       <translation>A kijelölt objektumok száma nem 3</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="890"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="623"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1185"/>
-      <location filename="../../CommandConstraints.cpp" line="890"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
@@ -4857,32 +4857,32 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="110"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="143"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="477"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="509"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="355"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="344"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="203"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="110"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="148"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
+      <location filename="../../DrawSketchHandlerText.h" line="182"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="318"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="135"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="196"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="264"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="223"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="175"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="174"/>
       <location filename="../../CommandSketcherTools.cpp" line="1315"/>
       <location filename="../../CommandSketcherTools.cpp" line="1896"/>
       <location filename="../../CommandSketcherTools.cpp" line="2333"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="190"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="477"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="509"/>
       <location filename="../../DrawSketchHandlerScale.h" line="153"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="196"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="157"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="203"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="135"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="515"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="175"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="174"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="264"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="143"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="223"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="157"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="148"/>
-      <location filename="../../DrawSketchHandlerText.h" line="182"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="344"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="393"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="678"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="755"/>
@@ -4921,16 +4921,16 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>A kényszer érvénytelen indexinformációval rendelkezik, és rosszul formázott.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1101"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
       <location filename="../../CommandConstraints.cpp" line="558"/>
       <location filename="../../CommandConstraints.cpp" line="635"/>
       <location filename="../../CommandConstraints.cpp" line="727"/>
       <location filename="../../CommandConstraints.cpp" line="811"/>
       <location filename="../../CommandConstraints.cpp" line="6758"/>
       <location filename="../../CommandConstraints.cpp" line="6960"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1101"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
       <source>Invalid Constraint</source>
       <translation>Érvénytelen kényszer</translation>
     </message>
@@ -5000,24 +5000,24 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Lekerekítés létrehozása sikertelen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="478"/>
       <location filename="../../DrawSketchHandlerLine.h" line="144"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="478"/>
       <source>Failed to add line</source>
       <translation>Sikertelen a vonal hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="239"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="155"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="222"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="142"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="230"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="182"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="197"/>
       <location filename="../../DrawSketchHandlerScale.h" line="162"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="164"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="142"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="522"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="222"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="182"/>
       <location filename="../../DrawSketchHandlerArc.h" line="299"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="150"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="230"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="155"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="522"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="164"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="239"/>
       <source>Tool execution aborted</source>
       <translation>Az eszköz végrehajtása megszakadt</translation>
     </message>
@@ -5052,9 +5052,9 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Sikertelen az él vágása</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1331"/>
       <location filename="../../EditDatumDialog.cpp" line="66"/>
       <location filename="../../EditDatumDialog.cpp" line="342"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1331"/>
       <source>Value Error</source>
       <translation>Értékhiba</translation>
     </message>
@@ -5074,22 +5074,22 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Váratlan felesleges/ellentmondásos kényszer. Ellenőrizze a művelet kényszereit és automatikus kényszereket.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="424"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="425"/>
       <source>Offset Error</source>
       <translation>Eltolási hiba</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="425"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="426"/>
       <source>Offset could not be created.</source>
       <translation>Eltolás nem hozható létre.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1241"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1242"/>
       <source>Invalid Value</source>
       <translation>Hibás érték</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1242"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1243"/>
       <source>Offset value can't be 0.</source>
       <translation>Az eltolási érték nem lehet 0.</translation>
     </message>
@@ -5287,12 +5287,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1196"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1197"/>
       <source>Delete original geometries (U)</source>
       <translation>Eredeti geometriák törlése (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1204"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1205"/>
       <source>Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation.</source>
       <translation>Eredeti geometria törlése. Ha csak egy másolat készül, ez egyenértékű egy 'Mozgatás' művelettel.</translation>
     </message>
@@ -5312,12 +5312,12 @@ Ehelyett az eredeti objektumok és másolataik között egyenlő kényszereket a
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1200"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1201"/>
       <source>Add offset constraint (J)</source>
       <translation>Eltolási kényszert ad hozzá (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1212"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1213"/>
       <source>Adds a distance constraint with additional construction geometries that allows the distance to modify the entire offset geometry</source>
       <translation>Távolság kényszer hozzáadása további szerkesztési geometriával, aminek segítségével a teljes eltolási geometria egyben módosítható.</translation>
     </message>
@@ -5792,12 +5792,12 @@ Ehelyett az eredeti objektumok és másolataik között egyenlő kényszereket a
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1178"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1179"/>
       <source>Arc</source>
       <translation>Ív</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1179"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1180"/>
       <source>Intersection</source>
       <translation>Metszet</translation>
     </message>
@@ -7928,12 +7928,12 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
   <context>
     <name>SketcherGui::DrawSketchHandlerOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="191"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="192"/>
       <source>Offset Parameters</source>
       <translation>Eltolás paraméterei</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="209"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="210"/>
       <source>%1 set offset direction and distance</source>
       <comment>Sketcher Offset: hint</comment>
       <translation>%1 eltolás irányának és távolságának beállítása</translation>
@@ -8239,24 +8239,16 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
     </message>
   </context>
   <context>
-    <name>CmdSketcherCreateText</name>
+    <name>CmdSketcherConstrainGroup</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1369"/>
-      <source>Text</source>
-      <translation>Szöveg</translation>
+      <location filename="../../CommandConstraints.cpp" line="10601"/>
+      <source>Group Constraint</source>
+      <translation>Csoport kényszer</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1370"/>
-      <source>Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
-</source>
-      <translation>Szöveg geometria létrehozása Szöveg kényszerrel.
-A szöveg vagy betűtípus módosításához kattints kétszer a szövegre.
-A szöveg helye és mérete a szerkesztési vonalon keresztül módosítható és kényszeríthető.
-Megjegyzés: Amíg a Szöveg kényszer aktív, a belső geometriákra alkalmazott kényszerek nem érvényesülnek.
-</translation>
+      <location filename="../../CommandConstraints.cpp" line="10602"/>
+      <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
+      <translation>A kijelölt geometriák csoportba foglalása. A csoportosított geometriák helye és mérete az automatikusan létrehozott szerkesztési vonal módosításával változtatható. A csoport tagjaira alkalmazott kényszerek nem érvényesülnek amíg a csoport kényszer aktív.</translation>
     </message>
   </context>
   <context>
@@ -8270,19 +8262,6 @@ Megjegyzés: Amíg a Szöveg kényszer aktív, a belső geometriákra alkalmazot
       <location filename="../../EditTextDialog.cpp" line="73"/>
       <source>The original font '%1' is not found on your system. A default font has been selected.</source>
       <translation>A kiválasztott "%1" betűtípus nem található. Helyette egy alapértelmezett betűtípus került kiválasztásra.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherConstrainGroup</name>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="10601"/>
-      <source>Group Constraint</source>
-      <translation>Csoport kényszer</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="10602"/>
-      <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
-      <translation>A kijelölt geometriák csoportba foglalása. A csoportosított geometriák helye és mérete az automatikusan létrehozott szerkesztési vonal módosításával változtatható. A csoport tagjaira alkalmazott kényszerek nem érvényesülnek amíg a csoport kényszer aktív.</translation>
     </message>
   </context>
   <context>
@@ -8335,6 +8314,27 @@ Megjegyzés: Amíg a Szöveg kényszer aktív, a belső geometriákra alkalmazot
       <location filename="../../Command.cpp" line="455"/>
       <source>Leave the sketch editing mode.</source>
       <translation>Vázlat szerkesztési mód elhagyása.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreateText</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1369"/>
+      <source>Text</source>
+      <translation>Szöveg</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1370"/>
+      <source>Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</source>
+      <translation>Szöveg geometria létrehozása Szöveg kényszerrel.
+A szöveg vagy betűtípus módosításához kattints kétszer a szövegre.
+A szöveg helye és mérete a szerkesztési vonalon keresztül módosítható és kényszeríthető.
+Megjegyzés: Amíg a Szöveg kényszer aktív, a belső geometriákra alkalmazott kényszerek nem érvényesülnek.
+</translation>
     </message>
   </context>
 </TS>

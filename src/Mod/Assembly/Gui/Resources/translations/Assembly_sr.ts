@@ -23,8 +23,8 @@
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>Део</translation>
+      <source>Insert Component</source>
+      <translation>Уметни компоненту</translation>
     </message>
   </context>
   <context>
@@ -349,12 +349,12 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="495"/>
       <source>Enter your formula…</source>
-      <translation type="unfinished">Enter your formula…</translation>
+      <translation>Унеси своју формулу…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="548"/>
       <source>In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</translation>
+      <translation>Великим словима су означене променљиве које треба заменити стварним вредностима. 'initialValue' је динамички замењен са тренутним углом или растојањем. Више детаља о сваком примеру у кратком опису.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="551"/>
@@ -474,22 +474,22 @@ SLOPE дефинише нагиб прелаза између 0 и H1, и H2 д�
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1045"/>
       <source>Animation</source>
-      <translation type="unfinished">Animation</translation>
+      <translation>Анимација</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1046"/>
       <source>Not enough frames to create an animation.</source>
-      <translation type="unfinished">Not enough frames to create an animation.</translation>
+      <translation>Нема довољно кадрова за прављење анимације.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1053"/>
       <source>Save Animation</source>
-      <translation type="unfinished">Save Animation</translation>
+      <translation>Сачувај анимацију</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1075"/>
       <source>Generating Frames…</source>
-      <translation type="unfinished">Generating Frames…</translation>
+      <translation>Правим кадрове…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1076"/>
@@ -499,27 +499,27 @@ SLOPE дефинише нагиб прелаза између 0 и H1, и H2 д�
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1103"/>
       <source>Assembling animation…</source>
-      <translation type="unfinished">Assembling animation…</translation>
+      <translation>Састављама анимацију…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1119"/>
       <source>An error occurred while saving the animation</source>
-      <translation type="unfinished">An error occurred while saving the animation</translation>
+      <translation>Дошло је до грешке приликом снимања анимације</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1137"/>
       <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
-      <translation type="unfinished">Pillow (PIL) is not installed. It is required for GIF export.</translation>
+      <translation>Pillow (PIL) није инсталиран. Неопходан је за извоз GIF-а.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1160"/>
       <source>OpenCV is not installed. It is required for video export.</source>
-      <translation type="unfinished">OpenCV is not installed. It is required for video export.</translation>
+      <translation>OpenCV није инсталиран. Неопходан је за извоз видеа.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1177"/>
       <source>Could not open video writer. Check codecs.</source>
-      <translation type="unfinished">Could not open video writer. Check codecs.</translation>
+      <translation>Није могуће отворити програм за снимање видеа. Провери кодеке.</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="160"/>
@@ -1008,7 +1008,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="324"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Направи навојни спој који сједињује два дела, један који има танслациони спој и други који има ротациони спој.&lt;/p&gt;&lt;p&gt;Изабери исте координатне системе као за транслационе и ротационе спојеве. Корак навоја одређује међусобно померање делова.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1223,7 +1223,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
       <source>Save the animation as a GIF or video file.</source>
-      <translation type="unfinished">Save the animation as a GIF or video file.</translation>
+      <translation>Сачувај анимацију у виду GIF или видео датотеке.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="197"/>
@@ -1323,7 +1323,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Ако је склоп активан: Направи спој који закључава два дела заједно, спречавајући било какво померање или ротацију&lt;/p&gt;&lt;p&gt;2 - Ако је део активан: Позиционира подређене делове подударањем изабраних координатних система. Други изабрани део ће се померити.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1440,7 +1440,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="300"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Направи пренос са зупчастом летвом који сједињује део који има транслациони спој са делом који има ротациони спој.&lt;/p&gt;&lt;p&gt;Изабери исте координатне системе као за транслационе и ротационе спојеве. Подеони полупречник одређује међусобно померање зупчасте летве и зупчаника.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1479,7 +1479,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="437"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
-      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</translation>
+      <translation>&lt;p&gt;Непокретни део.&lt;/p&gt;&lt;p&gt;Прављење дела непокретним трајно закључава његов положај у склопу, спречавајући било какву транслацију или ротацију.</translation>
     </message>
   </context>
   <context>
@@ -1548,9 +1548,9 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
 Click to select these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
-Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
+      <translation>Склоп има делове којима нису ограничени сви степени слободе.
+Кликни да би изабрао овакве делове.
+Напомена: Тренутно се бирају само делови без спојева, делови са спојевима који и даље имају степене слободе се не бирају.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
@@ -1568,12 +1568,12 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="102"/>
       <source>Go to linked Assembly</source>
-      <translation type="unfinished">Go to linked Assembly</translation>
+      <translation>Иди на повезани склоп</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
       <source>Selects the linked assembly and switches to its original document</source>
-      <translation type="unfinished">Selects the linked assembly and switches to its original document</translation>
+      <translation>Изабери повезани склоп и пребаци се на његов оригинални документ</translation>
     </message>
   </context>
   <context>
@@ -1586,12 +1586,12 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="166"/>
       <source>Select conflicting constraints</source>
-      <translation type="unfinished">Select conflicting constraints</translation>
+      <translation>Изабери сукобљене спојеве</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
       <source>Selects conflicting joints in the active assembly</source>
-      <translation type="unfinished">Selects conflicting joints in the active assembly</translation>
+      <translation>Изабери у активном склопу спојеве који су међусобно сукобљени</translation>
     </message>
   </context>
   <context>
@@ -1604,12 +1604,12 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="201"/>
       <source>Select redundant constraints</source>
-      <translation type="unfinished">Select redundant constraints</translation>
+      <translation>Изабери сувишне спојеве</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="202"/>
       <source>Selects redundant joints in the active assembly</source>
-      <translation type="unfinished">Selects redundant joints in the active assembly</translation>
+      <translation>Изабери у активном склопу спојеве који су сувишни</translation>
     </message>
   </context>
   <context>
@@ -1622,12 +1622,12 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="234"/>
       <source>Select malformed constraints</source>
-      <translation type="unfinished">Select malformed constraints</translation>
+      <translation>Изабери оштећене спојеве</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
       <source>Selects malformed joints in the active assembly</source>
-      <translation type="unfinished">Selects malformed joints in the active assembly</translation>
+      <translation>Изабери у активном склопу спојеве који су оштећени</translation>
     </message>
   </context>
   <context>
@@ -1640,12 +1640,12 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="268"/>
       <source>Select components with DoFs</source>
-      <translation type="unfinished">Select components with DoFs</translation>
+      <translation>Изабери делове са степенима слободе</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
       <source>Selects unconstrained components in the active assembly</source>
-      <translation type="unfinished">Selects unconstrained components in the active assembly</translation>
+      <translation>Изабери у активном склопу делове који нису потпуно ограничени тј. који имају степене слободе</translation>
     </message>
   </context>
   <context>
@@ -1658,12 +1658,12 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="311"/>
       <source>Select component joints</source>
-      <translation type="unfinished">Select component joints</translation>
+      <translation>Изабери све спојеве дела</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>
       <source>Selects all joints referencing the selected component</source>
-      <translation type="unfinished">Selects all joints referencing the selected component</translation>
+      <translation>Изабери све спојеве који се односе на изабрани део</translation>
     </message>
   </context>
 </TS>
