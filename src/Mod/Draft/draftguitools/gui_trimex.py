@@ -58,6 +58,84 @@ from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 
 
+def _trimex_axis_for(obj):
+    """Return a Trimex adapter dict for ``obj``, or None.
+
+    The adapter is contributed by ``obj.Proxy.trimex_axis(obj)`` when the
+    proxy implements it (BIM Wall / Pipe / Structure ...). For C++ types
+    without a Python proxy we fall back to a small set of built-in adapters.
+
+    The returned dict must contain ``endpoints`` (two world-space points
+    bounding the object's length / extrusion axis) and ``axes`` (matching
+    outward unit vectors used to identify end faces), plus either:
+        - ``redirect``: an object to operate on instead (e.g. a base wire)
+        - ``set``: callable(list[Vector]) committing new world endpoints
+    """
+    proxy = getattr(obj, "Proxy", None)
+    if proxy is not None and hasattr(proxy, "trimex_axis"):
+        try:
+            adapter = proxy.trimex_axis(obj)
+        except Exception:
+            adapter = None
+        if adapter is not None:
+            return adapter
+    return _builtin_trimex_axis(obj)
+
+
+def _builtin_trimex_axis(obj):
+    """Built-in adapters for objects without a Python ``trimex_axis``."""
+    try:
+        if obj.isDerivedFrom("Part::Extrusion"):
+            return _part_extrusion_axis(obj)
+    except Exception:
+        pass
+    return None
+
+
+def _part_extrusion_axis(obj):
+    """``Part::Extrusion`` adapter: modify ``LengthFwd`` / ``LengthRev``
+    when the user trims one of the two end caps along ``Dir``."""
+    try:
+        dir_local = App.Vector(obj.Dir)
+    except Exception:
+        return None
+    if dir_local.Length < 1e-9:
+        return None
+    pl = obj.Placement
+    dir_world = pl.Rotation.multVec(dir_local).normalize()
+    base = App.Vector(pl.Base)
+    fwd = float(obj.LengthFwd.Value) if hasattr(obj.LengthFwd, "Value") else float(obj.LengthFwd)
+    rev = float(obj.LengthRev.Value) if hasattr(obj.LengthRev, "Value") else float(obj.LengthRev)
+    symmetric = bool(getattr(obj, "Symmetric", False))
+    if symmetric:
+        half = fwd / 2.0
+        p_back = base - dir_world * half
+        p_fwd = base + dir_world * half
+    else:
+        p_back = base - dir_world * rev
+        p_fwd = base + dir_world * fwd
+
+    def _set(pts):
+        new_back = App.Vector(pts[0])
+        new_fwd = App.Vector(pts[1])
+        # Project onto the extrusion direction. Trimex only affects the
+        # axial length: off-axis displacement is ignored on purpose since
+        # changing Dir would alter the shape orientation, not just trim it.
+        new_rev = (base - new_back).dot(dir_world)
+        new_len = (new_fwd - base).dot(dir_world)
+        if symmetric:
+            obj.LengthFwd = max(0.0, new_len + new_rev)
+        else:
+            obj.LengthRev = max(0.0, new_rev)
+            obj.LengthFwd = max(0.0, new_len)
+
+    return {
+        "endpoints": [p_back, p_fwd],
+        "axes": [App.Vector(dir_world).negative(), App.Vector(dir_world)],
+        "set": _set,
+    }
+
+
 class Trimex(gui_base_original.Modifier):
     """Gui Command for the Trimex tool.
 
@@ -89,9 +167,14 @@ class Trimex(gui_base_original.Modifier):
         self.linetrack = None
         self.color = None
         self.width = None
-        self.wallHost = None
-        self.wallBaseless = None
-        self.wallEndpoints = None
+        # Trimex-axis protocol state. Set when an object provides a
+        # ``trimex_axis`` adapter (BIM Wall, Pipe, Structure, Part::Extrusion,
+        # ...): the host is re-selected at the end of the command; either the
+        # operation is redirected to ``self.obj`` (a base wire), or it commits
+        # via ``trimexSet`` which receives the two updated world endpoints.
+        self.trimexHost = None
+        self.trimexSet = None
+        self.trimexEndpoints = None
         self.lockedActivePoint = None
         if self.ui:
             if not Gui.Selection.getSelection():
@@ -115,12 +198,13 @@ class Trimex(gui_base_original.Modifier):
 
         import Part
 
-        # Wall integration: route the operation to the wall's base wire/line,
-        # or to a baseless wall's endpoints. Sketch-based walls fall through
-        # to the default face-extrude behaviour.
-        if utils.getType(self.obj) == "Wall":
-            if self._setupWallTrimex(sel):
-                return
+        # BIM / extrusion integration. If the selected object opts into
+        # Trimex via the ``trimex_axis`` protocol (Wall, Pipe, Structure,
+        # Part::Extrusion, ...) and an *end* face is pre-selected, route the
+        # operation to its base wire or to a property-update setter instead
+        # of the default face-extrude path.
+        if self._setupTrimexAxis(sel):
+            return
 
         reason = utils.get_trimex_unsupported_reason(self.obj, sel.SubObjects)
         if reason:
@@ -192,27 +276,32 @@ class Trimex(gui_base_original.Modifier):
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _toolmsg(translate("draft", "Pick distance"))
 
-    def _setupWallTrimex(self, sel):
-        """Route Trimex for a Wall. Returns True if fully handled here
-        (baseless walls); False to continue the regular flow (after possibly
-        re-targeting ``self.obj`` to the wall's base wire/line).
+    def _setupTrimexAxis(self, sel):
+        """Generic adapter dispatch.
 
-        Only triggers when the user pre-selected an *end* face of the wall.
-        Side / top / bottom faces fall through to the default face-extrude
-        behaviour, so the wall's length is never affected when picking those.
+        Resolves a ``trimex_axis`` adapter (from ``obj.Proxy.trimex_axis``
+        for BIM objects, or a built-in adapter for C++ types like
+        ``Part::Extrusion``) and, if the user pre-selected an *end* face,
+        routes Trimex to:
+          - the redirected base wire/line (``redirect`` key), or
+          - a property-update setter (``set`` key) driven by a virtual edge.
+
+        Returns True if the operation is fully set up here (set-mode);
+        False otherwise. Side / top / bottom face selections always fall
+        through to the default face-extrude path.
         """
         import Part
 
-        wall = self.obj
-        base = getattr(wall, "Base", None)
-        if base is not None and utils.getType(base) not in ("Wire", "Part::Line"):
-            # Sketch-based or otherwise unsupported base: default behaviour.
+        adapter = _trimex_axis_for(self.obj)
+        if adapter is None:
             return False
 
-        ends = self._wallEnds(wall, base)
-        if not ends:
+        endpoints = adapter.get("endpoints") or []
+        axes = adapter.get("axes") or []
+        if len(endpoints) < 2 or len(axes) != len(endpoints):
             return False
 
+        ends = list(zip(endpoints, axes))
         end_idx = None
         for sub in sel.SubObjects:
             if getattr(sub, "ShapeType", None) != "Face":
@@ -222,27 +311,30 @@ class Trimex(gui_base_original.Modifier):
                 end_idx = match
                 break
         if end_idx is None:
-            # Not an end face (or no face pre-selected): keep default behaviour.
             return False
 
-        if base is not None:
-            # Wire/line-based wall: re-target to the base; trim/extend updates
-            # the base geometry, the wall follows on recompute.
-            self.wallHost = wall
-            self.obj = base
+        redirect = adapter.get("redirect")
+        setter = adapter.get("set")
+        host = self.obj
+
+        if redirect is not None:
+            # Modify the base directly; the host follows on recompute.
+            self.trimexHost = host
+            self.obj = redirect
             self.lockedActivePoint = end_idx
             return False
 
-        # Baseless wall: operate on the wall's centerline endpoints.
-        endpoints = wall.Proxy.calc_endpoints(wall)
-        if len(endpoints) < 2:
+        if setter is None:
             return False
-        self.wallBaseless = wall
-        self.wallEndpoints = [App.Vector(p) for p in endpoints]
+
+        # Property-update mode: drive a virtual single-edge line and commit
+        # the new endpoints through the setter callable.
+        self.trimexHost = host
+        self.trimexSet = setter
+        self.trimexEndpoints = [App.Vector(p) for p in endpoints]
         self.lockedActivePoint = end_idx
 
-        # Build a virtual single-edge wire that Trimex's redraw can drive.
-        p1, p2 = self.wallEndpoints
+        p1, p2 = self.trimexEndpoints
         self.edges = [Part.LineSegment(p1, p2).toShape()]
         self.placement = None
         self.extrudeMode = False
@@ -262,65 +354,10 @@ class Trimex(gui_base_original.Modifier):
         return True
 
     @staticmethod
-    def _wallEnds(wall, base):
-        """List of (endpoint_world, outward_axis_world) for each open end of
-        the wall's centerline. Used to detect which faces are end faces.
-
-        For wire/line bases the endpoint follows the base wire's first and
-        last vertex with the tangent pointing outward. For baseless walls
-        the wall's local +X is the length axis.
-        """
-        import Part
-
-        wall_pl = getattr(wall, "Placement", App.Placement())
-        if base is None:
-            axis = wall_pl.Rotation.multVec(App.Vector(1, 0, 0))
-            try:
-                eps = wall.Proxy.calc_endpoints(wall)
-            except Exception:
-                return []
-            if len(eps) < 2:
-                return []
-            return [
-                (App.Vector(eps[0]), App.Vector(axis).negative()),
-                (App.Vector(eps[1]), App.Vector(axis)),
-            ]
-
-        shape = getattr(base, "Shape", None)
-        if shape is None or shape.isNull():
-            return []
-        if shape.Wires:
-            edges = Part.__sortEdges__(shape.Wires[0].Edges)
-        else:
-            edges = shape.Edges
-        if not edges:
-            return []
-
-        def _outward(edge, at_start):
-            p0 = edge.Vertexes[0].Point
-            p1 = edge.Vertexes[-1].Point
-            try:
-                if at_start:
-                    t = edge.tangentAt(edge.FirstParameter)
-                    t = App.Vector(t).negative()
-                else:
-                    t = edge.tangentAt(edge.LastParameter)
-            except Exception:
-                t = (p1 - p0) if not at_start else (p0 - p1)
-            if t.Length < 1e-12:
-                return App.Vector(1, 0, 0)
-            t.normalize()
-            return wall_pl.Rotation.multVec(t)
-
-        p_start = wall_pl.multVec(edges[0].Vertexes[0].Point)
-        p_end = wall_pl.multVec(edges[-1].Vertexes[-1].Point)
-        return [(p_start, _outward(edges[0], True)), (p_end, _outward(edges[-1], False))]
-
-    @staticmethod
     def _matchEndFace(face, ends):
-        """Index of the wall end whose axis is parallel to ``face``'s normal
-        and whose endpoint lies on the face's plane. ``None`` if the face is
-        not an end face (side, top, bottom)."""
+        """Index of the end whose axis is parallel to ``face``'s normal and
+        whose endpoint lies on the face's plane. ``None`` if the face is not
+        an end face (side, top, bottom, etc.)."""
         try:
             u, v = face.Surface.parameter(face.CenterOfMass)
             normal = face.normalAt(u, v)
@@ -603,8 +640,8 @@ class Trimex(gui_base_original.Modifier):
             edges = self.redraw(self.point, self.snapped, self.shift, self.alt, real=True)
             newshape = Part.Wire(edges)
             self.doc.openTransaction("Trim/extend")
-            if self.wallBaseless is not None:
-                pts = list(self.wallEndpoints)
+            if self.trimexSet is not None:
+                pts = list(self.trimexEndpoints)
                 idx = (
                     self.lockedActivePoint
                     if self.lockedActivePoint is not None
@@ -613,7 +650,7 @@ class Trimex(gui_base_original.Modifier):
                 if idx is None or idx >= len(pts):
                     idx = min(self.activePoint, len(pts) - 1)
                 pts[idx] = App.Vector(self.newpoint)
-                self.wallBaseless.Proxy.set_from_endpoints(self.wallBaseless, pts)
+                self.trimexSet(pts)
             elif utils.getType(self.obj) in ["Wire", "BSpline"]:
                 p = []
                 if self.placement:
@@ -762,9 +799,10 @@ class Trimex(gui_base_original.Modifier):
                     self.obj.ViewObject.LineColor = self.color
                 if self.width:
                     self.obj.ViewObject.LineWidth = self.width
-                # Re-select the wall when we operated on its base or its endpoints,
-                # so the user keeps a meaningful selection.
-                gui_utils.select(self.wallHost or self.wallBaseless or self.obj)
+                # Re-select the original host when we operated on its base
+                # or via its property setter, so the user keeps a meaningful
+                # selection.
+                gui_utils.select(self.trimexHost or self.obj)
         super().finish()
 
     def numericRadius(self, dist):

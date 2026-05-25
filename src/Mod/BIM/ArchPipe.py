@@ -404,6 +404,77 @@ class _ArchPipe(ArchComponent.Component):
                     p = p.cut(p2)
         return p
 
+    def trimex_axis(self, obj):
+        """Trimex adapter (see draftguitools.gui_trimex._trimex_axis_for).
+
+        Straight pipes expose their two endpoints to Trimex: wire/line-based
+        pipes redirect to the base wire (the pipe follows on recompute);
+        baseless pipes update ``Length`` and ``Placement`` so the local +Z
+        axis aligns with the new endpoints.
+        """
+        import Part
+        import Draft
+
+        pipe_pl = obj.Placement
+        base = getattr(obj, "Base", None)
+        if base is None:
+            length = float(obj.Length.Value)
+            p1 = FreeCAD.Vector(pipe_pl.Base)
+            axis = pipe_pl.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+            p2 = p1 + axis * length
+
+            def _set(pts):
+                new_p1 = FreeCAD.Vector(pts[0])
+                new_p2 = FreeCAD.Vector(pts[1])
+                new_len = new_p1.distanceToPoint(new_p2)
+                if new_len < 1e-9:
+                    return
+                new_dir = new_p2 - new_p1
+                new_dir.normalize()
+                obj.Placement.Base = new_p1
+                obj.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), new_dir)
+                obj.Length = new_len
+
+            return {
+                "endpoints": [p1, p2],
+                "axes": [FreeCAD.Vector(axis).negative(), FreeCAD.Vector(axis)],
+                "set": _set,
+            }
+        if Draft.getType(base) not in ("Wire", "Part::Line"):
+            return None
+        shape = getattr(base, "Shape", None)
+        if shape is None or shape.isNull():
+            return None
+        if shape.Wires:
+            edges = Part.__sortEdges__(shape.Wires[0].Edges)
+        else:
+            edges = shape.Edges
+        if not edges:
+            return None
+
+        def _tangent(edge, at_start):
+            try:
+                if at_start:
+                    t = FreeCAD.Vector(edge.tangentAt(edge.FirstParameter)).negative()
+                else:
+                    t = FreeCAD.Vector(edge.tangentAt(edge.LastParameter))
+            except Exception:
+                a = edge.Vertexes[0].Point
+                b = edge.Vertexes[-1].Point
+                t = (b - a) if not at_start else (a - b)
+            if t.Length < 1e-12:
+                return FreeCAD.Vector(1, 0, 0)
+            t.normalize()
+            return pipe_pl.Rotation.multVec(t)
+
+        p_start = pipe_pl.multVec(edges[0].Vertexes[0].Point)
+        p_end = pipe_pl.multVec(edges[-1].Vertexes[-1].Point)
+        return {
+            "endpoints": [p_start, p_end],
+            "axes": [_tangent(edges[0], True), _tangent(edges[-1], False)],
+            "redirect": base,
+        }
+
 
 class _ViewProviderPipe(ArchComponent.ViewProviderComponent):
     "A View Provider for the Pipe object"

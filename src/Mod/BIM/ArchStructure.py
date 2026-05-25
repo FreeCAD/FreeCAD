@@ -1387,6 +1387,82 @@ class _Structure(ArchComponent.Component):
                     )
         return edges
 
+    def trimex_axis(self, obj):
+        """Trimex adapter (see draftguitools.gui_trimex._trimex_axis_for).
+
+        Structures (Beam / Column / Slab) extrude a profile along a fixed
+        direction by ``Length`` (Beam-mode, length > height) or ``Height``.
+        Trimex picks one of the two end caps along that direction and
+        updates the matching property; the opposite end stays anchored.
+
+        Skipped when an extrusion ``Tool`` (path) is set — trimming a path
+        belongs to that wire, not to the host's scalar properties.
+        """
+        try:
+            if getattr(obj, "Tool", None):
+                return None
+        except Exception:
+            return None
+        try:
+            length_val = float(obj.Length.Value)
+            height_val = float(obj.Height.Value)
+        except Exception:
+            return None
+
+        ifc_type = getattr(obj, "IfcType", "")
+        if ifc_type in ("Beam", "Column") and length_val > height_val:
+            prop_name = "Length"
+        else:
+            prop_name = "Height"
+
+        # Derive the axis from getExtrusionData so we reuse the exact rules
+        # the executor uses (handles Normal=auto, profile orientation, etc.).
+        try:
+            extdata = self.getExtrusionData(obj)
+        except Exception:
+            return None
+        if not extdata:
+            return None
+        ev = extdata[1]
+        pla = extdata[2]
+        if isinstance(ev, list):
+            if not ev:
+                return None
+            ev = ev[0]
+            pla = pla[0] if isinstance(pla, list) else pla
+        if not isinstance(ev, FreeCAD.Vector):
+            # Tool-wire extrusion: filtered above, but guard anyway.
+            return None
+
+        # The extrusion vector is expressed in ``pla``'s local frame;
+        # ``pla`` itself is relative to obj.Placement.
+        ext_world = obj.Placement.Rotation.multVec(pla.Rotation.multVec(ev))
+        ext_length = ext_world.Length
+        if ext_length < 1e-9:
+            return None
+        axis_world = FreeCAD.Vector(ext_world).multiply(1.0 / ext_length)
+        p1 = obj.Placement.multVec(pla.Base)
+        p2 = p1 + axis_world * ext_length
+
+        def _set(pts):
+            new_p1 = FreeCAD.Vector(pts[0])
+            new_p2 = FreeCAD.Vector(pts[1])
+            # Only the axial component matters; off-axis mouse drift never
+            # tilts or shifts the structure laterally.
+            new_len = (new_p2 - new_p1).dot(axis_world)
+            if new_len < 1e-9:
+                return
+            shift = new_p1 - p1
+            shift_axial = shift.dot(axis_world)
+            obj.Placement.Base = obj.Placement.Base + axis_world * shift_axial
+            setattr(obj, prop_name, new_len)
+
+        return {
+            "endpoints": [p1, p2],
+            "axes": [FreeCAD.Vector(axis_world).negative(), FreeCAD.Vector(axis_world)],
+            "set": _set,
+        }
+
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"

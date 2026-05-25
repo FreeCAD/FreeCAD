@@ -300,6 +300,56 @@ class _Frame(ArchComponent.Component):
                 obj.Shape = Part.makeCompound(shapes)
                 obj.Placement = pl
 
+    def trimex_axis(self, obj):
+        """Trimex adapter (see draftguitools.gui_trimex._trimex_axis_for).
+
+        Frames sweep a profile along each edge of their base wire; the only
+        natural Trimex target is the base wire's two open endpoints, so we
+        redirect to the base when the user picks an end cap at either end.
+        Interior polyline vertices and closed bases produce no end-face
+        match and fall through to default behaviour.
+        """
+        import Part
+        import Draft
+
+        base = getattr(obj, "Base", None)
+        if base is None or Draft.getType(base) not in ("Wire", "Part::Line"):
+            return None
+        shape = getattr(base, "Shape", None)
+        if shape is None or shape.isNull():
+            return None
+        if shape.Wires:
+            edges = Part.__sortEdges__(shape.Wires[0].Edges)
+        else:
+            edges = shape.Edges
+        if not edges:
+            return None
+
+        obj_pl = obj.Placement
+
+        def _tangent(edge, at_start):
+            try:
+                if at_start:
+                    t = FreeCAD.Vector(edge.tangentAt(edge.FirstParameter)).negative()
+                else:
+                    t = FreeCAD.Vector(edge.tangentAt(edge.LastParameter))
+            except Exception:
+                a = edge.Vertexes[0].Point
+                b = edge.Vertexes[-1].Point
+                t = (b - a) if not at_start else (a - b)
+            if t.Length < 1e-12:
+                return FreeCAD.Vector(1, 0, 0)
+            t.normalize()
+            return obj_pl.Rotation.multVec(t)
+
+        p_start = obj_pl.multVec(edges[0].Vertexes[0].Point)
+        p_end = obj_pl.multVec(edges[-1].Vertexes[-1].Point)
+        return {
+            "endpoints": [p_start, p_end],
+            "axes": [_tangent(edges[0], True), _tangent(edges[-1], False)],
+            "redirect": base,
+        }
+
 
 class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
     "A View Provider for the Frame object"
