@@ -43,12 +43,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
-import DraftGeomUtils
 import DraftVecUtils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_trackers as trackers
-import draftguitools.gui_tool_utils as gui_tool_utils
-
+from draftgeoutils import geometry as geo_geometry
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
 from draftutils.messages import _msg, _toolmsg
 from draftutils.translate import translate
 
@@ -149,7 +148,7 @@ class Mirror(gui_base_original.Modifier):
                         nor = self.point.sub(last).cross(self.wp.axis)
                         if nor.Length > tol:
                             nor.normalize()
-                            mtx = DraftGeomUtils.mirror_matrix(App.Matrix(), last, nor)
+                            mtx = geo_geometry.mirror_matrix(App.Matrix(), last, nor)
                             self.ghost.setMatrix(mtx)  # Ignores the position of the matrix.
                             self.ghost.move(App.Vector(mtx.col(3)[:3]))
             if self.extendedCopy:

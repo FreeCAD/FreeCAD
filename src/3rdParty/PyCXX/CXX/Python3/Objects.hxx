@@ -2095,20 +2095,20 @@ namespace Py
             validate();
         }
 
-        String( const char *latin1 )
-        : SeqBase<Char>( PyUnicode_FromString( latin1 ), true )
+        String( const char *utf8 )
+        : SeqBase<Char>( PyUnicode_FromString( utf8 ), true )
         {
             validate();
         }
 
-        String( const std::string &latin1 )
-        : SeqBase<Char>( PyUnicode_FromStringAndSize( latin1.c_str(), latin1.size() ), true )
+        String( const std::string &utf8 )
+        : SeqBase<Char>( PyUnicode_FromStringAndSize( utf8.data(), Py_ssize_t(utf8.size()) ), true )
         {
             validate();
         }
 
-        String( const char *latin1, Py_ssize_t size )
-        : SeqBase<Char>( PyUnicode_FromStringAndSize( latin1, size ), true )
+        String( const char *utf8, Py_ssize_t size )
+        : SeqBase<Char>( PyUnicode_FromStringAndSize( utf8, size ), true )
         {
             validate();
         }
@@ -2131,7 +2131,7 @@ namespace Py
 
         */
         String( const std::string &s, const char *encoding, const char *errors=NULL )
-        : SeqBase<Char>( PyUnicode_Decode( s.c_str(), s.size(), encoding, errors ), true )
+        : SeqBase<Char>( PyUnicode_Decode( s.data(), Py_ssize_t(s.size()), encoding, errors ), true )
         {
             validate();
         }

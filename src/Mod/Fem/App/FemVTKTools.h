@@ -44,7 +44,7 @@ public:
     // uses the content of the cell array and convert it into FemMeshGroup. Ever unique entry in the
     // cell array becomes a group, and  this group contains all elements with the entry. If the cell
     // array is a Integer array the value becomes the groupID, if it is a string array the value
-    // becomes the group name. Other cell types are not supportet.
+    // becomes the group name. Other cell types are not supported.
     static void importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* mesh, std::string arrayname);
 
     // extract data from FreCAD FEM mesh and fill a vtkUnstructuredGrid instance with that data. Set

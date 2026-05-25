@@ -552,6 +552,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewPr
 ViewProviderSketch::ViewProviderSketch()
     : SelectionObserver(false)
     , toolManager(this)
+    , editingCancelled(false)
     , Mode(STATUS_NONE)
     , pcSketchFaces(new SoSketchFaces)
     , pcSketchFacesToggle(new SoToggleSwitch)
@@ -562,7 +563,6 @@ ViewProviderSketch::ViewProviderSketch()
     , sketchHandler(nullptr)
     , viewOrientationFactor(1)
     , blockContextMenu(false)
-    , editingCancelled(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
     PartGui::ViewProviderGridExtension::initExtension(this);
@@ -3457,6 +3457,7 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
 
     if (prop == &AutoColor) {
         updateColorPropertiesVisibility();
+        updateAutomaticColorProperties();
         return;
     }
 
@@ -3490,6 +3491,17 @@ void SketcherGui::ViewProviderSketch::updateColorPropertiesVisibility()
     ShapeAppearance.setStatus(App::Property::Hidden, usesAutomaticColors);
 }
 
+void SketcherGui::ViewProviderSketch::updateAutomaticColorProperties()
+{
+    if (!AutoColor.getValue()) {
+        return;
+    }
+
+    pObserver->updateFromParameter("SketchEdgeColor");
+    pObserver->updateFromParameter("SketchVertexColor");
+    pObserver->updateFromParameter("SketchFaceColor");
+}
+
 void SketcherGui::ViewProviderSketch::startRestoring()
 {
     // small hack: before restoring mark AutoColor property as non-touched
@@ -3516,9 +3528,7 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
 
     if (AutoColor.getValue()) {
         // update colors according to current user preferences
-        pObserver->updateFromParameter("SketchEdgeColor");
-        pObserver->updateFromParameter("SketchVertexColor");
-        pObserver->updateFromParameter("SketchFaceColor");
+        updateAutomaticColorProperties();
 
         updateColorPropertiesVisibility();
     }
@@ -3588,7 +3598,7 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 {
     ViewProvider2DObject::attach(pcFeat);
 
-    getAnnotation()->addChild(pcSketchFacesToggle);
+    getOrCreateAnnotation()->addChild(pcSketchFacesToggle);
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

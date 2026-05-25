@@ -115,6 +115,11 @@ void execHoleCircle(Gui::Command* cmd)
             if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
                 Circles.push_back(cgen);
+            } else {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw hole circle"),
+                                     QObject::tr("Can not make hole circle for %1")
+                                         .arg(QString::fromStdString(GeometryUtils::getGeomTypeName(geom->getGeomType()))));
+
             }
         }
     }
@@ -230,6 +235,10 @@ void execCircleCenterLines(Gui::Command* cmd)
                 // number and not the number from line attributes
                 horiz->m_format.setLineNumber(Preferences::CenterLineStyle());
                 vert->m_format.setLineNumber(Preferences::CenterLineStyle());
+            } else {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw circle centerlines"),
+                                     QObject::tr("Can not make centerlines for %1")
+                                        .arg(QString::fromStdString(GeometryUtils::getGeomTypeName(geom->getGeomType()))));
             }
         }
     }
@@ -990,7 +999,6 @@ void CmdTechDrawCosmeticCircle::activated(int iMsg)
             QObject::tr("Close active task dialog and try again."));
         return;
     }
-
     execCosmeticCircleCenter(this);
 
     updateActive();
@@ -1660,6 +1668,11 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         }
                         objFeat->requestPaint();
                     }
+                } else {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw extend/shorten line"),
+                                         QObject::tr("Can not make centerlines for %1")
+                                             .arg(QString::fromStdString(GeometryUtils::getGeomTypeName(baseGeo->getGeomType()))));
+
                 }
             }
         }
@@ -2200,6 +2213,10 @@ void _createThreadCircle(const std::string Name, TechDraw::DrawViewPart* objFeat
         float thinWeight = (float)TechDraw::DrawUtil::getDefaultLineWeight("Thin");
         Base::Color threadColor = _getActiveLineAttributes().getColor(); 
         _setLineAttributes(arc, solidStyle, thinWeight, threadColor);
+    } else {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw create thread circle"),
+                             QObject::tr("Can not make thread circle for %1")
+                                 .arg(QString::fromStdString(GeometryUtils::getGeomTypeName(geom->getGeomType()))));
     }
 }
 

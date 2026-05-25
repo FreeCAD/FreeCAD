@@ -315,7 +315,7 @@ protected:
         Base::Vector3d hitShapeDir = Base::Vector3d(0, 0, 0);
         bool isLine = false;
     };
-    PreselectionData getPreselectionData();
+    PreselectionData getPreselectionData() const;
 
     void seekPreselectionAutoConstraint(
         std::vector<AutoConstraint>& constraints,
@@ -326,9 +326,13 @@ protected:
 
     bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const;
 
-    void seekAlignmentAutoConstraint(std::vector<AutoConstraint>& constraints, const Base::Vector2d& Dir);
+    bool seekAlignmentAutoConstraint(
+        std::vector<AutoConstraint>& constraints,
+        const Base::Vector2d& Pos,
+        const Base::Vector2d& Dir
+    );
 
-    void seekTangentAutoConstraint(
+    bool seekTangentAutoConstraint(
         std::vector<AutoConstraint>& constraints,
         const Base::Vector2d& Pos,
         const Base::Vector2d& Dir

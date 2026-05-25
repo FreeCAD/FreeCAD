@@ -386,6 +386,7 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
     setGizmoPositions();
 
     ui->chamferType->currentIndexChanged(ui->chamferType->currentIndex());
+    showDraggerHints();
 }
 
 void TaskChamferParameters::setGizmoPositions()

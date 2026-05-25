@@ -93,7 +93,7 @@ void TaskDressUpParameters::setupTransaction()
     }
 
     // open a transaction if none is active
-    // where is this transaction commited - theo-vt?
+    // where is this transaction committed - theo-vt?
     std::string n("Edit ");
     n += DressUpView->getObject()->Label.getValue();
     transactionID = DressUpView->getObject()->getDocument()->openTransaction(n.c_str());

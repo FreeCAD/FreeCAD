@@ -1463,9 +1463,12 @@ class GroundedJoint:
             locked=True,
         )
         joint.ObjectToGround = obj_to_ground
+        self.setReadOnly(joint, True)
 
     def onDocumentRestored(self, joint):
         self.migrationScript(joint)
+
+        self.setReadOnly(joint, True)
 
     def migrationScript(self, joint):
         if (
@@ -1484,10 +1487,31 @@ class GroundedJoint:
     def loads(self, state):
         return None
 
-    def onChanged(self, fp, prop):
+    def onChanged(self, joint, prop):
         """Do something when a property has changed"""
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        pass
+        if prop == "ObjectToGround":
+            self.setReadOnly(joint, True)
+
+    def onBeforeChange(self, joint, prop):
+        if prop == "ObjectToGround":
+            self.setReadOnly(joint, False)
+
+    def onDelete(self, joint, args):
+        self.setReadOnly(joint, False)
+        return True
+
+    def setReadOnly(self, joint, value):
+        if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
+            obj = joint.ObjectToGround
+            tag = "-ReadOnly"
+            if value:
+                tag = "ReadOnly"
+
+            propList = obj.PropertiesList
+            if "Placement" in propList:
+                obj.setPropertyStatus("Placement", tag)
+            if "LinkPlacement" in propList:
+                obj.setPropertyStatus("LinkPlacement", tag)
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
@@ -1806,6 +1830,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.jForm.offset1Button.clicked.connect(self.onOffset1Clicked)
         self.jForm.offset2Button.clicked.connect(self.onOffset2Clicked)
         self.jForm.PushButtonReverse.clicked.connect(self.onReverseClicked)
+        self.jForm.PushButtonRotate90.clicked.connect(self.onRotate90Clicked)
 
         self.jForm.limitCheckbox1.stateChanged.connect(self.adaptUi)
         self.jForm.limitCheckbox2.stateChanged.connect(self.adaptUi)
@@ -2013,6 +2038,17 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def onReverseClicked(self):
         self.joint.Proxy.flipOnePart(self.joint)
 
+    def onRotate90Clicked(self):
+        """Rotate the joint attachment rotation (yaw) by +90 degrees."""
+        try:
+            cur = self.jForm.rotationSpinbox.property("rawValue")
+            if cur is None:
+                cur = 0.0
+            new_val = math.fmod(cur + 90.0, 360.0)
+            self.jForm.rotationSpinbox.setProperty("rawValue", new_val)
+        except Exception as e:
+            App.Console.PrintError(f"ERROR: failed to increment rotation spinbox: {e}\n")
+
     def reverseRotToggled(self, val):
         if val:
             self.jForm.jointType.setCurrentIndex(JointTypes.index("Gears"))
@@ -2071,6 +2107,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.jForm.rotationSpinbox.setVisible(not advancedOffset and needRotation)
 
         self.jForm.PushButtonReverse.setVisible(jType in JointUsingReverse)
+        self.jForm.PushButtonRotate90.setVisible(jType in JointUsingReverse)
 
         needLengthLimits = jType in JointUsingLimitLength
         needAngleLimits = jType in JointUsingLimitAngle

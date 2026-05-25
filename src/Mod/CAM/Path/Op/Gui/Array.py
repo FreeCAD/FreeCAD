@@ -137,16 +137,22 @@ class ObjectArray:
             QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
         )
         obj.addProperty(
-            "App::PropertyPercent",
-            "JitterPercent",
+            "App::PropertyBool",
+            "UseJitter",
             "Random",
-            QT_TRANSLATE_NOOP("App::Property", "Percent of copies to randomly offset"),
+            QT_TRANSLATE_NOOP("App::Property", "Use randomly offset"),
         )
         obj.addProperty(
             "App::PropertyIntegerConstraint",
             "JitterSeed",
             "Random",
             QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
+        )
+        obj.addProperty(
+            "App::PropertyAngle",
+            "JitterAngle",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Max angle of rotation for jitter randomness"),
         )
 
         obj.Active = True
@@ -155,6 +161,8 @@ class ObjectArray:
         obj.CopiesX = (0, 0, 99999, 1)
         obj.CopiesY = (0, 0, 99999, 1)
         obj.JitterSeed = (0, 0, 2147483647, 1)
+        obj.JitterMagnitude = FreeCAD.Vector(10, 10, 0)
+        obj.JitterAngle = 10
 
         self.setEditorModes(obj)
         obj.Proxy = self
@@ -185,12 +193,14 @@ class ObjectArray:
         obj.setEditorMode("CopiesY", copiesYMode)
         obj.setEditorMode("Offset", offsetMode)
         obj.setEditorMode("SwapDirection", swapDirectionMode)
-        obj.setEditorMode("JitterPercent", 0)
-        obj.setEditorMode("JitterMagnitude", 0)
-        obj.setEditorMode("JitterSeed", 0)
+
+        jitterMode = 0 if obj.UseJitter else 2
+        obj.setEditorMode("JitterMagnitude", jitterMode)
+        obj.setEditorMode("JitterSeed", jitterMode)
+        obj.setEditorMode("JitterAngle", jitterMode)
 
     def onChanged(self, obj, prop):
-        if prop == "Type" and not obj.Document.Restoring:
+        if prop in ("Type", "UseJitter") and not obj.Document.Restoring:
             self.setEditorModes(obj)
 
         if prop == "Active" and obj.ViewObject:
@@ -201,25 +211,29 @@ class ObjectArray:
         if not obj.ViewObject.Proxy:
             Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)
 
-        if not hasattr(obj, "Active"):
+        if not hasattr(obj, "JitterAngle"):
+            obj.addProperty(
+                "App::PropertyAngle",
+                "JitterAngle",
+                "Random",
+                QT_TRANSLATE_NOOP("App::Property", "Max angle of rotation for jitter randomness"),
+            )
+        if not hasattr(obj, "UseJitter"):
             obj.addProperty(
                 "App::PropertyBool",
-                "Active",
-                "Path",
-                QT_TRANSLATE_NOOP(
-                    "PathOp", "Make False, to prevent operation from generating code"
-                ),
-            )
-            obj.Active = True
-
-        if not hasattr(obj, "JitterSeed"):
-            obj.addProperty(
-                "App::PropertyInteger",
-                "JitterSeed",
+                "UseJitter",
                 "Random",
-                QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
+                QT_TRANSLATE_NOOP("App::Property", "Use randomly offset"),
             )
-            obj.JitterSeed = 0
+            obj.setGroupOfProperty("JitterMagnitude", "Random")
+            obj.setGroupOfProperty("JitterSeed", "Random")
+
+            obj.setGroupOfProperty("SwapDirection", "Pattern")
+            obj.setGroupOfProperty("CopiesX", "Pattern")
+            obj.setGroupOfProperty("CopiesY", "Pattern")
+            obj.setGroupOfProperty("Copies", "Pattern")
+            obj.setGroupOfProperty("Offset", "Pattern")
+            obj.setGroupOfProperty("Type", "Pattern")
 
         if not hasattr(obj, "CycleTime"):
             obj.addProperty(
@@ -247,8 +261,14 @@ class ObjectArray:
 
         obj.ToolController = toolController(base[0])
 
-        # use seed if specified, otherwise default to object name for consistency during recomputes
-        seed = obj.JitterSeed or obj.Name
+        # Prepare random function
+        jitterAngle = jitterMagnitude = None
+        if obj.UseJitter:
+            random.seed(obj.JitterSeed)
+            if obj.JitterMagnitude != FreeCAD.Vector():
+                jitterMagnitude = obj.JitterMagnitude
+            if obj.JitterAngle:
+                jitterAngle = obj.JitterAngle
 
         pa = PathArray(
             obj.Base,
@@ -260,9 +280,8 @@ class ObjectArray:
             obj.Angle,
             obj.Centre,
             obj.SwapDirection,
-            obj.JitterMagnitude,
-            obj.JitterPercent,
-            seed,
+            jitterMagnitude,
+            jitterAngle,
         )
 
         obj.Path = pa.getPath()
@@ -317,8 +336,7 @@ class PathArray:
         centre,
         swapDirection,
         jitterMagnitude,
-        jitterPercent,
-        seed,
+        jitterAngle,
     ):
         self.base = base
         self.arrayType = arrayType  # ['Linear1D', 'Linear2D', 'Polar']
@@ -330,15 +348,17 @@ class PathArray:
         self.polarCentre = centre
         self.swapDirection = swapDirection
         self.jitterMagnitude = jitterMagnitude
-        self.jitterPercent = jitterPercent
-        self.seed = seed
+        self.jitterAngle = jitterAngle
 
     def getPath(self):
         """getPath() ... Call this method on an instance of the class to generate and return
         path data for the requested path array."""
 
         commands = []
-        random.seed(self.seed)
+
+        self.jitterCentre = FreeCAD.Vector()
+        if self.jitterAngle:
+            self.jitterCentre = self.getBasePathCenter(self.base)
 
         if self.arrayType == "Polar":
             self.getPolarArray(commands)
@@ -353,14 +373,34 @@ class PathArray:
         return Path.Path(commands)
 
     def calculateJitter(self, pos):
-        """Returns the position argument with a random vector shift applied."""
-        if self.jitterPercent == 0:
-            pass
-        elif random.randint(0, 100) < self.jitterPercent:
-            pos.x = pos.x + random.uniform(-self.jitterMagnitude.x, self.jitterMagnitude.x)
-            pos.y = pos.y + random.uniform(-self.jitterMagnitude.y, self.jitterMagnitude.y)
-            pos.z = pos.z + random.uniform(-self.jitterMagnitude.z, self.jitterMagnitude.z)
-        return pos
+        """calculateJitter(pos) ...
+        Returns the position argument with a random vector shift applied and random angle"""
+
+        if self.jitterMagnitude:
+            pos.x += random.uniform(-self.jitterMagnitude.x, self.jitterMagnitude.x)
+            pos.y += random.uniform(-self.jitterMagnitude.y, self.jitterMagnitude.y)
+            pos.z += random.uniform(-self.jitterMagnitude.z, self.jitterMagnitude.z)
+
+        alpha = 0
+        if self.jitterAngle:
+            alpha = random.uniform(-self.jitterAngle, self.jitterAngle)
+
+        return pos, alpha
+
+    def getBasePathCenter(self, operations):
+        """Get center point of all base operations"""
+        xmin = ymin = xmax = ymax = None
+        for op in operations:
+            for cmd in PathUtils.getPathWithPlacement(op).Commands:
+                if cmd.Name in Path.Geom.CmdMoveMill:
+                    xmin = cmd.x if cmd.x is not None and (xmin is None or cmd.x < xmin) else xmin
+                    ymin = cmd.y if cmd.y is not None and (ymin is None or cmd.y < ymin) else ymin
+                    xmax = cmd.x if cmd.x is not None and (xmax is None or cmd.x > xmax) else xmax
+                    ymax = cmd.y if cmd.y is not None and (ymax is None or cmd.y > ymax) else ymax
+        if xmin is not None and ymin is not None and xmax is not None and ymax is not None:
+            return FreeCAD.Vector(xmin + (xmax - xmin) / 2, ymin + (ymax - ymin) / 2, 0)
+
+        return FreeCAD.Vector()
 
     def getLinear1DArray(self, commands):
         """Array type Linear1D"""
@@ -370,11 +410,12 @@ class PathArray:
                 self.offsetVector.y * (i + 1),
                 self.offsetVector.z * (i + 1),
             )
-            pos = self.calculateJitter(pos)
+            pos, alpha = self.calculateJitter(pos)
 
             for b in self.base:
                 pl = FreeCAD.Placement()
                 pl.move(pos)
+                pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
                 path = PathUtils.getPathWithPlacement(b)
                 path = PathUtils.applyPlacementToPath(pl, path)
                 commands.extend(path.Commands)
@@ -395,13 +436,14 @@ class PathArray:
                         self.offsetVector.y * i,
                         self.offsetVector.z * i,
                     )
-                pos = self.calculateJitter(pos)
+                pos, alpha = self.calculateJitter(pos)
 
                 for b in self.base:
                     pl = FreeCAD.Placement()
                     # index 0,0 will be processed by the base Paths themselves
                     if i != 0 or j != 0:
                         pl.move(pos)
+                        pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
                         path = PathUtils.getPathWithPlacement(b)
                         path = PathUtils.applyPlacementToPath(pl, path)
                         commands.extend(path.Commands)
@@ -422,13 +464,14 @@ class PathArray:
                         self.offsetVector.y * (self.copiesY - j),
                         self.offsetVector.z * i,
                     )
-                pos = self.calculateJitter(pos)
+                pos, alpha = self.calculateJitter(pos)
 
                 for b in self.base:
                     pl = FreeCAD.Placement()
                     # index 0,0 will be processed by the base Paths themselves
                     if i != 0 or j != 0:
                         pl.move(pos)
+                        pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
                         path = PathUtils.getPathWithPlacement(b)
                         path = PathUtils.applyPlacementToPath(pl, path)
                         commands.extend(path.Commands)
@@ -443,6 +486,11 @@ class PathArray:
             # prepare placement for polar pattern
             pl = FreeCAD.Placement()
             pl.rotate(self.polarCentre, FreeCAD.Vector(0, 0, 1), ang)
+
+            # add jitter to placement
+            pos, alpha = self.calculateJitter(FreeCAD.Vector())
+            pl.move(pos)
+            pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
 
             for b in self.base:
                 path = PathUtils.getPathWithPlacement(b)

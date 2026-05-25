@@ -52,7 +52,7 @@ _TAB_WARNINGS = 4
 
 
 def _parse_cycle_time(ct_str):
-    """Convert 'HH:MM:SS' string to total seconds, or None if unparseable."""
+    """Convert 'HH:MM:SS' string to total seconds, or None if unparsable."""
     try:
         parts = ct_str.strip().split(":")
         if len(parts) == 3:

@@ -108,7 +108,7 @@ def setup(doc=None, solver=None):
     if doc is None:
         doc = init_doc()
 
-    # create geomerty
+    # create geometry
     Part.makeBox
     b1 = Part.makeBox(10,30,10)
     b2 = Part.makeBox(30,10,10)
@@ -150,7 +150,7 @@ def setup(doc=None, solver=None):
 
     gmsh.MeshRefinementList = [math]
 
-    # translate to the side for beter visibility
+    # translate to the side for better visibility
     gmsh.Placement.translate(FreeCAD.Vector(0,0,20))
 
     return doc
