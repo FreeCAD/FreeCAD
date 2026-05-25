@@ -35,7 +35,7 @@ class ParameterGrpObserver;
 
 using ParameterGrpObserverList = std::list<ParameterGrpObserver*>;
 
-class ParameterGrpPy: public Py::PythonExtension<ParameterGrpPy>  // NOLINT
+class BaseExport ParameterGrpPy: public Py::PythonExtension<ParameterGrpPy>  // NOLINT
 {
 public:
     static void init_type();  // announce properties and methods
