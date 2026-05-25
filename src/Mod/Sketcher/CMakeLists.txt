@@ -29,6 +29,7 @@ if(BUILD_GUI)
           TestSketcherGui.py
     )
     list (APPEND Sketcher_TestScripts
+          SketcherTests/TestConstraintPreselectionGui.py
           SketcherTests/TestPlacementUpdate.py
           SketcherTests/TestOnViewParameterGui.py
     )
