@@ -756,7 +756,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                     Path.Log.error(self.inaccessibleMsg)
 
                             if openEdges:
-                                tup = openEdges, False, "OpenEdge"
+                                tup = openEdges[0], openEdges, "OpenEdge"
                                 shapes.append(tup)
 
                         else:
@@ -911,6 +911,28 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             "continuing.".format(rebuild_err)
                         )
                         continue
+
+            # Fallback : offset perpendiculaire manuel pour segment droit
+            try:
+                Path.Log.debug("_extractPathWireFromSketch: trying manual perpendicular offset.")
+                edges_out = []
+                for edge in wire.Edges:
+                    p1 = edge.Vertexes[0].Point
+                    p2 = edge.Vertexes[-1].Point
+                    tang = p2.sub(p1)
+                    if tang.Length < 1e-9:
+                        continue
+                    tang.normalize()
+                    perp = FreeCAD.Vector(-tang.y, tang.x, 0.0).multiply(offset)
+                    new_p1 = p1.add(perp)
+                    new_p2 = p2.add(perp)
+                    edges_out.append(Part.makeLine(new_p1, new_p2))
+                if edges_out:
+                    result_wire = Part.Wire(edges_out)
+                    Path.Log.debug("_extractPathWireFromSketch: manual offset OK.")
+                    return [result_wire]
+            except Exception as manual_err:
+                Path.Log.debug("_extractPathWireFromSketch: manual offset failed: {}".format(manual_err))
 
             Path.Log.error(
                 "_extractPathWireFromSketch: makeOffset2D failed on all join modes "
