@@ -55,6 +55,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawViewArch.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewDraft.h>
@@ -62,12 +63,18 @@
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
+#include "QGIEdge.h"
+#include "QGIFace.h"
+#include "QGIVertex.h"
 #include "QGIViewPart.h"
+#include "QGIViewBalloon.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
+#include "QGIView.h"
 #include "Rez.h"
 #include "TaskActiveView.h"
 #include "TaskComplexSection.h"
@@ -78,6 +85,7 @@
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "CommandHelpers.h"
+#include "TechDrawHandler.h"
 
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);
@@ -1197,8 +1205,6 @@ bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
 {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                             QObject::tr("Select an object first"));
         return false;
     }
 
@@ -1219,20 +1225,9 @@ bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
     return true;
 }
 
-bool _checkDrawViewPartBalloon(Gui::Command* cmd)
-{
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
-    if (!objFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                             QObject::tr("No view of a part in selection"));
-        return false;
-    }
-    return true;
-}
 
 bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>& subNames,
-                           QPointF& placement)
+                           QPointF& placement, bool& isFace)
 {
     // Let's see, if we can help speed up the placement of the balloon:
     // As of now we support:
@@ -1251,6 +1246,8 @@ bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>& 
         //not a view of a part, so no geometry to attach to
         return false;
     }
+
+    isFace = false;
 
     std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(subNames[0]);
     if (geoType == "Vertex") {
@@ -1272,9 +1269,433 @@ bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>& 
             return true;
         }
     }
+    else if (geoType == "Face") {
+        // For a face we use the placement of the click, we do this in the handler
+        isFace = true;
+        return true;
+    }
 
     return false;
 }
+
+class TDBallonHandler : public TechDrawHandler 
+{
+    private:
+        enum class State {
+            PlacingOriginFirst,
+            PlacingHeadSecond, 
+
+            PlacingHeadFirst,
+            PlacingOriginSecond,
+            
+            NotPlacing
+        };
+
+        bool pointSet = false;
+        bool isFace = false;
+        QPointF firstPoint;
+        QPointF headPlacement;
+        TechDraw::DrawView* sourceView = nullptr;
+        QGSPage* sourcePage = nullptr;
+        TechDraw::DrawViewBalloon* previewBalloon = nullptr;
+        State currentState = State::NotPlacing;
+
+        void resetPlacementState()
+        {
+            pointSet = false;
+            isFace = false;
+            firstPoint = QPointF();
+            headPlacement = QPointF();
+            sourceView = nullptr;
+            sourcePage = nullptr;
+            previewBalloon = nullptr;
+            currentState = State::NotPlacing;
+        }
+
+        void updatePreviewBalloon(const QPointF& cursorLocation)
+        {
+            if (!previewBalloon || !sourcePage || !sourceView) {
+                return;
+            }
+
+            if (currentState == State::PlacingOriginSecond) {
+                auto items = sourcePage->items(cursorLocation);
+                for (auto* item : items) {
+                    if (!dynamic_cast<QGIEdge*>(item) && !dynamic_cast<QGIVertex*>(item) && !dynamic_cast<QGIFace*>(item)) {
+                        continue;
+                    }
+
+                    auto* qgiView = dynamic_cast<QGIView*>(item->parentItem());
+                    if (!qgiView) {
+                        continue;
+                    }
+
+                    auto* hoveredView = dynamic_cast<TechDraw::DrawViewPart*>(qgiView->getViewObject());
+                    if (!hoveredView || hoveredView == sourceView) {
+                        break;
+                    }
+
+                    auto* qgi = sourcePage->getQGIVByName(previewBalloon->getNameInDocument());
+                    auto* qBalloon = dynamic_cast<QGIViewBalloon*>(qgi);
+
+                    QPointF balloonCenter;
+                    if (qBalloon && qBalloon->getBalloonLabel()) {
+                        auto* label = qBalloon->getBalloonLabel();
+                        balloonCenter = qBalloon->mapToScene(label->getCenterX(), label->getCenterY());
+                    }
+
+                    // Switch the source view to the view we are hovering over
+                    sourceView = hoveredView;
+                    previewBalloon->SourceView.setValue(hoveredView);
+
+                    // The location of the balloon should stay the same in relation to the page
+                    // But currently the balloon position is in relation to the view
+                    // So we need to find the new position of the balloon in the new view and move it there
+                    auto* qViewNew = sourcePage->findQViewForDocObj(hoveredView);
+                    if (qBalloon && qViewNew && qBalloon->getBalloonLabel()) {
+                        QPointF newCenter = qViewNew->mapFromScene(balloonCenter);
+                        double newX = Rez::appX(newCenter.x()) / hoveredView->getScale();
+                        double newY = -Rez::appX(newCenter.y()) / hoveredView->getScale();
+
+                        previewBalloon->X.setValue(newX);
+                        previewBalloon->Y.setValue(newY);
+                    }
+                    break;
+                }
+            }
+
+            auto* qParent = sourcePage->getQGIVByName(sourceView->getNameInDocument());
+
+            auto* qgi = sourcePage->getQGIVByName(previewBalloon->getNameInDocument());
+            auto* qBalloon = dynamic_cast<QGIViewBalloon*>(qgi);
+            
+            if (!qParent || !qBalloon || !qBalloon->getBalloonLabel()) {
+                return;
+            }
+
+            if (currentState == State::PlacingOriginSecond) {
+                QPointF location = qParent->mapFromScene(cursorLocation);
+                auto origin = DU::toVector3d(location);
+                origin = Rez::appX(origin) / sourceView->getScale();
+                origin = DrawUtil::invertY(origin);
+                origin.RotateZ(Base::toRadians(-sourceView->Rotation.getValue()));
+
+                previewBalloon->setOrigin(origin);
+            }
+            else if (currentState == State::PlacingHeadSecond) {
+                QPointF balloonPos = qBalloon->mapFromScene(cursorLocation);
+                qBalloon->getBalloonLabel()->setPosFromCenter(balloonPos.x(), balloonPos.y());
+            }
+            
+            qBalloon->balloonLabelDragged(false);
+        }
+
+        void cancelPreviewBalloon()
+        {
+            if (!previewBalloon) {
+                return;
+            }
+
+            int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Cancel Balloon"));
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.removeObject('%s')",
+                                    previewBalloon->getNameInDocument());
+            Gui::Command::commitCommand(tid);
+            previewBalloon = nullptr;
+        }
+
+    public:
+        void activated() override
+        {
+            if (viewPage) {
+                QPoint hotspot(15, 15);
+                QPixmap pixmap = viewPage->prepareCursorPixmap("TechDraw_Balloon_Pointer", hotspot);
+                viewPage->activateCursor(QCursor(pixmap, hotspot.x(), hotspot.y()));
+            }
+        }
+
+        void deactivated() override
+        {
+            cancelPreviewBalloon();
+            resetPlacementState();
+        }
+
+        void mouseMoveEvent(QMouseEvent* event) override
+        {
+            if (!viewPage || !pointSet || !previewBalloon) {
+                return;
+            }
+
+            QPointF cursorPlacement = viewPage->mapToScene(event->pos());
+            updatePreviewBalloon(cursorPlacement);
+        }
+
+        void mouseReleaseEvent(QMouseEvent* event) override
+        {
+            if (event->button() == Qt::RightButton && pointSet) {
+                cancelPreviewBalloon();
+                resetPlacementState();
+                event->accept();
+                return;
+            }
+
+            if (!viewPage) {
+                return;
+            }
+            if (event->button() != Qt::LeftButton) {
+                return;
+            }
+            QGraphicsItem* item = viewPage->scene()->itemAt(viewPage->mapToScene(event->pos()), QTransform());
+
+            if (currentState == State::NotPlacing) {
+                if (!item) {
+                    return;
+                }
+
+                auto* qgiView = dynamic_cast<QGIView*>(item);
+                if (!qgiView) {
+                    QGraphicsItem* parent = item->parentItem();
+                    qgiView = dynamic_cast<QGIView*>(parent);
+                }
+
+                // If the user has not clicked directly on a view, or something on that view
+                // Then they are trying to pick the placement of the head
+                if (!qgiView) {
+                    headPlacement = viewPage->mapToScene(event->pos());
+                    currentState = State::PlacingHeadFirst;
+                }
+                else {
+                    sourceView = qgiView->getViewObject();
+                    if (!sourceView) {
+                        currentState = State::PlacingHeadFirst;
+                    }
+
+                    if (currentState == State::NotPlacing) {
+                        TechDraw::DrawPage* page = sourceView->findParentPage();
+                        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
+                        ViewProviderPage* pageVP = freecad_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
+                        sourcePage = pageVP ? pageVP->getQGSPage() : nullptr;
+                    }
+                    
+    
+                    if (!sourcePage) {
+                        currentState = State::PlacingHeadFirst;
+                    }
+
+                    std::vector<std::string> subNames;
+
+                    if (currentState == State::NotPlacing) {
+                        firstPoint = viewPage->mapToScene(event->pos());
+
+
+                        // This checks the type of item clicked
+                        // just using the subnames from selection had some weird edge cases (No pun intended)
+                        if (auto* edge = dynamic_cast<QGIEdge*>(item)) {
+                            subNames = { "Edge" + std::to_string(edge->getProjIndex()) };
+                        }
+                        else if (auto* vertex = dynamic_cast<QGIVertex*>(item)) {
+                            subNames = { "Vertex" + std::to_string(vertex->getProjIndex()) };
+                        }
+                        else if (auto* face = dynamic_cast<QGIFace*>(item)) {
+                            subNames = { "Face" + std::to_string(face->getProjIndex()) };
+                        }
+
+                        if (subNames.empty()) {
+                            currentState = State::PlacingHeadFirst;
+                        }
+                    }
+    
+                    // If the user has not clicked directly on a vertex, face, or edge
+                    // Then they are also trying to pick the placement of the head
+                    if (!_checkDirectPlacement(qgiView, subNames, firstPoint, isFace)) {
+                        headPlacement = firstPoint;
+                        currentState = State::PlacingHeadFirst;
+                    }
+                    else {
+                        currentState = State::PlacingOriginFirst;
+                    }
+                }
+            }
+            else if (currentState == State::PlacingHeadSecond) {
+                headPlacement = viewPage->mapToScene(event->pos());
+    
+                if (!sourcePage || !sourceView || !previewBalloon) {
+                    resetPlacementState();
+                    return;
+                }
+    
+                updatePreviewBalloon(headPlacement);
+                
+                auto* qgi = sourcePage->getQGIVByName(previewBalloon->getNameInDocument());
+                auto* qBalloon = dynamic_cast<QGIViewBalloon*>(qgi);
+    
+                if (qBalloon) {
+                    qBalloon->setPreviewMode(false);
+                    qBalloon->balloonLabelDragFinished();
+                }
+                
+                resetPlacementState();
+                return;
+            }
+            else if (currentState == State::PlacingOriginSecond) {
+                QPointF originPlacement = viewPage->mapToScene(event->pos());
+                auto items = viewPage->scene()->items(originPlacement);
+
+                std::vector<std::string> subNames;
+                QGraphicsItem* clickedItem = nullptr;
+                for (auto* item : items) {
+                    if (auto* edge = dynamic_cast<QGIEdge*>(item)) {
+                        clickedItem = item;
+                        subNames.push_back("Edge" + std::to_string(edge->getProjIndex()));
+                        break;
+                    }
+                    if (auto* vertex = dynamic_cast<QGIVertex*>(item)) {
+                        clickedItem = item;
+                        subNames.push_back("Vertex" + std::to_string(vertex->getProjIndex()));
+                        break;
+                    }
+                    if (auto* face = dynamic_cast<QGIFace*>(item)) {
+                        clickedItem = item;
+                        subNames.push_back("Face" + std::to_string(face->getProjIndex()));
+                        break;
+                    }
+                }
+
+                if (subNames.empty()) {
+                    return;
+                }
+
+                QGraphicsItem* parent = clickedItem->parentItem();
+                QGIView* qgiView = dynamic_cast<QGIView*>(parent);
+
+                if (!qgiView) {
+                    return;
+                }
+
+                auto* selectedView = dynamic_cast<TechDraw::DrawViewPart*>(qgiView->getViewObject());
+                
+                if (!selectedView) {
+                    return;
+                }
+
+                if (!_checkDirectPlacement(qgiView, subNames, originPlacement, isFace)) {
+                    return;
+                }
+
+                if (!sourcePage || !sourceView || !previewBalloon) {
+                    resetPlacementState();
+                    return;
+                }
+
+                if (isFace) {
+                    previewBalloon->EndType.setValue(static_cast<int>(TechDraw::ArrowType::DOT));
+                }
+
+                auto* qgi = sourcePage->getQGIVByName(previewBalloon->getNameInDocument());
+                auto* qBalloon = dynamic_cast<QGIViewBalloon*>(qgi);
+            
+                updatePreviewBalloon(originPlacement);
+    
+                if (qBalloon) {
+                    qBalloon->setPreviewMode(false);
+                    qBalloon->balloonLabelDragFinished();
+                }
+                
+                resetPlacementState();
+            }
+
+            if (currentState == State::PlacingOriginFirst) {
+                QPointF scenePoint = viewPage->mapToScene(event->pos());
+
+                if (firstPoint.isNull()) {
+                    return;
+                }
+                else {
+                    previewBalloon = sourcePage->createBalloon(firstPoint, scenePoint, sourceView);
+                }
+
+                if (!previewBalloon) {
+                    resetPlacementState();
+                    return;
+                }
+
+                auto* qgi = sourcePage->getQGIVByName(previewBalloon->getNameInDocument());
+                if (isFace) {
+                    previewBalloon->EndType.setValue(static_cast<int>(TechDraw::ArrowType::DOT));
+                }
+                auto* qBalloon = dynamic_cast<QGIViewBalloon*>(qgi);
+                if (qBalloon) {
+                    qBalloon->setPreviewMode(true);
+                }
+
+                currentState = State::PlacingHeadSecond;
+                pointSet = true;
+                return;
+            }
+            else if (currentState == State::PlacingHeadFirst) {
+
+                // Find a random view on the page to be the parent of the preview balloon
+                QGIView* qgiView = nullptr;
+                auto items = viewPage->items();
+                for (auto item : items) {
+                    if (auto view = dynamic_cast<QGIView*>(item)) {
+                        qgiView = view;
+                        break;
+                    }
+                }
+
+                if (!qgiView) {
+                    resetPlacementState();
+                    return;
+                }
+
+                sourceView = qgiView->getViewObject();
+                if (!sourceView) {
+                    resetPlacementState();
+                    return;
+                }
+
+                TechDraw::DrawPage* page = sourceView->findParentPage();
+                Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
+                ViewProviderPage* pageVP = freecad_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
+                sourcePage = pageVP ? pageVP->getQGSPage() : nullptr;
+                
+                if (!sourcePage) {
+                    resetPlacementState();
+                    return;
+                }
+                
+                previewBalloon = sourcePage->createBalloon(headPlacement, headPlacement, sourceView);
+                
+                if (!previewBalloon) {
+                    resetPlacementState();
+                    return;
+                }
+
+                auto* qgi = sourcePage->getQGIVByName(previewBalloon->getNameInDocument());
+                auto* qBalloon = dynamic_cast<QGIViewBalloon*>(qgi);
+                if (qBalloon) {
+                    qBalloon->setPreviewMode(true);
+                }
+
+                pointSet = true;
+                currentState = State::PlacingOriginSecond;
+                Gui::Selection().clearSelection();
+                return;
+            }
+
+            TechDrawHandler::mouseReleaseEvent(event);
+        }
+
+        void mousePressEvent(QMouseEvent* event) override
+        {
+            Q_UNUSED(event);
+        }
+
+        void keyPressEvent(QKeyEvent* event) override
+        {
+            Q_UNUSED(event);
+        }
+};
 
 DEF_STD_CMD_A(CmdTechDrawBalloon)
 
@@ -1292,6 +1713,26 @@ CmdTechDrawBalloon::CmdTechDrawBalloon() : Command("TechDraw_Balloon")
 void CmdTechDrawBalloon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
+        return;
+    }
+
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+
+    // Handler for postselection
+    viewPage->activateHandler(new TDBallonHandler());
+
+    // The rest of the code is for the preselection
     bool result = _checkSelectionBalloon(this, 1);
     if (!result) {
         return;
@@ -1308,22 +1749,24 @@ void CmdTechDrawBalloon::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
-    ViewProviderPage* pageVP = freecad_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
     ViewProviderDrawingView* viewVP =
         freecad_cast<ViewProviderDrawingView*>(guiDoc->getViewProvider(objFeat));
 
     if (pageVP && viewVP) {
-        QGVPage* viewPage = pageVP->getQGVPage();
         QGSPage* scenePage = pageVP->getQGSPage();
         if (viewPage) {
             auto* view = dynamic_cast<QGIView*>(viewVP->getQView());
             QPointF placement;
-            if (view && _checkDirectPlacement(view, selection[0].getSubNames(), placement)) {
-                //this creates the balloon if something is already selected
-                scenePage->createBalloon(placement, objFeat);
+            bool isFace = false;
+            if (view && _checkDirectPlacement(view, selection[0].getSubNames(), placement, isFace)) {
+                if (placement.isNull()) {
+                    // if the direct placement is null it is a face, we dont allow it in preselection
+                    return;
+                }
+                QPointF noHeadPlacement;
+                scenePage->createBalloon(placement, noHeadPlacement, objFeat);
                 return;
             }
-            viewPage->startBalloonPlacing(objFeat);
         }
     }
 }

@@ -94,15 +94,11 @@ void QGVNavStyle::setAnchor()
 void QGVNavStyle::handleEnterEvent(QEvent* event)
 {
     Q_UNUSED(event);
-    if (getViewer()->isBalloonPlacing()) {
-        getViewer()->getBalloonCursor()->hide();
-    }
 }
 
 void QGVNavStyle::handleFocusOutEvent(QFocusEvent* event)
 {
     Q_UNUSED(event);
-    getViewer()->cancelBalloonPlacing();
 }
 
 void QGVNavStyle::handleKeyPressEvent(QKeyEvent* event)
@@ -149,7 +145,6 @@ void QGVNavStyle::handleKeyPressEvent(QKeyEvent* event)
                 return;
             }
             case Qt::Key_Escape: {
-                getViewer()->cancelBalloonPlacing();
                 event->accept();
                 return;
             }
@@ -185,29 +180,6 @@ void QGVNavStyle::handleKeyReleaseEvent(QKeyEvent* event)
 void QGVNavStyle::handleLeaveEvent(QEvent* event)
 {
     Q_UNUSED(event);
-    if (getViewer()->isBalloonPlacing()) {
-        int left_x;
-        if (getViewer()->getBalloonCursorPos().x() < 32)
-            left_x = 0;
-        else if (getViewer()->getBalloonCursorPos().x()
-                 > (getViewer()->contentsRect().right() - 32))
-            left_x = getViewer()->contentsRect().right() - 32;
-        else
-            left_x = getViewer()->getBalloonCursorPos().x();
-
-        int left_y;
-        if (getViewer()->getBalloonCursorPos().y() < 32)
-            left_y = 0;
-        else if (getViewer()->getBalloonCursorPos().y()
-                 > (getViewer()->contentsRect().bottom() - 32))
-            left_y = getViewer()->contentsRect().bottom() - 32;
-        else
-            left_y = getViewer()->getBalloonCursorPos().y();
-
-        /* When cursor leave the page, display getViewer()->balloonCursor where it left */
-        getViewer()->getBalloonCursor()->setGeometry(left_x, left_y, 32, 32);
-        getViewer()->getBalloonCursor()->show();
-    }
 }
 
 void QGVNavStyle::handleMousePressEvent(QMouseEvent* event)
@@ -222,11 +194,6 @@ void QGVNavStyle::handleMousePressEvent(QMouseEvent* event)
 void QGVNavStyle::handleMouseMoveEvent(QMouseEvent* event)
 {
     //    Base::Console().message("QGVNS::handleMouseMoveEvent()\n");
-    if (getViewer()->isBalloonPlacing()) {
-        balloonCursorMovement(event);
-        return;
-    }
-
     if (panningActive) {
         pan(event->pos());
         event->accept();
@@ -238,10 +205,6 @@ void QGVNavStyle::handleMouseMoveEvent(QMouseEvent* event)
 void QGVNavStyle::handleMouseReleaseEvent(QMouseEvent* event)
 {
     //    Base::Console().message("QGVNS::handleMouseReleaseEvent()\n");
-    if (getViewer()->isBalloonPlacing()) {
-        placeBalloon(event->pos());
-    }
-
     if (panningActive && (event->button() == Qt::MiddleButton)) {
         stopPan();
         event->accept();
@@ -385,23 +348,6 @@ void QGVNavStyle::stopClick()
 {
     m_clickPending = false;
     m_clickButton = Qt::MouseButton::NoButton;
-}
-
-void QGVNavStyle::placeBalloon(QPoint p)
-{
-    //    Base::Console().message("QGVNS::placeBalloon()\n");
-    getViewer()->getBalloonCursor()->hide();
-    //balloon was created in Command.cpp.  Why are we doing it again?
-    getViewer()->getScene()->createBalloon(getViewer()->mapToScene(p),
-                                           getViewer()->getBalloonParent());
-    getViewer()->setBalloonPlacing(false);
-}
-
-void QGVNavStyle::balloonCursorMovement(QMouseEvent *event)
-{
-    getViewer()->setBalloonCursorPos(event->pos());
-    event->accept();
-    return;
 }
 
 //****************************************
