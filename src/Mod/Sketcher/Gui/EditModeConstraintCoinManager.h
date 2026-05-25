@@ -41,6 +41,7 @@
 
 
 class SbVec3f;
+class SbVec2s;
 class SoRayPickAction;
 class SoPickedPoint;
 class SbVec3s;
@@ -134,7 +135,7 @@ public:
     void setConstraintSelectability(bool enabled = true);
     //@}
 
-    std::set<int> detectPreselectionConstr(const SoPickedPoint* Point);
+    std::set<int> detectPreselectionConstr(const SoPickedPoint* Point, const SbVec2s& cursorScreenPos);
 
     SoSeparator* getConstraintIdSeparator(int i);
 

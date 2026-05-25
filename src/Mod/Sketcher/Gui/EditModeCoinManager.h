@@ -28,6 +28,7 @@
 #include <vector>
 
 #include <App/Application.h>
+#include <Base/Vector3D.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include "GeometryCreationMode.h"
 
@@ -35,8 +36,10 @@
 
 
 class SbVec3f;
+class SbVec2s;
 class SoRayPickAction;
 class SoPickedPoint;
+class SoPickedPointList;
 class SbVec3s;
 
 namespace Base
@@ -174,6 +177,15 @@ public:
      */
     struct PreselectionResult
     {
+        enum class HitKind
+        {
+            None = -1,
+            Point = 0,
+            Edge = 1,
+            Axis = 2,
+            Constraint = 3
+        };
+
         enum SpecialValues
         {
             InvalidPoint = -1,
@@ -189,18 +201,36 @@ public:
             VerticalAxis = 2
         };
 
+        HitKind Kind = HitKind::None;
         int PointIndex = InvalidPoint;
         int GeoIndex = InvalidCurve;  // valid values are 0,1,2,... for normal geometry and
                                       // -3,-4,-5,... for external geometry
         Axes Cross = Axes::None;
         std::set<int> ConstrIndices;
+        Base::Vector3d PickedPoint;
+        bool HasPickedPoint = false;
+
+        [[nodiscard]] inline bool hasWinner() const
+        {
+            return Kind != HitKind::None;
+        }
+
+        [[nodiscard]] inline bool hasPickedPoint() const
+        {
+            return HasPickedPoint;
+        }
+
+        void setPickedPoint(const SoPickedPoint* point);
 
         inline void clear()
         {
+            Kind = HitKind::None;
             PointIndex = InvalidPoint;
             GeoIndex = InvalidCurve;
             Cross = Axes::None;
             ConstrIndices.clear();
+            PickedPoint = Base::Vector3d();
+            HasPickedPoint = false;
         }
     };
 
@@ -221,7 +251,7 @@ public:
 
     /** @name handle preselection and selection of points */
     //@{
-    PreselectionResult detectPreselection(SoPickedPoint* Point);
+    PreselectionResult detectPreselection(const SoPickedPointList& points, const SbVec2s& cursorPos);
     /// The client is responsible for unref-ing the SoGroup to release the memory.
     SoGroup* getSelectedConstraints();
     //@}
@@ -265,6 +295,16 @@ public:
     void updateElementSizeParameters();
 
 private:
+    PreselectionResult detectConstraintPreselection(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos
+    );
+    bool detectOriginPreselection(const SoPickedPoint* point, PreselectionResult& result);
+    bool detectGeometryPreselection(const SoPickedPoint* point, PreselectionResult& result);
+    bool detectPointPreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
+    bool detectCurvePreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
+    bool detectAxisPreselection(const SoPickedPoint* point, PreselectionResult& result);
+
     // This function populates the coin nodes with the information of the current geometry
     void processGeometry(const GeoListFacade& geolistfacade);
 

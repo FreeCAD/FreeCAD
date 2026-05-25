@@ -2229,7 +2229,10 @@ QString EditModeConstraintCoinManager::getPresentationString(
     return fixedValueStr;
 }
 
-std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPickedPoint* Point)
+std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
+    const SoPickedPoint* Point,
+    const SbVec2s& cursorScreenPos
+)
 {
     std::set<int> constrIndices;
     SoPath* path = Point->getPath();
@@ -2300,19 +2303,14 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                     // coordinate system.
                     SbVec2f iconGroupScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(
                         viewProvider,
-                        SbVec2f(iconGroupWorldPos[0], iconGroupWorldPos[1])
-                    );
-
-                    SbVec2f cursorScreenPos = ViewProviderSketchCoinAttorney::getScreenCoordinates(
-                        viewProvider,
-                        SbVec2f(Point->getPoint()[0], Point->getPoint()[1])
+                        iconGroupWorldPos
                     );
 
                     // 5. Calculate cursor position relative to the icon group's top-left corner.
                     //    - QRect/QImage assumes a top-left origin (Y increases downwards).
                     //    - Coin3D screen coordinates have a bottom-left origin (Y increases
-                    //    upwards).
-                    //    - We must flip the Y-axis for the check.
+                    //    upwards). Cursor coordinates come from the viewport in that same
+                    //    coordinate system, so only the Y flip for QRect is needed here.
                     int relativeX = static_cast<int>(
                         cursorScreenPos[0] - iconGroupScreenCenter[0] + iconGroupSize[0] / 2.0f
                     );

@@ -26,6 +26,7 @@
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/details/SoDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
@@ -58,6 +59,13 @@
 
 using namespace SketcherGui;
 using namespace Sketcher;
+
+void EditModeCoinManager::PreselectionResult::setPickedPoint(const SoPickedPoint* point)
+{
+    const SbVec3f pickedPoint = point->getPoint();
+    PickedPoint = Base::Vector3d(pickedPoint[0], pickedPoint[1], pickedPoint[2]);
+    HasPickedPoint = true;
+}
 
 //**************************** ParameterObserver nested class ******************************
 EditModeCoinManager::ParameterObserver::ParameterObserver(EditModeCoinManager& client)
@@ -683,81 +691,188 @@ void EditModeCoinManager::setAxisPickStyle(bool on)
     }
 }
 
-EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(SoPickedPoint* Point)
+EditModeCoinManager::PreselectionResult EditModeCoinManager::detectConstraintPreselection(
+    const SoPickedPointList& points,
+    const SbVec2s& cursorPos
+)
 {
-    EditModeCoinManager::PreselectionResult result;
+    PreselectionResult result;
 
-    if (!Point) {
+    for (int i = 0; i < points.getLength(); ++i) {
+        SoPickedPoint* point = points[i];
+        if (!point) {
+            continue;
+        }
+
+        result.ConstrIndices
+            = pEditModeConstraintCoinManager->detectPreselectionConstr(point, cursorPos);
+        if (result.ConstrIndices.empty()) {
+            continue;
+        }
+
+        result.Kind = PreselectionResult::HitKind::Constraint;
+        result.setPickedPoint(point);
         return result;
     }
 
-    // Base::Console().log("Point pick\n");
-    SoPath* path = Point->getPath();
-    SoNode* tail = path->getTail();  // Tail is directly the node containing points and curves
+    return result;
+}
 
-    // checking for a hit on the separate Origin Point
-    if (tail == editModeScenegraphNodes.OriginPointSet) {
-        const SoDetail* point_detail = Point->getDetail(editModeScenegraphNodes.OriginPointSet);
-        if (point_detail && point_detail->getTypeId() == SoPointDetail::getClassTypeId()) {
-            result.PointIndex = -1;  // The logical ID of the origin
-            result.Cross = PreselectionResult::Axes::RootPoint;
-            return result;
+bool EditModeCoinManager::detectOriginPreselection(const SoPickedPoint* point, PreselectionResult& result)
+{
+    SoPath* path = point->getPath();
+    SoNode* tail = path->getTail();
+    if (tail != editModeScenegraphNodes.OriginPointSet) {
+        return false;
+    }
+
+    const SoDetail* pointDetail = point->getDetail(editModeScenegraphNodes.OriginPointSet);
+    if (!pointDetail || pointDetail->getTypeId() != SoPointDetail::getClassTypeId()) {
+        return false;
+    }
+
+    result.Kind = PreselectionResult::HitKind::Axis;
+    result.Cross = PreselectionResult::Axes::RootPoint;
+    result.setPickedPoint(point);
+    return true;
+}
+
+bool EditModeCoinManager::detectPointPreselection(
+    const SoPickedPoint* point,
+    int layerIndex,
+    PreselectionResult& result
+)
+{
+    SoPath* path = point->getPath();
+    SoNode* tail = path->getTail();
+    if (tail != editModeScenegraphNodes.PointSet[layerIndex]) {
+        return false;
+    }
+
+    const SoDetail* pointDetail = point->getDetail(editModeScenegraphNodes.PointSet[layerIndex]);
+    if (!pointDetail || pointDetail->getTypeId() != SoPointDetail::getClassTypeId()) {
+        return false;
+    }
+
+    int pointIndex = static_cast<const SoPointDetail*>(pointDetail)->getCoordinateIndex();
+    result.PointIndex = coinMapping.getPointVertexId(pointIndex, layerIndex);
+    if (result.PointIndex == -1) {
+        result.Kind = PreselectionResult::HitKind::Axis;
+        result.Cross = PreselectionResult::Axes::RootPoint;
+    }
+    else {
+        result.Kind = PreselectionResult::HitKind::Point;
+    }
+
+    result.setPickedPoint(point);
+    return true;
+}
+
+bool EditModeCoinManager::detectCurvePreselection(
+    const SoPickedPoint* point,
+    int layerIndex,
+    PreselectionResult& result
+)
+{
+    SoPath* path = point->getPath();
+    SoNode* tail = path->getTail();
+
+    for (int subLayerIndex = 0; subLayerIndex < geometryLayerParameters.getSubLayerCount();
+         ++subLayerIndex) {
+        if (tail != editModeScenegraphNodes.CurveSet[layerIndex][subLayerIndex]) {
+            continue;
+        }
+
+        const SoDetail* curveDetail = point->getDetail(
+            editModeScenegraphNodes.CurveSet[layerIndex][subLayerIndex]
+        );
+        if (!curveDetail || curveDetail->getTypeId() != SoLineDetail::getClassTypeId()) {
+            return false;
+        }
+
+        int curveIndex = static_cast<const SoLineDetail*>(curveDetail)->getLineIndex();
+        result.GeoIndex = coinMapping.getCurveGeoId(curveIndex, layerIndex, subLayerIndex);
+        result.Kind = PreselectionResult::HitKind::Edge;
+        result.setPickedPoint(point);
+        return true;
+    }
+
+    return false;
+}
+
+bool EditModeCoinManager::detectGeometryPreselection(const SoPickedPoint* point, PreselectionResult& result)
+{
+    for (int layerIndex = 0; layerIndex < geometryLayerParameters.getCoinLayerCount(); ++layerIndex) {
+        if (detectPointPreselection(point, layerIndex, result)) {
+            return true;
+        }
+
+        if (detectCurvePreselection(point, layerIndex, result)) {
+            return true;
         }
     }
 
-    for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
-        // checking for a hit in the points
-        if (tail == editModeScenegraphNodes.PointSet[l]) {
-            const SoDetail* point_detail = Point->getDetail(editModeScenegraphNodes.PointSet[l]);
-            if (point_detail && point_detail->getTypeId() == SoPointDetail::getClassTypeId()) {
-                // get the index
-                int pindex = static_cast<const SoPointDetail*>(point_detail)->getCoordinateIndex();
-                result.PointIndex = coinMapping.getPointVertexId(
-                    pindex,
-                    l
-                );  // returns -1 for root, global VertexId for the rest of vertices.
+    return false;
+}
 
-                if (result.PointIndex == -1) {
-                    result.Cross = PreselectionResult::Axes::RootPoint;
-                }
-
-                return result;
-            }
-        }
-
-        // checking for a hit in the curves
-        for (int t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
-            if (tail == editModeScenegraphNodes.CurveSet[l][t]) {
-                const SoDetail* curve_detail = Point->getDetail(editModeScenegraphNodes.CurveSet[l][t]);
-                if (curve_detail && curve_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-                    // get the index
-                    int curveIndex = static_cast<const SoLineDetail*>(curve_detail)->getLineIndex();
-                    result.GeoIndex = coinMapping.getCurveGeoId(curveIndex, l, t);
-
-                    return result;
-                }
-            }
-        }
+bool EditModeCoinManager::detectAxisPreselection(const SoPickedPoint* point, PreselectionResult& result)
+{
+    SoPath* path = point->getPath();
+    SoNode* tail = path->getTail();
+    if (tail != editModeScenegraphNodes.RootCrossSet) {
+        return false;
     }
-    // checking for a hit in the axes
-    if (tail == editModeScenegraphNodes.RootCrossSet) {
-        const SoDetail* cross_detail = Point->getDetail(editModeScenegraphNodes.RootCrossSet);
-        if (cross_detail && cross_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-            // get the index (reserve index 0 for root point)
-            int CrossIndex = static_cast<const SoLineDetail*>(cross_detail)->getLineIndex();
 
-            if (CrossIndex == 0) {
-                result.Cross = PreselectionResult::Axes::HorizontalAxis;
-            }
-            else if (CrossIndex == 1) {
-                result.Cross = PreselectionResult::Axes::VerticalAxis;
-            }
-
-            return result;
-        }
+    const SoDetail* crossDetail = point->getDetail(editModeScenegraphNodes.RootCrossSet);
+    if (!crossDetail || crossDetail->getTypeId() != SoLineDetail::getClassTypeId()) {
+        return false;
     }
-    // checking if a constraint is hit
-    result.ConstrIndices = pEditModeConstraintCoinManager->detectPreselectionConstr(Point);
+
+    int crossIndex = static_cast<const SoLineDetail*>(crossDetail)->getLineIndex();
+    if (crossIndex == 0) {
+        result.Cross = PreselectionResult::Axes::HorizontalAxis;
+    }
+    else if (crossIndex == 1) {
+        result.Cross = PreselectionResult::Axes::VerticalAxis;
+    }
+
+    result.Kind = PreselectionResult::HitKind::Axis;
+    result.setPickedPoint(point);
+    return true;
+}
+
+EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
+    const SoPickedPointList& points,
+    const SbVec2s& cursorPos
+)
+{
+    PreselectionResult result;
+
+    if (points.getLength() == 0) {
+        return result;
+    }
+
+    result = detectConstraintPreselection(points, cursorPos);
+    if (result.hasWinner()) {
+        return result;
+    }
+
+    SoPickedPoint* point = points[0];
+    if (!point) {
+        return result;
+    }
+
+    if (detectOriginPreselection(point, result)) {
+        return result;
+    }
+
+    if (detectGeometryPreselection(point, result)) {
+        return result;
+    }
+
+    if (detectAxisPreselection(point, result)) {
+        return result;
+    }
 
     return result;
 }

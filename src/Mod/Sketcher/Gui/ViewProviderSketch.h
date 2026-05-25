@@ -27,6 +27,7 @@
 #include <boost/smart_ptr/scoped_ptr.hpp>
 
 #include <Inventor/SoRenderManager.h>
+#include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
 #include <QMetaObject>
@@ -44,8 +45,8 @@
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 
+#include "EditModeCoinManager.h"
 #include "PropertyVisualLayerList.h"
-
 #include "ShortcutListener.h"
 #include "Utils.h"
 
@@ -58,6 +59,7 @@ class TopoDS_Face;
 class SoSeparator;
 class SbLine;
 class SbVec2f;
+class SbVec2s;
 class SbVec3f;
 class SoCoordinate3;
 class SoInfo;
@@ -66,6 +68,7 @@ class SoTransform;
 class SoLineSet;
 class SoMarkerSet;
 class SoPickedPoint;
+class SoPickedPointList;
 class SoRayPickAction;
 
 class SoImage;
@@ -730,6 +733,13 @@ public:
     }
     //@}
 
+    bool getPreselectionAtViewportPos(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer,
+        std::vector<std::string>& subElementNames,
+        Base::Vector3d& pickedPoint
+    );
+
     /** @name Attorneys for collaboration with helper classes */
     //@{
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
@@ -816,8 +826,16 @@ private:
 
     /** @name preselection functions */
     //@{
+    SoPickedPointList getPickedPointsOnRay(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
+    EditModeCoinManager::PreselectionResult getPreselectionResultAtViewportPos(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
     /// helper to detect preselection
-    bool detectAndShowPreselection(SoPickedPoint* Point);
+    bool detectAndShowPreselection(const EditModeCoinManager::PreselectionResult& result);
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
@@ -850,11 +868,7 @@ private:
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints();
 
-    void preselectToSelection(
-        const std::stringstream& ss,
-        boost::scoped_ptr<SoPickedPoint>& pp,
-        bool toggle
-    );
+    void preselectToSelection(const std::stringstream& ss, const Base::Vector3d& pickedPoint, bool toggle);
     //@}
 
     /** @name miscelanea utilities */
@@ -913,6 +927,7 @@ private:
     std::unique_ptr<SoRayPickAction> getRayPickAction() const;
 
     SbVec2f getScreenCoordinates(SbVec2f sketchcoordinates) const;
+    SbVec2f getScreenCoordinates(SbVec3f sketchcoordinates) const;
 
     QFont getApplicationFont() const;
 
