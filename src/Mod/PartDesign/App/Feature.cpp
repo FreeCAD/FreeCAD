@@ -173,6 +173,62 @@ TopoShape Feature::getSolid(const TopoShape& shape) const
     return shape;
 }
 
+void Feature::onBaseFeatureRerouted(App::DocumentObject* /*oldBase*/, App::DocumentObject* /*newBase*/)
+{}
+
+bool Feature::relinkToMatchingSubelements(
+    App::PropertyLinkSub& link,
+    App::DocumentObject* oldBase,
+    App::DocumentObject* newBase
+)
+{
+    if (!oldBase || !newBase || link.getValue() != oldBase) {
+        return false;
+    }
+
+    auto oldFeature = freecad_cast<Part::Feature*>(oldBase);
+    auto newFeature = freecad_cast<Part::Feature*>(newBase);
+    if (!oldFeature || !newFeature) {
+        return false;
+    }
+
+    const auto& oldShape = oldFeature->Shape.getShape();
+    const auto& newShape = newFeature->Shape.getShape();
+    if (oldShape.isNull() || newShape.isNull()) {
+        return false;
+    }
+
+    const auto& oldSubs = link.getSubValues();
+    std::vector<std::string> newSubs;
+    newSubs.reserve(oldSubs.size());
+
+    for (const auto& sub : oldSubs) {
+        if (sub.empty()) {
+            newSubs.emplace_back();
+            continue;
+        }
+
+        auto oldSubShape = oldShape.getSubTopoShape(sub.c_str(), true);
+        if (oldSubShape.isNull()) {
+            return false;
+        }
+
+        std::vector<std::string> names;
+        auto matches = newShape.findSubShapesWithSharedVertex(
+            oldSubShape,
+            &names,
+            Data::SearchOption::CheckGeometry
+        );
+        if (matches.size() != 1 || names.size() != 1) {
+            return false;
+        }
+        newSubs.push_back(names.front());
+    }
+
+    link.setValue(newBase, std::move(newSubs));
+    return true;
+}
+
 void Feature::onChanged(const App::Property* prop)
 {
     if (!this->isRestoring() && this->getDocument()
