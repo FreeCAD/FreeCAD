@@ -90,10 +90,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return form
 
-    def updateMinTravel(self, obj, setModel=True):
-        if setModel and obj.MinTravel != self.form.minTravel.isChecked():
-            obj.MinTravel = self.form.minTravel.isChecked()
-
     def updateQuantitySpinBoxes(self, index=None):
         self.extraOffsetSpinBox.updateWidget()
         self.thresholdSpinBox.updateWidget()
@@ -130,8 +126,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             if obj.UseOutline != self.form.useOutline.isChecked():
                 obj.UseOutline = self.form.useOutline.isChecked()
 
-        self.updateMinTravel(obj)
-
         if FeatureFacing & self.pocketFeatures():
             print(obj.BoundaryShape)
             print(self.form.boundaryShape.currentText())
@@ -153,9 +147,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.angle.setValue(getattr(obj.Angle, "Value", obj.Angle))
         self.updateAngle(obj, False)
 
-        self.form.minTravel.setChecked(obj.MinTravel)
-        self.updateMinTravel(obj, False)
-
         self.selectInComboBox(obj.ClearingPattern, self.form.clearingPattern)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
 
@@ -176,7 +167,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.useStartPoint.clicked)
         signals.append(self.form.useRestMachining.clicked)
         signals.append(self.form.useOutline.clicked)
-        signals.append(self.form.minTravel.clicked)
 
         if FeatureFacing & self.pocketFeatures():
             signals.append(self.form.boundaryShape.currentIndexChanged)

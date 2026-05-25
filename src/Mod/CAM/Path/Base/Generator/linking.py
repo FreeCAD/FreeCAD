@@ -1,32 +1,28 @@
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 sliptonic sliptonic@freecad.org                    *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2025 sliptonic sliptonic@freecad.org
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import Constants
 import Part
 import Path
 from FreeCAD import Vector
-from typing import List, Optional
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -38,9 +34,9 @@ else:
 def check_collision(
     start_position: Vector,
     target_position: Vector,
-    solids: Optional[List[Part.Shape]] = None,
-    tool_shape: Optional[Part.Shape] = None,
-    tool_diameter: Optional[float] = None,
+    solids: list(Part.Shape) | None = None,
+    tool_shape: Part.Shape | None = None,
+    tool_diameter: float | None = None,
     collision_clearance: float = 1,
 ) -> bool:
     """
@@ -97,13 +93,13 @@ def get_linking_moves(
     start_position: Vector,
     target_position: Vector,
     heights_clearance: list[float],
-    tool_shape: Optional[Part.Shape] = None,
-    tool_diameter: Optional[float] = None,
-    solids: Optional[List[Part.Shape]] = None,
-    retract_height_offset: Optional[float] = None,
+    tool_shape: Part.Shape | None = None,
+    tool_diameter: float | None = None,
+    solids: list(Part.Shape) | None = None,
+    retract_height_offset: float | None = None,
     skip_if_no_collision: bool = False,
     collision_clearance: float = 1,
-    split_plunge_height: Optional[float] = None,
+    split_plunge_height: float | None = None,
 ) -> list:
     """
     Generate linking moves from start to target position.
@@ -121,9 +117,8 @@ def get_linking_moves(
         return []
 
     # For canned cycles: if we're already at a safe height and can move directly, skip linking
-    if skip_if_no_collision:
-        if not check_collision(start_position, target_position, solids):
-            return []
+    if skip_if_no_collision and not check_collision(start_position, target_position, solids):
+        return []
 
     if retract_height_offset is not None and retract_height_offset < 0:
         raise ValueError("Retract offset must be positive")
@@ -176,7 +171,6 @@ def get_linking_moves(
 def make_linking_wire(start: Vector, target: Vector, heights: list) -> Part.Wire:
     """Returns a wire connecting start and target points"""
     top_z = heights[-1]
-    plunge_heights = reversed([target.z] + heights[:-1])
     p1 = Vector(start.x, start.y, top_z)
     p2 = Vector(target.x, target.y, top_z)
     edges = []
@@ -188,6 +182,13 @@ def make_linking_wire(start: Vector, target: Vector, heights: list) -> Part.Wire
     # Only add traverse edge if there's actual movement
     if not Path.Geom.pointsCoincide(p1, p2):
         edges.append(Part.makeLine(p1, p2))
+
+    # No edges created
+    # Start and target on vertical line
+    # Find new top_z and exclude heights which is upper
+    if not edges:
+        top_z = max(start.z, target.z)
+    plunge_heights = reversed([target.z] + [h for h in heights[:-1] if h <= top_z])
 
     # Only add plunge edge if there's actual movement
     if not Path.Geom.pointsCoincide(p2, target):
@@ -203,9 +204,9 @@ def make_linking_wire(start: Vector, target: Vector, heights: list) -> Part.Wire
 
 def is_travel_collision_free(
     wire: Part.Wire,
-    solid: Optional[Part.Shape],
-    tool_shape: Optional[Part.Shape] = None,
-    tool_diameter: Optional[float] = None,
+    solid: Part.Shape | None,
+    tool_shape: Part.Shape | None = None,
+    tool_diameter: float | None = None,
     collision_clearance: float = 1,
 ) -> bool:
     """
