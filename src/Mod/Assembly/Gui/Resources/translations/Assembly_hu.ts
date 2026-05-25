@@ -23,8 +23,8 @@
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>Összetevő</translation>
+      <source>Insert Component</source>
+      <translation>Összetevő beszúrás</translation>
     </message>
   </context>
   <context>

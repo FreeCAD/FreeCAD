@@ -4844,7 +4844,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="493"/>
       <source>Add Column</source>
-      <translation type="unfinished">Add Column</translation>
+      <translation>Додати стовпець</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="494"/>
@@ -11381,7 +11381,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1080"/>
       <source>Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</source>
-      <translation type="unfinished">Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</translation>
+      <translation>Порада: результати найкраще переглядати в режимі «Каркас» (меню Вигляд -&gt; Стиль зображення -&gt; Каркас)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="304"/>
@@ -12433,7 +12433,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="37"/>
       <source>New Sketch</source>
-      <translation type="unfinished">New Sketch</translation>
+      <translation>Новий ескіз</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="40"/>
@@ -13181,7 +13181,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="57"/>
       <source>Horizontal Dimension</source>
-      <translation type="unfinished">Horizontal Dimension</translation>
+      <translation>Горизонтальний розмір</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="60"/>
@@ -13194,7 +13194,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="79"/>
       <source>Vertical Dimension</source>
-      <translation type="unfinished">Vertical Dimension</translation>
+      <translation>Вертикальний розмір</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="80"/>
@@ -13670,7 +13670,7 @@ Do you want to proceed?</translation>
     <message>
       <location filename="../../InitGui.py" line="308"/>
       <source>Boolean Tools</source>
-      <translation type="unfinished">Boolean Tools</translation>
+      <translation>Булеві інструменти</translation>
     </message>
   </context>
   <context>
@@ -13728,7 +13728,7 @@ Do you want to proceed?</translation>
     <message>
       <location filename="../../bimcommands/BimLink.py" line="14"/>
       <source>Make Link</source>
-      <translation type="unfinished">Make Link</translation>
+      <translation>Створити посилання</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLink.py" line="18"/>
