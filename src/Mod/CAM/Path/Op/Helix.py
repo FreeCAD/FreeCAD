@@ -917,7 +917,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
 def SetupProperties():
     """Returns property names for which the "Setup Sheet" should provide defaults."""
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("CutMode")
     setup.append("StartAt")
     setup.append("StepOver")

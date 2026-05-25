@@ -1121,25 +1121,60 @@ class TaskPanelHeightsPage(TaskPanelPage):
             self.form.clearanceHeight, obj, "ClearanceHeight"
         )
 
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance = PathGuiUtil.QuantitySpinBox(
+                self.form.CollisionClearance, obj, "CollisionClearance"
+            )
+            for mode in [
+                "Clearance Height",
+                "Retract Height",
+                "Line of Sight",
+                "Tool Diameter",
+                "Tool Shape",
+            ]:
+                self.form.CollisionAvoidanceStrategy.addItem(translate("CAM_Operation", mode), mode)
+        else:
+            self.form.groupBoxLinking.hide()
+
     def getTitle(self, obj):
         return translate("PathOp", "Heights")
 
     def getFields(self, obj):
         self.safeHeight.updateProperty()
         self.clearanceHeight.updateProperty()
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance.updateProperty()
+            mode = self.form.CollisionAvoidanceStrategy.currentData()
+            if mode and obj.CollisionAvoidanceStrategy != mode:
+                obj.CollisionAvoidanceStrategy = mode
 
     def setFields(self, obj):
         self.safeHeight.updateWidget()
         self.clearanceHeight.updateWidget()
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance.updateWidget()
+            index = self.form.CollisionAvoidanceStrategy.findData(obj.CollisionAvoidanceStrategy)
+            if index >= 0:
+                self.form.CollisionAvoidanceStrategy.blockSignals(True)
+                self.form.CollisionAvoidanceStrategy.setCurrentIndex(index)
+                self.form.CollisionAvoidanceStrategy.blockSignals(False)
 
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.safeHeight.editingFinished)
         signals.append(self.form.clearanceHeight.editingFinished)
+        if PathOp.FeatureLinking & self.features:
+            signals.append(self.form.CollisionClearance.editingFinished)
+            signals.append(self.form.CollisionAvoidanceStrategy.currentIndexChanged)
         return signals
 
     def pageUpdateData(self, obj, prop):
-        if prop in ["SafeHeight", "ClearanceHeight"]:
+        if prop in [
+            "SafeHeight",
+            "ClearanceHeight",
+            "CollisionAvoidanceStrategy",
+            "CollisionClearance",
+        ]:
             self.setFields(obj)
 
 
