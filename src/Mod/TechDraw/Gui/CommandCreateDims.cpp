@@ -1658,7 +1658,10 @@ void execDistanceX(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isHorizontal, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isHorizontal,
+                                                                 DimensionGeometry::isDiagonal,
+                                                                 DimensionGeometry::isHybrid,
+                                                                 DimensionGeometry::isMultiEdge});
 
     execDim(cmd, "DistanceX", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1706,7 +1709,10 @@ void execDistanceY(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isVertical, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isVertical,
+                                                                 DimensionGeometry::isDiagonal,
+                                                                 DimensionGeometry::isHybrid,
+                                                                 DimensionGeometry::isMultiEdge});
 
     execDim(cmd, "DistanceY", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
