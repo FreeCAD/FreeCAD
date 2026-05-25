@@ -928,7 +928,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     Path.Log.debug("_extractPathWireFromSketch: manual offset OK.")
                     return [result_wire]
             except Exception as manual_err:
-                Path.Log.debug("_extractPathWireFromSketch: manual offset failed: {}".format(manual_err))
+                Path.Log.debug(
+                    "_extractPathWireFromSketch: manual offset failed: {}".format(manual_err)
+                )
 
             Path.Log.error(
                 "_extractPathWireFromSketch: makeOffset2D failed on all join modes "
