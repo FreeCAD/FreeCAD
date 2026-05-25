@@ -1301,6 +1301,63 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
                 contextMenu.insertSeparator(topact);
             }
         }
+        else if (selItems.size() > 1) {
+            // Collect selected objects that expose a visible Suppressed property
+            std::vector<App::DocumentObject*> suppressibles;
+            for (auto* item : selItems) {
+                if (item->type() != ObjectType) {
+                    continue;
+                }
+                auto* obj = static_cast<DocumentObjectItem*>(item)->object()->getObject();
+                auto* ext = obj->getExtensionByType<App::SuppressibleExtension>(true);
+                if (ext && !ext->Suppressed.testStatus(App::Property::Hidden)) {
+                    suppressibles.push_back(obj);
+                }
+            }
+            if (!suppressibles.empty()) {
+                bool allSuppressed = std::all_of(
+                    suppressibles.begin(),
+                    suppressibles.end(),
+                    [](App::DocumentObject* o) {
+                        auto* e = o->getExtensionByType<App::SuppressibleExtension>(true);
+                        return e && e->Suppressed.getValue();
+                    }
+                );
+                QAction* suppressAct = new QAction(tr("Suppressed"), &contextMenu);
+                suppressAct->setCheckable(true);
+                suppressAct->setChecked(allSuppressed);
+                QAction* topact = contextMenu.actions().isEmpty()
+                    ? nullptr
+                    : contextMenu.actions().constFirst();
+                if (topact) {
+                    contextMenu.insertAction(topact, suppressAct);
+                    contextMenu.insertSeparator(topact);
+                }
+                else {
+                    contextMenu.addAction(suppressAct);
+                }
+                bool newValue = !allSuppressed;
+                connect(suppressAct, &QAction::triggered, this, [suppressibles, newValue]() {
+                    if (suppressibles.empty()) {
+                        return;
+                    }
+                    App::AutoTransaction trans(suppressibles.front()->getDocument(), "Toggle suppress");
+                    std::set<App::Document*> docs;
+                    for (auto* obj : suppressibles) {
+                        auto* e = obj->getExtensionByType<App::SuppressibleExtension>(true);
+                        if (e) {
+                            e->Suppressed.setValue(newValue);
+                            docs.insert(obj->getDocument());
+                        }
+                    }
+                    for (auto* d : docs) {
+                        if (d) {
+                            d->recompute();
+                        }
+                    }
+                });
+            }
+        }
     }
 
 
