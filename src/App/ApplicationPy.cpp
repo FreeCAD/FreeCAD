@@ -26,6 +26,7 @@
 #include <FCConfig.h>
 
 #include <array>
+#include <string>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -34,6 +35,7 @@
 #include <Base/Parameter.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Sequencer.h>
+#include <Base/Tools.h>
 
 #include "Application.h"
 #include "ApplicationPy.h"
@@ -451,6 +453,12 @@ PyObject* ApplicationPy::sCloseDocument(PyObject* /*self*/, PyObject* args)
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         Document* doc = GetApplication().getDocument(pstr);
         if (!doc) {
+            std::string cleanName = Base::Tools::getIdentifier(pstr);
+            if (cleanName != pstr) {
+                doc = GetApplication().getDocument(cleanName.c_str());
+            }
+        }
+        if (!doc) {
             PyErr_Format(PyExc_NameError, "Unknown document '%s'", pstr);
             return nullptr;
         }
@@ -459,7 +467,7 @@ PyObject* ApplicationPy::sCloseDocument(PyObject* /*self*/, PyObject* args)
             return nullptr;
         }
 
-        if (!GetApplication().closeDocument(pstr)) {
+        if (!GetApplication().closeDocument(doc)) {
             PyErr_Format(PyExc_RuntimeError, "Closing the document '%s' failed", pstr);
             return nullptr;
         }

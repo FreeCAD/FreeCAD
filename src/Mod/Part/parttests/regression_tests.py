@@ -259,6 +259,23 @@ class RegressionTests(unittest.TestCase):
             # cluster should contain all edges
             self.assertEqual(len(clusters[0]), i)
 
+    def test_issue_15966_close_document_with_sanitized_name(self):
+        "closeDocument() accepts the original proposed name for sanitized document identifiers"
+        requested_name = "PartRegressionTest-Issue15966"
+        doc = newDocument(requested_name)
+        internal_name = doc.Name
+        try:
+            self.assertNotEqual(internal_name, requested_name)
+            self.assertEqual(internal_name, "PartRegressionTest_Issue15966")
+
+            closeDocument(requested_name)
+
+            self.assertIsNone(FreeCAD.getDocument(internal_name))
+            doc = None
+        finally:
+            if doc and FreeCAD.getDocument(internal_name):
+                closeDocument(internal_name)
+
     def tearDown(self):
         """Clean up our test, optionally preserving the test document"""
         # This flag allows doing something like this:
