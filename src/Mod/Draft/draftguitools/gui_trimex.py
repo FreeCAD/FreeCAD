@@ -89,6 +89,10 @@ class Trimex(gui_base_original.Modifier):
         self.linetrack = None
         self.color = None
         self.width = None
+        self.wallHost = None
+        self.wallBaseless = None
+        self.wallEndpoints = None
+        self.lockedActivePoint = None
         if self.ui:
             if not Gui.Selection.getSelection():
                 self.ui.selectUi(on_close_call=self.finish)
@@ -110,6 +114,13 @@ class Trimex(gui_base_original.Modifier):
         sel = Gui.Selection.getSelectionEx("", 0)[0]
 
         import Part
+
+        # Wall integration: route the operation to the wall's base wire/line,
+        # or to a baseless wall's endpoints. Sketch-based walls fall through
+        # to the default face-extrude behaviour.
+        if utils.getType(self.obj) == "Wall":
+            if self._setupWallTrimex(sel):
+                return
 
         reason = utils.get_trimex_unsupported_reason(self.obj, sel.SubObjects)
         if reason:
@@ -180,6 +191,162 @@ class Trimex(gui_base_original.Modifier):
         self.cv = None
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _toolmsg(translate("draft", "Pick distance"))
+
+    def _setupWallTrimex(self, sel):
+        """Route Trimex for a Wall. Returns True if fully handled here
+        (baseless walls); False to continue the regular flow (after possibly
+        re-targeting ``self.obj`` to the wall's base wire/line).
+
+        Only triggers when the user pre-selected an *end* face of the wall.
+        Side / top / bottom faces fall through to the default face-extrude
+        behaviour, so the wall's length is never affected when picking those.
+        """
+        import Part
+
+        wall = self.obj
+        base = getattr(wall, "Base", None)
+        if base is not None and utils.getType(base) not in ("Wire", "Part::Line"):
+            # Sketch-based or otherwise unsupported base: default behaviour.
+            return False
+
+        ends = self._wallEnds(wall, base)
+        if not ends:
+            return False
+
+        end_idx = None
+        for sub in sel.SubObjects:
+            if getattr(sub, "ShapeType", None) != "Face":
+                continue
+            match = self._matchEndFace(sub, ends)
+            if match is not None:
+                end_idx = match
+                break
+        if end_idx is None:
+            # Not an end face (or no face pre-selected): keep default behaviour.
+            return False
+
+        if base is not None:
+            # Wire/line-based wall: re-target to the base; trim/extend updates
+            # the base geometry, the wall follows on recompute.
+            self.wallHost = wall
+            self.obj = base
+            self.lockedActivePoint = end_idx
+            return False
+
+        # Baseless wall: operate on the wall's centerline endpoints.
+        endpoints = wall.Proxy.calc_endpoints(wall)
+        if len(endpoints) < 2:
+            return False
+        self.wallBaseless = wall
+        self.wallEndpoints = [App.Vector(p) for p in endpoints]
+        self.lockedActivePoint = end_idx
+
+        # Build a virtual single-edge wire that Trimex's redraw can drive.
+        p1, p2 = self.wallEndpoints
+        self.edges = [Part.LineSegment(p1, p2).toShape()]
+        self.placement = None
+        self.extrudeMode = False
+        self.ghost = [trackers.lineTracker(scolor=(0.5, 0.5, 0.5), swidth=1)]
+        self.ui.trimUi(title=translate("draft", self.featureName))
+        self.linetrack = trackers.lineTracker()
+        for g in self.ghost:
+            g.on()
+        self.activePoint = 0
+        self.nodes = []
+        self.shift = False
+        self.alt = False
+        self.force = None
+        self.cv = None
+        self.call = self.view.addEventCallback("SoEvent", self.action)
+        _toolmsg(translate("draft", "Pick distance"))
+        return True
+
+    @staticmethod
+    def _wallEnds(wall, base):
+        """List of (endpoint_world, outward_axis_world) for each open end of
+        the wall's centerline. Used to detect which faces are end faces.
+
+        For wire/line bases the endpoint follows the base wire's first and
+        last vertex with the tangent pointing outward. For baseless walls
+        the wall's local +X is the length axis.
+        """
+        import Part
+
+        wall_pl = getattr(wall, "Placement", App.Placement())
+        if base is None:
+            axis = wall_pl.Rotation.multVec(App.Vector(1, 0, 0))
+            try:
+                eps = wall.Proxy.calc_endpoints(wall)
+            except Exception:
+                return []
+            if len(eps) < 2:
+                return []
+            return [
+                (App.Vector(eps[0]), App.Vector(axis).negative()),
+                (App.Vector(eps[1]), App.Vector(axis)),
+            ]
+
+        shape = getattr(base, "Shape", None)
+        if shape is None or shape.isNull():
+            return []
+        if shape.Wires:
+            edges = Part.__sortEdges__(shape.Wires[0].Edges)
+        else:
+            edges = shape.Edges
+        if not edges:
+            return []
+
+        def _outward(edge, at_start):
+            p0 = edge.Vertexes[0].Point
+            p1 = edge.Vertexes[-1].Point
+            try:
+                if at_start:
+                    t = edge.tangentAt(edge.FirstParameter)
+                    t = App.Vector(t).negative()
+                else:
+                    t = edge.tangentAt(edge.LastParameter)
+            except Exception:
+                t = (p1 - p0) if not at_start else (p0 - p1)
+            if t.Length < 1e-12:
+                return App.Vector(1, 0, 0)
+            t.normalize()
+            return wall_pl.Rotation.multVec(t)
+
+        p_start = wall_pl.multVec(edges[0].Vertexes[0].Point)
+        p_end = wall_pl.multVec(edges[-1].Vertexes[-1].Point)
+        return [(p_start, _outward(edges[0], True)), (p_end, _outward(edges[-1], False))]
+
+    @staticmethod
+    def _matchEndFace(face, ends):
+        """Index of the wall end whose axis is parallel to ``face``'s normal
+        and whose endpoint lies on the face's plane. ``None`` if the face is
+        not an end face (side, top, bottom)."""
+        try:
+            u, v = face.Surface.parameter(face.CenterOfMass)
+            normal = face.normalAt(u, v)
+        except Exception:
+            return None
+        if normal.Length < 1e-9:
+            return None
+        normal = App.Vector(normal).normalize()
+        center = face.CenterOfMass
+        best = None
+        best_dot = 0.95  # require strong alignment to discount side/top/bottom faces
+        for i, (endpoint, axis) in enumerate(ends):
+            ax_len = axis.Length
+            if ax_len < 1e-9:
+                continue
+            ax = App.Vector(axis).multiply(1.0 / ax_len)
+            dot = abs(normal.dot(ax))
+            if dot < best_dot:
+                continue
+            # Endpoint must lie on the face's plane (along the normal).
+            offset = abs(normal.dot(endpoint - center))
+            if offset > 1e-3:
+                continue
+            best_dot = dot
+            best = i
+        return best
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -288,7 +455,12 @@ class Trimex(gui_base_original.Modifier):
         for e in self.edges:
             vlist.append(e.Vertexes[0].Point)
         vlist.append(self.edges[-1].Vertexes[-1].Point)
-        if shift:
+        if self.lockedActivePoint is not None:
+            # An endpoint was pre-selected (e.g. the start/end face of a wall).
+            # Keep it locked so the user's mouse only sets the new position,
+            # not which end moves.
+            npoint = self.lockedActivePoint
+        elif shift:
             npoint = self.activePoint
         else:
             npoint = geo_general.findClosest(point, vlist)
@@ -431,7 +603,18 @@ class Trimex(gui_base_original.Modifier):
             edges = self.redraw(self.point, self.snapped, self.shift, self.alt, real=True)
             newshape = Part.Wire(edges)
             self.doc.openTransaction("Trim/extend")
-            if utils.getType(self.obj) in ["Wire", "BSpline"]:
+            if self.wallBaseless is not None:
+                pts = list(self.wallEndpoints)
+                idx = (
+                    self.lockedActivePoint
+                    if self.lockedActivePoint is not None
+                    else self.activePoint
+                )
+                if idx is None or idx >= len(pts):
+                    idx = min(self.activePoint, len(pts) - 1)
+                pts[idx] = App.Vector(self.newpoint)
+                self.wallBaseless.Proxy.set_from_endpoints(self.wallBaseless, pts)
+            elif utils.getType(self.obj) in ["Wire", "BSpline"]:
                 p = []
                 if self.placement:
                     invpl = self.placement.inverse()
@@ -579,7 +762,9 @@ class Trimex(gui_base_original.Modifier):
                     self.obj.ViewObject.LineColor = self.color
                 if self.width:
                     self.obj.ViewObject.LineWidth = self.width
-                gui_utils.select(self.obj)
+                # Re-select the wall when we operated on its base or its endpoints,
+                # so the user keeps a meaningful selection.
+                gui_utils.select(self.wallHost or self.wallBaseless or self.obj)
         super().finish()
 
     def numericRadius(self, dist):
