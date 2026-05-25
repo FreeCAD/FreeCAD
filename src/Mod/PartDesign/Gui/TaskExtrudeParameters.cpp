@@ -164,7 +164,15 @@ void TaskExtrudeParameters::setupSideDialog(SideController& side)
     }
 
     if (faceObj && PartDesign::Feature::isDatum(faceObj)) {
-        side.lineFaceName->setText(QString::fromUtf8(faceObj->Label.getValue()));
+        if (upToFaceName.empty()) {
+            side.lineFaceName->setText(QString::fromUtf8(faceObj->Label.getValue()));
+        }
+        else {
+            side.lineFaceName->setText(
+                QString::fromUtf8(faceObj->getNameInDocument()) + QStringLiteral(":")
+                + QString::fromStdString(upToFaceName)
+            );
+        }
         side.lineFaceName->setProperty("FeatureName", QByteArray(faceObj->getNameInDocument()));
     }
     else if (faceObj && faceId >= 0) {

@@ -199,7 +199,16 @@ QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)
         return {};
     }
 
-    if (obj->isDerivedFrom<Part::Datum>()) {
+    if (obj->isDerivedFrom<Part::Datum>() || obj->isDerivedFrom<App::DatumElement>()) {
+        if (parts.length() >= 2 && !parts[1].isEmpty()) {
+            std::vector<std::string> upToFaces(1, parts[1].toStdString());
+            auto sketchBased = getObject<PartDesign::ProfileBased>();
+            sketchBased->UpToFace.setValue(obj, upToFaces);
+            recomputeFeature();
+
+            return QByteArray(upToFaces.front().c_str());
+        }
+
         // it's up to the document to check that the datum plane is in the same body
         return {};
     }
