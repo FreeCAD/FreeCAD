@@ -60,11 +60,6 @@ void QGVNavStyleSolidWorks::handleMousePressEvent(QMouseEvent *event)
 void QGVNavStyleSolidWorks::handleMouseMoveEvent(QMouseEvent *event)
 {
 
-    if (getViewer()->isBalloonPlacing()) {
-        balloonCursorMovement(event);
-        return;
-    }
-
     if ((QGuiApplication::mouseButtons() & Qt::MiddleButton) &&
         QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) ) {
         //zoom mode 2 Shift + MMB
@@ -100,10 +95,6 @@ void QGVNavStyleSolidWorks::handleMouseMoveEvent(QMouseEvent *event)
 void QGVNavStyleSolidWorks::handleMouseReleaseEvent(QMouseEvent *event)
 {
 //    Base::Console().message("QGVNSSolidWorks::handleMouseReleaseEvent() - button: {} buttons: {}\n", event->button(), event->buttons());
-    if (getViewer()->isBalloonPlacing()) {
-        placeBalloon(event->pos());
-    }
-
     if (panningActive) {
         if (event->button() == Qt::MiddleButton) {
             //pan mode 1 or 2 - [Control] + MMB
