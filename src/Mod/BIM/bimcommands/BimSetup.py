@@ -34,6 +34,16 @@ translate = FreeCAD.Qt.translate
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
+def _safe_extractall(zfile, target):
+    target = os.path.abspath(target)
+    for member in zfile.infolist():
+        member_path = os.path.abspath(os.path.join(target, member.filename))
+        # Prevent Zip Slip path traversal from downloaded dependency archives.
+        if os.path.commonpath([target, member_path]) != target:
+            raise ValueError("Archive entry outside extraction directory: {}".format(member.filename))
+    zfile.extractall(target)
+
+
 class BIM_Setup:
 
     def GetResources(self):
@@ -684,7 +694,7 @@ class BIM_Setup:
                                 zfile = _stringio()
                                 zfile.write(u.read())
                                 zfile = zipfile.ZipFile(zfile)
-                                zfile.extractall(fp)
+                                _safe_extractall(zfile, fp)
                                 u.close()
                                 zfile.close()
                                 print("Successfully installed IfcOpenShell to", fp)

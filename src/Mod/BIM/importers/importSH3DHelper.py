@@ -30,10 +30,10 @@ import os
 import re
 import traceback
 import uuid
-import xml.etree.ElementTree as ET
 import zipfile
 
 import numpy as np
+from defusedxml import ElementTree as ET
 
 import FreeCAD as App
 import Arch
@@ -259,6 +259,7 @@ class SH3DImporter:
 
         if self.progress_bar:
             self.progress_bar.start(f"Importing SweetHome 3D Home. Standby…", -1)
+        # Use defusedxml to block XML entity expansion in untrusted SH3D content.
         self._import_home(ET.fromstring(home))
 
     def import_sh3d_from_filename(self, filename: str):
@@ -284,6 +285,7 @@ class SH3DImporter:
             entries = zip.namelist()
             if "Home.xml" not in entries:
                 raise ValueError(f"Invalid SweetHome3D file {self.filename}: missing Home.xml")
+            # Use defusedxml to block XML entity expansion in untrusted SH3D archives.
             self._import_home(ET.fromstring(zip.read("Home.xml")))
 
     def _import_home(self, home):
@@ -2566,13 +2568,18 @@ class BaseFurnitureHandler(BaseHandler):
             tmp_dir = App.ActiveDocument.TransientDir
             if os.path.isdir(os.path.join(tmp_dir, model)):
                 tmp_dir = os.path.join(tmp_dir, str(uuid.uuid4()))
+            model_target = os.path.abspath(os.path.join(tmp_dir, model))
+            # Prevent Zip Slip path traversal from malicious SH3D model entries.
+            if os.path.commonpath([os.path.abspath(tmp_dir), model_target]) != os.path.abspath(tmp_dir):
+                raise ValueError(f"Invalid SweetHome3D file: unsafe model path {model}")
             model_path = self.importer.zip.extract(member=model, path=tmp_dir)
             model_path_obj = model_path + ".obj"
             os.rename(model_path, model_path_obj)
             mesh = Mesh.Mesh()
             mesh.read(model_path_obj)
         finally:
-            os.remove(model_path_obj)
+            if model_path_obj:
+                os.remove(model_path_obj)
         return mesh
 
 

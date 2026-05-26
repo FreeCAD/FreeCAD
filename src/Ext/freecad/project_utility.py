@@ -13,6 +13,7 @@ import xml.sax
 import xml.sax.handler
 import xml.sax.xmlreader
 import zipfile
+from defusedxml import sax as defused_sax
 
 # SAX handler to parse the Document.xml
 class DocumentHandler(xml.sax.handler.ContentHandler):
@@ -36,21 +37,16 @@ class DocumentHandler(xml.sax.handler.ContentHandler):
 
 def extractDocument(filename, outpath):
     """ Extract files from project archive """
-    zfile = zipfile.ZipFile(filename)
-    files = zfile.namelist()
-
-    for i in files:
-        data = zfile.read(i)
-        dirs = i.split("/")
-        if len(dirs) > 1:
-            dirs.pop()
-            curpath = outpath
-            for j in dirs:
-                curpath = curpath + "/" + j
-                os.mkdir(curpath)
-        output = open(outpath + "/"+i, 'wb')
-        output.write(data)
-        output.close()
+    outpath = os.path.abspath(outpath)
+    with zipfile.ZipFile(filename) as zfile:
+        for i in zfile.namelist():
+            output_path = os.path.abspath(os.path.join(outpath, i))
+            # Prevent Zip Slip path traversal from malicious project archive entries.
+            if os.path.commonpath([outpath, output_path]) != outpath:
+                raise ValueError("Archive entry outside extraction directory: {}".format(i))
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            with open(output_path, 'wb') as output:
+                output.write(zfile.read(i))
 
 def createDocument(filename, outpath):
     """ Create project archive """
@@ -70,7 +66,8 @@ def getFilesList(filename):
     """ Determine list of files referenced in a Document.xml or GuiDocument.xml """
     dirname = os.path.dirname(filename)
     handler = DocumentHandler(dirname)
-    parser = xml.sax.make_parser()
+    # Use defusedxml to block XML entity expansion and external entity attacks.
+    parser = defused_sax.make_parser()
     parser.setContentHandler(handler)
     parser.parse(filename)
 

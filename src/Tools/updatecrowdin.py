@@ -84,6 +84,16 @@ from urllib.request import Request
 from urllib.request import urlopen
 from urllib.request import urlretrieve
 
+
+def safe_extractall(zfile, target):
+    target = os.path.abspath(target)
+    for member in zfile.infolist():
+        member_path = os.path.abspath(os.path.join(target, member.filename))
+        # Prevent Zip Slip path traversal from downloaded translation archives.
+        if os.path.commonpath([target, member_path]) != target:
+            raise ValueError("Archive entry outside extraction directory: {}".format(member.filename))
+    zfile.extractall(target)
+
 try:
     from PySide6 import QtCore
 except ImportError:
@@ -528,7 +538,7 @@ def applyTranslations(languages):
     os.chdir(tempfolder)
     zfile = zipfile.ZipFile("freecad.zip")
     print("extracting freecad.zip...")
-    zfile.extractall()
+    safe_extractall(zfile, tempfolder)
     os.chdir(currentfolder)
     for ln in languages:
         if not os.path.exists(os.path.join(tempfolder, ln)):

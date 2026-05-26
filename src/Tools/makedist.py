@@ -9,6 +9,16 @@
 import sys, os, getopt, tarfile, gzip, time, io, platform, shutil, subprocess
 
 
+def safe_extractall(archive, target):
+    target = os.path.abspath(target)
+    for member in archive.getmembers():
+        member_path = os.path.abspath(os.path.join(target, member.name))
+        # Prevent tar path traversal when validating generated source archives.
+        if os.path.commonpath([target, member_path]) != target:
+            raise ValueError("Archive entry outside extraction directory: {}".format(member.name))
+    archive.extractall(target)
+
+
 def main():
     bindir = "."
     major = "0"
@@ -119,7 +129,7 @@ def main():
     # Unpack and build
     if check:
         archive = tarfile.open(mode="r:gz", name=TGZNAME)
-        archive.extractall(bindir)
+        safe_extractall(archive, bindir)
         builddir = os.path.join(bindir, DIRNAME)
         cwd = os.getcwd()
         os.chdir(builddir)

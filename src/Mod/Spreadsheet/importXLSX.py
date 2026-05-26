@@ -55,7 +55,7 @@ known issues:
 
 
 import zipfile
-import xml.dom.minidom
+from defusedxml import minidom
 import FreeCAD as App
 
 try:
@@ -440,16 +440,17 @@ def open(nameXLSX):
         stringList = []
 
         theBookFile = z.open("xl/workbook.xml")
-        theBook = xml.dom.minidom.parse(theBookFile)
+        # Use defusedxml to block XXE and entity expansion in untrusted XLSX XML.
+        theBook = minidom.parse(theBookFile)
         theBookRelsFile = z.open("xl/_rels/workbook.xml.rels")
-        theBookRels = xml.dom.minidom.parse(theBookRelsFile)
+        theBookRels = minidom.parse(theBookRelsFile)
         handleWorkBook(theBook, theBookRels, sheetDict, theDoc)
         theBook.unlink()
         theBookRels.unlink()
 
         if "xl/sharedStrings.xml" in z.namelist():
             theStringFile = z.open("xl/sharedStrings.xml")
-            theStrings = xml.dom.minidom.parse(theStringFile)
+            theStrings = minidom.parse(theStringFile)
             handleStrings(theStrings, stringList)
             theStrings.unlink()
 
@@ -457,7 +458,7 @@ def open(nameXLSX):
             # print("sheetSpec: ", sheetSpec)
             theSheet, sheetFile = sheetDict[sheetSpec]
             f = z.open("xl/" + sheetFile)
-            myDom = xml.dom.minidom.parse(f)
+            myDom = minidom.parse(f)
 
             handleWorkSheet(myDom, theSheet, stringList)
             myDom.unlink()
@@ -482,16 +483,17 @@ def insert(nameXLSX, docname):
 
     z = zipfile.ZipFile(nameXLSX)
     theBookFile = z.open("xl/workbook.xml")
-    theBook = xml.dom.minidom.parse(theBookFile)
+    # Use defusedxml to block XXE and entity expansion in untrusted XLSX XML.
+    theBook = minidom.parse(theBookFile)
     theBookRelsFile = z.open("xl/_rels/workbook.xml.rels")
-    theBookRels = xml.dom.minidom.parse(theBookRelsFile)
+    theBookRels = minidom.parse(theBookRelsFile)
     handleWorkBook(theBook, theBookRels, sheetDict, theDoc)
     theBook.unlink()
     theBookRels.unlink()
 
     if "xl/sharedStrings.xml" in z.namelist():
         theStringFile = z.open("xl/sharedStrings.xml")
-        theStrings = xml.dom.minidom.parse(theStringFile)
+        theStrings = minidom.parse(theStringFile)
         handleStrings(theStrings, stringList)
         theStrings.unlink()
 
@@ -499,7 +501,7 @@ def insert(nameXLSX, docname):
         # print("sheetSpec: ", sheetSpec)
         theSheet, sheetFile = sheetDict[sheetSpec]
         f = z.open("xl/" + sheetFile)
-        myDom = xml.dom.minidom.parse(f)
+        myDom = minidom.parse(f)
 
         handleWorkSheet(myDom, theSheet, stringList)
         myDom.unlink()
