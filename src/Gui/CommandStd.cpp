@@ -32,6 +32,10 @@
 #include <QAbstractButton>
 #include <QTimer>
 #include <QProcess>
+#include <QMenu>
+#include <QAction>
+#include <QToolButton>
+#include <QToolBar>
 
 #include <App/Document.h>
 #include <Base/Exception.h>
@@ -62,7 +66,22 @@ using Base::Sequencer;
 using namespace Gui;
 namespace sp = std::placeholders;
 
+namespace {
+    class DelayedPopupAction : public Gui::Action {
+    public:
+        DelayedPopupAction(Gui::Command* cmd, QObject* parent) : Gui::Action(cmd, parent) {}
 
+        void addTo(QWidget* widget) override {
+            Gui::Action::addTo(widget);
+            if (QToolBar* toolBar = qobject_cast<QToolBar*>(widget)) {
+                if (QToolButton* toolButton = qobject_cast<QToolButton*>(toolBar->widgetForAction(this->action()))) {
+                    toolButton->setPopupMode(QToolButton::DelayedPopup);
+                    toolButton->setStyleSheet("QToolButton::menu-indicator { image: none; width: 0px; padding: 0px; }");
+                }
+            }
+        }
+    };
+}
 //===========================================================================
 // Std_Workbench
 //===========================================================================
@@ -93,6 +112,7 @@ void StdCmdWorkbench::activated(int i)
                 return;
             }
         }
+        WorkbenchManager::instance()->cleanNextWorkbenches();
         doCommand(Gui, "Gui.activateWorkbench(\"%s\")", switch_to.c_str());
     }
     catch (const Base::PyException& e) {
@@ -131,6 +151,182 @@ Action* StdCmdWorkbench::createAction()
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getPixmap()));
     }
 
+    return pcAction;
+}
+
+//===========================================================================
+// Std_PreviousWorkbench
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdPreviousWorkbench)
+
+StdCmdPreviousWorkbench::StdCmdPreviousWorkbench()
+    : Command("Std_PreviousWorkbench")
+{
+    sGroup = "View";
+    sMenuText = QT_TR_NOOP("Previous Workbench");
+    sToolTipText = QT_TR_NOOP("Switches to the previous workbench");
+    sWhatsThis = "Std_PreviousWorkbench";
+    sStatusTip = sToolTipText;
+    sPixmap = "button_left";
+    sAccel = "Alt+Left";
+    eType = 0;
+}
+
+void StdCmdPreviousWorkbench::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    try {
+        Workbench* w = WorkbenchManager::instance()->getPreviousWorkbench();
+        if (!w) {
+            return;
+        }
+        WorkbenchManager::instance()->goToPreviousWorkbench();
+        doCommand(Gui, "Gui.activateWorkbench(\"%s\")", w->name().c_str());
+    }
+    catch (const Base::PyException& e) {
+        QString msg(QLatin1String(e.what()));
+        // ignore '<type 'exceptions.*Error'>' prefixes
+        QRegularExpression rx;
+        rx.setPattern(QLatin1String(R"(^\s*<type 'exceptions.\w*'>:\s*)"));
+        auto match = rx.match(msg);
+        if (match.hasMatch()) {
+            msg = msg.mid(match.capturedLength());
+        }
+        QMessageBox::critical(getMainWindow(), QObject::tr("Cannot load workbench"), msg);
+    }
+    catch (...) {
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Cannot Load Workbench"),
+            QObject::tr("A general error occurred while loading the workbench")
+        );
+    }
+}
+
+bool StdCmdPreviousWorkbench::isActive()
+{
+    return true;
+}
+
+Action* StdCmdPreviousWorkbench::createAction()
+{
+    Gui::Action* pcAction = new DelayedPopupAction(this, getMainWindow());
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
+    applyCommandData(this->className(), pcAction);
+    if (getPixmap()) {
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getPixmap()));
+    }
+
+    QMenu* historyMenu = new QMenu(getMainWindow());
+    pcAction->action()->setMenu(historyMenu);
+    QObject::connect(pcAction->action(), &QObject::destroyed, historyMenu, &QObject::deleteLater);
+    QObject::connect(historyMenu, &QMenu::aboutToShow, [historyMenu]() {
+        historyMenu->clear();
+        auto historyList = WorkbenchManager::instance()->getPreviousWorkbenchList();
+        if (historyList.empty()) {
+            QAction* emptyAction = historyMenu->addAction(QObject::tr("No History"));
+            emptyAction->setEnabled(false);
+            return;
+        }
+        for (Workbench* wb : historyList) {
+            QString wbName = QString::fromStdString(wb->name());
+            QAction* itemAction = historyMenu->addAction(wbName);
+
+            QObject::connect(itemAction, &QAction::triggered, [wbName]() {
+                WorkbenchManager::instance()->jumpInHistory(wbName.toStdString(), "backwards");
+                Gui::Command::doCommand(Gui::Command::Gui, "Gui.activateWorkbench(\"%s\")", wbName.toUtf8().constData());
+            });
+        }
+    });
+    return pcAction;
+}
+
+//===========================================================================
+// Std_NextWorkbench
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdNextWorkbench)
+
+StdCmdNextWorkbench::StdCmdNextWorkbench()
+    : Command("Std_NextWorkbench")
+{
+    sGroup = "View";
+    sMenuText = QT_TR_NOOP("Next Workbench");
+    sToolTipText = QT_TR_NOOP("Switches to the next workbench");
+    sWhatsThis = "Std_NextWorkbench";
+    sStatusTip = sToolTipText;
+    sPixmap = "button_right";
+    sAccel = "Alt+Right";
+    eType = 0;
+}
+
+void StdCmdNextWorkbench::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    try {
+        Workbench* w = WorkbenchManager::instance()->getNextWorkbench();
+        if (!w) {
+            return;
+        }
+        WorkbenchManager::instance()->goToNextWorkbench();
+        doCommand(Gui, "Gui.activateWorkbench(\"%s\")", w->name().c_str());
+    }
+    catch (const Base::PyException& e) {
+        QString msg(QLatin1String(e.what()));
+        // ignore '<type 'exceptions.*Error'>' prefixes
+        QRegularExpression rx;
+        rx.setPattern(QLatin1String(R"(^\s*<type 'exceptions.\w*'>:\s*)"));
+        auto match = rx.match(msg);
+        if (match.hasMatch()) {
+            msg = msg.mid(match.capturedLength());
+        }
+        QMessageBox::critical(getMainWindow(), QObject::tr("Cannot load workbench"), msg);
+    }
+    catch (...) {
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Cannot Load Workbench"),
+            QObject::tr("A general error occurred while loading the workbench")
+        );
+    }
+}
+
+bool StdCmdNextWorkbench::isActive()
+{
+    return true;
+}
+
+Action* StdCmdNextWorkbench::createAction()
+{
+    Gui::Action* pcAction = new DelayedPopupAction(this, getMainWindow());
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
+    applyCommandData(this->className(), pcAction);
+    if (getPixmap()) {
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getPixmap()));
+    }
+
+    QMenu* historyMenu = new QMenu(getMainWindow());
+    pcAction->action()->setMenu(historyMenu);
+    QObject::connect(pcAction->action(), &QObject::destroyed, historyMenu, &QObject::deleteLater);
+    QObject::connect(historyMenu, &QMenu::aboutToShow, [historyMenu]() {
+        historyMenu->clear();
+        auto historyList = WorkbenchManager::instance()->getNextWorkbenchList();
+        if (historyList.empty()) {
+            QAction* emptyAction = historyMenu->addAction(QObject::tr("No History"));
+            emptyAction->setEnabled(false);
+            return;
+        }
+        for (Workbench* wb : historyList) {
+            QString wbName = QString::fromStdString(wb->name());
+            QAction* itemAction = historyMenu->addAction(wbName);
+
+            QObject::connect(itemAction, &QAction::triggered, [wbName]() {
+                WorkbenchManager::instance()->jumpInHistory(wbName.toStdString(), "forward");
+                Gui::Command::doCommand(Gui::Command::Gui, "Gui.activateWorkbench(\"%s\")", wbName.toUtf8().constData());
+            });
+        }
+    });
     return pcAction;
 }
 
@@ -1061,6 +1257,8 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdDlgCustomize());
     rcCmdMgr.addCommand(new StdCmdCommandLine());
     rcCmdMgr.addCommand(new StdCmdWorkbench());
+    rcCmdMgr.addCommand(new StdCmdPreviousWorkbench());
+    rcCmdMgr.addCommand(new StdCmdNextWorkbench());
     rcCmdMgr.addCommand(new StdCmdRecentFiles());
     rcCmdMgr.addCommand(new StdCmdRecentMacros());
     rcCmdMgr.addCommand(new StdCmdWhatsThis());

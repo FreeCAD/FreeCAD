@@ -65,6 +65,24 @@ public:
     std::string activeName() const;
     /** Returns a list of all created workbench objects. */
     std::list<std::string> workbenches() const;
+    /** Returns the previously active workbench. */
+    Workbench* getPreviousWorkbench() const;
+    /** Returns the next active workbench. */
+    Workbench* getNextWorkbench() const;
+    /** Returns a list of all previously active workbenches. */
+    std::list<Workbench*> getPreviousWorkbenchList() const;
+    /** Returns a list of all next active workbenches. */
+    std::list<Workbench*> getNextWorkbenchList() const;
+    /** Handles switching to the previous workbench. */
+    void goToPreviousWorkbench();
+    /** Handles switching to the next workbench. */
+    void goToNextWorkbench();
+    /** Empties the list of next workbenches. */
+    void cleanNextWorkbenches();
+    /** Removes a workbench from the list of previous workbenches. */
+    void removeFromPreviousWorkbenches(Workbench* wb);
+    /** Jumps to a workbench in the history list. */
+    void jumpInHistory(const std::string& name, const std::string& direction);
 
 protected:
     WorkbenchManager();
@@ -74,6 +92,9 @@ private:
     static WorkbenchManager* _instance;
     Workbench* _activeWorkbench {nullptr};
     std::map<std::string, Workbench*> _workbenches;
+    std::list<Workbench*> _previousWorkbenches;
+    std::list<Workbench*> _nextWorkbenches;
+    bool _isGoingToPreviousWorkbench {false};
 };
 
 }  // namespace Gui

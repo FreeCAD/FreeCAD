@@ -115,6 +115,14 @@ bool WorkbenchManager::activate(const std::string& name, std::string_view classN
 {
     Workbench* wb = createWorkbench(name, className);
     if (wb) {
+
+        if (_activeWorkbench && !_isGoingToPreviousWorkbench && _activeWorkbench->name() != "NoneWorkbench") {
+            _previousWorkbenches.push_front(_activeWorkbench);
+        }
+        _isGoingToPreviousWorkbench = false;
+
+        removeFromPreviousWorkbenches(wb);
+        
         _activeWorkbench = wb;
         wb->activate();
         return true;
@@ -144,4 +152,108 @@ std::list<std::string> WorkbenchManager::workbenches() const
         wb.push_back(it.first);
     }
     return wb;
+}
+
+Workbench* WorkbenchManager::getPreviousWorkbench() const
+{
+    if (_previousWorkbenches.empty() || _previousWorkbenches.front()->name() == "NoneWorkbench") {
+        return nullptr;
+    }
+    return _previousWorkbenches.front();
+}
+
+std::list<Workbench*> WorkbenchManager::getPreviousWorkbenchList() const
+{
+    return _previousWorkbenches;
+}
+
+Workbench* WorkbenchManager::getNextWorkbench() const
+{
+    if (_nextWorkbenches.empty()) {
+        return nullptr;
+    }
+    return _nextWorkbenches.front();
+}
+
+std::list<Workbench*> WorkbenchManager::getNextWorkbenchList() const
+{
+    return _nextWorkbenches;
+}
+
+void WorkbenchManager::goToPreviousWorkbench()
+{
+    _previousWorkbenches.pop_front();
+    _nextWorkbenches.push_front(_activeWorkbench);
+    _isGoingToPreviousWorkbench = true;
+}
+
+void WorkbenchManager::goToNextWorkbench()
+{
+    _nextWorkbenches.pop_front();
+}
+
+void WorkbenchManager::cleanNextWorkbenches()
+{
+    while (!_nextWorkbenches.empty()) {
+        _nextWorkbenches.pop_back();
+    }
+}
+
+void WorkbenchManager::removeFromPreviousWorkbenches(Workbench* wb)
+{
+    auto it = std::find(_previousWorkbenches.begin(), _previousWorkbenches.end(), wb);
+    if (it != _previousWorkbenches.end()) {
+        _previousWorkbenches.erase(it);
+    }
+}
+
+void WorkbenchManager::jumpInHistory(const std::string& name, const std::string& direction)
+{
+    if (!_activeWorkbench || _activeWorkbench->name() == name) {
+        return;
+    }
+    Workbench* tempActive = _activeWorkbench;
+    if (direction == "backwards" || direction == "Past" || direction == "past") {
+        
+        bool found = false;
+        for (Workbench* wb : _previousWorkbenches) {
+            if (wb->name() == name) { found = true; break; }
+        }
+        if (!found) return;
+
+        while (!_previousWorkbenches.empty()) {
+            Workbench* targetWb = _previousWorkbenches.front();
+            _previousWorkbenches.pop_front();
+            
+            _nextWorkbenches.push_front(tempActive);
+            tempActive = targetWb;
+            
+            if (tempActive->name() == name) {
+                break;
+            }
+        }
+    } 
+    else if (direction == "forward" || direction == "Future" || direction == "future") {
+        
+        bool found = false;
+        for (Workbench* wb : _nextWorkbenches) {
+            if (wb->name() == name) { found = true; break; }
+        }
+        if (!found) return;
+
+        while (!_nextWorkbenches.empty()) {
+            Workbench* targetWb = _nextWorkbenches.front();
+            _nextWorkbenches.pop_front();
+            
+            _previousWorkbenches.push_front(tempActive);
+            tempActive = targetWb;
+            
+            if (tempActive->name() == name) {
+                break;
+            }
+        }
+    }
+    _nextWorkbenches.remove(tempActive);
+    _previousWorkbenches.remove(tempActive);
+    _isGoingToPreviousWorkbench = true;
 }

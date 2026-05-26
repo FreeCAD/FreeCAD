@@ -754,6 +754,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ToggleTransparency"
           << "Separator"
           << "Std_Workbench"
+          << "Std_PreviousWorkbench"
+          << "Std_NextWorkbench"
           << "Std_ToolBarMenu"
           << "Std_DockViewMenu";
     if (DockWindowManager::instance()->isOverlayActivated()) {
@@ -851,7 +853,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // Workbench switcher
     auto wb = new ToolBarItem(root);
     wb->setCommand("Workbench");
-    *wb << "Std_Workbench";
+    *wb << "Std_Workbench" << "Separator" << "Std_PreviousWorkbench" << "Std_NextWorkbench";
 
     // Macro
     auto macro = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
@@ -1021,7 +1023,7 @@ MenuItem* NoneWorkbench::setupMenuBar() const
     // View
     auto view = new MenuItem(menuBar);
     view->setCommand("&View");
-    *view << "Std_Workbench";
+    *view << "Std_Workbench" << "Std_NextWorkbench";
 
     // Separator
     auto sep = new MenuItem(menuBar);
