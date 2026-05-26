@@ -26,6 +26,7 @@
 #include <FCConfig.h>
 
 #include <array>
+#include <cstring>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -34,6 +35,7 @@
 #include <Base/Parameter.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Sequencer.h>
+#include <Base/Tools.h>
 
 #include "Application.h"
 #include "ApplicationPy.h"
@@ -46,6 +48,47 @@
 // using Base::GetConsole;
 using namespace Base;
 using namespace App;
+
+namespace
+{
+
+enum class DocumentLookupResult
+{
+    NotFound,
+    Found,
+    Ambiguous,
+};
+
+DocumentLookupResult findDocumentByNameOrIdentifier(const char* nameOrIdentifier, Document*& doc)
+{
+    doc = GetApplication().getDocument(nameOrIdentifier);
+    if (doc) {
+        return DocumentLookupResult::Found;
+    }
+
+    std::string identifier = Base::Tools::getIdentifier(nameOrIdentifier);
+    if (identifier == nameOrIdentifier) {
+        return DocumentLookupResult::NotFound;
+    }
+
+    doc = GetApplication().getDocument(identifier.c_str());
+    if (!doc) {
+        return DocumentLookupResult::NotFound;
+    }
+
+    for (auto* document : GetApplication().getDocuments()) {
+        if (std::strcmp(document->Label.getValue(), nameOrIdentifier) != 0) {
+            continue;
+        }
+        if (document != doc) {
+            return DocumentLookupResult::Ambiguous;
+        }
+    }
+
+    return DocumentLookupResult::Found;
+}
+
+}  // namespace
 
 
 //**************************************************************************
@@ -449,18 +492,24 @@ PyObject* ApplicationPy::sCloseDocument(PyObject* /*self*/, PyObject* args)
 {
     char* pstr = nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
-        Document* doc = GetApplication().getDocument(pstr);
-        if (!doc) {
+        Document* doc = nullptr;
+        auto lookupResult = findDocumentByNameOrIdentifier(pstr, doc);
+        if (lookupResult == DocumentLookupResult::NotFound) {
             PyErr_Format(PyExc_NameError, "Unknown document '%s'", pstr);
             return nullptr;
         }
-        if (!doc->isClosable()) {
-            PyErr_Format(PyExc_RuntimeError, "The document '%s' is not closable for the moment", pstr);
+        if (lookupResult == DocumentLookupResult::Ambiguous) {
+            PyErr_Format(PyExc_NameError, "Ambiguous document label '%s'", pstr);
             return nullptr;
         }
 
-        if (!GetApplication().closeDocument(pstr)) {
-            PyErr_Format(PyExc_RuntimeError, "Closing the document '%s' failed", pstr);
+        if (!doc->isClosable()) {
+            PyErr_Format(PyExc_RuntimeError, "The document '%s' is not closable for the moment", doc->getName());
+            return nullptr;
+        }
+
+        if (!GetApplication().closeDocument(doc)) {
+            PyErr_Format(PyExc_RuntimeError, "Closing the document '%s' failed", doc->getName());
             return nullptr;
         }
 
