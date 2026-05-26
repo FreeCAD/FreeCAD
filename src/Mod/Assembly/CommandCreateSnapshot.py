@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # /**************************************************************************
 #                                                                           *
-#    Copyright (c) 2025 AstoCAD <hello@astocad.com>                         *
+#    Copyright (c) 2026 AstoCAD <hello@astocad.com>                         *
 #                                                                           *
 #    This file is part of FreeCAD.                                          *
 #                                                                           *
@@ -21,7 +21,6 @@
 #                                                                           *
 # **************************************************************************/
 
-import json
 import FreeCAD as App
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -89,15 +88,50 @@ class Snapshot:
 
     def __init__(self, snapshot_obj):
         snapshot_obj.Proxy = self
+        self.ensureProperties(snapshot_obj)
+        # Capture the state immediately upon creation
+        self.captureState(snapshot_obj)
 
-        if not hasattr(snapshot_obj, "CapturedState"):
+    def execute(self, snapshot_obj):
+        """Called on recompute. A snapshot is static, so we do nothing."""
+        pass
+
+    def onDocumentRestored(self, snapshot_obj):
+        """Called when a document containing a snapshot is loaded."""
+        self.ensureProperties(snapshot_obj)
+
+    def ensureProperties(self, snapshot_obj):
+        """Ensures that the required properties are added to the object."""
+        if not hasattr(snapshot_obj, "Components"):
             snapshot_obj.addProperty(
-                "App::PropertyString",
-                "CapturedState",
+                "App::PropertyLinkList",
+                "Components",
                 "Snapshot",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Stores the JSON data of the captured assembly state.",
+                    "List of components captured in this snapshot.",
+                ),
+            )
+
+        if not hasattr(snapshot_obj, "Placements"):
+            snapshot_obj.addProperty(
+                "App::PropertyPlacementList",
+                "Placements",
+                "Snapshot",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "List of corresponding placements for the components.",
+                ),
+            )
+
+        if not hasattr(snapshot_obj, "Visibilities"):
+            snapshot_obj.addProperty(
+                "App::PropertyBoolList",
+                "Visibilities",
+                "Snapshot",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "List of visibility states for the components.",
                 ),
             )
 
@@ -113,13 +147,6 @@ class Snapshot:
             )
             snapshot_obj.SolveOnActivation = True
 
-        # Capture the state immediately upon creation
-        self.captureState(snapshot_obj)
-
-    def execute(self, snapshot_obj):
-        """Called on recompute. A snapshot is static, so we do nothing."""
-        pass
-
     def getAssembly(self, snapshot_obj):
         """Finds the parent assembly of this snapshot."""
         for obj in snapshot_obj.InList:
@@ -131,8 +158,8 @@ class Snapshot:
 
     def captureState(self, snapshot_obj):
         """
-        Captures placements, visibility, and materials of all movable parts
-        in the assembly and stores them as a JSON string.
+        Captures placements and visibility of all movable parts
+        in the assembly and stores them inside the lists.
         """
         assembly = self.getAssembly(snapshot_obj)
         if not assembly:
@@ -140,31 +167,26 @@ class Snapshot:
             return
 
         components = UtilsAssembly.getMovablePartsWithin(assembly, partsAsSolid=True)
-        state_data = {}
+
+        captured_objs = []
+        captured_placements = []
+        captured_visibilities = []
 
         for part in components:
             if not part or not hasattr(part, "Placement"):
                 continue
 
-            part_state = {}
+            captured_objs.append(part)
+            captured_placements.append(part.Placement)
 
-            # Capture Placement
-            plc = part.Placement
-            part_state["placement"] = {
-                "pos": [plc.Base.x, plc.Base.y, plc.Base.z],
-                "rot": [plc.Rotation.Q[0], plc.Rotation.Q[1], plc.Rotation.Q[2], plc.Rotation.Q[3]],
-            }
-
-            # Capture Visibility
             try:
-                part_state["visibility"] = part.Visibility
+                captured_visibilities.append(bool(part.Visibility))
             except AttributeError:
-                # Part might not have a ShapeMaterial
-                part_state["visibility"] = None
+                captured_visibilities.append(True)  # Fallback value if Visibility is unavailable
 
-            state_data[part.Name] = part_state
-
-        snapshot_obj.CapturedState = json.dumps(state_data, indent=2)
+        snapshot_obj.Components = captured_objs
+        snapshot_obj.Placements = captured_placements
+        snapshot_obj.Visibilities = captured_visibilities
 
         snapshot_obj.purgeTouched()
 
@@ -173,40 +195,35 @@ class Snapshot:
         Applies the captured state to the assembly.
         """
         assembly = self.getAssembly(snapshot_obj)
-        doc = snapshot_obj.Document
-
         if not assembly:
             App.Console.PrintError("Snapshot cannot find its parent assembly to restore state.\n")
             return
 
-        if not snapshot_obj.CapturedState:
-            App.Console.PrintWarning("Snapshot has no captured state to restore.\n")
+        components = getattr(snapshot_obj, "Components", [])
+        placements = getattr(snapshot_obj, "Placements", [])
+        visibilities = getattr(snapshot_obj, "Visibilities", [])
+
+        if not components:
+            App.Console.PrintWarning("Snapshot has no captured components to restore.\n")
             return
 
-        try:
-            state_data = json.loads(snapshot_obj.CapturedState)
-        except json.JSONDecodeError:
-            App.Console.PrintError("Snapshot data is corrupt and cannot be restored.\n")
-            return
+        # Determine limits in case property list lengths do not match
+        n = min(len(components), len(placements), len(visibilities))
 
-        for part_fullname, part_state in state_data.items():
-            part = doc.getObject(part_fullname)
-
-            # If part was deleted, just skip it.
+        for i in range(n):
+            part = components[i]
+            # Skip if referenced part was deleted
             if not part:
                 continue
 
             # Restore Placement
-            if "placement" in part_state:
-                pos = part_state["placement"]["pos"]
-                rot = part_state["placement"]["rot"]
-                part.Placement = App.Placement(App.Vector(*pos), App.Rotation(*rot))
+            part.Placement = placements[i]
 
             # Restore Visibility
             try:
-                part.Visibility = part_state["visibility"]
-            except (AttributeError, KeyError):
-                pass  # Ignore if material properties are missing or object changed
+                part.Visibility = visibilities[i]
+            except AttributeError:
+                pass
 
             part.purgeTouched()
 
