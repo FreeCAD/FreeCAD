@@ -67,7 +67,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         self.initAreaOpProperties(obj)
 
         obj.setEditorMode("MiterLimit", 2)
-        obj.setEditorMode("JoinType", 2)
+        obj.setEditorMode("JoinType", 0)  # 0=visible
 
     def initAreaOpProperties(self, obj, warn=False):
         """initAreaOpProperties(obj) ... create operation specific properties"""
@@ -336,7 +336,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         multiPassMode = 0 if obj.NumPasses > 1 else 2
 
         obj.setEditorMode("Stepover", multiPassMode)
-        obj.setEditorMode("JoinType", 2)
+        obj.setEditorMode("JoinType", 0)  # 0=visible
         obj.setEditorMode("MiterLimit", 2)  # ml
         obj.setEditorMode("Side", side)
         obj.setEditorMode("HandleMultipleFeatures", 0)
@@ -401,15 +401,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         params["ExtraPass"] = num_passes - 1
         params["Stepover"] = stepover
 
-        # Map JoinType string to AreaParams enum value.
-        # Clipper integer values: jtSquare=0, jtRound=1, jtMiter=2
-        # Path.ClipperJoinType* constants were added after FreeCAD 1.1 — use raw ints for compatibility.
+        # Map JoinType string to Clipper2Lib integer values (FreeCAD 1.2+):
+        # 0=Miter (biseaux 45°), 2=Round (arrondis), 3=Square (angles droits 90°)  (1 est invalide)
         jointype_map = {
-            "Round": 1,
-            "Square": 0,
-            "Miter": 2,
+            "Miter": 0,
+            "Round": 2,
+            "Square": 3,
         }
-        params["JoinType"] = jointype_map.get(obj.JoinType, 1)  # default: Round
+        params["JoinType"] = jointype_map.get(obj.JoinType, 3)  # default: Square (angles droits)
 
         if obj.JoinType == "Miter":
             params["MiterLimit"] = obj.MiterLimit
@@ -1352,13 +1351,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if isHole is False:
             offset = 0 - offset
 
-        # Clipper integer values: jtSquare=0, jtRound=1, jtMiter=2
+        # Clipper2Lib integer values (FreeCAD 1.2+): 0=Miter (biseaux 45°), 2=Round (arrondis), 3=Square (angles droits)
         jointype_map = {
-            "Round": 1,
-            "Square": 0,
-            "Miter": 2,
+            "Miter": 0,
+            "Round": 2,
+            "Square": 3,
         }
-        joinType = jointype_map.get(obj.JoinType, 1)  # default: Round
+        joinType = jointype_map.get(obj.JoinType, 3)  # default: Square (angles droits)
 
         # PathUtils.getOffsetArea gained the 'joinType' parameter after FreeCAD 1.1.
         # Inspect the signature at runtime to stay compatible with older versions.
