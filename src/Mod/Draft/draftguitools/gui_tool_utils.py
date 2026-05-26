@@ -180,6 +180,11 @@ def select_object(arg):
         Then it runs the `proceed` method of the active command
         to continue with the command's logic.
     """
+    if getattr(App, "activeDraftCommand", None) is None:
+        # Callback may outlive the command that registered it (e.g. when a
+        # Draft command finished without unregistering its selection
+        # observer). Bail out silently instead of dereferencing None.
+        return
     if arg["Type"] == "SoKeyboardEvent":
         if arg["Key"] == "ESCAPE":
             App.activeDraftCommand.finish()
