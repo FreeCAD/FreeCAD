@@ -89,19 +89,31 @@ static float getFaceArea(TopoDS_Shape& face)
 TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat = nullptr)
 {
     App::DocumentObject* obj = subject.getSubObjectList().back();
-    if (!obj) {
+    if (!obj || !obj->getNameInDocument()) {
         return {};
     }
+    if (obj->isDerivedFrom<Part::Feature>()) {
+        TopoShape ts = static_cast<const Part::Feature*>(obj)->Shape.getShape();
+        ts.setPlacement(
+            App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
+        );
+        ts = ts.getSubTopoShape(subject.getElementName(), true);
+        if (mat) {
+            *mat = static_cast<const Part::Feature*>(obj)->Placement.getValue().toMatrix();
+        }
+        if (!ts.isNull()) {
+            return ts.getShape();
+        }
+    }
 
-    TopoDS_Shape shape = Part::Feature::getShape(
+    TopoShape ts = Part::Feature::getTopoShape(
         obj,
         Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
             | Part::ShapeOption::Transform,
         subject.getElementName(),
         mat
     );
-
-    if (shape.IsNull()) {
+    if (ts.isNull()) {
         Base::Console().log(
             "Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n",
             obj->getNameInDocument(),
@@ -109,8 +121,10 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
         );
         return {};
     }
-
-    return shape;
+    ts.setPlacement(
+        App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
+    );
+    return ts.getShape();
 }
 
 
