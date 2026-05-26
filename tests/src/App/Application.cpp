@@ -74,8 +74,10 @@ TEST_F(ApplicationTest, closeDocumentPythonAcceptsSanitizedDocumentIdentifier)
         }
     } cleanup;
 
-    Base::Interpreter().runString("import FreeCAD as App\n"
-                                  "App.newDocument('close-document-hyphen-test')\n");
+    Base::Interpreter().runString(
+        "import FreeCAD as App\n"
+        "App.newDocument('close-document-hyphen-test')\n"
+    );
 
     auto* doc = App::GetApplication().getDocument("close_document_hyphen_test");
     ASSERT_NE(doc, nullptr);
@@ -99,9 +101,11 @@ TEST_F(ApplicationTest, closeDocumentPythonAcceptsSanitizedDocumentIdentifierWit
         }
     } cleanup;
 
-    Base::Interpreter().runString("import FreeCAD as App\n"
-                                  "App.newDocument('close-document-custom-label-test', "
-                                  "'Custom document label')\n");
+    Base::Interpreter().runString(
+        "import FreeCAD as App\n"
+        "App.newDocument('close-document-custom-label-test', "
+        "'Custom document label')\n"
+    );
 
     auto* doc = App::GetApplication().getDocument("close_document_custom_label_test");
     ASSERT_NE(doc, nullptr);
@@ -145,9 +149,13 @@ TEST_F(ApplicationTest, closeDocumentPythonRejectsLabelIdentifierConflict)
     EXPECT_STREQ(second->getName(), secondName.c_str());
     EXPECT_STREQ(second->Label.getValue(), "close-document-identifier-conflict");
 
-    EXPECT_THROW(Base::Interpreter().runString("import FreeCAD as App\n"
-                                               "App.closeDocument('close-document-identifier-conflict')\n"),
-                 Base::Exception);
+    EXPECT_THROW(
+        Base::Interpreter().runString(
+            "import FreeCAD as App\n"
+            "App.closeDocument('close-document-identifier-conflict')\n"
+        ),
+        Base::Exception
+    );
     EXPECT_EQ(app.getDocument(firstName.c_str()), first);
     EXPECT_EQ(app.getDocument(secondName.c_str()), second);
 }
