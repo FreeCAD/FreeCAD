@@ -23,7 +23,7 @@ class GizmoContainer;
 namespace PartDesignGui
 {
 
-class TaskThreadParameters : public TaskDressUpParameters
+class TaskThreadParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
@@ -44,7 +44,7 @@ private:
     std::unique_ptr<Ui_TaskThreadParameters> ui;
 };
 
-class TaskDlgThreadParameters : public TaskDlgDressUpParameters
+class TaskDlgThreadParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
@@ -56,4 +56,4 @@ public:
     bool accept() override;
 };
 
-} // namespace PartDesignGui
+}  // namespace PartDesignGui

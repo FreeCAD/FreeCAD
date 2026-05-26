@@ -13,7 +13,8 @@ class PartDesignGuiExport ViewProviderThread: public ViewProviderDressUp
 
 public:
     /// constructor
-    ViewProviderThread(){
+    ViewProviderThread()
+    {
         sPixmap = "PartDesign_Thread.svg";
         menuName = tr("Thread Parameters");
     }
@@ -27,4 +28,4 @@ protected:
     TaskDlgFeatureParameters* getEditDialog() override;
 };
 
-}
+}  // namespace PartDesignGui

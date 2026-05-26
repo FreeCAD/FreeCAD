@@ -16,7 +16,7 @@ using namespace Gui;
 
 TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWidget* parent)
     : TaskDressUpParameters(DressUpView, true, true, parent)
-    , ui(std::make_unique<Ui_TaskThreadParameters>()) 
+    , ui(std::make_unique<Ui_TaskThreadParameters>())
 {
     proxy = new QWidget(this);
     ui->setupUi(proxy);
@@ -44,12 +44,10 @@ void TaskThreadParameters::changeEvent(QEvent* e)
 }
 
 void TaskThreadParameters::apply()
-{
-}
+{}
 
 void TaskThreadParameters::onRefDeleted()
-{
-}
+{}
 
 void TaskThreadParameters::setButtons(const PartDesignGui::TaskDressUpParameters::selectionModes mode)
 {
@@ -68,8 +66,8 @@ TaskDlgThreadParameters::TaskDlgThreadParameters(ViewProviderThread* DressUpView
     parameter = new TaskThreadParameters(DressUpView);
 
     Content.push_back(parameter);
-    
-    Content.push_back(preview); 
+
+    Content.push_back(preview);
 }
 
 TaskDlgThreadParameters::~TaskDlgThreadParameters() = default;
