@@ -91,8 +91,11 @@ def safe_extractall(zfile, target):
         member_path = os.path.abspath(os.path.join(target, member.filename))
         # Prevent Zip Slip path traversal from downloaded translation archives.
         if os.path.commonpath([target, member_path]) != target:
-            raise ValueError("Archive entry outside extraction directory: {}".format(member.filename))
+            raise ValueError(
+                "Archive entry outside extraction directory: {}".format(member.filename)
+            )
     zfile.extractall(target)
+
 
 try:
     from PySide6 import QtCore

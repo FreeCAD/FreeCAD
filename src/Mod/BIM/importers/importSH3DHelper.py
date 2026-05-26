@@ -2570,7 +2570,9 @@ class BaseFurnitureHandler(BaseHandler):
                 tmp_dir = os.path.join(tmp_dir, str(uuid.uuid4()))
             model_target = os.path.abspath(os.path.join(tmp_dir, model))
             # Prevent Zip Slip path traversal from malicious SH3D model entries.
-            if os.path.commonpath([os.path.abspath(tmp_dir), model_target]) != os.path.abspath(tmp_dir):
+            if os.path.commonpath([os.path.abspath(tmp_dir), model_target]) != os.path.abspath(
+                tmp_dir
+            ):
                 raise ValueError(f"Invalid SweetHome3D file: unsafe model path {model}")
             model_path = self.importer.zip.extract(member=model, path=tmp_dir)
             model_path_obj = model_path + ".obj"
