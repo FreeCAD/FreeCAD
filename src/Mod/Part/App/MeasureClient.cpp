@@ -86,22 +86,30 @@ static float getFaceArea(TopoDS_Shape& face)
     return gprops.Mass();
 }
 
-TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat = nullptr)
+TopoDS_Shape getLocatedShape(const App::SubObjectT& subject)
 {
     App::DocumentObject* obj = subject.getSubObjectList().back();
-    if (!obj) {
+    if (!obj || !obj->getNameInDocument()) {
         return {};
     }
+    if (obj->isDerivedFrom<Part::Feature>()) {
+        TopoShape ts = static_cast<const Part::Feature*>(obj)->Shape.getShape();
+        ts.setPlacement(
+            App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
+        );
+        ts = ts.getSubTopoShape(subject.getElementName(), true);
+        if (!ts.isNull()) {
+            return ts.getShape();
+        }
+    }
 
-    TopoDS_Shape shape = Part::Feature::getShape(
+    TopoShape ts = Part::Feature::getTopoShape(
         obj,
         Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
             | Part::ShapeOption::Transform,
-        subject.getElementName(),
-        mat
+        subject.getElementName()
     );
-
-    if (shape.IsNull()) {
+    if (ts.isNull()) {
         Base::Console().log(
             "Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n",
             obj->getNameInDocument(),
@@ -109,8 +117,10 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
         );
         return {};
     }
-
-    return shape;
+    ts.setPlacement(
+        App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
+    );
+    return ts.getShape();
 }
 
 
@@ -246,60 +256,6 @@ bool getShapeFromStrings(TopoDS_Shape& shapeOut, const App::SubObjectT& subject,
     );
     return !shapeOut.IsNull();
 }
-
-
-Part::VectorAdapter buildAdapter(const App::SubObjectT& subject)
-{
-    Base::Matrix4D mat;
-    TopoDS_Shape shape = getLocatedShape(subject, &mat);
-
-    if (shape.IsNull()) {
-        // failure here on loading document with existing measurement.
-        Base::Console().message(
-            "Part::buildAdapter did not retrieve shape for %s, %s\n",
-            subject.getObjectName(),
-            subject.getElementName()
-        );
-        return Part::VectorAdapter();
-    }
-    TopAbs_ShapeEnum shapeType = shape.ShapeType();
-
-    if (shapeType == TopAbs_EDGE) {
-        TopoDS_Edge edge = TopoDS::Edge(shape);
-        // make edge orientation so that end of edge closest to pick is head of vector.
-        TopoDS_Vertex firstVertex = TopExp::FirstVertex(edge, Standard_True);
-        TopoDS_Vertex lastVertex = TopExp::LastVertex(edge, Standard_True);
-        if (firstVertex.IsNull() || lastVertex.IsNull()) {
-            return {};
-        }
-        gp_Vec firstPoint = Part::VectorAdapter::convert(firstVertex);
-        gp_Vec lastPoint = Part::VectorAdapter::convert(lastVertex);
-        Base::Vector3d v(0.0, 0.0, 0.0);  // v(current.x,current.y,current.z);
-        v = mat * v;
-        gp_Vec pickPoint(v.x, v.y, v.z);
-        double firstDistance = (firstPoint - pickPoint).Magnitude();
-        double lastDistance = (lastPoint - pickPoint).Magnitude();
-        if (lastDistance > firstDistance) {
-            if (edge.Orientation() == TopAbs_FORWARD) {
-                edge.Orientation(TopAbs_REVERSED);
-            }
-            else {
-                edge.Orientation(TopAbs_FORWARD);
-            }
-        }
-        return {edge, pickPoint};
-    }
-    if (shapeType == TopAbs_FACE) {
-        TopoDS_Face face = TopoDS::Face(shape);
-        Base::Vector3d vTemp(0.0, 0.0, 0.0);  // v(current.x, current.y, current.z);
-        vTemp = mat * vTemp;
-        gp_Vec pickPoint(vTemp.x, vTemp.y, vTemp.z);
-        return {face, pickPoint};
-    }
-
-    return {};
-}
-
 
 MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
 {
@@ -506,29 +462,38 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
 
     TopAbs_ShapeEnum sType = shape.ShapeType();
 
-    Part::VectorAdapter vAdapt = buildAdapter(subject);
-
-    gp_Pnt vec;
-    Base::Vector3d position;
+    gp_Pnt position;
+    Base::Vector3d orientation;
     if (sType == TopAbs_FACE) {
         TopoDS_Face face = TopoDS::Face(shape);
 
         GProp_GProps gprops;
         BRepGProp::SurfaceProperties(face, gprops);
-        vec = gprops.CentreOfMass();
+        position = gprops.CentreOfMass();
+        auto vAdapt = Part::VectorAdapter(face, gp_Vec(0, 0, 0));
+        if (!vAdapt.isValid()) {
+            return std::make_shared<MeasureAngleInfo>();
+        }
+        orientation = (Base::Vector3d)vAdapt;
     }
     else if (sType == TopAbs_EDGE) {
         TopoDS_Edge edge = TopoDS::Edge(shape);
 
         GProp_GProps gprops;
         BRepGProp::LinearProperties(edge, gprops);
-        vec = gprops.CentreOfMass();
+        position = gprops.CentreOfMass();
+        auto vAdapt = Part::VectorAdapter(edge, gp_Vec(0, 0, 0));
+        if (!vAdapt.isValid()) {
+            return std::make_shared<MeasureAngleInfo>();
+        }
+        orientation = (Base::Vector3d)vAdapt;
     }
 
-    position.Set(vec.X(), vec.Y(), vec.Z());
-
-    auto info = std::make_shared<MeasureAngleInfo>(vAdapt.isValid(), (Base::Vector3d)vAdapt, position);
-    return info;
+    return std::make_shared<MeasureAngleInfo>(
+        true,
+        orientation, 
+        Base::Vector3d(position.X(), position.Y(), position.Z())
+    );
 }
 
 
