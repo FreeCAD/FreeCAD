@@ -2665,7 +2665,7 @@ CmdPartDesignThread::CmdPartDesignThread()
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
     sMenuText = QT_TR_NOOP("Thread");
-    //sToolTipText has to be rewviewed
+    // sToolTipText has to be rewviewed
     sToolTipText
         = QT_TR_NOOP("Creates Threads in the active body at the center points of circles or arcs of the selected face");
     sWhatsThis = "PartDesign_Thread";
@@ -2689,7 +2689,8 @@ void CmdPartDesignThread::activated(int iMsg)
     std::vector<std::string> SubNames;
     if (noSelection) {
         base = static_cast<Part::Feature*>(PartDesignGui::getBody(true)->Tip.getValue());
-    } else {
+    }
+    else {
         base = static_cast<Part::Feature*>(selected.getObject());
         SubNames = std::vector<std::string>(selected.getSubNames());
 

@@ -30,7 +30,7 @@ App::DocumentObjectExecReturn* Thread::execute()
     Base::Console().message("THREAD EXECUTED");
 
     return new App::DocumentObjectExecReturn(
-         QT_TRANSLATE_NOOP("Exception", "Thread failed: thread not implemented")
+        QT_TRANSLATE_NOOP("Exception", "Thread failed: thread not implemented")
     );
 }
 
