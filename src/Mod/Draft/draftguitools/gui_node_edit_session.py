@@ -48,8 +48,10 @@ import pivy.coin as coin
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import WorkingPlane
 from draftutils import gui_utils
 from draftutils import params
+from draftguitools import gui_snapper
 from draftguitools import gui_tool_utils
 from draftguitools import gui_trackers as trackers
 
@@ -87,6 +89,8 @@ class NodeEditSession:
         self._cb_mouse_moved = None
         self._cb_key_pressed = None
         self._pick_radius = params.get_param("DraftEditPickRadius")
+        self._wp = None
+        self._snapper = None
         self._running = False
 
     # ------------------------------------------------------------------ lifecycle
@@ -99,6 +103,14 @@ class NodeEditSession:
         if self._view is None:
             return
         self._render_manager = self._view.getViewer().getSoRenderManager()
+
+        # Initialize the working plane and prime the Snapper, mirroring what
+        # gui_base_original.Modifier.Activated does for every Draft command.
+        # Without this the Snapper has no working plane to project onto and
+        # snap() raises mid-call, leaving its internal "running" flag stuck.
+        self._wp = WorkingPlane.get_working_plane()
+        self._snapper = gui_snapper.get_snapper()
+        self._snapper.setTrackers()
 
         self._format_objects()
         for obj, tools in self._targets:
@@ -123,6 +135,16 @@ class NodeEditSession:
         self._unregister_callbacks()
         self._remove_all_trackers()
         self._deformat_objects()
+
+        # Tear down the Snapper and restore the working plane, mirroring
+        # gui_base_original.Modifier.finish.
+        if self._snapper is not None:
+            self._snapper.off()
+            self._snapper = None
+        if self._wp is not None:
+            self._wp._restore()
+            self._wp = None
+
         self._view = None
         self._render_manager = None
         self._running = False
@@ -202,13 +224,17 @@ class NodeEditSession:
         self._drag_start = tracker.get()
         tracker.off()
 
-        Gui.Snapper.setSelectMode(False)
+        self._snapper.setSelectMode(False)
         self._init_ghost(obj)
 
     def _update_drag(self, event):
         pos = event.getPosition().getValue()
         constrain = bool(event.wasShiftDown())
-        snapped = Gui.Snapper.snap((pos[0], pos[1]), self._drag_start, constrain=constrain)
+        snapped = self._snapper.snap((pos[0], pos[1]), self._drag_start, constrain=constrain)
+        if snapped is None:
+            # snap() returns None while a previous snap is still running
+            # (re-entrancy guard); skip this move rather than crash.
+            return
         self._trackers[self._editing_obj.Name][self._editing_idx].set(snapped)
         if self._ghost is not None:
             self._update_ghost(snapped)
@@ -219,7 +245,7 @@ class NodeEditSession:
         v = self._trackers[obj.Name][idx].get()
         self._finalize_ghost()
         self._trackers[obj.Name][idx].on()
-        Gui.Snapper.setSelectMode(True)
+        self._snapper.setSelectMode(True)
         self._editing_obj = None
         self._editing_idx = None
         self._drag_start = None
@@ -234,7 +260,7 @@ class NodeEditSession:
             tracker.set(self._drag_start)
         tracker.on()
         self._finalize_ghost()
-        Gui.Snapper.setSelectMode(True)
+        self._snapper.setSelectMode(True)
         self._editing_obj = None
         self._editing_idx = None
         self._drag_start = None
