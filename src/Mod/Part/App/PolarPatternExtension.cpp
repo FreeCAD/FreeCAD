@@ -282,9 +282,7 @@ gp_Ax2 PolarPatternExtension::getRotation() const
                 axdir = adapt.Circle().Axis().Direction();
             }
             else {
-                throw Base::TypeError(
-                    "Rotation edge must be a straight line, circle or arc of circle"
-                );
+                throw Base::TypeError("Rotation edge must be a straight line, circle or arc of circle");
             }
         }
         else {

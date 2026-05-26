@@ -442,9 +442,7 @@ void TaskPatternParameters::updateSpacingLabels()
             // Get the direction vector using the feature's public method.
             // calculateOffsetVector returns a vector whose magnitude is one step in 'Extent' mode,
             // or a normalized vector in 'Spacing' mode. We normalize it to be safe.
-            gp_Vec offset1 = linearPattern->calculateOffsetVector(
-                Part::LinearPatternDirection::First
-            );
+            gp_Vec offset1 = linearPattern->calculateOffsetVector(Part::LinearPatternDirection::First);
             Base::Vector3d direction1(0, 0, 1);  // Default direction
             if (offset1.Magnitude() > Precision::Confusion()) {
                 offset1.Normalize();
@@ -457,9 +455,7 @@ void TaskPatternParameters::updateSpacingLabels()
 
         // Handle second direction widget
         if (parametersWidget2) {
-            gp_Vec offset2 = linearPattern->calculateOffsetVector(
-                Part::LinearPatternDirection::Second
-            );
+            gp_Vec offset2 = linearPattern->calculateOffsetVector(Part::LinearPatternDirection::Second);
             Base::Vector3d direction2(0, 1, 0);  // Default direction
             if (offset2.Magnitude() > Precision::Confusion()) {
                 offset2.Normalize();
