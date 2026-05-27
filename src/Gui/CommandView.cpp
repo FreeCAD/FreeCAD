@@ -3760,7 +3760,7 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
 {
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Toggle Overl&ay for All Panels");
-    sToolTipText = QT_TR_NOOP("Toggled overlay mode for all docked panels");
+    sToolTipText = QT_TR_NOOP("Toggles overlay mode for all docked panels");
     sWhatsThis = "Std_DockOverlayAll";
     sStatusTip = sToolTipText;
     eType = 0;
