@@ -334,7 +334,7 @@
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The size of the smallest square of the grid. Location in preferences: &lt;span style=&quot; font-weight:600;&quot;&gt;Draft &amp;gt; Grid and Snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
-            <string>0 </string>
+            <string>0</string>
            </property>
            <property name="unit" stdset="0">
             <string notr="true"/>
@@ -486,7 +486,7 @@
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts. Location in preferences: &lt;span style=&quot; font-weight:600;&quot;&gt;Draft &amp;gt; Texts and Dimensions &amp;gt; Font size, TechDraw &amp;gt; Dimensions &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
-            <string>0 </string>
+            <string>0</string>
            </property>
            <property name="unit" stdset="0">
             <string notr="true"/>
@@ -544,7 +544,7 @@
             &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
-            <string>0 </string>
+            <string>0</string>
            </property>
            <property name="unit" stdset="0">
             <string notr="true"/>
