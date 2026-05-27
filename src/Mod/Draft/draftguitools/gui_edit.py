@@ -318,6 +318,7 @@ class Edit(gui_base_original.Modifier):
 
         App.addDocumentObserver(self)
         self.register_editing_callbacks()
+        self.update_hints()
 
     def numericInput(self, numx, numy, numz):
         """Execute callback by the toolbar to activate the update function.
@@ -359,6 +360,43 @@ class Edit(gui_base_original.Modifier):
     def reset_edit(self):
         if Gui.ActiveDocument is not None:
             Gui.ActiveDocument.resetEdit()
+
+    # -------------------------------------------------------------------------
+    # INPUT HINTS
+    # -------------------------------------------------------------------------
+
+    def get_hints(self):
+        """Return status bar input hints for the current tool state."""
+        if self.selection_callback is not None:
+            # Phase 1: waiting for the user to select an object to edit.
+            return [
+                Gui.InputHint(
+                    translate("draft", "%1 select object to edit"), Gui.UserInput.MouseLeft
+                ),
+            ]
+        if self.editing is None:
+            # Phase 2: trackers are shown, waiting for the user to pick a node.
+            # The context menu (E) acts on whatever is under the cursor, which
+            # can be a node or an edge, so the hint mentions both.
+            return [
+                Gui.InputHint(translate("draft", "%1 pick node to edit"), Gui.UserInput.MouseLeft),
+                Gui.InputHint(
+                    translate("draft", "%1 options for hovered node/edge"),
+                    Gui.UserInput.KeyE,
+                ),
+                Gui.InputHint(translate("draft", "%1 finish"), Gui.UserInput.KeyEscape),
+            ]
+        # Phase 3: a node is being edited, mirror the placement hints used by
+        # creation tools so the modifiers stay consistent across the workbench.
+        hints = [
+            Gui.InputHint(translate("draft", "%1 place node"), Gui.UserInput.MouseLeft),
+        ]
+        return (
+            hints
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     # -------------------------------------------------------------------------
     # SCENE EVENTS CALLBACKS
@@ -511,6 +549,7 @@ class Edit(gui_base_original.Modifier):
         self.node.append(self.trackers[obj.Name][node_idx].get())
         Gui.Snapper.setSelectMode(False)
         self.hideTrackers()
+        self.update_hints()
 
     def updateTrackerAndGhost(self, event):
         """Update tracker position when editing and update ghost."""
@@ -543,6 +582,7 @@ class Edit(gui_base_original.Modifier):
         self.editing = None
         self.showTrackers()
         gui_tool_utils.redraw_3d_view()
+        self.update_hints()
 
     # -------------------------------------------------------------------------
     # EDIT TRACKERS functions
