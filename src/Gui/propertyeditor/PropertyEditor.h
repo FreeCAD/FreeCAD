@@ -149,16 +149,19 @@ private:
     std::unordered_set<App::Property*> acquireSelectedProperties() const;
     void removeProperties(const std::unordered_set<App::Property*>& props);
 
-    void reportPropUsesObj(
+    void getPropUsesObj(
         int level,
         const App::DocumentObject* obj,
-        const std::set<App::ObjectIdentifier>& ids
+        const std::set<App::ObjectIdentifier>& ids,
+        QString& content
     ) const;
-    void reportPropUsesDoc(
+    void getPropUsesDoc(
         int level,
         const App::Document* doc,
-        const std::set<App::ObjectIdentifier>& ids
+        const std::set<App::ObjectIdentifier>& ids,
+        QString& content
     ) const;
+    QString getPropUses(App::Property* prop) const;
     void reportPropUses(App::Property* prop) const;
     bool removeSelectedDynamicProperties();
 

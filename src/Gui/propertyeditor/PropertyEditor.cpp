@@ -31,6 +31,9 @@
 #include <QMenu>
 #include <QPainter>
 #include <QActionGroup>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QTextBrowser>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -958,91 +961,113 @@ void PropertyEditor::removeProperties(const std::unordered_set<App::Property*>& 
     App::GetApplication().commitTransaction(tid);
 }
 
-template<typename T>
-static std::map<T, std::set<App::ObjectIdentifier>> groupBy(
-    const std::set<App::ObjectIdentifier>& ids,
-    const std::function<T(const App::ObjectIdentifier&)>& getKey
-)
-{
-    std::map<T, std::set<App::ObjectIdentifier>> map;
-    for (const auto& id : ids) {
-        auto key = getKey(id);
-        if (key) {
-            map[key].insert(id);
-        }
-    }
-    return map;
-}
-
 static inline std::string indent(int level)
 {
     return std::string(2 * level, ' ');
 }
 
-void PropertyEditor::reportPropUsesObj(
+void PropertyEditor::getPropUsesObj(
     int level,
     const App::DocumentObject* obj,
-    const std::set<App::ObjectIdentifier>& ids
+    const std::set<App::ObjectIdentifier>& ids,
+    QString& content
 ) const
 {
-    Base::Console().message(indent(level).c_str());
-    Base::Console().message(tr("object %1 (%2):\n")
-                                .arg(QString::fromUtf8(obj->getNameInDocument()))
-                                .arg(QString::fromUtf8(obj->Label.getValue()))
-                                .toUtf8()
-                                .constData());
+    content += indent(level);
+    content += tr("object %1 (%2):\n")
+                   .arg(QString::fromUtf8(obj->getNameInDocument()))
+                   .arg(QString::fromUtf8(obj->Label.getValue()));
+
 
     for (const auto& id : ids) {
-        Base::Console().message(indent(level + 1).c_str());
-        Base::Console().message(
-            tr("property %1\n").arg(QString::fromStdString(id.toString())).toUtf8().constData()
-        );
+        content += indent(level + 1);
+        content += tr("property %1\n").arg(QString::fromStdString(id.toString()));
     }
 }
 
-void PropertyEditor::reportPropUsesDoc(
+void PropertyEditor::getPropUsesDoc(
     int level,
     const App::Document* doc,
-    const std::set<App::ObjectIdentifier>& ids
+    const std::set<App::ObjectIdentifier>& ids,
+    QString& content
 ) const
 {
-    Base::Console().message(indent(level).c_str());
-    Base::Console().message(
-        tr("document %1:\n").arg(QString::fromUtf8(doc->getName())).toUtf8().constData()
-    );
+    content += indent(level);
+    content += tr("document %1:\n").arg(QString::fromUtf8(doc->getName()));
 
-    auto objToIds = groupBy<App::DocumentObject*>(ids, [](const App::ObjectIdentifier& id) {
-        return id.getDocumentObject();
-    });
+    std::map<App::DocumentObject*, std::set<App::ObjectIdentifier>> objToIds;
+    for (const auto& id : ids) {
+        if (auto obj = id.getDocumentObject()) {
+            objToIds[obj].insert(id);
+        }
+    }
 
-    for (const auto& [obj, ids] : objToIds) {
-        reportPropUsesObj(level + 1, obj, ids);
+
+    for (const auto& [obj, objIds] : objToIds) {
+        getPropUsesObj(level + 1, obj, objIds, content);
     }
 }
 
-void PropertyEditor::reportPropUses(App::Property* prop) const
+QString PropertyEditor::getPropUses(App::Property* prop) const
 {
+    QString content;
+
     std::set<App::ObjectIdentifier> uses = App::DocumentObject::getPropertyUses(prop);
     auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
     if (obj == nullptr) {
-        return;
+        return content;
     }
 
-    Base::Console().message(tr("Property %1 in object %2 (%3) in document %4 is referenced by:\n")
-                                .arg(QString::fromUtf8(prop->getName()))
-                                .arg(QString::fromUtf8(obj->getNameInDocument()))
-                                .arg(QString::fromUtf8(obj->Label.getValue()))
-                                .arg(QString::fromUtf8(obj->getDocument()->getName()))
-                                .toUtf8()
-                                .constData());
+    content += tr("The property %1 in object %2 (%3) in document %4 is referenced by:")
+                   .arg(QString::fromUtf8(prop->getName()))
+                   .arg(QString::fromUtf8(obj->getNameInDocument()))
+                   .arg(QString::fromUtf8(obj->Label.getValue()))
+                   .arg(QString::fromUtf8(obj->getDocument()->getName()));
+    content += "\n";
 
-    auto docToIds = groupBy<App::Document*>(uses, [](const App::ObjectIdentifier& id) {
-        return id.getDocument();
-    });
+    std::map<App::Document*, std::set<App::ObjectIdentifier>> docToIds;
+    for (const auto& id : uses) {
+        if (auto doc = id.getDocument()) {
+            docToIds[doc].insert(id);
+        }
+    }
+
+    if (docToIds.empty()) {
+        content += indent(1);
+        content += tr("(No references found.)");
+        return content;
+    }
 
     for (const auto& [doc, objs] : docToIds) {
-        reportPropUsesDoc(1, doc, objs);
+        getPropUsesDoc(1, doc, objs, content);
     }
+
+    return content;
+}
+
+constexpr int WidthPropUsesDialog = 800;
+constexpr int HeightPropUsesDialog = 600;
+
+void PropertyEditor::reportPropUses(App::Property* prop) const
+{
+    auto* dialog = new QDialog(Gui::getMainWindow());
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setWindowTitle(tr("Property Uses"));
+    dialog->resize(WidthPropUsesDialog, HeightPropUsesDialog);
+
+    auto* layout = new QVBoxLayout(dialog);
+
+    auto* textBrowser = new QTextBrowser(dialog);
+    textBrowser->setReadOnly(true);
+    textBrowser->setPlainText(getPropUses(prop));
+
+    auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, dialog);
+    QObject::connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::close);
+
+    layout->addWidget(textBrowser);
+    layout->addWidget(buttonBox);
+    dialog->setLayout(layout);
+    dialog->show();
 }
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
@@ -1400,6 +1425,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                 break;
             }
             reportPropUses(*props.begin());
+            break;
         }
         default:
             break;
