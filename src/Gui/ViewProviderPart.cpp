@@ -102,7 +102,7 @@ void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     func->trigger(act, [this]() { this->toggleActivePart(); });
 
     if (getColoredElementsProperty()) {
-        act = menu->addAction(QObject::tr("Override colors..."), receiver, member);
+        act = menu->addAction(QObject::tr("Override colors…"), receiver, member);
         act->setData(QVariant((int)ViewProvider::Color));
     }
 
