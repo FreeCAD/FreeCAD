@@ -79,6 +79,42 @@ private Q_SLOTS:
         checkImpliedLengthExpression("1/10", "0.1 in");
     }
 
+    void test_ImpliedUnitIgnoresLengthExpression()
+    {
+        Base::UnitsApi::setSchema("Internal");
+
+        docName = App::GetApplication().getUniqueDocumentName("test");
+        App::Document* doc = App::GetApplication().newDocument(docName.c_str(), "testUser");
+        App::DocumentObject* obj = doc->addObject("App::VarSet", "VarSet");
+        QVERIFY(obj != nullptr);
+
+        App::Property* width = obj->addDynamicProperty("App::PropertyLength", "Width");
+        QVERIFY(width != nullptr);
+        App::ObjectIdentifier widthPath(*width);
+        width->setPathValue(widthPath, Base::Quantity::parse("2 mm"));
+
+        App::Property* length = obj->addDynamicProperty("App::PropertyLength", "Length");
+        QVERIFY(length != nullptr);
+        App::ObjectIdentifier lengthPath(*length);
+
+        auto expr = App::Expression::parse(obj, "Width");
+        auto exprShared = std::shared_ptr<const App::Expression>(expr.release());
+
+        Gui::Dialog::DlgExpressionInput dlg(lengthPath, exprShared, Base::Unit::Length);
+        dlg.accept();
+
+        auto accepted = dlg.getExpression();
+        QVERIFY(accepted != nullptr);
+
+        auto evaluated = accepted->eval();
+        auto value = evaluated->getValueAsAny();
+        QVERIFY(value.type() == typeid(Base::Quantity));
+
+        const Base::Quantity quantity = App::any_cast<Base::Quantity>(value);
+        QCOMPARE(quantity.getUnit(), Base::Unit::Length);
+        QVERIFY(std::abs(quantity.getValue() - Base::Quantity::parse("2 mm").getValue()) < 1e-12);
+    }
+
 private:
     std::string docName;
 };

@@ -605,15 +605,12 @@ void DlgExpressionInput::applyImpliedUnit()
         Base::Quantity(factor, impliedUnit),
         unitString
     );
-    auto wrapped = std::make_shared<App::OperatorExpression>(
+    expression = std::make_shared<App::OperatorExpression>(
         path.getDocumentObject(),
-        left.get(),
+        left.release(),
         App::OperatorExpression::Operator::UNIT,
-        right.get()
+        right.release()
     );
-    left.release();
-    right.release();
-    expression = wrapped;
 }
 
 void DlgExpressionInput::createBindingVarSet(App::Property* propVarSet, App::DocumentObject* varSet)
