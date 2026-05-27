@@ -314,6 +314,14 @@ void SelectionView::search(const QString& text)
             countLabel->setText(QString::number(selectionView->count()));
         }
     }
+    else {
+        // When search text is cleared, restore the current selection
+        searchList.clear();
+        SelectionChanges changes;
+        changes.Type = SelectionChanges::SetSelection;
+        changes.pDocName = "";
+        onSelectionChanged(changes);
+    }
 }
 
 void SelectionView::validateSearch()
