@@ -311,22 +311,6 @@ private:
         PreselectionResult& result
     );
     bool detectPointPreselection(const SoPickedPointList& points, PreselectionResult& result);
-    bool detectNearbyPointPreselection(const SbVec2s& cursorPos, PreselectionResult& result);
-    bool detectPointDiskPreselection(
-        int pointIndex,
-        int layerIndex,
-        const SbVec2s& cursorPos,
-        float extraRadiusPx,
-        float& distanceSquared,
-        PreselectionResult& result
-    );
-    bool detectHoveredPointPreselection(
-        int hoveredPointIndex,
-        const SbVec2s& cursorPos,
-        float extraRadiusPx,
-        PreselectionResult& result
-    );
-    bool detectNearbyCurvePreselection(const SbVec2s& cursorPos, PreselectionResult& result);
     bool detectCurvePreselection(const SoPickedPointList& points, PreselectionResult& result);
     bool detectAxisPreselection(const SoPickedPointList& points, PreselectionResult& result);
     bool detectPointPreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);

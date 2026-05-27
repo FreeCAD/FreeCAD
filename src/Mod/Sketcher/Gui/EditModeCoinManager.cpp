@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <limits>
 #include <memory>
 
@@ -66,10 +67,13 @@ using namespace Sketcher;
 
 namespace
 {
-constexpr float PointMarkerHitPaddingPx = 5.0F;
-constexpr float EndpointPointHitRadiusBonusPx = 2.0F;
-constexpr float PointHoverHysteresisPx = 2.0F;
-constexpr float EdgeHitPaddingPx = 2.0F;
+struct ScreenPreselectionPolicy
+{
+    static constexpr float PointMarkerHitPaddingPx = 5.0F;
+    static constexpr float EndpointPointHitRadiusBonusPx = 2.0F;
+    static constexpr float PointHoverHysteresisPx = 2.0F;
+    static constexpr float EdgeHitPaddingPx = 2.0F;
+};
 
 float distanceSquaredToSegment(const SbVec2f& point, const SbVec2f& segmentStart, const SbVec2f& segmentEnd)
 {
@@ -93,6 +97,309 @@ float distanceSquaredToSegment(const SbVec2f& point, const SbVec2f& segmentStart
     float dy = point[1] - closestY;
     return dx * dx + dy * dy;
 }
+
+// Screen-space point/edge preselection should be resolved in one place so the fallback policy is
+// explicit and independent of raw Coin hit ordering.
+struct GeometryScreenPreselector
+{
+    GeometryScreenPreselector(
+        const SketcherGui::GeometryLayerParameters& geometryLayerParams,
+        const SketcherGui::EditModeScenegraphNodes& scenegraphNodes,
+        SketcherGui::CoinMapping& coinMap,
+        const SketcherGui::DrawingParameters& drawingParams,
+        const SketcherGui::GeoList& geoListArg,
+        std::function<SbVec2f(const SbVec3f&)> screenProjectorArg
+    )
+        : geometryLayerParameters(geometryLayerParams)
+        , editModeScenegraphNodes(scenegraphNodes)
+        , coinMapping(coinMap)
+        , drawingParameters(drawingParams)
+        , geolist(geoListArg)
+        , projectToScreen(std::move(screenProjectorArg))
+    {}
+
+    bool detectHoveredPointPreselection(
+        int hoveredPointIndex,
+        const SbVec2s& cursorPos,
+        SketcherGui::EditModeCoinManager::PreselectionResult& result
+    )
+    {
+        if (hoveredPointIndex == SketcherGui::EditModeCoinManager::PreselectionResult::InvalidPoint) {
+            return false;
+        }
+
+        SketcherGui::MultiFieldId pointId = coinMapping.getIndexLayer(hoveredPointIndex);
+        if (pointId == SketcherGui::MultiFieldId::Invalid) {
+            return false;
+        }
+
+        float distanceSquared = 0.0F;
+        return detectPointDiskPreselection(
+            pointId.fieldIndex,
+            pointId.layerId,
+            cursorPos,
+            ScreenPreselectionPolicy::PointHoverHysteresisPx,
+            distanceSquared,
+            result
+        );
+    }
+
+    bool detectNearbyPointPreselection(
+        const SbVec2s& cursorPos,
+        SketcherGui::EditModeCoinManager::PreselectionResult& result
+    )
+    {
+        float bestDistanceSquared = std::numeric_limits<float>::max();
+        bool found = false;
+
+        for (int layerIndex = 0; layerIndex < geometryLayerParameters.getCoinLayerCount();
+             ++layerIndex) {
+            SoCoordinate3* coords = editModeScenegraphNodes.PointsCoordinate[layerIndex];
+            if (!coords) {
+                continue;
+            }
+
+            int pointCount = coords->point.getNum();
+            for (int pointIndex = 0; pointIndex < pointCount; ++pointIndex) {
+                int vertexId = coinMapping.getPointVertexId(pointIndex, layerIndex);
+                if (vertexId < 0) {
+                    continue;
+                }
+
+                SketcherGui::EditModeCoinManager::PreselectionResult candidate;
+                float distanceSquared = 0.0F;
+                if (!detectPointDiskPreselection(
+                        pointIndex,
+                        layerIndex,
+                        cursorPos,
+                        0.0F,
+                        distanceSquared,
+                        candidate
+                    )) {
+                    continue;
+                }
+
+                if (distanceSquared > bestDistanceSquared) {
+                    continue;
+                }
+
+                result = candidate;
+                bestDistanceSquared = distanceSquared;
+                found = true;
+            }
+        }
+
+        return found;
+    }
+
+    bool detectNearbyCurvePreselection(
+        const SbVec2s& cursorPos,
+        SketcherGui::EditModeCoinManager::PreselectionResult& result
+    )
+    {
+        float bestDistanceSquared = std::numeric_limits<float>::max();
+        bool found = false;
+        SbVec2f cursorPoint(static_cast<float>(cursorPos[0]), static_cast<float>(cursorPos[1]));
+
+        for (int layerIndex = 0; layerIndex < geometryLayerParameters.getCoinLayerCount();
+             ++layerIndex) {
+            for (int subLayerIndex = 0; subLayerIndex < geometryLayerParameters.getSubLayerCount();
+                 ++subLayerIndex) {
+                if (static_cast<int>(editModeScenegraphNodes.CurvesCoordinate.size()) <= layerIndex
+                    || static_cast<int>(editModeScenegraphNodes.CurvesCoordinate[layerIndex].size())
+                        <= subLayerIndex
+                    || static_cast<int>(editModeScenegraphNodes.CurveSet.size()) <= layerIndex
+                    || static_cast<int>(editModeScenegraphNodes.CurveSet[layerIndex].size())
+                        <= subLayerIndex) {
+                    continue;
+                }
+
+                SoCoordinate3* coords
+                    = editModeScenegraphNodes.CurvesCoordinate[layerIndex][subLayerIndex];
+                SoLineSet* curveSet = editModeScenegraphNodes.CurveSet[layerIndex][subLayerIndex];
+                if (!coords || !curveSet) {
+                    continue;
+                }
+
+                const SbVec3f* curveValues = coords->point.getValues(0);
+                int curveCount = curveSet->numVertices.getNum();
+                if (!curveValues || curveCount <= 0) {
+                    continue;
+                }
+
+                float curveHitRadius = getCurveHitRadius(subLayerIndex);
+                float curveHitRadiusSquared = curveHitRadius * curveHitRadius;
+                int vertexOffset = 0;
+
+                for (int curveIndex = 0; curveIndex < curveCount; ++curveIndex) {
+                    int vertexCount = curveSet->numVertices[curveIndex];
+                    if (!coinMapping.isValidCurveId(curveIndex, layerIndex, subLayerIndex)) {
+                        vertexOffset += std::max(vertexCount, 0);
+                        continue;
+                    }
+
+                    if (vertexCount < 2) {
+                        vertexOffset += std::max(vertexCount, 0);
+                        continue;
+                    }
+
+                    float bestCurveDistanceSquared = std::numeric_limits<float>::max();
+                    int bestSegmentStart = -1;
+                    for (int segmentIndex = 0; segmentIndex < vertexCount - 1; ++segmentIndex) {
+                        int currentVertexIndex = vertexOffset + segmentIndex;
+                        SbVec2f segmentStart = projectToScreen(curveValues[currentVertexIndex]);
+                        SbVec2f segmentEnd = projectToScreen(curveValues[currentVertexIndex + 1]);
+                        float distanceSquared
+                            = distanceSquaredToSegment(cursorPoint, segmentStart, segmentEnd);
+                        if (distanceSquared > curveHitRadiusSquared
+                            || distanceSquared >= bestCurveDistanceSquared) {
+                            continue;
+                        }
+
+                        bestCurveDistanceSquared = distanceSquared;
+                        bestSegmentStart = currentVertexIndex;
+                    }
+
+                    vertexOffset += vertexCount;
+                    if (bestSegmentStart < 0 || bestCurveDistanceSquared >= bestDistanceSquared) {
+                        continue;
+                    }
+
+                    int geoIndex = coinMapping.getCurveGeoId(curveIndex, layerIndex, subLayerIndex);
+                    const SbVec3f& startPoint = curveValues[bestSegmentStart];
+                    const SbVec3f& endPoint = curveValues[bestSegmentStart + 1];
+                    SbVec2f startScreen = projectToScreen(startPoint);
+                    SbVec2f endScreen = projectToScreen(endPoint);
+
+                    float segmentX = endScreen[0] - startScreen[0];
+                    float segmentY = endScreen[1] - startScreen[1];
+                    float segmentLengthSquared = segmentX * segmentX + segmentY * segmentY;
+                    float interpolation = 0.0F;
+                    if (segmentLengthSquared > std::numeric_limits<float>::epsilon()) {
+                        interpolation = ((cursorPoint[0] - startScreen[0]) * segmentX
+                                         + (cursorPoint[1] - startScreen[1]) * segmentY)
+                            / segmentLengthSquared;
+                        interpolation = std::clamp(interpolation, 0.0F, 1.0F);
+                    }
+
+                    result.clear();
+                    result.Kind = SketcherGui::EditModeCoinManager::PreselectionResult::HitKind::Edge;
+                    result.GeoIndex = geoIndex;
+                    result.PickedPoint = Base::Vector3d(
+                        startPoint[0] + (endPoint[0] - startPoint[0]) * interpolation,
+                        startPoint[1] + (endPoint[1] - startPoint[1]) * interpolation,
+                        startPoint[2] + (endPoint[2] - startPoint[2]) * interpolation
+                    );
+                    result.HasPickedPoint = true;
+                    bestDistanceSquared = bestCurveDistanceSquared;
+                    found = true;
+                }
+            }
+        }
+
+        return found;
+    }
+
+private:
+    bool detectPointDiskPreselection(
+        int pointIndex,
+        int layerIndex,
+        const SbVec2s& cursorPos,
+        float extraRadiusPx,
+        float& distanceSquared,
+        SketcherGui::EditModeCoinManager::PreselectionResult& result
+    )
+    {
+        if (!coinMapping.isValidPointId(pointIndex, layerIndex)
+            || static_cast<int>(editModeScenegraphNodes.PointsCoordinate.size()) <= layerIndex) {
+            return false;
+        }
+
+        SoCoordinate3* coords = editModeScenegraphNodes.PointsCoordinate[layerIndex];
+        if (!coords || pointIndex >= coords->point.getNum()) {
+            return false;
+        }
+
+        const SbVec3f* pointValues = coords->point.getValues(0);
+        if (!pointValues) {
+            return false;
+        }
+
+        float pointHitRadius = getPointHitRadius(pointIndex, layerIndex, extraRadiusPx);
+        SbVec2f screenPoint = projectToScreen(pointValues[pointIndex]);
+        float dx = static_cast<float>(cursorPos[0]) - screenPoint[0];
+        float dy = static_cast<float>(cursorPos[1]) - screenPoint[1];
+        distanceSquared = dx * dx + dy * dy;
+        if (distanceSquared > pointHitRadius * pointHitRadius) {
+            return false;
+        }
+
+        result.clear();
+        result.Kind = SketcherGui::EditModeCoinManager::PreselectionResult::HitKind::Point;
+        result.PointIndex = coinMapping.getPointVertexId(pointIndex, layerIndex);
+        result.PickedPoint = Base::Vector3d(
+            pointValues[pointIndex][0],
+            pointValues[pointIndex][1],
+            pointValues[pointIndex][2]
+        );
+        result.HasPickedPoint = true;
+        return true;
+    }
+
+    float getPointHitRadius(int pointIndex, int layerIndex, float extraRadiusPx) const
+    {
+        float markerExtent = static_cast<float>(drawingParameters.markerSize);
+        if (static_cast<int>(editModeScenegraphNodes.PointsDrawStyle.size()) > layerIndex
+            && editModeScenegraphNodes.PointsDrawStyle[layerIndex]) {
+            markerExtent = std::max(
+                markerExtent,
+                editModeScenegraphNodes.PointsDrawStyle[layerIndex]->pointSize.getValue()
+            );
+        }
+
+        int pointGeoId = coinMapping.getPointGeoId(pointIndex, layerIndex);
+        Sketcher::PointPos pointPos = coinMapping.getPointPosId(pointIndex, layerIndex);
+        const Part::Geometry* geometry = geolist.getGeometryFromGeoId(pointGeoId);
+        bool isEndpointOfNonPointGeometry = geometry
+            && geometry->getTypeId() != Part::GeomPoint::getClassTypeId()
+            && (pointPos == Sketcher::PointPos::start || pointPos == Sketcher::PointPos::end);
+
+        float pointHitRadius = markerExtent * 0.5f
+            + ScreenPreselectionPolicy::PointMarkerHitPaddingPx + extraRadiusPx;
+        if (isEndpointOfNonPointGeometry) {
+            pointHitRadius += ScreenPreselectionPolicy::EndpointPointHitRadiusBonusPx;
+        }
+
+        return pointHitRadius;
+    }
+
+    float getCurveHitRadius(int subLayerIndex) const
+    {
+        SoDrawStyle* drawStyle = editModeScenegraphNodes.CurvesDrawStyle;
+        if (geometryLayerParameters.isConstructionSubLayer(subLayerIndex)) {
+            drawStyle = editModeScenegraphNodes.CurvesConstructionDrawStyle;
+        }
+        else if (geometryLayerParameters.isInternalSubLayer(subLayerIndex)) {
+            drawStyle = editModeScenegraphNodes.CurvesInternalDrawStyle;
+        }
+        else if (geometryLayerParameters.isExternalSubLayer(subLayerIndex)) {
+            drawStyle = editModeScenegraphNodes.CurvesExternalDrawStyle;
+        }
+        else if (geometryLayerParameters.isExternalDefiningSubLayer(subLayerIndex)) {
+            drawStyle = editModeScenegraphNodes.CurvesExternalDefiningDrawStyle;
+        }
+
+        float lineWidth = drawStyle ? drawStyle->lineWidth.getValue() : 1.0F;
+        return std::max(3.0F, lineWidth * 0.5F + ScreenPreselectionPolicy::EdgeHitPaddingPx);
+    }
+
+    const SketcherGui::GeometryLayerParameters& geometryLayerParameters;
+    const SketcherGui::EditModeScenegraphNodes& editModeScenegraphNodes;
+    SketcherGui::CoinMapping& coinMapping;
+    const SketcherGui::DrawingParameters& drawingParameters;
+    const SketcherGui::GeoList& geolist;
+    const std::function<SbVec2f(const SbVec3f&)> projectToScreen;
+};
 }  // namespace
 
 void EditModeCoinManager::PreselectionResult::setPickedPoint(const SoPickedPoint* point)
@@ -873,142 +1180,6 @@ bool EditModeCoinManager::detectPointPreselection(
     return false;
 }
 
-bool EditModeCoinManager::detectNearbyPointPreselection(
-    const SbVec2s& cursorPos,
-    PreselectionResult& result
-)
-{
-    float bestDistanceSquared = std::numeric_limits<float>::max();
-    bool found = false;
-
-    for (int layerIndex = 0; layerIndex < geometryLayerParameters.getCoinLayerCount(); ++layerIndex) {
-        SoCoordinate3* coords = editModeScenegraphNodes.PointsCoordinate[layerIndex];
-        if (!coords) {
-            continue;
-        }
-
-        int pointCount = coords->point.getNum();
-        for (int pointIndex = 0; pointIndex < pointCount; ++pointIndex) {
-            int vertexId = coinMapping.getPointVertexId(pointIndex, layerIndex);
-            if (vertexId < 0) {
-                continue;
-            }
-
-            PreselectionResult candidate;
-            float distanceSquared = 0.0F;
-            if (
-                !detectPointDiskPreselection(pointIndex, layerIndex, cursorPos, 0.0F, distanceSquared, candidate)
-            ) {
-                continue;
-            }
-
-            if (distanceSquared > bestDistanceSquared) {
-                continue;
-            }
-
-            result = candidate;
-            bestDistanceSquared = distanceSquared;
-            found = true;
-        }
-    }
-
-    return found;
-}
-
-bool EditModeCoinManager::detectPointDiskPreselection(
-    int pointIndex,
-    int layerIndex,
-    const SbVec2s& cursorPos,
-    float extraRadiusPx,
-    float& distanceSquared,
-    PreselectionResult& result
-)
-{
-    if (!coinMapping.isValidPointId(pointIndex, layerIndex)
-        || static_cast<int>(editModeScenegraphNodes.PointsCoordinate.size()) <= layerIndex) {
-        return false;
-    }
-
-    SoCoordinate3* coords = editModeScenegraphNodes.PointsCoordinate[layerIndex];
-    if (!coords || pointIndex >= coords->point.getNum()) {
-        return false;
-    }
-
-    const SbVec3f* pointValues = coords->point.getValues(0);
-    if (!pointValues) {
-        return false;
-    }
-
-    float markerExtent = static_cast<float>(drawingParameters.markerSize);
-    if (static_cast<int>(editModeScenegraphNodes.PointsDrawStyle.size()) > layerIndex
-        && editModeScenegraphNodes.PointsDrawStyle[layerIndex]) {
-        markerExtent = std::max(
-            markerExtent,
-            editModeScenegraphNodes.PointsDrawStyle[layerIndex]->pointSize.getValue()
-        );
-    }
-
-    int pointGeoId = coinMapping.getPointGeoId(pointIndex, layerIndex);
-    Sketcher::PointPos pointPos = coinMapping.getPointPosId(pointIndex, layerIndex);
-    const GeoList geolist = ViewProviderSketchCoinAttorney::getGeoList(viewProvider);
-    const Part::Geometry* geometry = geolist.getGeometryFromGeoId(pointGeoId);
-    bool isEndpointOfNonPointGeometry = geometry
-        && geometry->getTypeId() != Part::GeomPoint::getClassTypeId()
-        && (pointPos == Sketcher::PointPos::start || pointPos == Sketcher::PointPos::end);
-
-    float pointHitRadius = markerExtent * 0.5f + PointMarkerHitPaddingPx + extraRadiusPx;
-    if (isEndpointOfNonPointGeometry) {
-        pointHitRadius += EndpointPointHitRadiusBonusPx;
-    }
-
-    SbVec2f screenPoint
-        = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, pointValues[pointIndex]);
-    float dx = static_cast<float>(cursorPos[0]) - screenPoint[0];
-    float dy = static_cast<float>(cursorPos[1]) - screenPoint[1];
-    distanceSquared = dx * dx + dy * dy;
-    if (distanceSquared > pointHitRadius * pointHitRadius) {
-        return false;
-    }
-
-    result.clear();
-    result.Kind = PreselectionResult::HitKind::Point;
-    result.PointIndex = coinMapping.getPointVertexId(pointIndex, layerIndex);
-    result.PickedPoint = Base::Vector3d(
-        pointValues[pointIndex][0],
-        pointValues[pointIndex][1],
-        pointValues[pointIndex][2]
-    );
-    result.HasPickedPoint = true;
-    return true;
-}
-
-bool EditModeCoinManager::detectHoveredPointPreselection(
-    int hoveredPointIndex,
-    const SbVec2s& cursorPos,
-    float extraRadiusPx,
-    PreselectionResult& result
-)
-{
-    if (hoveredPointIndex == PreselectionResult::InvalidPoint) {
-        return false;
-    }
-
-    MultiFieldId pointId = coinMapping.getIndexLayer(hoveredPointIndex);
-    if (pointId == MultiFieldId::Invalid) {
-        return false;
-    }
-
-    float distanceSquared = 0.0F;
-    return detectPointDiskPreselection(
-        pointId.fieldIndex,
-        pointId.layerId,
-        cursorPos,
-        extraRadiusPx,
-        distanceSquared,
-        result
-    );
-}
-
 bool EditModeCoinManager::detectCurvePreselection(
     const SoPickedPointList& points,
     PreselectionResult& result
@@ -1031,139 +1202,6 @@ bool EditModeCoinManager::detectCurvePreselection(
     return false;
 }
 
-bool EditModeCoinManager::detectNearbyCurvePreselection(
-    const SbVec2s& cursorPos,
-    PreselectionResult& result
-)
-{
-    float bestDistanceSquared = std::numeric_limits<float>::max();
-    bool found = false;
-    SbVec2f cursorPoint(static_cast<float>(cursorPos[0]), static_cast<float>(cursorPos[1]));
-
-    auto getCurveHitRadius = [this](int subLayerIndex) {
-        SoDrawStyle* drawStyle = editModeScenegraphNodes.CurvesDrawStyle;
-        if (geometryLayerParameters.isConstructionSubLayer(subLayerIndex)) {
-            drawStyle = editModeScenegraphNodes.CurvesConstructionDrawStyle;
-        }
-        else if (geometryLayerParameters.isInternalSubLayer(subLayerIndex)) {
-            drawStyle = editModeScenegraphNodes.CurvesInternalDrawStyle;
-        }
-        else if (geometryLayerParameters.isExternalSubLayer(subLayerIndex)) {
-            drawStyle = editModeScenegraphNodes.CurvesExternalDrawStyle;
-        }
-        else if (geometryLayerParameters.isExternalDefiningSubLayer(subLayerIndex)) {
-            drawStyle = editModeScenegraphNodes.CurvesExternalDefiningDrawStyle;
-        }
-
-        float lineWidth = drawStyle ? drawStyle->lineWidth.getValue() : 1.0F;
-        return std::max(3.0F, lineWidth * 0.5F + EdgeHitPaddingPx);
-    };
-
-    for (int layerIndex = 0; layerIndex < geometryLayerParameters.getCoinLayerCount(); ++layerIndex) {
-        for (int subLayerIndex = 0; subLayerIndex < geometryLayerParameters.getSubLayerCount();
-             ++subLayerIndex) {
-            if (static_cast<int>(editModeScenegraphNodes.CurvesCoordinate.size()) <= layerIndex
-                || static_cast<int>(editModeScenegraphNodes.CurvesCoordinate[layerIndex].size())
-                    <= subLayerIndex
-                || static_cast<int>(editModeScenegraphNodes.CurveSet.size()) <= layerIndex
-                || static_cast<int>(editModeScenegraphNodes.CurveSet[layerIndex].size())
-                    <= subLayerIndex) {
-                continue;
-            }
-
-            SoCoordinate3* coords = editModeScenegraphNodes.CurvesCoordinate[layerIndex][subLayerIndex];
-            SoLineSet* curveSet = editModeScenegraphNodes.CurveSet[layerIndex][subLayerIndex];
-            if (!coords || !curveSet) {
-                continue;
-            }
-
-            const SbVec3f* curveValues = coords->point.getValues(0);
-            int curveCount = curveSet->numVertices.getNum();
-            if (!curveValues || curveCount <= 0) {
-                continue;
-            }
-
-            float curveHitRadius = getCurveHitRadius(subLayerIndex);
-            float curveHitRadiusSquared = curveHitRadius * curveHitRadius;
-            int vertexOffset = 0;
-
-            for (int curveIndex = 0; curveIndex < curveCount; ++curveIndex) {
-                int vertexCount = curveSet->numVertices[curveIndex];
-                if (!coinMapping.isValidCurveId(curveIndex, layerIndex, subLayerIndex)) {
-                    vertexOffset += std::max(vertexCount, 0);
-                    continue;
-                }
-
-                if (vertexCount < 2) {
-                    vertexOffset += std::max(vertexCount, 0);
-                    continue;
-                }
-
-                float bestCurveDistanceSquared = std::numeric_limits<float>::max();
-                int bestSegmentStart = -1;
-                for (int segmentIndex = 0; segmentIndex < vertexCount - 1; ++segmentIndex) {
-                    int currentVertexIndex = vertexOffset + segmentIndex;
-                    SbVec2f segmentStart = ViewProviderSketchCoinAttorney::getScreenCoordinates(
-                        viewProvider,
-                        curveValues[currentVertexIndex]
-                    );
-                    SbVec2f segmentEnd = ViewProviderSketchCoinAttorney::getScreenCoordinates(
-                        viewProvider,
-                        curveValues[currentVertexIndex + 1]
-                    );
-                    float distanceSquared
-                        = distanceSquaredToSegment(cursorPoint, segmentStart, segmentEnd);
-                    if (distanceSquared > curveHitRadiusSquared
-                        || distanceSquared >= bestCurveDistanceSquared) {
-                        continue;
-                    }
-
-                    bestCurveDistanceSquared = distanceSquared;
-                    bestSegmentStart = currentVertexIndex;
-                }
-
-                vertexOffset += vertexCount;
-                if (bestSegmentStart < 0 || bestCurveDistanceSquared >= bestDistanceSquared) {
-                    continue;
-                }
-
-                int geoIndex = coinMapping.getCurveGeoId(curveIndex, layerIndex, subLayerIndex);
-                const SbVec3f& startPoint = curveValues[bestSegmentStart];
-                const SbVec3f& endPoint = curveValues[bestSegmentStart + 1];
-                SbVec2f startScreen
-                    = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, startPoint);
-                SbVec2f endScreen
-                    = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, endPoint);
-
-                float segmentX = endScreen[0] - startScreen[0];
-                float segmentY = endScreen[1] - startScreen[1];
-                float segmentLengthSquared = segmentX * segmentX + segmentY * segmentY;
-                float interpolation = 0.0F;
-                if (segmentLengthSquared > std::numeric_limits<float>::epsilon()) {
-                    interpolation = ((cursorPoint[0] - startScreen[0]) * segmentX
-                                     + (cursorPoint[1] - startScreen[1]) * segmentY)
-                        / segmentLengthSquared;
-                    interpolation = std::clamp(interpolation, 0.0F, 1.0F);
-                }
-
-                result.clear();
-                result.Kind = PreselectionResult::HitKind::Edge;
-                result.GeoIndex = geoIndex;
-                result.PickedPoint = Base::Vector3d(
-                    startPoint[0] + (endPoint[0] - startPoint[0]) * interpolation,
-                    startPoint[1] + (endPoint[1] - startPoint[1]) * interpolation,
-                    startPoint[2] + (endPoint[2] - startPoint[2]) * interpolation
-                );
-                result.HasPickedPoint = true;
-                bestDistanceSquared = bestCurveDistanceSquared;
-                found = true;
-            }
-        }
-    }
-
-    return found;
-}
-
 bool EditModeCoinManager::detectGeometryPreselection(
     const SoPickedPointList& points,
     const SbVec2s& cursorPos,
@@ -1171,19 +1209,33 @@ bool EditModeCoinManager::detectGeometryPreselection(
     PreselectionResult& result
 )
 {
+    const GeoList geolist = ViewProviderSketchCoinAttorney::getGeoList(viewProvider);
+    auto projectToScreen = [this](const SbVec3f& point) {
+        return ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, point);
+    };
+
+    GeometryScreenPreselector screenPreselector {
+        geometryLayerParameters,
+        editModeScenegraphNodes,
+        coinMapping,
+        drawingParameters,
+        geolist,
+        projectToScreen
+    };
+
     if (detectPointPreselection(points, result)) {
         return true;
     }
 
-    if (detectHoveredPointPreselection(hoveredPointIndex, cursorPos, PointHoverHysteresisPx, result)) {
+    if (screenPreselector.detectHoveredPointPreselection(hoveredPointIndex, cursorPos, result)) {
         return true;
     }
 
-    if (detectNearbyPointPreselection(cursorPos, result)) {
+    if (screenPreselector.detectNearbyPointPreselection(cursorPos, result)) {
         return true;
     }
 
-    if (detectNearbyCurvePreselection(cursorPos, result)) {
+    if (screenPreselector.detectNearbyCurvePreselection(cursorPos, result)) {
         return true;
     }
 
