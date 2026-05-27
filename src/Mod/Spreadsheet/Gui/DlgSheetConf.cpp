@@ -43,6 +43,7 @@ DlgSheetConf::DlgSheetConf(Sheet* sheet, Range range, QWidget* parent)
     : QDialog(parent)
     , sheet(sheet)
     , ui(new Ui::DlgSheetConf)
+    , originalRange(range)
 {
     ui->setupUi(this);
 
@@ -50,6 +51,19 @@ DlgSheetConf::DlgSheetConf(Sheet* sheet, Range range, QWidget* parent)
     ui->lineEditEnd->setText(QString::fromLatin1(range.to().toString().c_str()));
     ui->radioButtonOrientationHorizontal->setChecked(range.from().col() != range.to().col());
     ui->radioButtonOrientationVertical->setChecked(range.from().col() == range.to().col());
+
+    connect(
+        ui->radioButtonOrientationHorizontal,
+        &QRadioButton::clicked,
+        this,
+        &DlgSheetConf::onOrientationChanged
+    );
+    connect(
+        ui->radioButtonOrientationVertical,
+        &QRadioButton::clicked,
+        this,
+        &DlgSheetConf::onOrientationChanged
+    );
 
     ui->lineEditProp->setDocumentObject(sheet, false);
 
@@ -83,8 +97,8 @@ App::Property* DlgSheetConf::prepare(
     bool init
 )
 {
-    from = sheet->getCellAddress(ui->lineEditStart->text().trimmed().toLatin1().constData());
-    to = sheet->getCellAddress(ui->lineEditEnd->text().trimmed().toLatin1().constData());
+    from = originalRange.from();
+    to = originalRange.to();
 
     // rangeConf is supposed to hold the range of string cells, each holding
     // the name of a configuration. The '-' / '|' below indicates a growing but
@@ -351,6 +365,16 @@ void DlgSheetConf::accept()
             sheet->getDocument()->abortTransaction();
         }
     }
+}
+
+void DlgSheetConf::onOrientationChanged()
+{
+    CellAddress from, to;
+    std::string rangeConf;
+    ObjectIdentifier path;
+    prepare(from, to, rangeConf, path, true);
+    ui->lineEditStart->setText(QString::fromLatin1(from.toString().c_str()));
+    ui->lineEditEnd->setText(QString::fromLatin1(to.toString().c_str()));
 }
 
 void DlgSheetConf::onDiscard()
