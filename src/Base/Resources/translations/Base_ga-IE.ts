@@ -4,54 +4,54 @@
   <context>
     <name>UnitsApi</name>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="90"/>
+      <location filename="../../UnitsSchemasData.h" line="93"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation type="unfinished">Standard (mm, kg, s, °)</translation>
+      <translation>Caighdeánach (mm, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="326"/>
+      <location filename="../../UnitsSchemasData.h" line="351"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation type="unfinished">MKS (m, kg, s, °)</translation>
+      <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="593"/>
+      <location filename="../../UnitsSchemasData.h" line="624"/>
       <source>US customary (in, lb)</source>
-      <translation type="unfinished">US customary (in, lb)</translation>
+      <translation>Gnáthnós SAM (in, lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="642"/>
+      <location filename="../../UnitsSchemasData.h" line="681"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, lb, mph)</translation>
+      <translation>Impiriúil d'Innealtóireacht Shibhialta (ft, lb, mph)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="75"/>
+      <location filename="../../UnitsSchemasData.h" line="77"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation type="unfinished">Imperial decimal (in, lb)</translation>
+      <translation>Deachúil impiriúil (orlach, punt)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="554"/>
+      <location filename="../../UnitsSchemasData.h" line="582"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation type="unfinished">Building Euro (cm, m², m³)</translation>
+      <translation>Foirgneamh Euro (cm, m², m³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="631"/>
+      <location filename="../../UnitsSchemasData.h" line="668"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation type="unfinished">Building US (ft-in, sqft, cft)</translation>
+      <translation>Foirgneamh SAM (troigh-orlach, troigh chearnach, cft)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="53"/>
+      <location filename="../../UnitsSchemasData.h" line="54"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC (mm, mm/min)</translation>
+      <translation>Páirteanna beaga méadracha &amp; CNC (mm, mm/nóim)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="581"/>
+      <location filename="../../UnitsSchemasData.h" line="612"/>
       <source>FEM (mm, N, s)</source>
-      <translation type="unfinished">FEM (mm, N, s)</translation>
+      <translation>FEM (mm, N, s)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="62"/>
+      <location filename="../../UnitsSchemasData.h" line="63"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
+      <translation>Deicheamh méadar (m, m², m³)</translation>
     </message>
   </context>
 </TS>

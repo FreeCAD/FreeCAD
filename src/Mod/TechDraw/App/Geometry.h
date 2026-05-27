@@ -486,6 +486,10 @@ class TechDrawExport GeometryUtils
                                       Base::Vector3d D,
                                       double tolerance);
 
+        static std::vector<FacePtr> removeNestedHoles(const std::vector<FacePtr>& holes);
+        static std::vector<int> findNestedFaceIndices(const std::vector<FacePtr>& holes);
+
+        static std::string getGeomTypeName(GeomType typeEnumValue);
 };
 
 } //end namespace TechDraw

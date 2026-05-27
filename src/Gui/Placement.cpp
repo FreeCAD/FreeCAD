@@ -1320,6 +1320,7 @@ void TaskPlacementPy::init_type()
     add_varargs_method("getStandardButtons", &TaskPlacementPy::getStandardButtons,
                        "getStandardButtons()");
     // clang-format on
+    behaviors().readyType();
 }
 
 PyObject* TaskPlacementPy::PyMake(struct _typeobject* type, PyObject* args, PyObject* kwds)

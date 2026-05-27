@@ -4,7 +4,7 @@ General:
   UUID: "c8bb743d-0f50-4109-b452-725037c3e3ec"
   Name: "Diagonal4"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   PAT:
     UUID: "0326c759-4e3d-46ca-bb7d-146ebebea65e"

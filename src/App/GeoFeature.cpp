@@ -220,6 +220,26 @@ bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::V
     return false;
 }
 
+bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& directionZ,
+                                             const std::vector<std::string>& subnames) const
+{
+    Base::Vector3d sum(0, 0, 0);
+    int count = 0;
+    for (const auto& sub : subnames) {
+        Base::Vector3d z(0, 0, 0);
+        Base::Vector3d x(0, 0, 0);
+        if (getCameraAlignmentDirection(z, x, sub.c_str())) {
+            sum += z;
+            ++count;
+        }
+    }
+    if (count == 0) {
+        return false;
+    }
+    directionZ = sum.Normalize();
+    return true;
+}
+
 bool GeoFeature::hasMissingElement(const char* subname)
 {
     return Data::hasMissingElement(subname);
@@ -328,7 +348,7 @@ Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
 Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
                                                App::PropertyXLinkSub* prop)
 {
-    if (!targetObj || !prop) {
+    if (!prop) {
         return Base::Placement();
     }
 
@@ -356,4 +376,5 @@ Base::Placement GeoFeature::getGlobalPlacement(const DocumentObject* obj)
 
     return placementProperty->getValue();
 }
+
 

@@ -25,6 +25,7 @@
 # Unit tests for the ArchComponent module
 
 import Arch
+import ArchComponent
 import Draft
 import Part
 import FreeCAD as App
@@ -48,6 +49,77 @@ class TestArchComponent(TestArchBase.TestArchBase):
         App.ActiveDocument.recompute()
         r = w.Shape.Volume > 1.5
         self.assertTrue(r, "Arch Add failed")
+
+    def testMakeProjectedHorizontalAreaFace(self):
+        """Projected horizontal analysis face should preserve union semantics."""
+
+        face_a = Part.makeFace(
+            [
+                Part.makePolygon(
+                    [
+                        App.Vector(0, 0, 0),
+                        App.Vector(2, 0, 0),
+                        App.Vector(2, 1, 0),
+                        App.Vector(0, 1, 0),
+                        App.Vector(0, 0, 0),
+                    ]
+                )
+            ],
+            "Part::FaceMakerCheese",
+        )
+        face_b = Part.makeFace(
+            [
+                Part.makePolygon(
+                    [
+                        App.Vector(1, 0, 0),
+                        App.Vector(3, 0, 0),
+                        App.Vector(3, 1, 0),
+                        App.Vector(1, 1, 0),
+                        App.Vector(1, 0, 0),
+                    ]
+                )
+            ],
+            "Part::FaceMakerCheese",
+        )
+        face_c = Part.makeFace(
+            [
+                Part.makePolygon(
+                    [
+                        App.Vector(0, 1, 0),
+                        App.Vector(3, 1, 0),
+                        App.Vector(3, 2, 0),
+                        App.Vector(0, 2, 0),
+                        App.Vector(0, 1, 0),
+                    ]
+                )
+            ],
+            "Part::FaceMakerCheese",
+        )
+
+        # Seed element maps so the test verifies the transient fuse drops
+        # naming metadata, not just that the projected faces union geometrically.
+        face_a.ElementMap = {"FaceA": "FaceA"}
+        face_b.ElementMap = {"FaceB": "FaceB"}
+        face_c.ElementMap = {"FaceC": "FaceC"}
+        self.assertGreater(face_a.ElementMapSize, 0)
+        self.assertGreater(face_b.ElementMapSize, 0)
+        self.assertGreater(face_c.ElementMapSize, 0)
+
+        single = ArchComponent._make_projected_horizontal_area_face([face_a])
+        overlapping_union = ArchComponent._make_projected_horizontal_area_face([face_a, face_b])
+        fused = ArchComponent._make_projected_horizontal_area_face([face_a, face_b, face_c])
+
+        self.assertIsNotNone(single)
+        self.assertEqual(0, single.ElementMapSize)
+        self.assertAlmostEqual(2.0, single.Area, places=7)
+        self.assertIsNotNone(overlapping_union)
+        self.assertEqual(0, overlapping_union.ElementMapSize)
+        self.assertAlmostEqual(3.0, overlapping_union.Area, places=7)
+        self.assertEqual(1, len(overlapping_union.Faces))
+        self.assertAlmostEqual(8.0, overlapping_union.Faces[0].OuterWire.Length, places=7)
+        self.assertIsNotNone(fused)
+        self.assertEqual(0, fused.ElementMapSize)
+        self.assertAlmostEqual(6.0, fused.Area, places=7)
 
     def testRemove(self):
         App.Console.PrintLog("Checking Arch Remove...\n")
@@ -273,7 +345,6 @@ class TestArchComponent(TestArchBase.TestArchBase):
         white-box testing on the internal calculator.
         """
         import math
-        import ArchComponent
 
         tolerance = Part.Precision.confusion()
 
@@ -701,20 +772,159 @@ class TestArchComponent(TestArchBase.TestArchBase):
                 msg="CSG pieces did not align. Base shape likely retained the offset.",
             )
 
-    def test_component_base_removal_cleanup(self):
-        """Test that removing the Base property clears the component shape."""
-        self.printTestMessage("ArchComponent Base Removal Cleanup...")
+    def test_component_without_base(self):
+        """Test that a component without a base retains its shape."""
+        self.printTestMessage("ArchComponent without Base test...")
 
-        box = self.document.addObject("Part::Box", "StaleTestBox")
-        comp = Arch.makeComponent(box)
+        box1 = self.document.addObject("Part::Box", "TestBox1")
+        box2 = self.document.addObject("Part::Box", "TestBox2")
+        self.document.recompute()
+        volume_box1 = box1.Shape.Volume
+        volume_box2 = box2.Shape.Volume  # Box2 will be deleted.
+
+        comp1 = Arch.makeComponent(box1)
+        comp2 = Arch.makeComponent(box2, delete=True)
         self.document.recompute()
 
-        self.assertFalse(comp.Shape.isNull(), "Component should have a shape initially.")
-
-        # Trigger the 'else' block
-        comp.Base = None
+        comp1.Base = None
         self.document.recompute()
 
-        self.assertTrue(
-            comp.Shape.isNull(), "Component retained a stale shape after its Base was removed."
+        self.assertAlmostEqual(
+            volume_box1,
+            comp1.Shape.Volume,
+            places=6,
+            msg="Wrong shape for baseless component!",
+        )
+
+        self.assertAlmostEqual(
+            volume_box2,
+            comp2.Shape.Volume,
+            places=6,
+            msg="Wrong shape for baseless component!",
+        )
+
+    def test_add_window_link_standard(self):
+        """Test adding a Window Link to a Wall using standard lifecycle (recompute before add).
+        This verifies the 'appLinkExecute' hook mechanism.
+        """
+        operation = "Arch Link addition (Standard Lifecycle)"
+        self.printTestMessage(operation)
+
+        # Create the host wall
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        wall = Arch.makeWall(line, width=200, height=3000, align="Center")
+        self.document.recompute()
+        initial_volume = wall.Shape.Volume
+
+        # Create a prototype window
+        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        rect.Placement.Base = App.Vector(0, 0, 0)
+        self.document.recompute()
+
+        win_proto = Arch.makeWindow(baseobj=rect, name="Window_Prototype")
+        win_proto.Width = 1000
+        win_proto.Height = 1500
+        win_proto.Frame = 100
+        self.document.recompute()
+
+        # Create a link to the prototype window and recompute
+        # This is the standard lifecycle
+        link1 = self.document.addObject("App::Link", "Link_Standard")
+        link1.LinkedObject = win_proto
+        link1.Placement.Base = App.Vector(1000, 0, 500)
+        self.document.recompute()  # Trigger appLinkExecute -> shadow_link_properties
+
+        # Add the window link to the wall
+        Arch.addComponents(link1, wall)
+        self.document.recompute()
+
+        # Assert
+        self.assertIn(wall, link1.Hosts, "Link should host the wall")
+        self.assertNotIn(wall, win_proto.Hosts, "Prototype should not host the wall")
+        self.assertLess(wall.Shape.Volume, initial_volume, "Wall volume should decrease (hole cut)")
+
+    def test_add_window_link_immediate(self):
+        """Test adding a Window Link to a Wall immediately without recomputing.
+        This verifies the 'ensure_link_overrides' safeguard mechanism.
+        """
+        operation = "Arch Link addition (Immediate Lifecycle)"
+        self.printTestMessage(operation)
+
+        # Create the host wall
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        wall = Arch.makeWall(line, width=200, height=3000, align="Center")
+        self.document.recompute()
+        initial_volume = wall.Shape.Volume
+
+        # Create a prototype window
+        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        rect.Placement.Base = App.Vector(0, 0, 0)
+        self.document.recompute()
+
+        win_proto = Arch.makeWindow(baseobj=rect, name="Window_Prototype")
+        win_proto.Width = 1000
+        win_proto.Height = 1500
+        win_proto.Frame = 100
+        self.document.recompute()
+
+        # Create a link to the prototype window without recomputing
+        link2 = self.document.addObject("App::Link", "Link_Immediate")
+        link2.LinkedObject = win_proto
+        link2.Placement.Base = App.Vector(3000, 0, 500)
+
+        # Add the window link to the wall immediately
+        # This triggers ensure_link_overrides -> shadow_link_properties
+        Arch.addComponents(link2, wall)
+        self.document.recompute()
+
+        # Assert
+        self.assertIn(wall, link2.Hosts, "Link should host the wall")
+        self.assertNotIn(wall, win_proto.Hosts, "Prototype should NOT host the wall")
+        self.assertLess(wall.Shape.Volume, initial_volume, "Wall volume should decrease (hole cut)")
+
+    def test_remove_window_link(self):
+        """Test removing a Window Link from a Wall."""
+        operation = "Arch Link removal"
+        self.printTestMessage(operation)
+
+        # Create the host wall
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        wall = Arch.makeWall(line, width=200, height=3000, align="Center")
+        self.document.recompute()
+        initial_volume = wall.Shape.Volume
+
+        # Create a prototype window
+        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        rect.Placement.Base = App.Vector(0, 0, 0)
+        self.document.recompute()
+
+        win_proto = Arch.makeWindow(baseobj=rect)
+        win_proto.Width = 1000
+        win_proto.Height = 1500
+        win_proto.Frame = 100
+        self.document.recompute()
+
+        # Create a link to the prototype window
+        link = self.document.addObject("App::Link", "Link_Remove")
+        link.LinkedObject = win_proto
+        link.Placement.Base = App.Vector(2000, 0, 500)
+        self.document.recompute()
+
+        # Add the window link to the wall, ensure it cuts the hole
+        Arch.addComponents(link, wall)
+        self.document.recompute()
+        cut_volume = wall.Shape.Volume
+        self.assertLess(cut_volume, initial_volume, "Setup failed: Wall not cut")
+
+        # Remove the window link from the wall
+        Arch.removeComponents([link])
+        self.document.recompute()
+
+        # Assert
+        self.assertNotIn(wall, link.Hosts, "Link should no longer host the wall")
+        self.assertAlmostEqual(
+            wall.Shape.Volume, initial_volume, 3, "Wall volume should be restored"
         )

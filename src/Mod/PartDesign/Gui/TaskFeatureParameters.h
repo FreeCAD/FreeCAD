@@ -70,7 +70,7 @@ public:
         const std::string& pixmapname,
         const QString& parname
     );
-    ~TaskFeatureParameters() override = default;
+    ~TaskFeatureParameters() override;
 
     /// save field history
     virtual void saveHistory()
@@ -85,6 +85,10 @@ public:
     {
         return blockUpdate;
     }
+
+protected:
+    void showDraggerHints();
+    void hideDraggerHints();
 
 protected Q_SLOTS:
     // TODO Add update view to all dialogs (2015-12-05, Fat-Zer)

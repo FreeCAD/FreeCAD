@@ -216,7 +216,7 @@ class WizardShaftTable:
         widget.setEnabled(False)
 
     def slotValueChanged(self, value):
-        (self.editedRow, self.editedColumn) = self.getFocusedCell()
+        self.editedRow, self.editedColumn = self.getFocusedCell()
         self.editedValue = value
 
     def slotEditingFinished(self):
@@ -251,7 +251,7 @@ class WizardShaftTable:
             pass
 
     def slotEditConstraint(self):
-        (self.editedRow, self.editedColumn) = (
+        self.editedRow, self.editedColumn = (
             self.getFocusedCell()
         )  # Because finishEditConstraint() will trigger slotEditingFinished() which requires this information
         self.shaft.editConstraint(self.editedColumn)

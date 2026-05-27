@@ -736,11 +736,25 @@ void PropertySheet::setForeground(CellAddress address, const Base::Color& color)
     cell->setForeground(color);
 }
 
+void PropertySheet::clearForeground(CellAddress address)
+{
+    Cell* cell = nonNullCellAt(address);
+    assert(cell);
+    cell->clearForeground();
+}
+
 void PropertySheet::setBackground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setBackground(color);
+}
+
+void PropertySheet::clearBackground(CellAddress address)
+{
+    Cell* cell = nonNullCellAt(address);
+    assert(cell);
+    cell->clearBackground();
 }
 
 void PropertySheet::setDisplayUnit(CellAddress address, const std::string& unit)

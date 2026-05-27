@@ -99,7 +99,7 @@ protected Q_SLOTS:
     void refocusAnnotation();
 
     void onViewSelectionChanged();
-    void onViewPositionChanged(const QPointF& scenePos);
+    void onViewPositionChanged();
 
 private:
     void removeViewFilter();
@@ -133,6 +133,8 @@ private:
 
     QPointer<MRichTextEdit> m_toolbar {nullptr};
     QPointer<QWidget> m_viewport {nullptr};
+
+    int m_tid {0};
 };
 
 class TaskDlgRichAnno : public Gui::TaskView::TaskDialog

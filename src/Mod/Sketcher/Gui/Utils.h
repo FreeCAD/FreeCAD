@@ -29,6 +29,8 @@
 #include <Base/Tools2D.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <QListWidget>
+#include <QMap>
+#include <QString>
 
 #include "AutoConstraint.h"
 #include "ViewProviderSketchGeometryExtension.h"
@@ -95,6 +97,9 @@ bool tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremoveredundants);
 /// This function tries to auto-recompute as tryAutoRecompute. If tryAutoRecompute
 /// is not enabled, then it solves the SketchObject.
 void tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj);
+
+// Recomputes and closes a transaction, then resets the transaction id
+void closeAndRecompute(int& tid, bool abort, Sketcher::SketchObject* Obj);
 
 /// Release any currently-active handler for the document.
 /// Returns true if a handler was released, and false if not
@@ -247,6 +252,8 @@ inline void scrollTo(QListWidget* list, int i, bool select)
         list->scrollTo(index, QAbstractItemView::PositionAtCenter);
     }
 }
+
+QMap<QString, QString> findAvailableFontFiles();
 
 }  // namespace SketcherGui
 

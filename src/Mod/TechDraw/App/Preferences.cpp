@@ -629,6 +629,25 @@ double Preferences::SnapLimitFactor()
 }
 
 
+//! true if dimensions should snap to position
+bool Preferences::SnapDimensions()
+{
+    return getPreferenceGroup("Dimensions")->GetBool("SnapDimensions", true);
+}
+
+//! percentage of dimension text length to use in deciding to snap dimension text
+double Preferences::SnapDimensionsTextFactor()
+{
+    return getPreferenceGroup("Dimensions")->GetFloat("SnapDimensionsTextFactor", 0.4);
+}
+
+//! percentage of inter-dimension distance (cascade spacing from dimAttributes?) to use in deciding to snap dimension
+double Preferences::SnapDimensionsChainFactor()
+{
+    return getPreferenceGroup("Dimensions")->GetFloat("SnapDimensionsChainFactor", 0.2);
+}
+
+
 //! returns the key combination that simulates multiple selection. Traditionally Ctrl+pick, as that
 //! is how QGraphicsScene implements multiple selection.  This method is likely to only be used by
 //! developers.

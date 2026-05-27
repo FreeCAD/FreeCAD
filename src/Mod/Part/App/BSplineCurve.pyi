@@ -195,6 +195,15 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
+    @constmethod
+    def split(self, u: float, tolerance: float = 0.0, /) -> tuple[BSplineCurve, BSplineCurve]:
+        """
+        split(u, tolerance=0.0)
+
+        Splits this B-Spline curve at parameter u and returns the two resulting curves.
+        """
+        ...
+
     def setKnot(self, knot: float, index: int, /) -> None:
         """
         Set a knot of the B-Spline curve.

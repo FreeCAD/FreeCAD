@@ -270,7 +270,7 @@ const std::vector<LocalCoordinateSystem::SetupData>& LocalCoordinateSystem::getS
         {App::Plane::getClassTypeId(), PlaneRoles[0], tr("XY-plane"), Base::Rotation()},
         {App::Plane::getClassTypeId(), PlaneRoles[1], tr("XZ-plane"), Base::Rotation(1.0, 0.0, 0.0, 1.0)},
         {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1, 1, 1), pi * 2 / 3)},
-        {App::Point::getClassTypeId(), PointRoles[0], tr("Origin"),   Base::Rotation()}
+        {App::Point::getClassTypeId(), PointRoles[0], tr("Origin-Point"),   Base::Rotation()}
         // clang-format on
     };
     return setupData;

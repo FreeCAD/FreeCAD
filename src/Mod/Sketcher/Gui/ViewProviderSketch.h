@@ -100,6 +100,7 @@ namespace SketcherGui
 class EditModeCoinManager;
 class SnapManager;
 class DrawSketchHandler;
+class ViewProviderSketchCommandConstraintsAttorney;
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
@@ -663,6 +664,8 @@ public:
     void attach(App::DocumentObject*) override;
     void updateData(const App::Property*) override;
 
+    void setActive(bool active) override;
+
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     /// is called when the Provider is in edit and a deletion request occurs
     bool onDelete(const std::vector<std::string>&) override;
@@ -732,7 +735,11 @@ public:
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
     friend class ViewProviderSketchCoinAttorney;
     friend class ViewProviderSketchSnapAttorney;
+    friend class ViewProviderSketchCommandConstraintsAttorney;
     //@}
+
+    bool editingCancelled;
+
 protected:
     /** @name enter/exit edit mode */
     //@{
@@ -752,7 +759,7 @@ protected:
     /// get called if a subelement is double clicked while editing
     void editDoubleClicked();
     /// get called when an edge is double clicked to select/unselect the whole wire
-    void toggleWireSelelection(int geoId);
+    void toggleWireSelection(int geoId);
     //@}
 
     /** @name Solver Information */
@@ -789,6 +796,10 @@ protected:
     void finishRestoring() override;
 
     bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
+    std::vector<std::pair<std::string, std::string>> getRelatedElements(
+        const std::string& subname,
+        const SbVec3f& pickPoint
+    ) const override;
     bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
 
 private:
@@ -861,6 +872,10 @@ private:
         OffsetMode offset = NoOffset
     );
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
+    //@}
+
+    void setupActiveAndInEdit();
+    void unsetupActiveAndInEdit();
 
     /** @name signals*/
     //@{
@@ -871,6 +886,7 @@ private:
     void slotToolWidgetChanged(QWidget* newwidget);
 
     void updateColorPropertiesVisibility();
+    void updateAutomaticColorProperties();
 
     /** @name Attorney functions*/
     //@{
@@ -887,6 +903,9 @@ private:
     /// gets the corresponding constraint to the given \a constid
     /// or null if it doesn't exist.
     Sketcher::Constraint* getConstraint(int constid) const;
+
+    // Return true if the constraint is active, includes checking if it's not in a group
+    bool isConstraintActiveInSketch(const Sketcher::Constraint* cstr) const;
 
     // gets the list of geometry of the sketchobject or of the solver instance
     const GeoList getGeoList() const;
@@ -1015,6 +1034,7 @@ private:
     int viewOrientationFactor;  // stores if sketch viewed from front or back
 
     bool blockContextMenu;
+    std::stringstream sketchBackup;
 };
 
 }  // namespace SketcherGui

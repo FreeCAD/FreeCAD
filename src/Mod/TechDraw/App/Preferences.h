@@ -154,6 +154,11 @@ public:
     static bool SnapViews();
     static double SnapLimitFactor();
 
+    static bool SnapDimensions();
+    static double SnapDimensionsTextFactor();
+    static double SnapDimensionsChainFactor();
+
+
     static Qt::KeyboardModifiers multiselectModifiers();
 
     static Qt::KeyboardModifiers balloonDragModifiers();

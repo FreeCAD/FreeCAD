@@ -320,7 +320,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="105"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation>Décompose une fusion ou un composite et applique des couleurs aléatoires.</translation>
+      <translation>Décompose une fusion ou un composé et applique des couleurs aléatoires.</translation>
     </message>
   </context>
   <context>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="158"/>
       <source>Refine Shape Feature</source>
-      <translation>Affiner la forme</translation>
+      <translation>Nettoyer la forme</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="161"/>

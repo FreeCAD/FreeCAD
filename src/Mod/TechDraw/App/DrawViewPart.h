@@ -263,7 +263,7 @@ protected:
     virtual TopoDS_Shape getShapeForGeometryBuild() const;
     virtual TechDraw::GeometryObjectPtr buildGeometryObject(const TopoDS_Shape& shape,
                                                             const gp_Ax2& viewAxis);
-    virtual TechDraw::GeometryObjectPtr makeGeometryForShape(TopoDS_Shape& shape);//const??
+    virtual TechDraw::GeometryObjectPtr makeGeometryForShape(const TopoDS_Shape& shape);//const??
     void partExec(TopoDS_Shape& shape);
     virtual void addPoints(void);
 

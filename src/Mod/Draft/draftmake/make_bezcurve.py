@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create BezCurve objects."""
+
 ## @package make_bezcurve
 # \ingroup draftmake
 # \brief Provides functions to create BezCurve objects.

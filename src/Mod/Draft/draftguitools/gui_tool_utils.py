@@ -30,6 +30,7 @@ These functions are used by different command classes in the `DraftTools`
 module. We assume that the graphical interface was already loaded
 as they operate on selections and graphical properties.
 """
+
 ## @package gui_tool_utils
 # \ingroup draftguitools
 # \brief Provides utility functions that are used by many Draft Gui Commands.
@@ -46,7 +47,6 @@ from draftutils import params
 from draftutils import utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
-
 
 # Set modifier keys from the parameter database
 MODS = ["shift", "ctrl", "alt"]
@@ -73,14 +73,24 @@ _HINT_MOD_KEYS = [Gui.UserInput.KeyShift, Gui.UserInput.KeyControl, Gui.UserInpu
 
 def _get_hint_mod_constrain():
     key = _HINT_MOD_KEYS[params.get_param("modconstrain")]
-    return [Gui.InputHint(translate("draft", "%1 constrain"), key)]
+    return [Gui.InputHint(translate("draft", "Hold %1 constrain"), key)]
+
+
+def _get_hint_mod_constrain_dimension_linear():
+    key = _HINT_MOD_KEYS[params.get_param("modconstrain")]
+    return [Gui.InputHint(translate("draft", "Hold %1 horizontal/vertical dimension"), key)]
+
+
+def _get_hint_mod_constrain_dimension_radial():
+    key = _HINT_MOD_KEYS[params.get_param("modconstrain")]
+    return [Gui.InputHint(translate("draft", "Hold %1 radial dimension"), key)]
 
 
 def _get_hint_mod_snap():
     if params.get_param("alwaysSnap"):
         return []
     key = _HINT_MOD_KEYS[params.get_param("modsnap")]
-    return [Gui.InputHint(translate("draft", "%1 snap"), key)]
+    return [Gui.InputHint(translate("draft", "Hold %1 snap"), key)]
 
 
 def _get_hint_xyz_constrain():
@@ -97,7 +107,7 @@ def _get_hint_xyz_constrain():
         key_y = getattr(Gui.UserInput, "Key" + shortcut_y)
         key_z = getattr(Gui.UserInput, "Key" + shortcut_z)
         return [
-            Gui.InputHint(translate("draft", "%1/%2/%3 switch constraint"), key_x, key_y, key_z)
+            Gui.InputHint(translate("draft", "%1 / %2 / %3 switch constraint"), key_x, key_y, key_z)
         ]
     return []
 
@@ -127,6 +137,18 @@ def _get_hint_continue():
         key = getattr(Gui.UserInput, "Key" + shortcut)
         return [Gui.InputHint(translate("draft", "%1 toggle continue"), key)]
     return []
+
+
+def _get_hint_select_edge():
+    mod_key = _HINT_MOD_KEYS[params.get_param("modalt")]
+    pattern = re.compile("[A-Z]")
+    shortcut = params.get_param("inCommandShortcutSelectEdge").upper()
+    if pattern.fullmatch(shortcut):
+        shortcut_key = getattr(Gui.UserInput, "Key" + shortcut)
+        return [
+            Gui.InputHint(translate("draft", "%1 / hold %2 select edge"), shortcut_key, mod_key)
+        ]
+    return [Gui.InputHint(translate("draft", "Hold %1 select edge"), mod_key)]
 
 
 def format_unit(exp, unit="mm"):

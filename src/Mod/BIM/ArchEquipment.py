@@ -54,6 +54,19 @@ else:
     # \endcond
 
 
+if FreeCAD.GuiUp:
+
+    class EquipmentTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
+        """A task panel for Arch Equipment using the generic options box"""
+
+        def __init__(self, obj):
+            property_definitions = [
+                {"prop": "Model", "label": translate("Arch", "Model")},
+                {"prop": "EquipmentPower", "label": translate("Arch", "Equipment Power")},
+            ]
+            super().__init__(obj, property_definitions)
+
+
 class _Equipment(ArchComponent.Component):
     "The Equipment object"
 
@@ -72,25 +85,6 @@ class _Equipment(ArchComponent.Component):
             obj.IfcType = "Furnishing Element"
         else:
             obj.IfcType = "Building Element Proxy"
-        # Add features in the SketchArch External Add-on, if present
-        self.addSketchArchFeatures(obj)
-
-    def addSketchArchFeatures(self, obj, linkObj=None, mode=None):
-        """
-        To add features in the SketchArch External Add-on, if present (https://github.com/paullee0/FreeCAD_SketchArch)
-        -  import ArchSketchObject module, and
-        -  set properties that are common to ArchObjects (including Links) and ArchSketch
-           to support the additional features
-
-        To install SketchArch External Add-on, see https://github.com/paullee0/FreeCAD_SketchArch#iv-install
-        """
-
-        try:
-            import ArchSketchObject
-
-            ArchSketchObject.ArchSketch.setPropertiesLinkCommon(self, obj, linkObj, mode)
-        except:
-            pass
 
     def setProperties(self, obj):
 
@@ -146,9 +140,6 @@ class _Equipment(ArchComponent.Component):
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj)
 
-        # Add features in the SketchArch External Add-on, if present
-        self.addSketchArchFeatures(obj)
-
     def loads(self, state):
 
         self.Type = "Equipment"
@@ -194,19 +185,6 @@ class _Equipment(ArchComponent.Component):
             ArchSketchObject.updateAttachmentOffset(obj, linkObj)
         except:
             pass
-
-    def appLinkExecute(self, obj, linkObj, index, linkElement):
-        """
-        Default Link Execute method() -
-        See https://forum.freecad.org/viewtopic.php?f=22&t=42184&start=10#p361124
-        @realthunder added support to Links to run Linked Scripted Object's methods()
-        """
-
-        # Add features in the SketchArch External Add-on, if present
-        self.addSketchArchFeatures(obj, linkObj)
-
-        # Execute features in the SketchArch External Add-on, if present
-        self.executeSketchArchFeatures(obj, linkObj)
 
     def computeAreas(self, obj):
         return
@@ -255,3 +233,11 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
                 self.coords.point.deleteValues(0)
         else:
             ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
+        taskd = EquipmentTaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(taskd)
+        return True

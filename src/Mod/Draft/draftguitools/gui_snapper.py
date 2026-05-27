@@ -27,6 +27,7 @@ everything that goes with it (toolbar buttons, cursor icons, etc.).
 It also creates the Draft grid, which is actually a tracker
 defined by `gui_trackers.gridTracker`.
 """
+
 ## @package gui_snapper
 #  \ingroup draftguitools
 #  \brief Provides the Snapper class to define the snapping tools and modes.
@@ -40,21 +41,24 @@ import collections as coll
 import inspect
 import itertools
 import math
-import pivy.coin as coin
-import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
-import PySide.QtWidgets as QtWidgets
+from pivy import coin
+from PySide import QtCore
+from PySide import QtGui
+from PySide import QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import Part
-import Draft
 import DraftVecUtils
-import DraftGeomUtils
 import WorkingPlane
+from draftgeoutils import edges as geo_edges
+from draftgeoutils import general as geo_general
+from draftgeoutils import geometry as geo_geometry
+from draftgeoutils import intersections as geo_intersections
 from draftguitools import gui_trackers as trackers
 from draftutils import gui_utils
 from draftutils import params
+from draftutils import utils
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _wrn
 from draftutils.translate import translate
@@ -90,6 +94,7 @@ class Snapper:
 
     def __init__(self):
         self.activeview = None
+        self.toolbar = None
         self.lastObj = []
         self.lastObjSubelements = []
         self.radius = 0
@@ -315,7 +320,7 @@ class Snapper:
 
         # Check if we have an object under the cursor and try to
         # snap to it
-        _view = Draft.get3DView()
+        _view = gui_utils.get_3d_view()
         objectsUnderCursor = _view.getObjectsInfo((screenpos[0], screenpos[1]))
         if objectsUnderCursor:
             if self.snapObjectIndex >= len(objectsUnderCursor):
@@ -370,7 +375,7 @@ class Snapper:
 
         if (
             not obj
-            or Draft.getType(obj) in UNSNAPPABLES
+            or utils.get_type(obj) in UNSNAPPABLES
             or not getattr(obj.ViewObject, "Selectable", True)
         ):
             # increase snapObjectIndex to find other objects under the cursor:
@@ -385,11 +390,11 @@ class Snapper:
         if not shape.isNull():
             snaps.extend(self.snapToSpecials(obj, lastpoint, eline))
 
-            if Draft.getType(obj) == "Polygon":
+            if utils.get_type(obj) == "Polygon":
                 # Special snapping for polygons: add the center
                 snaps.extend(self.snapToPolygon(obj))
 
-            elif Draft.getType(obj) == "BuildingPart" and self.isEnabled("Center"):
+            elif utils.get_type(obj) == "BuildingPart" and self.isEnabled("Center"):
                 # snap to the base placement of empty BuildingParts
                 snaps.append([obj.Placement.Base, "center", self.toWP(obj.Placement.Base)])
 
@@ -405,7 +410,7 @@ class Snapper:
                         snaps.extend(self.snapToIntersection(edge))
                         snaps.extend(self.snapToElines(edge, eline))
 
-                        et = DraftGeomUtils.geomType(edge)
+                        et = geo_general.geomType(edge)
                         if et == "Circle":
                             # the edge is an arc, we have extra options
                             snaps.extend(self.snapToAngles(edge))
@@ -433,30 +438,30 @@ class Snapper:
                     # or vertices.
                     snaps.extend(self.snapToNearUnprojected(point))
 
-        elif Draft.getType(obj) in ("LinearDimension", "AngularDimension"):
+        elif utils.get_type(obj) in ("LinearDimension", "AngularDimension"):
             # for dimensions we snap to their 2 points:
             snaps.extend(self.snapToDim(obj))
 
-        elif Draft.getType(obj) == "Axis":
+        elif utils.get_type(obj) == "Axis":
             for edge in obj.Shape.Edges:
                 snaps.extend(self.snapToEndpoints(edge))
                 snaps.extend(self.snapToIntersection(edge))
 
-        elif Draft.getType(obj).startswith("Mesh::"):
+        elif utils.get_type(obj).startswith("Mesh::"):
             snaps.extend(self.snapToNearUnprojected(point))
             snaps.extend(self.snapToEndpoints(obj.Mesh))
 
-        elif Draft.getType(obj).startswith("Points::"):
+        elif utils.get_type(obj).startswith("Points::"):
             snaps.extend(self.snapToEndpoints(obj.Points, point))
 
-        elif Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart") and self.isEnabled(
+        elif utils.get_type(obj) in ("WorkingPlaneProxy", "BuildingPart") and self.isEnabled(
             "Center"
         ):
             # snap to the center of WPProxies or to the base
             # placement of no empty BuildingParts
             snaps.append([obj.Placement.Base, "center", self.toWP(obj.Placement.Base)])
 
-        elif Draft.getType(obj) == "SectionPlane":
+        elif utils.get_type(obj) == "SectionPlane":
             # snap to corners of section planes
             snaps.extend(self.snapToEndpoints(obj.Shape))
 
@@ -498,7 +503,7 @@ class Snapper:
         if winner_not_near is None or shortest_not_near == shortest_all:
             winner = winner_all
         else:
-            view = Draft.get3DView()
+            view = gui_utils.get_3d_view()
             # get screen points with pixel coordinates
             scr_win_not_near_pt = App.Vector(*view.getPointOnScreen(winner_not_near[0]), 0)
             scr_cursor_pt = App.Vector(*view.getPointOnScreen(cursor_pt), 0)
@@ -539,7 +544,7 @@ class Snapper:
 
     def getApparentPoint(self, x, y):
         """Return a 3D point, projected on the current working plane."""
-        view = Draft.get3DView()
+        view = gui_utils.get_3d_view()
         pt = view.getPoint(x, y)
         if self.mask != "z":
             if view.getCameraType() == "Perspective":
@@ -618,20 +623,20 @@ class Snapper:
                 if not ob.isDerivedFrom("Part::Feature"):
                     continue
                 edges = ob.Shape.Edges
-                if Draft.getType(ob) == "Wall":
+                if utils.get_type(ob) == "Wall":
                     for so in [ob] + ob.Additions:
-                        if Draft.getType(so) == "Wall":
+                        if utils.get_type(so) == "Wall":
                             if so.Base:
                                 edges.extend(so.Base.Shape.Edges)
                                 edges.reverse()
                 if (not self.maxEdges) or (len(edges) <= self.maxEdges):
                     for e in edges:
-                        if DraftGeomUtils.geomType(e) != "Line":
+                        if geo_general.geomType(e) != "Line":
                             continue
                         np = self.getPerpendicular(e, point)
                         if (np.sub(point)).Length < self.radius:
                             if self.isEnabled("Extension"):
-                                if DraftGeomUtils.isPtOnEdge(np, e):
+                                if geo_general.isPtOnEdge(np, e):
                                     continue
                                 if np != e.Vertexes[0].Point:
                                     p0 = e.Vertexes[0].Point
@@ -650,27 +655,21 @@ class Snapper:
                                     if len(self.lastExtensions) == 0:
                                         self.lastExtensions.append(ne)
                                     elif len(self.lastExtensions) == 1:
-                                        if not DraftGeomUtils.areColinear(
-                                            ne, self.lastExtensions[0]
-                                        ):
+                                        if not geo_general.areColinear(ne, self.lastExtensions[0]):
                                             self.lastExtensions.append(self.lastExtensions[0])
                                             self.lastExtensions[0] = ne
                                     else:
                                         if (
-                                            not DraftGeomUtils.areColinear(
-                                                ne, self.lastExtensions[0]
-                                            )
+                                            not geo_general.areColinear(ne, self.lastExtensions[0])
                                         ) and (
-                                            not DraftGeomUtils.areColinear(
-                                                ne, self.lastExtensions[1]
-                                            )
+                                            not geo_general.areColinear(ne, self.lastExtensions[1])
                                         ):
                                             self.lastExtensions[1] = self.lastExtensions[0]
                                             self.lastExtensions[0] = ne
                                     return np, ne
                         elif self.isEnabled("Parallel"):
                             if last:
-                                ve = DraftGeomUtils.vec(e)
+                                ve = geo_general.vec(e)
                                 if not DraftVecUtils.isNull(ve):
                                     de = Part.LineSegment(last, last.add(ve)).toShape()
                                     np = self.getPerpendicular(de, point)
@@ -687,7 +686,7 @@ class Snapper:
         """Snap to the intersection of the last 2 extension lines."""
         if self.isEnabled("Extension"):
             if len(self.lastExtensions) == 2:
-                np = DraftGeomUtils.findIntersection(
+                np = geo_intersections.findIntersection(
                     self.lastExtensions[0], self.lastExtensions[1], True, True
                 )
                 if np:
@@ -797,7 +796,7 @@ class Snapper:
         snaps = []
         if self.isEnabled("Midpoint"):
             if isinstance(shape, Part.Edge):
-                mp = DraftGeomUtils.findMidpoint(shape)
+                mp = geo_edges.findMidpoint(shape)
                 if mp:
                     snaps.append([mp, "midpoint", self.toWP(mp)])
         return snaps
@@ -881,13 +880,13 @@ class Snapper:
             if constrain:
                 if isinstance(shape, Part.Edge):
                     if last:
-                        if DraftGeomUtils.geomType(shape) == "Line":
+                        if geo_general.geomType(shape) == "Line":
                             if self.constraintAxis:
                                 tmpEdge = Part.LineSegment(
                                     last, last.add(self.constraintAxis)
                                 ).toShape()
                                 # get the intersection points
-                                pt = DraftGeomUtils.findIntersection(tmpEdge, shape, True, True)
+                                pt = geo_intersections.findIntersection(tmpEdge, shape, True, True)
                                 if pt:
                                     for p in pt:
                                         snaps.append([p, "ortho", self.toWP(p)])
@@ -900,14 +899,14 @@ class Snapper:
                 tmpEdge1 = Part.LineSegment(last, last.add(self.constraintAxis)).toShape()
                 tmpEdge2 = Part.LineSegment(self.extLine.p1(), self.extLine.p2()).toShape()
                 # get the intersection points
-                pt = DraftGeomUtils.findIntersection(tmpEdge1, tmpEdge2, True, True)
+                pt = geo_intersections.findIntersection(tmpEdge1, tmpEdge2, True, True)
                 if pt:
                     return [pt[0], "ortho", pt[0]]
             if eline:
                 try:
                     tmpEdge2 = Part.LineSegment(self.extLine.p1(), self.extLine.p2()).toShape()
                     # get the intersection points
-                    pt = DraftGeomUtils.findIntersection(eline, tmpEdge2, True, True)
+                    pt = geo_intersections.findIntersection(eline, tmpEdge2, True, True)
                     if pt:
                         return [pt[0], "ortho", pt[0]]
                 except Exception:
@@ -938,10 +937,14 @@ class Snapper:
             while len(l) > 1:
                 p1 = l.pop()
                 for p2 in l:
-                    i1 = DraftGeomUtils.findIntersection(p1, p1.add(u), p2, p2.add(v), True, True)
+                    i1 = geo_intersections.findIntersection(
+                        p1, p1.add(u), p2, p2.add(v), True, True
+                    )
                     if i1:
                         ipoints.append([p1, i1[0]])
-                    i2 = DraftGeomUtils.findIntersection(p1, p1.add(v), p2, p2.add(u), True, True)
+                    i2 = geo_intersections.findIntersection(
+                        p1, p1.add(v), p2, p2.add(u), True, True
+                    )
                     if i2:
                         ipoints.append([p1, i2[0]])
             for p in ipoints:
@@ -949,12 +952,12 @@ class Snapper:
                     return [p[0], "ortho", p[1]]
         # then try to stick to a line
         for p in self.holdPoints:
-            d = DraftGeomUtils.findDistance(point, [p, p.add(u)])
+            d = geo_geometry.findDistance(point, [p, p.add(u)])
             if d:
                 if d.Length < self.radius:
                     fp = point.add(d)
                     return [p, "extension", fp]
-            d = DraftGeomUtils.findDistance(point, [p, p.add(v)])
+            d = geo_geometry.findDistance(point, [p, p.add(v)])
             if d:
                 if d.Length < self.radius:
                     fp = point.add(d)
@@ -977,7 +980,7 @@ class Snapper:
         if self.isEnabled("Intersection") and self.isEnabled("Extension"):
             if e1 and e2:
                 # get the intersection points
-                pts = DraftGeomUtils.findIntersection(e1, e2, True, True)
+                pts = geo_intersections.findIntersection(e1, e2, True, True)
                 if pts:
                     for p in pts:
                         snaps.append([p, "intersection", self.toWP(p)])
@@ -1055,12 +1058,12 @@ class Snapper:
             # get the stored objects to calculate intersections
             for obj_name, sub_name in zip(self.lastObj, self.lastObjSubelements):
                 obj = App.ActiveDocument.getObject(obj_name)
-                if obj and (obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis")):
+                if obj and (obj.isDerivedFrom("Part::Feature") or utils.get_type(obj) == "Axis"):
                     # obj sub is face, shape is edge:
                     if "Face" in sub_name and shape.ShapeType == "Edge":
                         face = obj.Shape.Faces[int(sub_name[4:]) - 1]
                         try:
-                            pts = DraftGeomUtils.findIntersection(face, shape)
+                            pts = geo_intersections.findIntersection(face, shape)
                             for pt in pts:
                                 snaps.append([pt, "intersection", self.toWP(pt)])
                         except Exception:
@@ -1071,7 +1074,7 @@ class Snapper:
                     elif shape.ShapeType == "Face":
                         edge = obj.Shape.Edges[int(sub_name[4:]) - 1]
                         try:
-                            pts = DraftGeomUtils.findIntersection(edge, shape)
+                            pts = geo_intersections.findIntersection(edge, shape)
                             for pt in pts:
                                 snaps.append([pt, "intersection", self.toWP(pt)])
                         except Exception:
@@ -1094,11 +1097,11 @@ class Snapper:
                                     p2 = self.toWP(edge.Vertexes[-1].Point)
                                     p3 = self.toWP(shape.Vertexes[0].Point)
                                     p4 = self.toWP(shape.Vertexes[-1].Point)
-                                    pts = DraftGeomUtils.findIntersection(
+                                    pts = geo_intersections.findIntersection(
                                         p1, p2, p3, p4, True, True
                                     )
                                 else:
-                                    pts = DraftGeomUtils.findIntersection(edge, shape)
+                                    pts = geo_intersections.findIntersection(edge, shape)
                                 for pt in pts:
                                     snaps.append([pt, "intersection", self.toWP(pt)])
                             except Exception:
@@ -1126,14 +1129,14 @@ class Snapper:
         snaps = []
         if self.isEnabled("Special"):
 
-            if Draft.getType(obj) == "Wall":
+            if utils.get_type(obj) == "Wall":
                 # special snapping for wall: snap to its base shape if it is linear
                 if obj.Base:
                     if not obj.Base.Shape.Solids:
                         for v in obj.Base.Shape.Vertexes:
                             snaps.append([v.Point, "special", self.toWP(v.Point)])
 
-            elif Draft.getType(obj) == "Structure":
+            elif utils.get_type(obj) == "Structure":
                 # special snapping for struct: only to its base point
                 if obj.Base:
                     if not obj.Base.Shape.Solids:
@@ -1159,7 +1162,7 @@ class Snapper:
 
     def getScreenDist(self, dist, cursor):
         """Return a distance in 3D space from a screen pixels distance."""
-        view = Draft.get3DView()
+        view = gui_utils.get_3d_view()
         p1 = view.getPoint(cursor)
         p2 = view.getPoint((cursor[0] + dist, cursor[1]))
         return (p2.sub(p1)).Length
@@ -1167,7 +1170,7 @@ class Snapper:
     def getPerpendicular(self, edge, pt):
         """Return a point on an edge, perpendicular to the given point."""
         dv = pt.sub(edge.Vertexes[0].Point)
-        nv = DraftVecUtils.project(dv, DraftGeomUtils.vec(edge))
+        nv = DraftVecUtils.project(dv, geo_general.vec(edge))
         np = (edge.Vertexes[0].Point).add(nv)
         return np
 
@@ -1428,7 +1431,7 @@ class Snapper:
         self.pt = None
         self.holdPoints = []
         self.ui = Gui.draftToolBar
-        self.view = Draft.get3DView()
+        self.view = gui_utils.get_3d_view()
 
         # remove any previous leftover callbacks
         try:
@@ -1561,11 +1564,10 @@ class Snapper:
 
     def get_snap_toolbar(self):
         """Get the snap toolbar."""
-        if not (hasattr(self, "toolbar") and self.toolbar):
+        if self.toolbar is None:
             mw = Gui.getMainWindow()
             self.toolbar = mw.findChild(QtWidgets.QToolBar, "Draft Snap")
-        if self.toolbar:
-            return self.toolbar
+        return self.toolbar
 
     def toggleGrid(self):
         """Toggle FreeCAD Draft Grid."""
@@ -1587,22 +1589,21 @@ class Snapper:
 
     def toggle_snap(self, snap, set_to=None):
         """Sets the given snap on/off according to the given parameter"""
-        if set_to:  # set mode
-            if set_to is True:
-                if not snap in self.active_snaps:
-                    self.active_snaps.append(snap)
-                status = True
-            elif set_to is False:
-                if snap in self.active_snaps:
-                    self.active_snaps.remove(snap)
-                status = False
-        else:  # toggle mode, default
+        if set_to is None:  # toggle mode, default
             if not snap in self.active_snaps:
                 self.active_snaps.append(snap)
                 status = True
-            elif snap in self.active_snaps:
+            else:
                 self.active_snaps.remove(snap)
                 status = False
+        elif set_to is True:
+            if not snap in self.active_snaps:
+                self.active_snaps.append(snap)
+            status = True
+        else:
+            if snap in self.active_snaps:
+                self.active_snaps.remove(snap)
+            status = False
         self.save_snap_state()
         return status
 
@@ -1654,7 +1655,7 @@ class Snapper:
 
     def setTrackers(self, update_grid=True):
         """Set the trackers."""
-        v = Draft.get3DView()
+        v = gui_utils.get_3d_view()
         if v is None:
             return
 

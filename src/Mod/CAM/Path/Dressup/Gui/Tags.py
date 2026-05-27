@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -31,7 +29,6 @@ import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Dressup.Tags as PathDressupTag
 import PathScripts.PathUtils as PathUtils
 import Path.Dressup.Utils as PathDressup
-
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -275,7 +272,7 @@ class PathDressupTagTaskPanel:
 
     def setFields(self):
         self.updateTagsView()
-        self.form.sbCount.setValue(len(self.Positions))
+        self.form.sbCount.setValue(int(len(self.Positions) / self.obj.Proxy.amountClosedWires))
         self.form.ifHeight.setText(
             FreeCAD.Units.Quantity(self.obj.Height, FreeCAD.Units.Length).UserString
         )
@@ -562,26 +559,18 @@ class CommandPathDressupTag:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        return bool(PathDressup.selection())
 
     def Activated(self):
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            Path.Log.error(translate("CAM_DressupTag", "Please select one toolpath object") + "\n")
+        op = PathDressup.selection(verbose=True)
+        if not op:
             return
-        baseObject = selection[0]
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Tag Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.Tags")
-        FreeCADGui.doCommand(
-            "Path.Dressup.Gui.Tags.Create(App.ActiveDocument.%s)" % baseObject.Name
-        )
+        FreeCADGui.doCommand("Path.Dressup.Gui.Tags.Create(App.ActiveDocument.%s)" % op.Name)
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 

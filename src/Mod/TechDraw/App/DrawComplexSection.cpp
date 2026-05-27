@@ -86,6 +86,7 @@
 #include <ShapeExtend_WireData.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
@@ -1627,17 +1628,16 @@ DrawComplexSection::findNormalForFace(const TopoDS_Face& face,
                                       const std::vector<std::pair<int, Base::Vector3d>>& normalKV,
                                       const std::vector<TopoDS_Edge>& segmentEdges)
 {
-    size_t index = getSegmentIndex(face, segmentEdges);
-    if (index < 0  ||
-        index >= segmentEdges.size()) {     //NOLINT
+    int index = getSegmentIndex(face, segmentEdges);
+    if (index < 0) {
         throw Base::RuntimeError("DCS::findNormalForFace - did not find normal for face!");
     }
     for (auto& keyValue : normalKV) {
-        if (static_cast<size_t>(keyValue.first) == index) {
+        if (keyValue.first == index) {
             return keyValue;
         }
     }
-     throw Base::RuntimeError("DCS::findNormalForFace - no keyValue pair for segment!");
+    throw Base::RuntimeError("DCS::findNormalForFace - no keyValue pair for segment!");
 }
 
 

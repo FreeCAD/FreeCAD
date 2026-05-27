@@ -43,6 +43,7 @@
 #include <BRepBuilderAPI.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <TopoDS.hxx>
+#include <TopExp_Explorer.hxx>
 #include <gp_Pln.hxx>
 
 #include <Base/Exception.h>
@@ -105,6 +106,7 @@ using DSHOffsetController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::OffsetConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -426,7 +428,7 @@ private:
             return;
         }
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
 
         // Create geos
         Obj->addGeometry(std::move(geometriesToAdd));
@@ -441,7 +443,7 @@ private:
             makeOffsetConstraint(listOfOffsetGeoIds);
         }
 
-        Gui::Command::commitCommand();
+        commitCommand();
     }
 
     void jointOffsetCurves(std::vector<int>& listOfOffsetGeoIds)
@@ -787,8 +789,10 @@ private:
                                 break;
                             }
                         }
-                        else if (isLineSegment(*geo2) || isBSplineCurve(*geo2)
-                                 || geo2->is<Part::GeomArcOfConic>()) {
+                        else if (
+                            isLineSegment(*geo2) || isBSplineCurve(*geo2)
+                            || geo2->is<Part::GeomArcOfConic>()
+                        ) {
                             // cases where arc is created by arc join mode.
                             Base::Vector3d p2, p3;
 
@@ -1049,8 +1053,10 @@ private:
             endPoint = line->getEndPoint();
             return true;
         }
-        else if (isArcOfCircle(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo)
-                 || isArcOfParabola(*geo)) {
+        else if (
+            isArcOfCircle(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo)
+            || isArcOfParabola(*geo)
+        ) {
             const auto* arcOfConic = static_cast<const Part::GeomArcOfConic*>(geo);
             startPoint = arcOfConic->getStartPoint(true);
             endPoint = arcOfConic->getEndPoint(true);
