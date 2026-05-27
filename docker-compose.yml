@@ -1,0 +1,69 @@
+name: freecad-dev
+
+x-freecad-service: &freecad-service
+  build:
+    context: .
+    dockerfile: Dockerfile
+  image: freecad-dev:local
+  working_dir: /workspace/FreeCAD
+  environment:
+    QT_QPA_PLATFORM: "${QT_QPA_PLATFORM:-offscreen}"
+    DISPLAY: "${DISPLAY:-}"
+    FREECAD_USER_HOME: /workspace/.freecad
+    CCACHE_DIR: /workspace/.ccache
+    COPILOT_PROVIDER: "${COPILOT_PROVIDER:-local}"
+    OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+    OPENAI_MODEL: "${OPENAI_MODEL:-gpt-4.1-mini}"
+  volumes:
+    - .:/workspace/FreeCAD
+    - freecad-pixi:/workspace/FreeCAD/.pixi
+    - freecad-build:/workspace/FreeCAD/build
+    - freecad-ccache:/workspace/.ccache
+
+services:
+  freecad:
+    <<: *freecad-service
+    stdin_open: true
+    tty: true
+    command: ["bash"]
+
+  configure:
+    <<: *freecad-service
+    profiles: ["build"]
+    command: ["pixi", "run", "configure-debug"]
+
+  build:
+    <<: *freecad-service
+    profiles: ["build"]
+    command: ["pixi", "run", "build-debug"]
+
+  test:
+    <<: *freecad-service
+    profiles: ["test"]
+    command: ["pixi", "run", "xvfb-run", "-a", "build/debug/bin/FreeCAD", "-t", "0"]
+
+  cmd:
+    <<: *freecad-service
+    profiles: ["run"]
+    command: ["pixi", "run", "build/debug/bin/FreeCADCmd", "--help"]
+
+  desktop:
+    <<: *freecad-service
+    profiles: ["desktop"]
+    environment:
+      QT_QPA_PLATFORM: xcb
+      DISPLAY: ":1"
+      FREECAD_USER_HOME: /workspace/.freecad
+      CCACHE_DIR: /workspace/.ccache
+      COPILOT_PROVIDER: "${COPILOT_PROVIDER:-local}"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      OPENAI_MODEL: "${OPENAI_MODEL:-gpt-4.1-mini}"
+      VNC_RESOLUTION: "${VNC_RESOLUTION:-1280x800x24}"
+    ports:
+      - "8010:6080"
+    command: ["start-novnc"]
+
+volumes:
+  freecad-build:
+  freecad-pixi:
+  freecad-ccache:
