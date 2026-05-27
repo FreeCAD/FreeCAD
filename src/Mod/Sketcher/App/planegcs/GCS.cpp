@@ -53,6 +53,7 @@
 #include <iostream>
 #include <limits>
 #include <numbers>
+#include <vector>
 
 #include "GCS.h"
 #include "qp_eq.h"
@@ -99,9 +100,6 @@
 
 #include <Base/Console.h>
 #include <FCConfig.h>
-
-#include <boost/graph/connected_components.hpp>
-#include <boost_graph_adjacency_list.hpp>
 
 using MatrixIndexType = Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType;
 
@@ -456,8 +454,6 @@ void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType ma
 }
 #endif
 
-
-using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;
 
 ///////////////////////////////////////
 // Solver
@@ -1763,43 +1759,27 @@ void System::initSolution(Algorithm alg)
     auto [redMap, constraints, params] = computeReductionMap(plist, solvableConstraints(clist));
     reductionMap = redMap;
 
-    auto components = partitionIntoComponents(params, constraints, reductionMap);
-
-    // TODO: Why are the later (constraint-related) items added first?
-    // Adding plist-related items first would simplify as   signment of `i`, but is not a big expense
-    // overall. Leaving as is to avoid any unintended consequences.
-    clists.clear();                 // destroy any lists
-    clists.resize(components.size);  // create empty lists to be filled in
-    for (size_t i = 0; i < constraints.size(); ++i) {
-        int cid = components.constraintComponent(i);
-        clists[cid].push_back(constraints[i]);
-    }
-
-    plists.clear();                 // destroy any lists
-    plists.resize(components.size);  // create empty lists to be filled in
-    for (size_t i = 0; i < params.size(); ++i) {
-        int cid = components.paramComponent(i);
-        plists[cid].push_back(params[i]);
-    }
+    auto subSystemDescriptions = partitionIntoSubSystems(params, constraints, reductionMap);
 
     // calculates subSystems and subSystemsAux from clists, plists
     clearSubSystems();
-    subSystems.resize(clists.size(), nullptr);
-    subSystemsAux.resize(clists.size(), nullptr);
-    for (std::size_t cid = 0; cid < clists.size(); ++cid) {
+    subSystems.resize(subSystemDescriptions.size(), nullptr);
+    subSystemsAux.resize(subSystemDescriptions.size(), nullptr);
+    for (size_t cid = 0; cid < subSystemDescriptions.size(); ++cid) {
+        const auto& subSystemDescription = subSystemDescriptions[cid];
         std::vector<Constraint*> clist0, clist1;
         std::ranges::partition_copy(
-            clists[cid],
+            subSystemDescription.constraints,
             std::back_inserter(clist0),
             std::back_inserter(clist1),
             [](auto constr) { return constr->getTag() >= 0; }
         );
 
         if (!clist0.empty()) {
-            subSystems[cid] = new SubSystem(clist0, plists[cid], reductionMap);
+            subSystems[cid] = new SubSystem(clist0, subSystemDescription.params, reductionMap);
         }
         if (!clist1.empty()) {
-            subSystemsAux[cid] = new SubSystem(clist1, plists[cid], reductionMap);
+            subSystemsAux[cid] = new SubSystem(clist1, subSystemDescription.params, reductionMap);
         }
     }
 
@@ -1820,14 +1800,17 @@ std::vector<Constraint*> System::solvableConstraints(const std::vector<Constrain
     }
     return solvable;
 }
-System::ReductionOutput System::computeReductionMap(const std::vector<double*>& params, const std::vector<Constraint*>& constraints)
+System::ReductionOutput System::computeReductionMap(
+    const std::vector<double*>& params,
+    const std::vector<Constraint*>& constraints
+)
 {
     std::map<double*, int> paramToIndex = buildParamToIndex(params);
     VEC_pD reducedParams = params;
     std::vector<Constraint*> remainingConstraints;
     std::map<double*, double*> reductionMap;
     std::vector<double*> remainingParams;
-    
+
     for (const auto& constr : constraints) {
         if (!(constr->getTag() >= 0 && constr->getTypeId() == Equal)) {
             remainingConstraints.push_back(constr);
@@ -1836,8 +1819,8 @@ System::ReductionOutput System::computeReductionMap(const std::vector<double*>& 
         const auto it1 = paramToIndex.find(constr->params()[0]);
         const auto it2 = paramToIndex.find(constr->params()[1]);
         if (it1 == paramToIndex.end() || it2 == paramToIndex.end()) {
-          remainingConstraints.push_back(constr);
-          continue;
+            remainingConstraints.push_back(constr);
+            continue;
         }
         double* p_kept = reducedParams[it1->second];
         double* p_replaced = reducedParams[it2->second];
@@ -1846,73 +1829,170 @@ System::ReductionOutput System::computeReductionMap(const std::vector<double*>& 
     for (size_t i = 0; i < params.size(); ++i) {
         if (params[i] != reducedParams[i]) {
             reductionMap[params[i]] = reducedParams[i];
-        } else {
+        }
+        else {
             remainingParams.push_back(params[i]);
         }
     }
 
     return ReductionOutput {
-                .reductionMap=reductionMap, 
-                .constraints=remainingConstraints, 
-                .params=remainingParams
-            };
+        .reductionMap = reductionMap,
+        .constraints = remainingConstraints,
+        .params = remainingParams
+    };
 }
-System::Components System::partitionIntoComponents(const std::vector<double*>& params, const std::vector<Constraint*>& constraints, const std::map<double*, double*>& reductionMap)
+
+void fillComponent(
+    int vertexIndex,
+    const std::vector<std::vector<size_t>>& adjacencyList,
+    std::vector<bool>& visited,
+    std::vector<size_t>& component
+)
 {
-    // partitioning into decoupled components
+    visited[vertexIndex] = true;
+    component.push_back(vertexIndex);
+
+    for (int adjVertex : adjacencyList[vertexIndex]) {
+        if (!visited[adjVertex]) {
+            fillComponent(adjVertex, adjacencyList, visited, component);
+        }
+    }
+}
+
+std::vector<System::SubSystemDescription> System::partitionIntoSubSystems(
+    const std::vector<double*>& params,
+    std::vector<Constraint*> constraints,
+    const std::map<double*, double*>& reductionMap
+)
+{
     std::map<double*, int> paramToIndex = buildParamToIndex(params);
 
-    Graph g;
-    
-    auto reducedParameters = [&](std::vector<double*> cparams) {
-        bool anyReduction = false;
+    // We sort by constraint type because we know
+    // equality and difference constraint have more chances
+    // to be solved singled out, so we edge our bet to have
+    // other, more complex constraints be reduced to 1 parameter
+    std::ranges::sort(constraints, [](Constraint* a, Constraint* b) -> bool {
+        return a->getTypeId() < b->getTypeId();
+    });
+
+    // This is used to find parameter indices for constraints parameters, it
+    // 1. Follows reduction indirection
+    // 2. Ensures uniqueness (no duplicate parameters)
+    // 3. Maps parameters to their index in the `params` vector
+    auto reduceParameters = [&](std::vector<double*> cparams) -> std::vector<size_t> {
         std::ranges::transform(cparams, cparams.begin(), [&](double* cparam) {
             auto foundReduction = reductionMap.find(cparam);
             if (foundReduction != reductionMap.end()) {
                 cparam = foundReduction->second;
-                anyReduction = true;
             }
             return cparam;
         });
 
-
-        if (!anyReduction) {
-            return cparams;
-        }
         std::ranges::sort(cparams);
         std::ranges::unique(cparams);
-        return cparams;
-    };
-
-    for (size_t i = 0; i < params.size() + constraints.size(); i++) {
-        boost::add_vertex(g);
-    }
-
-    int cvtid = int(params.size());
-    for (const auto constr : constraints) {
-        VEC_pD cparams = reducedParameters(c2p[constr]);
-    
-        for (auto param : cparams) {            
-            auto it = paramToIndex.find(param);
-            if (it != paramToIndex.end()) {
-                boost::add_edge(cvtid, it->second, g);
+        std::vector<size_t> paramIndices;
+        paramIndices.reserve(cparams.size());
+        for (auto param : cparams) {
+            auto foundIndex = paramToIndex.find(param);
+            if (foundIndex != paramToIndex.end()) {
+                paramIndices.push_back(foundIndex->second);
             }
         }
-        ++cvtid;
-    }
 
-    VEC_I components(boost::num_vertices(g));
-    int componentsSize = 0;
-    if (!components.empty()) {
-        componentsSize = boost::connected_components(g, &components[0]);
-    }
-
-    return Components {
-        .components = components,
-        .nParams = params.size(),
-        .size = componentsSize
+        return paramIndices;
     };
+
+    // Build an index
+    std::vector<std::pair<size_t, std::vector<size_t>>> constraintToParams;
+    for (size_t i = 0; i < constraints.size(); ++i) {
+        auto indices = reduceParameters(constraints[i]->origParams());
+        // if (indices.size() == 1) {
+        //     paramToIndex.erase(params[indices[0]]); // Will make simple systems discovery faster
+        //     later
+        // }
+        constraintToParams.push_back(std::make_pair(i, indices));
+    }
+
+    // Build the adjacency list. Every constraint and every parameter
+    // has a position in the vector. Each vector position contains
+    // a vector of indices to the adjacency list vector this represent
+    // adjacent vertices
+    // In practice, there should never be an edge between 2 constraints
+    // or between 2 parameters. Constraints occupy the first index range
+    // [0, constraints.size()[ and parameters occupy the second
+    // [constraints.size(), constraints.size() + params.size()[
+    std::vector<std::vector<size_t>> adjacencyList(constraints.size() + params.size());
+    for (size_t i = 0; i < constraints.size(); ++i) {
+        for (size_t paramInd : constraintToParams[i].second) {
+            size_t paramAdjInd = constraints.size() + paramInd;
+            adjacencyList[i].push_back(paramAdjInd);
+            adjacencyList[paramAdjInd].push_back(i);
+        }
+    }
+
+    // This cleanly removes a parameter from the adjacency list,
+    // severing every edge to or from it
+    // to preserve indexing, it does not actualy remove the parameter's
+    // position in the adjacencyList, but we can later test for
+    // vertices with no outgoing edge and refuse to make a subsystem
+    // from it
+    auto removeParam = [&](size_t paramAdjIndex) {
+        for (auto constrIndex : adjacencyList[paramAdjIndex]) {
+            std::erase(adjacencyList[constrIndex], paramAdjIndex);
+        }
+        adjacencyList[paramAdjIndex].clear();
+    };
+    std::vector<SubSystemDescription> subSystems;
+
+    bool retrySmallSystems = true;
+    size_t numSmallSystems = 0;
+    while (retrySmallSystems) {
+        retrySmallSystems = false;
+        for (size_t i = 0; i < constraints.size(); ++i) {
+            if (adjacencyList[i].size() != 1 || constraints[i]->getTag() < 0) {
+                continue;
+            }
+            size_t paramAdjIndex = adjacencyList[i][0];
+
+            subSystems.push_back(
+                SubSystemDescription {
+                    .constraints = {constraints[i]},
+                    .params = {params[paramAdjIndex - constraints.size()]}
+                }
+            );
+            removeParam(paramAdjIndex);
+            numSmallSystems++;
+            retrySmallSystems = true;
+        }
+    }
+
+    // Builds a subsystem description from constraints & parameters
+    // indices, it pulls from the `constraints` and `params` vectors
+    auto componentToSubsystem = [&](const std::vector<size_t>& component) -> SubSystemDescription {
+        System::SubSystemDescription desc;
+        for (size_t vertex : component) {
+            if (vertex < constraints.size()) {
+                desc.constraints.push_back(constraints[vertex]);
+            }
+            else {
+                desc.params.push_back(params[vertex - constraints.size()]);
+            }
+        }
+        return desc;
+    };
+
+    // Find every remaining connected components
+    std::vector<bool> visited(adjacencyList.size(), false);
+    for (size_t i = 0; i < constraints.size(); i++) {
+        if (!visited[i] && !adjacencyList[i].empty()) {
+            std::vector<size_t> component;
+            fillComponent(i, adjacencyList, visited, component);
+            subSystems.push_back(componentToSubsystem(component));
+        }
+    }
+    return subSystems;
 }
+
 std::map<double*, int> System::buildParamToIndex(const std::vector<double*> params)
 {
     std::map<double*, int> paramToIndex;
@@ -2124,6 +2204,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
     }
 
     subsys->revertParams();
+    subsys->applySolution();
 
     if (err <= smallF) {
         return Success;
@@ -2309,6 +2390,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     }
 
     subsys->revertParams();
+    subsys->applySolution();
 
     return (stop == 1) ? Success : Failed;
 }
@@ -2517,6 +2599,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     }
 
     subsys->revertParams();
+    subsys->applySolution();
 
     if (debugMode == IterationLevel) {
         std::stringstream stream;
@@ -4739,6 +4822,9 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
 
     subsysA->revertParams();
     subsysB->revertParams();
+
+    subsysA->applySolution();
+    subsysB->applySolution();
     return ret;
 }
 

@@ -36,14 +36,14 @@ namespace GCS
 {
 
 // SubSystem
-SubSystem::SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params)
+SubSystem::SubSystem(const std::vector<Constraint*>& clist_, const VEC_pD& params)
     : clist(clist_)
 {
     MAP_pD_pD dummymap;
     initialize(params, dummymap);
 }
 
-SubSystem::SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params, MAP_pD_pD& reductionmap)
+SubSystem::SubSystem(const std::vector<Constraint*>& clist_, const VEC_pD& params, const MAP_pD_pD& reductionmap)
     : clist(clist_)
 {
     initialize(params, reductionmap);
@@ -52,7 +52,7 @@ SubSystem::SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params, MAP_pD_pD
 SubSystem::~SubSystem()
 {}
 
-void SubSystem::initialize(VEC_pD& params, MAP_pD_pD& reductionmap)
+void SubSystem::initialize(const VEC_pD& params, const MAP_pD_pD& reductionmap)
 {
     csize = static_cast<int>(clist.size());
     plist = params;
@@ -73,7 +73,9 @@ void SubSystem::initialize(VEC_pD& params, MAP_pD_pD& reductionmap)
                 continue;
             }
             auto foundParam = pindex.find(foundReduction->second);
-            assert(foundParam != pindex.end());
+            if (foundParam == pindex.end()) {
+                continue;
+            }
             rindex[param] = foundParam->second;
         }
     }

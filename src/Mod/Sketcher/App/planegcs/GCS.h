@@ -690,11 +690,12 @@ protected:
     }
 
 public:
-    struct Components {
+    struct Components
+    {
         std::vector<int> components;
         size_t nParams;
         int size;
-    
+
         int constraintComponent(size_t constraintIndex)
         {
             return components[constraintIndex + nParams];
@@ -704,21 +705,38 @@ public:
             return components[paramIndex];
         }
     };
-    struct ReductionOutput {
+
+    struct SubSystemDescription
+    {
+        std::vector<Constraint*> constraints;
+        std::vector<double*> params;
+    };
+
+    struct ReductionOutput
+    {
         std::map<double*, double*> reductionMap;
         std::vector<Constraint*> constraints;
         std::vector<double*> params;
     };
-    struct IsolateConstraintsOutput {
-        std::vector<Constraint*> singleConstraints; // Constraints that can be solved individually
-        std::vector<Constraint*> groupConstraints; // Constraints that could not be isolated
+    struct IsolateConstraintsOutput
+    {
+        std::vector<Constraint*> singleConstraints;  // Constraints that can be solved individually
+        std::vector<Constraint*> groupConstraints;   // Constraints that could not be isolated
     };
+
 private:
     static std::map<double*, int> buildParamToIndex(const std::vector<double*> params);
     std::vector<Constraint*> solvableConstraints(const std::vector<Constraint*>& constraints);
-    ReductionOutput computeReductionMap(const std::vector<double*>& params, const std::vector<Constraint*>& constraints);
+    ReductionOutput computeReductionMap(
+        const std::vector<double*>& params,
+        const std::vector<Constraint*>& constraints
+    );
+    std::vector<SubSystemDescription> partitionIntoSubSystems(
+        const std::vector<double*>& params,
+        std::vector<Constraint*> constraints,
+        const std::map<double*, double*>& reductionMap
+    );
     IsolateConstraintsOutput isolateConstraints();
-    Components partitionIntoComponents(const std::vector<double*>& params, const std::vector<Constraint*>& constraints, const std::map<double*, double*>& reductionMap);
 };
 
 
