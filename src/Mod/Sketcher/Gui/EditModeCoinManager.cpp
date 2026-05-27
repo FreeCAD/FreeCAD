@@ -800,16 +800,67 @@ bool EditModeCoinManager::detectCurvePreselection(
     return false;
 }
 
-bool EditModeCoinManager::detectGeometryPreselection(const SoPickedPoint* point, PreselectionResult& result)
+bool EditModeCoinManager::detectPointPreselection(
+    const SoPickedPointList& points,
+    PreselectionResult& result
+)
 {
-    for (int layerIndex = 0; layerIndex < geometryLayerParameters.getCoinLayerCount(); ++layerIndex) {
-        if (detectPointPreselection(point, layerIndex, result)) {
-            return true;
+    for (int i = 0; i < points.getLength(); ++i) {
+        SoPickedPoint* point = points[i];
+        if (!point) {
+            continue;
         }
 
-        if (detectCurvePreselection(point, layerIndex, result)) {
-            return true;
+        for (int layerIndex = 0; layerIndex < geometryLayerParameters.getCoinLayerCount();
+             ++layerIndex) {
+            PreselectionResult candidate;
+            if (!detectPointPreselection(point, layerIndex, candidate)) {
+                continue;
+            }
+
+            if (candidate.Kind == PreselectionResult::HitKind::Point) {
+                result = candidate;
+                return true;
+            }
         }
+    }
+
+    return false;
+}
+
+bool EditModeCoinManager::detectCurvePreselection(
+    const SoPickedPointList& points,
+    PreselectionResult& result
+)
+{
+    for (int i = 0; i < points.getLength(); ++i) {
+        SoPickedPoint* point = points[i];
+        if (!point) {
+            continue;
+        }
+
+        for (int layerIndex = 0; layerIndex < geometryLayerParameters.getCoinLayerCount();
+             ++layerIndex) {
+            if (detectCurvePreselection(point, layerIndex, result)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool EditModeCoinManager::detectGeometryPreselection(
+    const SoPickedPointList& points,
+    PreselectionResult& result
+)
+{
+    if (detectPointPreselection(points, result)) {
+        return true;
+    }
+
+    if (detectCurvePreselection(points, result)) {
+        return true;
     }
 
     return false;
@@ -841,6 +892,42 @@ bool EditModeCoinManager::detectAxisPreselection(const SoPickedPoint* point, Pre
     return true;
 }
 
+bool EditModeCoinManager::detectAxisPreselection(
+    const SoPickedPointList& points,
+    PreselectionResult& result
+)
+{
+    for (int i = 0; i < points.getLength(); ++i) {
+        SoPickedPoint* point = points[i];
+        if (!point) {
+            continue;
+        }
+
+        if (detectOriginPreselection(point, result)) {
+            return true;
+        }
+
+        for (int layerIndex = 0; layerIndex < geometryLayerParameters.getCoinLayerCount();
+             ++layerIndex) {
+            PreselectionResult candidate;
+            if (!detectPointPreselection(point, layerIndex, candidate)) {
+                continue;
+            }
+
+            if (candidate.Kind == PreselectionResult::HitKind::Axis) {
+                result = candidate;
+                return true;
+            }
+        }
+
+        if (detectAxisPreselection(point, result)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
     const SoPickedPointList& points,
     const SbVec2s& cursorPos
@@ -857,20 +944,11 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
         return result;
     }
 
-    SoPickedPoint* point = points[0];
-    if (!point) {
+    if (detectGeometryPreselection(points, result)) {
         return result;
     }
 
-    if (detectOriginPreselection(point, result)) {
-        return result;
-    }
-
-    if (detectGeometryPreselection(point, result)) {
-        return result;
-    }
-
-    if (detectAxisPreselection(point, result)) {
+    if (detectAxisPreselection(points, result)) {
         return result;
     }
 

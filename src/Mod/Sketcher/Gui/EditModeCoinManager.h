@@ -300,7 +300,10 @@ private:
         const SbVec2s& cursorPos
     );
     bool detectOriginPreselection(const SoPickedPoint* point, PreselectionResult& result);
-    bool detectGeometryPreselection(const SoPickedPoint* point, PreselectionResult& result);
+    bool detectGeometryPreselection(const SoPickedPointList& points, PreselectionResult& result);
+    bool detectPointPreselection(const SoPickedPointList& points, PreselectionResult& result);
+    bool detectCurvePreselection(const SoPickedPointList& points, PreselectionResult& result);
+    bool detectAxisPreselection(const SoPickedPointList& points, PreselectionResult& result);
     bool detectPointPreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
     bool detectCurvePreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
     bool detectAxisPreselection(const SoPickedPoint* point, PreselectionResult& result);
